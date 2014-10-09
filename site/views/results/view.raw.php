@@ -13,7 +13,7 @@ class sportsmanagementViewResults extends JViewLegacy
 		// Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
         $option = JRequest::getCmd('option');
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $roundcode = 0;
 		$css		= 'components/com_sportsmanagement/assets/css/tabs.css';
 		$document->addStyleSheet($css);

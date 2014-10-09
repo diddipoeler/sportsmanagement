@@ -64,8 +64,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	$k=0;
 	foreach ($this->teams as $team)
 	{
-		$teaminfo_link	= sportsmanagementHelperRoute::getTeamInfoRoute( $this->project->slug, $team->team_slug );
-		$clubinfo_link	= sportsmanagementHelperRoute::getClubInfoRoute( $this->project->slug, $team->club_slug );
+		$teaminfo_link	= sportsmanagementHelperRoute::getTeamInfoRoute( $this->project->slug, $team->team_slug,0,JRequest::getInt('cfg_which_database',0) );
+		$clubinfo_link	= sportsmanagementHelperRoute::getClubInfoRoute( $this->project->slug, $team->club_slug,null,JRequest::getInt('cfg_which_database',0) );
 		$teamTitle		= JText::sprintf( 'COM_SPORTSMANAGEMENT_TEAMS_TEAM_PROJECT_INFO', $team->team_name );
 		$clubTitle		= JText::sprintf( 'COM_SPORTSMANAGEMENT_TEAMS_CLUB_PROJECT_INFO', $team->club_name );
 

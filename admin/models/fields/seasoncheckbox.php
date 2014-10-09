@@ -71,7 +71,7 @@ class JFormFieldseasoncheckbox extends JFormField
 	 */
 	protected function getInput()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $select_id = JRequest::getVar('id');
         $this->value = explode(",", $this->value);
@@ -79,8 +79,8 @@ class JFormFieldseasoncheckbox extends JFormField
         $targetid = $this->element['targetid'];
         
         
-        //$mainframe->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput targettable<br><pre>'.print_r($targettable,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput targetid<br><pre>'.print_r($targetid,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput targettable<br><pre>'.print_r($targettable,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput targetid<br><pre>'.print_r($targetid,true).'</pre>'),'');
     
     
         // Initialize variables.
@@ -98,8 +98,8 @@ class JFormFieldseasoncheckbox extends JFormField
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 			$options = JFactory::getDbo()->loadObjectList();
@@ -119,8 +119,8 @@ class JFormFieldseasoncheckbox extends JFormField
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 			$this->value = JFactory::getDbo()->loadColumn();
@@ -130,9 +130,9 @@ class JFormFieldseasoncheckbox extends JFormField
         $this->value = '';
     }
     
-    //$mainframe->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput query<br><pre>'.print_r($query,true).'</pre>'),'');
-    //$mainframe->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput value<br><pre>'.print_r($this->value,true).'</pre>'),'');
-    //$mainframe->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput options<br><pre>'.print_r($options,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput query<br><pre>'.print_r($query,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput value<br><pre>'.print_r($this->value,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_('JFormFieldseasoncheckbox getInput options<br><pre>'.print_r($options,true).'</pre>'),'');
    
 
 

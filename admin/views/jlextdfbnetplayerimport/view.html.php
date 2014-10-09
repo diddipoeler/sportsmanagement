@@ -56,7 +56,7 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 {
 	function display($tpl = null) 
     {
-		//global $mainframe;
+		//global $app;
 		
 		if ($this->getLayout () == 'default') {
 			$this->_displayDefault ( $tpl );
@@ -109,7 +109,7 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		$mtime = explode ( " ", $mtime );
 		$mtime = $mtime [1] + $mtime [0];
 		$starttime = $mtime;
-		$mainframe = JFactory::getApplication ();
+		$app = JFactory::getApplication ();
 		$db = JFactory::getDBO ();
 		$post = JRequest::get ( 'post' );
 		
@@ -135,7 +135,7 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
     {
 		//global $option;
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication ();
+		$app = JFactory::getApplication ();
 		$db = JFactory::getDBO ();
 		$uri = JFactory::getURI ();
 		$user = JFactory::getUser ();
@@ -145,7 +145,7 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		// $this->assignRef( 'name', $projectdata->name);
 		
 		$model = $this->getModel ();
-		$project = $mainframe->getUserState ( $option . 'project' );
+		$project = $app->getUserState ( $option . 'project' );
 		$this->assignRef ( 'project', $project );
 		$config = JComponentHelper::getParams ( 'com_media' );
 		
@@ -163,8 +163,8 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
     
 	function _displayDefaultUpdate($tpl) 
     {
-		// global $mainframe, $option;
-		$mainframe = & JFactory::getApplication ();
+		// global $app, $option;
+		$app = & JFactory::getApplication ();
 		$option = JRequest::getCmd ( 'option' );
 		
 		$db = JFactory::getDBO ();
@@ -172,14 +172,14 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		$user = JFactory::getUser ();
 		$model = $this->getModel ();
 		//$option = 'com_joomleague';
-		$project = $mainframe->getUserState ( $option . 'project' );
+		$project = $app->getUserState ( $option . 'project' );
 		$this->assignRef ( 'project', $project );
 		$config = JComponentHelper::getParams ( 'com_media' );
 		
-		$uploadArray = $mainframe->getUserState ( $option . 'uploadArray', array () );
-		$lmoimportuseteams = $mainframe->getUserState ( $option . 'lmoimportuseteams' );
-		$whichfile = $mainframe->getUserState ( $option . 'whichfile' );
-		//$delimiter = $mainframe->getUserState ( $option . 'delimiter' );
+		$uploadArray = $app->getUserState ( $option . 'uploadArray', array () );
+		$lmoimportuseteams = $app->getUserState ( $option . 'lmoimportuseteams' );
+		$whichfile = $app->getUserState ( $option . 'whichfile' );
+		//$delimiter = $app->getUserState ( $option . 'delimiter' );
 		
 		$this->assignRef ( 'uploadArray', $uploadArray );
 		

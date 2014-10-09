@@ -69,7 +69,8 @@ class sportsmanagementModelPositions extends JModelList
                         );
                 //$config['dbo'] = sportsmanagementHelper::getDBConnection();        
                 parent::__construct($config);
-                parent::setDbo(sportsmanagementHelper::getDBConnection());
+                $getDBConnection = sportsmanagementHelper::getDBConnection();
+                parent::setDbo($getDBConnection);
         }
         
     /**
@@ -81,12 +82,12 @@ class sportsmanagementModelPositions extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -104,7 +105,7 @@ class sportsmanagementModelPositions extends JModelList
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 
 
 //		// Load the parameters.
@@ -123,7 +124,7 @@ class sportsmanagementModelPositions extends JModelList
 	function getListQuery()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         
         $search	= $this->getState('filter.search');
         $search_state	= $this->getState('filter.state');
@@ -162,7 +163,7 @@ class sportsmanagementModelPositions extends JModelList
                 
   if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
   
 		return $query;
@@ -182,10 +183,10 @@ class sportsmanagementModelPositions extends JModelList
 	function getParentsPositions()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $query = JFactory::getDbo()->getQuery(true);
         $results = array();
-		//$project_id=$mainframe->getUserState($option.'project');
+		//$project_id=$app->getUserState($option.'project');
         
 		//get positions already in project for parents list
 		//support only 2 sublevel, so parent must not have parents themselves
@@ -228,10 +229,10 @@ class sportsmanagementModelPositions extends JModelList
     function getProjectPositions($project_id,$persontype=1)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $query = JFactory::getDbo()->getQuery(true);
         
-		//$project_id=$mainframe->getUserState($option.'project');
+		//$project_id=$app->getUserState($option.'project');
         
         // Select some fields
         $query->select('ppos.id AS value, pos.name AS text');
@@ -249,7 +250,7 @@ class sportsmanagementModelPositions extends JModelList
 //					ORDER BY ordering ";
 		JFactory::getDbo()->setQuery($query);
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		if (!$result=JFactory::getDbo()->loadObjectList())
 		{
@@ -273,8 +274,8 @@ class sportsmanagementModelPositions extends JModelList
 //	function getStaffPositions($project_id)
 //	{
 //		$option = JRequest::getCmd('option');
-//		$mainframe = JFactory::getApplication();
-//		//$project_id=$mainframe->getUserState($option.'project');
+//		$app = JFactory::getApplication();
+//		//$project_id=$app->getUserState($option.'project');
 //		$query="	SELECT ppos.id AS value, pos.name AS text
 //					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_position AS pos
 //					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_project_position AS ppos ON ppos.position_id=pos.id
@@ -302,8 +303,8 @@ class sportsmanagementModelPositions extends JModelList
 //	function getPlayerPositions($project_id)
 //	{
 //		$option = JRequest::getCmd('option');
-//		$mainframe = JFactory::getApplication();
-//		//$project_id=$mainframe->getUserState($option.'project');
+//		$app = JFactory::getApplication();
+//		//$project_id=$app->getUserState($option.'project');
 //
 //		$query="	SELECT pp.id AS value,name AS text
 //					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_position AS p
@@ -331,10 +332,10 @@ class sportsmanagementModelPositions extends JModelList
 	function getPositions($project_id)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $query = JFactory::getDbo()->getQuery(true);
         
-		//$project_id=$mainframe->getUserState($option.'project');
+		//$project_id=$app->getUserState($option.'project');
         
         // Select some fields
         $query->select('pp.id AS value,name AS text');
@@ -375,7 +376,7 @@ class sportsmanagementModelPositions extends JModelList
 	function getAllPositions()
 	{
 	   $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $query = JFactory::getDbo()->getQuery(true);
         
         // Select some fields
@@ -421,8 +422,8 @@ class sportsmanagementModelPositions extends JModelList
 //	function getRefereePositions($project_id)
 //	{
 //		$option = JRequest::getCmd('option');
-//		$mainframe = JFactory::getApplication();
-//		//$project_id=$mainframe->getUserState($option.'project');
+//		$app = JFactory::getApplication();
+//		//$project_id=$app->getUserState($option.'project');
 //		$query='SELECT	ppos.id AS value,
 //				pos.name AS text
 //				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos
@@ -451,7 +452,7 @@ class sportsmanagementModelPositions extends JModelList
     public function getPositionListSelect()
 	{
 	   $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $query = JFactory::getDbo()->getQuery(true);
         // Select some fields
         $query->select('id,name,id AS value,name AS text,alias,parent_id,persontype,sports_type_id');
@@ -459,7 +460,7 @@ class sportsmanagementModelPositions extends JModelList
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position');
         $query->order('name');
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		//$query='SELECT id,name,id AS value,name AS text,alias,parent_id,persontype,sports_type_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position ORDER BY name';
 		JFactory::getDbo()->setQuery($query);

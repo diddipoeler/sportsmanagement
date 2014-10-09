@@ -59,7 +59,7 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 	//function display($tpl = null)
     public function init ()
 	{
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
 		$document = JFactory::getDocument();
         $uri = JFactory::getURI();
 
@@ -74,7 +74,7 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 		$folder 	= ImageSelectSM::getfolder($type);
 		$field 		= JRequest::getVar( 'field' );
 		$fieldid 	= JRequest::getVar( 'fieldid' );
-		$search 	= $mainframe->getUserStateFromRequest( 'com_sportsmanagement.imageselect', 'search', '', 'string' );
+		$search 	= $app->getUserStateFromRequest( 'com_sportsmanagement.imageselect', 'search', '', 'string' );
 		$search 	= trim(JString::strtolower( $search ) );
 
 		//add css
@@ -132,7 +132,7 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 	function _displayupload($tpl = null)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
 
 		//initialise variables
 		$document	= JFactory::getDocument();

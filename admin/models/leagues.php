@@ -77,7 +77,8 @@ class sportsmanagementModelLeagues extends JModelList
                         );
                 //$config['dbo'] = sportsmanagementHelper::getDBConnection();  
                 parent::__construct($config);
-                parent::setDbo(sportsmanagementHelper::getDBConnection());
+                $getDBConnection = sportsmanagementHelper::getDBConnection();
+                parent::setDbo($getDBConnection);
         }
         
     /**
@@ -89,12 +90,12 @@ class sportsmanagementModelLeagues extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -111,7 +112,7 @@ class sportsmanagementModelLeagues extends JModelList
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 
 
 //		// Load the parameters.
@@ -129,7 +130,7 @@ class sportsmanagementModelLeagues extends JModelList
 	 */
 	protected function getListQuery()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $search	= $this->getState('filter.search');
         $search_nation	= $this->getState('filter.search_nation');
@@ -168,11 +169,11 @@ class sportsmanagementModelLeagues extends JModelList
                 $db->escape($this->getState('list.direction', 'ASC')));
                 
                 
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');        
  
 		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
         
         return $query;
@@ -192,13 +193,13 @@ class sportsmanagementModelLeagues extends JModelList
      */
     function getLeagues()
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $search_nation = '';
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($mainframe,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($app,true).'</pre>'),'Notice');
         
-        if ( $mainframe->isAdmin() )
+        if ( $app->isAdmin() )
         {
         $search_nation	= $this->getState('filter.search_nation');
         }
@@ -220,7 +221,7 @@ class sportsmanagementModelLeagues extends JModelList
         if (!$result = $db->loadObjectList())
         {
             sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
             return array();
         }
         foreach ($result as $league)

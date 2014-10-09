@@ -14,7 +14,7 @@ $result = array();
 $db		=& JFactory::getDBO();
 
 $document	=& JFactory::getDocument();
-$mainframe	=& JFactory::getApplication();
+$app	=& JFactory::getApplication();
  
 // Some simple validation
 if (is_string($search) && strlen($search) > 2 && strlen($search) < 64)

@@ -104,7 +104,7 @@ class sportsmanagementControllerPredictionUsers extends JControllerLegacy
 		JRequest::checkToken() or jexit(JText::_('JL_PRED_USERS_INVALID_TOKEN_MEMBER_NOT_SAVED'));
         $option = JRequest::getCmd('option');
         $optiontext = strtoupper(JRequest::getCmd('option').'_');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$document = JFactory::getDocument();
         
 		$msg	= '';

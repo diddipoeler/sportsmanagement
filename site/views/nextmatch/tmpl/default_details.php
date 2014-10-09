@@ -50,9 +50,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 		?>
 	<tr>
 		<td colspan="3"><span class=""><?php echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_OLD_MATCH' ); ?></span>
-		<span><?php echo JHTML :: link(sportsmanagementHelperRoute::getMatchReportRoute( $this->project->id, 
-		$this->match->old_match_id ),
-		$this->oldmatchtext); ?></span></td>
+		<span><?php 
+        echo JHTML :: link(sportsmanagementHelperRoute::getMatchReportRoute($this->project->id,$this->match->old_match_id,JRequest::getInt('cfg_which_database',0) ),$this->oldmatchtext); 
+        ?></span></td>
 	</tr>
 	<?php
 	}
@@ -64,9 +64,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 		?>
 	<tr>
 		<td colspan="3"><span class=""><?php echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_NEW_MATCH' ); ?></span>
-		<span><?php echo JHTML :: link(sportsmanagementHelperRoute::getNextMatchRoute( $this->project->id, 
-		$this->match->new_match_id ),
-		$this->newmatchtext);?></span></td>
+		<span>
+        <?php 
+        echo JHTML :: link(sportsmanagementHelperRoute::getNextMatchRoute($this->project->id,$this->match->new_match_id,JRequest::getInt('cfg_which_database',0) ),$this->newmatchtext);
+        ?>
+        </span></td>
 	</tr>
 	<?php
 	}
@@ -140,7 +142,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 	if ($this->config['show_match_playground'] == 1)
     {
 		if ($this->match->playground_id > 0): ?>
-			<?php $playground_link = sportsmanagementHelperRoute::getPlaygroundRoute( $this->project->id, $this->match->playground_id);?>
+			<?php $playground_link = sportsmanagementHelperRoute::getPlaygroundRoute($this->project->id, $this->match->playground_id,JRequest::getInt('cfg_which_database',0));?>
 			<tr>
 				<td colspan="3"><span class=""><?php echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_PLAYGROUND' ); ?></span>
 					<span>
@@ -168,7 +170,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 			<?php $html = array(); ?>
 			<tr>
 				<td colspan="3"><span class=""><?php echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_REFEREE' ); ?></span>
-				<?php foreach ($this->referees AS $ref): ?> <?php $referee_link = sportsmanagementHelperRoute::getRefereeRoute($this->project->id, $ref->person_id);?>
+				<?php foreach ($this->referees AS $ref): ?> <?php $referee_link = sportsmanagementHelperRoute::getRefereeRoute($this->project->id, $ref->person_id,JRequest::getInt('cfg_which_database',0));?>
 				<?php $html[] = JHtml::link ($referee_link, sportsmanagementHelper::formatName(null, $ref->firstname, $ref->nickname, $ref->lastname, $this->config["name_format"])) .' ('.$ref->position_name.')'; ?>
 				<?php endforeach;?> <span><?php echo implode('</span>, <span>', $html); ?></span>
 				</td>

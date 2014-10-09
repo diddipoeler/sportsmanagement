@@ -68,7 +68,7 @@ class sportsmanagementControllerImagehandler extends JControllerLegacy
 	 */
 	function upload()
 	{
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
         $option = JRequest::getCmd('option');
 
 		// Check for request forgeries
@@ -89,9 +89,9 @@ class sportsmanagementControllerImagehandler extends JControllerLegacy
 		//$base_Dir = JPATH_SITE . DS . 'media' . DS . 'com_joomleague' . DS . $folder . DS;
 		$base_Dir = JPATH_SITE . DS . 'images' . DS . $option . DS .'database'.DS. $folder . DS;
         
-        $mainframe->enqueueMessage(JText::_($type),'');
-        $mainframe->enqueueMessage(JText::_($folder),'');
-        $mainframe->enqueueMessage(JText::_($base_Dir),'');
+        $app->enqueueMessage(JText::_($type),'');
+        $app->enqueueMessage(JText::_($folder),'');
+        $app->enqueueMessage(JText::_($base_Dir),'');
 
     //do we have an imagelink?
     if ( !empty( $linkaddress ) )
@@ -114,13 +114,13 @@ else
 if ( !copy($linkaddress,$filepath) )
 {
 echo "<script> alert('".JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_COPY_FAILED' )."'); window.history.go(-1); </script>\n";
-//$mainframe->close();
+//$app->close();
 }
 else
 {
 //echo "<script> alert('" . JText::_( 'COPY COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
 echo "<script>  window.parent.selectImage_".$type."('$filename', '$filename','$field');window.parent.SqueezeBox.close(); </script>\n";
-//$mainframe->close();
+//$app->close();
 }
 
     
@@ -130,7 +130,7 @@ echo "<script>  window.parent.selectImage_".$type."('$filename', '$filename','$f
 		if ( empty( $file['name'] ) )
 		{
 			echo "<script> alert('".JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_IMAGE_EMPTY' )."'); window.history.go(-1); </script>\n";
-			//$mainframe->close();
+			//$app->close();
 		}
 
 		//check the image
@@ -138,7 +138,7 @@ echo "<script>  window.parent.selectImage_".$type."('$filename', '$filename','$f
 
 		if ( $check === false )
 		{
-			$mainframe->redirect( $_SERVER['HTTP_REFERER'] );
+			$app->redirect( $_SERVER['HTTP_REFERER'] );
 		}
 
 		//sanitize the image filename
@@ -149,7 +149,7 @@ echo "<script>  window.parent.selectImage_".$type."('$filename', '$filename','$f
 		if ( !JFile::upload( $file['tmp_name'], $filepath ) )
 		{
 			echo "<script> alert('".JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_FAILED' )."'); window.history.go(-1); </script>\n";
-			//$mainframe->close();
+			//$app->close();
 
 		}
 		else
@@ -157,7 +157,7 @@ echo "<script>  window.parent.selectImage_".$type."('$filename', '$filename','$f
 //			echo "<script> alert('" . JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE'.'-'.$folder.'-'.$type.'-'.$filename.'-'.$field ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
 //			echo "<script> alert('" . JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_CTRL_UPLOAD_COMPLETE' ) . "'); window.history.go(-1); window.parent.selectImage_".$type."('$filename', '$filename','$field'); </script>\n";
       echo "<script>  window.parent.selectImage_".$type."('$filename', '$filename','$field');window.parent.SqueezeBox.close(); </script>\n";
-			//$mainframe->close();
+			//$app->close();
 		}
 
 	}
@@ -171,7 +171,7 @@ echo "<script>  window.parent.selectImage_".$type."('$filename', '$filename','$f
 	 */
 	function delete()
 	{
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
         $option = JRequest::getCmd('option');
 		// Set FTP credentials, if given
 		jimport( 'joomla.client.helper' );
@@ -206,7 +206,7 @@ echo "<script>  window.parent.selectImage_".$type."('$filename', '$filename','$f
 			}
 		}
 
-		$mainframe->redirect( 'index.php?option='.$option.'&view=imagehandler&type=' . $type . '&tmpl=component' );
+		$app->redirect( 'index.php?option='.$option.'&view=imagehandler&type=' . $type . '&tmpl=component' );
 	}
 
 }

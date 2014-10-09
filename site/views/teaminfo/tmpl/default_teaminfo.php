@@ -139,7 +139,7 @@ else
 	<div class="jl_parentContainer">
 		<span class="clubinfo_listing_item"> <?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_EMAIL'); ?></span>
 		<span class="clubinfo_listing_value"> <?php
-		$user = &JFactory::getUser();
+		$user = JFactory::getUser();
 		if (($user->id) or (!$this->overallconfig['nospam_email']))
 		{
 			echo JHtml::link('mailto:'. $this->club->email, $this->club->email);

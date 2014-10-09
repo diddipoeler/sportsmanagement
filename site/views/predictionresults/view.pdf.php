@@ -35,7 +35,7 @@ class JoomleagueViewPredictionResults extends JViewLegacy
     $optiontext = strtoupper(JRequest::getCmd('option').'_');
     $this->assignRef( 'optiontext',			$optiontext );
     
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		$this->assignRef('predictionGame',$model->getPredictionGame());
 

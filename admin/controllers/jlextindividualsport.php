@@ -61,7 +61,7 @@ class sportsmanagementControllerjlextindividualsport extends JController
     
 //    function apply($data)
 //    {
-//        $mainframe = JFactory::getApplication();
+//        $app = JFactory::getApplication();
 //        $option = JRequest::getCmd('option');
 //        $model = $this->getModel('jlextindividualsport');
 //        $model->apply($data);
@@ -71,7 +71,7 @@ class sportsmanagementControllerjlextindividualsport extends JController
     
 //    function save($data)
 //    {
-//        $mainframe = JFactory::getApplication();
+//        $app = JFactory::getApplication();
 //        $option = JRequest::getCmd('option');
 //        $model = $this->getModel('jlextindividualsport');
 //        $model->save($data);
@@ -89,13 +89,13 @@ class sportsmanagementControllerjlextindividualsport extends JController
 	function addmatch()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         
         //option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&id=241&team1=23&team2=31&rid=31
 		$post = JRequest::get('post');
-		$post['project_id'] = $mainframe->getUserState( "$option.pid", '0' );
-		$post['round_id'] = $mainframe->getUserState( "$option.rid", '0' );
+		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
+		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
         //$post['match_id'] = $post['id'];
         
 		$model = $this->getModel('jlextindividualsport');
@@ -132,12 +132,12 @@ class sportsmanagementControllerjlextindividualsport extends JController
         
         /*
         $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$post=JRequest::get('post');
 		
-		$post['match_id']		= $mainframe->getUserState( $option . 'match_id',0 );
-		$post['project_id']=$mainframe->getUserState($option.'project',0);
-		$post['round_id']=$mainframe->getUserState($option.'round_id',0);
+		$post['match_id']		= $app->getUserState( $option . 'match_id',0 );
+		$post['project_id']=$app->getUserState($option.'project',0);
+		$post['round_id']=$app->getUserState($option.'round_id',0);
 		$model=$this->getModel('jlextindividualsport');
 		if ($model->store($post))
 		{

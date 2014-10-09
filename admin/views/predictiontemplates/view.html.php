@@ -63,7 +63,7 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$mainframe			= JFactory::getApplication();
+		$app			= JFactory::getApplication();
     // Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
     $option = JRequest::getCmd('option');
@@ -74,7 +74,7 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
         
-		//$this->prediction_id	= $mainframe->getUserState( "$option.prediction_id", '0' );
+		//$this->prediction_id	= $app->getUserState( "$option.prediction_id", '0' );
         
         $this->prediction_id = $this->state->get('filter.prediction_id_select');
         if ( isset($this->prediction_id) )
@@ -82,10 +82,10 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
         }
         else
         {
-            $this->prediction_id = $mainframe->getUserState( "$option.predid", '0' );
+            $this->prediction_id = $app->getUserState( "$option.predid", '0' );
         }   
          
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' prediction_id<br><pre>'.print_r($this->prediction_id,true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' prediction_id<br><pre>'.print_r($this->prediction_id,true).'</pre>'),'Notice');
         
 
         
@@ -95,7 +95,7 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
         
 		
 		
-        //$this->prediction_id	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier, 'prediction_id', '0' );
+        //$this->prediction_id	= $app->getUserStateFromRequest( $option .'.'.$model->_identifier, 'prediction_id', '0' );
         $mdlPredictionGame = JModelLegacy::getInstance("PredictionGame", "sportsmanagementModel");
         $mdlPredictionGames = JModelLegacy::getInstance("PredictionGames", "sportsmanagementModel");
         $mdlPredictionTemplates = JModelLegacy::getInstance("PredictionTemplates", "sportsmanagementModel");
@@ -109,14 +109,14 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
         }
         else
         {
-            $this->prediction_id = $mainframe->getUserState( "$option.predid", '0' );
+            $this->prediction_id = $app->getUserState( "$option.predid", '0' );
         }
         
         $items = $this->get('Items');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		$total = $this->get('Total');
@@ -174,11 +174,13 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 //        $document = JFactory::getDocument();
 //        $option = JRequest::getCmd('option');
 //        
-//        JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATES'),'templates');
+        $this->title = JText::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATES');
+$this->icon = 'templates';
 //        
 //        JToolBarHelper::divider();
 //		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 //        JToolBarHelper::preferences($option);
+JToolbarHelper::checkin('predictiontemplates.checkin');
 parent::addToolbar();
        
     }   

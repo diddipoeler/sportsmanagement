@@ -61,7 +61,7 @@ class sportsmanagementViewagegroup extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // get the Data
 		$form = $this->get('Form');

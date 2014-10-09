@@ -74,23 +74,22 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 				for ($i=0,$n=count($this->items); $i < $n; $i++)
 				{
 					$row =& $this->items[$i];
-					$link=JRoute::_('index.php?option=com_sportsmanagement&task=predictiongroup.edit&id='.$row->id);
-					$checked=JHtml::_('grid.checkedout',$row,$i);
+					$link = JRoute::_('index.php?option=com_sportsmanagement&task=predictiongroup.edit&id='.$row->id);
+					$checked = JHtml::_('grid.checkedout',$row,$i);
+                    $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
 						<td class="center"><?php echo $checked; ?></td>
 						<?php
-						if ($this->table->isCheckedOut($this->user->get('id'),$row->checked_out))
-						{
-							$inputappend=' disabled="disabled"';
-							?><td class="center">&nbsp;</td><?php
-						}
-						else
-						{
+						
 							$inputappend='';
 							?>
 							<td class="center">
+                            <?php
+                            if ($row->checked_out) : ?>
+										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'predictiongroups.', $canCheckin); ?>
+									<?php endif; ?>
 								<a href="<?php echo $link; ?>">
 									<?php
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONGROUPS_EDIT_DETAILS');
@@ -100,7 +99,7 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 								</a>
 							</td>
 							<?php
-						}
+						
 						?>
 						<td><?php echo $row->name; ?></td>
 						<td class="order">

@@ -50,10 +50,10 @@ class sportsmanagementModelteamstaff extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.teamstaff', 'teamstaff', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
@@ -105,13 +105,13 @@ class sportsmanagementModelteamstaff extends JModelAdmin
 	 */
 	function saveshort()
 	{
-		$mainframe =& JFactory::getApplication();
+		$app =& JFactory::getApplication();
         // Get the input
         $pks = JRequest::getVar('cid', null, 'post', 'array');
         $post = JRequest::get('post');
         
-        $mainframe->enqueueMessage('saveshort $pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        $mainframe->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        $app->enqueueMessage('saveshort $pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        $app->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
         
         $result=true;
 		for ($x=0; $x < count($pks); $x++)
@@ -166,8 +166,8 @@ class sportsmanagementModelteamstaff extends JModelAdmin
 	 */
 	public function delete(&$pks)
 	{
-	$mainframe =& JFactory::getApplication();
-    $mainframe->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
+	$app =& JFactory::getApplication();
+    $app->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
     //$pks = JRequest::getVar('cid', array(), 'post', 'array');
     /* Ein Datenbankobjekt beziehen */
     $db = JFactory::getDbo();
@@ -180,7 +180,7 @@ class sportsmanagementModelteamstaff extends JModelAdmin
 		{
 		//JArrayHelper::toInteger($cid);
 			$cids = implode(',',$pks);
-            $mainframe->enqueueMessage(JText::_('delete cids<br><pre>'.print_r($cids,true).'</pre>'),'');
+            $app->enqueueMessage(JText::_('delete cids<br><pre>'.print_r($cids,true).'</pre>'),'');
             // wir löschen mit join
             $query = 'DELETE mp,ms
             FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff as m    
@@ -193,7 +193,7 @@ class sportsmanagementModelteamstaff extends JModelAdmin
             $db->query();
             if (!$db->query()) 
             {
-                $mainframe->enqueueMessage(JText::_('delete getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                $app->enqueueMessage(JText::_('delete getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
                 return false; 
             }
             
@@ -217,11 +217,11 @@ class sportsmanagementModelteamstaff extends JModelAdmin
 	 */
 	public function save($data)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $post=JRequest::get('post');
        
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       //$app->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
@@ -231,7 +231,7 @@ class sportsmanagementModelteamstaff extends JModelAdmin
 			$data['extended'] = (string)$parameter;
 		}
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         // Proceed with the save
 		return parent::save($data);   

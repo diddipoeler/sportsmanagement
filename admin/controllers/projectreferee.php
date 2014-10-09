@@ -65,7 +65,7 @@ class sportsmanagementControllerprojectreferee extends JControllerForm
 	 */
 	function remove()
 	{
-	$mainframe =& JFactory::getApplication();
+	$app =& JFactory::getApplication();
     $pks = JRequest::getVar('cid', array(), 'post', 'array');
     $model = $this->getModel('projectreferee');
     $model->delete($pks);

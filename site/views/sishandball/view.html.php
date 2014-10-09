@@ -46,7 +46,7 @@ class sportsmanagementViewsishandball extends JViewLegacy
 	function display($tpl = null) 
     {
 		$option = JRequest::getCmd('option');
-		//global $mainframe;
+		//global $app;
 		$app = JFactory::getApplication();
 		$params = $app->getParams();
         $paramscomponent = JComponentHelper::getParams( $option );

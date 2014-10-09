@@ -41,6 +41,15 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
+/**
+ * sportsmanagementViewReferee
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementViewReferee extends JViewLegacy
 {
 
@@ -55,13 +64,13 @@ class sportsmanagementViewReferee extends JViewLegacy
 		// Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
         $option = JRequest::getCmd('option');
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
 		$model = $this->getModel();
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
-		$person = sportsmanagementModelPerson::getPerson();
+		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
+		$person = sportsmanagementModelPerson::getPerson(0,$model::$cfg_which_database);
 
-		$this->assign('project',sportsmanagementModelProject::getProject());
-		$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig());
+		$this->assign('project',sportsmanagementModelProject::getProject($model::$cfg_which_database));
+		$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database));
 		$this->assignRef('config',$config);
 		$this->assignRef('person',$person);
 
@@ -83,7 +92,7 @@ class sportsmanagementViewReferee extends JViewLegacy
 		if ($config['show_gameshistory'])
 		{
 			$this->assign('games',$model->getGames());
-			$this->assign('teams',sportsmanagementModelProject::getTeamsIndexedByPtid());
+			$this->assign('teams',sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$model::$cfg_which_database));
 		}
 
 		if ($person)
@@ -97,7 +106,7 @@ class sportsmanagementViewReferee extends JViewLegacy
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
 
 		parent::display($tpl);
 	}

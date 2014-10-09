@@ -362,7 +362,7 @@ if (!empty($this->rows))
 		<td class="td_l"><?php
 		if ($this->config['link_player']==1)
 		{
-			$link=sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$this->team->slug,$row->slug);
+			$link = sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$this->team->slug,$row->slug,NULL,JRequest::getInt('cfg_which_database',0));
 			echo JHtml::link($link,'<span class="playername">'.$playerName.'</span>');
 		}
 		else
@@ -450,7 +450,7 @@ if (!empty($this->rows))
 			$model = $this->getModel();
 			
             //$this->assign('InOutStat',$model->getInOutStats($row->pid));
-            $this->assign('InOutStat',sportsmanagementModelPlayer::getInOutStats($row->project_id,$row->season_team_id,$row->season_team_person_id,$this->project->game_regular_time));
+            $this->assign('InOutStat',sportsmanagementModelPlayer::getInOutStats($row->project_id,$row->season_team_id,$row->season_team_person_id,$this->project->game_regular_time,0,JRequest::getInt('cfg_which_database',0)));
             
 			if (isset($this->InOutStat) && ($this->InOutStat->played > 0))
 			{

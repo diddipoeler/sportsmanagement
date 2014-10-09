@@ -71,7 +71,8 @@ class sportsmanagementModelDivisions extends JModelList
                         'dv.picture'
                         );
                 parent::__construct($config);
-                parent::setDbo(sportsmanagementHelper::getDBConnection());
+                $getDBConnection = sportsmanagementHelper::getDBConnection();
+                parent::setDbo($getDBConnection);
         }
         
     /**
@@ -83,12 +84,12 @@ class sportsmanagementModelDivisions extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -103,7 +104,7 @@ class sportsmanagementModelDivisions extends JModelList
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 
 
 //		// Load the parameters.
@@ -121,12 +122,12 @@ class sportsmanagementModelDivisions extends JModelList
 	 */
 	protected function getListQuery()
 	{
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
-        $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        $this->_project_id	= $app->getUserState( "$option.pid", '0' );
         $search	= $this->getState('filter.search');
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelDivisions _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelDivisions _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'Notice');
         
        
         // Create a new query object.
@@ -148,7 +149,7 @@ class sportsmanagementModelDivisions extends JModelList
 
 if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
 
 		return $query;
@@ -168,7 +169,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	*/
 	function getDivisions($project_id)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $starttime = microtime(); 
         // Create a new query object.		
@@ -189,8 +190,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		if ( !$result = $db->loadObjectList("value") )
@@ -213,7 +214,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	 */
 	function getProjectDivisionsCount($project_id)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $starttime = microtime(); 
         // Create a new query object.		
@@ -235,7 +236,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
         
 		return $db->loadResult();

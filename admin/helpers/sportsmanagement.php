@@ -67,7 +67,7 @@ abstract class sportsmanagementHelper
      */
     function get_IP_address()
 {
-    $mainframe	= JFactory::getApplication();
+    $app	= JFactory::getApplication();
   foreach (array('HTTP_CLIENT_IP',
                'HTTP_X_FORWARDED_FOR',
                'HTTP_X_FORWARDED',
@@ -79,8 +79,8 @@ abstract class sportsmanagementHelper
         foreach (explode(',', $_SERVER[$key]) as $IPaddress){
             $IPaddress = trim($IPaddress); // Just to be safe
 
-$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' key<br><pre>'.print_r($key,true).'</pre>'),'Notice');
-$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.print_r($IPaddress,true).'</pre>'),'Notice');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' key<br><pre>'.print_r($key,true).'</pre>'),'Notice');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.print_r($IPaddress,true).'</pre>'),'Notice');
 
             if (filter_var($IPaddress,
                            FILTER_VALIDATE_IP,
@@ -102,13 +102,13 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
      */
     public static function isJoomlaVersion ($version = '2.5')
 	{
-	   $mainframe	= JFactory::getApplication();
+	   $app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
         
 		$j = new JVersion();
         
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($j,true).'</pre>'),'Notice');
-//        $mainframe->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), $j->RELEASE),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($j,true).'</pre>'),'Notice');
+//        $app->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), $j->RELEASE),'Notice');
         
         if (! defined('COM_SPORTSMANAGEMENT_JOOMLAVERSION'))
         {
@@ -124,14 +124,14 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
      * 
      * @return
      */
-    public static function getDBConnection($request = false, $value = false)
+    public static function getDBConnection($request = FALSE, $value = FALSE)
     {
     $app = JFactory::getApplication();
     $params = JComponentHelper::getParams( 'com_sportsmanagement' );
     
     $config = JFactory::getConfig();
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' base<br><pre>'.print_r(JURI::base(),true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' root<br><pre>'.print_r(JURI::root(),true).'</pre>'),'');
     
     if ( $request )
     {
@@ -194,7 +194,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
         $query->from('#__user_profiles as up');
         $query->where('up.user_id = '.$user_id);
         $query->where('up.profile_key LIKE '.$db->Quote(''.'jsmprofile.website'.'') );
-        $query->where('up.profile_value LIKE '.$db->Quote(''.JURI::base().''));
+        $query->where('up.profile_value LIKE '.$db->Quote(''.JURI::root().''));
         $db->setQuery($query);
         $results2 = $db->loadResult();
         
@@ -410,31 +410,31 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
 	 */
 	public static function addSubmenu($submenu) 
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
         $document = JFactory::getDocument();
         $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // retrieve the value of the state variable. If no value is specified,
         // the specified default value will be returned.
         // function syntax is getUserState( $key, $default );
-        $project_id = $mainframe->getUserState( "$option.pid", '0' );
-        $project_team_id = $mainframe->getUserState( "$option.project_team_id", '0' );
-        $team_id = $mainframe->getUserState( "$option.team_id", '0' );
-        $club_id = $mainframe->getUserState( "$option.club_id", '0' );
+        $project_id = $app->getUserState( "$option.pid", '0' );
+        $project_team_id = $app->getUserState( "$option.project_team_id", '0' );
+        $team_id = $app->getUserState( "$option.team_id", '0' );
+        $club_id = $app->getUserState( "$option.club_id", '0' );
       
         
         
         if ( $show_debug_info )
         {
-            $mainframe->enqueueMessage(JText::_('addSubmenu post<br><pre>'.print_r(JRequest::get('post'),true).'</pre>'),'');
-            $mainframe->enqueueMessage(JText::_('addSubmenu project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
-            $mainframe->enqueueMessage(JText::_('addSubmenu project_team_id<br><pre>'.print_r($project_team_id,true).'</pre>'),'');
-            $mainframe->enqueueMessage(JText::_('addSubmenu team_id<br><pre>'.print_r($team_id,true).'</pre>'),'');
-            $mainframe->enqueueMessage(JText::_('addSubmenu club_id<br><pre>'.print_r($club_id,true).'</pre>'),'');
+            $app->enqueueMessage(JText::_('addSubmenu post<br><pre>'.print_r(JRequest::get('post'),true).'</pre>'),'');
+            $app->enqueueMessage(JText::_('addSubmenu project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
+            $app->enqueueMessage(JText::_('addSubmenu project_team_id<br><pre>'.print_r($project_team_id,true).'</pre>'),'');
+            $app->enqueueMessage(JText::_('addSubmenu team_id<br><pre>'.print_r($team_id,true).'</pre>'),'');
+            $app->enqueueMessage(JText::_('addSubmenu club_id<br><pre>'.print_r($club_id,true).'</pre>'),'');
         }
         
-        //$mainframe->enqueueMessage(JText::_('addSubmenu project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' joomla version -> <br><pre>'.print_r(COM_SPORTSMANAGEMENT_JOOMLAVERSION,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_('addSubmenu project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' joomla version -> <br><pre>'.print_r(COM_SPORTSMANAGEMENT_JOOMLAVERSION,true).'</pre>'),'');
         
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
@@ -546,13 +546,13 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
 	 */
 	static function getExtendedStatistic($data='', $file, $format='ini') 
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
 		//$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.$file.'.xml';
 		$templatepath = JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics';
         $xmlfile = $templatepath.DS.$file.'.xml';
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementHelper data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementHelper getExtendedStatistic<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementHelper data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementHelper getExtendedStatistic<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
         
 		$extended = JForm::getInstance('params', $xmlfile,
 				array('control'=> 'params'),
@@ -570,7 +570,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
 	 */
 	static function getExtended($data='', $file, $format='ini') 
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
 		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.$file.'.xml';
 		
     /*
@@ -604,8 +604,8 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
         $jRegistry->loadJSON($data);   
         }
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementHelper data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementHelper getExtended<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementHelper data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementHelper getExtended<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
         
 		$extended = JForm::getInstance('extended', $xmlfile,
 				array('control'=> 'extended'),
@@ -625,7 +625,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
      */
     static function getExtendedUser($data='', $file, $format='ini') 
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
 		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extendeduser'.DS.$file.'.xml';
 		
     /*
@@ -660,8 +660,8 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
         $jRegistry->loadJSON($data);    
         }
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementHelper data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementHelper getExtended<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementHelper data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementHelper getExtended<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
         
 		$extended = JForm::getInstance('extendeduser', $xmlfile,
 				array('control'=> 'extendeduser'),
@@ -935,13 +935,13 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
 	 */
 	public static function getExtensions()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = 'com_sportsmanagement';
         $view = JRequest::getVar('view');
 		$arrExtensions = array();
 		$excludeExtension = array();
 		
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view<br><pre>'.print_r($view,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view<br><pre>'.print_r($view,true).'</pre>'),'Notice');
         
 		if(JFolder::exists(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions')) {
 			$folderExtensions  = JFolder::folders(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions',
@@ -949,7 +949,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
 			if($folderExtensions !== false) {
 				foreach ($folderExtensions as $ext)
 				{
-					//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ext<br><pre>'.print_r($ext,true).'</pre>'),'Notice');
+					//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ext<br><pre>'.print_r($ext,true).'</pre>'),'Notice');
                     
                     if ( $ext == $view )
                     {
@@ -1284,7 +1284,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
 	 * @param boolean $use_offset use time offset
 	 * @param int $project_serveroffset custom time offset in hours. Use default joomla timeoffset if null
 	 */
-	function getTimestamp($date = null, $use_offset = 0, $offset = null)
+	public static function getTimestamp($date = null, $use_offset = 0, $offset = null)
 	{
 		$date = $date ? $date : 'now';
 		$app = JFactory::getApplication();
@@ -1388,16 +1388,16 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
 	 * @param mixed $config
 	 * @return
 	 */
-	public static function showTeamIcons(&$team,&$config)
+	public static function showTeamIcons(&$team,&$config,$cfg_which_database = 0)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($team,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($team,true).'</pre>'),'');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
-                $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.'<br><pre>'.print_r($team,true).'</pre>'),'');
+                $app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.'<br><pre>'.print_r($team,true).'</pre>'),'');
             }
             
         if(!isset($team->projectteamid)) return "";
@@ -1412,7 +1412,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
 
 		if ($config['show_team_link'])
 		{
-			$link = sportsmanagementHelperRoute::getPlayersRoute($projectSlug,$teamSlug,NULL,$projectteamid);
+			$link = sportsmanagementHelperRoute::getPlayersRoute($projectSlug,$teamSlug,NULL,$projectteamid,$cfg_which_database);
 			$title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_ROSTER_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/team_icon.png';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
@@ -1421,7 +1421,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
 
 		if (((!isset($team_plan)) || ($teamid!=$team_plan->id)) && ($config['show_plan_link']))
 		{
-			$link =sportsmanagementHelperRoute::getTeamPlanRoute($projectSlug,$teamSlug,$division_slug,NULL,$projectteamid);
+			$link =sportsmanagementHelperRoute::getTeamPlanRoute($projectSlug,$teamSlug,$division_slug,NULL,$projectteamid,$cfg_which_database);
 			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMPLAN_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/calendar_icon.gif';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
@@ -1430,7 +1430,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
 
 		if ($config['show_curve_link'])
 		{
-			$link =sportsmanagementHelperRoute::getCurveRoute($projectSlug,$teamSlug,0,$division_slug);
+			$link =sportsmanagementHelperRoute::getCurveRoute($projectSlug,$teamSlug,0,$division_slug,$cfg_which_database);
 			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_CURVE_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/curve_icon.gif';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
@@ -1440,7 +1440,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
 		if ($config['show_teaminfo_link'])
 		{
 //    		$link =JoomleagueHelperRoute::getProjectTeamInfoRoute($projectSlug,$projectteamid);
-			$link = sportsmanagementHelperRoute::getTeamInfoRoute($projectSlug,$teamSlug,$projectteamid);
+			$link = sportsmanagementHelperRoute::getTeamInfoRoute($projectSlug,$teamSlug,$projectteamid,$cfg_which_database);
 //            $link = sportsmanagementHelperRoute::getTeamInfoRoute($projectSlug,$projectteamid);
             $title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMINFO_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/teaminfo_icon.png';
@@ -1450,7 +1450,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
 
 		if ($config['show_club_link'])
 		{
-			$link =sportsmanagementHelperRoute::getClubInfoRoute($projectSlug,$clubSlug);
+			$link =sportsmanagementHelperRoute::getClubInfoRoute($projectSlug,$clubSlug,NULL,$cfg_which_database);
 			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_CLUBINFO_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/mail.gif';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
@@ -1459,7 +1459,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
 
 		if ($config['show_teamstats_link'])
 		{
-			$link =sportsmanagementHelperRoute::getTeamStatsRoute($projectSlug,$teamSlug);
+			$link =sportsmanagementHelperRoute::getTeamStatsRoute($projectSlug,$teamSlug,$cfg_which_database);
 			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMSTATS_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/teamstats_icon.png';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
@@ -1468,7 +1468,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
 
 		if ($config['show_clubplan_link'])
 		{
-			$link =sportsmanagementHelperRoute::getClubPlanRoute($projectSlug,$clubSlug);
+			$link =sportsmanagementHelperRoute::getClubPlanRoute($projectSlug,$clubSlug,NULL,$cfg_which_database);
 			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_CLUBPLAN_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/clubplan_icon.png';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
@@ -1488,7 +1488,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
 	 * @param mixed $link
 	 * @return
 	 */
-	public static function formatTeamName($team,$containerprefix,&$config,$isfav=0,$link=null)
+	public static function formatTeamName($team,$containerprefix,&$config,$isfav=0,$link=null,$cfg_which_database = 0)
 	{
 		$output			= '';
 		$desc			= '';
@@ -1571,7 +1571,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
 			$output .= '<'.$container.' id="page-'.$containerId.'" style="'.$style_append.';" class="rankingteam">';
             //$output .= '<div id="config-document">';
             //$output .= '<'.$container.' id="page-'.$containerId.'" >';
-			$output .= self::showTeamIcons ($team,$config);
+			$output .= self::showTeamIcons ($team,$config,$cfg_which_database);
 			$output .= '</'.$container.'>';
             //$output .= '</div>';
 		}
@@ -1686,7 +1686,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
 	 */
 	public static function getVersion() 
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        //$db = JFactory::getDBO();
        $query = JFactory::getDbo()->getQuery(true);
@@ -1700,7 +1700,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
 //	   $query->setQuery('SELECT manifest_cache FROM #__extensions WHERE name = "com_sportsmanagement"');
        $manifest_cache = json_decode( JFactory::getDbo()->loadResult(), true );
 	   
-       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' manifest_cache -><br><pre>'.print_r($manifest_cache,true).'</pre>'),'');
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' manifest_cache -><br><pre>'.print_r($manifest_cache,true).'</pre>'),'');
        
        return $manifest_cache['version'];	
 	}
@@ -1960,10 +1960,10 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
     static function ToolbarButton($layout = Null,$icon_image = 'upload',$alt_text = 'My Label',$view = '',$type=0)
 	{
 	$option = JRequest::getCmd('option');
-	$mainframe = JFactory::getApplication();
+	$app = JFactory::getApplication();
     
-    //$mainframe->enqueueMessage(JText::_('ToolbarButton layout<br><pre>'.print_r(JRequest::getVar('layout'),true).'</pre>'),'Notice');
-    //$mainframe->enqueueMessage(JText::_('ToolbarButton get<br><pre>'.print_r($_GET,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_('ToolbarButton layout<br><pre>'.print_r(JRequest::getVar('layout'),true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_('ToolbarButton get<br><pre>'.print_r($_GET,true).'</pre>'),'Notice');
     
     if ( !$view )
     {
@@ -1977,8 +1977,8 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
     
     $bar->appendButton('Popup', $icon_image, $alt_text, $page_url, $modal_popup_width, $modal_popup_height);
     
-//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' modal_popup_width<br><pre>'.print_r($modal_popup_width,true).'</pre>'),'Notice');
-//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' modal_popup_height<br><pre>'.print_r($modal_popup_height,true).'</pre>'),'Notice');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' modal_popup_width<br><pre>'.print_r($modal_popup_width,true).'</pre>'),'Notice');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' modal_popup_height<br><pre>'.print_r($modal_popup_height,true).'</pre>'),'Notice');
     
 
     
@@ -1993,7 +1993,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
     static function ToolbarButtonOnlineHelp()
 	{
 	$option = JRequest::getCmd('option');
-	$mainframe = JFactory::getApplication();
+	$app = JFactory::getApplication();
 	$document = JFactory::getDocument();
     $view = JRequest::getVar( "view") ;
     $layout= JRequest::getVar( "layout") ;
@@ -2003,14 +2003,14 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
     $window_width = '<script>alert($(window).width()); </script>';
     $window_height = '<script>alert(window.screen.height); </script>';
     
-    //$mainframe->enqueueMessage(JText::_('ToolbarButtonOnlineHelp width<br><pre>'.print_r($window_width,true).'</pre>'),'Notice');
-    //$mainframe->enqueueMessage(JText::_('ToolbarButtonOnlineHelp width<br><pre>'.print_r($_SESSION,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_('ToolbarButtonOnlineHelp width<br><pre>'.print_r($window_width,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_('ToolbarButtonOnlineHelp width<br><pre>'.print_r($_SESSION,true).'</pre>'),'Notice');
     
     switch ($view)
     {
     case 'Template':
     case 'Predictiontemplate':
-    $template_help = $mainframe->getUserState($option.'template_help');
+    $template_help = $app->getUserState($option.'template_help');
     $view = $view.'_'.$template_help;
     break;
     default:
@@ -2048,10 +2048,10 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
 	* @param string $ordering
 	* @return array
 	*/
-	public static function getRoundsOptions($project_id, $ordering='ASC', $required = false, $round_ids = NULL)
+	public static function getRoundsOptions($project_id, $ordering='ASC', $required = false, $round_ids = NULL,$cfg_which_database = 0)
 	{
-		$mainframe = JFactory::getApplication();
-        $db = self::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+		$app = JFactory::getApplication();
+        $db = self::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         $query->select('id as value');
         $query->select('name AS text');
@@ -2069,11 +2069,11 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
         
         $query->order('roundcode '.$ordering);  
         
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' project_id'.'<pre>'.print_r($project_id,true).'</pre>' ),'');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' ordering'.'<pre>'.print_r($ordering,true).'</pre>' ),'');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' required'.'<pre>'.print_r($required,true).'</pre>' ),'');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' round_ids'.'<pre>'.print_r($round_ids,true).'</pre>' ),'');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' project_id'.'<pre>'.print_r($project_id,true).'</pre>' ),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' ordering'.'<pre>'.print_r($ordering,true).'</pre>' ),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' required'.'<pre>'.print_r($required,true).'</pre>' ),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' round_ids'.'<pre>'.print_r($round_ids,true).'</pre>' ),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
 
 		$db->setQuery($query);
 		if(!$required) {
@@ -2134,9 +2134,9 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>
  * @param integer $fieldtyp
  * @return
  */
-function getExtraSelectOptions($view='', $field='', $template = FALSE, $fieldtyp = 0  )	
+public static function getExtraSelectOptions($view='', $field='', $template = FALSE, $fieldtyp = 0  )	
 {
-$mainframe = JFactory::getApplication();
+$app = JFactory::getApplication();
         $option = JRequest::getCmd('option'); 
         $select_columns = array();
         $select_values = array();
@@ -2145,8 +2145,8 @@ $mainframe = JFactory::getApplication();
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
         
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($view,true).'</pre>'),'Notice');    
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($field,true).'</pre>'),'Notice');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($view,true).'</pre>'),'Notice');    
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($field,true).'</pre>'),'Notice');
 
         // Select some fields
         if ( $template )
@@ -2170,7 +2170,7 @@ $mainframe = JFactory::getApplication();
         $query->where('fieldtyp = ' . $fieldtyp );
         
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
     $db->setQuery($query);
     $result = $db->loadObject();
@@ -2187,7 +2187,7 @@ $mainframe = JFactory::getApplication();
           {
           $select_values = explode(",",$result->select_columns);  
           }
-          //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($select_columns,true).'</pre>'),'Notice');
+          //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($select_columns,true).'</pre>'),'Notice');
           
           foreach($select_columns as $key => $value )
           {
@@ -2218,7 +2218,7 @@ $mainframe = JFactory::getApplication();
 	 */
     static function checkUserExtraFields()
     {
-         $mainframe	= JFactory::getApplication();
+         $app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -2249,11 +2249,11 @@ $mainframe = JFactory::getApplication();
 	 */
     static function getUserExtraFields($jlid)
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
     	$db = JFactory::getDBO();
         $query = $db->getQuery(true);
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' db-id<br><pre>'.print_r($jlid,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' db-id<br><pre>'.print_r($jlid,true).'</pre>'),'Notice');
         
         $query->select('ef.*,ev.fieldvalue as fvalue,ev.id as value_id ');
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields as ef ');
@@ -2265,8 +2265,8 @@ $mainframe = JFactory::getApplication();
         $db->setQuery($query);
 		if (!$result = $db->loadObjectList())
 		{
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
 			return false;
 		}
 		return $result;
@@ -2283,16 +2283,16 @@ $mainframe = JFactory::getApplication();
      */
     function saveExtraFields($post,$pid)
   {
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
        $address_parts = array();
-    //$mainframe->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields<br><pre>'.print_r($post,true).'</pre>'),'Notice');
     
     $db = JFactory::getDBO();
   //-------extra fields-----------//
 		if(isset($post['extraf']) && count($post['extraf']))
     {
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields pid<br><pre>'.print_r($pid,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields pid<br><pre>'.print_r($pid,true).'</pre>'),'Notice');
 			for($p=0;$p<count($post['extraf']);$p++)
             {
                 // Create a new query object.
@@ -2311,7 +2311,7 @@ $db->setQuery($query);
 if (!$db->query())
 		{
 			
-            $mainframe->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields delete<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields delete<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		}
         
 // Create a new query object.
@@ -2331,7 +2331,7 @@ if (!$db->query())
 if (!$db->query())
 		{
 			
-            $mainframe->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields insert<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields insert<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		}
 
 			}
@@ -2345,13 +2345,13 @@ if (!$db->query())
 	*/	 	
 	public static function getAddressData($address)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
 
 		$url = 'http://maps.google.com/maps/api/geocode/json?' . 'address='.urlencode($address) .'&sensor=false&language=de';
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($url,true).'</pre>'),'');        
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($url,true).'</pre>'),'');        
 
 		$content = self::getContent($url);
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($content,true).'</pre>'),'');   		
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($content,true).'</pre>'),'');   		
 
 		$status = null;	
 		if(!empty($content))
@@ -2360,7 +2360,7 @@ if (!$db->query())
 			$status = $json->decode($content);
 		}
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($status,true).'</pre>'),'');   
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($status,true).'</pre>'),'');   
 
 		return $status;
 	}
@@ -2373,7 +2373,7 @@ if (!$db->query())
 */
 public function getOSMGeoCoords($address)
 {
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     $coords = array();
         
     //$address = utf8_encode($address);
@@ -2384,7 +2384,7 @@ public function getOSMGeoCoords($address)
     $geoCodeURL = "http://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=1&q=".
                   urlencode($address);
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($geoCodeURL,true).'</pre>'),'');   
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($geoCodeURL,true).'</pre>'),'');   
     
     $result = json_decode(file_get_contents($geoCodeURL), true);
     
@@ -2409,7 +2409,7 @@ public function getOSMGeoCoords($address)
     
     }
     
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($result,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($result,true).'</pre>'),'');
 
     return $coords;
 }
@@ -2422,12 +2422,12 @@ public function getOSMGeoCoords($address)
      */
     public static function resolveLocation($address)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
     $coords = array();
 		$data = self::getAddressData($address);
         
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($address,true).'</pre>'),'');
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($data->status,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($address,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($data->status,true).'</pre>'),'');
 //$osm = self::getOSMGeoCoords($address);  
         
 		if($data)
@@ -2514,9 +2514,9 @@ public function getOSMGeoCoords($address)
 			
 			if ($curl_errno!=0)
 			{
-				$mainframe	= JFactory::getApplication();
+				$app	= JFactory::getApplication();
 				$err		= 'CURL error : '.$curl_errno.' '.$curl_error;
-				$mainframe->enqueueMessage($err, 'error');
+				$app->enqueueMessage($err, 'error');
 			}
 			
 			$code		= curl_getinfo( $ch , CURLINFO_HTTP_CODE );
@@ -2563,7 +2563,7 @@ public function getOSMGeoCoords($address)
      */
     static function getPictureClub($id)
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $db = JFactory::getDBO();
     // Create a new query object.
@@ -2592,7 +2592,7 @@ public function getOSMGeoCoords($address)
      */
     static function getPicturePlayground($id)
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $db = JFactory::getDBO();
     // Create a new query object.
@@ -2622,7 +2622,7 @@ public function getOSMGeoCoords($address)
      */
     public static function getArticleList($project_category_id)
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
        // $db = JFactory::getDBO();
        
@@ -2637,10 +2637,10 @@ public function getOSMGeoCoords($address)
        
        if( !$k2->option )
        {
-       $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_COM_K2_NOT_AVAILABLE'),'Error');
+       $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_COM_K2_NOT_AVAILABLE'),'Error');
        return false; 
        }
-       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' k2<br><pre>'.print_r($k2,true).'</pre>'),'');
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' k2<br><pre>'.print_r($k2,true).'</pre>'),'');
        
        }
        

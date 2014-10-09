@@ -26,7 +26,7 @@ class JoomleagueViewTreeto extends JLGView
 {
 	function display( $tpl = null )
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		if ( $this->getLayout() == 'form' )
 		{
 			$this->_displayForm( $tpl );
@@ -43,7 +43,7 @@ class JoomleagueViewTreeto extends JLGView
 	function _displayForm($tpl)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$db = JFactory::getDbo();
 		$uri = JFactory::getURI();
 		$user = JFactory::getUser();
@@ -61,7 +61,7 @@ class JoomleagueViewTreeto extends JLGView
 		if ($model->isCheckedOut($user->get('id')))
 		{
 			$msg=JText::sprintf('DESCBEINGEDITTED',JText::_('The treeto'),$treeto->id);
-			$mainframe->redirect('index.php?option='.$option,$msg);
+			$app->redirect('index.php?option='.$option,$msg);
 		}
 
 		$this->assignRef('form' 	,$this->get('form'));
@@ -75,7 +75,7 @@ class JoomleagueViewTreeto extends JLGView
 	function _displayGennode($tpl)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$db = JFactory::getDbo();
 		$uri = JFactory::getURI();
 		$user = JFactory::getUser();

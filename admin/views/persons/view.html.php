@@ -67,7 +67,7 @@ class sportsmanagementViewPersons extends sportsmanagementView
 		}
         
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $user	= JFactory::getUser();
 		$model	= $this->getModel();
         
@@ -77,7 +77,7 @@ class sportsmanagementViewPersons extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->state,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->state,true).'</pre>'),'');
         }
 
 
@@ -85,7 +85,7 @@ $starttime = microtime();
 		$items = $this->get('Items');
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
@@ -93,7 +93,7 @@ $starttime = microtime();
         $table = JTable::getInstance('person', 'sportsmanagementTable');
 		$this->assignRef('table', $table);
 
-		$mainframe->setUserState($option.'task','');
+		$app->setUserState($option.'task','');
 
 
 
@@ -152,7 +152,7 @@ $starttime = microtime();
 	function _displayAssignPlayers($tpl=null)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $user	= JFactory::getUser();
 		$model = $this->getModel();
         
@@ -160,12 +160,12 @@ $starttime = microtime();
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
         
-		//$project_id = $mainframe->getUserState($option.'project');
-        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
+		//$project_id = $app->getUserState($option.'project');
+        $this->project_id	= $app->getUserState( "$option.pid", '0' );
 		$mdlProject = JModelLegacy::getInstance("project", "sportsmanagementModel");
         $project = $mdlProject->getProject($this->project_id);
 		$project_name = $project->name;
-		$project_team_id = $mainframe->getUserState($option.'project_team_id');
+		$project_team_id = $app->getUserState($option.'project_team_id');
 		$team_name = $model->getProjectTeamName($project_team_id);
 		//$mdlQuickAdd = JModelLegacy::getInstance('Quickadd','sportsmanagementModel');
         
@@ -215,7 +215,7 @@ $starttime = microtime();
 
 		//JToolBarHelper::onlinehelp();		
 		
-		//$limit = $mainframe->getUserStateFromRequest('global.list.limit','limit',$mainframe->getCfg('list_limit'),'int');
+		//$limit = $app->getUserStateFromRequest('global.list.limit','limit',$app->getCfg('list_limit'),'int');
 
 		//jimport('joomla.html.pagination');
 		//$pagination = new JPagination($mdlQuickAdd->_total,JRequest::getVar('limitstart',0,'','int'),$limit);
@@ -302,6 +302,7 @@ $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_TITLE');
 		JToolBarHelper::addNew('person.add');
 		JToolBarHelper::custom('person.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('person.export',JText::_('JTOOLBAR_EXPORT'));
+        JToolbarHelper::checkin('persons.checkin');
 		if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
             {
 		    JToolbarHelper::trash('persons.trash');

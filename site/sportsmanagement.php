@@ -88,7 +88,7 @@ $langtag = JFactory::getLanguage();
 //echo 'Current language is: ' . $langtag->getTag();
 
 $document = JFactory::getDocument();
-$mainframe = JFactory::getApplication();
+$app = JFactory::getApplication();
 $config = JFactory::getConfig();
 
 $lang = JFactory::getLanguage();
@@ -110,7 +110,7 @@ DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$show_query_debug_info );
 
-if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) )
+if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
 {
 DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$cfg_which_database_server );    
 }
@@ -123,9 +123,9 @@ DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );
 
 //JFactory::$database = sportsmanagementHelper::getDBConnection();
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config <br><pre>'.print_r($config,true).'</pre>'),'');
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sitename <br><pre>'.print_r($config->getValue( 'config.sitename' ),true).'</pre>'),'');
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' MetaKeys <br><pre>'.print_r($config->getValue( 'config.MetaKeys' ),true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config <br><pre>'.print_r($config,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sitename <br><pre>'.print_r($config->getValue( 'config.sitename' ),true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' MetaKeys <br><pre>'.print_r($config->getValue( 'config.MetaKeys' ),true).'</pre>'),'');
 
 $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
 
@@ -143,14 +143,14 @@ $meta_keys[] = $config->getValue( 'config.MetaKeys' );
 
 $project_id = JRequest::getInt( "p") ;
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id <br><pre>'.print_r($project_id,true).'</pre>'),'');
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' MetaKeys <br><pre>'.print_r($meta_keys,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id <br><pre>'.print_r($project_id,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' MetaKeys <br><pre>'.print_r($meta_keys,true).'</pre>'),'');
 
 if ( $project_id )
 {
     sportsmanagementModelProject::$projectid = $project_id; 
     $teams = sportsmanagementModelProject::getTeams();
-    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams <br><pre>'.print_r($teams,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams <br><pre>'.print_r($teams,true).'</pre>'),'');
     
     if ( $teams )
     {
@@ -161,7 +161,7 @@ if ( $project_id )
     }
 }
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' MetaKeys <br><pre>'.print_r($meta_keys,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' MetaKeys <br><pre>'.print_r($meta_keys,true).'</pre>'),'');
 
 $document->setMetaData( 'author', 'Dieter Ploeger' );
 $document->setMetaData( 'revisit-after', '2 days' );
@@ -190,17 +190,17 @@ DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_HELP_SERVER',$cfg_help_server );
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_BUGTRACKER_SERVER',$cfg_bugtracker_server );
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_VIEW',$view );
 
-if ( $mainframe->isAdmin() )
+if ( $app->isAdmin() )
 {
 if($task == '' && $option == 'com_sportsmanagement') 
 {
-$js ="registerhome('".JURI::base()."','JSM Sports Management','".$mainframe->getCfg('sitename')."','1');". "\n";
+$js ="registerhome('".JURI::base()."','JSM Sports Management','".$app->getCfg('sitename')."','1');". "\n";
 $document->addScriptDeclaration( $js );
 }
 }
 else
 {
-$js ="registerhome('".JURI::base()."','JSM Sports Management','".$mainframe->getCfg('sitename')."','0');". "\n";
+$js ="registerhome('".JURI::base()."','JSM Sports Management','".$app->getCfg('sitename')."','0');". "\n";
 $document->addScriptDeclaration( $js );    
 }
 

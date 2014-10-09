@@ -102,7 +102,7 @@ class sportsmanagementControllerPredictionEntry extends JControllerLegacy
 	{
 		$option = JRequest::getCmd('option');
     
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$document = JFactory::getDocument();
     
     
@@ -113,8 +113,8 @@ class sportsmanagementControllerPredictionEntry extends JControllerLegacy
 		$link	= '';
 		$post	= JRequest::get('post');
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
 
 		$predictionGameID	= JRequest::getVar('prediction_id',	'',	'post',	'int');
 		$joomlaUserID		= JRequest::getVar('user_id',		'',	'post',	'int');
@@ -244,7 +244,7 @@ class sportsmanagementControllerPredictionEntry extends JControllerLegacy
 		JRequest::checkToken() or jexit(JText::_('JL_PRED_ENTRY_INVALID_TOKEN_PREDICTIONS_NOT_SAVED'));
     $option = JRequest::getCmd('option');
     $optiontext = strtoupper(JRequest::getCmd('option').'_');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$document = JFactory::getDocument();
 		
 		$msg	= '';

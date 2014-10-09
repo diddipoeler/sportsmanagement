@@ -19,16 +19,31 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-			<field	name="p" type="projects"
+		
+		
+			<field	name="s" 
+      type="seasonlist"
+      value_field="cfg_which_database"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
+					required="">
+			</field>
+			
+			<field	name="p" 
+			task="projects" 
+      type="dependsql"
+      depends="s"
+      key_field="season_id"
+			value_field="s"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_DESCR"
-					required="true">
+					required="">
 			</field>
 			<field	name="division" type="dependsql" depends="p" task="projectdivisionsoptions"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_DESCR">
 			</field>
-			<field	name="r" type="dependsql" depends="p" task="roundsoptions"
+			<field	name="r" type="dependsql" depends="p" task="projectroundoptions"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_ROUND_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_ROUND_DESCR">
 			</field>

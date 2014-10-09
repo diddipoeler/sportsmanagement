@@ -63,16 +63,16 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$uri 	= JFactory::getURI();
 		$user 	= JFactory::getUser();
 		$model	= $this->getModel();
         
 //        $project_id = JRequest::getVar('project_id');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__  .' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__  .' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
         
 //        $id = JRequest::getVar('id');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__  .' id<br><pre>'.print_r($id,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__  .' id<br><pre>'.print_r($id,true).'</pre>'),'');
 
         
  /*       
@@ -109,9 +109,9 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 		$this->item = $item;
 		$this->script = $script;
 		
-        $mainframe->setUserState( "$option.pid", $this->item->project_id );
+        $app->setUserState( "$option.pid", $this->item->project_id );
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__  .' item<br><pre>'.print_r($this->item,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__  .' item<br><pre>'.print_r($this->item,true).'</pre>'),'');
         
         //$this->form->setValue('user_ids',null,$pred_admins);
         //$this->form->setValue('project_ids',null,$pred_projects);
@@ -136,7 +136,7 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 //	{
 //	  
 //		$option = JRequest::getCmd('option');
-//		$mainframe = JFactory::getApplication();
+//		$app = JFactory::getApplication();
 //		$uri 	= JFactory::getURI();
 //		$user 	= JFactory::getUser();
 //		$model	= $this->getModel();
@@ -156,7 +156,7 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 //		if ($model->isCheckedOut($user->get('id')))
 //		{
 //			$msg=JText::sprintf('DESCBEINGEDITTED',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAME_THE_PREDICTIONGAME'),$prediction->name);
-//			$mainframe->redirect('index.php?option='.$option,$msg);
+//			$app->redirect('index.php?option='.$option,$msg);
 //		}
 //
 //		// Edit or Create?
@@ -207,7 +207,7 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 //	function _displayPredSettings($tpl)
 //	{
 //		$option = JRequest::getCmd('option');
-//		$mainframe =& JFactory::getApplication();
+//		$app =& JFactory::getApplication();
 //		$db =& JFactory::getDBO();
 //		$uri =& JFactory::getURI();
 //		$user =& JFactory::getUser();
@@ -224,7 +224,7 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 //		if ($model->isCheckedOut($user->get('id')))
 //		{
 //			$msg=JText::sprintf('DESCBEINGEDITTED',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAME_THE_PREDICTIONGAME'),$pred_project->project_name);
-//			$mainframe->redirect('index.php?option='.$option,$msg);
+//			$app->redirect('index.php?option='.$option,$msg);
 //		}
 //
 //		// Edit or Create?

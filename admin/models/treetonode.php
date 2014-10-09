@@ -74,8 +74,8 @@ class JoomleagueModelTreetonode extends JoomleagueModelItem
 	{
 		$option = JRequest::getCmd('option');
 
-		$mainframe	= JFactory::getApplication();
-		//$division_id = $mainframe->getUserState( $option . 'division_id' );
+		$app	= JFactory::getApplication();
+		//$division_id = $app->getUserState( $option . 'division_id' );
 		$query = ' SELECT mc.id AS mid ';
 	//	$query .=	' CONCAT(t1.name, \'_\', mc.team1_result, \':\', mc.team2_result, \'_\',  t2.name) AS text ';
 		$query .=	' ,mc.match_number AS match_number';
@@ -113,7 +113,7 @@ class JoomleagueModelTreetonode extends JoomleagueModelItem
 	function setUnpublishNode()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
 		$post	= 	JRequest::get( 'post' );
 		$id = 	(int) $post['id'];
 		

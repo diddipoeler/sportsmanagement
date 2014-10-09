@@ -79,6 +79,8 @@ class sportsmanagementModelCurve extends JModelLegacy
 	var $ranking2 = array();
 	var $ranking = array(); // cache for ranking function return data
 	var $teamcount = array();
+    
+    static $cfg_which_database = 0;
 	
 	/**
 	 * sportsmanagementModelCurve::__construct()
@@ -94,6 +96,7 @@ class sportsmanagementModelCurve extends JModelLegacy
 		$this->teamid2   = JRequest::getInt('tid2', 0);
 		$this->both      = JRequest::getInt('both', 0);
         sportsmanagementModelProject::$projectid = $this->projectid;
+        self::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
         
 		$this->determineTeam1And2();
 	}
@@ -106,9 +109,9 @@ class sportsmanagementModelCurve extends JModelLegacy
 	function determineTeam1And2()
 	{
 	   $option = JRequest::getCmd('option');
-	$mainframe = JFactory::getApplication();
+	$app = JFactory::getApplication();
         // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
         $starttime = microtime(); 
         
@@ -194,7 +197,7 @@ class sportsmanagementModelCurve extends JModelLegacy
                 $query->where($team.'.team_id='.$quoted_team_id);
 			}
             
-			$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
+			$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),self::$cfg_which_database);
 			$expiry_time = $config ? $config['expiry_time'] : 0;
             
             $query->where('(m.team1_result IS NULL OR m.team2_result IS NULL)');
@@ -214,8 +217,8 @@ class sportsmanagementModelCurve extends JModelLegacy
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 			$match = $db->loadObject();
@@ -233,8 +236,8 @@ class sportsmanagementModelCurve extends JModelLegacy
                 
                 if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 				$match = $db->loadObject();
@@ -256,7 +259,7 @@ class sportsmanagementModelCurve extends JModelLegacy
 	{
 		if ( is_null( $this->divlevel ) )
 		{
-			$config = sportsmanagementModelProject::getTemplateConfig("ranking");
+			$config = sportsmanagementModelProject::getTemplateConfig("ranking",self::$cfg_which_database);
 			$this->divlevel = $config['default_division_view'];
 		}
 		return $this->divlevel;
@@ -311,7 +314,7 @@ class sportsmanagementModelCurve extends JModelLegacy
 	 */
 	function getDivision( )
 	{
-		return sportsmanagementModelProject::getDivision($this->division);
+		return sportsmanagementModelProject::getDivision($this->division,self::$cfg_which_database);
 	}
 
 	/**
@@ -332,29 +335,27 @@ class sportsmanagementModelCurve extends JModelLegacy
 	 */
 	function getDataByDivision($division=0)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         
-		$project = sportsmanagementModelProject::getProject();
-		$rounds  = sportsmanagementModelProject::getRounds();
-		$teams   = sportsmanagementModelProject::getTeamsIndexedByPtid($division);
+		$project = sportsmanagementModelProject::getProject(self::$cfg_which_database);
+		$rounds  = sportsmanagementModelProject::getRounds('ASC',self::$cfg_which_database);
+		$teams   = sportsmanagementModelProject::getTeamsIndexedByPtid($division,'name',self::$cfg_which_database);
 		
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');
         	
-		$rankinghelper = JSMRanking::getInstance($project);
-		$rankinghelper->setProjectId( $project->id );
+		$rankinghelper = JSMRanking::getInstance($project,self::$cfg_which_database);
+		$rankinghelper->setProjectId( $project->id,self::$cfg_which_database );
 		//$mdlRounds = JModelLegacy::getInstance("Rounds", "sportsmanagementModel");
 		//$mdlRounds->setProjectId($project->id);
         sportsmanagementModelRounds::$_project_id = $project->id;
-		$firstRound = sportsmanagementModelRounds::getFirstRound($project->id);
+		$firstRound = sportsmanagementModelRounds::getFirstRound($project->id,self::$cfg_which_database);
 		$firstRoundId = $firstRound['id'];
 		
 		$rankings = array();
 		foreach ($rounds as $r)
 		{
-			$rankings[$r->id] = $rankinghelper->getRanking($firstRoundId, 
-															$r->id, 
-															$division);
+			$rankings[$r->id] = $rankinghelper->getRanking($firstRoundId,$r->id,$division,self::$cfg_which_database);
 		}
         
 		foreach ($teams as $ptid => $team)

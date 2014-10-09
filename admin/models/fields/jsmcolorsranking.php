@@ -75,7 +75,7 @@ class JFormFieldjsmcolorsranking extends JFormField
 	 */
 	public function getInput()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $select_id = JRequest::getVar('id');
         //$this->value = explode(",", $this->value);
@@ -109,12 +109,12 @@ class JFormFieldjsmcolorsranking extends JFormField
       //$pane = JPane::getInstance('sliders');
         
 	
-//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' templatename<br><pre>'.print_r($templatename,true).'</pre>'),'');
-//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' templatefield<br><pre>'.print_r($templatefield,true).'</pre>'),'');
-//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' select_Options<br><pre>'.print_r($select_Options,true).'</pre>'),'');
-//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' select_text<br><pre>'.print_r($select_text,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' templatename<br><pre>'.print_r($templatename,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' templatefield<br><pre>'.print_r($templatefield,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' select_Options<br><pre>'.print_r($select_Options,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' select_text<br><pre>'.print_r($select_text,true).'</pre>'),'');
     
-   // $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' rankingteams<br><pre>'.print_r($rankingteams,true).'</pre>'),'');
+   // $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' rankingteams<br><pre>'.print_r($rankingteams,true).'</pre>'),'');
 
    
 
@@ -206,7 +206,7 @@ class JFormFieldjsmcolorsranking extends JFormField
     
             //return $html;
             
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' html<br><pre>'.print_r($html,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' html<br><pre>'.print_r($html,true).'</pre>'),'');
             
             //return implode("\n", $html);
             return implode($html);     

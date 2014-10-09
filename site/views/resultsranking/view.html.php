@@ -39,10 +39,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-require_once(JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'pagination.php');
-require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'ranking.php' );
-require_once(JPATH_COMPONENT_SITE . DS . 'models' . DS . 'results.php' );
-require_once(JPATH_COMPONENT_SITE . DS . 'views' . DS . 'results' . DS . 'view.html.php' );
+require_once(JPATH_COMPONENT_SITE.DS.'helpers'.DS.'pagination.php');
+require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'ranking.php' );
+require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'results.php' );
+require_once(JPATH_COMPONENT_SITE.DS.'views'.DS.'results' . DS . 'view.html.php' );
 
 jimport('joomla.application.component.view');
 jimport('joomla.filesystem.file');
@@ -77,16 +77,17 @@ else
 {
 JHtml::_( 'behavior.mootools' );    
 }
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-		$params = $mainframe->getParams();
+		$params = $app->getParams();
 		// get a reference of the page instance in joomla
 		$document = JFactory :: getDocument();
 		$uri = JFactory :: getURI();
         
         $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
         
-		
+		$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+        
         /*
         // add the css files
 		$version = urlencode(JoomleagueHelper::getVersion());
@@ -102,10 +103,10 @@ JHtml::_( 'behavior.mootools' );
         
 		// add the ranking model
 		$rankingmodel = new sportsmanagementModelRanking();
-		$project = sportsmanagementModelProject::getProject();
+		$project = sportsmanagementModelProject::getProject($cfg_which_database);
 		// add the ranking config file
-		$rankingconfig = sportsmanagementModelProject::getTemplateConfig('ranking');
-		$rankingmodel->computeRanking();
+		$rankingconfig = sportsmanagementModelProject::getTemplateConfig('ranking',$cfg_which_database);
+		$rankingmodel->computeRanking($cfg_which_database);
         
         $mdlProjectteams = JModelLegacy::getInstance("Projectteams", "sportsmanagementModel");
         
@@ -114,10 +115,10 @@ JHtml::_( 'behavior.mootools' );
 		// add the results config file
 
 		$mdlRound = JModelLegacy::getInstance("Round", "sportsmanagementModel");
-		$roundcode = $mdlRound->getRoundcode($rankingmodel->round);
-		$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true);
+		$roundcode = $mdlRound->getRoundcode($rankingmodel->round,$cfg_which_database);
+		$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true,NULL,$cfg_which_database);
 		
-		$resultsconfig = sportsmanagementModelProject::getTemplateConfig('results');
+		$resultsconfig = sportsmanagementModelProject::getTemplateConfig('results',$cfg_which_database);
 		if (!isset($resultsconfig['switch_home_guest'])){$resultsconfig['switch_home_guest']=0;}
 		if (!isset($resultsconfig['show_dnp_teams_icons'])){$resultsconfig['show_dnp_teams_icons']=0;}
 		if (!isset($resultsconfig['show_results_ranking'])){$resultsconfig['show_results_ranking']=0;}
@@ -125,49 +126,49 @@ JHtml::_( 'behavior.mootools' );
 		// merge the 2 config files
 		$config = array_merge($rankingconfig, $resultsconfig);
 
-		$this->assign('project', 		sportsmanagementModelProject::getProject());
-		$this->assign('overallconfig',	sportsmanagementModelProject::getOverallConfig());
-		$this->assign('config',			array_merge($this->overallconfig, $config));
-		$this->assignRef('tableconfig',		$rankingconfig);
-		$this->assignRef('params', 			$params);
-		$this->assign('showediticon',	$resultsmodel->getShowEditIcon());
-		$this->assign('division',		$resultsmodel->getDivision());
-		$this->assign('divisions', 		sportsmanagementModelProject::getDivisions());
-		$this->assignRef('divLevel',  		$rankingmodel->divLevel);
-		$this->assign('matches',			$resultsmodel->getMatches());
-		$this->assignRef('round',			$resultsmodel->roundid);
-		$this->assignRef('roundid',			$resultsmodel->roundid);
-		$this->assignRef('roundcode',		$roundcode);
+		$this->assign('project',sportsmanagementModelProject::getProject($cfg_which_database));
+		$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig($cfg_which_database));
+		$this->assign('config',array_merge($this->overallconfig, $config));
+		$this->assignRef('tableconfig',$rankingconfig);
+		$this->assignRef('params',$params);
+		$this->assign('showediticon',$resultsmodel->getShowEditIcon());
+		$this->assign('division',$resultsmodel->getDivision());
+		$this->assign('divisions',sportsmanagementModelProject::getDivisions(0,$cfg_which_database));
+		$this->assignRef('divLevel',$rankingmodel->divLevel);
+		$this->assign('matches',$resultsmodel->getMatches($cfg_which_database));
+		$this->assignRef('round',$resultsmodel::$roundid);
+		$this->assignRef('roundid',$resultsmodel::$roundid);
+		$this->assignRef('roundcode',$roundcode);
 		
-		$rounds = sportsmanagementModelProject::getRoundOptions();
-		$options = $this->getRoundSelectNavigation($rounds);
+		$rounds = sportsmanagementModelProject::getRoundOptions('ASC',$cfg_which_database);
+		$options = $this->getRoundSelectNavigation($rounds,$cfg_which_database);
 		
 		$this->assignRef('matchdaysoptions',$options);
-		$this->assign('currenturl', 		sportsmanagementHelperRoute::getResultsRankingRoute($project->slug, $this->round));
-		$this->assign('rounds',			sportsmanagementModelProject::getRounds());
-		$this->assign('favteams',		sportsmanagementModelProject::getFavTeams($this->project));
-		$this->assign('projectevents',	sportsmanagementModelProject::getProjectEvents());
-		$this->assignRef('model',			$resultsmodel);
-		$this->assign('isAllowed',		$resultsmodel->isAllowed());
+		$this->assign('currenturl',sportsmanagementHelperRoute::getResultsRankingRoute($project->slug, $this->round,0,$cfg_which_database));
+		$this->assign('rounds',sportsmanagementModelProject::getRounds('ASC',$cfg_which_database));
+		$this->assign('favteams',sportsmanagementModelProject::getFavTeams($cfg_which_database));
+		$this->assign('projectevents',sportsmanagementModelProject::getProjectEvents(0,$cfg_which_database));
+		$this->assignRef('model',$resultsmodel);
+		$this->assign('isAllowed',$resultsmodel->isAllowed());
 
-		$this->assignRef('type',      $rankingmodel->type);
-		$this->assignRef('from',      $rankingmodel->from);
-		$this->assignRef('to',        $rankingmodel->to);
+		$this->assignRef('type',$rankingmodel->type);
+		$this->assignRef('from',$rankingmodel->from);
+		$this->assignRef('to',$rankingmodel->to);
 
-		$this->assignRef('currentRanking',  $rankingmodel->currentRanking);
-		$this->assignRef('previousRanking', $rankingmodel->previousRanking);
-		$this->assignRef('homeRank',     	$rankingmodel->homeRank);
-		$this->assignRef('awayRank',      	$rankingmodel->awayRank);
-		$this->assignRef('current_round', 	$rankingmodel->current_round);
-		$this->assign('teams',			sportsmanagementModelProject::getTeamsIndexedByPtid());
-		$this->assign('previousgames',   $rankingmodel->getPreviousGames());
+		$this->assignRef('currentRanking',$rankingmodel->currentRanking);
+		$this->assignRef('previousRanking',$rankingmodel->previousRanking);
+		$this->assignRef('homeRank',$rankingmodel->homeRank);
+		$this->assignRef('awayRank',$rankingmodel->awayRank);
+		$this->assignRef('current_round',$rankingmodel->current_round);
+		$this->assign('teams',sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$cfg_which_database));
+		$this->assign('previousgames',$rankingmodel->getPreviousGames($cfg_which_database));
 		
-		$this->assign('action', $uri->toString());
+		$this->assign('action',$uri->toString());
 		//rankingcolors
 		if (!isset ($this->config['colors'])) {
 			$this->config['colors'] = "";
 		}
-		$this->assign('colors', sportsmanagementModelProject::getColors($this->config['colors']));
+		$this->assign('colors',sportsmanagementModelProject::getColors($this->config['colors'],$cfg_which_database));
         
         //$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
         //$this->assign('use_joomlaworks', JComponentHelper::getParams('com_sportsmanagement')->get('use_joomlaworks',0) );
@@ -187,7 +188,7 @@ JHtml::_( 'behavior.mootools' );
         $document->addCustomTag($stylelink);
         
         // diddipoeler
-		$this->assign( 'allteams', $mdlProjectteams->getAllProjectTeams($project->id) );
+		$this->assign( 'allteams',$mdlProjectteams->getAllProjectTeams($project->id,0,null,$cfg_which_database) );
         
         if (($this->config['show_ranking_maps'])==1)
 	  {
@@ -243,12 +244,12 @@ JHtml::_( 'behavior.mootools' );
 	 * @param mixed $rounds
 	 * @return
 	 */
-	function getRoundSelectNavigation(&$rounds)
+	function getRoundSelectNavigation(&$rounds,$cfg_which_database = 0)
 	{
 		$options = array();
 		foreach ($rounds as $r)
 		{
-			$link = sportsmanagementHelperRoute::getResultsRankingRoute($this->project->slug, $r->value);
+			$link = sportsmanagementHelperRoute::getResultsRankingRoute($this->project->slug, $r->value,0,$cfg_which_database);
 			$options[] = JHTML::_('select.option', $link, $r->text);
 		}
 		return $options;

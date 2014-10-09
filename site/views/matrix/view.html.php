@@ -60,36 +60,59 @@ class sportsmanagementViewMatrix extends JViewLegacy
 	 */
 	function display( $tpl = null )
 	{
+	   $option = JRequest::getCmd('option');
+        $app = JFactory::getApplication();
 		// Get a refrence of the page instance in joomla
 		$document= JFactory::getDocument();
-        $option = JRequest::getCmd('option');
-
+        
 		$model = $this->getModel();
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
-		$project = sportsmanagementModelProject::getProject();
+		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
+		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
 		
 		$this->assignRef('model', $model);
 		$this->assignRef('project', $project);
-		$this->assign('overallconfig', sportsmanagementModelProject::getOverallConfig() );
+		$this->assign('overallconfig', sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database) );
 
 		$this->assignRef('config', $config );
 
-		$this->assign('divisionid', $model->getDivisionID() );
-		$this->assign('roundid', $model->getRoundID() );
+		$this->assign('divisionid', $model::$divisionid );
+		$this->assign('roundid', $model::$roundid );
 		$this->assign('division', $model->getDivision() );
 		$this->assign('round', $model->getRound() );
-		$this->assign('teams', sportsmanagementModelProject::getTeamsIndexedByPtid( $model->getDivisionID(),$this->config->teamnames ) );
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' divisionid<br><pre>'.print_r($model::$divisionid,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($model::$cfg_which_database,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'Notice');
+        
+        
+        if ( isset($this->config['teamnames']) && $this->config['teamnames'] )
+        {
+		$this->assign('teams', sportsmanagementModelProject::getTeamsIndexedByPtid( $model::$divisionid,$this->config['teamnames'],$model::$cfg_which_database ) );
+        }
+        else
+        {
+        $this->config['teamnames'] = 'name';    
+        $this->assign('teams', sportsmanagementModelProject::getTeamsIndexedByPtid( $model::$divisionid,'name',$model::$cfg_which_database ) );    
+        }
+        
+        if ( !isset($this->config['image_placeholder']) )
+        {
+		$this->config['image_placeholder'] = '';
+        }
+        
 		$this->assign('results', $model->getMatrixResults( $project->id ) );
-		
+	
+    if ( isset($this->config['show_matrix_russia']) )
+    {	
         if (($this->config['show_matrix_russia'])==1)
 	{
 	$this->assign('russiamatrix', $model->getRussiaMatrixResults($this->teams, $this->results ) );
     } 
-    
+    }
 		if ($project->project_type == 'DIVISIONS_LEAGUE' && !$this->divisionid )
 		{
 			$ranking_reason = array();
-      $divisions = $model->getDivisions();
+      $divisions = sportsmanagementModelProject::getDivisions(0,$model::$cfg_which_database);
 			$this->assignRef('divisions', $divisions);
 			
 			foreach ( $this->results as $result ) 
@@ -139,7 +162,7 @@ class sportsmanagementViewMatrix extends JViewLegacy
 		}
 		
 		if(!is_null($project)) {
-			$this->assign('favteams', sportsmanagementModelProject::getFavTeams() );
+			$this->assign('favteams', sportsmanagementModelProject::getFavTeams($model::$cfg_which_database) );
 		}
     
     //$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );

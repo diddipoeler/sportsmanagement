@@ -63,7 +63,7 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
 		$uri	= JFactory::getURI();
         $model	= $this->getModel();
         
@@ -76,7 +76,7 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		$total		= $this->get('Total');
@@ -142,6 +142,7 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 		JToolBarHelper::editList('eventtype.edit');
 		JToolBarHelper::custom('eventtype.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('eventtype.export',JText::_('JTOOLBAR_EXPORT'));
+        JToolbarHelper::checkin('eventtypes.checkin');
 		//JToolBarHelper::deleteList('', 'eventtypes.delete', 'JTOOLBAR_DELETE');
         if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
         {

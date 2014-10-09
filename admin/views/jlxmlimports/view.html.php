@@ -65,13 +65,13 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 	public function init ($tpl = null)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         // Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
         $model = JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel');
         $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/jlxmlimports.js' );
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout <br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout <br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
         
         $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_3');
         $this->icon = 'xmlimports';
@@ -143,10 +143,10 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
      */
     private function _displayUpdate($tpl)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $option = JRequest::getCmd('option');
-       //$project_id = (int) $mainframe->getUserState($option.'project', 0);
-       //$mainframe->enqueueMessage(JText::_('_displayUpdate project_id -> '.'<pre>'.print_r($project_id ,true).'</pre>' ),'');
+       //$project_id = (int) $app->getUserState($option.'project', 0);
+       //$app->enqueueMessage(JText::_('_displayUpdate project_id -> '.'<pre>'.print_r($project_id ,true).'</pre>' ),'');
        $model = JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel');
 	   $data = $model->getData();
        $update_matches = $model->getDataUpdate(); 
@@ -185,14 +185,14 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		$mtime			= $mtime[1] + $mtime[0];
 		$starttime		= $mtime;
 		$option = JRequest::getCmd('option');
-		$mainframe		= JFactory::getApplication();
+		$app		= JFactory::getApplication();
 		$document		= JFactory::getDocument();
 		$db				= JFactory::getDBO();
 		$uri			= JFactory::getURI();
         $config['dbo'] = sportsmanagementHelper::getDBConnection(); 
 		$model			= JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel');
 		$data			= $model->getData();
-		$uploadArray	= $mainframe->getUserState($option.'uploadArray',array());
+		$uploadArray	= $app->getUserState($option.'uploadArray',array());
 		// TODO: import timezone
 		$value  		= isset($data['project']->timezone) ? $data['project']->timezone: null;
 		
@@ -200,16 +200,16 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
         // Get the list of time zones from the server.
 		$zones = DateTimeZone::listIdentifiers();
         
-        //$mainframe->enqueueMessage(JText::_('_displayForm zones<br><pre>'.print_r($zones,true).'</pre>'),'Error');
-        //$mainframe->enqueueMessage(JText::_('_displayForm groups<br><pre>'.print_r($groups,true).'</pre>'),'Error');
+        //$app->enqueueMessage(JText::_('_displayForm zones<br><pre>'.print_r($zones,true).'</pre>'),'Error');
+        //$app->enqueueMessage(JText::_('_displayForm groups<br><pre>'.print_r($groups,true).'</pre>'),'Error');
         //$lists['timezone']=$groups;
         $lists['timezone']=JHtml::_('select.genericList',$zones,'timezone','class="inputbox" ','value','text',$value);
         //$lists['timezone']= JHtml::_('select.genericlist', array(), 'timezone', ' class="inputbox"', 'value', 'text', $value);
 		
-    $whichfile = $mainframe->getUserState($option.'whichfile');
+    $whichfile = $app->getUserState($option.'whichfile');
 		$this->assignRef('option',$option);
         $this->assignRef('whichfile',$whichfile);
-        $projectidimport = $mainframe->getUserState($option.'projectidimport');
+        $projectidimport = $app->getUserState($option.'projectidimport');
         $this->assignRef('projectidimport',$projectidimport);
 		//$countries=new Countries();
 		$this->assignRef('uploadArray',$uploadArray);
@@ -292,7 +292,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 	private function _displayInfo($tpl)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe 	= JFactory::getApplication();
+		$app 	= JFactory::getApplication();
         $mtime 		= microtime();
 		$mtime		= explode(" ",$mtime);
 		$mtime		= $mtime[1] + $mtime[0];
@@ -301,7 +301,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		$model 		= JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel',$config);
 		$post		= JRequest::get('post');
 		
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout <br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout <br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
         
 		//// Get a refrence of the page instance in joomla
 //		$document	= JFactory::getDocument();
@@ -338,7 +338,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 	private function _displaySelectpage($tpl)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe 	= JFactory::getApplication();
+		$app 	= JFactory::getApplication();
 		$document 	= JFactory::getDocument();
 		$db 		= JFactory::getDBO();
 		$uri 		= JFactory::getURI();
@@ -346,8 +346,8 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		$lists 		= array();
 
 		$this->assignRef('request_url',$uri->toString());
-		$this->assignRef('selectType',$mainframe->getUserState($option.'selectType'));
-		$this->assignRef('recordID',$mainframe->getUserState($option.'recordID'));
+		$this->assignRef('selectType',$app->getUserState($option.'selectType'));
+		$this->assignRef('recordID',$app->getUserState($option.'recordID'));
         $this->assignRef('option',$option);
 
 		switch ($this->selectType)

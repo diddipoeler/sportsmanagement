@@ -62,7 +62,7 @@ class sportsmanagementViewspecialextensions extends sportsmanagementView
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $model	= $this->getModel();
         
         $this->Extensions = $model->getSpecialExtensions();

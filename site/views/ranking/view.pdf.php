@@ -65,7 +65,7 @@ class sportsmanagementViewRanking extends JViewLegacy
 		// Get a refrence of the page instance in joomla
 		$document = JFactory :: getDocument();
 		$uri = JFactory :: getURI();
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         
         //$version = urlencode(JoomleagueHelper::getVersion());
@@ -126,7 +126,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
        $model->to = 0;
        unset ($model->currentRanking);
 	   unset ($model->previousRanking);
-       $model->computeRanking();
+       $model->computeRanking($model::$cfg_which_database);
        $this->assignRef('firstRank',$model->currentRanking  );
      }
      
@@ -137,7 +137,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
        $model->to = 0;
        unset ($model->currentRanking);
 	   unset ($model->previousRanking);
-       $model->computeRanking();
+       $model->computeRanking($model::$cfg_which_database);
        $this->assignRef('secondRank',$model->currentRanking );
      }  
        
@@ -146,7 +146,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 	   unset ($model->previousRanking);
 	   }
        
-		$model->computeRanking();
+		$model->computeRanking($model::$cfg_which_database);
 
 		$this->assignRef('round',$model->round);
 		$this->assignRef('part',$model->part);
@@ -184,11 +184,11 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-       $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' divisions'.'<pre>'.print_r($this->divisions,true).'</pre>' ),'');
-       $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' currentRanking'.'<pre>'.print_r($this->currentRanking,true).'</pre>' ),'');
+       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' divisions'.'<pre>'.print_r($this->divisions,true).'</pre>' ),'');
+       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' currentRanking'.'<pre>'.print_r($this->currentRanking,true).'</pre>' ),'');
        }
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current_round'.'<pre>'.print_r($this->current_round,true).'</pre>' ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current_round'.'<pre>'.print_r($this->current_round,true).'</pre>' ),'');
 		
 		$no_ranking_reason = '';
 		if ($this->config['show_notes'] == 1 )
@@ -259,17 +259,17 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' overallconfig<br><pre>'.print_r($this->overallconfig,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');   
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' currentRanking<br><pre>'.print_r($this->currentRanking,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' previousRanking<br><pre>'.print_r($this->previousRanking,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' homeRank<br><pre>'.print_r($this->homeRank,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' awayRank<br><pre>'.print_r($this->awayRank,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' allteams<br><pre>'.print_r($this->allteams,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' overallconfig<br><pre>'.print_r($this->overallconfig,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');   
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' currentRanking<br><pre>'.print_r($this->currentRanking,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' previousRanking<br><pre>'.print_r($this->previousRanking,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' homeRank<br><pre>'.print_r($this->homeRank,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' awayRank<br><pre>'.print_r($this->awayRank,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' allteams<br><pre>'.print_r($this->allteams,true).'</pre>'),'');
         }
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
         
 		if (($this->config['show_ranking_maps'])==1)
 	  {

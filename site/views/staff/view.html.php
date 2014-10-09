@@ -64,9 +64,10 @@ class sportsmanagementViewStaff extends JViewLegacy
 		// Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
         $option = JRequest::getCmd('option');
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
 
 		$model = $this->getModel();
+        
 //        $mdlPerson = JModelLegacy::getInstance("Person", "sportsmanagementModel");
         $model->projectid = JRequest::getInt( 'p', 0 );
 		$model->personid = JRequest::getInt( 'pid', 0 );
@@ -79,21 +80,21 @@ class sportsmanagementViewStaff extends JViewLegacy
 //		sportsmanagementModelPerson::personid = JRequest::getInt( 'pid', 0 );
 //		sportsmanagementModelPerson::teamplayerid = JRequest::getInt( 'pt', 0 );
         
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
-		$person = sportsmanagementModelPerson::getPerson();
+		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
+		$person = sportsmanagementModelPerson::getPerson(0,$model::$cfg_which_database);
         
-//        $mainframe->enqueueMessage(JText::_('sportsmanagementViewStaff person<br><pre>'.print_r($person,true).'</pre>'),'');
-//        $mainframe->enqueueMessage(JText::_('sportsmanagementViewStaff personid<br><pre>'.print_r($model->personid,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_('sportsmanagementViewStaff person<br><pre>'.print_r($person,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_('sportsmanagementViewStaff personid<br><pre>'.print_r($model->personid,true).'</pre>'),'');
 
-		$this->assign('project',sportsmanagementModelProject::getProject());
-		$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig());
+		$this->assign('project',sportsmanagementModelProject::getProject($model::$cfg_which_database));
+		$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database));
 		$this->assignRef('config',$config);
 		$this->assignRef('person',$person);
 		$this->assign('showediticon',sportsmanagementModelPerson::getAllowed($config['edit_own_player']));
 		
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' showediticon<br><pre>'.print_r($this->showediticon,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' showediticon<br><pre>'.print_r($this->showediticon,true).'</pre>'),'Notice');
         
-		$staff=&$model->getTeamStaff();
+		$staff = $model->getTeamStaff();
 		$titleStr = JText::sprintf('COM_SPORTSMANAGEMENT_STAFF_ABOUT_AS_A_STAFF', sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]));		
 		
 		$this->assignRef('inprojectinfo',$staff);

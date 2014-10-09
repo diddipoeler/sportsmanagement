@@ -49,8 +49,8 @@ class sportsmanagementViewTreetos extends sportsmanagementView
 	public function init ()
 	{
 		$option		= JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
-		$this->project_id = $mainframe->getUserState( "$option.pid", '0' );
+		$app	= JFactory::getApplication();
+		$this->project_id = $app->getUserState( "$option.pid", '0' );
 		$uri 		= JFactory::getURI()->toString();
 		$user		= JFactory::getUser();
 		
@@ -64,7 +64,7 @@ class sportsmanagementViewTreetos extends sportsmanagementView
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $projectws = $mdlProject->getProject($this->project_id);
         
-		$division = $mainframe->getUserStateFromRequest($option.'tt_division','division','','string');
+		$division = $app->getUserStateFromRequest($option.'tt_division','division','','string');
 
 		//build the html options for divisions
 		$divisions[]=JHtmlSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));

@@ -70,10 +70,10 @@ class JFormFieldAssociationsList extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $selected = 0;
-        //$mainframe->enqueueMessage(JText::_('JFormFieldAssociationsList getOptions<br><pre>'.print_r($this->element,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('JFormFieldAssociationsList getOptions<br><pre>'.print_r($this->element,true).'</pre>'),'Notice');
         // Initialize variables.
 		$options = array();
     //echo 'this->element<br /><pre>~' . print_r($this->element,true) . '~</pre><br />';
@@ -110,7 +110,7 @@ class JFormFieldAssociationsList extends JFormFieldList
 			
 			$sections = $db->loadObjectList ();
             
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sections<br><pre>'.print_r($sections,true).'</pre>'),'Notice');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sections<br><pre>'.print_r($sections,true).'</pre>'),'Notice');
             
   $categoryparent = empty($sections) ? 0 : $sections[0]->value;
   //echo 'categoryparent<br /><pre>~' . print_r($categoryparent,true) . '~</pre><br />';

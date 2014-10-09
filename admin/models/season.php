@@ -180,7 +180,7 @@ class sportsmanagementModelseason extends JModelAdmin
 	 */
 	public function save($data)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
        $post = JRequest::get('post');
@@ -188,8 +188,8 @@ class sportsmanagementModelseason extends JModelAdmin
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');
        
-       //$mainframe->enqueueMessage(JText::_(' save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$mainframe->enqueueMessage(JText::_(' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       //$app->enqueueMessage(JText::_(' save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       //$app->enqueueMessage(JText::_(' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
@@ -199,7 +199,7 @@ class sportsmanagementModelseason extends JModelAdmin
 			$data['extended'] = (string)$parameter;
 		}
         
-        //$mainframe->enqueueMessage(JText::_(' save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(' save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         // Proceed with the save
 		return parent::save($data);   
@@ -213,14 +213,14 @@ class sportsmanagementModelseason extends JModelAdmin
     function saveshortpersons()
     {
         $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $db = JFactory::getDbo();
         $post = JRequest::get('post');
         $pks = JRequest::getVar('cid', null, 'post', 'array');
         $season_id = $post['season_id'];
         
-        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','');
-        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post, true).'</pre><br>','');
+        //$app->enqueueMessage(get_class($this).' '.__FUNCTION__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','');
+        //$app->enqueueMessage(get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post, true).'</pre><br>','');
         
         foreach ( $pks as $key => $value )
         {
@@ -240,7 +240,7 @@ class sportsmanagementModelseason extends JModelAdmin
 
 		if (!$db->query())
 		{
-		  $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+		  $app->enqueueMessage(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
 		} 
              
         }
@@ -255,14 +255,14 @@ class sportsmanagementModelseason extends JModelAdmin
     function saveshortteams()
     {
         $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $db = JFactory::getDbo();
         $post = JRequest::get('post');
         $pks = JRequest::getVar('cid', null, 'post', 'array');
         $season_id = $post['season_id'];
         
-        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','');
-        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post, true).'</pre><br>','');
+        //$app->enqueueMessage(get_class($this).' '.__FUNCTION__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','');
+        //$app->enqueueMessage(get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post, true).'</pre><br>','');
         
         foreach ( $pks as $key => $value )
         {
@@ -282,7 +282,7 @@ class sportsmanagementModelseason extends JModelAdmin
 
 		if (!$db->query())
 		{
-		  $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+		  $app->enqueueMessage(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
 		}  
         
         }

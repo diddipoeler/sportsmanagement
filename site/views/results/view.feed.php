@@ -11,7 +11,7 @@ class sportsmanagementViewResults extends JViewLegacy
 
 		$document	= JFactory::getDocument();
 		$option = JRequest::getCmd('option');
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
 		$document->link = JRoute::_('index.php?option=com_sportsmanagement');
 		$model = $this->getModel();
 		$matches = $model->getMatches();
@@ -24,7 +24,7 @@ class sportsmanagementViewResults extends JViewLegacy
 		$this->assignRef( 'matches',		$matches);
 		$this->assignRef( 'project',		$project);
 		$this->assignRef( 'teams',			sportsmanagementModelProject::getTeamsIndexedByPtid());
-		$dates = $this->sortByDate();
+		$dates = $this->sortByDate($this->matches);
 		foreach( $dates as $date => $games )
 		{
 			foreach($games as $game)

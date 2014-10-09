@@ -60,7 +60,7 @@ class sportsmanagementViewpredictiongroups extends sportsmanagementView
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $model	= $this->getModel();
 		$uri = JFactory::getURI();
         
@@ -79,7 +79,7 @@ class sportsmanagementViewpredictiongroups extends sportsmanagementView
         
         if ( !$items )
         {
-        $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_GROUPS'),'Error');    
+        $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_GROUPS'),'Error');    
         }
 
 
@@ -105,8 +105,10 @@ class sportsmanagementViewpredictiongroups extends sportsmanagementView
 //        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
 //        
-//        // Set toolbar items for the page
-//		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONGROUPS_TITLE'),'predgroups');
+
+        // Set toolbar items for the page
+		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONGROUPS_TITLE');
+$this->icon = 'predgroups';
 		
         
 		JToolBarHelper::addNew('predictiongroup.add');
@@ -114,6 +116,7 @@ class sportsmanagementViewpredictiongroups extends sportsmanagementView
 		JToolBarHelper::custom('predictiongroup.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('predictiongroup.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('','predictiongroups.delete', 'JTOOLBAR_DELETE');
+        JToolbarHelper::checkin('predictiongroups.checkin');
 	parent::addToolbar();  
         
         

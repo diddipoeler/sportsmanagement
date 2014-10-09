@@ -68,13 +68,13 @@ class sportsmanagementViewPredictionEntry extends JViewLegacy
 		// Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
     $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$model		= $this->getModel();
    
     
 		$this->assign('predictionGame',sportsmanagementModelPrediction::getPredictionGame());
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGame<br><pre>'.print_r($this->predictionGame,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGame<br><pre>'.print_r($this->predictionGame,true).'</pre>'),'');
         
 		if (isset($this->predictionGame))
 		{

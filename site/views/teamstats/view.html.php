@@ -62,20 +62,20 @@ class sportsmanagementViewTeamStats extends JViewLegacy
 	{
 		// Get a refrence of the page instance in joomla
 		$document= JFactory::getDocument();
-		 $mainframe = JFactory::getApplication();
+		 $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 
 		$model = $this->getModel();
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
+		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 
-		$tableconfig = sportsmanagementModelProject::getTemplateConfig( "ranking" );
-		$eventsconfig = sportsmanagementModelProject::getTemplateConfig( "eventsranking" );
-		$flashconfig = sportsmanagementModelProject::getTemplateConfig( "flash" );
+		$tableconfig = sportsmanagementModelProject::getTemplateConfig( "ranking",$model::$cfg_which_database );
+		$eventsconfig = sportsmanagementModelProject::getTemplateConfig( "eventsranking",$model::$cfg_which_database );
+		$flashconfig = sportsmanagementModelProject::getTemplateConfig( "flash",$model::$cfg_which_database );
 
-		$this->assign( 'project', sportsmanagementModelProject::getProject() );
+		$this->assign( 'project', sportsmanagementModelProject::getProject($model::$cfg_which_database) );
 		if ( isset( $this->project ) )
 		{
-			$this->assign( 'overallconfig', sportsmanagementModelProject::getOverallConfig() );
+			$this->assign( 'overallconfig', sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database) );
 			if ( !isset( $this->overallconfig['seperator'] ) )
 			{
 				$this->overallconfig['seperator'] = ":";
@@ -84,7 +84,7 @@ class sportsmanagementViewTeamStats extends JViewLegacy
 
 			$this->assignRef('tableconfig', $tableconfig );
 			$this->assignRef('eventsconfig', $eventsconfig );
-			$this->assign('actualround', sportsmanagementModelProject::getCurrentRound() );
+			$this->assign('actualround', sportsmanagementModelProject::getCurrentRound(NULL,$model::$cfg_which_database) );
 			$this->assign('team', $model->getTeam() );
 			
             $this->assign('highest_home', $model->getHighest('HOME','WIN') );
@@ -98,10 +98,7 @@ class sportsmanagementViewTeamStats extends JViewLegacy
 
 			$this->assign('totalshome', $model->getSeasonTotals('HOME') );
             $this->assign('totalsaway', $model->getSeasonTotals('AWAY') );
-            
-            
-            
-            
+
             $this->assign('matchdaytotals', $model->getMatchDayTotals( ) );
 			$this->assign('totalrounds', $model->getTotalRounds( ) );
 			$this->assign('totalattendance', $model->getTotalAttendance() );
@@ -115,15 +112,15 @@ class sportsmanagementViewTeamStats extends JViewLegacy
 
 			$this->_setChartdata(array_merge($flashconfig, $config));
             
-//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($this->results,true).'</pre>'),'');
-//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' totalshome<br><pre>'.print_r($this->totalshome,true).'</pre>'),'');
-//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' totalsaway<br><pre>'.print_r($this->totalsaway,true).'</pre>'),'');
-//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' highest_home<br><pre>'.print_r($this->highest_home,true).'</pre>'),'');
-//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' highest_away<br><pre>'.print_r($this->highest_away,true).'</pre>'),'');
-//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' highestdef_home<br><pre>'.print_r($this->highestdef_home,true).'</pre>'),'');
-//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' highestdef_away<br><pre>'.print_r($this->highestdef_away,true).'</pre>'),'');
-//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' highestdraw_home<br><pre>'.print_r($this->highestdraw_home,true).'</pre>'),'');
-//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' highestdraw_away<br><pre>'.print_r($this->highestdraw_away,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($this->results,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' totalshome<br><pre>'.print_r($this->totalshome,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' totalsaway<br><pre>'.print_r($this->totalsaway,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' highest_home<br><pre>'.print_r($this->highest_home,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' highest_away<br><pre>'.print_r($this->highest_away,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' highestdef_home<br><pre>'.print_r($this->highestdef_home,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' highestdef_away<br><pre>'.print_r($this->highestdef_away,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' highestdraw_home<br><pre>'.print_r($this->highestdraw_home,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' highestdraw_away<br><pre>'.print_r($this->highestdraw_away,true).'</pre>'),'');
             
 		}
 		

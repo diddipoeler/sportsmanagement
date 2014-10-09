@@ -59,7 +59,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                 
                 // diddipoeler
                 //$link = sportsmanagementHelperRoute::getTeamInfoRoute( $team->pid, $team->id );
-                $link = sportsmanagementHelperRoute::getTeamInfoRoute( $team->pid, $team->team_slug , $team->ptid);
+                $link = sportsmanagementHelperRoute::getTeamInfoRoute( $team->pid, $team->team_slug , $team->ptid,JRequest::getInt('cfg_which_database',0));
 				?>
 				<tr>
 				<td>

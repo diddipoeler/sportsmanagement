@@ -74,7 +74,8 @@ class sportsmanagementModelMatches extends JModelList
                         'mc.ordering'
                         );
                 parent::__construct($config);
-                parent::setDbo(sportsmanagementHelper::getDBConnection());
+                $getDBConnection = sportsmanagementHelper::getDBConnection();
+                parent::setDbo($getDBConnection);
         }
         
     /**
@@ -86,12 +87,12 @@ class sportsmanagementModelMatches extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -105,7 +106,7 @@ class sportsmanagementModelMatches extends JModelList
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 
 
 //		// Load the parameters.
@@ -123,18 +124,18 @@ class sportsmanagementModelMatches extends JModelList
 	 */
 	protected function getListQuery()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $this->_season_id	= $mainframe->getUserState( "$option.season_id", '0' );
+        $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
         $search_division	= $this->getState('filter.division');
         
         $this->_rid = JRequest::getvar('rid', 0);
         
-//        $mainframe->enqueueMessage(JText::_('sportsmanagementViewMatches _season_id<br><pre>'.print_r($this->_season_id,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_('sportsmanagementViewMatches _season_id<br><pre>'.print_r($this->_season_id,true).'</pre>'),'');
         
         if ( !$this->_rid )
         {
-            $this->_rid	= $mainframe->getUserState( "$option.rid", '0' );
+            $this->_rid	= $app->getUserState( "$option.rid", '0' );
         }
         
         // Create a new query object.		
@@ -289,7 +290,7 @@ class sportsmanagementModelMatches extends JModelList
  
  if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
          
 
@@ -326,7 +327,7 @@ class sportsmanagementModelMatches extends JModelList
 	 * @return
 	 */
 	function getMatchesByRound($roundId)
-	{$mainframe = JFactory::getApplication();
+	{$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');    
     // Create a new query object.		
 		$db = JFactory::getDBO();

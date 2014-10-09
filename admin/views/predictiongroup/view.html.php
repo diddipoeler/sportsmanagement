@@ -60,7 +60,7 @@ class sportsmanagementViewpredictiongroup extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		if ($this->getLayout() == 'form')
 		{

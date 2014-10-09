@@ -391,8 +391,8 @@ $nbcols = 0;
 			?>
 		<td width='5' class='ko'>
 		<?php
- 			$events	= sportsmanagementModelProject::getMatchEvents($match->id);
- 			$subs	= sportsmanagementModelProject::getMatchSubstitutions($match->id);
+ 			$events	= sportsmanagementModelProject::getMatchEvents($match->id,0,0,JRequest::getInt('cfg_which_database',0));
+ 			$subs	= sportsmanagementModelProject::getMatchSubstitutions($match->id,JRequest::getInt('cfg_which_database',0));
 
 			if ($this->config['use_tabs_events']) {
 			    $hasEvents = (count($events) + count($subs) > 0 && $this->config['show_events']);
@@ -426,7 +426,7 @@ $nbcols = 0;
 		?>
 			<td width='5%'>
 			<?php
-			$link=sportsmanagementHelperRoute::getResultsRoute($this->project->slug,$match->roundid);
+			$link = sportsmanagementHelperRoute::getResultsRoute($this->project->slug,$match->roundid,0,0,0,NULL,JRequest::getInt('cfg_which_database',0));
 			echo JHtml::link($link,$match->roundcode);
 			?>
 			</td>
@@ -517,8 +517,8 @@ $nbcols = 0;
 			$class2	= 'left';
 		}
 		if ($this->config['show_teamplan_link']) {
-			$homelink=sportsmanagementHelperRoute::getTeamPlanRoute($this->project->slug,$hometeam->team_slug);
-			$awaylink=sportsmanagementHelperRoute::getTeamPlanRoute($this->project->slug,$guestteam->team_slug);
+			$homelink=sportsmanagementHelperRoute::getTeamPlanRoute($this->project->slug,$hometeam->team_slug,0,NULL,0,JRequest::getInt('cfg_which_database',0));
+			$awaylink=sportsmanagementHelperRoute::getTeamPlanRoute($this->project->slug,$guestteam->team_slug,0,NULL,JRequest::getInt('cfg_which_database',0));
 		} else {
 			$homelink = null;
 			$awaylink = null;
@@ -617,7 +617,7 @@ $nbcols = 0;
 
             if ($this->config['switch_home_guest'])
                 {
-                    $result=$match->team2_result.'&nbsp;'.$this->config['seperator'].'&nbsp;'.$match->team1_result;
+                    $result = $match->team2_result.'&nbsp;'.$this->config['seperator'].'&nbsp;'.$match->team1_result;
 
                     $part_results_left = explode(";", $match->team2_result_split);
                     $part_results_right = explode(";", $match->team1_result_split);
@@ -631,7 +631,7 @@ $nbcols = 0;
                 }
                 else
                 {
-                    $result=$match->team1_result.'&nbsp;'.$this->config['seperator'].'&nbsp;'.$match->team2_result;
+                    $result = $match->team1_result.'&nbsp;'.$this->config['seperator'].'&nbsp;'.$match->team2_result;
 
                     $part_results_left = explode(";", $match->team1_result_split);
                     $part_results_right = explode(";", $match->team2_result_split);
@@ -698,9 +698,9 @@ $nbcols = 0;
             //Link
             if (isset($match->team1_result))
                 {
-                    $link=sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug,$match->id);
+                    $link=sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug,$match->id,JRequest::getInt('cfg_which_database',0));
             } else {
-                    $link=sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug,$match->id);
+                    $link=sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug,$match->id,JRequest::getInt('cfg_which_database',0));
                 }
 
             $ResultsTooltipTitle = $result;

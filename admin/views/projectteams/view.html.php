@@ -64,7 +64,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
 
@@ -76,7 +76,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         $this->project_id = JRequest::getVar('pid');
         if ( !$this->project_id )
         {
-        $this->project_id = $mainframe->getUserState( "$option.pid", '0' );
+        $this->project_id = $app->getUserState( "$option.pid", '0' );
         }
        
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
@@ -86,17 +86,17 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         $this->season_id = $project->season_id;
         $this->sports_type_id = $project->sports_type_id;
         
-        $mainframe->setUserState( "$option.pid", $project->id );
-        $mainframe->setUserState( "$option.season_id", $project->season_id );
-        $mainframe->setUserState( "$option.project_art_id", $project->project_art_id );
-        $mainframe->setUserState( "$option.sports_type_id", $project->sports_type_id );
+        $app->setUserState( "$option.pid", $project->id );
+        $app->setUserState( "$option.season_id", $project->season_id );
+        $app->setUserState( "$option.project_art_id", $project->project_art_id );
+        $app->setUserState( "$option.sports_type_id", $project->sports_type_id );
         
         $starttime = microtime(); 
         $items = $this->get('Items');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		$total = $this->get('Total');
@@ -107,11 +107,11 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         
         if ( $this->project_art_id == 3 )
         {
-            $filter_order = $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order','filter_order','t.lastname','cmd');
+            $filter_order = $app->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order','filter_order','t.lastname','cmd');
         } 
         else
         {
-            $filter_order = $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order','filter_order','t.name','cmd');
+            $filter_order = $app->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order','filter_order','t.name','cmd');
         }
         
         
@@ -222,8 +222,8 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         
         
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpl<br><pre>'.print_r($tpl,true).'</pre>'   ),'');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' items<br><pre>'.print_r($items,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpl<br><pre>'.print_r($tpl,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' items<br><pre>'.print_r($items,true).'</pre>'   ),'');
 
         
         $myoptions = array();
@@ -243,8 +243,8 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         $this->assignRef('project',$project);
         $this->assignRef('project_art_id',$this->project_art_id);
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'   ),'');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectteam<br><pre>'.print_r($this->projectteam,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectteam<br><pre>'.print_r($this->projectteam,true).'</pre>'   ),'');
         
         if ( $this->getLayout() == 'editlist' || $this->getLayout() == 'editlist_3')
 		{
@@ -266,7 +266,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 	protected function addToolbar()
 	{
 	   $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         
         
 	//// Get a refrence of the page instance in joomla
@@ -276,10 +276,10 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 //        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
 
-		$mainframe->setUserState( "$option.pid", $this->project_id );
-        $mainframe->setUserState( "$option.season_id", $this->season_id );
-        $mainframe->setUserState( "$option.project_art_id", $this->project_art_id );
-        $mainframe->setUserState( "$option.sports_type_id", $this->sports_type_id );
+		$app->setUserState( "$option.pid", $this->project_id );
+        $app->setUserState( "$option.season_id", $this->season_id );
+        $app->setUserState( "$option.project_art_id", $this->project_art_id );
+        $app->setUserState( "$option.sports_type_id", $this->sports_type_id );
         
         // Set toolbar items for the page
         if ( $this->project_art_id != 3 )
@@ -299,7 +299,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         sportsmanagementHelper::ToolbarButton('changeteams','move',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_CHANGE_TEAMS'));
 		sportsmanagementHelper::ToolbarButton('editlist','upload',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_ASSIGN'));
         JToolBarHelper::custom('projectteam.copy','copy','copy', JText::_('JTOOLBAR_DUPLICATE'), true);
-		
+		JToolbarHelper::checkin('projectteams.checkin');
         parent::addToolbar();  
 
 	}

@@ -61,7 +61,7 @@ class sportsmanagementViewrosterpositions extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
     $db = JFactory::getDBO();
 		$uri = JFactory::getURI();
 		$document	= JFactory::getDocument();
@@ -116,7 +116,7 @@ class sportsmanagementViewrosterpositions extends sportsmanagementView
         {
         JToolBarHelper::deleteList('', 'rosterpositions.delete', 'JTOOLBAR_DELETE');    
         }
-        
+        JToolbarHelper::checkin('rosterpositions.checkin');
 		parent::addToolbar();  
        
        

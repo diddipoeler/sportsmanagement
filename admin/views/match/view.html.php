@@ -75,7 +75,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $user = JFactory::getUser();
 		$model = $this->getModel();
@@ -84,7 +84,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
         $config = JComponentHelper::getParams ( 'com_media' );
         $this->assignRef ( 'config', $config );
 
-        $project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        $project_id	= $app->getUserState( "$option.pid", '0' );
         $this->assignRef('project_id',$project_id);
         $default_name_format = '';
         
@@ -133,7 +133,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$this->item = $item;
 		$this->script = $script;
         
-		//$mainframe->enqueueMessage(JText::_('sportsmanagementViewMatch item<br><pre>'.print_r($this->item,true).'</pre>'   ),'');
+		//$app->enqueueMessage(JText::_('sportsmanagementViewMatch item<br><pre>'.print_r($this->item,true).'</pre>'   ),'');
         
         $match = $model->getMatchData($this->item->id);
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'match');
@@ -219,8 +219,8 @@ class sportsmanagementViewMatch extends sportsmanagementView
     public function initEditEeventsBB()
 	{
 	$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		$project_id = $mainframe->getUserState( "$option.pid", '0' );
+		$app = JFactory::getApplication();
+		$project_id = $app->getUserState( "$option.pid", '0' );
 		$document = JFactory::getDocument();
 		$params = JComponentHelper::getParams( $option );
 		$default_name_format = $params->get("name_format");
@@ -228,7 +228,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$model = $this->getModel();
 		$teams = $model->getMatchTeams($this->item->id);
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams'.'<pre>'.print_r($teams,true).'</pre>' ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams'.'<pre>'.print_r($teams,true).'</pre>' ),'');
 
 		$homeRoster = $model->getTeamPersons($teams->projectteam1_id,FALSE,1);
 		//if (count($homeRoster)==0)
@@ -266,7 +266,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
     
     public function initEdit()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 	$document = JFactory::getDocument();
     $model = $this->getModel();
@@ -289,7 +289,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
     
     public function initPicture()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 	$document = JFactory::getDocument();
     $model = $this->getModel();
@@ -301,7 +301,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
     
     public function initPressebericht()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 	$document = JFactory::getDocument();
     $model = $this->getModel();
@@ -359,7 +359,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
     
     public function initEditStats()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 	$document = JFactory::getDocument();
     $model = $this->getModel();
@@ -414,7 +414,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
     
     public function initEditEevents()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 	$document = JFactory::getDocument();
     $model = $this->getModel();
@@ -435,12 +435,12 @@ $this->assignRef('csvstaff',$model->csv_staff);
         
         
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewMatch editevents browser<br><pre>'.print_r($browser,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_('sportsmanagementViewMatch editevents browser<br><pre>'.print_r($browser,true).'</pre>'   ),'');
         
         // mannschaften der paarung
        	$teams = $model->getMatchTeams($this->item->id);
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewMatch editevents teams<br><pre>'.print_r($teams,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_('sportsmanagementViewMatch editevents teams<br><pre>'.print_r($teams,true).'</pre>'   ),'');
         
 		$teamlist=array();
 		$teamlist[]=JHtml::_('select.option',$teams->projectteam1_id,$teams->team1);
@@ -493,7 +493,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
     
     public function initEditLineup()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 	$document = JFactory::getDocument();
     $model = $this->getModel();
@@ -511,13 +511,13 @@ $this->assignRef('csvstaff',$model->csv_staff);
 		$starters = $model->getMatchPersons($tid,0,$this->item->id,'player');
         $starters_id = array_keys($starters);
  
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' editlineup starters player'.'<pre>'.print_r($starters,true).'</pre>' ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' editlineup starters player'.'<pre>'.print_r($starters,true).'</pre>' ),'');
         
 
 		// get players not already assigned to starter
         $not_assigned = $model->getTeamPersons($tid,$starters_id,1);
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' editlineup not_assigned player'.'<pre>'.print_r($not_assigned,true).'</pre>' ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' editlineup not_assigned player'.'<pre>'.print_r($not_assigned,true).'</pre>' ),'');
         
 		if (!$not_assigned && !$starters_id)
 		{
@@ -527,7 +527,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
 
 		$projectpositions = $model->getProjectPositionsOptions(0, 1,$this->project_id);
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' editlineup player projectpositions'.'<pre>'.print_r($projectpositions,true).'</pre>' ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' editlineup player projectpositions'.'<pre>'.print_r($projectpositions,true).'</pre>' ),'');
         		
         if (!$projectpositions)
 		{
@@ -583,7 +583,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
 */
 
 		// generate selection list for each position
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectpositions'.'<pre>'.print_r($projectpositions,true).'</pre>' ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectpositions'.'<pre>'.print_r($projectpositions,true).'</pre>' ),'');
 		$starters = array();
 		foreach ($projectpositions AS $position_id => $pos)
 		{
@@ -591,7 +591,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
 			$starters[$position_id] = $model->getRoster($tid, $pos->value,$this->item->id,$pos->text);
 		}
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' editlineup starters player'.'<pre>'.print_r($starters,true).'</pre>' ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' editlineup starters player'.'<pre>'.print_r($starters,true).'</pre>' ),'');
 
 		foreach ($starters AS $position_id => $players)
 		{
@@ -609,20 +609,20 @@ $this->assignRef('csvstaff',$model->csv_staff);
 
 		$substitutions = $model->getSubstitutions($tid,$this->item->id);
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' substitutions'.'<pre>'.print_r($substitutions,true).'</pre>' ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' substitutions'.'<pre>'.print_r($substitutions,true).'</pre>' ),'');
 
 		/**
 		 * staff positions
 		 */
 		$staffpositions = $model->getProjectPositionsOptions(0, 2,$this->project_id);	// get staff not already assigned to starter
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' editlineup staff projectpositions'.'<pre>'.print_r($staffpositions,true).'</pre>' ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' editlineup staff projectpositions'.'<pre>'.print_r($staffpositions,true).'</pre>' ),'');
 
 		// assigned staff
         $assigned = $model->getMatchPersons($tid,0,$this->item->id,'staff');
 		$assigned_id = array_keys($assigned);
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' editlineup assigned staff'.'<pre>'.print_r($assigned,true).'</pre>' ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' editlineup assigned staff'.'<pre>'.print_r($assigned,true).'</pre>' ),'');
         
         
 		// not assigned staff
@@ -683,7 +683,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
     
     public function initEditReferees()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 	$document = JFactory::getDocument();
     $model = $this->getModel();
@@ -770,8 +770,8 @@ $this->assignRef('csvstaff',$model->csv_staff);
 			}
 		}
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewMatch editreferees positions<br><pre>'.print_r($projectpositions,true).'</pre>'   ),'');
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewMatch editreferees lists<br><pre>'.print_r($lists,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_('sportsmanagementViewMatch editreferees positions<br><pre>'.print_r($projectpositions,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_('sportsmanagementViewMatch editreferees lists<br><pre>'.print_r($lists,true).'</pre>'   ),'');
         
         $this->assignRef('positions',$projectpositions);   
        $this->assignRef('lists',$lists);
@@ -790,10 +790,10 @@ $this->assignRef('csvstaff',$model->csv_staff);
      */
     function _displaySavePressebericht($tpl)
     {
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 	$document = JFactory::getDocument();
-    $project_id = $mainframe->getUserState( "$option.pid", '0' );;
+    $project_id = $app->getUserState( "$option.pid", '0' );;
     $model = $this->getModel();
     $csv_file_save = $model->savePressebericht();
     
@@ -810,14 +810,14 @@ $this->assignRef('csvstaff',$model->csv_staff);
      */
     function _displayPressebericht($tpl)
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 		$document = JFactory::getDocument();
-        $project_id = $mainframe->getUserState( "$option.pid", '0' );;
+        $project_id = $app->getUserState( "$option.pid", '0' );;
         $config = JComponentHelper::getParams ( 'com_media' );
         $this->assignRef ( 'config', $config );
         
-//$mainframe->enqueueMessage(JText::_('displayPressebericht<br><pre>'.print_r($this->_datas['match'],true).'</pre>'   ),'');     
+//$app->enqueueMessage(JText::_('displayPressebericht<br><pre>'.print_r($this->_datas['match'],true).'</pre>'   ),'');     
 //    $document->addScript(JURI::root() . 'administrator/components/com_joomleague/assets/js/jquery.csv-0.71.js');       
 //    $document->addScript(JURI::root() . 'administrator/components/com_joomleague/assets/js/jquery.csv.js');
 $model = $this->getModel();
@@ -879,11 +879,11 @@ $this->assignRef('csvstaff',$model->csv_staff);
 	 */
 	function _displayEditReferees($tpl)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$document = JFactory::getDocument();
-		//$project_id=$mainframe->getUserState('com_joomleagueproject');
+		//$project_id=$app->getUserState('com_joomleagueproject');
 		$option = JRequest::getCmd('option');
-        //$project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        //$project_id	= $app->getUserState( "$option.pid", '0' );
 		$params = JComponentHelper::getParams( $option );
 		//$default_name_format = $params->get("name_format");
 
@@ -972,12 +972,12 @@ $this->assignRef('csvstaff',$model->csv_staff);
 	function _displayEditevents($tpl)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         //$model = $this->getModel();
         //$model = JModelLegacy::getInstance('match', 'sportsmanagementmodel');
-		//$project_id = $mainframe->getUserState('com_joomleagueproject');
+		//$project_id = $app->getUserState('com_joomleagueproject');
         //$match_id	= $this->item->id;
-        //$project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        //$project_id	= $app->getUserState( "$option.pid", '0' );
         
         //$this->assignRef('match_id',$match_id);
         $this->assignRef('project_id',$this->project_id);
@@ -995,7 +995,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
 		
 		$teams = $model->getMatchTeams($this->item->id);
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewMatch _displayEditevents teams<br><pre>'.print_r($teams,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_('sportsmanagementViewMatch _displayEditevents teams<br><pre>'.print_r($teams,true).'</pre>'   ),'');
 
 /*
 		$homeRoster = $model->getTeamPlayers($teams->projectteam1_id);
@@ -1060,8 +1060,8 @@ $this->assignRef('csvstaff',$model->csv_staff);
 	function _displayEditeventsbb($tpl)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		$project_id = $mainframe->getUserState('com_joomleagueproject');
+		$app = JFactory::getApplication();
+		$project_id = $app->getUserState('com_joomleagueproject');
 		$document = JFactory::getDocument();
 		$params = JComponentHelper::getParams( $option );
 		$default_name_format = $params->get("name_format");
@@ -1118,8 +1118,8 @@ $this->assignRef('csvstaff',$model->csv_staff);
 	function _displayEditstats($tpl)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		//$project_id=$mainframe->getUserState($option.'project');
+		$app = JFactory::getApplication();
+		//$project_id=$app->getUserState($option.'project');
 		$document = JFactory::getDocument();
 		$params = JComponentHelper::getParams( $option );
 		//$default_name_format = $params->get("name_format");
@@ -1176,8 +1176,8 @@ $this->assignRef('csvstaff',$model->csv_staff);
 	function _displayEditlineup($tpl)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		$project_id=$mainframe->getUserState($option.'project');
+		$app = JFactory::getApplication();
+		$project_id=$app->getUserState($option.'project');
 		$document = JFactory::getDocument();
 		$tid=JRequest::getVar('team','0');
 		$params =& JComponentHelper::getParams( $option );

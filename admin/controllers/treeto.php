@@ -24,7 +24,7 @@ class sportsmanagementControllerTreeto extends JControllerLegacy
 	public function display($cachable = false, $urlparams = false)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$document = JFactory::getDocument();
 		$model=$this->getModel('treetos');
 		$viewType=$document->getType();
@@ -32,7 +32,7 @@ class sportsmanagementControllerTreeto extends JControllerLegacy
 		$view->setModel($model,true);  // true is for the default model;
 
 		$projectws=$this->getModel('project');
-		$projectws->setId($mainframe->getUserState($option.'project',0));
+		$projectws->setId($app->getUserState($option.'project',0));
 		$view->setModel($projectws);
 				
 		switch($this->getTask())
@@ -68,8 +68,8 @@ class sportsmanagementControllerTreeto extends JControllerLegacy
 	public function saveshort()
 	{
 		$option		= JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
- 		$project_id = $mainframe->getUserState($option . 'project');
+		$app	= JFactory::getApplication();
+ 		$project_id = $app->getUserState($option . 'project');
 		
 		$post	= JRequest::get('post');
 		$cid	= JRequest::getVar('cid', array(), 'post', 'array');
@@ -93,9 +93,9 @@ class sportsmanagementControllerTreeto extends JControllerLegacy
 	public function genNode()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$document = JFactory::getDocument();
-		$proj=$mainframe->getUserState($option.'project',0);
+		$proj=$app->getUserState($option.'project',0);
 		$post=JRequest::get('post');
 		$cid=JRequest::getVar('cid',array(),'get','array');
 		JArrayHelper::toInteger($cid);
@@ -107,7 +107,7 @@ class sportsmanagementControllerTreeto extends JControllerLegacy
 		$view->setModel($model,true);	// true is for the default model;
 
 		$projectws=$this->getModel('project');
-		$projectws->setId($mainframe->getUserState($option.'project',0));
+		$projectws->setId($app->getUserState($option.'project',0));
 		$view->setModel($projectws);
 
 		JRequest::setVar('hidemainmenu',0);
@@ -125,10 +125,10 @@ class sportsmanagementControllerTreeto extends JControllerLegacy
 	{
 		JSession::checkToken() or die(JText::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$post=JRequest::get('post');
 		$model=$this->getModel('treeto');
-		$project_id=$mainframe->getUserState($option.'project');
+		$project_id=$app->getUserState($option.'project');
 		if ($model->setGenerateNode() )
 		{
 			$msg=JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_CTRL_GENERATE_NODE');

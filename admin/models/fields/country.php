@@ -76,12 +76,12 @@ class JFormFieldCountry extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Initialize variables.
 		$options = JSMCountries::getCountryOptions();
 		
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($options,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($options,true).'</pre>'),'');
         
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);

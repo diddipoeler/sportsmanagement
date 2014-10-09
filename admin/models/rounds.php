@@ -66,10 +66,10 @@ class sportsmanagementModelRounds extends JModelList
      */
     public function __construct($config = array())
         {
-            $mainframe = JFactory::getApplication();
+            $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-                //$this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
-                self::$_project_id	= $mainframe->getUserState( "$option.pid", '0' );
+                //$this->_project_id	= $app->getUserState( "$option.pid", '0' );
+                self::$_project_id	= $app->getUserState( "$option.pid", '0' );
                 $config['filter_fields'] = array(
                         'r.name',
                         'r.roundcode',
@@ -79,7 +79,8 @@ class sportsmanagementModelRounds extends JModelList
                         'r.ordering'
                         );
                 parent::__construct($config);
-                parent::setDbo(sportsmanagementHelper::getDBConnection());
+                $getDBConnection = sportsmanagementHelper::getDBConnection();
+                parent::setDbo($getDBConnection);
         }
         
     /**
@@ -91,12 +92,12 @@ class sportsmanagementModelRounds extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -111,7 +112,7 @@ class sportsmanagementModelRounds extends JModelList
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 
 
 //		// Load the parameters.
@@ -129,12 +130,12 @@ class sportsmanagementModelRounds extends JModelList
 	 */
 	protected function getListQuery()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $search	= $this->getState('filter.search');
         
         //$this->_project_id	= JRequest::getVar('pid');
-        //$this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        //$this->_project_id	= $app->getUserState( "$option.pid", '0' );
         
         // Create a new query object.		
 		$db = JFactory::getDBO();
@@ -178,7 +179,7 @@ class sportsmanagementModelRounds extends JModelList
 
 if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
         
         return $query;
@@ -199,8 +200,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	function getRoundsCount($project_id)
 	{
 	   $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+		$app = JFactory::getApplication();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
 	  // Select some fields
         $query->select('count(*) AS count');
@@ -217,11 +218,14 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	 * @param int $projectid
 	 * @return assocarray
 	 */
-	public static function getFirstRound($projectid) 
+	public static function getFirstRound($projectid,$cfg_which_database = 0) 
     {
          $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+		$app = JFactory::getApplication();
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
+        
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         
         // Select some fields
@@ -230,12 +234,14 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
         $query->where('project_id = '.$projectid);  
         $query->order('roundcode ASC, id ASC');  
-        
 
 		$db->setQuery($query);
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        
 		if ( !$result = $db->loadAssocList() )
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(__CLASS__, __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		return $result[0];
@@ -246,11 +252,14 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	 * @param int $projectid
 	 * @return assocarray
 	 */
-	public static function getLastRound($projectid) 
+	public static function getLastRound($projectid,$cfg_which_database = 0) 
     {
          $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+		$app = JFactory::getApplication();
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
+        
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         
         // Select some fields
@@ -259,12 +268,14 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
         $query->where('project_id = '.$projectid);  
         $query->order('roundcode DESC, id DESC');  
-        
-		
+        		
 		$db->setQuery($query);
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        
 		if (!$result=$db->loadAssocList())
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(__CLASS__, __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		return $result[0];
@@ -276,11 +287,11 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	 * @param int $projectid
 	 * @return assocarray
 	 */
-	public static function getPreviousRound($roundid, $projectid) 
+	public static function getPreviousRound($roundid, $projectid,$cfg_which_database = 0) 
     {
          $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+		$app = JFactory::getApplication();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         
         // Select some fields
@@ -294,7 +305,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		$db->setQuery($query);
 		if (!$result=$db->loadAssocList())
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(__CLASS__, __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		for ($i=0,$n=count($result); $i < $n; $i++) {
@@ -312,11 +323,11 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	 * @param int $projectid
 	 * @return assocarray
 	 */
-	public static function getNextRound($roundid, $projectid) 
+	public static function getNextRound($roundid, $projectid,$cfg_which_database = 0) 
     {
          $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+		$app = JFactory::getApplication();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         
        // Select some fields
@@ -330,7 +341,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		$db->setQuery($query);
 		if (!$result=$db->loadAssocList())
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(__CLASS__, __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		for ($i=0,$n=count($result); $i < $n; $i++) {
@@ -352,8 +363,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	function getNextRoundByToday($projectid)
 	{
 	    $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+		$app = JFactory::getApplication();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         
 	  // Select some fields
@@ -368,7 +379,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		$db->setQuery($query);
 		if (!$result=$db->loadAssocList())
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(__CLASS__, __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		return $result;		
@@ -380,14 +391,14 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	 * @param string $ordering
 	 * @return array
 	 */
-	public static function getRoundsOptions($project_id, $ordering='ASC')
+	public static function getRoundsOptions($project_id, $ordering='ASC',$cfg_which_database = 0)
 	{
 	    $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+		$app = JFactory::getApplication();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelRounds getRoundsOptions project_id<br><pre>'.print_r($project_id,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'   ),'');
         
       // Select some fields
         $query->select('id as value,name as text, id, name, round_date_first, round_date_last, roundcode');
@@ -395,11 +406,13 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
         $query->where('project_id = '.$project_id);  
         $query->order('roundcode '.$ordering); 
-        
-		
 
 		$db->setQuery($query);
-		return $db->loadObjectList();
+        $result = $db->loadObjectList();
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'   ),'');
+        
+        return $result;
 	}
 	
 	

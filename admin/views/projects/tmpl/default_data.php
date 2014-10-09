@@ -152,7 +152,7 @@ JHtml::_('behavior.modal');
 					$link2 = JRoute::_('index.php?option=com_sportsmanagement&view=projects&task=project.display&id='.$row->id);
 					$link2panel = JRoute::_('index.php?option=com_sportsmanagement&task=project.edit&layout=panel&pid='.$row->id.'&stid='.$row->sports_type_id.'&id='.$row->id   );
                     $link2teams = JRoute::_('index.php?option=com_sportsmanagement&view=projectteams&pid='.$row->id.'&id='.$row->id   );
-                    
+                    $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
                     $link2rounds = JRoute::_('index.php?option=com_sportsmanagement&view=rounds&pid='.$row->id );
                     $link2divisions = JRoute::_('index.php?option=com_sportsmanagement&view=divisions&pid='.$row->id );
 
@@ -163,36 +163,33 @@ JHtml::_('behavior.modal');
 						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
 						<td width="5%" class="center"><?php echo $checked; ?></td>
 						<?php
-						if ($this->table->isCheckedOut($this->user->get ('id'),$row->checked_out))
-						{
-							$inputappend=' disabled="disabled"';
-							?><td class="center">&nbsp;</td><?php
-						}
-						else
-						{
-							$inputappend='';
+                        						
+							$inputappend = '';
 							?>
 							<td class="center">
+                            <?php
+                            if ( ( $row->checked_out != $this->user->get ('id') ) && $row->checked_out ) : ?>
+										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'projects.', $canCheckin); ?>
+									<?php else: ?>
 								<a href="<?php echo $link; ?>">
-									<img src="<?php echo JUri::root();?>/administrator/components/com_sportsmanagement/assets/images/edit.png"
-										 border="0"
-										 alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_EDIT_DETAILS');?>"
-										 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_EDIT_DETAILS');?>" />
+                                <?php
+									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_EDIT_DETAILS');
+									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
+													$imageTitle,'title= "'.$imageTitle.'"');
+									?>
+                                
+									
 								</a>
-							</td>
 							<?php
-						}
+						endif;
 						?>
+                            </td>
+							
 						<td>
 							<?php
-							if ($this->table->isCheckedOut($this->user->get('id'),$row->checked_out))
-							{
-								echo $row->name;
-							}
-							else
-							{
+							
 								?><a href="<?php echo $link2panel; ?>"><?php echo $row->name; ?></a><?php
-							}
+							
 							?>
 						</td>
 						<td><?php echo $row->league; ?></td>

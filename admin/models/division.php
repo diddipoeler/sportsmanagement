@@ -94,10 +94,10 @@ class sportsmanagementModeldivision extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.division', 'division', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
@@ -176,16 +176,16 @@ class sportsmanagementModeldivision extends JModelAdmin
 	 */
 	public function save($data)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
        $post = JRequest::get('post');
-       $project_id = $mainframe->getUserState( "$option.pid", '0' );
+       $project_id = $app->getUserState( "$option.pid", '0' );
        
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldivision save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldivision project_id<br><pre>'.print_r($project_id,true).'</pre>'),'Notice');
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldivision post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       //$app->enqueueMessage(JText::_('sportsmanagementModeldivision save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       //$app->enqueueMessage(JText::_('sportsmanagementModeldivision project_id<br><pre>'.print_r($project_id,true).'</pre>'),'Notice');
+       //$app->enqueueMessage(JText::_('sportsmanagementModeldivision post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
        if ( !$data['id'] )
        {
@@ -200,7 +200,7 @@ class sportsmanagementModeldivision extends JModelAdmin
 			$data['extended'] = (string)$parameter;
 		}
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldivision save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementModeldivision save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         // Set the values
 	   $data['modified'] = $date->toSql();
@@ -219,8 +219,8 @@ class sportsmanagementModeldivision extends JModelAdmin
 	 */
 	public function delete(&$pks)
 	{
-	$mainframe = JFactory::getApplication();
-    //$mainframe->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
+	$app = JFactory::getApplication();
+    //$app->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
     
     return parent::delete($pks);
     

@@ -102,14 +102,14 @@ class JSMCountries
 	 */
 	public static function getCountryOptions($value_tag='value', $text_tag='text')
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // welche tabelle soll genutzt werden
 //$params = JComponentHelper::getParams( 'com_sportsmanagement' );
 //$database_table	= $params->get( 'cfg_which_database_table' );
 
         // Get a db connection.
-$db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+$db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
  
 // Create a new query object.
 $query = $db->getQuery(true);
@@ -122,7 +122,7 @@ $query = $db->getQuery(true);
 		$db->setQuery($query);
 		$countries = $db->loadAssocList();
 		
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($countries,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($countries,true).'</pre>'),'');
         
 		$options=array();
 		foreach ($countries AS $k )
@@ -143,14 +143,14 @@ $query = $db->getQuery(true);
 	 */
 	public static function convertIso2to3($iso_code_2)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // welche tabelle soll genutzt werden
 //$params = JComponentHelper::getParams( 'com_sportsmanagement' );
 //$database_table	= $params->get( 'cfg_which_database_table' );
 
 	// Get a db connection.
-$db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+$db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 // Create a new query object.
 $query = $db->getQuery(true);
 	  // Select some fields
@@ -177,13 +177,13 @@ $query = $db->getQuery(true);
 	 */
 	public static function convertIso3to2($iso_code_3)
 	{
-	    $mainframe = JFactory::getApplication();
+	    $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // welche tabelle soll genutzt werden
 //$params = JComponentHelper::getParams( 'com_sportsmanagement' );
 //$database_table	= $params->get( 'cfg_which_database_table' );
 	// Get a db connection.
-$db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+$db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 // Create a new query object.
 $query = $db->getQuery(true);
 // Select some fields
@@ -236,10 +236,10 @@ $query = $db->getQuery(true);
 	 */
 	public static function getCountryFlag($countrycode,$attributes='')
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 
         $src = self::getIso3Flag($countrycode);
 		if (!$src)
@@ -270,13 +270,13 @@ $query = $db->getQuery(true);
    */
 	public static function getCountryName($iso3)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // welche tabelle soll genutzt werden
 //$params = JComponentHelper::getParams( 'com_sportsmanagement' );
 //$database_table	= $params->get( 'cfg_which_database_table' );
 	// Get a db connection.
-$db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+$db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 // Create a new query object.
 $query = $db->getQuery(true);
 // Select some fields

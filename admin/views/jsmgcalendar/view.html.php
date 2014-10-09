@@ -62,7 +62,7 @@ class sportsmanagementViewjsmgcalendar extends sportsmanagementView
  */
 function display( $tpl = null )
 	{
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 		$db	 		= JFactory::getDBO();
 		$uri		= JFactory::getURI();
@@ -101,7 +101,7 @@ function display( $tpl = null )
     protected function addToolbar() 
     {
 		//JRequest::setVar('hidemainmenu', true);
-        $mainframe	= JFactory::getApplication();
+        $app	= JFactory::getApplication();
 $option = JRequest::getCmd('option');
 		$canDo = jsmGCalendarUtil::getActions($this->gcalendar->id);
 		if ($this->gcalendar->id < 1) 
@@ -110,7 +110,7 @@ $option = JRequest::getCmd('option');
             
 			if ($canDo->get('core.create')) 
             {
-                $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_INSERT_ON_GOOGLE'),'Notice');
+                $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_INSERT_ON_GOOGLE'),'Notice');
                 
                 $this->gcalendar->username = JComponentHelper::getParams(JRequest::getCmd('option'))->get('google_mail_account','');
                 $this->gcalendar->password = JComponentHelper::getParams(JRequest::getCmd('option'))->get('google_mail_password','');

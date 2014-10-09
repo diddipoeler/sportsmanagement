@@ -62,7 +62,7 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $model = $this->getModel();
         $uri = JFactory::getURI();
         
@@ -72,7 +72,7 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
         $this->assign('jl_tables',$databasetool->getJoomleagueImportTables() );
         
         $checktables = $databasetool->checkImportTablesJlJsm($this->jl_tables);
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($checktables,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($checktables,true).'</pre>'),'');
         
         //build the html select list for seasons
 		$seasons[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'),'id','name');
@@ -93,10 +93,10 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
         $this->assignRef('lists', $lists);
         $this->assign('request_url',$uri->toString());
         $this->assign('items',$checktables);
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($this->jl_tables,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($this->jl_tables,true).'</pre>'),'');
         
-        $this->addToolbar();
-		parent::display($tpl);
+        //$this->addToolbar();
+		//parent::display($tpl);
 	}
     
     /**
@@ -106,20 +106,23 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+//		// Get a refrence of the page instance in joomla
+//		$document	= JFactory::getDocument();
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
-        JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT'),'joomleague-import');
-        //JToolBarHelper::custom('joomleagueimports.newstructur','upload','upload',JText::_('JMODIFY'),false);
+        $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT');
+        $this->icon = 'joomleague-import';
+        
+        JToolBarHelper::custom('joomleagueimports.positions','edit','edit',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'),false);
+        
         JToolBarHelper::custom('joomleagueimports.checkimport','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
         JToolBarHelper::custom('joomleagueimports.import','new','new',JText::_('JTOOLBAR_DUPLICATE'),false);
         JToolBarHelper::divider();
-		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
-        
+//		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+//        JToolBarHelper::preferences(JRequest::getCmd('option'));
+        parent::addToolbar();
     }    
     
     

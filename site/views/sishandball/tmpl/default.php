@@ -45,7 +45,7 @@ $modal_popup_height = JComponentHelper::getParams('com_sportsmanagement')->get('
 
 $document =  JFactory::getDocument();
 $cssHTML = '<link href="components/com_sportsmanagement/assets/css/sis.css" rel="stylesheet" type="text/css" />' . "\n";
-//$mainframe->addCustomHeadTag( $cssHTML );
+//$app->addCustomHeadTag( $cssHTML );
 $document->addCustomTag( $cssHTML );
 
 echo JHtml::image('components/com_sportsmanagement/assets/images/sislogo.png', $this->params->get('page_title'), array('title' => $this->params->get('page_title') ));

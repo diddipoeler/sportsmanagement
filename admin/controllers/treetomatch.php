@@ -23,7 +23,7 @@ class sportsmanagementControllerTreetomatch extends JControllerLegacy
 	public function display($cachable = false, $urlparams = false)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$document = JFactory::getDocument();
 
 	 	$model=$this->getModel('treetomatchs');
@@ -32,18 +32,18 @@ class sportsmanagementControllerTreetomatch extends JControllerLegacy
 		$view->setModel($model,true);	// true is for the default model;
 
 		$projectws=$this->getModel('project');
-		$projectws->setId($mainframe->getUserState($option.'project',0));
+		$projectws->setId($app->getUserState($option.'project',0));
 		$view->setModel($projectws);
 			if ( $nid = JRequest::getVar( 'nid', null, '', 'array' ) )
 		{
-			$mainframe->setUserState( $option . 'node_id', $nid[0] );
+			$app->setUserState( $option . 'node_id', $nid[0] );
 		}
 		if ( $tid = JRequest::getVar( 'tid', null, '', 'array' ) )
 		{
-			$mainframe->setUserState( $option . 'treeto_id', $tid[0] );
+			$app->setUserState( $option . 'treeto_id', $tid[0] );
 		}
 		$nodews = $this->getModel( 'treetonode' );
-		$nodews->setId( $mainframe->getUserState( $option.'node_id') );
+		$nodews->setId( $app->getUserState( $option.'node_id') );
 		$view->setModel( $nodews );
 		
 		switch($this->getTask())
@@ -78,7 +78,7 @@ class sportsmanagementControllerTreetomatch extends JControllerLegacy
 	{
 		$option = JRequest::getCmd('option');
 
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
 		$document	= JFactory::getDocument();
 		$model		= $this->getModel ('treetomatchs');
 		$viewType	= $document->getType();
@@ -86,19 +86,19 @@ class sportsmanagementControllerTreetomatch extends JControllerLegacy
 		$view->setModel($model, true);  // true is for the default model;
 
 		$projectws = $this->getModel ('project');
-		$projectws->setId($mainframe->getUserState($option . 'project', 0));
+		$projectws->setId($app->getUserState($option . 'project', 0));
 		$view->setModel($projectws);
 		
 			if ( $nid = JRequest::getVar( 'nid', null, '', 'array' ) )
 		{
-			$mainframe->setUserState( $option . 'node_id', $nid[0] );
+			$app->setUserState( $option . 'node_id', $nid[0] );
 		}
 		if ( $tid = JRequest::getVar( 'tid', null, '', 'array' ) )
 		{
-			$mainframe->setUserState( $option . 'treeto_id', $tid[0] );
+			$app->setUserState( $option . 'treeto_id', $tid[0] );
 		}
 		$nodews = $this->getModel( 'treetonode' );
-		$nodews->setId( $mainframe->getUserState( $option.'node_id') );
+		$nodews->setId( $app->getUserState( $option.'node_id') );
 		$view->setModel( $nodews );
 		
 		JRequest::setVar('hidemainmenu', 0);

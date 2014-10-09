@@ -60,7 +60,7 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $starttime = microtime(); 
         
         // get the Data
@@ -69,7 +69,7 @@ class sportsmanagementViewPlayground extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		$script = $this->get('Script');
@@ -87,7 +87,7 @@ class sportsmanagementViewPlayground extends sportsmanagementView
         
         if ( $this->item->latitude == 255 )
         {
-            $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_NO_GEOCODE'),'Error');
+            $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_NO_GEOCODE'),'Error');
             $this->map = false;
         }
         else
@@ -97,7 +97,7 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 		
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'playground');
 		$this->assignRef( 'extended', $extended );
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewPlayground display<br><pre>'.print_r($this->extended,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementViewPlayground display<br><pre>'.print_r($this->extended,true).'</pre>'),'Notice');
 
 
 	}

@@ -69,7 +69,7 @@ class JFormFieldpersonagegroup extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 			$personquery = $db->getQuery(true);
@@ -86,8 +86,8 @@ class JFormFieldpersonagegroup extends JFormFieldList
     $select_id	= (int) $this->form->getValue('id');
 	$agegroup_id	= (int) $this->form->getValue('agegroup_id');
     
-    //$mainframe->enqueueMessage(JText::_('personagegroup select_id<br><pre>'.print_r($select_id,true).'</pre>'   ),'');
-    //$mainframe->enqueueMessage(JText::_('personagegroup agegroup_id<br><pre>'.print_r($agegroup_id,true).'</pre>'   ),'');
+    //$app->enqueueMessage(JText::_('personagegroup select_id<br><pre>'.print_r($select_id,true).'</pre>'   ),'');
+    //$app->enqueueMessage(JText::_('personagegroup agegroup_id<br><pre>'.print_r($agegroup_id,true).'</pre>'   ),'');
  
       $query->select('a.id AS value, concat(a.name, \' von: \',a.age_from,\' bis: \',a.age_to,\' Stichtag: \',a.deadline_day) AS text');
 			$query->from('#__sportsmanagement_agegroup as a');
@@ -97,7 +97,7 @@ class JFormFieldpersonagegroup extends JFormFieldList
 			$db->setQuery($query);
 			$options_select = $db->loadObjectList();
 			
-      //$mainframe->enqueueMessage(JText::_('personagegroup options<br><pre>'.print_r($options_select,true).'</pre>'   ),'');
+      //$app->enqueueMessage(JText::_('personagegroup options<br><pre>'.print_r($options_select,true).'</pre>'   ),'');
 			
       foreach($options_select as $row)
 			{

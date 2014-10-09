@@ -74,30 +74,31 @@ class sportsmanagementViewTeamPlan extends JViewLegacy
 		// Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
         $option = JRequest::getCmd('option');
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
 		$model = $this->getModel();
+        $model::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
         
         $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
         
         //$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
-        sportsmanagementModelProject::setProjectID(JRequest::getInt('p',0));
-		$project = sportsmanagementModelProject::getProject();
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
+        sportsmanagementModelProject::setProjectID(JRequest::getInt('p',0),$model::$cfg_which_database);
+		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
+		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 		
 		if (isset($project))
 		{
 			$this->assignRef('project',$project);
-			$rounds = sportsmanagementModelProject::getRounds($config['plan_order']);
+			$rounds = sportsmanagementModelProject::getRounds($config['plan_order'],$model::$cfg_which_database);
 
-			$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig());
+			$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database));
 			$this->assign('config',array_merge($this->overallconfig,$config));
 			$this->assignRef('rounds',$rounds);
-			$this->assign('teams',sportsmanagementModelProject::getTeamsIndexedByPtid());
+			$this->assign('teams',sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$model::$cfg_which_database));
 			$this->assignRef('match',$match);
-			$this->assign('favteams',sportsmanagementModelProject::getFavTeams());
+			$this->assign('favteams',sportsmanagementModelProject::getFavTeams($model::$cfg_which_database));
 			$this->assign('division',$model->getDivision());
 			$this->assign('ptid',$model->getProjectTeamId());
-			$this->assign('projectevents',sportsmanagementModelProject::getProjectEvents());
+			$this->assign('projectevents',sportsmanagementModelProject::getProjectEvents(0,$model::$cfg_which_database));
 			$this->assign('matches',$model->getMatches($config));
 			$this->assign('matches_refering',$model->getMatchesRefering($config));
 			$this->assign('matchesperround',$model->getMatchesPerRound($config,$rounds));
@@ -105,7 +106,7 @@ class sportsmanagementViewTeamPlan extends JViewLegacy
 
 		}
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' project<br><pre>'.print_r($project,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' project<br><pre>'.print_r($project,true).'</pre>'),'');
         
     //$this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
     

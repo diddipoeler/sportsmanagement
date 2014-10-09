@@ -62,16 +62,25 @@ class sportsmanagementViewjoomleagueimport extends sportsmanagementView
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $document = JFactory::getDocument();
         $model = $this->getModel();
         $uri = JFactory::getURI();
+        $this->task = JRequest::getCmd('task');
+        $this->assign('request_url',$uri->toString());
+        
+        
+        if ( $this->getLayout() == 'positions'  )
+		{
+		$this->initPositions();  
+        } 
+        
         
         //$count = 5;
         $count = JComponentHelper::getParams($option)->get('max_import_jl_import_steps',0);
         
-        $this->step = $mainframe->getUserState( "$option.step", '0' );
-        $this->totals = $mainframe->getUserState( "$option.totals", '0' );
+        $this->step = $app->getUserState( "$option.step", '0' );
+        $this->totals = $app->getUserState( "$option.totals", '0' );
         
         if ( !$this->step )
         {
@@ -132,13 +141,13 @@ $javascript .= '  });' . "\n";
 $document->addScriptDeclaration( $javascript );            
             
             $this->step = $this->step + $count;
-            $mainframe->setUserState( "$option.step", $this->step);    
+            $app->setUserState( "$option.step", $this->step);    
         
         
         
 //        
 //        $checktables = $databasetool->checkImportTablesJlJsm($this->jl_tables);
-//        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($checktables,true).'</pre>'),'');
+//        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($checktables,true).'</pre>'),'');
 //        
 //        $this->assign('request_url',$uri->toString());
 //        $this->assign('items',$checktables);
@@ -150,8 +159,33 @@ $document->addScriptDeclaration( $javascript );
         $document->addStylesheet(JURI::base().'components/'.$option.'/assets/css/progressbar.css');
         JToolBarHelper::title(JText::_('Bearbeitete Steps: '.$this->step.' von: '.$this->totals),'joomleague-import');
         //$this->addToolbar();
-		parent::display($tpl);
+		//parent::display($tpl);
 	}
+    
+    function initPositions()
+    {
+        $option = JRequest::getCmd('option');
+		$app = JFactory::getApplication();
+        $document = JFactory::getDocument();
+        $model = $this->getModel();
+        $uri = JFactory::getURI();
+        
+        $this->assign('joomleague',$model->getImportPositions('joomleague') );
+        $this->assign('sportsmanagement',$model->getImportPositions('sportsmanagement') );
+        
+        $nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_POSITION'));
+		if ($res = $model->getImportPositions('sportsmanagement'))
+        {
+            $nation = array_merge($nation,$res);
+            }
+		
+        $lists['position'] = $nation;
+        $this->assignRef('lists',$lists);
+        
+        JToolBarHelper::custom('joomleagueimports.updateplayer','upload','upload',JText::_('COM_SPORTSMANAGEMENT_JL_IMPORT_PLAYER_UPDATE'),false);
+        
+    }
+    
     
 //    /**
 //	* Add the page title and toolbar.

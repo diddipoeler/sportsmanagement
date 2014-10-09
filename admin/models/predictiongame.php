@@ -98,10 +98,10 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.predictiongame', 'predictiongame', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
@@ -151,7 +151,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 	public function save($data)
 	{
 	   $option = JRequest::getCmd('option');
-	$mainframe	= JFactory::getApplication();
+	$app	= JFactory::getApplication();
     // Get a db connection.
         $db = JFactory::getDbo();
        $date = JFactory::getDate();
@@ -161,8 +161,8 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');
        
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelPredictionGame save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelPredictionGame post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       //$app->enqueueMessage(JText::_('sportsmanagementModelPredictionGame save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       //$app->enqueueMessage(JText::_('sportsmanagementModelPredictionGame post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
        self::storePredictionAdmins($data);
        self::storePredictionProjects($data);
@@ -178,10 +178,10 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
      */
     function import()
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         
-        $mainframe->enqueueMessage(JText::_('sportsmanagementModelPredictionGame import<br><pre>'.print_r($option,true).'</pre>'   ),'');
+        $app->enqueueMessage(JText::_('sportsmanagementModelPredictionGame import<br><pre>'.print_r($option,true).'</pre>'   ),'');
         
     }
   
@@ -195,7 +195,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 	*/
 	function getPredictionGame($id)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.		
 		$db = JFactory::getDBO();
@@ -227,7 +227,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 	*/
 	function getPredictionProjectIDs($prediction_id)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.		
 		$db = JFactory::getDBO();
@@ -308,7 +308,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 	function storePredictionAdmins($data)
 	{
  		$option = JRequest::getCmd('option');
-	$mainframe	= JFactory::getApplication();
+	$app	= JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -343,7 +343,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
         
         if ( $result )
         {
-            $mainframe->enqueueMessage(JText::_('Admins zum Tippspiel gespeichern'),'Notice');
+            $app->enqueueMessage(JText::_('Admins zum Tippspiel gespeichern'),'Notice');
         }
 	
 
@@ -359,7 +359,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 	function storePredictionProjects($data)
 	{
  		$option = JRequest::getCmd('option');
-	$mainframe	= JFactory::getApplication();
+	$app	= JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -391,7 +391,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
         
         if ( $result )
         {
-            $mainframe->enqueueMessage(JText::_('Projekte zum Tippspiel gespeichern'),'Notice');
+            $app->enqueueMessage(JText::_('Projekte zum Tippspiel gespeichern'),'Notice');
         }
 
 		return $result;
@@ -412,7 +412,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 
 	function deletePredictionAdmins($cid=array())
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $db = JFactory::getDbo();  
         $query = $db->getQuery(true);
@@ -443,7 +443,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 
 	function deletePredictionProjects($cid=array())
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $db = JFactory::getDbo();  
         $query = $db->getQuery(true);
@@ -475,7 +475,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 
 	function deletePredictionMembers($cid=array())
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $db = JFactory::getDbo();  
         $query = $db->getQuery(true);
@@ -506,7 +506,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 
 	function deletePredictionResults($cid=array())
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $db = JFactory::getDbo();  
         $query = $db->getQuery(true);
@@ -536,7 +536,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 	 */
 	function savePredictionProjectSettings($data)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $db = JFactory::getDbo();  
         $query = $db->getQuery(true);
@@ -614,7 +614,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 		if ( !$result )
 		{
 			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 			$result= false;
 		}
 
@@ -631,7 +631,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 	 */
 	function rebuildPredictionProjectSPoints($cid)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $db = JFactory::getDbo();  
         $query = $db->getQuery(true);
@@ -829,7 +829,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 						if (!$result)
                         {
                             //$this->setError($this->_db->getErrorMsg());
-                            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
                             $result= false;
                             }
 					}

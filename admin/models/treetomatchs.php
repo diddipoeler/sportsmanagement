@@ -65,8 +65,8 @@ class JoomleagueModelTreetomatchs extends JoomleagueModelList
 	{
 		$option = JRequest::getCmd('option');
 		
-		$mainframe	= JFactory::getApplication();
-		$node_id = $mainframe->getUserState($option . 'node_id');
+		$app	= JFactory::getApplication();
+		$node_id = $app->getUserState($option . 'node_id');
 		$where = ' WHERE  ttm.node_id = ' . $node_id ;
 		
 		return $where;
@@ -119,10 +119,10 @@ class JoomleagueModelTreetomatchs extends JoomleagueModelList
 	function getMatches()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
-		$node_id = $mainframe->getUserState($option . 'node_id');
-		$treeto_id = $mainframe->getUserState($option . 'treeto_id');
-		$project_id = $mainframe->getUserState($option . 'project');
+		$app	= JFactory::getApplication();
+		$node_id = $app->getUserState($option . 'node_id');
+		$treeto_id = $app->getUserState($option . 'treeto_id');
+		$project_id = $app->getUserState($option . 'project');
 		
 		$query = ' SELECT mc.id AS value ';
 		$query .=	' ,CONCAT(t1.name, \'_vs_\', t2.name, \' [round:\',r.roundcode,\']\') AS text ';

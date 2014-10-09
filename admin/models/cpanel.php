@@ -69,7 +69,7 @@ var $_success_text = '';
  */
 public function getVersion() 
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        // Create a new query object.		
 		$db = JFactory::getDBO();
@@ -77,7 +77,7 @@ public function getVersion()
         
 	   $this->_db->setQuery('SELECT manifest_cache FROM #__extensions WHERE name = "com_sportsmanagement"');
        $manifest_cache = json_decode( $this->_db->loadResult(), true );
-	   //$mainframe->enqueueMessage(JText::_('manifest_cache<br><pre>'.print_r($manifest_cache,true).'</pre>'   ),'');
+	   //$app->enqueueMessage(JText::_('manifest_cache<br><pre>'.print_r($manifest_cache,true).'</pre>'   ),'');
        return $manifest_cache['version'];	
 	}
 
@@ -88,10 +88,10 @@ public function getVersion()
  */
 public function getGithubRequests()
 {
-$mainframe = JFactory::getApplication(); 
+$app = JFactory::getApplication(); 
 $option = JRequest::getCmd('option');   
 $paramsdata = JComponentHelper::getParams($option);
-//$mainframe->enqueueMessage(JText::_('getGithubRequests paramsdata<br><pre>'.print_r($paramsdata,true).'</pre>'   ),'');
+//$app->enqueueMessage(JText::_('getGithubRequests paramsdata<br><pre>'.print_r($paramsdata,true).'</pre>'   ),'');
 
 
 // Load the parameters
@@ -136,7 +136,7 @@ $paramsdata = JComponentHelper::getParams($option);
      */
     function getInstalledPlugin($plugin)
     {
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
   $option = JRequest::getCmd('option'); 
   $db = JFactory::getDBO();    
         $query = $db->getQuery(true);
@@ -157,15 +157,15 @@ $paramsdata = JComponentHelper::getParams($option);
      */
     function checkUpdateVersion()
     {
-        $mainframe = JFactory::getApplication(); 
+        $app = JFactory::getApplication(); 
         $option = JRequest::getCmd('option');  
         //$xml = JFactory::getXMLParser( 'Simple' );
         $return = 0;
         $version = sportsmanagementHelper::getVersion() ;
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($version,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($version,true).'</pre>'),'');
         
         $temp = explode(".",$version);  
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' temp<br><pre>'.print_r($temp,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' temp<br><pre>'.print_r($temp,true).'</pre>'),'');
      
               
         //Laden
@@ -189,8 +189,8 @@ if (function_exists('curl_version'))
         // moving to display page to display curl errors
           //echo curl_errno($curl) ;
           //echo curl_error($curl);
-          //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r(curl_errno($curl),true).'</pre>'),'Error');
-          //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r(curl_error($curl),true).'</pre>'),'Error');
+          //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r(curl_errno($curl),true).'</pre>'),'Error');
+          //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r(curl_error($curl),true).'</pre>'),'Error');
           
           
     }
@@ -201,17 +201,17 @@ if (function_exists('curl_version'))
         curl_close($curl);
     } 
     
-    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r($content,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r($content,true).'</pre>'),'');
 }
 else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 {
     $content = file_get_contents($datei);
-    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($content,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($content,true).'</pre>'),'');
 }
 else
 {
     //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-    $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 		//$content = file_get_contents('https://raw2.github.com/diddipoeler/sportsmanagement/master/sportsmanagement.xml');
 		//Parsen
@@ -220,7 +220,7 @@ else
         {
 		$doc = DOMDocument::loadXML($content);
         $doc->save(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($doc,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($doc,true).'</pre>'),'');
         }
         
         if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -247,20 +247,20 @@ else
 //        }
         
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml <br><pre>'.print_r($xml,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml version<br><pre>'.print_r((string)$xml->version,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' version<br><pre>'.print_r((string)$version,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml <br><pre>'.print_r($xml,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml version<br><pre>'.print_r((string)$xml->version,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' version<br><pre>'.print_r((string)$version,true).'</pre>'),'');
         
         $github_version = (string)$xml->version;
         
 //        foreach( $xml->document->version as $version ) 
 //            {
 //            $github_version = $version->data();
-//            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($github_version,true).'</pre>'),'');
+//            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($github_version,true).'</pre>'),'');
 //            }
                      
             //$temp2 = explode(".",$github_version);  
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' temp2<br><pre>'.print_r($temp2,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' temp2<br><pre>'.print_r($temp2,true).'</pre>'),'');
         
         if(version_compare($github_version,$version,'gt')) 
         {
@@ -284,18 +284,18 @@ else
 //            if ( (int)$temp[$key] !== (int)$temp2[$key] )
 //            {
 //                $return = $temp[$key];
-//                //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' temp key<br><pre>'.print_r($temp[$key],true).'</pre>'),'');
+//                //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' temp key<br><pre>'.print_r($temp[$key],true).'</pre>'),'');
 //                break;
 //            }    
 //            }
             
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' return<br><pre>'.print_r($return,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' return<br><pre>'.print_r($return,true).'</pre>'),'');
             
             //$anzahl = strcspn($github_version,$version);
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' anzahl<br><pre>'.print_r($anzahl,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' anzahl<br><pre>'.print_r($anzahl,true).'</pre>'),'');
             
             //$return = strcmp (trim($github_version), trim($version));
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' return<br><pre>'.print_r($return,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' return<br><pre>'.print_r($return,true).'</pre>'),'');
             
 //            return $return;
                     
@@ -308,7 +308,7 @@ else
      */
     function checkcountry()
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $starttime = microtime(); 
         // Create a new query object.		
@@ -316,7 +316,7 @@ else
 		$query = $db->getQuery(true);
         
         //$cols = $this->_db->getTableColumns('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($cols,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($cols,true).'</pre>'),'');
 //        $query='SELECT count(*) AS count
 //		FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_countries';
 		
@@ -329,8 +329,8 @@ else
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		return $db->loadResult();
@@ -344,7 +344,7 @@ else
      */
     function checksporttype($type)
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $starttime = microtime(); 
         // Create a new query object.		
@@ -366,8 +366,8 @@ else
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		return $db->loadResult();
@@ -420,7 +420,7 @@ else
 	 */
 	static function processData($obj, $params)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         // Initialize
 		$github = array();
 		$i = 0;
@@ -449,7 +449,7 @@ else
 			if ($i <= $count)
 			{
 				
-                //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' github<br><pre>'.print_r($github, true).'</pre><br>','Notice');
+                //$app->enqueueMessage(get_class($this).' '.__FUNCTION__.' github<br><pre>'.print_r($github, true).'</pre><br>','Notice');
                 
                 // Initialize a new object
                 //$github[] = '';

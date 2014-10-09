@@ -64,6 +64,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
   }
   else 
   {
+    if ( isset($this->config['show_matrix_russia']) )
+    {
  	if (($this->config['show_matrix_russia'])==1)
 	{
 	echo $this->loadTemplate('matrix_russia');
@@ -71,6 +73,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     else
     {
      echo $this->loadTemplate('matrix');
+     }
+     }
+     else
+     {
+        echo $this->loadTemplate('matrix');
      }
   }
 	

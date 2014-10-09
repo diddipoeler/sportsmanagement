@@ -64,13 +64,13 @@ class sportsmanagementControllerjlextsisimport extends JControllerLegacy
     function save() 
     {
 	   $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication ();
+		$app = JFactory::getApplication ();
 		$document = JFactory::getDocument ();
 		// Check for request forgeries
 		JRequest::checkToken () or die ( 'COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN' );
 		$msg = '';
 		//JToolBarHelper::back ( JText::_ ( 'COM_SPORTSMANAGEMENT_GLOBAL_BACK' ), JRoute::_ ( 'index.php?option='.$option.'&view=jldfbnetimport' ) );
-		// $mainframe = JFactory::getApplication();
+		// $app = JFactory::getApplication();
 		$model = $this->getModel ( 'jlextsisimport' );
 		$post = JRequest::get ( 'post' );
 		

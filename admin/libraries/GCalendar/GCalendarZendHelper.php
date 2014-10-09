@@ -39,7 +39,7 @@ class jsmGCalendarZendHelper {
 	 */
 	public static function getCalendars($username, $password) 
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         
         
 		try {
@@ -67,9 +67,9 @@ class jsmGCalendarZendHelper {
 	 */
 	public static function getEvents($calendar, $startDate = null, $endDate = null, $max = 1000, $filter = null, $orderBy = jsmGCalendarZendHelper::ORDER_BY_START_TIME, $pastEvents = false, $sortOrder = jsmGCalendarZendHelper::SORT_ORDER_ASC, $startIndex = 1) 
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' calendar<br><pre>'.print_r($calendar,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' calendar<br><pre>'.print_r($calendar,true).'</pre>'),'Notice');
         
 		// Implement View Level Access
 		$user = JFactory::getUser();
@@ -109,7 +109,7 @@ class jsmGCalendarZendHelper {
 			}
 		}
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' events<br><pre>'.print_r($events,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' events<br><pre>'.print_r($events,true).'</pre>'),'Notice');
         
 		return $events;
 	}
@@ -122,7 +122,7 @@ class jsmGCalendarZendHelper {
 	 */
 	public static function getEvent($calendar, $eventId) 
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         
 		// Implement View Level Access
 		$user = JFactory::getUser();
@@ -160,7 +160,7 @@ class jsmGCalendarZendHelper {
 			$event->setWho(array());
 		}
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' event<br><pre>'.print_r($event,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' event<br><pre>'.print_r($event,true).'</pre>'),'Notice');
         
 		return $event;
 	}
@@ -170,7 +170,7 @@ class jsmGCalendarZendHelper {
 	 */
 	public static function internalGetEvents($calendar, $startDate = null, $endDate = null, $max = 1000, $filter = null, $orderBy = jsmGCalendarZendHelper::ORDER_BY_START_TIME, $pastEvents = false, $sortOrder = jsmGCalendarZendHelper::SORT_ORDER_ASC, $startIndex = 1)
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         
 		try {
 			$client = new Zend_Http_Client();
@@ -226,7 +226,7 @@ class jsmGCalendarZendHelper {
 	 */
 	public static function internalGetEvent($calendar, $eventId) 
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         
 		try {
 			$client = new Zend_Http_Client();
@@ -261,7 +261,7 @@ class jsmGCalendarZendHelper {
 
 	public static function loadZendClasses() 
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         
 		static $zendLoaded;
 		if($zendLoaded == null){

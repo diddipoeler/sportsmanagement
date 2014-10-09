@@ -62,7 +62,7 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		//global $mainframe;
+		//global $app;
 
     /*
     echo '<pre>';
@@ -115,7 +115,7 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 	function _displayDefault( $tpl )
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication ();
+		$app = JFactory::getApplication ();
 
 		$db		= JFactory::getDBO();
 		$uri 	= JFactory::getURI();
@@ -126,14 +126,14 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 //		$projectid = $model->getProject();
 //		$this->assignRef( 'projectid',		$projectid );
         
-        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        $this->project_id	= $app->getUserState( "$option.pid", '0' );
 		
     $istable = $model->checkTable();
     
     if ( empty($this->project_id) )
     {
     JError::raiseWarning( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_1' ) );
-    $mainframe->redirect( 'index.php?option=' . $option .'&view=projects' );
+    $app->redirect( 'index.php?option=' . $option .'&view=projects' );
     }
     else
     {
@@ -148,7 +148,7 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
        
        $dfbteams = count($projectteams) - 1;
        
-       //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($dfbteams,true).'</pre>'),'');
+       //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($dfbteams,true).'</pre>'),'');
        
        if ( $resdfbkey = $model->getDFBKey($dfbteams,'FIRST') )
 		   {
@@ -166,13 +166,13 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 		   {
 		   JError::raiseNotice( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_2' ) );
 		   JError::raiseWarning(500,JText::sprintf( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_7' , $resmatches ));
-		   $mainframe->redirect( 'index.php?option=' . $option .'&view=rounds' );
+		   $app->redirect( 'index.php?option=' . $option .'&view=rounds' );
 		   }
 		   else
 		   {
 //        JError::raiseWarning( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_3' ) );
 //        JError::raiseNotice( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_4' ) );
-       $mainframe->redirect( 'index.php?option=' . $option .'&view=jlextdfbkeyimport&layout=default_firstmatchday' );       
+       $app->redirect( 'index.php?option=' . $option .'&view=jlextdfbkeyimport&layout=default_firstmatchday' );       
        }
 		   
 		   
@@ -181,7 +181,7 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 		   {
        JError::raiseWarning( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_3' ) );
        JError::raiseNotice( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_4' ) );
-       $mainframe->redirect( 'index.php?option=' . $option .'&view=jlextdfbkeyimport&layout=default_createdays' );
+       $app->redirect( 'index.php?option=' . $option .'&view=jlextdfbkeyimport&layout=default_createdays' );
        }
               
        }
@@ -190,7 +190,7 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
        $procountry = $model->getCountry($this->project_id);
        //JError::raiseWarning( 500, JText::_( '[DFB-Key Tool] Error: No DFB-Key for '.$dfbteams.'  Teams available!' ) );
        JError::raiseWarning(500,JText::sprintf( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_6' , $dfbteams , JSMCountries::getCountryFlag($procountry) , $procountry ));
-       $mainframe->redirect( 'index.php?option=' . $option .'&view=projects' );
+       $app->redirect( 'index.php?option=' . $option .'&view=projects' );
        }
        
        unset( $projectteams ); 
@@ -200,7 +200,7 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
     {
 //    JError::raiseNotice( 500, JText::_( '[DFB-Key Tool] Notice: No Teams assigned!' ) );
     JError::raiseError( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_5' ) );
-    $mainframe->redirect( 'index.php?option=' . $option .'&view=projectteams' );
+    $app->redirect( 'index.php?option=' . $option .'&view=projectteams' );
     
     }
     
@@ -219,7 +219,7 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
   function _displayDefaultCreatedays( $tpl )
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication ();
+		$app = JFactory::getApplication ();
 		
 		$db		= JFactory::getDBO();
 		$uri 	= JFactory::getURI();
@@ -229,7 +229,7 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
     //get the project
     //echo '_displayDefaultCreatedays project -> '.$projectid.'<br>';
     
-		$projectid = $mainframe->getUserState( "$option.pid", '0' );;
+		$projectid = $app->getUserState( "$option.pid", '0' );;
 		$this->assignRef( 'projectid',		$projectid );
 		
 		if ( $res =  $model->getProjectteams($projectid) )
@@ -281,14 +281,14 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
   function _displayDefaultFirstMatchday( $tpl )
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication ();
+		$app = JFactory::getApplication ();
 		
 		$db		= JFactory::getDBO();
 		$uri 	= JFactory::getURI();
 		$user 	= JFactory::getUser();
 		$model	= $this->getModel();
         
-        $projectid = $mainframe->getUserState( "$option.pid", '0' );;
+        $projectid = $app->getUserState( "$option.pid", '0' );;
 		
 		if ( $res =  $model->getProjectteams($projectid) )
 		{
@@ -337,14 +337,14 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
   function _displayDefaultSaveMatchdays( $tpl )
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication ();
+		$app = JFactory::getApplication ();
 		
 		$db		= JFactory::getDBO();
 		$uri 	= JFactory::getURI();
 		$user 	= JFactory::getUser();
 		$model	= $this->getModel();
 		
-		$projectid = $mainframe->getUserState( "$option.pid", '0' );;
+		$projectid = $app->getUserState( "$option.pid", '0' );;
 		$this->assignRef( 'projectid',		$projectid );
 		
 		$post = JRequest::get( 'post' );

@@ -15,13 +15,13 @@ class JWTSHelper {
 	// Path overrides for MVC templating
 	function getTemplatePath($pluginName,$folder){
 
-		$mainframe = &JFactory::getApplication();
+		$app = &JFactory::getApplication();
 		$p = new JObject;
 		$pluginGroup = 'content';
 
-		if(file_exists(JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.$pluginName.DS.str_replace('/',DS,$folder))){
-			$p->folder = JPATH_SITE.DS.'templates'.DS.$mainframe->getTemplate().DS.'html'.DS.$pluginName.DS.$folder;
-			$p->http = JURI::root(true).'/templates/'.$mainframe->getTemplate().'/html/'.$pluginName.'/'.$folder;
+		if(file_exists(JPATH_SITE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.$pluginName.DS.str_replace('/',DS,$folder))){
+			$p->folder = JPATH_SITE.DS.'templates'.DS.$app->getTemplate().DS.'html'.DS.$pluginName.DS.$folder;
+			$p->http = JURI::root(true).'/templates/'.$app->getTemplate().'/html/'.$pluginName.'/'.$folder;
 		} else {
 			if(version_compare(JVERSION,'1.6.0','ge')) {
 				// Joomla! 1.6+

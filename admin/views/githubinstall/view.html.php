@@ -61,7 +61,7 @@ class sportsmanagementViewgithubinstall extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $model	= $this->getModel();
         $uri	= JFactory::getURI();

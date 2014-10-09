@@ -73,7 +73,8 @@ class sportsmanagementModelTemplates extends JModelList
                         'tmpl.ordering'
                         );
                 parent::__construct($config);
-                parent::setDbo(sportsmanagementHelper::getDBConnection());
+                $getDBConnection = sportsmanagementHelper::getDBConnection();
+                parent::setDbo($getDBConnection);
         }
         
     /**
@@ -85,12 +86,12 @@ class sportsmanagementModelTemplates extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -102,7 +103,7 @@ class sportsmanagementModelTemplates extends JModelList
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 
 
 //		// Load the parameters.
@@ -120,14 +121,14 @@ class sportsmanagementModelTemplates extends JModelList
 	 */
 	protected function getListQuery()
 	{
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
         $search	= $this->getState('filter.search');
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
         
-        $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        $this->_project_id	= $app->getUserState( "$option.pid", '0' );
         
         $query->select('tmpl.template,tmpl.title,tmpl.id,tmpl.checked_out,u.name AS editor,(0) AS isMaster');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config AS tmpl');
@@ -154,10 +155,10 @@ $query->order($db->escape($this->getState('list.ordering', 'tmpl.template')).' '
 
 if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         { 
-$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 }
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 
 		return $query;
 	}
@@ -168,7 +169,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
 	 */
 	function checklist($project_id)
 	{
-	   $mainframe	= JFactory::getApplication();
+	   $app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
         // Create a new query object.		
 		$db = JFactory::getDBO();
@@ -178,7 +179,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
 //        $this->_project_id = JRequest::getVar('pid');
 //        if ( !$this->_project_id )
 //        {
-//        $this->_project_id = $mainframe->getUserState( "$option.pid", '0' );
+//        $this->_project_id = $app->getUserState( "$option.pid", '0' );
 //        }
 //                 
 //		$project_id = $this->_project_id;
@@ -187,7 +188,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
         $path = JPATH_SITE.'/components/'.$option.'/views';
 		$predictionTemplatePrefix = 'prediction';
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($project_id,true).'</pre>'),'Notice');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($project_id,true).'</pre>'),'Notice');
 
 		if (!$project_id)
         {
@@ -204,7 +205,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         { 
-$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 }
 
 		$params = $db->loadObject();
@@ -242,14 +243,14 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
 			}
 		}
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xmldirs<br><pre>'.print_r($xmldirs,true).'</pre>'),'Notice');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xmldirs<br><pre>'.print_r($xmldirs,true).'</pre>'),'Notice');
 
 // now check for all xml files in these folders
 		foreach ($xmldirs as $xmldir)
 		{
 			/*
             $files = JFolder::files($xmldir, '.xml', false, false, array('predictionentry.xml','predictionflash.xml','predictionoverall.xml','predictionranking.xml','predictionresults.xml','predictionrules.xml','predictionusers.xml'), array());
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' files<br><pre>'.print_r($files,true).'</pre>'),'Notice');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' files<br><pre>'.print_r($files,true).'</pre>'),'Notice');
             
             foreach ($files as $file)
 		{
@@ -257,7 +258,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
             
             
             
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' template -> '.$template.''),'Notice');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' template -> '.$template.''),'Notice');
          
                             $xmlfile = $xmldir.DS.$file;
 							$arrStandardSettings = array();
@@ -277,9 +278,9 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
 							}
 							
                             $defaultvalues = json_encode( $arrStandardSettings);
-         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' defaultvalues<br><pre>'.print_r($defaultvalues,true).'</pre>'),'Notice');
-         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName -> '.$form->getName().''),'Notice');
-         $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' form<br><pre>'.print_r($form,true).'</pre>'),'Notice');
+         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' defaultvalues<br><pre>'.print_r($defaultvalues,true).'</pre>'),'Notice');
+         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName -> '.$form->getName().''),'Notice');
+         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' form<br><pre>'.print_r($form,true).'</pre>'),'Notice');
          }   
          */
          
@@ -302,29 +303,29 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
                         // Determine if a metadata file exists for the view.
 				        //$metafile = $path.'/'.$template.'/metadata.xml';
                         $metafile = $path.'/'.$template.'/tmpl/default.xml';
-                        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' metafile -> '.$metafile.''),'Notice');
+                        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' metafile -> '.$metafile.''),'Notice');
                         
                         $attributetitle = '';
                         if (is_file($metafile)) 
                         {
                         $xml = JFactory::getXML($metafile,true);
-                        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml<br><pre>'.print_r($xml->layout,true).'</pre>'),'Notice');
+                        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml<br><pre>'.print_r($xml->layout,true).'</pre>'),'Notice');
                         $attributetitle = (string)$xml->layout->attributes()->title;
-                        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml<br><pre>'.print_r($attributetitle,true).'</pre>'),'Notice');
+                        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml<br><pre>'.print_r($attributetitle,true).'</pre>'),'Notice');
                             
                         /*    
                         // Attempt to load the xml file.
 					   if ($metaxml = simplexml_load_file($metafile)) 
                         {
-                        //$mainframe->enqueueMessage(JText::_('PredictionGame template metaxml-> '.'<br /><pre>~' . print_r($metaxml,true) . '~</pre><br />'),'');    
+                        //$app->enqueueMessage(JText::_('PredictionGame template metaxml-> '.'<br /><pre>~' . print_r($metaxml,true) . '~</pre><br />'),'');    
                         // This will save the value of the attribute, and not the objet
                         //$attributetitle = (string)$metaxml->view->attributes()->title;
                         $attributetitle = (string)$metaxml->layout->attributes()->title;
-                        $mainframe->enqueueMessage(JText::_('PredictionGame template attribute-> '.'<br /><pre>~' . print_r($attributetitle,true) . '~</pre><br />'),'');
+                        $app->enqueueMessage(JText::_('PredictionGame template attribute-> '.'<br /><pre>~' . print_r($attributetitle,true) . '~</pre><br />'),'');
                         if ($menu = $metaxml->xpath('view[1]')) 
                         {
 							$menu = $menu[0];
-                            //$mainframe->enqueueMessage(JText::_('PredictionGame template menu-> '.'<br /><pre>~' . print_r($menu,true) . '~</pre><br />'),'');
+                            //$app->enqueueMessage(JText::_('PredictionGame template menu-> '.'<br /><pre>~' . print_r($menu,true) . '~</pre><br />'),'');
                             }
                         }
                         */
@@ -373,8 +374,8 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
         // Insert the object into the user profile table.
         $result = JFactory::getDbo()->insertObject('#__sportsmanagement_template_config', $object_template);
         
-                            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' template -> '.$template.''),'Notice');
-                            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName -> '.$form->getName().''),'Notice');
+                            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' template -> '.$template.''),'Notice');
+                            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName -> '.$form->getName().''),'Notice');
                             }
                             
                             //$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
@@ -414,7 +415,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
 	 */
 	function getMasterTemplatesList()
 	{
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
         // Create a new query object.		
 		$db = JFactory::getDBO();
@@ -430,7 +431,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         { 
-$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 }
 
 		$current = $db->loadResultArray();
@@ -479,7 +480,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         { 
-$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 }
 
 		$current = $db->loadObjectList();
@@ -493,7 +494,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
 	 */
 	function getMasterName()
 	{
-	   $mainframe	= JFactory::getApplication();
+	   $app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
         // Create a new query object.		
 		$db = JFactory::getDBO();
@@ -513,7 +514,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         { 
-$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 }
 
 		return ($db->loadResult());

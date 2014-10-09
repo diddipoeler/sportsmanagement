@@ -14,7 +14,7 @@ class sportsmanagementViewjsmgcalendars extends sportsmanagementView
 public function init ()
 	{
 		$option 	= JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
 		$uri		= JFactory::getUri();
         
         $this->items = $this->get('Items');

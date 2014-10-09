@@ -68,10 +68,10 @@ class sportsmanagementModelsmextxmleditor extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.smextxmleditor', 'smextxmleditor', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
@@ -116,10 +116,10 @@ class sportsmanagementModelsmextxmleditor extends JModelAdmin
 	 */
 	public function save($data)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         jimport('joomla.filesystem.file');
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmextxmleditor save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelsmextxmleditor save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         $filePath = JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'assets'.DS.'extended'.DS.$data['filename'];
         //$return = JFile::write($filePath, $data['source']);
@@ -141,7 +141,7 @@ class sportsmanagementModelsmextxmleditor extends JModelAdmin
 	 */
 	public function &getSource()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
     $option = JRequest::getCmd('option');
         $item = new stdClass;
 //		if (!$this->_template) {

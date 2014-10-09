@@ -62,7 +62,7 @@ class sportsmanagementViewClub extends sportsmanagementView
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $document = JFactory::getDocument();
 		$uri	= JFactory::getURI();
         $model	= $this->getModel();
@@ -70,7 +70,7 @@ class sportsmanagementViewClub extends sportsmanagementView
         
         $this->option = $option;
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JRequest::getVar('tmpl'),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JRequest::getVar('tmpl'),true).'</pre>'),'Notice');
         $this->assign( 'tmpl', JRequest::getVar('tmpl') );
         
         // get the Data
@@ -79,7 +79,7 @@ class sportsmanagementViewClub extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		$script = $this->get('Script');
@@ -106,7 +106,7 @@ class sportsmanagementViewClub extends sportsmanagementView
         
         if ( $this->item->latitude == 255 )
         {
-            $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_NO_GEOCODE'),'Error');
+            $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_NO_GEOCODE'),'Error');
             $this->map = false;
         }
         else
@@ -124,7 +124,7 @@ class sportsmanagementViewClub extends sportsmanagementView
         if ( $this->checkextrafields )
         {
             $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($item->id);
-            //$mainframe->enqueueMessage(JText::_('sportsmanagementViewClub ext_fields'.'<pre>'.print_r($lists['ext_fields'],true).'</pre>' ),'');
+            //$app->enqueueMessage(JText::_('sportsmanagementViewClub ext_fields'.'<pre>'.print_r($lists['ext_fields'],true).'</pre>' ),'');
         }
         
         // die mannschaften zum verein

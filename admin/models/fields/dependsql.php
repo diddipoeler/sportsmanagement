@@ -82,7 +82,7 @@ class JFormFieldDependSQL extends JFormField
      */
     protected function getInput()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        
        $attribs = '';
 		$required = $this->element['required'] == "true" ? 'true' : 'false';
@@ -110,9 +110,9 @@ class JFormFieldDependSQL extends JFormField
         
         $cfg_which_database = $this->form->getValue('cfg_which_database',$div);
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database -> '.$this->form->getValue('cfg_which_database',$div).' name -> '.$this->name),'Notice');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value -> '.$this->value.''),'Notice');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' id -> '.$this->id.''),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database -> '.$this->form->getValue('cfg_which_database',$div).' name -> '.$this->name),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value -> '.$this->value.''),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' id -> '.$this->id.''),'Notice');
 
 		$ctrl = $this->name;
 		$id = $this->id;
@@ -185,9 +185,9 @@ $script[] = "});";
         $result = sportsmanagementModelAjax::$ajaxtask($value,$required);
         }
 
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ajaxtask<br><pre>'.print_r($ajaxtask,true).'</pre>'),'Notice');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($value,true).'</pre>'),'Notice');        
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ajaxtask<br><pre>'.print_r($ajaxtask,true).'</pre>'),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($value,true).'</pre>'),'Notice');        
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
         
      //$options = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), $key, JText::_($val)));
      $options = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), 'value','text' ));

@@ -60,7 +60,7 @@ class JFormFieldImageSelect extends JFormField
 	 */
 	function getInput() 
     {
-        $mainframe	= JFactory::getApplication();
+        $app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
         
 		$default = $this->value;
@@ -69,7 +69,7 @@ class JFormFieldImageSelect extends JFormField
 		//$targetfolder = array_pop($arrPathes);
 		$targetfolder = $this->element['targetfolder'];
         
-        //$mainframe->enqueueMessage(JText::_('JFormFieldImageSelect targetfolder<br><pre>'.print_r($targetfolder,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('JFormFieldImageSelect targetfolder<br><pre>'.print_r($targetfolder,true).'</pre>'),'Notice');
         
 		
 // 		echo 'this->value -> '.$this->value.'<br>';

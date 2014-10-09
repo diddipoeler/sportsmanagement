@@ -65,7 +65,7 @@ class sportsmanagementViewRankingAllTime extends JViewLegacy
      */
     function display($tpl = null)
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();

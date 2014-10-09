@@ -63,7 +63,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $this->massadd = 0;
         $tpl = NULL;
         
@@ -94,10 +94,10 @@ class sportsmanagementViewRounds extends sportsmanagementView
     function _displayMassadd($tpl)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$db = JFactory::getDBO();
 		$uri = JFactory::getURI();
-        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        $this->project_id	= $app->getUserState( "$option.pid", '0' );
         
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
@@ -114,7 +114,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
 	function _displayDefault($tpl)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$db = JFactory::getDBO();
 		$uri = JFactory::getURI();
         
@@ -126,7 +126,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
 		$matchday = $this->get('Items');
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
@@ -136,7 +136,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
 		$this->assignRef('table', $table);
         
         //$project_id	= JRequest::getVar('pid');
-        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        $this->project_id	= $app->getUserState( "$option.pid", '0' );
         
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
@@ -157,7 +157,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
 		$this->assignRef('project',$project);
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
-        
+        $this->assign('user',JFactory::getUser());
         
 
 		
@@ -240,6 +240,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
 			JToolBarHelper::addNew('round.save');
 			JToolBarHelper::divider();
 			JToolBarHelper::deleteList('','rounds.deletematches',JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSDEL_BUTTON'));
+            JToolbarHelper::checkin('rounds.checkin');
 			//JToolBarHelper::deleteList('','rounds.delete');
             if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
         {

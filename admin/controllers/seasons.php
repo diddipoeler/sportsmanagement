@@ -72,7 +72,7 @@ class sportsmanagementControllerseasons extends JControllerAdmin
 	function applypersons()
     {
         $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $post = JRequest::get('post');
         $model = $this->getModel();
        $model->saveshortpersons();
@@ -90,7 +90,7 @@ class sportsmanagementControllerseasons extends JControllerAdmin
     function savepersons()
     {
         $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $post = JRequest::get('post');
         $model = $this->getModel();
        $model->saveshortpersons();
@@ -108,7 +108,7 @@ class sportsmanagementControllerseasons extends JControllerAdmin
     function applyteams()
     {
         $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $post = JRequest::get('post');
         $model = $this->getModel();
        $model->saveshortteams();
@@ -126,7 +126,7 @@ class sportsmanagementControllerseasons extends JControllerAdmin
     function saveteams()
     {
         $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $post = JRequest::get('post');
         $model = $this->getModel();
        $model->saveshortteams();

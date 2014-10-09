@@ -42,6 +42,7 @@ $templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
+//JHtml::_('behavior.calendar');
 $params = $this->form->getFieldsets('params');
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
@@ -54,7 +55,22 @@ $fieldsets = $this->form->getFieldsets();
 			<ul class="adminformlist">
 			<?php foreach($this->form->getFieldset('details') as $field) :?>
 				<li><?php echo $field->label; ?>
-				<?php echo $field->input; 
+				<?php 
+                echo $field->input; 
+                
+//                if ( $field->type ==  'Calendar' )
+//                {
+//                $value = $field->input;
+//                $name = 'kalender';
+//                $id = 'kalender';
+//                echo JHtml::_('calendar', $value, $name, $id,"%d-%m-%Y");    
+////                    //echo JHtml::_('date', $field->input,"%d-%m-%Y");
+////                    $field->input;                    
+//                } 
+//                else
+//                {
+//                    $field->input; 
+//                }
                 
                 $suchmuster = array ("jform[","]");
                 $ersetzen = array ('', '');

@@ -31,7 +31,7 @@ class sportsmanagementViewGcalendar extends JViewLegacy
 
 	public function display($tpl = null) 
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         
 		$calendars = $this->get('DBCalendars');
         

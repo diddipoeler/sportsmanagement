@@ -61,7 +61,7 @@ class sportsmanagementViewjlextfederations extends sportsmanagementView
 	public function init ()
 	{
 		
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
     //$db = JFactory::getDBO();
 		$uri = JFactory::getURI();
 		$document	= JFactory::getDocument();
@@ -78,7 +78,7 @@ $starttime = microtime();
 		$items = $this->get('Items');
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
@@ -138,6 +138,7 @@ $starttime = microtime();
 		JToolBarHelper::editList('jlextfederation.edit');
 		JToolBarHelper::custom('jlextfederation.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('jlextfederation.export',JText::_('JTOOLBAR_EXPORT'));
+        JToolbarHelper::checkin('jlextfederations.checkin');
 		//JToolBarHelper::deleteList();
 		//JToolBarHelper::deleteList('', 'jlextfederation.delete', 'JTOOLBAR_DELETE');
 		if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )

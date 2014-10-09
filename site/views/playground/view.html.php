@@ -60,7 +60,7 @@ class sportsmanagementViewPlayground extends JViewLegacy
 	 */
 	function display( $tpl = null )
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Get a refrence of the page instance in joomla
 		$document= JFactory::getDocument();
@@ -68,14 +68,14 @@ class sportsmanagementViewPlayground extends JViewLegacy
         $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
 
 		$model = $this->getModel();
-        sportsmanagementModelProject::setProjectID(JRequest::getInt( "p", 0 ));
+        sportsmanagementModelProject::setProjectID(JRequest::getInt( "p", 0 ),$model::$cfg_which_database);
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
         
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
+		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 
-		$this->assign( 'project', sportsmanagementModelProject::getProject() );
-		$this->assign( 'overallconfig', sportsmanagementModelProject::getOverallConfig() );
+		$this->assign( 'project', sportsmanagementModelProject::getProject($model::$cfg_which_database) );
+		$this->assign( 'overallconfig', sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database) );
 		$this->assignRef( 'config', $config );
 
 		//$model = $this->getModel();
@@ -87,8 +87,8 @@ class sportsmanagementViewPlayground extends JViewLegacy
 		$this->assignRef( 'games', $games );
 		$this->assignRef( 'gamesteams', $gamesteams );
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playground<br><pre>'.print_r($this->playground,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playground<br><pre>'.print_r($this->playground,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
 
 		//$this->assignRef( 'mapconfig', $model->getMapConfig() );
 		

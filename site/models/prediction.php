@@ -98,7 +98,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	function __construct()
 	{
 		$option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
         //$post	= JRequest::get('post');
 		
 		self::$predictionGameID		= JRequest::getInt('prediction_id',		0);
@@ -129,7 +129,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
   function getChampionPoints($champ_tipp)
   {
     $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -176,14 +176,14 @@ class sportsmanagementModelPrediction extends JModelLegacy
   
   if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
   {
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->predictionGameID<br><pre>'.print_r($this->predictionGameID,true).'</pre>'),'');
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->pjID<br><pre>'.print_r($this->pjID,true).'</pre>'),'');
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' resultchamp<br><pre>'.print_r($resultchamp,true).'</pre>'),'');
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' resultchamppoints<br><pre>'.print_r($resultchamppoints,true).'</pre>'),'');
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' champ_tipp<br><pre>'.print_r($champ_tipp,true).'</pre>'),'');
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sChampTeamsList<br><pre>'.print_r($sChampTeamsList,true).'</pre>'),'');
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dChampTeamsList<br><pre>'.print_r($dChampTeamsList,true).'</pre>'),'');
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' champTeamsList<br><pre>'.print_r($champTeamsList,true).'</pre>'),'');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->predictionGameID<br><pre>'.print_r($this->predictionGameID,true).'</pre>'),'');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->pjID<br><pre>'.print_r($this->pjID,true).'</pre>'),'');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' resultchamp<br><pre>'.print_r($resultchamp,true).'</pre>'),'');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' resultchamppoints<br><pre>'.print_r($resultchamppoints,true).'</pre>'),'');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' champ_tipp<br><pre>'.print_r($champ_tipp,true).'</pre>'),'');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sChampTeamsList<br><pre>'.print_r($sChampTeamsList,true).'</pre>'),'');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dChampTeamsList<br><pre>'.print_r($dChampTeamsList,true).'</pre>'),'');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' champTeamsList<br><pre>'.print_r($champTeamsList,true).'</pre>'),'');
 
   }
 				
@@ -200,7 +200,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	function getPredictionGame()
 	{
 	    $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -222,7 +222,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
                 
                 if (!self::$_predictionGame)
 		{
-		  $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+		  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		}  
                 
 			}
@@ -242,7 +242,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
   {
   
   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -340,7 +340,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	function getPredictionMember($configavatar)
 	{
 	   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -370,8 +370,8 @@ class sportsmanagementModelPrediction extends JModelLegacy
                 else
                 {
                     
-//		  $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-//		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+//		  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+//		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
                 }
 			}
 			else
@@ -390,8 +390,8 @@ class sportsmanagementModelPrediction extends JModelLegacy
 					}
 					else
 					{
-					   //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-                       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+					   //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
                        
 						self::$_predictionMember->id = 0;
 						self::$_predictionMember->pmID = 0;
@@ -424,7 +424,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	function getPredictionProjectS()
 	{
 		 $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -482,7 +482,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	function getPredictionTemplateConfig($template)
 	{
     $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$document = JFactory::getDocument();
 
     // Create a new query object.		
@@ -597,12 +597,12 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	function getPredictionProject($project_id=0)
 	{
 	   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
         
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__. ' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__. ' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
         
 		if ($project_id > 0)
 		{
@@ -631,9 +631,9 @@ class sportsmanagementModelPrediction extends JModelLegacy
             // timezone in serveroffset umwandeln
             $date = JFactory::getDate();
             $date->setTimezone(new DateTimeZone($result->timezone));
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.'date<br><pre>'.print_r($date,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.'date<br><pre>'.print_r($date,true).'</pre>'),'');
             $result->serveroffset = $date->getOffsetFromGMT(true);
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.'serveroffset<br><pre>'.print_r($result->serveroffset,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.'serveroffset<br><pre>'.print_r($result->serveroffset,true).'</pre>'),'');
    
             return $result;
 		}
@@ -650,7 +650,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	function getMatchTeam($teamID=0,$teamName='name')
 	{
 	   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -687,7 +687,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	function getMatchTeamClubLogo($teamID=0,$which_logo = 'logo_big')
 	{
 	   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -723,7 +723,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
   function getMatchTeamClubFlag($teamID=0)
 	{
 	   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -761,7 +761,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	function getProjectSettings($pid=0)
 	{
 	   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -789,7 +789,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	function getProjectRounds($pid=0)
 	{
 	   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -816,7 +816,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	function checkPredictionMembership()
 	{
 	   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -843,7 +843,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	function checkIsNotApprovedPredictionMember()
 	{
 	   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -874,7 +874,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	function getAllowed($pmUID=0)
 	{
 	   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -882,7 +882,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 		$allowed = false;
         $groupNames = '';
         // Application Instanz holen
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         // ACL Instanz holen
         $acl = JFactory::getACL();
         // JUserobjekt holen
@@ -951,7 +951,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	function getSystemAdminsEMailAdresses()
 	{
 	   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -975,7 +975,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	function getPredictionGameAdminsEMailAdresses()
 	{
 	   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -1002,7 +1002,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	function getPredictionGameAdmins($predictionID)
 	{
 	   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -1024,7 +1024,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	function getPredictionMemberEMailAdress($predictionMemberID)
 	{
 	   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -1067,7 +1067,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
   
   $option = JRequest::getCmd('option');
   $document	= JFactory::getDocument();
-  $mainframe = JFactory::getApplication();
+  $app = JFactory::getApplication();
   
   $configprediction			= self::getPredictionTemplateConfig('predictionentry');
   $overallConfig	= self::getPredictionOverallConfig();
@@ -1312,13 +1312,13 @@ $body .= $this->createHelptText($predictionProject->mode);
 	{
 	//echo 'Error sending email to:<br />'.print_r($recipient,true).'<br />';
 	//echo 'Error message: '.$send->message;
-	$mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MAIL_SEND_ERROR'),'Error');
+	$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MAIL_SEND_ERROR'),'Error');
 	}
 	else
 	{
 	//echo 'Mail sent';
 	$emailadresses = implode(",",$predictionGameMemberMail);
-	$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_MAIL_SEND_OK',$emailadresses),'');
+	$app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_MAIL_SEND_OK',$emailadresses),'');
 	}
                           				
   }
@@ -1332,9 +1332,9 @@ $body .= $this->createHelptText($predictionProject->mode);
 	function sendMembershipConfirmation($cid=array())
 	{
 	   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     
-    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cid<br><pre>'.print_r($cid,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cid<br><pre>'.print_r($cid,true).'</pre>'),'');
     
 		if (count($cid))
 		{
@@ -1452,7 +1452,7 @@ $body .= $this->createHelptText($predictionProject->mode);
   function getPredictionGroupList()
 	{
 	   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -1476,7 +1476,7 @@ $body .= $this->createHelptText($predictionProject->mode);
 	function getPredictionMemberList(&$config,$actUserId=null)
 	{
 	   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -1519,7 +1519,7 @@ $body .= $this->createHelptText($predictionProject->mode);
 	function getMemberPredictionTotalCount($user_id)
 	{
 	   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -1545,7 +1545,7 @@ $body .= $this->createHelptText($predictionProject->mode);
 	function getMemberPredictionJokerCount($user_id,$project_id=0)
 	{
 	   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -1750,7 +1750,7 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 	function getPredictionMembersResultsList($project_id,$round1ID,$round2ID=0,$user_id=0,$type=0)
 	{
 	   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -1800,7 +1800,7 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
         
         $query->order('pm.id,m.match_date,m.id ASC');
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
         $db->setQuery($query);
 		$results = $db->loadObjectList();
@@ -1884,7 +1884,7 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 	function savePredictionPoints(&$memberResult,&$predictionProject,$returnArray=false)
 	{
 	$option = JRequest::getCmd('option');
-	$mainframe	= JFactory::getApplication();
+	$app	= JFactory::getApplication();
 	// Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -1914,9 +1914,9 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 		
 		if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 		{
-    $mainframe->enqueueMessage(JText::_('predictionProject<pre>~'.print_r($predictionProject,true).'~</pre>'),'Notice');
-    $mainframe->enqueueMessage(JText::_('memberResult<pre>~'.print_r($memberResult,true).'~</pre>'),'Notice');
-    $mainframe->enqueueMessage(JText::_('prediction mode ~> '.$predictionProject->mode.'<br>'),'Notice');
+    $app->enqueueMessage(JText::_('predictionProject<pre>~'.print_r($predictionProject,true).'~</pre>'),'Notice');
+    $app->enqueueMessage(JText::_('memberResult<pre>~'.print_r($memberResult,true).'~</pre>'),'Notice');
+    $app->enqueueMessage(JText::_('prediction mode ~> '.$predictionProject->mode.'<br>'),'Notice');
     }
 		
 		
@@ -1973,7 +1973,7 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
       
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 		{
-    $mainframe->enqueueMessage(JText::_('toto points -> '.$points.'<br>'),'Notice');
+    $app->enqueueMessage(JText::_('toto points -> '.$points.'<br>'),'Notice');
     }
     
     }
@@ -2076,12 +2076,12 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
         // Update their details in the table using id as the primary key.
         $result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_result', $object, 'id'); 
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' result<br><pre>'.print_r($result,true).'</pre>' ),'');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' result<br><pre>'.print_r($result,true).'</pre>' ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'');
                                 
 		if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 		{
-    $mainframe->enqueueMessage(JText::_('update query ~> '.$query.'<br>'),'Notice');
+    $app->enqueueMessage(JText::_('update query ~> '.$query.'<br>'),'Notice');
     }
     
 
@@ -2111,12 +2111,12 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 
   $document	= JFactory::getDocument();
   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
   
-  //$mainframe->enqueueMessage(JText::_('project_id -> <pre> '.print_r($project_id,true).'</pre><br>' ),'Notice');
+  //$app->enqueueMessage(JText::_('project_id -> <pre> '.print_r($project_id,true).'</pre><br>' ),'Notice');
     
 		if (empty($this->_roundNames))
 		{
@@ -2132,10 +2132,10 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
     
     $query->order('id '.$ordering);
 
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' project_id'.'<pre>'.print_r($project_id,true).'</pre>' ),'');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' ordering'.'<pre>'.print_r($ordering,true).'</pre>' ),'');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' round_ids'.'<pre>'.print_r($round_ids,true).'</pre>' ),'');
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' project_id'.'<pre>'.print_r($project_id,true).'</pre>' ),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' ordering'.'<pre>'.print_r($ordering,true).'</pre>' ),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' round_ids'.'<pre>'.print_r($round_ids,true).'</pre>' ),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
 
 			$db->setQuery($query);
 			$this->_roundNames = $db->loadObjectList();
@@ -2159,7 +2159,7 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 	function compare($a,$b)
 	{
 	    $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     
 		$res	= 0;
 		$i		= 1;
@@ -2211,7 +2211,7 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 	function computeMembersRanking($membersResultsArray,$config)
 	{
 	   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     
 		//$this->table_config = $config;
         self::$table_config = $config;
@@ -2220,7 +2220,7 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 		//uasort($dummy,array($this,'compare'));
         uasort($dummy,array('self','compare'));
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this<br><pre>'.print_r($this,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this<br><pre>'.print_r($this,true).'</pre>'),'');
 
 		$i = 1;
 		$lfdnumber = 1;
@@ -2269,7 +2269,7 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 	function getPredictionMembersList(&$config = NULL, &$configavatar = NULL, $total = false, $limit = NULL)
 	{
 	   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -2320,7 +2320,7 @@ $query->where('pm.group_id = '.self::$pggroup);
         $query->order('pm.id ASC');
         $db->setQuery($query);
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$results = $db->loadObjectList();
 		

@@ -60,7 +60,7 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 		$db	 		= JFactory::getDBO();
 		$uri		= JFactory::getURI();
@@ -90,7 +90,7 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
         $this->_persontype = JRequest::getVar('persontype');
         if ( empty($this->_persontype) )
         {
-            $this->_persontype	= $mainframe->getUserState( "$option.persontype", '0' );
+            $this->_persontype	= $app->getUserState( "$option.persontype", '0' );
         }
         
         $this->project_id	= $this->item->project_id;
@@ -110,7 +110,7 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
         
         if ( $this->show_debug_info )
         {
-            $mainframe->enqueueMessage(JText::_('sportsmanagementViewProjectReferee project_ref_positions<br><pre>'.print_r($project_ref_positions,true).'</pre>'),'');
+            $app->enqueueMessage(JText::_('sportsmanagementViewProjectReferee project_ref_positions<br><pre>'.print_r($project_ref_positions,true).'</pre>'),'');
         }
         
         
@@ -130,7 +130,7 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-	   $mainframe	= JFactory::getApplication();
+	   $app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
         
 	
@@ -139,8 +139,8 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
         $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_PROJECTREFEREE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_PROJECTREFEREE_NEW');
         $this->icon = 'projectreferee';
 
-        $mainframe->setUserState( "$option.pid", $this->item->project_id );
-        $mainframe->setUserState( "$option.persontype", $this->_persontype );	
+        $app->setUserState( "$option.pid", $this->item->project_id );
+        $app->setUserState( "$option.persontype", $this->_persontype );	
         
 	
         

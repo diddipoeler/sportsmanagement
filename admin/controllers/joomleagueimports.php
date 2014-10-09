@@ -55,6 +55,24 @@ jimport('joomla.application.component.controlleradmin');
 class sportsmanagementControllerjoomleagueimports extends JControllerAdmin
 {
   
+
+function updateplayer()
+{
+    $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $model	= $this->getModel();  
+        $model->updateplayer();
+    $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view=joomleagueimport&layout=positions'  , false));
+}
+
+  
+  function positions()
+  {
+  $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $model	= $this->getModel();  
+    $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view=joomleagueimport&layout=positions'  , false));
+  }
   
   /**
    * sportsmanagementControllerjoomleagueimports::checkimport()
@@ -63,7 +81,7 @@ class sportsmanagementControllerjoomleagueimports extends JControllerAdmin
    */
   function checkimport()
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $model	= $this->getModel();
         //$post = JRequest::get('post');
@@ -72,8 +90,8 @@ class sportsmanagementControllerjoomleagueimports extends JControllerAdmin
         if ( $model->checkimport() )
         {
             $totals = $model->gettotals();
-            $mainframe->setUserState( "$option.step", 0);
-            $mainframe->setUserState( "$option.totals", $totals);  
+            $app->setUserState( "$option.step", 0);
+            $app->setUserState( "$option.totals", $totals);  
         $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view=joomleagueimport&task=joomleagueimport.newstructur&tmpl=component'  , false));    
         }
         else
@@ -89,7 +107,7 @@ class sportsmanagementControllerjoomleagueimports extends JControllerAdmin
    */
   function import()
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $model	= $this->getModel();
         $result = $model->import();
@@ -105,7 +123,7 @@ class sportsmanagementControllerjoomleagueimports extends JControllerAdmin
  */
 function newstructur()
 {
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $model	= $this->getModel();
         $result = $model->newstructur();
@@ -118,7 +136,7 @@ function newstructur()
 	 * Proxy for getModel.
 	 * @since	1.6
 	 */
-	public function getModel($name = 'joomleagueimports', $prefix = 'sportsmanagementModel') 
+	public function getModel($name = 'joomleagueimports', $prefix = 'sportsmanagementModel', $config = Array() ) 
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;

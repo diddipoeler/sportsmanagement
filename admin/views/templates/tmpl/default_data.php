@@ -96,11 +96,18 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 						$row =& $this->templates[$i];
 						$link1 = JRoute::_('index.php?option=com_sportsmanagement&task=template.edit&id='.$row->id);
 						$checked = JHtml::_('grid.checkedout',$row,$i);
+                        $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
 						?>
 						<tr class="<?php echo "row$k"; ?>">
 							<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
 							<td class="center"><?php echo $checked; ?></td>
-							<td><?php
+							<td>
+                            <?php
+                            if ($row->checked_out) : ?>
+										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'smquotes.', $canCheckin); ?>
+									<?php endif; ?>
+                            
+                            <?php
 								$imageFile = 'administrator/components/com_sportsmanagement/assets/images/edit.png';
 								$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_EDIT_DETAILS');
 								$imageParams = 'title= "'.$imageTitle.'"';

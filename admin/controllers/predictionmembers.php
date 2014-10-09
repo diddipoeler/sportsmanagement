@@ -171,7 +171,7 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
 		//echo '<pre>'; print_r($post); echo '</pre>';
     $option = JRequest::getCmd('option');
     //$optiontext = strtoupper(JRequest::getCmd('option').'_');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
     
 		$d		= ' - ';
 		$msg	= '';

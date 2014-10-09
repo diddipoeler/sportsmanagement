@@ -62,23 +62,23 @@ class sportsmanagementViewTeamInfo extends JViewLegacy
 	{
 		// Get a reference of the page instance in joomla
 		$document	= JFactory::getDocument();
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         
 		$model		= $this->getModel();
-		$config		= sportsmanagementModelProject::getTemplateConfig( $this->getName() );
-		$project	= sportsmanagementModelProject::getProject();
-        $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
-//        $mainframe->enqueueMessage(JText::_('teaminfo checkextrafields -> '.'<pre>'.print_r($this->checkextrafields,true).'</pre>' ),'');
+		$config		= sportsmanagementModelProject::getTemplateConfig( $this->getName(),$model::$cfg_which_database );
+		$project	= sportsmanagementModelProject::getProject($model::$cfg_which_database);
+        $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields($model::$cfg_which_database) );
+//        $app->enqueueMessage(JText::_('teaminfo checkextrafields -> '.'<pre>'.print_r($this->checkextrafields,true).'</pre>' ),'');
 		$this->assignRef( 'project', $project );
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($this->project,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($this->project,true).'</pre>'),'');
         
 		$isEditor = sportsmanagementModelProject::hasEditPermission('projectteam.edit');
 
 		if ( isset($this->project->id) )
 		{
-			$overallconfig = sportsmanagementModelProject::getOverallConfig();
+			$overallconfig = sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
 			$this->assignRef('overallconfig',  $overallconfig);
 			$this->assignRef('config', $config );
 			$team = $model->getTeamByProject();
@@ -129,8 +129,8 @@ class sportsmanagementViewTeamInfo extends JViewLegacy
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team<br><pre>'.print_r($this->team,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' seasons<br><pre>'.print_r($seasons,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team<br><pre>'.print_r($this->team,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' seasons<br><pre>'.print_r($seasons,true).'</pre>'),'');
 }
 
     	

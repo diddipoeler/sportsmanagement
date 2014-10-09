@@ -65,15 +65,15 @@ class sportsmanagementViewClubInfo extends JViewLegacy
 	{
 		// Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         
 		$model			= $this->getModel();
 		$club			= $model->getClub() ;
 		
-		$config			= sportsmanagementModelProject::getTemplateConfig( $this->getName() );	
-		$project 		= sportsmanagementModelProject::getProject();
-		$overallconfig	= sportsmanagementModelProject::getOverallConfig();
+		$config			= sportsmanagementModelProject::getTemplateConfig( $this->getName(),$model::$cfg_which_database );	
+		$project 		= sportsmanagementModelProject::getProject($model::$cfg_which_database);
+		$overallconfig	= sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
 		$teams			= $model->getTeamsByClubId();
 		$stadiums	 	= $model->getStadiums();
 		$playgrounds	= $model->getPlaygrounds();
@@ -83,7 +83,7 @@ class sportsmanagementViewClubInfo extends JViewLegacy
 //		$google_map		= $model->getGoogleMap( $map_config, $address_string );
         $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
                         
-        //$mainframe->enqueueMessage(JText::_('clubinfo checkextrafields -> '.'<pre>'.print_r($this->checkextrafields,true).'</pre>' ),'');
+        //$app->enqueueMessage(JText::_('clubinfo checkextrafields -> '.'<pre>'.print_r($this->checkextrafields,true).'</pre>' ),'');
 		
         if ( $this->checkextrafields )
         {
@@ -94,7 +94,7 @@ class sportsmanagementViewClubInfo extends JViewLegacy
     $lng ='';
 		
 		$this->assignRef( 'project',		$project );
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($this->project,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($this->project,true).'</pre>'),'');
         
 		$this->assignRef( 'overallconfig',	$overallconfig );
 		$this->assignRef( 'config',			$config );
@@ -155,8 +155,8 @@ class sportsmanagementViewClubInfo extends JViewLegacy
 			$pageTitle .= ': ' . $this->club->name;
 		}
 		
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' overallconfig<br><pre>'.print_r($this->overallconfig,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' overallconfig<br><pre>'.print_r($this->overallconfig,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
         
         $this->assignRef( 'modid',			$this->club->id );
 		// clubhistory

@@ -67,7 +67,7 @@ class sportsmanagementViewProject extends sportsmanagementView
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$uri = JFactory::getURI();
 		$user = JFactory::getUser();
         $tpl = '';
@@ -87,7 +87,7 @@ class sportsmanagementViewProject extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		$script = $this->get('Script');
@@ -129,7 +129,7 @@ class sportsmanagementViewProject extends sportsmanagementView
         if ( $this->checkextrafields )
         {
             $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id);
-            //$mainframe->enqueueMessage(JText::_('view -> '.'<pre>'.print_r($lists['ext_fields'],true).'</pre>' ),'');
+            //$app->enqueueMessage(JText::_('view -> '.'<pre>'.print_r($lists['ext_fields'],true).'</pre>' ),'');
         }
         
         $this->form->setValue('fav_team', null, explode(',',$this->item->fav_team) );
@@ -150,7 +150,7 @@ class sportsmanagementViewProject extends sportsmanagementView
 	function _displayPanel($tpl)
 	{
 	$option = JRequest::getCmd('option');
-	$mainframe = JFactory::getApplication();
+	$app = JFactory::getApplication();
 	$uri = JFactory::getURI();
 	$user = JFactory::getUser();
     $starttime = microtime(); 
@@ -159,7 +159,7 @@ class sportsmanagementViewProject extends sportsmanagementView
     
     if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
     
     
@@ -196,13 +196,13 @@ class sportsmanagementViewProject extends sportsmanagementView
     
     // store the variable that we would like to keep for next time
     // function syntax is setUserState( $key, $value );
-    $mainframe->setUserState( "$option.pid", $this->item->id);
-    $mainframe->setUserState( "$option.season_id", $this->item->season_id);  
-    $mainframe->setUserState( "$option.project_art_id", $this->item->project_art_id);
-    $mainframe->setUserState( "$option.sports_type_id", $this->item->sports_type_id);  
+    $app->setUserState( "$option.pid", $this->item->id);
+    $app->setUserState( "$option.season_id", $this->item->season_id);  
+    $app->setUserState( "$option.project_art_id", $this->item->project_art_id);
+    $app->setUserState( "$option.sports_type_id", $this->item->sports_type_id);  
     
     
-    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JComponentHelper::getParams($option)->get('which_article_component'),true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JComponentHelper::getParams($option)->get('which_article_component'),true).'</pre>'),'Notice');
     
     //$bar = JToolBar::getInstance('toolbar');
 //    
@@ -234,7 +234,7 @@ class sportsmanagementViewProject extends sportsmanagementView
 	{
 	
 	   $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
     
     $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_ADD_NEW');
         $this->icon = 'project';

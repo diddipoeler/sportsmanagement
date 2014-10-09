@@ -79,7 +79,8 @@ class sportsmanagementModelProjects extends JModelList
                         'ag.name',
                         );
                 parent::__construct($config);
-                parent::setDbo(sportsmanagementHelper::getDBConnection());
+                $getDBConnection = sportsmanagementHelper::getDBConnection();
+                parent::setDbo($getDBConnection);
         }
         
     /**
@@ -91,12 +92,12 @@ class sportsmanagementModelProjects extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -126,7 +127,7 @@ class sportsmanagementModelProjects extends JModelList
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 
 
 //		// Load the parameters.
@@ -144,7 +145,7 @@ class sportsmanagementModelProjects extends JModelList
 	 */
 	protected function getListQuery()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         
         $search	= $this->getState('filter.search');
@@ -166,7 +167,7 @@ class sportsmanagementModelProjects extends JModelList
         $subQuery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt');
         $subQuery->where('pt.project_id = p.id');
         
-        $subQuery2->select('max(ef.name)');
+        $subQuery2->select('ef.name');
         $subQuery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields_values as ev ');
         $subQuery2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields as ef ON ef.id = ev.field_id');
         $subQuery2->where('ev.jl_id = p.id');
@@ -174,14 +175,14 @@ class sportsmanagementModelProjects extends JModelList
         $subQuery2->where('ev.fieldvalue != '.$db->Quote(''.''));
         
 
-        $query->select('p.id,p.ordering,p.published,p.project_type,p.name,p.checked_out,p.sports_type_id,p.current_round,p.picture ');
+        $query->select('p.id,p.ordering,p.published,p.project_type,p.name,p.checked_out,p.checked_out_time,p.sports_type_id,p.current_round,p.picture ');
         $query->select('st.name AS sportstype');
         $query->select('s.name AS season');
         $query->select('l.name AS league,l.country');
         $query->select('u.name AS editor');
         $query->select('ag.name AS agegroup');
         $query->select('(' . $subQuery . ') AS proteams');
-        //$query->select('(' . $subQuery2 . ') AS user_field');  
+        //$query->select('(' . $subQuery2 . ' LIMIT 1 ) AS user_field');  
         
     $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p');
     $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id = p.season_id');
@@ -231,53 +232,15 @@ class sportsmanagementModelProjects extends JModelList
      
      $query->order($db->escape($this->getState('list.ordering', 'p.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
                 
-                if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
                 
 		return $query;
-
-/**
-SELECT p.id, p.ordering, p.published, p.project_type, p.name, p.checked_out, p.sports_type_id, p.current_round, p.picture, 
-st.name AS sportstype, s.name AS season, l.name AS league, l.country, u.name AS editor, 
-ag.name AS agegroup
-,
-(
-SELECT MAX( ef.name ) 
-FROM j25_sportsmanagement_user_extra_fields_values AS ev
-INNER JOIN j25_sportsmanagement_user_extra_fields AS ef ON ef.id = ev.field_id
-WHERE ev.jl_id = p.id
-AND ef.template_backend LIKE  'project'
-AND ev.fieldvalue !=  ''
-) AS user_field
-
-FROM j25_sportsmanagement_project AS p
-LEFT JOIN j25_sportsmanagement_season AS s ON s.id = p.season_id
-LEFT JOIN j25_sportsmanagement_league AS l ON l.id = p.league_id
-LEFT JOIN j25_sportsmanagement_sports_type AS st ON st.id = p.sports_type_id
-LEFT JOIN j25_sportsmanagement_agegroup AS ag ON ag.id = p.agegroup_id
-LEFT JOIN j25_users AS u ON u.id = p.checked_out
-ORDER BY p.name ASC
-
-
-(
-SELECT COUNT( pt.id ) 
-FROM j25_sportsmanagement_project_team AS pt
-WHERE pt.project_id = p.id
-) AS proteams, 
-
-(
-SELECT MAX( ef.name ) 
-FROM j25_sportsmanagement_user_extra_fields_values AS ev
-INNER JOIN j25_sportsmanagement_user_extra_fields AS ef ON ef.id = ev.field_id
-WHERE ev.jl_id = p.id
-AND ef.template_backend LIKE  'project'
-AND ev.fieldvalue !=  ''
-) AS user_field
-
-*/        
         
 	}
 	

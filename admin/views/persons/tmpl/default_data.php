@@ -113,28 +113,22 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					{
 						$link       = JRoute::_('index.php?option=com_sportsmanagement&task=person.edit&id='.$row->id);
 						$checked    = JHtml::_('grid.checkedout',$row,$i);
-                        $canCheckin	= $user->authorise('core.manage','com_checkin') || $row->checked_out == $userId || $row->checked_out == 0;
-						$is_checked = $this->table->isCheckedOut($this->user->get('id'),$row->checked_out);
+                        $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
+						//$is_checked = $this->table->isCheckedOut($this->user->get('id'),$row->checked_out);
                         $published  = JHtml::_('grid.published',$row,$i, 'tick.png','publish_x.png','persons.');
 						?>
 						<tr class="<?php echo "row$k"; ?>">
 							<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
 							<td class="center"><?php echo $checked; ?></td>
 							<?php
-							if ($is_checked)
-							{
-								$inputappend=' disabled="disabled" ';
-								?><td class="center">
-                                	<?php if ($row->checked_out) : ?>
-						<?php echo JHtml::_('grid.checkedout', $row, $i, $row->checked_out_time, 'persons.', $canCheckin); ?>
-					<?php endif; ?>
-                    </td><?php
-							}
-							else
-							{
+							
 								$inputappend='';
 								?>
 								<td class="center">
+                                <?php
+                            if ($row->checked_out) : ?>
+										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'persons.', $canCheckin); ?>
+									<?php endif; ?>
 									<a href="<?php echo $link; ?>">
 										<?php
 										$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_EDIT_DETAILS');
@@ -144,7 +138,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 									</a>
 								</td>
 								<?php
-							}
+							
 							?>
 							<td class="center">
 								<input	<?php echo $inputappend; ?> type="text" size="15"
@@ -207,12 +201,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 //								{
 //									$append=' style="background-color:#FFCCCC;"';
 //								}
-								if ($is_checked)
-								{
-									echo $row->birthday;
-								}
-								else
-								{
+//								if ($is_checked)
+//								{
+//									echo $row->birthday;
+//								}
+//								else
+//								{
 									/*
                                     echo $this->calendar(	sportsmanagementHelper::convertDate($row->birthday),
 															'birthday'.$row->id,
@@ -231,7 +225,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 														'tabindex="3" '.
 														'class="center" '.
 														'onchange="document.getElementById(\'cb'.$i.'\').checked=true"');                         
-								}
+//								}
 								?>
 							</td>
 							<td class="nowrap" class="center">

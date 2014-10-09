@@ -81,9 +81,9 @@ class sportsmanagementControllerJLXMLImport extends JControllerLegacy
 	 */
 	public function display($cachable = false, $urlparams = false)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        
-       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask <br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask <br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
        
 		switch ($this->getTask())
 		{
@@ -119,12 +119,12 @@ class sportsmanagementControllerJLXMLImport extends JControllerLegacy
 	 */
 	function select()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 		$selectType=JRequest::getVar('type',0,'get','int');
 		$recordID=JRequest::getVar('id',0,'get','int');
-		$mainframe->setUserState($option.'selectType',$selectType);
-		$mainframe->setUserState($option.'recordID',$recordID);
+		$app->setUserState($option.'selectType',$selectType);
+		$app->setUserState($option.'recordID',$recordID);
 
 		JRequest::setVar('hidemainmenu',1);
 		JRequest::setVar('layout','selectpage');
@@ -144,7 +144,7 @@ class sportsmanagementControllerJLXMLImport extends JControllerLegacy
 		JRequest::checkToken() or die('JINVALID_TOKEN');
 		$msg='';
 		JToolBarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$post=JRequest::get('post');
         
         $projectid = JRequest::getVar('projektfussballineuropa',null);
@@ -162,20 +162,20 @@ class sportsmanagementControllerJLXMLImport extends JControllerLegacy
         $europalink = "http://www.fussballineuropa.de/index.php?option=com_joomleague&view=jlxmlexports&p=".$projectid."&update=0";    
         }
         
-        $mainframe->enqueueMessage(JText::_('hole daten von -> '.$europalink.''),'Notice');
+        $app->enqueueMessage(JText::_('hole daten von -> '.$europalink.''),'Notice');
         //set the target directory
 		$base_Dir = JPATH_SITE . DS . 'tmp' . DS;
         $filepath = $base_Dir . 'joomleague_import.jlg';
         if ( !copy($europalink,$filepath) )
 {
-$mainframe->enqueueMessage(JText::_('daten -> '.$europalink.' konnten nicht kopiert werden!'),'Error');
+$app->enqueueMessage(JText::_('daten -> '.$europalink.' konnten nicht kopiert werden!'),'Error');
 }
 else
 {
 $upload['name'] = $europalink;    
-$mainframe->setUserState('com_sportsmanagement'.'uploadArray',$upload); 
-$mainframe->setUserState('com_sportsmanagement'.'projectidimport',$projectid);     
-$mainframe->enqueueMessage(JText::_('daten -> '.$europalink.' sind kopiert worden!'),'Notice');    
+$app->setUserState('com_sportsmanagement'.'uploadArray',$upload); 
+$app->setUserState('com_sportsmanagement'.'projectidimport',$projectid);     
+$app->enqueueMessage(JText::_('daten -> '.$europalink.' sind kopiert worden!'),'Notice');    
 }
         }
         else
@@ -185,7 +185,7 @@ $mainframe->enqueueMessage(JText::_('daten -> '.$europalink.' sind kopiert worde
 		{
 			$upload=JRequest::getVar('import_package',null,'files','array');
 			$tempFilePath=$upload['tmp_name'];
-			$mainframe->setUserState('com_sportsmanagement'.'uploadArray',$upload);
+			$app->setUserState('com_sportsmanagement'.'uploadArray',$upload);
 			$filename='';
 			$msg='';
 			$dest=JPATH_SITE.DS.'tmp'.DS.$upload['name'];

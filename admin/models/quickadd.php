@@ -50,10 +50,10 @@ class JoomleagueModelQuickAdd extends JoomleagueModelList
         }
         
         $option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
 
-		$filter_order		= $mainframe->getUserStateFromRequest( $option . 'pl_filter_order', 'filter_order', 'pl.lastname', 'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option . 'pl_filter_order_Dir',	'filter_order_Dir', '',	'word' );
+		$filter_order		= $app->getUserStateFromRequest( $option . 'pl_filter_order', 'filter_order', 'pl.lastname', 'cmd' );
+		$filter_order_Dir	= $app->getUserStateFromRequest( $option . 'pl_filter_order_Dir',	'filter_order_Dir', '',	'word' );
 
 		if ( $filter_order == 'pl.lastname' )
 		{
@@ -98,10 +98,10 @@ class JoomleagueModelQuickAdd extends JoomleagueModelList
         }
         
         $option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
 
-		$filter_order		= $mainframe->getUserStateFromRequest( $option . 'pl_filter_order', 'filter_order', 'pl.lastname', 'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option . 'pl_filter_order_Dir',	'filter_order_Dir', '',	'word' );
+		$filter_order		= $app->getUserStateFromRequest( $option . 'pl_filter_order', 'filter_order', 'pl.lastname', 'cmd' );
+		$filter_order_Dir	= $app->getUserStateFromRequest( $option . 'pl_filter_order_Dir',	'filter_order_Dir', '',	'word' );
 
 		if ( $filter_order == 'pl.lastname' )
 		{
@@ -148,10 +148,10 @@ class JoomleagueModelQuickAdd extends JoomleagueModelList
         }
         
         $option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
 
-		$filter_order		= $mainframe->getUserStateFromRequest( $option . 'pl_filter_order', 'filter_order', 'pl.lastname', 'cmd' );
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest( $option . 'pl_filter_order_Dir',	'filter_order_Dir', '',	'word' );
+		$filter_order		= $app->getUserStateFromRequest( $option . 'pl_filter_order', 'filter_order', 'pl.lastname', 'cmd' );
+		$filter_order_Dir	= $app->getUserStateFromRequest( $option . 'pl_filter_order_Dir',	'filter_order_Dir', '',	'word' );
 
 		if ( $filter_order == 'pl.lastname' )
 		{

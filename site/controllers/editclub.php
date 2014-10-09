@@ -147,14 +147,14 @@ public function getModel($name = '', $prefix = '', $config = array('ignore_reque
 	 */
 	function save()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
     // Check for request forgeries
 		JRequest::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
 		$msg='';
 		$address_parts = array();
 		$post=JRequest::get('post');
 		
-		//$mainframe->enqueueMessage(JText::_('post -> '.'<pre>'.print_r($post,true).'</pre>' ),'');
+		//$app->enqueueMessage(JText::_('post -> '.'<pre>'.print_r($post,true).'</pre>' ),'');
 		
 		$cid=JRequest::getVar('cid',array(0),'post','array');
 		$post['id']=(int) $cid[0];
@@ -187,7 +187,7 @@ public function getModel($name = '', $prefix = '', $config = array('ignore_reque
 		//$coords = $model->resolveLocation($address);
         $coords = sportsmanagementHelper::resolveLocation($address);
 		
-		//$mainframe->enqueueMessage(JText::_('coords -> '.'<pre>'.print_r($coords,true).'</pre>' ),'');
+		//$app->enqueueMessage(JText::_('coords -> '.'<pre>'.print_r($coords,true).'</pre>' ),'');
 		
 		foreach( $coords as $key => $value )
 		{
@@ -214,7 +214,7 @@ public function getModel($name = '', $prefix = '', $config = array('ignore_reque
 			$post['merge_teams']='';
 		}
 		
-    //$mainframe->enqueueMessage(JText::_('post -> '.'<pre>'.print_r($post,true).'</pre>' ),'');
+    //$app->enqueueMessage(JText::_('post -> '.'<pre>'.print_r($post,true).'</pre>' ),'');
 		
 		if ($model->save($post))
 		{

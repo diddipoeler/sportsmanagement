@@ -63,6 +63,8 @@ class sportsmanagementModelResults extends JModelLegacy
 	var $config = 0;
 	var $project = null;
 	var $matches = null;
+    
+    static $cfg_which_database = 0;
 
 	/**
 	 * sportsmanagementModelResults::__construct()
@@ -71,7 +73,7 @@ class sportsmanagementModelResults extends JModelLegacy
 	 */
 	function __construct()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         
         parent::__construct();
 
@@ -81,10 +83,12 @@ class sportsmanagementModelResults extends JModelLegacy
         $this->projectid = JRequest::getInt('p',0);
 		$round = JRequest::getInt('r', 0);
 		$roundid = $round;
+        self::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
         
         sportsmanagementModelProject::$projectid = $this->projectid;
+        sportsmanagementModelProject::$cfg_which_database = self::$cfg_which_database;
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($round,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($round,true).'</pre>'),'');
         
 		if( $round > 0 ) 
         {
@@ -94,9 +98,9 @@ class sportsmanagementModelResults extends JModelLegacy
         else 
         {
 			//$this->roundid = sportsmanagementModelProject::getCurrentRound(JRequest::getVar('view'));
-            self::$roundid = sportsmanagementModelProject::getCurrentRound(JRequest::getVar('view'));
+            self::$roundid = sportsmanagementModelProject::getCurrentRound(JRequest::getVar('view'),self::$cfg_which_database);
             
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _current_round<br><pre>'.print_r(sportsmanagementModelProject::$_current_round,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _current_round<br><pre>'.print_r(sportsmanagementModelProject::$_current_round,true).'</pre>'),'');
             //$roundid = sportsmanagementModelProject::$_current_round;
 		}
         
@@ -104,9 +108,9 @@ class sportsmanagementModelResults extends JModelLegacy
         //sportsmanagementHelperHtml::$roundid = $this->roundid;
         
 		//$this->roundid = $roundid;
-		$this->config = sportsmanagementModelProject::getTemplateConfig('results');
+		$this->config = sportsmanagementModelProject::getTemplateConfig('results',self::$cfg_which_database);
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundid<br><pre>'.print_r($this->roundid,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundid<br><pre>'.print_r($this->roundid,true).'</pre>'),'');
         
 	}
 
@@ -115,7 +119,7 @@ class sportsmanagementModelResults extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getDivisionID()
+	function getDivisionID($cfg_which_database = 0)
 	{
 		return $this->divisionid;
 	}
@@ -125,7 +129,7 @@ class sportsmanagementModelResults extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getDivision()
+	function getDivision($cfg_which_database = 0)
 	{
 		$division=null;
 		if ($this->divisionid > 0)
@@ -216,14 +220,14 @@ class sportsmanagementModelResults extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getMatches()
+	function getMatches($cfg_which_database = 0)
 	{
 	   $option = JRequest::getCmd('option');
-	$mainframe = JFactory::getApplication();
+	$app = JFactory::getApplication();
     
 		if (is_null($this->matches))
 		{
-			$this->matches = self::getResultsRows(self::$roundid,$this->divisionid,$this->config);
+			$this->matches = self::getResultsRows(self::$roundid,$this->divisionid,$this->config,NULL,$cfg_which_database);
 		}
 		
 		$allowed = $this->isAllowed();
@@ -254,18 +258,18 @@ class sportsmanagementModelResults extends JModelLegacy
 	 * @param mixed $config
 	 * @return
 	 */
-	function getResultsRows($round,$division,&$config,$params = NULL)
+	function getResultsRows($round,$division,&$config,$params = NULL,$cfg_which_database = 0)
 	{
 		$option = JRequest::getCmd('option');
-	$mainframe = JFactory::getApplication();
+	$app = JFactory::getApplication();
         // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
         
-        $project = sportsmanagementModelProject::getProject();
+        $project = sportsmanagementModelProject::getProject($cfg_which_database,__METHOD__);
 
 		if ( !$round ) 
         {
@@ -273,8 +277,8 @@ class sportsmanagementModelResults extends JModelLegacy
             $round = $project->current_round;
 		}
 
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($project,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($round,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($project,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($round,true).'</pre>'),'');
 
 		$result = array();
         // select some fields
@@ -356,8 +360,8 @@ class sportsmanagementModelResults extends JModelLegacy
 		
         if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	    {
-		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
 	    }
         
 		return $result;
@@ -370,12 +374,12 @@ class sportsmanagementModelResults extends JModelLegacy
 	 * @param mixed $match_id
 	 * @return
 	 */
-	function getMatchReferees($match_id)
+	function getMatchReferees($match_id,$cfg_which_database = 0)
 	{
 		$option = JRequest::getCmd('option');
-	$mainframe = JFactory::getApplication();
+	$app = JFactory::getApplication();
         // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         $starttime = microtime(); 
         
@@ -393,14 +397,14 @@ class sportsmanagementModelResults extends JModelLegacy
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
         $result = $db->loadObjectList();
         
         if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	    {
-		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+		$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 	    }
         
 		return $result;
@@ -414,12 +418,12 @@ class sportsmanagementModelResults extends JModelLegacy
 	 * @param mixed $match_id
 	 * @return
 	 */
-	function getMatchRefereeTeams($match_id)
+	function getMatchRefereeTeams($match_id,$cfg_which_database = 0)
 	{
 		$option = JRequest::getCmd('option');
-	$mainframe = JFactory::getApplication();
+	$app = JFactory::getApplication();
         // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         $starttime = microtime(); 
         
@@ -451,15 +455,15 @@ class sportsmanagementModelResults extends JModelLegacy
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
         $result = $db->loadObjectList('value');
         
         if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	    {
-		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+		$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 	    }
         
 		return $result;
@@ -472,12 +476,12 @@ class sportsmanagementModelResults extends JModelLegacy
 	 * @param mixed $userid
 	 * @return
 	 */
-	function isTeamEditor($userid)
+	function isTeamEditor($userid,$cfg_which_database = 0)
 	{
 	   $option = JRequest::getCmd('option');
-	$mainframe = JFactory::getApplication();
+	$app = JFactory::getApplication();
         // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         $starttime = microtime(); 
         
@@ -501,8 +505,8 @@ class sportsmanagementModelResults extends JModelLegacy
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 			if ($db->loadResult()) return true;
@@ -517,12 +521,12 @@ class sportsmanagementModelResults extends JModelLegacy
 	 * @param mixed $userid
 	 * @return
 	 */
-	function isMatchAdmin($matchid,$userid)
+	function isMatchAdmin($matchid,$userid,$cfg_which_database = 0)
 	{
 	   $option = JRequest::getCmd('option');
-	$mainframe = JFactory::getApplication();
+	$app = JFactory::getApplication();
         // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         $starttime = microtime(); 
         
@@ -544,8 +548,8 @@ class sportsmanagementModelResults extends JModelLegacy
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		return $db->loadResult();
@@ -556,13 +560,13 @@ class sportsmanagementModelResults extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function isAllowed()
+	function isAllowed($cfg_which_database = 0)
 	{
 		$allowed = false;
 		$user = JFactory::getUser();
 		if ($user->id != 0)
 		{
-			$project = sportsmanagementModelProject::getProject();
+			$project = sportsmanagementModelProject::getProject($cfg_which_database,__METHOD__);
 			$hasACLPermssion = $user->authorise('results.saveshort', 'com_sportsmanagement');
 			$isProjectAdmin = $user->id == $project->admin;
 			$isProjectEditor = $user->id == $project->editor;
@@ -702,20 +706,20 @@ class sportsmanagementModelResults extends JModelLegacy
      * 
      * @return
      */
-    function saveshort()
+    function saveshort($cfg_which_database = 0)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // Get the input
         $pks = JRequest::getVar('cid', null, 'post', 'array');
         $post = JRequest::get('post');
         
         
-        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        //$app->enqueueMessage(get_class($this).' '.__FUNCTION__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        //$app->enqueueMessage(get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
         
         
         $result=true;
@@ -743,7 +747,7 @@ class sportsmanagementModelResults extends JModelLegacy
             
             if ( $post['match_date'.$pks[$x]] != $tbl->match_date )
             {
-                $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_ADMIN_CHANGE'),'Notice');
+                $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_ADMIN_CHANGE'),'Notice');
                 //self::sendEmailtoPlayers();
                 
             }
@@ -831,31 +835,31 @@ class sportsmanagementModelResults extends JModelLegacy
             
             if(!$result_update) 
             {
-                $mainframe->enqueueMessage('sportsmanagementModelMatch saveshort<br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+                $app->enqueueMessage('sportsmanagementModelMatch saveshort<br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
 				$result = false;
 			}
             else
             {
 
                 sprintf(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'),$pks[$x]);
-                $mainframe->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'),$pks[$x]),'Notice');
+                $app->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'),$pks[$x]),'Notice');
             }
 
 		}
 		return $result;
 	}
     
-    /**
-	 * sportsmanagementModelResults::getFavTeams()
-	 * 
-	 * @param mixed $project
-	 * @return
-	 */
-	function getFavTeams(&$project)
-	{
-		$favteams=explode(',',$project->fav_team);
-		return $favteams;
-	}
+//    /**
+//	 * sportsmanagementModelResults::getFavTeams()
+//	 * 
+//	 * @param mixed $project
+//	 * @return
+//	 */
+//	function getFavTeams(&$project)
+//	{
+//		$favteams=explode(',',$project->fav_team);
+//		return $favteams;
+//	}
     
     
     /**

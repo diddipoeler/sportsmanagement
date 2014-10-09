@@ -62,7 +62,7 @@ class JFormFieldagegroups extends JFormField
 	{
 		$result = array();
 		$db = JFactory::getDBO();
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
 		$lang = JFactory::getLanguage();
         $option = JRequest::getCmd('option');
         // welche tabelle soll genutzt werden
@@ -93,10 +93,10 @@ class JFormFieldagegroups extends JFormField
 		{
 		$query='SELECT id, name FROM #__'.$database_table.'_agegroup where sportstype_id = '.$sports_type.' ORDER BY name ASC ';
 		$db->setQuery($query);
-        //$mainframe->enqueueMessage(JText::_('JFormFieldSportsTypes<br><pre>'.print_r($query,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_('JFormFieldSportsTypes<br><pre>'.print_r($query,true).'</pre>'),'');
 		if (!$result = $db->loadObjectList())
 		{
-			//$mainframe->enqueueMessage(JText::_('JFormFieldSportsTypes<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+			//$app->enqueueMessage(JText::_('JFormFieldSportsTypes<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
       sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
 		}

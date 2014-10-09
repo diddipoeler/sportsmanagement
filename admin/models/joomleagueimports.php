@@ -57,6 +57,56 @@ if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImp
 class sportsmanagementModeljoomleagueimports extends JModelList
 {
 
+static $db_num_rows = 0;
+
+function updateplayer()
+{
+$app = JFactory::getApplication();
+    $db = JFactory::getDbo(); 
+    $query = $db->getQuery(true);
+    $option = JRequest::getCmd('option');
+    
+$post = JRequest::get('post');
+        
+        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        
+        for ($x=0; $x < count($pks); $x++)
+		{
+            $position = $post['position'.$pks[$x]];
+            $position_old = $pks[$x];
+
+// Fields to update.
+$fields = array(
+    $db->quoteName('position_id') . ' = ' . $db->quote($position),
+    $db->quoteName('jl_update') . ' = 1'
+);
+ 
+// Conditions for which records should be updated.
+$conditions = array(
+    $db->quoteName('position_id') . ' = ' . $db->quote($position_old),
+    $db->quoteName('jl_update') . ' = 0'
+);
+
+
+$query->clear(); 
+$query->update($db->quoteName('#__sportsmanagement_project_position'))->set($fields)->where($conditions);
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+$app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_N_ITEMS_PUBLISHED',self::$db_num_rows),'');
+
+$query->clear(); 
+$query->update($db->quoteName('#__sportsmanagement_person'))->set($fields)->where($conditions);
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+$app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_N_ITEMS_PUBLISHED',self::$db_num_rows),'');
+
+		}
+        
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');    
+    
+        
+}
 
 /**
  * sportsmanagementModeljoomleagueimports::gettotals()
@@ -65,7 +115,7 @@ class sportsmanagementModeljoomleagueimports extends JModelList
  */
 function gettotals()
 {
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $option = JRequest::getCmd('option');
         
@@ -74,13 +124,13 @@ function gettotals()
         // the specified default value will be returned
         // function syntax is getUserStateFromRequest( $key, $request, $default );
         
-        $jsm_table = $mainframe->getUserStateFromRequest( "$option.jsm_table", 'jsm_table', '' );
-        $jl_table = $mainframe->getUserStateFromRequest( "$option.jl_table", 'jl_table', '' );
-        $season_id = $mainframe->getUserState( "$option.season_id", '0' );
+        $jsm_table = $app->getUserStateFromRequest( "$option.jsm_table", 'jsm_table', '' );
+        $jl_table = $app->getUserStateFromRequest( "$option.jl_table", 'jl_table', '' );
+        $season_id = $app->getUserState( "$option.season_id", '0' );
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_table<br><pre>'.print_r($jl_table,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' season_id<br><pre>'.print_r($season_id,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_table<br><pre>'.print_r($jsm_table,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_table<br><pre>'.print_r($jl_table,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' season_id<br><pre>'.print_r($season_id,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_table<br><pre>'.print_r($jsm_table,true).'</pre>'),'');
 
         // Das "i" nach der Suchmuster-Begrenzung kennzeichnet eine Suche ohne
             // Berücksichtigung von Groß- und Kleinschreibung
@@ -99,12 +149,12 @@ function gettotals()
                 $query->where('p.season_id = '.$season_id);
             }
             
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             
             $db->setQuery($query);
             $total = $db->loadResult();
             
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'total<br><pre>'.print_r($total,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'total<br><pre>'.print_r($total,true).'</pre>'),'');
             
             return $total;
             }
@@ -124,7 +174,7 @@ function gettotals()
                 $query->where('p.season_id = '.$season_id);
             }
             
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             
             $db->setQuery($query);
             $total = $db->loadResult();
@@ -142,7 +192,7 @@ function gettotals()
  */
 function checkimport()
 {
-$mainframe = JFactory::getApplication();
+$app = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $option = JRequest::getCmd('option');
         $post = JRequest::get('post');
@@ -152,7 +202,7 @@ $mainframe = JFactory::getApplication();
         $jsm = $post['jsm'];
         $season_id= $post['filter_season'];
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'post<br><pre>'.print_r($post,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'post<br><pre>'.print_r($post,true).'</pre>'),'');
         
         
   foreach ( $cid as $key => $value )
@@ -166,9 +216,9 @@ $mainframe = JFactory::getApplication();
             {
                 // store the variable that we would like to keep for next time
                 // function syntax is setUserState( $key, $value );
-                $mainframe->setUserState( "$option.jsm_table", $jsm_table );
-                $mainframe->setUserState( "$option.jl_table", $jl_table );
-                $mainframe->setUserState( "$option.season_id", $season_id );
+                $app->setUserState( "$option.jsm_table", $jsm_table );
+                $app->setUserState( "$option.jl_table", $jl_table );
+                $app->setUserState( "$option.season_id", $season_id );
                 //JRequest::setVar('jsm_table', $jsm_table);
             return true;    
             }
@@ -176,9 +226,19 @@ $mainframe = JFactory::getApplication();
             {
                 // store the variable that we would like to keep for next time
                 // function syntax is setUserState( $key, $value );
-                $mainframe->setUserState( "$option.jsm_table", $jsm_table );
-                $mainframe->setUserState( "$option.jl_table", $jl_table );
-                $mainframe->setUserState( "$option.season_id", $season_id );
+                $app->setUserState( "$option.jsm_table", $jsm_table );
+                $app->setUserState( "$option.jl_table", $jl_table );
+                $app->setUserState( "$option.season_id", $season_id );
+                //JRequest::setVar('jsm_table', $jsm_table);
+            return true;    
+            }
+            elseif (preg_match("/team_staff/i", $jsm_table)) 
+            {
+                // store the variable that we would like to keep for next time
+                // function syntax is setUserState( $key, $value );
+                $app->setUserState( "$option.jsm_table", $jsm_table );
+                $app->setUserState( "$option.jl_table", $jl_table );
+                $app->setUserState( "$option.season_id", $season_id );
                 //JRequest::setVar('jsm_table', $jsm_table);
             return true;    
             }
@@ -199,7 +259,7 @@ $mainframe = JFactory::getApplication();
  */
 function import()
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $option = JRequest::getCmd('option');
         $post = JRequest::get('post');
@@ -209,8 +269,8 @@ function import()
         $jlid = $post['jlid'];
         $jsm = $post['jsm'];
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($post,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($cid,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($post,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($cid,true).'</pre>'),'');
         
         foreach ( $cid as $key => $value )
         {
@@ -227,27 +287,27 @@ function import()
             $query->from($jsm_table);
             $db->setQuery($query);
             
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             
             $totals = $db->loadResult();
             
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'totals<br><pre>'.print_r($totals,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'totals<br><pre>'.print_r($totals,true).'</pre>'),'');
             
             // noch die zu importierenden tabellen prüfen
             // Das "i" nach der Suchmuster-Begrenzung kennzeichnet eine Suche ohne
             // Berücksichtigung von Groß- und Kleinschreibung
             if ( preg_match("/project_team/i", $jsm_table) || preg_match("/team_player/i", $jsm_table) || preg_match("/team_staff/i", $jsm_table) ) 
             {
-            $mainframe->enqueueMessage(JText::_('Sie muessen die Daten aus der Tabelle: ( '.$jl_table.' ) in die neue Struktur umsetzen!'),'');
+            $app->enqueueMessage(JText::_('Sie muessen die Daten aus der Tabelle: ( '.$jl_table.' ) in die neue Struktur umsetzen!'),'');
             // wir müssen ein neues feld an die tabelle zum import einfügen
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_fields<br><pre>'.print_r($jl_fields,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_fields<br><pre>'.print_r($jl_fields,true).'</pre>'),'');
             if (array_key_exists('import', $jl_fields[$jl_table]  ) )
             {
-                $mainframe->enqueueMessage(JText::_('Importfeld ist vorhanden'),'');
+                $app->enqueueMessage(JText::_('Importfeld ist vorhanden'),'');
             }
             else
             {
-                $mainframe->enqueueMessage(JText::_('importfeld ist nicht vorhanden'),'');
+                $app->enqueueMessage(JText::_('importfeld ist nicht vorhanden'),'');
                 $query = $db->getQuery(true);
                 $query = 'ALTER TABLE '.$jl_table.' ADD import INT(11) NOT NULL DEFAULT 0 ';
                 $db->setQuery($query);
@@ -281,21 +341,21 @@ function import()
 
             if ( $totals )
             {
-            $mainframe->enqueueMessage(JText::_('Daten aus der Tabelle: ( '.$jl[$value].' ) koennen nicht kopiert werden. Tabelle: ( '.$jsm[$value].' ) nicht leer!'),'Error');     
+            $app->enqueueMessage(JText::_('Daten aus der Tabelle: ( '.$jl[$value].' ) koennen nicht kopiert werden. Tabelle: ( '.$jsm[$value].' ) nicht leer!'),'Error');     
             }
             else
             {
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($jl_fields,true).'</pre>'),'');
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'jsm_fields<br><pre>'.print_r($jsm_fields,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($jl_fields,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'jsm_fields<br><pre>'.print_r($jsm_fields,true).'</pre>'),'');
             
             $jsm_field_array = $jsm_fields[$jsm[$value]];
             
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'jsm_field_array<br><pre>'.print_r($jsm_field_array,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'jsm_field_array<br><pre>'.print_r($jsm_field_array,true).'</pre>'),'');
             
             foreach ( $jl_fields[$jl[$value]] as $key2 => $value2 )
             {
-                //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'key<br><pre>'.print_r($key,true).'</pre>'),'');
-                //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'value<br><pre>'.print_r($value,true).'</pre>'),'');
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'key<br><pre>'.print_r($key,true).'</pre>'),'');
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'value<br><pre>'.print_r($value,true).'</pre>'),'');
                 
                 if (array_key_exists($key2, $jsm_field_array)) 
                 {
@@ -305,19 +365,19 @@ function import()
             
             $select_fields = implode(',', $exportfields);
             
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'exportfields<br><pre>'.print_r($exportfields,true).'</pre>'),'');
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'select_fields<br><pre>'.print_r($select_fields,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'exportfields<br><pre>'.print_r($exportfields,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'select_fields<br><pre>'.print_r($select_fields,true).'</pre>'),'');
             
             $query->clear();
             $query = 'INSERT INTO '.$jsm[$value].' ('.$select_fields.') SELECT '.$select_fields.' FROM '.$jl[$value];
             $db->setQuery($query);
             if (!$db->query())
 		    {
-			$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+			$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		    }
             else
             {
-            $mainframe->enqueueMessage(JText::_('Daten aus der Tabelle: ( '.$jl[$value].' ) in die Tabelle: ( '.$jsm[$value].' ) importiert!'),'Notice');    
+            $app->enqueueMessage(JText::_('Daten aus der Tabelle: ( '.$jl[$value].' ) in die Tabelle: ( '.$jsm[$value].' ) importiert!'),'Notice');    
             }
             
             // Create an object for the record we are going to update.
@@ -328,14 +388,14 @@ function import()
             // Update their details in the users table using id as the primary key.
             $result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_jl_tables', $object, 'id');   
             
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query,true).'</pre>'),'');
             
             unset($exportfields);
             
             // in der template tabelle stehen die parameter nicht im json format
             if (preg_match("/template_config/i", $jsm_table)) 
             {
-                $mainframe->enqueueMessage(JText::_('Die Parameter aus der Tabelle: ( '.$jsm_table.' ) werden in das JSON-Format umgesetzt!'),'');
+                $app->enqueueMessage(JText::_('Die Parameter aus der Tabelle: ( '.$jsm_table.' ) werden in das JSON-Format umgesetzt!'),'');
                 $query = $db->getQuery(true);
                 $query->clear();
                 $query->select('id,params,template');

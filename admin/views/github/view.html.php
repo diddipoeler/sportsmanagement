@@ -49,7 +49,7 @@ class sportsmanagementViewgithub extends sportsmanagementView
 	{
 	   $document=JFactory::getDocument();
         $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $model	= $this->getModel();
         
         $list = $model->getGithubList();

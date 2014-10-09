@@ -61,13 +61,13 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
         $inputappend = '';
         $startmemory = memory_get_usage();
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' bilderpfad<br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' bilderpfad<br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
         
         $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
@@ -78,7 +78,7 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 		$items = $this->get('Items');
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
@@ -113,7 +113,7 @@ class sportsmanagementViewLeagues extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' speicherbelegung<br><pre>'.print_r(sportsmanagementModeldatabasetool::getMemory($startmemory, memory_get_usage()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' speicherbelegung<br><pre>'.print_r(sportsmanagementModeldatabasetool::getMemory($startmemory, memory_get_usage()),true).'</pre>'),'Notice');
         }
         
         
@@ -142,7 +142,7 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 		JToolBarHelper::editList('league.edit');
 		JToolBarHelper::custom('league.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('league.export',JText::_('JTOOLBAR_EXPORT'));
-        
+        JToolbarHelper::checkin('leagues.checkin');
         if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
         {
 		JToolbarHelper::trash('leagues.trash');

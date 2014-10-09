@@ -68,16 +68,16 @@ if ((int)ini_get('memory_limit') < (int)$maxImportMemory){ini_set('memory_limit'
 function getUpdatePart()
 {
 	$option = JRequest::getCmd('option');
-	$mainframe = JFactory::getApplication();
-	$update_part=$mainframe->getUserState($option.'update_part');
+	$app = JFactory::getApplication();
+	$update_part=$app->getUserState($option.'update_part');
 	return $update_part;
 }
 
 function setUpdatePart($val=1)
 {
 	$option = JRequest::getCmd('option');
-	$mainframe = JFactory::getApplication();
-	$update_part=$mainframe->getUserState($option.'update_part');
+	$app = JFactory::getApplication();
+	$update_part=$app->getUserState($option.'update_part');
 	if ($val!=0)
 	{
 		if ($update_part=='')
@@ -93,7 +93,7 @@ function setUpdatePart($val=1)
 	{
 		$update_part=0;
 	}
-	$mainframe->setUserState($option.'update_part',$update_part);
+	$app->setUserState($option.'update_part',$update_part);
 }
 
 function ImportTables()

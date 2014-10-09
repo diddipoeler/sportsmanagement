@@ -63,7 +63,7 @@ class sportsmanagementViewallprojectrounds extends JViewLegacy
 	function display( $tpl = null )
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
     // Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
 		$uri = JFactory::getURI();	
@@ -102,7 +102,7 @@ class sportsmanagementViewallprojectrounds extends JViewLegacy
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
 		    
     

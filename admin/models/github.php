@@ -55,7 +55,7 @@ class sportsmanagementModelgithub extends JModel
     function getGithubList()
     {
         $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         
         //$this->client = JApplicationHelper::getClientInfo($this->getState('filter.client_id', 0));
         //JApplicationHelper::addClientInfo($this->client);
@@ -64,7 +64,7 @@ class sportsmanagementModelgithub extends JModel
         $github_user = JComponentHelper::getParams($option)->get('cfg_github_username','');
         $github_repo = JComponentHelper::getParams($option)->get('cfg_github_repository','');
         
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' client<br><pre>'.print_r($this->client,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' client<br><pre>'.print_r($this->client,true).'</pre>'),'');
         //JGithubIssues::$client = $this->client;
         //$GithubList = JGithubIssues::getListByRepository($github_user,$github_repo);
         

@@ -61,16 +61,16 @@ class JFormFieldpredictionmatchid extends JFormField
 	protected function getInput()
   {
 		$db = JFactory::getDBO();
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
 		$option	= 'com_sportsmanagement';
-		//$prediction_id = (int) $mainframe->getUserState( $option . 'prediction_id' );
-        $prediction_id = $mainframe->getUserState( "$option.predid", '0' );
+		//$prediction_id = (int) $app->getUserState( $option . 'prediction_id' );
+        $prediction_id = $app->getUserState( "$option.predid", '0' );
         
         // welche tabelle soll genutzt werden
         $params = JComponentHelper::getParams( 'com_sportsmanagement' );
         $database_table	= $params->get( 'cfg_which_database_table' );
 
-//$mainframe->enqueueMessage(JText::_('prediction_id -> <pre> '.print_r($prediction_id,true).'</pre><br>' ),'Notice');		
+//$app->enqueueMessage(JText::_('prediction_id -> <pre> '.print_r($prediction_id,true).'</pre><br>' ),'Notice');		
 
     $query	= $db->getQuery(true);
     $query->select('m.id AS id,m.match_date');
@@ -93,16 +93,16 @@ class JFormFieldpredictionmatchid extends JFormField
 
 		$db->setQuery( $query );
         
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$teams = $db->loadObjectList();
         
         if ( !$teams )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');
 
     $mitems = array();
     

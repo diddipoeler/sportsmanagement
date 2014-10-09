@@ -55,6 +55,8 @@ jimport( 'joomla.application.component.model' );
 class sportsmanagementModelReferees extends JModelLegacy
 {
     
+    static $cfg_which_database = 0;
+    static $projectid = 0;
     
 	/**
 	 * sportsmanagementModelReferees::__construct()
@@ -64,8 +66,9 @@ class sportsmanagementModelReferees extends JModelLegacy
 	function __construct()
 	{
 		
-        $this->projectid = JRequest::getInt( 'p', 0 );
-		sportsmanagementModelProject::$projectid = $this->projectid;
+        self::$projectid = JRequest::getInt( 'p', 0 );
+		sportsmanagementModelProject::$projectid = self::$projectid;
+        self::$cfg_which_database = JRequest::getInt( 'cfg_which_database', 0 );
 		parent::__construct();
 	}
     
@@ -77,9 +80,10 @@ class sportsmanagementModelReferees extends JModelLegacy
 	function getReferees()
 	{
 		$option = JRequest::getCmd('option');
-	$mainframe = JFactory::getApplication();
-    $query = JFactory::getDbo()->getQuery(true);
-    $subquery = JFactory::getDbo()->getQuery(true);
+	$app = JFactory::getApplication();
+    $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
+    $query = $db->getQuery(true);
+    $subquery = $db->getQuery(true);
         
         // Select some fields
         $query->select('p.*,p.id AS pid,CONCAT_WS( \':\', p.id, p.alias ) AS slug');
@@ -104,78 +108,15 @@ class sportsmanagementModelReferees extends JModelLegacy
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position as ppos ON ppos.id = pr.project_position_id ');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position as pos ON pos.id = ppos.position_id ');
         
-        $query->where('pr.project_id = '.$this->projectid);
+        $query->where('pr.project_id = '.self::$projectid);
         $query->where('p.published = 1');
        
         $query->order('pos.ordering');
         $query->order('pos.id');
         
-       
-        //$query = "	SELECT  , , , 
-//					
-//					
-//						(SELECT count(*) 
-//						FROM #__joomleague_match AS m
-//						INNER JOIN #__joomleague_round AS r ON m.round_id=r.id 
-//						LEFT JOIN #__joomleague_project_team AS ptt1 ON m.projectteam1_id=ptt1.id 
-//						LEFT JOIN #__joomleague_project_team AS ptt2 ON m.projectteam2_id=ptt2.id 
-//						INNER JOIN #__joomleague_match_referee AS mr ON m.id=mr.match_id 
-//						WHERE (ptt1.project_id = pr.project_id or ptt2.project_id = pr.project_id) 
-//						AND mr.project_referee_id=pr.id) AS countGames 
-//                        
-//					FROM #__joomleague_project_referee pr 
-//					INNER JOIN #__joomleague_person p ON pr.person_id = p.id 
-//					INNER JOIN #__joomleague_project_position ppos ON ppos.id = pr.project_position_id 
-//					INNER JOIN #__joomleague_position pos ON pos.id = ppos.position_id 
-//					WHERE pr.project_id = " . $this->projectid . "
-//					AND p.published = 1
-//					ORDER BY pos.ordering, pos.id";
-
-		JFactory::getDbo()->setQuery( $query );
-		return JFactory::getDbo()->loadObjectList();
+		$db->setQuery( $query );
+		return $db->loadObjectList();
 	}
-
-//	function getPositionEventTypes( $positionId = 0 )
-//	{
-//		$result = array();
-//
-//		$query = '  SELECT	pet.*,
-//							et.name AS name,
-//							et.icon AS icon
-//					FROM #__joomleague_position_eventtype AS pet
-//					INNER JOIN #__joomleague_eventtype AS et ON et.id=pet.eventtype_id
-//					INNER JOIN #__joomleague_project_position AS ppos ON ppos.position_id=pet.position_id
-//					WHERE ppos.project_id=' . $this->projectid;
-//
-//		if ( $positionId > 0 )
-//		{
-//			$query .= ' AND pet.position_id=' . (int)$positionId;
-//		}
-//
-//		$query .= ' ORDER BY et.ordering';
-//
-//		$this->_db->setQuery( $query );
-//
-//		$result = $this->_db->loadObjectList();
-//
-//		if ( $result )
-//		{
-//			if ( $positionId )
-//			{
-//				return $result;
-//			}
-//			else
-//			{
-//				$posEvents = array();
-//				foreach ( $result as $r )
-//				{
-//					$posEvents[$r->position_id][] = $r;
-//				}
-//				return ( $posEvents );
-//			}
-//		}
-//		return array();
-//	}
 
 }
 ?>

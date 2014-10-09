@@ -54,6 +54,7 @@ class sportsmanagementModelTeams extends JModelLegacy
 {
 	static $projectid = 0;
 	static $divisionid = 0;
+    static $cfg_which_database = 0;
 	var $teamid = 0;
 	var $team = null;
 	var $club = null;
@@ -67,26 +68,26 @@ class sportsmanagementModelTeams extends JModelLegacy
 	{
 		self::$projectid = JRequest::getInt( "p", 0 );
 		self::$divisionid = JRequest::getInt( "division", 0 );
-        
+        self::$cfg_which_database = JRequest::getInt( 'cfg_which_database', 0 );
         sportsmanagementModelProject::$projectid = self::$projectid; 
 
 		parent::__construct( );
 	}
 
-	/**
-	 * sportsmanagementModelTeams::getDivision()
-	 * 
-	 * @return
-	 */
-	function getDivision()
-	{
-		$division = null;
-		if (self::$divisionid != 0)
-		{
-			$division = parent::getDivision(self::$divisionid);
-		}
-		return $division;
-	}
+//	/**
+//	 * sportsmanagementModelTeams::getDivision()
+//	 * 
+//	 * @return
+//	 */
+//	function getDivision()
+//	{
+//		$division = null;
+//		if (self::$divisionid != 0)
+//		{
+//			$division = parent::getDivision(self::$divisionid);
+//		}
+//		return $division;
+//	}
 
 //	/**
 //	 * sportsmanagementModelTeams::getTeams()

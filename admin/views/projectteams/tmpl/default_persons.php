@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.filesystem.file');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
-$mainframe = JFactory::getApplication();
+$app = JFactory::getApplication();
 
 ?>
 	<div id="editcell">
@@ -74,7 +74,7 @@ $mainframe = JFactory::getApplication();
 													}
 												}
 											}
-											?>?subject=[<?php echo $mainframe->getCfg('sitename'); ?>]">
+											?>?subject=[<?php echo $app->getCfg('sitename'); ?>]">
 								<?php
 								$imageFile='administrator/components/com_sportsmanagement/assets/images/mail.png';
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SEND_MAIL_TEAMS');
@@ -106,7 +106,7 @@ $mainframe = JFactory::getApplication();
 													}
 												}
 											}
-											?>?subject=[<?php echo $mainframe->getCfg('sitename'); ?>]">
+											?>?subject=[<?php echo $app->getCfg('sitename'); ?>]">
 								<?php
 								$imageFile='administrator/components/com_sportsmanagement/assets/images/mail.png';
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SEND_MAIL_ADMINS');

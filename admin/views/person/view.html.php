@@ -61,7 +61,7 @@ class sportsmanagementViewPerson extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $model = $this->getModel();
         $option = JRequest::getCmd('option');
         // Get a refrence of the page instance in joomla
@@ -74,12 +74,12 @@ class sportsmanagementViewPerson extends sportsmanagementView
         
         
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' item<br><pre>'.print_r($item,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' form<br><pre>'.print_r($form,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' item<br><pre>'.print_r($item,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' form<br><pre>'.print_r($form,true).'</pre>'),'');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		$script = $this->get('Script');
@@ -108,7 +108,7 @@ class sportsmanagementViewPerson extends sportsmanagementView
         
         if ( $this->item->latitude == 255 )
         {
-            $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_NO_GEOCODE'),'Error');
+            $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_NO_GEOCODE'),'Error');
             $this->map = false;
         }
         else
@@ -133,16 +133,16 @@ class sportsmanagementViewPerson extends sportsmanagementView
         if ( $this->checkextrafields )
         {
             $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($item->id);
-            //$mainframe->enqueueMessage(JText::_('view -> '.'<pre>'.print_r($lists['ext_fields'],true).'</pre>' ),'');
+            //$app->enqueueMessage(JText::_('view -> '.'<pre>'.print_r($lists['ext_fields'],true).'</pre>' ),'');
         }
         
     $this->assignRef('lists',$lists);
     
     
     $person_age = sportsmanagementHelper::getAge($this->form->getValue('birthday'),$this->form->getValue('deathday'));
-//    $mainframe->enqueueMessage(JText::_('personagegroup person_age<br><pre>'.print_r($person_age,true).'</pre>'   ),'');
+//    $app->enqueueMessage(JText::_('personagegroup person_age<br><pre>'.print_r($person_age,true).'</pre>'   ),'');
     $person_range = $model->getAgeGroupID($person_age);
-//    $mainframe->enqueueMessage(JText::_('personagegroup person_range<br><pre>'.print_r($person_range,true).'</pre>'   ),'');
+//    $app->enqueueMessage(JText::_('personagegroup person_range<br><pre>'.print_r($person_range,true).'</pre>'   ),'');
     if ( $person_range )
     {
         $this->form->setValue('agegroup_id', null, $person_range);

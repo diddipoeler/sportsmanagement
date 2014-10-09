@@ -110,7 +110,18 @@
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
 		</field>	
 		
-		
+	<field
+			name="standard_playground"
+			type="playgroundlist"
+			class="inputbox"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_VENUE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_VENUE_DESC">
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYGROUND</option>
+		</field>		
 			
 	</fieldset>	
   

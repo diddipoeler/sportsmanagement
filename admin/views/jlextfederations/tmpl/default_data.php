@@ -92,23 +92,22 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 				for ($i=0,$n=count($this->items); $i < $n; $i++)
 				{
 					$row =& $this->items[$i];
-					$link=JRoute::_('index.php?option=com_sportsmanagement&task=jlextfederation.edit&id='.$row->id);
-					$checked=JHtml::_('grid.checkedout',$row,$i);
+					$link = JRoute::_('index.php?option=com_sportsmanagement&task=jlextfederation.edit&id='.$row->id);
+					$checked = JHtml::_('grid.checkedout',$row,$i);
+                    $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td style="text-align:center; "><?php echo $this->pagination->getRowOffset($i); ?></td>
 						<td style="text-align:center; "><?php echo $checked; ?></td>
 						<?php
-						if ($this->table->isCheckedOut($this->user->get('id'),$row->checked_out))
-						{
-							$inputappend=' disabled="disabled"';
-							?><td style="text-align:center; ">&nbsp;</td><?php
-						}
-						else
-						{
+						
 							$inputappend='';
 							?>
 							<td style="text-align:center; ">
+                            <?php
+                            if ($row->checked_out) : ?>
+										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'jlextfederations.', $canCheckin); ?>
+									<?php endif; ?>
 								<a href="<?php echo $link; ?>">
 									<?php
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_EDIT_DETAILS');
@@ -118,7 +117,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 								</a>
 							</td>
 							<?php
-						}
+						
 						?>
 						<td><?php echo $row->name; ?></td>
 						<td><?php echo $row->short_name; ?></td>

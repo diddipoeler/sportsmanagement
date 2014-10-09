@@ -63,23 +63,23 @@ class sportsmanagementModelTeamPlayers extends JModelList
 	function getListQuery()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		        
-        $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
-        $this->_season_id	= $mainframe->getUserState( "$option.season_id", '0' );
+        $this->_project_id	= $app->getUserState( "$option.pid", '0' );
+        $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
         $this->_team_id = JRequest::getVar('team_id');
         $this->_project_team_id = JRequest::getVar('project_team_id');
         
         if ( !$this->_team_id )
         {
-            $this->_team_id	= $mainframe->getUserState( "$option.team_id", '0' );
+            $this->_team_id	= $app->getUserState( "$option.team_id", '0' );
         }
         if ( !$this->_project_team_id )
         {
-            $this->_project_team_id	= $mainframe->getUserState( "$option.project_team_id", '0' );
+            $this->_project_team_id	= $app->getUserState( "$option.project_team_id", '0' );
         }
         
         // Get the WHERE and ORDER BY clauses for the query
@@ -140,9 +140,9 @@ class sportsmanagementModelTeamPlayers extends JModelList
 	function _buildContentOrderBy()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-        $filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.tp_filter_order','filter_order','tp.ordering','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.tp_filter_order_Dir','filter_order_Dir','','word');
+		$app = JFactory::getApplication();
+        $filter_order		= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.tp_filter_order','filter_order','tp.ordering','cmd');
+		$filter_order_Dir	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.tp_filter_order_Dir','filter_order_Dir','','word');
 		if ($filter_order=='ppl.lastname')
 		{
 			$orderby=' ppl.lastname '.$filter_order_Dir;
@@ -157,14 +157,14 @@ class sportsmanagementModelTeamPlayers extends JModelList
 	function _buildContentWhere()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		
-        //$project_id=$mainframe->getUserState($option.'project');
-		//$team_id=$mainframe->getUserState($option.'project_team_id');
+        //$project_id=$app->getUserState($option.'project');
+		//$team_id=$app->getUserState($option.'project_team_id');
         
-		$filter_state	= $mainframe->getUserStateFromRequest( $option . '.'.$this->_identifier.'.tp_filter_state','filter_state','','word' );
-		$search			= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.tp_search','search','','string');
-		$search_mode	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.tp_search_mode','search_mode','','string');
+		$filter_state	= $app->getUserStateFromRequest( $option . '.'.$this->_identifier.'.tp_filter_state','filter_state','','word' );
+		$search			= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.tp_search','search','','string');
+		$search_mode	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.tp_search_mode','search_mode','','string');
 		$search=JString::strtolower($search);
 		$where=array();
 		
@@ -217,13 +217,13 @@ class sportsmanagementModelTeamPlayers extends JModelList
 	function getProjectTeamplayers($project_team_id)
     {
         $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         // Create a new query object.
 		$db		= &JFactory::getDBO();
 		$query	= $db->getQuery(true);
 		$user	= JFactory::getUser(); 
 		
-        //$mainframe->enqueueMessage('sportsmanagementModelTeamPlayers getProjectTeamplayers project_team_id<br><pre>'.print_r($project_team_id, true).'</pre><br>','Notice');
+        //$app->enqueueMessage('sportsmanagementModelTeamPlayers getProjectTeamplayers project_team_id<br><pre>'.print_r($project_team_id, true).'</pre><br>','Notice');
         
         // Select some fields
 		$query->select('pl.*');
@@ -235,13 +235,13 @@ class sportsmanagementModelTeamPlayers extends JModelList
         $db->setQuery($query);
         //$db->query();
         $result = $db->loadObjectList();
-        //$mainframe->enqueueMessage('sportsmanagementModelTeamPlayers getProjectTeamplayers query<br><pre>'.print_r($query, true).'</pre><br>','Notice');
+        //$app->enqueueMessage('sportsmanagementModelTeamPlayers getProjectTeamplayers query<br><pre>'.print_r($query, true).'</pre><br>','Notice');
                 
 		if (!$result)
 		{
 			//$this->setError($this->_db->getErrorMsg());
-            $mainframe->enqueueMessage('sportsmanagementModelTeamPlayers getProjectTeamplayers message<br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
-            $mainframe->enqueueMessage('sportsmanagementModelTeamPlayers getProjectTeamplayers nummer<br><pre>'.print_r($db->getErrorNum(), true).'</pre><br>','Error');
+            $app->enqueueMessage('sportsmanagementModelTeamPlayers getProjectTeamplayers message<br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+            $app->enqueueMessage('sportsmanagementModelTeamPlayers getProjectTeamplayers nummer<br><pre>'.print_r($db->getErrorNum(), true).'</pre><br>','Error');
 			return false;
 		}
 		return $result;

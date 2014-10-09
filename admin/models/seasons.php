@@ -66,11 +66,11 @@ class sportsmanagementModelSeasons extends JModelList
      */
     public function __construct($config = array())
         {   
-                $mainframe = JFactory::getApplication();
+                $app = JFactory::getApplication();
                 
                 $layout = JRequest::getVar('layout');
                 
-                //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($layout,true).'</pre>'),'Notice');
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($layout,true).'</pre>'),'Notice');
                 
                 switch ($layout)
         {
@@ -94,7 +94,8 @@ class sportsmanagementModelSeasons extends JModelList
                         's.checked_out_time'
                         );
                 parent::__construct($config);
-                parent::setDbo(sportsmanagementHelper::getDBConnection());
+                $getDBConnection = sportsmanagementHelper::getDBConnection();
+                parent::setDbo($getDBConnection);
         }
         
     /**
@@ -106,14 +107,14 @@ class sportsmanagementModelSeasons extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $layout = JRequest::getVar('layout');
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
         $order = '';
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->context,true).'</pre>'   ),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -131,7 +132,7 @@ class sportsmanagementModelSeasons extends JModelList
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 
 
 //		// Load the parameters.
@@ -153,7 +154,7 @@ class sportsmanagementModelSeasons extends JModelList
 //            break;
 //        }
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _order<br><pre>'.print_r($this->_order,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _order<br><pre>'.print_r($this->_order,true).'</pre>'),'Notice');
         
         //$this->setState('list.ordering', $this->_order);
         
@@ -169,7 +170,7 @@ class sportsmanagementModelSeasons extends JModelList
 	 */
 	protected function getListQuery()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $search	= $this->getState('filter.search');
         $search_nation	= $this->getState('filter.search_nation');
@@ -178,7 +179,7 @@ class sportsmanagementModelSeasons extends JModelList
         
         $this->setState('list.ordering', $this->_order);
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getState<br><pre>'.print_r($this->getState(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getState<br><pre>'.print_r($this->getState(),true).'</pre>'),'Notice');
         
         //$order = '';
         
@@ -236,17 +237,17 @@ class sportsmanagementModelSeasons extends JModelList
             break;
         }
 		
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _order<br><pre>'.print_r($this->_order,true).'</pre>'),'Notice');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.ordering<br><pre>'.print_r($this->getState('list.ordering', $this->_order),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _order<br><pre>'.print_r($this->_order,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.ordering<br><pre>'.print_r($this->getState('list.ordering', $this->_order),true).'</pre>'),'Notice');
         
         $query->order($db->escape($this->getState('list.ordering', $this->_order)).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
  
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
  
 if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
 
         return $query;

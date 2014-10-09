@@ -25,7 +25,7 @@ class JoomleagueViewTreetonodes extends JLGView
 
 	public function init ()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		if ($this->getLayout()=='default')
 		{
 			$this->_displayDefault($tpl);
@@ -37,7 +37,7 @@ class JoomleagueViewTreetonodes extends JLGView
 	function _displayDefault($tpl)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$db = JFactory::getDbo();
 		$uri = JFactory::getURI();
 

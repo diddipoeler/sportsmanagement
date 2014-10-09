@@ -64,7 +64,7 @@ class sportsmanagementModelPredictionRules extends JModelLegacy
 	function __construct()
 	{
 	   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     
     $this->predictionGameID		= JRequest::getInt('prediction_id',		0);
 		$this->predictionMemberID	= JRequest::getInt('uid',	0);

@@ -126,7 +126,7 @@ defined('_JEXEC') or die('Restricted access');
             {
                 
 				$title = JText :: _('COM_SPORTSMANAGEMENT_MATRIX_CLUB_PAGE_LINK') . ' ' . $team_row_header->name;
-				$link = sportsmanagementHelperRoute::getClubInfoRoute($this->project->id, $team_row_header->club_id);
+				$link = sportsmanagementHelperRoute::getClubInfoRoute($this->project->id, $team_row_header->club_id,NULL,JRequest::getInt('cfg_which_database',0));
 				//$desc = $team_row_header->short_name;
                 $name = $this->config['teamnames'];
                 $desc = $teamnumber .', ' . $team_row_header->$name;
@@ -167,7 +167,7 @@ defined('_JEXEC') or die('Restricted access');
 			if ($k_c == 0) // Header columns
 				{
 				$title = JText :: _('COM_SPORTSMANAGEMENT_MATRIX_PLAYERS_PAGE_LINK') . ' ' . $trow->name;
-				$link = sportsmanagementHelperRoute :: getPlayersRoute($this->project->id, $trow->id);
+				$link = sportsmanagementHelperRoute :: getPlayersRoute($this->project->id, $trow->id,NULL,0,JRequest::getInt('cfg_which_database',0));
 				//$desc = $trow->short_name;
                 $name = $this->config['teamnames'];
                 $desc = $trow->$name;
@@ -261,7 +261,7 @@ defined('_JEXEC') or die('Restricted access');
 						// result with matchreport
 						$title = "";
 						$arrayString = array ();
-						$link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->id, $result->id);
+						$link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->id, $result->id,JRequest::getInt('cfg_which_database',0));
 						if (($e1 != "") && ($e2 != "")) {
 							$colorStr = "color:" . $this->project->fav_team_text_color . ";";
 							$bgColorStr = "background-color:" . $this->project->fav_team_color . ";";
@@ -290,7 +290,7 @@ defined('_JEXEC') or die('Restricted access');
 						} else {
 							switch ($this->config['which_link']) {
 								case 1 : // Link to Next Match page
-									$link = sportsmanagementHelperRoute :: getNextMatchRoute($this->project->id, $result->id);
+									$link = sportsmanagementHelperRoute :: getNextMatchRoute($this->project->id, $result->id,JRequest::getInt('cfg_which_database',0));
 									//FIXME
 									// $title = str_replace( "%TEAMHOME%",
 									//                       $this->teams[$result->projectteam1_id]->name,
@@ -314,7 +314,7 @@ defined('_JEXEC') or die('Restricted access');
 								$match_result = JHTML::link($link, $desc);
 								$new_match = "";
 								if($result->new_match_id > 0) {
-									$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->id, $result->new_match_id);
+									$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->id, $result->new_match_id,JRequest::getInt('cfg_which_database',0));
 									$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 									$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
 									$new_match = JHTML::link($link, $desc);
@@ -342,7 +342,7 @@ defined('_JEXEC') or die('Restricted access');
 						$match_result = $resultStr;
 					} else {
 						// Any result available so "bullet_black.png" is shown with a link to the gameday of the match
-						$link = sportsmanagementHelperRoute :: getResultsRoute($this->project->id, $result->roundid);
+						$link = sportsmanagementHelperRoute :: getResultsRoute($this->project->id, $result->roundid,0,0,0,NULL,JRequest::getInt('cfg_which_database',0));
 						$title = str_replace("%NR_OF_MATCHDAY%", $result->roundcode, JText :: _('COM_SPORTSMANAGEMENT_MATCHDAY_FORM'));
 						$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 						$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);

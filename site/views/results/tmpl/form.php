@@ -85,7 +85,7 @@ $document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eve
 				}
 				?>
 			</td>
-			<td><?php echo sportsmanagementHelperHtml::getRoundSelectNavigation(TRUE); ?></td>
+			<td><?php echo sportsmanagementHelperHtml::getRoundSelectNavigation(TRUE,JRequest::getInt('cfg_which_database',0)); ?></td>
 		</tr>
 	</table>
 	<form name="adminForm" id="adminForm" method="post" action="<?php echo JFactory::getURI()->toString(); ?>">

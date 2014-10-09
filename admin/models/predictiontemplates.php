@@ -73,7 +73,8 @@ class sportsmanagementModelPredictionTemplates extends JModelList
                         'tmpl.ordering'
                         );
                 parent::__construct($config);
-                parent::setDbo(sportsmanagementHelper::getDBConnection());
+                $getDBConnection = sportsmanagementHelper::getDBConnection();
+                parent::setDbo($getDBConnection);
         }
     
     /**
@@ -85,12 +86,12 @@ class sportsmanagementModelPredictionTemplates extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -108,13 +109,13 @@ class sportsmanagementModelPredictionTemplates extends JModelList
 		}
         else
         {
-            $this->setState('filter.prediction_id_select', $mainframe->getUserState( "$option.predid", '0' ));
+            $this->setState('filter.prediction_id_select', $app->getUserState( "$option.predid", '0' ));
         }  
 
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 
 
 //		// Load the parameters.
@@ -133,7 +134,7 @@ class sportsmanagementModelPredictionTemplates extends JModelList
 	 */
 	function getListQuery()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.		
 		$db = JFactory::getDBO();
@@ -147,12 +148,12 @@ class sportsmanagementModelPredictionTemplates extends JModelList
         
         if (is_numeric($prediction_id) )
 		{
-		$mainframe->setUserState( "$option.predid", $prediction_id );  
+		$app->setUserState( "$option.predid", $prediction_id );  
 		$query->where('tmpl.prediction_id = ' . $prediction_id);	
 		}
         else
         {
-            $prediction_id	= $mainframe->getUserState( "$option.predid", '0' );
+            $prediction_id	= $app->getUserState( "$option.predid", '0' );
             $query->where('tmpl.prediction_id = ' . $prediction_id);
         }
 
@@ -163,7 +164,7 @@ class sportsmanagementModelPredictionTemplates extends JModelList
  
 if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
 
 		
@@ -179,7 +180,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	 */
 	function checklist($prediction_id)
 	{
-	  $mainframe		= JFactory::getApplication();
+	  $app		= JFactory::getApplication();
       $option = JRequest::getCmd('option');
 		//$prediction_id	= $this->_prediction_id;
 		//$defaultpath	= JLG_PATH_EXTENSION_PREDICTIONGAME.DS.'settings';
@@ -234,7 +235,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 					{
 						$template = substr($file,0,(strlen($file)-4));
                         
-                        //$mainframe->enqueueMessage(JText::_('PredictionGame template -> '.$template),'');
+                        //$app->enqueueMessage(JText::_('PredictionGame template -> '.$template),'');
                         
 						// Determine if a metadata file exists for the view.
 				        //$metafile = $path.'/'.$template.'/metadata.xml';
@@ -245,15 +246,15 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
                         // Attempt to load the xml file.
 					   if ($metaxml = simplexml_load_file($metafile)) 
                         {
-                        //$mainframe->enqueueMessage(JText::_('PredictionGame template metaxml-> '.'<br /><pre>~' . print_r($metaxml,true) . '~</pre><br />'),'');    
+                        //$app->enqueueMessage(JText::_('PredictionGame template metaxml-> '.'<br /><pre>~' . print_r($metaxml,true) . '~</pre><br />'),'');    
                         // This will save the value of the attribute, and not the objet
                         //$attributetitle = (string)$metaxml->view->attributes()->title;
                         $attributetitle = (string)$metaxml->layout->attributes()->title;
-                        //$mainframe->enqueueMessage(JText::_('PredictionGame template attribute-> '.'<br /><pre>~' . print_r($attributetitle,true) . '~</pre><br />'),'');
+                        //$app->enqueueMessage(JText::_('PredictionGame template attribute-> '.'<br /><pre>~' . print_r($attributetitle,true) . '~</pre><br />'),'');
                         if ($menu = $metaxml->xpath('view[1]')) 
                         {
 							$menu = $menu[0];
-                            //$mainframe->enqueueMessage(JText::_('PredictionGame template menu-> '.'<br /><pre>~' . print_r($menu,true) . '~</pre><br />'),'');
+                            //$app->enqueueMessage(JText::_('PredictionGame template menu-> '.'<br /><pre>~' . print_r($menu,true) . '~</pre><br />'),'');
                             }
                         }
                         }
@@ -285,7 +286,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 			                $ini = $parameter->toArray($ini);
 			                $defaultvalues = json_encode( $ini );
                             	
-                            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' defaultvalues<br><pre>'.print_r($defaultvalues,true).'</pre>'),'');
+                            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' defaultvalues<br><pre>'.print_r($defaultvalues,true).'</pre>'),'');
 
                             
 							//$defaultvalues = ereg_replace('"', '', $defaultvalues);

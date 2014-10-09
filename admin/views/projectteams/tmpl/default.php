@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.filesystem.file');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
-$mainframe = JFactory::getApplication();
+$app = JFactory::getApplication();
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>

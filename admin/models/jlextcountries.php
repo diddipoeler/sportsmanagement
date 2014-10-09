@@ -82,7 +82,8 @@ class sportsmanagementModeljlextcountries extends JModelList
                         'objcountry.checked_out_time'
                         );
                 parent::__construct($config);
-                parent::setDbo(sportsmanagementHelper::getDBConnection());
+                $getDBConnection = sportsmanagementHelper::getDBConnection();
+                parent::setDbo($getDBConnection);
         }
         
     /**
@@ -94,7 +95,7 @@ class sportsmanagementModeljlextcountries extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
@@ -116,7 +117,7 @@ class sportsmanagementModeljlextcountries extends JModelList
         $value = JRequest::getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 
 
 //		// Load the parameters.
@@ -134,7 +135,7 @@ class sportsmanagementModeljlextcountries extends JModelList
 	 */
 	function getListQuery()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $search	= $this->getState('filter.search');
         $federation	= $this->getState('filter.federation');
@@ -168,7 +169,7 @@ class sportsmanagementModeljlextcountries extends JModelList
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
         
 		return $query;
@@ -186,7 +187,7 @@ class sportsmanagementModeljlextcountries extends JModelList
      */
     function getFederation()
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.		
 		$db = JFactory::getDBO();
@@ -200,9 +201,9 @@ class sportsmanagementModeljlextcountries extends JModelList
         
         if (!$results)
 		{
-//		  $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-//          $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-          $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_FEDERATIONS_NULL'),'Error');
+//		  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+//          $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+          $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_FEDERATIONS_NULL'),'Error');
 		}  
         
 		return $results;

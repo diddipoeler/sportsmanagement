@@ -62,7 +62,7 @@ class sportsmanagementViewsmimageimports extends sportsmanagementView
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $model = $this->getModel();
         $uri = JFactory::getURI();
         
@@ -73,7 +73,7 @@ class sportsmanagementViewsmimageimports extends sportsmanagementView
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
         
-        //$filter_state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state','filter_state','','word');
+        //$filter_state		= $app->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state','filter_state','','word');
         // state filter
 		//$lists['state'] = JHtml::_('grid.state',$filter_state);
         

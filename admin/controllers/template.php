@@ -58,7 +58,7 @@ class sportsmanagementControllertemplate extends JControllerForm
 
 function __construct()
 	{
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 		parent::__construct();
 

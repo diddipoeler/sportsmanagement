@@ -97,7 +97,7 @@ class sportsmanagementModelteam extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $db		= $this->getDbo();
         $query = $db->getQuery(true);
@@ -105,7 +105,7 @@ class sportsmanagementModelteam extends JModelAdmin
         
         $show_team_community = JComponentHelper::getParams($option)->get('show_team_community',0);
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.team', 'team', array('control' => 'jform', 'load_data' => $loadData));
@@ -122,11 +122,11 @@ class sportsmanagementModelteam extends JModelAdmin
         $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/teams');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         
-        $prefix = $mainframe->getCfg('dbprefix');
+        $prefix = $app->getCfg('dbprefix');
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' prefix<br><pre>'.print_r($prefix,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' prefix<br><pre>'.print_r($prefix,true).'</pre>'),'');
         //$whichtabel = $this->getTable();
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' whichtabel<br><pre>'.print_r($whichtabel,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' whichtabel<br><pre>'.print_r($whichtabel,true).'</pre>'),'');
         
         $query->select('*');
 			$query->from('information_schema.columns');
@@ -134,16 +134,16 @@ class sportsmanagementModelteam extends JModelAdmin
 			
 			$db->setQuery($query);
             
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             
 			$result = $db->loadObjectList();
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
             
             foreach($result as $field )
         {
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COLUMN_NAME<br><pre>'.print_r($field->COLUMN_NAME,true).'</pre>'),'');
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' DATA_TYPE<br><pre>'.print_r($field->DATA_TYPE,true).'</pre>'),'');
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' CHARACTER_MAXIMUM_LENGTH<br><pre>'.print_r($field->CHARACTER_MAXIMUM_LENGTH,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COLUMN_NAME<br><pre>'.print_r($field->COLUMN_NAME,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' DATA_TYPE<br><pre>'.print_r($field->DATA_TYPE,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' CHARACTER_MAXIMUM_LENGTH<br><pre>'.print_r($field->CHARACTER_MAXIMUM_LENGTH,true).'</pre>'),'');
             
             switch ($field->COLUMN_NAME)
             {
@@ -228,7 +228,7 @@ class sportsmanagementModelteam extends JModelAdmin
      */
     public static function getTeamLogo($team_id)
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
@@ -255,7 +255,7 @@ class sportsmanagementModelteam extends JModelAdmin
 	 */
 	function getTeam($team_id=0,$pro_team_id=0)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
@@ -289,11 +289,11 @@ class sportsmanagementModelteam extends JModelAdmin
 	public function save($data)
 	{
 	   $option = JRequest::getCmd('option');
-	$mainframe	= JFactory::getApplication();
+	$app	= JFactory::getApplication();
     
     // store the variable that we would like to keep for next time
     // function syntax is setUserState( $key, $value );
-    $mainframe->setUserState( "$option.change_training_date", self::$change_training_date);
+    $app->setUserState( "$option.change_training_date", self::$change_training_date);
     
     //// Get a db connection.
 //        $db = JFactory::getDbo();
@@ -307,8 +307,8 @@ class sportsmanagementModelteam extends JModelAdmin
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');
        
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelteam post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       //$app->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       //$app->enqueueMessage(JText::_('sportsmanagementModelteam post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
        if (isset($data['season_ids']) && is_array($data['season_ids'])) 
 		{
@@ -340,7 +340,7 @@ class sportsmanagementModelteam extends JModelAdmin
 
 		if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 		{
-//            $mainframe->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
+//            $app->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
 		}  
           
           }
@@ -377,12 +377,12 @@ class sportsmanagementModelteam extends JModelAdmin
         {
             self::addNewTrainigData($data[id]);
         }
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         //-------extra fields-----------//
         sportsmanagementHelper::saveExtraFields($post,$data['id']);
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' change_training_date<br><pre>'.print_r(self::$change_training_date,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' change_training_date<br><pre>'.print_r(self::$change_training_date,true).'</pre>'),'');
         
         // Proceed with the save
 		return parent::save($data);   
@@ -398,7 +398,7 @@ class sportsmanagementModelteam extends JModelAdmin
     function DeleteTrainigData($id)
     {
         $option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
         
     $db = JFactory::getDbo();
  
@@ -416,14 +416,14 @@ $db->setQuery($query);
 if (!$db->query())
 		{
 			
-            $mainframe->enqueueMessage(JText::_('sportsmanagementModelteam DeleteTrainigData<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(JText::_('sportsmanagementModelteam DeleteTrainigData<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 			$result = false;
 		}
         
         // store the variable that we would like to keep for next time
         // function syntax is setUserState( $key, $value );
         self::$change_training_date = true; 
-        $mainframe->setUserState( "$option.change_training_date", self::$change_training_date);
+        $app->setUserState( "$option.change_training_date", self::$change_training_date);
         
      return true;           
     }
@@ -438,9 +438,9 @@ if (!$db->query())
     function UpdateTrainigData($post)
     {
         $option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
         
         //$db		= $this->getDbo();
 		//$query	= $db->getQuery(true);
@@ -477,7 +477,7 @@ if (!$db->query())
     
     // store the variable that we would like to keep for next time
     // function syntax is setUserState( $key, $value );
-    $mainframe->setUserState( "$option.change_training_date", self::$change_training_date);
+    $app->setUserState( "$option.change_training_date", self::$change_training_date);
        
     return true; 
     }
@@ -492,7 +492,7 @@ if (!$db->query())
 	function getTrainigData($team_id=0,$pro_team_id=0)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
         //$db		= $this->getDbo();
 		$query	= JFactory::getDbo()->getQuery(true);
         // Select some fields
@@ -517,8 +517,8 @@ if (!$db->query())
 		
 		if (!$result = JFactory::getDbo()->loadObjectList())
 		{
-			$mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TITLE_NO_TRAINING'),'Notice');
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+			$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TITLE_NO_TRAINING'),'Notice');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 			return false;
 		}
 		return $result;
@@ -534,7 +534,7 @@ if (!$db->query())
     function addNewTrainigData($team_id)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
         
         // Get a db connection.
         $db = JFactory::getDbo();
@@ -555,17 +555,61 @@ if (!$db->query())
 		if (!$db->query())
 		{
 			
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 			$result = false;
 		}
-        $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TITLE_INSERT_TRAINING'),'Notice');
+        $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_TITLE_INSERT_TRAINING'),'Notice');
         
         // store the variable that we would like to keep for next time
         // function syntax is setUserState( $key, $value );
         self::$change_training_date = true; 
-        $mainframe->setUserState( "$option.change_training_date", self::$change_training_date);
+        $app->setUserState( "$option.change_training_date", self::$change_training_date);
     
 		return true;
+	}
+    
+    
+    /**
+     * sportsmanagementModelteam::saveshort()
+     * 
+     * @return
+     */
+    public function saveshort()
+	{
+		$app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        
+        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+        
+        // Get the input
+        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        if ( !$pks )
+        {
+            return JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_SAVE_NO_SELECT');
+        }
+        $post = JRequest::get('post');
+        
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $app->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        $app->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        }
+        
+        //$result=true;
+		for ($x=0; $x < count($pks); $x++)
+		{
+			$tblProject = & $this->getTable();
+			$tblProject->id = $pks[$x];
+            $tblProject->sports_type_id	= $post['sportstype'.$pks[$x]];
+
+			if(!$tblProject->store()) 
+            {
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+				return false;
+			}
+		}
+		return JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_SAVE');
 	}
     
     

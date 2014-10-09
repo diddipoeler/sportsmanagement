@@ -74,7 +74,7 @@ class sportsmanagementModelEditPerson extends JModelAdmin
      */
     function updItem($data)
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         
         foreach( $data['request'] as $key => $value)
         {
@@ -122,8 +122,8 @@ class sportsmanagementModelEditPerson extends JModelAdmin
         $db->setQuery((string)$query);
 */        
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' table<br><pre>'.print_r($table,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' table<br><pre>'.print_r($table,true).'</pre>'),'Notice');
         
     }
     

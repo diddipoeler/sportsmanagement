@@ -70,7 +70,7 @@ class JFormFieldsortorder extends JFormFieldList
      */
     protected function getOptions()
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $lang = JFactory::getLanguage();
         $options = array();

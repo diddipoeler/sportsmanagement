@@ -76,7 +76,7 @@ class sportsmanagementModelEditClub extends JModelForm
    */
   function __construct()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
 		parent::__construct();
 
 		$this->projectid = JRequest::getInt( 'p', 0 );
@@ -92,7 +92,7 @@ class sportsmanagementModelEditClub extends JModelForm
    */
   function getClub()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
 		if ( is_null( $this->club  ) )
 		{
 			$this->club = $this->getTable( 'Club', 'sportsmanagementTable' );
@@ -107,7 +107,7 @@ class sportsmanagementModelEditClub extends JModelForm
          */
         public function getForm($data = array(), $loadData = true)
         {
-            $mainframe = JFactory::getApplication();
+            $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
         $show_team_community = JComponentHelper::getParams($option)->get('show_team_community',0);
@@ -162,7 +162,7 @@ class sportsmanagementModelEditClub extends JModelForm
 	 */
 	protected function loadFormData()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
 		// Check the session for previously entered form data.
 		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.'.$this->name.'.data', array());
 		if (empty($data))

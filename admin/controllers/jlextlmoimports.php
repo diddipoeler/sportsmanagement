@@ -65,12 +65,12 @@ class sportsmanagementControllerjlextlmoimports extends JControllerLegacy
 	function save()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         // Check for request forgeries
 		JRequest::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
 		$msg='';
 		JToolBarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&view=jllmoimport&controller=jllmoimport'));
-		$mainframe =& JFactory::getApplication();
+		$app =& JFactory::getApplication();
 		$post=JRequest::get('post');
     $model=$this->getModel('jlextlmoimports');
     
@@ -81,10 +81,10 @@ class sportsmanagementControllerjlextlmoimports extends JControllerLegacy
 
 
 			$lmoimportuseteams=JRequest::getVar('lmoimportuseteams',null);
-			$mainframe->setUserState($option.'lmoimportuseteams',$lmoimportuseteams);
+			$app->setUserState($option.'lmoimportuseteams',$lmoimportuseteams);
 			
 			$tempFilePath=$upload['tmp_name'];
-			$mainframe->setUserState($option.'uploadArray',$upload);
+			$app->setUserState($option.'uploadArray',$upload);
 			$filename='';
 			$msg='';
 			$dest=JPATH_SITE.DS.'tmp'.DS.$upload['name'];

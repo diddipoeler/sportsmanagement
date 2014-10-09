@@ -197,7 +197,7 @@ class sportsmanagementModelUpdates extends JModelLegacy
 	function loadUpdateFiles()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		//$updateFileList=JFolder::files(JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'updates'.DS,'.php$',false,true,array('',''));
 		$updateFileList=JFolder::files(JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'updates'.DS,'.php$');
 		// installer for extensions
@@ -324,8 +324,8 @@ class sportsmanagementModelUpdates extends JModelLegacy
 				$i++;
 			}
 		}
-		$filter_order		= $mainframe->getUserState($option.'updates_filter_order',		'filter_order',		'dates',	'cmd');
-		$filter_order_Dir	= $mainframe->getUserState($option.'updates_filter_order_Dir',	'filter_order_Dir',	'',			'word');
+		$filter_order		= $app->getUserState($option.'updates_filter_order',		'filter_order',		'dates',	'cmd');
+		$filter_order_Dir	= $app->getUserState($option.'updates_filter_order_Dir',	'filter_order_Dir',	'',			'word');
 		$orderfn='_cmpDate';
 		switch ($filter_order)
 		{

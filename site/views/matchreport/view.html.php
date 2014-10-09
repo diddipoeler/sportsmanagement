@@ -66,7 +66,7 @@ class sportsmanagementViewMatchReport extends JViewLegacy
 	 */
 	function display($tpl=null)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         // Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
         $option = JRequest::getCmd('option');
@@ -83,19 +83,20 @@ class sportsmanagementViewMatchReport extends JViewLegacy
 
 		$model = $this->getModel();
         $model->matchid = JRequest::getInt('mid',0);
+        $model::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
         
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
-		$project = sportsmanagementModelProject::getProject();
-		$match = sportsmanagementModelMatch::getMatchData(JRequest::getInt( "mid", 0 ));
+		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
+		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
+		$match = sportsmanagementModelMatch::getMatchData(JRequest::getInt( "mid", 0 ),$model::$cfg_which_database);
         $matchsingle = sportsmanagementModelMatch::getMatchSingleData(JRequest::getInt( "mid", 0 ));
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' project<br><pre>'.print_r($project,true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($project,true).'</pre>'),'Notice');
         }
 
 		$this->assignRef('project',$project);
-		$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig());
+		$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database));
 		$this->assignRef('config',$config);
 		$this->assignRef('match',$match);
         
@@ -108,11 +109,11 @@ class sportsmanagementViewMatchReport extends JViewLegacy
         
         $this->assign('match_article',$model->getMatchArticle($this->match->content_id));
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match_article<br><pre>'.print_r($this->match_article,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match_article<br><pre>'.print_r($this->match_article,true).'</pre>'),'Notice');
 
 		$this->assign('round',$model->getRound());
-		$this->assign('team1',sportsmanagementModelProject::getTeaminfo($this->match->projectteam1_id));
-		$this->assign('team2',sportsmanagementModelProject::getTeaminfo($this->match->projectteam2_id));
+		$this->assign('team1',sportsmanagementModelProject::getTeaminfo($this->match->projectteam1_id,$model::$cfg_which_database));
+		$this->assign('team2',sportsmanagementModelProject::getTeaminfo($this->match->projectteam2_id,$model::$cfg_which_database));
 		$this->assign('team1_club',$model->getClubinfo($this->team1->club_id));
 		$this->assign('team2_club',$model->getClubinfo($this->team2->club_id));
         //$this->assign('matchplayerpositions',$model->getMatchPlayerPositions());
@@ -128,22 +129,22 @@ class sportsmanagementViewMatchReport extends JViewLegacy
 		$this->assign('matchreferees',$model->getMatchReferees());
         $this->assign('matchcommentary',sportsmanagementModelMatch::getMatchCommentary($this->match->id));
 		//$this->assign('substitutes',$model->getMatchSubstitutions());
-        $this->assign('substitutes',sportsmanagementModelProject::getMatchSubstitutions($model->matchid));
+        $this->assign('substitutes',sportsmanagementModelProject::getMatchSubstitutions($model->matchid,$model::$cfg_which_database));
 		$this->assign('eventtypes',$model->getEventTypes());
 		$sortEventsDesc = isset($this->config['sort_events_desc']) ? $this->config['sort_events_desc'] : '1';
-		$this->assign('matchevents',sportsmanagementModelProject::getMatchEvents($this->match->id,1,$sortEventsDesc));
+		$this->assign('matchevents',sportsmanagementModelProject::getMatchEvents($this->match->id,1,$sortEventsDesc,$model::$cfg_which_database));
 		$this->assign('playground',sportsmanagementModelPlayground::getPlayground($this->match->playground_id));
-        $this->assign('stats',sportsmanagementModelProject::getProjectStats());
+        $this->assign('stats',sportsmanagementModelProject::getProjectStats(0,0,$model::$cfg_which_database));
 		$this->assign('playerstats',$model->getMatchStats());
 		$this->assign('staffstats',$model->getMatchStaffStats());
 		$this->assignRef('model',$model);
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchplayerpositions<br><pre>'.print_r($this->matchplayerpositions,true).'</pre>'),'Notice');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchplayers<br><pre>'.print_r($this->matchplayers,true).'</pre>'),'Notice');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchstaffpositions<br><pre>'.print_r($this->matchstaffpositions,true).'</pre>'),'Notice');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchstaffs<br><pre>'.print_r($this->matchstaffs,true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchplayerpositions<br><pre>'.print_r($this->matchplayerpositions,true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchplayers<br><pre>'.print_r($this->matchplayers,true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchstaffpositions<br><pre>'.print_r($this->matchstaffpositions,true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchstaffs<br><pre>'.print_r($this->matchstaffs,true).'</pre>'),'Notice');
         }
 
 
@@ -615,7 +616,7 @@ if ( $this->config['show_pictures'] == 1 )
 	function showEvents_Timelines1($eventid=0,$projectteamid=0)
 	{
 		$option = JRequest::getCmd('option');
-	$mainframe = JFactory::getApplication();
+	$app = JFactory::getApplication();
         $result = '';
 		$eventcounter = array();
 		foreach ($this->eventtypes AS $event)
@@ -625,7 +626,7 @@ if ( $this->config['show_pictures'] == 1 )
 				if ( $me->event_type_id == $event->id && $me->ptid == $this->match->projectteam1_id )
 				{
 					
-                    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' tppicture1'.'<pre>'.print_r($me,true).'</pre>' ),'');
+                    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' tppicture1'.'<pre>'.print_r($me,true).'</pre>' ),'');
                     
                     $placeholder = sportsmanagementHelper::getDefaultPlaceholder("player");
 					// set teamplayer picture

@@ -60,7 +60,7 @@ class sportsmanagementViewTemplates extends sportsmanagementView
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$document = JFactory::getDocument();
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
@@ -70,7 +70,7 @@ class sportsmanagementViewTemplates extends sportsmanagementView
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
         
-        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        $this->project_id	= $app->getUserState( "$option.pid", '0' );
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         
@@ -81,18 +81,18 @@ class sportsmanagementViewTemplates extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		$total = $this->get('Total');
 //		$pagination = $this->get('Pagination');
         
 		//$projectws =& $this->get('Data','projectws');
-        //$this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        //$this->project_id	= $app->getUserState( "$option.pid", '0' );
 //        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 //	    $project = $mdlProject->getProject($this->project_id);
 		
-		//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($project,true).'</pre>'),'');
+		//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($project,true).'</pre>'),'');
         
 		if ($project->master_template)
 		{
@@ -113,7 +113,7 @@ class sportsmanagementViewTemplates extends sportsmanagementView
             $total = count($templates);
 		}
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' total<br><pre>'.print_r($total,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' total<br><pre>'.print_r($total,true).'</pre>'),'');
         
         //$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
@@ -165,6 +165,7 @@ class sportsmanagementViewTemplates extends sportsmanagementView
 			JToolBarHelper::custom('template.reset','restore','restore',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_RESET'));
 		}
 		}
+        JToolbarHelper::checkin('templates.checkin');
         parent::addToolbar();
 	}	
 }

@@ -55,10 +55,11 @@ class sportsmanagementModelJLXMLImports extends JModelLegacy
     
         public function __construct($config = array())
         {   
-////            $mainframe = JFactory::getApplication();
-////            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'Notice');
+////            $app = JFactory::getApplication();
+////            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'Notice');
                 parent::__construct($config);
-                parent::setDbo(sportsmanagementHelper::getDBConnection());
+                $getDBConnection = sportsmanagementHelper::getDBConnection();
+                parent::setDbo($getDBConnection);
         }
         
 }

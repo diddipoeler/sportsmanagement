@@ -38,8 +38,8 @@ class JoomleagueViewTreetonode extends JLGView
 	{
 		$option = JRequest::getCmd('option');
 
-		$mainframe	= JFactory::getApplication();
-		$project_id = $mainframe->getUserState( 'com_joomleagueproject' );
+		$app	= JFactory::getApplication();
+		$project_id = $app->getUserState( 'com_joomleagueproject' );
 		$uri 	= JFactory::getURI();
 		$user 	= JFactory::getUser();
 		$model	= $this->getModel();

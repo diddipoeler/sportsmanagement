@@ -61,7 +61,7 @@ class sportsmanagementViewPosition extends sportsmanagementView
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$uri = JFactory::getURI();
         $model = $this->getModel();
         $document = JFactory::getDocument();
@@ -69,12 +69,12 @@ class sportsmanagementViewPosition extends sportsmanagementView
         
         if ( JPluginHelper::isEnabled( 'system', 'jqueryeasy' ) )
         {
-            $mainframe->enqueueMessage(JText::_('jqueryeasy ist installiert'),'Notice');
+            $app->enqueueMessage(JText::_('jqueryeasy ist installiert'),'Notice');
             $this->jquery = true;
         }
         else
         {
-            $mainframe->enqueueMessage(JText::_('jqueryeasy ist nicht installiert'),'Error');
+            $app->enqueueMessage(JText::_('jqueryeasy ist nicht installiert'),'Error');
             $this->jquery = false;
         }
         
@@ -84,7 +84,7 @@ class sportsmanagementViewPosition extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		$script = $this->get('Script');

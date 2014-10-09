@@ -60,7 +60,7 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 		$uri		= JFactory::getURI();
 		$user		= JFactory::getUser();
@@ -85,13 +85,13 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 		$this->item = $item;
 		$this->script = $script;
 
-        $this->team_id	= $mainframe->getUserState( "$option.team_id", '0' );
-        $this->_persontype = $mainframe->getUserState( "$option.persontype", '0' );
-        $this->project_team_id	= $mainframe->getUserState( "$option.project_team_id", '0' );
+        $this->team_id	= $app->getUserState( "$option.team_id", '0' );
+        $this->_persontype = $app->getUserState( "$option.persontype", '0' );
+        $this->project_team_id	= $app->getUserState( "$option.project_team_id", '0' );
         
         //$this->project_id	= sportsmanagementHelper::getTeamplayerProject($this->item->projectteam_id);
-        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
-        $this->season_id	= $mainframe->getUserState( "$option.season_id", '0' );
+        $this->project_id	= $app->getUserState( "$option.pid", '0' );
+        $this->season_id	= $app->getUserState( "$option.season_id", '0' );
                
         
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
@@ -164,11 +164,11 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($this->project_id,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _persontype<br><pre>'.print_r($this->_persontype,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_team_id<br><pre>'.print_r($this->project_team_id,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($this->team_id,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' season_id<br><pre>'.print_r($this->season_id,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($this->project_id,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _persontype<br><pre>'.print_r($this->_persontype,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_team_id<br><pre>'.print_r($this->project_team_id,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($this->team_id,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' season_id<br><pre>'.print_r($this->season_id,true).'</pre>'),'');
         }
  
   
@@ -182,7 +182,7 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        
 //	   // Get a refrence of the page instance in joomla
@@ -195,12 +195,12 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
         
         if ( isset($this->item->projectteam_id) )
         {
-        $mainframe->setUserState( "$option.project_team_id", $this->item->projectteam_id );
+        $app->setUserState( "$option.project_team_id", $this->item->projectteam_id );
         }
         
-        $mainframe->setUserState( "$option.pid", $this->project_id );
-        $mainframe->setUserState( "$option.team_id", $this->team_id );
-        $mainframe->setUserState( "$option.season_id", $this->season_id );
+        $app->setUserState( "$option.pid", $this->project_id );
+        $app->setUserState( "$option.team_id", $this->team_id );
+        $app->setUserState( "$option.season_id", $this->season_id );
         
 		$user = JFactory::getUser();
 		$userId = $user->id;
@@ -216,7 +216,7 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
         JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_EDIT'), 'teamstaff');
 		}
         
-        //$mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.' _persontype<br><pre>'.print_r($this->_persontype, true).'</pre><br>','Notice');
+        //$app->enqueueMessage(get_class($this).' '.__FUNCTION__.' _persontype<br><pre>'.print_r($this->_persontype, true).'</pre><br>','Notice');
 //        
 //        // Built the actions for new and existing records.
 //		if ($isNew) 

@@ -75,7 +75,8 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
         {   
 
                 parent::__construct($config);
-                parent::setDbo(sportsmanagementHelper::getDBConnection());
+                $getDBConnection = sportsmanagementHelper::getDBConnection();
+                parent::setDbo($getDBConnection);
         }
         
     /**
@@ -86,7 +87,7 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
      */
     public static function runJoomlaQuery($setModelVar='')
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $result = false;
         if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -100,8 +101,8 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
 //            {
 //                $result = JFactory::getDbo()->getAffectedRows();
 //            }
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getAffectedRows<br><pre>'.print_r(JFactory::getDbo()->getAffectedRows(),true).'</pre>'),'');
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getAffectedRows<br><pre>'.print_r(JFactory::getDbo()->getAffectedRows(),true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
             //try {
 //                }
 //            catch (Exception $e) {
@@ -121,8 +122,8 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
 //            {
 //                $result = $this->db_num_rows;
 //            }
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' db_num_rows<br><pre>'.print_r($this->db_num_rows,true).'</pre>'),'');
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' db_num_rows<br><pre>'.print_r($this->db_num_rows,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
         } 
         return $result;   
     }
@@ -138,10 +139,10 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.databasetool', 'databasetool', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
@@ -203,15 +204,15 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
      */
     function getSportsManagementTables()
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $db = JFactory::getDbo();
         //$jsmtables = array();
-        $prefix = $mainframe->getCfg('dbprefix');
+        $prefix = $app->getCfg('dbprefix');
         
         $result = $db->getTableList();
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prefix <br><pre>'.print_r($prefix,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTableList <br><pre>'.print_r($result,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prefix <br><pre>'.print_r($prefix,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTableList <br><pre>'.print_r($result,true).'</pre>'),'');
         
         foreach ( $result as $key => $value )
         {
@@ -221,7 +222,7 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
         }   
         }
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsmtables <br><pre>'.print_r($jsmtables,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsmtables <br><pre>'.print_r($jsmtables,true).'</pre>'),'');
         
 //        $query = "SHOW TABLES LIKE '%_sportsmanagement%'";
 //		$db->setQuery($query);
@@ -245,9 +246,9 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
      */
     function checkImportTablesJlJsm($tables)
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $db = JFactory::getDbo();
-        $prefix = $mainframe->getCfg('dbprefix');  
+        $prefix = $app->getCfg('dbprefix');  
         $storeFailedColor = 'red';
 	    $storeSuccessColor = 'green';
 	    $existingInDbColor = 'orange';
@@ -259,9 +260,9 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
 $prefix.'joomleague_' => ''
   );
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($tables,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prefix' .  ' <br><pre>'.print_r($prefix,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' convert2' .  ' <br><pre>'.print_r($convert2,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($tables,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prefix' .  ' <br><pre>'.print_r($prefix,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' convert2' .  ' <br><pre>'.print_r($convert2,true).'</pre>'),'');
         
         $count = 1;
         foreach ( $tables as $key => $value )
@@ -279,7 +280,7 @@ $prefix.'joomleague_' => ''
             
             $check_table = str_replace(array_keys($convert2), array_values($convert2), $value->name  );
             
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' check_table' .  ' <br><pre>'.print_r($check_table,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' check_table' .  ' <br><pre>'.print_r($check_table,true).'</pre>'),'');
             
             switch ($check_table)
             {
@@ -337,7 +338,7 @@ $prefix.'joomleague_' => ''
      */
     function getJoomleagueImportTables()
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $db = JFactory::getDbo();  
         $option = JRequest::getCmd('option');
         $query = $db->getQuery(true);
@@ -347,7 +348,7 @@ $prefix.'joomleague_' => ''
         $db->setQuery($query);
         $result = $db->loadObjectList();
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($result,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($result,true).'</pre>'),'');
         
         return $result;
     }
@@ -360,7 +361,7 @@ $prefix.'joomleague_' => ''
      */
     function getJoomleagueTables()
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $query = JFactory::getDbo()->getQuery(true);
         //$db = JFactory::getDbo();  
         $option = JRequest::getCmd('option');
@@ -368,7 +369,7 @@ $prefix.'joomleague_' => ''
 		JFactory::getDbo()->setQuery($query);
         $result = JFactory::getDbo()->loadResultArray();
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($result,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($result,true).'</pre>'),'');
         
         if ( $result )
         {
@@ -403,13 +404,13 @@ $prefix.'joomleague_' => ''
      */
     function setSportsManagementTableQuery($table, $command)
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $query = strtoupper($command).' TABLE `'.$table.'`'; 
             JFactory::getDbo()->setQuery($query);
             if (!self::runJoomlaQuery())
 		{
-			$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
+			$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
 			return false;
 		}
         
@@ -425,7 +426,7 @@ $prefix.'joomleague_' => ''
      */
     function checkQuotes($sm_quotes)
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         //$db = JFactory::getDbo();   
         //$xml = JFactory::getXMLParser( 'Simple' );
@@ -468,7 +469,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
     $quotes = 'children()'; 
             }
     
-    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($xml,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($xml,true).'</pre>'),'Notice');
     
             //$xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml');
             
@@ -484,7 +485,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
 //            foreach( $xml->$document as $version ) 
 //            {
 //            $quote_version = $version->data();
-//            //$mainframe->enqueueMessage(JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' wird installiert !'),'');
+//            //$app->enqueueMessage(JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' wird installiert !'),'');
 ////            $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
 ////		    $this->my_text .= JText::_('Installiere Zitate').'</strong></span><br />';
 ////			$this->my_text .= JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' wird installiert !').'<br />';
@@ -495,7 +496,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
 		    $this->my_text .= JText::_('Installiere Zitate').'</strong></span><br />';
 			$this->my_text .= JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' wird installiert !').'<br />';
             
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' quotes<br><pre>'.print_r($quotes,true).'</pre>'),'Notice');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' quotes<br><pre>'.print_r($quotes,true).'</pre>'),'Notice');
             
             foreach( $xml->children() as $quote ) 
             {
@@ -505,11 +506,11 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
             $daily_number = (string)$quote->quote->attributes()->daily_number;
             $zitat = (string)$quote->quote;
             
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' quote<br><pre>'.print_r($quote,true).'</pre>'),'Notice');
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' author<br><pre>'.print_r($author,true).'</pre>'),'Notice');
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' notes<br><pre>'.print_r($notes,true).'</pre>'),'Notice');
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' daily_number<br><pre>'.print_r($daily_number,true).'</pre>'),'Notice');
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' zitat<br><pre>'.print_r($zitat,true).'</pre>'),'Notice');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' quote<br><pre>'.print_r($quote,true).'</pre>'),'Notice');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' author<br><pre>'.print_r($author,true).'</pre>'),'Notice');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' notes<br><pre>'.print_r($notes,true).'</pre>'),'Notice');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' daily_number<br><pre>'.print_r($daily_number,true).'</pre>'),'Notice');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' zitat<br><pre>'.print_r($zitat,true).'</pre>'),'Notice');
             
             if ( $zitat )
             {
@@ -541,7 +542,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
 //            foreach( $xml->$quotes as $quote ) 
 //            {
 //                
-//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' quote<br><pre>'.print_r($quote,true).'</pre>'),'Notice');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' quote<br><pre>'.print_r($quote,true).'</pre>'),'Notice');
 //                
 //            $author = '';
 //            $zitat = '';
@@ -628,11 +629,11 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
      */
     function insertAgegroup($search_nation,$filter_sports_type)
     {
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     $option = JRequest::getCmd('option'); 
     
-    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($search_nation,true).'</pre>'),'Notice');
-    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filter_sports_type,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($search_nation,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filter_sports_type,true).'</pre>'),'Notice');
     
     $mdl = JModelLegacy::getInstance("sportstype", "sportsmanagementModel");
     $p_sportstype = $mdl->getTable();
@@ -640,18 +641,18 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
     $temp = explode("_",$p_sportstype->name);
     $sport_type_name = strtolower(array_pop($temp));
     
-    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($sport_type_name,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($sport_type_name,true).'</pre>'),'Notice');
     $filename = JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/'.'agegroup_'.strtolower($search_nation).'_'.$sport_type_name.'.xml';
     
     if (!JFile::exists($filename)) 
     {
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filename,true).'</pre>'),'Error');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filename,true).'</pre>'),'Error');
         $this->my_text = '<span style="color:'.$this->storeFailedColor.'"><strong>';
 					$this->my_text .= JText::_('Fehlende Altersgruppen').'</strong></span><br />';
 					$this->my_text .= JText::sprintf('Die Datei %1$s ist nicht vorhanden!','agegroup_'.strtolower($search_nation).'_'.$sport_type_name.'.xml').'<br />';
 					
 					//$this->_success_text['Altersgruppen:'] = $my_text;
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->my_text,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->my_text,true).'</pre>'),'');
         return $this->my_text;
     }  
     else
@@ -676,7 +677,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
        if ( $xml )
        {
        
-       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml -><br><pre>'.print_r($xml,true).'</pre>'),'');
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml -><br><pre>'.print_r($xml,true).'</pre>'),'');
         
        // schleife altersgruppen anfang
        foreach( $xml->agegroups as $agegroups ) 
@@ -685,7 +686,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
 //   $name = $agegroup->getElementByPath('agegroup');
 //   $attributes = $name->attributes();
    
-   //$mainframe->enqueueMessage(JText::_(get_class($this).'<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
+   //$app->enqueueMessage(JText::_(get_class($this).'<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
    
    $agegroup = (string)$agegroups->agegroup;
    $info = (string)$agegroups->agegroup->attributes()->info;
@@ -727,12 +728,12 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
         if (!self::runJoomlaQuery())
 		{
 			
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' insertSportType<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            //$app->enqueueMessage(JText::_(get_class($this).' insertSportType<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 			$result = false;
 		}
         else
         {
-        //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_AGEGROUP_SUCCESS',$agegroup),'Notice');
+        //$app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_AGEGROUP_SUCCESS',$agegroup),'Notice');
         $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
 					$this->my_text .= JText::_('Installierte Altersgruppen').'</strong></span><br />';
 					$this->my_text .= JText::sprintf('Die Altersgruppe %1$s wurde angelegt!!',$agegroup).'<br />';
@@ -759,7 +760,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
      */
     function checkAssociations()
     {
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     $option = JRequest::getCmd('option');    
     /* Ein Datenbankobjekt beziehen */
     $db = JFactory::getDbo();   
@@ -790,8 +791,8 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
     $country_assoc_del = "'".implode("','",$country_assoc)."'";    
     }
     
-    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country_assoc,true).'</pre>'),'Notice');
-    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country_assoc_del,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country_assoc,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country_assoc_del,true).'</pre>'),'Notice');
     
    
     /* Ein JDatabaseQuery Objekt beziehen */
@@ -803,7 +804,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
     $result = self::runJoomlaQuery();
     }
     
-    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'');
      
     $image_path = '/images/'.$option.'/database/associations/';
     
@@ -815,8 +816,8 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
    //$country = $attributes['country'];
    $country = (string)$association->assocname->attributes()->country;
    
-   //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($attributes['country'],true).'</pre>'),'Notice');
-   //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
+   //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($attributes['country'],true).'</pre>'),'Notice');
+   //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
    
    if ( $country_assoc )
    {
@@ -848,7 +849,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
     JFactory::getDbo()->setQuery( $query1 );
 	$result = JFactory::getDbo()->loadResult();
    
-    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($query1,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($query1,true).'</pre>'),'Notice');
    
    $export = array();
    if ( !$result )
@@ -871,7 +872,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
                 
 	            if (!self::runJoomlaQuery())
 			    {
-			    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+			    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
 			    self::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
                 }
 			    else
@@ -885,7 +886,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
    else
    {
    $parent_id = $this->_assoclist[$country][$parentmain];
-   //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($parent_id,true).'</pre>'),'');
+   //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($parent_id,true).'</pre>'),'');
     // Create a new query object.
                 $insertquery = JFactory::getDbo()->getQuery(true);
                 // Insert columns.
@@ -902,7 +903,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
                 
 	            if (!self::runJoomlaQuery())
 			    {
-			    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+			    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
                 self::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__); 
 			    }
 			    else
@@ -944,7 +945,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
    }
    }
    
-    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_assoclist,true).'</pre>'),'');   
+    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_assoclist,true).'</pre>'),'');   
     }
     
     
@@ -956,11 +957,11 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
      */
     function checkSportTypeStructur($type)
     {
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     $option = JRequest::getCmd('option');    
     //$db_table = JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/sp_structur/'.$type.'.txt';    
     //$fileContent = JFile::read($db_table);    
-    //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur fileContent<br><pre>'.print_r($fileContent,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur fileContent<br><pre>'.print_r($fileContent,true).'</pre>'),'Notice');
     
 //    $xml = JFactory::getXMLParser( 'Simple' );
 //    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/sp_structur/'.$type.'.xml');
@@ -981,7 +982,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
         return false;
     }    
     //$xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/sp_structur/'.$type.'.xml');
-    //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml<br><pre>'.print_r($xml,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml<br><pre>'.print_r($xml,true).'</pre>'),'Notice');
     
     
     // We can now step through each element of the file
@@ -995,8 +996,8 @@ foreach( $xml->events as $event )
    //$main = (string)$association->assocname->attributes()->main;
    
    //$icon = $event->getElementByPath('icon');
-   //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml name<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
-   //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml icon<br><pre>'.print_r($icon->data(),true).'</pre>'),'Notice');
+   //$app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml name<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
+   //$app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml icon<br><pre>'.print_r($icon->data(),true).'</pre>'),'Notice');
    
    $temp = new stdClass();
    $temp->name = strtoupper($option).'_'.strtoupper($type).'_E_'.strtoupper((string)$event->name);
@@ -1005,8 +1006,8 @@ foreach( $xml->events as $event )
     $this->_sport_types_events[$type] = array_merge($export);
    }
     }    
-   //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_events<br><pre>'.print_r($this->_sport_types_events,true).'</pre>'),'Notice'); 
-   //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent mainpositions<br><pre>'.print_r($xml->document->mainpositions,true).'</pre>'),'Notice');
+   //$app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_events<br><pre>'.print_r($this->_sport_types_events,true).'</pre>'),'Notice'); 
+   //$app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent mainpositions<br><pre>'.print_r($xml->document->mainpositions,true).'</pre>'),'Notice');
    
    unset ($export); 
    
@@ -1018,13 +1019,13 @@ foreach( $xml->events as $event )
    //$name = $position->getElementByPath('mainname');
 //   $attributes = $name->attributes();
    
-   //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml mainpositions<br><pre>'.print_r($name,true).'</pre>'),'Notice');
+   //$app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml mainpositions<br><pre>'.print_r($name,true).'</pre>'),'Notice');
    
 //   $switch = $position->getElementByPath('mainswitch');
 //   $parent = $position->getElementByPath('mainparent');
 //   $content = $position->getElementByPath('maincontent');
-   //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml name<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
-   //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml icon<br><pre>'.print_r($icon->data(),true).'</pre>'),'Notice');
+   //$app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml name<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
+   //$app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml icon<br><pre>'.print_r($icon->data(),true).'</pre>'),'Notice');
    
    
         $temp = new stdClass();
@@ -1036,10 +1037,10 @@ foreach( $xml->events as $event )
         $this->_sport_types_position[$type] = array_merge($export);
    }
     }  
-    //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_position<br><pre>'.print_r($this->_sport_types_position,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_position<br><pre>'.print_r($this->_sport_types_position,true).'</pre>'),'Notice');
     
     
-    //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parentpositions<br><pre>'.print_r($xml->document->parentpositions,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parentpositions<br><pre>'.print_r($xml->document->parentpositions,true).'</pre>'),'Notice');
     
     unset ($export); 
     if ( isset($xml->parentpositions) )
@@ -1050,25 +1051,25 @@ foreach( $xml->events as $event )
 //   $attributes = $name->attributes();
    
    
-   //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parentname<br><pre>'.print_r($name,true).'</pre>'),'Notice');
-   //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent attributes<br><pre>'.print_r($name->attributes(),true).'</pre>'),'Notice');
+   //$app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parentname<br><pre>'.print_r($name,true).'</pre>'),'Notice');
+   //$app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent attributes<br><pre>'.print_r($name->attributes(),true).'</pre>'),'Notice');
    
 //   $switch = $parent->getElementByPath('parentswitch');
 //   $parent = $parent->getElementByPath('parentparent');
 //   $content = $parent->getElementByPath('parentcontent');
 //   $mainparentposition = $parent->getElementByPath('mainparentposition');
    
-//   $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent name<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
-//   $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent switch<br><pre>'.print_r($switch->data(),true).'</pre>'),'Notice');
-//   $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parent<br><pre>'.print_r($parent->data(),true).'</pre>'),'Notice');
-//   $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent content<br><pre>'.print_r($content->data(),true).'</pre>'),'Notice');
-//   $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent mainparentposition<br><pre>'.print_r($mainparentposition->data(),true).'</pre>'),'Notice');
+//   $app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent name<br><pre>'.print_r($name->data(),true).'</pre>'),'Notice');
+//   $app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent switch<br><pre>'.print_r($switch->data(),true).'</pre>'),'Notice');
+//   $app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parent<br><pre>'.print_r($parent->data(),true).'</pre>'),'Notice');
+//   $app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent content<br><pre>'.print_r($content->data(),true).'</pre>'),'Notice');
+//   $app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent mainparentposition<br><pre>'.print_r($mainparentposition->data(),true).'</pre>'),'Notice');
    
-//   $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent name<br><pre>'.print_r($name,true).'</pre>'),'Notice');
-//   $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent switch<br><pre>'.print_r($switch,true).'</pre>'),'Notice');
-//   $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parent<br><pre>'.print_r($parent,true).'</pre>'),'Notice');
-//   $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent content<br><pre>'.print_r($content,true).'</pre>'),'Notice');
-//   $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent mainparentposition<br><pre>'.print_r($mainparentposition,true).'</pre>'),'Notice');
+//   $app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent name<br><pre>'.print_r($name,true).'</pre>'),'Notice');
+//   $app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent switch<br><pre>'.print_r($switch,true).'</pre>'),'Notice');
+//   $app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent parent<br><pre>'.print_r($parent,true).'</pre>'),'Notice');
+//   $app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent content<br><pre>'.print_r($content,true).'</pre>'),'Notice');
+//   $app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml parent mainparentposition<br><pre>'.print_r($mainparentposition,true).'</pre>'),'Notice');
    
   
         $temp = new stdClass();
@@ -1089,7 +1090,7 @@ foreach( $xml->events as $event )
     
     
     
-    //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_position_parent<br><pre>'.print_r($this->_sport_types_position_parent,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool createSportTypeArray _sport_types_position_parent<br><pre>'.print_r($this->_sport_types_position_parent,true).'</pre>'),'Notice');
     
     return true;
     }
@@ -1102,7 +1103,7 @@ foreach( $xml->events as $event )
      */
     function insertCountries()
     {
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     $option = JRequest::getCmd('option');
     require_once( JPATH_ADMINISTRATOR.'/components/'.$option.'/'. 'helpers' . DS . 'jinstallationhelper.php' );    
     $db = JFactory::getDBO();
@@ -1117,24 +1118,24 @@ foreach( $xml->events as $event )
     $result = JInstallationHelper::populateDatabase($db, $db_table, $errors);
     if ( $result )
     {
-    //$mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_ERROR'),'Error'); 
+    //$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_ERROR'),'Error'); 
     $this->my_text = '<span style="color:'.$this->storeFailedColor.'"><strong>';
 					$this->my_text .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_ERROR').'</strong></span><br />';
 					
 					
 					//$this->_success_text['Altersgruppen:'] = $my_text;
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->my_text,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->my_text,true).'</pre>'),'');
         return $this->my_text;    
     }   
     else
     {
-    //$mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_SUCCESS'),'');
+    //$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_SUCCESS'),'');
     $this->my_text = '<span style="color:'.$this->storeSuccessColor.'"><strong>';
 					$this->my_text .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNTRIES_INSERT_SUCCESS').'</strong></span><br />';
 					
 					
 					//$this->_success_text['Altersgruppen:'] = $my_text;
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->my_text,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->my_text,true).'</pre>'),'');
         return $this->my_text;         
     }
     
@@ -1145,7 +1146,7 @@ foreach( $xml->events as $event )
 					$this->my_text .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_JOOMLEAGUE_COUNTRIES_INSERT_ERROR').'</strong></span><br />';
         return $this->my_text;     
     } 
-    //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool insertCountries result<br><pre>'.print_r($result,true).'</pre>'),'Notice');    
+    //$app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool insertCountries result<br><pre>'.print_r($result,true).'</pre>'),'Notice');    
     
     }
     
@@ -1157,17 +1158,17 @@ foreach( $xml->events as $event )
      */
     function insertSportType($type)
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $db = sportsmanagementHelper::getDBConnection(FALSE,FALSE);
-        //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT',strtoupper($type)),'Notice');
+        //$app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT',strtoupper($type)),'Notice');
         
         //self::createSportTypeArray();
         $available = self::checkSportTypeStructur($type);
         
         if ( !$available )
         {
-            //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_XML_ERROR',strtoupper($type)),'Error');
+            //$app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_XML_ERROR',strtoupper($type)),'Error');
             $this->my_text = '<span style="color:'.$this->storeFailedColor.'"><strong>';
             $this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_XML_ERROR',strtoupper($type)).'</strong></span><br />';
             return false;
@@ -1178,8 +1179,8 @@ foreach( $xml->events as $event )
        $result = $db->loadResult();
        if ( $result )
        {
-       //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_AVAILABLE',strtoupper($type)),'Notice');
-     // $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool insertSportType result<br><pre>'.print_r($result,true).'</pre>'),'Notice'); 
+       //$app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_AVAILABLE',strtoupper($type)),'Notice');
+     // $app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool insertSportType result<br><pre>'.print_r($result,true).'</pre>'),'Notice'); 
       $sports_type_id = $result;
         $sports_type_name = 'COM_SPORTSMANAGEMENT_ST_'.strtoupper($type);
       self::addStandardForSportType($sports_type_name, $sports_type_id, $type,$update=1);
@@ -1206,12 +1207,12 @@ foreach( $xml->events as $event )
         if (!$db->query())
 		{
 			
-            $mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool insertSportType<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool insertSportType<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 			$result = false;
 		}
         else
         {
-        //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_SUCCESS',strtoupper($type)),'Notice');
+        //$app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_SUCCESS',strtoupper($type)),'Notice');
         $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
 		$this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_SUCCESS',strtoupper($type)).'</strong></span><br />';
         
@@ -1237,14 +1238,14 @@ foreach( $xml->events as $event )
      */
     function addStandardForSportType($name, $id, $type,$update=0)
 {
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Get a db connection.
         //$db = JFactory::getDbo();
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool addStandardForSportType name<br><pre>'.print_r($name,true).'</pre>'),'Notice');
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool addStandardForSportType id<br><pre>'.print_r($id,true).'</pre>'),'Notice');
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModeldatabasetool addStandardForSportType events<br><pre>'.print_r($this->_sport_types_events[$type],true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool addStandardForSportType name<br><pre>'.print_r($name,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool addStandardForSportType id<br><pre>'.print_r($id,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool addStandardForSportType events<br><pre>'.print_r($this->_sport_types_events[$type],true).'</pre>'),'Notice');
         
 	$events_player		= array();
 	$events_staff		= array();
@@ -1288,7 +1289,7 @@ foreach( $xml->events as $event )
         
         if ( !$update )
         {
-        //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_EVENTS_INSERT_SUCCESS',$event->name),'Notice');
+        //$app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_EVENTS_INSERT_SUCCESS',$event->name),'Notice');
         $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
 		$this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_EVENTS_INSERT_SUCCESS',$event->name).'</strong></span><br />';
         }
@@ -1320,7 +1321,7 @@ foreach( $xml->events as $event )
     
    if ( !$update )
         {
-    //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_POSITION_INSERT_SUCCESS',$position->name),'Notice');
+    //$app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_POSITION_INSERT_SUCCESS',$position->name),'Notice');
     $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
 		$this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_POSITION_INSERT_SUCCESS',$position->name).'</strong></span><br />';
     }
@@ -1363,13 +1364,13 @@ foreach( $xml->events as $event )
 //                {
 //                if ( $result )
 //                {
-//                    //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_SUCCESS',$event->name),'Notice');
+//                    //$app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_SUCCESS',$event->name),'Notice');
 //                    $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
 //		$this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_SUCCESS',$event->name).'</strong></span><br />';
 //                }   
 //                else
 //                {
-//                    //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_ERROR',$event->name),'Error');
+//                    //$app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_EVENT_ERROR',$event->name),'Error');
 //                }
 //                }
 //                }
@@ -1381,7 +1382,7 @@ foreach( $xml->events as $event )
         
         if ( !$update )
         {    
-        //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_SUCCESS',$parent->name),'Notice');    
+        //$app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_SUCCESS',$parent->name),'Notice');    
         $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
 		$this->my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_PARENT_POSITION_INSERT_SUCCESS',$parent->name).'</strong></span><br />';
          }
@@ -1477,7 +1478,7 @@ function build_InsertQuery_PositionEventType($param1,$param2)
  */
 public static function writeErrorLog($class, $function, $file, $text, $line)
 {
-$mainframe = JFactory::getApplication();
+$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Get a db connection.
         $db = JFactory::getDbo();   
@@ -1485,7 +1486,7 @@ $mainframe = JFactory::getApplication();
         $time = date("H:i:s");
         
         //$path_parts = pathinfo($file); 
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($path_parts,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($path_parts,true).'</pre>'),'');
         
         $file = str_replace("\\", "\\\\", $file);
         
@@ -1502,12 +1503,12 @@ $insertquery = $db->getQuery(true);
                 // Set the query using our newly populated query object and execute it.
                 $db->setQuery($insertquery);
                 
-                //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($file,true).'</pre>'),'');
-                //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($insertquery,true).'</pre>'),'');
+                //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($file,true).'</pre>'),'');
+                //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($insertquery,true).'</pre>'),'');
                 
 	            if (!$db->query())
 			    {
-			    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+			    $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
 			    }
 			    else
 			    {

@@ -80,7 +80,8 @@ class sportsmanagementModelagegroups extends JModelList
                         'obj.checked_out_time'
                         );
                 parent::__construct($config);
-                parent::setDbo(sportsmanagementHelper::getDBConnection());
+                $getDBConnection = sportsmanagementHelper::getDBConnection();
+                parent::setDbo($getDBConnection);
                 
         }
         
@@ -93,12 +94,12 @@ class sportsmanagementModelagegroups extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -132,15 +133,15 @@ class sportsmanagementModelagegroups extends JModelList
 	 */
 	function getListQuery()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $search	= $this->getState('filter.search');
         $filter_sports_type	= $this->getState('filter.sports_type');
         $search_nation	= $this->getState('filter.search_nation');
         
-        //$search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
-//        $search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
-//        $filter_sports_type	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_sports_type','filter_sports_type','','int');
+        //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+//        $search_nation		= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
+//        $filter_sports_type	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_sports_type','filter_sports_type','','int');
         // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
@@ -175,7 +176,7 @@ class sportsmanagementModelagegroups extends JModelList
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
         
 		return $query;

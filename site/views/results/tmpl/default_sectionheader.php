@@ -87,7 +87,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		?>
         </td>
 	            <td class="contentheading" style="text-align:right; font-size: 100%;">
-			<?php echo sportsmanagementHelperHtml::getRoundSelectNavigation(FALSE); ?>
+			<?php echo sportsmanagementHelperHtml::getRoundSelectNavigation(FALSE,JRequest::getInt('cfg_which_database',0)); ?>
 				</td>
                 <td>
         <?php

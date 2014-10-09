@@ -54,7 +54,7 @@ function example_alertBox( boxText )
 <?php
 $nbcols			= 7;
 $nbcols_header	= 0;
-$dates			= $this->sortByDate();
+$dates			= $this->sortByDate($this->matches);
 
 if($this->config['show_division']){$nbcols++;}
 if($this->config['show_match_number']){$nbcols++;}
@@ -323,7 +323,9 @@ $link = "javascript:void(0);";
 			</td>
 			<!-- show match score -->
 			<td width='10' class='score'>
-				<?php echo $this->formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link); ?>
+				<?php 
+        echo $this->formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link,$this->config); 
+        ?>
 			</td>
 				<?php
 		}
@@ -348,7 +350,7 @@ $link = "javascript:void(0);";
 			<td width='5' class='score' nowrap='nowrap'>
 				<?php
 					echo '&nbsp;';
-					echo $this->formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link);
+					echo $this->formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link,$this->config);
 					echo '&nbsp;';
 				?>
 			</td>
@@ -396,7 +398,7 @@ $link = "javascript:void(0);";
 			<td width='5' class='score' nowrap='nowrap'>
 				<?php
 					echo '&nbsp;';
-					echo $this->formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link);
+					echo $this->formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link,$this->config);
 					echo '&nbsp;';
 				?>
 			</td>

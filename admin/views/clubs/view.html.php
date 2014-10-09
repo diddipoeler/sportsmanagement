@@ -64,7 +64,7 @@ class sportsmanagementViewClubs extends sportsmanagementView
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$uri = JFactory::getURI();
         $model = $this->getModel();
         
@@ -74,7 +74,7 @@ class sportsmanagementViewClubs extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->state,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->state,true).'</pre>'),'');
         }
         
         $starttime = microtime(); 
@@ -84,7 +84,7 @@ class sportsmanagementViewClubs extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		$total = $this->get('Total');
@@ -172,7 +172,7 @@ $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_TITLE');
             {
             JToolBarHelper::deleteList('', 'clubs.delete', 'JTOOLBAR_DELETE');    
             }
-		
+		JToolbarHelper::checkin('clubs.checkin');
         parent::addToolbar();
 		
 	}

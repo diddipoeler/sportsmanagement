@@ -64,6 +64,8 @@ class sportsmanagementModelStaff extends JModelLegacy
 	var $_history = null;
     
     var $_inproject = null;
+    
+    static $cfg_which_database = 0;
 
 
  	/**
@@ -74,9 +76,10 @@ class sportsmanagementModelStaff extends JModelLegacy
  	function __construct()
  	{
  		
- 		$this->projectid=JRequest::getInt('p',0);
- 		$this->personid=JRequest::getInt('pid',0);
- 		$this->teamid=JRequest::getInt('tid',0);
+ 		$this->projectid = JRequest::getInt('p',0);
+ 		$this->personid = JRequest::getInt('pid',0);
+ 		$this->teamid = JRequest::getInt('tid',0);
+        self::$cfg_which_database = JRequest::getInt( 'cfg_which_database', 0 );
         parent::__construct();
  	}
 
@@ -86,9 +89,9 @@ class sportsmanagementModelStaff extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function &getTeamStaff()
+	function getTeamStaff()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
     $option = JRequest::getCmd('option');
         // Create a new query object.		
 	   $db = JFactory::getDBO();
@@ -126,13 +129,13 @@ class sportsmanagementModelStaff extends JModelLegacy
 	 */
 	function getStaffHistory($order='ASC')
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
         
-        //$mainframe->enqueueMessage(JText::_('getStaffHistory personid<br><pre>'.print_r($this->personid,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_('getStaffHistory personid<br><pre>'.print_r($this->personid,true).'</pre>'),'');
         
         //if (empty($this->_history))
 		//{
@@ -168,7 +171,7 @@ class sportsmanagementModelStaff extends JModelLegacy
 		//}
         if ( !$this->_history )
         {
-            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
         
 		return $this->_history;
@@ -182,7 +185,7 @@ class sportsmanagementModelStaff extends JModelLegacy
 //	 */
 //	function getContactID($catid)
 //	{
-//	   $mainframe = JFactory::getApplication();
+//	   $app = JFactory::getApplication();
 //    $option = JRequest::getCmd('option');
 //        // Create a new query object.		
 //	   $db = JFactory::getDBO();
@@ -204,7 +207,7 @@ class sportsmanagementModelStaff extends JModelLegacy
 	 */
 	function getPresenceStats($project_id,$person_id)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
     $option = JRequest::getCmd('option');
         // Create a new query object.		
 	   $db = JFactory::getDBO();

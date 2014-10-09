@@ -28,7 +28,7 @@ class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView
     
     function display( $tpl = null )
 	{
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 		$db	 		= JFactory::getDBO();
 		$uri		= JFactory::getURI();
@@ -41,8 +41,8 @@ class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView
 			$this->onlineItems = $this->get('OnlineData');
 			$this->dbItems = $this->get('DBData');
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dbItems<br><pre>'.print_r($this->dbItems,true).'</pre>'),'Notice');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' onlineItems<br><pre>'.print_r($this->onlineItems,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dbItems<br><pre>'.print_r($this->dbItems,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' onlineItems<br><pre>'.print_r($this->onlineItems,true).'</pre>'),'Notice');
         }
         
         

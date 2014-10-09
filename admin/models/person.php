@@ -96,7 +96,7 @@ class sportsmanagementModelperson extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $db		= $this->getDbo();
         $query = $db->getQuery(true);
@@ -108,21 +108,21 @@ class sportsmanagementModelperson extends JModelAdmin
 		$form = $this->loadForm('com_sportsmanagement.person', 'person', array('control' => 'jform', 'load_data' => $loadData));
 		
         //$item = $this->getItem();
-        //$mainframe->set( 'person_art', 2 );
+        //$app->set( 'person_art', 2 );
         //JRequest::set('person_art', 2);
         //$form->setValue('request_sports_type_id',$item->sports_type_id);
         //JRequest::setVar('sports_type_id', $item->sports_type_id);
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' form<br><pre>'.print_r($form,true).'</pre>'),'Notice');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' item<br><pre>'.print_r($item,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' form<br><pre>'.print_r($form,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' item<br><pre>'.print_r($item,true).'</pre>'),'Notice');
         
         if (empty($form)) 
 		{
 			return false;
 		}
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.'<br><pre>'.print_r($form->getValue('person_art'),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.'<br><pre>'.print_r($form->getValue('person_art'),true).'</pre>'),'Notice');
         
         switch($form->getValue('person_art'))
         {
@@ -144,17 +144,21 @@ class sportsmanagementModelperson extends JModelAdmin
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
         $form->setFieldAttribute('contact_id', 'type', 'modal_contact');
+        $form->setFieldAttribute('birthday', 'type', 'calendar');
+        $form->setFieldAttribute('deathday', 'type', 'calendar'); 
         }
         else
         {
-        $form->setFieldAttribute('contact_id', 'type', 'modal_contacts');    
+        $form->setFieldAttribute('contact_id', 'type', 'modal_contacts');  
+        $form->setFieldAttribute('birthday', 'type', 'customcalendar');
+        $form->setFieldAttribute('deathday', 'type', 'customcalendar');  
         }
 
-        $prefix = $mainframe->getCfg('dbprefix');
+        $prefix = $app->getCfg('dbprefix');
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' prefix<br><pre>'.print_r($prefix,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' prefix<br><pre>'.print_r($prefix,true).'</pre>'),'');
         //$whichtabel = $this->getTable();
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' whichtabel<br><pre>'.print_r($whichtabel,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' whichtabel<br><pre>'.print_r($whichtabel,true).'</pre>'),'');
         
         $query->select('*');
 			$query->from('information_schema.columns');
@@ -162,16 +166,16 @@ class sportsmanagementModelperson extends JModelAdmin
 			
 			$db->setQuery($query);
             
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             
 			$result = $db->loadObjectList();
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
             
             foreach($result as $field )
         {
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COLUMN_NAME<br><pre>'.print_r($field->COLUMN_NAME,true).'</pre>'),'');
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' DATA_TYPE<br><pre>'.print_r($field->DATA_TYPE,true).'</pre>'),'');
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' CHARACTER_MAXIMUM_LENGTH<br><pre>'.print_r($field->CHARACTER_MAXIMUM_LENGTH,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COLUMN_NAME<br><pre>'.print_r($field->COLUMN_NAME,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' DATA_TYPE<br><pre>'.print_r($field->DATA_TYPE,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' CHARACTER_MAXIMUM_LENGTH<br><pre>'.print_r($field->CHARACTER_MAXIMUM_LENGTH,true).'</pre>'),'');
             
             switch ($field->DATA_TYPE)
             {
@@ -205,7 +209,7 @@ class sportsmanagementModelperson extends JModelAdmin
    */
   public function getAgeGroupID($age) 
 	{
-  $mainframe = JFactory::getApplication();
+  $app = JFactory::getApplication();
   $option = JRequest::getCmd('option');
   
   if ( is_numeric($age) )
@@ -221,7 +225,7 @@ class sportsmanagementModelperson extends JModelAdmin
 //    FROM #__sportsmanagement_agegroup 
 //    WHERE ".$age." >= age_from and ".$age." <= age_to";
 		
-    //$mainframe->enqueueMessage('getAgeGroupID<br><pre>'.print_r($query, true).'</pre><br>','Notice');
+    //$app->enqueueMessage('getAgeGroupID<br><pre>'.print_r($query, true).'</pre><br>','Notice');
 		
 		JFactory::getDbo()->setQuery($query);
 			$person_range = JFactory::getDbo()->loadResult();
@@ -261,7 +265,7 @@ class sportsmanagementModelperson extends JModelAdmin
 	 */
 	function getPerson($person_id=0,$season_person_id=0)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         //// Create a new query object.
 //		$db		= $this->getDbo();
@@ -333,16 +337,16 @@ class sportsmanagementModelperson extends JModelAdmin
     function storeAssign($post)
     {
     $option = JRequest::getCmd('option');
-	$mainframe	= JFactory::getApplication();  
-    $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
-    $this->_team_id = $mainframe->getUserState( "$option.team_id", '0' );
-    $this->_project_team_id = $mainframe->getUserState( "$option.project_team_id", '0' );
-    $this->_season_id = $mainframe->getUserState( "$option.season_id", '0' );
+	$app	= JFactory::getApplication();  
+    $this->_project_id	= $app->getUserState( "$option.pid", '0' );
+    $this->_team_id = $app->getUserState( "$option.team_id", '0' );
+    $this->_project_team_id = $app->getUserState( "$option.project_team_id", '0' );
+    $this->_season_id = $app->getUserState( "$option.season_id", '0' );
     $cid = $post['cid'];
           
     $mdlPerson = JModel::getInstance("person", "sportsmanagementModel");
     $mdlPersonTable = $mdlPerson->getTable();
-    //$mainframe->enqueueMessage(JText::_('sportsmanagementModelPersons storeAssign post<br><pre>'.print_r($post,true).'</pre>'),'');    
+    //$app->enqueueMessage(JText::_('sportsmanagementModelPersons storeAssign post<br><pre>'.print_r($post,true).'</pre>'),'');    
     
     switch ($post['type'])
             {
@@ -461,7 +465,7 @@ class sportsmanagementModelperson extends JModelAdmin
 	 */
 	public function save($data)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
@@ -478,8 +482,8 @@ class sportsmanagementModelperson extends JModelAdmin
        //// Get a db connection.
 //        $db = JFactory::getDbo();
        
-       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
        // request variablen umbauen
        $data['person_art'] = $data['request']['person_art'];
@@ -546,7 +550,7 @@ class sportsmanagementModelperson extends JModelAdmin
 
 		if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 		{
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDBO()->getErrorMsg(),true).'</pre>'),'Error');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDBO()->getErrorMsg(),true).'</pre>'),'Error');
 		}  
         
         }
@@ -581,7 +585,7 @@ class sportsmanagementModelperson extends JModelAdmin
 		$address = implode(', ', $address_parts);
 		$coords = sportsmanagementHelper::resolveLocation($address);
 		
-		//$mainframe->enqueueMessage(JText::_('sportsmanagementModelperson coords -> '.'<pre>'.print_r($coords,true).'</pre>' ),'');
+		//$app->enqueueMessage(JText::_('sportsmanagementModelperson coords -> '.'<pre>'.print_r($coords,true).'</pre>' ),'');
         
         if ( $coords )
         {
@@ -611,7 +615,7 @@ class sportsmanagementModelperson extends JModelAdmin
         $address = implode(',', $address_parts);
         $coords = sportsmanagementHelper::getOSMGeoCoords($address);
 		
-		//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' coords<br><pre>'.print_r($coords,true).'</pre>' ),'');
+		//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' coords<br><pre>'.print_r($coords,true).'</pre>' ),'');
         
         $data['latitude'] = $coords['latitude'];
 		$data['longitude'] = $coords['longitude'];
@@ -647,7 +651,7 @@ class sportsmanagementModelperson extends JModelAdmin
         $data['away_date_end']	= sportsmanagementHelper::convertDate($data['away_date_end'],0);
 
             
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelperson save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelperson save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         //-------extra fields-----------//
         sportsmanagementHelper::saveExtraFields($post,$data['id']);

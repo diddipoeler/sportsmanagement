@@ -72,7 +72,8 @@ class sportsmanagementModelSportsTypes extends JModelList
                         's.checked_out_time'
                         );
                 parent::__construct($config);
-                parent::setDbo(sportsmanagementHelper::getDBConnection());
+                $getDBConnection = sportsmanagementHelper::getDBConnection();
+                parent::setDbo($getDBConnection);
         }
         
     /**
@@ -84,12 +85,12 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -101,7 +102,7 @@ class sportsmanagementModelSportsTypes extends JModelList
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 
 
 //		// Load the parameters.
@@ -120,7 +121,7 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	function getListQuery()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $search	= $this->getState('filter.search');
         // Create a new query object.
@@ -143,7 +144,7 @@ class sportsmanagementModelSportsTypes extends JModelList
                 
 		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
         
 		return $query;
@@ -162,15 +163,15 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public static function getSportsTypes()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $db = JFactory::getDBO();
 		$query='SELECT id, name, name AS text FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type ORDER BY name ASC ';
 		$db->setQuery($query);
 		if (!$result=$db->loadObjectList())
 		{
 			//$this->setError($db->getErrorMsg());COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_NO_RESULT
-            //$mainframe->enqueueMessage(JText::_('getSportsTypes<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-            $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_NO_RESULT'),'Error');
+            //$app->enqueueMessage(JText::_('getSportsTypes<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_NO_RESULT'),'Error');
 			return array();
 		}
 		foreach ($result as $sportstype){

@@ -93,7 +93,7 @@ class sportsmanagementModelallprojectrounds extends JModelLegacy
 	 */
 	function __construct( )
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
     $this->projectid = JRequest::getInt( "p", 0 );
     sportsmanagementModelProject::$projectid = $this->projectid;
 
@@ -103,10 +103,10 @@ class sportsmanagementModelallprojectrounds extends JModelLegacy
 //       $registry = new JRegistry();
 //$registry->loadArray($params);
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'item->id<pre>'.print_r($item->id,true).'</pre>' ),'Error');
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'params<pre>'.print_r($params,true).'</pre>' ),'Error');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'item->id<pre>'.print_r($item->id,true).'</pre>' ),'Error');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'params<pre>'.print_r($params,true).'</pre>' ),'Error');
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'request<pre>'.print_r($_REQUEST,true).'</pre>' ),'Error');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'request<pre>'.print_r($_REQUEST,true).'</pre>' ),'Error');
 
 //$newparams = $registry->toString('ini');
 //$newparams = $registry->toArray();
@@ -116,7 +116,7 @@ foreach ($_REQUEST as $key => $value ) {
             $this->_params[$key] = $value;
         }
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'params<pre>'.print_r($this->_params,true).'</pre>' ),'Error');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'params<pre>'.print_r($this->_params,true).'</pre>' ),'Error');
 
 // 		$this->round = JRequest::getInt( "r", $this->current_round);
 // 		$this->part  = JRequest::getInt( "part", 0);
@@ -142,7 +142,7 @@ foreach ($_REQUEST as $key => $value ) {
    */
   function getProjectMatches()
   {
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
@@ -229,7 +229,7 @@ foreach ($_REQUEST as $key => $value ) {
    */
   function getProjectTeamID($favteams)
   {
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
@@ -263,7 +263,7 @@ $this->ProjectTeams[$value] = $db->loadResult();
    */
   function getSubstitutes()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
@@ -316,8 +316,8 @@ $this->ProjectTeams[$value] = $db->loadResult();
         if ( !$result )
         {
         JError::raiseWarning(0, 'Keine Auswechselungen vorhanden');      
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');    
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');    
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
         }
      else
      {   
@@ -337,7 +337,7 @@ $this->ProjectTeams[$value] = $db->loadResult();
 	 */
 	function getPlayersEvents()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
@@ -364,8 +364,8 @@ $this->ProjectTeams[$value] = $db->loadResult();
 if ( !$res )
         {
         JError::raiseWarning(0, 'Keine Ereignisse vorhanden');     
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');    
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');    
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
         }
         
 		foreach ( $res as $row )
@@ -386,7 +386,7 @@ if ( !$res )
    */
   function getMatchPlayers()
 	{
-	    $mainframe = JFactory::getApplication();
+	    $app = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
@@ -455,8 +455,8 @@ if ( !$res )
         if ( !$matchplayers )
         {
         JError::raiseWarning(0, 'Keine Spieler vorhanden');    
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');    
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');    
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
         }
 		
 // 		echo '<br />matchplayers<pre>~'.print_r($matchplayers,true).'~</pre><br />';

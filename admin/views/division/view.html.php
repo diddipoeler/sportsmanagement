@@ -62,7 +62,7 @@ class sportsmanagementViewDivision extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 		$db	 		= JFactory::getDBO();
 		$uri		= JFactory::getURI();
@@ -80,7 +80,7 @@ class sportsmanagementViewDivision extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		$script = $this->get('Script');
@@ -97,7 +97,7 @@ class sportsmanagementViewDivision extends sportsmanagementView
 		$this->item = $item;
 		$this->script = $script;
         
-        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        $this->project_id	= $app->getUserState( "$option.pid", '0' );
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         $this->assignRef('project',$project);

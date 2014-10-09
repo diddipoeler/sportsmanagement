@@ -62,7 +62,7 @@ class sportsmanagementViewCurve extends JViewLegacy
 	function display($tpl = null)
 	{
 		$option = JRequest::getCmd('option');
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
 		// Get a reference of the page instance in joomla
 		$document = JFactory::getDocument();
 		$uri      = JFactory::getURI();
@@ -74,24 +74,24 @@ class sportsmanagementViewCurve extends JViewLegacy
 		$division	= JRequest::getInt('division', 0);
 
 		$model = $this->getModel();
-		$rankingconfig = sportsmanagementModelProject::getTemplateConfig( "ranking" );
-		$flashconfig   = sportsmanagementModelProject::getTemplateConfig( "flash" );
-		$config        = sportsmanagementModelProject::getTemplateConfig($this->getName());
+		$rankingconfig = sportsmanagementModelProject::getTemplateConfig( "ranking",$model::$cfg_which_database );
+		$flashconfig   = sportsmanagementModelProject::getTemplateConfig( "flash",$model::$cfg_which_database );
+		$config        = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 
-		$this->assign( 'project', sportsmanagementModelProject::getProject() );
+		$this->assign( 'project', sportsmanagementModelProject::getProject($model::$cfg_which_database) );
 
 		if ( isset( $this->project ) )
 		{
 			$teamid1 = $model->teamid1;
 			$teamid2 = $model->teamid2;
 			$options = array(	JHtml::_( 'select.option', '0', JText::_('COM_SPORTSMANAGEMENT_CURVE_CHOOSE_TEAM') ) );
-			$divisions = sportsmanagementModelProject::getDivisions();
+			$divisions = sportsmanagementModelProject::getDivisions(0,$model::$cfg_which_database);
 			if (count($divisions)>0 && $division == 0)
 			{
 				foreach ($divisions as $d)
 				{
 					$options = array();
-					$teams = sportsmanagementModelProject::getTeams($d->id);
+					$teams = sportsmanagementModelProject::getTeams($d->id,'name',$model::$cfg_which_database);
 					$i=0;
 					foreach ((array) $teams as $t) {
 						$options[] = JHtml::_( 'select.option', $t->id, $t->name );
@@ -119,9 +119,9 @@ class sportsmanagementViewCurve extends JViewLegacy
 					$div->name = '';
 				}
 				$divisions[0] = $div;
-				$teams = sportsmanagementModelProject::getTeams($division);
+				$teams = sportsmanagementModelProject::getTeams($division,'name',$model::$cfg_which_database);
                 
-                //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');
                 
 				$i=0;
 				foreach ((array) $teams as $t) {
@@ -141,20 +141,20 @@ class sportsmanagementViewCurve extends JViewLegacy
 				$team2select[$div->id] = JHtml::_('select.genericlist', $options, 'tid2_'.$div->id, 'onchange="reload_curve_chart_'.$div->id.'()" class="inputbox" style="font-size:9px;"','value', 'text', $teamid2);		
 			}
 
-			$this->assign( 'overallconfig', sportsmanagementModelProject::getOverallConfig() );
+			$this->assign( 'overallconfig', sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database) );
 			if ( !isset( $this->overallconfig['seperator'] ) )
 			{
 				$this->overallconfig['seperator'] = ":";
 			}
 			$this->assignRef( 'config', $config );
 			$this->assignRef( 'model', $model);
-			$this->assign( 'colors',          sportsmanagementModelProject::getColors($rankingconfig['colors']) );
+			$this->assign( 'colors',          sportsmanagementModelProject::getColors($rankingconfig['colors'],$model::$cfg_which_database) );
 			$this->assignRef( 'divisions',       $divisions );
 			$this->assign( 'division',        $model->getDivision($division) );
-			$this->assign( 'favteams',        sportsmanagementModelProject::getFavTeams() );
+			$this->assign( 'favteams',        sportsmanagementModelProject::getFavTeams($model::$cfg_which_database) );
 			$this->assign( 'team1',           $model->getTeam1() );
 			$this->assign( 'team2',           $model->getTeam2() );
-			$this->assign( 'allteams',        sportsmanagementModelProject::getTeams($division) );
+			$this->assign( 'allteams',        sportsmanagementModelProject::getTeams($division,'name',$model::$cfg_which_database) );
 			$this->assignRef( 'team1select',     $team1select );
 			$this->assignRef( 'team2select',     $team2select );
 			$this->_setChartdata(array_merge($flashconfig, $rankingconfig));
@@ -177,10 +177,10 @@ class sportsmanagementViewCurve extends JViewLegacy
 	function _setChartdata($config)
 	{
 	   $option = JRequest::getCmd('option');
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         
 		$model 			= $this->getModel();
-		$rounds			= sportsmanagementModelProject::getRounds();
+		$rounds			= sportsmanagementModelProject::getRounds('ASC',$model::$cfg_which_database);
 		$round_labels	= array();
 		foreach ($rounds as $r) 
         {
@@ -196,9 +196,9 @@ class sportsmanagementViewCurve extends JViewLegacy
 		foreach ($divisions as $division)
 		{
 			$data = $model->getDataByDivision($division->id);
-			$allteams = sportsmanagementModelProject::getTeams($division->id);
+			$allteams = sportsmanagementModelProject::getTeams($division->id,'name',$model::$cfg_which_database);
             
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' allteams<br><pre>'.print_r($allteams,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' allteams<br><pre>'.print_r($allteams,true).'</pre>'),'');
             
 			if(empty($allteams) || count($allteams)==0) continue;
 			

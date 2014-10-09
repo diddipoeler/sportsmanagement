@@ -64,15 +64,15 @@ class JFormFieldrankingcolumns extends JFormField
 	{
 		$result = array();
 		$db = JFactory::getDBO();
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
 		$lang = JFactory::getLanguage();
         $option = JRequest::getCmd('option');
         
         $selrankingcol = (int) ($this->element['selrankingcol']);
         
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' element<br><pre>'.print_r($this->element,true).'</pre>'),'Notice');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($this->value,true).'</pre>'),'Notice');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' selrankingcol<br><pre>'.print_r($selrankingcol,true).'</pre>'),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' element<br><pre>'.print_r($this->element,true).'</pre>'),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($this->value,true).'</pre>'),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' selrankingcol<br><pre>'.print_r($selrankingcol,true).'</pre>'),'Notice');
         
         
 
@@ -124,7 +124,7 @@ $mitems[] = JHtml::_('select.option', 'LASTGAMES', JText::_('COM_SPORTSMANAGEMEN
         
     }
     
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' mitems<br><pre>'.print_r($mitems,true).'</pre>'),'Notice');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' mitems<br><pre>'.print_r($mitems,true).'</pre>'),'Notice');
     
 return JHtml::_('select.genericlist',  $mitems, $this->name, 
 				'class="inputbox" size="10" multiple="true" ', 'value', 'text', $this->value, $this->id);   

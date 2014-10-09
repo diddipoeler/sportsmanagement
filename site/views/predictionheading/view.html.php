@@ -61,8 +61,8 @@ class sportsmanagementViewPredictionHeading extends JViewLegacy
 	function display($tpl=null)
 	{
 		$document =  JFactory::getDocument();
-        $mainframe = JFactory::getApplication();		
-//	$js ="registerhome('".JURI::base()."','Prediction Game Extension','".$mainframe->getCfg('sitename')."','0');". "\n";
+        $app = JFactory::getApplication();		
+//	$js ="registerhome('".JURI::base()."','Prediction Game Extension','".$app->getCfg('sitename')."','0');". "\n";
 //    $document->addScriptDeclaration( $js );	
     
         parent::display($tpl);

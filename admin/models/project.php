@@ -100,12 +100,12 @@ class sportsmanagementModelProject extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.
         $db = JFactory::getDBO();
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
 
         //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
         
@@ -116,7 +116,7 @@ class sportsmanagementModelProject extends JModelAdmin
 			return false;
 		}
         
-        //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__FUNCTION__. '<br><pre>'.print_r($form,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__FILE__.' '.__FUNCTION__. '<br><pre>'.print_r($form,true).'</pre>'),'Notice');
         $sports_type_id = $form->getValue('sports_type_id');
         
         $query = $db->getQuery(true);
@@ -140,10 +140,10 @@ class sportsmanagementModelProject extends JModelAdmin
             break;
         }
         
-        //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__FUNCTION__. ' sports_type_id<br><pre>'.print_r($result,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__FILE__.' '.__FUNCTION__. ' sports_type_id<br><pre>'.print_r($result,true).'</pre>'),'Notice');
         
         switch ( JComponentHelper::getParams($option)->get('which_article_component') )
-    {
+        {
         case 'com_content':
         $form->setFieldAttribute('category_id', 'type', 'category');
         $form->setFieldAttribute('category_id', 'extension', 'com_content');
@@ -152,7 +152,17 @@ class sportsmanagementModelProject extends JModelAdmin
         $form->setFieldAttribute('category_id', 'type', 'categorylistk2');
 
         break;
-    }
+        }
+        
+        // welche joomla version ?
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        $form->setFieldAttribute('start_date', 'type', 'calendar'); 
+        }
+        else
+        {
+        $form->setFieldAttribute('start_date', 'type', 'customcalendar');  
+        }
         
         $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($option)->get('ph_logo_big',''));
         $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/projects');
@@ -224,7 +234,7 @@ class sportsmanagementModelProject extends JModelAdmin
 	 */
 	function getProjectTeam($projectteam_id)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $query = JFactory::getDbo()->getQuery(true);
        
        $query->select('t.*');
@@ -251,7 +261,7 @@ class sportsmanagementModelProject extends JModelAdmin
 	 */
 	function getProject($project_id)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        //// Create a new query object.
 //		$db = JFactory::getDbo();
@@ -280,8 +290,8 @@ class sportsmanagementModelProject extends JModelAdmin
 	function getProjectTeams($project_id)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
-		//$project_id = $mainframe->getUserState($option . 'project');
+		$app	= JFactory::getApplication();
+		//$project_id = $app->getUserState($option . 'project');
 
 		$query = '	SELECT	pt.id AS value,
 							t.name AS text,
@@ -315,12 +325,12 @@ class sportsmanagementModelProject extends JModelAdmin
 	function getProjectTeamsOptions($project_id,$iDivisionId=0)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
         //$db	= $this->getDbo();
 		$query = JFactory::getDbo()->getQuery(true);
-        $this->project_art_id	= $mainframe->getUserState( "$option.project_art_id", '0' );
+        $this->project_art_id	= $app->getUserState( "$option.project_art_id", '0' );
         
-		//$project_id = $mainframe->getUserState($option . 'project');
+		//$project_id = $app->getUserState($option . 'project');
         
         if ( $this->project_art_id == 3 )
         {
@@ -374,13 +384,13 @@ class sportsmanagementModelProject extends JModelAdmin
 	 */
 	public function delete(&$pks)
 	{
-	$mainframe = JFactory::getApplication();
+	$app = JFactory::getApplication();
     $option = JRequest::getCmd('option');
     $success = $this->deleteProjectsData($pks);  
     
     if ( $success )
     {
-    $mainframe->setUserState( "$option.pid", 0 );     
+    $app->setUserState( "$option.pid", 0 );     
     return parent::delete($pks);
     }
          
@@ -395,7 +405,7 @@ class sportsmanagementModelProject extends JModelAdmin
 	 */
 	function deleteProjectsData($pk=array())
 	{
-	$mainframe = JFactory::getApplication();
+	$app = JFactory::getApplication();
 
     $query = JFactory::getDbo()->getQuery(true);
     
@@ -529,9 +539,9 @@ class sportsmanagementModelProject extends JModelAdmin
             $temp->id = $id;
             $export[] = $temp;
             }
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' export<br><pre>'.print_r($export,true).'</pre>'),'');    
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' export<br><pre>'.print_r($export,true).'</pre>'),'');    
             $this->_tables_to_delete = array_merge($export);
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _tables_to_delete<br><pre>'.print_r($this->_tables_to_delete,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _tables_to_delete<br><pre>'.print_r($this->_tables_to_delete,true).'</pre>'),'');
             
             // jetzt starten wir das löschen
             foreach( $this->_tables_to_delete as $row_to_delete )
@@ -542,7 +552,7 @@ class sportsmanagementModelProject extends JModelAdmin
             sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             if ( self::$db_num_rows )
             {
-            $mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT'.strtoupper($row_to_delete->table).'_ITEMS_DELETED',self::$db_num_rows),'');
+            $app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT'.strtoupper($row_to_delete->table).'_ITEMS_DELETED',self::$db_num_rows),'');
             }    
             }
             
@@ -563,7 +573,7 @@ class sportsmanagementModelProject extends JModelAdmin
 	 */
 	public function saveshort()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
@@ -578,8 +588,8 @@ class sportsmanagementModelProject extends JModelAdmin
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        $app->enqueueMessage(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        $app->enqueueMessage(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($post, true).'</pre><br>','Notice');
         }
         
         //$result=true;
@@ -607,7 +617,7 @@ class sportsmanagementModelProject extends JModelAdmin
 	 */
 	public function save($data)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $address_parts = array();
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
@@ -617,7 +627,7 @@ class sportsmanagementModelProject extends JModelAdmin
 	   $data['modified_by'] = $user->get('id');
        $date = time();    // aktuelles Datum
        
-       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
        
        //$data['modified'] = date('Y-m-d H:i:s', $date);
        //$post['modified'] = $date->toSql();
@@ -645,7 +655,7 @@ class sportsmanagementModelProject extends JModelAdmin
 			$data['extendeduser'] = (string)$parameter;
 		}
         
-       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
        
        //-------extra fields-----------//
         sportsmanagementHelper::saveExtraFields($post,$data['id']);

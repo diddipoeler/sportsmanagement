@@ -48,7 +48,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 	{
 		?>
 		<td class="picture"><?php
-		$picturetext=JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PICTURE' );
+		$picturetext = JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PICTURE' );
 		$imgTitle = JText::sprintf( $picturetext , sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]) );
 		$picture = isset($this->teamPlayer) ? $this->teamPlayer->picture : null;
 		if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player") ))

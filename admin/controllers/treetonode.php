@@ -22,7 +22,7 @@ class sportsmanagementControllerTreetonode extends JControllerLegacy
 	public function display($cachable = false, $urlparams = false)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$document = JFactory::getDocument();
 
 	 	$model=$this->getModel('treetonodes');
@@ -31,14 +31,14 @@ class sportsmanagementControllerTreetonode extends JControllerLegacy
 		$view->setModel($model,true);	// true is for the default model;
 
 		$projectws=$this->getModel('project');
-		$projectws->setId($mainframe->getUserState($option.'project',0));
+		$projectws->setId($app->getUserState($option.'project',0));
 		$view->setModel($projectws);
 		if ( $tid = JRequest::getVar( 'tid', null, '', 'array' ) )
 		{
-			$mainframe->setUserState( $option . 'treeto_id', $tid[0] );
+			$app->setUserState( $option . 'treeto_id', $tid[0] );
 		}
 		$treetows = $this->getModel( 'treeto' );
-		$treetows->setId( $mainframe->getUserState( $option.'treeto_id') );
+		$treetows->setId( $app->getUserState( $option.'treeto_id') );
 		$view->setModel( $treetows );
 		
 		switch($this->getTask())
@@ -67,9 +67,9 @@ class sportsmanagementControllerTreetonode extends JControllerLegacy
 	public function removenode()
 	{
 		
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
 		$post	= JRequest::get( 'post' );
-		$post['treeto_id']=$mainframe->getUserState($option.'treeto_id',0);
+		$post['treeto_id']=$app->getUserState($option.'treeto_id',0);
 		$model		= $this->getModel( 'treetonodes' );
 		if ( $model->setRemoveNode() )
 		{
@@ -85,7 +85,7 @@ class sportsmanagementControllerTreetonode extends JControllerLegacy
 
 	public function unpublishnode()
 	{
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
 		$post	= JRequest::get( 'post' );
 		$model		= $this->getModel( 'treetonode' );
 		if ( $model->setUnpublishNode() )
@@ -105,9 +105,9 @@ class sportsmanagementControllerTreetonode extends JControllerLegacy
 	{
 		JSession::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$post=JRequest::get('post');
-		$post['treeto_id']=$mainframe->getUserState($option.'treeto_id',0);
+		$post['treeto_id']=$app->getUserState($option.'treeto_id',0);
 		$cid=JRequest::getVar('cid',array(),'post','array');
 		JArrayHelper::toInteger($cid);
 		$model=$this->getModel('treetonodes');
@@ -127,9 +127,9 @@ class sportsmanagementControllerTreetonode extends JControllerLegacy
 	{
 		JSession::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
 		$option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
 		$post	= JRequest::get( 'post' );
-		$post['treeto_id']=$mainframe->getUserState($option.'treeto_id',0);
+		$post['treeto_id']=$app->getUserState($option.'treeto_id',0);
 		$model		= $this->getModel( 'treetonodes' );
 
 		if ( $model->storefinishleaf() )
@@ -148,7 +148,7 @@ class sportsmanagementControllerTreetonode extends JControllerLegacy
 	{
 		JSession::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$post=JRequest::get('post');
 		$cid=JRequest::getVar('cid',array(),'post','array');
 		JArrayHelper::toInteger($cid);
@@ -169,7 +169,7 @@ class sportsmanagementControllerTreetonode extends JControllerLegacy
 	{
 		JSession::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$post=JRequest::get('post');
 		$model=$this->getModel('treetonode');
 
@@ -198,10 +198,10 @@ class sportsmanagementControllerTreetonode extends JControllerLegacy
 	public function assignmatch()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$post=JRequest::get('post');
-		$post['project_id']=$mainframe->getUserState($option.'project',0);
-		$post['node_id']=$mainframe->getUserState($option.'node_id',0);
+		$post['project_id']=$app->getUserState($option.'project',0);
+		$post['node_id']=$app->getUserState($option.'node_id',0);
 		$model=$this->getModel('treetonode');
 		if ($model->store($post))
 		{

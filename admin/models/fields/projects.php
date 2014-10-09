@@ -64,7 +64,7 @@ class JFormFieldProjects extends JFormFieldList
 //	protected function getInput()
 //    {
 //    $options = array();
-//    $mainframe = JFactory::getApplication();    
+//    $app = JFactory::getApplication();    
 //    $val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
 //        $value = $this->form->getValue($val,'request');
 //        
@@ -78,14 +78,14 @@ class JFormFieldProjects extends JFormFieldList
 //        $div = 'request';
 //        }
 //        
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database -> <br><pre>'.print_r($this->form->getValue('cfg_which_database',$div),true).'</pre>'),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database -> <br><pre>'.print_r($this->form->getValue('cfg_which_database',$div),true).'</pre>'),'Notice');
 //            
 //    }
     
     protected function getOptions() 
     {
         $options = array();
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
 		//$db = JFactory::getDBO();
 		$lang = JFactory::getLanguage();
         // welche tabelle soll genutzt werden
@@ -105,7 +105,7 @@ class JFormFieldProjects extends JFormFieldList
         $div = 'request';
         }
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database -> <br><pre>'.print_r($this->form->getValue('cfg_which_database',$div),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database -> <br><pre>'.print_r($this->form->getValue('cfg_which_database',$div),true).'</pre>'),'Notice');
         
         $cfg_which_database = $this->form->getValue('cfg_which_database',$div);
         if ( !$cfg_which_database )

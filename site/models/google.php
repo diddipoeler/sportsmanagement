@@ -30,14 +30,14 @@ class sportsmanagementModelGoogle extends JModelLegacy
 
 	public function getDBCalendars() 
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
 		if ($this->cached_data == null) 
         {
 			$calendars = jsmGCalendarDBUtil::getAllCalendars();
 			$this->cached_data = $calendars;
 		}
         
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cached_data<br><pre>'.print_r($this->cached_data,true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cached_data<br><pre>'.print_r($this->cached_data,true).'</pre>'),'Notice');
         
 		return $this->cached_data;
 	}

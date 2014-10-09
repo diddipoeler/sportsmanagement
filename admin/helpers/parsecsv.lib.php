@@ -363,7 +363,7 @@ class parseCSV {
 	 * @return  2D array with CSV data, or false on failure
 	 */
 	function parse_string ($data = null) {
-	$mainframe	=& JFactory::getApplication();
+	$app	=& JFactory::getApplication();
 		if ( empty($data) ) {
 			if ( $this->_check_data() ) {
 				$data = &$this->file_data;
@@ -423,9 +423,9 @@ class parseCSV {
     {
 	  $letters[] = 'I'.$buchstabe;
     }
-    //$mainframe->enqueueMessage(JText::_('data<br><pre>'.print_r($data,true).'</pre>'   ),'');
-    //$mainframe->enqueueMessage(JText::_('letters<br><pre>'.print_r($letters,true).'</pre>'   ),'');
-    //$mainframe->enqueueMessage(JText::_('strlen<br><pre>'.print_r($strlen,true).'</pre>'   ),'');
+    //$app->enqueueMessage(JText::_('data<br><pre>'.print_r($data,true).'</pre>'   ),'');
+    //$app->enqueueMessage(JText::_('letters<br><pre>'.print_r($letters,true).'</pre>'   ),'');
+    //$app->enqueueMessage(JText::_('strlen<br><pre>'.print_r($strlen,true).'</pre>'   ),'');
 		
 		// walk through each character
 		for ( $i=0; $i < $strlen; $i++ ) {
@@ -505,7 +505,7 @@ class parseCSV {
               //$head[$key] = 'Spalte'. ( $key + 1 );
               $head[$key] = $letters[$key];
               }
-//$mainframe->enqueueMessage(JText::_('head2<br><pre>'.print_r($head,true).'</pre>'   ),'');							
+//$app->enqueueMessage(JText::_('head2<br><pre>'.print_r($head,true).'</pre>'   ),'');							
 						} elseif ( empty($this->fields) || (!empty($this->fields) && (($this->heading && $row_count > 0) || !$this->heading)) ) {
 							if ( !empty($this->sort_by) && !empty($row[$this->sort_by]) ) {
 								if ( isset($rows[$row[$this->sort_by]]) ) {

@@ -63,7 +63,7 @@ class sportsmanagementViewPredictionGames extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
     $model = $this->getModel();
     $starttime = microtime();
 		$document	= JFactory::getDocument();
@@ -74,8 +74,8 @@ class sportsmanagementViewPredictionGames extends sportsmanagementView
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
     
-		//$prediction_id		= (int) $mainframe->getUserState( $option . 'prediction_id' );
-        //$this->prediction_id	= $mainframe->getUserState( "$option.prediction_id", '0' );
+		//$prediction_id		= (int) $app->getUserState( $option . 'prediction_id' );
+        //$this->prediction_id	= $app->getUserState( "$option.prediction_id", '0' );
         $modalheight = JComponentHelper::getParams($option)->get('modal_popup_height', 600);
         $modalwidth = JComponentHelper::getParams($option)->get('modal_popup_width', 900);
 		$this->assignRef( 'modalheight',$modalheight );
@@ -87,14 +87,14 @@ class sportsmanagementViewPredictionGames extends sportsmanagementView
 		$lists				= array();
 
         
-        $this->prediction_id	= $mainframe->getUserStateFromRequest( $option .'.'.$model->_identifier, 'prediction_id', '0' );
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewPredictionGames prediction_id<br><pre>'.print_r($this->prediction_id,true).'</pre>'),'Notice');
+        $this->prediction_id	= $app->getUserStateFromRequest( $option .'.'.$model->_identifier, 'prediction_id', '0' );
+        //$app->enqueueMessage(JText::_('sportsmanagementViewPredictionGames prediction_id<br><pre>'.print_r($this->prediction_id,true).'</pre>'),'Notice');
 
 $items = $this->get('Items');
 
 if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		$total = $this->get('Total');
@@ -105,7 +105,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         
         if ( !$items )
         {
-        $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_GAMES'),'Error');
+        $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_GAMES'),'Error');
         }
         
 
@@ -169,7 +169,7 @@ $this->icon = 'pred-cpanel';
 		JToolBarHelper::custom('predictiongame.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('predictiongame.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('','predictiongames.delete', 'JTOOLBAR_DELETE');
-        
+        JToolbarHelper::checkin('predictiongroups.checkin');
 		parent::addToolbar();  
         
         

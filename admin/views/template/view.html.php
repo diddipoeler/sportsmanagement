@@ -66,7 +66,7 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 		$app = JFactory::getApplication();
 		$uri = JFactory::getURI();
 		$user = JFactory::getUser();
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$model = $this->getModel();
 		$lists = array();
         $starttime = microtime(); 
@@ -81,7 +81,7 @@ class sportsmanagementViewTemplate extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		$script = $this->get('Script');
@@ -89,9 +89,9 @@ class sportsmanagementViewTemplate extends sportsmanagementView
  /*       
         if (is_array($item->params))
         {
-        $mainframe->enqueueMessage(JText::_('sportsmanagementViewTemplate params<br><pre>'.print_r($item->params,true).'</pre>'),'Error');  
+        $app->enqueueMessage(JText::_('sportsmanagementViewTemplate params<br><pre>'.print_r($item->params,true).'</pre>'),'Error');  
         $item->params = json_encode($item->params,true);  
-        $mainframe->enqueueMessage(JText::_('sportsmanagementViewTemplate new params<br><pre>'.print_r($item->params,true).'</pre>'),'Error');
+        $app->enqueueMessage(JText::_('sportsmanagementViewTemplate new params<br><pre>'.print_r($item->params,true).'</pre>'),'Error');
         }
  */
  
@@ -102,7 +102,7 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 			return false;
 		}
 		
-        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        $this->project_id	= $app->getUserState( "$option.pid", '0' );
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         
@@ -110,7 +110,7 @@ class sportsmanagementViewTemplate extends sportsmanagementView
         $templatepath = JPATH_COMPONENT_SITE.DS.'settings';
         $xmlfile = $templatepath.DS.'default'.DS.$item->template.'.xml';
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewTemplate xmlfile<br><pre>'.print_r($xmlfile,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementViewTemplate xmlfile<br><pre>'.print_r($xmlfile,true).'</pre>'),'Notice');
         
         $form = JForm::getInstance($item->template, $xmlfile,array('control'=> 'params'));
 		//$form->bind($jRegistry);
@@ -122,7 +122,7 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 		//$this->item = $item;
 		$this->script = $script;
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->form->getName(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->form->getName(),true).'</pre>'),'Notice');
         
         switch ( $this->form->getName() )
         {
@@ -139,7 +139,7 @@ class sportsmanagementViewTemplate extends sportsmanagementView
             {
             $count = 1;    
             $teile = explode(";",$colors);    
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($teile,true).'</pre>'),'Notice');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($teile,true).'</pre>'),'Notice');
             foreach($teile as $key => $value )
             {
             $teile2 = explode(",",$value);      
@@ -149,8 +149,8 @@ class sportsmanagementViewTemplate extends sportsmanagementView
             $this->form->setValue('colors_ranking',null,$colors_ranking);
             }
             //$this->form->setFieldAttribute('colors_ranking','default' , $iProjectTeamsCount);
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($colors,true).'</pre>'),'Notice');
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($colors_ranking,true).'</pre>'),'Notice');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($colors,true).'</pre>'),'Notice');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($colors_ranking,true).'</pre>'),'Notice');
             
             break;
         }

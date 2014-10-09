@@ -187,7 +187,7 @@ return $this->which_first_round;
  */
 function getTreeBracketRoundWidth()
 {
-global $mainframe;
+global $app;
     
 //-- Einlesen der Feldnamen
 if ( $this->project_art_id == 3 )
@@ -209,7 +209,7 @@ $this->jl_tree_bracket_round_width = 16 + ( $this->team_strlen * 4 ) + 25 + 100;
 $fieldName = $this->request['tree_name'];
 $fieldtype = $tFields[$tableName][$fieldName]->Type;
   
-//$mainframe->enqueueMessage(JText::_('feldtyp -> '.$fieldtype),'Notice');
+//$app->enqueueMessage(JText::_('feldtyp -> '.$fieldtype),'Notice');
 
 return $this->jl_tree_bracket_round_width;    
 }
@@ -280,7 +280,7 @@ return $this->color_to;
 function getTournamentName()
 {
 $option = JRequest::getCmd('option');
-$mainframe = JFactory::getApplication();
+$app = JFactory::getApplication();
 $user = JFactory::getUser();
 
 $db = JFactory::getDBO();
@@ -309,12 +309,12 @@ $this->project_art_id = $result->project_art_id;
 function getTournamentRounds()
 {
 $option = JRequest::getCmd('option');
-$mainframe	= JFactory::getApplication();
+$app	= JFactory::getApplication();
 $user = JFactory::getUser();
 $db = JFactory::getDBO();
 $query = $db->getQuery(true);
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' request<br><pre>'.print_r($this->request,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' request<br><pre>'.print_r($this->request,true).'</pre>'),'');
 
 if ( $this->debug_info )
 {
@@ -387,7 +387,7 @@ $query->order("ro.roundcode DESC");
 
 $db->setQuery($query);
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
 if ( $this->debug_info )
 {
@@ -426,7 +426,7 @@ return '['.implode(",",$temp_rounds).']';
 function getTournamentMatches($rounds)
 {
 $option = JRequest::getCmd('option');
-$mainframe = JFactory::getApplication();
+$app = JFactory::getApplication();
 $user = JFactory::getUser();
 
 $db = JFactory::getDBO();
@@ -1223,7 +1223,7 @@ if ( $this->debug_info )
 echo 'Gesamt. varteams -> <br /><pre>~'.print_r($varteams,true).'~</pre><br />';
 }
 
-//$mainframe->enqueueMessage(JText::_('laengster mannschafts string -> '.$this->team_strlen),'Notice');
+//$app->enqueueMessage(JText::_('laengster mannschafts string -> '.$this->team_strlen),'Notice');
 
 return implode(",",$varteams);
 
@@ -1239,7 +1239,7 @@ function getTournamentResults($rounds)
 {
     
 $option = JRequest::getCmd('option');
-$mainframe = JFactory::getApplication();
+$app = JFactory::getApplication();
 $user = JFactory::getUser();
 
 $db = JFactory::getDBO();

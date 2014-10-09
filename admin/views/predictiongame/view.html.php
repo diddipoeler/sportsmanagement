@@ -60,7 +60,7 @@ class sportsmanagementViewPredictionGame extends sportsmanagementView
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$uri 	= JFactory::getURI();
 		$user 	= JFactory::getUser();
 		$model	= $this->getModel();

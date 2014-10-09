@@ -94,13 +94,13 @@ class sportsmanagementModelclub extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $db		= $this->getDbo();
         $query = $db->getQuery(true);
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
         $show_team_community = JComponentHelper::getParams($option)->get('show_team_community',0);
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.club', 'club', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
@@ -111,6 +111,18 @@ class sportsmanagementModelclub extends JModelAdmin
         if ( !$show_team_community )
         {
             $form->setFieldAttribute('merge_teams', 'type', 'hidden');
+        }
+        
+        // welche joomla version ?
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        $form->setFieldAttribute('founded', 'type', 'calendar');
+        $form->setFieldAttribute('dissolved', 'type', 'calendar');  
+        }
+        else
+        {
+        $form->setFieldAttribute('founded', 'type', 'customcalendar');  
+        $form->setFieldAttribute('dissolved', 'type', 'customcalendar');
         }
         
         $form->setFieldAttribute('logo_small', 'default', JComponentHelper::getParams($option)->get('ph_logo_small',''));
@@ -133,11 +145,11 @@ class sportsmanagementModelclub extends JModelAdmin
         $form->setFieldAttribute('trikot_away', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/clubs/trikot_away');
         $form->setFieldAttribute('trikot_away', 'type', $cfg_which_media_tool);
         
-        $prefix = $mainframe->getCfg('dbprefix');
+        $prefix = $app->getCfg('dbprefix');
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prefix<br><pre>'.print_r($prefix,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prefix<br><pre>'.print_r($prefix,true).'</pre>'),'');
         //$whichtabel = $this->getTable();
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' whichtabel<br><pre>'.print_r($whichtabel,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' whichtabel<br><pre>'.print_r($whichtabel,true).'</pre>'),'');
         
         $query->select('*');
 			$query->from('information_schema.columns');
@@ -145,16 +157,16 @@ class sportsmanagementModelclub extends JModelAdmin
 			
 			$db->setQuery($query);
             
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             
 			$result = $db->loadObjectList();
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
             
             foreach($result as $field )
         {
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' COLUMN_NAME<br><pre>'.print_r($field->COLUMN_NAME,true).'</pre>'),'');
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' DATA_TYPE<br><pre>'.print_r($field->DATA_TYPE,true).'</pre>'),'');
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' CHARACTER_MAXIMUM_LENGTH<br><pre>'.print_r($field->CHARACTER_MAXIMUM_LENGTH,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' COLUMN_NAME<br><pre>'.print_r($field->COLUMN_NAME,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' DATA_TYPE<br><pre>'.print_r($field->DATA_TYPE,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' CHARACTER_MAXIMUM_LENGTH<br><pre>'.print_r($field->CHARACTER_MAXIMUM_LENGTH,true).'</pre>'),'');
             
             switch ($field->COLUMN_NAME)
             {
@@ -239,7 +251,7 @@ class sportsmanagementModelclub extends JModelAdmin
 	 */
 	function saveshort()
 	{
-		$mainframe =& JFactory::getApplication();
+		$app =& JFactory::getApplication();
         $option = JRequest::getCmd('option');
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // Get the input
@@ -248,8 +260,8 @@ class sportsmanagementModelclub extends JModelAdmin
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage('saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        $mainframe->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        $app->enqueueMessage('saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        $app->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
         }
         
         $result=true;
@@ -301,7 +313,7 @@ class sportsmanagementModelclub extends JModelAdmin
 			if(!$tblClub->store()) 
             {
 				//$this->setError($this->_db->getErrorMsg());
-                $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(), true).'</pre><br>','Error');
+                $app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(), true).'</pre><br>','Error');
 				$result = false;
 			}
 		}
@@ -317,7 +329,7 @@ class sportsmanagementModelclub extends JModelAdmin
      */
     function teamsofclub($club_id)
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $db	= $this->getDbo();
         $query = $db->getQuery(true);
@@ -341,15 +353,15 @@ return $teamsofclub;
 	 */
 	public function save($data)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
        $address_parts = array();
        $address_parts2 = array();
        $post = JRequest::get('post');
        
-//       $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-//       $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        
        // gibt es vereinsnamen zum ändern ?
        if (isset($post['team_id']) && is_array($post['team_id'])) 
@@ -400,7 +412,7 @@ return $teamsofclub;
             $data['dissolved_year'] = $data['dissolved_year'];
         }
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
         
         if (!empty($data['address']))
 		{
@@ -431,15 +443,15 @@ return $teamsofclub;
 		$address = implode(', ', $address_parts);
 		$coords = sportsmanagementHelper::resolveLocation($address);
 		
-//		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' address_parts<br><pre>'.print_r($address_parts,true).'</pre>' ),'');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' coords<br><pre>'.print_r($coords,true).'</pre>' ),'');
+//		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' address_parts<br><pre>'.print_r($address_parts,true).'</pre>' ),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' coords<br><pre>'.print_r($coords,true).'</pre>' ),'');
         
         if ( !$coords )
         {
         $address = implode(', ', $address_parts2);
 		$coords = sportsmanagementHelper::resolveLocation($address);
-//		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' address_parts2<br><pre>'.print_r($address_parts2,true).'</pre>' ),'');
-//		$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' coords<br><pre>'.print_r($coords,true).'</pre>' ),'');    
+//		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' address_parts2<br><pre>'.print_r($address_parts2,true).'</pre>' ),'');
+//		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' coords<br><pre>'.print_r($coords,true).'</pre>' ),'');    
         }    
         
         if ( $coords )
@@ -471,7 +483,7 @@ return $teamsofclub;
         $address = implode(',', $address_parts);
         $coords = sportsmanagementHelper::getOSMGeoCoords($address);
 		
-		//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' coords<br><pre>'.print_r($coords,true).'</pre>' ),'');
+		//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' coords<br><pre>'.print_r($coords,true).'</pre>' ),'');
         
         $data['latitude'] = $coords['latitude'];
 		$data['longitude'] = $coords['longitude'];
@@ -498,8 +510,8 @@ return $teamsofclub;
 			$data['extendeduser'] = (string)$parameter;
 		}
         
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nach bereinigung post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nach bereinigung data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nach bereinigung post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nach bereinigung data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         //-------extra fields-----------//
         sportsmanagementHelper::saveExtraFields($post,$data['id']);

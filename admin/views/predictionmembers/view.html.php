@@ -62,9 +62,9 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
   public function init ()
 	{
 	   
-       $mainframe = JFactory::getApplication();
+       $app = JFactory::getApplication();
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
 
     if ( $this->getLayout() == 'default' || $this->getLayout() == 'default_3' )
 		{
@@ -90,7 +90,7 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
    */
   function _editlist( $tpl = null )
 	{
-		$mainframe			= JFactory::getApplication();
+		$app			= JFactory::getApplication();
     $db					= JFactory::getDBO();
 		$uri				= JFactory::getURI();
 		//$document =& JFactory::getDocument();
@@ -115,7 +115,7 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
 		
 
     		
-		$prediction_id		= (int) $mainframe->getUserState( $option . 'prediction_id' );
+		$prediction_id		= (int) $app->getUserState( $option . 'prediction_id' );
 		$prediction_name = $this->getModel()->getPredictionProjectName($prediction_id);
 		$this->assignRef( 'prediction_name',			$prediction_name );
 		
@@ -165,7 +165,7 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
      */
     function _display( $tpl = null )
 	{
-$mainframe = JFactory::getApplication();
+$app = JFactory::getApplication();
 		$document = JFactory::getDocument();
 		$option = JRequest::getCmd('option');
     $model	= $this->getModel();
@@ -222,7 +222,7 @@ $mainframe = JFactory::getApplication();
 	*/
 	protected function addToolbar()
 	{
-	  // $mainframe = JFactory::getApplication();
+	  // $app = JFactory::getApplication();
 //       $option = JRequest::getCmd('option');
 //	// Get a refrence of the page instance in joomla
 //        $document = JFactory::getDocument();
@@ -243,7 +243,7 @@ $mainframe = JFactory::getApplication();
 		  JToolBarHelper::unpublishList('predictionmembers.unpublish', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_REJECT' ) );
           JToolBarHelper::deleteList( '','predictionmembers.remove' );  
         }
-		
+		JToolbarHelper::checkin('predictionmembers.checkin');
 
         
         parent::addToolbar();

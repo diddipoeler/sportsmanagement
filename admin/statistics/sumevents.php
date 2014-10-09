@@ -83,12 +83,12 @@ class SMStatisticSumevents extends SMStatistic
 	
 	function getQuotedSids()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         
 		$params = SMStatistic::getParams();
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
         
 		//$stat_ids = explode(',', $params->get('stat_ids'));
         $stat_ids = $params->get('stat_ids');
@@ -122,7 +122,7 @@ class SMStatisticSumevents extends SMStatistic
 
 	function getPlayerStatsByGame($teamplayer_ids, $project_id)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $sids = self::getQuotedSids();
 		$db = JFactory::getDBO();
@@ -149,7 +149,7 @@ class SMStatisticSumevents extends SMStatistic
 		$db->setQuery($query);
 		$res = $db->loadObjectList('match_id');
         
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' res<br><pre>'.print_r($res,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' res<br><pre>'.print_r($res,true).'</pre>'),'');
 
 		// Determine total for the whole project
 		$totals = new stdclass;

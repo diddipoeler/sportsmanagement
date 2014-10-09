@@ -66,9 +66,9 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 	{
 		$document=JFactory::getDocument();
         $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         
-        $project_id = $mainframe->getUserState( "$option.pid", '0' );
+        $project_id = $app->getUserState( "$option.pid", '0' );
         $model	= $this->getModel();
         $my_text = '';
         
@@ -77,7 +77,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         DEFINE( 'COM_SPORTSMANAGEMENT_MODEL_ERRORLOG',$databasetool );
         
         sportsmanagementHelper::isJoomlaVersion('2.5');
-        //$mainframe->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
+        //$app->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
         
         // für den import die jl tabellen lesen
         $jl_table_import = $databasetool->getJoomleagueTables();
@@ -90,47 +90,47 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         // JPluginHelper::isEnabled( 'system', 'jqueryeasy' )
         if ( $model->getInstalledPlugin('jqueryeasy')  )
         {
-            //$mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_JQUERY_AVAILABLE'),'Notice');
+            //$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_JQUERY_AVAILABLE'),'Notice');
             $this->jquery = '0';
             if ( !JPluginHelper::isEnabled( 'system', 'jqueryeasy' )  )
             {
-                $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_JQUERY_NOT_ENABLED'),'Error');
+                $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_JQUERY_NOT_ENABLED'),'Error');
             }
         }
         else
         {
-            $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_JQUERY_NOT_AVAILABLE'),'Error');
+            $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_JQUERY_NOT_AVAILABLE'),'Error');
             $this->jquery = '1';
         }
         
         if ( $model->getInstalledPlugin('plugin_googlemap3') )
         {
-            //$mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GOOGLEMAP_AVAILABLE'),'Notice');
+            //$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GOOGLEMAP_AVAILABLE'),'Notice');
             $this->googlemap = '0';
             if ( !JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' )  )
             {
-                $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GOOGLEMAP_NOT_ENABLED'),'Error');
+                $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GOOGLEMAP_NOT_ENABLED'),'Error');
             }
         }
         else
         {
-            $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GOOGLEMAP_NOT_AVAILABLE'),'Error');
+            $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GOOGLEMAP_NOT_AVAILABLE'),'Error');
             $this->googlemap = '1';
         }
         
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($country,true).'</pre>'),'Notice');
         
         $this->aktversion = $model->checkUpdateVersion();
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->aktversion,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->aktversion,true).'</pre>'),'Notice');
         
         if ( !$this->aktversion )
         {
-            $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_COMPONENT_UP_TO_DATE'),'');
+            $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_COMPONENT_UP_TO_DATE'),'');
         }  
         else
         {
-            $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_COMPONENT_UPDATE'),'Notice');
+            $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_COMPONENT_UPDATE'),'Notice');
         }
         
         if ( $sm_quotes )
@@ -148,7 +148,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         
         if ( $checksporttype )
         {
-        //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_SPORT_TYPE_SUCCESS',strtoupper($type)),'');    
+        //$app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_SPORT_TYPE_SUCCESS',strtoupper($type)),'');    
          $my_text .= '<span style="color:'.$model->existingInDbColor.'"><strong>';
 					$my_text .= JText::_('Installierte Sportarten').'</strong></span><br />';
 					$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_SPORT_TYPE_SUCCESS',strtoupper($type)).'<br />';
@@ -163,7 +163,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         foreach ( $country as $keyc => $typec )
         {    
         $insert_agegroup = $databasetool->insertAgegroup($typec,$insert_sport_type);    
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($insert_agegroup,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($insert_agegroup,true).'</pre>'),'');
         $model->_success_text['Altersgruppen:'] .= $insert_agegroup;  
         }
         }
@@ -171,7 +171,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         }
         else
         {
-        //$mainframe->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_SPORT_TYPE_ERROR',strtoupper($type)),'Error');
+        //$app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_SPORT_TYPE_ERROR',strtoupper($type)),'Error');
         $my_text .= '<span style="color:'.$model->storeFailedColor.'"><strong>';
 					$my_text .= JText::_('Fehlende Sportarten').'</strong></span><br />';
 					$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_SPORT_TYPE_ERROR',strtoupper($type)).'<br />';
@@ -187,11 +187,11 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         foreach ( $country as $keyc => $typec )
         {    
         $insert_agegroup = $databasetool->insertAgegroup($typec,$insert_sport_type);  
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($insert_agegroup,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($insert_agegroup,true).'</pre>'),'');
         $model->_success_text['Altersgruppen:'] .= $insert_agegroup;  
         }
         //$databasetool->_success_text['Altersgruppen:'] .= $databasetool->_success_text; 
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($databasetool->my_text,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($databasetool->my_text,true).'</pre>'),'');
         }
            
         
@@ -208,7 +208,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         $checkcountry = $model->checkcountry();
         if ( $checkcountry )
         {
-        //$mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_COUNTRIES_SUCCESS'),''); 
+        //$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_COUNTRIES_SUCCESS'),''); 
         $my_text = '<span style="color:'.$model->existingInDbColor.'"><strong>';
 					$my_text .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_COUNTRIES_SUCCESS').'</strong></span><br />';
 					//$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_COUNTRIES_SUCCESS',strtoupper($type)).'<br />';
@@ -217,7 +217,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         }
         else
         {
-        //$mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_COUNTRIES_ERROR'),'Error');
+        //$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_COUNTRIES_ERROR'),'Error');
         $my_text = '<span style="color:'.$model->storeFailedColor.'"><strong>';
 					$my_text .= JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_COUNTRIES_ERROR').'</strong></span><br />';
 					//$my_text .= JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_COUNT_COUNTRIES_SUCCESS',strtoupper($type)).'<br />';
@@ -275,7 +275,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{
-  		$mainframe = JFactory::getApplication(); 
+  		$app = JFactory::getApplication(); 
           // Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
         $option = JRequest::getCmd('option');
@@ -287,17 +287,17 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 
         $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
         
-        if ( $mainframe->isAdmin() )
+        if ( $app->isAdmin() )
         {
         if($task == '' && $option == 'com_sportsmanagement') 
         {
-        $js ="registerhome('".JURI::base()."','JSM Sports Management','".$mainframe->getCfg('sitename')."','1');". "\n";
+        $js ="registerhome('".JURI::base()."','JSM Sports Management','".$app->getCfg('sitename')."','1');". "\n";
         $document->addScriptDeclaration( $js );
         }
         }
         else
         {
-        $js ="registerhome('".JURI::base()."','JSM Sports Management','".$mainframe->getCfg('sitename')."','0');". "\n";
+        $js ="registerhome('".JURI::base()."','JSM Sports Management','".$app->getCfg('sitename')."','0');". "\n";
         $document->addScriptDeclaration( $js );    
         }
         
@@ -308,14 +308,14 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 		{
             if ( $this->jquery )
             {
-            $mainframe->setUserState( "$option.install", 'jqueryeasy');    
+            $app->setUserState( "$option.install", 'jqueryeasy');    
             sportsmanagementHelper::ToolbarButton('default','upload',JText::_('COM_SPORTSMANAGEMENT_INSTALL_JQUERY'),'githubinstall',1);
             //JToolBarHelper::custom('cpanel.jqueryinstall','upload','upload',JText::_('COM_SPORTSMANAGEMENT_INSTALL_JQUERY'),false);
             }
             
             if ( $this->googlemap )
             {
-            $mainframe->setUserState( "$option.install", 'plugin_googlemap3');    
+            $app->setUserState( "$option.install", 'plugin_googlemap3');    
             sportsmanagementHelper::ToolbarButton('default','upload',JText::_('COM_SPORTSMANAGEMENT_INSTALL_GOOGLEMAP'),'githubinstall',1);
             //JToolBarHelper::custom('cpanel.jqueryinstall','upload','upload',JText::_('COM_SPORTSMANAGEMENT_INSTALL_JQUERY'),false);
             }

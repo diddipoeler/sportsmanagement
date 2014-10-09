@@ -72,6 +72,7 @@ class sportsmanagementModelClubs extends JModelList
                         'a.logo_middle',
                         'a.logo_small',
                         'a.country',
+                        'a.alias',
                         'a.zipcode',
                         'a.location',
                         'a.address',
@@ -84,7 +85,8 @@ class sportsmanagementModelClubs extends JModelList
                         'a.checked_out_time'
                         );
                 parent::__construct($config);
-                parent::setDbo(sportsmanagementHelper::getDBConnection());
+                $getDBConnection = sportsmanagementHelper::getDBConnection();
+                parent::setDbo($getDBConnection);
         }
         
     /**
@@ -96,12 +98,12 @@ class sportsmanagementModelClubs extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -132,7 +134,7 @@ class sportsmanagementModelClubs extends JModelList
      */
     protected function getListQuery()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $search	= $this->getState('filter.search');
         $search_nation	= $this->getState('filter.search_nation');
@@ -169,7 +171,7 @@ class sportsmanagementModelClubs extends JModelList
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
         
 
@@ -184,7 +186,7 @@ class sportsmanagementModelClubs extends JModelList
      */
     public function getClubListSelect()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);

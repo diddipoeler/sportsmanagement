@@ -63,10 +63,10 @@ class sportsmanagementViewUpdates extends sportsmanagementView
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
-		$mainframe->setUserState($option.'update_part',0); // 0
-		$filter_order		= $mainframe->getUserStateFromRequest($option.'updates_filter_order','filter_order','dates','cmd');
-		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'updates_filter_order_Dir','filter_order_Dir','','word');
+		$app = JFactory::getApplication();
+		$app->setUserState($option.'update_part',0); // 0
+		$filter_order		= $app->getUserStateFromRequest($option.'updates_filter_order','filter_order','dates','cmd');
+		$filter_order_Dir	= $app->getUserStateFromRequest($option.'updates_filter_order_Dir','filter_order_Dir','','word');
 		
 		
         

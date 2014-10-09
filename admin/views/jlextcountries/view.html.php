@@ -60,13 +60,13 @@ class sportsmanagementViewjlextcountries extends sportsmanagementView
     public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
         $inputappend = '';
         
-        //$mainframe->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
-        //$mainframe->enqueueMessage(JText::_('Layout -> ').$this->getLayout(),'');
+        //$app->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
+        //$app->enqueueMessage(JText::_('Layout -> ').$this->getLayout(),'');
         
         $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
@@ -76,7 +76,7 @@ class sportsmanagementViewjlextcountries extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		$total = $this->get('Total');
@@ -127,6 +127,7 @@ class sportsmanagementViewjlextcountries extends sportsmanagementView
 		JToolBarHelper::editList('jlextcountry.edit');
 		JToolBarHelper::custom('jlextcountry.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('jlextcountry.export',JText::_('JTOOLBAR_EXPORT'));
+        JToolbarHelper::checkin('jlextcountries.checkin');
 		//JToolBarHelper::deleteList('', 'jlextcountries.delete', 'JTOOLBAR_DELETE');
         if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
         {

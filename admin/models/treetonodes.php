@@ -65,9 +65,9 @@ class JoomleagueModelTreetonodes extends JoomleagueModelList
 	function _buildContentWhere()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
-		$project_id = $mainframe->getUserState( $option . 'project' );
-		$treeto_id = $mainframe->getUserState( $option . 'treeto_id' );
+		$app	= JFactory::getApplication();
+		$project_id = $app->getUserState( $option . 'project' );
+		$treeto_id = $app->getUserState( $option . 'treeto_id' );
 		$where = ' WHERE  ttn.treeto_id = ' . $treeto_id ;
 		return $where;
 	}
@@ -87,8 +87,8 @@ class JoomleagueModelTreetonodes extends JoomleagueModelList
 	function setRemoveNode()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
-		$treeto_id = 	$mainframe->getUserState( $option . 'treeto_id' );
+		$app	= JFactory::getApplication();
+		$treeto_id = 	$app->getUserState( $option . 'treeto_id' );
 		$post	= 	JRequest::get( 'post' );
 		$treeto_id = 	(int) $post['treeto_id'];
 		
@@ -121,8 +121,8 @@ class JoomleagueModelTreetonodes extends JoomleagueModelList
 	function storeshortleaf($cid,$post)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
-		//$project_id = $mainframe->getUserState( $option . 'project' );
+		$app	= JFactory::getApplication();
+		//$project_id = $app->getUserState( $option . 'project' );
 		$post	= 	JRequest::get( 'post' );
 		$result=true;
 		$tree_i = 	$post['tree_i'];
@@ -195,8 +195,8 @@ class JoomleagueModelTreetonodes extends JoomleagueModelList
 	function storefinishleaf()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
-		$project_id = $mainframe->getUserState($option . 'project');
+		$app	= JFactory::getApplication();
+		$project_id = $app->getUserState($option . 'project');
 		$post	= 	JRequest::get( 'post' );
 		$tree_i = 	$post['tree_i'];
 		$treeto_id = 	$post['treeto_id'];
@@ -216,8 +216,8 @@ class JoomleagueModelTreetonodes extends JoomleagueModelList
 	{
 		$option = JRequest::getCmd('option');
 
-		$mainframe	= JFactory::getApplication();
-		$project_id = $mainframe->getUserState($option . 'project');
+		$app	= JFactory::getApplication();
+		$project_id = $app->getUserState($option . 'project');
 
 		$query = ' SELECT	pt.id AS value, '
 		. ' CASE WHEN CHAR_LENGTH(t.name) < 45 THEN t.name ELSE t.middle_name END AS text '

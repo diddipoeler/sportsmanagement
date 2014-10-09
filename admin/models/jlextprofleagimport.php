@@ -238,7 +238,7 @@ function getData()
 	{
 $option = JRequest::getCmd('option');
 
-  $mainframe = JFactory::getApplication();
+  $app = JFactory::getApplication();
   $document	= JFactory::getDocument();
   
   $lang = JFactory::getLanguage();
@@ -248,10 +248,10 @@ $option = JRequest::getCmd('option');
   $country = $post['country'];
   //$country = JSMCountries::convertIso2to3($teile[1]);
   
-  $mainframe->enqueueMessage(JText::_('land '.$country.''),'');
+  $app->enqueueMessage(JText::_('land '.$country.''),'');
   
   $option = JRequest::getCmd('option');
-	$project = $mainframe->getUserState( $option . 'project', 0 );
+	$project = $app->getUserState( $option . 'project', 0 );
 	
 		
 	
@@ -272,7 +272,7 @@ $xml->parseFile($file);
 $tree = $xml->getTree(); 
 unset($xml); 
 
-//$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' season<br><pre>'.print_r($tree[tournament][season][value],true).'</pre>'),'Notice');
+//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' season<br><pre>'.print_r($tree[tournament][season][value],true).'</pre>'),'Notice');
 
 $temp = new stdClass();
 $temp->name = $tree[tournament][title][value];
@@ -1297,52 +1297,52 @@ $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setJoomLea
 // set the project datas
 if ( isset($this->_datas['project']) )
 {
-$mainframe->enqueueMessage(JText::_('project daten '.'generiert'),'');    
+$app->enqueueMessage(JText::_('project daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setProjectData($this->_datas['project']));
 }
 // set league data of project
 if ( isset($this->_datas['league']) )
 {
-$mainframe->enqueueMessage(JText::_('league daten '.'generiert'),'');      
+$app->enqueueMessage(JText::_('league daten '.'generiert'),'');      
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setLeagueData($this->_datas['league']));
 }
 // set season data of project
 if ( isset($this->_datas['season']) )
 {
-$mainframe->enqueueMessage(JText::_('season daten '.'generiert'),'');      
+$app->enqueueMessage(JText::_('season daten '.'generiert'),'');      
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setSeasonData($this->_datas['season']));
 }
 
 // set the rounds sportstype
 if ( isset($this->_datas['sportstype']) )
 {
-$mainframe->enqueueMessage(JText::_('sportstype daten '.'generiert'),'');      
+$app->enqueueMessage(JText::_('sportstype daten '.'generiert'),'');      
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setSportsType($this->_datas['sportstype']));    
 }
 
 // set the rounds data
 if ( isset($this->_datas['round']) )
 {
-$mainframe->enqueueMessage(JText::_('round daten '.'generiert'),'');      
+$app->enqueueMessage(JText::_('round daten '.'generiert'),'');      
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['round'], 'Round') );
 }
 // set the teams data
 if ( isset($this->_datas['team']) )
 {
-$mainframe->enqueueMessage(JText::_('team daten '.'generiert'),'');    
+$app->enqueueMessage(JText::_('team daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['team'], 'JL_Team'));
 }
 
 // set the teamplayer data
 if ( isset($this->_datas['teamplayer']) )
 {
-$mainframe->enqueueMessage(JText::_('teamplayer daten '.'generiert'),'');    
+$app->enqueueMessage(JText::_('teamplayer daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['teamplayer'], 'TeamPlayer'));
 }
 // set the teamstaff data
 if ( isset($this->_datas['teamstaff']) )
 {
-$mainframe->enqueueMessage(JText::_('teamstaff daten '.'generiert'),'');    
+$app->enqueueMessage(JText::_('teamstaff daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['teamstaff'], 'TeamStaff'));
 }
 
@@ -1350,37 +1350,37 @@ $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData
 // set the clubs data
 if ( isset($this->_datas['club']) )
 {
-$mainframe->enqueueMessage(JText::_('club daten '.'generiert'),'');    
+$app->enqueueMessage(JText::_('club daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['club'], 'Club'));
 }
 // set the matches data
 if ( isset($this->_datas['match']) )
 {
-$mainframe->enqueueMessage(JText::_('match daten '.'generiert'),'');    
+$app->enqueueMessage(JText::_('match daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['match'], 'Match'));
 }
 // set the positions data
 if ( isset($this->_datas['position']) )
 {
-    $mainframe->enqueueMessage(JText::_('position daten '.'generiert'),'');    
+    $app->enqueueMessage(JText::_('position daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['position'], 'Position'));
 }
 // set the positions parent data
 if ( isset($this->_datas['parentposition']) )
 {
-    $mainframe->enqueueMessage(JText::_('parentposition daten '.'generiert'),'');    
+    $app->enqueueMessage(JText::_('parentposition daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['parentposition'], 'ParentPosition'));
 }
 // set position data of project
 if ( isset($this->_datas['projectposition']) )
 {
-    $mainframe->enqueueMessage(JText::_('projectposition daten '.'generiert'),'');    
+    $app->enqueueMessage(JText::_('projectposition daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['projectposition'], 'ProjectPosition'));
 }
 // set the matchreferee data
 if ( isset($this->_datas['matchreferee']) )
 {
-    $mainframe->enqueueMessage(JText::_('matchreferee daten '.'generiert'),'');    
+    $app->enqueueMessage(JText::_('matchreferee daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['matchreferee'], 'MatchReferee'));
 }
 
@@ -1388,13 +1388,13 @@ $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData
 // set the matchplayer data
 if ( isset($this->_datas['matchplayer']) )
 {
-    $mainframe->enqueueMessage(JText::_('matchplayer daten '.'generiert'),'');    
+    $app->enqueueMessage(JText::_('matchplayer daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['matchplayer'], 'MatchPlayer'));
 }
 // set the matchevent data
 if ( isset($this->_datas['matchevent']) )
 {
-    $mainframe->enqueueMessage(JText::_('matchevent daten '.'generiert'),'');    
+    $app->enqueueMessage(JText::_('matchevent daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['matchevent'], 'MatchEvent'));
 }
 
@@ -1402,25 +1402,25 @@ $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData
 // set the person data
 if ( isset($this->_datas['person']) )
 {
-    $mainframe->enqueueMessage(JText::_('person daten '.'generiert'),'');    
+    $app->enqueueMessage(JText::_('person daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['person'], 'Person'));
 }
 // set the projectreferee data
 if ( isset($this->_datas['projectreferee']) )
 {
-    $mainframe->enqueueMessage(JText::_('projectreferee daten '.'generiert'),'');    
+    $app->enqueueMessage(JText::_('projectreferee daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['projectreferee'], 'ProjectReferee'));
 }
 // set the projectteam data
 if ( isset($this->_datas['projectteam']) )
 {
-    $mainframe->enqueueMessage(JText::_('projectteam daten '.'generiert'),'');    
+    $app->enqueueMessage(JText::_('projectteam daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['projectteam'], 'ProjectTeam'));
 }
 // set playground data of project
 if ( isset($this->_datas['playground']) )
 {
-    $mainframe->enqueueMessage(JText::_('playground daten '.'generiert'),'');    
+    $app->enqueueMessage(JText::_('playground daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['playground'], 'Playground'));
 }            
             
@@ -1481,16 +1481,16 @@ if ( ($val >= 176 && $val <= 255) )
           	
 function _loadData()
 	{
-  global $mainframe, $option;
-  $this->_data =  $mainframe->getUserState( $option . 'project', 0 );
+  global $app, $option;
+  $this->_data =  $app->getUserState( $option . 'project', 0 );
    
   return $this->_data;
 	}
 
 function _initData()
 	{
-	global $mainframe, $option;
-  $this->_data =  $mainframe->getUserState( $option . 'project', 0 );
+	global $app, $option;
+  $this->_data =  $app->getUserState( $option . 'project', 0 );
   return $this->_data;
 	}
 

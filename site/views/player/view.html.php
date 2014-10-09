@@ -63,34 +63,34 @@ class sportsmanagementViewPlayer extends JViewLegacy
 	{
 		// Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 		$model = $this->getModel();
         
-        $model->projectid = JRequest::getInt( 'p', 0 );
-		$model->personid = JRequest::getInt( 'pid', 0 );
-		$model->teamplayerid = JRequest::getInt( 'pt', 0 );
+        $model::$projectid = JRequest::getInt( 'p', 0 );
+		$model::$personid = JRequest::getInt( 'pid', 0 );
+		$model::$teamplayerid = JRequest::getInt( 'pt', 0 );
         
-        sportsmanagementModelProject::setProjectID(JRequest::getInt('p',0));
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
+        sportsmanagementModelProject::setProjectID(JRequest::getInt('p',0),$model::$cfg_which_database);
+		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
         
 
-		$person = sportsmanagementModelPerson::getPerson();
+		$person = sportsmanagementModelPerson::getPerson(0,$model::$cfg_which_database);
 		$nickname = isset($person->nickname) ? $person->nickname : "";
 		if(!empty($nickname)){$nickname="'".$nickname."'";}
 		$this->assign('isContactDataVisible',sportsmanagementModelPerson::isContactDataVisible($config['show_contact_team_member_only']));
-		$project = sportsmanagementModelProject::getProject();
+		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
 		$this->assignRef('project', $project);
-		$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig());
+		$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database));
 		$this->assignRef('config',$config);
 		$this->assignRef('person',$person);
 		$this->assignRef('nickname',$nickname);
-		$this->assign('teamPlayers',$model->getTeamPlayers());
+		$this->assign('teamPlayers',$model->getTeamPlayers($model::$cfg_which_database));
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewPlayer teamPlayers<br><pre>'.print_r($this->teamPlayers,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_('sportsmanagementViewPlayer teamPlayers<br><pre>'.print_r($this->teamPlayers,true).'</pre>'),'');
         
         $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
-//        $mainframe->enqueueMessage(JText::_('player checkextrafields -> '.'<pre>'.print_r($this->checkextrafields,true).'</pre>' ),'');
+//        $app->enqueueMessage(JText::_('player checkextrafields -> '.'<pre>'.print_r($this->checkextrafields,true).'</pre>' ),'');
         if ( $this->checkextrafields )
         {
             $this->assignRef( 'extrafields', sportsmanagementHelper::getUserExtraFields($person->id) );
@@ -114,35 +114,36 @@ class sportsmanagementViewPlayer extends JViewLegacy
 				$teamPlayer = $this->teamPlayers[$currentProjectTeamId];
 			}
 		}
-		$sportstype = $config['show_plcareer_sportstype'] ? sportsmanagementModelProject::getSportsType() : 0;
+		$sportstype = $config['show_plcareer_sportstype'] ? sportsmanagementModelProject::getSportsType($model::$cfg_which_database) : 0;
 		$this->assignRef('teamPlayer',$teamPlayer);
 		
-        $this->assign('historyPlayer',$model->getPlayerHistory($sportstype, 'ASC'));
-		$this->assign('historyPlayerStaff',$model->getPlayerHistoryStaff($sportstype, 'ASC'));
+        $this->assign('historyPlayer',$model->getPlayerHistory($sportstype, 'ASC',1,$model::$cfg_which_database));
+		//$this->assign('historyPlayerStaff',$model->getPlayerHistoryStaff($sportstype, 'ASC'));
+        $this->assign('historyPlayerStaff',$model->getPlayerHistory($sportstype, 'ASC',2,$model::$cfg_which_database));
         
 		$this->assign('AllEvents',$model->getAllEvents($sportstype));
 		$this->assign('showediticon',sportsmanagementModelPerson::getAllowed($config['edit_own_player']));
-		$this->assign('stats',sportsmanagementModelProject::getProjectStats());
+		$this->assign('stats',sportsmanagementModelProject::getProjectStats(0,0,$model::$cfg_which_database));
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' showediticon<br><pre>'.print_r($this->showediticon,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' showediticon<br><pre>'.print_r($this->showediticon,true).'</pre>'),'Notice');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' stats<br><pre>'.print_r($this->stats,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' stats<br><pre>'.print_r($this->stats,true).'</pre>'),'');
         }
 
 		// Get events and stats for current project
 		if ($config['show_gameshistory'])
 		{
 			$this->assign('games',$model->getGames());
-			$this->assign('teams',sportsmanagementModelProject::getTeamsIndexedByPtid());
+			$this->assign('teams',sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$model::$cfg_which_database));
 			$this->assign('gamesevents',$model->getGamesEvents());
 			$this->assign('gamesstats',$model->getPlayerStatsByGame());
 		}
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' gamesstats<br><pre>'.print_r($this->gamesstats,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' gamesstats<br><pre>'.print_r($this->gamesstats,true).'</pre>'),'');
         }
 
 		// Get events and stats for all projects where player played in (possibly restricted to sports type of current project)
@@ -152,15 +153,19 @@ class sportsmanagementViewPlayer extends JViewLegacy
 			$this->assign('projectstats',$model->getPlayerStatsByProject($sportstype));
 		}
 
-		$extended = sportsmanagementHelper::getExtended($person->extended, 'person');
+		$extended = '';
+        //if ( $person )
+        //{
+        $extended = sportsmanagementHelper::getExtended($person->extended, 'person');
+        //}
 		$this->assignRef( 'extended', $extended );
         unset($form_value);
         $form_value = $this->extended->getValue('COM_SPORTSMANAGEMENT_EXT_PERSON_PARENT_POSITIONS');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' extended<br><pre>'.print_r($this->extended,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COM_SPORTSMANAGEMENT_EXT_PERSON_PARENT_POSITIONS<br><pre>'.print_r($form_value,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' extended<br><pre>'.print_r($this->extended,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COM_SPORTSMANAGEMENT_EXT_PERSON_PARENT_POSITIONS<br><pre>'.print_r($form_value,true).'</pre>'),'');
         }
         
         // nebenposition vorhanden ?
@@ -175,7 +180,7 @@ class sportsmanagementViewPlayer extends JViewLegacy
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COM_SPORTSMANAGEMENT_EXT_PERSON_POSITION<br><pre>'.print_r($form_value,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COM_SPORTSMANAGEMENT_EXT_PERSON_POSITION<br><pre>'.print_r($form_value,true).'</pre>'),'');
         }
         
         if ( $form_value )
@@ -184,7 +189,7 @@ class sportsmanagementViewPlayer extends JViewLegacy
         }
         else
         {
-        $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_PERSON_NO_POSITION'),'Error');
+        $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_PERSON_NO_POSITION'),'Error');
         }
         
         $this->assignRef( 'hasDescription',$this->teamPlayer->notes);

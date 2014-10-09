@@ -78,7 +78,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_club` (
   `checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
-  `dissolved` DATE NULL DEFAULT NULL ,
+  `dissolved` DATE NOT NULL DEFAULT '0000-00-00' ,
   `dissolved_year` VARCHAR(4) NULL DEFAULT NULL,
   `founded_year` VARCHAR(4) NULL DEFAULT NULL,
   `unique_id` VARCHAR(20) NULL DEFAULT NULL ,
@@ -572,6 +572,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_person` (
   `person_art` TINYINT( 4 ) NOT NULL DEFAULT  '1',
   `sports_type_id` TINYINT(1) NOT NULL DEFAULT '1' ,
   `contact_id` int(11) DEFAULT NULL,
+  `jl_update` TINYINT(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `country` (`country`),
@@ -773,6 +774,10 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project_position` (
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
+  
+  `checked_out` INT(11) NOT NULL DEFAULT '0' ,
+  `checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
+  `jl_update` TINYINT(1) NOT NULL DEFAULT '0' ,
   PRIMARY KEY (`id`) ,
   KEY `project_id` (`project_id`),
   KEY `position_id` (`position_id`),
@@ -948,6 +953,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season_team_id` (
   `picture` VARCHAR(250) NULL ,
   `logo_big` VARCHAR(250) NULL ,
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
+  `standard_playground` INT(11) NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE KEY `combi` (`team_id`,`season_id`) ,
   KEY `team_id` (`team_id`),
@@ -1008,7 +1014,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season_team_person_id` (
   `played_time` INT(11) NULL DEFAULT '0' ,
   
   `persontype` TINYINT(1) NOT NULL DEFAULT '0' ,
-  
+  `jl_update` TINYINT(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`) ,
   UNIQUE KEY `combi` (`person_id`,`season_id`,`team_id`) ,
   KEY `team_id` (`team_id`),
@@ -1099,6 +1105,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_team` (
   `agegroup_id` INT( 11 ) NOT NULL DEFAULT  '0',
   `sports_type_id` INT( 11 ) NOT NULL DEFAULT  '0',
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
+  `standard_playground` INT(11) NULL DEFAULT NULL ,
   PRIMARY KEY (`id`) ,
   KEY `club_id` (`club_id`),
   KEY `sports_type_id` (`sports_type_id`)

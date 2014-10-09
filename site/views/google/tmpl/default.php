@@ -29,8 +29,8 @@ $items = $menu->getItems('component_id', $component->id);
 
 $model = & $this->getModel();
 if (is_array($items)){
-	$mainframe = JFactory::getApplication();
-	$pathway = $mainframe->getPathway();
+	$app = JFactory::getApplication();
+	$pathway = $app->getPathway();
 	foreach($items as $item) {
 		$paramsItem	= $menu->getParams($item->id);
 		//if($paramsItem->get('calendars')===$this->params->get('calendars')){

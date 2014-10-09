@@ -95,7 +95,7 @@ class sportsmanagementModelposition extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $db		= $this->getDbo();
         $query = $db->getQuery(true);
@@ -107,11 +107,11 @@ class sportsmanagementModelposition extends JModelAdmin
 			return false;
 		}
         
-        $prefix = $mainframe->getCfg('dbprefix');
+        $prefix = $app->getCfg('dbprefix');
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' prefix<br><pre>'.print_r($prefix,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' prefix<br><pre>'.print_r($prefix,true).'</pre>'),'');
         //$whichtabel = $this->getTable();
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' whichtabel<br><pre>'.print_r($whichtabel,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' whichtabel<br><pre>'.print_r($whichtabel,true).'</pre>'),'');
         
         $query->select('*');
 			$query->from('information_schema.columns');
@@ -119,16 +119,16 @@ class sportsmanagementModelposition extends JModelAdmin
 			
 			$db->setQuery($query);
             
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             
 			$result = $db->loadObjectList();
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
             
             foreach($result as $field )
         {
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COLUMN_NAME<br><pre>'.print_r($field->COLUMN_NAME,true).'</pre>'),'');
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' DATA_TYPE<br><pre>'.print_r($field->DATA_TYPE,true).'</pre>'),'');
-            //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' CHARACTER_MAXIMUM_LENGTH<br><pre>'.print_r($field->CHARACTER_MAXIMUM_LENGTH,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COLUMN_NAME<br><pre>'.print_r($field->COLUMN_NAME,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' DATA_TYPE<br><pre>'.print_r($field->DATA_TYPE,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' CHARACTER_MAXIMUM_LENGTH<br><pre>'.print_r($field->CHARACTER_MAXIMUM_LENGTH,true).'</pre>'),'');
             
             switch ($field->DATA_TYPE)
             {
@@ -206,13 +206,13 @@ class sportsmanagementModelposition extends JModelAdmin
 	 */
 	function saveshort()
 	{
-		$mainframe =& JFactory::getApplication();
+		$app =& JFactory::getApplication();
         // Get the input
         $pks = JRequest::getVar('cid', null, 'post', 'array');
         $post = JRequest::get('post');
         
-        $mainframe->enqueueMessage('saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        $mainframe->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        $app->enqueueMessage('saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        $app->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
         
         $result=true;
 		for ($x=0; $x < count($pks); $x++)
@@ -238,7 +238,7 @@ class sportsmanagementModelposition extends JModelAdmin
 	 */
 	public function save($data)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
        $post = JRequest::get('post');
@@ -246,14 +246,14 @@ class sportsmanagementModelposition extends JModelAdmin
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');
        
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelposition save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelposition post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       //$app->enqueueMessage(JText::_('sportsmanagementModelposition save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       //$app->enqueueMessage(JText::_('sportsmanagementModelposition post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
        if (isset($post['position_eventslist']) && is_array($post['position_eventslist'])) 
 		{
 		if ( $data['id'] )
         {
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelposition post position_eventslist<br><pre>'.print_r($post['position_eventslist'],true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelposition post position_eventslist<br><pre>'.print_r($post['position_eventslist'],true).'</pre>'),'Notice');
         $mdl = JModelLegacy::getInstance("positioneventtype", "sportsmanagementModel");
         $mdl->store($post,$data['id']);
             
@@ -268,7 +268,7 @@ class sportsmanagementModelposition extends JModelAdmin
 			$data['extended'] = (string)$parameter;
 		}
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelposition save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelposition save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         // Proceed with the save
 		return parent::save($data);   

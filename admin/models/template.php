@@ -168,7 +168,7 @@ class sportsmanagementModeltemplate extends JModelAdmin
 	 */
 	public function save($data)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
        $post = JRequest::get('post');
@@ -176,8 +176,8 @@ class sportsmanagementModeltemplate extends JModelAdmin
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');
        
-//       $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-//       $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
        if (isset($post['params']['colors_ranking']) && is_array($post['params']['colors_ranking'])) 
 		{
@@ -185,16 +185,16 @@ class sportsmanagementModeltemplate extends JModelAdmin
           foreach ( $post['params']['colors_ranking'] as $key => $value )
           {
             
-//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($value,true).'</pre>'),'Notice');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($value,true).'</pre>'),'Notice');
             
             if ( !empty($value['von']) )
             {
                 $colors[] = implode(",",$value);
-                //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($value,true).'</pre>'),'Notice');
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($value,true).'</pre>'),'Notice');
             }
           }
           
-          //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' colors<br><pre>'.print_r($colors,true).'</pre>'),'Notice');
+          //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' colors<br><pre>'.print_r($colors,true).'</pre>'),'Notice');
         
         $post['params']['colors'] = implode(";",$colors); 
         }  
@@ -209,7 +209,7 @@ class sportsmanagementModeltemplate extends JModelAdmin
             $data['params'] = $paramsString;
 		}
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         // Proceed with the save
 		return parent::save($data);   
@@ -225,7 +225,7 @@ class sportsmanagementModeltemplate extends JModelAdmin
     function getAllTemplatesList($project_id,$master_id)
 	{
 		
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.
 		$db		= $this->getDbo();
@@ -309,8 +309,8 @@ return true;
 	 */
 	public function delete(&$pks)
 {
-$mainframe = JFactory::getApplication();
-    //$mainframe->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
+$app = JFactory::getApplication();
+    //$app->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
     
     return parent::delete($pks);
     

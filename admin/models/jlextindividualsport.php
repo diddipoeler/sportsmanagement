@@ -117,10 +117,10 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.jlextindividualsport', 'jlextindividualsport', array('control' => 'jform', 'load_data' => $loadData));
@@ -136,16 +136,16 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
     
 //    function apply($data)
 //    {
-//        $mainframe = JFactory::getApplication();
+//        $app = JFactory::getApplication();
 //        $option = JRequest::getCmd('option');
 //        $post = JRequest::get('post');
-//        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+//        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($post,true).'</pre>'),'Notice');
 //        
 //    }
     
     function saveshort()
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.		
 		$db = JFactory::getDBO();
@@ -158,8 +158,8 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
         
         $result_tie_break = 0;
         
-        //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','');
-        //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post, true).'</pre><br>','');
+        //$app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','');
+        //$app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post, true).'</pre><br>','');
         
         // select some fields
 		$query->select('use_tie_break,game_parts,sports_type_id');
@@ -176,8 +176,8 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
             $result_tie_break = $result_tie_break - 1;
         }
 
-        //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' use_tie_break<br><pre>'.print_r($use_tie_break, true).'</pre><br>','');
-        //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' result_tie_break<br><pre>'.print_r($result_tie_break, true).'</pre><br>','');
+        //$app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' use_tie_break<br><pre>'.print_r($use_tie_break, true).'</pre><br>','');
+        //$app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' result_tie_break<br><pre>'.print_r($result_tie_break, true).'</pre><br>','');
         
         $query = $db->getQuery(true);
         $query->clear();
@@ -190,7 +190,7 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
         $db->setQuery($query);
         $event_list = $db->loadObjectList('name');
         
-        //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' event_list<br><pre>'.print_r($event_list, true).'</pre><br>','');
+        //$app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' event_list<br><pre>'.print_r($event_list, true).'</pre><br>','');
         
         
         
@@ -213,8 +213,8 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
             
             
               
-            //$mainframe->enqueueMessage($post['match_date'.$pks[$x]],'Notice');
-            //$mainframe->enqueueMessage($tbl->match_date,'Notice');
+            //$app->enqueueMessage($post['match_date'.$pks[$x]],'Notice');
+            //$app->enqueueMessage($tbl->match_date,'Notice');
             
 
             
@@ -277,12 +277,12 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
 
 			if(!$tblMatch->store()) 
             {
-                $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+                $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
 				$result = false;
 			}
             else
             {
-                //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($tblMatch,true).'</pre>'),'');
+                //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($tblMatch,true).'</pre>'),'');
             }
             
             // ereignisse speichern heim
@@ -294,14 +294,14 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
                 {
                     // ereignis_id
                     $event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_SINGLE_WON']->id;
-                    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
+                    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
                  
                 }
                 if ( $tblMatch->team1_result < $tblMatch->team2_result )
                 {
                     // ereignis_id
                     $event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_SINGLE_LOST']->id;
-                    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
+                    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
                  
                 }
                 self::deleteevents($post['match_id'],$tblMatch->teamplayer1_id,$event_id);
@@ -318,14 +318,14 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
                 {
                     // ereignis_id
                     $event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_DOUBLE_WON']->id;
-                    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
+                    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
                  
                 }
                 if ( $tblMatch->team1_result < $tblMatch->team2_result )
                 {
                     // ereignis_id
                     $event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_DOUBLE_LOST']->id;
-                    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
+                    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
                  
                 }
                 self::deleteevents($post['match_id'],$tblMatch->double_team1_player1,$event_id);
@@ -342,14 +342,14 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
                 {
                     // ereignis_id
                     $event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_DOUBLE_WON']->id;
-                    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
+                    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
                  
                 }
                 if ( $tblMatch->team1_result < $tblMatch->team2_result )
                 {
                     // ereignis_id
                     $event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_DOUBLE_LOST']->id;
-                    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
+                    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
                  
                 }
                 self::deleteevents($post['match_id'],$tblMatch->double_team1_player2,$event_id);
@@ -367,14 +367,14 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
                 {
                     // ereignis_id
                     $event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_SINGLE_WON']->id;
-                    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
+                    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
                  
                 }
                 if ( $tblMatch->team1_result > $tblMatch->team2_result )
                 {
                     // ereignis_id
                     $event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_SINGLE_LOST']->id;
-                    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
+                    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
                  
                 }
                 self::deleteevents($post['match_id'],$tblMatch->teamplayer2_id,$event_id);
@@ -391,14 +391,14 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
                 {
                     // ereignis_id
                     $event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_DOUBLE_WON']->id;
-                    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
+                    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
                  
                 }
                 if ( $tblMatch->team1_result > $tblMatch->team2_result )
                 {
                     // ereignis_id
                     $event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_DOUBLE_LOST']->id;
-                    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
+                    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
                  
                 }
                 self::deleteevents($post['match_id'],$tblMatch->double_team2_player1,$event_id);
@@ -415,14 +415,14 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
                 {
                     // ereignis_id
                     $event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_DOUBLE_WON']->id;
-                    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
+                    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
                  
                 }
                 if ( $tblMatch->team1_result > $tblMatch->team2_result )
                 {
                     // ereignis_id
                     $event_id = $event_list['COM_SPORTSMANAGEMENT_TENNIS_E_DOUBLE_LOST']->id;
-                    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
+                    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' event_id<br><pre>'.print_r($event_id,true).'</pre>'),'Notice');
                  
                 }
                 self::deleteevents($post['match_id'],$tblMatch->double_team2_player2,$event_id);
@@ -444,7 +444,7 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
         $query->where('mc.match_id = '.$match_id);
         $db->setQuery($query);
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$result = $db->loadObjectList();
         $temp = new stdClass();
@@ -475,8 +475,8 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
             $team1_result_split	= explode(";",$row->team1_result_split);
             $team2_result_split	= explode(";",$row->team2_result_split);  
             
-            //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' team1_result_split<br><pre>'.print_r($team1_result_split, true).'</pre><br>','');
-            //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' team2_result_split<br><pre>'.print_r($team2_result_split, true).'</pre><br>','');
+            //$app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' team1_result_split<br><pre>'.print_r($team1_result_split, true).'</pre><br>','');
+            //$app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' team2_result_split<br><pre>'.print_r($team2_result_split, true).'</pre><br>','');
             
             foreach ( $team1_result_split as $key => $value )
             {
@@ -534,8 +534,8 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
                             $temp->team2_single_games	+= $team2_result_split[$result_tie_break]; 
                         }
             }
-            //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' team1_single_games<br><pre>'.print_r($temp->team1_single_games, true).'</pre><br>','');
-            //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' team2_single_games<br><pre>'.print_r($temp->team2_single_games, true).'</pre><br>','');
+            //$app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' team1_single_games<br><pre>'.print_r($temp->team1_single_games, true).'</pre><br>','');
+            //$app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' team2_single_games<br><pre>'.print_r($temp->team2_single_games, true).'</pre><br>','');
             
         }
         
@@ -559,7 +559,7 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
             {
             }    
             
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($temp,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($temp,true).'</pre>'),'');
         
         // Proceed with the save
 		//return parent::save($data);
@@ -568,7 +568,7 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
     
     function deleteevents($match_id,$teamplayer1_id,$event_id)
 	{
-	$mainframe = JFactory::getApplication();
+	$app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -580,7 +580,7 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
                 $resultdel = $db->query();
                 if(!$resultdel) 
                 {
-                $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+                $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
     		     }
     
     
@@ -588,7 +588,7 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
     
     function insertevents($match_id,$projectteam1_id,$teamplayer1_id,$event_id)
 	{
-	$mainframe = JFactory::getApplication();
+	$app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -603,7 +603,7 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
                 $resultins = JFactory::getDbo()->insertObject('#__sportsmanagement_match_event', $event);
                 if(!$resultins) 
                 {
-                $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+                $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
     		     }
     
     
@@ -618,17 +618,17 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
 	 */
 	function delete($pk=array())
 	{
-	$mainframe = JFactory::getApplication();
+	$app = JFactory::getApplication();
     return parent::delete($pk);
     return true; 
     }
     
 //    function publish($pks, $value)
 //    {
-//	$mainframe = JFactory::getApplication();
+//	$app = JFactory::getApplication();
 //    
-//    $mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','');
-//    $mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' value<br><pre>'.print_r($value, true).'</pre><br>','');
+//    $app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','');
+//    $app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' value<br><pre>'.print_r($value, true).'</pre><br>','');
 //    
 //    return parent::publish($pks, $value);
 //    return true; 
@@ -646,18 +646,18 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
 	function save_array($cid=null,$post=null,$zusatz=false,$project_id)
 	{
 		$option='com_joomleague';
-		$mainframe	=& JFactory::getApplication();
+		$app	=& JFactory::getApplication();
 		$datatable[0]='#__joomleague_match_single';
 		$fields = $this->_db->getTableFields($datatable);
 		
-    $sporttype = $mainframe->getUserState( $option . 'sporttype' );
+    $sporttype = $app->getUserState( $option . 'sporttype' );
     $defaultvalues = array();
-    $game_parts = $mainframe->getUserState( $option . 'game_parts' );
+    $game_parts = $app->getUserState( $option . 'game_parts' );
     //$game_parts = $game_parts - 1;
      
-//     $mainframe->enqueueMessage(JText::_('save_array-resultsplit: '.print_r($post,true) ),'');
-//     $mainframe->enqueueMessage(JText::_('save_array-resultsplit team 1: '.print_r($post['team1_result_split'.$cid],true) ),'Notice');
-//     $mainframe->enqueueMessage(JText::_('save_array-resultsplit team 2: '.print_r($post['team2_result_split'.$cid],true) ),'Notice');
+//     $app->enqueueMessage(JText::_('save_array-resultsplit: '.print_r($post,true) ),'');
+//     $app->enqueueMessage(JText::_('save_array-resultsplit team 1: '.print_r($post['team1_result_split'.$cid],true) ),'Notice');
+//     $app->enqueueMessage(JText::_('save_array-resultsplit team 2: '.print_r($post['team2_result_split'.$cid],true) ),'Notice');
 
 // in abhängigkeit von der sportart wird das ergebnis gespeichert    
 switch(strtolower($sporttype))
@@ -734,7 +734,7 @@ $query="UPDATE #__joomleague_match_single SET `extended`='".$temp."' WHERE id=".
 $this->_db->setQuery($query);
 if (!$this->_db->query())
 		{
-$mainframe->enqueueMessage(JText::_('save_array - defaultconfig: '.print_r($this->_db->getErrorMsg(),true) ),'Error');			
+$app->enqueueMessage(JText::_('save_array - defaultconfig: '.print_r($this->_db->getErrorMsg(),true) ),'Error');			
 		}
 
 
@@ -758,8 +758,8 @@ if (isset($arr["params"]["param"]))
 						}
 					}
 					
-//$mainframe->enqueueMessage(JText::_('save_array - temp: '.print_r($temp,true) ),'');					
-//$mainframe->enqueueMessage(JText::_('save_array - defaultconfig: '.print_r($defaultconfig,true) ),'');
+//$app->enqueueMessage(JText::_('save_array - temp: '.print_r($temp,true) ),'');					
+//$app->enqueueMessage(JText::_('save_array - defaultconfig: '.print_r($defaultconfig,true) ),'');
 
 // alles auf null setzen
 $defaultconfig['JL_EXT_TENNIS_DATA_HOME_MATCHES'] = 0;
@@ -799,7 +799,7 @@ $defaultconfig['JL_EXT_TENNIS_DATA_HOME_POINTS'] = 0;
 $post['team1_result'.$cid] = $defaultconfig['JL_EXT_TENNIS_DATA_HOME_POINTS'];
 $post['team2_result'.$cid] = $defaultconfig['JL_EXT_TENNIS_DATA_AWAY_POINTS'];
 
-//$mainframe->enqueueMessage(JText::_('save_array - defaultconfig: '.print_r($defaultconfig,true) ),'Notice');
+//$app->enqueueMessage(JText::_('save_array - defaultconfig: '.print_r($defaultconfig,true) ),'Notice');
 
 // $temp='';
 // foreach ( $defaultconfig as $key => $value )
@@ -819,7 +819,7 @@ $query="UPDATE #__joomleague_match_single SET `extended`='".$temp."' WHERE id=".
 $this->_db->setQuery($query);
 if (!$this->_db->query())
 		{
-$mainframe->enqueueMessage(JText::_('save_array - defaultconfig: '.print_r($this->_db->getErrorMsg(),true) ),'Error');			
+$app->enqueueMessage(JText::_('save_array - defaultconfig: '.print_r($this->_db->getErrorMsg(),true) ),'Error');			
 		}
 		
 break;
@@ -951,16 +951,16 @@ break;
 	function save_round_match_tennis()
 	{
   $option='com_joomleague';
-	$mainframe	=& JFactory::getApplication();
+	$app	=& JFactory::getApplication();
 	$post=JRequest::get('post');
   $cid=JRequest::getVar('cid',array(),'post','array');
 	JArrayHelper::toInteger($cid);
 		
-  $sporttype = $mainframe->getUserState( $option . 'sporttype' );
+  $sporttype = $app->getUserState( $option . 'sporttype' );
   $defaultvalues = array();
   
-//   $mainframe->enqueueMessage(JText::_('save_round_match-post: '.print_r($post,true) ),'');
-//   $mainframe->enqueueMessage(JText::_('save_round_match-cid: '.print_r($cid,true) ),'');
+//   $app->enqueueMessage(JText::_('save_round_match-post: '.print_r($post,true) ),'');
+//   $app->enqueueMessage(JText::_('save_round_match-cid: '.print_r($cid,true) ),'');
     
   $match_id = $post['match_id'];
   
@@ -988,7 +988,7 @@ break;
     
   }
   
-  //$mainframe->enqueueMessage(JText::_('save_array - configvalues: '.print_r($configvalues,true) ),'Notice');
+  //$app->enqueueMessage(JText::_('save_array - configvalues: '.print_r($configvalues,true) ),'Notice');
 
   //$temp='';
 foreach ( $configvalues as $key => $value )
@@ -1014,16 +1014,16 @@ $temp = implode( "\n", $defaultvalues );
   function save_round_match_kegeln()
 	{
   $option = 'com_joomleague';
-	$mainframe	=& JFactory::getApplication();
+	$app	=& JFactory::getApplication();
 	$post = JRequest::get('post');
   $cid = JRequest::getVar('cid',array(),'post','array');
 	JArrayHelper::toInteger($cid);
 		
-  $sporttype = $mainframe->getUserState( $option . 'sporttype' );
+  $sporttype = $app->getUserState( $option . 'sporttype' );
   $defaultvalues = array();
   
-  //$mainframe->enqueueMessage(JText::_('save_round_match-post: '.print_r($post,true) ),'');
-  //$mainframe->enqueueMessage(JText::_('save_round_match-cid: '.print_r($cid,true) ),'');
+  //$app->enqueueMessage(JText::_('save_round_match-post: '.print_r($post,true) ),'');
+  //$app->enqueueMessage(JText::_('save_round_match-cid: '.print_r($cid,true) ),'');
     
   $match_id = $post['match_id'];	
 
@@ -1075,7 +1075,7 @@ $query = ' SELECT
     
   }
 
-  //$mainframe->enqueueMessage(JText::_('save_round_match -configvalues: '.print_r($configvalues,true) ),'');
+  //$app->enqueueMessage(JText::_('save_round_match -configvalues: '.print_r($configvalues,true) ),'');
   
 
 foreach ( $configvalues as $key => $value )
@@ -1097,9 +1097,9 @@ $temp = implode( "\n", $defaultvalues );
 	JError::raiseError(500, $rowupdate->getError() );
   }  
 		
-// 	$mainframe->enqueueMessage(JText::_('save_round_match -> '.$match_id ),'Notice');
-// 	$mainframe->enqueueMessage(JText::_('save_round_match -> '.$row['resulthome'] ),'Notice');
-// 	$mainframe->enqueueMessage(JText::_('save_round_match -> '.$row['resultaway'] ),'Notice');
+// 	$app->enqueueMessage(JText::_('save_round_match -> '.$match_id ),'Notice');
+// 	$app->enqueueMessage(JText::_('save_round_match -> '.$row['resulthome'] ),'Notice');
+// 	$app->enqueueMessage(JText::_('save_round_match -> '.$row['resultaway'] ),'Notice');
 
   }
 

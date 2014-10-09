@@ -277,7 +277,7 @@ if ( $this->config['show_match_diff'] == 1 )
 		<tr class="sectiontableentry2">
       <td class="valueleft">
 	    	<?php if ($stat = $this->home_highest_home_win): ?>
-	        	<?php echo JHtml::link( sportsmanagementHelperRoute::getMatchReportRoute( $this->home_highest_home_win->pid,$this->home_highest_home_win->mid ), 
+	        	<?php echo JHtml::link( sportsmanagementHelperRoute::getMatchReportRoute( $this->home_highest_home_win->pid,$this->home_highest_home_win->mid,JRequest::getInt('cfg_which_database',0) ), 
 	        													sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
 	      <?php else: ?>
 	      	----
@@ -286,7 +286,7 @@ if ( $this->config['show_match_diff'] == 1 )
       <td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HIGHEST_WON_HOME');?></td>
       <td class="valueright">
 	    	<?php if ($stat = $this->away_highest_home_win): ?>
-	        	<?php echo JHtml::link( sportsmanagementHelperRoute::getMatchReportRoute( $this->away_highest_home_win->pid,$this->away_highest_home_win->mid ), 
+	        	<?php echo JHtml::link( sportsmanagementHelperRoute::getMatchReportRoute( $this->away_highest_home_win->pid,$this->away_highest_home_win->mid,JRequest::getInt('cfg_which_database',0) ), 
 	        													sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
 	      <?php else: ?>
 	      	----
@@ -299,7 +299,7 @@ if ( $this->config['show_match_diff'] == 1 )
     <tr class="sectiontableentry1">
       <td class="valueleft">
 	    	<?php if ($stat = $this->home_highest_home_def): ?>
-	        	<?php echo JHtml::link( sportsmanagementHelperRoute::getMatchReportRoute( $this->home_highest_home_def->pid,$this->home_highest_home_def->mid ), 
+	        	<?php echo JHtml::link( sportsmanagementHelperRoute::getMatchReportRoute( $this->home_highest_home_def->pid,$this->home_highest_home_def->mid,JRequest::getInt('cfg_which_database',0) ), 
 	        													sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
 	      <?php else: ?>
 	      	----
@@ -308,7 +308,7 @@ if ( $this->config['show_match_diff'] == 1 )
       <td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HIGHEST_LOSS_HOME');?></td>
       <td class="valueright">
 	    	<?php if ($stat = $this->away_highest_home_def): ?>
-	        	<?php echo JHtml::link( sportsmanagementHelperRoute::getMatchReportRoute( $this->away_highest_home_def->pid,$this->away_highest_home_def->mid ), 
+	        	<?php echo JHtml::link( sportsmanagementHelperRoute::getMatchReportRoute( $this->away_highest_home_def->pid,$this->away_highest_home_def->mid,JRequest::getInt('cfg_which_database',0) ), 
 	        													sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
 	      <?php else: ?>
 	      	----
@@ -321,7 +321,7 @@ if ( $this->config['show_match_diff'] == 1 )
     <tr class="sectiontableentry2">
       <td class="valueleft">
 	    	<?php if ($stat = $this->home_highest_away_win): ?>
-	        	<?php echo JHtml::link( sportsmanagementHelperRoute::getMatchReportRoute( $this->home_highest_away_win->pid,$this->home_highest_away_win->mid ), 
+	        	<?php echo JHtml::link( sportsmanagementHelperRoute::getMatchReportRoute( $this->home_highest_away_win->pid,$this->home_highest_away_win->mid,JRequest::getInt('cfg_which_database',0) ), 
 	        													sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
 	      <?php else: ?>
 	      	----
@@ -330,7 +330,7 @@ if ( $this->config['show_match_diff'] == 1 )
       <td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HIGHEST_WON_AWAY');?></td>
       <td class="valueright">
 	    	<?php if ($stat = $this->away_highest_away_win): ?>
-	        	<?php echo JHtml::link( sportsmanagementHelperRoute::getMatchReportRoute( $this->away_highest_away_win->pid,$this->away_highest_away_win->mid ), 
+	        	<?php echo JHtml::link( sportsmanagementHelperRoute::getMatchReportRoute( $this->away_highest_away_win->pid,$this->away_highest_away_win->mid,JRequest::getInt('cfg_which_database',0) ), 
 	        													sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
 	      <?php else: ?>
 	      	----
@@ -343,7 +343,7 @@ if ( $this->config['show_match_diff'] == 1 )
     <tr class="sectiontableentry1">
       <td class="valueleft">
 	    	<?php if ($stat = $this->home_highest_away_def): ?>
-	        	<?php echo JHtml::link( sportsmanagementHelperRoute::getMatchReportRoute( $this->home_highest_away_def->pid,$this->home_highest_away_def->mid ), 
+	        	<?php echo JHtml::link( sportsmanagementHelperRoute::getMatchReportRoute( $this->home_highest_away_def->pid,$this->home_highest_away_def->mid,JRequest::getInt('cfg_which_database',0) ), 
 	        													sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
 	      <?php else: ?>
 	      	----
@@ -352,7 +352,7 @@ if ( $this->config['show_match_diff'] == 1 )
       <td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HIGHEST_LOSS_AWAY');?></td>
       <td class="valueright">
 	    	<?php if ($stat = $this->away_highest_away_def): ?>
-	        	<?php echo JHtml::link( sportsmanagementHelperRoute::getMatchReportRoute( $this->away_highest_away_def->pid,$this->away_highest_away_def->mid ), 
+	        	<?php echo JHtml::link( sportsmanagementHelperRoute::getMatchReportRoute( $this->away_highest_away_def->pid,$this->away_highest_away_def->mid,JRequest::getInt('cfg_which_database',0) ), 
 	        													sprintf("%s - %s %s:%s", $stat->hometeam, $stat->awayteam, $stat->homegoals, $stat->awaygoals) ); ?>
 	      <?php else: ?>
 	      	----

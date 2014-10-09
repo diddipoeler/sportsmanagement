@@ -62,7 +62,7 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 	 */
 	public function init ()
     {
-		//global $mainframe;
+		//global $app;
 		
 		if ($this->getLayout () == 'default') {
 			$this->_displayDefault ( $tpl );
@@ -121,7 +121,7 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
     {
 		//global $option;
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication ();
+		$app = JFactory::getApplication ();
 		$db = JFactory::getDBO ();
 		$uri = JFactory::getURI ();
 		$user = JFactory::getUser ();
@@ -131,7 +131,7 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 		// $this->assignRef( 'name', $projectdata->name);
 		
 		$model = $this->getModel ();
-		$project = $mainframe->getUserState ( $option . 'project' );
+		$project = $app->getUserState ( $option . 'project' );
 		$this->assignRef ( 'project', $project );
 		$config = JComponentHelper::getParams ( 'com_media' );
         $params = JComponentHelper::getParams( $option );
@@ -139,9 +139,9 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
         $sis_nummer	= $params->get( 'sis_meinevereinsnummer' );
         $sis_passwort	= $params->get( 'sis_meinvereinspasswort' );
 		
-//        $mainframe->enqueueMessage(JText::_('sis_xmllink<br><pre>'.print_r($sis_xmllink,true).'</pre>'   ),'');
-//        $mainframe->enqueueMessage(JText::_('sis_meinevereinsnummer<br><pre>'.print_r($sis_nummer,true).'</pre>'   ),'');
-//        $mainframe->enqueueMessage(JText::_('sis_meinvereinspasswort<br><pre>'.print_r($sis_passwort,true).'</pre>'   ),'');
+//        $app->enqueueMessage(JText::_('sis_xmllink<br><pre>'.print_r($sis_xmllink,true).'</pre>'   ),'');
+//        $app->enqueueMessage(JText::_('sis_meinevereinsnummer<br><pre>'.print_r($sis_nummer,true).'</pre>'   ),'');
+//        $app->enqueueMessage(JText::_('sis_meinvereinspasswort<br><pre>'.print_r($sis_passwort,true).'</pre>'   ),'');
         
 		$this->assign ( 'request_url', $uri->toString () );
 		$this->assignRef ( 'config', $config );
@@ -162,8 +162,8 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 	 */
 	function _displayDefaultUpdate($tpl) 
     {
-		// global $mainframe, $option;
-		$mainframe = JFactory::getApplication ();
+		// global $app, $option;
+		$app = JFactory::getApplication ();
 		$option = JRequest::getCmd ( 'option' );
 		
 		$db = JFactory::getDBO ();
@@ -171,14 +171,14 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 		$user = JFactory::getUser ();
 		$model = $this->getModel ();
 		//$option = 'com_joomleague';
-		$project = $mainframe->getUserState ( $option . 'project' );
+		$project = $app->getUserState ( $option . 'project' );
 		$this->assignRef ( 'project', $project );
 		$config = JComponentHelper::getParams ( 'com_media' );
 		
-		$uploadArray = $mainframe->getUserState ( $option . 'uploadArray', array () );
-		$lmoimportuseteams = $mainframe->getUserState ( $option . 'lmoimportuseteams' );
-		$whichfile = $mainframe->getUserState ( $option . 'whichfile' );
-		//$delimiter = $mainframe->getUserState ( $option . 'delimiter' );
+		$uploadArray = $app->getUserState ( $option . 'uploadArray', array () );
+		$lmoimportuseteams = $app->getUserState ( $option . 'lmoimportuseteams' );
+		$whichfile = $app->getUserState ( $option . 'whichfile' );
+		//$delimiter = $app->getUserState ( $option . 'delimiter' );
 		
 		$this->assignRef ( 'uploadArray', $uploadArray );
 		

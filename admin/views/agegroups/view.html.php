@@ -61,7 +61,7 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
         $starttime = microtime(); 
@@ -71,7 +71,7 @@ class sportsmanagementViewagegroups extends sportsmanagementView
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' state<br><pre>'.print_r($this->state,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' state<br><pre>'.print_r($this->state,true).'</pre>'),'');
 
 
 
@@ -79,7 +79,7 @@ class sportsmanagementViewagegroups extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		$total = $this->get('Total');
@@ -119,19 +119,26 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 																'text',
 																$this->state->get('filter.search_nation'));
 
-		//$mainframe->enqueueMessage(JText::_('items<br><pre>'.print_r($items,true).'</pre>'),'');
+		//$app->enqueueMessage(JText::_('items<br><pre>'.print_r($items,true).'</pre>'),'');
         
         foreach ( $items as $item )
         {
             $sportstype = $mdlSportsType->getSportstype($item->sportstype_id);
+            if ( $sportstype )
+            {
             $item->sportstype = $sportstype->name;
+            }
+            else
+            {
+            $item->sportstype = NULL;    
+            }
         }
         
         if ( count($items)  == 0 )
         {
             $databasetool = JModelLegacy::getInstance("databasetool", "sportsmanagementModel");
             $insert_agegroup = $databasetool->insertAgegroup($this->state->get('filter.search_nation'),$this->state->get('filter.sports_type'));
-        $mainframe->enqueueMessage(JText::_('Zu diesem Land/Sportart gibt es keine Altersgruppen'),'Error');
+        $app->enqueueMessage(JText::_('Zu diesem Land/Sportart gibt es keine Altersgruppen'),'Error');
         }
         
 

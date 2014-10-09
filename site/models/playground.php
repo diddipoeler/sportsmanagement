@@ -41,9 +41,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.model' );
 
-//require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
-//include_once JPATH_COMPONENT . DS . 'helpers' . DS . 'easygooglemap.php';
-
 /**
  * sportsmanagementModelPlayground
  * 
@@ -58,6 +55,8 @@ class sportsmanagementModelPlayground extends JModelLegacy
     var $playgroundid = 0;
     var $playground = null;
     var $projectid = 0;
+    
+    static $cfg_which_database = 0;
 
     /**
      * sportsmanagementModelPlayground::__construct()
@@ -71,6 +70,7 @@ class sportsmanagementModelPlayground extends JModelLegacy
         $this->projectid = JRequest::getInt( "p", 0 );
         $this->playgroundid = JRequest::getInt( "pgid", 0 );
         sportsmanagementModelProject::$projectid = $this->projectid;
+        self::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
         
         parent::__construct( ); 
     }
@@ -105,7 +105,7 @@ class sportsmanagementModelPlayground extends JModelLegacy
     function getTeams( )
     {
         $option = JRequest::getCmd('option');
-	    $mainframe = JFactory::getApplication();
+	    $app = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
@@ -166,7 +166,7 @@ class sportsmanagementModelPlayground extends JModelLegacy
     function getTeamLogo($team_id)
     {
         $option = JRequest::getCmd('option');
-	    $mainframe = JFactory::getApplication();
+	    $app = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
@@ -199,7 +199,7 @@ class sportsmanagementModelPlayground extends JModelLegacy
 //    function getTeamsFromMatches( & $games )
 //    {
 //        $option = JRequest::getCmd('option');
-//	    $mainframe = JFactory::getApplication();
+//	    $app = JFactory::getApplication();
 //        // Get a db connection.
 //        $db = JFactory::getDbo();
 //        $query = $db->getQuery(true);

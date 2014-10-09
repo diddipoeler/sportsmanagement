@@ -79,7 +79,7 @@ class sportsmanagementControllermatch extends JControllerForm
 	function insertgooglecalendar()
     {
         $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $model = $this->getModel('match');
         $result = $model->insertgooglecalendar();
         
@@ -106,10 +106,10 @@ class sportsmanagementControllermatch extends JControllerForm
     function addmatch()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$post = JRequest::get('post');
-		$post['project_id'] = $mainframe->getUserState( "$option.pid", '0' );
-		$post['round_id'] = $mainframe->getUserState( "$option.rid", '0' );
+		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
+		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
 		$model = $this->getModel('match');
         $row = $model->getTable();
         // bind the form fields to the table
@@ -187,7 +187,7 @@ class sportsmanagementControllermatch extends JControllerForm
 	 */
 	function remove()
 	{
-	$mainframe = JFactory::getApplication();
+	$app = JFactory::getApplication();
     $pks = JRequest::getVar('cid', array(), 'post', 'array');
     $model = $this->getModel('match');
     $model->delete($pks);
@@ -251,7 +251,7 @@ class sportsmanagementControllermatch extends JControllerForm
 		JRequest::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
 		$msg='';
 		JToolBarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$post=JRequest::get('post');
         $model = $this->getModel('match');
 
@@ -262,7 +262,7 @@ class sportsmanagementControllermatch extends JControllerForm
             //$cid = JRequest::getVar('cid',array(0),'','array');
             $match_id = JRequest::getInt('id',0);
 			$tempFilePath = $upload['tmp_name'];
-			$mainframe->setUserState('com_sportsmanagement'.'uploadArray',$upload);
+			$app->setUserState('com_sportsmanagement'.'uploadArray',$upload);
 			$filename = '';
 			$msg = '';
 			$dest = JPATH_SITE.DS.'tmp'.DS.$upload['name'];

@@ -60,7 +60,7 @@ class sportsmanagementViewsmquotes extends sportsmanagementView
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
         $starttime = microtime(); 
@@ -75,7 +75,7 @@ class sportsmanagementViewsmquotes extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		$total = $this->get('Total');
@@ -85,10 +85,10 @@ class sportsmanagementViewsmquotes extends sportsmanagementView
 		$this->assignRef('table', $table);
         
         
-        //$this->state		= $mainframe->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state','filter_state','','word');;
-//        $mainframe->enqueueMessage(JText::_('sportsmanagementViewsmquotes state<br><pre>'.print_r($this->state,true).'</pre>'),'Notice');
-//        $mainframe->enqueueMessage(JText::_('sportsmanagementViewsmquotes filter_state<br><pre>'.print_r($this->filter_state,true).'</pre>'),'Notice');
-//        $mainframe->enqueueMessage(JText::_('sportsmanagementViewsmquotes filter_catid<br><pre>'.print_r($this->filter_catid,true).'</pre>'),'Notice');
+        //$this->state		= $app->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state','filter_state','','word');;
+//        $app->enqueueMessage(JText::_('sportsmanagementViewsmquotes state<br><pre>'.print_r($this->state,true).'</pre>'),'Notice');
+//        $app->enqueueMessage(JText::_('sportsmanagementViewsmquotes filter_state<br><pre>'.print_r($this->filter_state,true).'</pre>'),'Notice');
+//        $app->enqueueMessage(JText::_('sportsmanagementViewsmquotes filter_catid<br><pre>'.print_r($this->filter_catid,true).'</pre>'),'Notice');
         
         
   

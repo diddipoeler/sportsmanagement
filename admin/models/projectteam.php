@@ -95,10 +95,10 @@ class sportsmanagementModelprojectteam extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.projectteam', 'projectteam', array('control' => 'jform', 'load_data' => $loadData));
@@ -186,7 +186,7 @@ class sportsmanagementModelprojectteam extends JModelAdmin
 	 */
 	function saveshort()
 	{
-		$mainframe =& JFactory::getApplication();
+		$app =& JFactory::getApplication();
         $option = JRequest::getCmd('option');
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // Get the input
@@ -195,8 +195,8 @@ class sportsmanagementModelprojectteam extends JModelAdmin
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage('saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        $mainframe->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        $app->enqueueMessage('saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        $app->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
         }
         
         $result=true;
@@ -224,7 +224,7 @@ class sportsmanagementModelprojectteam extends JModelAdmin
 
 			if(!$tblProjectteam->store()) {
 				//$this->setError($this->_db->getErrorMsg());
-                $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(), true).'</pre><br>','Error');
+                $app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(), true).'</pre><br>','Error');
 				$result = false;
 			}
 		}
@@ -241,7 +241,7 @@ class sportsmanagementModelprojectteam extends JModelAdmin
     function setseasonid()
     {
         $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
         $post = JRequest::get('post');
@@ -249,9 +249,9 @@ class sportsmanagementModelprojectteam extends JModelAdmin
         $project_id = $post['pid'];
         $season_id = $post['season_id'];
         
-        //$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' season_id<br><pre>'.print_r($season_id , true).'</pre><br>','Notice');
-        //$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id , true).'</pre><br>','Notice');
-        //$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' season_id<br><pre>'.print_r($season_id , true).'</pre><br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id , true).'</pre><br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
         
         for ($x=0; $x < count($pks); $x++)
 		{
@@ -269,7 +269,7 @@ class sportsmanagementModelprojectteam extends JModelAdmin
         
         if ( !$result )
 		{
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		}
         
         }
@@ -284,21 +284,21 @@ class sportsmanagementModelprojectteam extends JModelAdmin
     function matchgroups()
     {
         $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
         $post = JRequest::get('post');
         $pks = JRequest::getVar('cid', null, 'post', 'array');
         
-        //$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
         
         for ($x=0; $x < count($pks); $x++)
 		{
 		$projectteam_id	= $pks[$x];
         $projectteam_division_id = $post['division_id' . $pks[$x]];  
         
-        //$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($projectteam_id , true).'</pre><br>','Notice');
-        //$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' projectteam_division_id<br><pre>'.print_r($projectteam_division_id , true).'</pre><br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($projectteam_id , true).'</pre><br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' projectteam_division_id<br><pre>'.print_r($projectteam_division_id , true).'</pre><br>','Notice');
         
         // Fields to update.
         $query = $db->getQuery(true);
@@ -315,7 +315,7 @@ class sportsmanagementModelprojectteam extends JModelAdmin
         $result = $db->query();  
         if ( !$result )
 		{
-			$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+			$app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
 		}
         
         $query->clear();
@@ -331,7 +331,7 @@ class sportsmanagementModelprojectteam extends JModelAdmin
         $result = $db->query();  
         if ( !$result )
 		{
-			$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+			$app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
 		}
         
         
@@ -349,12 +349,12 @@ class sportsmanagementModelprojectteam extends JModelAdmin
     function storeAssign($post)
     {
         $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $post = JRequest::get('post');
         $_pro_teams_to_delete = array();
         $query = JFactory::getDbo()->getQuery(true);
         
-        //$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
         
         $project_id = $post['project_id'];
         $assign_id = $post['project_teamslist'];
@@ -370,8 +370,8 @@ class sportsmanagementModelprojectteam extends JModelAdmin
           $_pro_teams_to_delete[] = $row->projectteamid;  
           }
          } 
-//        $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' _pro_teams_to_delete<br><pre>'.print_r($_pro_teams_to_delete , true).'</pre><br>','Notice');
-//        $mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' delete_team<br><pre>'.print_r($delete_team , true).'</pre><br>','Notice');
+//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' _pro_teams_to_delete<br><pre>'.print_r($_pro_teams_to_delete , true).'</pre><br>','Notice');
+//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' delete_team<br><pre>'.print_r($delete_team , true).'</pre><br>','Notice');
         
         foreach ( $assign_id as $key => $value )
         {
@@ -410,7 +410,7 @@ class sportsmanagementModelprojectteam extends JModelAdmin
 	 */
 	public function save($data)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
@@ -419,8 +419,8 @@ class sportsmanagementModelprojectteam extends JModelAdmin
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');
        
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelprojectteam save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementModelprojectteam post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       //$app->enqueueMessage(JText::_('sportsmanagementModelprojectteam save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       //$app->enqueueMessage(JText::_('sportsmanagementModelprojectteam post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
@@ -450,7 +450,7 @@ class sportsmanagementModelprojectteam extends JModelAdmin
         $mdlTeam->UpdateTrainigData($post);
         }
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelprojectteam save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelprojectteam save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         // Proceed with the save
 		return parent::save($data);   
@@ -464,13 +464,13 @@ class sportsmanagementModelprojectteam extends JModelAdmin
      */
     public function delete(&$pks)
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 		$db		= JFactory::getDbo();
 		//$query	= $db->getQuery(true);
         //$pks = JRequest::getVar('cid', null, 'post', 'array');
         
-        //$mainframe->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
         
         // als erstes die heimspiele
         if (count($pks))
@@ -483,11 +483,11 @@ class sportsmanagementModelprojectteam extends JModelAdmin
             $result = sportsmanagementModeldatabasetool::runJoomlaQuery();
             if ( $result )
             {
-                $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_HOME'),'');
+                $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_HOME'),'');
             }
             else
             {
-                $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_HOME_ERROR'),'Error');
+                $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_HOME_ERROR'),'Error');
             }
         }    
         // dann die auswärtsspiele
@@ -501,11 +501,11 @@ class sportsmanagementModelprojectteam extends JModelAdmin
             $result = sportsmanagementModeldatabasetool::runJoomlaQuery();
             if ( $result )
             {
-                $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_AWAY'),'');
+                $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_AWAY'),'');
             }
             else
             {
-                $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_AWAY_ERROR'),'Error');
+                $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DELETE_MATCH_AWAY_ERROR'),'Error');
             }
         }    
         
@@ -521,7 +521,7 @@ class sportsmanagementModelprojectteam extends JModelAdmin
 	 */
 	function getProjectTeam($team_id)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);

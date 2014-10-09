@@ -57,7 +57,7 @@ class sportsmanagementViewPredictionMember extends sportsmanagementView
 {
 	function display( $tpl = null )
 	{
-		$mainframe	=& JFactory::getApplication();
+		$app	=& JFactory::getApplication();
 
 		if ( $this->getLayout() == 'form' )
 		{
@@ -73,7 +73,7 @@ class sportsmanagementViewPredictionMember extends sportsmanagementView
 
 	function _displayForm( $tpl )
 	{
-		$mainframe			=& JFactory::getApplication();
+		$app			=& JFactory::getApplication();
 		$option = JRequest::getCmd('option');
 		$db		=& JFactory::getDBO();
 		$uri 	=& JFactory::getURI();

@@ -48,7 +48,7 @@ defined('_JEXEC') or die('Restricted access');
 			if (!empty($this->rounds))
 			{
 				$pageNavigation  = "<div class='pagenav'>";
-				$pageNavigation .= sportsmanagementModelPagination::pagenav($this->project);
+				$pageNavigation .= sportsmanagementModelPagination::pagenav($this->project,JRequest::getInt('cfg_which_database',0));
 				$pageNavigation .= "</div>";
 				echo $pageNavigation;
 			}

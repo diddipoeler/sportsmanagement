@@ -54,8 +54,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 			foreach ( $this->previousx[$this->currentteam] as $game )
 			{
 				$class = ($k == 0)? 'sectiontableentry1' : 'sectiontableentry2';
-				$result_link = sportsmanagementHelperRoute::getResultsRoute( $game->project_id,$game->roundid);
-				$report_link = sportsmanagementHelperRoute::getMatchReportRoute( $game->project_id,$game->id);
+				$result_link = sportsmanagementHelperRoute::getResultsRoute($game->project_id,$game->roundid,0,0,0,null,JRequest::getInt('cfg_which_database',0));
+				$report_link = sportsmanagementHelperRoute::getMatchReportRoute($game->project_id,$game->id,JRequest::getInt('cfg_which_database',0));
 				$home = $this->allteams[$game->projectteam1_id];
 				$away = $this->allteams[$game->projectteam2_id];
 				?>

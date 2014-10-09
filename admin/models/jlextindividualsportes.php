@@ -73,14 +73,14 @@ class sportsmanagementModeljlextindividualsportes extends JModelList
         
     protected function getListQuery()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $project_id			= $mainframe->getUserState( "$option.pid", '0' );
+        $project_id			= $app->getUserState( "$option.pid", '0' );
 		$match_id		= JRequest::getvar('id', 0);;
 		$projectteam1_id		= JRequest::getvar('team1', 0);;
 		$projectteam2_id		= JRequest::getvar('team2', 0);;
-        //$search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
-        //$search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
+        //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        //$search_nation		= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -94,7 +94,7 @@ class sportsmanagementModeljlextindividualsportes extends JModelList
 $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
         
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
  
 
         return $query;
@@ -106,13 +106,13 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 	function checkGames($project,$match_id,$rid,$projectteam1_id,$projectteam2_id)
     {
         $option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
         
-        //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' project<br><pre>'.print_r($project, true).'</pre><br>','');
-        //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' match_id<br><pre>'.print_r($match_id, true).'</pre><br>','');
+        //$app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' project<br><pre>'.print_r($project, true).'</pre><br>','');
+        //$app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' match_id<br><pre>'.print_r($match_id, true).'</pre><br>','');
         
         // Select some fields
 		$query->select('COUNT(mc.id)');
@@ -123,13 +123,13 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
         $db->setQuery($query);
         $singleresult = $db->loadResult();
         
-        //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' singleresult<br><pre>'.print_r($singleresult, true).'</pre><br>','');
+        //$app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' singleresult<br><pre>'.print_r($singleresult, true).'</pre><br>','');
         
         if ( $singleresult < $project->tennis_single_matches )
         {
             $insertmatch = $project->tennis_single_matches - $singleresult;
             
-            //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' insertmatch<br><pre>'.print_r($insertmatch, true).'</pre><br>','');
+            //$app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' insertmatch<br><pre>'.print_r($insertmatch, true).'</pre><br>','');
             
             for ($i=0; $i < $insertmatch; $i++)
 		    {
@@ -158,13 +158,13 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
         $db->setQuery($query);
         $doubleresult = $db->loadResult();
         
-        //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' doubleresult<br><pre>'.print_r($doubleresult, true).'</pre><br>','');
+        //$app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' doubleresult<br><pre>'.print_r($doubleresult, true).'</pre><br>','');
         
         if ( $doubleresult < $project->tennis_double_matches )
         {
             $insertmatch = $project->tennis_double_matches - $doubleresult;
             
-            //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' insertmatch<br><pre>'.print_r($insertmatch, true).'</pre><br>','');
+            //$app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' insertmatch<br><pre>'.print_r($insertmatch, true).'</pre><br>','');
             
             for ($i=0; $i < $insertmatch; $i++)
 		    {
@@ -199,8 +199,8 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 	{
 		$option = JRequest::getCmd('option');
 
-		$mainframe	= JFactory::getApplication();
-		//$project_id = $mainframe->getUserState($option . 'project');
+		$app	= JFactory::getApplication();
+		//$project_id = $app->getUserState($option . 'project');
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -231,8 +231,8 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 
 		if (!$result = $db->loadObjectList())
 		{
-			$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+			$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 			return false;
 		}
 		else
@@ -250,8 +250,8 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 	{
 		$option = JRequest::getCmd('option');
 
-		$mainframe	=& JFactory::getApplication();
-		$project_id = $mainframe->getUserState($option . 'project');
+		$app	=& JFactory::getApplication();
+		$project_id = $app->getUserState($option . 'project');
 
 		$query = ' SELECT	pt.id AS value, '
 		. ' CASE WHEN CHAR_LENGTH(t.name) < 25 THEN t.name ELSE t.middle_name END AS text '
@@ -294,11 +294,11 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 	function getPlayer($teamid,$project_id)
 	{
   $option = JRequest::getCmd('option');
-	$mainframe	= JFactory::getApplication();
+	$app	= JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
-        $season_id	= $mainframe->getUserState( "$option.season_id", '0' );
+        $season_id	= $app->getUserState( "$option.season_id", '0' );
 
 // Select some fields
 		$query->select('tp.id AS value');
@@ -321,8 +321,8 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
         
         if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
 		return $result;
   
@@ -331,14 +331,14 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
   function getSportType($id)
   {
   $option = JRequest::getCmd('option');
-	$mainframe	=& JFactory::getApplication();
+	$app	=& JFactory::getApplication();
   $query='SELECT name
 					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type
 					WHERE id='. $this->_db->Quote($id);
 		$this->_db->setQuery($query);
 		$sporttype = $this->_db->loadResult();
-		$mainframe->setUserState($option.'sporttype',$sporttype);
-		$mainframe->enqueueMessage(JText::_('Sporttype: '.$sporttype ),'');
+		$app->setUserState($option.'sporttype',$sporttype);
+		$app->enqueueMessage(JText::_('Sporttype: '.$sporttype ),'');
 		
 		switch ( strtolower($sporttype) )
 		{
@@ -355,9 +355,9 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
   function _getSinglefile()
   {
   $option = JRequest::getCmd('option');
-	$mainframe	=& JFactory::getApplication();
+	$app	=& JFactory::getApplication();
 	
-	$match_id		= $mainframe->getUserState( $option . 'match_id' );
+	$match_id		= $app->getUserState( $option . 'match_id' );
 	$query='SELECT match_number
 					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match
 					WHERE id='. $this->_db->Quote($match_id);
@@ -367,15 +367,15 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 	$dir = JPATH_SITE.DS.'tmp'.DS.'ringerdateien';
   $files = JFolder::files($dir, '^MKEinzelkaempfe_Data_'.$match_number, false, false, array('^Termine_Schema') );
   
-  $mainframe->enqueueMessage(JText::_('_getSinglefile: '.print_r($files,true) ),'');
+  $app->enqueueMessage(JText::_('_getSinglefile: '.print_r($files,true) ),'');
   
   if ( $files )
   {
-  $mainframe->enqueueMessage(JText::_('Einzelk&auml;mpfe '.$match_number.' vorhanden' ),'Notice');
+  $app->enqueueMessage(JText::_('Einzelk&auml;mpfe '.$match_number.' vorhanden' ),'Notice');
   }
   else
   {
-  $mainframe->enqueueMessage(JText::_('Einzelk&auml;mpfe '.$match_number.' nicht vorhanden' ),'Error');
+  $app->enqueueMessage(JText::_('Einzelk&auml;mpfe '.$match_number.' nicht vorhanden' ),'Error');
   }
   
   }

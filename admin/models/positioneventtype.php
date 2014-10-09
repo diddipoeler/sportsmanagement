@@ -123,7 +123,7 @@ class sportsmanagementModelpositioneventtype extends JModelAdmin
 	 */
 	function store($data,$position_id)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $result	= true;
 		$peid	= (isset($data['position_eventslist']) ? $data['position_eventslist'] : array());
 		JArrayHelper::toInteger( $peid );

@@ -65,8 +65,8 @@ class sportsmanagementViewjltournamenttree extends JViewLegacy
     // Get a refrence of the page instance in joomla
 	$document = JFactory::getDocument();
 	$uri = JFactory::getURI();		
-	$mainframe = JFactory::getApplication();		
-//	$js ="registerhome('".JURI::base()."','Tournament Tree Extension','".$mainframe->getCfg('sitename')."','0');". "\n";
+	$app = JFactory::getApplication();		
+//	$js ="registerhome('".JURI::base()."','Tournament Tree Extension','".$app->getCfg('sitename')."','0');". "\n";
 //  $document->addScriptDeclaration( $js );	
     
     //$model =& $this->getModel( 'jlxmlexports' ); 

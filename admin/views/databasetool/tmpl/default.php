@@ -82,11 +82,11 @@ else
 ?>
 <div id="progressbar">
 <div class="progress-label">
-<?php echo $this->task; ?>
+<?php echo $this->task.' - '.$this->work_table; ?>
 </div>
 </div>
 <?PHP
-echo 'step -> '.$this->work_table.'<br>';
+//echo 'step -> '.$this->work_table.'<br>';
 }
 ?>
 

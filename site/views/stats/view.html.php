@@ -61,7 +61,7 @@ class sportsmanagementViewStats extends JViewLegacy
 	function display($tpl = null)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         // Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
 

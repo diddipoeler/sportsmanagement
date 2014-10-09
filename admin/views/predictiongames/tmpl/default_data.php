@@ -105,28 +105,25 @@ JHtml::_('behavior.modal');
 				$checked		= JHtml::_('grid.checkedout',$row,$i);
 				//$published		= JHtml::_('grid.published',$row,$i);
         $published  = JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','predictiongames.');
-        
+        $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
 				$link			= JRoute::_('index.php?option=com_sportsmanagement&task=predictiongame.edit&id=' . $row->id);
 				?>
 				<tr class='<?php echo "row$k"; ?>'>
 					<td style='text-align:right; '><?php echo $this->pagination->getRowOffset( $i ); ?></td>
 					<td><?php echo $checked; ?></td>
-					<td style='text-align:center; '><?php
-						if ( $this->table->isCheckedOut( $this->user->get ('id'), $row->checked_out ) )
-						{
-							$inputappend = " disabled='disabled'";
-							?>&nbsp;<?php
-						}
-						else
-						{
-							?><a href='<?php echo $link; ?>'>
+					<td style='text-align:center; '>
+                    <?php
+                            if ($row->checked_out) : ?>
+										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'predictiongames.', $canCheckin); ?>
+									<?php endif; ?>
+							<a href='<?php echo $link; ?>'>
 									<img	src='<?php echo JURI::root(); ?>administrator/components/com_sportsmanagement/assets/images/edit.png'
 											border='0'
 											alt='<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_EDIT_DETAILS' ); ?>'
 											title='<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_EDIT_DETAILS' ); ?>'>
 								</a>
 							<?php
-						}
+						
 					?></td>
 					<td>
 						<?php

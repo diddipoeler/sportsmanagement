@@ -126,44 +126,51 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 				for ($i=0,$n=count($this->items); $i < $n; $i++)
 				{
 					$row =& $this->items[$i];
-					$link=JRoute::_('index.php?option=com_sportsmanagement&task=club.edit&id='.$row->id);
-					$link2=JRoute::_('index.php?option=com_sportsmanagement&view=teams&club_id='.$row->id);
-					$checked= JHtml::_('grid.checkedout',$row,$i);
+					$link = JRoute::_('index.php?option=com_sportsmanagement&task=club.edit&id='.$row->id);
+					$link2 = JRoute::_('index.php?option=com_sportsmanagement&view=teams&club_id='.$row->id);
+					$checked = JHtml::_('grid.checkedout',$row,$i);
+                    $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
 						<td class="center"><?php echo $checked; ?></td>
 						<?php
-                        $checkedOut	= !($row->checked_out == 0 || $row->checked_out == $this->user->get('id'));
-						if ($checkedOut)
-						{
-							$inputappend=' disabled="disabled"';
-							?><td class="center">&nbsp;</td><?php
-						}
-						else
-						{
+                        
 							$inputappend='';
 							?>
 							<td class="center">
+                            <?php
+                            if ( ( $row->checked_out != $this->user->get ('id') ) && $row->checked_out ) : 
+                            ?>
+										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'clubs.', $canCheckin); ?>
+									<?php else: ?>
 								<a href="<?php echo $link; ?>">
 									<?php
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS');
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
-													$imageTitle,'title= "'.$imageTitle.'"');
+									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS');
+                                    $attribs['title'] = $imageTitle;
+                                    $attribs['width'] = '16px';
+                                    $attribs['height'] = 'auto';
+									echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/edit.png',
+													$imageTitle, $attribs);
 									?>
 								</a>
+                                <?php endif; ?>
                                 <a href="<?php echo $link2; ?>">
 									<?php
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_SHOW_TEAMS');
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/icon-16-Teams.png',
-													$imageTitle,'title= "'.$imageTitle.'"');
+									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_SHOW_TEAMS');
+                                    $attribs['title'] = $imageTitle;
+									echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/icon-16-Teams.png',
+													$imageTitle, $attribs);
 									?>
 								</a>
 							</td>
 							<?php
-						}
+						
 						?>
-						<td><?php echo $row->name; ?></td>
+						<td><?php echo $row->name; ?>
+                        <p class="smallsub">
+						<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias));?></p>
+                        </td>
 						<td>
 							<?php
 							if ($row->website != ''){echo '<a href="'.$row->website.'" target="_blank">';}

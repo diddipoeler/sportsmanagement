@@ -45,8 +45,8 @@ if (!file_exists(JPATH_LIBRARIES . '/import.legacy.php')) {
 	require_once ( JPATH_BASE.'/includes/framework.php' );
 	/* To use Joomla's Database Class */
 	require_once ( JPATH_BASE.'/libraries/joomla/factory.php' );
-	$mainframe = JFactory::getApplication('site');
-	$mainframe->initialise();
+	$app = JFactory::getApplication('site');
+	$app->initialise();
 	$user = JFactory::getUser();
 	$session = JFactory::getSession();
 } else {

@@ -60,12 +60,12 @@ class sportsmanagementViewRound extends sportsmanagementView
 	public function init ()
 	{
 	   $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$uri = JFactory::getURI();
 		$user = JFactory::getUser();
         
-        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );;
-        $this->project_art_id	= $mainframe->getUserState( "$option.project_art_id", '0' );;
+        $this->project_id	= $app->getUserState( "$option.pid", '0' );;
+        $this->project_art_id	= $app->getUserState( "$option.project_art_id", '0' );;
         
 		// get the Data
 		$form = $this->get('Form');
@@ -86,7 +86,7 @@ class sportsmanagementViewRound extends sportsmanagementView
         
         
         
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' info<br><pre>'.print_r($_SERVER['REMOTE_ADDR'],true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' info<br><pre>'.print_r($_SERVER['REMOTE_ADDR'],true).'</pre>'   ),'');
         
 		// Assign the Data
 		$this->form = $form;

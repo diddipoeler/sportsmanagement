@@ -62,7 +62,7 @@ class sportsmanagementViewSportsType extends sportsmanagementView
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         
         // get the Data
 		$form = $this->get('Form');

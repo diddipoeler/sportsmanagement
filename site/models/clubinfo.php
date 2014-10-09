@@ -68,7 +68,9 @@ class sportsmanagementModelClubInfo extends JModelLegacy
   var $jgcat_rows_sorted = Array();
      
 	var $treedepth = 0;
-	var $treedepthold = 0;	
+	var $treedepthold = 0;
+    
+    static $cfg_which_database = 0;	
 
 	/**
 	 * sportsmanagementModelClubInfo::__construct()
@@ -83,6 +85,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy
 		$this->clubid = JRequest::getInt( "cid", 0 );
         
         sportsmanagementModelProject::$projectid = $this->projectid;
+        self::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
         
         parent::__construct( );
 	}
@@ -170,9 +173,9 @@ class sportsmanagementModelClubInfo extends JModelLegacy
     function getClubAssociation($associations)
 	{
 	   $option = JRequest::getCmd('option');
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
         // Select some fields
              $query->select('asoc.*');
@@ -195,9 +198,9 @@ class sportsmanagementModelClubInfo extends JModelLegacy
     function getClub( )
 	{
 		$option = JRequest::getCmd('option');
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
         
         $this->projectid = JRequest::getInt( "p", 0 );
@@ -228,9 +231,9 @@ class sportsmanagementModelClubInfo extends JModelLegacy
 	function getTeamsByClubId()
 	{
 		$option = JRequest::getCmd('option');
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
         $subquery1 = $db->getQuery(true);
         $subquery2 = $db->getQuery(true);
@@ -273,12 +276,12 @@ class sportsmanagementModelClubInfo extends JModelLegacy
 			$db->setQuery( $query );
 			$teams = $db->loadObjectList();
             
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
             
             if ( !$teams )
             {
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
             }
 
 		}
@@ -293,9 +296,9 @@ class sportsmanagementModelClubInfo extends JModelLegacy
 	function getStadiums()
 	{
 		$option = JRequest::getCmd('option');
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
         
         $stadiums = array();
@@ -348,9 +351,9 @@ class sportsmanagementModelClubInfo extends JModelLegacy
 	function getPlaygrounds( )
 	{
 		$option = JRequest::getCmd('option');
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
         
         $playgrounds = array();
@@ -387,9 +390,9 @@ class sportsmanagementModelClubInfo extends JModelLegacy
     function getClubHistory( $clubid )
 	{
 	$option = JRequest::getCmd('option');
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
         $query->select('c.id, c.name, c.new_club_id');
         $query->select('CONCAT_WS( \':\', id, alias ) AS slug');
@@ -438,9 +441,9 @@ class sportsmanagementModelClubInfo extends JModelLegacy
         function getClubHistoryHTML( $clubid )
 	{
 	   $option = JRequest::getCmd('option');
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
         $subquery = $db->getQuery(true);
         
@@ -493,7 +496,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy
   }
   
   
-  $link = sportsmanagementHelperRoute::getClubInfoRoute( $row->pid, $row->slug );	
+  $link = sportsmanagementHelperRoute::getClubInfoRoute( $row->pid, $row->slug,null,self::$cfg_which_database );	
   $imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_HISTORY_FROM' );
   
   $temp .= JHTML::_(	'image',
@@ -539,9 +542,9 @@ class sportsmanagementModelClubInfo extends JModelLegacy
         function getClubHistoryTree( $clubid, $new_club_id )
 	{
 	$option = JRequest::getCmd('option');
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
         $subquery = $db->getQuery(true);
     
@@ -590,7 +593,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy
   			            
 				$db->setQuery($query);
                 
-//                $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+//                $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
                 
 				$result = $db->loadObjectList();
    foreach ( $result as $row )
@@ -601,7 +604,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy
 		
   $this->jgcat_rows = array_merge($this->jgcat_rows, $result);
   
-  //$mainframe->enqueueMessage(JText::_('jgcat_rows -> '.'<pre>'.print_r($this->jgcat_rows,true).'</pre>' ),'');
+  //$app->enqueueMessage(JText::_('jgcat_rows -> '.'<pre>'.print_r($this->jgcat_rows,true).'</pre>' ),'');
   
   foreach ( $result as $row )
 	{
@@ -635,7 +638,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy
         function getSortClubHistoryTree( $clubtree, $root_catid, $cat_name )
 	{
 	$option = JRequest::getCmd('option');
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
 	$script = '';
 	
   $jgcat_rows_sorted = Array();
@@ -852,14 +855,14 @@ class sportsmanagementModelClubInfo extends JModelLegacy
 /**
  *     function checkUserExtraFields()
  *     {
- *         $mainframe = JFactory::getApplication();
- *         //$mainframe->enqueueMessage(JText::_('view -> '.'<pre>'.print_r(JRequest::getVar('view'),true).'</pre>' ),'');
+ *         $app = JFactory::getApplication();
+ *         //$app->enqueueMessage(JText::_('view -> '.'<pre>'.print_r(JRequest::getVar('view'),true).'</pre>' ),'');
  *     $query="SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_user_extra_fields WHERE template_frontend LIKE '".JRequest::getVar('view')."' and published = 1 ";
- * 			//$mainframe->enqueueMessage(JText::_('query -> '.'<pre>'.print_r($query,true).'</pre>' ),'');
+ * 			//$app->enqueueMessage(JText::_('query -> '.'<pre>'.print_r($query,true).'</pre>' ),'');
  * 			$this->_db->setQuery($query);
  * 			if ($this->_db->loadResult())
  * 			{
- * 			 //$mainframe->enqueueMessage(JText::_('loadResult -> '.'<pre>'.print_r($this->_db->loadResult(),true).'</pre>' ),'');
+ * 			 //$app->enqueueMessage(JText::_('loadResult -> '.'<pre>'.print_r($this->_db->loadResult(),true).'</pre>' ),'');
  * 				return true;
  * 			}
  *             else
@@ -873,7 +876,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy
 /**
  *     function getUserExtraFields($jlid)
  *     {
- *         $mainframe = JFactory::getApplication();
+ *         $app = JFactory::getApplication();
  *     	$query = "SELECT ef.*,
  *         ev.fieldvalue as fvalue,
  *         ev.id as value_id 
@@ -890,7 +893,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy
  * 			$this->setError($this->_db->getErrorMsg());
  * 			return false;
  * 		}
- *         //$mainframe->enqueueMessage(JText::_('loadResult -> '.'<pre>'.print_r($result,true).'</pre>' ),'');
+ *         //$app->enqueueMessage(JText::_('loadResult -> '.'<pre>'.print_r($result,true).'</pre>' ),'');
  * 		return $result;
  *     
  *     }

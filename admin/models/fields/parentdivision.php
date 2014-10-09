@@ -71,8 +71,8 @@ class JFormFieldparentdivision extends JFormFieldList
 	protected function getOptions()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe= JFactory::getApplication();
-        $project_id	= $mainframe->getUserState( "$option.pid", '0' );
+		$app= JFactory::getApplication();
+        $project_id	= $app->getUserState( "$option.pid", '0' );
         
         // Initialize variables.
 		$options = array();

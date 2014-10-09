@@ -78,6 +78,20 @@ class sportsmanagementControllerteams extends JControllerAdmin
 			return true;
 		}
 	}
+    
+    /**
+     * sportsmanagementControllerteams::saveshort()
+     * 
+     * @return void
+     */
+    function saveshort()
+	{
+	   $model = $this->getModel();
+       $msg = $model->saveshort();
+       //$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+       $this->setRedirect('index.php?option=com_sportsmanagement&view=teams',$msg);
+    }  
+    
 	/**
 	 * Proxy for getModel.
 	 * @since	1.6

@@ -63,6 +63,8 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	var $showpics = 0;
 	var $ranking = null;
 	var $teams = null;
+    
+    static $cfg_which_database = 0;
 
 	/**
 	 * caching match data
@@ -82,6 +84,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 		$this->matchid = JRequest::getInt( "mid", 0 );
 		$this->showpics = JRequest::getInt( "pics", 0 );
 		$this->projectteamid = JRequest::getInt( "ptid", 0 );
+        self::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
         
         sportsmanagementModelProject::$projectid = $this->projectid; 
         
@@ -102,10 +105,10 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	 */
 	function getSpecifiedMatch($projectId, $projectTeamId, $matchId)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        // Create a new query object.		
-	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
         
 		if (!$this->_match)
@@ -154,7 +157,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
             
         if ( !$this->_match  )
 	    {
-		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+		$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 	    }
         
 			if($this->_match)
@@ -172,10 +175,10 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	 */
 	function getMatch()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        // Create a new query object.		
-	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
        
 		if (empty($this->_match))
@@ -193,7 +196,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
             
         if ( !$db->loadObject() )
 	    {
-		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+		$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 	    }
         
 			$this->_match = $db->loadObject();
@@ -227,8 +230,8 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 				return null;
 			}
 
-			$team1 = sportsmanagementModelProject::getTeaminfo($match->projectteam1_id);
-			$team2 = sportsmanagementModelProject::getTeaminfo($match->projectteam2_id);
+			$team1 = sportsmanagementModelProject::getTeaminfo($match->projectteam1_id,self::$cfg_which_database);
+			$team2 = sportsmanagementModelProject::getTeaminfo($match->projectteam2_id,self::$cfg_which_database);
 			$this->teams[] = $team1;
 			$this->teams[] = $team2;
 			// Set the division id, so that the home and away ranks are 
@@ -245,7 +248,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 //	 */
 //	function getMatchCommentary()
 //    {
-//        $mainframe = JFactory::getApplication();
+//        $app = JFactory::getApplication();
 //       $option = JRequest::getCmd('option');
 //       // Create a new query object.		
 //	   $db = JFactory::getDBO();
@@ -268,10 +271,10 @@ class sportsmanagementModelNextMatch extends JModelLegacy
      */
     function getReferees()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        // Create a new query object.		
-	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
        
 		$match = self::getMatch();
@@ -301,11 +304,11 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	{
 		if (empty($this->ranking))
 		{
-			$project = sportsmanagementModelProject::getProject();
+			$project = sportsmanagementModelProject::getProject(self::$cfg_which_database);
 			$division = $this->divisionid;
-			$ranking = JSMRanking::getInstance($project);
-			$ranking->setProjectId( $project->id );
-			$this->ranking = $ranking->getRanking(0, sportsmanagementModelProject::getCurrentRound(), $division);
+			$ranking = JSMRanking::getInstance($project,self::$cfg_which_database);
+			$ranking->setProjectId( $project->id,self::$cfg_which_database );
+			$this->ranking = $ranking->getRanking(0, sportsmanagementModelProject::getCurrentRound(NULL,self::$cfg_which_database), $division,self::$cfg_which_database);
 		}
 		return $this->ranking;
 	}
@@ -357,10 +360,10 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	 */
 	function _getHighestMatches($teamid,$whichteam,$gameart)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        // Create a new query object.		
-	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
        
 		//$match = self::getMatch();
@@ -556,10 +559,10 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	 */
 	function getGames( )
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        // Create a new query object.		
-	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
        
 		$result = array();
@@ -607,10 +610,10 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	 */
 	function getTeamsFromMatches( & $games )
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        // Create a new query object.		
-	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
        
 		$teams = Array();
@@ -640,7 +643,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
         
         if ( !$result )
 	    {
-		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+		$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 	    }
 
 		foreach ( $result as $r )
@@ -659,7 +662,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 //	 */
 //	function getPlayground( $pgid )
 //	{
-//	   $mainframe = JFactory::getApplication();
+//	   $app = JFactory::getApplication();
 //       $option = JRequest::getCmd('option');
 //       // Create a new query object.		
 //	   $db = JFactory::getDBO();
@@ -674,7 +677,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 //        
 //        if ( !$db->loadObject() )
 //	    {
-//		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+//		$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 //	    }
 //        
 //		return $db->loadObject();
@@ -688,7 +691,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 //	 */
 //	function getMatchText($match_id)
 //	{
-//	   $mainframe = JFactory::getApplication();
+//	   $app = JFactory::getApplication();
 //       $option = JRequest::getCmd('option');
 //       // Create a new query object.		
 //	   $db = JFactory::getDBO();
@@ -712,7 +715,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 //        
 //        if ( !$db->loadObject() )
 //	    {
-//		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+//		$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 //	    }
 //        
 //		return $db->loadObject();
@@ -790,13 +793,13 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	*/
 	function _getTeamPreviousX($current_roundcode, $ptid)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        // Create a new query object.		
-	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
        
-		$config = sportsmanagementModelProject::getTemplateConfig('nextmatch');
+		$config = sportsmanagementModelProject::getTemplateConfig('nextmatch',self::$cfg_which_database);
 		$nblast = $config['nb_previous'];
         
         // Select some fields
@@ -815,7 +818,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
         
         if ( !$res )
 	    {
-		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+		$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 	    }
         
 		if ($res) {

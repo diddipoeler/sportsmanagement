@@ -68,7 +68,7 @@ class JFormFieldJLGColor extends JFormField
 	 */
 	protected function getInput()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $document = JFactory::getDocument();
 		$document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/301a.js');
 		
@@ -77,7 +77,7 @@ class JFormFieldJLGColor extends JFormField
 		$classes = (string) $this->element['class'];
 		$disabled = ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' size<br><pre>'.print_r($size,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' size<br><pre>'.print_r($size,true).'</pre>'),'Notice');
 
 		// Initialize JavaScript field attributes.
 		$onchange = $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';

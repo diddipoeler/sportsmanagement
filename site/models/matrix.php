@@ -54,9 +54,10 @@ jimport( 'joomla.application.component.model' );
 class sportsmanagementModelMatrix extends JModelLegacy
 {
 	
-    var $divisionid= 0;
-    var $roundid= 0;
-    var $projectid= 0;
+    static $divisionid= 0;
+    static $roundid= 0;
+    static $projectid= 0;
+    static $cfg_which_database = 0;
     
     /**
 	 * sportsmanagementModelMatrix::__construct()
@@ -67,31 +68,32 @@ class sportsmanagementModelMatrix extends JModelLegacy
 	{
 		parent::__construct( );
 
-		$this->divisionid = JRequest::getInt( 'division', 0 );
-		$this->roundid = JRequest::getInt( 'r', 0 );
-		$this->projectid = JRequest::getInt( 'p', 0 );
-		sportsmanagementModelProject::$projectid = $this->projectid;
+		self::$divisionid = JRequest::getInt( 'division', 0 );
+		self::$roundid = JRequest::getInt( 'r', 0 );
+		self::$projectid = JRequest::getInt( 'p', 0 );
+		sportsmanagementModelProject::$projectid = self::$projectid;
+        self::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
 	}
 
-	/**
-	 * sportsmanagementModelMatrix::getDivisionID()
-	 * 
-	 * @return
-	 */
-	function getDivisionID( )
-	{
-		return $this->divisionid;
-	}
+//	/**
+//	 * sportsmanagementModelMatrix::getDivisionID()
+//	 * 
+//	 * @return
+//	 */
+//	function getDivisionID( )
+//	{
+//		return $this->divisionid;
+//	}
 
-	/**
-	 * sportsmanagementModelMatrix::getRoundID()
-	 * 
-	 * @return
-	 */
-	function getRoundID( )
-	{
-		return $this->roundid;
-	}
+//	/**
+//	 * sportsmanagementModelMatrix::getRoundID()
+//	 * 
+//	 * @return
+//	 */
+//	function getRoundID( )
+//	{
+//		return $this->roundid;
+//	}
 
 	/**
 	 * sportsmanagementModelMatrix::getDivision()
@@ -100,11 +102,23 @@ class sportsmanagementModelMatrix extends JModelLegacy
 	 */
 	function getDivision( )
 	{
+	   $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.		
+		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
+		$query = $db->getQuery(true);
+        
 		$division = null;
-		if ( $this->divisionid > 0 )
+		if ( self::$divisionid > 0 )
 		{
-			$division = & $this->getTable( "Division", "Table" );
-			$division->load( $this->divisionid );
+		  $query->select('*');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division');
+            $query->where('id = '.self::$divisionid);
+            $db->setQuery($query);
+            $division = $db->loadObject();
+            
+			//$division = & $this->getTable( "Division", "Table" );
+			//$division->load( $this->divisionid );
 		}
 		return $division;
 	}
@@ -116,11 +130,22 @@ class sportsmanagementModelMatrix extends JModelLegacy
 	 */
 	function getRound( )
 	{
+	   $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.		
+		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
+		$query = $db->getQuery(true);
+        
 		$round = null;
-		if ( $this->roundid > 0 )
+		if ( self::$roundid > 0 )
 		{
-			$round = & $this->getTable( "Round", "Table" );
-			$round->load( $this->roundid );
+		  $query->select('*');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+            $query->where('id = '.self::$roundid);
+            $db->setQuery($query);
+            $round = $db->loadObject();
+			//$round = & $this->getTable( "Round", "Table" );
+			//$round->load( $this->roundid );
 		}
 		return $round;
 	}
@@ -135,17 +160,17 @@ class sportsmanagementModelMatrix extends JModelLegacy
      */
     function getRussiaMatrixResults($teams, $results )
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         //$russiamatrix = array();
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'Notice');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($results,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($results,true).'</pre>'),'Notice');
         
         foreach ($teams as $team_row_id => $team_row) 
         {
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_row_id<br><pre>'.print_r($team_row_id,true).'</pre>'),'Notice');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_row<br><pre>'.print_r($team_row,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_row_id<br><pre>'.print_r($team_row_id,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_row<br><pre>'.print_r($team_row,true).'</pre>'),'Notice');
         
         foreach ($teams as $team_col_id => $team_col) 
         {
@@ -154,7 +179,7 @@ class sportsmanagementModelMatrix extends JModelLegacy
             {
             if (($result->projectteam1_id == $team_row->projectteamid) && ($result->projectteam2_id == $team_col->projectteamid)) 
                 {
-                //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_col->projectteamid<br><pre>'.print_r($team_col->projectteamid,true).'</pre>'),'Notice');
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_col->projectteamid<br><pre>'.print_r($team_col->projectteamid,true).'</pre>'),'Notice');
                 if ( isset($team_row->first[(int)$team_col->projectteamid]) )
                 {
                 $team_row->second[(int)$team_col->projectteamid] = new stdClass();     
@@ -229,7 +254,7 @@ class sportsmanagementModelMatrix extends JModelLegacy
         }
         }    
             
-    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'Notice');
     
     
     return $teams;    
@@ -244,10 +269,10 @@ class sportsmanagementModelMatrix extends JModelLegacy
 	 */
 	function getMatrixResults( $project_id, $unpublished = 0 )
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 		$query = $db->getQuery(true);
         $starttime = microtime(); 
         
@@ -264,18 +289,18 @@ class sportsmanagementModelMatrix extends JModelLegacy
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt1 ON m.projectteam1_id = tt1.id');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt2 ON m.projectteam2_id = tt2.id');
                 
-		if ( $this->divisionid > 0 )
+		if ( self::$divisionid > 0 )
 		{
-		  $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d1 ON m.division_id = d1.id AND (	d1.id = '.$db->Quote($this->divisionid).' OR d1.parent_id = ' . $db->Quote($this->divisionid) . ' )');
+		  $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d1 ON m.division_id = d1.id AND (	d1.id = '.self::$divisionid.' OR d1.parent_id = ' . self::$divisionid . ' )');
 
 		}
 
 
         $query->where('r.project_id = '.$project_id);
 
-		if ( $this->roundid > 0 )
+		if ( self::$roundid > 0 )
 		{
-            $query->where('m.round_id = ' . $this->_db->Quote($this->roundid));
+            $query->where('m.round_id = ' . self::$roundid );
 		}
 		if ( $unpublished != 1 )
 		{
@@ -288,15 +313,15 @@ class sportsmanagementModelMatrix extends JModelLegacy
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
         
 		if ( !$result = $db->loadObjectList() )
 		{
-		  $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-          $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+		  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+          $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 			//echo $db->getErrorMsg();
 		}
 		return $result;

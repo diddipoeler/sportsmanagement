@@ -32,7 +32,7 @@ class sportsmanagementViewGcalendar extends JViewLegacy
 
 	public function display($tpl = null) 
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         
 		$calendars = $this->get('DBCalendars');
         
@@ -47,9 +47,9 @@ class sportsmanagementViewGcalendar extends JViewLegacy
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' calendars<br><pre>'.print_r($this->calendars,true).'</pre>'),'Notice');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($this->params,true).'</pre>'),'Notice');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' calendarids<br><pre>'.print_r($this->calendarids,true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' calendars<br><pre>'.print_r($this->calendars,true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($this->params,true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' calendarids<br><pre>'.print_r($this->calendarids,true).'</pre>'),'Notice');
         }
 
  		$this->prepareDocument();

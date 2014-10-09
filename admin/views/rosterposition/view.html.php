@@ -71,7 +71,7 @@ class sportsmanagementViewrosterposition extends sportsmanagementView
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $document = JFactory::getDocument();
         
         $bildpositionenhome = array();
@@ -124,12 +124,12 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
 /*
         if ( JPluginHelper::isEnabled( 'system', 'jqueryeasy' ) )
         {
-            $mainframe->enqueueMessage(JText::_('jqueryeasy ist installiert'),'Notice');
+            $app->enqueueMessage(JText::_('jqueryeasy ist installiert'),'Notice');
             $this->jquery = true;
         }
         else
         {
-            $mainframe->enqueueMessage(JText::_('jqueryeasy ist nicht installiert'),'Error');
+            $app->enqueueMessage(JText::_('jqueryeasy ist nicht installiert'),'Error');
             $this->jquery = false;
         }
 */        
@@ -156,9 +156,9 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
         //$bildpositionenhome = $mdlRosterpositions->getRosterHome();
 //        $bildpositionenaway = $mdlRosterpositions->getRosterAway();
      
-     //$mainframe->enqueueMessage(JText::_('sportsmanagementViewrosterposition extended<br><pre>'.print_r($this->item->extended,true).'</pre>'),'Notice');
-     //$mainframe->enqueueMessage(JText::_('sportsmanagementViewrosterposition getRosterHome<br><pre>'.print_r($bildpositionenhome,true).'</pre>'),'Notice');
-     //$mainframe->enqueueMessage(JText::_('sportsmanagementViewrosterposition getRosterAway<br><pre>'.print_r($bildpositionenaway,true).'</pre>'),'Notice');
+     //$app->enqueueMessage(JText::_('sportsmanagementViewrosterposition extended<br><pre>'.print_r($this->item->extended,true).'</pre>'),'Notice');
+     //$app->enqueueMessage(JText::_('sportsmanagementViewrosterposition getRosterHome<br><pre>'.print_r($bildpositionenhome,true).'</pre>'),'Notice');
+     //$app->enqueueMessage(JText::_('sportsmanagementViewrosterposition getRosterAway<br><pre>'.print_r($bildpositionenaway,true).'</pre>'),'Notice');
      
      // position ist vorhanden
      if ( $this->item->id )   
@@ -218,7 +218,7 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
 //    $position++;
 //    }
     
-    //$mainframe->enqueueMessage(JText::_('sportsmanagementViewrosterposition jRegistry<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_('sportsmanagementViewrosterposition jRegistry<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
     
     for($a=0; $a < $count_players; $a++)
     {
@@ -236,8 +236,8 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
     }
     $this->assignRef('bildpositionen',$bildpositionen);  
     
-    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' jRegistry<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
-    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' bildpositionen<br><pre>'.print_r($this->bildpositionen,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' jRegistry<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' bildpositionen<br><pre>'.print_r($this->bildpositionen,true).'</pre>'),'Notice');
     
     }
     else
@@ -258,7 +258,7 @@ $jRegistry->loadString('' , 'ini');
 $extended->bind($jRegistry);
 
 
-    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' addposition<br><pre>'.print_r($addposition,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' addposition<br><pre>'.print_r($addposition,true).'</pre>'),'Notice');
     
     
     switch ($addposition)
@@ -292,8 +292,8 @@ $extended->bind($jRegistry);
     $this->item = $object;    
     }
     
-    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' bildpositionen<br><pre>'.print_r($this->bildpositionen,true).'</pre>'),'Notice');
-    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' item<br><pre>'.print_r($this->item,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' bildpositionen<br><pre>'.print_r($this->bildpositionen,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' item<br><pre>'.print_r($this->item,true).'</pre>'),'Notice');
         
 
         
@@ -320,7 +320,7 @@ $javascript .= "\n";
         $this->assignRef('form', $this->form);
         $this->assignRef('option', $option);
         
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item -> <br><pre>'.print_r($this->item,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item -> <br><pre>'.print_r($this->item,true).'</pre>'),'');
         
         $this->setLayout('edit');
 	}

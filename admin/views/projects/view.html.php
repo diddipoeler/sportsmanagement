@@ -60,7 +60,7 @@ class sportsmanagementViewProjects extends sportsmanagementView
 	public function init ()
 	{
 		$option 	= JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
 		$uri		= JFactory::getUri();
         $model	= $this->getModel();
         $inputappend = '';
@@ -75,9 +75,10 @@ class sportsmanagementViewProjects extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
 		
+        JTable::addIncludePath(JPATH_COMPONENT.DS.'tables');
         $table = JTable::getInstance('project', 'sportsmanagementTable');
 		$this->assignRef('table', $table);
         
@@ -85,8 +86,9 @@ class sportsmanagementViewProjects extends sportsmanagementView
 		$pagination = $this->get('Pagination');
 		$javascript = "onchange=\"$('adminForm').submit();\"";
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' total<br><pre>'.print_r($total,true).'</pre>'),'Notice');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' state<br><pre>'.print_r($this->state,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' total<br><pre>'.print_r($total,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' state<br><pre>'.print_r($this->state,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' items<br><pre>'.print_r($items,true).'</pre>'),'Notice');
 
 
 
@@ -133,6 +135,7 @@ class sportsmanagementViewProjects extends sportsmanagementView
         
         $this->assignRef('sports_type',$allSportstypes);
         
+        $lists['sportstype'] = $sportstypes;
 		$lists['sportstypes'] = JHtml::_( 'select.genericList',
 										$sportstypes,
 										'filter_sports_type',
@@ -238,7 +241,7 @@ $this->icon = 'projects';
 		JToolBarHelper::archiveList('project.export',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
 		JToolBarHelper::custom('project.copy','copy.png','copy_f2.png',JText::_('JTOOLBAR_DUPLICATE'),false);
 		JToolBarHelper::deleteList('', 'projects.delete');
-		
+		JToolbarHelper::checkin('projects.checkin');
         parent::addToolbar();
 	}
 }

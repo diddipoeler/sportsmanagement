@@ -56,6 +56,7 @@ jimport('joomla.application.component.modellist');
 class sportsmanagementModelTeams extends JModelList
 {
 	var $_identifier = "teams";
+    //static $cfg_which_database = 0;
 	
     /**
      * sportsmanagementModelTeams::__construct()
@@ -67,12 +68,12 @@ class sportsmanagementModelTeams extends JModelList
         {   
                 $config['filter_fields'] = array(
                         't.name',
-                        //'c.name',
+                        't.sports_type_id',
                         't.website',
                         't.middle_name',
                         't.short_name',
                         't.info',
-                        //'st.name',
+                        't.alias',
                         't.picture',
                         't.id',
                         't.ordering',
@@ -80,7 +81,8 @@ class sportsmanagementModelTeams extends JModelList
                         't.checked_out_time'
                         );
                 parent::__construct($config);
-                parent::setDbo(sportsmanagementHelper::getDBConnection());
+                $getDBConnection = sportsmanagementHelper::getDBConnection();
+                parent::setDbo($getDBConnection);
         }
         
     /**
@@ -92,12 +94,12 @@ class sportsmanagementModelTeams extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -105,7 +107,8 @@ class sportsmanagementModelTeams extends JModelList
 
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.state', $published);
-        
+        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.sports_type', 'filter_sports_type', '');
+		$this->setState('filter.sports_type', $temp_user_request);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
         
@@ -115,7 +118,7 @@ class sportsmanagementModelTeams extends JModelList
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 
 
 //		// Load the parameters.
@@ -133,7 +136,7 @@ class sportsmanagementModelTeams extends JModelList
 	 */
 	function getListQuery()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $search	= $this->getState('filter.search');
         $search_nation	= $this->getState('filter.search_nation');
@@ -166,10 +169,13 @@ class sportsmanagementModelTeams extends JModelList
 		{
         $query->where('c.country LIKE '.$db->Quote(''.$search_nation.''));
         }
-                
+        if ($this->getState('filter.sports_type'))
+		{
+        $query->where('t.sports_type_id = ' . $this->getState('filter.sports_type') );
+        }        
         if ($cid = JRequest::getvar('club_id', 0, 'GET', 'INT')) 
                 {
-                    $mainframe->setUserState( "$option.club_id", $cid); 
+                    $app->setUserState( "$option.club_id", $cid); 
                     $query->where('club_id ='. $cid);
                 }
         
@@ -180,7 +186,7 @@ class sportsmanagementModelTeams extends JModelList
         
 if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
 
 		return $query;
@@ -196,7 +202,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
      */
     public function getTeamListSelect()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
@@ -212,7 +218,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		if ($results = $db->loadObjectList())
@@ -236,7 +242,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
      */
     public static function getTeams($playground_id)
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
@@ -260,7 +266,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
             $db->setQuery( $query );
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
             $rows = $db->loadObjectList();
@@ -279,7 +285,7 @@ $starttime = microtime();
                 $db->setQuery( $query );
                 if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
                 $teams[ $row->id ]->teaminfo[] = $db->loadObjectList();
@@ -294,7 +300,7 @@ $starttime = microtime();
                 $db->setQuery( $query );
                 if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
             	$teams[ $row->id ]->project = $db->loadResult();
             }
@@ -311,7 +317,7 @@ $starttime = microtime();
      */
     public static function getTeamsFromMatches( & $games )
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);

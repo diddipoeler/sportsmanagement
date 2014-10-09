@@ -54,7 +54,7 @@ function example_alertBox( boxText )
 <?php
 $nbcols			= 7;
 $nbcols_header	= 0;
-$dates			= sportsmanagementViewResults::sortByDate();
+$dates			= sportsmanagementViewResults::sortByDate($this->matches);
 
 if($this->config['show_division']){$nbcols++;}
 if($this->config['show_match_number']){$nbcols++;}
@@ -153,15 +153,15 @@ else
 		{
 			if (isset($game->team1_result))
 			{
-				$report_link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug, $game->slug);
+				$report_link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug, $game->slug,JRequest::getInt('cfg_which_database',0));
 			}
 			else
 			{
-				$report_link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $game->slug);
+				$report_link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $game->slug,JRequest::getInt('cfg_which_database',0));
 			}
 
-			$events	= sportsmanagementModelProject::getMatchEvents($game->id);
-			$subs	= sportsmanagementModelProject::getMatchSubstitutions($game->id);
+			$events	= sportsmanagementModelProject::getMatchEvents($game->id,0,0,JRequest::getInt('cfg_which_database',0));
+			$subs	= sportsmanagementModelProject::getMatchSubstitutions($game->id,JRequest::getInt('cfg_which_database',0));
 
 			if ($this->config['use_tabs_events']) {
 			    $hasEvents = (count($events) + count($subs) > 0 && $this->config['show_events']);
@@ -324,7 +324,7 @@ $link = "javascript:void(0);";
 			<td>
 				<?php
 					$isFavTeam = in_array($team1->id, $this->favteams);
-					echo sportsmanagementHelper::formatTeamName($team1,'g'.$game->id,$this->config,$isFavTeam );
+					echo sportsmanagementHelper::formatTeamName($team1,'g'.$game->id,$this->config,$isFavTeam,NULL,JRequest::getInt('cfg_which_database',0) );
 				?>
 			</td>
 			<td width='<?PHP echo $width;?>'>
@@ -333,12 +333,14 @@ $link = "javascript:void(0);";
 			<td>
 				<?php
 					$isFavTeam = in_array($team2->id, $this->favteams);
-					echo sportsmanagementHelper::formatTeamName($team2,'g'.$game->id,$this->config,$isFavTeam);
+					echo sportsmanagementHelper::formatTeamName($team2,'g'.$game->id,$this->config,$isFavTeam,NULL,JRequest::getInt('cfg_which_database',0));
 				?>
 			</td>
 			<!-- show match score -->
 			<td width='10' class='score'>
-				<?php echo sportsmanagementViewResults::formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link); ?>
+				<?php 
+        echo sportsmanagementViewResults::formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link,$this->config); 
+        ?>
 			</td>
 				<?php
 		}
@@ -363,7 +365,7 @@ $link = "javascript:void(0);";
 			<td width='5' class='score' nowrap='nowrap'>
 				<?php
 					echo '&nbsp;';
-					echo $this->formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link);
+					echo $this->formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link,$this->config);
 					echo '&nbsp;';
 				?>
 			</td>
@@ -411,7 +413,7 @@ $link = "javascript:void(0);";
 			<td width='5' class='score' nowrap='nowrap'>
 				<?php
 					echo '&nbsp;';
-					echo sportsmanagementViewResults::formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link);
+					echo sportsmanagementViewResults::formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link,$this->config);
 					echo '&nbsp;';
 				?>
 			</td>
@@ -498,45 +500,54 @@ $link = "javascript:void(0);";
 
 			$count = JCommentsModel::getCommentsCount($options);
 
-			if ($count == 1) {
-				$imgTitle		= $count.' '.JText::_('COM_SPORTSMANAGEMENT_RESULTS_COMMENTS_COUNT_SINGULAR');
-				if ($this->config['show_comments_count'] == 1) {
-					$href_text		= JHtml::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
-				} elseif ($this->config['show_comments_count'] == 2) {
-					$href_text		= '<span title="'. $imgTitle .'">('.$count.')</span>';
+			if ($count == 1) 
+            {
+				$imgTitle = $count.' '.JText::_('COM_SPORTSMANAGEMENT_RESULTS_COMMENTS_COUNT_SINGULAR');
+				if ($this->config['show_comments_count'] == 1) 
+                {
+					$href_text = JHtml::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
+				} 
+                elseif ($this->config['show_comments_count'] == 2) 
+                {
+					$href_text = '<span title="'. $imgTitle .'">('.$count.')</span>';
 				}
 				//Link
 				if (isset($game->team1_result))
 				{
-					$link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug, $game->slug).'#comments';
+					$link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug, $game->slug,JRequest::getInt('cfg_which_database',0)).'#comments';
 				}
 				else
 				{
-					$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $game->slug).'#comments';
+					$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $game->slug,JRequest::getInt('cfg_which_database',0)).'#comments';
 				}
-				$viewComment	= JHtml::link($link, $href_text);
+				$viewComment = JHtml::link($link, $href_text);
 				echo $viewComment;
 			}
-			elseif ($count > 1) {
-				$imgTitle	= $count.' '.JText::_('COM_SPORTSMANAGEMENT_RESULTS_COMMENTS_COUNT_PLURAL');
-				if ($this->config['show_comments_count'] == 1) {
-					$href_text		= JHtml::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
-				} elseif ($this->config['show_comments_count'] == 2) {
-					$href_text		= '<span title="'. $imgTitle .'">('.$count.')</span>';
+			elseif ($count > 1) 
+            {
+				$imgTitle = $count.' '.JText::_('COM_SPORTSMANAGEMENT_RESULTS_COMMENTS_COUNT_PLURAL');
+				if ($this->config['show_comments_count'] == 1) 
+                {
+					$href_text = JHtml::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss_active.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
+				} 
+                elseif ($this->config['show_comments_count'] == 2) 
+                {
+					$href_text = '<span title="'. $imgTitle .'">('.$count.')</span>';
 				}
 				//Link
 				if (isset($game->team1_result))
 				{
-					$link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug, $game->slug).'#comments';
+					$link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug, $game->slug,JRequest::getInt('cfg_which_database',0)).'#comments';
 				}
 				else
 				{
-					$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $game->slug).'#comments';
+					$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $game->slug,JRequest::getInt('cfg_which_database',0)).'#comments';
 				}
-				$viewComment	= JHtml::link($link, $href_text);
+				$viewComment = JHtml::link($link, $href_text);
 				echo $viewComment;
 			}
-			else {
+			else 
+            {
 				$imgTitle	= JText::_('COM_SPORTSMANAGEMENT_RESULTS_COMMENTS_COUNT_NOCOMMENT');
 				if ($this->config['show_comments_count'] == 1) {
 					$href_text		= JHtml::image( JURI::root().'media/com_sportsmanagement/jl_images/discuss.gif', $imgTitle, array(' title' => $imgTitle,' border' => 0,' style' => 'vertical-align: middle'));
@@ -546,13 +557,13 @@ $link = "javascript:void(0);";
 				//Link
 				if (isset($game->team1_result))
 				{
-					$link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug, $game->slug).'#comments';
+					$link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug, $game->slug,JRequest::getInt('cfg_which_database',0)).'#comments';
 				}
 				else
 				{
-					$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $game->slug).'#comments';
+					$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $game->slug,JRequest::getInt('cfg_which_database',0)).'#comments';
 				}
-				$viewComment	= JHtml::link($link, $href_text);
+				$viewComment = JHtml::link($link, $href_text);
 				echo $viewComment;
 			}
 		?></td>
@@ -573,12 +584,7 @@ $link = "javascript:void(0);";
 		<table class='matchreport' border='0'>
 			<tr>
 				<td><?php
-				echo $this->showEventsContainerInResults(
-												$game,
-												$this->projectevents,
-												$events,
-												$subs,
-												$this->config );
+				echo $this->showEventsContainerInResults($game,$this->projectevents,$events,$subs,$this->config);
 				?></td>
 			</tr>
 		</table>

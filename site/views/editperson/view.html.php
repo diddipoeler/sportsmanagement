@@ -64,12 +64,12 @@ class sportsmanagementViewEditPerson extends JViewLegacy
 	{
 		
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$db = JFactory::getDBO();
 		$uri = JFactory::getURI();
 		$user = JFactory::getUser();
         
-        $params         = $mainframe->getParams();
+        $params         = $app->getParams();
         $dispatcher = JDispatcher::getInstance();
         
         // Get some data from the models
@@ -119,7 +119,7 @@ class sportsmanagementViewEditPerson extends JViewLegacy
 //		if ($model->isCheckedOut($user->get('id')))
 //		{
 //			$msg=JText::sprintf('DESCBEINGEDITTED',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSON_THEPERSON'),$person->name);
-//			$mainframe->redirect('index.php?option='.$option,$msg);
+//			$app->redirect('index.php?option='.$option,$msg);
 //		}
 
 		// Edit or Create?
@@ -147,7 +147,7 @@ class sportsmanagementViewEditPerson extends JViewLegacy
 
 //	function _displayModal($tpl)
 //	{
-//		$mainframe	= JFactory::getApplication();
+//		$app	= JFactory::getApplication();
 //
 //		// Do not allow cache
 //		JResponse::allowCache(false);

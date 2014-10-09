@@ -40,7 +40,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 $nbcols		= 5;
-$dates		= $this->sortByDate();
+$dates		= $this->sortByDate($this->matches);
 $nametype = $this->config['names'];
 
 if($this->config['show_match_number']){$nbcols++;}

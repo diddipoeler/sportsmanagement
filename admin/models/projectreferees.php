@@ -80,7 +80,8 @@ public function __construct($config = array())
 				'pref.picture'
                         );
                 parent::__construct($config);
-                parent::setDbo(sportsmanagementHelper::getDBConnection());
+                $getDBConnection = sportsmanagementHelper::getDBConnection();
+                parent::setDbo($getDBConnection);
         }
 
 
@@ -93,12 +94,12 @@ public function __construct($config = array())
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -119,7 +120,7 @@ public function __construct($config = array())
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 
 
 //		// Load the parameters.
@@ -147,24 +148,24 @@ public function __construct($config = array())
 	 */
 	protected function getListQuery()
 	{
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
         $search	= $this->getState('filter.search');
         $search_nation	= $this->getState('filter.search_nation');
         $search_project_position_id	= $this->getState('filter.project_position_id');
         
-        $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
-        $this->_season_id	= $mainframe->getUserState( "$option.season_id", '0' );
+        $this->_project_id	= $app->getUserState( "$option.pid", '0' );
+        $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
         $this->_team_id = JRequest::getVar('team_id');
         $this->_project_team_id = JRequest::getVar('project_team_id');
         
         if ( !$this->_team_id )
         {
-            $this->_team_id	= $mainframe->getUserState( "$option.team_id", '0' );
+            $this->_team_id	= $app->getUserState( "$option.team_id", '0' );
         }
         if ( !$this->_project_team_id )
         {
-            $this->_project_team_id	= $mainframe->getUserState( "$option.project_team_id", '0' );
+            $this->_project_team_id	= $app->getUserState( "$option.project_team_id", '0' );
         }
        
        
@@ -218,10 +219,10 @@ $query->order(JFactory::getDbo()->escape($this->getState('list.ordering', 'p.las
         
 if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 
 		return $query;
         
@@ -242,9 +243,9 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 //	function _buildContentOrderBy()
 //	{
 //		$option = JRequest::getCmd('option');
-//		$mainframe = JFactory::getApplication();
-//		$filter_order		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'p_filter_order','filter_order','p.lastname','cmd');
-//		$filter_order_Dir	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'p_filter_order_Dir','filter_order_Dir','','word');
+//		$app = JFactory::getApplication();
+//		$filter_order		= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'p_filter_order','filter_order','p.lastname','cmd');
+//		$filter_order_Dir	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'p_filter_order_Dir','filter_order_Dir','','word');
 //		if ($filter_order=='p.lastname')
 //		{
 //			$orderby='p.lastname '.$filter_order_Dir;
@@ -259,10 +260,10 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 //	function _buildContentWhere()
 //	{
 //		$option = JRequest::getCmd('option');
-//		$mainframe = JFactory::getApplication();
+//		$app = JFactory::getApplication();
 //		
-//		$search			= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'p_search','search','','string');
-//		$search_mode	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'p_search_mode','search_mode','','string');
+//		$search			= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'p_search','search','','string');
+//		$search_mode	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'p_search_mode','search_mode','','string');
 //		$search=JString::strtolower($search);
 //		$where=array();
 //		$where[]='pref.project_id='.$this->_project_id;
@@ -297,7 +298,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	function storeAssigned($cid,$project_id)
 	{
 	   $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $query = JFactory::getDbo()->getQuery(true);
         
 		if (!count($cid))
@@ -395,7 +396,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	function getProjectRefereesCount($project_id)
 	{
 	   $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $query = JFactory::getDbo()->getQuery(true);
         
         // Select some fields

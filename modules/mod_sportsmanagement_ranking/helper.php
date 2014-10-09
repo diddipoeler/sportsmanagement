@@ -72,17 +72,22 @@ class modJSMRankingHelper
             require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'ranking.php' );
 		}
 		
-        $app->setUserState( "com_sportsmanagement.cfg_which_database", $params->get( 'cfg_which_database' ) );
-		sportsmanagementModelProject::setProjectId($params->get('p'));
+        //$app->setUserState( "com_sportsmanagement.cfg_which_database", $params->get( 'cfg_which_database' ) );
+        sportsmanagementModelProject::$cfg_which_database = $params->get( 'cfg_which_database' );
+		sportsmanagementModelProject::setProjectId($params->get('p'),$params->get( 'cfg_which_database' ));
+        //sportsmanagementModelRanking::$cfg_which_database = $params->get( 'cfg_which_database' );
 
-		$project = sportsmanagementModelProject::getProject();
+		$project = sportsmanagementModelProject::getProject($params->get( 'cfg_which_database' ),__METHOD__);
 
-		$ranking = JSMRanking::getInstance($project);
-		$ranking->setProjectId($params->get('p'));
+		$ranking = JSMRanking::getInstance($project,$params->get( 'cfg_which_database' ));
+		$ranking->setProjectId($params->get('p'),$params->get( 'cfg_which_database' ));
 		$divisionid = explode(':', $params->get('division_id', 0));
 		$divisionid = $divisionid[0];
-		$res   = $ranking->getRanking(null, null, $divisionid);
-		$teams = sportsmanagementModelProject::getTeamsIndexedByPtid();
+		$res   = $ranking->getRanking(null, null, $divisionid,$params->get( 'cfg_which_database' ));
+		$teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$params->get( 'cfg_which_database' ),__METHOD__);
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' res<br><pre>'.print_r($res,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'Notice');
 
 		$list = array();
 		foreach ($res as $ptid => $t) 
@@ -97,11 +102,12 @@ class modJSMRankingHelper
 			$list = modJSMRankingHelper::getShrinkedDataAroundOneTeam($list,$exParam[0],$params->get('limit', 5));
 		}
 		$colors = array();
-		if ($params->get('show_rank_colors', 0)) {
+		if ($params->get('show_rank_colors', 0)) 
+        {
 //			$mdlRanking = JModel::getInstance("Ranking", "sportsmanagementModel");
 //			$mdlRanking->setProjectid($params->get('p'));
 			sportsmanagementModelRanking::$projectid = $params->get('p');
-            $config = sportsmanagementModelProject::getTemplateConfig("ranking");
+            $config = sportsmanagementModelProject::getTemplateConfig("ranking",$params->get( 'cfg_which_database' ),__METHOD__);
 			$colors = sportsmanagementModelProject::getColors($config["colors"]);
 		}
 		return array('project' => $project, 'ranking' => $list, 'colors' => $colors);
@@ -256,13 +262,13 @@ class modJSMRankingHelper
 		switch ($params->get('teamlink'))
 		{
 			case 'teaminfo':
-				return sportsmanagementHelperRoute::getTeamInfoRoute($project->slug, $item->team->team_slug);
+				return sportsmanagementHelperRoute::getTeamInfoRoute($project->slug,$item->team->team_slug,$item->team->projectteamid,$params->get('cfg_which_database'));
 			case 'roster':
-				return sportsmanagementHelperRoute::getPlayersRoute($project->slug, $item->team->team_slug);
+				return sportsmanagementHelperRoute::getPlayersRoute($project->slug,$item->team->team_slug,NULL,$item->team->projectteamid,$params->get('cfg_which_database'));
 			case 'teamplan':
-				return sportsmanagementHelperRoute::getTeamPlanRoute($project->slug, $item->team->team_slug, $item->team->division_slug);
+				return sportsmanagementHelperRoute::getTeamPlanRoute($project->slug,$item->team->team_slug,$item->team->division_slug,NULL,$item->team->projectteamid,$params->get('cfg_which_database'));
 			case 'clubinfo':
-				return sportsmanagementHelperRoute::getClubInfoRoute($project->slug, $item->team->club_slug);
+				return sportsmanagementHelperRoute::getClubInfoRoute($project->slug,$item->team->club_slug,NULL,$params->get('cfg_which_database'));
 
 		}
 	}

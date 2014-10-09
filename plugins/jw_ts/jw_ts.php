@@ -40,7 +40,7 @@ class plgContentJw_ts extends JPlugin {
 	function renderTS(&$row, &$params, $page = 0){
 
 		// API
-    $mainframe= &JFactory::getApplication();
+    $app= &JFactory::getApplication();
 		$document = &JFactory::getDocument();
 
 		// Assign paths

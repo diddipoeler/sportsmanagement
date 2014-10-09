@@ -97,10 +97,10 @@ class sportsmanagementModelrosterposition extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.rosterposition', 'rosterposition', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
@@ -180,7 +180,7 @@ class sportsmanagementModelrosterposition extends JModelAdmin
 	public function save($data)
 	{
 	   $option = JRequest::getCmd('option');
-	$mainframe	= JFactory::getApplication();
+	$app	= JFactory::getApplication();
     // Get a db connection.
         $db = JFactory::getDbo();
        $post=JRequest::get('post');

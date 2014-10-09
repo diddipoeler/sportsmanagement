@@ -66,10 +66,10 @@ class sportsmanagementViewPredictionRanking extends JViewLegacy
 	function display($tpl=null)
 	{
 		// Get a refrence of the page instance in joomla
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
 		$document	= JFactory::getDocument();
 		$uri = JFactory :: getURI();
-//		$js ="registerhome('".JURI::base()."','Prediction Game Extension','".$mainframe->getCfg('sitename')."','0');". "\n";
+//		$js ="registerhome('".JURI::base()."','Prediction Game Extension','".$app->getCfg('sitename')."','0');". "\n";
 //    $document->addScriptDeclaration( $js );	
 		$model		= $this->getModel();
     $option = JRequest::getCmd('option');
@@ -88,7 +88,7 @@ class sportsmanagementViewPredictionRanking extends JViewLegacy
 
 /*    
     // limit, limitstart und limitende
-    $limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+    $limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
     $limitstart = JRequest::getVar('limitstart', 0, '', 'int');
     $limitend = $limitstart + $limit;
     $this->assignRef('limit',$limit);

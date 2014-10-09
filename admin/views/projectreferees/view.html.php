@@ -58,7 +58,7 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
         
@@ -78,9 +78,9 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
         $this->_persontype = JRequest::getVar('persontype');
         if ( empty($this->_persontype) )
         {
-            $this->_persontype	= $mainframe->getUserState( "$option.persontype", '0' );
+            $this->_persontype	= $app->getUserState( "$option.persontype", '0' );
         }
-        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        $this->project_id	= $app->getUserState( "$option.pid", '0' );
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         
@@ -119,9 +119,9 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 	protected function addToolbar()
 	{
 	
-	$mainframe	= JFactory::getApplication();
+	$app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
-	 $mainframe->setUserState( "$option.persontype", $this->_persontype );	
+	 $app->setUserState( "$option.persontype", $this->_persontype );	
         //// Get a refrence of the page instance in joomla
 //		$document	= JFactory::getDocument();
 //        // Set toolbar items for the page
@@ -135,7 +135,7 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
         sportsmanagementHelper::ToolbarButton('assignplayers','upload',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_ASSIGN'),'persons',2);
 		//JToolBarHelper::custom('projectreferees.remove','cancel.png','cancel_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_UNASSIGN'),false);
         JToolBarHelper::deleteList('', 'projectreferees.delete');
-        
+        JToolbarHelper::checkin('projectreferees.checkin');
 		parent::addToolbar();  
         
 

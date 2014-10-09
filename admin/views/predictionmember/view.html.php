@@ -64,7 +64,7 @@ class sportsmanagementViewpredictionmember extends sportsmanagementView
 	 */
 	public function init ()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
 		$document = JFactory::getDocument();
 		$option = JRequest::getCmd('option');
         
@@ -84,7 +84,7 @@ class sportsmanagementViewpredictionmember extends sportsmanagementView
 		$this->item = $item;
 		$this->script = $script;
 		
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($this->item,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($this->item,true).'</pre>'),'');
 
 	}
  

@@ -65,7 +65,7 @@ class sportsmanagementViewRanking extends JViewLegacy
 		// Get a refrence of the page instance in joomla
 		$document = JFactory :: getDocument();
 		$uri = JFactory :: getURI();
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         
         //$version = urlencode(JoomleagueHelper::getVersion());
@@ -74,19 +74,24 @@ class sportsmanagementViewRanking extends JViewLegacy
         $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
 
 		$model = $this->getModel();
-        sportsmanagementModelProject::setProjectID(JRequest::getInt('p',0));
+        $model::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+        sportsmanagementModelProject::setProjectID(JRequest::getInt('p',0),$model::$cfg_which_database);
         //$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
         $mdlDivisions = JModelLegacy::getInstance("Divisions", "sportsmanagementModel");
         $mdlProjectteams = JModelLegacy::getInstance("Projectteams", "sportsmanagementModel");
         $mdlTeams = JModelLegacy::getInstance("Teams", "sportsmanagementModel");
         
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
-		$project = sportsmanagementModelProject::getProject();
+		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database,__METHOD__);
+		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database,__METHOD__);
 		
-		$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true);
-			
-		sportsmanagementModelProject::setProjectId($project->id);
+		$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true,NULL,$model::$cfg_which_database);
 		
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($model::$cfg_which_database,true).'</pre>'),'');
+        	
+		sportsmanagementModelProject::setProjectId($project->id,$model::$cfg_which_database);
+		
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($model::$cfg_which_database,true).'</pre>'),'');
+        
 		//$map_config		= $model->getMapConfig();
 		//$this->assignRef( 'mapconfig',		$map_config ); // Loads the project-template -settings for the GoogleMap
 		$this->assignRef('model',$model);
@@ -95,7 +100,7 @@ class sportsmanagementViewRanking extends JViewLegacy
         $extended = sportsmanagementHelper::getExtended($this->project->extended, 'project');
         $this->assignRef( 'extended', $extended );
         
-		$this->assign('overallconfig', sportsmanagementModelProject::getOverallConfig());
+		$this->assign('overallconfig', sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database));
 		$this->assignRef('tableconfig', $config);
 		$this->assignRef('config', $config);
         
@@ -128,8 +133,11 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
        $model->to = 0;
        unset ($model->currentRanking);
 	   unset ($model->previousRanking);
-       $model->computeRanking();
+       $model->computeRanking($model::$cfg_which_database);
        $this->assignRef('firstRank',$model->currentRanking  );
+       
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($model::$cfg_which_database,true).'</pre>'),'');
+       
      }
      
      if ($this->config['show_table_5']==1)
@@ -139,8 +147,11 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
        $model->to = 0;
        unset ($model->currentRanking);
 	   unset ($model->previousRanking);
-       $model->computeRanking();
+       $model->computeRanking($model::$cfg_which_database);
        $this->assignRef('secondRank',$model->currentRanking );
+       
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($model::$cfg_which_database,true).'</pre>'),'');
+       
      }  
        
        $model->part = 0;
@@ -148,13 +159,15 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 	   unset ($model->previousRanking);
 	   }
        
-		$model->computeRanking();
+		$model->computeRanking($model::$cfg_which_database);
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($model::$cfg_which_database,true).'</pre>'),'');
 
 		$this->assignRef('round',$model->round);
 		$this->assignRef('part',$model->part);
 		$this->assignRef('rounds',$rounds);
 		//$this->assign('divisions',$mdlDivisions->getDivisions($project->id));
-        $this->assign('divisions',sportsmanagementModelProject::getDivisions());
+        $this->assign('divisions',sportsmanagementModelProject::getDivisions(0,$model::$cfg_which_database));
 		$this->assignRef('type',$model->type);
 		//$this->assignRef('from',$model->from);
 		//$this->assignRef('to',$model->to);
@@ -164,10 +177,10 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
         
 		$this->assignRef('divLevel',$model->divLevel);
         
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($this->round,true).'</pre>'),'');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' from<br><pre>'.print_r($this->from,true).'</pre>'),'');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' to<br><pre>'.print_r($this->to,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($this->round,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' from<br><pre>'.print_r($this->from,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' to<br><pre>'.print_r($this->to,true).'</pre>'),'');
         
         if ($this->config['show_table_1']==1)
 	{
@@ -189,18 +202,19 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
         
        
 		//$this->assignRef('current_round', $model->current_round);
-        $this->assign('current_round', sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.JRequest::getVar("view")));
+        $this->assign('current_round', sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.JRequest::getVar("view"),$model::$cfg_which_database));
         
         // mannschaften holen
-		$this->assign('teams',sportsmanagementModelProject::getTeamsIndexedByPtid());
+		$this->assign('teams',sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$model::$cfg_which_database,__METHOD__));
 		
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-       $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' divisions'.'<pre>'.print_r($this->divisions,true).'</pre>' ),'');
-       $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' currentRanking'.'<pre>'.print_r($this->currentRanking,true).'</pre>' ),'');
+       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' divisions'.'<pre>'.print_r($this->divisions,true).'</pre>' ),'');
+       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' currentRanking'.'<pre>'.print_r($this->currentRanking,true).'</pre>' ),'');
        }
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current_round'.'<pre>'.print_r($this->current_round,true).'</pre>' ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($model::$cfg_which_database,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams'.'<pre>'.print_r($this->teams,true).'</pre>' ),'');
 		
 		$no_ranking_reason = '';
 		if ($this->config['show_notes'] == 1 )
@@ -239,7 +253,11 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		
 		
 		
-		$this->assign('previousgames', $model->getPreviousGames());
+		$this->assign('previousgames', $model->getPreviousGames($model::$cfg_which_database));
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($model::$cfg_which_database,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' previousgames'.'<pre>'.print_r($this->previousgames,true).'</pre>' ),'');
+        
 		$this->assign('action', $uri->toString());
 
 		$frommatchday[] = JHTML :: _('select.option', '0', JText :: _('COM_SPORTSMANAGEMENT_RANKING_FROM_MATCHDAY'));
@@ -261,24 +279,24 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 			$config['colors'] = "";
 		}
 
-		$this->assign('colors', sportsmanagementModelProject::getColors($config['colors']));
+		$this->assign('colors', sportsmanagementModelProject::getColors($config['colors'],$model::$cfg_which_database));
 		//$this->assignRef('result', $model->getTeamInfo());
 		//		$this->assignRef( 'pageNav', $model->pagenav( "ranking", count( $rounds ), $sr->to ) );
 		//		$this->assignRef( 'pageNav2', $model->pagenav2( "ranking", count( $rounds ), $sr->to ) );
 
     // diddipoeler
-		$this->assign( 'allteams', $mdlProjectteams->getAllProjectTeams($project->id) );
+		$this->assign( 'allteams', $mdlProjectteams->getAllProjectTeams($project->id,0,NULL,$model::$cfg_which_database) );
 		
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' overallconfig<br><pre>'.print_r($this->overallconfig,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');   
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' currentRanking<br><pre>'.print_r($this->currentRanking,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' previousRanking<br><pre>'.print_r($this->previousRanking,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' homeRank<br><pre>'.print_r($this->homeRank,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' awayRank<br><pre>'.print_r($this->awayRank,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' allteams<br><pre>'.print_r($this->allteams,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' overallconfig<br><pre>'.print_r($this->overallconfig,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');   
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' currentRanking<br><pre>'.print_r($this->currentRanking,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' previousRanking<br><pre>'.print_r($this->previousRanking,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' homeRank<br><pre>'.print_r($this->homeRank,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' awayRank<br><pre>'.print_r($this->awayRank,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' allteams<br><pre>'.print_r($this->allteams,true).'</pre>'),'');
         }
         
 		if (($this->config['show_ranking_maps'])==1)

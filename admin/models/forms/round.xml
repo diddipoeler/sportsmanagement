@@ -36,6 +36,8 @@
 			class="inputbox"/>	
 		<field
 			name="round_date_first"
+			size="10"
+			default="00-00-0000"
 			type="calendar"
 			label="COM_SPORTSMANAGEMENT_ADMIN_ROUND_START"
 			description="COM_SPORTSMANAGEMENT_ADMIN_ROUND_START_DESC"
@@ -43,6 +45,8 @@
 			format="%d-%m-%Y"/>	
 		<field
 			name="round_date_last"
+			size="10"
+			default="00-00-0000"
 			type="calendar"
 			label="COM_SPORTSMANAGEMENT_ADMIN_ROUND_END"
 			description="COM_SPORTSMANAGEMENT_ADMIN_ROUND_END_DESC"
@@ -53,9 +57,10 @@
 			name="tournement"
 			type="radio"
 			default="0"
+			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_ROUND_TOURNEMENT"
 			description="COM_SPORTSMANAGEMENT_ADMIN_ROUND_TOURNEMENT_DESC"
-			class="radio">
+			>
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>

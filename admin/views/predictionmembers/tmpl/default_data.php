@@ -126,6 +126,7 @@ JHtml::_( 'behavior.tooltip' );
 				$link	= JRoute::_( 'index.php?option=com_sportsmanagement&task=prediction.edit&id=' . $row->id );
 				//$link2	= JRoute::_( 'index.php?option=com_users&view=user&layout=edit&cid[]=' . $row->user_id );
                 $link2	= JRoute::_( 'index.php?option=com_sportsmanagement&task=predictionmember.edit&id=' . $row->id );
+                $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
 
 				$checked = JHtml::_( 'grid.checkedout', $row, $i );
 				?>
@@ -141,14 +142,10 @@ JHtml::_( 'behavior.tooltip' );
 						?>
 					</td>
 					<td>
-						<?php
-						#if ( $this->table->($this->user->get( 'id' ), $row->checked_out ) )
-						#{
-						#	echo $row->username;
-						#}
-						#else
-						{
-						?>
+					<?php
+                            if ($row->checked_out) : ?>
+										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'predictionmembers.', $canCheckin); ?>
+									<?php endif; ?>	
 							<a  href="<?php echo $link2; ?>"
 								title="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_EDIT_USER' ); ?>" >
 								<?php
@@ -156,7 +153,7 @@ JHtml::_( 'behavior.tooltip' );
 								?>
 							</a>
 							<?php
-						}
+						
 						?>
 					</td>
 					<td>

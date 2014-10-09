@@ -96,7 +96,7 @@ class sportsmanagementModelround extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
 		// Get the form.
@@ -106,6 +106,17 @@ class sportsmanagementModelround extends JModelAdmin
 			return false;
 		}
         
+        // welche joomla version ?
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        $form->setFieldAttribute('round_date_first', 'type', 'calendar');
+        $form->setFieldAttribute('round_date_last', 'type', 'calendar');       
+        }
+        else
+        {
+        $form->setFieldAttribute('round_date_first', 'type', 'customcalendar');
+        $form->setFieldAttribute('round_date_last', 'type', 'customcalendar');
+        }
         $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($option)->get('ph_team',''));
         $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/rounds');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
@@ -177,7 +188,7 @@ class sportsmanagementModelround extends JModelAdmin
 	 */
 	public function saveshort()
 	{
-		$mainframe =& JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
@@ -192,8 +203,8 @@ class sportsmanagementModelround extends JModelAdmin
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        $mainframe->enqueueMessage(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        $app->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        $app->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($post, true).'</pre><br>','Notice');
         }
         
         //$result=true;
@@ -230,12 +241,12 @@ class sportsmanagementModelround extends JModelAdmin
     function massadd()
 	{
 	$option = JRequest::getCmd('option');
-	$mainframe = JFactory::getApplication();
+	$app = JFactory::getApplication();
     
     //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info_'.$this->_identifier,0) ;
     
     $post = JRequest::get('post');
-    $project_id	= $mainframe->getUserState( "$option.pid", '0' );
+    $project_id	= $app->getUserState( "$option.pid", '0' );
     $add_round_count = (int)$post['add_round_count'];
     
         $max=0;
@@ -267,8 +278,8 @@ class sportsmanagementModelround extends JModelAdmin
     
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
     {
- 	$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($add_round_count,true).'</pre>'   ),'');
-    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($project_id,true).'</pre>'   ),'');
+ 	$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($add_round_count,true).'</pre>'   ),'');
+    $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($project_id,true).'</pre>'   ),'');
     }
     
     return $msg;
@@ -310,10 +321,10 @@ class sportsmanagementModelround extends JModelAdmin
     * @param mixed $round_id
     * @return
     */
-   public static function getRoundcode($round_id)
+   public static function getRoundcode($round_id,$cfg_which_database = 0)
    {
     // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         // select some fields
 		$query->select('roundcode');
@@ -333,10 +344,10 @@ class sportsmanagementModelround extends JModelAdmin
 	 * @param $roundcode
 	 * @param $project_id
 	 */
-	public static function getRoundId($roundcode, $project_id)
+	public static function getRoundId($roundcode, $project_id,$cfg_which_database = 0)
 	{
 	   // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         // select some fields
 		$query->select('id');
@@ -351,16 +362,18 @@ class sportsmanagementModelround extends JModelAdmin
 		return $result;
 	}
     
-    /**
-	 * return 
-	 *
-	 * @param int round_id
-	 * @return int
+    
+	/**
+	 * sportsmanagementModelround::getRound()
+	 * 
+	 * @param mixed $round_id
+	 * @param integer $cfg_which_database
+	 * @return
 	 */
-	function getRound($round_id)
+	public static function getRound($round_id,$cfg_which_database = 0)
 	{
 	   // Get a db connection.
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         // select some fields
 		$query->select('*');
@@ -383,8 +396,8 @@ class sportsmanagementModelround extends JModelAdmin
 	 */
 	public function deleteRoundMatches($pks)
 	{
-	$mainframe =& JFactory::getApplication();
-    $mainframe->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
+	$app =& JFactory::getApplication();
+    $app->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
     /* Ein Datenbankobjekt beziehen */
     $db = JFactory::getDbo();
     /* Ein JDatabaseQuery Objekt beziehen */
@@ -395,7 +408,7 @@ class sportsmanagementModelround extends JModelAdmin
 		{
 			//JArrayHelper::toInteger($cid);
 			$cids = implode(',',$pks);
-            $mainframe->enqueueMessage(JText::_('delete cids<br><pre>'.print_r($cids,true).'</pre>'),'');
+            $app->enqueueMessage(JText::_('delete cids<br><pre>'.print_r($cids,true).'</pre>'),'');
             // wir löschen mit join
             $query = 'DELETE m,ms,mc,mss,mst,mev,mre,mpl
             FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m    
@@ -418,7 +431,7 @@ class sportsmanagementModelround extends JModelAdmin
             $db->query();
             if (!$db->query()) 
             {
-                $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
                 return false; 
             }
             
@@ -435,11 +448,11 @@ class sportsmanagementModelround extends JModelAdmin
 	 */
 	public function delete(&$pks)
 	{
-	$mainframe =& JFactory::getApplication();
+	$app = JFactory::getApplication();
     
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
     {
-    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($pks,true).'</pre>'),'');
+    $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($pks,true).'</pre>'),'');
     }
     
     $success = $this->deleteRoundMatches($pks);  
@@ -460,13 +473,13 @@ class sportsmanagementModelround extends JModelAdmin
 	 */
 	public function save($data)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
        $post=JRequest::get('post');
        
-//       $mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-//       $mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+//       $app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+//       $app->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
@@ -483,7 +496,7 @@ class sportsmanagementModelround extends JModelAdmin
 		$data['modified'] = $date->toSql();
 		$data['modified_by'] = $user->get('id');
             
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         // Proceed with the save
 		return parent::save($data);   

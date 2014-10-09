@@ -72,11 +72,11 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 		parent::__construct();
 
 		$option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
 
-		$limit		= $mainframe->getUserStateFromRequest( $option.'.imageselect'.'limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
-		$limitstart = $mainframe->getUserStateFromRequest( $option.'.imageselect'.'limitstart', 'limitstart', 0, 'int' );
-		$search 	= $mainframe->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
+		$limit		= $app->getUserStateFromRequest( $option.'.imageselect'.'limit', 'limit', $app->getCfg('list_limit'), 'int');
+		$limitstart = $app->getUserStateFromRequest( $option.'.imageselect'.'limitstart', 'limitstart', 0, 'int' );
+		$search 	= $app->getUserStateFromRequest( $option.'.search', 'search', '', 'string' );
 		$search 	= trim(JString::strtolower( $search ) );
 
 		$this->setState('limit', $limit);
@@ -159,7 +159,7 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 	function getList()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
         static $list;
 
 		// Only process the list once per request

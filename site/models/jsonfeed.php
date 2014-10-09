@@ -28,7 +28,7 @@ class sportsmanagementModelJSONFeed extends JModelLegacy
 
 	public function getGoogleCalendarFeeds() 
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         
 		$startDate = JRequest::getVar('start', null, 'GET');
 		$endDate = JRequest::getVar('end', null, 'GET');
@@ -44,7 +44,7 @@ class sportsmanagementModelJSONFeed extends JModelLegacy
 		}
 		$results = jsmGCalendarDBUtil::getCalendars($calendarids);
         
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($results,true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($results,true).'</pre>'),'Notice');
         
 		if(empty($results))
 			return null;
@@ -61,7 +61,7 @@ class sportsmanagementModelJSONFeed extends JModelLegacy
 			$calendars[] = $events;
 		}
         
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' calendars<br><pre>'.print_r($calendars,true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' calendars<br><pre>'.print_r($calendars,true).'</pre>'),'Notice');
 
 		return $calendars;
 	}

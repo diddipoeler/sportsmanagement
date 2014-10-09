@@ -63,7 +63,7 @@ class sportsmanagementModelAjax extends JModelLegacy
      */
     function getProjectsOptions($season_id = 0, $league_id = 0, $ordering = 0)
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $db = JFactory::getDbo();
         //$option = JRequest::getCmd('option');
         // Select some fields

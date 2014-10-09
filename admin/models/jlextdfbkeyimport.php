@@ -64,9 +64,9 @@ class sportsmanagementModeljlextDfbkeyimport extends JModelLegacy
 function _loadData()
 	{
   /*
-  global $mainframe, $option;
-  echo '_loadData projekt -> '.$mainframe->getUserState( $option . 'project', 0 ).'<br>';
-  $this->_data =  $mainframe->getUserState( $option . 'project', 0 );
+  global $app, $option;
+  echo '_loadData projekt -> '.$app->getUserState( $option . 'project', 0 ).'<br>';
+  $this->_data =  $app->getUserState( $option . 'project', 0 );
   return $this->_data;
   */
 	}
@@ -74,9 +74,9 @@ function _loadData()
 function _initData()
 	{
 	/*
-	global $mainframe, $option;
-  echo '_initData projekt -> '.$mainframe->getUserState( $option . 'project', 0 ).'<br>';
-  $this->_data =  $mainframe->getUserState( $option . 'project', 0 );
+	global $app, $option;
+  echo '_initData projekt -> '.$app->getUserState( $option . 'project', 0 ).'<br>';
+  $this->_data =  $app->getUserState( $option . 'project', 0 );
   return $this->_data;
   */
 	}
@@ -85,9 +85,9 @@ function _initData()
 function getProject()
 {
   $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication ();
-  //echo 'getProject projekt -> '.$mainframe->getUserState( $option . 'project', 0 ).'<br>';
-  $result =  $mainframe->getUserState( $option . 'project', 0 );
+		$app = JFactory::getApplication ();
+  //echo 'getProject projekt -> '.$app->getUserState( $option . 'project', 0 ).'<br>';
+  $result =  $app->getUserState( $option . 'project', 0 );
   return $result;
 }
 */
@@ -116,9 +116,9 @@ return $country;
 	function getProjectteams($project_id)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication ();
+		$app = JFactory::getApplication ();
 
-		//$project_id = $mainframe->getUserState( $option . 'project' );
+		//$project_id = $app->getUserState( $option . 'project' );
 
 		$query = '	SELECT	pt.id AS value,
 							t.name As text,
@@ -132,7 +132,7 @@ return $country;
 		if ( !$result = $this->_db->loadObjectList() )
 		{
 			//$this->setError( $this->_db->getErrorMsg() );
-            $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
 			return false;
 		}
 		else
@@ -162,11 +162,11 @@ echo "Die Zahl $zahl ist gerade";
 function getDFBKey($number,$matchdays)
 	{
 	$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication ();
+		$app = JFactory::getApplication ();
 	$document	= JFactory::getDocument();
   
-$project_id	= $mainframe->getUserState( "$option.pid", '0' );
-	//$project_id = $mainframe->getUserState( $option . 'project' );
+$project_id	= $app->getUserState( "$option.pid", '0' );
+	//$project_id = $app->getUserState( $option . 'project' );
 	
 	// gibt es zum land der liga schlüssel ?
 $query = "SELECT l.country
@@ -223,7 +223,7 @@ $country = $this->_db->loadResult();
   function getMatchdays($projectid)
 	{
 	$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication ();
+		$app = JFactory::getApplication ();
 	
 	$query = 'select *
   from #__'.COM_SPORTSMANAGEMENT_TABLE.'_round
@@ -246,7 +246,7 @@ $country = $this->_db->loadResult();
 	function getMatches($projectid)
 	{
 	   $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication ();
+		$app = JFactory::getApplication ();
   $query = 'select *
   from #__'.COM_SPORTSMANAGEMENT_TABLE.'_round
   where project_id = ' . (int) $projectid . '';
@@ -268,7 +268,7 @@ return $count;
 	function getSchedule( $post, $projectid )
 	{
 	$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication ();
+		$app = JFactory::getApplication ();
 
 /*	
 echo '<pre>';
@@ -372,7 +372,7 @@ $this->savedfb = $result ;
     
 	function checkTable()
   {
-  $mainframe = JFactory::getApplication();
+  $app = JFactory::getApplication();
     $option = JRequest::getCmd('option');
     require_once( JPATH_ADMINISTRATOR.'/components/'.$option.'/'. 'helpers' . DS . 'jinstallationhelper.php' );    
     $db = JFactory::getDBO();
@@ -400,19 +400,19 @@ if (in_array("jos_joomleague_dfbkey", $result))
 else
 {
 // echo "jos_joomleague_extensions nicht enthalten";
-$mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXTENSIONS_DFBKEY_CHECK_TABLE'),'Error');
+$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXTENSIONS_DFBKEY_CHECK_TABLE'),'Error');
 
 $db_table = JPATH_COMPONENT_SITE . DS. 'extensions' . DS. 'jlextdfbkey' . DS. 'admin' . DS. 'sql' . DS . 'table.sql';
 // echo $db_table.'<br>';
 $result = JInstallationHelper::populateDatabase($db, $db_table, $errors);
 // print_r( $result );
-$mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXTENSIONS_DFBKEY_CHECK_TABLE_SUCCESS'),'');
+$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXTENSIONS_DFBKEY_CHECK_TABLE_SUCCESS'),'');
 
 $db_table = JPATH_COMPONENT_SITE . DS. 'extensions' . DS. 'jlextdfbkey' . DS. 'admin' . DS. 'sql' . DS . 'data.sql';
 // echo $db_table.'<br>';
 $result = JInstallationHelper::populateDatabase($db, $db_table, $errors);
 // print_r( $result );
-$mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXTENSIONS_DFBKEY_INSERT_KEYS_SUCCESS'),'');
+$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXTENSIONS_DFBKEY_INSERT_KEYS_SUCCESS'),'');
 
 }
 */

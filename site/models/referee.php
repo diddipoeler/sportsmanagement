@@ -42,17 +42,27 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.model');
 //require_once('person.php');
 
+/**
+ * sportsmanagementModelReferee
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementModelReferee extends JModelLegacy
 {
-	static $projectid		= 0;
-	static $personid		  = 0;
+	static $projectid = 0;
+	static $personid = 0;
+    static $cfg_which_database = 0;
 
     
     /**
 	 * cache for data query
 	 * @var object
 	 */
-	var $_data=null;
+	var $_data = null;
 
 	/**
 	 * data array for history
@@ -60,25 +70,30 @@ class sportsmanagementModelReferee extends JModelLegacy
 	 */
 	static $_history = null;
 
+	/**
+	 * sportsmanagementModelReferee::__construct()
+	 * 
+	 * @return void
+	 */
 	function __construct()
 	{
 	   $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         
 		parent::__construct();
 		self::$projectid = JRequest::getInt('p',0);
 		self::$personid = JRequest::getInt('pid',0);
-        
+        self::$cfg_which_database = JRequest::getInt( 'cfg_which_database', 0 );
         sportsmanagementModelPerson::$projectid = JRequest::getInt('p',0);
 		sportsmanagementModelPerson::$personid = JRequest::getInt('pid',0);
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid <br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' personid <br><pre>'.print_r(self::$personid,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid <br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' personid <br><pre>'.print_r(self::$personid,true).'</pre>'),'');
 	}
 
 //	function &getReferee()
 //	{
-//	   $mainframe = JFactory::getApplication();
+//	   $app = JFactory::getApplication();
 //       $option = JRequest::getCmd('option');
 //       // Create a new query object.		
 //	   $db = JFactory::getDBO();
@@ -115,12 +130,12 @@ class sportsmanagementModelReferee extends JModelLegacy
 	 */
 	function getHistory($order='ASC')
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        // Create a new query object.		
-	   //$db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
        
-	   $query = JFactory::getDBO()->getQuery(true);
+	   $query = $db->getQuery(true);
        
 		if (empty(self::$_history))
 		{
@@ -164,10 +179,10 @@ class sportsmanagementModelReferee extends JModelLegacy
 //						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id=pos.id
 //						WHERE per.id='.$this->_db->Quote($personid).' AND per.published = 1 ORDER BY s.ordering ASC,l.ordering ASC,p.name ASC ';
 			
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             
-            JFactory::getDBO()->setQuery($query);
-			self::$_history = JFactory::getDBO()->loadObjectList();
+            $db->setQuery($query);
+			self::$_history = $db->loadObjectList();
 		}
 		return self::$_history;
 	}
@@ -181,11 +196,11 @@ class sportsmanagementModelReferee extends JModelLegacy
 	 */
 	function getPresenceStats($project_id,$person_id)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $option = JRequest::getCmd('option');
 //       // Create a new query object.		
-//	   $db = JFactory::getDBO();
-	   $query = JFactory::getDBO()->getQuery(true);
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
+	   $query = $db->getQuery(true);
        
        $query->select('count(mr.id) AS present');
        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr ');
@@ -200,8 +215,8 @@ class sportsmanagementModelReferee extends JModelLegacy
 //					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr ON pr.id=mr.project_referee_id
 //					WHERE pr.person_id='.$this->_db->Quote((int)$person_id).' AND pr.project_id='.$this->_db->Quote((int)$project_id);
 		
-        JFactory::getDBO()->setQuery($query,0,1);
-		$inoutstat = JFactory::getDBO()->loadResult();
+        $db->setQuery($query,0,1);
+		$inoutstat = $db->loadResult();
 		return $inoutstat;
 	}
 
@@ -212,11 +227,11 @@ class sportsmanagementModelReferee extends JModelLegacy
 	 */
 	function getGames()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        // Create a new query object.		
-	   //$db = JFactory::getDBO();
-	   $query = JFactory::getDBO()->getQuery(true);
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
+	   $query = $db->getQuery(true);
        
        $query->select('m.*');
        $query->select('t1.id AS team1');
@@ -262,8 +277,8 @@ class sportsmanagementModelReferee extends JModelLegacy
                     
                     
                     
-		JFactory::getDBO()->setQuery($query);
-		return JFactory::getDBO()->loadObjectList();
+		$db->setQuery($query);
+		return $db->loadObjectList();
 	}
 
 }

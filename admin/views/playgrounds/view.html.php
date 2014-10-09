@@ -60,7 +60,7 @@ class sportsmanagementViewPlaygrounds extends sportsmanagementView
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
         
@@ -71,7 +71,7 @@ $starttime = microtime();
 		$items = $this->get('Items');
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
@@ -122,7 +122,8 @@ $starttime = microtime();
 		JToolBarHelper::addNew('playground.add');
 		JToolBarHelper::custom('playground.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('playground.export',JText::_('JTOOLBAR_EXPORT'));
-		
+		JToolbarHelper::checkin('playgrounds.checkin');
+        
         if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
         {
 		JToolbarHelper::trash('playgrounds.trash');

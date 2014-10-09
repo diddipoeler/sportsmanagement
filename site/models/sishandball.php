@@ -72,7 +72,7 @@ class sportsmanagementModelsishandball extends JModelLegacy
 	function getLink($vereinsnummer,$vereinspasswort,$liganummer,$sis_art,$sis_xmllink) 
     {
         $option = JRequest::getCmd('option');
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
 		$sislink = $sis_xmllink.'/xmlexport/xml_dyn.aspx?user=%s&pass=%s&art=%s&auf=%s';
 		$link = sprintf($sislink, $vereinsnummer, $vereinspasswort, $sis_art, $liganummer );	
 		return $link;
@@ -90,7 +90,7 @@ class sportsmanagementModelsishandball extends JModelLegacy
 	function getTabelle($linkresults,$liganummer,$sis_art) 
     {
         $option = JRequest::getCmd('option');
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
 		// XML File
 		$filepath='components/'.$option.'/data/';
 		//File laden
@@ -118,7 +118,7 @@ else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 else
 {
     //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-    $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 
 					//Parsen
@@ -147,7 +147,7 @@ else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 else
 {
     //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-    $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 			//Parsen
 			$doc = DOMDocument::loadXML($content);
@@ -170,7 +170,7 @@ else
 	function getStatistik($linkresults,$liganummer) 
     {
         $option = JRequest::getCmd('option');
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
 		// XML File
 		$filepath='components/'.$option.'/data/';
 		//File laden
@@ -199,7 +199,7 @@ else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 else
 {
     //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-    $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 
 					//Parsen
@@ -228,7 +228,7 @@ else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 else
 {
     //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-    $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 			//Parsen
 			$doc = DOMDocument::loadXML($content);
@@ -254,7 +254,7 @@ else
 	function getSpielplan($linkresults,$liganummer,$sis_art) 
     {
         $option = JRequest::getCmd('option');
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
 		// XML File
 		$filepath='components/'.$option.'/data/';
 		//File laden
@@ -282,7 +282,7 @@ else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 else
 {
     //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-    $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 					//Parsen
 					$doc = DOMDocument::loadXML($content);
@@ -310,7 +310,7 @@ else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 else
 {
     //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-    $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 			//Parsen
 			$doc = DOMDocument::loadXML($content);

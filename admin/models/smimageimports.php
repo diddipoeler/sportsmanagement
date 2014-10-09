@@ -83,12 +83,12 @@ class sportsmanagementModelsmimageimports extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -100,7 +100,7 @@ class sportsmanagementModelsmimageimports extends JModelList
 		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 		$this->setState('filter.image_folder', $image_folder);
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 
 
 //		// Load the parameters.
@@ -120,13 +120,13 @@ class sportsmanagementModelsmimageimports extends JModelList
 	 */
 	protected function getListQuery()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $search	= $this->getState('filter.search');
         $filter_state = $this->getState('filter.state');
         $filter_image_folder = $this->getState('filter.image_folder');
-        //$search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
-        //$search_nation		= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
+        //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        //$search_nation		= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -154,7 +154,7 @@ class sportsmanagementModelsmimageimports extends JModelList
         $query->order($db->escape($this->getState('list.ordering', 'name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
                 
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
  
 		
         return $query;
@@ -167,7 +167,7 @@ class sportsmanagementModelsmimageimports extends JModelList
  */
 function getXMLFolder()
 {
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 // Get a db connection.
         $db = JFactory::getDBO();
@@ -185,7 +185,7 @@ function getXMLFolder()
             return array();
         }
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
         return $result;    
 }
@@ -199,7 +199,7 @@ function getXMLFolder()
  */
 function getimagesxml()
 {
-    $mainframe = JFactory::getApplication(); 
+    $app = JFactory::getApplication(); 
         $option = JRequest::getCmd('option');  
         // sind neue bilder pakete vorhanden ?
 		//$content = file_get_contents('https://raw2.github.com/diddipoeler/sportsmanagement/master/admin/helpers/xml_files/pictures.xml');
@@ -224,8 +224,8 @@ if (function_exists('curl_version'))
         // moving to display page to display curl errors
           //echo curl_errno($curl) ;
           //echo curl_error($curl);
-          //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r(curl_errno($curl),true).'</pre>'),'Error');
-          //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r(curl_error($curl),true).'</pre>'),'Error');
+          //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r(curl_errno($curl),true).'</pre>'),'Error');
+          //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r(curl_error($curl),true).'</pre>'),'Error');
           
           
     }
@@ -236,17 +236,17 @@ if (function_exists('curl_version'))
         curl_close($curl);
     } 
     
-    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r($content,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r($content,true).'</pre>'),'');
 }
 else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 {
     $content = file_get_contents($datei);
-    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r($content,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__. '<br><pre>'.print_r($content,true).'</pre>'),'');
 }
 else
 {
     //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-    $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 		
 		
@@ -261,7 +261,7 @@ else
 		//Parsen
 		$doc = DOMDocument::loadXML($content);
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($doc,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($doc,true).'</pre>'),'');
         
         $doc->save(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'xml_files'.DS.'pictures.xml');
         }
@@ -274,7 +274,7 @@ else
  */
 function getXMLFiles()
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $query = JFactory::getDbo()->getQuery(true);
         $files = array();
@@ -294,10 +294,10 @@ function getXMLFiles()
             
             $picturedescription = (string)$picture->picture;
             
-//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picturedescription<br><pre>'.print_r($picturedescription,true).'</pre>'),'Notice');
-//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' folder<br><pre>'.print_r($folder,true).'</pre>'),'Notice');
-//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' directory<br><pre>'.print_r($directory,true).'</pre>'),'Notice');
-//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' file<br><pre>'.print_r($file,true).'</pre>'),'Notice');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picturedescription<br><pre>'.print_r($picturedescription,true).'</pre>'),'Notice');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' folder<br><pre>'.print_r($folder,true).'</pre>'),'Notice');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' directory<br><pre>'.print_r($directory,true).'</pre>'),'Notice');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' file<br><pre>'.print_r($file,true).'</pre>'),'Notice');
                 $temp = new stdClass();
    $temp->id = $i;
    $temp->picture = $picturedescription;
@@ -365,7 +365,7 @@ function getXMLFiles()
    }
 */
        
-    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($files,true).'</pre>'),'');   
+    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($files,true).'</pre>'),'');   
         
         return $files;
         

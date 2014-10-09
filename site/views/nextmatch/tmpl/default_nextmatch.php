@@ -107,7 +107,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 </table>
 
 	<?php 
-        $report_link = sportsmanagementHelperRoute::getMatchReportRoute( $this->project->id,$this->match->id);
+        $report_link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->id,$this->match->id,JRequest::getInt('cfg_which_database',0));
 					
         if(isset($this->match->team1_result) && isset($this->match->team2_result))
             { ?>

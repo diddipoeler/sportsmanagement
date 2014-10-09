@@ -75,7 +75,8 @@ class sportsmanagementModelStatistics extends JModelList
                         'obj.ordering'
                         );
                 parent::__construct($config);
-                parent::setDbo(sportsmanagementHelper::getDBConnection());
+                $getDBConnection = sportsmanagementHelper::getDBConnection();
+                parent::setDbo($getDBConnection);
         }
         
     /**
@@ -87,12 +88,12 @@ class sportsmanagementModelStatistics extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -105,7 +106,7 @@ class sportsmanagementModelStatistics extends JModelList
 
 
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 
 
 //		// Load the parameters.
@@ -118,7 +119,7 @@ class sportsmanagementModelStatistics extends JModelList
     
 	function getListQuery()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $search	= $this->getState('filter.search');
         $search_sports_type	= $this->getState('filter.sports_type');
@@ -159,7 +160,7 @@ class sportsmanagementModelStatistics extends JModelList
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
         
 		return $query;
@@ -182,9 +183,9 @@ class sportsmanagementModelStatistics extends JModelList
 	*/
 	function getPositionStatsOptions($id)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        //$search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
@@ -212,9 +213,9 @@ class sportsmanagementModelStatistics extends JModelList
 	*/
 	function getAvailablePositionStatsOptions($id)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        //$search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
@@ -237,9 +238,9 @@ class sportsmanagementModelStatistics extends JModelList
     
     public function getStatisticListSelect()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        //$search	= $mainframe->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
+        //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);

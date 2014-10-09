@@ -61,10 +61,10 @@ class JFormFieldpredictionroundid extends JFormField
 	protected function getInput()
   {
 		$db = JFactory::getDBO();
-    $mainframe			= JFactory::getApplication();
+    $app			= JFactory::getApplication();
 		$option				= 'com_sportsmanagement';
         
-        $prediction_id = $mainframe->getUserState( "$option.predid", '0' );
+        $prediction_id = $app->getUserState( "$option.predid", '0' );
         
         // welche tabelle soll genutzt werden
         $params = JComponentHelper::getParams( 'com_sportsmanagement' );
@@ -80,18 +80,18 @@ class JFormFieldpredictionroundid extends JFormField
     $query->where('prepro.prediction_id = '. $prediction_id);
     $query->group('r.id');
 
-//$mainframe->enqueueMessage(JText::_('prediction_id -> <pre> '.print_r($prediction_id,true).'</pre><br>' ),'Notice');		
+//$app->enqueueMessage(JText::_('prediction_id -> <pre> '.print_r($prediction_id,true).'</pre><br>' ),'Notice');		
 
 
 		$db->setQuery( $query );
         
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$teams = $db->loadObjectList();
         
         if ( !$teams )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
   
 

@@ -38,12 +38,12 @@ class jsmGCalendarUtil
 
 	public static function getComponentParameter($key, $defaultValue = null) 
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         
 		$params = JComponentHelper::getParams('com_sportsmanagement');
 		$value = $params->get($key, $defaultValue);
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
 
 
 		if ($key == 'timezone' && empty($value)) {
@@ -65,15 +65,15 @@ class jsmGCalendarUtil
 
 	public static function getItemId($calendarId, $strict = false) 
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         
 		$component = JComponentHelper::getComponent('com_sportsmanagement');
 		$menu = JFactory::getApplication()->getMenu();
 		$items = $menu->getItems('component_id', $component->id);
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' component<br><pre>'.print_r($component,true).'</pre>'),'Notice');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' menu<br><pre>'.print_r($menu,true).'</pre>'),'Notice');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' items<br><pre>'.print_r($items,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' component<br><pre>'.print_r($component,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' menu<br><pre>'.print_r($menu,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' items<br><pre>'.print_r($items,true).'</pre>'),'Notice');
 
 		$default = null;
 		if (is_array($items)) {
@@ -111,16 +111,16 @@ class jsmGCalendarUtil
 
 	public static function renderEvents(array $events = null, $output, $params = null, $eventParams = array()) 
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         
 		if ($events === null) {
 			$events = array();
 		}
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' events<br><pre>'.print_r($events,true).'</pre>'),'Notice');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' output<br><pre>'.print_r($output,true).'</pre>'),'Notice');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' eventParams<br><pre>'.print_r($eventParams,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' events<br><pre>'.print_r($events,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' output<br><pre>'.print_r($output,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' eventParams<br><pre>'.print_r($eventParams,true).'</pre>'),'Notice');
 
 		JFactory::getLanguage()->load('com_sportsmanagement', JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement');
 
@@ -156,7 +156,7 @@ class jsmGCalendarUtil
 
 			$itemID = jsmGCalendarUtil::getItemId($event->getParam('gcid'));
             
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' itemID<br><pre>'.print_r($itemID,true).'</pre>'),'Notice');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' itemID<br><pre>'.print_r($itemID,true).'</pre>'),'Notice');
             
 			if (!empty($itemID)) {
 				$itemID = '&Itemid='.$itemID;
@@ -289,7 +289,7 @@ class jsmGCalendarUtil
 
 		$configuration['emptyText'] = JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_LABEL_NO_EVENT_TEXT');
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' configuration<br><pre>'.print_r($configuration,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' configuration<br><pre>'.print_r($configuration,true).'</pre>'),'Notice');
 
 		try{
 			$m = new Mustache();
@@ -518,7 +518,7 @@ class jsmGCalendarUtil
 	public static function getDateFromString($date, $time, $allDay, $timezone, $dateFormat = null, $timeFormat = null) 
     {
         $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         
 		$string = $date;
 		if (!empty($time)) {
@@ -541,12 +541,12 @@ class jsmGCalendarUtil
 
 		$date = DateTime::createFromFormat($dateFormat.($allDay ? '' : ' '.$timeFormat), $string, new DateTimeZone($timezone));
         
-//        $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' dateFormat<br><pre>'.print_r($dateFormat, true).'</pre><br>','Notice');
-//        $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' allDay<br><pre>'.print_r($allDay, true).'</pre><br>','Notice');
-//        $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' timeFormat<br><pre>'.print_r($timeFormat, true).'</pre><br>','Notice');
-//        $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' string<br><pre>'.print_r($string, true).'</pre><br>','Notice');
-//        $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' timezone<br><pre>'.print_r($timezone, true).'</pre><br>','Notice');
-//        $mainframe->enqueueMessage(__METHOD__.' '.__FUNCTION__.' date<br><pre>'.print_r($date, true).'</pre><br>','Notice');
+//        $app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' dateFormat<br><pre>'.print_r($dateFormat, true).'</pre><br>','Notice');
+//        $app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' allDay<br><pre>'.print_r($allDay, true).'</pre><br>','Notice');
+//        $app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' timeFormat<br><pre>'.print_r($timeFormat, true).'</pre><br>','Notice');
+//        $app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' string<br><pre>'.print_r($string, true).'</pre><br>','Notice');
+//        $app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' timezone<br><pre>'.print_r($timezone, true).'</pre><br>','Notice');
+//        $app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' date<br><pre>'.print_r($date, true).'</pre><br>','Notice');
         
 		$date = jsmGCalendarUtil::getDate($date->format('U'), $allDay);
 

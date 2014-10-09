@@ -65,7 +65,7 @@ class sportsmanagementViewClubPlan extends JViewLegacy
 		$uri = JFactory::getURI();
 		$model = $this->getModel();
         $option = JRequest::getCmd('option');
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
         
         $js = "window.addEvent('domready', function() {"."\n";
@@ -74,13 +74,13 @@ class sportsmanagementViewClubPlan extends JViewLegacy
         $document->addScriptDeclaration( $js );
         
         
-		$project = sportsmanagementModelProject::getProject();
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
+		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
+		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 		$this->assignRef('project',$project);
-		$this->assignRef('overallconfig',sportsmanagementModelProject::getOverallConfig());
+		$this->assignRef('overallconfig',sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database));
 		$this->assignRef('config',$config);
 		$this->assignRef('showclubconfig',$showclubconfig);
-		$this->assignRef('favteams',sportsmanagementModelProject::getFavTeams());
+		$this->assignRef('favteams',sportsmanagementModelProject::getFavTeams($model::$cfg_which_database));
 		$this->assignRef('club',sportsmanagementModelClubInfo::getClub());
         
         $this->assignRef('type',JRequest::getVar("type", 0));
@@ -136,9 +136,9 @@ class sportsmanagementViewClubPlan extends JViewLegacy
 				break;
 		}
         
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' allmatches <br><pre>'.print_r($this->allmatches,true).'</pre>'),'');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' homematches <br><pre>'.print_r($this->homematches,true).'</pre>'),'');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' awaymatches <br><pre>'.print_r($this->awaymatches,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' allmatches <br><pre>'.print_r($this->allmatches,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' homematches <br><pre>'.print_r($this->homematches,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' awaymatches <br><pre>'.print_r($this->awaymatches,true).'</pre>'),'');
         
         
 		$this->assignRef('startdate',$model->getStartDate());

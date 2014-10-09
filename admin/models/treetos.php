@@ -16,9 +16,9 @@ class sportsmanagementModelTreetos extends JModelList
     
     public function __construct($config = array())
         {
-            $mainframe = JFactory::getApplication();
+            $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-                $this->_project_id	= $mainframe->getUserState( "$option.pid", '0' );
+                $this->_project_id	= $app->getUserState( "$option.pid", '0' );
                 //$config['filter_fields'] = array(
 //                        'r.name',
 //                        'r.roundcode',
@@ -32,7 +32,7 @@ class sportsmanagementModelTreetos extends JModelList
         
 	protected function getListQuery()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $search	= $this->getState('filter.search');
         
@@ -67,9 +67,9 @@ class sportsmanagementModelTreetos extends JModelList
 	//function _buildContentWhere()
 //	{
 //		$option = JRequest::getCmd('option');
-//		$mainframe	= JFactory::getApplication();
-//		$project_id = $mainframe->getUserState( $option . 'project' );
-//		$division = (int) $mainframe->getUserStateFromRequest( $option.'tt_division', 'division', 0 );
+//		$app	= JFactory::getApplication();
+//		$project_id = $app->getUserState( $option . 'project' );
+//		$division = (int) $app->getUserStateFromRequest( $option.'tt_division', 'division', 0 );
 //		$division=JString::strtolower($division);
 //		$where = ' WHERE  tt.project_id = ' . $project_id ;
 //		if($division > 0)

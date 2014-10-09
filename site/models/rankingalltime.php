@@ -105,7 +105,7 @@ class sportsmanagementModelRankingAllTime extends JModelLegacy
      */
     function __construct()
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $this->alltimepoints = JRequest::getVar("points", 0);
         
         if (!class_exists($this->classname))
@@ -117,22 +117,22 @@ class sportsmanagementModelRankingAllTime extends JModelLegacy
         }
         }
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' classname<br><pre>'.print_r($this->classname,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' classname<br><pre>'.print_r($this->classname,true).'</pre>'),'Notice');
         
         $menu = JMenu::getInstance('site');
         $item = $menu->getActive();
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' menu<br><pre>'.print_r($menu,true).'</pre>'),'Notice');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($item,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' menu<br><pre>'.print_r($menu,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($item,true).'</pre>'),'Notice');
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($item->query['view'],true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($item->query['view'],true).'</pre>'),'Notice');
         
         $params = $menu->getParams($item->id);
 
         //$menu = &JSite::getMenu();
-        $show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',
+        //$show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',
             0);
-        if ($show_debug_info) {
+        if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
             $this->debug_info = true;
         } else {
             $this->debug_info = false;
@@ -169,15 +169,15 @@ foreach ($newparams['data'] as $key => $value ) {
         // We can now step through each element of the file 
 foreach( $xml->document->fields as $field ) 
 {
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' field<br><pre>'.print_r($field->attributes() ,true).'</pre>'),'Notice');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' field<br><pre>'.print_r($field->attributes() ,true).'</pre>'),'Notice');
 foreach( $field->fieldset  as $fieldset ) 
 {
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' fieldset<br><pre>'.print_r($fieldset->attributes(),true).'</pre>'),'Notice');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' fieldset<br><pre>'.print_r($fieldset->attributes(),true).'</pre>'),'Notice');
 
 foreach( $fieldset->field  as $param ) 
 {
 $attributes = $param->attributes();
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' fieldset<br><pre>'.print_r($param->attributes(),true).'</pre>'),'Notice');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' fieldset<br><pre>'.print_r($param->attributes(),true).'</pre>'),'Notice');
 $this->_params[$attributes['name']] = $attributes['default'];
 
 }
@@ -189,7 +189,7 @@ $this->_params[$attributes['name']] = $attributes['default'];
 }        
 
 
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _params<br><pre>'.print_r($this->_params,true).'</pre>'),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _params<br><pre>'.print_r($this->_params,true).'</pre>'),'Notice');
         
         parent::__construct();
 
@@ -204,11 +204,11 @@ $this->_params[$attributes['name']] = $attributes['default'];
      */
     function getAllTeamsIndexedByPtid($project_ids)
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $result = $this->getAllTeams($project_ids);
         
         $count_teams = count($result);
-    $mainframe->enqueueMessage(JText::_('Wir verarbeiten '.$count_teams.' Vereine !'),'');
+    $app->enqueueMessage(JText::_('Wir verarbeiten '.$count_teams.' Vereine !'),'');
 
         if (count($result)) {
             foreach ($result as $r) {
@@ -249,7 +249,7 @@ $this->_params[$attributes['name']] = $attributes['default'];
     function getAllTeams($project_ids)
     {
 $option = JRequest::getCmd('option');
-	$mainframe = JFactory::getApplication();
+	$app = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
@@ -289,8 +289,8 @@ $query->group('st.team_id' );
         
         if ( !$this->_teams )
         {
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         }
         
         
@@ -313,7 +313,7 @@ $query->group('st.team_id' );
 //        
 //    }
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_teams,true).'</pre>'),'Error');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_teams,true).'</pre>'),'Error');
 
         return $this->_teams;
 
@@ -328,7 +328,7 @@ $query->group('st.team_id' );
     function getAllMatches($projects)
     {
         $option = JRequest::getCmd('option');
-	$mainframe = JFactory::getApplication();
+	$app = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
@@ -362,14 +362,14 @@ $query->group('st.team_id' );
     
     if ( !$res )
         {
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         }
               
     $this->_matches = $res;
     
     $count_matches = count($res);
-    $mainframe->enqueueMessage(JText::_('Wir verarbeiten '.$count_matches.' Spiele !'),'');
+    $app->enqueueMessage(JText::_('Wir verarbeiten '.$count_matches.' Spiele !'),'');
            
     return $res;    
     }
@@ -382,11 +382,11 @@ $query->group('st.team_id' );
     function getAllTimeRanking()
     {
         $option = JRequest::getCmd('option');
-	$mainframe = JFactory::getApplication();
+	$app = JFactory::getApplication();
     
     $arr = explode(",",$this->alltimepoints);
     
-    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' alltimepoints<br><pre>'.print_r($arr,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' alltimepoints<br><pre>'.print_r($arr,true).'</pre>'),'');
     
     foreach ((array)$this->_matches as $match)
 		{
@@ -412,7 +412,7 @@ $query->group('st.team_id' );
     $home = &$this->teams[$homeId];
     $away = &$this->teams[$awayId];
     
-    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' home<br><pre>'.print_r($home,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' home<br><pre>'.print_r($home,true).'</pre>'),'');
     
     $home->cnt_matches++;
 		$away->cnt_matches++;
@@ -673,7 +673,7 @@ $query->group('st.team_id' );
     }
     
     
-    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _teams<br><pre>'.print_r($this->_teams,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _teams<br><pre>'.print_r($this->_teams,true).'</pre>'),'');
     
     foreach ( $this->_teams as $team )
     {
@@ -693,7 +693,7 @@ $query->group('st.team_id' );
         
     }
     
-    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
     
     return $this->teams;
      
@@ -745,7 +745,7 @@ $query->group('st.team_id' );
      */
     function getAllProject()
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $league = JRequest::getInt("l", 0);
 
         if (!$league) {
@@ -768,7 +768,7 @@ $query->group('st.team_id' );
         $this->project_ids_array = $result;
         
         $count_project = count($result);
-    $mainframe->enqueueMessage(JText::_('Wir verarbeiten '.$count_project.' Projekte/Saisons !'),'');
+    $app->enqueueMessage(JText::_('Wir verarbeiten '.$count_project.' Projekte/Saisons !'),'');
     
         return $result;
 
@@ -792,9 +792,9 @@ $query->group('st.team_id' );
     function getCurrentRanking()
     {
         $option = JRequest::getCmd('option');
-	$mainframe = JFactory::getApplication();
+	$app = JFactory::getApplication();
     
-//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
     
         $newranking = array();
 
@@ -832,7 +832,7 @@ $query->group('st.team_id' );
 
         }
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' newranking<br><pre>'.print_r($newranking,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' newranking<br><pre>'.print_r($newranking,true).'</pre>'),'');
 
         $newranking[0] = $this->_sortRanking($newranking[0]);
 
@@ -1322,9 +1322,9 @@ $query->group('st.team_id' );
  */
 function _getRankingCriteria()
     {
-$mainframe = JFactory::getApplication();
+$app = JFactory::getApplication();
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _params<br><pre>'.print_r($this->_params,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _params<br><pre>'.print_r($this->_params,true).'</pre>'),'');
 
         if (empty($this->_criteria)) {
             // get the values from ranking template setting

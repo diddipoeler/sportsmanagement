@@ -249,7 +249,7 @@ else
 				$playground_number = 1;
 				foreach ( $this->playgrounds AS $playground )
 				{
-					$link = sportsmanagementHelperRoute::getPlaygroundRoute( $this->project->slug, $playground->slug );
+					$link = sportsmanagementHelperRoute::getPlaygroundRoute( $this->project->slug, $playground->slug,JRequest::getInt('cfg_which_database',0) );
 					$pl_dummy = JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_PLAYGROUND' );
 					?>
 					<span class="clubinfo_listing_item"><?php echo str_replace( "%NUMBER%", $playground_number, $pl_dummy ); ?></span>

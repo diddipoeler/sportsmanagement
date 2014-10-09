@@ -40,14 +40,30 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
-//require_once(JPATH_COMPONENT . DS . 'models' . DS . 'results.php');
+
+/**
+ * sportsmanagementViewNextMatch
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementViewNextMatch extends JViewLegacy
 {
+	/**
+	 * sportsmanagementViewNextMatch::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function display($tpl = null)
 	{
 		// Get a reference of the page instance in joomla
 		$document= JFactory::getDocument();
         $option = JRequest::getCmd('option');
+        $app = JFactory::getApplication();
     //$version = urlencode(sportsmanagementHelper::getVersion());
 //		$css='components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
 //		$document->addStyleSheet($css);
@@ -55,13 +71,13 @@ class sportsmanagementViewNextMatch extends JViewLegacy
 		$model = $this->getModel();
 		$match = $model->getMatch();
 
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
-		$tableconfig = sportsmanagementModelProject::getTemplateConfig( "ranking" );
+		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
+		$tableconfig = sportsmanagementModelProject::getTemplateConfig( "ranking",$model::$cfg_which_database );
 
-		$this->assign( 'project',			sportsmanagementModelProject::getProject() );
+		$this->assign( 'project',			sportsmanagementModelProject::getProject($model::$cfg_which_database) );
 		$this->assignRef( 'config',			$config );
 		$this->assignRef( 'tableconfig',		$tableconfig );
-		$this->assign( 'overallconfig',		sportsmanagementModelProject::getOverallConfig() );
+		$this->assign( 'overallconfig',		sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database) );
 		if ( !isset( $this->overallconfig['seperator'] ) )
 		{
 			$this->overallconfig['seperator'] = ":";
@@ -114,11 +130,16 @@ class sportsmanagementViewNextMatch extends JViewLegacy
 			
 			
 			$previousx = $this->get('previousx');
-			$teams = sportsmanagementModelProject::getTeamsIndexedByPtid();
+			$teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$model::$cfg_which_database);
 			
 			$this->assignRef('previousx', $previousx);
 			$this->assignRef('allteams',  $teams);
             $this->assign('matchcommentary',sportsmanagementModelMatch::getMatchCommentary($this->match->id));
+            
+            
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' homeranked <br><pre>'.print_r($this->homeranked,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' awayranked <br><pre>'.print_r($this->awayranked,true).'</pre>'),'');
+            
 		}
         
         //$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );

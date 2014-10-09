@@ -60,7 +60,7 @@ class sportsmanagementViewjlextassociations extends sportsmanagementView
 	public function init ()
 	{
 		
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
     //$db = JFactory::getDBO();
 		$uri = JFactory::getURI();
 		$document	= JFactory::getDocument();
@@ -72,13 +72,13 @@ class sportsmanagementViewjlextassociations extends sportsmanagementView
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->state,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->state,true).'</pre>'),'');
    
 $starttime = microtime(); 
 		$items = $this->get('Items');
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
@@ -135,6 +135,7 @@ $starttime = microtime();
 		JToolBarHelper::editList('jlextassociation.edit');
 		JToolBarHelper::custom('jlextassociation.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('jlextassociation.export',JText::_('JTOOLBAR_EXPORT'));
+        JToolbarHelper::checkin('jlextassociations.checkin');
 		//JToolBarHelper::deleteList();
 		//JToolBarHelper::deleteList('', 'jlextassociations.delete', 'JTOOLBAR_DELETE');
         if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )

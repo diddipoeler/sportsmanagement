@@ -77,7 +77,8 @@ class sportsmanagementModelPredictionMembers extends JModelList
                         'tmb.approved'
                         );
                 parent::__construct($config);
-                parent::setDbo(sportsmanagementHelper::getDBConnection());
+                $getDBConnection = sportsmanagementHelper::getDBConnection();
+                parent::setDbo($getDBConnection);
         }
     
     /**
@@ -89,12 +90,12 @@ class sportsmanagementModelPredictionMembers extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -109,7 +110,7 @@ class sportsmanagementModelPredictionMembers extends JModelList
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 
 
 //		// Load the parameters.
@@ -127,7 +128,7 @@ class sportsmanagementModelPredictionMembers extends JModelList
 	 */
 	function getListQuery()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.		
 		$db = JFactory::getDBO();
@@ -163,7 +164,7 @@ class sportsmanagementModelPredictionMembers extends JModelList
 		 $query->order($db->escape($this->getState('list.ordering', 'u.username')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
  
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
 		return $query;
 	}
@@ -181,7 +182,7 @@ class sportsmanagementModelPredictionMembers extends JModelList
 	 */
 	function getPredictionProjectName($predictionID)
 	{
-	$mainframe = JFactory::getApplication();
+	$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.		
 		$db = JFactory::getDBO();
@@ -196,8 +197,8 @@ class sportsmanagementModelPredictionMembers extends JModelList
 		$db->setQuery($query);
 		$result = $db->loadResult();
 	  
-    //$mainframe->enqueueMessage(JText::_('<br />predictionID<pre>~' . print_r($predictionID,true) . '~</pre><br />'),'Notice');
-    //$mainframe->enqueueMessage(JText::_('<br />result<pre>~' . print_r($result,true) . '~</pre><br />'),'Notice');
+    //$app->enqueueMessage(JText::_('<br />predictionID<pre>~' . print_r($predictionID,true) . '~</pre><br />'),'Notice');
+    //$app->enqueueMessage(JText::_('<br />result<pre>~' . print_r($result,true) . '~</pre><br />'),'Notice');
     
 		return $result;
 	}
@@ -210,7 +211,7 @@ class sportsmanagementModelPredictionMembers extends JModelList
 	 */
 	function getPredictionMembers($prediction_id)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.		
 		$db = JFactory::getDBO();
@@ -236,7 +237,7 @@ class sportsmanagementModelPredictionMembers extends JModelList
 	 */
 	function getJLUsers($prediction_id)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.		
 		$db = JFactory::getDBO();
@@ -293,7 +294,7 @@ class sportsmanagementModelPredictionMembers extends JModelList
 	 */
 	function save_memberlist()
 	{
-	$mainframe = JFactory::getApplication();
+	$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.		
 		$db = JFactory::getDBO();
@@ -304,13 +305,13 @@ class sportsmanagementModelPredictionMembers extends JModelList
   $prediction_id = (int) $cid[0];
   //echo '<br />save_memberlist post<pre>~' . print_r($post,true) . '~</pre><br />';
   
-  //$mainframe->enqueueMessage(JText::_('<br />save_memberlist post<pre>~' . print_r($post,true) . '~</pre><br />'),'Notice');
-  //$mainframe->enqueueMessage(JText::_('<br />prediction id<pre>~' . print_r($prediction_id,true) . '~</pre><br />'),'Notice');
+  //$app->enqueueMessage(JText::_('<br />save_memberlist post<pre>~' . print_r($post,true) . '~</pre><br />'),'Notice');
+  //$app->enqueueMessage(JText::_('<br />prediction id<pre>~' . print_r($prediction_id,true) . '~</pre><br />'),'Notice');
   
   
   foreach ( $post['prediction_members'] as $key => $value )
   {
-  //$mainframe->enqueueMessage(JText::_('<br />memberlist id<pre>~' . print_r($value,true) . '~</pre><br />'),'Notice');
+  //$app->enqueueMessage(JText::_('<br />memberlist id<pre>~' . print_r($value,true) . '~</pre><br />'),'Notice');
   //$table = 'predictionmember';
   $table = 'predictionentry';
   $rowproject = JTable::getInstance( $table, 'sportsmanagementTable' );

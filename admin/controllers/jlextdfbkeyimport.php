@@ -79,10 +79,10 @@ function display()
 {
 
 
-//global $mainframe,$option;
+//global $app,$option;
 
 $document	=& JFactory::getDocument();
-		$mainframe	=& JFactory::getApplication();
+		$app	=& JFactory::getApplication();
     $model = $this->getModel('jlextdfbkeyimport');
     $post = JRequest::get( 'post' );
     
@@ -125,7 +125,7 @@ $document	=& JFactory::getDocument();
 
  				$projectws = $this->getModel( 'project' );
 				$projectws->_name = 'projectws';
-				$projectws->setId( $mainframe->getUserState( $option . 'project', 0 ) );
+				$projectws->setId( $app->getUserState( $option . 'project', 0 ) );
 				$view->setModel( $projectws );
 
 				$model = $this->getModel( 'round' );
@@ -149,7 +149,7 @@ $document	=& JFactory::getDocument();
   function save()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication ();
+		$app = JFactory::getApplication ();
         $post = JRequest::get( 'post' );
 
     /*
@@ -194,7 +194,7 @@ $document	=& JFactory::getDocument();
     
     if ( !$row->store() )
 		{
-		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+		$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
         //$this->setError( $this->_db->getErrorMsg() );
 		//return false;
 		}
@@ -231,7 +231,7 @@ $document	=& JFactory::getDocument();
   function insert()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication ();
+		$app = JFactory::getApplication ();
         $post = JRequest::get( 'post' );
       
     /*    
@@ -267,7 +267,7 @@ $document	=& JFactory::getDocument();
 		
 		if ( !$row->store() )
 		{
-		$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+		$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
         //$this->setError( $this->_db->getErrorMsg() );
 		//return false;
 		//echo 'nicht eingefügt <br>';

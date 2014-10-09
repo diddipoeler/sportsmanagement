@@ -214,7 +214,7 @@ foreach( $current as $ptid => $team )
 	// TODO: ranking deviates from the other views, regarding highlighting of the favorite team(s). Align this...
 	$config['highlight_fav'] = $isFavTeam;
 	//echo sportsmanagementHelper::formatTeamName( $team->team, 'tr' . $team->team->id, $config, $isFavTeam );
-    echo sportsmanagementHelper::formatTeamName( $team->team, $this->teamrow . $team->team->id, $config, $isFavTeam );
+    echo sportsmanagementHelper::formatTeamName( $team->team, $this->teamrow . $team->team->id, $config, $isFavTeam, NULL,JRequest::getInt('cfg_which_database',0) );
 	echo '</td>';
 	echo "\n";
 
@@ -242,7 +242,7 @@ foreach( $current as $ptid => $team )
 				echo '>';
 				if (( $config['show_wdl_teamplan_link'])==1)
 				{
-					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->id, $team->_teamid, 0, 1,$team->team->projectteamid);
+					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->id, $team->_teamid, 0, 1,$team->team->projectteamid,JRequest::getInt('cfg_which_database',0));
 					echo JHtml::link($teamplan_link, $team->cnt_won);
 				}
 				else
@@ -261,7 +261,7 @@ foreach( $current as $ptid => $team )
 				echo '>';
 				if (( $config['show_wdl_teamplan_link'])==1)
 				{
-					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->id, $team->_teamid, 0, 2,$team->team->projectteamid);
+					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->id, $team->_teamid, 0, 2,$team->team->projectteamid,JRequest::getInt('cfg_which_database',0));
 					echo JHtml::link($teamplan_link, $team->cnt_draw);
 				}
 				else
@@ -280,7 +280,7 @@ foreach( $current as $ptid => $team )
 				echo '>';
 				if (( $config['show_wdl_teamplan_link'])==1)
 				{
-					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->id, $team->_teamid, 0, 3,$team->team->projectteamid);
+					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->id, $team->_teamid, 0, 3,$team->team->projectteamid,JRequest::getInt('cfg_which_database',0));
 					echo JHtml::link($teamplan_link, $team->cnt_lost);
 				}
 				else
@@ -710,7 +710,7 @@ foreach( $current as $ptid => $team )
 							break;
 					}
 
-					$url = JRoute::_(sportsmanagementHelperRoute::getMatchReportRoute($g->project_slug, $g->slug));
+					$url = JRoute::_(sportsmanagementHelperRoute::getMatchReportRoute($g->project_slug, $g->slug,JRequest::getInt('cfg_which_database',0)));
 					echo JHtml::link($url, $img, $attr);
 				}
 				echo '</td>';

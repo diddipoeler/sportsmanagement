@@ -214,7 +214,7 @@ if (!empty($css))
 	}
 	else
 	{
-		echo "<p>Project team could not be determined</p>";
+		echo JText::_('COM_SPORTSMANAGEMENT_ROSTER_ERROR_PROJECT_TEAM');
 	}
 
 	echo "<div>";

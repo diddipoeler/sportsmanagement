@@ -62,20 +62,20 @@ class sportsmanagementViewTeams extends JViewLegacy
 	{
 		// Get a reference of the page instance in joomla
 		$document= JFactory::getDocument();
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
 
 		$model = $this->getModel();
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
+		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),JRequest::getInt('cfg_which_database',0));
 
-		$this->assignRef( 'project', sportsmanagementModelProject::getProject() );
-		//$this->assignRef( 'division', $model->getDivision() );
-		$this->assignRef( 'overallconfig', sportsmanagementModelProject::getOverallConfig() );
+		$this->assignRef( 'project', sportsmanagementModelProject::getProject(JRequest::getInt('cfg_which_database',0)) );
+		$this->assignRef( 'division', sportsmanagementModelProject::getDivision(JRequest::getInt( "division", 0 ),JRequest::getInt('cfg_which_database',0)) );
+		$this->assignRef( 'overallconfig', sportsmanagementModelProject::getOverallConfig(JRequest::getInt('cfg_which_database',0)) );
 		$this->assignRef( 'config', $config );
 
 		//$this->assignRef( 'teams', $model->getTeams() );
-        $this->assignRef( 'teams', sportsmanagementModelProject::getTeams($model->divisionid) );
+        $this->assign( 'teams', sportsmanagementModelProject::getTeams(JRequest::getInt( "division", 0 ),'name',JRequest::getInt('cfg_which_database',0)) );
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
 
 		// Set page title
 		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_TITLE' );

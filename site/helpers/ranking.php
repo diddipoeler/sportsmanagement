@@ -124,7 +124,7 @@ class JSMRanking
 	 *
 	 * @param string $type
 	 */
-	public static function getInstance($project = null)
+	public static function getInstance($project = null,$cfg_which_database = 0)
 	{
 		if ($project)
 		{
@@ -142,18 +142,18 @@ class JSMRanking
 					{
 						require_once($file);
 						$obj = new $classname();
-						$obj->setProjectId($project->id);
+						$obj->setProjectId($project->id,$cfg_which_database);
 						return $obj;
 					}
 				}
 				else {
 					$obj = new $classname();
-					$obj->setProjectId($project->id);
+					$obj->setProjectId($project->id,$cfg_which_database);
 					return $obj;
 				}
 			}
 			$obj = new JSMRanking();
-			$obj->setProjectId($project->id);
+			$obj->setProjectId($project->id,$cfg_which_database);
 			return $obj;
 		}
 		$obj = new JSMRanking();
@@ -166,21 +166,23 @@ class JSMRanking
 	 * inits project object and parameters
 	 * @param int $id
 	 */
-	function setProjectId($id)
+	function setProjectId($id,$cfg_which_database = 0)
 	{
 	   $option = JRequest::getCmd('option');
-	$mainframe = JFactory::getApplication();
+	$app = JFactory::getApplication();
+    
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
     
 		$this->_projectid = (int) $id;
 //		$this->_project = new sportsmanagementModelProject();
 //		$this->_project->setProjectID($id);
 //		$this->_params = $this->_project->getTemplateConfig('ranking');
-		sportsmanagementModelProject::setProjectID($id);
-		$this->_params = sportsmanagementModelProject::getTemplateConfig('ranking');
+		sportsmanagementModelProject::setProjectID($id,$cfg_which_database);
+		$this->_params = sportsmanagementModelProject::getTemplateConfig('ranking',$cfg_which_database,__METHOD__);
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($this->_projectid,true).'</pre>'),'');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($this->_projectid,true).'</pre>'),'');
     }
 
 		// wipe data
@@ -192,7 +194,7 @@ class JSMRanking
 	 * if not null, the return ranking will be for this division
 	 * @param $id
 	 */
-	function setDivisionId($id)
+	function setDivisionId($id,$cfg_which_database = 0)
 	{
 		$this->_division  = $id;
 		$this->_divisions = null;
@@ -205,21 +207,29 @@ class JSMRanking
 	 * @param int roundid to
 	 * @param int division id
 	 */
-	function getRanking($from = null, $to = null, $division = null)
+	function getRanking($from = null, $to = null, $division = null,$cfg_which_database = 0)
 	{
+	   $option = JRequest::getCmd('option');
+        $app = JFactory::getApplication();
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
+        
 		$this->_from     = $from;
 		$this->_to       = $to;
 		$this->_mode     = 0;
-		if ( $division == '' )
+		
+        if ( $division == '' )
 		{
     $division = 0;
     }
-		self::setDivisionId($division);
+		self::setDivisionId($division,$cfg_which_database);
 
-		$teams = self::_collect();
+		$teams = self::_collect(NULL,$cfg_which_database);
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');
 	
-		$rankings = self::_buildRanking($teams);
-			
+		$rankings = self::_buildRanking($teams,$cfg_which_database);
+		//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' rankings<br><pre>'.print_r($rankings,true).'</pre>'),'');
+        	
 		return $rankings;
 	}
 
@@ -231,8 +241,13 @@ class JSMRanking
 	 * @param int roundid to
 	 * @param int division id
 	 */
-	function getRankingHome($from = null, $to = null, $division = null)
+	function getRankingHome($from = null, $to = null, $division = null,$cfg_which_database = 0)
 	{
+	   $option = JRequest::getCmd('option');
+        $app = JFactory::getApplication();
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
+        
 		$this->_from     = $from;
 		$this->_to       = $to;
 		$this->_mode     = 1;
@@ -240,10 +255,10 @@ class JSMRanking
 		{
     $division = 0;
     }
-		$this->setDivisionId($division);
+		self::setDivisionId($division,$cfg_which_database);
 
-		$teams = $this->_collect();
-		$rankings = $this->_buildRanking($teams);
+		$teams = self::_collect(NULL,$cfg_which_database);
+		$rankings = self::_buildRanking($teams,$cfg_which_database);
 		
 		return $rankings;
 	}
@@ -256,8 +271,13 @@ class JSMRanking
 	 * @param int roundid to
 	 * @param int division id
 	 */
-	function getRankingAway($from = null, $to = null, $division = null)
+	function getRankingAway($from = null, $to = null, $division = null,$cfg_which_database = 0)
 	{
+	   $option = JRequest::getCmd('option');
+        $app = JFactory::getApplication();
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
+        
 		$this->_from     = $from;
 		$this->_to       = $to;
 		$this->_mode     = 2;
@@ -265,10 +285,10 @@ class JSMRanking
 		{
     $division = 0;
     }
-		$this->setDivisionId($division);
+		self::setDivisionId($division,$cfg_which_database);
 
-		$teams = $this->_collect();
-		$rankings = $this->_buildRanking($teams);
+		$teams = self::_collect(NULL,$cfg_which_database);
+		$rankings = self::_buildRanking($teams,$cfg_which_database);
 		
 		return $rankings;
 	}
@@ -278,8 +298,13 @@ class JSMRanking
 	 *
 	 * @return object with properties _teams and _matches
 	 */
-	function _initData()
+	function _initData($cfg_which_database = 0)
 	{
+	   $option = JRequest::getCmd('option');
+	   $app = JFactory::getApplication();
+       
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
+       
 		if (!$this->_projectid) {
 			JError::raiseWarning(0, JText::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_PROJECTID_REQUIRED'));
 			return false;
@@ -294,7 +319,7 @@ class JSMRanking
 			$cache->setCaching( 1 );
 		}
 
-		$data = $cache->call( array( get_class($this), '_cachedGetData' ), $this->_projectid, $this->_division );
+		$data = $cache->call( array( get_class($this), '_cachedGetData' ), $this->_projectid, $this->_division,$cfg_which_database );
 			
 		return $data;
 	}
@@ -304,12 +329,12 @@ class JSMRanking
 	 *
 	 * @param int project id
 	 */
-	public static function _cachedGetData($pid,$division)
+	public static function _cachedGetData($pid,$division,$cfg_which_database = 0)
 	{
 		$data = new stdclass();
 
-		$data->_teams   = self::_initTeams($pid,$division);
-		$data->_matches = self::_getMatches($pid,$division);
+		$data->_teams   = self::_initTeams($pid,$division,$cfg_which_database);
+		$data->_matches = self::_getMatches($pid,$division,$cfg_which_database);
 
 		return $data;
 	}
@@ -319,15 +344,20 @@ class JSMRanking
 	 *
 	 * @param array int project team ids: only collect for games between specified teams (usefull for head to head)
 	 */
-	function _collect($ptids = null)
+	function _collect($ptids = null,$cfg_which_database = 0)
 	{
+	   $option = JRequest::getCmd('option');
+	   $app = JFactory::getApplication();
+       
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
+    
 		$mode     	= $this->_mode;
 		$from     	= $this->_from;
 		$to       	= $this->_to;
 		$division 	= $this->_division;
 //		$project  	= $this->_project->getProject();
-        $project  	= sportsmanagementModelProject::getProject();
-		$data 		= $this->_initData();
+        $project  	= sportsmanagementModelProject::getProject($cfg_which_database,__METHOD__);
+		$data 		= self::_initData($cfg_which_database);
 		
 		foreach ((array)$data->_matches as $match)
 		{
@@ -338,7 +368,7 @@ class JSMRanking
 			continue;
 		}
 		
-			if (!$this->_countGame($match, $from, $to, $ptids)) {
+			if (!$this->_countGame($match, $from, $to, $ptids,$cfg_which_database)) {
 				continue;
 			}
 			if($match->projectteam1_id==0 || $match->projectteam2_id==0) {
@@ -680,12 +710,12 @@ class JSMRanking
 	 *
 	 * @return array of JSMRankingTeam objects
 	 */
-	public static function _initTeams($pid,$division)
+	public static function _initTeams($pid,$division,$cfg_which_database = 0)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
     $option = JRequest::getCmd('option');
         // Create a new query object.		
-	   $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
 	   $query = $db->getQuery(true);
 	$starttime = microtime(); 
 		
@@ -753,23 +783,23 @@ class JSMRanking
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		$res = $db->loadObjectList();
         
         if ( !$res && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         } 
         elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($res,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($res,true).'</pre>'),'');
 
 
 		$teams = array();
@@ -838,11 +868,11 @@ class JSMRanking
 	 *
 	 * @return array
 	 */
-	public static function _getMatches($pid,$division)
+	public static function _getMatches($pid,$division,$cfg_which_database = 0)
 	{
 	   $option = JRequest::getCmd('option');
-	$mainframe = JFactory::getApplication();
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+	$app = JFactory::getApplication();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
             $query = $db->getQuery(true);
             $starttime = microtime(); 
     
@@ -905,7 +935,7 @@ class JSMRanking
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		$res = $db->loadObjectList();
@@ -923,11 +953,11 @@ class JSMRanking
 	 *
 	 * @return array
 	 */
-	function _getSubDivisions()
+	function _getSubDivisions($cfg_which_database = 0)
 	{
 	   $option = JRequest::getCmd('option');
-	$mainframe = JFactory::getApplication();
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+	$app = JFactory::getApplication();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
             $query = $db->getQuery(true);
             
 		if (!$this->_division) 
@@ -949,7 +979,7 @@ class JSMRanking
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
             
 			$res = $db->loadResultArray();
@@ -968,23 +998,23 @@ class JSMRanking
 	 * @param int division id
 	 * @param array int project team ids, game must be between team in that array
 	 */
-	function _countGame($game, $from = null, $to = null, $ptids = null)
+	function _countGame($game, $from = null, $to = null, $ptids = null,$cfg_which_database = 0)
 	{
 	   $option = JRequest::getCmd('option');
-	$mainframe = JFactory::getApplication();
+	$app = JFactory::getApplication();
     
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' game<br><pre>'.print_r($game,true).'</pre>'),'');
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' from<br><pre>'.print_r($from,true).'</pre>'),'');
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' to<br><pre>'.print_r($to,true).'</pre>'),'');
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ptids<br><pre>'.print_r($ptids,true).'</pre>'),'');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' game<br><pre>'.print_r($game,true).'</pre>'),'');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' from<br><pre>'.print_r($from,true).'</pre>'),'');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' to<br><pre>'.print_r($to,true).'</pre>'),'');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ptids<br><pre>'.print_r($ptids,true).'</pre>'),'');
     }
     
-//	$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' game<br><pre>'.print_r($game,true).'</pre>'),'');
-//    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' from<br><pre>'.print_r($from,true).'</pre>'),'');
-//    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' to<br><pre>'.print_r($to,true).'</pre>'),'');
-//    $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' ptids<br><pre>'.print_r($ptids,true).'</pre>'),'');
+//	$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' game<br><pre>'.print_r($game,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' from<br><pre>'.print_r($from,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' to<br><pre>'.print_r($to,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' ptids<br><pre>'.print_r($ptids,true).'</pre>'),'');
     
  
 	
@@ -992,7 +1022,7 @@ class JSMRanking
 		
 		if ($from)
 		{
-			if ( $this->_getRoundcode($game->roundid) < $this->_getRoundcode($from) ) 
+			if ( $this->_getRoundcode($game->roundid,$cfg_which_database) < $this->_getRoundcode($from,$cfg_which_database) ) 
             {
 				return false;
 			}
@@ -1000,7 +1030,7 @@ class JSMRanking
 
 		if ($to)
 		{
-			if ( $this->_getRoundcode($game->roundid) > $this->_getRoundcode($to) ) 
+			if ( $this->_getRoundcode($game->roundid,$cfg_which_database) > $this->_getRoundcode($to,$cfg_which_database) ) 
             {
 				return false;
 			}
@@ -1023,18 +1053,18 @@ class JSMRanking
 	 * @param int $round_id
 	 * @return int roundcode
 	 */
-	function _getRoundcode($round_id)
+	function _getRoundcode($round_id,$cfg_which_database = 0)
 	{
 	   $option = JRequest::getCmd('option');
-	$mainframe = JFactory::getApplication();
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $mainframe->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+	$app = JFactory::getApplication();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
             $query = $db->getQuery(true);
             $starttime = microtime(); 
             
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-    //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' _roundcodes<br><pre>'.print_r($this->_roundcodes,true).'</pre>'),'');
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round_id<br><pre>'.print_r($round_id,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' _roundcodes<br><pre>'.print_r($this->_roundcodes,true).'</pre>'),'');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round_id<br><pre>'.print_r($round_id,true).'</pre>'),'');
     }
         
 		if (empty($this->_roundcodes))
@@ -1052,15 +1082,15 @@ class JSMRanking
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 			$this->_roundcodes = $db->loadAssocList('id');
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');    
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _roundcodes<br><pre>'.print_r($this->_roundcodes,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');    
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _roundcodes<br><pre>'.print_r($this->_roundcodes,true).'</pre>'),'');
     }
 		}
         
@@ -1112,9 +1142,14 @@ class JSMRanking
 	 *
 	 * @param array teams objects
 	 */
-	function _buildRanking($teams)
+	function _buildRanking($teams,$cfg_which_database = 0)
 	{
-		// division filtering
+		$option = JRequest::getCmd('option');
+	    $app = JFactory::getApplication();
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
+        
+        // division filtering
 		$teams = array_filter($teams, array($this, "_filterdivision"));
 
 		// initial group contains all teams, unordered, indexed by starting rank 1
@@ -1866,6 +1901,11 @@ class JSMRankingTeam
 	}
 
 
+	/**
+	 * JSMRankingTeam::getName()
+	 * 
+	 * @return
+	 */
 	function getName()
 	{
 		return $this->_name;

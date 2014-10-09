@@ -83,7 +83,7 @@ class sportsmanagementModelcurrentseasons extends JModelList
     function _buildContentOrderBy()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
 
         $orderby 	= ' ORDER BY p.name ';
 
@@ -93,14 +93,14 @@ class sportsmanagementModelcurrentseasons extends JModelList
     function _buildContentWhere()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         
         $where = array();
 		$filter_season = JComponentHelper::getParams($option)->get('current_season',0);
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filter_season,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filter_season,true).'</pre>'),'');
 		}
         
         if ( $filter_season )

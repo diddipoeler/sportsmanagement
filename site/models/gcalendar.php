@@ -49,7 +49,7 @@ class sportsmanagementModelGCalendar extends JModelLegacy
 
 	public function getDBCalendars()
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
 		if($this->cached_data == null){
 			$calendarids = $this->getState('calendarids');
 			if(!empty($calendarids)){
@@ -61,7 +61,7 @@ class sportsmanagementModelGCalendar extends JModelLegacy
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cached_data<br><pre>'.print_r($this->cached_data,true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cached_data<br><pre>'.print_r($this->cached_data,true).'</pre>'),'Notice');
         }
         
 		return $this->cached_data;

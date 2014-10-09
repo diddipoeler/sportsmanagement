@@ -67,17 +67,24 @@ class sportsmanagementViewDatabaseTool extends sportsmanagementView
 		$uri	= JFactory::getURI();
         $model	= $this->getModel();
         $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $document = JFactory::getDocument();
         //$this->state = $this->get('State'); 
         $command = JRequest::getCmd('task');
         
-        // Explode the controller.task command.
-	   list ($this->controller, $this->task) = explode('.', $command);
-    
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' task<br><pre>'.print_r($this->task,true).'</pre>'),'');
+        $this->assign('request_url',$uri->toString());
         
-        $this->step = $mainframe->getUserState( "$option.step", '0' );
+        //$command2 = JRequest::getVar('task');
+        
+        $this->task = $command;
+        // Explode the controller.task command.
+	   //list ($this->controller, $this->task) = explode('.', $command);
+    
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' command<br><pre>'.print_r($command,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' command2<br><pre>'.print_r($command2,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' task<br><pre>'.print_r($this->task,true).'</pre>'),'');
+        
+        $this->step = $app->getUserState( "$option.step", '0' );
         
         if ( !$this->step )
         {
@@ -95,7 +102,7 @@ class sportsmanagementViewDatabaseTool extends sportsmanagementView
             case 'repair':
             $jsm_tables = $model->getSportsManagementTables();
             
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_tables<br><pre>'.print_r($jsm_tables,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_tables<br><pre>'.print_r($jsm_tables,true).'</pre>'),'');
             
             $this->assign('totals',count(sportsmanagementModeldatabasetool::$jsmtables) );
             if ( $this->step < count(sportsmanagementModeldatabasetool::$jsmtables) )
@@ -128,7 +135,7 @@ $javascript .= '      progressLabel = jQuery( ".progress-label" );' . "\n";
 $javascript .= '     progressbar.progressbar({' . "\n"; 
 $javascript .= '      value: '.$this->bar_value.',' . "\n";
 $javascript .= '      create: function() {' . "\n"; 
-$javascript .= '        progressLabel.text( "'.$this->task.' -> " + progressbar.progressbar( "value" ) + "%" );' . "\n"; 
+$javascript .= '        progressLabel.text( "'.$this->task.' -> '.$this->work_table.' '.'" + progressbar.progressbar( "value" ) + "%" );' . "\n"; 
 $javascript .= '      },' . "\n";
 $javascript .= '      change: function() {' . "\n"; 
 $javascript .= '        progressLabel.text( progressbar.progressbar( "value" ) + "%" );' . "\n"; 
@@ -149,7 +156,7 @@ $javascript .= '  });' . "\n";
 $document->addScriptDeclaration( $javascript );            
 }            
             $this->step++;
-            $mainframe->setUserState( "$option.step", $this->step); 
+            $app->setUserState( "$option.step", $this->step); 
             break;
         }
         

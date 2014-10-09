@@ -40,7 +40,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.filesystem.file');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
-$mainframe = JFactory::getApplication();
+$app = JFactory::getApplication();
 
 $modalheight = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_height', 600);
 $modalwidth = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_width', 900);
@@ -84,7 +84,7 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
 													}
 												}
 											}
-											?>?subject=[<?php echo $mainframe->getCfg('sitename'); ?>]">
+											?>?subject=[<?php echo $app->getCfg('sitename'); ?>]">
 								<?php
 								$imageFile='administrator/components/com_sportsmanagement/assets/images/mail.png';
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SEND_MAIL_TEAMS');
@@ -116,7 +116,7 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
 													}
 												}
 											}
-											?>?subject=[<?php echo $mainframe->getCfg('sitename'); ?>]">
+											?>?subject=[<?php echo $app->getCfg('sitename'); ?>]">
 								<?php
 								$imageFile='administrator/components/com_sportsmanagement/assets/images/mail.png';
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SEND_MAIL_ADMINS');
@@ -188,39 +188,45 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
 					for ($i=0, $n=count($this->projectteam); $i < $n; $i++)
 					{
 						$row = &$this->projectteam[$i];
-						$link1=JRoute::_('index.php?option=com_sportsmanagement&task=projectteam.edit&id='.$row->id.'&pid='.$this->project->id."&team_id=".$row->team_id );
+						$link1 = JRoute::_('index.php?option=com_sportsmanagement&task=projectteam.edit&id='.$row->id.'&pid='.$this->project->id."&team_id=".$row->team_id );
 						//$link2=JRoute::_('index.php?option=com_sportsmanagement&view=teamplayers&project_team_id='.$row->id."&team_id=".$row->team_id.'&pid='.$this->project->id);
 						//$link3=JRoute::_('index.php?option=com_sportsmanagement&view=teamstaffs&project_team_id='.$row->id."&team_id=".$row->team_id.'&pid='.$this->project->id);
-                        $link2=JRoute::_('index.php?option=com_sportsmanagement&view=teampersons&persontype=1&project_team_id='.$row->id."&team_id=".$row->team_id.'&pid='.$this->project->id);
-						$link3=JRoute::_('index.php?option=com_sportsmanagement&view=teampersons&persontype=2&project_team_id='.$row->id."&team_id=".$row->team_id.'&pid='.$this->project->id);
-                        
+                        $link2 = JRoute::_('index.php?option=com_sportsmanagement&view=teampersons&persontype=1&project_team_id='.$row->id."&team_id=".$row->team_id.'&pid='.$this->project->id);
+						$link3 = JRoute::_('index.php?option=com_sportsmanagement&view=teampersons&persontype=2&project_team_id='.$row->id."&team_id=".$row->team_id.'&pid='.$this->project->id);
+                        $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
 						$checked=JHtml::_('grid.checkedout',$row,$i);
 						?>
 						<tr class="">
 							<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
 							<td class="center"><?php echo $checked;?></td>
 							<?php
-							if ($this->table->isCheckedOut($this->user->get('id'),$row->checked_out))
-							{
-								$inputappend = ' disabled="disabled"';
-								?><td class="center">&nbsp;</td><?php
-							}
-							else
-							{
+							
 								$inputappend='';
 								?>
-								<td style="text-align:center; "><?php
+								<td style="text-align:center; ">
+                                <?php
+                            if ( ( $row->checked_out != $this->user->get ('id') ) && $row->checked_out ) : ?>
+										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'projectteams.', $canCheckin); ?>
+									<?php else: ?>	
+                                
+                                
+                                <?php
 									$imageFile = 'administrator/components/com_sportsmanagement/assets/images/edit.png';
 									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_EDIT_DETAILS');
 									$imageParams = 'title= "'.$imageTitle.'"';
 									$image = JHtml::image($imageFile,$imageTitle,$imageParams);
 									$linkParams = '';
 									echo JHtml::link($link1,$image);
-									?></td>
+                                    
+                                    endif;
+									?>
+                                    
+                                    </td>
 								<?php
-							}
+							
 							?>
-							<td><?php 
+							<td>
+                            <?php 
                             
                             if ($row->club_logo == '')
 							{

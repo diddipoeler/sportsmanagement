@@ -142,7 +142,7 @@ class sportsmanagementModelProjectposition extends JModelAdmin
 	 */
 	function store($data)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         echo '<br /><pre>1~'.print_r($data,true).'~</pre><br />';
 		$result=true;
 		//$peid=(isset($data['project_teamslist']));
@@ -212,8 +212,8 @@ class sportsmanagementModelProjectposition extends JModelAdmin
 	 */
 	function getProjectPositions()
 	{
-		$mainframe = JFactory::getApplication();
-		$project_id=$mainframe->getUserState('com_joomleagueproject');
+		$app = JFactory::getApplication();
+		$project_id=$app->getUserState('com_joomleagueproject');
 		$query='	SELECT	p.id AS value,
 							p.name AS text,
 							p.sports_type_id AS type,

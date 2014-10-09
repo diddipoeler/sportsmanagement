@@ -24,7 +24,7 @@ class JFormFieldprojectrounds extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $options = array();
 
 		$db = JFactory::getDbo();
@@ -33,7 +33,7 @@ class JFormFieldprojectrounds extends JFormFieldList
 			->from('#__sportsmanagement_round AS a')
 			;
 
-$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($this->form->getValue('project'),true).'</pre>'),'');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($this->form->getValue('project'),true).'</pre>'),'');
 
 		if ($menuType = $this->form->getValue('project'))
 		{

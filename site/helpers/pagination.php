@@ -68,10 +68,10 @@ class sportsmanagementModelPagination extends JModelLegacy
     function getnextlink()
     {
         $option = JRequest::getCmd('option');
-       $mainframe = JFactory::getApplication();
+       $app = JFactory::getApplication();
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' nextink'.'<pre>'.print_r($this->nextlink,true).'</pre>' ),'');
+        $app->enqueueMessage(JText::_(__CLASS__.' '.__FUNCTION__.' nextink'.'<pre>'.print_r($this->nextlink,true).'</pre>' ),'');
         }
         
         return $this->nextlink;
@@ -83,10 +83,10 @@ class sportsmanagementModelPagination extends JModelLegacy
 	 * @param object $project
 	 * @return string
 	 */
-	public static function pagenav($project)
+	public static function pagenav($project,$cfg_which_database = 0)
 	{
 	   $option = JRequest::getCmd('option');
-       $mainframe = JFactory::getApplication();
+       $app = JFactory::getApplication();
        
 		$pageNav = '';
 		$spacer2 = '&nbsp;&nbsp;';
@@ -106,20 +106,20 @@ class sportsmanagementModelPagination extends JModelLegacy
             $roundid = $project->current_round;
         }
         
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project->current_round'.'<pre>'.print_r($project->current_round,true).'</pre>' ),'');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current_round'.'<pre>'.print_r($roundid,true).'</pre>' ),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project->current_round'.'<pre>'.print_r($project->current_round,true).'</pre>' ),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current_round'.'<pre>'.print_r($roundid,true).'</pre>' ),'');
         
 		//$mdlRound = JModelLegacy::getInstance("Round", "JoomleagueModel");
 		//$mdlRounds = JModelLegacy::getInstance("Rounds", "JoomleagueModel");
 		//sportsmanagementModelRounds::setProjectId($project->id);
 
-		$firstRound			= sportsmanagementModelRounds::getFirstRound($project->id);
-		$lastRound			= sportsmanagementModelRounds::getLastRound($project->id);
-		$previousRound 		= sportsmanagementModelRounds::getPreviousRound($roundid, $project->id);
-		$nextRound			= sportsmanagementModelRounds::getNextRound($roundid, $project->id);
-		$currentRoundcode 	= sportsmanagementModelRound::getRoundcode($roundid);
-		$arrRounds 			= sportsmanagementModelRounds::getRoundsOptions($project->id);
-		$rlimit 			= count($arrRounds);
+		$firstRound	= sportsmanagementModelRounds::getFirstRound($project->id,$cfg_which_database);
+		$lastRound = sportsmanagementModelRounds::getLastRound($project->id,$cfg_which_database);
+		$previousRound = sportsmanagementModelRounds::getPreviousRound($roundid, $project->id,$cfg_which_database);
+		$nextRound = sportsmanagementModelRounds::getNextRound($roundid, $project->id,$cfg_which_database);
+		$currentRoundcode = sportsmanagementModelRound::getRoundcode($roundid,$cfg_which_database);
+		$arrRounds = sportsmanagementModelRounds::getRoundsOptions($project->id,'ASC',$cfg_which_database);
+		$rlimit	= count($arrRounds);
 
 		$params = array();
 		$params['option'] = $option;
@@ -131,14 +131,17 @@ class sportsmanagementModelPagination extends JModelLegacy
 		if ($division > 0){$params['division'] = $division;}
 		if ($divLevel > 0){$params['divLevel'] = $divLevel;}
 		$prediction_id = JRequest::getInt("prediction_id",0);
-		if($prediction_id >0) {
+		if($prediction_id >0) 
+        {
 			$params['prediction_id']= $prediction_id;
 		}
 		
+        $params['cfg_which_database']= $cfg_which_database;
+        
 		$query = JURI::buildQuery($params);
 		$link = JRoute::_('index.php?' . $query);
-		$backward = sportsmanagementModelRound::getRoundId($currentRoundcode-1, $project->id);
-		$forward = sportsmanagementModelRound::getRoundId($currentRoundcode+1, $project->id);
+		$backward = sportsmanagementModelRound::getRoundId($currentRoundcode-1, $project->id,$cfg_which_database);
+		$forward = sportsmanagementModelRound::getRoundId($currentRoundcode+1, $project->id,$cfg_which_database);
 
 		if ($firstRound['id'] != $roundid)
 		{
@@ -149,8 +152,8 @@ class sportsmanagementModelPagination extends JModelLegacy
 			$prevlink = JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PREV'));
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prevlink'.'<pre>'.print_r($link,true).'</pre>' ),'');
+            {
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prevlink'.'<pre>'.print_r($link,true).'</pre>' ),'');
             }
 
 			$params['r'] = $firstRound['id'];
@@ -173,7 +176,7 @@ class sportsmanagementModelPagination extends JModelLegacy
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nextink'.'<pre>'.print_r($link,true).'</pre>' ),'');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nextink'.'<pre>'.print_r($link,true).'</pre>' ),'');
             }
             
 			$nextlink = $spacer4;
@@ -221,10 +224,10 @@ class sportsmanagementModelPagination extends JModelLegacy
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' firstlink'.'<pre>'.print_r($firstlink,true).'</pre>' ),'');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prevlink'.'<pre>'.print_r($prevlink,true).'</pre>' ),'');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nextlink'.'<pre>'.print_r($nextlink,true).'</pre>' ),'');
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' lastlink'.'<pre>'.print_r($lastlink,true).'</pre>' ),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' firstlink'.'<pre>'.print_r($firstlink,true).'</pre>' ),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prevlink'.'<pre>'.print_r($prevlink,true).'</pre>' ),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nextlink'.'<pre>'.print_r($nextlink,true).'</pre>' ),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' lastlink'.'<pre>'.print_r($lastlink,true).'</pre>' ),'');
         }
         
 		return '<span class="pageNav">&laquo;' . $spacer2 . $firstlink . $prevlink . $pageNav . $nextlink .  $lastlink . $spacer2 . '&raquo;</span>';

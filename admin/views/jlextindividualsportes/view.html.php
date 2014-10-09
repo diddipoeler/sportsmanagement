@@ -57,7 +57,7 @@ class sportsmanagementViewjlextindividualsportes extends JView
 {
 	public function init ()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		if ($this->getLayout()=='default')
 		{
@@ -71,7 +71,7 @@ class sportsmanagementViewjlextindividualsportes extends JView
 	function _displayDefault($tpl)
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $model = $this->getModel();
 		$uri = JFactory::getURI();
 
@@ -83,7 +83,7 @@ $this->state = $this->get('State');
     
 
 		
-        $project_id			= $mainframe->getUserState( "$option.pid", '0' );
+        $project_id			= $app->getUserState( "$option.pid", '0' );
 		$match_id		= JRequest::getvar('id', 0);
         $rid		= JRequest::getvar('rid', 0);
 		$projectteam1_id		= JRequest::getvar('team1', 0);
@@ -94,11 +94,11 @@ $this->state = $this->get('State');
         $mdlRound = JModelLegacy::getInstance("Round", "sportsmanagementModel");
 		$roundws = $mdlRound->getRound($rid);
         
-        //$mainframe->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' projectws<br><pre>'.print_r($projectws, true).'</pre><br>','');
+        //$app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' projectws<br><pre>'.print_r($projectws, true).'</pre><br>','');
         
         $model->checkGames($projectws,$match_id,$rid,$projectteam1_id,$projectteam2_id);
         
-        //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' ' .  ' match_id<br><pre>'.print_r($match_id,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' ' .  ' match_id<br><pre>'.print_r($match_id,true).'</pre>'),'');
         
         $matches = $this->get('Items');
 		$total = $this->get('Total');
@@ -127,7 +127,7 @@ $this->state = $this->get('State');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' ' .  ' lists<br><pre>'.print_r($lists,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' ' .  ' lists<br><pre>'.print_r($lists,true).'</pre>'),'');
         }
         
         $this->assignRef('matches',$matches);

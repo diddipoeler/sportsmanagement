@@ -62,7 +62,7 @@ class sportsmanagementViewsmquotetxt extends sportsmanagementView
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $model = $this->getModel();
         $this->file_name = JRequest::getVar('file_name');
         
@@ -72,7 +72,7 @@ class sportsmanagementViewsmquotetxt extends sportsmanagementView
         
        //$this->assign('contents',$model->getContents());
        
-       //$mainframe->enqueueMessage(JText::_('sportsmanagementViewsmextxmleditor contents<br><pre>'.print_r($this->contents,true).'</pre>'   ),'');
+       //$app->enqueueMessage(JText::_('sportsmanagementViewsmextxmleditor contents<br><pre>'.print_r($this->contents,true).'</pre>'   ),'');
        
         $this->assignRef('option',$option);
         

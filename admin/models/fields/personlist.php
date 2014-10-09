@@ -70,7 +70,7 @@ class JFormFieldpersonlist extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Initialize variables.
 		$options = array();
@@ -84,8 +84,8 @@ class JFormFieldpersonlist extends JFormFieldList
 			$db->setQuery($query);
 			$options = $db->loadObjectList();
     
-//    $mainframe->enqueueMessage(JText::_('JFormFieldpersonlist getOptions<br><pre>'.print_r(COM_SPORTSMANAGEMENT_TABLE,true).'</pre>'),'');
-//    $mainframe->enqueueMessage(JText::_('JFormFieldpersonlist getOptions<br><pre>'.print_r($options,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_('JFormFieldpersonlist getOptions<br><pre>'.print_r(COM_SPORTSMANAGEMENT_TABLE,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_('JFormFieldpersonlist getOptions<br><pre>'.print_r($options,true).'</pre>'),'');
     
 		// Merge any additional options in the XML definition.
 		$options = array_merge(parent::getOptions(), $options);

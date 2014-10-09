@@ -70,7 +70,7 @@ class JFormFieldprojectlist extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         // Initialize variables.
 		$options = array();
     
@@ -89,8 +89,8 @@ class JFormFieldprojectlist extends JFormFieldList
 			
 			$query->order('l.name');
             
-//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-//            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r(COM_SPORTSMANAGEMENT_TABLE,true).'</pre>'),'Notice');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r(COM_SPORTSMANAGEMENT_TABLE,true).'</pre>'),'Notice');
             
 			$db->setQuery($query);
 			$options = $db->loadObjectList();

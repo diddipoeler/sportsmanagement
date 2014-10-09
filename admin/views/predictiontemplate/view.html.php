@@ -63,11 +63,11 @@ class sportsmanagementViewPredictionTemplate extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $model = $this->getModel();
         
-        $this->prediction_id		= $mainframe->getUserState( "$option.predid", '0' );
+        $this->prediction_id		= $app->getUserState( "$option.predid", '0' );
         $predictionGame = $model->getPredictionGame( $this->prediction_id );
 
         
@@ -89,11 +89,11 @@ class sportsmanagementViewPredictionTemplate extends sportsmanagementView
     //$jRegistry = new JRegistry;
 //		$jRegistry->loadString($item->params, 'ini');
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewPredictionTemplate params<br><pre>'.print_r($item->params ,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementViewPredictionTemplate params<br><pre>'.print_r($item->params ,true).'</pre>'),'Notice');
         
         //$jRegistry->loadJSON($item->params);
         //$item->params = $jRegistry->toArray($item->params);
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewPredictionTemplate params<br><pre>'.print_r($item->params ,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementViewPredictionTemplate params<br><pre>'.print_r($item->params ,true).'</pre>'),'Notice');
         
 		$form = JForm::getInstance($item->template, $xmlfile,array('control'=> 'params'));
 		//$form->bind($jRegistry);

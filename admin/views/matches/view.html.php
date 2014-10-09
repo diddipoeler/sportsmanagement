@@ -63,7 +63,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$uri = JFactory::getURI();
         $model = $this->getModel();
 		$params = JComponentHelper::getParams( $option );
@@ -72,7 +72,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
         $_db = JFactory::getDBO(); // the method is contextual so we must have a DBO
         $table_info = $_db->getTableFields('#__sportsmanagement_match');
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($table_info,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($table_info,true).'</pre>'),'Notice');
 
         $starttime = microtime(); 
         
@@ -86,7 +86,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		$total = $this->get('Total');
@@ -95,27 +95,27 @@ class sportsmanagementViewMatches extends sportsmanagementView
         $table = JTable::getInstance('match', 'sportsmanagementTable');
 		$this->assignRef('table', $table);
         
-        $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
-        $this->project_art_id	= $mainframe->getUserState( "$option.project_art_id", '0' );
-        //$this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
+        $this->project_id	= $app->getUserState( "$option.pid", '0' );
+        $this->project_art_id	= $app->getUserState( "$option.project_art_id", '0' );
+        //$this->project_id	= $app->getUserState( "$option.pid", '0' );
         
         $this->project_id	= JRequest::getvar('pid', 0);
         if ( !$this->project_id )
         {
-            $this->project_id	= $mainframe->getUserState( "$option.pid", '0' );
+            $this->project_id	= $app->getUserState( "$option.pid", '0' );
         }
         
         $this->rid	= JRequest::getvar('rid', 0);
         if ( !$this->rid )
         {
-            $this->rid	= $mainframe->getUserState( "$option.rid", '0' );
+            $this->rid	= $app->getUserState( "$option.rid", '0' );
         }
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $projectws = $mdlProject->getProject($this->project_id);
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' projectws<br><pre>'.print_r($projectws,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' projectws<br><pre>'.print_r($projectws,true).'</pre>'),'');
         }
         
         $mdlRound = JModelLegacy::getInstance("Round", "sportsmanagementModel");
@@ -146,7 +146,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 		unset($project_change_roundslist);
         
         //build the html options for teams
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' items<br><pre>'.print_r($items,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' items<br><pre>'.print_r($items,true).'</pre>'),'');
 		foreach ($items as $row)
 		{
 			if ( $row->divhomeid == '' )
@@ -187,13 +187,13 @@ class sportsmanagementViewMatches extends sportsmanagementView
             $dest = JPATH_ROOT.'/images/com_sportsmanagement/database/matchreport/'.$row->id;
             if(JFolder::exists($dest)) 
             {
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' pfad vorhanden<br><pre>'.print_r($dest,true).'</pre>'),'');    
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' pfad vorhanden<br><pre>'.print_r($dest,true).'</pre>'),'');    
             }
             else
             {
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' pfad nicht vorhanden<br><pre>'.print_r($dest,true).'</pre>'),'');    
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' pfad nicht vorhanden<br><pre>'.print_r($dest,true).'</pre>'),'');    
             $result = JFolder::create($dest);
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' result<br><pre>'.print_r($result,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' result<br><pre>'.print_r($result,true).'</pre>'),'');
             }
             
 		}
@@ -234,7 +234,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
         
         if( $select_Options )
         {
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($select_Options,true).'</pre>'),'Notice');  
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($select_Options,true).'</pre>'),'Notice');  
         
         $select[] = JHtmlSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'));
         $select = array_merge($select,$select_Options);  
@@ -275,12 +275,12 @@ class sportsmanagementViewMatches extends sportsmanagementView
 //        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
         
-		$mainframe	= JFactory::getApplication();
+		$app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
         // store the variable that we would like to keep for next time
         // function syntax is setUserState( $key, $value );
-        $mainframe->setUserState( "$option.rid", $this->rid );
-        $mainframe->setUserState( "$option.pid", $this->project_id );
+        $app->setUserState( "$option.rid", $this->rid );
+        $app->setUserState( "$option.pid", $this->project_id );
         
         $massadd = JRequest::getInt('massadd',0);
 

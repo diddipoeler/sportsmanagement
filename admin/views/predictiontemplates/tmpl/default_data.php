@@ -116,8 +116,9 @@ JHtml::_( 'behavior.tooltip' );
 						{
 							$row =& $this->items[$i];
 
-							$link	= JRoute::_( 'index.php?option=com_sportsmanagement&task=predictiontemplate.edit&id=' . $row->id.'&predid='.$this->prediction_id );
+							$link = JRoute::_( 'index.php?option=com_sportsmanagement&task=predictiontemplate.edit&id=' . $row->id.'&predid='.$this->prediction_id );
 							$checked = JHtml::_( 'grid.checkedout', $row, $i );
+                            $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
 							?>
 							<tr class='<?php echo "row$k"; ?>'>
 								<td>
@@ -131,6 +132,10 @@ JHtml::_( 'behavior.tooltip' );
 									?>
 								</td>
 								<td style='text-align:center; '>
+                                <?php
+                            if ($row->checked_out) : ?>
+										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'predictiontemplates.', $canCheckin); ?>
+									<?php endif; ?>	
 									<a href='<?php echo $link; ?>'>
 										<?php
 										echo JHtml::_(	'image',

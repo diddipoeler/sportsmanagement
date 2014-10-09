@@ -225,13 +225,13 @@ class sportsmanagementModelJLXMLExports extends JModelLegacy
 	public function exportData()
 	{
 		$option='com_sportsmanagement';
-		$mainframe	=& JFactory::getApplication();
+		$app	=& JFactory::getApplication();
 		$user = JFactory::getUser();
 
-		//$this->_project_id = $mainframe->getUserState($option.'project');
+		//$this->_project_id = $app->getUserState($option.'project');
         $this->_project_id = JRequest::getInt('p');
         $this->_update = JRequest::getInt('update');
-		//$this->_project_id = $mainframe->getUserState('project');
+		//$this->_project_id = $app->getUserState('project');
 		if (empty($this->_project_id) || $this->_project_id == 0)
 		{
 			JError::raiseWarning('ERROR_CODE',JText::_('JL_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
@@ -244,7 +244,7 @@ class sportsmanagementModelJLXMLExports extends JModelLegacy
 		
 		if(empty($filename)) 
     {
-			//$this->_project_id = $mainframe->getUserState($option.'project');
+			//$this->_project_id = $app->getUserState($option.'project');
             $this->_project_id = JRequest::getInt('p');
 			if (empty($this->_project_id) || $this->_project_id == 0)
 			{
@@ -415,11 +415,11 @@ $xmlfile = $xmlfile.$output;
 	function downloadXml($data, $table)
 	{
 		$option='com_sportsmanagement';
-		$mainframe	=& JFactory::getApplication();
+		$app	=& JFactory::getApplication();
 		jimport('joomla.filter.output');
 		$filename = $this->_getIdFromData('name', $this->_project);
 		if(empty($filename)) {
-			$this->_project_id = $mainframe->getUserState($option.'project');
+			$this->_project_id = $app->getUserState($option.'project');
 			if (empty($this->_project_id) || $this->_project_id == 0)
 			{
 				JError::raiseWarning('ERROR_CODE',JText::_('JL_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));

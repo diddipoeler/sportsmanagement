@@ -65,7 +65,7 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 	function __construct()
 	{
 	   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     
     $this->predictionGameID		= JRequest::getInt('prediction_id',		0);
 		$this->predictionMemberID	= JRequest::getInt('uid',	0);
@@ -101,7 +101,7 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
         sportsmanagementModelPrediction::$type = $this->type;
         sportsmanagementModelPrediction::$page = $this->page;
         
-	   //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($this->predictionGameID,true).'</pre>'),'');
+	   //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($this->predictionGameID,true).'</pre>'),'');
        
 		parent::__construct();
 	}
@@ -115,7 +115,7 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 	{
 		$document	= JFactory::getDocument();
     $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -167,7 +167,7 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 		if (!$resultquery)
 		{
 			//$this->setError($this->_db->getErrorMsg());
-            $mainframe->enqueueMessage(JText::_(__METHOD__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(JText::_(__METHOD__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 			$result = false;
 			//echo '<br />ERROR~' . $query . '~<br />';
 		}
@@ -185,14 +185,14 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 	function showMemberPicture($outputUserName, $user_id = 0)
 	{
 
-	$mainframe	= JFactory::getApplication();
+	$app	= JFactory::getApplication();
 	$db = JFactory::getDBO();
     $query = $db->getQuery(true);
 	$playerName = $outputUserName;
 	$picture = '';
 	
-	//$mainframe->enqueueMessage(JText::_('username ->'.$outputUserName),'Notice');
-	//$mainframe->enqueueMessage(JText::_('user_id ->'.$user_id),'Notice');
+	//$app->enqueueMessage(JText::_('username ->'.$outputUserName),'Notice');
+	//$app->enqueueMessage(JText::_('user_id ->'.$user_id),'Notice');
 
 	
 	if ($this->config['show_photo'])
@@ -209,7 +209,7 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 	$results = $db->loadResult();
 	if ( !$results )
 	{
-    $mainframe->enqueueMessage(JText::_('Die Komponente '.$this->config['show_image_from'].' ist f&uuml;r das Profilbild nicht installiert'),'Error');
+    $app->enqueueMessage(JText::_('Die Komponente '.$this->config['show_image_from'].' ist f&uuml;r das Profilbild nicht installiert'),'Error');
     }
     
     // Select some fields
@@ -276,9 +276,9 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 			
 	if ( !file_exists($picture) )
 	{
-		//$mainframe->enqueueMessage(JText::_('user bild ->'.$picture.' ist nicht vorhanden'),'Error');
+		//$app->enqueueMessage(JText::_('user bild ->'.$picture.' ist nicht vorhanden'),'Error');
         $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
-        //$mainframe->enqueueMessage(JText::_('nehme standard ->'.$picture),'Notice');
+        //$app->enqueueMessage(JText::_('nehme standard ->'.$picture),'Notice');
 	}
 	//echo JHTML::image($picture, $imgTitle, array(' title' => $imgTitle));
 	echo sportsmanagementHelper::getPictureThumb($picture, $playerName,0,0);
@@ -375,7 +375,7 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 	{
 	   $document	= JFactory::getDocument();
     $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -403,7 +403,7 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 		{
 		  $document	= JFactory::getDocument();
     $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);

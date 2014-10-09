@@ -41,24 +41,39 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view' );
 
+/**
+ * sportsmanagementViewReferees
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementViewReferees extends JViewLegacy
 {
 
+	/**
+	 * sportsmanagementViewReferees::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function display( $tpl = null )
 	{
 		// Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
 
 		$model	= $this->getModel();
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
+		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 		
 		if ( !$config )
 		{
-			$config	= sportsmanagementModelProject::getTemplateConfig( 'players' );
+			$config	= sportsmanagementModelProject::getTemplateConfig( 'players',$model::$cfg_which_database );
 		}
 
-		$this->assignRef( 'project', sportsmanagementModelProject::getProject() );
-		$this->assignRef( 'overallconfig', sportsmanagementModelProject::getOverallConfig() );
+		$this->assignRef( 'project', sportsmanagementModelProject::getProject($model::$cfg_which_database) );
+		$this->assignRef( 'overallconfig', sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database) );
 		$this->assignRef( 'config', $config );
 
 		$this->assignRef( 'rows', $model->getReferees() );

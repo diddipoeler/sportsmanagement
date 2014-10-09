@@ -62,7 +62,7 @@ class JFormFieldSportsTypes extends JFormField
 	{
 		$result = array();
 		$db = JFactory::getDBO();
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
 		$lang = JFactory::getLanguage();
         $option = JRequest::getCmd('option');
         // welche tabelle soll genutzt werden
@@ -80,7 +80,7 @@ class JFormFieldSportsTypes extends JFormField
 		$db->setQuery($query);
 		if (!$result=$db->loadObjectList())
 		{
-			$mainframe->enqueueMessage(JText::_('JFormFieldSportsTypes<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+			$app->enqueueMessage(JText::_('JFormFieldSportsTypes<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
       sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			return false;
 		}

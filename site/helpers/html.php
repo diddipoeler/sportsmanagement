@@ -202,21 +202,46 @@ class sportsmanagementHelperHtml
 	 */
 	public static function showMatchdaysTitle($title,$current_round,&$config,$mode=0)
 	{
-		$projectid = JRequest::getInt('p',0);
-		$joomleague = JTable::getInstance('Project','sportsmanagementTable');
-		$joomleague->load($projectid);
+		$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+        // Get a db connection.
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
+        $query = $db->getQuery(true);
+        
+        $projectid = JRequest::getInt('p',0);
+		//$thisproject = JTable::getInstance('Project','sportsmanagementTable');
+		//$thisproject->load($projectid);
+        
+        $query->clear();
+        // select some fields
+        $query->select('*');
+        // from table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
+        // where
+        $query->where('id = '.$projectid);
+		$db->setQuery($query);
+		$thisproject = $db->loadObject();
 
 		echo ($title != '') ? $title.' - ' : $title;
 		if ($current_round > 0)
 		{
-			$thisround = JTable::getInstance('Round','sportsmanagementTable');
-			$thisround->load($current_round);
+			//$thisround = JTable::getInstance('Round','sportsmanagementTable');
+			//$thisround->load($current_round);
+            
+            $query->clear();
+            // select some fields
+		    $query->select('*');
+		    // from table
+		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+            // where
+            $query->where('id = '.$current_round);
+		    $db->setQuery($query);
+		    $thisround = $db->loadObject();
 
 			if ($config['type_section_heading'] == 1 && $thisround->name != '')
 			{
 				if ($mode == 1)
 				{
-					$link=sportsmanagementHelperRoute::getRankingRoute($projectid,$thisround->id);
+					$link=sportsmanagementHelperRoute::getRankingRoute($projectid,$thisround->id,null,null,0,0,$cfg_which_database);
 					echo JHtml::link($link,$thisround->name);
 				}
 				else
@@ -252,37 +277,37 @@ class sportsmanagementHelperHtml
 	 * @param mixed $form
 	 * @return
 	 */
-	public static function getRoundSelectNavigation($form)
+	public static function getRoundSelectNavigation($form,$cfg_which_database = 0)
 	{
-		$mainframe = JFactory::getApplication();
-        $rounds = sportsmanagementModelProject::getRoundOptions();
+		$app = JFactory::getApplication();
+        $rounds = sportsmanagementModelProject::getRoundOptions('ASC',$cfg_which_database);
 		$division = JRequest::getInt('division',0);
 
 		if($form)
         {
-			$currenturl = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, self::$roundid, $division);
+			$currenturl = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, self::$roundid, $division,0,0,null,$cfg_which_database);
 			$options = array();
 			foreach ($rounds as $r)
 			{
-				$link = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, $r->value, $division);
+				$link = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, $r->value, $division,0,0,NULL,$cfg_which_database);
 				$options[] = JHtml::_('select.option', $link, $r->text);
 			}
 		} 
         else 
         {
-			$currenturl = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, self::$roundid, $division);
+			$currenturl = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, self::$roundid, $division,0,0,NULL,$cfg_which_database);
 			$options = array();
 			foreach ($rounds as $r)
 			{
-				$link = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, $r->value, $division);
+				$link = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, $r->value, $division,0,0,NULL,$cfg_which_database);
 				$options[] = JHtml::_('select.option', $link, $r->text);
 			}
 		}
         
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundid'.'<pre>'.print_r(self::$roundid,true).'</pre>' ),'');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' rounds'.'<pre>'.print_r($rounds,true).'</pre>' ),'');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' currenturl'.'<pre>'.print_r($currenturl,true).'</pre>' ),'');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' options'.'<pre>'.print_r($options,true).'</pre>' ),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundid'.'<pre>'.print_r(self::$roundid,true).'</pre>' ),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' rounds'.'<pre>'.print_r($rounds,true).'</pre>' ),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' currenturl'.'<pre>'.print_r($currenturl,true).'</pre>' ),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' options'.'<pre>'.print_r($options,true).'</pre>' ),'');
         
 		return JHtml::_('select.genericlist',$options,'select-round','onchange="top.location.href=this.options[this.selectedIndex].value;"','value','text',$currenturl);
 	}
@@ -294,17 +319,34 @@ class sportsmanagementHelperHtml
 	 */
 	function showMatchPlayground(&$game)
 	{
-		if (($this->config['show_playground'] || $this->config['show_playground_alert']) && isset($game->playground_id))
+		
+        $cfg_which_database = JRequest::getInt('cfg_which_database',0);
+        // Get a db connection.
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
+        $query = $db->getQuery(true);
+        
+        if (($this->config['show_playground'] || $this->config['show_playground_alert']) && isset($game->playground_id))
 		{
 			if (empty($game->playground_id)){
 				$game->playground_id=$this->teams[$game->projectteam1_id]->standard_playground;
 			}
 			if (empty($game->playground_id))
 			{
-				$cinfo =& JTable::getInstance('Club','Table');
-				$cinfo->load($this->teams[$game->projectteam1_id]->club_id);
-				$game->playground_id=$cinfo->standard_playground;
-				$this->teams[$game->projectteam1_id]->standard_playground=$cinfo->standard_playground;
+				//$cinfo =& JTable::getInstance('Club','Table');
+				//$cinfo->load($this->teams[$game->projectteam1_id]->club_id);
+                
+                $query->clear();
+                // select some fields
+		        $query->select('*');
+		        // from table
+		        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club');
+                // where
+                $query->where('id = '.$this->teams[$game->projectteam1_id]->club_id);
+		        $db->setQuery($query);
+		        $cinfo = $db->loadObject();
+                
+				$game->playground_id = $cinfo->standard_playground;
+				$this->teams[$game->projectteam1_id]->standard_playground = $cinfo->standard_playground;
 			}
 
 			if (!$this->config['show_playground'] && $this->config['show_playground_alert'])
@@ -330,14 +372,24 @@ class sportsmanagementHelperHtml
 				$playgroundID	= $this->teams[$game->projectteam1_id]->standard_playground;
 			}
 
-			$pginfo =& JTable::getInstance('Playground','sportsmanagementTable');
-			$pginfo->load($game->playground_id);
+			//$pginfo =& JTable::getInstance('Playground','sportsmanagementTable');
+			//$pginfo->load($game->playground_id);
+            
+            $query->clear();
+            // select some fields
+		    $query->select('*');
+		    // from table
+		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground');
+            // where
+            $query->where('id = '.$game->playground_id);
+		    $db->setQuery($query);
+		    $pginfo = $db->loadObject();
 
 			$toolTipText	.= $pginfo->name.'&lt;br /&gt;';
 			$toolTipText	.= $pginfo->address.'&lt;br /&gt;';
 			$toolTipText	.= $pginfo->zipcode.' '.$pginfo->city. '&lt;br /&gt;';
 
-			$link=sportsmanagementHelperRoute::getPlaygroundRoute($this->project->id,$game->playground_id);
+			$link=sportsmanagementHelperRoute::getPlaygroundRoute($this->project->id,$game->playground_id,$cfg_which_database);
 			$playgroundName=($this->config['show_playground_name'] == 'name') ? $pginfo->name : $pginfo->short_name;
 			?>
 <span class='hasTip'
@@ -510,7 +562,8 @@ class sportsmanagementHelperHtml
      */
     public static function printColumnHeadingSortAllTimeRanking( $columnTitle, $paramName, $config = null, $default="DESC" )
 	{
-		$output = "";
+		$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+        $output = "";
 		$img='';
 		if ( $config['column_sorting'] || $config == null)
 		{
@@ -537,6 +590,9 @@ class sportsmanagementHelperHtml
 				$params["order"] = $paramName;
 				$params["dir"] = $default;
 			}
+            
+            $params["cfg_which_database"] = $cfg_which_database;
+            
 			$query = JURI::buildQuery( $params );
 			echo JHtml::link(
 			JRoute::_( "index.php?".$query ),
@@ -560,7 +616,8 @@ class sportsmanagementHelperHtml
 	 */
 	public static function printColumnHeadingSort( $columnTitle, $paramName, $config = null, $default="DESC" )
 	{
-		$output = "";
+		$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+        $output = "";
 		$img='';
 		if ( $config['column_sorting'] || $config == null)
 		{
@@ -585,6 +642,9 @@ class sportsmanagementHelperHtml
 				$params["order"] = $paramName;
 				$params["dir"] = $default;
 			}
+            
+            $params["cfg_which_database"] = $cfg_which_database;
+            
 			$query = JURI::buildQuery( $params );
 			echo JHtml::link(
 			JRoute::_( "index.php?".$query ),

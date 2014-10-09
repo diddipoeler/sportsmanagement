@@ -74,7 +74,7 @@ class JFormFieldseasonlist extends JFormField
 	{
 		// Initialize variables.
 		$options = array();
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
     $attribs = '';
     $ctrl = $this->name;
     $val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
@@ -91,11 +91,11 @@ class JFormFieldseasonlist extends JFormField
         
         $cfg_which_database = $this->form->getValue('cfg_which_database',$div);
         
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' name -> <br><pre>'.print_r($this->name,true).'</pre>'),'Notice');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value_field -> <br><pre>'.print_r($this->element['value_field'],true).'</pre>'),'Notice');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value -> <br><pre>'.print_r($value,true).'</pre>'),'Notice');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' div -> <br><pre>'.print_r($div,true).'</pre>'),'Notice'); 
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database -> <br><pre>'.print_r($this->form->getValue('cfg_which_database',$div),true).'</pre>'),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' name -> <br><pre>'.print_r($this->name,true).'</pre>'),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value_field -> <br><pre>'.print_r($this->element['value_field'],true).'</pre>'),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value -> <br><pre>'.print_r($value,true).'</pre>'),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' div -> <br><pre>'.print_r($div,true).'</pre>'),'Notice'); 
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database -> <br><pre>'.print_r($this->form->getValue('cfg_which_database',$div),true).'</pre>'),'Notice');
         
     $db = sportsmanagementHelper::getDBConnection(TRUE,$cfg_which_database);
 			$query = $db->getQuery(true);

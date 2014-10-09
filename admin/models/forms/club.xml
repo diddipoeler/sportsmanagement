@@ -145,6 +145,8 @@
 			class="inputbox"/>		
 	<field
 			name="founded"
+			size="10"
+			default="00-00-0000"
 			type="calendar"
 			format="%d-%m-%Y"
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED"
@@ -152,6 +154,8 @@
 			class="inputbox"/>	
 	<field
 			name="dissolved"
+			size="10"
+			default="00-00-0000"
 			type="calendar"
 			format="%d-%m-%Y"
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED"

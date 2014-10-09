@@ -71,12 +71,12 @@ class JFormFieldCurrentround extends JFormFieldList
 	protected function getOptions()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         // Initialize variables.
 		$options = array();
 
 		$varname = (string) $this->element['varname'];
-        $project_id = $mainframe->getUserState( "$option.pid", '0' );;
+        $project_id = $app->getUserState( "$option.pid", '0' );;
 		/*
         $project_id = JRequest::getVar($varname);
 		if (is_array($project_id)) {

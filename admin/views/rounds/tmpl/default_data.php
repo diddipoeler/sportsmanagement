@@ -88,18 +88,25 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					for ($i=0,$n=count($this->matchday); $i < $n; $i++)
 					{
 						$row =& $this->matchday[$i];
-						$link1=JRoute::_('index.php?option=com_sportsmanagement&task=round.edit&id='.$row->id.'&pid='.$this->project->id);
-						$link2=JRoute::_('index.php?option=com_sportsmanagement&view=matches&rid='.$row->id.'&pid='.$this->project->id);
-						$checked=JHtml::_('grid.checkedout',$row,$i);
-                        $published  = JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','rounds.');
+						$link1 = JRoute::_('index.php?option=com_sportsmanagement&task=round.edit&id='.$row->id.'&pid='.$this->project->id);
+						$link2 = JRoute::_('index.php?option=com_sportsmanagement&view=matches&rid='.$row->id.'&pid='.$this->project->id);
+						$checked = JHtml::_('grid.checkedout',$row,$i);
+                        $published = JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','rounds.');
+                        $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
 						?>
 						<tr class="<?php echo "row$k"; ?>">
 							<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
 							<td class="center"><?php echo $checked; ?></td>
-							<td class="center"><?php
-								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_EDIT_DETAILS');
-								$imageFile='administrator/components/com_sportsmanagement/assets/images/edit.png';
-								$imageParams="title='$imageTitle'";
+							<td class="center">
+                            
+                            <?php
+                            if ($row->checked_out) : ?>
+										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'rounds.', $canCheckin); ?>
+									<?php endif; ?>
+                            <?php
+								$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_EDIT_DETAILS');
+								$imageFile = 'administrator/components/com_sportsmanagement/assets/images/edit.png';
+								$imageParams = "title='$imageTitle'";
 								echo JHtml::link($link1,JHtml::image($imageFile,$imageTitle,$imageParams));
 							?></td>
 							<td class="center">

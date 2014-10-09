@@ -97,10 +97,10 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.predictionmember', 'predictionmember', array('control' => 'jform', 'load_data' => $loadData));
 		if (empty($form)) 
@@ -156,12 +156,12 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
    */
   function sendEmailtoMembers($cid,$prediction_id)
   {
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $config = JFactory::getConfig();
   $mailer =& JFactory::getMailer();
   
-  //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config <br><pre>'.print_r($config,true).'</pre>'),'');
+  //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config <br><pre>'.print_r($config,true).'</pre>'),'');
   
 //  $meta_keys[] = $config->getValue( 'config.MetaKeys' );
 //$your_name = $config->getValue( 'config.sitename' );
@@ -177,7 +177,7 @@ $mailer->setSender($sender);
     {
     $member_email = $this->getPredictionMemberEMailAdress( $value );
     
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($member_email,true).'</pre>'),'');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($member_email,true).'</pre>'),'');
     
     //add the recipient. $recipient = $user_email;
     $mailer->addRecipient($member_email); 
@@ -195,10 +195,10 @@ $send =& $mailer->Send();
 
 if ( $send !== true ) {
     //echo 'Error sending email: ' . $send->message;
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($send->message,true).'</pre>'),'Error');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($send->message,true).'</pre>'),'Error');
 } else {
     //echo 'Mail sent';
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($send->message,true).'</pre>'),'');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($send->message,true).'</pre>'),'');
 }
    
 				
@@ -220,7 +220,7 @@ if ( $send !== true ) {
 	 */
 	function getSystemAdminsEMailAdresses()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         
 		$query =	'	SELECT u.email
@@ -242,7 +242,7 @@ if ( $send !== true ) {
 	 */
 	function getPredictionGameAdminsEMailAdresses( $predictionGameID )
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         
 		$query =	'	SELECT u.email
@@ -265,7 +265,7 @@ if ( $send !== true ) {
 	 */
 	function getPredictionMembersEMailAdresses( $cids )
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         
 		//echo '<br /><pre>~' . print_r( $cids, true ) . '~</pre><br />';
@@ -298,7 +298,7 @@ if ( $send !== true ) {
 	 */
 	function getPredictionMemberEMailAdress( $predictionMemberID )
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         
 		
@@ -335,7 +335,7 @@ if ( $send !== true ) {
      */
     function getPredictionGroups()
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         
         $query = 'SELECT id, name as text FROM #__sportsmanagement_prediction_groups ORDER BY name ASC ';
@@ -357,7 +357,7 @@ if ( $send !== true ) {
 	 */
 	function publish( $cid = array(), $publish = 1, $predictionGameID )
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         
 		$user =& JFactory::getUser();
@@ -372,14 +372,14 @@ if ( $send !== true ) {
 
 			$this->_db->setQuery( $query );
             
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' publish<br><pre>'.print_r($publish,true).'</pre>'),'');
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($predictionGameID,true).'</pre>'),'');
-            $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'),'');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' publish<br><pre>'.print_r($publish,true).'</pre>'),'');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($predictionGameID,true).'</pre>'),'');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'),'');
             
 			if ( !$this->_db->query() )
 			{
 				//$this->setError( $this->_db->getErrorMsg() );
-                $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+                $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
 				return false;
 			}
 
@@ -508,7 +508,7 @@ if ( $send !== true ) {
 	 */
 	function deletePredictionMembers( $cid = array() )
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         
 		if ( count( $cid ) )
@@ -520,7 +520,7 @@ if ( $send !== true ) {
 			if ( !$this->_db->query() )
 			{
 				//$this->setError( $this->_db->getErrorMsg() );
-                $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+                $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
 				return false;
 			}
 		}
@@ -538,7 +538,7 @@ if ( $send !== true ) {
 	 */
 	function deletePredictionResults($cid=array(),$prediction_id=0)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         
 		if (count($cid))
@@ -564,7 +564,7 @@ if ( $send !== true ) {
 			if (!$this->_db->query())
 			{
 				//$this->setError($this->_db->getErrorMsg());
-                $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+                $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
 				return false;
 			}
 		}
@@ -580,7 +580,7 @@ if ( $send !== true ) {
 	 */
 	public function save($data)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
        $post = JRequest::get('post');

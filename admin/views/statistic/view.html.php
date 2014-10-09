@@ -64,7 +64,7 @@ class sportsmanagementViewstatistic extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         // get the Data
 		$form = $this->get('Form');
 		$item = $this->get('Item');
@@ -97,7 +97,7 @@ class sportsmanagementViewstatistic extends sportsmanagementView
         //$jRegistry->loadJSON($this->item->params);
         $jRegistry->loadArray($this->item->params);
         
-        $mainframe->enqueueMessage(JText::_('sportsmanagementViewstatistic jRegistry<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_('sportsmanagementViewstatistic jRegistry<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
         
         //$this->formparams = JForm::getInstance($item->class, $xmlfile,array('control'=> 'params'));
         $this->formparams = JForm::getInstance('params', $xmlfile,array('control'=> 'params'),false, '/config');
@@ -105,13 +105,13 @@ class sportsmanagementViewstatistic extends sportsmanagementView
         $this->formparams->bind($this->item->params);
 		*/
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewstatistic params<br><pre>'.print_r($item->params,true).'</pre>'),'Notice');
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewstatistic params<br><pre>'.print_r($item->baseparams,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementViewstatistic params<br><pre>'.print_r($item->params,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementViewstatistic params<br><pre>'.print_r($item->baseparams,true).'</pre>'),'Notice');
         
         $formparams = sportsmanagementHelper::getExtendedStatistic($item->params, $item->class);
 		$this->assignRef( 'formparams', $formparams );
         
-        //$mainframe->enqueueMessage(JText::_('sportsmanagementViewstatistic formparams<br><pre>'.print_r($this->formparams,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_('sportsmanagementViewstatistic formparams<br><pre>'.print_r($this->formparams,true).'</pre>'),'Notice');
         
 // 		$extended = sportsmanagementHelper::getExtended($item->extended, 'team');
 // 		$this->assignRef( 'extended', $extended );

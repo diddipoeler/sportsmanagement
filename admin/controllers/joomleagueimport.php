@@ -58,7 +58,6 @@ class sportsmanagementControllerjoomleagueimport extends JControllerAdmin
   
 
 
-
 /**
  * sportsmanagementControllerjoomleagueimport::newstructur()
  * 
@@ -66,7 +65,7 @@ class sportsmanagementControllerjoomleagueimport extends JControllerAdmin
  */
 function newstructur()
 {
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $model	= $this->getModel();
         $result = $model->newstructur();
@@ -79,7 +78,7 @@ function newstructur()
 	 * Proxy for getModel.
 	 * @since	1.6
 	 */
-	public function getModel($name = 'joomleagueimport', $prefix = 'sportsmanagementModel') 
+	public function getModel($name = 'joomleagueimport', $prefix = 'sportsmanagementModel', $config = Array() ) 
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;

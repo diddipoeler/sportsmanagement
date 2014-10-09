@@ -118,8 +118,9 @@ JHtml::_( 'behavior.mootools' );
 					for ($i=0,$n=count($this->items); $i < $n; $i++)
 					{
 						$row =& $this->items[$i];
-						$link=JRoute::_('index.php?option=com_sportsmanagement&task=projectreferee.edit&id='.$row->id.'&pid='.$row->project_id.'&person_id='.$row->person_id  );
-						$checked=JHtml::_('grid.checkedout',$row,$i);
+						$link = JRoute::_('index.php?option=com_sportsmanagement&task=projectreferee.edit&id='.$row->id.'&pid='.$row->project_id.'&person_id='.$row->person_id  );
+						$checked = JHtml::_('grid.checkedout',$row,$i);
+                        $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
 						$inputappend='';
 						?>
 						<tr class="<?php echo "row$k"; ?>">
@@ -133,20 +134,12 @@ JHtml::_( 'behavior.mootools' );
 								echo $checked;
 								?>
 							</td>
-							<?php
-							if ($this->table->isCheckedOut($this->user->get('id'),$row->checked_out))
-							{
-								$inputappend=' disabled="disabled"';
-								?>
-								<td>
-									&nbsp;
-								</td>
-								<?php
-							}
-							else
-							{
-								?>
+							
 								<td class="center">
+                                <?php
+                            if ($row->checked_out) : ?>
+										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'projectreferees.', $canCheckin); ?>
+									<?php endif; ?>	
 									<a href="<?php echo $link; ?>">
 										<?php
 										$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_EDIT_DETAILS');
@@ -157,7 +150,7 @@ JHtml::_( 'behavior.mootools' );
 									</a>
 								</td>
 								<?php
-							}
+							
 							?>
 							<td>
 								<?php echo sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 1) ?>

@@ -71,13 +71,13 @@ class JFormFieldprojectteamlist extends JFormFieldList
 	protected function getOptions()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         // Initialize variables.
 		$options = array();
         
-    $project_id = $mainframe->getUserState( "$option.pid", '0' );
+    $project_id = $app->getUserState( "$option.pid", '0' );
     
-    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__  .' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__  .' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
     
     if ($project_id)
 		{
@@ -91,7 +91,7 @@ class JFormFieldprojectteamlist extends JFormFieldList
 			$query->order('t.name');
 			$db->setQuery($query);
             
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__  .' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__  .' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
 			$options = $db->loadObjectList();
     }

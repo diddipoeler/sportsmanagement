@@ -32,7 +32,7 @@ class JElementTemplate extends JElement {
 	function fetchElement($name, $value, & $node, $control_name) {
 
 		jimport('joomla.filesystem.folder');
-		$mainframe = &JFactory::getApplication();
+		$app = &JFactory::getApplication();
 		$fieldName = (version_compare( JVERSION, '1.6.0', 'ge' )) ? $name : $control_name.'['.$name.']';
 
 		if(version_compare(JVERSION,'1.6.0','ge')) {

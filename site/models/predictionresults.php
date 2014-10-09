@@ -82,7 +82,7 @@ class sportsmanagementModelPredictionResults extends JModelLegacy
 	function __construct()
 	{
 	   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     
     $this->predictionGameID		= JRequest::getInt('prediction_id',		0);
 		$this->predictionMemberID	= JRequest::getInt('uid',	0);
@@ -123,13 +123,13 @@ class sportsmanagementModelPredictionResults extends JModelLegacy
 		
         //$this->pggrouprank			= JRequest::getInt('pggrouprank',		0);
 		$option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     $this->predictionGameID	= JRequest::getInt('prediction_id',0);
 
 if ( JRequest::getVar( "view") == 'predictionresults' )
 {    
 	// Get pagination request variables
-	$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+	$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
 	$limitstart = JRequest::getVar('limitstart', 0, '', 'int');
  
 	// In case limit has been changed, adjust it
@@ -153,13 +153,13 @@ function checkRoundID($project_id,$roundID)
 {
  $option = JRequest::getCmd('option'); 
     $document	= JFactory::getDocument();
-    $mainframe	= JFactory::getApplication();
+    $app	= JFactory::getApplication();
 // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);    
 
-//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($roundID,true).'</pre>'),'');
-//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($roundID,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
 
 $query->select('roundcode');
 $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
@@ -167,7 +167,7 @@ $query->where('project_id = '.$project_id);
 $query->where('id = '.$roundID);
 $db->setQuery( $query );
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
 $results = $db->loadResult();
 		
@@ -179,9 +179,9 @@ $roundIDnew= $tblproject->current_round;
 $this->roundID=$roundIDnew;
 sportsmanagementModelPrediction::$roundID = $roundIDnew;
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundIDnew<br><pre>'.print_r($roundIDnew,true).'</pre>'),'');
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($this->roundID,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundIDnew<br><pre>'.print_r($roundIDnew,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($this->roundID,true).'</pre>'),'');
 
 }
 
@@ -197,12 +197,12 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
 
 }
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($results,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($results,true).'</pre>'),'');
 		
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundIDnew<br><pre>'.print_r($roundIDnew,true).'</pre>'),'');
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundIDnew<br><pre>'.print_r($roundIDnew,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
 
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($this->roundID,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($this->roundID,true).'</pre>'),'');
     
 }
 
@@ -273,16 +273,16 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
 	 */
 	function getMatches($roundID,$project_id,$match_ids,$round_ids,$proteams_ids)
 	{
-	  //global $mainframe, $option;
+	  //global $app, $option;
       $option = JRequest::getCmd('option'); 
     $document	= JFactory::getDocument();
-    $mainframe	= JFactory::getApplication();
+    $app	= JFactory::getApplication();
     
-//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($roundID,true).'</pre>'),'');
-//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
-//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match_ids<br><pre>'.print_r($match_ids,true).'</pre>'),'');
-//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round_ids<br><pre>'.print_r($round_ids,true).'</pre>'),'');
-//    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' proteams_ids<br><pre>'.print_r($proteams_ids,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($roundID,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match_ids<br><pre>'.print_r($match_ids,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round_ids<br><pre>'.print_r($round_ids,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' proteams_ids<br><pre>'.print_r($proteams_ids,true).'</pre>'),'');
     
     // Create a new query object.		
 		$db = JFactory::getDBO();
@@ -362,7 +362,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
 	 */
 	function showClubLogo($clubLogo,$teamName)
 	{
-	  $mainframe = JFactory::getApplication();
+	  $app = JFactory::getApplication();
 		$document	= JFactory::getDocument();
 		$uri = JFactory::getURI();
     $option = JRequest::getCmd('option');

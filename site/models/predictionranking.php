@@ -88,7 +88,7 @@ class sportsmanagementModelPredictionRanking extends JModelLegacy
 	function __construct()
 	{
 	   $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     
 		parent::__construct();
         
@@ -109,9 +109,9 @@ class sportsmanagementModelPredictionRanking extends JModelLegacy
 		$this->page  				= JRequest::getInt('page',	1);
         $this->ranking_array = JRequest::getVar('ranking_array','');
         
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' ranking_array<br><pre>'.print_r($this->ranking_array,true).'</pre>'),'');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' pggroup<br><pre>'.print_r($this->pggroup,true).'</pre>'),'');
-//        $mainframe->enqueueMessage(JText::_(__METHOD__.' _REQUEST<br><pre>'.print_r($_REQUEST,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' ranking_array<br><pre>'.print_r($this->ranking_array,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' pggroup<br><pre>'.print_r($this->pggroup,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' _REQUEST<br><pre>'.print_r($_REQUEST,true).'</pre>'),'');
         
         $prediction = new sportsmanagementModelPrediction();  
 
@@ -133,7 +133,7 @@ class sportsmanagementModelPredictionRanking extends JModelLegacy
 if ( JRequest::getVar( "view") == 'predictionranking' )
 {
 	// Get pagination request variables
-	$limit = $mainframe->getUserStateFromRequest('global.list.limit', 'limit', $mainframe->getCfg('list_limit'), 'int');
+	$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
 	$limitstart = JRequest::getVar('limitstart', 0, '', 'int');
 
 	// In case limit has been changed, adjust it
@@ -155,7 +155,7 @@ if ( JRequest::getVar( "view") == 'predictionranking' )
 function _buildQuery()
 {
     $option = JRequest::getCmd('option');    
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -245,7 +245,7 @@ function getPagination()
     function getChampLogo($ProjectID,$champ_tipp)
     {
     $option = JRequest::getCmd('option');
-	$mainframe	= JFactory::getApplication();
+	$app	= JFactory::getApplication();
     
     $sChampTeamsList=explode(';',$champ_tipp);
 	foreach ($sChampTeamsList AS $key => $value){$dChampTeamsList[]=explode(',',$value);}

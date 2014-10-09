@@ -113,7 +113,7 @@ private function dump_header($text)
 function checkStartExtension()
 {
 $option = JRequest::getCmd('option');
-$mainframe	=& JFactory::getApplication();
+$app	=& JFactory::getApplication();
 $user = JFactory::getUser();
 $fileextension = JPATH_SITE.DS.'tmp'.DS.'lmoimport-2-0.txt';
 $xmlfile = '';
@@ -228,8 +228,8 @@ TRUNCATE TABLE `jos_joomleague_playground`;
 */
 
 	
-  global $mainframe, $option;
-  $mainframe =& JFactory::getApplication();
+  global $app, $option;
+  $app =& JFactory::getApplication();
   $document	=& JFactory::getDocument();
   
   $lang = JFactory::getLanguage();
@@ -239,10 +239,10 @@ TRUNCATE TABLE `jos_joomleague_playground`;
   $country = $post['country'];
   //$country = JSMCountries::convertIso2to3($teile[1]);
   
-  $mainframe->enqueueMessage(JText::_('land '.$country.''),'');
+  $app->enqueueMessage(JText::_('land '.$country.''),'');
   
   $option = JRequest::getCmd('option');
-	$project = $mainframe->getUserState( $option . 'project', 0 );
+	$project = $app->getUserState( $option . 'project', 0 );
 	
 	$tempprovorschlag = '';
 	$team2_summary = '';
@@ -268,7 +268,7 @@ WHERE pro.id = ' . (int) $project;
 $this->_db->setQuery( $query );
 $row = $this->_db->loadAssoc();
 $tempprovorschlag = $row['name'];
-$mainframe->enqueueMessage(JText::_('project '.$tempprovorschlag.''),'');
+$app->enqueueMessage(JText::_('project '.$tempprovorschlag.''),'');
 
 // saisonname  
   $query = 'SELECT se.name,se.id
@@ -283,7 +283,7 @@ $row = $this->_db->loadAssoc();
   $temp->id = $row['id'];
   $temp->name = $row['name'];
   $this->_datas['season'] = $temp;
-$mainframe->enqueueMessage(JText::_('season '.$temp->name.''),'');
+$app->enqueueMessage(JText::_('season '.$temp->name.''),'');
 $convert = array (
       $temp->name => ''
   );
@@ -313,7 +313,7 @@ $row = $this->_db->loadAssoc();
   }
   
   $this->_datas['league'] = $temp;
-$mainframe->enqueueMessage(JText::_('league '.$temp->name.''),'');
+$app->enqueueMessage(JText::_('league '.$temp->name.''),'');
   
 //   $temp = new stdClass();
 //   $temp->project_type = 'SIMPLE_LEAGUE';
@@ -332,7 +332,7 @@ $row = $this->_db->loadAssoc();
   $temp->id = $row['id'];
   $temp->name = $row['name'];
   $this->_datas['sportstype'] = $temp;
-$mainframe->enqueueMessage(JText::_('sportstype '.$temp->name.''),'');  
+$app->enqueueMessage(JText::_('sportstype '.$temp->name.''),'');  
   
   $temp = new stdClass();
   $this->_datas['template'] = $temp;
@@ -351,7 +351,7 @@ $mainframe->enqueueMessage(JText::_('sportstype '.$temp->name.''),'');
   $temp->name = 'COM_SPORTSMANAGEMENT_ST_SOCCER';
   $this->_datas['sportstype'] = $temp;
     
-	$lmoimportuseteams=$mainframe->getUserState($option.'lmoimportuseteams');
+	$lmoimportuseteams=$app->getUserState($option.'lmoimportuseteams');
   
   $teamid = 1;
   $file = JPATH_SITE.DS.'tmp'.DS.'joomleague_import.l98';
@@ -902,16 +902,16 @@ $countjoomleagueteams = $this->_db->loadResult();
 
 if (  $countlmoteams != $countjoomleagueteams  )
 {
-$mainframe->enqueueMessage(JText::_('Die Anzahl der Teams im Projekt '.$project.' stimmt nicht überein!'),'Error');
+$app->enqueueMessage(JText::_('Die Anzahl der Teams im Projekt '.$project.' stimmt nicht überein!'),'Error');
 }
 else
 {
-$mainframe->enqueueMessage(JText::_('Die Anzahl der Teams im Projekt '.$project.' stimmt überein!'),'Notice');
+$app->enqueueMessage(JText::_('Die Anzahl der Teams im Projekt '.$project.' stimmt überein!'),'Notice');
 }
     
     }
 		
-		//$mainframe->setUserState('com_joomleague'.'lmoimportxml',$this->_datas);
+		//$app->setUserState('com_joomleague'.'lmoimportxml',$this->_datas);
 		
 		//JRequest::setVar('lmoimportxml', $this->_datas, 'post');
 
@@ -930,51 +930,51 @@ $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setJoomLea
 // set the project datas
 if ( isset($this->_datas['project']) )
 {
-$mainframe->enqueueMessage(JText::_('project daten '.'generiert'),'');    
+$app->enqueueMessage(JText::_('project daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setProjectData($this->_datas['project']));
 }
 // set league data of project
 if ( isset($this->_datas['league']) )
 {
-$mainframe->enqueueMessage(JText::_('league daten '.'generiert'),'');      
+$app->enqueueMessage(JText::_('league daten '.'generiert'),'');      
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setLeagueData($this->_datas['league']));
 }
 // set season data of project
 if ( isset($this->_datas['season']) )
 {
-$mainframe->enqueueMessage(JText::_('season daten '.'generiert'),'');      
+$app->enqueueMessage(JText::_('season daten '.'generiert'),'');      
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setSeasonData($this->_datas['season']));
 }
 
 // set the rounds sportstype
 if ( isset($this->_datas['sportstype']) )
 {
-$mainframe->enqueueMessage(JText::_('sportstype daten '.'generiert'),'');      
+$app->enqueueMessage(JText::_('sportstype daten '.'generiert'),'');      
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setSportsType($this->_datas['sportstype']));    
 }
 
 // set the rounds data
 if ( isset($this->_datas['round']) )
 {
-$mainframe->enqueueMessage(JText::_('round daten '.'generiert'),'');      
+$app->enqueueMessage(JText::_('round daten '.'generiert'),'');      
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['round'], 'Round') );
 }
 // set the teams data
 if ( isset($this->_datas['team']) )
 {
-$mainframe->enqueueMessage(JText::_('team daten '.'generiert'),'');    
+$app->enqueueMessage(JText::_('team daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['team'], 'JL_Team'));
 }
 // set the clubs data
 if ( isset($this->_datas['club']) )
 {
-$mainframe->enqueueMessage(JText::_('club daten '.'generiert'),'');    
+$app->enqueueMessage(JText::_('club daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['club'], 'Club'));
 }
 // set the matches data
 if ( isset($this->_datas['match']) )
 {
-$mainframe->enqueueMessage(JText::_('match daten '.'generiert'),'');    
+$app->enqueueMessage(JText::_('match daten '.'generiert'),'');    
 $output .= sportsmanagementHelper::_addToXml(sportsmanagementHelper::_setXMLData($this->_datas['match'], 'Match'));
 }
 // set the positions data
@@ -1078,16 +1078,16 @@ echo $this->pane->endPane();
           	
 function _loadData()
 	{
-  global $mainframe, $option;
-  $this->_data =  $mainframe->getUserState( $option . 'project', 0 );
+  global $app, $option;
+  $this->_data =  $app->getUserState( $option . 'project', 0 );
    
   return $this->_data;
 	}
 
 function _initData()
 	{
-	global $mainframe, $option;
-  $this->_data =  $mainframe->getUserState( $option . 'project', 0 );
+	global $app, $option;
+  $this->_data =  $app->getUserState( $option . 'project', 0 );
   return $this->_data;
 	}
 

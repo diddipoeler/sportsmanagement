@@ -66,10 +66,10 @@ class sportsmanagementControllerjlextindividualsportes extends JControllerAdmin
     function saveshort()
 	{
 	   $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $post = JRequest::get('post');
-		$post['project_id'] = $mainframe->getUserState( "$option.pid", '0' );
-		$post['round_id'] = $mainframe->getUserState( "$option.rid", '0' );
+		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
+		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
         
 	   $model = $this->getModel();
        $model->saveshort();
@@ -91,10 +91,10 @@ class sportsmanagementControllerjlextindividualsportes extends JControllerAdmin
     function applyshort()
 	{
 	   $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $post = JRequest::get('post');
-		$post['project_id'] = $mainframe->getUserState( "$option.pid", '0' );
-		$post['round_id'] = $mainframe->getUserState( "$option.rid", '0' );
+		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
+		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
         
        $model = $this->getModel();
        $model->saveshort();
@@ -113,11 +113,11 @@ class sportsmanagementControllerjlextindividualsportes extends JControllerAdmin
     function publish() 
     {
            $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $pks = JRequest::getVar('cid', array(), 'post', 'array');
         $post = JRequest::get('post');
-		$post['project_id'] = $mainframe->getUserState( "$option.pid", '0' );
-		$post['round_id'] = $mainframe->getUserState( "$option.rid", '0' );
+		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
+		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
         
        
        parent::publish();
@@ -135,11 +135,11 @@ class sportsmanagementControllerjlextindividualsportes extends JControllerAdmin
     function delete()
 	{
 	   $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $pks = JRequest::getVar('cid', array(), 'post', 'array');
         $post = JRequest::get('post');
-		$post['project_id'] = $mainframe->getUserState( "$option.pid", '0' );
-		$post['round_id'] = $mainframe->getUserState( "$option.rid", '0' );
+		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
+		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
         
        $model = $this->getModel();
        $model->delete($pks);

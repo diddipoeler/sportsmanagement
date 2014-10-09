@@ -207,7 +207,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
         //JRequest::checkToken() or jexit('JINVALID_TOKEN');
         //JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
 
-		//$mainframe = JFactory::getApplication();
+		//$app = JFactory::getApplication();
 		$data = array();
 		$data['teamplayer_id']	= JRequest::getInt('teamplayer_id');
 		$data['projectteam_id']	= JRequest::getInt('projectteam_id');
@@ -222,7 +222,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
         $data['projecttime']			= JRequest::getVar('projecttime','');
         
         $model = $this->getModel();
-		//$project_id = $mainframe->getUserState( "$option.pid", '0' );;
+		//$project_id = $app->getUserState( "$option.pid", '0' );;
 		if (!$result = $model->saveevent($data)) {
 			$result = "0"."&".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_EVENT').': '.$model->getError();
         } else {
@@ -243,7 +243,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
         //$option = JRequest::getCmd('option');
         //JRequest::checkToken() or jexit('JINVALID_TOKEN');
         //JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
-        //$mainframe = JFactory::getApplication();
+        //$app = JFactory::getApplication();
         
         //$response = self::getAjaxResponse();
         //$result = $response;
@@ -264,7 +264,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
         $data['projecttime']			= JRequest::getVar('projecttime','');
         
         $model = $this->getModel();
-		//$project_id = $mainframe->getUserState( "$option.pid", '0' );;
+		//$project_id = $app->getUserState( "$option.pid", '0' );;
 		if (!$result = $model->savecomment($data)) {
             $result = '0&'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVED_COMMENT').': '.$model->getError();
         } else {
@@ -274,7 +274,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
  
 		echo json_encode($result);
 		JFactory::getApplication()->close();
-        //$mainframe->close();
+        //$app->close();
     }
     
     /**

@@ -49,14 +49,14 @@
  */
 function sportsmanagementBuildRoute( &$query )
 {
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     $paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
     $show_debug_info = $paramscomponent->get( 'show_debug_info' );  
     //DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
     
     if ( $show_debug_info )
         {
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'   ),'');
     }
     
 	$segments = array();
@@ -460,7 +460,7 @@ function sportsmanagementBuildRoute( &$query )
     
     if ( $show_debug_info )
         {
-    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'   ),'');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'   ),'');
     }
     
 	return $segments;
@@ -474,13 +474,13 @@ function sportsmanagementBuildRoute( &$query )
  */
 function sportsmanagementParseRoute( $segments )
 {
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
     $paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
     $show_debug_info = $paramscomponent->get( 'show_debug_info' );  
     
     if ( $show_debug_info )
         {
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'   ),'');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'   ),'');
     }
     
 	$vars = array();
@@ -837,7 +837,7 @@ function sportsmanagementParseRoute( $segments )
     
     if ( $show_debug_info )
         {
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' vars<br><pre>'.print_r($vars,true).'</pre>'   ),'');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' vars<br><pre>'.print_r($vars,true).'</pre>'   ),'');
     }
     
 	return $vars;

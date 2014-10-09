@@ -72,7 +72,7 @@ class sportsmanagementViewPredictionUser extends JViewLegacy
 //    $this->assignRef( 'optiontext',			$optiontext );
 //    $this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
 
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		
 		$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/json2.js');
 		$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/swfobject.js');
@@ -193,7 +193,7 @@ class sportsmanagementViewPredictionUser extends JViewLegacy
           // ist überhaupt das startdatum gesetzt ?
           if ( $predictionProject->start_date == '0000-00-00' )
           {
-          $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING_STARTDATE'),'Error');  
+          $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING_STARTDATE'),'Error');  
           $disabled=' disabled="disabled" ';
           }
           else

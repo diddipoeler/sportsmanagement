@@ -61,7 +61,7 @@ class sportsmanagementViewSportsTypes extends sportsmanagementView
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
         
@@ -74,7 +74,7 @@ class sportsmanagementViewSportsTypes extends sportsmanagementView
 		$items = $this->get('Items');
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
@@ -122,6 +122,7 @@ class sportsmanagementViewSportsTypes extends sportsmanagementView
 		JToolBarHelper::editList('sportstype.edit');
 		JToolBarHelper::custom('sportstype.import','upload','upload', JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('sportstype.export', JText::_('JTOOLBAR_EXPORT'));
+        JToolbarHelper::checkin('sportstypes.checkin');
         if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
         {
 		JToolbarHelper::trash('sportstypes.trash');

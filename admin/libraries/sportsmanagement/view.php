@@ -73,7 +73,7 @@ class sportsmanagementView extends JViewLegacy
 	public function display ($tpl = null)
 	{
 	   $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         
         $view = JRequest::getCmd('view', 'cpanel');
         $this->tmpl = JRequest::getCmd('tmpl', '');
@@ -103,7 +103,7 @@ class sportsmanagementView extends JViewLegacy
         }
         
         
-        $mainframe->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
+        $app->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
 
 //		if (sportsmanagementHelper::isJoomlaVersion('2.5'))
 //		{
@@ -121,7 +121,7 @@ class sportsmanagementView extends JViewLegacy
 
 		$this->addToolbar();
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' joomla version -> <br><pre>'.print_r(COM_SPORTSMANAGEMENT_JOOMLAVERSION,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' joomla version -> <br><pre>'.print_r(COM_SPORTSMANAGEMENT_JOOMLAVERSION,true).'</pre>'),'');
         
         // hier wird gesteuert, welcher menüeintrag aktiv ist.
         if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -165,7 +165,7 @@ class sportsmanagementView extends JViewLegacy
 	protected function addToolbar ()
 	{
 	   $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $view = JRequest::getCmd('view', 'cpanel');
 		$canDo = sportsmanagementHelper::getActions();
         
@@ -350,7 +350,7 @@ class sportsmanagementView extends JViewLegacy
 			$this->icon = strtolower($this->getName());
 		}
 		
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' icon -> '.$this->icon.''),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' icon -> '.$this->icon.''),'Notice');
         
         //JToolBarHelper::title(JText::_($this->title), $this->icon);
 		$document = JFactory::getDocument();

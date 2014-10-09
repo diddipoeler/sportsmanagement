@@ -65,16 +65,16 @@ class sportsmanagementViewRoster extends JViewLegacy
 	{
 		// Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 		$model = $this->getModel();
         
-        sportsmanagementModelProject::setProjectID(JRequest::getInt('p',0));
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
+        sportsmanagementModelProject::setProjectID(JRequest::getInt('p',0),$model::$cfg_which_database);
+		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 
-		$this->assign('project',sportsmanagementModelProject::getProject());
+		$this->assign('project',sportsmanagementModelProject::getProject($model::$cfg_which_database));
         $model->seasonid = $this->project->season_id;
-		$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig());
+		$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database));
 		//$this->assignRef('staffconfig',$model->getTemplateConfig('teamstaff'));
 		$this->assignRef('config',$config);
 		$this->assign('projectteam',$model->getProjectTeam());
@@ -110,14 +110,14 @@ class sportsmanagementViewRoster extends JViewLegacy
 			//stats
 			if ($this->config['show_stats'])
 			{
-				$this->assign('stats',sportsmanagementModelProject::getProjectStats());
+				$this->assign('stats',sportsmanagementModelProject::getProjectStats(0,0,$model::$cfg_which_database));
 				$this->assign('playerstats',$model->getRosterStats());
 			}
 
 			//$this->assign('stafflist',$model->getStaffList());
             $this->assign('stafflist',$model->getTeamPlayers(2));
             
-            //$mainframe->enqueueMessage(JText::_('getTeamPlayers stafflist<br><pre>'.print_r($this->stafflist,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_('getTeamPlayers stafflist<br><pre>'.print_r($this->stafflist,true).'</pre>'),'');
 
 			// Set page title
 			$document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE',$this->team->name));

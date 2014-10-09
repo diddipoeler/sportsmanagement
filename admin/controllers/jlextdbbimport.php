@@ -73,21 +73,21 @@ class sportsmanagementControllerjlextdbbimport extends JControllerLegacy
 	 */
 	function save() {
 	   $option = JRequest::getCmd('option');
-		$mainframe = JFactory::getApplication ();
+		$app = JFactory::getApplication ();
 		$document = JFactory::getDocument ();
 		// Check for request forgeries
 		JRequest::checkToken () or die ( 'COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN' );
 		$msg = '';
 		//JToolBarHelper::back ( JText::_ ( 'COM_SPORTSMANAGEMENT_GLOBAL_BACK' ), JRoute::_ ( 'index.php?option='.$option.'&view=jldfbnetimport' ) );
-		// $mainframe = JFactory::getApplication();
+		// $app = JFactory::getApplication();
 		$model = $this->getModel ( 'jlextdbbimport' );
 		$post = JRequest::get ( 'post' );
 		
 		//$delimiter = JRequest::getVar ( 'delimiter', null );
 		$whichfile = JRequest::getVar ( 'whichfile', null );
 		
-		//$mainframe->enqueueMessage ( JText::_ ( 'delimiter ' . $delimiter . '' ), '' );
-		//$mainframe->enqueueMessage ( JText::_ ( 'whichfile ' . $whichfile . '' ), '' );
+		//$app->enqueueMessage ( JText::_ ( 'delimiter ' . $delimiter . '' ), '' );
+		//$app->enqueueMessage ( JText::_ ( 'whichfile ' . $whichfile . '' ), '' );
 		
 		if ($whichfile == 'playerfile') {
 			JError::raiseNotice ( 500, JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT_PLAYERFILE' ) );
@@ -105,12 +105,12 @@ class sportsmanagementControllerjlextdbbimport extends JControllerLegacy
 			
 			$lmoimportuseteams = JRequest::getVar ( 'lmoimportuseteams', null );
 			
-			$mainframe->setUserState ( $option . 'lmoimportuseteams', $lmoimportuseteams );
-			$mainframe->setUserState ( $option . 'whichfile', $whichfile );
-			$mainframe->setUserState ( $option . 'delimiter', $delimiter );
+			$app->setUserState ( $option . 'lmoimportuseteams', $lmoimportuseteams );
+			$app->setUserState ( $option . 'whichfile', $whichfile );
+			$app->setUserState ( $option . 'delimiter', $delimiter );
 			
 			$tempFilePath = $upload ['tmp_name'];
-			$mainframe->setUserState ( $option . 'uploadArray', $upload );
+			$app->setUserState ( $option . 'uploadArray', $upload );
 			$filename = '';
 			$msg = '';
 			$dest = JPATH_SITE . DS . 'tmp' . DS . $upload ['name'];

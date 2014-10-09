@@ -29,11 +29,11 @@ class sportsmanagementModelEvent extends JModelLegacy
 
 	public function getGCalendar() 
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         
 		$results = jsmGCalendarDBUtil::getCalendars(JRequest::getVar('gcid', null));
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($results,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($results,true).'</pre>'),'Notice');
         
 		if (empty($results) || JRequest::getVar('eventID', null) == null) {
 			return null;

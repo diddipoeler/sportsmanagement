@@ -28,14 +28,14 @@ class sportsmanagementModelgithubinstall extends JModel
     
 function CopyGithubLink($link)
 {
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $app = JFactory::getApplication();
         
         $gitinstall = '';
-        //$gitinstall = $mainframe->getUserState( "$option.install");
+        //$gitinstall = $app->getUserState( "$option.install");
         
-        $mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' install<br><pre>'.print_r($gitinstall,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' install<br><pre>'.print_r($gitinstall,true).'</pre>'),'');
 
 if ( $gitinstall )
 {

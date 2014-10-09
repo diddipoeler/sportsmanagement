@@ -182,11 +182,11 @@ var $_sis_art = 1;
 	function getSpielplan($linkresults,$liganummer,$sis_art) 
     {
         $option = JRequest::getCmd('option');
-  $mainframe = JFactory::getApplication();
+  $app = JFactory::getApplication();
 		// XML File
 		$filepath='components/'.$option.'/sisdata/';
         
-        //$mainframe->enqueueMessage(JText::_('filepath<br><pre>'.print_r($filepath,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_('filepath<br><pre>'.print_r($filepath,true).'</pre>'   ),'');
         
 		//File laden
 		$datei = ($filepath.'sp_sis_art_'.$sis_art.'_ln_'.$liganummer.'.xml');
@@ -221,7 +221,7 @@ else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 else
 {
     //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-    $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
 
 					//Parsen
@@ -259,13 +259,13 @@ else if (file_get_contents(__FILE__) && ini_get('allow_url_fopen'))
 else
 {
     //echo 'Sie haben weder cURL installiert, noch allow_url_fopen aktiviert. Bitte aktivieren/installieren allow_url_fopen oder Curl!';
-    $mainframe->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
+    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_ERROR_ALLOW_URL_FOPEN'),'Error');
 }
-            //$mainframe->enqueueMessage(JText::_('content<br><pre>'.print_r($content,true).'</pre>'   ),'');
+            //$app->enqueueMessage(JText::_('content<br><pre>'.print_r($content,true).'</pre>'   ),'');
             
 			//Parsen
 			$doc = DOMDocument::loadXML($content);
-            //$mainframe->enqueueMessage(JText::_('doc<br><pre>'.print_r($doc,true).'</pre>'   ),'');
+            //$app->enqueueMessage(JText::_('doc<br><pre>'.print_r($doc,true).'</pre>'   ),'');
 			//Speichern
 			$doc->save($filepath.'sp_sis_art_'.$sis_art.'_ln_'.$liganummer.'.xml');
 		}
