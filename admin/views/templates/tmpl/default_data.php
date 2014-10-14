@@ -103,9 +103,9 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 							<td class="center"><?php echo $checked; ?></td>
 							<td>
                             <?php
-                            if ($row->checked_out) : ?>
+                            if ( ( $row->checked_out != $this->user->get ('id') ) && $row->checked_out ) :  ?>
 										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'smquotes.', $canCheckin); ?>
-									<?php endif; ?>
+									<?php else: ?>
                             
                             <?php
 								$imageFile = 'administrator/components/com_sportsmanagement/assets/images/edit.png';
@@ -114,7 +114,11 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 								$image = JHtml::image($imageFile,$imageTitle,$imageParams);
 								$linkParams = '';
 								echo JHtml::link($link1,$image);
-								?></td>
+                                
+                                endif;
+                                
+								?>
+                                </td>
 							<td><?php echo $row->template; ?></td>
 							<td><?php echo JText::_($row->title); ?></td>
 							<td><?php

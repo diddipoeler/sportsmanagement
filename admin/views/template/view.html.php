@@ -116,7 +116,7 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 		//$form->bind($jRegistry);
         $form->bind($item->params);
       
-        
+        $this->item = $item;
         // Assign the Data
 		$this->form = $form;
 		//$this->item = $item;
@@ -170,12 +170,16 @@ class sportsmanagementViewTemplate extends sportsmanagementView
         $this->assign('request_url',$uri->toString());
 		$this->assignRef('template',$item);
         
-        
-        
         $this->assign('templatename',$this->form->getName());
 		$this->assignRef('project',$project);
 		$this->assignRef('lists',$lists);
 		$this->assignRef('user',$user);
+        
+        // Load the language files for the contact integration
+		$jlang = JFactory::getLanguage();
+		$jlang->load('com_contact', JPATH_ADMINISTRATOR, 'en-GB', true);
+		$jlang->load('com_contact', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
+		$jlang->load('com_contact', JPATH_ADMINISTRATOR, null, true);
 
 	}
 	/**
@@ -188,7 +192,10 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 	
         JRequest::setVar('hidemainmenu', true);
         JRequest::setVar('pid', $this->project_id);
-		$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_NEW');
+        $this->item->name = $this->item->template;
+		//$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_NEW');
+        //$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT');
+        $this->title = JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT',$this->item->title);
         $this->icon = 'template';
         
         parent::addToolbar();
