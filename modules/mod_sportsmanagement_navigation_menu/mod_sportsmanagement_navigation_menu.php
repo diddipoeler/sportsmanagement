@@ -44,7 +44,7 @@ defined('_JEXEC') or die('Restricted access');
 require_once (dirname(__FILE__).DS.'helper.php');
 
 $paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
-if ( !defined( 'COM_SPORTSMANAGEMENT_TABLE' ))
+if ( !defined( 'COM_SPORTSMANAGEMENT_TABLE' )) {
 $database_table	= $paramscomponent->get( 'cfg_which_database_table' );
 DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
 }
