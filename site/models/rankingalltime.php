@@ -130,8 +130,8 @@ class sportsmanagementModelRankingAllTime extends JModelLegacy
         $params = $menu->getParams($item->id);
 
         //$menu = &JSite::getMenu();
-        //$show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',
-            0);
+        //$show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0);
+		
         if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO) {
             $this->debug_info = true;
         } else {
