@@ -45,7 +45,11 @@ require_once (dirname(__FILE__).DS.'helper.php');
 
 $paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
 $database_table	= $paramscomponent->get( 'cfg_which_database_table' );
+if ( !defined( 'COM_SPORTSMANAGEMENT_TABLE' ))
+{
 DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
+}
+
 
 //require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'sportsmanagement.php');
 
