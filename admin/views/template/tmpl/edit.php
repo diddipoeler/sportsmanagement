@@ -76,8 +76,8 @@ $i    = 1;
 		echo JHtml::_('tabs.start','tabs', array('useCookie'=>1));
         $fieldSets = $this->form->getFieldsets();
         foreach ($fieldSets as $name => $fieldSet) :
-            $label = $fieldSet->name;
-            echo JHtml::_('tabs.panel',JText::_($label), 'panel'.$i++);
+			$label = $fieldSet->name;
+			echo JHtml::_('tabs.panel',JText::_($label), 'panel'.$i++);
 			?>
 			<fieldset class="panelform">
 				<?php
@@ -90,26 +90,26 @@ $i    = 1;
 				<?php 
                 foreach ($this->form->getFieldset($name) as $field): 
                 
-                $suchmuster = array ("params[","]","[");
-                $ersetzen = array ('', '', '');
-                $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
-                
-                if ( $var_onlinehelp != 'colors' )
-                {
-                    //echo '<li>';
-                }    
-                ?>
+				$suchmuster = array ("params[","]","[");
+				$ersetzen = array ('', '', '');
+				$var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
+				
+				if ( $var_onlinehelp != 'colors' )
+				{
+					//echo '<li>';
+				}
+				?>
 				<tr>	
 					<?php if (!$field->hidden) : ?>
-                    <td>
+					<td>
 					<?php echo $field->label; ?>
-                    </td>
+					</td>
 					<?php endif; ?>
-                    <td>
-					<?php echo $field->input; 
-                    ?>
-                    </td>
-                    <?php
+					<td>
+					<?php echo $field->input;
+					?
+					</td>
+					<?php
                     
                   
                     //echo ' <br><pre>'.print_r($field->name,true).'</pre>';
@@ -123,29 +123,30 @@ $i    = 1;
 //                $ersetzen = array ('', '', '');
 //                $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
                
-                    
-                if ( $var_onlinehelp == 'ordered_columns_new_select' )
-                {
-                ?>
-                <td>
-                <input  type="button" class="inputbox"
+				
+				if ( $var_onlinehelp == 'ordered_columns_new_select' )
+				{
+				?>
+				<td>
+				<input  type="button" class="inputbox"
 						onclick="move_list_items('params_ordered_columns_new_select','params_ordered_columns_new');jQuery('#params_ordered_columns_new option').prop('selected', true);"
 						value="&gt;&gt;" />
 				<br /><br />
-                </td>
-                <?PHP    
-                }    
-                if ( $var_onlinehelp == 'ordered_columns_new' )
-                {
-                ?>
-                <td>
-                <input  type="button" class="inputbox"
+				</td>
+				<?PHP
+				}
+				if ( $var_onlinehelp == 'ordered_columns_new' )
+				{
+				?>
+				<td>
+				<input  type="button" class="inputbox"
 						onclick="move_list_items('params_ordered_columns_new','params_ordered_columns_new_select');jQuery('#params_ordered_columns_new option').prop('selected', true);"
 						value="&lt;&lt;" />
-                <input  type="button" class="inputbox"
+						<br />
+				<input  type="button" class="inputbox"
 						onclick="move_up('params_ordered_columns_new');jQuery('#params_ordered_columns_new option').prop('selected', true);"
 						value="<?php echo JText::_('JLIB_HTML_MOVE_UP'); ?>" />
-                        <br />
+						<br />
                 <input type="button" class="inputbox"
 					   onclick="move_down('params_ordered_columns_new');jQuery('#params_ordered_columns_new option').prop('selected', true);"
 					   value="<?php echo JText::_('JLIB_HTML_MOVE_DOWN'); ?>" />  
@@ -198,7 +199,7 @@ $i    = 1;
 </fieldset>
 
 	<div>		
-		<input type='hidden' name='user_id' value='<?php echo $this->user->id; ?>'/>
+		<input type="hidden" name="user_id" value="<?php echo $this->user->id; ?>"/>
 		
 		<input type="hidden" name="task" value="template.edit"/>
         

@@ -156,10 +156,10 @@ class sportsmanagementViewTemplate extends sportsmanagementView
         }
 
 		$master_id = ($project->master_template) ? $project->master_template : '-1';
-        $templates=array();
-        $res = $model->getAllTemplatesList($project->id,$master_id);
-        $templates=array_merge($templates,$res);
-        $lists['templates'] = JHtml::_('select.genericlist',	$templates,
+		$templates = array();
+		$res = $model->getAllTemplatesList($project->id,$master_id);
+		$templates = array_merge($templates,$res);
+		$lists['templates'] = JHtml::_('select.genericlist',	$templates,
 														'new_id',
 														'class="inputbox" size="1" onchange="javascript: Joomla.submitbutton(\'templates.changetemplate\');"',
 														'value',
@@ -167,10 +167,10 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 														$item->id);
         
         
-        $this->assign('request_url',$uri->toString());
+		$this->assign('request_url',$uri->toString());
 		$this->assignRef('template',$item);
         
-        $this->assign('templatename',$this->form->getName());
+		$this->assign('templatename',$this->form->getName());
 		$this->assignRef('project',$project);
 		$this->assignRef('lists',$lists);
 		$this->assignRef('user',$user);
@@ -190,15 +190,16 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 	protected function addToolbar()
 	{
 	
-        JRequest::setVar('hidemainmenu', true);
-        JRequest::setVar('pid', $this->project_id);
-        $this->item->name = $this->item->template;
+		JRequest::setVar('hidemainmenu', true);
+		Request::setVar('pid', $this->project_id);
+		$this->item->name = $this->item->template;
+		$this->item->title = JText::_($this->item->title);
 		//$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_NEW');
         //$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT');
-        $this->title = JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT',$this->item->title);
-        $this->icon = 'template';
-        
-        parent::addToolbar();
+		$this->title = JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT',$this->item->title);
+		
+		$this->icon = 'template';
+		parent::addToolbar();
 	}
     
 
