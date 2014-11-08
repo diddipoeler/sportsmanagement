@@ -218,7 +218,9 @@ else
         
         if ( $content )
         {
-		$doc = DOMDocument::loadXML($content);
+		//$doc = DOMDocument::loadXML($content);
+		$doc = new DOMDocument();
+		$doc->loadXML($content);
         $doc->save(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');
         //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($doc,true).'</pre>'),'');
         }

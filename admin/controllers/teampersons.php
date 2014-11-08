@@ -53,7 +53,7 @@ jimport('joomla.application.component.controlleradmin');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerteampersons extends JControllerAdmin
+class sportsmanagementControllerteampersons extends JControllerAdminLegacy
 {
 	
   
@@ -64,7 +64,7 @@ class sportsmanagementControllerteampersons extends JControllerAdmin
 	 * @return	boolean	True on success
 	 *
 	 */
-    function saveshort()
+    public function saveshort()
 	{
 	   $model = $this->getModel();
        $model->saveshort();
