@@ -169,7 +169,7 @@ $paramsdata = JComponentHelper::getParams($option);
      
               
         //Laden
-        $datei = "https://raw2.github.com/diddipoeler/sportsmanagement/master/sportsmanagement.xml";
+        $datei = "https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/sportsmanagement.xml";
 if (function_exists('curl_version'))
 {
    $curl = curl_init();
