@@ -323,6 +323,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 				{
 					$this->_datas['project']=$xmlData->record[$i];
 					$this->import_version='OLD';
+                    //$this->import_version='NEW';
 					JError::raiseNotice(0,JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_RENDERING_093'));
 				}
 
@@ -375,7 +376,9 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 				// collect the projectteam data of old export file / Here TeamTool instead of projectteam
 				if ($xmlData->record[$i]['object']=='TeamTool')
 				{
+				    // für jl version 0.93
 					$this->_datas['teamtool'][$m]=$xmlData->record[$i];
+                    //$this->_datas['projectteam'][$m]=$xmlData->record[$i];
 					$m++;
 				}
 
@@ -3533,7 +3536,7 @@ $this->dump_variable("import_team", $import_team);
         }
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ini -> '.'<pre>'.print_r($ini,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' defaultvalues -> '.'<pre>'.print_r($defaultvalues,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' defaultvalues -> '.'<pre>'.print_r($defaultvalues,true).'</pre>'),'');
         
 			// beim import kann es vorkommen, das wir in der neuen komponente
                     // zusätzliche felder haben, die mit abgespeichert werden müssen
@@ -3863,7 +3866,15 @@ $t_params = json_encode( $ini );
 				$my_text .= '<br />';
 			}
 			$insertID = $p_projectteam->id;//JFactory::getDbo()->insertid();
-			$this->_convertProjectTeamID[$this->_getDataFromObject($projectteam,'id')] = $p_projectteam->id;
+			
+            if ($this->import_version=='NEW')
+			{
+            $this->_convertProjectTeamID[$this->_getDataFromObject($projectteam,'id')] = $p_projectteam->id;
+            }
+            else
+            {
+            $this->_convertProjectTeamID[$this->_getDataFromObject($projectteam,'team_id')] = $p_projectteam->id;    
+            }
 
 //$this->dump_variable(__FUNCTION__." p_projectteam", $p_projectteam);
 
@@ -4379,6 +4390,11 @@ $t_params = json_encode( $ini );
 	   $app = JFactory::getApplication();
        $query = JFactory::getDbo()->getQuery(true);
        
+       
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__. ' _convertTeamID <br><pre>'.print_r($this->_convertTeamID,true).'</pre>'),'');
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__. ' _convertProjectTeamID <br><pre>'.print_r($this->_convertProjectTeamID,true).'</pre>'),'');
+ 
+       
 //$this->dump_header("function _importMatches");
 		$my_text='';
 		if (!isset($this->_datas['match']) || count($this->_datas['match'])==0)
@@ -4521,11 +4537,14 @@ $t_params = json_encode( $ini );
 			{
 				$p_match->set('round_id',$this->_convertRoundID[intval($match->round_id)]);
 				$p_match->set('match_number',$this->_getDataFromObject($match,'match_number'));
+                
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__. ' matchparts -> '.$match->matchpart1.' - '.$match->matchpart2),'');
 
 				if ($match->matchpart1 > 0)
 				{
-					$team1=$this->_convertTeamID[intval($match->matchpart1)];
-					$p_match->set('projectteam1_id',$this->_convertProjectTeamID[$team1]);
+					//$team1 = $this->_convertTeamID[intval($match->matchpart1)];
+					//$p_match->set('projectteam1_id',$this->_convertProjectTeamID[$team1]);
+                    $p_match->set('projectteam1_id',$this->_convertProjectTeamID[intval($match->matchpart1)]);
 				}
 				else
 				{
@@ -4534,13 +4553,16 @@ $t_params = json_encode( $ini );
 
 				if ($match->matchpart2 > 0)
 				{
-					$team2=$this->_convertTeamID[intval($match->matchpart2)];
-					$p_match->set('projectteam2_id',$this->_convertProjectTeamID[$team2]);
+					//$team2 = $this->_convertTeamID[intval($match->matchpart2)];
+					//$p_match->set('projectteam2_id',$this->_convertProjectTeamID[$team2]);
+                    $p_match->set('projectteam2_id',$this->_convertProjectTeamID[intval($match->matchpart2)]);
 				}
 				else
 				{
 					$p_match->set('projectteam2_id',0);
 				}
+                
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__. ' teams -> '.$team1.' - '.$team2),'');
 
 				$matchdate=(string)$match->match_date;
 				$p_match->set('match_date',$matchdate);
