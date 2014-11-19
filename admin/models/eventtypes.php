@@ -232,21 +232,30 @@ class sportsmanagementModelEventtypes extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
-        $query='	SELECT	p.id AS value,
-        p.name as posname,
-						st.name AS stname,
-                        concat(p.name, " (" , st.name, ")") AS text  
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS p
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pe
-						ON pe.eventtype_id=p.id
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = p.sports_type_id 
-					WHERE pe.position_id='. $id.'
-					ORDER BY pe.ordering ASC ';
+        $db		= $this->getDbo();
+		$query	= $db->getQuery(true);
+        // Select some fields
+		$query->select('p.id AS value,p.name as posname,st.name AS stname,concat(p.name, \' (\' , st.name, \')\') AS text');
+        // From table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS p');
+        // Join over the sportstype
+		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pe ON pe.eventtype_id=p.id');
+		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = p.sports_type_id');
+        $query->where('pe.position_id = '.$id);
+        $query->order('pe.ordering ASC');
+        
+//        $query='	SELECT	  
+//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS p
+//					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pe
+//						ON pe.eventtype_id=p.id
+//					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = p.sports_type_id 
+//					WHERE pe.position_id='. $id.'
+//					ORDER BY pe.ordering ASC ';
 
-		$this->_db->setQuery($query);
-		if (!$result=$this->_db->loadObjectList())
+		$db->setQuery($query);
+		if ( !$result = $db->loadObjectList())
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		foreach ($result as $event)
@@ -257,6 +266,11 @@ class sportsmanagementModelEventtypes extends JModelList
 		return $result;
 	}
     
+    /**
+     * sportsmanagementModelEventtypes::getEventList()
+     * 
+     * @return
+     */
     public function getEventList()
 	{
 		$query='SELECT *,id AS value,name AS text FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype ORDER BY name';
