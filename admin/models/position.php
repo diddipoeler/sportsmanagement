@@ -246,9 +246,27 @@ class sportsmanagementModelposition extends JModelAdmin
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');
        
+       if (isset($post['extended']) && is_array($post['extended'])) 
+		{
+			// Convert the extended field to a string.
+			$parameter = new JRegistry;
+			$parameter->loadArray($post['extended']);
+			$data['extended'] = (string)$parameter;
+		}
+        
        //$app->enqueueMessage(JText::_('sportsmanagementModelposition save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$app->enqueueMessage(JText::_('sportsmanagementModelposition post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
+       // zuerst sichern, damit wir bei einer neuanlage die id haben
+       if (parent::save($data))
+       {
+			$id =  (int) $this->getState($this->getName().'.id');
+            $data['id'] = $id;
+
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' id -> '.$id.''),'Notice');
+           //Here you can do other tasks with your newly saved record...
+		}
+        
        if (isset($post['position_eventslist']) && is_array($post['position_eventslist'])) 
 		{
 		if ( $data['id'] )
@@ -260,18 +278,13 @@ class sportsmanagementModelposition extends JModelAdmin
         }
 		}
         
-       if (isset($post['extended']) && is_array($post['extended'])) 
-		{
-			// Convert the extended field to a string.
-			$parameter = new JRegistry;
-			$parameter->loadArray($post['extended']);
-			$data['extended'] = (string)$parameter;
-		}
+       
         
         //$app->enqueueMessage(JText::_('sportsmanagementModelposition save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         // Proceed with the save
-		return parent::save($data);   
+		//return parent::save($data);
+        return true;   
     }
     
     
