@@ -60,7 +60,13 @@ class sportsmanagementModeljoomleagueimport extends JModelList
 
 
 
-function getImportPositions($component = 'joomleague')
+/**
+ * sportsmanagementModeljoomleagueimport::getImportPositions()
+ * 
+ * @param string $component
+ * @return
+ */
+function getImportPositions($component = 'joomleague',$which_table='project_position')
 {
     $app = JFactory::getApplication();
     $db = JFactory::getDbo(); 
@@ -76,7 +82,7 @@ function getImportPositions($component = 'joomleague')
 switch ($component)
 {
     case 'joomleague':
-    $query->join('INNER', '#__'.$component.'_project_position AS pp ON pp.position_id = pos.id');
+    $query->join('INNER', '#__'.$component.'_'.$which_table.' AS pp ON pp.position_id = pos.id');
     //$query->join('INNER', '#__'.$component.'_person AS pp ON pp.position_id = pos.id');
     $query->group('pos.id');
     break;

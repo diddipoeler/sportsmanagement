@@ -61,6 +61,7 @@ class sportsmanagementModelPlaygrounds extends JModelList
         {   
                 $config['filter_fields'] = array(
                         'v.name',
+                        'v.alias',
                         'v.short_name',
                         'v.max_visitors',
                         'v.picture',

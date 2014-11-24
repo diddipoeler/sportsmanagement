@@ -114,7 +114,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							</td>
 							<td class="center">
 								<input tabindex="2" type="text" size="30" maxlength="64" class="inputbox" name="name<?php echo $row->id; ?>" value="<?php echo $row->name; ?>" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
-							</td>
+							<p class="smallsub">
+						<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias));?></p>
+                            </td>
 							<td class="center">
 								<?php
 								$date1 = sportsmanagementHelper::convertDate($row->round_date_first, 1);

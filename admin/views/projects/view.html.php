@@ -196,6 +196,44 @@ class sportsmanagementViewProjects extends sportsmanagementView
 									$this->state->get('filter.project_type'));
         unset($myoptions);
         
+        unset($nation);
+        $nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
+        $mdlassociation = JModelLegacy::getInstance("jlextassociations", "sportsmanagementModel");
+        if ( $res = $mdlassociation->getAssociations() )
+        {
+            $nation = array_merge($nation,$res);
+            $this->assignRef('search_association',$res);
+        }
+        
+        $lists['association'] = array();
+        foreach( $res as $row)
+        {
+            if (array_key_exists($row->country, $lists['association'] )) 
+            {
+            $lists['association'][$row->country][] = $row;
+            //echo "Das Element 'erstes' ist in dem Array vorhanden";
+            }
+            else
+            {
+            $lists['association'][$row->country][] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
+            $lists['association'][$row->country][] = $row;    
+            }
+            
+            
+            
+            //$lists['association'] = $nation;
+        }
+        //$lists['association'] = $nation;
+        
+        
+        $lists['association2']= JHtmlSelect::genericlist(	$nation,
+																'filter_search_association',
+																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+																'value',
+																'text',
+																$this->state->get('filter.search_association'));
+        
+        
         $mdlProjectDivisions = JModelLegacy::getInstance("divisions", "sportsmanagementModel");
         $mdlRounds = JModelLegacy::getInstance("Rounds", "sportsmanagementModel");
       

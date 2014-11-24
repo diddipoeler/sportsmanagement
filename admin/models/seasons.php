@@ -88,6 +88,7 @@ class sportsmanagementModelSeasons extends JModelList
         }
                 $config['filter_fields'] = array(
                         's.name',
+                        's.alias',
                         's.id',
                         's.ordering',
                         's.checked_out',

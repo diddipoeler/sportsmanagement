@@ -9,6 +9,14 @@
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields"
   >
 	
+	<field name="cfg_plz_server" 
+  type="text" 
+  default="http://download.geonames.org/export/zip/" 
+		size="100"
+    label="COM_SPORTSMANAGEMENT_SETTINGS_PLZSERVER"
+		description="COM_SPORTSMANAGEMENT_SETTINGS_PLZSERVER_DESC">
+		</field>
+		
   <field name="cfg_help_server" 
   type="text" 
   default="http://smwiki.diddipoeler.de/index.php/" 

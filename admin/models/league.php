@@ -210,4 +210,45 @@ class sportsmanagementModelleague extends JModelAdmin
 		return parent::save($data);   
     }
     
+    /**
+	 * Method to update checked leagues
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 *
+	 */
+	function saveshort()
+	{
+		$app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Get the input
+        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        $post = JRequest::get('post');
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $app->enqueueMessage('saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        $app->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        }
+        
+        $result=true;
+		for ($x=0; $x < count($pks); $x++)
+		{
+		  
+			$tblLeague = & $this->getTable();
+            
+			$tblLeague->id	= $pks[$x];
+            $tblLeague->associations = $post['association' . $pks[$x]];
+            $tblLeague->country = $post['country' . $pks[$x]];
+
+			if(!$tblLeague->store()) 
+            {
+				//$this->setError($this->_db->getErrorMsg());
+                $app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(), true).'</pre><br>','Error');
+				$result = false;
+			}
+		}
+		return $result;
+	}
+    
 }

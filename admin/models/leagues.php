@@ -67,6 +67,7 @@ class sportsmanagementModelLeagues extends JModelList
         {   
                 $config['filter_fields'] = array(
                         'obj.name',
+                        'obj.alias',
                         'obj.short_name',
                         'obj.country',
                         'st.name',
@@ -95,7 +96,7 @@ class sportsmanagementModelLeagues extends JModelList
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
         
-        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context ->'.$this->context.''),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -105,6 +106,9 @@ class sportsmanagementModelLeagues extends JModelList
 		$this->setState('filter.state', $published);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
+        
+        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_association', 'filter_search_association', '');
+		$this->setState('filter.search_association', $temp_user_request);
         
         $value = JRequest::getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
@@ -132,16 +136,16 @@ class sportsmanagementModelLeagues extends JModelList
 	{
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $search	= $this->getState('filter.search');
-        $search_nation	= $this->getState('filter.search_nation');
+        //$search	= $this->getState('filter.search');
+        //$search_nation	= $this->getState('filter.search_nation');
         
         // Create a new query object.		
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 		// Select some fields
-		$query->select('obj.name,obj.short_name,obj.country,obj.ordering,obj.id,obj.picture,obj.checked_out,obj.checked_out_time');
+		$query->select('obj.name,obj.short_name,obj.alias,obj.associations,obj.country,obj.ordering,obj.id,obj.picture,obj.checked_out,obj.checked_out_time');
         $query->select('st.name AS sportstype');
-		// From the hello table
+		// From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league as obj');
         $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = obj.sports_type_id');
         // Join over the users for the checked out user.
@@ -154,14 +158,19 @@ class sportsmanagementModelLeagues extends JModelList
         $query->select('fed.name AS fedname');
         $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations AS fed ON fed.id = obj.associations');
         
-        if ($search)
+        if ($this->getState('filter.search'))
 		{
-        $query->where('LOWER(obj.name) LIKE '.$db->Quote('%'.$search.'%'));
+        $query->where('LOWER(obj.name) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%'));
         }
         
-        if ($search_nation)
+        if ($this->getState('filter.search_nation'))
 		{
-        $query->where('obj.country LIKE '.$db->Quote(''.$search_nation.''));
+        $query->where('obj.country LIKE '.$db->Quote(''.$this->getState('filter.search_nation').''));
+        }
+        
+        if ($this->getState('filter.search_association'))
+		{
+        $query->where('obj.associations = '.$this->getState('filter.search_association') );
         }
         
 

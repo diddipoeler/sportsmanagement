@@ -80,7 +80,7 @@ class sportsmanagementViewLeague extends sportsmanagementView
         $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
         $this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);
         
-		$extended = sportsmanagementHelper::getExtended($item->extended, 'league');
+		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'league');
 		$this->assignRef( 'extended', $extended );
         $extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'league');		
 		$this->assignRef( 'extendeduser', $extendeduser );

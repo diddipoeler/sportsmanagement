@@ -80,7 +80,7 @@ class sportsmanagementControllerprojectpositions extends JControllerAdmin
 	 * Proxy for getModel.
 	 * @since	1.6
 	 */
-	public function getModel($name = 'Projectposition', $prefix = 'sportsmanagementModel') 
+	public function getModel($name = 'Projectposition', $prefix = 'sportsmanagementModel', $config = Array() ) 
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;

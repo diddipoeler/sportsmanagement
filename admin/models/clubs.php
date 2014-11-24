@@ -103,7 +103,7 @@ class sportsmanagementModelClubs extends JModelList
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
         
-        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context ->'.$this->context.''),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -137,8 +137,8 @@ class sportsmanagementModelClubs extends JModelList
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $search	= $this->getState('filter.search');
-        $search_nation	= $this->getState('filter.search_nation');
-        $search_season = $this->getState('filter.season');
+        //$search_nation	= $this->getState('filter.search_nation');
+        //$search_season = $this->getState('filter.season');
 
         // Create a new query object.		
 		$db = JFactory::getDBO();
@@ -153,16 +153,16 @@ class sportsmanagementModelClubs extends JModelList
         //$query->where('LOWER(a.name) LIKE '.$db->Quote('%'.$search.'%'));
         $query->where(' ( LOWER(a.name) LIKE '.$db->Quote('%'.$search.'%') .' OR LOWER(a.unique_id) LIKE '.$db->Quote('%'.$search.'%') .')' );
         }
-        if ($search_nation)
+        if ($this->getState('filter.search_nation'))
 		{
-        $query->where("a.country = '".$search_nation."'");
+        $query->where('a.country LIKE '.$db->Quote(''.$this->getState('filter.search_nation').''));
         }
         
-        if ($search_season)
+        if ($this->getState('filter.season'))
 		{
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON a.id = t.club_id');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON t.id = st.team_id ');
-        $query->where('st.season_id = '.$search_season);
+        $query->where('st.season_id = '.$this->getState('filter.season'));
         }
         
         

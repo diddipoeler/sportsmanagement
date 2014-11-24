@@ -171,6 +171,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 								<?php
 								echo $row->name;
 								?>
+                                <p class="smallsub">
+						<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias));?></p>
 							</td>
 							<td>
 								<?php

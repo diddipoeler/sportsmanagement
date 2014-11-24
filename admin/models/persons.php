@@ -93,7 +93,7 @@ class sportsmanagementModelPersons extends JModelList
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context<br><pre>'.print_r($this->context,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context ->'.$this->context.''),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -136,8 +136,8 @@ class sportsmanagementModelPersons extends JModelList
         $this->_season_id = $app->getUserState( "$option.season_id", '0' );
         $this->_project_team_id = $app->getUserState( "$option.project_team_id", '0' );
         
-        $search	= $this->getState('filter.search');
-        $search_nation	= $this->getState('filter.search_nation');
+        //$search	= $this->getState('filter.search');
+        //$search_nation	= $this->getState('filter.search_nation');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
@@ -175,17 +175,17 @@ class sportsmanagementModelPersons extends JModelList
             $query->where('sp.season_id = '.$this->_season_id);
         }
         
-        if ($search)
+        if ($this->getState('filter.search'))
 		{
-        $query->where('(LOWER(pl.lastname) LIKE ' . $db->Quote( '%' . $search . '%' ).
-						   'OR LOWER(pl.firstname) LIKE ' . $db->Quote( '%' . $search . '%' ) .
-						   'OR LOWER(pl.nickname) LIKE ' . $db->Quote( '%' . $search . '%' ) .
-                           'OR LOWER(pl.info) LIKE ' . $db->Quote( '%' . $search . '%' ) .
+        $query->where('(LOWER(pl.lastname) LIKE ' . $db->Quote( '%' . $this->getState('filter.search') . '%' ).
+						   'OR LOWER(pl.firstname) LIKE ' . $db->Quote( '%' . $this->getState('filter.search') . '%' ) .
+						   'OR LOWER(pl.nickname) LIKE ' . $db->Quote( '%' . $this->getState('filter.search') . '%' ) .
+                           'OR LOWER(pl.info) LIKE ' . $db->Quote( '%' . $this->getState('filter.search') . '%' ) .
                             ')');
         }
-        if ($search_nation)
+        if ($this->getState('filter.search_nation'))
 		{
-        $query->where("pl.country = '".$search_nation."'");
+        $query->where('pl.country LIKE '.$db->Quote(''.$this->getState('filter.search_nation').''));
         }
         
         if ( JRequest::getVar('layout') == 'assignplayers')

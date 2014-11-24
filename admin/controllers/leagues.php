@@ -56,12 +56,25 @@ jimport('joomla.application.component.controlleradmin');
 class sportsmanagementControllerleagues extends JControllerAdmin
 {
   
-  
+  /**
+	 * Method to update checked leagues
+	 *
+	 * @access	public
+	 * @return	boolean	True on success
+	 *
+	 */
+    function saveshort()
+	{
+	   $model = $this->getModel();
+       $model->saveshort();
+       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+    } 
+    
 	/**
 	 * Proxy for getModel.
 	 * @since	1.6
 	 */
-	public function getModel($name = 'League', $prefix = 'sportsmanagementModel') 
+	public function getModel($name = 'League', $prefix = 'sportsmanagementModel', $config = Array() ) 
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;

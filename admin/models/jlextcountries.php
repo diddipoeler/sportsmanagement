@@ -179,6 +179,8 @@ class sportsmanagementModeljlextcountries extends JModelList
         
         
 	}
+      
+    
     
     /**
      * sportsmanagementModeljlextcountries::getFederation()

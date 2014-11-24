@@ -55,17 +55,55 @@ jimport('joomla.application.component.controlleradmin');
 class sportsmanagementControllerjoomleagueimports extends JControllerAdmin
 {
   
-
-function updateplayer()
+/**
+ * sportsmanagementControllerjoomleagueimports::updateplayerproposition()
+ * 
+ * @return void
+ */
+function updateplayerproposition()
 {
     $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $model	= $this->getModel();  
-        $model->updateplayer();
+        $model->updateplayerproposition();
+    $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view=joomleagueimport&layout=positions'  , false));
+}
+
+/**
+ * sportsmanagementControllerjoomleagueimports::updatestaffproposition()
+ * 
+ * @return void
+ */
+function updatestaffproposition()
+{
+    $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $model	= $this->getModel();  
+        $model->updatestaffproposition();
+    $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view=joomleagueimport&layout=positions'  , false));
+}
+
+
+/**
+ * sportsmanagementControllerjoomleagueimports::updatepositions()
+ * 
+ * @return void
+ */
+function updatepositions()
+{
+    $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $model	= $this->getModel();  
+        $model->updatepositions();
     $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view=joomleagueimport&layout=positions'  , false));
 }
 
   
+  /**
+   * sportsmanagementControllerjoomleagueimports::positions()
+   * 
+   * @return void
+   */
   function positions()
   {
   $app = JFactory::getApplication();

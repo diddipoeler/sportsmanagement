@@ -60,10 +60,17 @@ class sportsmanagementModeljlextassociations extends JModelList
 {
 	var $_identifier = "jlextassociations";
 	
+	/**
+	 * sportsmanagementModeljlextassociations::__construct()
+	 * 
+	 * @param mixed $config
+	 * @return void
+	 */
 	public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
                         'objassoc.name',
+                        'objassoc.alias',
                         'objassoc.short_name',
                         'objassoc.country',
                         'objassoc.id',
@@ -120,6 +127,11 @@ class sportsmanagementModeljlextassociations extends JModelList
 		parent::populateState('objassoc.name', 'asc');
 	}
     
+  /**
+   * sportsmanagementModeljlextassociations::getListQuery()
+   * 
+   * @return
+   */
   protected function getListQuery()
 	{
 		$app = JFactory::getApplication();
@@ -144,7 +156,7 @@ class sportsmanagementModeljlextassociations extends JModelList
         }
         if ( $search_nation )
 		{
-        $query->where("objassoc.country = '".$search_nation."'");
+        $query->where("objassoc.country LIKE '".$search_nation."'");
         }
 
         
@@ -159,6 +171,52 @@ class sportsmanagementModeljlextassociations extends JModelList
         return $query;
 	}
 	
+    
+    /**
+     * sportsmanagementModeljlextassociations::getAssociations()
+     * 
+     * @return
+     */
+    function getAssociations()
+    {
+        $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $search_nation = '';
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($app,true).'</pre>'),'Notice');
+        
+        if ( $app->isAdmin() )
+        {
+        $search_nation	= $this->getState('filter.search_nation');
+        }
+        // Get a db connection.
+        $db = sportsmanagementHelper::getDBConnection();
+        // Create a new query object.
+        $query = $db->getQuery(true);
+        $query->select('id,name,id as value,name as text,country');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations');
+        
+        if ($search_nation)
+		{
+        $query->where('country LIKE '.$db->Quote(''.$search_nation.''));
+        }
+        
+        $query->order('name ASC');
+
+        $db->setQuery($query);
+        if (!$result = $db->loadObjectList())
+        {
+            sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            return array();
+        }
+        foreach ($result as $association)
+        {
+            $association->name = '( '.$association->country.' ) '.   JText::_($association->name);
+            $association->text = $association->name;
+        }
+        return $result;
+    }
 
 
 	

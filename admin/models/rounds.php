@@ -72,6 +72,7 @@ class sportsmanagementModelRounds extends JModelList
                 self::$_project_id	= $app->getUserState( "$option.pid", '0' );
                 $config['filter_fields'] = array(
                         'r.name',
+                        'r.alias',
                         'r.roundcode',
                         'r.round_date_first',
                         'r.round_date_last',

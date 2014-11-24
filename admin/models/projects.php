@@ -114,7 +114,8 @@ class sportsmanagementModelProjects extends JModelList
 		$this->setState('filter.season', $temp_user_request);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
-        
+        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_association', 'filter_search_association', '');
+		$this->setState('filter.search_association', $temp_user_request);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.project_type', 'filter_project_type', '');
 		$this->setState('filter.project_type', $temp_user_request);
         
@@ -148,14 +149,14 @@ class sportsmanagementModelProjects extends JModelList
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         
-        $search	= $this->getState('filter.search');
-        $search_league = $this->getState('filter.league');
-        $search_sports_type	= $this->getState('filter.sports_type');
-        $search_season = $this->getState('filter.season');
-        $filter_state = $this->getState('filter.state');
-        $search_nation = $this->getState('filter.search_nation');
-        $search_project_type = $this->getState('filter.project_type');
-        $search_userfields = $this->getState('filter.userfields');
+        //$search	= $this->getState('filter.search');
+        //$search_league = $this->getState('filter.league');
+        //$search_sports_type	= $this->getState('filter.sports_type');
+        //$search_season = $this->getState('filter.season');
+        //$filter_state = $this->getState('filter.state');
+        //$search_nation = $this->getState('filter.search_nation');
+        //$search_project_type = $this->getState('filter.project_type');
+        //$search_userfields = $this->getState('filter.userfields');
         
         // Create a new query object.
         $db = JFactory::getDBO();
@@ -175,7 +176,7 @@ class sportsmanagementModelProjects extends JModelList
         $subQuery2->where('ev.fieldvalue != '.$db->Quote(''.''));
         
 
-        $query->select('p.id,p.ordering,p.published,p.project_type,p.name,p.checked_out,p.checked_out_time,p.sports_type_id,p.current_round,p.picture ');
+        $query->select('p.id,p.ordering,p.published,p.project_type,p.name,p.alias,p.checked_out,p.checked_out_time,p.sports_type_id,p.current_round,p.picture ');
         $query->select('st.name AS sportstype');
         $query->select('s.name AS season');
         $query->select('l.name AS league,l.country');
@@ -191,43 +192,52 @@ class sportsmanagementModelProjects extends JModelList
     $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup AS ag ON ag.id = p.agegroup_id');
     $query->join('LEFT', '#__users AS u ON u.id = p.checked_out');
   
-  if ($search_userfields)
+        if ($this->getState('filter.userfields'))
 		{
 		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields_values as ev ON ev.jl_id = p.id');  
 		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields as ef ON ef.id = ev.field_id');  
         //$query->where('ef.id LIKE ' . $db->Quote( '' . $search_userfields . '' ));
-        $query->where('ef.id = ' . $search_userfields );
+        $query->where('ef.id = ' . $this->getState('filter.userfields') );
         }
-  
 
-        if ($search)
+        if ($this->getState('filter.search'))
 		{
-        $query->where('LOWER(p.name) LIKE ' . $db->Quote( '%' . $search . '%' ));
-        }
-        if ($search_league)
-		{
-        $query->where('p.league_id = ' . $search_league);
-        }
-        if ($search_sports_type)
-		{
-        $query->where('p.sports_type_id = ' . $db->Quote($search_sports_type));
-        }
-        if ($search_season)
-		{
-        $query->where('p.season_id = ' . $search_season);
-        }
-        if (is_numeric($filter_state) )
-		{
-		$query->where('p.published = '.$filter_state);	
-		}
-        if ($search_nation)
-		{
-        $query->where("l.country = '".$search_nation."'");
+        $query->where('LOWER(p.name) LIKE ' . $db->Quote( '%' . $this->getState('filter.search') . '%' ));
         }
         
-        if ($search_project_type)
+        if ($this->getState('filter.league'))
 		{
-        $query->where('p.project_type LIKE ' . $db->Quote( '' . $search_project_type . '' ));
+        $query->where('p.league_id = ' . $this->getState('filter.league'));
+        }
+        
+        if ($this->getState('filter.sports_type'))
+		{
+        $query->where('p.sports_type_id = ' . $this->getState('filter.sports_type') );
+        }
+        
+        if ($this->getState('filter.season'))
+		{
+        $query->where('p.season_id = ' . $this->getState('filter.season'));
+        }
+        
+        if (is_numeric($this->getState('filter.state')) )
+		{
+		$query->where('p.published = '.$this->getState('filter.state'));	
+		}
+        
+        if ($this->getState('filter.search_nation'))
+		{
+        $query->where('l.country LIKE ' . $db->Quote( '' . $this->getState('filter.search_nation') . '' ));
+        }
+        
+        if ($this->getState('filter.search_association'))
+		{
+        $query->where("l.associations = ".$this->getState('filter.search_association') );
+        }
+        
+        if ($this->getState('filter.project_type'))
+		{
+        $query->where('p.project_type LIKE ' . $db->Quote( '' . $this->getState('filter.project_type') . '' ));
         }
      
      $query->order($db->escape($this->getState('list.ordering', 'p.name')).' '.

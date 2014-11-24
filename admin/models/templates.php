@@ -70,7 +70,9 @@ class sportsmanagementModelTemplates extends JModelList
                         'tmpl.template',
                         'tmpl.title',
                         'tmpl.id',
-                        'tmpl.ordering'
+                        'tmpl.ordering',
+                        'tmpl.checked_out_time',
+                        'tmpl.checked_out'
                         );
                 parent::__construct($config);
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
@@ -130,7 +132,7 @@ class sportsmanagementModelTemplates extends JModelList
         
         $this->_project_id	= $app->getUserState( "$option.pid", '0' );
         
-        $query->select('tmpl.template,tmpl.title,tmpl.id,tmpl.checked_out,u.name AS editor,(0) AS isMaster');
+        $query->select('tmpl.template,tmpl.title,tmpl.id,tmpl.checked_out,u.name AS editor,(0) AS isMaster,tmpl.checked_out_time');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config AS tmpl');
         $query->join('LEFT', '#__users AS u ON u.id = tmpl.checked_out');
         

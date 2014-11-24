@@ -133,9 +133,10 @@ JHtml::_('behavior.modal');
 							?>
 							<td class="center">
                             <?php
-                            if ($row->checked_out) : ?>
+                            if ( ( $row->checked_out != $this->user->get ('id') ) && $row->checked_out ) : 
+                             ?>
 										<?php echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'leagues.', $canCheckin); ?>
-									<?php endif; ?>
+									<?php else: ?>
 								<a href="<?php echo $link; ?>">
 									<?php
 									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_EDIT_DETAILS');
@@ -143,16 +144,38 @@ JHtml::_('behavior.modal');
 													$imageTitle,'title= "'.$imageTitle.'"');
 									?>
 								</a>
+                                <?php endif; ?>
 							</td>
 							<?php
 						
 						?>
-						<td><?php echo $row->name; ?></td>
+						<td><?php echo $row->name; ?>
+                        <p class="smallsub">
+						<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias));?></p>
+                        </td>
 						<td><?php echo $row->short_name; ?></td>
-						<td class="center"><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
+						<td class="center">
+                        <?php 
+                        echo JSMCountries::getCountryFlag($row->country); 
+                        $append =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
+                        echo JHtml::_(	'select.genericlist',$this->lists['nation'],'country'.$row->id,
+												'class="inputbox" size="1"'.$append,'value','text',$row->country);
+                        ?>
+                        </td>
                         <td class="center"><?php echo JText::_($row->sportstype); ?></td>
                         <td class="center"><?php echo JText::_($row->agegroup); ?></td>
-                        <td class="center"><?php echo JText::_($row->fedname); ?></td>
+                        <td class="center">
+                        <?php 
+                        //echo JText::_($row->fedname); 
+                        
+                         
+                        $append =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
+                        echo JHtml::_(	'select.genericlist',$this->lists['association'][$row->country],'association'.$row->id,
+												'class="inputbox" size="1"'.$append,'value','text',$row->associations); 
+                        
+                        
+                        ?>
+                        </td>
                         <td class="center">
 								<?php
 								//if (empty($row->picture) || !JFile::exists(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$row->picture))

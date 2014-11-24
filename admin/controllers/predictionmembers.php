@@ -185,7 +185,7 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
 			JError::raiseError(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_DEL_ITEM'));
 		}
 
-		$model =& $this->getModel('predictionmember');
+		$model = $this->getModel('predictionmember');
 
 		if (!$model->deletePredictionResults($cid,$prediction_id))
 		{
@@ -212,7 +212,7 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
 	 * Proxy for getModel.
 	 * @since	1.6
 	 */
-	public function getModel($name = 'predictionmember', $prefix = 'sportsmanagementModel') 
+	public function getModel($name = 'predictionmember', $prefix = 'sportsmanagementModel', $config = Array() ) 
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;

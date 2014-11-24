@@ -55,6 +55,20 @@ jimport('joomla.application.component.controlleradmin');
  */
 class sportsmanagementControllerjlextcountries extends JControllerAdmin
 {
+  
+  
+  /**
+   * sportsmanagementControllerjlextcountries::importplz()
+   * 
+   * @return void
+   */
+  function importplz()
+    {
+    $model = $this->getModel();
+       $model->importplz();
+       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));    
+    }    
+    
   /**
 	 * Save the manual order inputs from the categories list page.
 	 *
@@ -82,7 +96,7 @@ class sportsmanagementControllerjlextcountries extends JControllerAdmin
 	 * Proxy for getModel.
 	 * @since	1.6
 	 */
-	public function getModel($name = 'Jlextcountry', $prefix = 'sportsmanagementModel') 
+	public function getModel($name = 'Jlextcountry', $prefix = 'sportsmanagementModel',$config = array() ) 
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;

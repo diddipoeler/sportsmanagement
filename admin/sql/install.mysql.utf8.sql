@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_associations` (
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
+  `cr_picture` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `country` (`country`),
   KEY `parent_id` (`parent_id`),
@@ -44,6 +45,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_federations` (
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
+  `cr_picture` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
@@ -96,6 +98,9 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_club` (
   `twitter` VARCHAR(250) NOT NULL DEFAULT '' ,
   `facebook` VARCHAR(250) NOT NULL DEFAULT '' ,
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
+  `cr_logo_big` varchar(255) DEFAULT NULL,
+  `cr_logo_middle` varchar(255) DEFAULT NULL,
+  `cr_logo_small` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `standard_playground` (`standard_playground`),
   KEY `country` (`country`)
@@ -573,6 +578,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_person` (
   `sports_type_id` TINYINT(1) NOT NULL DEFAULT '1' ,
   `contact_id` int(11) DEFAULT NULL,
   `jl_update` TINYINT(1) NOT NULL DEFAULT '0',
+  `cr_picture` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `country` (`country`),
@@ -611,6 +617,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_playground` (
   `extendeduser` TEXT NULL ,
   `unique_id` VARCHAR(100) NULL DEFAULT NULL ,
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
+  `cr_picture` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `club_id` (`club_id`),
   KEY `country` (`country`)
@@ -1888,5 +1895,6 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_countries_plz` (
   `modified` date NOT NULL DEFAULT '0000-00-00',
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   `modified_by` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `schluessel1` (`country_code`,`postal_code`,`place_name`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

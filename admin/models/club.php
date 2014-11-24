@@ -243,7 +243,7 @@ class sportsmanagementModelclub extends JModelAdmin
 	}
     
     /**
-	 * Method to update checked project teams
+	 * Method to update checked clubs
 	 *
 	 * @access	public
 	 * @return	boolean	True on success
@@ -251,7 +251,7 @@ class sportsmanagementModelclub extends JModelAdmin
 	 */
 	function saveshort()
 	{
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // Get the input

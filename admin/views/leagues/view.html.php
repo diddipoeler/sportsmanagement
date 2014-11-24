@@ -72,6 +72,8 @@ class sportsmanagementViewLeagues extends sportsmanagementView
         $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
+        
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' state<br><pre>'.print_r($this->state,true).'</pre>'),'');
 
 
         $starttime = microtime(); 
@@ -102,9 +104,46 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 																'text',
 																$this->state->get('filter.search_nation'));
 
-
-
-		$this->assign('user',JFactory::getUser());
+		unset($nation);
+        $nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
+        $mdlassociation = JModelLegacy::getInstance("jlextassociations", "sportsmanagementModel");
+        if ( $res = $mdlassociation->getAssociations() )
+        {
+            $nation = array_merge($nation,$res);
+            $this->assignRef('search_association',$res);
+        }
+        
+        $lists['association'] = array();
+        foreach( $res as $row)
+        {
+            if (array_key_exists($row->country, $lists['association'] )) 
+            {
+            $lists['association'][$row->country][] = $row;
+            //echo "Das Element 'erstes' ist in dem Array vorhanden";
+            }
+            else
+            {
+            $lists['association'][$row->country][] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
+            $lists['association'][$row->country][] = $row;    
+            }
+            
+            
+            
+            //$lists['association'] = $nation;
+        }
+        //$lists['association'] = $nation;
+        
+        
+        $lists['association2']= JHtmlSelect::genericlist(	$nation,
+																'filter_search_association',
+																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+																'value',
+																'text',
+																$this->state->get('filter.search_association'));
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' association<br><pre>'.print_r($lists['association'],true).'</pre>'),'');
+        
+        $this->assign('user',JFactory::getUser());
 		$this->assignRef('lists',$lists);
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
@@ -138,6 +177,8 @@ class sportsmanagementViewLeagues extends sportsmanagementView
         
         // Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_TITLE');
+        JToolBarHelper::apply('leagues.saveshort');
+        
 		JToolBarHelper::addNew('league.add');
 		JToolBarHelper::editList('league.edit');
 		JToolBarHelper::custom('league.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);

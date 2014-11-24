@@ -191,6 +191,8 @@ JHtml::_('behavior.modal');
 								?><a href="<?php echo $link2panel; ?>"><?php echo $row->name; ?></a><?php
 							
 							?>
+                            <p class="smallsub">
+						<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias));?></p>
 						</td>
 						<td><?php echo $row->league; ?></td>
                         <td class="center"><?php echo JSMCountries::getCountryFlag($row->country); ?></td>

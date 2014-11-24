@@ -66,6 +66,7 @@ class sportsmanagementModelDivisions extends JModelList
         {   
                 $config['filter_fields'] = array(
                         'dv.name',
+                        'dv.alias',
                         'dv.id',
                         'dv.ordering',
                         'dv.picture'

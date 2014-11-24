@@ -59,7 +59,98 @@ class sportsmanagementModeljoomleagueimports extends JModelList
 
 static $db_num_rows = 0;
 
-function updateplayer()
+
+/**
+ * sportsmanagementModeljoomleagueimports::updateplayerproposition()
+ * 
+ * @return void
+ */
+function updateplayerproposition()
+{
+$app = JFactory::getApplication();
+    $db = JFactory::getDbo(); 
+    $query = $db->getQuery(true);
+    $option = JRequest::getCmd('option');    
+    
+
+// Select some fields
+            $query = $db->getQuery(true);
+            $query->clear();
+		    $query->select('tp.project_position_id,tp.import');
+            // From joomleague table
+		    $query->from('#__joomleague_team_player AS tp');
+            $query->where('tp.import != 0');
+            $query->group('tp.import');
+$db->setQuery($query);
+$result = $db->loadObjectList();
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
+
+foreach ( $result as $row )
+{
+// Create an object for the record we are going to joomleague update.
+                $object = new stdClass();
+                // Must be a valid primary key value.
+                $object->id = $row->import;
+                $object->project_position_id = $row->project_position_id;
+                // Update their details in the users table using id as the primary key.
+                $result = JFactory::getDbo()->updateObject('#__sportsmanagement_season_team_person_id', $object, 'id');
+    
+}
+
+
+}
+
+
+/**
+ * sportsmanagementModeljoomleagueimports::updatestaffproposition()
+ * 
+ * @return void
+ */
+function updatestaffproposition()
+{
+$app = JFactory::getApplication();
+    $db = JFactory::getDbo(); 
+    $query = $db->getQuery(true);
+    $option = JRequest::getCmd('option');    
+    
+
+// Select some fields
+            $query = $db->getQuery(true);
+            $query->clear();
+		    $query->select('tp.project_position_id,tp.import');
+            // From joomleague table
+		    $query->from('#__joomleague_team_staff AS tp');
+            $query->where('tp.import != 0');
+            $query->group('tp.import');
+$db->setQuery($query);
+$result = $db->loadObjectList();
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
+
+foreach ( $result as $row )
+{
+// Create an object for the record we are going to joomleague update.
+                $object = new stdClass();
+                // Must be a valid primary key value.
+                $object->id = $row->import;
+                $object->project_position_id = $row->project_position_id;
+                // Update their details in the users table using id as the primary key.
+                $result = JFactory::getDbo()->updateObject('#__sportsmanagement_season_team_person_id', $object, 'id');
+    
+}
+
+
+}
+
+
+
+/**
+ * sportsmanagementModeljoomleagueimports::updatepositions()
+ * 
+ * @return void
+ */
+function updatepositions()
 {
 $app = JFactory::getApplication();
     $db = JFactory::getDbo(); 
@@ -354,26 +445,41 @@ function import()
             
             foreach ( $jl_fields[$jl[$value]] as $key2 => $value2 )
             {
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'key<br><pre>'.print_r($key,true).'</pre>'),'');
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'value<br><pre>'.print_r($value,true).'</pre>'),'');
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'key2<br><pre>'.print_r($key2,true).'</pre>'),'');
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'value2<br><pre>'.print_r($value2,true).'</pre>'),'');
                 
-                if (array_key_exists($key2, $jsm_field_array)) 
+                switch ($key2)
                 {
+                    case 'import':
+                    case 'ordering':
+                    case 'checked_out':
+                    case 'checked_out_time':
+                    case 'modified':
+                    case 'modified_by':
+                    case 'out':
+                    break;
+                    default:
+                    if (array_key_exists($key2, $jsm_field_array)) 
+                    {
+                    //$exportfields[] = $db->Quote($key2);
                     $exportfields[] = $key2;
+                    }
+                    break;
                 }
+                
             }
             
             $select_fields = implode(',', $exportfields);
             
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'exportfields<br><pre>'.print_r($exportfields,true).'</pre>'),'');
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'select_fields<br><pre>'.print_r($select_fields,true).'</pre>'),'');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'exportfields<br><pre>'.print_r($exportfields,true).'</pre>'),'');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'select_fields<br><pre>'.print_r($select_fields,true).'</pre>'),'');
             
             $query->clear();
             $query = 'INSERT INTO '.$jsm[$value].' ('.$select_fields.') SELECT '.$select_fields.' FROM '.$jl[$value];
             $db->setQuery($query);
             if (!$db->query())
 		    {
-			$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+			$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		    }
             else
             {
