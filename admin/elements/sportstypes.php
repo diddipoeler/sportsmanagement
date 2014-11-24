@@ -67,7 +67,7 @@ class JFormFieldSportsTypes extends JFormField
         $option = JRequest::getCmd('option');
         // welche tabelle soll genutzt werden
         $params = JComponentHelper::getParams( $option );
-        $database_table	= $params->get( 'cfg_which_database_table' );
+        //$database_table	= $params->get( 'cfg_which_database_table' );
         
 		$extension = "COM_SPORTSMANAGEMENT";
 		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
@@ -76,12 +76,12 @@ class JFormFieldSportsTypes extends JFormField
 		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
 		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		
-		$query='SELECT id, name FROM #__'.$database_table.'_sports_type ORDER BY name ASC ';
+		$query='SELECT id, name FROM #__sportsmanagement_sports_type ORDER BY name ASC ';
 		$db->setQuery($query);
 		if (!$result=$db->loadObjectList())
 		{
 			$app->enqueueMessage(JText::_('JFormFieldSportsTypes<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-      sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+      sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		foreach ($result as $sportstype)
