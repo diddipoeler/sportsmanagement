@@ -242,7 +242,12 @@ class sportsmanagementModelEventtypes extends JModelList
         // Join over the sportstype
 		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pe ON pe.eventtype_id=p.id');
 		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = p.sports_type_id');
+        
+        if ( $id )
+        {
         $query->where('pe.position_id = '.$id);
+        }
+        
         $query->order('pe.ordering ASC');
         
 //        $query='	SELECT	  

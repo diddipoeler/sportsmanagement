@@ -69,7 +69,7 @@ class JFormFieldSportsTypes extends JFormField
         $params = JComponentHelper::getParams( $option );
         $database_table	= $params->get( 'cfg_which_database_table' );
         
-		$extension = "COM_SPORTSMANAGEMENT_sport_types";
+		$extension = "COM_SPORTSMANAGEMENT";
 		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
 		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
 		||	$lang->load($extension, $source, null, false, false)

@@ -77,7 +77,7 @@ class JFormFieldsportstypelist extends JFormFieldList
 			$query = $db->getQuery(true);
 			
 			$query->select('id AS value, name AS text');
-			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type');
+			$query->from('#__sportsmanagement_sports_type');
 			$query->order('name');
 			$db->setQuery($query);
 			$options = $db->loadObjectList();

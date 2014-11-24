@@ -123,7 +123,7 @@ class sportsmanagementModelSportsTypes extends JModelList
 	{
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $search	= $this->getState('filter.search');
+        //$search	= $this->getState('filter.search');
         // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
@@ -134,9 +134,10 @@ class sportsmanagementModelSportsTypes extends JModelList
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS s');
         $query->join('LEFT', '#__users AS uc ON uc.id = s.checked_out');
-        if ($search)
+        
+        if ($this->getState('filter.search'))
 		{
-        $query->where('LOWER(s.name) LIKE '.$db->Quote('%'.$search.'%'));
+        $query->where('LOWER(s.name) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%'));
         }
         
         $query->order($db->escape($this->getState('list.ordering', 's.name')).' '.
@@ -165,7 +166,11 @@ class sportsmanagementModelSportsTypes extends JModelList
 	{
 		$app = JFactory::getApplication();
         $db = JFactory::getDBO();
-		$query='SELECT id, name, name AS text FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type ORDER BY name ASC ';
+        $query	= $db->getQuery(true);
+        $query->select('id, name, name AS text');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type');
+        $query->order('name ASC');
+		//$query='SELECT id, name, name AS text FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type ORDER BY name ASC ';
 		$db->setQuery($query);
 		if (!$result=$db->loadObjectList())
 		{
