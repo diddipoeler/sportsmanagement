@@ -126,9 +126,9 @@ class sportsmanagementModelEventtypes extends JModelList
 	{
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $search	= $this->getState('filter.search');
-        $search_state	= $this->getState('filter.state');
-        $search_sports_type	= $this->getState('filter.sports_type');
+        //$search	= $this->getState('filter.search');
+        //$search_state	= $this->getState('filter.state');
+        //$search_sports_type	= $this->getState('filter.sports_type');
         
         //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         // Create a new query object.
@@ -146,19 +146,20 @@ class sportsmanagementModelEventtypes extends JModelList
         // Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
-        
-        
-        if ($search)
+                
+        if ($this->getState('filter.search'))
 		{
-        $query->where('LOWER(obj.name) LIKE '.$this->_db->Quote('%'.$search.'%'));
+        $query->where('LOWER(obj.name) LIKE '.$this->_db->Quote('%'.$this->getState('filter.search').'%'));
         }
-		if (is_numeric($search_state))
+		
+        if (is_numeric($this->getState('filter.state')))
 		{
-        $query->where('obj.published = '.$search_state);
+        $query->where('obj.published = '.$this->getState('filter.state'));
         }
-        if ($search_sports_type)
+        
+        if ($this->getState('filter.sports_type'))
 		{
-        $query->where('obj.sports_type_id = '.$this->_db->Quote($filter_sports_type));
+        $query->where('obj.sports_type_id = '.$this->getState('filter.sports_type') );
         }
         
         
@@ -228,7 +229,7 @@ class sportsmanagementModelEventtypes extends JModelList
 	* @return  array
 	* @since 0.1
 	*/
-	function getEventsPosition($id)
+	function getEventsPosition($id=0)
 	{
 		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();

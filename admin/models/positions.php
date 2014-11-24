@@ -126,9 +126,9 @@ class sportsmanagementModelPositions extends JModelList
 		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
         
-        $search	= $this->getState('filter.search');
-        $search_state	= $this->getState('filter.state');
-        $search_sports_type	= $this->getState('filter.sports_type');
+        //$search	= $this->getState('filter.search');
+        //$search_state	= $this->getState('filter.state');
+        //$search_sports_type	= $this->getState('filter.sports_type');
         
         // Create a new query object.		
 		$db = JFactory::getDBO();
@@ -144,17 +144,19 @@ class sportsmanagementModelPositions extends JModelList
         $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pop ON pop.id = po.parent_id');
         $query->join('LEFT', '#__users AS u ON u.id=po.checked_out');
         
-        if ($search)
+        if ($this->getState('filter.search'))
 		{
-        $query->where('LOWER(po.name) LIKE '.$db->Quote('%'.$search.'%'));
+        $query->where('LOWER(po.name) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%'));
         }
-        if (is_numeric($search_state))
+        
+        if (is_numeric($this->getState('filter.state')))
 		{
-        $query->where('po.published = '.$search_state);
+        $query->where('po.published = '.$this->getState('filter.state'));
         }
-        if ($search_sports_type)
+        
+        if ($this->getState('filter.sports_type'))
 		{
-        $query->where('po.sports_type_id = '.$db->Quote($search_sports_type));
+        $query->where('po.sports_type_id = '.$this->getState('filter.sports_type') );
         }
 
 	
