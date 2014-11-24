@@ -319,11 +319,20 @@
 			<option value="2">COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_OPTION2_USER_PROFILE</option>
 		</field>
 
+<!--
 		<field 	name="contact_cat_id" type="text" default="0" 
 				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_CONTACT_ID" 
 				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_CONTACT_ID">
 		</field>
+-->
 
+    <field name="contact_cat_id"
+			addfieldpath="/administrator/components/com_contact/models/fields"
+			type="modal_contacts"
+			description="COM_CONTACT_SELECT_CONTACT_DESC"
+			label="COM_CONTACT_SELECT_CONTACT_LABEL"
+			required="false"/>
+			
 	</fieldset>
 	
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS" 

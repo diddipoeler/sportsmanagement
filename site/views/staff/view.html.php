@@ -69,9 +69,9 @@ class sportsmanagementViewStaff extends JViewLegacy
 		$model = $this->getModel();
         
 //        $mdlPerson = JModelLegacy::getInstance("Person", "sportsmanagementModel");
-        $model->projectid = JRequest::getInt( 'p', 0 );
-		$model->personid = JRequest::getInt( 'pid', 0 );
-		$model->teamplayerid = JRequest::getInt( 'pt', 0 );
+        $model::$projectid = JRequest::getInt( 'p', 0 );
+		$model::$personid = JRequest::getInt( 'pid', 0 );
+		$model::$teamplayerid = JRequest::getInt( 'pt', 0 );
 //        $mdlPerson->projectid = JRequest::getInt( 'p', 0 );
 //		$mdlPerson->personid = JRequest::getInt( 'pid', 0 );
 //		$mdlPerson->teamplayerid = JRequest::getInt( 'pt', 0 );

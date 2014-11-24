@@ -51,7 +51,7 @@ JHtml::_( 'behavior.mootools' );
 $modalheight = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_height', 600);
 $modalwidth = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_width', 900);
 
-echo ' default_sectionheader showediticon<br><pre>'.print_r($this->showediticon,true).'</pre>'
+//echo ' default_sectionheader showediticon<br><pre>'.print_r($this->showediticon,true).'</pre>'
 
 ?>
 <table width="100%" class="contentpaneopen">
