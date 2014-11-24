@@ -53,17 +53,18 @@ jimport('joomla.application.component.model');
  */
 class sportsmanagementModelStaff extends JModelLegacy
 {
-	var $projectid		= 0;
-	var $personid		  = 0;
-	var $teamplayerid	= 0;
+	static $projectid = 0;
+	static $personid = 0;
+	static $teamplayerid = 0;
+    static $teamid = 0;
     
     /**
 	 * data array for staff history
 	 * @var array
 	 */
-	var $_history = null;
+	static $_history = null;
     
-    var $_inproject = null;
+    static $_inproject = null;
     
     static $cfg_which_database = 0;
 
@@ -76,9 +77,9 @@ class sportsmanagementModelStaff extends JModelLegacy
  	function __construct()
  	{
  		
- 		$this->projectid = JRequest::getInt('p',0);
- 		$this->personid = JRequest::getInt('pid',0);
- 		$this->teamid = JRequest::getInt('tid',0);
+ 		self::$projectid = JRequest::getInt('p',0);
+ 		self::$personid = JRequest::getInt('pid',0);
+ 		self::$teamid = JRequest::getInt('tid',0);
         self::$cfg_which_database = JRequest::getInt( 'cfg_which_database', 0 );
         parent::__construct();
  	}
@@ -94,10 +95,10 @@ class sportsmanagementModelStaff extends JModelLegacy
 	   $app = JFactory::getApplication();
     $option = JRequest::getCmd('option');
         // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
        
-		if (is_null($this->_inproject))
+		if (is_null(self::$_inproject))
 		{
 		  $query->select('ts.*,ts.picture as picture');
           $query->select('pos.name AS position_name');
@@ -109,14 +110,14 @@ class sportsmanagementModelStaff extends JModelLegacy
           $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = ts.project_position_id');
           $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');
         
-          $query->where('pt.project_id = '.$db->Quote($this->projectid));
-          $query->where('ts.person_id = '.$db->Quote($this->personid));
+          $query->where('pt.project_id = '.self::$projectid );
+          $query->where('ts.person_id = '.self::$personid );
           $query->where('ts.published = 1');
           
 			$db->setQuery($query);
-			$this->_inproject = $db->loadObject();
+			self::$_inproject = $db->loadObject();
 		}
-		return $this->_inproject;
+		return self::$_inproject;
 	}
 
 	/**
@@ -132,14 +133,14 @@ class sportsmanagementModelStaff extends JModelLegacy
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 		$query = $db->getQuery(true);
         
         //$app->enqueueMessage(JText::_('getStaffHistory personid<br><pre>'.print_r($this->personid,true).'</pre>'),'');
         
         //if (empty($this->_history))
 		//{
-			$personid = $this->personid;
+			$personid = self::$personid;
             
             // Select some fields
 		    $query->select('pr.id AS pid,pr.firstname,pr.lastname');
@@ -157,24 +158,24 @@ class sportsmanagementModelStaff extends JModelLegacy
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = tt.project_id');
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id = p.season_id');
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON l.id = p.league_id');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = o.project_position_id');
+            $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = o.project_position_id');
             $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id ');
-            $query->where('pr.id='.$db->Quote($personid));
+            $query->where('pr.id = '.self::$personid );
             $query->where('pr.published = 1');
             $query->where('o.published = 1');
             $query->where('p.published = 1');
             $query->where('o.persontype = 2');
             $query->order('s.ordering '.$order.', l.ordering ASC, p.name ASC ');
             $db->setQuery($query);
-			$this->_history = $db->loadObjectList();
+			self::$_history = $db->loadObjectList();
    
 		//}
-        if ( !$this->_history )
+        if ( !self::$_history )
         {
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
         
-		return $this->_history;
+		return self::$_history;
 	}
 
 //	/**
@@ -210,7 +211,7 @@ class sportsmanagementModelStaff extends JModelLegacy
 	   $app = JFactory::getApplication();
     $option = JRequest::getCmd('option');
         // Create a new query object.		
-	   $db = JFactory::getDBO();
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
        
 		$query='	SELECT	count(mp.id) AS present
@@ -233,8 +234,11 @@ class sportsmanagementModelStaff extends JModelLegacy
 	function getStats()
 	{
 		$staff = self::getTeamStaff();
-		if(!isset($staff->position_id)){$staff->position_id=0;}
-		$result = sportsmanagementModelProject::getProjectStats(0,$staff->position_id);
+		if(!isset($staff->position_id))
+        {
+            $staff->position_id=0;
+        }
+		$result = sportsmanagementModelProject::getProjectStats(0,$staff->position_id,self::$cfg_which_database);
 		return $result;
 	}
 
@@ -245,8 +249,11 @@ class sportsmanagementModelStaff extends JModelLegacy
 	function getStaffStats()
 	{
 		$staff = self::getTeamStaff();
-		if (!isset($staff->position_id)){$staff->position_id=0;}
-		$stats = sportsmanagementModelProject::getProjectStats(0,$staff->position_id);
+		if (!isset($staff->position_id))
+        {
+            $staff->position_id=0;
+        }
+		$stats = sportsmanagementModelProject::getProjectStats(0,$staff->position_id,self::$cfg_which_database);
 		$history = self::getStaffHistory();
 		$result = array();
 		if(count($history) > 0 && count($stats) > 0)
@@ -273,7 +280,7 @@ class sportsmanagementModelStaff extends JModelLegacy
 	function getHistoryStaffStats()
 	{
 		$staff = self::getTeamStaff();
-		$stats = sportsmanagementModelProject::getProjectStats(0,$staff->position_id);
+		$stats = sportsmanagementModelProject::getProjectStats(0,$staff->position_id,self::$cfg_which_database);
 		$result = array();
 		if (count($stats) > 0)
 		{

@@ -1018,7 +1018,7 @@ class sportsmanagementModelPlayer extends JModelLegacy
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS stp ON stp.id = mp.teamplayer_id');
             
             $query->where('mp.teamplayer_id IN ( '.$tpid_list.' )');
-            $query->where('p.id='.$db->Quote($this->projectid));
+            $query->where('p.id = '.self::$projectid );
             $query->where('m.published = 1');
             $query->where('p.published = 1');
             
