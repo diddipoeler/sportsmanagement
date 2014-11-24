@@ -1,4 +1,4 @@
-ALTER TABLE  `#__sportsmanagement_countries_plz` ADD UNIQUE  `schluessel1` (  `country_code` ,  `postal_code` ,  `place_name` )
+ALTER TABLE  `#__sportsmanagement_countries_plz` ADD UNIQUE  `schluessel1` (  `country_code` ,  `postal_code` ,  `place_name` ) ;
 
 ALTER TABLE  `#__sportsmanagement_associations` ADD `cr_picture` varchar(255) DEFAULT NULL ;
 ALTER TABLE  `#__sportsmanagement_federations` ADD `cr_picture` varchar(255) DEFAULT NULL ;
