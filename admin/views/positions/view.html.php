@@ -148,11 +148,11 @@ $starttime = microtime();
 		//JToolBarHelper::deleteList('','position.delete');
         if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
         {
-		JToolbarHelper::trash('position.trash');
+		JToolbarHelper::trash('positions.trash');
         }
         else
         {
-        JToolBarHelper::deleteList('', 'position.delete', 'JTOOLBAR_DELETE');    
+        JToolBarHelper::deleteList('', 'positions.delete', 'JTOOLBAR_DELETE');    
         }
 
 		
