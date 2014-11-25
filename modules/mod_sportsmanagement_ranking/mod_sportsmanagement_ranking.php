@@ -41,6 +41,11 @@
 //no direct access
 defined('_JEXEC') or die('Restricted access');
 
+if (! defined('DS'))
+{
+	define('DS', DIRECTORY_SEPARATOR);
+}
+
 if ( !defined('JSM_PATH') )
 {
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );

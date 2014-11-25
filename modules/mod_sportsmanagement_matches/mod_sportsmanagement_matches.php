@@ -38,9 +38,14 @@
 */
 
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
-if ( !defined('JSM_PATH') )	
-{	
-    DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
+if (! defined('DS'))
+{
+	define('DS', DIRECTORY_SEPARATOR);
+}
+
+if ( !defined('JSM_PATH') )
+{
+DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');  

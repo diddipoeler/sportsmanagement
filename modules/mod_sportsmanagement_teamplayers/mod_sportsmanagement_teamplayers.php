@@ -40,7 +40,11 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-//require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'sportsmanagement.php');
+if (! defined('DS'))
+{
+	define('DS', DIRECTORY_SEPARATOR);
+}
+
 if ( !defined('JSM_PATH') )
 {
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );

@@ -40,7 +40,8 @@
  
  //no direct access
 defined('_JEXEC') or die('Restricted access'); 
-if(!defined('DS')){
+if(!defined('DS'))
+{
 define('DS',DIRECTORY_SEPARATOR);
 error_reporting(0);
 }

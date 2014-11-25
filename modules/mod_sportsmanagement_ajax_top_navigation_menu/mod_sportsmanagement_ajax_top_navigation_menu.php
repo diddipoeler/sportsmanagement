@@ -39,6 +39,17 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access'); 
+
+if (! defined('DS'))
+{
+	define('DS', DIRECTORY_SEPARATOR);
+}
+
+if ( !defined('JSM_PATH') )
+{
+DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
+}
+
 require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'route.php');
 
 $mainframe = JFactory::getApplication();
@@ -71,6 +82,21 @@ if ( !defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO') )
 {
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$show_query_debug_info );
 }
+
+if ( !defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE') )
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',$paramscomponent->get( 'cfg_which_database' ) );
+}
+
+if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$cfg_which_database_server );    
+}
+else
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );    
+}
+
 
 // get helper
 require_once (dirname(__FILE__).DS.'helper.php');

@@ -21,6 +21,16 @@
 
 defined('_JEXEC') or die();
 
+if (! defined('DS'))
+{
+	define('DS', DIRECTORY_SEPARATOR);
+}
+
+if ( !defined('JSM_PATH') )
+{
+DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
+}
+
 JLoader::import('joomla.application.component.model');
 
 JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
