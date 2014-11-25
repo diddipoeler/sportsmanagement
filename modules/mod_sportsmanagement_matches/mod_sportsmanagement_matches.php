@@ -68,7 +68,15 @@ $match_id = JRequest::getVar('match_id',0,'default','POST');
 $nr = JRequest::getVar('nr',-1,'default','POST');
 $ajaxmod= JRequest::getVar('ajaxmodid',0,'default','POST');
 $template = $params->get('template','default');
+
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+} 
+else
+{
 JHTML::_('behavior.mootools');
+}
+
 $doc = JFactory::getDocument();
 $doc->addScript( _JSMMATCHLISTMODURL.'assets/js/mod_sportsmanagement_matches.js' );
 $doc->addStyleSheet(_JSMMATCHLISTMODURL.'tmpl/'.$template.'/mod_sportsmanagement_matches.css');
