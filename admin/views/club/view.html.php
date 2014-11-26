@@ -77,6 +77,8 @@ class sportsmanagementViewClub extends sportsmanagementView
 		$form = $this->get('Form');
 		$item = $this->get('Item');
         
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($item,true).'</pre>'),'');
+        
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
@@ -103,6 +105,18 @@ class sportsmanagementViewClub extends sportsmanagementView
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
+        
+        if ( $this->item->id )
+        {
+            // alles ok
+        }
+        else
+        {
+//            $this->item->founded = '';
+//            $this->item->dissolved = '';
+            $this->form->setValue('founded', null, '0000-00-00');
+            $this->form->setValue('dissolved', null, '0000-00-00');
+        }
         
         if ( $this->item->latitude == 255 )
         {

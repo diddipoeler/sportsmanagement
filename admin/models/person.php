@@ -113,7 +113,7 @@ class sportsmanagementModelperson extends JModelAdmin
         //$form->setValue('request_sports_type_id',$item->sports_type_id);
         //JRequest::setVar('sports_type_id', $item->sports_type_id);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' form<br><pre>'.print_r($form,true).'</pre>'),'Notice');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' item<br><pre>'.print_r($item,true).'</pre>'),'Notice');
         

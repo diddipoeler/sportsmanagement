@@ -85,6 +85,8 @@
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_BIRTHDAY_DESC"
 			class="inputbox"
 			format="%d-%m-%Y"/>
+
+
 			
 		<field
 			name="deathday"
@@ -95,6 +97,9 @@
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DEATHDAY_DESC"
 			class="inputbox"
 			format="%d-%m-%Y"/>
+			
+
+			
 	<field
 			name="height"
 			type="text"

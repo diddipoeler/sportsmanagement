@@ -143,6 +143,7 @@
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PRESIDENT"
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_PRESIDENT_DESC"
 			class="inputbox"/>		
+  
 	<field
 			name="founded"
 			size="10"
@@ -151,7 +152,11 @@
 			format="%d-%m-%Y"
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED"
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_DESC"
-			class="inputbox"/>	
+			class="inputbox"/>
+      
+
+
+    	
 	<field
 			name="dissolved"
 			size="10"
@@ -160,7 +165,9 @@
 			format="%d-%m-%Y"
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED"
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED_DESC"
-			class="inputbox"/>	
+			class="inputbox"/>
+
+      	
 	<field
 			name="standard_playground"
 			type="playgroundlist"

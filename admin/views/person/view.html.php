@@ -72,9 +72,7 @@ class sportsmanagementViewPerson extends sportsmanagementView
 		$form = $this->get('Form');
 		$item = $this->get('Item');
         
-        
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' item<br><pre>'.print_r($item,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($item,true).'</pre>'),'');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' form<br><pre>'.print_r($form,true).'</pre>'),'');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
@@ -120,6 +118,8 @@ class sportsmanagementViewPerson extends sportsmanagementView
         if ( $isNew )
         {
             $this->form->setValue('person_art', null, '1');
+            $this->form->setValue('birthday', null, '0000-00-00');
+            $this->form->setValue('deathday', null, '0000-00-00');
         }
         
         $extended = sportsmanagementHelper::getExtended($item->extended, 'person');

@@ -178,7 +178,7 @@ class sportsmanagementModelposition extends JModelAdmin
 	 */
 	function saveorder($pks = NULL, $order = NULL)
 	{
-		$row =& $this->getTable();
+		$row = $this->getTable();
 		
 		// update ordering values
 		for ($i=0; $i < count($pks); $i++)
@@ -206,7 +206,7 @@ class sportsmanagementModelposition extends JModelAdmin
 	 */
 	function saveshort()
 	{
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
         // Get the input
         $pks = JRequest::getVar('cid', null, 'post', 'array');
         $post = JRequest::get('post');
@@ -241,6 +241,7 @@ class sportsmanagementModelposition extends JModelAdmin
 	   $app = JFactory::getApplication();
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
+       $option = JRequest::getCmd('option');
        $post = JRequest::get('post');
        // Set the values
 	   $data['modified'] = $date->toSql();
@@ -258,12 +259,20 @@ class sportsmanagementModelposition extends JModelAdmin
        //$app->enqueueMessage(JText::_('sportsmanagementModelposition post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
        // zuerst sichern, damit wir bei einer neuanlage die id haben
-       if (parent::save($data))
+       if ( parent::save($data) )
        {
 			$id =  (int) $this->getState($this->getName().'.id');
+            $isNew = $this->getState($this->getName() . '.new');
             $data['id'] = $id;
+            
+            if ( $isNew )
+            {
+                $app->enqueueMessage(JText::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
+            }
 
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' id -> '.$id.''),'Notice');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<pre>'.print_r($this->getName(),true).'</pre>'),'Notice');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isNew -> '.$isNew.''),'Notice');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' id -> '.$id.''),'Notice');
            //Here you can do other tasks with your newly saved record...
 		}
         
