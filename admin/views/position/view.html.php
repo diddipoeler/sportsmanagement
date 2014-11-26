@@ -122,7 +122,11 @@ class sportsmanagementViewPosition extends sportsmanagementView
 		$res = array();
 		$res1 = array();
 		$notusedevents = array();
-		if ($res = $mdlEventtypes->getEventsPosition($this->item->id))
+        
+        // nur wenn die position angelegt ist, hat sie auch events
+        if ( $this->item->id )
+        {
+		if ($res = $mdlEventtypes->getEventsPosition($this->item->id) )
 		{
 			$lists['position_events']=JHtml::_(	'select.genericlist',$res,'position_eventslist[]',
 								' style="width:250px; height:300px;" class="inputbox" multiple="true" size="'.max(10,count($res)).'"',
@@ -132,8 +136,14 @@ class sportsmanagementViewPosition extends sportsmanagementView
 		{
 			$lists['position_events']='<select name="position_eventslist[]" id="position_eventslist" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
 		}
+        }
+        else
+        {
+            $lists['position_events']='<select name="position_eventslist[]" id="position_eventslist" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
+        }
+        
 		$res1 = $mdlEventtypes->getEvents($this->item->sports_type_id);
-		if ($res = $mdlEventtypes->getEventsPosition($this->item->id))
+		if ($res = $mdlEventtypes->getEventsPosition($this->item->id) )
 		{
 			if($res1!="")
 			foreach ($res1 as $miores1)
@@ -151,7 +161,10 @@ class sportsmanagementViewPosition extends sportsmanagementView
 			$notusedevents=$res1;
 		}
 
-		//build the html select list for events
+    
+        if ( $this->item->id )
+        {
+        //build the html select list for events
 		if (($notusedevents) && (count($notusedevents) > 0))
 		{
 			$lists['events']=JHtml::_(	'select.genericlist',$notusedevents,'eventslist[]',
@@ -162,6 +175,14 @@ class sportsmanagementViewPosition extends sportsmanagementView
 		{
 			$lists['events']='<select name="eventslist[]" id="eventslist" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
 		}
+        }
+        else
+        {
+            $lists['events']=JHtml::_(	'select.genericlist',$res1,'eventslist[]',
+							' style="width:250px; height:300px;" class="inputbox" multiple="true" size="'.max(10,count($res1)).'"',
+							'value','text');
+        }
+
 		unset($res);
 		unset($res1);
 		unset($notusedevents);
