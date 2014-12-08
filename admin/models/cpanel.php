@@ -39,9 +39,13 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
+
+if (! defined('DS'))
+{
+	define('DS', DIRECTORY_SEPARATOR);
+}
  
 // import Joomla modelform library
-//jimport('joomla.application.component.model');
 jimport('joomla.application.component.modeladmin'); 
 
 /**
@@ -53,7 +57,6 @@ jimport('joomla.application.component.modeladmin');
  * @version 2013
  * @access public
  */
-//class sportsmanagementModelcpanel extends JModel
 class sportsmanagementModelcpanel extends JModelLegacy
 {
 

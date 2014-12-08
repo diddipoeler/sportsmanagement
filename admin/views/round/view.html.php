@@ -83,16 +83,24 @@ class sportsmanagementViewRound extends sportsmanagementView
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         $this->assignRef('project',$this->project_id);
-        
-        
-        
+ 
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' info<br><pre>'.print_r($_SERVER['REMOTE_ADDR'],true).'</pre>'   ),'');
         
 		// Assign the Data
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
-        //$this->item->project_id = $this->project_id;
+        
+        if ( $this->item->id )
+        {
+            // alles ok
+        }
+        else
+        {
+            $this->form->setValue('round_date_first', null, '0000-00-00');
+            $this->form->setValue('round_date_last', null, '0000-00-00');
+        }
+        
         $this->form->setValue('project_id', null, $this->project_id);
  
 
