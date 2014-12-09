@@ -269,34 +269,43 @@ class sportsmanagementModelTeamPersons extends JModelList
 	 * @param mixed $project_team_id
 	 * @return
 	 */
-	function getProjectTeamplayers($project_team_id)
+	function getProjectTeamplayers($team_id = 0,$season_id = 0)
     {
         $option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
         // Create a new query object.
-		$db		= &JFactory::getDBO();
+		$db		= JFactory::getDBO();
 		$query	= $db->getQuery(true);
 		$user	= JFactory::getUser(); 
 		
-        //$app->enqueueMessage('sportsmanagementModelTeamPlayers getProjectTeamplayers project_team_id<br><pre>'.print_r($project_team_id, true).'</pre><br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' project_team_id -> '.$project_team_id.'<br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' season_id -> '.$season_id.'<br>','Notice');
         
         // Select some fields
-		$query->select('pl.*');
+		$query->select('ppl.*');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person as pl');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player as tpl on tpl.person_id = pl.id');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt on pt.id = tpl.projectteam_id');
-        $query->where('pt.team_id = '.$project_team_id);
+//		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person as pl');
+//        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player as tpl on tpl.person_id = pl.id');
+//        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt on pt.id = tpl.projectteam_id');
+//        $query->where('pt.team_id = '.$team_id);
+        
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ppl');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp on tp.person_id = ppl.id');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = tp.team_id');
+        $query->where('st.team_id = '.$team_id);
+        $query->where('st.season_id = '.$season_id);
+        $query->where('tp.team_id = '.$season_id);
+        
         $db->setQuery($query);
         //$db->query();
         $result = $db->loadObjectList();
-        //$app->enqueueMessage('sportsmanagementModelTeamPlayers getProjectTeamplayers query<br><pre>'.print_r($query, true).'</pre><br>','Notice');
+        
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(), true).'</pre><br>','Notice');
                 
 		if (!$result)
 		{
-			//$this->setError($this->_db->getErrorMsg());
-            $app->enqueueMessage('sportsmanagementModelTeamPlayers getProjectTeamplayers message<br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
-            $app->enqueueMessage('sportsmanagementModelTeamPlayers getProjectTeamplayers nummer<br><pre>'.print_r($db->getErrorNum(), true).'</pre><br>','Error');
+            //$app->enqueueMessage(__METHOD__.' '.__LINE__.' message<br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+            //$app->enqueueMessage(__METHOD__.' '.__LINE__.' nummer<br><pre>'.print_r($db->getErrorNum(), true).'</pre><br>','Error');
 			return false;
 		}
 		return $result;

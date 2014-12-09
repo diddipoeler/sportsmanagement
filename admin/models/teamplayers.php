@@ -214,12 +214,12 @@ class sportsmanagementModelTeamPlayers extends JModelList
 		return $where;
 	}
 
-	function getProjectTeamplayers($project_team_id)
+	function getProjectTeamplayers($project_team_id = 0)
     {
         $option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
         // Create a new query object.
-		$db		= &JFactory::getDBO();
+		$db		= JFactory::getDBO();
 		$query	= $db->getQuery(true);
 		$user	= JFactory::getUser(); 
 		
@@ -240,8 +240,8 @@ class sportsmanagementModelTeamPlayers extends JModelList
 		if (!$result)
 		{
 			//$this->setError($this->_db->getErrorMsg());
-            $app->enqueueMessage('sportsmanagementModelTeamPlayers getProjectTeamplayers message<br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
-            $app->enqueueMessage('sportsmanagementModelTeamPlayers getProjectTeamplayers nummer<br><pre>'.print_r($db->getErrorNum(), true).'</pre><br>','Error');
+            $app->enqueueMessage(__METHOD__.' '.__LINE__.' message<br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+            $app->enqueueMessage(__METHOD__.' '.__LINE__.' nummer<br><pre>'.print_r($db->getErrorNum(), true).'</pre><br>','Error');
 			return false;
 		}
 		return $result;

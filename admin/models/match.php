@@ -2276,18 +2276,18 @@ if (!$db->query())
         $mdl = JModel::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdl->getProject($this->project_id);
         
-        //$app->enqueueMessage('sportsmanagementModelMatch sendEmailtoPlayers project<br><pre>'.print_r($project, true).'</pre><br>','Notice');
-        //$app->enqueueMessage('sportsmanagementModelMatch sendEmailtoPlayers user<br><pre>'.print_r($user, true).'</pre><br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($project, true).'</pre><br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' user<br><pre>'.print_r($user, true).'</pre><br>','Notice');
         
-        $mdl = JModel::getInstance("TeamPlayers", "sportsmanagementModel");
-	    $teamplayer = $mdl->getProjectTeamplayers($project->fav_team);
+        $mdl = JModel::getInstance("TeamPersons", "sportsmanagementModel");
+	    $teamplayer = $mdl->getProjectTeamplayers($project->fav_team,$project->season_id);
         
-        //$app->enqueueMessage('sportsmanagementModelMatch sendEmailtoPlayers teamplayer<br><pre>'.print_r($teamplayer, true).'</pre><br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' teamplayer<br><pre>'.print_r($teamplayer, true).'</pre><br>','Notice');
         
-        //$app->enqueueMessage('sportsmanagementModelMatch sendEmailtoPlayers _match_time_new<br><pre>'.print_r($this->_match_time_new, true).'</pre><br>','Notice');
-        //$app->enqueueMessage('sportsmanagementModelMatch sendEmailtoPlayers _match_date_new<br><pre>'.print_r($this->_match_date_new, true).'</pre><br>','Notice');
-        //$app->enqueueMessage('sportsmanagementModelMatch sendEmailtoPlayers _match_time_old<br><pre>'.print_r($this->_match_time_old, true).'</pre><br>','Notice');
-        //$app->enqueueMessage('sportsmanagementModelMatch sendEmailtoPlayers _match_date_old<br><pre>'.print_r($this->_match_date_old, true).'</pre><br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' _match_time_new<br><pre>'.print_r($this->_match_time_new, true).'</pre><br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' _match_date_new<br><pre>'.print_r($this->_match_date_new, true).'</pre><br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' _match_time_old<br><pre>'.print_r($this->_match_time_old, true).'</pre><br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' _match_date_old<br><pre>'.print_r($this->_match_date_old, true).'</pre><br>','Notice');
         
         foreach ( $teamplayer as $player )
         {
