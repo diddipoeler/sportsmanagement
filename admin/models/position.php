@@ -267,13 +267,10 @@ class sportsmanagementModelposition extends JModelAdmin
             
             if ( $isNew )
             {
+                //Here you can do other tasks with your newly saved record...
                 $app->enqueueMessage(JText::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
             }
-
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<pre>'.print_r($this->getName(),true).'</pre>'),'Notice');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isNew -> '.$isNew.''),'Notice');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' id -> '.$id.''),'Notice');
-           //Here you can do other tasks with your newly saved record...
+           
 		}
         
        if (isset($post['position_eventslist']) && is_array($post['position_eventslist'])) 

@@ -310,6 +310,54 @@ class sportsmanagementModelteam extends JModelAdmin
        //$app->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$app->enqueueMessage(JText::_('sportsmanagementModelteam post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
+       if (isset($post['extended']) && is_array($post['extended'])) 
+		{
+			// Convert the extended field to a string.
+			$parameter = new JRegistry;
+			$parameter->loadArray($post['extended']);
+			$data['extended'] = (string)$parameter;
+		}
+        
+        if (isset($post['extendeduser']) && is_array($post['extendeduser'])) 
+		{
+			// Convert the extended field to a string.
+			$parameter = new JRegistry;
+			$parameter->loadArray($post['extendeduser']);
+			$data['extendeduser'] = (string)$parameter;
+		}
+        
+        if ( $post['delete'] )
+        {
+            self::DeleteTrainigData($post['delete'][0]);
+        }
+        
+        if ( $post['tdids'] )
+        {
+            self::UpdateTrainigData($post);
+        }
+        
+        if ( $post['add_trainingData'] )
+        {
+            self::addNewTrainigData($data[id]);
+        }
+       
+        // zuerst sichern, damit wir bei einer neuanlage die id haben
+       if ( parent::save($data) )
+       {
+			$id =  (int) $this->getState($this->getName().'.id');
+            $isNew = $this->getState($this->getName() . '.new');
+            $data['id'] = $id;
+            
+            if ( $isNew )
+            {
+                //Here you can do other tasks with your newly saved record...
+                $app->enqueueMessage(JText::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
+            }
+           
+		}
+       
+       
+       
        if (isset($data['season_ids']) && is_array($data['season_ids'])) 
 		{
 		  foreach( $data['season_ids'] as $key => $value )
@@ -347,36 +395,9 @@ class sportsmanagementModelteam extends JModelAdmin
 		//$mdl = JModelLegacy::getInstance("seasonteam", "sportsmanagementModel");
 		}
         }
-       if (isset($post['extended']) && is_array($post['extended'])) 
-		{
-			// Convert the extended field to a string.
-			$parameter = new JRegistry;
-			$parameter->loadArray($post['extended']);
-			$data['extended'] = (string)$parameter;
-		}
         
-        if (isset($post['extendeduser']) && is_array($post['extendeduser'])) 
-		{
-			// Convert the extended field to a string.
-			$parameter = new JRegistry;
-			$parameter->loadArray($post['extendeduser']);
-			$data['extendeduser'] = (string)$parameter;
-		}
         
-        if ( $post['delete'] )
-        {
-            self::DeleteTrainigData($post['delete'][0]);
-        }
-        
-        if ( $post['tdids'] )
-        {
-            self::UpdateTrainigData($post);
-        }
-        
-        if ( $post['add_trainingData'] )
-        {
-            self::addNewTrainigData($data[id]);
-        }
+       
         //$app->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         //-------extra fields-----------//
@@ -385,7 +406,9 @@ class sportsmanagementModelteam extends JModelAdmin
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' change_training_date<br><pre>'.print_r(self::$change_training_date,true).'</pre>'),'');
         
         // Proceed with the save
-		return parent::save($data);   
+		//return parent::save($data);
+        return true;
+           
     }
     
     /**

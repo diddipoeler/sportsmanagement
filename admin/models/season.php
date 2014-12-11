@@ -184,6 +184,8 @@ class sportsmanagementModelseason extends JModelAdmin
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
        $post = JRequest::get('post');
+       $option = JRequest::getCmd('option');
+       
        // Set the values
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');
@@ -202,7 +204,24 @@ class sportsmanagementModelseason extends JModelAdmin
         //$app->enqueueMessage(JText::_(' save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         // Proceed with the save
-		return parent::save($data);   
+		//return parent::save($data);  
+        
+        // zuerst sichern, damit wir bei einer neuanlage die id haben
+       if ( parent::save($data) )
+       {
+			$id =  (int) $this->getState($this->getName().'.id');
+            $isNew = $this->getState($this->getName() . '.new');
+            $data['id'] = $id;
+            
+            if ( $isNew )
+            {
+                //Here you can do other tasks with your newly saved record...
+                $app->enqueueMessage(JText::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
+            }
+           
+		}
+        
+        return true;   
     }
     
     /**

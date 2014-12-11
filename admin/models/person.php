@@ -518,47 +518,6 @@ class sportsmanagementModelperson extends JModelAdmin
         }
        
        
-       
-       
-        if (isset($data['season_ids']) && is_array($data['season_ids'])) 
-		{
-		  foreach( $data['season_ids'] as $key => $value )
-          {
-          
-        $query->clear();  
-        $query->select('id');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id');
-        $query->where('person_id ='. $data['id'] );
-        $query->where('season_id ='. $value );
-        JFactory::getDbo()->setQuery($query);
-		$res = JFactory::getDbo()->loadResult();
-        
-        if ( !$res )
-        {
-        $query->clear();
-        // Insert columns.
-        $columns = array('person_id','season_id');
-        // Insert values.
-        $values = array($data['id'],$value);
-        // Prepare the insert query.
-        $query
-            ->insert(JFactory::getDBO()->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id'))
-            ->columns(JFactory::getDBO()->quoteName($columns))
-            ->values(implode(',', $values));
-        // Set the query using our newly populated query object and execute it.
-        JFactory::getDBO()->setQuery($query);
-
-		if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
-		{
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDBO()->getErrorMsg(),true).'</pre>'),'Error');
-		}  
-        
-        }
-          
-          }
-		//$mdl = JModelLegacy::getInstance("seasonperson", "sportsmanagementModel");
-		}
-       
        if (!empty($data['address']))
 		{
 			$address_parts[] = $data['address'];
@@ -649,7 +608,60 @@ class sportsmanagementModelperson extends JModelAdmin
         $data['susp_date_end']	= sportsmanagementHelper::convertDate($data['susp_date_end'],0);
         $data['away_date_start']	= sportsmanagementHelper::convertDate($data['away_date_start'],0);
         $data['away_date_end']	= sportsmanagementHelper::convertDate($data['away_date_end'],0);
+        
+       // zuerst sichern, damit wir bei einer neuanlage die id haben
+       if ( parent::save($data) )
+       {
+			$id =  (int) $this->getState($this->getName().'.id');
+            $isNew = $this->getState($this->getName() . '.new');
+            $data['id'] = $id;
+            
+            if ( $isNew )
+            {
+                //Here you can do other tasks with your newly saved record...
+                $app->enqueueMessage(JText::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
+            }
+           
+		}
 
+        if (isset($data['season_ids']) && is_array($data['season_ids'])) 
+		{
+		  foreach( $data['season_ids'] as $key => $value )
+          {
+          
+        $query->clear();  
+        $query->select('id');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id');
+        $query->where('person_id ='. $data['id'] );
+        $query->where('season_id ='. $value );
+        JFactory::getDbo()->setQuery($query);
+		$res = JFactory::getDbo()->loadResult();
+        
+        if ( !$res )
+        {
+        $query->clear();
+        // Insert columns.
+        $columns = array('person_id','season_id');
+        // Insert values.
+        $values = array($data['id'],$value);
+        // Prepare the insert query.
+        $query
+            ->insert(JFactory::getDBO()->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id'))
+            ->columns(JFactory::getDBO()->quoteName($columns))
+            ->values(implode(',', $values));
+        // Set the query using our newly populated query object and execute it.
+        JFactory::getDBO()->setQuery($query);
+
+		if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
+		{
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDBO()->getErrorMsg(),true).'</pre>'),'Error');
+		}  
+        
+        }
+          
+          }
+		//$mdl = JModelLegacy::getInstance("seasonperson", "sportsmanagementModel");
+		}
             
         //$app->enqueueMessage(JText::_('sportsmanagementModelperson save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
@@ -657,7 +669,9 @@ class sportsmanagementModelperson extends JModelAdmin
         sportsmanagementHelper::saveExtraFields($post,$data['id']);
     
         // Proceed with the save
-		return parent::save($data);   
+		//return parent::save($data);
+        return true;
+           
     }
     
     
