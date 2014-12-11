@@ -83,7 +83,7 @@ class JFormFieldDependSQL extends JFormField
     protected function getInput()
 	{
 	   $app = JFactory::getApplication();
-       
+       $view = JRequest::getCmd('view');
        $attribs = '';
 		$required = $this->element['required'] == "true" ? 'true' : 'false';
 		$key = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
@@ -93,7 +93,10 @@ class JFormFieldDependSQL extends JFormField
         $query = (string)$this->element['query'];
         $value = $this->form->getValue($val,'request');
 
-		if ($v = $this->element['size'])
+		
+        $project_id = $this->form->getValue('id');
+        
+        if ($v = $this->element['size'])
 		{
 			$attribs .= ' size="'.$v.'"';
 		}
@@ -113,6 +116,8 @@ class JFormFieldDependSQL extends JFormField
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database -> '.$this->form->getValue('cfg_which_database',$div).' name -> '.$this->name),'Notice');
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value -> '.$this->value.''),'Notice');
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' id -> '.$this->id.''),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view -> '.$view.''),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id -> '.$project_id.''),'Notice');
 
 		$ctrl = $this->name;
 		$id = $this->id;
@@ -132,7 +137,16 @@ $script[] = "					var value = $('#jform_".$div."_".$depends."').val();";
 //$script[] = " alert('cfg_which_database ' + dbparam);";
 
 $script[] = "					$.ajax({";
-$script[] = "						url: 'index.php?option=com_sportsmanagement&format=json&dbase=".$cfg_which_database."&slug=false&task=ajax.".$ajaxtask."&".$depends."=' + value,";
+switch ($view)
+{
+    case 'project':
+    $script[] = "						url: 'index.php?option=com_sportsmanagement&format=json&dbase=".$cfg_which_database."&slug=false&task=ajax.".$ajaxtask."&project=".$project_id."&".$depends."=' + value,";
+    break;
+    default:
+    $script[] = "						url: 'index.php?option=com_sportsmanagement&format=json&dbase=".$cfg_which_database."&slug=false&task=ajax.".$ajaxtask."&".$depends."=' + value,";
+    break;
+}
+
 $script[] = "						dataType: 'json'";
 $script[] = "					}).done(function(data) {";
 $script[] = "						$('#".$this->id." option').each(function() {";
@@ -156,7 +170,16 @@ $script[] = "					var value = $('#jform_".$div."_".$depends."').val();";
 //$script[] = " alert('value -> ' + value);";
 
 $script[] = "					$.ajax({";
-$script[] = "						url: 'index.php?option=com_sportsmanagement&format=json&dbase=".$cfg_which_database."&slug=false&task=ajax.".$ajaxtask."&".$depends."=' + value,";
+switch ($view)
+{
+    case 'project':
+    $script[] = "						url: 'index.php?option=com_sportsmanagement&format=json&dbase=".$cfg_which_database."&slug=false&task=ajax.".$ajaxtask."&project=".$project_id."&".$depends."=' + value,";
+    break;
+    default:
+    $script[] = "						url: 'index.php?option=com_sportsmanagement&format=json&dbase=".$cfg_which_database."&slug=false&task=ajax.".$ajaxtask."&".$depends."=' + value,";
+    break;
+}
+
 $script[] = "						dataType: 'json'";
 $script[] = "					}).done(function(data) {";
 $script[] = "						$('#".$this->id." option').each(function() {";

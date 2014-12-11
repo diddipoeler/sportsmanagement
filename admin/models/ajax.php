@@ -168,7 +168,7 @@ class sportsmanagementModelAjax extends JModelLegacy
          * @param bool $required
          * @return
          */
-        public static function getpersonagegroupoptions($sports_type_id, $required = false, $slug = false, $dabse = false)
+        public static function getpersonagegroupoptions($sports_type_id, $required = false, $slug = false, $dabse = false, $project_id = 0 )
         {
             $option = JRequest::getCmd('option');
 	   $app = JFactory::getApplication();
@@ -186,6 +186,14 @@ class sportsmanagementModelAjax extends JModelLegacy
         
          $query->select('a.id AS value, concat(a.name, \' von: \',a.age_from,\' bis: \',a.age_to,\' Stichtag: \',a.deadline_day) AS text');
 			$query->from('#__sportsmanagement_agegroup as a');
+            
+            if ( $project_id )
+            {
+            $query->join('LEFT', '#__sportsmanagement_league AS l ON l.country = a.country'); 
+            $query->join('LEFT', '#__sportsmanagement_project AS p ON p.league_id = l.id');    
+            $query->where('p.id = '.$project_id);
+            }
+
             $query->where('a.sportstype_id = '.$sports_type_id);
 			$query->order('a.name');    
                     

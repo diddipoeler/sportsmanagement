@@ -177,6 +177,10 @@ class sportsmanagementModelProjects extends JModelList
         
 
         $query->select('p.id,p.ordering,p.published,p.project_type,p.name,p.alias,p.checked_out,p.checked_out_time,p.sports_type_id,p.current_round,p.picture ');
+        
+        $query->select('p.modified,p.modified_by');
+        $query->select('u1.username');
+        
         $query->select('st.name AS sportstype');
         $query->select('s.name AS season');
         $query->select('l.name AS league,l.country');
@@ -191,6 +195,7 @@ class sportsmanagementModelProjects extends JModelList
     $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = p.sports_type_id');
     $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup AS ag ON ag.id = p.agegroup_id');
     $query->join('LEFT', '#__users AS u ON u.id = p.checked_out');
+    $query->join('LEFT', '#__users AS u1 ON u1.id = p.modified_by');
   
         if ($this->getState('filter.userfields'))
 		{

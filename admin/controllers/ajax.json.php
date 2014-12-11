@@ -112,7 +112,7 @@ class sportsmanagementControllerAjax extends JControllerLegacy
                 $model = $this->getModel('ajax');
                 $req = JRequest::getVar('required', false);
                 $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) $model->getpersonagegroupoptions(JRequest::getInt( 'sports_type_id' ), $required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' )));
+                echo json_encode((array) $model->getpersonagegroupoptions(JRequest::getInt( 'sports_type_id' ), $required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' ),JRequest::getInt( 'project' ) ) );
                 JFactory::getApplication()->close();
         }
 

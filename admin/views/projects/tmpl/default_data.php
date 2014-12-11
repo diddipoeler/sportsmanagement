@@ -135,12 +135,28 @@ JHtml::_('behavior.modal');
 						echo JHtml::_('grid.sort','JGRID_HEADING_ID','p.id',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
+                    
+                    <th width="" class="title">
+						<?php
+						echo JText::_('JGLOBAL_FIELD_MODIFIED_LABEL');
+						?>
+					</th>
+                    <th width="" class="title">
+						<?php
+						echo JText::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL');
+						?>
+					</th>
+                    
 				</tr>
 			</thead>
-			<tfoot><tr><td colspan='13'><?php echo $this->pagination->getListFooter(); ?></td>
+			<tfoot>
+            <tr>
+            <td colspan='15'><?php echo $this->pagination->getListFooter(); ?>
+            </td>
             <td colspan="6"><?php echo $this->pagination->getResultsCounter(); ?>
-                        </td>
-            </tr></tfoot>
+            </td>
+            </tr>
+            </tfoot>
 			<tbody>
 				<?php
 				$k=0;
@@ -275,6 +291,8 @@ JHtml::_('behavior.modal');
 							<input type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" <?php echo $disabled ?> class="text_area" style="text-align: center" />
 						</td>
 						<td class="center"><?php echo $row->id; ?></td>
+                        <td class="center"><?php echo $row->modified; ?></td>
+                        <td class="center"><?php echo $row->username; ?></td>
 					</tr>
 					<?php
 					$k=1 - $k;
