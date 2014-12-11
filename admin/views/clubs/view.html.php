@@ -72,10 +72,10 @@ class sportsmanagementViewClubs extends sportsmanagementView
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
         
-        //if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        //{
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->state,true).'</pre>'),'');
-        //}
+        }
         
         $starttime = microtime(); 
         $inputappend = '';

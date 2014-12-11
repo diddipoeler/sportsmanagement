@@ -173,6 +173,8 @@ $starttime = microtime();
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
+        $table = JTable::getInstance('person', 'sportsmanagementTable');
+		$this->assignRef('table', $table);
 
 		//save icon should be replaced by the apply
 		JToolBarHelper::apply('person.saveassigned',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_SAVE_SELECTED'));		
