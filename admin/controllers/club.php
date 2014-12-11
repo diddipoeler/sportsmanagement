@@ -94,7 +94,7 @@ class sportsmanagementControllerclub extends JControllerForm
         
         if ($createTeam)
 		{
-			 $mdlTeam = JModel::getInstance("team", "sportsmanagementModel");
+			 $mdlTeam = JModelLegacy::getInstance("team", "sportsmanagementModel");
              $team_name = $data['name'];
 		     $team_short_name = strtoupper(substr(ereg_replace("[^a-zA-Z]","",$team_name),0,3));
 			

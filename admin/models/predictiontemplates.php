@@ -295,7 +295,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 							//echo 'defaultvalues<br /><pre>~' . print_r($defaultvalues,true) . '~</pre><br />';
 							
 							//$tblTemplate_Config = JTable::getInstance('predictiontemplate', 'table');
-                            $mdl = JModel::getInstance("predictiontemplate", "sportsmanagementModel");
+                            $mdl = JModelLegacy::getInstance("predictiontemplate", "sportsmanagementModel");
                             $tblTemplate_Config = $mdl->getTable();
 							
                             $tblTemplate_Config->template = $template;

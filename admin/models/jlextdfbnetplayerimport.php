@@ -244,7 +244,7 @@ function getUpdateData()
   
   foreach ( $updatedata as $row)
   {
-  $mdl = JModel::getInstance("match", "sportsmanagementModel");
+  $mdl = JModelLegacy::getInstance("match", "sportsmanagementModel");
   $p_match = $mdl->getTable();
   
   

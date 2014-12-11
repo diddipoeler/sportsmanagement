@@ -164,7 +164,7 @@ $document	=& JFactory::getDocument();
 		{
 //    $table = 'round';
 //		$row = JTable::getInstance( $table, 'sportsmanagementTable' );
-        $mdl = JModel::getInstance("round", "sportsmanagementModel");
+        $mdl = JModelLegacy::getInstance("round", "sportsmanagementModel");
         $row = $mdl->getTable();
             
     $row->roundcode = $post[roundcode][$i];
@@ -244,7 +244,7 @@ $document	=& JFactory::getDocument();
 		{
 //    $table = 'match';
 //		$row = JTable::getInstance( $table, 'sportsmanagementTable' );
-        $mdl = JModel::getInstance("match", "sportsmanagementModel");
+        $mdl = JModelLegacy::getInstance("match", "sportsmanagementModel");
         $row = $mdl->getTable();
 		
 		$row->round_id = $post[round_id][$i];
