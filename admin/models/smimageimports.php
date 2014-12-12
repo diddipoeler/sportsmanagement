@@ -39,6 +39,12 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+
+if (! defined('DS'))
+{
+	define('DS', DIRECTORY_SEPARATOR);
+}
+
 jimport('joomla.filesystem.file');
 jimport('joomla.application.component.modellist');
 
@@ -122,9 +128,11 @@ class sportsmanagementModelsmimageimports extends JModelList
 	{
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $search	= $this->getState('filter.search');
-        $filter_state = $this->getState('filter.state');
-        $filter_image_folder = $this->getState('filter.image_folder');
+        
+        //$search	= $this->getState('filter.search');
+        //$filter_state = $this->getState('filter.state');
+        //$filter_image_folder = $this->getState('filter.image_folder');
+        
         //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         //$search_nation		= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
         // Create a new query object.		
@@ -138,17 +146,18 @@ class sportsmanagementModelsmimageimports extends JModelList
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
         
-        if (is_numeric($filter_state) )
+        if (is_numeric($this->getState('filter.state')) )
 		{
-		$query->where('obj.published = '.$filter_state);	
+		$query->where('obj.published = '.$this->getState('filter.state'));	
 		}
-        if ( $search )
+        if ( $this->getState('filter.search') )
 		{
-		$query->where('LOWER(obj.name) LIKE '.$this->_db->Quote('%'.$search.'%'));	
+		$query->where('LOWER(obj.name) LIKE '.$this->_db->Quote('%'.$this->getState('filter.search').'%'));	
 		}
-        if ( $filter_image_folder )
+        if ( $this->getState('filter.image_folder') )
 		{
-		$query->where("obj.folder LIKE '".$filter_image_folder."'");	
+		//$query->where("obj.folder LIKE '".$this->getState('filter.image_folder')."'");	
+        $query->where('obj.folder LIKE '.$this->_db->Quote(''.$this->getState('filter.image_folder').''));
 		}
         
         $query->order($db->escape($this->getState('list.ordering', 'name')).' '.
@@ -204,7 +213,11 @@ function getimagesxml()
         // sind neue bilder pakete vorhanden ?
 		//$content = file_get_contents('https://raw2.github.com/diddipoeler/sportsmanagement/master/admin/helpers/xml_files/pictures.xml');
 		
-		$datei = "https://raw2.github.com/diddipoeler/sportsmanagement/master/admin/helpers/xml_files/pictures.xml";
+		//$datei = "https://raw2.github.com/diddipoeler/sportsmanagement/master/admin/helpers/xml_files/pictures.xml";
+        
+        // das sollte vielleicht noch in die konfiguration und nicht als hardcodierte zeile
+        // wenn im github was geändert wird, gibt es immer einen abbruch
+        $datei = "https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/admin/helpers/xml_files/pictures.xml";
 if (function_exists('curl_version'))
 {
     $curl = curl_init();
