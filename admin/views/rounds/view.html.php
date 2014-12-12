@@ -239,7 +239,10 @@ class sportsmanagementViewRounds extends sportsmanagementView
             
 			JToolBarHelper::addNew('round.save');
 			JToolBarHelper::divider();
-			JToolBarHelper::deleteList('','rounds.deletematches',JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSDEL_BUTTON'));
+			
+            JToolBarHelper::deleteList('','rounds.deleteroundmatches',JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSDEL_BUTTON'));
+            //JToolBarHelper::custom('rounds.deletematches','delete.png','delete.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSDEL_BUTTON'),false);
+            
             JToolbarHelper::checkin('rounds.checkin');
 			//JToolBarHelper::deleteList('','rounds.delete');
             if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )

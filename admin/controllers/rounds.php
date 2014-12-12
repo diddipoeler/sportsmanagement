@@ -90,6 +90,7 @@ class sportsmanagementControllerrounds extends JControllerAdmin
        $msg = $model->massadd();
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
 	}
+
     
     /**
 	 * Method to delete matches in round
@@ -104,8 +105,8 @@ class sportsmanagementControllerrounds extends JControllerAdmin
 	   $model = $this->getModel();
        $pks = JRequest::getVar('cid', null, 'post', 'array');
        $msg = $model->deleteRoundMatches($pks);
-       //$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
-       $this->setRedirect('index.php?option=com_sportsmanagement&view=rounds',$msg);
+       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+       //$this->setRedirect('index.php?option=com_sportsmanagement&view=rounds',$msg);
     } 
     
     

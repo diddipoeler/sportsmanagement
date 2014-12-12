@@ -55,6 +55,8 @@ jimport('joomla.application.component.modeladmin');
 class sportsmanagementModelround extends JModelAdmin
 {
     var $_identifier = "rounds";
+    static $db_num_rows = 0;
+    var $_tables_to_delete = array();
     
 	/**
 	 * Method override to check if you can edit an existing record.
@@ -394,48 +396,91 @@ class sportsmanagementModelround extends JModelAdmin
 	 * @return	boolean	True on success
 	 * @since	0.1
 	 */
-	public function deleteRoundMatches($pks)
+	public function deleteRoundMatches($pks=array())
 	{
-	$app =& JFactory::getApplication();
-    $app->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
+	$app = JFactory::getApplication();
+    //$app->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
     /* Ein Datenbankobjekt beziehen */
     $db = JFactory::getDbo();
     /* Ein JDatabaseQuery Objekt beziehen */
     $query = $db->getQuery(true);
-    
-	//$result = false;
+
     if (count($pks))
 		{
 			//JArrayHelper::toInteger($cid);
-			$cids = implode(',',$pks);
-            $app->enqueueMessage(JText::_('delete cids<br><pre>'.print_r($cids,true).'</pre>'),'');
-            // wir löschen mit join
-            $query = 'DELETE m,ms,mc,mss,mst,mev,mre,mpl
-            FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m    
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic as ms
-            ON ms.match_id = m.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentary as mc
-            ON m.id = mc.match_id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic as mss
-            ON mss.match_id = m.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff as mst
-            ON mst.match_id = m.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event as mev
-            ON mev.match_id = m.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee as mre
-            ON mre.match_id = m.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player as mpl
-            ON mpl.match_id = m.id
-            WHERE m.round_id IN ('.$cids.')';
-            $db->setQuery($query);
-            $db->query();
-            if (!$db->query()) 
+			//$cids = implode(',',$pks);
+            
+            // matches
+            $query->clear();
+            $query->select('m.id');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m');
+            $query->where('m.round_id IN ('.implode(",",$pks).')');
+            JFactory::getDBO()->setQuery($query);
+            $matches = JFactory::getDbo()->loadColumn();
+            
+            if ( $matches )
             {
-                $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-                return false; 
+            $field= 'match_id';
+            $id = implode(",",$matches);
+            $temp = new stdClass();
+            $temp->table = '_match_statistic';
+            $temp->field = $field;
+            $temp->id = $id;
+            $export[] = $temp;
+            $temp->table = '_match_commentary';
+            $temp->field = $field;
+            $temp->id = $id;
+            $export[] = $temp;
+            $temp->table = '_match_staff_statistic';
+            $temp->field = $field;
+            $temp->id = $id;
+            $export[] = $temp;
+            $temp->table = '_match_staff';
+            $temp->field = $field;
+            $temp->id = $id;
+            $export[] = $temp;
+            $temp->table = '_match_event';
+            $temp->field = $field;
+            $temp->id = $id;
+            $export[] = $temp;
+            $temp->table = '_match_referee';
+            $temp->field = $field;
+            $temp->id = $id;
+            $export[] = $temp;
+            $temp->table = '_match_player';
+            $temp->field = $field;
+            $temp->id = $id;
+            $export[] = $temp;
+            
+            $field= 'round_id';
+            $id = implode(",",$pks);
+            $temp = new stdClass();
+            $temp->table = '_match';
+            $temp->field = $field;
+            $temp->id = $id;
+            $export[] = $temp;
+            
             }
             
+            $this->_tables_to_delete = array_merge($export);
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _tables_to_delete<br><pre>'.print_r($this->_tables_to_delete,true).'</pre>'),'');
+            
+            // jetzt starten wir das löschen
+            foreach( $this->_tables_to_delete as $row_to_delete )
+            {
+            $query->clear();
+            $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.$row_to_delete->table)->where($row_to_delete->field.' IN ('.$row_to_delete->id.')' );
+            JFactory::getDbo()->setQuery($query);
+            sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+            if ( self::$db_num_rows )
+            {
+            $app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT'.strtoupper($row_to_delete->table).'_ITEMS_DELETED',self::$db_num_rows),'');
+            }    
+            }
+
+            
         }    
+   
    return true;     
    }
     
