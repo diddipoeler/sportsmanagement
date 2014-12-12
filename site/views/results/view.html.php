@@ -536,9 +536,13 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		}
 		if (isset($homeResultSO) || isset($formatScoreawayResultSO))
 		{
-			if ($this->config['result_style']==1){
+			if ($config['result_style']==1)
+            {
 				$result .= '<br />';
-			}else{$result .= ' ';
+			}
+            else
+            {
+                $result .= ' ';
 			}
 			$result .= '('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT').' ';
 			$result .= $homeResultSO.'&nbsp;'.$config['seperator'].'&nbsp;'.$awayResultSO;
@@ -578,9 +582,13 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		{
 			if ($game->match_result_type==1)
 			{
-				if ($this->config['result_style']==1){
+				if ($config['result_style']==1)
+                {
 					$result .= '<br />';
-				}else{$result .= ' ';
+				}
+                else
+                {
+                    $result .= ' ';
 				}
 				$result .= '('.JText::_('COM_SPORTSMANAGEMENT_RESULTS_OVERTIME');
 				$result .= ')';
