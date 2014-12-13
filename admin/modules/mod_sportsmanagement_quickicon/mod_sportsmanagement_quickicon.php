@@ -28,15 +28,6 @@ $position = ModSportsmanagementQuickIconHelper::getModPosition();
 $document = JFactory::getDocument();
 $document->addStyleSheet(JURI::base(true).'/modules/mod_sportsmanagement_quickicon/tmpl/css/style.css');
 
-if( version_compare(JVERSION,'1.6.0','ge') ) 
-{
-$jsm_version = '';    
-}    
-else
-{
-$jsm_version = '15';    
-}
-
 // joomla versionen
 if( version_compare(JVERSION,'3.0.0','ge') && $position == 'icon' ) 
 {
@@ -53,7 +44,14 @@ if (!empty($html)) : ?>
 else
 {
 ?>
-<div id="jsmQuickIcons<?php echo $jsm_version; ?>" class="jsmNoLogo">	     
+
+<div class="clr"></div>
+<div id="jsmQuickIconsTitle">
+	<a href="<?php echo JRoute::_('index.php?option=com_sportsmanagement'); ?>" title="<?php echo JText::_('MOD_SPORTSMANAGEMENT_QUICKICON_PANEL_LINK'); ?>">
+		<span>JSM</span>
+	</a>
+</div>
+<div id="jsmQuickIcons">	     
   <div class="icon-wrapper">      
     <div class="icon">           
       <a title="<?php echo JText::_('MOD_SPORTSMANAGEMENT_QUICKICON_PANEL_LINK')?>" href="index.php?option=com_sportsmanagement">               
@@ -98,7 +96,8 @@ else
           <?php echo JText::_('MOD_SPORTSMANAGEMENT_QUICKICON_CURRENT_SAISON_LABEL')?>               
         </span></a>		        
     </div>    
-  </div>	    
+  </div>
+<div style="clear: both;"></div>  	    
 </div>
 <?PHP
 }

@@ -2,20 +2,10 @@
 
 .clr { clear:both; height:0; line-height:0; display:block; float:none; }
 div#jsmQuickIconsTitle { margin:16px 0 0; padding:0; /*background:url(../images/bg.jpg) repeat-x 0 50%;height:8px;*/ position:relative; z-index:9; }
-div#jsmQuickIconsTitle a { display:block; clear:both; float:none; background:#f9f9f9 url(../images/k2_logo_46x18.png) no-repeat 50% 50%; width:46px; height:18px; padding:2px 6px; margin:0 0 0 24px; border:1px solid #d5d5d5; border-bottom:1px solid #f9f9f9; }
+div#jsmQuickIconsTitle a { display:block; clear:both; float:none; background:#f9f9f9 url(../images/jsm_24x24.png) no-repeat 50% 50%; width:24px; height:24px; padding:2px 6px; margin:0 0 0 24px; border:1px solid #d5d5d5; border-bottom:1px solid #f9f9f9; }
 div#jsmQuickIconsTitle a span { display:none; }
 
-/* Joomla! 1.5 */
-#jsmQuickIcons15 {clear:both;margin:-1px 0 8px 0;padding:8px 0;border-top:1px solid #d5d5d5;position:relative;z-index:8;}
-#jsmQuickIcons15.jsmNoLogo {margin:0 0 8px 0;padding:0;border:none;}
-	#jsmQuickIcons15 div.icon-wrapper {float:left;}
-		#jsmQuickIcons15 div.icon { text-align:center; float:left; margin:0 5px 5px 0; }
-			#jsmQuickIcons15 div.icon a { display:block; float:left; border:1px solid #f0f0f0; height:97px; width:108px; color:#666; vertical-align:middle; text-decoration:none; }
-			#jsmQuickIcons15 div.icon a:hover { border-left:1px solid #eee; border-top:1px solid #eee; border-right:1px solid #ccc; border-bottom:1px solid #ccc; background:#f9f9f9; color:#0B55C4; }
-				#jsmQuickIcons15 div.icon a img { padding:10px 0; margin:0 auto; }
-				#jsmQuickIcons15 div.icon a span { display:block; text-align:center; }
 
-/* Joomla! 1.6+ */
 #jsmQuickIcons { clear:both; margin:-1px 0 8px; padding:8px 0; border-top:1px solid #d5d5d5; position:relative; z-index:8; }
 #jsmQuickIcons.jsmNoLogo { margin:0 0 8px; padding:0; border:none; }
 	#jsmQuickIcons div.icon-wrapper { float:left; display: block !important; width: auto !important; height :auto!important; line-height:12px !important; background: none; }
