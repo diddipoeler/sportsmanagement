@@ -217,7 +217,10 @@ function getimagesxml()
         
         // das sollte vielleicht noch in die konfiguration und nicht als hardcodierte zeile
         // wenn im github was geändert wird, gibt es immer einen abbruch
-        $datei = "https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/admin/helpers/xml_files/pictures.xml";
+        //$datei = "https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/admin/helpers/xml_files/pictures.xml";
+        
+        $datei = JComponentHelper::getParams($option)->get('cfg_images_server','');
+        
 if (function_exists('curl_version'))
 {
     $curl = curl_init();

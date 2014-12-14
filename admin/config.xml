@@ -17,6 +17,17 @@
 		description="COM_SPORTSMANAGEMENT_SETTINGS_PLZSERVER_DESC">
 		</field>
 		
+
+	
+	<field name="cfg_images_server" 
+  type="textarea" 
+  default="https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/admin/helpers/xml_files/pictures.xml" 
+		rows="10"
+	cols="60"
+    label="COM_SPORTSMANAGEMENT_SETTINGS_IMAGESSERVER"
+		description="COM_SPORTSMANAGEMENT_SETTINGS_IMAGESSERVER_DESC">
+		</field>	
+		
   <field name="cfg_help_server" 
   type="text" 
   default="http://smwiki.diddipoeler.de/index.php/" 
