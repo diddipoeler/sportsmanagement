@@ -118,6 +118,123 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 		return substr($j->RELEASE, 0, strlen($version)) == $version;
 	}
     
+    /**
+	 * returns titleInfo
+	 *
+	 * @param prefix Text that must be placed at the start of the title.
+	 */
+	public static function createTitleInfo($prefix)
+	{
+		return (object)array(
+			"prefix" => $prefix,
+			"clubName" => null,
+			"team1Name" => null,
+			"team2Name" => null,
+			"roundName" => null,
+			"personName" => null,
+			"playgroundName" => null,
+			"projectName" => null,
+			"divisionName" => null,
+			"leagueName" => null,
+			"seasonName" => null
+		);
+	}
+    
+    /**
+	 * returns formatName
+	 *
+	 * @param titleInfo (info on prefix, teams (optional), project, division (optional), league and season)
+	 * @param format
+	 */
+	public static function formatTitle($titleInfo, $format)
+	{
+		$name = array();
+
+		if (!empty($titleInfo->personName)) {
+			$name[] = $titleInfo->personName;
+		}
+
+		if (!empty($titleInfo->playgroundName)) {
+			$name[] = $titleInfo->playgroundName;
+		}
+
+		if (!empty($titleInfo->team1Name)) {
+			if (!empty($titleInfo->team2Name)) {
+				$name[] = $titleInfo->team1Name." - ".$titleInfo->team2Name;
+			} else {
+				$name[] = $titleInfo->team1Name;
+			}
+		}
+
+		if (!empty($titleInfo->clubName)) {
+			$name[] = $titleInfo->clubName;
+		}
+
+		if (!empty($titleInfo->roundName)) {
+			$name[] = $titleInfo->roundName;
+		}
+
+		$projectDivisionName = !empty($titleInfo->projectName) ? $titleInfo->projectName : "";
+		if (!empty($titleInfo->divisionName)) $projectDivisionName .= " - ".$titleInfo->divisionName;
+
+		switch ($format)
+		{
+			case 0: //Projectname
+				if (!empty($projectDivisionName)) {
+					$name[] = $projectDivisionName;
+				}
+				break;
+			case 1: //Project and league name
+				if (!empty($projectDivisionName)) {
+					$name[] = $projectDivisionName;
+				}
+				if (!empty($titleInfo->leagueName)) {
+					$name[] = $titleInfo->leagueName;
+				}
+				break;
+			case 2: //Project, league and season name
+				if (!empty($projectDivisionName)) {
+					$name[] = $projectDivisionName;
+				}
+				if (!empty($titleInfo->leagueName)) {
+					$name[] = $titleInfo->leagueName;
+				}
+				if (!empty($titleInfo->seasonName)) {
+					$name[] = $titleInfo->seasonName;
+				}
+				break;
+			case 3: //Project and season name
+				if (!empty($projectDivisionName)) {
+					$name[] = $projectDivisionName;
+				}
+				if (!empty($titleInfo->seasonName)) {
+					$name[] = $titleInfo->seasonName;
+				}
+				break;
+			case 4: //League name
+				if (!empty($titleInfo->leagueName)) {
+					$name[] = $titleInfo->leagueName;
+				}
+				break;
+			case 5: //League and season name
+				if (!empty($titleInfo->leagueName)) {
+					$name[] = $titleInfo->leagueName;
+				}
+				if (!empty($titleInfo->seasonName)) {
+					$name[] = $titleInfo->seasonName;
+				}
+				break;
+			case 6: //Season name
+				if (!empty($titleInfo->seasonName)) {
+					$name[] = $titleInfo->seasonName;
+				}
+				break;
+			case 7: // None
+				break;
+		}
+
+		return $titleInfo->prefix . ": " . implode(" | ", $name);
+	}
     
     /**
      * sportsmanagementHelper::getDBConnection()

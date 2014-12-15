@@ -168,12 +168,13 @@ class sportsmanagementModelProject extends JModelLegacy
 		{
 			//fs_sport_type_name = sport_type folder name
             $query->select('p.*, l.country, st.id AS sport_type_id, st.name AS sport_type_name');
-            $query->select('st.icon AS sport_type_picture, l.picture as leaguepicture');
+            $query->select('st.icon AS sport_type_picture, l.picture as leaguepicture, l.name as league_name, s.name as season_name  ');
             $query->select('LOWER(SUBSTR(st.name, CHAR_LENGTH( "COM_SPORTSMANAGEMENT_ST_")+1)) AS fs_sport_type_name');
             $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug');
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON p.sports_type_id = st.id ');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON p.league_id = l.id ');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON p.season_id = s.id ');
             $query->where('p.id = '. self::$projectid);
             
 
@@ -888,7 +889,7 @@ class sportsmanagementModelProject extends JModelLegacy
 	 * @param string $teamname
 	 * @return
 	 */
-	function getTeamsIndexedById($division=0,$teamname='name',$cfg_which_database = 0)
+	public static function getTeamsIndexedById($division=0,$teamname='name',$cfg_which_database = 0)
 	{
 		$result = self::getTeams($division,$teamname,$cfg_which_database = 0);
 		$teams = array();
@@ -955,7 +956,7 @@ class sportsmanagementModelProject extends JModelLegacy
 	 * @param integer $evid
 	 * @return
 	 */
-	function getEventTypes($evid=0,$cfg_which_database = 0)
+	public static function getEventTypes($evid=0,$cfg_which_database = 0)
 	{
 	   $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
