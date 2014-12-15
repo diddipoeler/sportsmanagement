@@ -37,33 +37,58 @@
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_DESCR"
 					required="">
 			</field>
+			
 			<field	name="division" 
       type="dependsql" 
       depends="p" 
+      key_field="project_id"
+			value_field="p"
       task="projectdivisionsoptions"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_DESCR"
 					required="false" >
 			</field>
+
+<!--			
 			<field	name="tid" 
       type="dependsql" 
       depends="p" 
+      key_field="project_id"
+			value_field="p"
       task="projectteamsbydivisionoptions"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_TEAM_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_TEAM_DESCR"
 					required="false" >
 			</field>
-			<field	name="evid" 
-      type="multidependsql" 
+-->			
+
+			<field	name="tid" 
+      type="dependsql" 
       depends="p" 
+      key_field="project_id"
+			value_field="p"
+      task="projectteamoptions"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_TEAM_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_TEAM_DESCR"
+					required="false" >
+			</field>
+			
+			<field	name="evid" 
+      type="dependsql" 
+      depends="p" 
+      key_field="project_id"
+			value_field="p"
       task="projecteventsoptions"
 					label="COM_SPORTSMANAGEMENT_XML_EVENTSRANKING_SELECT_EVENT_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_EVENTSRANKING_SELECT_EVENT_DESCR"
 					required="false" >
 			</field>
+			
 			<field	name="mid" 
       type="dependsql" 
       depends="p" 
+      key_field="project_id"
+			value_field="p"
       task="matchesoptions" 
 					label="COM_SPORTSMANAGEMENT_XML_EVENTSRANKING_SELECT_MATCH_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_EVENTSRANKING_SELECT_MATCH_DESCR"

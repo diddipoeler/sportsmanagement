@@ -77,7 +77,7 @@ class JFormFieldClublist extends JFormFieldList
 			$query = $db->getQuery(true);
 			
 			$query->select('id AS value, name AS text');
-			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club');
+			$query->from('#__sportsmanagement_club');
 			$query->order('name');
 			$db->setQuery($query);
 			$options = $db->loadObjectList();

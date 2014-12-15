@@ -77,23 +77,23 @@ class sportsmanagementViewClubPlan extends JViewLegacy
 		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 		$this->assignRef('project',$project);
-		$this->assignRef('overallconfig',sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database));
+		$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database));
 		$this->assignRef('config',$config);
 		$this->assignRef('showclubconfig',$showclubconfig);
-		$this->assignRef('favteams',sportsmanagementModelProject::getFavTeams($model::$cfg_which_database));
-		$this->assignRef('club',sportsmanagementModelClubInfo::getClub());
+		$this->assign('favteams',sportsmanagementModelProject::getFavTeams($model::$cfg_which_database));
+		$this->assign('club',sportsmanagementModelClubInfo::getClub());
         
-        $this->assignRef('type',JRequest::getVar("type", 0));
-        $this->assignRef('teamartsel',JRequest::getVar("teamartsel", 0));
+        $this->assign('type',JRequest::getVar("type", 0));
+        $this->assign('teamartsel',JRequest::getVar("teamartsel", 0));
         $model->teamart = $this->teamartsel;
-        $this->assignRef('teamprojectssel',JRequest::getVar("teamprojectssel", 0));
+        $this->assign('teamprojectssel',JRequest::getVar("teamprojectssel", 0));
         $model->teamprojects = $this->teamprojectssel;
         $model->project_id = JRequest::getInt("p",0);
         if ( $this->teamprojectssel > 0 )
         {
             $model->project_id = $this->teamprojectssel;
         }
-        $this->assignRef('teamseasonssel',JRequest::getVar("teamseasonssel", 0));
+        $this->assign('teamseasonssel',JRequest::getVar("teamseasonssel", 0));
         $model->teamseasons = $this->teamseasonssel;
         if ( $this->teamseasonssel > 0 )
         {
@@ -119,19 +119,19 @@ class sportsmanagementViewClubPlan extends JViewLegacy
 			case 0 :
             case 3 : 
             case 4 : // all matches
-				$this->assignRef('allmatches',$model->getAllMatches($config['MatchesOrderBy'],$config['type_matches']));
+				$this->assign('allmatches',$model->getAllMatches($config['MatchesOrderBy'],$config['type_matches']));
 				break;
 			case 1 : // home matches
-				$this->assignRef('homematches',$model->getAllMatches($config['MatchesOrderBy'],$config['type_matches']));
+				$this->assign('homematches',$model->getAllMatches($config['MatchesOrderBy'],$config['type_matches']));
 
 				break;
 			case 2 : // away matches
-				$this->assignRef('awaymatches',$model->getAllMatches($config['MatchesOrderBy'],$config['type_matches']));
+				$this->assign('awaymatches',$model->getAllMatches($config['MatchesOrderBy'],$config['type_matches']));
 
 				break;
 			default: // home+away matches
-				$this->assignRef('homematches',$model->getAllMatches($config['MatchesOrderBy'],$config['type_matches']));
-				$this->assignRef('awaymatches',$model->getAllMatches($config['MatchesOrderBy'],$config['type_matches']));
+				$this->assign('homematches',$model->getAllMatches($config['MatchesOrderBy'],$config['type_matches']));
+				$this->assign('awaymatches',$model->getAllMatches($config['MatchesOrderBy'],$config['type_matches']));
 
 				break;
 		}
@@ -141,13 +141,13 @@ class sportsmanagementViewClubPlan extends JViewLegacy
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' awaymatches <br><pre>'.print_r($this->awaymatches,true).'</pre>'),'');
         
         
-		$this->assignRef('startdate',$model->getStartDate());
-		$this->assignRef('enddate',$model->getEndDate());
-		$this->assignRef('teams',$model->getTeams());
+		$this->assign('startdate',$model->getStartDate());
+		$this->assign('enddate',$model->getEndDate());
+		$this->assign('teams',$model->getTeams());
         
-        $this->assignRef('teamart',$model->getTeamsArt());
-        $this->assignRef('teamprojects',$model->getTeamsProjects());
-        $this->assignRef('teamseasons',$model->getTeamsSeasons());
+        $this->assign('teamart',$model->getTeamsArt());
+        $this->assign('teamprojects',$model->getTeamsProjects());
+        $this->assign('teamseasons',$model->getTeamsSeasons());
         
         $fromteamart[] = JHTML :: _('select.option', '', JText :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAMART'));
 		$fromteamart = array_merge($fromteamart, $this->teamart);

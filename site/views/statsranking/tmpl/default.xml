@@ -40,6 +40,8 @@
 			<field	name="division" 
       type="dependsql" 
       depends="p" 
+      key_field="project_id"
+			value_field="p"
       task="projectdivisionsoptions"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_DESCR"
@@ -59,6 +61,8 @@
 						<field	name="tid" 
       type="dependsql" 
       depends="p" 
+      key_field="project_id"
+			value_field="p"
       task="projectteamoptions"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_TEAM_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_TEAM_DESCR"
@@ -66,13 +70,16 @@
 			</field>
 			
 			<field	name="sid" 
-      type="multidependsql" 
+      type="dependsql" 
       depends="p" 
-      task="projectstatsoptions"
+      key_field="project_id"
+			value_field="p"
+      task="projectstatoptions"
 					label="COM_SPORTSMANAGEMENT_XML_STATSRANKING_SELECT_STAT_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_STATSRANKING_SELECT_STAT_DESCR"
 					required="false">
 			</field>
+			
 			<field	name="order" 
       type="list" 
       default="desc"

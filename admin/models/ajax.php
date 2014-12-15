@@ -421,7 +421,7 @@ class sportsmanagementModelAjax extends JModelLegacy
          * @param bool $required
          * @return
          */
-        function getProjectsByClubOptions($club_id, $required=false, $slug = false, $dbase = false)
+        public static function getProjectsByClubOptions($club_id, $required=false, $slug = false, $dbase = false)
         {
             $option = JRequest::getCmd('option');
 	   $app = JFactory::getApplication();
@@ -688,7 +688,7 @@ class sportsmanagementModelAjax extends JModelLegacy
          * @param bool $required
          * @return
          */
-        function getProjectClubOptions($project_id, $required = false, $slug = false, $dbase = false)
+        public static function getProjectClubOptions($project_id, $required = false, $slug = false, $dbase = false)
         {
             $option = JRequest::getCmd('option');
 	   $app = JFactory::getApplication();
@@ -729,7 +729,7 @@ $db->setQuery($query);
          * @param bool $required
          * @return
          */
-        function getProjectEventsOptions($project_id, $required = false, $slug = false, $dbase = false)
+        public static function getProjectEventsOptions($project_id, $required = false, $slug = false, $dbase = false)
         {
             $option = JRequest::getCmd('option');
 	   $app = JFactory::getApplication();
@@ -770,7 +770,7 @@ $db->setQuery($query);
          * @param bool $required
          * @return
          */
-        function getProjectStatOptions($project_id, $required=false, $slug = false, $dbase = false)
+        public static function getProjectStatOptions($project_id, $required=false, $slug = false, $dbase = false)
         {
             $option = JRequest::getCmd('option');
 	   $app = JFactory::getApplication();
@@ -811,7 +811,7 @@ $db->setQuery($query);
          * @param bool $required
          * @return
          */
-        function getMatchesOptions($project_id, $required=false, $slug = false, $dbase = false)
+        public static function getMatchesOptions($project_id, $required=false, $slug = false, $dbase = false)
         {
             $option = JRequest::getCmd('option');
 	   $app = JFactory::getApplication();

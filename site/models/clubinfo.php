@@ -54,8 +54,8 @@ jimport( 'joomla.application.component.model' );
  */
 class sportsmanagementModelClubInfo extends JModelLegacy
 {
-	var $projectid = 0;
-	var $clubid = 0;
+	static $projectid = 0;
+	static $clubid = 0;
 	static $club = null;
     
     var $new_club_id = 0;
@@ -81,10 +81,10 @@ class sportsmanagementModelClubInfo extends JModelLegacy
 	{
 		
 
-		$this->projectid = JRequest::getInt( "p", 0 );
-		$this->clubid = JRequest::getInt( "cid", 0 );
+		self::$projectid = JRequest::getInt( "p", 0 );
+		self::$clubid = JRequest::getInt( "cid", 0 );
         
-        sportsmanagementModelProject::$projectid = $this->projectid;
+        sportsmanagementModelProject::$projectid = self::$projectid;
         self::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
         
         parent::__construct( );
@@ -195,7 +195,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy
      * 
      * @return
      */
-    function getClub( )
+    static function getClub( )
 	{
 		$option = JRequest::getCmd('option');
 	   $app = JFactory::getApplication();
@@ -203,18 +203,18 @@ class sportsmanagementModelClubInfo extends JModelLegacy
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
         
-        $this->projectid = JRequest::getInt( "p", 0 );
-		$this->clubid = JRequest::getInt( "cid", 0 );
+        self::$projectid = JRequest::getInt( "p", 0 );
+		self::$clubid = JRequest::getInt( "cid", 0 );
         if ( is_null( self::$club ) )
 		{
-			if ( $this->clubid > 0 )
+			if ( self::$clubid > 0 )
 			{
 			 // Select some fields
              $query->select('c.*');
              // From 
 		     $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c');
              // Where
-             $query->where('c.id = '. $db->Quote($this->clubid) );
+             $query->where('c.id = '. $db->Quote(self::$clubid) );
 
 				$db->setQuery($query);
 				self::$club = $db->loadObject();
@@ -239,7 +239,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy
         $subquery2 = $db->getQuery(true);
         
         $teams = array( 0 );
-		if ( $this->clubid > 0 )
+		if ( self::$clubid > 0 )
 		{
 		  // Select some fields
           $query->select('t.id,prot.trikot_home,prot.trikot_away');
@@ -269,7 +269,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy
           $query->select('('.$subquery1.' ) as pid');
           $query->select('('.$subquery2.' ) as ptid');
           
-          $query->where('t.club_id = '.(int) $this->clubid);
+          $query->where('t.club_id = '.(int) self::$clubid);
           
           $query->group('t.id');
 
