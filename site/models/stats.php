@@ -521,7 +521,7 @@ class sportsmanagementModelStats extends JModelLegacy
           $query->select('t1.id AS teamid');
           $query->select('playground.max_visitors AS capacity');
           
-          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'match AS matches ');
+          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS matches ');
           $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt1 ON pt1.id = matches.projectteam1_id ');
           $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt1.team_id ');
           $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team t1 ON t1.id = st.team_id');
