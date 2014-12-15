@@ -6,6 +6,13 @@
 .page-title {
 	background: url(../images/jsm_24x24.png) no-repeat 0 50%;
 }
+.icon-48-generic {
+    background-image: url(images/jsm_48x48.png);
+}
+.pagetitle h2 {
+font-size:20px;
+padding-top:10px;
+}
 /* ----------*/
 #sidebar {
 	float: none;
