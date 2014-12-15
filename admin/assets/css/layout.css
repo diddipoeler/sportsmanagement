@@ -7,8 +7,38 @@
  * @link http://www.fussballineuropa.de
  **/
 
+
+
+#sidebar{
+float:none;
+}
+#submenu{
+padding-bottom:25px;
+}
+hr.hr-condensed{
+margin:5px 0;
+}
+.well .module-title.nav-header {
+padding-bottom:0px;
+}
+.row-fluid .span7{
+width:57.1823%;
+float:left;
+display:block;
+}
+.row-fluid .span5{
+float:left;
+display:block;
+width:40.0552%;}
+
+.row-fluid [class*="span"]{
+float:left;
+display:block;}
+
+
 #jsm.admin.override {
     font-size: 13px;
+    font-weight:bold;
 }
 
 #jsm.admin.override select,
@@ -51,13 +81,18 @@
 
 #jsm.admin.override #dashboard-icons.btn-group {
     white-space: normal;
+    padding-bottom: 30px;
 }
 
 #jsm.admin.override #dashboard-icons .btn {
-    border-radius: 3px;
+    border-radius:3px;
+    border: 1px solid;
     min-height: 64px;
-    min-width: 72px;
+    min-width: 125px;
     overflow: hidden;
+    padding:6px;
+    margin:3px;
+    text-align:center;
 }
 
 /*All wells in tables should not have margin*/
