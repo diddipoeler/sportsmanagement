@@ -153,8 +153,8 @@ class sportsmanagementModelStats extends JModelLegacy
 //				$query .= ' AND pt1.division_id = '.$this->divisionid;
 			}
             
-            $query->where('published = 1');
-            $query->where('alt_decision = 0');
+            $query->where('matches.published = 1');
+            $query->where('matches.alt_decision = 0');
             $query->where('(matches.cancel IS NULL OR matches.cancel = 0)');
             
             switch ($which)
@@ -372,7 +372,7 @@ class sportsmanagementModelStats extends JModelLegacy
 //				$query .= ' AND pt1.division_id = '.$this->divisionid;
 			}
             
-            $query->where('published = 1');
+            $query->where('matches.published = 1');
             $query->where('(matches.cancel IS NULL OR matches.cancel = 0)');
             
 //			$query .= ' AND published=1 '
