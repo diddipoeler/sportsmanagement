@@ -25,8 +25,8 @@ class sportsmanagementModelStatsRanking extends JModelLegacy
 	var $_pagination = null;
 	
 	var $order = null;
-	var $divisionid = 0;
-	var $teamid = 0;
+	static $divisionid = 0;
+	static $teamid = 0;
     
     static $cfg_which_database = 0;
 	static $projectid = 0;
@@ -36,9 +36,9 @@ class sportsmanagementModelStatsRanking extends JModelLegacy
 		parent::__construct( );
 
 		self::$projectid	= JRequest::getInt( 'p', 0 );
-		$this->divisionid	= JRequest::getInt( 'division', 0 );
-		$this->teamid		= JRequest::getInt( 'tid', 0 );
-		$this->setStatid(JRequest::getVar( 'sid', 0 ));
+		self::$divisionid	= JRequest::getInt( 'division', 0 );
+		self::$teamid		= JRequest::getInt( 'tid', 0 );
+		self::setStatid(JRequest::getVar( 'sid', 0 ));
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 		// TODO: the default value for limit should be updated when we know if there is more than 1 statistics type to be shown
 		if ( $this->stat_id != 0 )
@@ -60,16 +60,16 @@ class sportsmanagementModelStatsRanking extends JModelLegacy
 	function getDivision()
 	{
 		$division = null;
-		if ($this->divisionid != 0)
+		if (self::$divisionid != 0)
 		{
-			$division = sportsmanagementModelProject::getDivision($this->divisionid);
+			$division = sportsmanagementModelProject::getDivision(self::$divisionid,self::$cfg_which_database);
 		}
 		return $division;
 	}
 
 	function getTeamId()
 	{
-		return $this->teamid;
+		return self::$teamid;
 	}
 
 	/**
@@ -115,7 +115,7 @@ class sportsmanagementModelStatsRanking extends JModelLegacy
 	
 	function getProjectUniqueStats()
 	{
-		$pos_stats = sportsmanagementModelProject::getProjectStats($this->stat_id);
+		$pos_stats = sportsmanagementModelProject::getProjectStats($this->stat_id,0,self::$cfg_which_database);
 		
 		$allstats = array();
 		foreach ($pos_stats as $pos => $stats) 
@@ -129,13 +129,13 @@ class sportsmanagementModelStatsRanking extends JModelLegacy
 	
 	function getPlayersStats($order=null)
 	{
-		$stats = $this->getProjectUniqueStats();
+		$stats = self::getProjectUniqueStats();
 		$order = ($order ? $order : $this->order);
 		
 		$results = array();
 		foreach ($stats as $stat) 
 		{
-			$results[$stat->id] = $stat->getPlayersRanking($this->projectid, $this->divisionid, $this->teamid, $this->getLimit(), $this->getLimitStart(), $order);
+			$results[$stat->id] = $stat->getPlayersRanking(self::$projectid, self::$divisionid, self::$teamid, self::getLimit(), self::getLimitStart(), $order);
 		}
 		
 		return $results;

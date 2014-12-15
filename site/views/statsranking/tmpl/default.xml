@@ -37,22 +37,45 @@
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_DESCR"
 					required="">
 			</field>
-			<field	name="division" type="dependsql" depends="p" task="projectdivisionsoptions"
+			<field	name="division" 
+      type="dependsql" 
+      depends="p" 
+      task="projectdivisionsoptions"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_DESCR"
 					required="false">
 			</field>
-			<field	name="tid" type="dependsql" depends="p" task="projectteamsbydivisionoptions"
+
+<!--
+			<field	name="tid" 
+      type="dependsql" 
+      depends="p" 
+      task="projectteamsbydivisionoptions"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_TEAM_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_TEAM_DESCR"
 					required="false">
 			</field>
-			<field	name="sid" type="multidependsql" depends="p" task="projectstatsoptions"
+-->
+						<field	name="tid" 
+      type="dependsql" 
+      depends="p" 
+      task="projectteamoptions"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_TEAM_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_TEAM_DESCR"
+					required="false">
+			</field>
+			
+			<field	name="sid" 
+      type="multidependsql" 
+      depends="p" 
+      task="projectstatsoptions"
 					label="COM_SPORTSMANAGEMENT_XML_STATSRANKING_SELECT_STAT_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_STATSRANKING_SELECT_STAT_DESCR"
 					required="false">
 			</field>
-			<field	name="order" type="list" default="desc"
+			<field	name="order" 
+      type="list" 
+      default="desc"
 					label="COM_SPORTSMANAGEMENT_XML_STATSRANKING_ORDER_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_STATSRANKING_ORDER_DESC">
 				<option value="asc">Ascending</option>

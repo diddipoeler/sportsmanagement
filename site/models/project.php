@@ -891,7 +891,7 @@ class sportsmanagementModelProject extends JModelLegacy
 	 */
 	public static function getTeamsIndexedById($division=0,$teamname='name',$cfg_which_database = 0)
 	{
-		$result = self::getTeams($division,$teamname,$cfg_which_database = 0);
+		$result = self::getTeams($division,$teamname,$cfg_which_database);
 		$teams = array();
 		if (count($result))
 		{
@@ -987,6 +987,8 @@ class sportsmanagementModelProject extends JModelLegacy
 //			$query .= " me.event_type_id=".(int)$evid;
             $query->where('me.event_type_id = '.(int)$evid);
 		}
+        
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
 		$db->setQuery($query);
 		return $db->loadObjectList('etid');

@@ -154,6 +154,9 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 		$query->order('et.ordering');
         
         $db->setQuery($query);
+        
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
 		$result = $db->loadObjectList('etid');
 		return $result;
 	}
@@ -215,6 +218,9 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 			}
 			
             $db->setQuery($query);
+            
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            
 			$this->_total = $db->loadResult();
 		}
 		return $this->_total;
@@ -280,10 +286,15 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
                 $query->where('me.match_id = ' . self::$matchid );
 			}
             
-		$query .= " GROUP BY me.teamplayer_id ORDER BY p $order, me.match_id";
-		
+		//$query .= " GROUP BY me.teamplayer_id ORDER BY p $order, me.match_id";
+		$query->group('me.teamplayer_id');
+        $query->order('me.match_id,p '.$order);
+        
         $db->setQuery($query, self::getlimitStart(), self::getlimit());
-		$rows = $db->loadObjectList();
+		
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
+        $rows = $db->loadObjectList();
 
 		// get ranks
 		$previousval = 0;
