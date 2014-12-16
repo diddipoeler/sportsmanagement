@@ -65,27 +65,27 @@ class sportsmanagementViewPlayground extends JViewLegacy
         // Get a refrence of the page instance in joomla
 		$document= JFactory::getDocument();
         
-        $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
+        //$document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
 
 		$model = $this->getModel();
-        sportsmanagementModelProject::setProjectID(JRequest::getInt( "p", 0 ),$model::$cfg_which_database);
+        sportsmanagementModelProject::setProjectID(JRequest::getInt( "p", 0 ),JRequest::getInt('cfg_which_database',0));
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
         
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
+		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),JRequest::getInt('cfg_which_database',0));
 
-		$this->assign( 'project', sportsmanagementModelProject::getProject($model::$cfg_which_database) );
-		$this->assign( 'overallconfig', sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database) );
-		$this->assignRef( 'config', $config );
+		$this->assign('project', sportsmanagementModelProject::getProject(JRequest::getInt('cfg_which_database',0)) );
+		$this->assign('overallconfig', sportsmanagementModelProject::getOverallConfig(JRequest::getInt('cfg_which_database',0)) );
+		$this->assignRef('config', $config );
 
 		//$model = $this->getModel();
-		$games = $model->getNextGames();
+		$games = $model->getNextGames(JRequest::getInt( "p", 0 ));
 		$gamesteams = sportsmanagementModelTeams::getTeamsFromMatches( $games );
-		$this->assign( 'playground',  $model->getPlayground() );
-        $this->assign( 'address_string', $model->getAddressString() );
-		$this->assign( 'teams', sportsmanagementModelTeams::getTeams($this->playground->id) );
-		$this->assignRef( 'games', $games );
-		$this->assignRef( 'gamesteams', $gamesteams );
+		$this->assign('playground',  $model->getPlayground(JRequest::getInt( "pgid", 0 )) );
+        $this->assign('address_string', $model->getAddressString() );
+		$this->assign('teams', sportsmanagementModelTeams::getTeams($this->playground->id) );
+		$this->assignRef('games', $games );
+		$this->assignRef('gamesteams', $gamesteams );
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playground<br><pre>'.print_r($this->playground,true).'</pre>'),'');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
