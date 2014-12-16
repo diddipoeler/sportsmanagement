@@ -71,8 +71,8 @@ function tableOrdering( order, dir, task )
 		<label class="filter_search-lbl" for="filter_search"><?php echo JText::_('JSEARCH_FILTER_LABEL').':&#160;'; ?></label>
 		<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filter); ?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" />
 
-		<button type="submit" class="button"><?php echo JText::_('JGLOBAL_FILTER_BUTTON'); ?></button>
-        <button class="button" onclick="document.getElementById('filter_search').value='';this.form.submit(); ">
+		<button type="submit" class="btn"><?php echo JText::_('JGLOBAL_FILTER_BUTTON'); ?></button>
+        <button class="btn" onclick="document.getElementById('filter_search').value='';this.form.submit(); ">
 					<?php
 					echo JText::_('JSEARCH_FILTER_CLEAR');
 					?>
