@@ -34,7 +34,7 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
 		<th class="td_c" nowrap="nowrap">
 			<?php
 				$iconPath=$rows->icon;
-				if (!strpos(' '.$iconPath,'/')){$iconPath='media/com_joomleague/events/'.$iconPath;}
+				if (!strpos(' '.$iconPath,'/')){$iconPath='media/com_sportsmanagement/events/'.$iconPath;}
 				echo JHtml::image($iconPath,JText::_($rows->name),array('title'=> JText::_($rows->name),'align'=> 'top','hspace'=> '2'));
 			?>
 			</th>
@@ -45,7 +45,7 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
 	</thead>
 	<tbody>
 	<?php
-	if (count($this->eventranking[$rows->id]) > 0)
+	if ( isset($this->eventranking[$rows->id]) && count($this->eventranking[$rows->id]) > 0)
 	{
 		$k=0;
 		$lastrank=0;
@@ -154,7 +154,8 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
 </table>
 <?php if ($this->multiple_events == 1):?>
 <div class="fulltablelink">
-<?php echo JHtml::link($link=sportsmanagementHelperRoute::getEventsRankingRoute($this->project->id, (isset($this->division->id) ? $this->division->id : 0), $this->teamid, $rows->id, (isset($this->matchid) ? $this->matchid : 0)), JText::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_MORE')); ?>
+<?php 
+echo JHtml::link($link=sportsmanagementHelperRoute::getEventsRankingRoute($this->project->id, (isset($this->division->id) ? $this->division->id : 0), $this->teamid, $rows->id, (isset($this->matchid) ? $this->matchid : 0)), JText::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_MORE')); ?>
 </div>
 <?php else: ?>
 <div class="pageslinks">

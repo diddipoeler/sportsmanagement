@@ -31,7 +31,7 @@ class sportsmanagementViewEventsRanking extends JViewLegacy
 		$this->assign('limitstart', $model->getLimitStart());
 		$this->assign('pagination', $this->get('Pagination'));
 		$this->assign('eventranking', $model->getEventRankings($this->limit));
-		$this->assign( 'multiple_events', count($this->eventtypes) > 1 );
+		$this->assign('multiple_events', count($this->eventtypes) > 1 );
 
 		$prefix = JText::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_PAGE_TITLE');
 		if ( $this->multiple_events )

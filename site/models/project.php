@@ -964,7 +964,7 @@ class sportsmanagementModelProject extends JModelLegacy
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         
-        $query->select('et.id AS etid,et.id AS etid,');
+        $query->select('et.id AS etid,et.name,et.icon');
         $query->select('me.event_type_id AS id');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me ON et.id = me.event_type_id');

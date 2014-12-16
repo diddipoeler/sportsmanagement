@@ -209,7 +209,7 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 			if (self::$teamid > 0)
 			{
 				//$query .= " AND pt.team_id = ".$this->teamid;
-                $query->where('pt.team_id = ' . self::$teamid );
+                $query->where('st.team_id = ' . self::$teamid );
 			}
 			if (self::$matchid > 0)
 			{
@@ -278,7 +278,7 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 			if (self::$teamid > 0)
 			{
 				//$query .= " AND pt.team_id = ".$this->teamid;
-                $query->where('pt.team_id = ' . self::$teamid );
+                $query->where('st.team_id = ' . self::$teamid );
 			}
 			if (self::$matchid > 0)
 			{
