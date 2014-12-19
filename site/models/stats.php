@@ -55,8 +55,10 @@ jimport( 'joomla.application.component.model');
  */
 class sportsmanagementModelStats extends JModelLegacy
 {
-	var $projectid = 0;
-	var $divisionid = 0;
+	static $projectid = 0;
+	static $divisionid = 0;
+    static $cfg_which_database = 0;
+    
 	var $highest_home = null;
 	var $highest_away = null;
 	var $totals = null;
@@ -73,10 +75,11 @@ class sportsmanagementModelStats extends JModelLegacy
 	{
 		parent::__construct();
 
-		$this->projectid = JRequest::getInt( "p", 0 );
-		$this->divisionid = JRequest::getint( "division", 0 );
+		self::$projectid = JRequest::getInt( "p", 0 );
+		self::$divisionid = JRequest::getint( "division", 0 );
+        self::$cfg_which_database = JRequest::getint( "cfg_which_database", 0 );
         
-        sportsmanagementModelProject::$projectid = $this->projectid;
+        sportsmanagementModelProject::$projectid = self::$projectid;
 	}
 
 //	/**
@@ -129,7 +132,7 @@ class sportsmanagementModelStats extends JModelLegacy
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = pt2.team_id ');
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON st2.team_id = t2.id ');
             
-            $query->where('pt1.project_id = '.$this->projectid);
+            $query->where('pt1.project_id = '.self::$projectid);
             
 //            $query  = ' SELECT t1.name AS hometeam, '
 //				. ' t2.name AS guestteam, '
@@ -147,9 +150,9 @@ class sportsmanagementModelStats extends JModelLegacy
 //				. ' WHERE pt1.project_id = '.$this->projectid
 //			;
             
-			if ($this->divisionid != 0)
+			if (self::$divisionid != 0)
 			{
-			 $query->where('pt1.division.id = '.$this->divisionid);
+			 $query->where('pt1.division.id = '.self::$divisionid);
 //				$query .= ' AND pt1.division_id = '.$this->divisionid;
 			}
             
@@ -337,14 +340,14 @@ class sportsmanagementModelStats extends JModelLegacy
           $Subquery->where('sub1.crowd > 0');
           $Subquery->where('sub1.published = 1');
           $Subquery->where('(sub1.cancel IS NULL OR sub1.cancel = 0)');
-          $Subquery->where('sub2.project_id = '.$this->projectid);
+          $Subquery->where('sub2.project_id = '.self::$projectid);
           
           $query->select('('.$Subquery.') AS attendedmatches');
           
           $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS matches');
           $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id = matches.projectteam1_id');
             
-          $query->where('pt1.project_id = '.$this->projectid);
+          $query->where('pt1.project_id = '.self::$projectid);
             
 //            $query  = ' SELECT '
 //				. ' COUNT(matches.id) AS totalmatches, '
@@ -366,9 +369,9 @@ class sportsmanagementModelStats extends JModelLegacy
 //				. ' WHERE pt1.project_id = '.$this->projectid
 //			;
             
-			if ($this->divisionid != 0)
+			if (self::$divisionid != 0)
 			{
-			 $query->where('pt1.division.id = '.$this->divisionid);
+			 $query->where('pt1.division.id = '.self::$divisionid);
 //				$query .= ' AND pt1.division_id = '.$this->divisionid;
 			}
             
@@ -428,11 +431,11 @@ class sportsmanagementModelStats extends JModelLegacy
 //				. ' FROM #__joomleague_round AS rounds'
 //				. ' LEFT JOIN #__joomleague_match AS matches ON rounds.id = matches.round_id'
 //			;
-			if ($this->divisionid != 0)
+			if (self::$divisionid != 0)
 			{
 			 $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS division ON division.project_id = rounds.project_id');
-             $query->where('rounds.project_id = '.$this->projectid);
-             $query->where('division.id = '.$this->divisionid);
+             $query->where('rounds.project_id = '.self::$projectid);
+             $query->where('division.id = '.self::$divisionid);
              
 //				$query .= ' INNER JOIN #__joomleague_division AS division ON division.project_id=rounds.project_id'
 //					. ' WHERE rounds.project_id = '.$this->projectid
@@ -440,7 +443,7 @@ class sportsmanagementModelStats extends JModelLegacy
 			}
 			else
 			{
-			 $query->where('rounds.project_id = '.$this->projectid);
+			 $query->where('rounds.project_id = '.self::$projectid);
 //				$query .= ' WHERE rounds.project_id = '.$this->projectid;
  			}
             
@@ -481,7 +484,7 @@ class sportsmanagementModelStats extends JModelLegacy
 		{
 		  $query->select('COUNT(id)');
           $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
-          $query->where('project_id = '.$this->projectid);
+          $query->where('project_id = '.self::$projectid);
           
 //			$query  = ' SELECT COUNT(id)'
 //				. ' FROM #__joomleague_round'
@@ -527,7 +530,7 @@ class sportsmanagementModelStats extends JModelLegacy
           $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team t1 ON t1.id = st.team_id');
           $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS playground ON pt1.standard_playground = playground.id');
           
-          $query->where('pt1.project_id = '.$this->projectid);
+          $query->where('pt1.project_id = '.self::$projectid);
           
 //			$query  = ' SELECT '
 //				. ' SUM(matches.crowd) AS sumspectatorspt, '
@@ -542,14 +545,14 @@ class sportsmanagementModelStats extends JModelLegacy
 //				. ' WHERE pt1.project_id = '.$this->projectid
 //			;
             
-			if ($this->divisionid != 0)
+			if (self::$divisionid != 0)
 			{
-			 $query->where('pt1.division.id = '.$this->divisionid);
+			 $query->where('pt1.division.id = '.self::$divisionid);
 //				$query .= ' AND pt1.division_id = '.$this->divisionid;
 			}
             
             $query->where('matches.published = 1');
-            $query->where('matches.crowd > 0');
+            //$query->where('matches.crowd > 0');
             $query->group('matches.projectteam1_id');
             $query->order('avgspectatorspt DESC');
             

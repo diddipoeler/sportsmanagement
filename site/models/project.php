@@ -282,7 +282,7 @@ class sportsmanagementModelProject extends JModelLegacy
 	 * 
 	 * @return int
 	 */
-	function getCurrentRoundNumber($cfg_which_database = 0)
+	public static function getCurrentRoundNumber($cfg_which_database = 0)
 	{
 	   $app = JFactory::getApplication();
 		$round = self::increaseRound($cfg_which_database);
