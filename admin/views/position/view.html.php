@@ -189,15 +189,31 @@ class sportsmanagementViewPosition extends sportsmanagementView
         
         // position statistics
         $mdlStatistics = JModelLegacy::getInstance("Statistics", "sportsmanagementModel");
+        
 		$position_stats = $mdlStatistics->getPositionStatsOptions($this->item->id);
-		$lists['position_statistic']=JHtml::_(	'select.genericlist',$position_stats,'position_statistic[]',
+		
+        if (!empty($position_stats)) 
+        {
+        $lists['position_statistic'] = JHtml::_(	'select.genericlist',$position_stats,'position_statistic[]',
 							' style="width:250px; height:300px;" class="inputbox" id="position_statistic" multiple="true" size="'.max(10,count($position_stats)).'"',
 							'value','text');
+        }
+        else
+		{
+		      $lists['position_statistic']='<select name="position_statistic[]" id="position_statistic" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
+		}
+        
         $available_stats = $mdlStatistics->getAvailablePositionStatsOptions($this->item->id);
+        if (!empty($available_stats)) 
+        {
 		$lists['statistic']=JHtml::_(	'select.genericlist',$available_stats,'statistic[]',
 						' style="width:250px; height:300px;" class="inputbox" id="statistic" multiple="true" size="'.max(10,count($available_stats)).'"',
 						'value','text');
-                        
+        }                
+        else
+		{
+		      $lists['statistic']='<select name="statistic[]" id="statistic" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
+		}
                         
         $document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/sm_functions.js');
         

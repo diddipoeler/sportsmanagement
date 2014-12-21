@@ -942,7 +942,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 		$db->setQuery($query);
 		if (!$result=$db->loadResult())
 		{
-			$this->setError($db->getErrorMsg());
+			//$this->setError($db->getErrorMsg());
 			return false;
 		}
 		return $result;
@@ -962,7 +962,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 		$db->setQuery($query);
 		if (!$result=$db->loadResult())
 		{
-			$this->setError($db->getErrorMsg());
+			//$this->setError($db->getErrorMsg());
 			return false;
 		}
 		return JText::_($result);

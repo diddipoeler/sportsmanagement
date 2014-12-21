@@ -4,15 +4,26 @@
 		          label="COM_SPORTSMANAGEMENT_STAT_PARAMS_GROUP_SETTINGS" 
 		          description="COM_SPORTSMANAGEMENT_STAT_PERGAME_DESC">
 
-			<field type="text" name="numerator_ids" value="" 
+			<field name="numerator_ids" 
+      type="sql" 
+      value="" 
+      multiple="multiple" 
+      query="SELECT id, name FROM #__sportsmanagement_statistic where class like 'basic'" 
+      key_field="id" 
+      value_field="name" 
 					label="COM_SPORTSMANAGEMENT_STAT_PERGAME_NUMERATOR_IDS" 
 					description="COM_SPORTSMANAGEMENT_STAT_PERGAME_NUMERATOR_IDS_DESC">
 			</field>
-			<field 	name="precision" type="text" value="2"
+			<field 	name="precision" 
+      type="text" 
+      value="2"
 					label="COM_SPORTSMANAGEMENT_STAT_PRECISION"
 					description="COM_SPORTSMANAGEMENT_STAT_PRECISION_DESC">
 			</field>
-			<field name="statistic_views" type="list" default="roster,matchreport,player" multiple="multiple" 
+			<field name="statistic_views" 
+      type="list" 
+      default="roster,matchreport,player" 
+      multiple="multiple" 
 					label="COM_SPORTSMANAGEMENT_STAT_SHOW_IN_VIEWS_IDS"
 					description="COM_SPORTSMANAGEMENT_STAT_SHOW_IN_VIEWS_DESC">
 				<option value="nowhere">COM_SPORTSMANAGEMENT_STAT_SHOW_IN_VIEWS_OPTION_NOWHERE</option>

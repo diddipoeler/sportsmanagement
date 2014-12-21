@@ -42,12 +42,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics'.DS.'base.php');
 
+
 /**
- * base class for statistics handling.
- *
- * @package Joomla
- * @subpackage Joomleague
- * @since 0.9
+ * SMStatisticSumevents
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
  */
 class SMStatisticSumevents extends SMStatistic 
 {
@@ -57,58 +60,59 @@ class SMStatisticSumevents extends SMStatistic
 	var $_calculated = 1;
 	
 	var $_showinsinglematchreports = 1;
-	
+	var $_ids = 'stat_ids';
+    
 	function __construct()
 	{
 		parent::__construct();
 	}
 	
-	function getSids()
-	{
-		$params = SMStatistic::getParams();
-		//$stat_ids = explode(',', $params->get('stat_ids'));
-        $stat_ids = $params->get('stat_ids');
-		if (!count($stat_ids)) {
-			JError::raiseWarning(0, get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
-			return(array(0));
-		}
-				
-		$db = &JFactory::getDBO();
-		$sids = array();
-		foreach ($stat_ids as $s) {
-			$sids[] = (int)$s;
-		}		
-		return $sids;
-	}
+//	function getSids()
+//	{
+//		$params = SMStatistic::getParams();
+//		//$stat_ids = explode(',', $params->get('stat_ids'));
+//        $stat_ids = $params->get('stat_ids');
+//		if (!count($stat_ids)) {
+//			JError::raiseWarning(0, get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+//			return(array(0));
+//		}
+//				
+//		$db = &JFactory::getDBO();
+//		$sids = array();
+//		foreach ($stat_ids as $s) {
+//			$sids[] = (int)$s;
+//		}		
+//		return $sids;
+//	}
 	
-	function getQuotedSids()
-	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        
-		$params = SMStatistic::getParams();
-        
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
-        
-		//$stat_ids = explode(',', $params->get('stat_ids'));
-        $stat_ids = $params->get('stat_ids');
-		if (!count($stat_ids)) {
-			JError::raiseWarning(0, get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
-			return(array(0));
-		}
-				
-		$db = JFactory::getDBO();
-		$sids = array();
-		foreach ($stat_ids as $s) {
-			$sids[] = $db->Quote($s);
-		}		
-		return $sids;
-	}
+//	function getQuotedSids()
+//	{
+//	   $app = JFactory::getApplication();
+//        $option = JRequest::getCmd('option');
+//        
+//		$params = SMStatistic::getParams();
+//        
+//        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
+//        
+//		//$stat_ids = explode(',', $params->get('stat_ids'));
+//        $stat_ids = $params->get('stat_ids');
+//		if (!count($stat_ids)) {
+//			JError::raiseWarning(0, get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
+//			return(array(0));
+//		}
+//				
+//		$db = JFactory::getDBO();
+//		$sids = array();
+//		foreach ($stat_ids as $s) {
+//			$sids[] = $db->Quote($s);
+//		}		
+//		return $sids;
+//	}
 	
 	function getMatchPlayerStat(&$gamemodel, $teamplayer_id)
 	{
 		$gamestats = $gamemodel->getPlayersEvents();
-		$stat_ids = self::getSids();
+		$stat_ids = SMStatistic::getSids($this->_ids);
 		
 		$res = 0;
 		foreach ($stat_ids as $id) 
@@ -117,19 +121,20 @@ class SMStatisticSumevents extends SMStatistic
 				$res += $gamestats[$teamplayer_id][$id];
 			}
 		}
-		return $this->formatValue($res, SMStatistic::getPrecision());
+		return stats::formatValue($res, SMStatistic::getPrecision());
 	}
 
 	function getPlayerStatsByGame($teamplayer_ids, $project_id)
 	{
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $sids = self::getQuotedSids();
+        $sids = SMStatistic::getQuotedSids($this->_ids);
 		$db = JFactory::getDBO();
         $query = $db->getQuery(true);
         
 		$quoted_tpids = array();
-		foreach ($teamplayer_ids as $tpid) {
+		foreach ($teamplayer_ids as $tpid) 
+        {
 			$quoted_tpids[] = $db->Quote($tpid);
 		}
 		
@@ -163,7 +168,7 @@ class SMStatisticSumevents extends SMStatistic
 				$totals->value += $match->value;
 				$res[$k]->value = self::formatValue($res[$k]->value, $precision);
 			}
-			$totals->value = $this->formatValue($totals->value, $precision);
+			$totals->value = self::formatValue($totals->value, $precision);
 		}
 		$res['totals'] = $totals;
 		return $res;
@@ -171,9 +176,9 @@ class SMStatisticSumevents extends SMStatistic
 
 	function getPlayerStatsByProject($person_id, $projectteam_id = 0, $project_id = 0, $sports_type_id = 0)
 	{
-		$sids = self::getSids();
+		$sids = SMStatistic::getSids($this->_ids);
 		$res = SMStatistic::getPlayerStatsByProjectForEvents($person_id, $projectteam_id, $project_id, $sports_type_id, $sids);
-		return self::formatValue($res, $this->getPrecision());
+		return self::formatValue($res, SMStatistic::getPrecision());
 	}
 	
 	/**
@@ -184,7 +189,7 @@ class SMStatisticSumevents extends SMStatistic
 	 */
 	function getRosterStats($team_id, $project_id, $position_id)
 	{
-		$sids = $this->getSids();
+		$sids = SMStatistic::getSids($this->_ids);
 		$res = $this->getRosterStatsForEvents($team_id, $project_id, $position_id, $sids);
 		if (!empty($res))
 		{
@@ -197,46 +202,83 @@ class SMStatisticSumevents extends SMStatistic
 		return $res;
 	}
 
+	/**
+	 * SMStatisticSumevents::getPlayersRanking()
+	 * 
+	 * @param mixed $project_id
+	 * @param mixed $division_id
+	 * @param mixed $team_id
+	 * @param integer $limit
+	 * @param integer $limitstart
+	 * @param mixed $order
+	 * @return
+	 */
 	function getPlayersRanking($project_id, $division_id, $team_id, $limit = 20, $limitstart = 0, $order=null)
 	{		
-		$sids = $this->getQuotedSids();
-		
+		$sids = SMStatistic::getQuotedSids($this->_ids);
+		$app = JFactory::getApplication();
 		$db = JFactory::getDBO();
-		
-		$query_select_count = ' SELECT COUNT(DISTINCT tp.id) as count';
-
-		$query_select_details = ' SELECT SUM(me.event_sum) AS total,'
+		$query_core = JFactory::getDbo()->getQuery(true);
+		$query_select_count = 'COUNT(DISTINCT tp.id) as count';
+		$query_select_details = 'SUM(me.event_sum) AS total,'
 							  . ' tp.id AS teamplayer_id, tp.person_id, tp.picture AS teamplayerpic,'
 							  . ' p.firstname, p.nickname, p.lastname, p.picture, p.country,'
 							  . ' pt.team_id, pt.team_id, pt.picture AS projectteam_picture,'
 							  . ' t.picture AS team_picture, t.name AS team_name, t.short_name AS team_short_name';
 
-		$query_core	= ' FROM #__joomleague_team_player AS tp'
-					. ' INNER JOIN #__joomleague_person AS p ON p.id = tp.person_id'
-					. ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id'
-					. ' INNER JOIN #__joomleague_team AS t ON pt.team_id = t.id'
-					. ' INNER JOIN #__joomleague_match_event AS me ON me.teamplayer_id = tp.id'
-					. '   AND me.event_type_id IN ('. implode(',', $sids) .')'
-					. ' INNER JOIN #__joomleague_match AS m ON m.id = me.match_id'
-					. '   AND m.published = 1'
-					. ' WHERE pt.project_id = '. $db->Quote($project_id)
-					. '   AND p.published = 1 ';
+
+
+
+
+		$query_core->select($query_select_count);
+        $query_core->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp');
+        $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON p.id = tp.person_id ');
+        $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
+        $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+        $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON st.team_id = t.id');
+        $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me ON me.teamplayer_id = tp.id AND me.event_type_id IN ('. implode(',', $sids) .')');
+        $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = me.match_id AND m.published = 1');
+        $query_core->where('pt.project_id = ' . $project_id);
+        $query_core->where('p.published = 1');
+        
+//        $query_core	= ' FROM #__joomleague_team_player AS tp'
+//					. ' INNER JOIN #__joomleague_person AS p ON p.id = tp.person_id'
+//					. ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id'
+//					. ' INNER JOIN #__joomleague_team AS t ON pt.team_id = t.id'
+//					. ' INNER JOIN #__joomleague_match_event AS me ON me.teamplayer_id = tp.id'
+//					. '   AND me.event_type_id IN ('. implode(',', $sids) .')'
+//					. ' INNER JOIN #__joomleague_match AS m ON m.id = me.match_id'
+//					. '   AND m.published = 1'
+//					. ' WHERE pt.project_id = '. $db->Quote($project_id)
+//					. '   AND p.published = 1 ';
 		if ($division_id != 0)
 		{
-			$query_core .= '   AND pt.division_id = '. $db->Quote($division_id);
+			//$query_core .= '   AND pt.division_id = '. $db->Quote($division_id);
+            $query_core->where('pt.division_id = ' . $division_id);
 		}
 		if ($team_id != 0)
 		{
-			$query_core .= '   AND pt.team_id = ' . $db->Quote($team_id);
+			//$query_core .= '   AND pt.team_id = ' . $db->Quote($team_id);
+            $query_core->where('st.team_id = ' . $team_id);
 		}
-		$query_end_details	= ' GROUP BY tp.id '
-							. ' ORDER BY total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).', tp.id';
+//		$query_end_details	= ' GROUP BY tp.id '
+//							. ' ORDER BY total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).', tp.id';
 
 		$res = new stdclass;
-		$db->setQuery($query_select_count.$query_core);
+		$db->setQuery($query_core);
+        
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
+        
 		$res->pagination_total = $db->loadResult();
+        
+        $query_core->clear('select');
+        $query_core->select($query_select_details);
+        $query_core->group('tp.id');
+		$query_core->order('total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).', tp.id'); 
+        
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
 
-		$db->setQuery($query_select_details.$query_core.$query_end_details, $limitstart, $limit);
+		$db->setQuery($query_core, $limitstart, $limit);
 		$res->ranking = $db->loadObjectList();
 	
 		if ($res->ranking)
@@ -256,7 +298,7 @@ class SMStatisticSumevents extends SMStatistic
 				$previousval = $row->total;
 				$currentrank = $res->ranking[$k]->rank;
 
-				$res->ranking[$k]->total = $this->formatValue($res->ranking[$k]->total, $precision);
+				$res->ranking[$k]->total = self::formatValue($res->ranking[$k]->total, $precision);
 			}
 		}
 
@@ -265,9 +307,9 @@ class SMStatisticSumevents extends SMStatistic
 
 	function getTeamsRanking($project_id, $limit = 20, $limitstart = 0, $order=null)
 	{		
-		$sids = $this->getQuotedSids();
+		$sids = SMStatistic::getQuotedSids($this->_ids);
 		
-		$db = &JFactory::getDBO();
+		$db = JFactory::getDBO();
 		
 		$query = ' SELECT SUM(ms.event_sum) AS total, '
 		       . ' pt.team_id ' 
@@ -311,6 +353,13 @@ class SMStatisticSumevents extends SMStatistic
 		return $res;		
 	}
 
+	/**
+	 * SMStatisticSumevents::formatValue()
+	 * 
+	 * @param mixed $value
+	 * @param mixed $precision
+	 * @return
+	 */
 	function formatValue($value, $precision)
 	{
 		if (empty($value))

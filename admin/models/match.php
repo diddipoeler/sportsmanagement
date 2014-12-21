@@ -390,6 +390,95 @@ class sportsmanagementModelMatch extends JModelAdmin
 		return true;
 	}
     
+    
+    /**
+     * sportsmanagementModelMatch::savestats()
+     * 
+     * @param mixed $data
+     * @return
+     */
+    function savestats($data)
+	{
+	   $app = JFactory::getApplication();
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
+		$match_id = $data['match_id'];
+		if (isset($data['cid']))
+		{
+			// save all checked rows
+			foreach ($data['teamplayer_id'] as $idx => $tpid)
+			{
+				$teamplayer_id  = $data['teamplayer_id'][$idx];
+				$projectteam_id = $data['projectteam_id'][$idx];
+				//clear previous data
+				$query=' DELETE FROM #__sportsmanagement_match_statistic '
+				.' WHERE match_id='. $this->_db->Quote($match_id)
+				.'   AND teamplayer_id='. $this->_db->Quote($teamplayer_id);
+				$this->_db->setQuery($query);
+				$res=$this->_db->query();
+				foreach ($data as $key => $value)
+				{
+					if (preg_match('/^stat'.$teamplayer_id.'_([0-9]+)/',$key,$reg) && $value!="")
+					{
+						$statistic_id=$reg[1];
+						$stat=JTable::getInstance('Matchstatistic','sportsmanagementTable');
+						$stat->match_id       = $match_id;
+						$stat->projectteam_id = $projectteam_id;
+						$stat->teamplayer_id  = $teamplayer_id;
+						$stat->statistic_id   = $statistic_id;
+						$stat->value          = ($value=="") ? null : $value;
+						if (!$stat->check())
+						{
+							echo "stat check failed!"; die();
+						}
+						if (!$stat->store())
+						{
+							echo "stat store failed!"; die();
+						}
+					}
+				}
+			}
+		}
+		//staff stats
+		if (isset($data['staffcid']))
+		{
+			// save all checked rows
+			foreach ($data['team_staff_id'] as $idx => $stid)
+			{
+				$team_staff_id = $data['team_staff_id'][$idx];
+				$projectteam_id = $data['sprojectteam_id'][$idx];
+				//clear previous data
+				$query=' DELETE FROM #__sportsmanagement_match_staff_statistic '
+				.' WHERE match_id='. $this->_db->Quote($match_id)
+				.'   AND team_staff_id='. $this->_db->Quote($team_staff_id);
+				$this->_db->setQuery($query);
+				$res=$this->_db->query();
+				foreach ($data as $key => $value)
+				{
+					if (ereg('^staffstat'.$team_staff_id.'_([0-9]+)',$key,$reg) && $value!="")
+					{
+						$statistic_id=$reg[1];
+						$stat=JTable::getInstance('Matchstaffstatistic','sportsmanagementTable');
+						$stat->match_id      = $match_id;
+						$stat->projectteam_id= $projectteam_id;
+						$stat->team_staff_id = $team_staff_id;
+						$stat->statistic_id  = $statistic_id;
+						$stat->value= ($value=="") ? null : $value;
+						if (!$stat->check())
+						{
+							echo "stat check failed!"; die();
+						}
+						if (!$stat->store())
+						{
+							echo "stat store failed!"; die();
+						}
+					}
+				}
+			}
+		}
+		return true;
+	}
+    
+    
     /**
 	 * Method to update checked project match
 	 *
@@ -1176,38 +1265,41 @@ class sportsmanagementModelMatch extends JModelAdmin
         {
             case 'player':
             $id = 'teamplayer_id';
+            $query->select('mp.'.$id.' AS tpid,mp.'.$id.',mp.project_position_id,mp.match_id,mp.id as update_id');
             break;
             case 'staff':
             $id = 'team_staff_id';
+            $query->select('mp.'.$id.' ,mp.project_position_id,mp.match_id,mp.id as update_id');
             break;
         }
         
         // Select some fields
-        $query->select('mp.'.$id.',mp.project_position_id,mp.match_id,mp.id as update_id');
+        $query->select('pt.id as projectteam_id');
         $query->select('sp.id AS value');
         $query->select('pl.firstname,pl.nickname,pl.lastname');
         $query->select('pos.name AS positionname');
         $query->select('ppos.position_id,ppos.id AS pposid');
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_'.$table.' AS mp');
-        
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS sp ON mp.'.$id.' = sp.id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = sp.team_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+
+$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position as ppos ON ppos.id = mp.project_position_id'); 
+//$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.project_id = ppos.project_id'); 
+//$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt.team_id');
+$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl ON pl.id = sp.person_id');
+$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');
+
+/*        
 $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS sp ON mp.'.$id.' = sp.id');
 $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position as ppos ON ppos.id = mp.project_position_id'); 
 $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.project_id = ppos.project_id'); 
 $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt.team_id');
 $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl ON pl.id = sp.person_id');
 $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');
-        
-/*        
-        // Join 
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS sp ON mp.'.$id.' = sp.id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl ON pl.id = sp.person_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position as ppos ON ppos.id = mp.project_position_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');
-        
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.team_id = sp.team_id ');
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st1.id ');
-*/
+*/        
+
 		// Where
         $query->where('mp.match_id = '.$match_id);
         $query->where('pl.published = 1');
@@ -1235,11 +1327,12 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
         $result = JFactory::getDbo()->loadObjectList($id);
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
         
         if ( !$result )
        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>' ),'Error');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>' ),'Error');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         }
         
 		return $result;
@@ -1387,15 +1480,21 @@ AND pt.id = 110
 //		.' ORDER BY stat.ordering, ps.ordering ';
         
 		JFactory::getDbo()->setQuery($query);
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        
 		$res = JFactory::getDbo()->loadObjectList();
 		$stats=array();
 		foreach ($res as $k => $row)
 		{
-			$stat = JSMStatistic::getInstance($row->class);
+			$stat = SMStatistic::getInstance($row->class);
 			$stat->bind($row);
 			$stat->set('position_id',$row->posid);
 			$stats[]=$stat;
 		}
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' stats<br><pre>'.print_r($stats,true).'</pre>'),'Notice');
+        
 		return $stats;
 	}
     
@@ -1423,6 +1522,8 @@ AND pt.id = 110
 //		$query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic  WHERE match_id='.$match_id;
         
 		JFactory::getDbo()->setQuery($query);
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
@@ -1464,6 +1565,8 @@ AND pt.id = 110
 //		$query='SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic WHERE match_id='.$match_id;
         
 		JFactory::getDbo()->setQuery($query);
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {

@@ -311,7 +311,35 @@ class sportsmanagementControllermatches extends JControllerAdmin
 	}
     
     
-    
+    function savestats()
+    {
+        $option = JRequest::getCmd('option');
+        $post = JRequest::get('post');
+        $model = $this->getModel();
+        if ($model->savestats($post))
+		{
+			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_UPDATE_STATS');
+		}
+		else
+		{
+			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_UPDATE_STATS');
+		}
+        
+        if ( JRequest::getString('close', 0) == 1 )
+        {
+            $link = 'index.php?option='.$option.'&view=close&tmpl=component';
+        }
+        else
+        {
+            $link = 'index.php?option='.$option.'&close='.JRequest::getString('close', 0).'&tmpl=component&view=match&layout=editstats&id='.$post['id'].'&team='.$post['team'];
+        }
+        
+		//echo $link.'<br />';
+		$this->setRedirect($link,$msg);
+        
+        
+    }
+        
     /**
      * sportsmanagementControllermatches::saveroster()
      * 

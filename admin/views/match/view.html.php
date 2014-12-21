@@ -357,6 +357,11 @@ $this->assignRef('csvstaff',$model->csv_staff);
     
     }
     
+    /**
+     * sportsmanagementViewMatch::initEditStats()
+     * 
+     * @return
+     */
     public function initEditStats()
 	{
 	   $app = JFactory::getApplication();
@@ -399,6 +404,16 @@ $this->assignRef('csvstaff',$model->csv_staff);
 		$playerstats = $model->getMatchStatsInput($this->item->id,$teams->projectteam1_id,$teams->projectteam2_id);
 		$staffstats = $model->getMatchStaffStatsInput($this->item->id,$teams->projectteam1_id,$teams->projectteam2_id);
         
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' positions<br><pre>'.print_r($positions,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' stats<br><pre>'.print_r($stats,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playerstats<br><pre>'.print_r($playerstats,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' staffstats<br><pre>'.print_r($staffstats,true).'</pre>'),'');
+
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' homeStaff<br><pre>'.print_r($homeStaff,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' awayStaff<br><pre>'.print_r($awayStaff,true).'</pre>'),'');
+        
+        $this->assignRef('playerstats', $playerstats );
+		$this->assignRef('staffstats', $staffstats );
         $this->assignRef('stats',$stats);
         $this->assignRef('homeStaff',$homeStaff);
 		$this->assignRef('awayStaff',$awayStaff);
