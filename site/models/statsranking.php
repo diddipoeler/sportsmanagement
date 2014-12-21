@@ -8,6 +8,15 @@ jimport( 'joomla.application.component.model');
 
 //require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
 
+/**
+ * sportsmanagementModelStatsRanking
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementModelStatsRanking extends JModelLegacy
 {
 	/**
@@ -31,6 +40,11 @@ class sportsmanagementModelStatsRanking extends JModelLegacy
     static $cfg_which_database = 0;
 	static $projectid = 0;
     
+	/**
+	 * sportsmanagementModelStatsRanking::__construct()
+	 * 
+	 * @return void
+	 */
 	function __construct( )
 	{
 		parent::__construct( );
@@ -57,6 +71,11 @@ class sportsmanagementModelStatsRanking extends JModelLegacy
         
 	}
 	
+	/**
+	 * sportsmanagementModelStatsRanking::getDivision()
+	 * 
+	 * @return
+	 */
 	function getDivision()
 	{
 		$division = null;
@@ -67,6 +86,11 @@ class sportsmanagementModelStatsRanking extends JModelLegacy
 		return $division;
 	}
 
+	/**
+	 * sportsmanagementModelStatsRanking::getTeamId()
+	 * 
+	 * @return
+	 */
 	function getTeamId()
 	{
 		return self::$teamid;
@@ -85,16 +109,32 @@ class sportsmanagementModelStatsRanking extends JModelLegacy
 		return $this->order;
 	}
 
+	/**
+	 * sportsmanagementModelStatsRanking::getLimit()
+	 * 
+	 * @return
+	 */
 	function getLimit( )
 	{
 		return $this->limit;
 	}
 
+	/**
+	 * sportsmanagementModelStatsRanking::getLimitStart()
+	 * 
+	 * @return
+	 */
 	function getLimitStart( )
 	{
 		return $this->limitstart;
 	}
 
+	/**
+	 * sportsmanagementModelStatsRanking::setStatid()
+	 * 
+	 * @param mixed $statid
+	 * @return void
+	 */
 	function setStatid($statid)
 	{
 		// Allow for multiple statistics IDs, arranged in a single parameters (sid) as string
@@ -113,6 +153,11 @@ class sportsmanagementModelStatsRanking extends JModelLegacy
 	}
 
 	
+	/**
+	 * sportsmanagementModelStatsRanking::getProjectUniqueStats()
+	 * 
+	 * @return
+	 */
 	function getProjectUniqueStats()
 	{
 		$pos_stats = sportsmanagementModelProject::getProjectStats($this->stat_id,0,self::$cfg_which_database);
@@ -127,6 +172,12 @@ class sportsmanagementModelStatsRanking extends JModelLegacy
 		return $allstats;
 	}
 	
+	/**
+	 * sportsmanagementModelStatsRanking::getPlayersStats()
+	 * 
+	 * @param mixed $order
+	 * @return
+	 */
 	function getPlayersStats($order=null)
 	{
 		$stats = self::getProjectUniqueStats();

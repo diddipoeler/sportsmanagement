@@ -99,10 +99,16 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
  		{
  			$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
  		}
-		echo sportsmanagementHelper::getPictureThumb($picture, $playerName,
-												$this->config['player_picture_width'],
-												$this->config['player_picture_height']);
+//		echo sportsmanagementHelper::getPictureThumb($picture, $playerName,
+//												$this->config['player_picture_width'],
+//												$this->config['player_picture_height']);
 		?>
+        <a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $playerName;?>" class="modal">
+<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $playerName;?>" width="<?php echo $this->config['player_picture_width'];?>" />
+</a>
+        
+        
+        
 		</td>
 		<?php endif; ?>
 
@@ -125,7 +131,7 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
 		<?php	if ( $this->config['show_team'] == 1 ):	?>
 		<td class="td_l playerteam">
 			<?php
-			$team=$this->teams[$row->team_id];
+			$team = $this->teams[$row->team_id];
 			if ( ( $this->config['link_to_team'] == 1 ) && ( $this->project->id > 0 ) && ( $row->team_id > 0 ) )
 			{
 				$link = sportsmanagementHelperRoute::getTeamInfoRoute( $this->project->id, $row->team_id  );
