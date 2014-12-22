@@ -68,15 +68,18 @@ function tableOrdering( order, dir, task )
 	<legend class="hidelabeltxt"><?php echo JText::_('JGLOBAL_FILTER_LABEL'); ?></legend>
 	<div class="filter-search">
 
-		<label class="filter_search-lbl" for="filter_search"><?php echo JText::_('JSEARCH_FILTER_LABEL').':&#160;'; ?></label>
+<!--label class="filter_search-lbl" for="filter_search"><!--?php echo JText::_('JSEARCH_FILTER_LABEL').':&#160;'; ?></label-->
 		<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->filter); ?>" class="inputbox" onchange="document.getElementById('adminForm').submit();" />
 
-		<button type="submit" class="btn"><?php echo JText::_('JGLOBAL_FILTER_BUTTON'); ?></button>
-        <button class="btn" onclick="document.getElementById('filter_search').value='';this.form.submit(); ">
-					<?php
+		<button type="submit" class="btn" title=""><i class="icon-search"></i></button>
+		<button type="button" class="btn" title="" onclick="document.id('filter_search').value='';this.form.submit();"><i class="icon-remove"></i></button>
+		<!--button type="submit" class="button"><!--?php echo JText::_('JGLOBAL_FILTER_BUTTON'); ?></button-->
+		
+        <!--button class="button" onclick="document.getElementById('filter_search').value='';this.form.submit(); ">
+					<!--?php
 					echo JText::_('JSEARCH_FILTER_CLEAR');
 					?>
-				</button>
+				</button-->
         <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?></td>
         <td nowrap='nowrap' align='right'><?php echo $this->lists['leagues'].'&nbsp;&nbsp;'; ?></td>
         <td nowrap='nowrap' align='right'><?php echo $this->lists['seasons'].'&nbsp;&nbsp;'; ?></td>
