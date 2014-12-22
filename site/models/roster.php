@@ -512,14 +512,19 @@ class sportsmanagementModelRoster extends JModelLegacy
 	 */
 	function getRosterStats()
 	{
-		$stats = sportsmanagementModelProject::getProjectStats();
+		$app = JFactory::getApplication();
+        $stats = sportsmanagementModelProject::getProjectStats();
 		$projectteam = self::getprojectteam();
-		$result=array();
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectteam<br><pre>'.print_r($projectteam,true).'</pre>'),'Notice');  
+        
+		$result = array();
 		foreach ($stats as $pos => $pos_stats)
 		{
 			foreach ($pos_stats as $k => $stat)
 			{
-				$result[$pos][$stat->id] = $stat->getRosterStats($projectteam->team_id,$projectteam->project_id, $pos);
+				//$result[$pos][$stat->id] = $stat->getRosterStats($projectteam->team_id,$projectteam->project_id, $pos);
+                $result[$pos][$stat->id] = $stat->getRosterStats($projectteam->season_team_id,$projectteam->project_id, $pos);
 			}
 		}
 		return $result;

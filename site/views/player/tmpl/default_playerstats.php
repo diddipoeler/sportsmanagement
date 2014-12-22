@@ -329,6 +329,7 @@ echo 'PERSON_PERSONAL_STATISTICS stats<br /><pre>~' . print_r($this->stats,true)
 								    array_key_exists($stat->id, $this->projectstats))
 								{
 									//echo $this->projectstats[$stat->id]['totals'];
+                                    //echo 'hallo';
                                     echo ($this->projectstats[$stat->id]['totals'] > 0 ? $this->projectstats[$stat->id]['totals'] : $this->overallconfig['zero_events_value']);
 								}
 								else	// In case there are no stats for the player

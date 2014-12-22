@@ -216,7 +216,7 @@ if (count($this->games))
                     
 					<?php
 					}
-					if ($this->config['show_career_events_stats'])
+					if ($this->config['show_career_events_stats'] && isset($this->AllEvents) )
 					{
 						foreach($this->AllEvents as $eventtype)
 						{

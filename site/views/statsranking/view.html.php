@@ -53,7 +53,7 @@ class sportsmanagementViewStatsRanking extends JViewLegacy
 		}
 
 		$this->assignRef('teams', $teams );
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
+        
         
 		$this->assign('overallconfig', sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database) );
 		$this->assignRef('config', $config );
@@ -64,8 +64,11 @@ class sportsmanagementViewStatsRanking extends JViewLegacy
 		$this->assign('limitstart', $model->getLimitStart() );
 		$this->assign('multiple_stats', count($this->stats) > 1 );
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');    
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playersstats<br><pre>'.print_r($this->playersstats,true).'</pre>'),'');
-
+}
 		$prefix = JText::_('COM_SPORTSMANAGEMENT_STATSRANKING_PAGE_TITLE');
 		if ( $this->multiple_stats )
 		{
