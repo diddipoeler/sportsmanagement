@@ -82,7 +82,7 @@ defined('_JEXEC') or die('Restricted access');
 					$header .= '</div></th>';
 					$matrix .= $header;
 				} else {
-					$header = '<th class="rotated_cell"<div class="rotate_text">>';
+					$header = '<th class="rotated_cell"><div class="rotate_text">';
 					$header .= $desc;
 					$header .= '</div></th>';
 					$matrix .= $header;
