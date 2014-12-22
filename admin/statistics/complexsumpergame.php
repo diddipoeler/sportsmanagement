@@ -164,10 +164,10 @@ class SMStatisticComplexsumpergame extends SMStatistic
 	{
 		$sids = SMStatistic::getSids($this->_ids);
 		$factors  = self::getFactors();
-		$num = $this->getRosterStatsForIds($team_id, $project_id, $position_id, $sids, $factors);
-		$den = $this->getGamesPlayedByProjectTeam($team_id, $project_id, $position_id);
+		$num = SMStatistic::getRosterStatsForIds($team_id, $project_id, $position_id, $sids, $factors);
+		$den = SMStatistic::getGamesPlayedByProjectTeam($team_id, $project_id, $position_id);
 
-		$precision = $this->getPrecision();
+		$precision = SMStatistic::getPrecision();
 		$res = array();
 		foreach (array_unique(array_merge(array_keys($num), array_keys($den))) as $person_id) 
 		{
@@ -175,7 +175,7 @@ class SMStatisticComplexsumpergame extends SMStatistic
 			$res[$person_id]->person_id = $person_id;
 			$n = isset($num[$person_id]->value) ? $num[$person_id]->value : 0;
 			$d = isset($den[$person_id]->value) ? $den[$person_id]->value : 0;
-			$res[$person_id]->value = $this->formatValue($n, $d, $precision);
+			$res[$person_id]->value = self::formatValue($n, $d, $precision);
 		}
 		return $res;
 	}

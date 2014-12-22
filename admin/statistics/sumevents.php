@@ -62,6 +62,11 @@ class SMStatisticSumevents extends SMStatistic
 	var $_showinsinglematchreports = 1;
 	var $_ids = 'stat_ids';
     
+	/**
+	 * SMStatisticSumevents::__construct()
+	 * 
+	 * @return void
+	 */
 	function __construct()
 	{
 		parent::__construct();
@@ -154,7 +159,10 @@ class SMStatisticSumevents extends SMStatistic
 		$db->setQuery($query);
 		$res = $db->loadObjectList('match_id');
         
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' res<br><pre>'.print_r($res,true).'</pre>'),'');
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' res<br><pre>'.print_r($res,true).'</pre>'),'');
+}
 
 		// Determine total for the whole project
 		$totals = new stdclass;
@@ -174,10 +182,33 @@ class SMStatisticSumevents extends SMStatistic
 		return $res;
 	}
 
+	/**
+	 * SMStatisticSumevents::getPlayerStatsByProject()
+	 * 
+	 * @param mixed $person_id
+	 * @param integer $projectteam_id
+	 * @param integer $project_id
+	 * @param integer $sports_type_id
+	 * @return
+	 */
 	function getPlayerStatsByProject($person_id, $projectteam_id = 0, $project_id = 0, $sports_type_id = 0)
 	{
+	   $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        
 		$sids = SMStatistic::getSids($this->_ids);
 		$res = SMStatistic::getPlayerStatsByProjectForEvents($person_id, $projectteam_id, $project_id, $sports_type_id, $sids);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' person_id<br><pre>'.print_r($person_id,true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($projectteam_id,true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sports_type_id<br><pre>'.print_r($sports_type_id,true).'</pre>'),'Notice');
+        
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sids<br><pre>'.print_r($sids,true).'</pre>'),'Notice');
+        }
+        
 		return self::formatValue($res, SMStatistic::getPrecision());
 	}
 	
@@ -190,13 +221,13 @@ class SMStatisticSumevents extends SMStatistic
 	function getRosterStats($team_id, $project_id, $position_id)
 	{
 		$sids = SMStatistic::getSids($this->_ids);
-		$res = $this->getRosterStatsForEvents($team_id, $project_id, $position_id, $sids);
+		$res = SMStatistic::getRosterStatsForEvents($team_id, $project_id, $position_id, $sids);
 		if (!empty($res))
 		{
-			$precision = $this->getPrecision();
+			$precision = SMStatistic::getPrecision();
 			foreach ($res as $k => $player)
 			{
-				$res[$k]->value = $this->formatValue($res[$k]->value, $precision);
+				$res[$k]->value = self::formatValue($res[$k]->value, $precision);
 			}
 		}
 		return $res;

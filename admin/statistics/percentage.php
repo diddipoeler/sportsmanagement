@@ -109,7 +109,10 @@ class SMStatisticPercentage extends SMStatistic
 			$ids['den'][] = (int)$s;
 		}
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ids<br><pre>'.print_r($ids,true).'</pre>'),'');
+        }
         
 		return $ids;
 	}
@@ -149,7 +152,10 @@ class SMStatisticPercentage extends SMStatistic
 			$ids['den'][] = $db->Quote((int)$s);
 		}
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ids<br><pre>'.print_r($ids,true).'</pre>'),'');
+        }
         
 		return $ids;
 	}
@@ -467,7 +473,10 @@ class SMStatisticPercentage extends SMStatistic
         
 		$db->setQuery($query, $limitstart, $limit);
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        }
         
 		$res = $db->loadObjectList();
 

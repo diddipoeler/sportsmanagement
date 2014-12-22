@@ -62,6 +62,7 @@ class SMStatisticEventPergame extends SMStatistic
 	var $_showinsinglematchreports = 0;
 	
     var $_ids = 'event_ids';
+    //var $_ids = 'stat_ids';
     
 	/**
 	 * SMStatisticEventPergame::__construct()
@@ -132,11 +133,19 @@ class SMStatisticEventPergame extends SMStatistic
 	 */
 	function getPlayerStatsByProject($person_id, $projectteam_id = 0, $project_id = 0, $sports_type_id = 0)
 	{
+	   $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        
 		$sids = SMStatistic::getSids($this->_ids);
-		$num = $this->getPlayerStatsByProjectForEvents($person_id, $projectteam_id, $project_id, $sports_type_id, $sids);
-		$den = $this->getGamesPlayedByPlayer($person_id, $projectteam_id, $project_id, $sports_type_id);
+		$num = SMStatistic::getPlayerStatsByProjectForEvents($person_id, $projectteam_id, $project_id, $sports_type_id, $sids);
+		$den = SMStatistic::getGamesPlayedByPlayer($person_id, $projectteam_id, $project_id, $sports_type_id);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sids<br><pre>'.print_r($sids,true).'</pre>'),'Notice');
+}
 
-		return $this->formatValue($num, $den, $this->getPrecision());
+		return self::formatValue($num, $den, SMStatistic::getPrecision());
 	}
 	
 
@@ -154,7 +163,7 @@ class SMStatisticEventPergame extends SMStatistic
 		$sids = SMStatistic::getSids($this->_ids);
 		$num = $this->getRosterStatsForEvents($team_id, $project_id, $position_id, $sids);
 		$den = $this->getGamesPlayedByProjectTeam($team_id, $project_id, $position_id);
-		$precision = $this->getPrecision();
+		$precision = SMStatistic::getPrecision();
 		
 		$res = array();
 		foreach (array_unique(array_merge(array_keys($num), array_keys($den))) as $person_id) 
@@ -221,11 +230,17 @@ class SMStatisticEventPergame extends SMStatistic
 		//$query_num .= ' GROUP BY tp.id ';
         $query_num->group('tp.id'); 
 		
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_num<br><pre>'.print_r($query_num->dump(),true).'</pre>'),'');
+        }
         
 		$query_den = SMStatistic::getGamesPlayedQuery($project_id, $division_id, $team_id);
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_den<br><pre>'.print_r($query_den->dump(),true).'</pre>'),'');
+}
 
 		$query_select_count = ' COUNT(DISTINCT tp.id) as count';
 
@@ -269,8 +284,10 @@ class SMStatisticEventPergame extends SMStatistic
 		}
         
 		
-        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
+        }
         
 		$res = new stdclass;
 		//$db->setQuery($query_select_count.$query_core);
@@ -282,7 +299,10 @@ class SMStatisticEventPergame extends SMStatistic
         $query_core->select($query_select_details);
 		$query_core->order('total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).' '); 
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
+}
 
 		//$db->setQuery($query_select_details.$query_core.$query_end_details, $limitstart, $limit);
         $db->setQuery($query_core, $limitstart, $limit);
@@ -393,7 +413,10 @@ class SMStatisticEventPergame extends SMStatistic
 		
 		$db->setQuery($query, $limitstart, $limit);
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        }
         
 		$res = $db->loadObjectList();
 	

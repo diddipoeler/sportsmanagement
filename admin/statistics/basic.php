@@ -211,6 +211,7 @@ class SMStatisticBasic extends SMStatistic
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
         
 		$res->pagination_total = $db->loadResult();
+        
         $query_core->clear('select');
         $query_core->select($query_select_details);
         $query_core->group('tp.id');
@@ -327,25 +328,41 @@ class SMStatisticBasic extends SMStatistic
 		return self::formatValue($res, $this->getPrecision());
 	}
 	
+	/**
+	 * SMStatisticBasic::getStaffStats()
+	 * 
+	 * @param mixed $person_id
+	 * @param mixed $team_id
+	 * @param mixed $project_id
+	 * @return
+	 */
 	function getStaffStats($person_id, $team_id, $project_id)
 	{
-		$db = &JFactory::getDBO();
+		$option = JRequest::getCmd('option');
+	$app = JFactory::getApplication();
+	$db = JFactory::getDBO();
 		
-		$query = ' SELECT SUM(ms.value) AS value '
-		       . ' FROM #__joomleague_team_staff AS tp '
-		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
-		       . ' INNER JOIN #__joomleague_match_staff_statistic AS ms ON ms.team_staff_id = tp.id '
-		       . '   AND ms.statistic_id = '. $db->Quote($this->id)
-		       . ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id '
-		       . '   AND m.published = 1 '
-		       . ' WHERE pt.team_id = '. $db->Quote($team_id)
-		       . '   AND pt.project_id = '. $db->Quote($project_id)
-		       . '   AND tp.person_id = '. $db->Quote($person_id)
-		       . ' GROUP BY tp.id '
-		       ;
+        $query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $this->id);
+        
+//		$query = ' SELECT SUM(ms.value) AS value '
+//		       . ' FROM #__joomleague_team_staff AS tp '
+//		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
+//		       . ' INNER JOIN #__joomleague_match_staff_statistic AS ms ON ms.team_staff_id = tp.id '
+//		       . '   AND ms.statistic_id = '. $db->Quote($this->id)
+//		       . ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id '
+//		       . '   AND m.published = 1 '
+//		       . ' WHERE pt.team_id = '. $db->Quote($team_id)
+//		       . '   AND pt.project_id = '. $db->Quote($project_id)
+//		       . '   AND tp.person_id = '. $db->Quote($person_id)
+//		       . ' GROUP BY tp.id '
+//		       ;
+               
 		$db->setQuery($query, 0, 1);
+        
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
 		$res = $db->loadResult();
-		return $this->formatValue($res, $this->getPrecision());
+		return self::formatValue($res, $this->getPrecision());
 	}
 
 	function getHistoryStaffStats($person_id)

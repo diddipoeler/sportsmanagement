@@ -180,7 +180,7 @@ class SMStatisticComplexsum extends SMStatistic
 	function getRosterStats($team_id, $project_id, $position_id)
 	{
 		$sids = SMStatistic::getSids($this->_ids);
-		$factors  = SMStatistic::getFactors();
+		$factors  = self::getFactors();
 		$res = SMStatistic::getRosterStatsForIds($team_id, $project_id, $position_id, $sids, $factors);
 		if (isset($res))
 		{
@@ -250,7 +250,10 @@ class SMStatisticComplexsum extends SMStatistic
         
 		$db->setQuery($query);
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        }
         
 		$stats = $db->loadObjectList();
 		
@@ -313,7 +316,10 @@ class SMStatisticComplexsum extends SMStatistic
 
 		$db->setQuery($query);
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        }
         
 		$details = $db->loadObjectList('teamplayer_id');
 
@@ -330,9 +336,12 @@ class SMStatisticComplexsum extends SMStatistic
 				$res->ranking[$i] = $details[$k];
 				$res->ranking[$i]->total = self::formatValue($value, $precision);
 				
-				if ($value == $previousval) {
+				if ($value == $previousval) 
+                {
 					$res->ranking[$i]->rank = $currentrank;
-				} else {
+				} 
+                else 
+                {
 					$res->ranking[$i]->rank = $i + 1 + $limitstart;
 				}
 				
