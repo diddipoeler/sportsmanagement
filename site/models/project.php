@@ -39,9 +39,24 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+if (! defined('DS'))
+{
+	define('DS', DIRECTORY_SEPARATOR);
+}
+
+if (! defined('JSM_PATH'))
+{
+DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
+}
+
 jimport('joomla.application.component.model');
 jimport( 'joomla.utilities.arrayhelper' );
 
+if (!class_exists('sportsmanagementModeldatabasetool')) 
+{
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
+}
+            
 /**
  * sportsmanagementModelProject
  * 
