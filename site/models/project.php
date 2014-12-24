@@ -55,6 +55,33 @@ jimport( 'joomla.utilities.arrayhelper' );
 if (!class_exists('sportsmanagementModeldatabasetool')) 
 {
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
+$lang = JFactory::getLanguage();
+$extension = 'com_sportsmanagement';
+$base_dir = JPATH_ADMINISTRATOR;
+$language_tag = $langtag->getTag();
+$reload = true;
+$lang->load($extension, $base_dir, $language_tag, $reload);
+    
+// welche tabelle soll genutzt werden
+$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
+$database_table	= $paramscomponent->get( 'cfg_which_database_table' );
+$show_debug_info = $paramscomponent->get( 'show_debug_info' );  
+$show_query_debug_info = $paramscomponent->get( 'show_query_debug_info' ); 
+$cfg_which_database_server = $paramscomponent->get( 'cfg_which_database_server' );
+
+DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',$paramscomponent->get( 'cfg_which_database' ) );
+DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$show_query_debug_info );
+
+if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$cfg_which_database_server );    
+}
+else
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );    
+}
 }
             
 /**
