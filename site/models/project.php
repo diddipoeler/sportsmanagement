@@ -55,6 +55,12 @@ jimport( 'joomla.utilities.arrayhelper' );
 if (!class_exists('sportsmanagementModeldatabasetool')) 
 {
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
+// sprachdatei aus dem backend laden
+$langtag = JFactory::getLanguage();
+
+$document = JFactory::getDocument();
+$app = JFactory::getApplication();
+$config = JFactory::getConfig();
 $lang = JFactory::getLanguage();
 $extension = 'com_sportsmanagement';
 $base_dir = JPATH_ADMINISTRATOR;
