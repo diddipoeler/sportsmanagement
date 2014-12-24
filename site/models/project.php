@@ -75,18 +75,35 @@ $show_debug_info = $paramscomponent->get( 'show_debug_info' );
 $show_query_debug_info = $paramscomponent->get( 'show_query_debug_info' ); 
 $cfg_which_database_server = $paramscomponent->get( 'cfg_which_database_server' );
 
+if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
+{
 DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',$paramscomponent->get( 'cfg_which_database' ) );
+}
+if (! defined('COM_SPORTSMANAGEMENT_TABLE'))
+{
 DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
+}
+if (! defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO'))
+{
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
+}
+if (! defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO'))
+{
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$show_query_debug_info );
-
+}
 if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
 {
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$cfg_which_database_server );    
+if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+{        
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$cfg_which_database_server );
+}    
 }
 else
 {
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );    
+if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+{        
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );
+}    
 }
 }
             
