@@ -37,7 +37,8 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined('_JEXEC') or die('Restricted access'); ?>
+defined('_JEXEC') or die('Restricted access'); 
+?>
 
 
 
@@ -48,7 +49,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 </strong>
 </legend>
 
-<table width="100%" class="fixtures">
+<table class="table table-striped">
 <thead>
 	<tr class="sectiontableheader">
 		<th class="title" nowrap="nowrap" style="vertical-align:top;background:#BDBDBD; "><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON'); ?></th>

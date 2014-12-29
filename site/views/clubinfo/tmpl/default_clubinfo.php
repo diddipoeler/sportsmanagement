@@ -70,9 +70,20 @@ else
 		}
 		?>
         
-<a href="<?php echo $picture;?>" title="<?php echo $club_emblem_title;?>" class="modal">
+<a href="<?php echo $picture;?>" title="<?php echo $club_emblem_title;?>" data-toggle="modal" data-target="#modal">
 <img src="<?php echo $picture;?>" alt="<?php echo $club_emblem_title;?>" width="<?php echo $this->config['team_picture_width'];?>" />
 </a>        
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="beispielModalLabel" aria-hidden="true">
+<div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+
+      </div>
+
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $club_emblem_title, array('title' => $club_emblem_title,'class' => "img-rounded" ));      
+?>
+</div> 
         
 		<!-- SHOW LOGO - END -->
 		<!-- SHOW SMALL LOGO - START -->

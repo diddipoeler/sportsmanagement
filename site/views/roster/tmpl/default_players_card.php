@@ -40,7 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 foreach ( $this->rows as $position_id => $players ): ?>
-<div style="margin:auto; width:100%">
+<div style="margin:auto; width:100%;">
 	<!-- position header -->
 	<?php 
 		$row = current($players);

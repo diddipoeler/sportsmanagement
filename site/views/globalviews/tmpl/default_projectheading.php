@@ -54,8 +54,9 @@ if ( $this->overallconfig['show_project_staffel_id'] ) { $nbcols++; }
 if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
 {
 	?>
-	<div class="componentheading">
-		<table class="contentpaneopen">
+<!--	<div class="componentheading"> -->
+		<div class="container">
+        <table class="contentpaneopen">
 			<tbody>
 				<?php
 				if ( $this->overallconfig['show_project_country'] == 1 )
@@ -79,9 +80,18 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
 						?>
 						<td>
 
-<a href="<?php echo $this->project->sport_type_picture;?>" title="<?php echo $this->project->sport_type_name;?>" class="modal">
+<a href="<?php echo $this->project->sport_type_picture;?>" title="<?php echo $this->project->sport_type_name;?>" data-toggle="modal" data-target="#<?php echo $this->project->sport_type_name;?>">
 <img src="<?php echo $this->project->sport_type_picture;?>" alt="<?php echo $this->project->sport_type_name;?>" width="<?php echo $this->overallconfig['picture_width'];?>" />
 </a>                        
+
+<div class="modal fade" id="<?php echo $this->project->sport_type_name;?>" tabindex="-1" role="dialog" aria-labelledby="<?php echo $this->project->sport_type_name;?>" aria-hidden="true">
+<div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+
+      </div>
+<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$this->project->sport_type_picture;?>" alt="<?php echo $this->project->sport_type_name;?>"  />
+
+</div>
                         
                         
 						<?php

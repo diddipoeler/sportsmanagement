@@ -48,13 +48,11 @@ defined('_JEXEC') or die('Restricted access'); ?>
 </strong>
 </legend>
 
-<table width="100%" class="fixtures">
-
 <?php
 
 ?>
 
-<table width="100%"  class="fixtures" >
+<table class="table table-striped" >
 <thead>
 	<tr class="sectiontableheader">
 		<th class="title" nowrap="nowrap" style="vertical-align:top;background:#BDBDBD; "><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_DAY'); ?></th>
@@ -119,9 +117,19 @@ defined('_JEXEC') or die('Restricted access'); ?>
 	else
 	{
 	?>
-	<tr class="<?php echo ($k==0)? $this->config['style_class1'] : $this->config['style_class2']; ?>">
-		<td align="left" colspan="5" >  <?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NODATA'); ?> </td>
-	</tr>
+	
+    
+    <div class="alert alert-error">
+<h4>
+<?php
+echo JText::_('COM_SPORTSMANAGEMENT_ERROR');
+?>
+</h4>
+<?php
+echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NODATA');
+?>
+</div>
+    
 	<?php
 	}
 	

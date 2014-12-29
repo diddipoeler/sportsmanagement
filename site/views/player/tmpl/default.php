@@ -61,7 +61,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 if (isset($this->person))
 {
 	?>
-<div class="joomleague">
+<!-- <div class="joomleague"> -->
+<div class="container">
 	<?php
 	echo $this->loadTemplate('projectheading');
 
@@ -293,8 +294,17 @@ if (isset($this->person))
 }
 else
 {
-	?>
-<p>No person selected</p>
+?>
+<div class="alert alert-error">
+<h4>
+<?php
+echo JText::_('COM_SPORTSMANAGEMENT_ERROR');
+?>
+</h4>
+<?php
+echo JText::_('COM_SPORTSMANAGEMENT_PERSON_NO_SELECTED');
+?>
+</div>
 <?php
 }
 ?>

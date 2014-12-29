@@ -48,8 +48,7 @@ echo 'PERSON_PERSONAL_STATISTICS stats<br /><pre>~' . print_r($this->stats,true)
 
 <!-- Player stats History START -->
 <h2><?php	echo JText::_('COM_SPORTSMANAGEMENT_PERSON_PERSONAL_STATISTICS');	?></h2>
-<table width="96%" align="center" border="0" cellpadding="0"
-	cellspacing="0">
+<table align="center" border="0" cellpadding="0" cellspacing="0" class="table">
 	<tr>
 		<td>
 		<table id="playercareer">

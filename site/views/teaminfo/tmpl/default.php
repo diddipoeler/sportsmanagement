@@ -54,7 +54,9 @@ $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 ?>
-<div class="joomleague">
+<!-- <div class="joomleague"> -->
+<div class="container">
+
 	<?php
 	if ($this->config['show_projectheader']==1)
 	{	

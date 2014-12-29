@@ -47,26 +47,31 @@ class sportsmanagementModelStatsRanking extends JModelLegacy
 	 */
 	function __construct( )
 	{
+        // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
 		parent::__construct( );
 
-		self::$projectid	= JRequest::getInt( 'p', 0 );
-		self::$divisionid	= JRequest::getInt( 'division', 0 );
-		self::$teamid		= JRequest::getInt( 'tid', 0 );
-		self::setStatid(JRequest::getVar( 'sid', 0 ));
+
+		self::$projectid	= $jinput->getInt( 'p', 0 );
+		self::$divisionid	= $jinput->getInt( 'division', 0 );
+		self::$teamid		= $jinput->getInt( 'tid', 0 );
+		self::setStatid($jinput->getVar( 'sid', 0 ));
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 		// TODO: the default value for limit should be updated when we know if there is more than 1 statistics type to be shown
 		if ( $this->stat_id != 0 )
 		{
-			$this->limit = JRequest::getInt( 'limit', $config["max_stats"] );
+			$this->limit = $jinput->getInt( 'limit', $config["max_stats"] );
 		}
 		else
 		{
-			$this->limit = JRequest::getInt( 'limit', $config["count_stats"] );
+			$this->limit = $jinput->getInt( 'limit', $config["count_stats"] );
 		}
-		$this->limitstart = JRequest::getInt( 'limitstart', 0 );
-		$this->setOrder(JRequest::getVar('order'));
+		$this->limitstart = $jinput->getInt( 'limitstart', 0 );
+		$this->setOrder($jinput->getVar('order'));
         
-        self::$cfg_which_database = JRequest::getInt( 'cfg_which_database', 0 );
+        self::$cfg_which_database = $jinput->getInt( 'cfg_which_database', 0 );
         sportsmanagementModelProject::$projectid = self::$projectid;
         
 	}

@@ -37,7 +37,11 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+
+//echo 'person <br><pre>'.print_r($this->person,true).'</pre><br>';
+
+?>
 <!-- person data START -->
 <h2><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PERSONAL_DATA' );	?></h2>
 
@@ -70,9 +74,23 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
     */
     //echo JHtml::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['picture_width'] ));
     ?>
-        <a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $imgTitle;?>" class="modal">
+
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target="#<?php echo $this->person->id;?>">
 <img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['picture_width'];?>" />
 </a>
+
+<div class="modal fade" id="<?php echo $this->person->id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+
+      </div>
+
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $imgTitle, array('title' => $imgTitle,'class' => "img-rounded" ));      
+?>
+</div>
+
+
 <?PHP                    
 		?></td>
 		<?php

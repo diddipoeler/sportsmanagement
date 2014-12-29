@@ -82,7 +82,7 @@ if (count($this->stafflist) > 0)
 
 	?>
 	<br>
-	<table width="100%" class="contentpaneopen">
+	<table class="table table-striped">
 		<tr>
 			<td class="contentheading">
 				<?php
@@ -100,7 +100,7 @@ if (count($this->stafflist) > 0)
 		</tr>
 	</table>
 	<br />
-	<table width="100%" style="text-align:center; " border="0" cellpadding="0" cellspacing="0">
+	<table style="text-align:center; " border="0" cellpadding="0" cellspacing="0" class="table table-striped">
 		<thead>
 			<tr class="sectiontableheader rosterheader">
 				<th width="60%" colspan="<?php echo $positionHeaderSpan; ?>">
@@ -165,16 +165,27 @@ if (count($this->stafflist) > 0)
 															$this->config['staff_picture_width'],
 															$this->config['staff_picture_height']);
 															*/
-					        //echo JHtml::image($picture, $playerName, array('title' => $playerName,'width' => $this->config['staff_picture_width'] ));
-                  
+					        //echo JHtml::image($picture, $playerName, array('title' => $playerName,'width' => $this->config['staff_picture_width'],'class' => "img-rounded" ));
+                  // class="img-rounded"
                   
 
       ?>
+
                                     
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $playerName;?>" class="modal">
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $playerName;?>" data-toggle="modal" data-target="#<?php echo $row->playerid;?>">
 <img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $playerName;?>" width="<?php echo $this->config['staff_picture_width'];?>" />
 </a>
-      
+
+<div class="modal fade" id="<?php echo $row->playerid;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+
+      </div>
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $playerName, array('title' => $playerName,'class' => "img-rounded" ));      
+?>
+
+</div>      
         
 <?PHP
               
