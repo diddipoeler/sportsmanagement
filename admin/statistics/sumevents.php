@@ -114,6 +114,13 @@ class SMStatisticSumevents extends SMStatistic
 //		return $sids;
 //	}
 	
+	/**
+	 * SMStatisticSumevents::getMatchPlayerStat()
+	 * 
+	 * @param mixed $gamemodel
+	 * @param mixed $teamplayer_id
+	 * @return
+	 */
 	function getMatchPlayerStat(&$gamemodel, $teamplayer_id)
 	{
 		$gamestats = $gamemodel->getPlayersEvents();
@@ -129,6 +136,13 @@ class SMStatisticSumevents extends SMStatistic
 		return stats::formatValue($res, SMStatistic::getPrecision());
 	}
 
+	/**
+	 * SMStatisticSumevents::getPlayerStatsByGame()
+	 * 
+	 * @param mixed $teamplayer_ids
+	 * @param mixed $project_id
+	 * @return
+	 */
 	function getPlayerStatsByGame($teamplayer_ids, $project_id)
 	{
 		$app = JFactory::getApplication();
@@ -250,17 +264,19 @@ class SMStatisticSumevents extends SMStatistic
 		$app = JFactory::getApplication();
 		$db = JFactory::getDBO();
 		$query_core = JFactory::getDbo()->getQuery(true);
+        
 		$query_select_count = 'COUNT(DISTINCT tp.id) as count';
-		$query_select_details = 'SUM(me.event_sum) AS total,'
+		
+        $query_select_details = 'SUM(ms.event_sum) AS total,'
 							  . ' tp.id AS teamplayer_id, tp.person_id, tp.picture AS teamplayerpic,'
 							  . ' p.firstname, p.nickname, p.lastname, p.picture, p.country,'
-							  . ' pt.team_id, pt.team_id, pt.picture AS projectteam_picture,'
+							  . ' st.team_id, pt.picture AS projectteam_picture,'
 							  . ' t.picture AS team_picture, t.name AS team_name, t.short_name AS team_short_name';
 
 
 
 
-
+/*
 		$query_core->select($query_select_count);
         $query_core->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp');
         $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON p.id = tp.person_id ');
@@ -292,10 +308,14 @@ class SMStatisticSumevents extends SMStatistic
 			//$query_core .= '   AND pt.team_id = ' . $db->Quote($team_id);
             $query_core->where('st.team_id = ' . $team_id);
 		}
+        */
 //		$query_end_details	= ' GROUP BY tp.id '
 //							. ' ORDER BY total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).', tp.id';
 
-		$res = new stdclass;
+		
+        $query_core	= SMStatistic::getPlayersRankingStatisticQuery($project_id, $division_id, $team_id, $sids, $query_select_count,'event');
+        
+        $res = new stdclass;
 		$db->setQuery($query_core);
         
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
@@ -304,7 +324,7 @@ class SMStatisticSumevents extends SMStatistic
         
         $query_core->clear('select');
         $query_core->select($query_select_details);
-        $query_core->group('tp.id');
+        //$query_core->group('tp.id');
 		$query_core->order('total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).', tp.id'); 
         
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
@@ -339,7 +359,8 @@ class SMStatisticSumevents extends SMStatistic
 	function getTeamsRanking($project_id, $limit = 20, $limitstart = 0, $order=null)
 	{		
 		$sids = SMStatistic::getQuotedSids($this->_ids);
-		
+		$option = JRequest::getCmd('option');
+	$app = JFactory::getApplication();
 		$db = JFactory::getDBO();
 		
 		$query = ' SELECT SUM(ms.event_sum) AS total, '
@@ -359,11 +380,14 @@ class SMStatisticSumevents extends SMStatistic
 		       . ' ORDER BY total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).', tp.id'
 		       ;
 		$db->setQuery($query, $limitstart, $limit);
+        
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
 		$res = $db->loadObjectList();
 
 		if (!empty($res))
 		{
-			$precision = $this->getPrecision();
+			$precision = SMStatistic::getPrecision();
 			// get ranks
 			$previousval = 0;
 			$currentrank = 1 + $limitstart;
@@ -378,7 +402,7 @@ class SMStatisticSumevents extends SMStatistic
 				$previousval = $row->total;
 				$currentrank = $res[$k]->rank;
 
-				$res[$k]->total = $this->formatValue($res[$k]->total, $precision);
+				$res[$k]->total = self::formatValue($res[$k]->total, $precision);
 			}
 		}
 		return $res;		

@@ -54,6 +54,7 @@ echo $this->loadTemplate('joomla3');
 }
 else
 {
+//echo $this->loadTemplate('joomla3');
 echo $this->loadTemplate('joomla2');    
 }
 

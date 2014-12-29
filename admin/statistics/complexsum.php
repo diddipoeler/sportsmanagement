@@ -100,13 +100,15 @@ class SMStatisticComplexsum extends SMStatistic
 		$factors = explode(',', $params->get('factors'));
 		$stat_ids = SMStatistic::getSids($this->_ids);
 		
-		if (count($stat_ids) != count($factors)) {
+		if (count($stat_ids) != count($factors)) 
+        {
 			JError::raiseWarning(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION - BAD FACTORS COUNT', $this->_name, $this->id));
 			return(array(0));
 		}
 		
 		$sids = array();
-		foreach ($factors as $s) {
+		foreach ($factors as $s) 
+        {
 			$sids[] = (float)$s;
 		}
 		return $sids;
@@ -446,26 +448,41 @@ class SMStatisticComplexsum extends SMStatistic
 		return $this->formatValue($res, $this->getPrecision());
 	}
 	
+	/**
+	 * SMStatisticComplexsum::getStaffStats()
+	 * 
+	 * @param mixed $person_id
+	 * @param mixed $team_id
+	 * @param mixed $project_id
+	 * @return
+	 */
 	function getStaffStats($person_id, $team_id, $project_id)
 	{
 		$sids = SMStatistic::getSids($this->_ids);
-		$sqids = $this->getQuotedSids();
-		$factors  = $this->getFactors();
+		$sqids = SMStatistic::getQuotedSids($this->_ids);
+		$factors  = self::getFactors();
+		$option = JRequest::getCmd('option');
+	$app = JFactory::getApplication();
+		$db = JFactory::getDBO();
 		
-		$db = &JFactory::getDBO();
-		
-		$query = ' SELECT ms.value, ms.statistic_id '
-		       . ' FROM #__joomleague_team_staff AS tp '
-		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
-		       . ' INNER JOIN #__joomleague_match_staff_statistic AS ms ON ms.team_staff_id = tp.id '
-		       . '   AND ms.statistic_id IN ('. implode(',', $sqids) .')'
-		       . ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id '
-		       . '   AND m.published = 1 '
-		       . ' WHERE pt.team_id = '. $db->Quote($team_id)
-		       . '   AND pt.project_id = '. $db->Quote($project_id)
-		       . '   AND tp.person_id = '. $db->Quote($person_id)
-		       ;
+        $select = 'ms.value, ms.statistic_id ';
+        $query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sqids,$select,FALSE);
+        
+//		$query = ' SELECT ms.value, ms.statistic_id '
+//		       . ' FROM #__joomleague_team_staff AS tp '
+//		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
+//		       . ' INNER JOIN #__joomleague_match_staff_statistic AS ms ON ms.team_staff_id = tp.id '
+//		       . '   AND ms.statistic_id IN ('. implode(',', $sqids) .')'
+//		       . ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id '
+//		       . '   AND m.published = 1 '
+//		       . ' WHERE pt.team_id = '. $db->Quote($team_id)
+//		       . '   AND pt.project_id = '. $db->Quote($project_id)
+//		       . '   AND tp.person_id = '. $db->Quote($person_id)
+//		       ;
 		$db->setQuery($query);
+        
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
 		$stats = $db->loadObjectList();
 		
 		$res = 0;
@@ -477,29 +494,41 @@ class SMStatisticComplexsum extends SMStatistic
 			}
 		}
 		
-		return $this->formatValue($res, $this->getPrecision());
+		return self::formatValue($res, SMStatistic::getPrecision());
 	}
 	
+	/**
+	 * SMStatisticComplexsum::getHistoryStaffStats()
+	 * 
+	 * @param mixed $person_id
+	 * @return
+	 */
 	function getHistoryStaffStats($person_id)
 	{
 		$sids = SMStatistic::getSids($this->_ids);
-		$sqids = $this->getQuotedSids();
-		$factors  = $this->getFactors();
+		$sqids = SMStatistic::getQuotedSids($this->_ids);
+		$factors  = self::getFactors();
+		$option = JRequest::getCmd('option');
+	$app = JFactory::getApplication();
+		$db = JFactory::getDBO();
 		
-		$db = &JFactory::getDBO();
-		
-		$query = ' SELECT ms.value AS value, ms.statistic_id '
-		       . ' FROM #__joomleague_team_staff AS tp '
-		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
-		       . ' INNER JOIN #__joomleague_project AS p ON p.id = pt.project_id '
-		       . ' INNER JOIN #__joomleague_match_staff_statistic AS ms ON ms.team_staff_id = tp.id '
-		       . '   AND ms.statistic_id IN ('. implode(',', $sqids) .')'
-		       . ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id '
-		       . '   AND m.published = 1 '
-		       . ' WHERE tp.person_id = '. $db->Quote($person_id)
-		       . '   AND p.published = 1 '
-		       ;
+        $query = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sqids,$select,TRUE);
+        
+//		$query = ' SELECT ms.value AS value, ms.statistic_id '
+//		       . ' FROM #__joomleague_team_staff AS tp '
+//		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
+//		       . ' INNER JOIN #__joomleague_project AS p ON p.id = pt.project_id '
+//		       . ' INNER JOIN #__joomleague_match_staff_statistic AS ms ON ms.team_staff_id = tp.id '
+//		       . '   AND ms.statistic_id IN ('. implode(',', $sqids) .')'
+//		       . ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id '
+//		       . '   AND m.published = 1 '
+//		       . ' WHERE tp.person_id = '. $db->Quote($person_id)
+//		       . '   AND p.published = 1 '
+//		       ;
 		$db->setQuery($query);
+        
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
 		$stats = $db->loadObjectList();
 		
 		$res = 0;
@@ -511,7 +540,7 @@ class SMStatisticComplexsum extends SMStatistic
 			}
 		}
 		
-		return $this->formatValue($res, $this->getPrecision());
+		return self::formatValue($res, SMStatistic::getPrecision());
 	}
 
 	/**

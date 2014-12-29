@@ -127,10 +127,11 @@ foreach ($this->formparams->getFieldsets() as $fieldset)
 	<?php
 	$fields = $this->formparams->getFieldset($fieldset->name);
 	
-	if(!count($fields)) {
+	if(!count($fields)) 
+    {
 		echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
 	}
-	
+	echo '<b><p class="tab-description">'.JText::_($this->description).'</p></b>';
 	foreach ($fields as $field)
 	{
 		echo $field->label;

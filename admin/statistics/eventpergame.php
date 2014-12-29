@@ -195,9 +195,10 @@ class SMStatisticEventPergame extends SMStatistic
 	$app = JFactory::getApplication();
 		$db = JFactory::getDBO();
         
-        $query_num = JFactory::getDbo()->getQuery(true);
+        //$query_num = JFactory::getDbo()->getQuery(true);
         $query_core = JFactory::getDbo()->getQuery(true);
         
+        /*
         $query_num->select('SUM(me.event_sum) AS num, tp.id AS tpid, tp.person_id');
         $query_num->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp');
         $query_num->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
@@ -229,7 +230,11 @@ class SMStatisticEventPergame extends SMStatistic
 		}
 		//$query_num .= ' GROUP BY tp.id ';
         $query_num->group('tp.id'); 
-		
+        */
+        
+        $query_select_count = 'SUM(ms.event_sum) AS num, tp.id AS tpid, tp.person_id';
+        $query_num	= SMStatistic::getPlayersRankingStatisticQuery($project_id, $division_id, $team_id, $sids, $query_select_count,'event');
+        
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_num<br><pre>'.print_r($query_num->dump(),true).'</pre>'),'');
@@ -247,7 +252,7 @@ class SMStatisticEventPergame extends SMStatistic
 		$query_select_details = ' (n.num / d.played) AS total, n.person_id, 1 as rank,'
 							  . ' tp.id AS teamplayer_id, tp.person_id, tp.picture AS teamplayerpic,'
 							  . ' p.firstname, p.nickname, p.lastname, p.picture, p.country,'
-							  . ' pt.team_id, pt.picture AS projectteam_picture,'
+							  . ' st.team_id, pt.picture AS projectteam_picture,'
 							  . ' t.picture AS team_picture, t.name AS team_name, t.short_name AS team_short_name';
 
 		

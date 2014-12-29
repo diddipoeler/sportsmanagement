@@ -47,14 +47,22 @@ $params = $this->form->getFieldsets('params');
 
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
+$formparams = $this->formparams->getFieldsets();
 
+//echo ' params<br><pre>'.print_r($params,true).'</pre>';
+//echo ' fieldsets<br><pre>'.print_r($fieldsets,true).'</pre>';
+//echo ' formparams<br><pre>'.print_r($formparams,true).'</pre>';
+
+foreach($formparams as $fieldset) :
+$this->description = $fieldset->description;
+endforeach;
 // echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PARAM'), 'panel3');
 // echo $this->loadTemplate('param');
 // echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_GPARAM'), 'panel4');
 // echo $this->loadTemplate('gparam');
 
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" >
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm"  id="adminForm">
  
 	
  
@@ -84,6 +92,7 @@ $fieldsets = $this->form->getFieldsets();
 			echo JHtml::_('sliders.panel', JText::_($fieldset->label), $fieldset->name);
 		if (isset($fieldset->description) && !empty($fieldset->description)) :
 				echo '<p class="tab-description">'.JText::_($fieldset->description).'</p>';
+                //echo '<p class="tab-description">'.JText::_($description).'</p>';
 			endif;
 		//echo $this->loadTemplate($fieldset->name);
         $this->fieldset = $fieldset->name;

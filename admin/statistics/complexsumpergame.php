@@ -106,7 +106,8 @@ class SMStatisticComplexsumpergame extends SMStatistic
 		$factors = explode(',', $params->get('factors'));
 		$stat_ids = SMStatistic::getSids($this->_ids);
 		
-		if (count($stat_ids) != count($factors)) {
+		if (count($stat_ids) != count($factors)) 
+        {
 			JError::raiseWarning(0, JText::sprintf('STAT %s/%s WRONG CONFIGURATION - BAD FACTORS COUNT', $this->_name, $this->id));
 			return(array(0));
 		}
@@ -327,7 +328,7 @@ class SMStatisticComplexsumpergame extends SMStatistic
 		$res->ranking = array();
 		if (!empty($details))
 		{
-			$precision = $this->getPrecision();
+			$precision = SMStatistic::getPrecision();
 			// get ranks
 			$previousval = 0;
 			$currentrank = 1 + $limitstart;
@@ -347,7 +348,7 @@ class SMStatisticComplexsumpergame extends SMStatistic
 				$previousval = $value;
 				$currentrank = $res->ranking[$i]->rank;
 
-				$res->ranking[$i]->total = $this->formatValue($res->ranking[$i]->total, 1, $precision);
+				$res->ranking[$i]->total = self::formatValue($res->ranking[$i]->total, 1, $precision);
 
 				$i++;
 			}

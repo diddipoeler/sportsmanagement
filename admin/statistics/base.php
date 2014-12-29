@@ -209,22 +209,32 @@ class SMStatistic extends JObject
      * @param mixed $sids
      * @return
      */
-    function getStaffStatsQuery($person_id, $team_id, $project_id, $sids)
+    function getStaffStatsQuery($person_id, $team_id, $project_id, $sids, $select,$history = false)
 	{
 		$option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
 	$db = JFactory::getDBO();
     $query_core = JFactory::getDbo()->getQuery(true);
     
-	$query_core->select('SUM(ms.value) AS value');
+	$query_core->select($select);
     $query_core->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp');
     $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
     $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-    $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ('. $sids .')');
+    
+    $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id');
+    
+    $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ('. $sids .')');
     $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = ms.match_id AND m.published = 1 ');
-    $query_core->where('pt.project_id = ' . $project_id);
-    $query_core->where('st.team_id = ' . $team_id);
+    $query_core->where('p.published = 1');
     $query_core->where('tp.person_id = '. $person_id);
+    
+    if ( !$history )
+    {
+    $query_core->where('pt.project_id = ' . $project_id);
+    $query_core->where('st.team_id = ' . $team_id);    
+    }
+    
+    
     
     $query_core->group('tp.id');
     	
@@ -258,7 +268,7 @@ class SMStatistic extends JObject
      * @param mixed $select
      * @return
      */
-    function getPlayersRankingStatisticQuery($project_id, $division_id, $team_id, $sids, $select)
+    function getPlayersRankingStatisticQuery($project_id, $division_id, $team_id, $sids, $select,$which='statistic')
     {
     $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
@@ -268,8 +278,19 @@ class SMStatistic extends JObject
     $query_num->select($select);
     $query_num->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp');
     $query_num->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
+    $query_num->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON p.id = tp.person_id ');
+    $query_num->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON st.team_id = t.id');
     $query_num->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-    $query_num->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ('. implode(',', $sids) .')');
+    switch ($which)
+    {
+        case 'statistic':
+        $query_num->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ('. implode(',', $sids) .')');
+        break;
+        case 'event':
+        $query_num->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS ms ON ms.teamplayer_id = tp.id AND ms.event_type_id IN ('. implode(',', $sids) .')');
+        break;
+    }
+    
     $query_num->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = ms.match_id AND m.published = 1 ');
     $query_num->where('pt.project_id = ' . $project_id);
     if ($division_id != 0)
@@ -287,6 +308,15 @@ class SMStatistic extends JObject
         
     }
     
+    /**
+     * SMStatistic::getPlayersRankingStatisticNumQuery()
+     * 
+     * @param mixed $project_id
+     * @param mixed $division_id
+     * @param mixed $team_id
+     * @param mixed $sids
+     * @return
+     */
     function getPlayersRankingStatisticNumQuery($project_id, $division_id, $team_id, $sids)
     {
     $option = JRequest::getCmd('option');
@@ -1251,36 +1281,64 @@ class SMStatistic extends JObject
 	protected function getRosterStatsForIds($team_id, $project_id, $position_id, $sids, $factors = NULL)
 	{
 		$db = JFactory::getDBO();
-		
+		$app = JFactory::getApplication();
+        $query = JFactory::getDbo()->getQuery(true);
+        
 		$quoted_sids = array();
-		foreach ($sids as $sid) {
+		foreach ($sids as $sid) 
+        {
 			$quoted_sids[] = $db->Quote($sid);
 		}		
 
 		if (isset($factors))
 		{
-			$query = ' SELECT ms.value AS value, tp.person_id, ms.statistic_id ';
+			//$query = ' SELECT ms.value AS value, tp.person_id, ms.statistic_id ';
+            $query->select('ms.value AS value, tp.person_id, ms.statistic_id');
 		}
 		else
 		{
-			$query = '';
+			//$query = '';
+            $query->clear('select');
 		}
-		$query .= ' FROM #__joomleague_team_player AS tp '
-		       . ' INNER JOIN #__joomleague_person AS prs ON prs.id=tp.person_id '
-		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
-		       . ' INNER JOIN #__joomleague_match_statistic AS ms ON ms.teamplayer_id = tp.id '
-		       . '   AND ms.statistic_id IN ('. implode(',', $quoted_sids) .')'
-		       . ' INNER JOIN #__joomleague_project_position AS ppos ON ppos.id = tp.project_position_id ' 
-		       . ' INNER JOIN #__joomleague_position AS pos ON pos.id=ppos.position_id ' 
-		       . ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id '
-		       . '   AND m.published = 1 '
-		       . ' WHERE pt.team_id = '. $db->Quote($team_id)
-		       . '   AND pt.project_id = '. $db->Quote($project_id)
-		       . '   AND ppos.position_id = '. $db->Quote($position_id)
-			;
+        
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS prs ON prs.id = tp.person_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ('. implode(',', $quoted_sids) .')');
+        
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = tp.project_position_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id ');
+        
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = ms.match_id AND m.published = 1 ');
+        
+        $query->where('st.team_id = '. $team_id);
+        $query->where('pt.project_id = ' . $project_id);
+        $query->where('ppos.position_id = '. $position_id);
+        
+//		$query .= ' FROM #__joomleague_team_player AS tp '
+//		       . ' INNER JOIN #__joomleague_person AS prs ON prs.id=tp.person_id '
+//		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
+//		       . ' INNER JOIN #__joomleague_match_statistic AS ms ON ms.teamplayer_id = tp.id '
+//		       . '   AND ms.statistic_id IN ('. implode(',', $quoted_sids) .')'
+//		       . ' INNER JOIN #__joomleague_project_position AS ppos ON ppos.id = tp.project_position_id ' 
+//		       . ' INNER JOIN #__joomleague_position AS pos ON pos.id=ppos.position_id ' 
+//		       . ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id '
+//		       . '   AND m.published = 1 '
+//		       . ' WHERE pt.team_id = '. $db->Quote($team_id)
+//		       . '   AND pt.project_id = '. $db->Quote($project_id)
+//		       . '   AND ppos.position_id = '. $db->Quote($position_id)
+//			;
+
 		if (isset($factors))
 		{
 			$db->setQuery($query);
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            }
+            
 			$stats = $db->loadObjectList();
 			// Apply weighting using factors
 			$res = array();
@@ -1306,11 +1364,32 @@ class SMStatistic extends JObject
 		else
 		{
 			// Determine the statistics per project team player
-			$db->setQuery(' SELECT SUM(ms.value) AS value, tp.person_id ' . $query . ' GROUP BY tp.person_id ');
+            $query->clear('select');
+            $query->clear('group');
+            $query->select('SUM(ms.value) AS value, tp.person_id');
+            $query->group('tp.person_id');
+			//$db->setQuery(' SELECT SUM(ms.value) AS value, tp.person_id ' . $query . ' GROUP BY tp.person_id ');
+            $db->setQuery($query);
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            }
+            
 			$res = $db->loadObjectList('person_id');
 
 			// Determine the total statistics for the position_id of the project team
-			$db->setQuery(' SELECT SUM(ms.value) AS value ' . $query);
+            $query->clear('select');
+            $query->clear('group');
+            $query->select('SUM(ms.value) AS value');
+			//$db->setQuery(' SELECT SUM(ms.value) AS value ' . $query);
+            $db->setQuery($query);
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            }
+            
 			$res['totals'] = new stdclass;
 			$res['totals']->value = $db->loadResult();
 			if (!isset($res['totals']->value))

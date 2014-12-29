@@ -129,7 +129,7 @@ class sportsmanagementModelAjax extends JModelLegacy
          * @param bool $required
          * @return
          */
-        function getpersonpositionoptions($sports_type_id, $required = false, $slug = false, $dbase = false)
+        public static function getpersonpositionoptions($sports_type_id, $required = false, $slug = false, $dbase = false)
         {
             $option = JRequest::getCmd('option');
 	   $app = JFactory::getApplication();

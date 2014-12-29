@@ -111,7 +111,7 @@ class sportsmanagementViewstatistic extends sportsmanagementView
         $formparams = sportsmanagementHelper::getExtendedStatistic($item->params, $item->class);
 		$this->assignRef( 'formparams', $formparams );
         
-        //$app->enqueueMessage(JText::_('sportsmanagementViewstatistic formparams<br><pre>'.print_r($this->formparams,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' formparams<br><pre>'.print_r($this->formparams,true).'</pre>'),'Notice');
         
 // 		$extended = sportsmanagementHelper::getExtended($item->extended, 'team');
 // 		$this->assignRef( 'extended', $extended );

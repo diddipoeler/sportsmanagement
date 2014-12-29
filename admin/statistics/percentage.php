@@ -221,10 +221,10 @@ class SMStatisticPercentage extends SMStatistic
 	function getRosterStats($team_id, $project_id, $position_id)
 	{
 		$sids = self::getSids();
-		$num = $this->getRosterStatsForIds($team_id, $project_id, $position_id, $sids['num']);
-		$den = $this->getRosterStatsForIds($team_id, $project_id, $position_id, $sids['den']);
-		$precision = $this->getPrecision();
-		$showPercentageSymbol = $this->getShowPercentageSymbol();
+		$num = SMStatistic::getRosterStatsForIds($team_id, $project_id, $position_id, $sids['num']);
+		$den = SMStatistic::getRosterStatsForIds($team_id, $project_id, $position_id, $sids['den']);
+		$precision = SMStatistic::getPrecision();
+		$showPercentageSymbol = self::getShowPercentageSymbol();
 
 		$res = array();
 		foreach (array_unique(array_merge(array_keys($num), array_keys($den))) as $person_id) 
@@ -233,7 +233,7 @@ class SMStatisticPercentage extends SMStatistic
 			$res[$person_id]->person_id = $person_id;
 			$n = isset($num[$person_id]->value) ? $num[$person_id]->value : 0;
 			$d = isset($den[$person_id]->value) ? $den[$person_id]->value : 0;
-			$res[$person_id]->value = $this->formatValue($n, $d, $precision, $showPercentageSymbol);
+			$res[$person_id]->value = self::formatValue($n, $d, $precision, $showPercentageSymbol);
 		}
 		return $res;
 	}

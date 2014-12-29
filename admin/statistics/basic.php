@@ -71,7 +71,7 @@ class SMStatisticBasic extends SMStatistic
 		if (isset($gamestats[$teamplayer_id][$this->id])) {
 			$res = $gamestats[$teamplayer_id][$this->id];
 		}
-		return self::formatValue($res, $this->getPrecision());
+		return self::formatValue($res, SMStatistic::getPrecision());
 	}
 
 	function getMatchPlayersStats($match_id)
@@ -91,33 +91,49 @@ class SMStatisticBasic extends SMStatistic
 
 		if (!empty($res))
 		{
-			$precision = $this->getPrecision();
+			$precision = SMStatistic::getPrecision();
 			foreach ($res as $player)
 			{
-				$player->value = $this->formatValue($player->value, $precision);
+				$player->value = self::formatValue($player->value, $precision);
 			}
 		}
 		return $res;
 	}
 	
+	/**
+	 * SMStatisticBasic::getPlayerStatsByGame()
+	 * 
+	 * @param mixed $teamplayer_ids
+	 * @param mixed $project_id
+	 * @return
+	 */
 	function getPlayerStatsByGame($teamplayer_ids, $project_id)
 	{
-		$res = $this->getPlayerStatsByGameForIds($teamplayer_ids, $project_id, array($this->id));
+		$res = SMStatistic::getPlayerStatsByGameForIds($teamplayer_ids, $project_id, array($this->id));
 		if (!empty($res))
 		{
-			$precision = $this->getPrecision();
+			$precision = SMStatistic::getPrecision();
 			foreach($res as $k => $match)
 			{
-				$res[$k]->value = $this->formatValue($res[$k]->value, $precision);
+				$res[$k]->value = self::formatValue($res[$k]->value, $precision);
 			}
 		}
 		return $res;
 	}
 	
+	/**
+	 * SMStatisticBasic::getPlayerStatsByProject()
+	 * 
+	 * @param mixed $person_id
+	 * @param integer $projectteam_id
+	 * @param integer $project_id
+	 * @param integer $sports_type_id
+	 * @return
+	 */
 	function getPlayerStatsByProject($person_id, $projectteam_id = 0, $project_id = 0, $sports_type_id = 0)
 	{
-		$res = $this->getPlayerStatsByProjectForIds($person_id, $projectteam_id, $project_id, $sports_type_id, array($this->id));
-		return $this->formatValue($res, $this->getPrecision());
+		$res = SMStatistic::getPlayerStatsByProjectForIds($person_id, $projectteam_id, $project_id, $sports_type_id, array($this->id));
+		return self::formatValue($res, $this->getPrecision());
 	}
 
 	/**
@@ -128,13 +144,13 @@ class SMStatisticBasic extends SMStatistic
 	 */
 	function getRosterStats($team_id, $project_id, $position_id)
 	{
-		$res = $this->GetRosterStatsForIds($team_id, $project_id, $position_id, array($this->id));
+		$res = SMStatistic::GetRosterStatsForIds($team_id, $project_id, $position_id, array($this->id));
 		if (!empty($res))
 		{
-			$precision = $this->getPrecision();
+			$precision = SMStatistic::getPrecision();
 			foreach ($res as $k => $player)
 			{
-				$res[$k]->value = $this->formatValue($res[$k]->value, $precision);
+				$res[$k]->value = self::formatValue($res[$k]->value, $precision);
 			}
 		}
 		return $res;
@@ -225,7 +241,7 @@ class SMStatisticBasic extends SMStatistic
 	
 		if ($res->ranking)
 		{
-			$precision = $this->getPrecision();
+			$precision = SMStatistic::getPrecision();
 			// get ranks
 			$previousval = 0;
 			$currentrank = 1 + $limitstart;
@@ -239,7 +255,7 @@ class SMStatisticBasic extends SMStatistic
 				}
 				$previousval = $row->total;
 				$currentrank = $res->ranking[$k]->rank;
-				$res->ranking[$k]->total = $this->formatValue($res->ranking[$k]->total, $precision);
+				$res->ranking[$k]->total = self::formatValue($res->ranking[$k]->total, $precision);
 			}
 		}
 
@@ -296,7 +312,7 @@ class SMStatisticBasic extends SMStatistic
 		
 		if ($res)
 		{
-			$precision = $this->getPrecision();
+			$precision = SMStatistic::getPrecision();
 			// get ranks
 			$previousval = 0;
 			$currentrank = 1 + $limitstart;
@@ -318,6 +334,13 @@ class SMStatisticBasic extends SMStatistic
 		return $res;
 	}
 
+	/**
+	 * SMStatisticBasic::getMatchStaffStat()
+	 * 
+	 * @param mixed $gamemodel
+	 * @param mixed $team_staff_id
+	 * @return
+	 */
 	function getMatchStaffStat(&$gamemodel, $team_staff_id)
 	{
 		$gamestats = $gamemodel->getMatchStaffStats();
@@ -341,8 +364,8 @@ class SMStatisticBasic extends SMStatistic
 		$option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
 	$db = JFactory::getDBO();
-		
-        $query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $this->id);
+		$select = 'SUM(ms.value) AS value ';
+        $query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $this->id,$select,FALSE);
         
 //		$query = ' SELECT SUM(ms.value) AS value '
 //		       . ' FROM #__joomleague_team_staff AS tp '
@@ -365,25 +388,39 @@ class SMStatisticBasic extends SMStatistic
 		return self::formatValue($res, $this->getPrecision());
 	}
 
+	/**
+	 * SMStatisticBasic::getHistoryStaffStats()
+	 * 
+	 * @param mixed $person_id
+	 * @return
+	 */
 	function getHistoryStaffStats($person_id)
 	{
-		$db = &JFactory::getDBO();
+		$option = JRequest::getCmd('option');
+	$app = JFactory::getApplication();
+        $db = JFactory::getDBO();
 		
-		$query = ' SELECT SUM(ms.value) AS value '
-		       . ' FROM #__joomleague_team_staff AS tp '
-		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
-		       . ' INNER JOIN #__joomleague_project AS p ON p.id = pt.project_id '
-		       . ' INNER JOIN #__joomleague_match_staff_statistic AS ms ON ms.team_staff_id = tp.id '
-		       . '   AND ms.statistic_id = '. $db->Quote($this->id)
-		       . ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id '
-		       . '   AND m.published = 1 '
-		       . ' WHERE tp.person_id = '. $db->Quote($person_id)
-		       . '   AND p.published = 1 '
-		       . ' GROUP BY tp.id '
-		       ;
+        $select = 'SUM(ms.value) AS value ';
+        $query = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $this->id,$select,TRUE);
+        
+//		$query = ' SELECT SUM(ms.value) AS value '
+//		       . ' FROM #__joomleague_team_staff AS tp '
+//		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
+//		       . ' INNER JOIN #__joomleague_project AS p ON p.id = pt.project_id '
+//		       . ' INNER JOIN #__joomleague_match_staff_statistic AS ms ON ms.team_staff_id = tp.id '
+//		       . '   AND ms.statistic_id = '. $db->Quote($this->id)
+//		       . ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id '
+//		       . '   AND m.published = 1 '
+//		       . ' WHERE tp.person_id = '. $db->Quote($person_id)
+//		       . '   AND p.published = 1 '
+//		       . ' GROUP BY tp.id '
+//		       ;
 		$db->setQuery($query);
+        
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
 		$res = $db->loadResult();
-		return $this->formatValue($res, $this->getPrecision());
+		return self::formatValue($res, SMStatistic::getPrecision());
 	}
 
 	/**
