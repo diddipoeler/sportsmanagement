@@ -89,6 +89,11 @@ class sportsmanagementViewstatistic extends sportsmanagementView
         $item->class = 'basic';    
         }
         
+        if ( $this->getLayout() == 'edit' || $this->getLayout() == 'edit_3' )
+		{
+		  $this->setLayout('edit');
+        }
+        
         /*
         $templatepath = JPATH_COMPONENT_ADMINISTRATOR.DS.'statistics';
         $xmlfile = $templatepath.DS.$item->class.'.xml';
