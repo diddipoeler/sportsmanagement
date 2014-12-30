@@ -77,11 +77,15 @@ class sportsmanagementModelPlayer extends JModelLegacy
 	 */
 	function __construct()
 	{
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
 		parent::__construct();
-		self::$projectid = JRequest::getInt('p',0);
-		self::$personid = JRequest::getInt('pid',0);
-		self::$teamplayerid = JRequest::getInt('pt',0);
-        self::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+		self::$projectid = $jinput->getInt('p',0);
+		self::$personid = $jinput->getInt('pid',0);
+		self::$teamplayerid = $jinput->getInt('pt',0);
+        self::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
 	}
 
 
@@ -94,7 +98,9 @@ class sportsmanagementModelPlayer extends JModelLegacy
 	function getTeamPlayers($cfg_which_database = 0)
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+       // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
 		$query = $db->getQuery(true);
@@ -558,7 +564,7 @@ class sportsmanagementModelPlayer extends JModelLegacy
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet ON pet.eventtype_id = et.id');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = pet.position_id');
         $query->where('pet.position_id IN ('. implode(',',$positionhistory) .')');
-        $query->where('published = 1');
+        $query->where('et.published = 1');
         $query->order('pet.ordering ');
                     
 		$db->setQuery($query);
