@@ -885,41 +885,69 @@ class SMStatistic extends JObject
 	 */
 	protected function getPlayerStatsByGameForIds($teamplayer_ids, $project_id, $sids, $factors = NULL)
 	{
-		$db = JFactory::getDBO();
+		$app = JFactory::getApplication();
+        $db = JFactory::getDBO();
+        $query = JFactory::getDbo()->getQuery(true);
 
 		$quoted_sids = array();
-		foreach ($sids as $sid) {
+		foreach ($sids as $sid) 
+        {
 			$quoted_sids[] = $db->Quote($sid);
 		}		
 		$quoted_tpids = array();
-		foreach ($teamplayer_ids as $tpid) {
+		foreach ($teamplayer_ids as $tpid) 
+        {
 			$quoted_tpids[] = $db->Quote($tpid);
 		}
 		if (isset($factors))
 		{
-			$query = ' SELECT ms.value AS value, ms.match_id, ms.statistic_id';
+			//$query = ' SELECT ms.value AS value, ms.match_id, ms.statistic_id';
+            $query->select('ms.value AS value, ms.match_id, ms.statistic_id');
 		}
 		else
 		{
-			$query = ' SELECT SUM(ms.value) AS value, ms.match_id';
+			//$query = ' SELECT SUM(ms.value) AS value, ms.match_id';
+            $query->select('SUM(ms.value) AS value, ms.match_id');
 		}
-		$query .= ' FROM #__joomleague_match_statistic AS ms'
-			. ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id'
-			. '                                    AND m.published = 1'
-			. ' INNER JOIN #__joomleague_team_player AS tp ON ms.teamplayer_id=tp.id'
-			. ' INNER JOIN #__joomleague_project_position AS ppos ON tp.project_position_id=ppos.id'
-			. ' INNER JOIN #__joomleague_position AS pos ON ppos.position_id=pos.id'
-			. ' INNER JOIN #__joomleague_position_statistic AS ps ON ps.position_id=pos.id'
-			. '                                                  AND ps.statistic_id=ms.statistic_id'
-			. ' INNER JOIN #__joomleague_project_team AS pt ON tp.projectteam_id=pt.id'
-			. ' INNER JOIN #__joomleague_project AS p ON pt.project_id=p.id'
-			. '                                       AND p.id=' . $db->Quote($project_id)
-			. ' WHERE ms.teamplayer_id IN (' . implode(',', $quoted_tpids) .')'
-			. ' AND p.published=1'
-			. ' AND ms.statistic_id  IN ('. implode(',', $quoted_sids) .')'
-			;
+        
+        
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic AS ms');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = ms.match_id AND m.published = 1');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = ms.teamplayer_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = tp.project_position_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id = pos.id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ON ps.position_id = pos.id AND ps.statistic_id = ms.statistic_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON pt.project_id = p.id AND p.id=' . $db->Quote($project_id));
+        
+        $query->where('ms.teamplayer_id IN (' . implode(',', $quoted_tpids) .')');
+        $query->where('p.published = 1');
+        $query->where('ms.statistic_id IN ('. implode(',', $quoted_sids) .')');
+        
+//		$query .= ' FROM #__joomleague_match_statistic AS ms'
+//			. ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id'
+//			. '                                    AND m.published = 1'
+//			. ' INNER JOIN #__joomleague_team_player AS tp ON ms.teamplayer_id=tp.id'
+//            
+//			. ' INNER JOIN #__joomleague_project_position AS ppos ON tp.project_position_id=ppos.id'
+//            
+//			. ' INNER JOIN #__joomleague_position AS pos ON ppos.position_id=pos.id'
+//			. ' INNER JOIN #__joomleague_position_statistic AS ps ON ps.position_id=pos.id'
+//			. '                                                  AND ps.statistic_id=ms.statistic_id'
+//            
+//			. ' INNER JOIN #__joomleague_project_team AS pt ON tp.projectteam_id=pt.id'
+//            
+//			. ' INNER JOIN #__joomleague_project AS p ON pt.project_id=p.id'
+//			. '                                       AND p.id=' . $db->Quote($project_id)
+//			. ' WHERE ms.teamplayer_id IN (' . implode(',', $quoted_tpids) .')'
+//			. ' AND p.published=1'
+//			. ' AND ms.statistic_id  IN ('. implode(',', $quoted_sids) .')'
+//			;
 
-		if (isset($factors))
+		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
+        if (isset($factors))
 		{
 			$db->setQuery($query);
 			$stats = $db->loadObjectList();
@@ -941,7 +969,8 @@ class SMStatistic extends JObject
 		}
 		else
 		{
-			$db->setQuery($query . ' GROUP BY ms.match_id');
+			$query->group('ms.match_id');
+            $db->setQuery($query);
 			$res = $db->loadObjectList('match_id');
 		}
 
@@ -973,8 +1002,29 @@ class SMStatistic extends JObject
 	 */
 	protected function getPlayerStatsByProjectForIds($person_id, $projectteam_id, $project_id, $sports_type_id, $sids, $factors = NULL)
 	{
-		$db = JFactory::getDBO();
+		$app = JFactory::getApplication();
+        $db = JFactory::getDBO();
+        $query = JFactory::getDbo()->getQuery(true);
+/*
+            $query->select('SUM(ms.value) AS value, ms.match_id');
+		}
+        
+        
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic AS ms');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = ms.match_id AND m.published = 1');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = ms.teamplayer_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = tp.project_position_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id = pos.id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ON ps.position_id = pos.id AND ps.statistic_id = ms.statistic_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON pt.project_id = p.id AND p.id=' . $db->Quote($project_id));
+        
+        $query->where('ms.teamplayer_id IN (' . implode(',', $quoted_tpids) .')');
+        $query->where('p.published = 1');
+        $query->where('ms.statistic_id IN ('. implode(',', $quoted_sids) .')');
 
+*/
 		$quoted_sids = array();
 		foreach ($sids as $sid) 
         {
@@ -983,37 +1033,60 @@ class SMStatistic extends JObject
 
 		if (isset($factors))
 		{
-			$query = ' SELECT ms.value AS value, ms.statistic_id ';
+			//$query = ' SELECT ms.value AS value, ms.statistic_id ';
+            $query->select('ms.value AS value, ms.statistic_id');
 		}
 		else
 		{
-			$query = ' SELECT SUM(ms.value) AS value ';
+			//$query = ' SELECT SUM(ms.value) AS value ';
+            $query->select('SUM(ms.value) AS value');
 		}
-		$query .= ' FROM #__joomleague_match_statistic AS ms'
-			. ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id'
-			. '                                    AND m.published = 1'
-			. ' INNER JOIN #__joomleague_team_player AS tp ON ms.teamplayer_id=tp.id'
-			. ' INNER JOIN #__joomleague_project_position AS ppos ON tp.project_position_id=ppos.id'
-			. ' INNER JOIN #__joomleague_position AS pos ON ppos.position_id=pos.id'
-			. ' INNER JOIN #__joomleague_position_statistic AS ps ON ps.position_id=pos.id'
-			. '                                                  AND ps.statistic_id=ms.statistic_id'
-			. ' INNER JOIN #__joomleague_project_team AS pt ON tp.projectteam_id=pt.id'
-			. ' INNER JOIN #__joomleague_project AS p ON pt.project_id=p.id'
-			. ' WHERE tp.person_id = ' . $db->Quote($person_id)
-			. ' AND ms.statistic_id  IN ('. implode(',', $quoted_sids) .')'
-			;
+        
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic AS ms');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = ms.match_id AND m.published = 1');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = ms.teamplayer_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = tp.project_position_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id = pos.id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ON ps.position_id = pos.id AND ps.statistic_id = ms.statistic_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON pt.project_id = p.id');
+        
+        $query->where('tp.person_id = ' . $person_id);
+        $query->where('ms.statistic_id IN ('. implode(',', $quoted_sids) .')');
+        
+//		$query .= ' FROM #__joomleague_match_statistic AS ms'
+//			. ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id'
+//			. '                                    AND m.published = 1'
+//			. ' INNER JOIN #__joomleague_team_player AS tp ON ms.teamplayer_id=tp.id'
+//			. ' INNER JOIN #__joomleague_project_position AS ppos ON tp.project_position_id=ppos.id'
+//			. ' INNER JOIN #__joomleague_position AS pos ON ppos.position_id=pos.id'
+//			. ' INNER JOIN #__joomleague_position_statistic AS ps ON ps.position_id=pos.id'
+//			. '                                                  AND ps.statistic_id=ms.statistic_id'
+//			. ' INNER JOIN #__joomleague_project_team AS pt ON tp.projectteam_id=pt.id'
+//			. ' INNER JOIN #__joomleague_project AS p ON pt.project_id=p.id'
+//			. ' WHERE tp.person_id = ' . $db->Quote($person_id)
+//			. ' AND ms.statistic_id  IN ('. implode(',', $quoted_sids) .')'
+//			;
+            
 		if ($projectteam_id)
 		{
-			$query .= ' AND pt.id=' . $db->Quote($projectteam_id);
+			//$query .= ' AND pt.id=' . $db->Quote($projectteam_id);
+            $query->where('pt.id = ' . $projectteam_id);
 		}
 		if ($project_id)
 		{
-			$query .= ' AND p.id=' . $db->Quote($project_id);
+			//$query .= ' AND p.id=' . $db->Quote($project_id);
+            $query->where('p.id = ' . $project_id);
 		}
 		if ($sports_type_id)
 		{
-			$query .= ' AND p.sports_type_id='.$db->Quote($sports_type_id);
+			//$query .= ' AND p.sports_type_id='.$db->Quote($sports_type_id);
+            $query->where('p.sports_type_id = '.$sports_type_id);
 		}
+        
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
 		if (isset($factors))
 		{
 			$db->setQuery($query);

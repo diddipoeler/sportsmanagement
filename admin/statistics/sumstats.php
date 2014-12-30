@@ -128,13 +128,20 @@ class SMStatisticSumstats extends SMStatistic
 		return self::formatValue($res, $this->getPrecision());
 	}
 
+	/**
+	 * SMStatisticSumstats::getPlayerStatsByGame()
+	 * 
+	 * @param mixed $teamplayer_ids
+	 * @param mixed $project_id
+	 * @return
+	 */
 	function getPlayerStatsByGame($teamplayer_ids, $project_id)
 	{
 		$sids = SMStatistic::getSids($this->_ids);
-		$res = $this->getPlayerStatsByGameForIds($teamplayer_ids, $project_id, $sids);
+		$res = SMStatistic::getPlayerStatsByGameForIds($teamplayer_ids, $project_id, $sids);
 		if (is_array($res))
 		{
-			$precision = $this->getPrecision();
+			$precision = SMStatistic::getPrecision();
 			foreach($res as $k => $match)
 			{
 				$res[$k]->value = self::formatValue($res[$k]->value, $precision);
@@ -143,11 +150,20 @@ class SMStatisticSumstats extends SMStatistic
 		return $res;
 	}
 
+	/**
+	 * SMStatisticSumstats::getPlayerStatsByProject()
+	 * 
+	 * @param mixed $person_id
+	 * @param integer $projectteam_id
+	 * @param integer $project_id
+	 * @param integer $sports_type_id
+	 * @return
+	 */
 	function getPlayerStatsByProject($person_id, $projectteam_id = 0, $project_id = 0, $sports_type_id = 0)
 	{
 		$sids = SMStatistic::getSids($this->_ids);
-		$value = $this->getPlayerStatsByProjectForIds($person_id, $projectteam_id, $project_id, $sports_type_id, $sids);
-		return $this->formatValue($value, $this->getPrecision());
+		$value = SMStatistic::getPlayerStatsByProjectForIds($person_id, $projectteam_id, $project_id, $sports_type_id, $sids);
+		return self::formatValue($value, SMStatistic::getPrecision());
 	}
 
 	/**
@@ -159,18 +175,29 @@ class SMStatisticSumstats extends SMStatistic
 	function getRosterStats($team_id, $project_id, $position_id)
 	{
 		$sids = SMStatistic::getSids($this->_ids);
-		$res = $this->GetRosterStatsForIds($team_id, $project_id, $position_id, $sids);
+		$res = SMStatistic::GetRosterStatsForIds($team_id, $project_id, $position_id, $sids);
 		if (!empty($res))
 		{
-			$precision = $this->getPrecision();
+			$precision = SMStatistic::getPrecision();
 			foreach ($res as $k => $player)
 			{
-				$res[$k]->value = $this->formatValue($res[$k]->value, $precision);
+				$res[$k]->value = self::formatValue($res[$k]->value, $precision);
 			}
 		}
 		return $res;
 	}
 
+	/**
+	 * SMStatisticSumstats::getPlayersRanking()
+	 * 
+	 * @param mixed $project_id
+	 * @param mixed $division_id
+	 * @param mixed $team_id
+	 * @param integer $limit
+	 * @param integer $limitstart
+	 * @param mixed $order
+	 * @return
+	 */
 	function getPlayersRanking($project_id, $division_id, $team_id, $limit = 20, $limitstart = 0, $order=null)
 	{		
 		$sids = SMStatistic::getQuotedSids($this->_ids);
