@@ -91,7 +91,7 @@ class sportsmanagementViewstatistic extends sportsmanagementView
         
         if ( $this->getLayout() == 'edit' || $this->getLayout() == 'edit_3' )
 		{
-		  $this->setLayout('edit');
+		  //$this->setLayout('edit');
         }
         
         /*
