@@ -128,8 +128,10 @@ class SMStatisticWinpergame extends SMStatistic
         $query->group('tp.id');
 		$db->setQuery($query);
         
-        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        }
         
 		$num = $db->loadResult();
 		

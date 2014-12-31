@@ -945,7 +945,10 @@ class SMStatistic extends JObject
 //			. ' AND ms.statistic_id  IN ('. implode(',', $quoted_sids) .')'
 //			;
 
-		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+		if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        }
         
         if (isset($factors))
 		{
@@ -1085,7 +1088,10 @@ class SMStatistic extends JObject
             $query->where('p.sports_type_id = '.$sports_type_id);
 		}
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        }
         
 		if (isset($factors))
 		{
