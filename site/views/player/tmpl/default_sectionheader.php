@@ -53,7 +53,7 @@ $modalheight = JComponentHelper::getParams($option)->get('modal_popup_height', 6
 $modalwidth = JComponentHelper::getParams($option)->get('modal_popup_width', 900);
 
 ?>
-<table class="contentpaneopen">
+<table class="table">
 	<tr>
 		<td class="contentheading">
 			<?php

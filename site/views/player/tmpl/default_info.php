@@ -75,16 +75,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
     //echo JHtml::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['picture_width'] ));
     ?>
 
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target="#<?php echo $this->person->id;?>">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['picture_width'];?>" />
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target="#p<?php echo $this->person->id;?>">
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $imgTitle, array('title' => $imgTitle,'class' => "img-rounded",'width' => $this->config['picture_width'] ));      
+?>
 </a>
 
-<div class="modal fade" id="<?php echo $this->person->id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div class="modal fade" id="p<?php echo $this->person->id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
 <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-
-      </div>
-
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+</div>
 <?PHP
 echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $imgTitle, array('title' => $imgTitle,'class' => "img-rounded" ));      
 ?>

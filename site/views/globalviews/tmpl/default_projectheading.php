@@ -56,7 +56,7 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
 	?>
 <!--	<div class="componentheading"> -->
 		<div class="container">
-        <table class="contentpaneopen">
+        <table class="table">
 			<tbody>
 				<?php
 				if ( $this->overallconfig['show_project_country'] == 1 )
@@ -80,17 +80,19 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
 						?>
 						<td>
 
-<a href="<?php echo $this->project->sport_type_picture;?>" title="<?php echo $this->project->sport_type_name;?>" data-toggle="modal" data-target="#<?php echo $this->project->sport_type_name;?>">
-<img src="<?php echo $this->project->sport_type_picture;?>" alt="<?php echo $this->project->sport_type_name;?>" width="<?php echo $this->overallconfig['picture_width'];?>" />
+<a href="<?php echo $this->project->sport_type_picture;?>" title="<?php echo $this->project->sport_type_name;?>" data-toggle="modal" data-target="#s<?php echo $this->project->sport_type_name;?>">
+<?PHP
+echo JHtml::image($this->project->sport_type_picture, $this->project->sport_type_name, array('title' => $this->project->sport_type_name,'class' => "img-rounded",'width' => $this->overallconfig['picture_width'] ));      
+?>
 </a>                        
 
-<div class="modal fade" id="<?php echo $this->project->sport_type_name;?>" tabindex="-1" role="dialog" aria-labelledby="<?php echo $this->project->sport_type_name;?>" aria-hidden="true">
+<div class="modal fade" id="s<?php echo $this->project->sport_type_name;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
 <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-
-      </div>
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$this->project->sport_type_picture;?>" alt="<?php echo $this->project->sport_type_name;?>"  />
-
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+</div>
+<?PHP
+echo JHtml::image($this->project->sport_type_picture, $this->project->sport_type_name, array('title' => $this->project->sport_type_name,'class' => "img-rounded" ));
+?>
 </div>
                         
                         
@@ -119,9 +121,29 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
                         
                         ?>
 						<td>
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $this->project->name;?>" class="modal">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $this->project->name;?>" width="<?php echo $this->overallconfig['picture_width'];?>" />
+
+
+
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $this->project->name;?>" data-toggle="modal" data-target="#p<?php echo $this->project->name;?>">
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->project->name, array('title' => $this->project->name,'class' => "img-rounded",'width' => $this->overallconfig['picture_width'] ));      
+?>
 </a>                        
+
+<div class="modal fade" id="p<?php echo $this->project->name;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+</div>
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->project->name, array('title' => $this->project->name,'class' => "img-rounded" ));
+?>
+</div>
+
+
+
+
+
+                       
 						<?php
                         // diddipoeler
                         //echo JHtml::image($picture, $this->project->name, array('title' => $this->project->name,'width' => $this->overallconfig['picture_width'] ));

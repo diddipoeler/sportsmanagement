@@ -193,10 +193,26 @@ foreach( $current as $ptid => $team )
 //					$config['team_picture_width'],
 //					$config['team_picture_height'],3);
 		
-?>                                    
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->team->$pic;?>" title="<?php echo $team->team->name;?>" class="modal">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->team->$pic;?>" alt="<?php echo $team->team->name;?>" width="20" />
-</a>
+?>    
+                                
+
+
+
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->team->$pic;?>" title="<?php echo $team->team->name;?>" data-toggle="modal" data-target="#t<?php echo $team->team->id;?>">
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->team->$pic, $team->team->name, array('title' => $team->team->name,'class' => "img-rounded",'width' => 20 ));      
+?>
+</a>                        
+
+<div class="modal fade" id="t<?php echo $team->team->id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+</div>
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->team->$pic, $team->team->name, array('title' => $team->team->name,'class' => "img-rounded" ));
+?>
+</div>
+
 <?PHP        
         }
 
