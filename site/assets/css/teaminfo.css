@@ -21,25 +21,25 @@ table.fixtures {
 	clear: both;
 }
 
-div.joomleague .left-column {
+div.jsm .left-column {
 	float: left;
 	width: 50%;
 }
 
-div.joomleague .right-column {
+div.jsm .right-column {
 	float: right;
 	width: 50%;
 }
 
-div.joomleague .jl_listing_item {
+div.jsm .jl_listing_item {
 	width: 48%;
 	text-align: right;
 }
 
-div.joomleague .jl_listing_value {
+div.jsm .jl_listing_value {
 	width: 50%;
 }
 
-div.joomleague .jl_parentContainer {
+div.jsm .jl_parentContainer {
 	overflow: hidden;
 }

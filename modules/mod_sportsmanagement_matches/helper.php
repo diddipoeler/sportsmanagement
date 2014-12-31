@@ -68,7 +68,7 @@ class modMatchesSportsmanagementHelper {
 			0 => array ()
 		);
 		$this->addusedprojects();
-		$this->iconpath = ($params->get('use_icons') != '-1') ? _JLMATCHLISTMODURL . 'assets/images/' .
+		$this->iconpath = ($params->get('use_icons') != '-1') ? _JSMMATCHLISTMODURL . 'assets/images/' .
 		$params->get('use_icons') . '/' : false;
 	}
 

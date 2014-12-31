@@ -48,7 +48,9 @@ defined('_JEXEC') or die('Restricted access');
 			</legend>
 			<?php if ($fieldset->description): ?>
 			<div class="fs-description">
-				<?php echo JText::_($fieldset->description); ?>
+				<?php 
+                echo JText::_($fieldset->description); 
+                ?>
 			</div>
 			<?php endif; ?>
 			<table class="admintable">

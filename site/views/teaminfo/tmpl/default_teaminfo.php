@@ -39,6 +39,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+?>
+<div class="jsm">
+
+<?PHP
 if (!isset($this->team))
 {
 	JError::raiseWarning('ERROR_CODE', JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_ERROR'));
@@ -70,10 +74,22 @@ else
 	*/
 	?>
     
- <a href="<?php echo $picture;?>" title="<?php echo $this->team->name;?>" class="modal">
-<img src="<?php echo $picture;?>" alt="<?php echo $this->team->name;?>" width="<?php echo $this->config['team_picture_width'];?>" />
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $this->team->name;?>" data-toggle="modal" data-target="#modal">
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->team->name, array('title' => $this->team->name,'class' => $this->config['team_picture_style'],'width' => $this->config['team_picture_width'] ));      
+?>
+
 </a>
-    
+
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="beispielModalLabel" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+</div>
+
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->team->name, array('title' => $this->team->name,'class' => $this->config['team_picture_style'] ));      
+?>
+</div>     
 
 <?PHP  
   ?>
@@ -250,5 +266,9 @@ else
 	<br />
 	<?php
 	}
+    ?>
+    
+    <?PHP
 }
 ?>
+</div>

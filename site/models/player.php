@@ -77,11 +77,15 @@ class sportsmanagementModelPlayer extends JModelLegacy
 	 */
 	function __construct()
 	{
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
 		parent::__construct();
-		self::$projectid = JRequest::getInt('p',0);
-		self::$personid = JRequest::getInt('pid',0);
-		self::$teamplayerid = JRequest::getInt('pt',0);
-        self::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+		self::$projectid = $jinput->getInt('p',0);
+		self::$personid = $jinput->getInt('pid',0);
+		self::$teamplayerid = $jinput->getInt('pt',0);
+        self::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
 	}
 
 
@@ -94,7 +98,9 @@ class sportsmanagementModelPlayer extends JModelLegacy
 	function getTeamPlayers($cfg_which_database = 0)
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+       // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
 		$query = $db->getQuery(true);
@@ -558,7 +564,7 @@ class sportsmanagementModelPlayer extends JModelLegacy
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet ON pet.eventtype_id = et.id');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = pet.position_id');
         $query->where('pet.position_id IN ('. implode(',',$positionhistory) .')');
-        $query->where('published = 1');
+        $query->where('et.published = 1');
         $query->order('pet.ordering ');
                     
 		$db->setQuery($query);
@@ -796,8 +802,14 @@ class sportsmanagementModelPlayer extends JModelLegacy
 	 */
 	function getStats()
 	{
+	   $app = JFactory::getApplication();
+    $option = JRequest::getCmd('option');
+    
 		$stats = array();
 		$players = self::getTeamPlayer();
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' players<br><pre>'.print_r($players,true).'</pre>'),'');
+        
 		if (is_array($players))
 		{
 			foreach ($players as $player)
@@ -805,6 +817,9 @@ class sportsmanagementModelPlayer extends JModelLegacy
 				// Remark: we cannot use array_merge because numerical keys will result in duplicate entries
 				// so we check if a key already exists in the output array before adding it.
 				$projectStats = sportsmanagementModelProject::getProjectStats(0,$player->position_id);
+                
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectStats<br><pre>'.print_r($projectStats,true).'</pre>'),'');
+                
 				if (is_array($projectStats))
 				{
 					foreach ($projectStats as $key=>$projectStat)
@@ -830,43 +845,65 @@ class sportsmanagementModelPlayer extends JModelLegacy
 	 */
 	function getCareerStats($person_id, $sports_type_id)
 	{
+	   $app = JFactory::getApplication();
+		$db = JFactory::getDBO();
+		$query_core = JFactory::getDbo()->getQuery(true);
+
 		if (empty($this->_careerStats))
 		{
-			$query = 'SELECT s.id,'
-				. ' s.name,'
-				. ' s.short,'
-				. ' s.class,'
-				. ' s.icon,'
-				. ' s.calculated,'
-				. ' ppos.id AS pposid,'
-				. ' ppos.position_id AS position_id,'
-				. ' s.params,'
-				. ' s.baseparams'
-				. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p'
-				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ON tp.person_id = p.id'
-				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON tp.project_position_id = ppos.id'
-				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id = pos.id'
-				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ON ps.position_id = pos.id'
-				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic AS s ON ps.statistic_id = s.id'
-				. ' WHERE p.id='.$this->_db->Quote($person_id);
+		  $query_core->select('s.id,s.name,s.short,s.class,s.icon,s.calculated,ppos.id AS pposid,ppos.position_id AS position_id,s.params,s.baseparams');
+          $query_core->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p');
+          $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON p.id = tp.person_id ');
+          $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON tp.project_position_id = ppos.id ');
+          $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id = pos.id ');
+          $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ON ps.position_id = pos.id ');
+          $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic AS s ON ps.statistic_id = s.id ');
+          $query_core->where('p.id = '.$person_id);
+          
+//			$query = 'SELECT s.id,'
+//				. ' s.name,'
+//				. ' s.short,'
+//				. ' s.class,'
+//				. ' s.icon,'
+//				. ' s.calculated,'
+//				. ' ppos.id AS pposid,'
+//				. ' ppos.position_id AS position_id,'
+//				. ' s.params,'
+//				. ' s.baseparams'
+//				. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p'
+//				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp ON tp.person_id = p.id'
+//				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON tp.project_position_id = ppos.id'
+//				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id = pos.id'
+//				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ON ps.position_id = pos.id'
+//				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic AS s ON ps.statistic_id = s.id'
+//				. ' WHERE p.id='.$this->_db->Quote($person_id);
 			if ($sports_type_id > 0)
 			{
-				$query.= ' AND pos.sports_type_id='.$this->_db->Quote($sports_type_id);
+				//$query.= ' AND pos.sports_type_id='.$this->_db->Quote($sports_type_id);
+                $query_core->where('pos.sports_type_id = '.$sports_type_id);
 			}
-			$query.= ' GROUP BY s.id';
+			//$query.= ' GROUP BY s.id';
+            $query_core->group('s.id');
 
-			$this->_db->setQuery($query);
-			$this->_careerStats=$this->_db->loadObjectList();
+			$db->setQuery($query_core);
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
+ }
+            
+			$this->_careerStats = $db->loadObjectList();
 		}
+        
 		$stats=array();
 		if (count($this->_careerStats) > 0)
 		{
 			foreach ($this->_careerStats as $k => $row)
 			{
-				$stat=&JLGStatistic::getInstance($row->class);
+				$stat = SMStatistic::getInstance($row->class);
 				$stat->bind($row);
 				$stat->set('position_id',$row->position_id);
-				$stats[$row->id]=$stat;
+				$stats[$row->id] = $stat;
 			}
 		}
 		return $stats;
@@ -936,8 +973,11 @@ class sportsmanagementModelPlayer extends JModelLegacy
 	 */
 	function getPlayerStatsByProject($sportstype=0)
 	{
+	   $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        
 		$teamplayer = self::getTeamPlayer();
-		$result=array();
+		$result = array();
 		if (is_array($teamplayer) && !empty($teamplayer))
 		{
 			// getTeamPlayer can return multiple teamplayers, because a player can be transferred from 
@@ -945,6 +985,14 @@ class sportsmanagementModelPlayer extends JModelLegacy
 			// So we get the player_id from the first array entry.
 			$stats  = self::getCareerStats($teamplayer[0]->person_id, $sportstype);
 			$history = self::getPlayerHistory($sportstype);
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamplayer<br><pre>'.print_r($teamplayer,true).'</pre>'),'');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' stats<br><pre>'.print_r($stats,true).'</pre>'),'');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' history<br><pre>'.print_r($history,true).'</pre>'),'');
+ }
+            
 			if(count($history)>0)
 			{
 				foreach ($stats as $stat)
@@ -953,7 +1001,18 @@ class sportsmanagementModelPlayer extends JModelLegacy
 					{
 						foreach ($history as $player)
 						{
-							$result[$stat->id][$player->project_id][$player->ptid]=$stat->getPlayerStatsByProject($player->person_id, $player->ptid, $player->project_id, $sportstype);
+
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{							
+       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' person_id<br><pre>'.print_r($player->person_id,true).'</pre>'),'');
+       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($player->ptid,true).'</pre>'),'');
+       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($player->project_id,true).'</pre>'),'');
+       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sportstype<br><pre>'.print_r($sportstype,true).'</pre>'),'');
+ }
+                            
+                            $result[$stat->id][$player->project_id][$player->ptid] = $stat->getPlayerStatsByProject($player->person_id, $player->ptid, $player->project_id, $sportstype);
+       
+       
 						}
 						$result[$stat->id]['totals'] = $stat->getPlayerStatsByProject($player->person_id, 0, 0, $sportstype);
 					}

@@ -145,6 +145,16 @@
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PLAYER_PICTURE_WIDTH" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PLAYER_PICTURE_WIDTH">
 		</field>
+		
+		<field name="player_picture_style" type="list" default=""
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PICTURE_STYLE" 
+      description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PICTURE_STYLE">
+      <option value="">COM_SPORTSMANAGEMENT_FES_PICTURE_NOTHING</option>
+      <option value="img-rounded">COM_SPORTSMANAGEMENT_FES_PICTURE_STYLE_ROUNDED</option>
+      <option value="img-circle">COM_SPORTSMANAGEMENT_FES_PICTURE_STYLE_CIRCLE</option>
+      <option value="img-thumbnail">COM_SPORTSMANAGEMENT_FES_PICTURE_STYLE_THUMBNAIL</option>
+		</field>
+		
 <!-- wird automatisch berechnet			
 		<field 	name="player_picture_height" type="text" default="40"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PLAYER_PICTURE_HEIGHT" 
@@ -227,6 +237,16 @@
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STAFF_PICTURE_WIDTH" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STAFF_PICTURE_WIDTH">
 		</field>
+		
+		<field name="staff_picture_style" type="list" default=""
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PICTURE_STYLE" 
+      description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PICTURE_STYLE">
+      <option value="">COM_SPORTSMANAGEMENT_FES_PICTURE_NOTHING</option>
+      <option value="img-rounded">COM_SPORTSMANAGEMENT_FES_PICTURE_STYLE_ROUNDED</option>
+      <option value="img-circle">COM_SPORTSMANAGEMENT_FES_PICTURE_STYLE_CIRCLE</option>
+      <option value="img-thumbnail">COM_SPORTSMANAGEMENT_FES_PICTURE_STYLE_THUMBNAIL</option>
+		</field>
+		
 <!-- wird automatisch berechnet			
 		<field 	name="staff_picture_height" type="text" default="40"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STAFF_PICTURE_HEIGHT" 
@@ -273,6 +293,15 @@
 		<field 	name="team_picture_width" type="text" default="150"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_WIDTH" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_WIDTH">
+		</field>
+		
+		<field name="team_picture_style" type="list" default=""
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PICTURE_STYLE" 
+      description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PICTURE_STYLE">
+      <option value="">COM_SPORTSMANAGEMENT_FES_PICTURE_NOTHING</option>
+      <option value="img-rounded">COM_SPORTSMANAGEMENT_FES_PICTURE_STYLE_ROUNDED</option>
+      <option value="img-circle">COM_SPORTSMANAGEMENT_FES_PICTURE_STYLE_CIRCLE</option>
+      <option value="img-thumbnail">COM_SPORTSMANAGEMENT_FES_PICTURE_STYLE_THUMBNAIL</option>
 		</field>
 		
 		<field 	name="show_team_logo_highslide" type="radio" default="1" class="radio btn-group btn-group-yesno"

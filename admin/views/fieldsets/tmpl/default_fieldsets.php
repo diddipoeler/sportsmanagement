@@ -288,6 +288,39 @@ else
 }
 break;
 
+// für die extended daten
+case 'params':
+if ( isset($this->formparams) )
+{
+foreach ($this->formparams->getFieldsets() as $fieldset)
+{
+	?>
+	<fieldset class="adminform">
+	
+	<?php
+	$fields = $this->formparams->getFieldset($fieldset->name);
+	
+	if(!count($fields)) 
+    {
+		echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+	}
+	echo '<b><p class="tab-description">'.JText::_($this->description).'</p></b>';
+	foreach ($fields as $field)
+	{
+		echo $field->label;
+       	echo $field->input;
+	}
+	?>
+	</fieldset>
+	<?php
+}
+}
+else
+{
+    echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
+}
+break;
+
 // das ist der standard
 default:
 ?>

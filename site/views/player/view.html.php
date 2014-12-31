@@ -87,6 +87,9 @@ class sportsmanagementViewPlayer extends JViewLegacy
 		$this->assignRef('nickname',$nickname);
 		$this->assign('teamPlayers',$model->getTeamPlayers($model::$cfg_which_database));
         
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
+        
         //$app->enqueueMessage(JText::_('sportsmanagementViewPlayer teamPlayers<br><pre>'.print_r($this->teamPlayers,true).'</pre>'),'');
         
         $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
@@ -125,7 +128,7 @@ class sportsmanagementViewPlayer extends JViewLegacy
 		$this->assign('showediticon',sportsmanagementModelPerson::getAllowed($config['edit_own_player']));
 		$this->assign('stats',sportsmanagementModelProject::getProjectStats(0,0,$model::$cfg_which_database));
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' showediticon<br><pre>'.print_r($this->showediticon,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' stats<br><pre>'.print_r($this->stats,true).'</pre>'),'Notice');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
@@ -165,6 +168,7 @@ class sportsmanagementViewPlayer extends JViewLegacy
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' extended<br><pre>'.print_r($this->extended,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectstats<br><pre>'.print_r($this->projectstats,true).'</pre>'),'');
         $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COM_SPORTSMANAGEMENT_EXT_PERSON_PARENT_POSITIONS<br><pre>'.print_r($form_value,true).'</pre>'),'');
         }
         

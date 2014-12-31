@@ -16,8 +16,13 @@
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
   label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"  
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS"
-			addfieldpath="/administrator/components/com_sportsmanagement/elements">
+			addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 	
+	<field	name="page_title_format" type="pagetitleformat" default="0"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PAGE_TITLE_FORMAT"
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PAGE_TITLE_FORMAT">
+		</field>
+		
 		<field 	name="count_stats" type="text" default="5"
 				label="COM_SPORTSMANAGEMENT_FES_STATSRANKING_PARAM_LABEL_COUNT_STATS"
 				description="COM_SPORTSMANAGEMENT_FES_STATSRANKING_PARAM_DESCR_COUNT_STATS">

@@ -553,7 +553,7 @@ class sportsmanagementModelClubPlan extends JModelLegacy
 	 * @param integer $with_space
 	 * @return
 	 */
-	function getClubIconHtmlSimple($logo_small,$country,$type=1,$with_space=0)
+	static function getClubIconHtmlSimple($logo_small,$country,$type=1,$with_space=0)
 	{
 		if ($type==1)
 		{

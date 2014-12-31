@@ -44,7 +44,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 	if ( ( $this->config['show_team_logo'] == 1 ) )
 	{
 		?>
-		<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
+		<table align="center" border="0" cellpadding="0" cellspacing="0">
 			<tr>
 				<td align="center">
 					<?php
@@ -64,10 +64,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
       ?>
 
 
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $this->team->name;?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $this->team->name;?>" width="<?php echo $this->config['team_picture_width'];?>" />
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $this->team->name;?>" data-toggle="modal" data-target="#modal">
+<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $this->team->name;?>" width="<?php echo $this->config['team_picture_width'];?>" />
 </a>
 
+<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="beispielModalLabel" aria-hidden="true">
+<div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+
+      </div>
+<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $this->team->name;?>"  />
+
+</div>      
 
     <?php
       	

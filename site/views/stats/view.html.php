@@ -66,17 +66,17 @@ class sportsmanagementViewStats extends JViewLegacy
 		$document = JFactory::getDocument();
 
 		$model = $this->getModel();
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
+		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),JRequest::getint( "cfg_which_database", 0 ));
 
-		$tableconfig = sportsmanagementModelProject::getTemplateConfig( "ranking" );
-		$eventsconfig = sportsmanagementModelProject::getTemplateConfig( "eventsranking" );
-		$flashconfig = sportsmanagementModelProject::getTemplateConfig( "flash" );
+		$tableconfig = sportsmanagementModelProject::getTemplateConfig( "ranking",JRequest::getint( "cfg_which_database", 0 ) );
+		$eventsconfig = sportsmanagementModelProject::getTemplateConfig( "eventsranking",JRequest::getint( "cfg_which_database", 0 ) );
+		$flashconfig = sportsmanagementModelProject::getTemplateConfig( "flash",JRequest::getint( "cfg_which_database", 0 ) );
 
-		$this->assign( 'project', sportsmanagementModelProject::getProject() );
+		$this->assign( 'project', sportsmanagementModelProject::getProject(JRequest::getint( "cfg_which_database", 0 )) );
 		if ( isset( $this->project ) )
 		{
-			$this->assign( 'division', sportsmanagementModelProject::getDivision($model->divisionid));
-			$this->assign( 'overallconfig', sportsmanagementModelProject::getOverallConfig() );
+			$this->assign( 'division', sportsmanagementModelProject::getDivision($model::$divisionid,JRequest::getint( "cfg_which_database", 0 )));
+			$this->assign( 'overallconfig', sportsmanagementModelProject::getOverallConfig(JRequest::getint( "cfg_which_database", 0 )) );
 			if ( !isset( $this->overallconfig['seperator'] ) )
 			{
 				$this->overallconfig['seperator'] = ":";
@@ -86,7 +86,7 @@ class sportsmanagementViewStats extends JViewLegacy
 				
 			$this->assignRef( 'tableconfig', $tableconfig );
 			$this->assignRef( 'eventsconfig', $eventsconfig );
-			$this->assign( 'actualround', sportsmanagementModelProject::getCurrentRoundNumber() );
+			$this->assign( 'actualround', sportsmanagementModelProject::getCurrentRoundNumber(JRequest::getint( "cfg_which_database", 0 )) );
 
 //			$this->assign( 'highest_home', 		$model->getHighestHome());
 //			$this->assign( 'highest_away', 		$model->getHighestAway());

@@ -48,11 +48,10 @@ echo 'PERSON_PERSONAL_STATISTICS stats<br /><pre>~' . print_r($this->stats,true)
 
 <!-- Player stats History START -->
 <h2><?php	echo JText::_('COM_SPORTSMANAGEMENT_PERSON_PERSONAL_STATISTICS');	?></h2>
-<table width="96%" align="center" border="0" cellpadding="0"
-	cellspacing="0">
+<table class="table table-striped">
 	<tr>
 		<td>
-		<table id="playercareer">
+		<table class="table table-striped">
 			<thead>
 			<tr class="sectiontableheader">
 				<th class="td_l" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION'); ?></th>
@@ -329,6 +328,7 @@ echo 'PERSON_PERSONAL_STATISTICS stats<br /><pre>~' . print_r($this->stats,true)
 								    array_key_exists($stat->id, $this->projectstats))
 								{
 									//echo $this->projectstats[$stat->id]['totals'];
+                                    //echo 'hallo';
                                     echo ($this->projectstats[$stat->id]['totals'] > 0 ? $this->projectstats[$stat->id]['totals'] : $this->overallconfig['zero_events_value']);
 								}
 								else	// In case there are no stats for the player

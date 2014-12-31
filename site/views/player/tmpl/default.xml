@@ -37,7 +37,10 @@
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_DESCR"
 					required="">
 			</field>
-			<field	name="pid" type="dependsql" depends="p" task="projectplayeroptions" 
+			<field	name="pid" 
+      type="dependsql" 
+      depends="p" 
+      task="projectplayeroptions" 
 			key_field="project_id"
 			value_field="p"
 					label="COM_SPORTSMANAGEMENT_XML_PLAYER_SELECT_PLAYER_LABEL"

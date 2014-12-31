@@ -40,7 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 $view = JRequest::getCmd('view', 'cpanel');
 ?>
-
+<div id="j-main-container" class="span10">
 <table>
 		<tr>
 			<td align="left" width="100%">
@@ -148,4 +148,4 @@ $view = JRequest::getCmd('view', 'cpanel');
             ?>
 		</tr>
 	</table>
-    
+  

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-		<fieldset name="base" label="COM_SPORTSMANAGEMENT_ADMIN_STAT_GENERAL_PARAMS">
-			<field name="ranking_order" type="list" default="DESC" 
+		<fieldset name="base" 
+    label="COM_SPORTSMANAGEMENT_ADMIN_STAT_GENERAL_PARAMS">
+			<field name="ranking_order" 
+      type="list" 
+      default="DESC" 
 					label="COM_SPORTSMANAGEMENT_STAT_RANKING_ORDER" 
 					description="COM_SPORTSMANAGEMENT_STAT_RANKING_ORDER_DESC">
 				<option value="ASC">COM_SPORTSMANAGEMENT_GLOBAL_ASCENDING</option>

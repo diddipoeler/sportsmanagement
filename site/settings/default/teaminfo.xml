@@ -119,6 +119,15 @@
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_WIDTH" 
       description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_WIDTH">
 		</field>
+		
+		<field name="team_picture_style" type="list" default=""
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PICTURE_STYLE" 
+      description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PICTURE_STYLE">
+      <option value="">COM_SPORTSMANAGEMENT_FES_PICTURE_NOTHING</option>
+      <option value="img-rounded">COM_SPORTSMANAGEMENT_FES_PICTURE_STYLE_ROUNDED</option>
+      <option value="img-circle">COM_SPORTSMANAGEMENT_FES_PICTURE_STYLE_CIRCLE</option>
+      <option value="img-thumbnail">COM_SPORTSMANAGEMENT_FES_PICTURE_STYLE_THUMBNAIL</option>
+		</field>
 
 <!--
 		<field name="team_picture_height" type="text" default="150"

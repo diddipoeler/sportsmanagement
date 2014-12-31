@@ -1,12 +1,57 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
+
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
  
+
 /**
- * SportsManagement Model
+ * sportsmanagementModelpositionstatistic
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
  */
 class sportsmanagementModelpositionstatistic extends JModelAdmin
 {
@@ -95,7 +140,7 @@ class sportsmanagementModelpositionstatistic extends JModelAdmin
 	 */
 	function saveorder($pks = NULL, $order = NULL)
 	{
-		$row =& $this->getTable();
+		$row = $this->getTable();
 		
 		// update ordering values
 		for ($i=0; $i < count($pks); $i++)
@@ -113,5 +158,57 @@ class sportsmanagementModelpositionstatistic extends JModelAdmin
 		}
 		return true;
 	}
+    
+    /**
+     * sportsmanagementModelpositionstatistic::store()
+     * 
+     * @param mixed $data
+     * @param mixed $position_id
+     * @return
+     */
+    function store($data,$position_id)
+	{
+ 		$result	= true;
+		$peid	= (isset($data['position_statistic']) ? $data['position_statistic'] : array());
+		JArrayHelper::toInteger( $peid );
+		$peids = implode( ',', $peid );
+		
+		$query = ' DELETE	FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic '
+		       . ' WHERE position_id = ' . $position_id
+		       ;
+		if (count($peid)) {
+			$query .= '   AND statistic_id NOT IN  (' . $peids . ')';
+		}
+
+		$this->_db->setQuery( $query );
+		if( !$this->_db->query() )
+		{
+			$this->setError( $this->_db->getErrorMsg() );
+			$result = false;
+		}
+
+		for ( $x = 0; $x < count($peid); $x++ )
+		{
+			$query = "UPDATE #__".COM_SPORTSMANAGEMENT_TABLE."_position_statistic SET ordering='$x' WHERE position_id = '" . $position_id . "' AND statistic_id = '" . $peid[$x] . "'";
+ 			$this->_db->setQuery( $query );
+			if( !$this->_db->query() )
+			{
+				$this->setError( $this->_db->getErrorMsg() );
+				$result= false;
+			}
+		}
+		for ( $x = 0; $x < count($peid); $x++ )
+		{
+			$query = "INSERT IGNORE INTO #__".COM_SPORTSMANAGEMENT_TABLE."_position_statistic (position_id, statistic_id, ordering) VALUES ( '" . $position_id . "', '" . $peid[$x] . "','" . $x . "')";
+			$this->_db->setQuery( $query );
+			if ( !$this->_db->query() )
+			{
+				$this->setError( $this->_db->getErrorMsg() );
+				$result= false;
+			}
+		}
+		return $result;
+	}
+    
     
 }

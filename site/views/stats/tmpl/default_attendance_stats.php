@@ -53,7 +53,17 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 	</tr>
 	<tr class="sectiontableentry2">
 		<td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_PER_MATCH');?>:</td>
-		<td class="statvalue"><?php echo round (($this->totals->sumspectators / $this->totals->attendedmatches),2);?>
+		<td class="statvalue">
+        <?php 
+        if ( isset($this->totals->sumspectators) && $this->totals->attendedmatches )
+        {
+        echo round (($this->totals->sumspectators / $this->totals->attendedmatches),2);
+        }
+        else
+        {
+        echo 0;    
+        }
+        ?>
 		</td>
 	</tr>
 	<tr class="sectiontableentry1">

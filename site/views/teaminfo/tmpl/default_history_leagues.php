@@ -37,7 +37,8 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined('_JEXEC') or die('Restricted access'); ?>
+defined('_JEXEC') or die('Restricted access'); 
+?>
 
 
 
@@ -49,7 +50,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 </legend>
 
 
-<table width="100%" class='adminlist'>
+<table width="100%" class="table table-striped">
 
 <thead>
 <tr class="sectiontableheader">

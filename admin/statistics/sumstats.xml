@@ -8,9 +8,12 @@
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 			
       <field name="stat_ids" 
-      type="acteventtype" 
+      type="sql" 
       value="" 
-      multiple="true" 
+      multiple="multiple" 
+      query="SELECT id, name FROM #__sportsmanagement_statistic where class like 'basic'" 
+      key_field="id" 
+      value_field="name" 
 					label="COM_SPORTSMANAGEMENT_STAT_SUMSTAT_STAT_IDS" 
 					description="COM_SPORTSMANAGEMENT_STAT_SUMSTAT_STAT_IDS_DESC">
 			</field>

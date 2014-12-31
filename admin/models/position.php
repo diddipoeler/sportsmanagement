@@ -284,7 +284,16 @@ class sportsmanagementModelposition extends JModelAdmin
         }
 		}
         
-       
+       if (isset($post['position_statistic']) && is_array($post['position_statistic'])) 
+		{
+		if ( $data['id'] )
+        {
+        //$app->enqueueMessage(JText::_('sportsmanagementModelposition post position_statistic<br><pre>'.print_r($post['position_statistic'],true).'</pre>'),'Notice');
+        $mdl = JModelLegacy::getInstance("positionstatistic", "sportsmanagementModel");
+        $mdl->store($post,$data['id']);
+            
+        }
+		}
         
         //$app->enqueueMessage(JText::_('sportsmanagementModelposition save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         

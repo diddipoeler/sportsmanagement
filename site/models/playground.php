@@ -52,9 +52,9 @@ jimport( 'joomla.application.component.model' );
  */
 class sportsmanagementModelPlayground extends JModelLegacy
 {
-    var $playgroundid = 0;
+    static $playgroundid = 0;
     var $playground = null;
-    var $projectid = 0;
+    static $projectid = 0;
     
     static $cfg_which_database = 0;
 
@@ -67,9 +67,9 @@ class sportsmanagementModelPlayground extends JModelLegacy
     {
         
 
-        $this->projectid = JRequest::getInt( "p", 0 );
-        $this->playgroundid = JRequest::getInt( "pgid", 0 );
-        sportsmanagementModelProject::$projectid = $this->projectid;
+        self::$projectid = JRequest::getInt( "p", 0 );
+        self::$playgroundid = JRequest::getInt( "pgid", 0 );
+        sportsmanagementModelProject::$projectid = self::$projectid;
         self::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
         
         parent::__construct( ); 

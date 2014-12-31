@@ -101,7 +101,7 @@ else
 }
 ?>
 
-<table class='fixtures-results'>
+<table class="table table-striped">
 	<?php
 	foreach( $dates as $date => $games )
 	{
@@ -319,7 +319,9 @@ $link = "javascript:void(0);";
 		?>
 			<!-- show team-icons and/or -names -->
 			<td width='<?PHP echo $width;?>'>
-				<?php echo sportsmanagementViewResults::getTeamClubIcon($team1, $this->config['show_logo_small'], array('class' => 'teamlogo')); ?>
+				<?php 
+                echo sportsmanagementViewResults::getTeamClubIcon($team1, $this->config['show_logo_small'], array('class' => 'teamlogo')); 
+                ?>
 			</td>
 			<td>
 				<?php
@@ -328,7 +330,9 @@ $link = "javascript:void(0);";
 				?>
 			</td>
 			<td width='<?PHP echo $width;?>'>
-				<?php echo sportsmanagementViewResults::getTeamClubIcon($team2, $this->config['show_logo_small'], array('class' => 'teamlogo')); ?>
+				<?php 
+                echo sportsmanagementViewResults::getTeamClubIcon($team2, $this->config['show_logo_small'], array('class' => 'teamlogo')); 
+                ?>
 			</td>
 			<td>
 				<?php

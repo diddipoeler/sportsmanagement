@@ -760,6 +760,10 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project` (
   `agegroup_id` INT( 11 ) NOT NULL DEFAULT  '0',
   `projectinfo` TEXT NOT NULL ,
   `category_id` INT( 11 ) NOT NULL DEFAULT  '0',
+  
+  `hits` INT(11) NOT NULL DEFAULT '0' ,
+  `modified_hits` INT(11) NOT NULL DEFAULT '0' ,
+  
   PRIMARY KEY (`id`) ,
   KEY `league_id` (`league_id`),
   KEY `season_id` (`season_id`),

@@ -39,6 +39,11 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); // Check to ensure this file is included in Joomla!
 
+if (! defined('DS'))
+{
+	define('DS', DIRECTORY_SEPARATOR);
+}
+
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'models'.DS.'ajax.php');
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'sportsmanagement.php');  
 

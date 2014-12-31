@@ -53,8 +53,7 @@ if (count($this->games))
 {
 	?>
 <h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_GAMES_HISTORY'); ?></h2>
-<table width="96%" align="center" border="0" cellpadding="0"
-	cellspacing="0">
+<table align="center" border="0" cellpadding="0" class="table"	cellspacing="0">
 	<tr>
 		<td>
 		<table id="gameshistory">
@@ -216,7 +215,7 @@ if (count($this->games))
                     
 					<?php
 					}
-					if ($this->config['show_career_events_stats'])
+					if ($this->config['show_career_events_stats'] && isset($this->AllEvents) )
 					{
 						foreach($this->AllEvents as $eventtype)
 						{

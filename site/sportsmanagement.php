@@ -95,6 +95,33 @@ $app = JFactory::getApplication();
 $config = JFactory::getConfig();
 
 $lang = JFactory::getLanguage();
+
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Joomla! 3.0 code here
+}
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
+JFactory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/css/bootstrap.min.css');
+JFactory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/css/bootstrap-responsive.min.css');
+//JFactory::getDocument()->addScript(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/js/bootstrap.min.js');
+} 
+elseif(version_compare(JVERSION,'1.7.0','ge')) 
+{
+// Joomla! 1.7 code here
+} 
+elseif(version_compare(JVERSION,'1.6.0','ge')) 
+{
+// Joomla! 1.6 code here
+} 
+else 
+{
+// Joomla! 1.5 code here
+}
+
+//$document->setMetaData( 'viewport', "width=device-width, initial-scale=1.0" );
+
 $extension = 'com_sportsmanagement';
 $base_dir = JPATH_ADMINISTRATOR;
 $language_tag = $langtag->getTag();
@@ -108,18 +135,36 @@ $show_debug_info = $paramscomponent->get( 'show_debug_info' );
 $show_query_debug_info = $paramscomponent->get( 'show_query_debug_info' ); 
 $cfg_which_database_server = $paramscomponent->get( 'cfg_which_database_server' );
 
+if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
+{
 DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',$paramscomponent->get( 'cfg_which_database' ) );
+}
+if (! defined('COM_SPORTSMANAGEMENT_TABLE'))
+{
 DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
+}
+if (! defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO'))
+{
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
+}
+if (! defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO'))
+{
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$show_query_debug_info );
+}
 
 if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
 {
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$cfg_which_database_server );    
+if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+{    
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$cfg_which_database_server );
+}    
 }
 else
 {
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );    
+if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+{        
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );
+}    
 }
 
 

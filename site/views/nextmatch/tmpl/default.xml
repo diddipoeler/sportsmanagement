@@ -19,6 +19,7 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		
 			<field	name="s" 
       type="seasonlist"
       value_field="cfg_which_database"
@@ -37,18 +38,39 @@
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_DESCR"
 					required="">
 			</field>
+
+<!--			
 			<field	name="ptid" type="dependsql" depends="p" task="projectteamsptidoptions" 
 					label="COM_SPORTSMANAGEMENT_XML_NEXTMATCH_SELECT_TEAM_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_NEXTMATCH_SELECT_TEAM_DESCR"
 					required="false">
 			</field>
-			<field	name="mid" type="dependsql" depends="p" task="matchesoptions"
+-->			
+			
+			<field	name="ptid" 
+      type="dependsql" 
+      depends="p" 
+      key_field="project_id"
+			value_field="p"
+      task="projectteamoptions"
+					label="COM_SPORTSMANAGEMENT_XML_NEXTMATCH_SELECT_TEAM_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_NEXTMATCH_SELECT_TEAM_DESCR"
+					required="false">
+			</field>
+			
+
+
+      <field	name="mid" 
+      type="dependsql" 
+      depends="p" 
+      key_field="project_id"
+			value_field="p"
+      task="matchesoptions" 
 					label="COM_SPORTSMANAGEMENT_XML_NEXTMATCH_SELECT_MATCH_LABEL"
 					description="COM_SPORTSMANAGEMENTXML_NEXTMATCH_SELECT_MATCH_DESCR"
-					required="false"
-					>
+					required="false" >
 			</field>
-
+			
 		</fieldset>
 	</fields>
 </metadata>

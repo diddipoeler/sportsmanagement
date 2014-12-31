@@ -39,9 +39,74 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+if (! defined('DS'))
+{
+	define('DS', DIRECTORY_SEPARATOR);
+}
+
+if (! defined('JSM_PATH'))
+{
+DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
+}
+
 jimport('joomla.application.component.model');
 jimport( 'joomla.utilities.arrayhelper' );
 
+if (!class_exists('sportsmanagementModeldatabasetool')) 
+{
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
+// sprachdatei aus dem backend laden
+$langtag = JFactory::getLanguage();
+
+$document = JFactory::getDocument();
+$app = JFactory::getApplication();
+$config = JFactory::getConfig();
+$lang = JFactory::getLanguage();
+$extension = 'com_sportsmanagement';
+$base_dir = JPATH_ADMINISTRATOR;
+$language_tag = $langtag->getTag();
+$reload = true;
+$lang->load($extension, $base_dir, $language_tag, $reload);
+    
+// welche tabelle soll genutzt werden
+$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
+$database_table	= $paramscomponent->get( 'cfg_which_database_table' );
+$show_debug_info = $paramscomponent->get( 'show_debug_info' );  
+$show_query_debug_info = $paramscomponent->get( 'show_query_debug_info' ); 
+$cfg_which_database_server = $paramscomponent->get( 'cfg_which_database_server' );
+
+if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',$paramscomponent->get( 'cfg_which_database' ) );
+}
+if (! defined('COM_SPORTSMANAGEMENT_TABLE'))
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
+}
+if (! defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO'))
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
+}
+if (! defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO'))
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$show_query_debug_info );
+}
+if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
+{
+if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+{        
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$cfg_which_database_server );
+}    
+}
+else
+{
+if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+{        
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );
+}    
+}
+}
+            
 /**
  * sportsmanagementModelProject
  * 
@@ -168,12 +233,13 @@ class sportsmanagementModelProject extends JModelLegacy
 		{
 			//fs_sport_type_name = sport_type folder name
             $query->select('p.*, l.country, st.id AS sport_type_id, st.name AS sport_type_name');
-            $query->select('st.icon AS sport_type_picture, l.picture as leaguepicture');
+            $query->select('st.icon AS sport_type_picture, l.picture as leaguepicture, l.name as league_name, s.name as season_name  ');
             $query->select('LOWER(SUBSTR(st.name, CHAR_LENGTH( "COM_SPORTSMANAGEMENT_ST_")+1)) AS fs_sport_type_name');
             $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug');
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON p.sports_type_id = st.id ');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON p.league_id = l.id ');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON p.season_id = s.id ');
             $query->where('p.id = '. self::$projectid);
             
 
@@ -281,7 +347,7 @@ class sportsmanagementModelProject extends JModelLegacy
 	 * 
 	 * @return int
 	 */
-	function getCurrentRoundNumber($cfg_which_database = 0)
+	public static function getCurrentRoundNumber($cfg_which_database = 0)
 	{
 	   $app = JFactory::getApplication();
 		$round = self::increaseRound($cfg_which_database);
@@ -888,9 +954,9 @@ class sportsmanagementModelProject extends JModelLegacy
 	 * @param string $teamname
 	 * @return
 	 */
-	function getTeamsIndexedById($division=0,$teamname='name',$cfg_which_database = 0)
+	public static function getTeamsIndexedById($division=0,$teamname='name',$cfg_which_database = 0)
 	{
-		$result = self::getTeams($division,$teamname,$cfg_which_database = 0);
+		$result = self::getTeams($division,$teamname,$cfg_which_database);
 		$teams = array();
 		if (count($result))
 		{
@@ -955,7 +1021,7 @@ class sportsmanagementModelProject extends JModelLegacy
 	 * @param integer $evid
 	 * @return
 	 */
-	function getEventTypes($evid=0,$cfg_which_database = 0)
+	public static function getEventTypes($evid=0,$cfg_which_database = 0)
 	{
 	   $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
@@ -963,7 +1029,7 @@ class sportsmanagementModelProject extends JModelLegacy
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         
-        $query->select('et.id AS etid,et.id AS etid,');
+        $query->select('et.id AS etid,et.name,et.icon');
         $query->select('me.event_type_id AS id');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me ON et.id = me.event_type_id');
@@ -986,6 +1052,8 @@ class sportsmanagementModelProject extends JModelLegacy
 //			$query .= " me.event_type_id=".(int)$evid;
             $query->where('me.event_type_id = '.(int)$evid);
 		}
+        
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
 		$db->setQuery($query);
 		return $db->loadObjectList('etid');

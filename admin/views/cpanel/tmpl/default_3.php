@@ -136,6 +136,24 @@ jimport('joomla.html.html.bootstrap');
 </div> 
 
 <hr class="hr-condensed"> 
+<div class="module-title nav-header"><?php echo JText::_('COM_SPORTSMANAGEMENT_D_HEADING_SPECIAL_FUNCTION') ?>
+</div>
+<hr class="hr-condensed">    
+<div id="dashboard-icons" class="btn-group">
+
+<a class="btn" href="index.php?option=com_sportsmanagement&view=extrafields">
+<img src="components/com_sportsmanagement/assets/icons/extrafelder.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_EXTRAFIELDS') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_EXTRAFIELDS') ?></span>
+</a>
+
+<a class="btn" href="index.php?option=com_sportsmanagement&view=statistics">
+<img src="components/com_sportsmanagement/assets/icons/statistik.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_STATISTICS') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_STATISTICS') ?></span>
+</a>
+
+</div>
+
+<hr class="hr-condensed"> 
 <div class="module-title nav-header"><?php echo JText::_('COM_SPORTSMANAGEMENT_D_HEADING_IMPORT_EXPORT_FUNCTION') ?>
 </div>
 <hr class="hr-condensed">    

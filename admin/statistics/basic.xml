@@ -4,12 +4,17 @@
 		          label="COM_SPORTSMANAGEMENT_STAT_PARAMS_GROUP_SETTINGS" 
 		          description="COM_SPORTSMANAGEMENT_STAT_BASIC_DESC">
 
-			<field 	name="precision" type="text" value="2"
+			<field 	name="precision" 
+      type="text" 
+      default="2"
 			label="COM_SPORTSMANAGEMENT_STAT_PRECISION"
 				description="COM_SPORTSMANAGEMENT_STAT_PRECISION_DESC">
 			</field>
 	
-			<field name="statistic_views" type="list" default="roster,matchreport,player" multiple="multiple" 
+			<field name="statistic_views" 
+      type="list" 
+      default="roster,matchreport,player" 
+      multiple="multiple" 
 					label="COM_SPORTSMANAGEMENT_STAT_SHOW_IN_VIEWS_IDS"
 					description="COM_SPORTSMANAGEMENT_STAT_SHOW_IN_VIEWS_DESC">
 				<option value="nowhere">COM_SPORTSMANAGEMENT_STAT_SHOW_IN_VIEWS_OPTION_NOWHERE</option>

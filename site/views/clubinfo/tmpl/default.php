@@ -60,6 +60,7 @@ $this->kmlfile = $this->club->id.'-club.kml';
 
 ?>
 <div class="joomleague">
+<!-- <div class="container"> -->
 	<?php 
 	echo $this->loadTemplate('projectheading');
 

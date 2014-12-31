@@ -145,7 +145,7 @@ class sportsmanagementModelstatistic extends JModelAdmin
             
            } 
            
-        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' form<br><pre>'.print_r($form,true).'</pre>'),'');
         
 		return $form;
 	}

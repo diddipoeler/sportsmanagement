@@ -248,6 +248,9 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 	{
 		if(!isset($team->name)) return "";
 		$title = $team->name;
+        
+        //echo 'team<pre>',print_r($team,true),'</pre><br>'; 
+        
 		$attribs = array_merge(array('title' => $title,$attribs));
 		if ($type==1)
 		{
@@ -282,9 +285,17 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
             if ( !empty($team->logo_big) )
 			{
 				//$image = JHtml::image($team->logo_big,$title,$attribs);
-                $image="<a href=\"".COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->logo_big."\" title=\"".$title."\" class=\"modal\">";
+                $image="<a href=\"".COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->logo_big."\" title=\"".$title."\" data-toggle=\"modal\" data-target=\"#pt".$team->projectteamid."\">";
 				$image.=JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->logo_big,$title,$attribs);
 				$image.="</a>";
+                $image.="<div class=\"modal fade\" id=\"pt".$team->projectteamid."\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal\" aria-hidden=\"true\">";
+                $image.="<div class=\"modal-header\">";
+                $image.="<button type=\"button\" class=\"close\" data-dismiss=\"modal\"><span aria-hidden=\"true\">&times;</span></button>";
+                $image.="</div>";
+                $image.= JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->logo_big, $title, array('title' => $title,'class' => "img-rounded" ));
+                $image.="</div>";
+                
+                
 			}
 			else
 			{
@@ -305,12 +316,18 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 			//$image = JSMCountries::getCountryFlag($team->country);
 			if (empty($image))
 			{
-				//$image = JHtml::image($team->logo_big,$title,$attribs).' '.JSMCountries::getCountryFlag($team->country);
-                $attribs = array_merge(array('width' => '20',$attribs));
-                $image="<a href=\"".COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->logo_big."\" title=\"".$title."\" class=\"modal\">";
-				$image.=JHtml::image($team->logo_big,$title,$attribs);
+				$attribs = array_merge(array('width' => '20',$attribs));
+                //$image = JHtml::image($team->logo_big,$title,$attribs).' '.JSMCountries::getCountryFlag($team->country);
+                $image="<a href=\"".COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->logo_big."\" title=\"".$title."\" data-toggle=\"modal\" data-target=\"#pt".$team->projectteamid."\">";
+				$image.=JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->logo_big,$title,$attribs);
 				$image.="</a>";
                 $image.=' '.JSMCountries::getCountryFlag($team->country);
+                $image.="<div class=\"modal fade\" id=\"pt".$team->projectteamid."\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal\" aria-hidden=\"true\">";
+                $image.="<div class=\"modal-header\">";
+                $image.="<button type=\"button\" class=\"close\" data-dismiss=\"modal\"><span aria-hidden=\"true\">&times;</span></button>";
+                $image.="</div>";
+                $image.= JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->logo_big, $title, array('title' => $title,'class' => "img-rounded" ));
+                $image.="</div>";
 			}
 		}
         elseif ($type==7 && !empty($team->country) && !empty($team->logo_big) && !JFile::exists($team->logo_big) )

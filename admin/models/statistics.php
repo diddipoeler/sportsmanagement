@@ -103,6 +103,9 @@ class sportsmanagementModelStatistics extends JModelList
 		$this->setState('filter.state', $published);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.sports_type', 'filter_sports_type', '');
 		$this->setState('filter.sports_type', $temp_user_request);
+        
+        $value = JRequest::getUInt('limitstart', 0);
+		$this->setState('list.start', $value);
 
 
         
@@ -117,13 +120,18 @@ class sportsmanagementModelStatistics extends JModelList
 		parent::populateState('obj.name', 'asc');
 	}
     
+	/**
+	 * sportsmanagementModelStatistics::getListQuery()
+	 * 
+	 * @return
+	 */
 	function getListQuery()
 	{
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $search	= $this->getState('filter.search');
-        $search_sports_type	= $this->getState('filter.sports_type');
-        $search_state	= $this->getState('filter.state');
+        //$search	= $this->getState('filter.search');
+        //$search_sports_type	= $this->getState('filter.sports_type');
+        //$search_state	= $this->getState('filter.state');
 
         // Create a new query object.
 		$db		= $this->getDbo();
@@ -142,17 +150,17 @@ class sportsmanagementModelStatistics extends JModelList
 		$query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
         
         
-        if ($search)
+        if ($this->getState('filter.search'))
 		{
-        $query->where('LOWER(obj.name) LIKE ' . $this->_db->Quote('%' . $search . '%'));
+        $query->where('LOWER(obj.name) LIKE ' . $this->_db->Quote('%' . $this->getState('filter.search') . '%'));
         }
-        if ($search_sports_type)
+        if ($this->getState('filter.sports_type'))
 		{
-        $query->where('obj.sports_type_id='.$db->Quote($search_sports_type));
+        $query->where('obj.sports_type_id = '.$this->getState('filter.sports_type') );
         }
-        if (is_numeric($search_state))
+        if (is_numeric($this->getState('filter.state')))
 		{
-        $query->where('obj.published = '.$search_state);
+        $query->where('obj.published = '.$this->getState('filter.state'));
         }
 
         $query->order($db->escape($this->getState('list.ordering', 'obj.name')).' '.
@@ -187,21 +195,31 @@ class sportsmanagementModelStatistics extends JModelList
         $option = JRequest::getCmd('option');
         //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         // Create a new query object.
-		$db		= $this->getDbo();
+		$db = JFactory::getDBO();
 		$query	= $db->getQuery(true);
         
-		$query=' SELECT	s.id AS value,
-				concat(s.name, " (" , st.name, ")") AS text
-				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic AS s 
-				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps 
-                ON ps.statistic_id=s.id 
-				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st 
-                ON st.id = s.sports_type_id 
-				WHERE ps.position_id='.(int) $id . '
-				ORDER BY ps.ordering ASC ';
+        $query->select('s.id AS value, concat(s.name, " (" , st.name, ")") AS text');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic AS s');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ON ps.statistic_id = s.id ');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = s.sports_type_id  ');
+        $query->where('ps.position_id = '.(int) $id);
+        $query->order('ps.ordering ASC');
+        
+//		$query=' SELECT	s.id AS value,
+//				concat(s.name, " (" , st.name, ")") AS text
+//				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic AS s 
+//				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps 
+//                ON ps.statistic_id=s.id 
+//				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st 
+//                ON st.id = s.sports_type_id 
+//				WHERE ps.position_id='.(int) $id . '
+//				ORDER BY ps.ordering ASC ';
 
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		$db->setQuery($query);
+        
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
+		return $db->loadObjectList();
 	}
     
     /**
@@ -217,37 +235,60 @@ class sportsmanagementModelStatistics extends JModelList
         $option = JRequest::getCmd('option');
         //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         // Create a new query object.
-		$db		= $this->getDbo();
+		$db = JFactory::getDBO();
 		$query	= $db->getQuery(true);
         
-		$query=' SELECT	s.id AS value, 
-				concat(s.name, " (" , st.name, ")") AS text 
-				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic AS s 
-				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps 
-                ON ps.statistic_id = s.id 
-				AND ps.position_id !='.(int) $id . '
-				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st 
-                ON st.id = s.sports_type_id 
-				WHERE ps.id IS NULL 
-				ORDER BY s.ordering ASC ';
+        $query->select('s.id AS value, concat(s.name, " (" , st.name, ")") AS text');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic AS s');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ON ps.statistic_id = s.id AND ps.position_id = '.(int) $id );
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = s.sports_type_id  ');
+        $query->where('ps.id IS NULL');
+        $query->order('s.ordering ASC');
+        
+//		$query=' SELECT	s.id AS value, 
+//				concat(s.name, " (" , st.name, ")") AS text 
+//				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic AS s 
+//				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps 
+//                ON ps.statistic_id = s.id 
+//				AND ps.position_id !='.(int) $id . '
+//				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st 
+//                ON st.id = s.sports_type_id 
+//				WHERE ps.id IS NULL 
+//				ORDER BY s.ordering ASC ';
 
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+		$db->setQuery($query);
+        
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
+		return $db->loadObjectList();
 	}
     
     
+    /**
+     * sportsmanagementModelStatistics::getStatisticListSelect()
+     * 
+     * @return
+     */
     public function getStatisticListSelect()
 	{
 	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         // Create a new query object.
-		$db		= $this->getDbo();
+		$db = JFactory::getDBO();
 		$query	= $db->getQuery(true);
         
-		$query='SELECT id,name,id AS value,name AS text,short,class,note FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic ORDER BY name';
-		$this->_db->setQuery($query);
-		return $this->_db->loadObjectList();
+        $query->select('id,name,id AS value,name AS text,short,class,note');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic');
+        $query->order('name');
+        
+//		$query='SELECT id,name,id AS value,name AS text,short,class,note FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic ORDER BY name';
+                
+		$db->setQuery($query);
+        
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
+		return $db->loadObjectList();
 	}
     
     

@@ -55,7 +55,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                 <th style="width:6px;"></th>
                 <th style="width:25%;">
                 <?php
-        JoomleagueHelperHtml::printColumnHeadingSort(JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING_TEAM'), "name", null, "ASC");
+        sportsmanagementHelperHtml::printColumnHeadingSort(JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING_TEAM'), "name", null, "ASC");
         ?>
                 </th>
                 <th style="width:3%;text-align:center;">
@@ -65,22 +65,22 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                 </th>
                 <th style="width:16%;text-align:right;">
                 <?php
-        JoomleagueHelperHtml::printColumnHeadingSort(JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING_TOTAL'), "totalattend", null);
+        sportsmanagementHelperHtml::printColumnHeadingSort(JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING_TOTAL'), "totalattend", null);
         ?>
                 </th>
                 <th style="width:16%;text-align:right;">
                 <?php
-        JoomleagueHelperHtml::printColumnHeadingSort(JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING_AVG'), "avgattend", null);
+        sportsmanagementHelperHtml::printColumnHeadingSort(JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING_AVG'), "avgattend", null);
         ?>
                 </th>
                 <th style="width:19%;text-align:right;">
                 <?php
-        JoomleagueHelperHtml::printColumnHeadingSort(JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING_CAPACITY'), "capacity", null);
+        sportsmanagementHelperHtml::printColumnHeadingSort(JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING_CAPACITY'), "capacity", null);
         ?>
                 </th>
                 <th style="width:20%;text-align:right;">
                 <?php
-        JoomleagueHelperHtml::printColumnHeadingSort(JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING_UTILISATION'), "utilisation", null);
+        sportsmanagementHelperHtml::printColumnHeadingSort(JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING_UTILISATION'), "utilisation", null);
         ?>
                 </th>
             </tr>
@@ -90,19 +90,19 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                 if (isset($_REQUEST['order'])) {
                     switch ($_REQUEST['order']) {
                     case 'name':
-                        usort($this->attendanceranking, array("JoomleagueModelStats", "teamNameCmp2"));
+                        usort($this->attendanceranking, array("sportsmanagementModelStats", "teamNameCmp2"));
                         break;
                     case 'totalattend':
-                        usort($this->attendanceranking, array("JoomleagueModelStats", "totalattendCmp"));
+                        usort($this->attendanceranking, array("sportsmanagementModelStats", "totalattendCmp"));
                         break;
                     case 'avgattend':
-                        usort($this->attendanceranking, array("JoomleagueModelStats", "avgattendCmp"));
+                        usort($this->attendanceranking, array("sportsmanagementModelStats", "avgattendCmp"));
                         break;
                     case 'capacity':
-                        usort($this->attendanceranking, array("JoomleagueModelStats", "capacityCmp"));
+                        usort($this->attendanceranking, array("sportsmanagementModelStats", "capacityCmp"));
                         break;
                     case 'utilisation':
-                        usort($this->attendanceranking, array("JoomleagueModelStats", "utilisationCmp"));
+                        usort($this->attendanceranking, array("sportsmanagementModelStats", "utilisationCmp"));
                         break;
                     }
 

@@ -49,6 +49,17 @@ $user = JFactory::getUser();
 JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANEL_TITLE'),'projects');
 
 ?>
+<div id="j-main-container">
+<div id="jsm" class="admin override">
+
+<div id="j-main-container" class="span10">
+<section class="content-block" role="main">
+
+<div class="row-fluid">
+<div class="span7">
+
+<div class="well well-small">  
+<div id="dashboard-icons" class="btn-group">
 			<div id="element-box">
 				<div class="m">
 					<div class="adminform">
@@ -155,6 +166,15 @@ JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_CONTROL_PANE
 		</td>
 	</tr>
 </table>
+
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+</div>
 <?PHP
 echo "<div>";
 echo $this->loadTemplate('footer');
