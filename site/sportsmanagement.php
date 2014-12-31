@@ -105,7 +105,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 // Joomla! 2.5 code here
 JFactory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/css/bootstrap.min.css');
 JFactory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/css/bootstrap-responsive.min.css');
-JFactory::getDocument()->addScript(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/js/bootstrap.min.js');
+//JFactory::getDocument()->addScript(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/js/bootstrap.min.js');
 } 
 elseif(version_compare(JVERSION,'1.7.0','ge')) 
 {
