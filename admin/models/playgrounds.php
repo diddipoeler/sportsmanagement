@@ -147,7 +147,7 @@ class sportsmanagementModelPlaygrounds extends JModelList
         }
         if ($search_nation)
 		{
-        $query->where("v.country = '".$search_nation."'");
+        $query->where("v.country LIKE '".$search_nation."'");
         }
 
         

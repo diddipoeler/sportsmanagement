@@ -431,7 +431,10 @@ class sportsmanagementModelPlayground extends JModelAdmin
         $db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playground<br><pre>'.print_r(self::$playground,true).'</pre>'),'');
+        }
         
         if ( is_null( self::$playground ) )
         {
@@ -447,7 +450,10 @@ class sportsmanagementModelPlayground extends JModelAdmin
                 $query->where('id = '. $pgid);
                 $db->setQuery( $query );
                 
+                if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
                 $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+                }
                 
                 self::$playground = $db->loadObject();
                 //self::$playground = self::getTable();
