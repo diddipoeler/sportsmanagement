@@ -589,10 +589,13 @@ class sportsmanagementModelPlayer extends JModelLegacy
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
        
+       
+       
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' player_id<br><pre>'.print_r($player_id,true).'</pre>'),'');
-       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' game_regular_time<br><pre>'.print_r($game_regular_time,true).'</pre>'),'');
+       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' player_id<br><pre>'.print_r($player_id,true).'</pre>'),'');
+       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' game_regular_time<br><pre>'.print_r($game_regular_time,true).'</pre>'),'');
+       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cards<br><pre>'.print_r($cards,true).'</pre>'),'');
        }   
        
     
@@ -685,7 +688,7 @@ class sportsmanagementModelPlayer extends JModelLegacy
     $query->select('*');
 	$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event '); 
     $query->where('teamplayer_id = '.$player_id);
-    $query->where('event_type_id in ('.$cards.')');
+    $query->where('event_type_id IN ('.implode(',', $cards).')');
 
     if ( $match_id )
     {
