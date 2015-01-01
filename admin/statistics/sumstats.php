@@ -240,7 +240,10 @@ class SMStatisticSumstats extends SMStatistic
 		$res = new stdclass;
 		$db->setQuery($query_core);
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
+        }
         
 		$res->pagination_total = $db->loadResult();
         
@@ -251,7 +254,10 @@ class SMStatisticSumstats extends SMStatistic
 
 		$db->setQuery($query_core, $limitstart, $limit);
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
+        }
         
 		$res->ranking = $db->loadObjectList();
 	
