@@ -39,7 +39,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
-<table style='width:96%; border: 0; text-align:center;'>
+<table class="<?php echo $this->config['table_class']; ?>">
 	<thead>
 	<tr class="sectiontableheader">
 		<?php if ($this->config['show_small_logo']) { ?>
@@ -96,7 +96,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			$mediumClubLogoLink = JHTML::link( $clubinfo_link, $image );
 		}
 		?>
-		<tr class="<?php echo ($k==0)? $this->config['style_class1'] : $this->config['style_class2']; ?>">
+		<tr class="">
 			<?php if ($this->config['show_small_logo']) { ?>
 			<td class="team_logo"><?php echo $smallTeamLogoLink; ?></td>
 			<?php } ?>

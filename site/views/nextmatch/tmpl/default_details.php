@@ -41,8 +41,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
 <!-- START of match details -->
 <h2><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DETAILS'); ?></h2>
-<table
-	width="98%" align="center" border="0" cellpadding="0" cellspacing="0">
+<table class="table">
 	<!-- Prev Match-->
 	<?php
 	if ($this->match->old_match_id > 0)

@@ -41,7 +41,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
 
 <!-- sectionheading e.g. ranking aso -->
-	<table width="100%" class="contentpaneopen">
+	<table class="table">
 		<tr>
 			<td class="contentheading"><a name="division<?php echo $this->divisions;?>"></a>
 			

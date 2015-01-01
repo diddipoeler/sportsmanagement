@@ -40,7 +40,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
 <!-- START: Contentheading -->
-<table width="100%" class="contentpaneopen">
+<table class="table">
 	<tr>
 		<td class="contentheading"><?php
 		echo JHtml::date($this->match->match_date, JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE' ) ). " ".

@@ -39,7 +39,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
-    <table class="contentpaneopen" width="100%">
+    <table class="<?php echo $this->config['ranking_table_class'];?>">
     <tbody>
 	<tr>
 	    <td class="contentheading"><?php echo JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE_RANKING'); ?></td>
@@ -49,7 +49,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
         <br />
         <div style="<?php // echo $show_att_ranking;?>float:left;width:96%;clear:both;margin:0 0 25px 0;">
-        <table width="100%" align="center" border="0" cellpadding="0" cellspacing="0">
+        <table class="<?php echo $this->config['ranking_table_class'];?>">
 
 			<tr class="sectiontableheader">
                 <th style="width:6px;"></th>

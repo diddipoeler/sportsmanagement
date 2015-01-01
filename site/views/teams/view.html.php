@@ -63,17 +63,19 @@ class sportsmanagementViewTeams extends JViewLegacy
 		// Get a reference of the page instance in joomla
 		$document= JFactory::getDocument();
         $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
 
 		$model = $this->getModel();
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),JRequest::getInt('cfg_which_database',0));
+		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$jinput->getInt('cfg_which_database',0));
 
-		$this->assignRef( 'project', sportsmanagementModelProject::getProject(JRequest::getInt('cfg_which_database',0)) );
-		$this->assignRef( 'division', sportsmanagementModelProject::getDivision(JRequest::getInt( "division", 0 ),JRequest::getInt('cfg_which_database',0)) );
-		$this->assignRef( 'overallconfig', sportsmanagementModelProject::getOverallConfig(JRequest::getInt('cfg_which_database',0)) );
+		$this->assign( 'project', sportsmanagementModelProject::getProject($jinput->getInt('cfg_which_database',0)) );
+		$this->assign( 'division', sportsmanagementModelProject::getDivision($jinput->getInt( "division", 0 ),$jinput->getInt('cfg_which_database',0)) );
+		$this->assign( 'overallconfig', sportsmanagementModelProject::getOverallConfig($jinput->getInt('cfg_which_database',0)) );
 		$this->assignRef( 'config', $config );
 
 		//$this->assignRef( 'teams', $model->getTeams() );
-        $this->assign( 'teams', sportsmanagementModelProject::getTeams(JRequest::getInt( "division", 0 ),'name',JRequest::getInt('cfg_which_database',0)) );
+        $this->assign( 'teams', sportsmanagementModelProject::getTeams($jinput->getInt( "division", 0 ),'name',$jinput->getInt('cfg_which_database',0)) );
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
 

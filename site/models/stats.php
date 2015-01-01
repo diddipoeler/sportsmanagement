@@ -73,11 +73,15 @@ class sportsmanagementModelStats extends JModelLegacy
 	 */
 	function __construct( )
 	{
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
 		parent::__construct();
 
-		self::$projectid = JRequest::getInt( "p", 0 );
-		self::$divisionid = JRequest::getint( "division", 0 );
-        self::$cfg_which_database = JRequest::getint( "cfg_which_database", 0 );
+		self::$projectid = $jinput->getInt( "p", 0 );
+		self::$divisionid = $jinput->getint( "division", 0 );
+        self::$cfg_which_database = $jinput->getint( "cfg_which_database", 0 );
         
         sportsmanagementModelProject::$projectid = self::$projectid;
 	}
@@ -106,7 +110,9 @@ class sportsmanagementModelStats extends JModelLegacy
 	function getHighest($which = 'HOME' )
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+       // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
@@ -317,7 +323,9 @@ class sportsmanagementModelStats extends JModelLegacy
 	function getSeasonTotals( )
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+       // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);

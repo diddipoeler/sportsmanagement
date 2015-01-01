@@ -185,7 +185,10 @@ class sportsmanagementModelProject extends JModelLegacy
 	 */
 	function __construct()
 	{
-		$app = JFactory::getApplication();
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
         
         //self::$projectid = JRequest::getInt('p',0);
         //self::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
@@ -1053,7 +1056,10 @@ class sportsmanagementModelProject extends JModelLegacy
             $query->where('me.event_type_id = '.(int)$evid);
 		}
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+            {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        }
 
 		$db->setQuery($query);
 		return $db->loadObjectList('etid');
@@ -1560,10 +1566,20 @@ $starttime = microtime();
 //			}
 
 
-			$image = "<a href=\"".COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->$club_icon."\" title=\"".$title."\" class=\"modal\">";
-			$image.=JHtml::image($team->$club_icon,$title,$params);
+//			$image = "<a href=\"".COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->$club_icon."\" title=\"".$title."\" class=\"modal\">";
+//			$image.=JHtml::image($team->$club_icon,$title,$params);
+//			$image.="</a>";
+            
+            $image="<a href=\"".COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->$club_icon."\" title=\"".$title."\" data-toggle=\"modal\" data-target=\"#pt".$team->team_id."\">";
+			$image.=JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->$club_icon,$title,$params);
 			$image.="</a>";
-                
+            $image.="<div class=\"modal fade\" id=\"pt".$team->team_id."\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal\" aria-hidden=\"true\">";
+            $image.="<div class=\"modal-header\">";
+            $image.="<button type=\"button\" class=\"close\" data-dismiss=\"modal\"><span aria-hidden=\"true\">&times;</span></button>";
+            $image.="</div>";
+            $image.= JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->$club_icon, $title, array('title' => $title,'class' => "img-rounded" ));
+            $image.="</div>";
+                    
             //return JHtml::image($small_club_icon,'',$params);
             return $image;
 		}

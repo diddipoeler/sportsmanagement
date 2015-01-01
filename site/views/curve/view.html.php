@@ -61,8 +61,11 @@ class sportsmanagementViewCurve extends JViewLegacy
 	 */
 	function display($tpl = null)
 	{
-		$option = JRequest::getCmd('option');
+	// Reference global application object
         $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		// Get a reference of the page instance in joomla
 		$document = JFactory::getDocument();
 		$uri      = JFactory::getURI();
@@ -71,7 +74,7 @@ class sportsmanagementViewCurve extends JViewLegacy
 		$js = $this->baseurl . '/components/'.$option.'/assets/js/swfobject.js';
 		$document->addScript($js);
 
-		$division	= JRequest::getInt('division', 0);
+		$division	= $jinput->getInt('division', 0);
 
 		$model = $this->getModel();
 		$rankingconfig = sportsmanagementModelProject::getTemplateConfig( "ranking",$model::$cfg_which_database );
@@ -176,8 +179,11 @@ class sportsmanagementViewCurve extends JViewLegacy
 	 */
 	function _setChartdata($config)
 	{
-	   $option = JRequest::getCmd('option');
+	// Reference global application object
         $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+	   $option = $jinput->getCmd('option');
         
 		$model 			= $this->getModel();
 		$rounds			= sportsmanagementModelProject::getRounds('ASC',$model::$cfg_which_database);

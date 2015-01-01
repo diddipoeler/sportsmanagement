@@ -55,7 +55,11 @@ defined('_JEXEC') or die('Restricted access');
 	<tr>
 		<td align="center">
 <?PHP 
-$option = JRequest::getCmd('option');
+// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+$option = $jinput->getCmd('option');
 $backgroundimage = 'administrator/components/'.$option.'/assets/icons/logo_transparent.png';  
 
 //echo $backgroundimage.'<br>';

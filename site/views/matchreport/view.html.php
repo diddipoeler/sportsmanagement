@@ -67,9 +67,11 @@ class sportsmanagementViewMatchReport extends JViewLegacy
 	function display($tpl=null)
 	{
 		$app = JFactory::getApplication();
+		// JInput object
+        $jinput = $app->input;
         // Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
-        $option = JRequest::getCmd('option');
+        $option = $jinput->getCmd('option');
 //		$version = urlencode(sportsmanagementHelper::getVersion());
 //		$css='components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
 //		$document->addStyleSheet($css);
@@ -82,8 +84,8 @@ class sportsmanagementViewMatchReport extends JViewLegacy
         $document->addScript( JURI::base(true).'/components/com_sportsmanagement/assets/js/tooltipscript.js');
 
 		$model = $this->getModel();
-        $model->matchid = JRequest::getInt('mid',0);
-        $model::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+        $model->matchid = $jinput->getInt('mid',0);
+        $model::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
         
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);

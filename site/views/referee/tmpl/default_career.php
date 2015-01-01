@@ -46,8 +46,7 @@ if (count($this->history) > 0)
 
 <?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_PLAYING_CAREER');	?></h2>
 <!-- staff history START -->
-<table width="96%" align="center" border="0" cellpadding="0"
-	cellspacing="0">
+<table class="<?php echo $this->config['career_table_class']; ?>">
 	<tr>
 		<td><br />
 			<table class="gameshistory">

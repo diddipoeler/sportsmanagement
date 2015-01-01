@@ -75,10 +75,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
     public function getprojectsoptions()
     {
         $app = JFactory::getApplication();
-
-        $season = Jrequest::getInt('s');
-        $league = Jrequest::getInt('l');
-        $ordering = Jrequest::getInt('o');
+        // JInput object
+        $jinput = $app->input;
+        $season = $jinput->getInt('s');
+        $league = $jinput->getInt('l');
+        $ordering = $jinput->getInt('o');
 
         $model = $this->getModel('ajax');
 

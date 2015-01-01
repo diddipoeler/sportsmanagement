@@ -38,10 +38,13 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+
+//echo '<pre>',print_r($this->club,true),'</pre><br>';
+
 ?>
 <form name="adminForm" id="adminForm" method="post">
 	<?php $dateformat="%d-%m-%Y"; ?>
-	<table width="100%" border="0" cellpadding="0" cellspacing="0">
+	<table class="table" >
 		<tr>
         <td><?php
                 echo "".JHtml::_('select.genericlist', $this->lists['fromteamart'], 'teamartsel' , 'class="inputbox" size="1" onchange="hideclubplandate();" ', 'value', 'text', $this->teamartsel )."";
@@ -75,9 +78,25 @@ defined('_JEXEC') or die('Restricted access');
 				$picture = $this->club->logo_big;
 
 ?>                                    
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $this->club->name;?>" class="modal">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $this->club->name;?>" width="50" />
-</a>
+
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $this->club->name;?>" data-toggle="modal" data-target="#cl<?php echo $this->club->id;?>">
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->club->name, array('title' => $this->club->name,'class' => "img-rounded",'width' => 50 ));      
+?>
+</a>                        
+
+<div class="modal fade" id="cl<?php echo $this->club->id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+</div>
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->club->name, array('title' => $this->club->name,'class' => "img-rounded" ));
+?>
+</div>
+
+
+
+
 <?PHP            
             }
 			?></td>

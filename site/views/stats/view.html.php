@@ -60,23 +60,26 @@ class sportsmanagementViewStats extends JViewLegacy
 	 */
 	function display($tpl = null)
 	{
-		$option = JRequest::getCmd('option');
+		
 		$app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
 
 		$model = $this->getModel();
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),JRequest::getint( "cfg_which_database", 0 ));
+		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$jinput->getint( "cfg_which_database", 0 ));
 
-		$tableconfig = sportsmanagementModelProject::getTemplateConfig( "ranking",JRequest::getint( "cfg_which_database", 0 ) );
-		$eventsconfig = sportsmanagementModelProject::getTemplateConfig( "eventsranking",JRequest::getint( "cfg_which_database", 0 ) );
-		$flashconfig = sportsmanagementModelProject::getTemplateConfig( "flash",JRequest::getint( "cfg_which_database", 0 ) );
+		$tableconfig = sportsmanagementModelProject::getTemplateConfig( "ranking",$jinput->getint( "cfg_which_database", 0 ) );
+		$eventsconfig = sportsmanagementModelProject::getTemplateConfig( "eventsranking",$jinput->getint( "cfg_which_database", 0 ) );
+		$flashconfig = sportsmanagementModelProject::getTemplateConfig( "flash",$jinput->getint( "cfg_which_database", 0 ) );
 
-		$this->assign( 'project', sportsmanagementModelProject::getProject(JRequest::getint( "cfg_which_database", 0 )) );
+		$this->assign( 'project', sportsmanagementModelProject::getProject($jinput->getint( "cfg_which_database", 0 )) );
 		if ( isset( $this->project ) )
 		{
-			$this->assign( 'division', sportsmanagementModelProject::getDivision($model::$divisionid,JRequest::getint( "cfg_which_database", 0 )));
-			$this->assign( 'overallconfig', sportsmanagementModelProject::getOverallConfig(JRequest::getint( "cfg_which_database", 0 )) );
+			$this->assign( 'division', sportsmanagementModelProject::getDivision($model::$divisionid,$jinput->getint( "cfg_which_database", 0 )));
+			$this->assign( 'overallconfig', sportsmanagementModelProject::getOverallConfig($jinput->getint( "cfg_which_database", 0 )) );
 			if ( !isset( $this->overallconfig['seperator'] ) )
 			{
 				$this->overallconfig['seperator'] = ":";
@@ -86,7 +89,7 @@ class sportsmanagementViewStats extends JViewLegacy
 				
 			$this->assignRef( 'tableconfig', $tableconfig );
 			$this->assignRef( 'eventsconfig', $eventsconfig );
-			$this->assign( 'actualround', sportsmanagementModelProject::getCurrentRoundNumber(JRequest::getint( "cfg_which_database", 0 )) );
+			$this->assign( 'actualround', sportsmanagementModelProject::getCurrentRoundNumber($jinput->getint( "cfg_which_database", 0 )) );
 
 //			$this->assign( 'highest_home', 		$model->getHighestHome());
 //			$this->assign( 'highest_away', 		$model->getHighestAway());

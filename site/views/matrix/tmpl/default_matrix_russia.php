@@ -43,7 +43,8 @@ defined('_JEXEC') or die('Restricted access');
 
  <?php
 	$division_id = $this->divisionid;
-	$matrix = '<table class="matrix" border="2px">';
+	//$matrix = '<table class="matrix" border="2px">';
+    $matrix = '<table class="'.$this->config['table_class'].'" border="2px">';
 	$k = 1;
 	$crosstable_icons_horizontal = (isset ($this->config['crosstable_icons_horizontal'])) ? $this->config['crosstable_icons_horizontal'] : 0;
 	$crosstable_icons_vertical = (isset ($this->config['crosstable_icons_vertical'])) ? $this->config['crosstable_icons_vertical'] : 0;
@@ -92,7 +93,8 @@ defined('_JEXEC') or die('Restricted access');
 			$matrix .= '</tr>';
 		}
 
-		$class = ($k_r % 2 == 0) ? $this->config['style_class1'] : $this->config['style_class2'];
+		//$class = ($k_r % 2 == 0) ? $this->config['style_class1'] : $this->config['style_class2'];
+        $class = '';
         
         //echo 'class '.$class.'<br>';
         

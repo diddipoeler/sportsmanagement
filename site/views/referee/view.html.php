@@ -61,10 +61,14 @@ class sportsmanagementViewReferee extends JViewLegacy
 	 */
 	function display($tpl=null)
 	{
-		// Get a refrence of the page instance in joomla
-		$document = JFactory::getDocument();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
         $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        // Get a refrence of the page instance in joomla
+		$document = JFactory::getDocument();
+        $option = $jinput->getCmd('option');
+
 		$model = $this->getModel();
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 		$person = sportsmanagementModelPerson::getPerson(0,$model::$cfg_which_database);

@@ -61,7 +61,11 @@ class sportsmanagementViewReferees extends JViewLegacy
 	 */
 	function display( $tpl = null )
 	{
-		// Get a refrence of the page instance in joomla
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        // Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
 
 		$model	= $this->getModel();
@@ -72,11 +76,11 @@ class sportsmanagementViewReferees extends JViewLegacy
 			$config	= sportsmanagementModelProject::getTemplateConfig( 'players',$model::$cfg_which_database );
 		}
 
-		$this->assignRef( 'project', sportsmanagementModelProject::getProject($model::$cfg_which_database) );
-		$this->assignRef( 'overallconfig', sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database) );
+		$this->assign( 'project', sportsmanagementModelProject::getProject($model::$cfg_which_database) );
+		$this->assign( 'overallconfig', sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database) );
 		$this->assignRef( 'config', $config );
 
-		$this->assignRef( 'rows', $model->getReferees() );
+		$this->assign( 'rows', $model->getReferees() );
 //		$this->assignRef( 'positioneventtypes', $model->getPositionEventTypes( ) );
 
 		// Set page title

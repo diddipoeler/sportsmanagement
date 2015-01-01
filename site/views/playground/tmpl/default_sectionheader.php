@@ -37,9 +37,10 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+?>
 
-<table width="100%" class="contentpaneopen" border="0">
+<table class="table" >
     <tr>
         <td class="contentheading">
             <?php

@@ -37,7 +37,9 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+
+?>
 
 <?php
 
@@ -50,7 +52,7 @@ if ( $this->games )
 
 <h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NEXT_GAMES'); ?></h2>
 		<div class="venuecontent map">
-					<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
+					<table class="<?php echo $this->config['matches_table_class']; ?>" >
 						<?php
 						//sort games by dates
 						$gamesByDate = Array();

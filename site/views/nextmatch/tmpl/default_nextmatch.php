@@ -37,11 +37,14 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+
+//echo '<pre>',print_r($this->teams,true),'</pre><br>';
+
+?>
 
 <!-- Main START -->
-<table width="96%" align="center" border="0" cellpadding="0"
-	cellspacing="0">
+<table class="table">
 	<?php
 	if( $this->config['show_logo'] == 1 )
 	{
@@ -56,9 +59,24 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
         $picture = sportsmanagementHelper::getDefaultPlaceholder("team");
         }                        
 		?>
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $this->teams[0]->name;?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $this->teams[0]->name;?>" width="<?php echo $this->config['team_picture_width'];?>" />
-</a>
+
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $this->teams[0]->name;?>" data-toggle="modal" data-target="#t<?php echo $this->teams[0]->id;?>">
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->teams[0]->name, array('title' => $this->teams[0]->name,'class' => "img-rounded",'width' => $this->config['team_picture_width'] ));      
+?>
+</a>                        
+
+<div class="modal fade" id="t<?php echo $this->teams[0]->id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+</div>
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->teams[0]->name, array('title' => $this->teams[0]->name,'class' => "img-rounded" ));
+?>
+</div>
+
+
+
 
         </td>
 		<td class="vs">&nbsp;</td>
@@ -70,9 +88,20 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
         $picture = sportsmanagementHelper::getDefaultPlaceholder("team");
         }                         
 		?>
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $this->teams[1]->name;?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $this->teams[1]->name;?>" width="<?php echo $this->config['team_picture_width'];?>" />
-</a>        
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $this->teams[1]->name;?>" data-toggle="modal" data-target="#t<?php echo $this->teams[1]->id;?>">
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->teams[1]->name, array('title' => $this->teams[1]->name,'class' => "img-rounded",'width' => $this->config['team_picture_width'] ));      
+?>
+</a>                        
+
+<div class="modal fade" id="t<?php echo $this->teams[1]->id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+</div>
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->teams[1]->name, array('title' => $this->teams[1]->name,'class' => "img-rounded" ));
+?>
+</div>        
         
         </td>
 	</tr>

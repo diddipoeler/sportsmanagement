@@ -102,7 +102,10 @@ defined('_JEXEC') or die('Restricted access');
 	#$this->config['highlight_fav_team'] = 1;
 	#$this->project->fav_team_text_color = "#FFFFFF";
 	$division_id = $this->divisionid;
-	$matrix = '<table class="matrix">';
+	//$matrix = '<table class="matrix">';
+    
+    $matrix = '<div class="row">';
+    $matrix .= '<table class="'.$this->config['table_class'].'">';
 	$k = 1;
 	$crosstable_icons_horizontal = (isset ($this->config['crosstable_icons_horizontal'])) ? $this->config['crosstable_icons_horizontal'] : 0;
 	$crosstable_icons_vertical = (isset ($this->config['crosstable_icons_vertical'])) ? $this->config['crosstable_icons_vertical'] : 0;
@@ -153,8 +156,8 @@ defined('_JEXEC') or die('Restricted access');
 			$matrix .= '</tr>';
 		}
 
-		$class = ($k_r % 2 == 0) ? $this->config['style_class1'] : $this->config['style_class2'];
-        
+		//$class = ($k_r % 2 == 0) ? $this->config['style_class1'] : $this->config['style_class2'];
+        $class = '';
         //echo 'class '.$class.'<br>';
         
 		$trow = $team_row;
@@ -409,6 +412,8 @@ defined('_JEXEC') or die('Restricted access');
 		$matrix .= "</tr>";
 	}
 	$matrix .= '</table>';
+    
+    $matrix .= '</div>';
 	echo $matrix;
 ?>
 </div>

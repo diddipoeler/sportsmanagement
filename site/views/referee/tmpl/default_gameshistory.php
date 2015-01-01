@@ -45,10 +45,10 @@ defined('_JEXEC') or die('Restricted access'); ?>
 {
 	?>
 <h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_GAMES_HISTORY'); ?></h2>
-<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
+<table class="table">
 	<tr>
 		<td><br />
-			<table class="gameshistory">
+			<table class="<?php echo $this->config['history_table_class']; ?>">
 				<thead>
 					<tr class="sectiontableheader">
 						<th colspan="6"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_GAMES'); ?></th>

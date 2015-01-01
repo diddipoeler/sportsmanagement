@@ -49,7 +49,7 @@ if ( !isset( $this->config['show_referees'] ) )
 	$this->config['show_referees'] = 1;
 }
 ?>
-<div class="joomleague">
+<div class="container">
 	<?php
 	echo $this->loadTemplate( 'projectheading' );
 

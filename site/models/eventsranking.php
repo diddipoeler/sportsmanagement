@@ -1,5 +1,41 @@
 <?php
-
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
@@ -8,6 +44,15 @@ jimport('joomla.application.component.model');
 
 //require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
 
+/**
+ * sportsmanagementModelEventsRanking
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2014
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementModelEventsRanking extends JModelLegacy
 {
 	static $projectid = 0;
@@ -20,25 +65,40 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
     
     static $cfg_which_database = 0;
 
+	/**
+	 * sportsmanagementModelEventsRanking::__construct()
+	 * 
+	 * @return void
+	 */
 	function __construct()
 	{
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        
 		parent::__construct();
-		self::$projectid=JRequest::getInt('p',0);
-		self::$divisionid = JRequest::getInt( 'division', 0 );
-		self::$teamid = JRequest::getInt( 'tid', 0 );
-		self::setEventid(JRequest::getVar('evid', '0'));
-		self::$matchid = JRequest::getInt('mid',0);
+		self::$projectid = $jinput->getInt('p',0);
+		self::$divisionid = $jinput->getInt( 'division', 0 );
+		self::$teamid = $jinput->getInt( 'tid', 0 );
+		self::setEventid($jinput->getVar('evid', '0'));
+		self::$matchid = $jinput->getInt('mid',0);
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 		$defaultLimit = self::$eventid != 0 ? $config['max_events'] : $config['count_events'];
-		self::$limit=JRequest::getInt('limit',$defaultLimit);
-		self::$limitstart=JRequest::getInt('limitstart',0);
-		self::setOrder(JRequest::getVar('order','desc'));
+		self::$limit = $jinput->getInt('limit',$defaultLimit);
+		self::$limitstart = $jinput->getInt('limitstart',0);
+		self::setOrder($jinput->getVar('order','desc'));
         
-        self::$cfg_which_database = JRequest::getInt( 'cfg_which_database', 0 );
+        self::$cfg_which_database = $jinput->getInt( 'cfg_which_database', 0 );
         sportsmanagementModelProject::$projectid = self::$projectid;
          
 	}
 
+	/**
+	 * sportsmanagementModelEventsRanking::getDivision()
+	 * 
+	 * @return
+	 */
 	function getDivision()
 	{
 		$division = null;
@@ -49,16 +109,31 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 		return $division;
 	}
 
+	/**
+	 * sportsmanagementModelEventsRanking::getTeamId()
+	 * 
+	 * @return
+	 */
 	function getTeamId()
 	{
 		return self::$teamid;
 	}
 
+	/**
+	 * sportsmanagementModelEventsRanking::getLimit()
+	 * 
+	 * @return
+	 */
 	function getLimit()
 	{
 		return self::$limit;
 	}
 
+	/**
+	 * sportsmanagementModelEventsRanking::getLimitStart()
+	 * 
+	 * @return
+	 */
 	function getLimitStart()
 	{
 		return self::$limitstart;
@@ -81,6 +156,12 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 		return $this->_pagination;
 	}
 
+	/**
+	 * sportsmanagementModelEventsRanking::setEventid()
+	 * 
+	 * @param mixed $evid
+	 * @return void
+	 */
 	function setEventid($evid)
 	{
 		// Allow for multiple statistics IDs, arranged in a single parameters (sid) as string
@@ -112,6 +193,11 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 		return $this->order;
 	}
 
+	/**
+	 * sportsmanagementModelEventsRanking::getEventTypes()
+	 * 
+	 * @return
+	 */
 	function getEventTypes()
 	{
 	   $app = JFactory::getApplication();
@@ -155,12 +241,20 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
         
         $db->setQuery($query);
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+            {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        }
         
 		$result = $db->loadObjectList('etid');
 		return $result;
 	}
 
+	/**
+	 * sportsmanagementModelEventsRanking::getTotal()
+	 * 
+	 * @return
+	 */
 	function getTotal()
 	{
 	   $app = JFactory::getApplication();
@@ -219,13 +313,25 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 			
             $db->setQuery($query);
             
+            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+            {
             $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            }
             
 			$this->_total = $db->loadResult();
 		}
 		return $this->_total;
 	}
 
+	/**
+	 * sportsmanagementModelEventsRanking::_getEventsRanking()
+	 * 
+	 * @param mixed $eventtype_id
+	 * @param string $order
+	 * @param integer $limit
+	 * @param integer $limitstart
+	 * @return
+	 */
 	function _getEventsRanking($eventtype_id, $order='desc', $limit=10, $limitstart=0)
 	{
 	   $app = JFactory::getApplication();
@@ -292,7 +398,10 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
         
         $db->setQuery($query, self::getlimitStart(), self::getlimit());
 		
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+            {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        }
         
         $rows = $db->loadObjectList();
 
@@ -308,6 +417,14 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 		return $rows;
 	}
 
+	/**
+	 * sportsmanagementModelEventsRanking::getEventRankings()
+	 * 
+	 * @param mixed $limit
+	 * @param integer $limitstart
+	 * @param mixed $order
+	 * @return
+	 */
 	function getEventRankings($limit, $limitstart=0, $order=null)
 	{
 		$order = ($order ? $order : $this->order);

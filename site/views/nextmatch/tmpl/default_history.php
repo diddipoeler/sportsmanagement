@@ -46,7 +46,7 @@ if ( $this->games )
 	?>
 
 <h2><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY'); ?></h2>
-<table width="100%">
+<table class="<?php echo $this->config['hystory_table_class']; ?>">
 	<tr>
 		<td>
 		<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">

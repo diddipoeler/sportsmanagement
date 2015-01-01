@@ -65,12 +65,15 @@ class sportsmanagementModelPlayground extends JModelLegacy
      */
     function __construct( )
     {
-        
+        // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
 
-        self::$projectid = JRequest::getInt( "p", 0 );
-        self::$playgroundid = JRequest::getInt( "pgid", 0 );
+        self::$projectid = $jinput->getInt( "p", 0 );
+        self::$playgroundid = $jinput->getInt( "pgid", 0 );
         sportsmanagementModelProject::$projectid = self::$projectid;
-        self::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+        self::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
         
         parent::__construct( ); 
     }

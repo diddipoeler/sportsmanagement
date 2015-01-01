@@ -158,6 +158,14 @@
 				description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_NAMES">
 		</field>
 
+    <field 	name="team_picture" type="list" default="logo_small"
+               label="COM_SPORTSMANAGEMENT_FES_TEAMS_PARAM_LABEL_SHOW_TEAM_PICTURE"
+               description="COM_SPORTSMANAGEMENT_FES_TEAMS_PARAM_DESCR_SHOW_TEAM_PICTURE">
+            <option value="logo_small">COM_SPORTSMANAGEMENT_FES_TEAMS_OPTION_CLUB_LOGO_SMALL</option>
+            <option value="logo_middle">COM_SPORTSMANAGEMENT_FES_TEAMS_OPTION_CLUB_LOGO_MIDDLE</option>
+            <option value="logo_big">COM_SPORTSMANAGEMENT_FES_TEAMS_OPTION_CLUB_LOGO_BIG</option>
+        </field>
+        
 		<field name="highlight_fav" type="radio" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_HIGHLIGHT_FAV" description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_HIGHLIGHT_FAV">
@@ -238,6 +246,18 @@
 		group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS"
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_ADVANCED_OPTIONS">
 
+  <field 	name="table_class" type="list" default="table" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+			
+		</field>	
+<!--
 		<field name="style_class1" type="text" default="sectiontableentry1"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_ODD" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STYLE_ODD">
 		</field>
@@ -245,6 +265,6 @@
 		<field name="style_class2" type="text" default="sectiontableentry2"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_EVEN" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STYLE_EVEN">
 		</field>
-
+-->
 	</fieldset>
 </form>

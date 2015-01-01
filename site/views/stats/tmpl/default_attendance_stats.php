@@ -42,7 +42,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 <div id="jl_stats">
 
 <div class="jl_substats">
-<table cellspacing="0" border="0" width="100%">
+<table class="<?php echo $this->config['attendance_table_class'];?>">
 	<tr class="sectiontableheader">
 		<th colspan="2"><?php	echo JText::_('COM_SPORTSMANAGEMENT_STATS_ATTENDANCE'); ?></th>
 	</tr>

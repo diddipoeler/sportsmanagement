@@ -37,8 +37,10 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
-<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0" class="venueinfo">
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+?>
+<!-- <table width="96%" align="center" border="0" cellpadding="0" cellspacing="0" class="venueinfo"> -->
+<table class="table">
 	<tr class="sectiontableheader">
 		<th colspan="2">
 			<?php

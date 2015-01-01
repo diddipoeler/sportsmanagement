@@ -37,11 +37,17 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+
+//echo 'referee <pre>',print_r($this->referee,true),'</pre>';
+//echo 'person <pre>',print_r($this->person,true),'</pre>';
+
+?>
 <!-- person data START -->
 <?php if ($this->referee) { ?>
 <h2><?php	echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PERSONAL_DATA' );	?></h2>
-<table class="plgeneralinfo">
+<!-- <table class="plgeneralinfo"> -->
+<table class="table">
 	<tr>
 		<?php
 		if ( $this->config['show_photo'] == 1 )
@@ -69,9 +75,19 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
  */
                                                         
 				?>
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $imgTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['picture_width'];?>" />
-</a>			
+
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>"  title="<?php echo $imgTitle;?>" data-toggle="modal" data-target="#r<?php echo $this->referee->id;?>">
+<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['picture_width'];?>" />
+</a>
+<div class="modal fade" id="r<?php echo $this->referee->id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+</div>
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $imgTitle, array('title' => $imgTitle,'class' => "img-rounded" ));      
+?>
+</div>
+			
             </td>
 			<?php
 		}

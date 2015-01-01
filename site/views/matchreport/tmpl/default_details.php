@@ -41,7 +41,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
 <!-- Details-->
 <h2><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS'); ?></h2>
-<table width="98%" align="center" border="0" cellpadding="0" cellspacing="0">
+<table class="table">
 	<!-- Prev Match-->
 	<?php
 	if ($this->match->old_match_id > 0)

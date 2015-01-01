@@ -90,7 +90,10 @@ if (!empty($this->matchplayerpositions ))
 
 
 ?>
-<div class="joomleague"><?php
+<!-- <div class="joomleague"> -->
+<div class="container">
+
+<?php
 	echo $this->loadTemplate('projectheading');
 
 	if (($this->config['show_sectionheader'])==1)

@@ -74,12 +74,16 @@ class sportsmanagementModelClubPlan extends JModelLegacy
 	 */
 	function __construct()
 	{
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
 		parent::__construct();
-		$this->clubid = JRequest::getInt("cid",0);
+		$this->clubid = $jinput->getInt("cid",0);
 //		$this->project_id = JRequest::getInt("p",0);
-		$this->setStartDate(JRequest::getVar("startdate", $this->startdate,'request','string'));
-		$this->setEndDate(JRequest::getVar("enddate",$this->enddate,'request','string'));
-        self::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+		$this->setStartDate($jinput->getVar("startdate", $this->startdate,'request','string'));
+		$this->setEndDate($jinput->getVar("enddate",$this->enddate,'request','string'));
+        self::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
 	}
     
     
@@ -90,8 +94,12 @@ class sportsmanagementModelClubPlan extends JModelLegacy
      */
     function getTeamsArt()
     {
-        $option = JRequest::getCmd('option');
-	   $app = JFactory::getApplication();
+        // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -412,8 +420,12 @@ class sportsmanagementModelClubPlan extends JModelLegacy
         $query->select('playground.name AS pl_name');
         $query->select('t1.club_id as t1club_id,t1.id AS team1_id,t1.name AS tname1,t1.short_name AS tname1_short,t1.middle_name AS tname1_middle,t1.club_id AS club1_id,CONCAT_WS(\':\',t1.id,t1.alias) AS team1_slug');
         $query->select('t2.club_id as t2club_id,t2.id AS team2_id,t2.name AS tname2,t2.short_name AS tname2_short,t2.middle_name AS tname2_middle,t2.club_id AS club2_id,CONCAT_WS(\':\',t2.id,t2.alias) AS team2_slug');
-        $query->select('c1.logo_small AS home_logo_small,CONCAT_WS(\':\',c1.id,c1.alias) AS club1_slug');
-        $query->select('c2.logo_small AS away_logo_small,CONCAT_WS(\':\',c2.id,c2.alias) AS club2_slug');
+        $query->select('c1.logo_small AS home_logo_small,CONCAT_WS(\':\',c1.id,c1.alias) AS club1_slug,c1.country AS club1_country');
+        $query->select('c2.logo_small AS away_logo_small,CONCAT_WS(\':\',c2.id,c2.alias) AS club2_slug,c2.country AS club2_country');
+        $query->select('c1.logo_big AS home_logo_big');
+        $query->select('c2.logo_big AS away_logo_big');
+        $query->select('c1.logo_middle AS home_logo_middle');
+        $query->select('c2.logo_middle AS away_logo_middle');
         $query->select('tj1.division_id');
         $query->select('d.name AS division_name, d.shortname AS division_shortname, d.parent_id AS parent_division_id,CONCAT_WS(\':\',d.id,d.alias) AS division_slug');
         // From 

@@ -52,7 +52,8 @@ $this->kmlpath = JURI::root().'tmp'.DS.$this->playground->id.'-playground.kml';
 $this->kmlfile = $this->playground->id.'-playground.kml';
 
 ?>
-<div class="joomleague">
+<!-- <div class="joomleague"> -->
+<div class="container">
 	<?php 
 	echo $this->loadTemplate('projectheading');
 

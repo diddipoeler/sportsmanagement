@@ -37,7 +37,11 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+
+//echo '<pre>',print_r($this->playground,true),'</pre><br>';
+
+?>
 
 <?php
 if ( ( $this->playground->picture ) )
@@ -61,10 +65,25 @@ $picture = JURI::root() . sportsmanagementHelper::getDefaultPlaceholder("team");
                 }
                 
 ?>
-        
-<a href="<?php echo $picture;?>" title="<?php echo $this->playground->name;?>" class="modal">
-<img src="<?php echo $picture;?>" alt="<?php echo $this->playground->name;?>" width="<?php echo $this->config['playground_picture_width'];?>" />
-</a>        
+       
+
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $this->playground->name;?>" data-toggle="modal" data-target="#pl<?php echo $this->playground->id;?>">
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->playground->name, array('title' => $this->playground->name,'class' => "img-rounded",'width' => $this->config['playground_picture_width'] ));      
+?>
+</a>                        
+
+<div class="modal fade" id="pl<?php echo $this->playground->id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+</div>
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->playground->name, array('title' => $this->playground->name,'class' => "img-rounded" ));
+?>
+</div>
+
+
+
 
 		<?php                
                 ?>

@@ -38,7 +38,7 @@
 */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
-<table width="100%" class="contentpaneopen">
+<table class="table">
 	<tr>
 		<td class="contentheading">
 			<?php

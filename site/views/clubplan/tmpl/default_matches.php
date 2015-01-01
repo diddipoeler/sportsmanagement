@@ -37,9 +37,13 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined('_JEXEC') or die('Restricted access'); ?>
+defined('_JEXEC') or die('Restricted access'); 
+
+//echo '<pre>',print_r($this->matches,true),'</pre><br>';
+
+?>
 <!-- START: matches -->
-<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
+<table class="<?php echo $this->config['table_class']; ?>">
 <?php
 if ($this->config['type_matches'] != 0) {
 ?>
@@ -105,7 +109,7 @@ if ($this->config['type_matches'] != 0) {
 			}
 
 
-			$class = ($k==0)? $this->config['style_class1'] : $this->config['style_class2'];
+			//$class = ($k==0)? $this->config['style_class1'] : $this->config['style_class2'];
 			$result_link = sportsmanagementHelperRoute::getResultsRoute($game->project_id,$game->roundid);
 			$nextmatch_link = sportsmanagementHelperRoute::getNextmatchRoute($game->project_id,$game->match_id);
 			$teaminfo1_link = sportsmanagementHelperRoute::getTeamInfoRoute($game->project_id,$game->team1_id);
@@ -182,7 +186,7 @@ if ($this->config['type_matches'] != 0) {
 			}
 
 			?>
-			<tr class="<?php echo $class; ?>"<?php echo $favStyle; ?>>
+			<tr class=""<?php echo $favStyle; ?>>
 					<?php if ($this->config['show_matchday']==1) { ?>
 				<td>
 					<?php if ($this->config['which_link']==0) { ?>
@@ -243,18 +247,46 @@ if ($this->config['type_matches'] != 0) {
 						echo $tname1;
 					?>
 				</td>
-					<?php if ($this->config['show_club_logo']==1) { ?>
+					<?php if ($this->config['show_club_logo']==1) { 
+					   $picture = 'home_'.$this->config['team_picture'];
+                       ?>
 				<td>
-					<?php echo sportsmanagementModelClubPlan::getClubIconHtmlSimple($game->home_logo_small,1); ?>
-				</td>
+                <a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$game->$picture;?>" title="<?php echo $game->tname1;?>" data-toggle="modal" data-target="#t<?php echo $game->team1_id;?>">
+					<?php echo sportsmanagementModelClubPlan::getClubIconHtmlSimple($game->$picture,$game->club1_country,1); ?>
+				</a>
+
+<div class="modal fade" id="t<?php echo $game->team1_id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+</div>
+<?PHP
+echo sportsmanagementModelClubPlan::getClubIconHtmlSimple($game->$picture,$game->club1_country,1);
+?>
+</div>
+                  
+                </td>
 					<?php } ?>				
 				<td>
 					-
 				</td>
-					<?php if ($this->config['show_club_logo']==1) { ?>
+					<?php if ($this->config['show_club_logo']==1) { 
+					   $picture = 'away_'.$this->config['team_picture'];
+                       ?>
 				<td>
-					<?php echo sportsmanagementModelClubPlan::getClubIconHtmlSimple($game->away_logo_small,1); ?>
-				</td>
+                <a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$game->$picture;?>" title="<?php echo $game->tname2;?>" data-toggle="modal" data-target="#t<?php echo $game->team2_id;?>">
+					<?php echo sportsmanagementModelClubPlan::getClubIconHtmlSimple($game->$picture,$game->club2_country,1); ?>
+				</a>
+
+<div class="modal fade" id="t<?php echo $game->team2_id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+</div>
+<?PHP
+echo sportsmanagementModelClubPlan::getClubIconHtmlSimple($game->$picture,$game->club2_country,1);
+?>
+</div>
+                
+                </td>
 					<?php } ?>
 				<td>
 					<?php

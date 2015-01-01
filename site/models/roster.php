@@ -82,13 +82,18 @@ class sportsmanagementModelRoster extends JModelLegacy
 	 */
 	function __construct()
 	{
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        
 		parent::__construct();
 
-		$this->projectid = JRequest::getInt('p',0);
-		$this->teamid = JRequest::getInt('tid',0);
-		$this->projectteamid = JRequest::getInt('ttid',0);
+		$this->projectid = $jinput->getInt('p',0);
+		$this->teamid = $jinput->getInt('tid',0);
+		$this->projectteamid = $jinput->getInt('ttid',0);
 		sportsmanagementModelProject::$projectid = $this->projectid;
-        self::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+        self::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
 		self::getProjectTeam();
 	}
 
@@ -101,7 +106,9 @@ class sportsmanagementModelRoster extends JModelLegacy
 	function getProjectTeam()
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+       // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
        // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 		$query = $db->getQuery(true);

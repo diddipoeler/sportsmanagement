@@ -38,11 +38,14 @@
 */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+//echo 'rows <pre>',print_r($this->rows,true),'</pre>';
+
 // Show referees as defined
 if ( !empty( $this->rows  ) )
 {
 	?>
-	<table width="96%" border="0" cellpadding="0" cellspacing="0" style="text-align:center; ">
+	<table class="<?php echo $this->config['table_class'];?>">
 		<?php
 		$k				= 0;
 		$position		= '';
@@ -90,9 +93,20 @@ if ( !empty( $this->rows  ) )
 //																$this->config['referee_picture_width'],
 //																'auto');
 ?>
-<a href="<?php echo $row->picture;?>" title="<?php echo $refereeName;?>" class="modal">
-<img src="<?php echo $row->picture;?>" alt="<?php echo $refereeName;?>" width="<?php echo $this->config['referee_picture_width'];?>" />
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$row->picture;?>"  title="<?php echo $refereeName;?>" data-toggle="modal" data-target="#r<?php echo $row->id;?>">
+<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$row->picture;?>" alt="<?php echo $refereeName;?>" width="<?php echo $this->config['referee_picture_width'];?>" />
 </a>
+<div class="modal fade" id="r<?php echo $row->id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+</div>
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$row->picture, $refereeName, array('title' => $refereeName,'class' => "img-rounded" ));      
+?>
+</div>
+
+
+
 <?PHP 
 					}
 					?>

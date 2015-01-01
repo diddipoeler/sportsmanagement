@@ -62,7 +62,7 @@ $teamid = JRequest::getInt('tid');
 $nbcols = 0;
 ?>
 
-<table class='fixtures'>
+<table class="<?php echo $this->config['table_class']; ?>">
 	<thead>
 	<tr class="sectiontableheader">
 		<?php
@@ -309,7 +309,8 @@ $nbcols = 0;
 		$guestteam=$this->teams[$match->projectteam2_id];
 		$guest_projectteam_id=$guestteam->projectteamid;
 
-		$class=($k==0)? $this->config['style_class1'] : $this->config['style_class2'];
+		//$class = ($k==0)? $this->config['style_class1'] : $this->config['style_class2'];
+        $class = '';
 
 		if ($match->team1==$this->favteams)
 		{

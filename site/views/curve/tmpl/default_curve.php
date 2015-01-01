@@ -55,7 +55,7 @@ foreach ($this->divisions as $division)
 	if(empty($this->$chart)) continue;
 	if(empty($this->allteams) || count($this->allteams)==0) continue;
 		?>
-	<table width="100%" class="contentpaneopen">
+	<table class="table">
 	<tr>
 		<td class="contentheading"><?php echo $division->name; ?></td>
 	</tr>
