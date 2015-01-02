@@ -172,19 +172,16 @@ if (count($this->stafflist) > 0)
       ?>
 
                                     
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $playerName;?>" data-toggle="modal" data-target="#<?php echo $row->playerid;?>">
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $playerName;?>" data-toggle="modal" data-target="#st<?php echo $row->playerid;?>">
 <img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $playerName;?>" width="<?php echo $this->config['staff_picture_width'];?>" />
 </a>
-
-<div class="modal fade" id="<?php echo $row->playerid;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div class="modal fade" id="st<?php echo $row->playerid;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
 <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-
-      </div>
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+</div>
 <?PHP
 echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $playerName, array('title' => $playerName,'class' => "img-rounded" ));      
 ?>
-
 </div>      
         
 <?PHP
