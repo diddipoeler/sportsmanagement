@@ -200,7 +200,7 @@ class sportsmanagementModelLeagues extends JModelList
      * @return	array seasons
      * @since	1.5.0a
      */
-    public static function getLeagues()
+    public function getLeagues()
     {
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
@@ -211,6 +211,7 @@ class sportsmanagementModelLeagues extends JModelList
         if ( $app->isAdmin() )
         {
         $search_nation	= $this->getState('filter.search_nation');
+        //$search_nation	= self::getState('filter.search_nation');
         }
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection();

@@ -267,7 +267,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
      * @return	array seasons
      * @since	1.5.0a
      */
-    public static function getSeasons()
+    public function getSeasons()
     {
         // Get a db connection.
         $db = JFactory::getDBO();
