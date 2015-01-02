@@ -60,6 +60,73 @@ $modalwidth = JComponentHelper::getParams($jinput->getCmd('option'))->get('modal
 
 switch ( $view )
 {
+    case 'player':
+    ?>
+    <table class="table">
+	<tr>
+		<td class="contentheading">
+			<?php
+	echo JText::sprintf('COM_SPORTSMANAGEMENT_PLAYER_INFORMATION', sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]));
+	
+	if ( $this->showediticon )
+	{
+		
+    $link = sportsmanagementHelperRoute::getPlayerRoute( $this->project->id, $this->teamPlayer->team_id, $this->person->id, 'person.edit' );
+    /*
+		$desc = JHtml::image(
+			"media/com_sportsmanagement/jl_images/edit.png",
+			JText::_( 'COM_SPORTSMANAGEMENT_PERSON_EDIT' ),
+			array( "title" => JText::_( "COM_SPORTSMANAGEMENT_PERSON_EDIT" ) )
+		);
+	    echo " ";
+	    echo JHtml::_('link', $link, $desc );
+	    */
+	
+	?>   
+	             <a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
+									href="<?php echo $link; ?>"
+									 class="modal">
+									<?php
+									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
+													JText::_('COM_SPORTSMANAGEMENT_PERSON_EDIT'),'title= "' .
+													JText::_('COM_SPORTSMANAGEMENT_PERSON_EDIT').'"');
+									?>
+								</a>
+                <?PHP
+                
+  }
+
+	if ( isset($this->teamPlayer->injury) && $this->teamPlayer->injury )
+	{
+		$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_PERSON_INJURED' );
+		echo "&nbsp;&nbsp;" . JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/injured.gif',
+							$imageTitle,
+							array( 'title' => $imageTitle ) );
+	}
+
+	if ( isset($this->teamPlayer->suspension) && $this->teamPlayer->suspension )
+	{
+		$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_PERSON_SUSPENDED' );
+		echo "&nbsp;&nbsp;" . JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/suspension.gif',
+							$imageTitle,
+							array( 'title' => $imageTitle ) );
+	}
+
+
+	if ( isset($this->teamPlayer->away) && $this->teamPlayer->away )
+	{
+		$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_PERSON_AWAY' );
+		echo "&nbsp;&nbsp;" . JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/away.gif',
+							$imageTitle,
+							array( 'title' => $imageTitle ) );
+	}
+			?>
+		</td>
+	</tr>
+</table>
+    
+    <?PHP
+    break;
     case 'staff':
     ?>
     <table class="table">
