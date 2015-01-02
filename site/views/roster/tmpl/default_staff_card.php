@@ -39,9 +39,11 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+//echo 'getTeamPlayers stafflist<br><pre>'.print_r($this->stafflist,true).'</pre><br>';
+
 ?>
 <div class="mini-team clear">
-	<table width="100%" class="contentpaneopen">
+	<table class="table">
 		<tr>
 			<td class="contentheading">
 				<?php
@@ -66,7 +68,7 @@ defined('_JEXEC') or die('Restricted access');
 				?>
 				<tr class="<?php echo ($k == 0)? '' : 'sectiontableentry2'; ?>"></td><div class="mini-team-toggler">
 			<div class="short-team clear">
-				<table width="100%" cellspacing="0" cellpadding="0" border="0">
+				<table class="table">
 				  <tbody><tr>
 				    <td style="padding: 5px 10px; color: rgb(173, 173, 173); font-weight: bold; width: 200px; text-transform: uppercase;">
 				      <?php
@@ -76,10 +78,10 @@ defined('_JEXEC') or die('Restricted access');
 				    <td>
 					  <div class="player-name">
 					  <?php 
-					  	$playerName = JoomleagueHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, $this->config["name_format"]);
+					  	$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, $this->config["name_format"]);
 						if ($this->config['link_player']==1)
 						{
-							$link=JoomleagueHelperRoute::getPlayerRoute($this->project->slug,$this->team->slug,$row->slug);
+							$link=sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$this->team->slug,$row->slug);
 							echo JHtml::link($link,'<i>'.$playerName.'</i>');
 						}
 						else
@@ -92,7 +94,7 @@ defined('_JEXEC') or die('Restricted access');
 				</tbody></table>
 			</div>
 			<div onclick="window.location.href=''" style="cursor: pointer;" class="quick-team clear">
-				<table width="100%" cellspacing="0" cellpadding="0" border="0">
+				<table class="table" >
 				  <tbody><tr>
 				    <td style="padding: 5px 10px; color: rgb(173, 173, 173); font-weight: bold; width: 200px; text-transform: uppercase;">
 				      <?php
@@ -105,20 +107,20 @@ defined('_JEXEC') or die('Restricted access');
 		
 		$imgTitle = JText::sprintf( $playerName );
 		$picture = $row->picture;
-		if ((empty($picture)) || ($picture == JoomleagueHelper::getDefaultPlaceholder("player") ))
+		if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player") ))
 		{
 		$picture = $row->ppic;
 		}
 		if ( !file_exists( $picture ) )
 		{
-			$picture = JoomleagueHelper::getDefaultPlaceholder("player");
+			$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 		}
 		//echo JHtml::image( $picture, $imgTitle, array( ' title' => $imgTitle ) );
 ?>                                    
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $playerName;?>" data-toggle="modal" data-target="#st<?php echo $row->playerid;?>">
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $playerName;?>" data-toggle="modal" data-target="#st<?php echo $row->person_id;?>">
 <img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $playerName;?>" width="<?php echo $this->config['staff_picture_width'];?>" />
 </a>
-<div class="modal fade" id="st<?php echo $row->playerid;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div class="modal fade" id="st<?php echo $row->person_id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
 <div class="modal-header">
 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
 </div>
@@ -139,7 +141,7 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $playerName, arr
 				echo  $row->position;
 				?></div>
 					  <div class="player-name"><?php $projectid = $this->project->id;
-							$link = JoomleagueHelperRoute::getStaffRoute( $this->project->slug, $this->team->slug, $row->slug );
+							$link = sportsmanagementHelperRoute::getStaffRoute( $this->project->slug, $this->team->slug, $row->slug );
 							echo JHtml::link($link,'<i>'.$playerName.'</i>'); ?></div>	  	  
 					</td>
 				  </tr>

@@ -48,10 +48,14 @@ foreach ( $this->rows as $position_id => $players ): ?>
 		$k			= 0;
 		$colspan	= ( ( $this->config['show_birthday'] > 0 ) ? '6' : '5' );	?>
 <h2><?php	echo '&nbsp;' . JText::_( $row->position );	?></h2>
-<?php foreach ($players as $row): ?>
+<?php 
+
+//echo 'getTeamPlayers players<br><pre>'.print_r($players,true).'</pre><br>';
+
+foreach ($players as $row): ?>
 <tr	class="<?php echo ($k == 0)?'sectiontableentry1' : 'sectiontableentry2'; ?>">
 <div class="mini-player_links">
-			<table>
+			<table class="table">
 			  <tbody><tr>
 			    <td>	       
 			         <div class="player-trikot">		
@@ -79,10 +83,10 @@ foreach ( $this->rows as $position_id => $players ): ?>
 				//echo JHtml::image( $picture, $imgTitle, array( ' title' => $imgTitle ) );
 				
 ?>                                    
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>"  title="<?php echo $playerName;?>" data-toggle="modal" data-target="#pl<?php echo $row->playerid;?>">
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>"  title="<?php echo $playerName;?>" data-toggle="modal" data-target="#pl<?php echo $row->person_id;?>">
 <img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $playerName;?>" width="<?php echo $this->config['player_picture_width'];?>" />
 </a>
-<div class="modal fade" id="pl<?php echo $row->playerid;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div class="modal fade" id="pl<?php echo $row->person_id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
 <div class="modal-header">
 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
 </div>

@@ -37,7 +37,11 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined('_JEXEC') or die('Restricted access');?>
+defined('_JEXEC') or die('Restricted access');
+
+//echo 'getTeamPlayers staff<br><pre>'.print_r($this->row,true).'</pre><br>';
+
+?>
 		<div class="jl_rosterperson jl_rp<?php echo $this->k;?>">
 <?php 
 $personName = sportsmanagementHelper::formatName(null ,$this->row->firstname, $this->row->nickname, $this->row->lastname, $this->config["name_format_staff"]);
@@ -65,9 +69,20 @@ if ($this->config['show_staff_icon']==1)
 <?php
 
       ?>
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $personName;?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $personName;?>" width="<?php echo $this->config['staff_picture_width'];?>" />
+
+
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $personName;?>" data-toggle="modal" data-target="#st<?php echo $this->row->person_id;?>">
+<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $personName;?>" width="<?php echo $this->config['staff_picture_width'];?>" />
 </a>
+<div class="modal fade" id="st<?php echo $this->row->person_id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+</div>
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $personName, array('title' => $personName,'class' => "img-rounded" ));      
+?>
+</div>  
+
     <?php
       	
     

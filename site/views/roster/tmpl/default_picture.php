@@ -44,7 +44,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 	if ( ( $this->config['show_team_logo'] == 1 ) )
 	{
 		?>
-		<table align="center" border="0" cellpadding="0" cellspacing="0">
+		<table class="table">
 			<tr>
 				<td align="center">
 					<?php
