@@ -200,7 +200,7 @@ class sportsmanagementModelLeagues extends JModelList
      * @return	array seasons
      * @since	1.5.0a
      */
-    function getLeagues()
+    public static function getLeagues()
     {
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
