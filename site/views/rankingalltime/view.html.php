@@ -65,13 +65,18 @@ class sportsmanagementViewRankingAllTime extends JViewLegacy
      */
     function display($tpl = null)
     {
+        // Get a refrence of the page instance in joomla
+		$document	= JFactory::getDocument();
+        
+        // Reference global application object
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();
         $uri = JFactory::getURI();
-        //$this->project->id = JRequest::getInt('p', 0);
-        
+                
         $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
 
          $model = $this->getModel();

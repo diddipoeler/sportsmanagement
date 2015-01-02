@@ -72,16 +72,21 @@ class sportsmanagementViewTeamPlan extends JViewLegacy
 	function display($tpl=null)
 	{
 		// Get a refrence of the page instance in joomla
-		$document = JFactory::getDocument();
-        $option = JRequest::getCmd('option');
+		$document	= JFactory::getDocument();
+        
+        // Reference global application object
         $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        
 		$model = $this->getModel();
-        $model::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+        $model::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
         
         $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
         
         //$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
-        sportsmanagementModelProject::setProjectID(JRequest::getInt('p',0),$model::$cfg_which_database);
+        sportsmanagementModelProject::setProjectID($jinput->getInt('p',0),$model::$cfg_which_database);
 		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 		
@@ -121,7 +126,7 @@ class sportsmanagementViewTeamPlan extends JViewLegacy
 		}
 		$document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_TEAMPLAN_PAGE_TITLE',$pageTitle));
         
-        $view = JRequest::getVar( "view") ;
+        $view = $jinput->getVar( "view") ;
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 

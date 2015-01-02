@@ -64,12 +64,16 @@ class sportsmanagementViewRoster extends JViewLegacy
 	function display($tpl=null)
 	{
 		// Get a refrence of the page instance in joomla
-		$document = JFactory::getDocument();
+		$document	= JFactory::getDocument();
+        
+        // Reference global application object
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
 		$model = $this->getModel();
         
-        sportsmanagementModelProject::setProjectID(JRequest::getInt('p',0),$model::$cfg_which_database);
+        sportsmanagementModelProject::setProjectID($jinput->getInt('p',0),$model::$cfg_which_database);
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 
 		$this->assign('project',sportsmanagementModelProject::getProject($model::$cfg_which_database));
@@ -81,8 +85,8 @@ class sportsmanagementViewRoster extends JViewLegacy
         
         $this->assign('lastseasondate',$model->getLastSeasonDate());
         
-        $type = JRequest::getVar("type", 0);
-        $typestaff = JRequest::getVar("typestaff", 0);
+        $type = $jinput->getVar("type", 0);
+        $typestaff = $jinput->getVar("typestaff", 0);
         if ( !$type )
         {
             $type = $this->config['show_players_layout'];
@@ -128,7 +132,7 @@ class sportsmanagementViewRoster extends JViewLegacy
 			$document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE', "Project team does not exist"));
 		}
         
-        $view = JRequest::getVar( "view") ;
+        $view = $jinput->getVar( "view") ;
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         

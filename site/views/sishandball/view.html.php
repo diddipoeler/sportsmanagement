@@ -40,14 +40,34 @@
 
 jimport( 'joomla.application.component.view');
 
+/**
+ * sportsmanagementViewsishandball
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2015
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementViewsishandball extends JViewLegacy 
 { 
 
+	/**
+	 * sportsmanagementViewsishandball::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function display($tpl = null) 
     {
-		$option = JRequest::getCmd('option');
-		//global $app;
-		$app = JFactory::getApplication();
+		// Get a refrence of the page instance in joomla
+		$document	= JFactory::getDocument();
+        
+        // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
 		$params = $app->getParams();
         $paramscomponent = JComponentHelper::getParams( $option );
 		$model = $this->getModel();
