@@ -88,10 +88,16 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	 */
 	function __construct()
 	{
-		$this->matchid = JRequest::getInt('mid',0);
-        $this->projectid = JRequest::getInt( 'p', 0 );
-        self::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+	    // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        
+		$this->matchid = $jinput->getInt('mid',0);
+        $this->projectid = $jinput->getInt( 'p', 0 );
+        self::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
 		sportsmanagementModelProject::$projectid = $this->projectid;
+        sportsmanagementModelProject::$matchid = $this->matchid;
 		parent::__construct();
 	}
 
@@ -492,11 +498,11 @@ class sportsmanagementModelMatchReport extends JModelLegacy
         
 		if (!($this->_playersbasicstats))
 		{
-			$match=&$this->getMatch();
+			$match = sportsmanagementModelProject::getMatch();
             
             $query->select('*');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic');
-        $query->where('match_id = '.$db->Quote($match->id));
+        $query->where('match_id = '.$match->id );
 
 //			$query=' SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic '
 //			      .' WHERE match_id='. $this->_db->Quote($match->id);

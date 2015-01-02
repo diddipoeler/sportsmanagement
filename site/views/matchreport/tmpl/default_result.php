@@ -79,7 +79,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->team1->name, array('title' => $this->team1->name,'class' => "img-rounded",'width' => $this->config['team_picture_width'] ));      
 ?>
 </a>                        
-
 <div class="modal fade" id="t<?php echo $this->team1->id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
 <div class="modal-header">
 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
@@ -115,12 +114,12 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->team1->na
 			*/
     //  echo JHtml::image($this->team2->$pic, $this->team2->name, array('title' => $this->team2->name,'width' => $this->config['team_picture_width'] ))							
 		?>
+        
 <a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $this->team2->name;?>" data-toggle="modal" data-target="#t<?php echo $this->team2->id;?>">
 <?PHP
 echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->team2->name, array('title' => $this->team2->name,'class' => "img-rounded",'width' => $this->config['team_picture_width'] ));      
 ?>
 </a>                        
-
 <div class="modal fade" id="t<?php echo $this->team2->id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
 <div class="modal-header">
 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>

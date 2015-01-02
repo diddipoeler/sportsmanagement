@@ -142,6 +142,9 @@ class sportsmanagementViewMatchReport extends JViewLegacy
 		$this->assign('staffstats',$model->getMatchStaffStats());
 		$this->assignRef('model',$model);
         
+        
+        
+        
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchplayerpositions<br><pre>'.print_r($this->matchplayerpositions,true).'</pre>'),'Notice');
@@ -200,6 +203,11 @@ if ( $this->config['show_pictures'] == 1 )
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 
+//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'Notice');
+//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchplayerpositions<br><pre>'.print_r($this->matchplayerpositions,true).'</pre>'),'Notice');
+//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchplayers<br><pre>'.print_r($this->matchplayers,true).'</pre>'),'Notice');
+//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchstaffpositions<br><pre>'.print_r($this->matchstaffpositions,true).'</pre>'),'Notice');
+//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchstaffs<br><pre>'.print_r($this->matchstaffs,true).'</pre>'),'Notice');
 
     
 /*    

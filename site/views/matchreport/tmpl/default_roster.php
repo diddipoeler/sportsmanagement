@@ -39,6 +39,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.modal');
+
+//echo 'matchplayerpositions<pre>',print_r($this->matchplayerpositions,true),'</pre>';
+//echo 'matchplayers<pre>',print_r($this->matchplayers,true),'</pre>';
+
 ?>
 <!-- START: game roster -->
 <!-- Show Match players -->
@@ -48,7 +52,7 @@ if (!empty($this->matchplayerpositions))
 ?>
 
 <h2><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP'); ?></h2>		
-	<table class="matchreport">
+	<table class="table">
 		<?php
 		foreach ($this->matchplayerpositions as $pos)
 		{
@@ -140,9 +144,18 @@ if (!empty($this->matchplayerpositions))
                                                 ?>
                                                 
 
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $imgTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['player_picture_width'];?>" />
+
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target="#pl<?php echo $player->person_id;?>">
+<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['player_picture_width'];?>" />
 </a>
+<div class="modal fade" id="pl<?php echo $player->person_id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+</div>
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $imgTitle, array('title' => $imgTitle,'class' => "img-rounded" ));      
+?>
+</div>    
                                                 
                                                 <?PHP
                                                 //echo JHtml::link($player_link,JHtml::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['player_picture_width'] )));
@@ -160,10 +173,18 @@ if (!empty($this->matchplayerpositions))
 													
                                                     */
                                                     ?>
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $imgTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['player_picture_width'];?>" />
-</a>                                               
-                                               
+
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target="#pl<?php echo $player->person_id;?>">
+<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['player_picture_width'];?>" />
+</a>
+<div class="modal fade" id="pl<?php echo $player->person_id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+</div>
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $imgTitle, array('title' => $imgTitle,'class' => "img-rounded" ));      
+?>
+</div>                                                   
                                                 <?PHP
                                                 //    echo JHtml::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['player_picture_width'] ));
                         ?>
@@ -253,9 +274,17 @@ if (!empty($this->matchplayerpositions))
 																							$this->config['player_picture_height']);
 													*/                         ?>
     
-<a href="<?php echo JURI::root().$picture;?>" title="<?php echo $imgTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['player_picture_width'];?>" />
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target="#pl<?php echo $player->person_id;?>">
+<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['player_picture_width'];?>" />
 </a>
+<div class="modal fade" id="pl<?php echo $player->person_id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+</div>
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $imgTitle, array('title' => $imgTitle,'class' => "img-rounded" ));      
+?>
+</div> 
                                                 <?PHP
                                                     
                                                     //echo JHtml::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['player_picture_width'] ));

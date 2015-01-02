@@ -293,6 +293,9 @@ if (!empty($this->matchplayerpositions ))
             {
   // diddipoeler
   // anzeige als tabs oder slider von joomlaworks
+  
+  //echo 'output<pre>',print_r($output,true),'</pre>';
+  
   $startoutput = '';
     $params = '';
     if($this->config['show_result_tabs'] == "show_tabs") 
@@ -319,6 +322,15 @@ if (!empty($this->matchplayerpositions ))
     $params .= $endoutput;
     }    
         
+    }
+    else 
+    {
+
+	foreach ($output as $templ)
+	{
+	echo $this->loadTemplate($templ);
+	}
+	
     }    
 
     echo JHtml::_('content.prepare', $params); 

@@ -40,7 +40,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 
 ?>
-	<table class="matchstats" border="0">
+	<table class="table" >
 		<?php
 		foreach ( $this->matchplayerpositions as $pos )
 		{
@@ -75,9 +75,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 									<tr class="starter">
 										<td class="playername">
 										<?php
-										    $player_link = JoomleagueHelperRoute::getPlayerRoute( $this->project->slug, $player->team_slug, $player->person_slug );
+										    $player_link = sportsmanagementHelperRoute::getPlayerRoute( $this->project->slug, $player->team_slug, $player->person_slug );
 										    $prefix = $player->jerseynumber ? $player->jerseynumber."." : null;
-										    $match_player = JoomleagueHelper::formatName($prefix,$player->firstname,$player->nickname,$player->lastname, $this->config["name_format"]);
+										    $match_player = sportsmanagementHelper::formatName($prefix,$player->firstname,$player->nickname,$player->lastname, $this->config["name_format"]);
 										    $isFavTeam = in_array( $player->team_id, explode(",",$this->project->fav_team)); 
 										    
 										    if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
@@ -101,8 +101,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 									<tr class="sub">
 										<td class="playername">
 										<?php
-										    $player_link = JoomleagueHelperRoute::getPlayerRoute( $this->project->slug, $sub->team_slug, $sub->person_slug );
-										    $match_player = JoomleagueHelper::formatName(null,$sub->firstname,$sub->nickname,$sub->lastname, $this->config["name_format"]);
+										    $player_link = sportsmanagementHelperRoute::getPlayerRoute( $this->project->slug, $sub->team_slug, $sub->person_slug );
+										    $match_player = sportsmanagementHelper::formatName(null,$sub->firstname,$sub->nickname,$sub->lastname, $this->config["name_format"]);
 										    $isFavTeam = in_array( $sub->team_id, explode(",",$this->project->fav_team)); 
 										    
 										    if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
@@ -159,8 +159,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 									<tr class="starter">
 										<td class="playername">
 										<?php
-										    $player_link = JoomleagueHelperRoute::getStaffRoute( $this->project->slug, $player->team_slug, $player->person_slug );
-										    $match_player = JoomleagueHelper::formatName(null,$player->firstname,$player->nickname,$player->lastname, $this->config["name_format"]);
+										    $player_link = sportsmanagementHelperRoute::getStaffRoute( $this->project->slug, $player->team_slug, $player->person_slug );
+										    $match_player = sportsmanagementHelper::formatName(null,$player->firstname,$player->nickname,$player->lastname, $this->config["name_format"]);
 										    $isFavTeam = in_array( $player->team_id, explode(",",$this->project->fav_team)); 
 										    
 										    if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )

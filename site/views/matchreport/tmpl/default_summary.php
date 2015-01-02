@@ -53,7 +53,7 @@ if (!empty($this->match->summary) && preg_match('/{jcomments\s+(off|lock)}/is', 
 if (!empty($this->match->summary))
 {
 	?>
-	<table width="100%" class="contentpaneopen">
+	<table class="table">
 		<tr>
 			<td class="contentheading">
 				<?php
@@ -62,7 +62,7 @@ if (!empty($this->match->summary))
 			</td>
 		</tr>
 	</table>
-	<table class="matchreport">
+	<table class="table">
 		<tr>
 			<td>
 			<?php

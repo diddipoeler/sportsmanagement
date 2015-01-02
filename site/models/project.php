@@ -123,6 +123,8 @@ class sportsmanagementModelProject extends JModelLegacy
     static $matchid = 0;
     static $_round_from;
     static $_round_to;
+    
+    static $_match = null;
 
 	/**
 	 * project league country
@@ -190,8 +192,9 @@ class sportsmanagementModelProject extends JModelLegacy
         // JInput object
         $jinput = $app->input;
         
-        //self::$projectid = JRequest::getInt('p',0);
-        //self::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+        self::$projectid = $jinput->getInt('p',0);
+        self::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
+        self::$matchid = $jinput->getInt('mid',0);
         //$app->setUserState( "com_sportsmanagement.cfg_which_database", JRequest::getInt('cfg_which_database',0) );
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
         
@@ -1734,15 +1737,69 @@ $starttime = microtime();
 		return $result;
 	}
 
-	/**
+	
+    /**
+     * sportsmanagementModelProject::getMatch()
+     * 
+     * @return
+     */
+    public static function getMatch()
+	{
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        // Get a refrence of the page instance in joomla
+		$document = JFactory::getDocument();
+        $option = $jinput->getCmd('option');
+        // Get a db connection.
+        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
+        $query = $db->getQuery(true);
+        
+		if (is_null(self::$_match))
+		{
+		  $query->select('m.*,DATE_FORMAT(m.time_present,"%H:%i") time_present, r.project_id, p.timezone ');
+          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r on r.id = m.round_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p on r.project_id = p.id ');
+        $query->where('m.id = '.self::$matchid );
+        
+//			$query='SELECT m.*,DATE_FORMAT(m.time_present,"%H:%i") time_present, r.project_id, p.timezone 
+//					FROM #__joomleague_match AS m 
+//					INNER JOIN #__joomleague_round AS r on r.id=m.round_id 
+//					INNER JOIN #__joomleague_project AS p on r.project_id=p.id 
+//					WHERE m.id='. $db->Quote(self::$matchid)
+//			      ;
+			
+            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+       {
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+            }
+            
+            $db->setQuery($query,0,1);
+			self::$_match = $db->loadObject();
+			if (self::$_match)
+			{
+				sportsmanagementHelper::convertMatchDateToTimezone(self::$_match);
+			}
+		}
+		return self::$_match;
+	}
+    
+    /**
 	 * returns match events
 	 * @param int match id
 	 * @return array
 	 */
 	public static function getMatchEvents($match_id,$showcomments=0,$sortdesc=0,$cfg_which_database = 0)
 	{
-		$option = JRequest::getCmd('option');
-	$app = JFactory::getApplication();
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        // Get a refrence of the page instance in joomla
+		$document = JFactory::getDocument();
+        $option = $jinput->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);

@@ -38,13 +38,16 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
+
+//echo ' matchstaffs<br><pre>'.print_r($this->matchstaffs,true).'</pre><br>';
+
 ?>
 <!-- Show Match staff -->
 <?php
 if (!empty($this->matchstaffpositions))
 {
 	?>
-	<table class="matchreport">
+	<table class="table">
 		<?php
 		foreach ($this->matchstaffpositions as $pos)
 		{
@@ -77,11 +80,20 @@ if (!empty($this->matchstaffpositions))
 												$this->config['staff_picture_height']);
 										*/
                                         ?>
-                                        <a href="<?php echo $picture;?>" alt="<?php echo $imgTitle;?>" title="<?php echo $imgTitle;?>" class="highslide" onclick="return hs.expand(this)">
-                                        <?php
-                                        echo JHtml::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['staff_picture_width'] ));
-                                        ?>
-                                        </a>
+                                        
+                                        
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target="#st<?php echo $player->person_id;?>">
+<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['staff_picture_width'];?>" />
+</a>
+<div class="modal fade" id="st<?php echo $player->person_id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+</div>
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $imgTitle, array('title' => $imgTitle,'class' => "img-rounded" ));      
+?>
+</div>                                            
+                                        
 									</li>
 									<?php
 								}
@@ -113,11 +125,18 @@ if (!empty($this->matchstaffpositions))
 												$this->config['staff_picture_height']);
 										*/
                                         ?>
-                                        <a href="<?php echo $picture;?>" alt="<?php echo $imgTitle;?>" title="<?php echo $imgTitle;?>" class="highslide" onclick="return hs.expand(this)">
-                                        <?PHP
-                                        echo JHtml::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['staff_picture_width'] ));
-                                        ?>
-                                        </a>
+                                        
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target="#st<?php echo $player->person_id;?>">
+<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['staff_picture_width'];?>" />
+</a>
+<div class="modal fade" id="st<?php echo $player->person_id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+</div>
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $imgTitle, array('title' => $imgTitle,'class' => "img-rounded" ));      
+?>
+</div>                                         
                                         <?php
                                         echo '&nbsp;';
 										$player_link=sportsmanagementHelperRoute::getStaffRoute($this->project->slug,$player->team_slug,$player->person_slug);
