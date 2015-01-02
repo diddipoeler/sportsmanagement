@@ -60,6 +60,42 @@ abstract class sportsmanagementHelper
 	static $_jsm_db = '';
     
     
+    
+    /**
+	 * Convert the UTC timestamp of a match (stored as UTC in the database) to:
+	 * - the timezone of the Joomla user if that is set
+	 * - to the project timezone as set in the project otherwise (so also for guest users,
+	 *   aka visitors that have not logged in).
+	 *
+	 * @param match $match Typically obtained from a DB-query and contains the match_date and timezone (of the project)
+	 */
+	public static function convertMatchDateToTimezone(&$match)
+	{
+		if ($match->match_date > 0)
+		{
+			$app = JFactory::getApplication();
+			if ($app->isAdmin())
+			{
+				// In case we are editing match(es) always use the project timezone
+				$timezone = $match->timezone;
+			}
+			else
+			{
+				// Otherwise use user timezone for display, and if not set use the project timezone
+				$user = JFactory::getUser();
+	 			$timezone = $user->getParam('timezone', $match->timezone);
+			}
+
+	 		$matchDate = new JDate($match->match_date, 'UTC');
+	 		$matchDate->setTimezone(new DateTimeZone($timezone));
+
+	 		$match->match_date = $matchDate;
+	 		$match->timezone = $timezone;
+		} else {
+			$match->match_date = null;
+		}
+	}
+    
     /**
      * sportsmanagementHelper::get_IP_address()
      * 

@@ -133,7 +133,7 @@ class SMStatisticSumevents extends SMStatistic
 				$res += $gamestats[$teamplayer_id][$id];
 			}
 		}
-		return stats::formatValue($res, SMStatistic::getPrecision());
+		return self::formatValue($res, SMStatistic::getPrecision());
 	}
 
 	/**
