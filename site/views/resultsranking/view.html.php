@@ -77,8 +77,11 @@ else
 {
 JHtml::_( 'behavior.mootools' );    
 }
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
 		$params = $app->getParams();
 		// get a reference of the page instance in joomla
 		$document = JFactory :: getDocument();
@@ -86,7 +89,7 @@ JHtml::_( 'behavior.mootools' );
         
         $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
         
-		$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+		$cfg_which_database = $jinput->getInt('cfg_which_database',0);
         
         /*
         // add the css files
@@ -183,7 +186,7 @@ JHtml::_( 'behavior.mootools' );
 		}
 		$document->setTitle($pageTitle);
         
-        $view = JRequest::getVar( "view") ;
+        $view = $jinput->getVar( "view") ;
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         

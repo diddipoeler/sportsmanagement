@@ -66,7 +66,11 @@ var $_identifier = "allteams";
 	 */
 	public function __construct($config = array())
         {   
-            $this->limitstart = JRequest::getVar('limitstart', 0, '', 'int');
+            // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+            $this->limitstart = $jinput->getVar('limitstart', 0, '', 'int');
             
                 $config['filter_fields'] = array(
                         'v.name',
@@ -89,7 +93,10 @@ var $_identifier = "allteams";
  */
 public function getStart()
 {
-    $app = JFactory::getApplication();
+    // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
     //$limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
     $this->setState('list.start', $this->limitstart );
     
@@ -130,10 +137,11 @@ public function getStart()
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Initialise variables.
-		$app = JFactory::getApplication();
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' limitstart<br><pre>'.print_r($this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart'),true).'</pre>'   ),'');
         
@@ -201,10 +209,13 @@ public function getStart()
      */
     function getListQuery()
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $search	= $this->getState('filter.search');
-        $search_nation	= $this->getState('filter.search_nation');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        //$search	= $this->getState('filter.search');
+        //$search_nation	= $this->getState('filter.search_nation');
         
         // Create a new query object.
 		$db		= $this->getDbo();
@@ -212,7 +223,7 @@ public function getStart()
 		$user	= JFactory::getUser(); 
 		
         // Select some fields
-		$query->select('v.name,v.picture,v.website');
+		$query->select('v.id,v.name,v.picture,v.website');
         $query->select('CONCAT_WS( \':\', v.id, v.alias ) AS slug');
         $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS projectslug');
         // From table
@@ -220,7 +231,6 @@ public function getStart()
         // Join over the clubs
 		$query->select('c.name As club,c.address,c.zipcode,c.country,c.location');
 		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON c.id = v.club_id');
-//        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.club_id = c.id');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = v.id');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id');
@@ -230,13 +240,14 @@ public function getStart()
 //		$query->join('LEFT', '#__users AS uc ON uc.id = v.checked_out');
         
         
-        if ($search)
+        if ($this->getState('filter.search'))
 		{
-        $query->where('LOWER(v.name) LIKE '.$db->Quote('%'.$search.'%'));
+        $query->where('LOWER(v.name) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%'));
         }
-        if ($search_nation)
+        if ($this->getState('filter.search_nation'))
 		{
-        $query->where("c.country = '".$search_nation."'");
+        //$query->where("c.country = '".$search_nation."'");
+        $query->where('c.country LIKE '.$db->Quote(''.$this->getState('filter.search_nation').''));
         }
         
         $query->group('v.id');

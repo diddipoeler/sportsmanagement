@@ -62,6 +62,7 @@ class sportsmanagementViewTeams extends JViewLegacy
 	{
 		// Get a reference of the page instance in joomla
 		$document= JFactory::getDocument();
+        // Reference global application object
         $app = JFactory::getApplication();
         // JInput object
         $jinput = $app->input;
@@ -90,6 +91,8 @@ class sportsmanagementViewTeams extends JViewLegacy
 			}
 		}
 		$document->setTitle( $pageTitle );
+        
+        $this->headertitle = JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_TITLE' );
 
 		parent::display( $tpl );
 	}

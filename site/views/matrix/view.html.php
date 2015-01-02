@@ -60,11 +60,14 @@ class sportsmanagementViewMatrix extends JViewLegacy
 	 */
 	function display( $tpl = null )
 	{
-	   $option = JRequest::getCmd('option');
+	   
+        // Reference global application object
         $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
 		// Get a refrence of the page instance in joomla
 		$document= JFactory::getDocument();
-        
+        $option = $jinput->getCmd('option');
 		$model = $this->getModel();
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);

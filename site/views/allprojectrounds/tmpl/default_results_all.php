@@ -48,7 +48,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <?php
 
 	?>
-	<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
+	<table class="<?php echo $this->tableclass;?>">
 		<tr>
 			<td class="">
 				<?php

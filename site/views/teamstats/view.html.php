@@ -62,8 +62,11 @@ class sportsmanagementViewTeamStats extends JViewLegacy
 	{
 		// Get a refrence of the page instance in joomla
 		$document= JFactory::getDocument();
-		 $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
 
 		$model = $this->getModel();
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
@@ -134,9 +137,11 @@ class sportsmanagementViewTeamStats extends JViewLegacy
 		}
 		$document->setTitle( $pageTitle );
 
-	$view = JRequest::getVar( "view") ;
+	$view = $jinput->getVar( "view") ;
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
+        
+        $this->headertitle = JText::_( 'COM_SPORTSMANAGEMENT_TEAMSTATS_TITLE' ) . " - " . $this->team->name;
         
 		parent::display( $tpl );
 	}

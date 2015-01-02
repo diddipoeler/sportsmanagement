@@ -66,7 +66,11 @@ var $_identifier = "allleagues";
 	 */
 	public function __construct($config = array())
         {   
-            $this->limitstart = JRequest::getVar('limitstart', 0, '', 'int');
+            // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+            $this->limitstart = $jinput->getVar('limitstart', 0, '', 'int');
                 $config['filter_fields'] = array(
                         'v.name',
                         'v.picture',
@@ -84,7 +88,10 @@ var $_identifier = "allleagues";
  */
 public function getStart()
 {
-    $app = JFactory::getApplication();
+    // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
     //$limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
     $this->setState('list.start', $this->limitstart );
     
@@ -125,8 +132,11 @@ public function getStart()
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Initialise variables.
 		$app = JFactory::getApplication('site');
         
@@ -135,7 +145,7 @@ public function getStart()
         $value = $this->getUserStateFromRequest($this->context.'.limit', 'limit', $app->getCfg('list_limit', 0));
 		$this->setState('list.limit', $value);
 
-		$value = JRequest::getUInt('limitstart', 0);
+		$value = $jinput->getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
         
         //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
@@ -189,10 +199,13 @@ public function getStart()
      */
     function getListQuery()
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $search	= $this->getState('filter.search');
-        $search_nation	= $this->getState('filter.search_nation');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        //$search	= $this->getState('filter.search');
+        //$search_nation	= $this->getState('filter.search_nation');
         
         // Create a new query object.
 		$db		= $this->getDbo();
@@ -215,13 +228,14 @@ public function getStart()
 //		$query->join('LEFT', '#__users AS uc ON uc.id = v.checked_out');
         
         
-        if ($search)
+        if ($this->getState('filter.search'))
 		{
-        $query->where('LOWER(v.name) LIKE '.$db->Quote('%'.$search.'%'));
+        $query->where('LOWER(v.name) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%'));
         }
-        if ($search_nation)
+        if ($this->getState('filter.search_nation'))
 		{
-        $query->where("v.country = '".$search_nation."'");
+        //$query->where("v.country = '".$search_nation."'");
+        $query->where('v.country LIKE '.$db->Quote(''.$this->getState('filter.search_nation').''));
         }
         
         $query->group('v.id');

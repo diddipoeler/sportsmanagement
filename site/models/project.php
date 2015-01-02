@@ -262,7 +262,10 @@ class sportsmanagementModelProject extends JModelLegacy
 
     
 			self::$_project = $db->loadObject();
+            if ( !self::$seasonid )
+            {
             self::$seasonid = self::$_project->season_id;
+            }
             
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' season_id<br><pre>'.print_r(self::$_project->season_id,true).'</pre>'),'');
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' seasonid<br><pre>'.print_r(self::$seasonid,true).'</pre>'),'');

@@ -65,8 +65,11 @@ class sportsmanagementViewRanking extends JViewLegacy
 		// Get a refrence of the page instance in joomla
 		$document = JFactory :: getDocument();
 		$uri = JFactory :: getURI();
+        // Reference global application object
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         
         //$version = urlencode(JoomleagueHelper::getVersion());
 		//$css='components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
@@ -74,8 +77,8 @@ class sportsmanagementViewRanking extends JViewLegacy
         $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
 
 		$model = $this->getModel();
-        $model::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
-        sportsmanagementModelProject::setProjectID(JRequest::getInt('p',0),$model::$cfg_which_database);
+        $model::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
+        sportsmanagementModelProject::setProjectID($jinput->getInt('p',0),$model::$cfg_which_database);
         //$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
         $mdlDivisions = JModelLegacy::getInstance("Divisions", "sportsmanagementModel");
         $mdlProjectteams = JModelLegacy::getInstance("Projectteams", "sportsmanagementModel");
@@ -202,7 +205,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
         
        
 		//$this->assignRef('current_round', $model->current_round);
-        $this->assign('current_round', sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.JRequest::getVar("view"),$model::$cfg_which_database));
+        $this->assign('current_round', sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.$jinput->getVar("view"),$model::$cfg_which_database));
         
         // mannschaften holen
 		$this->assign('teams',sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$model::$cfg_which_database,__METHOD__));
@@ -344,10 +347,13 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 			$pageTitle .= ': ' . $this->project->name;
 		}
 		$document->setTitle( $pageTitle );
-		$view = JRequest::getVar( "view") ;
+		$view = $jinput->getVar( "view") ;
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         $document->addCustomTag('<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">');
+        
+        $this->headertitle = JText::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE' );
+        
 		parent :: display($tpl);
 	}
 		

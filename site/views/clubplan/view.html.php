@@ -64,8 +64,12 @@ class sportsmanagementViewClubPlan extends JViewLegacy
 		$document = JFactory::getDocument();
 		$uri = JFactory::getURI();
 		$model = $this->getModel();
-        $option = JRequest::getCmd('option');
+        
+        // Reference global application object
         $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
         
         $js = "window.addEvent('domready', function() {"."\n";
@@ -83,17 +87,17 @@ class sportsmanagementViewClubPlan extends JViewLegacy
 		$this->assign('favteams',sportsmanagementModelProject::getFavTeams($model::$cfg_which_database));
 		$this->assign('club',sportsmanagementModelClubInfo::getClub());
         
-        $this->assign('type',JRequest::getVar("type", 0));
-        $this->assign('teamartsel',JRequest::getVar("teamartsel", 0));
+        $this->assign('type',$jinput->getVar("type", 0));
+        $this->assign('teamartsel',$jinput->getVar("teamartsel", 0));
         $model->teamart = $this->teamartsel;
-        $this->assign('teamprojectssel',JRequest::getVar("teamprojectssel", 0));
+        $this->assign('teamprojectssel',$jinput->getVar("teamprojectssel", 0));
         $model->teamprojects = $this->teamprojectssel;
-        $model->project_id = JRequest::getInt("p",0);
+        $model->project_id = $jinput->getInt("p",0);
         if ( $this->teamprojectssel > 0 )
         {
             $model->project_id = $this->teamprojectssel;
         }
-        $this->assign('teamseasonssel',JRequest::getVar("teamseasonssel", 0));
+        $this->assign('teamseasonssel',$jinput->getVar("teamseasonssel", 0));
         $model->teamseasons = $this->teamseasonssel;
         if ( $this->teamseasonssel > 0 )
         {
@@ -196,6 +200,8 @@ class sportsmanagementViewClubPlan extends JViewLegacy
         $view = JRequest::getVar( "view") ;
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
+        
+        $this->headertitle = JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_PAGE_TITLE').' '.$this->club->name;
         
 		parent::display($tpl);
 	}

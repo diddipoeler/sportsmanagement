@@ -62,7 +62,7 @@ function tableOrdering( order, dir, task )
         document.adminForm.submit( task );
 }
 </script>
-
+<div class="container">
 <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars(JFactory::getURI()->toString());?>" method="post">
 	<fieldset class="filters">
 	<legend class="hidelabeltxt"><?php echo JText::_('JGLOBAL_FILTER_LABEL'); ?></legend>
@@ -105,5 +105,5 @@ function tableOrdering( order, dir, task )
 	echo "</div>";
     ?>
 </form>
-
+</div>
 

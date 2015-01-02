@@ -61,7 +61,8 @@ class sportsmanagementViewStats extends JViewLegacy
 	function display($tpl = null)
 	{
 		
-		$app = JFactory::getApplication();
+		// Reference global application object
+        $app = JFactory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -122,9 +123,11 @@ class sportsmanagementViewStats extends JViewLegacy
 		}
 		$document->setTitle( $pageTitle );
         
-        $view = JRequest::getVar( "view") ;
+        $view = $jinput->getVar( "view") ;
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
+        
+        $this->headertitle = JText::_('COM_SPORTSMANAGEMENT_STATS_TITLE');
 
 		parent::display( $tpl );
 	}

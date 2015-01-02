@@ -40,7 +40,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
 <!-- START: Contentheading -->
-<table class="contentpaneopen" width="100%">
+<table class="table" >
     <tr>
         <td class="contentheading">
             <?php

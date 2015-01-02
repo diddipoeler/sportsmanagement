@@ -66,8 +66,9 @@ class sportsmanagementViewMatchReport extends JViewLegacy
 	 */
 	function display($tpl=null)
 	{
-		$app = JFactory::getApplication();
-		// JInput object
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
         $jinput = $app->input;
         // Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
@@ -89,8 +90,8 @@ class sportsmanagementViewMatchReport extends JViewLegacy
         
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
-		$match = sportsmanagementModelMatch::getMatchData(JRequest::getInt( "mid", 0 ),$model::$cfg_which_database);
-        $matchsingle = sportsmanagementModelMatch::getMatchSingleData(JRequest::getInt( "mid", 0 ));
+		$match = sportsmanagementModelMatch::getMatchData($jinput->getInt( "mid", 0 ),$model::$cfg_which_database);
+        $matchsingle = sportsmanagementModelMatch::getMatchSingleData($jinput->getInt( "mid", 0 ));
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {

@@ -86,6 +86,8 @@ class sportsmanagementViewReferees extends JViewLegacy
 		// Set page title
 		$pagetitle=JText::_( 'COM_SPORTSMANAGEMENT_REFEREES_PAGE_TITLE' );
 		$document->setTitle( JText::sprintf( $pagetitle, $this->project->name ) );
+        
+        $this->headertitle = JText::_( 'COM_SPORTSMANAGEMENT_REFEREES_TITLE' );
 
 		parent::display( $tpl );
 	}

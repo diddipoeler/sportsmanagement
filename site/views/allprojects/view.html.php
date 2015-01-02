@@ -68,12 +68,16 @@ class sportsmanagementViewallprojects extends JViewLegacy
 		// Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
         $option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
-        
+		// Reference global application object
         $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        
+        
 		$user		= JFactory::getUser();
         $starttime = microtime(); 
         $inputappend = '';
+        $this->tableclass = $jinput->getVar('table_class', 'table','request','string');
 
 		$state 		= $this->get('State');
 		$items 		= $this->get('Items');

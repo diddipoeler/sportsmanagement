@@ -63,22 +63,25 @@ class sportsmanagementViewStaff extends JViewLegacy
 	{
 		// Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
-        $option = JRequest::getCmd('option');
+        
+        // Reference global application object
         $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
 
 		$model = $this->getModel();
-        
+        $option = $jinput->getCmd('option');
 //        $mdlPerson = JModelLegacy::getInstance("Person", "sportsmanagementModel");
-        $model::$projectid = JRequest::getInt( 'p', 0 );
-		$model::$personid = JRequest::getInt( 'pid', 0 );
-		$model::$teamplayerid = JRequest::getInt( 'pt', 0 );
-//        $mdlPerson->projectid = JRequest::getInt( 'p', 0 );
-//		$mdlPerson->personid = JRequest::getInt( 'pid', 0 );
-//		$mdlPerson->teamplayerid = JRequest::getInt( 'pt', 0 );
+        $model::$projectid = $jinput->getInt( 'p', 0 );
+		$model::$personid = $jinput->getInt( 'pid', 0 );
+		$model::$teamplayerid = $jinput->getInt( 'pt', 0 );
+//        $mdlPerson->projectid = $jinput->getInt( 'p', 0 );
+//		$mdlPerson->personid = $jinput->getInt( 'pid', 0 );
+//		$mdlPerson->teamplayerid = $jinput->getInt( 'pt', 0 );
         
-//      sportsmanagementModelPerson::projectid = JRequest::getInt( 'p', 0 );
-//		sportsmanagementModelPerson::personid = JRequest::getInt( 'pid', 0 );
-//		sportsmanagementModelPerson::teamplayerid = JRequest::getInt( 'pt', 0 );
+//      sportsmanagementModelPerson::projectid = $jinput->getInt( 'p', 0 );
+//		sportsmanagementModelPerson::personid = $jinput->getInt( 'pid', 0 );
+//		sportsmanagementModelPerson::teamplayerid = $jinput->getInt( 'pt', 0 );
         
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 		$person = sportsmanagementModelPerson::getPerson(0,$model::$cfg_which_database);
@@ -110,7 +113,7 @@ class sportsmanagementViewStaff extends JViewLegacy
 		$this->assignRef( 'extended', $extended);
 		$document->setTitle($titleStr);
         
-        $view = JRequest::getVar( "view") ;
+        $view = $jinput->getVar( "view") ;
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         

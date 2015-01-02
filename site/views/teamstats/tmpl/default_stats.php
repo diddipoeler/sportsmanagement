@@ -43,7 +43,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <div id="jl_teamstats">
 	<div class="jl_teamsubstats">
-		<table cellspacing="0" border="0" width="100%">
+		<table class="table">
 			<thead>
 				<tr class="sectiontableheader">
 					<th>&nbsp;</th>

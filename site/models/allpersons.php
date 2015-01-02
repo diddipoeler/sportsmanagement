@@ -67,8 +67,11 @@ var $_identifier = "allpersons";
 	 */
 	public function __construct($config = array())
         {   
-            //$app = JFactory::getApplication('site');
-                $this->limitstart = JRequest::getVar('limitstart', 0, '', 'int');
+            // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+                $this->limitstart = $jinput->getVar('limitstart', 0, '', 'int');
 //                JRequest::setVar('limitstart', JRequest::getVar('limitstart', 0, '', 'int'));
                 //$this->setState('limitstart', JRequest::getVar('limitstart', 0, '', 'int'));
               //  $this->limit = $this->getUserStateFromRequest($this->context.'.limit', 'limit', $app->getCfg('list_limit', 0));
@@ -97,7 +100,10 @@ var $_identifier = "allpersons";
  */
 public function getStart()
 {
-    $app = JFactory::getApplication();
+    // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
     //$limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
     $this->setState('list.start', $this->limitstart );
     
@@ -138,8 +144,11 @@ public function getStart()
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Initialise variables.
 		$app = JFactory::getApplication('site');
         
@@ -172,7 +181,7 @@ public function getStart()
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' limitstart<br><pre>'.print_r($this->getState('limitstart'),true).'</pre>'),'');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
         
-        $columns = JRequest::getVar('show_columns');
+        $columns = $jinput->getVar('show_columns');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' columns<br><pre>'.print_r($columns,true).'</pre>'),'');
         $this->setState('filter.select_columns', $columns);
         $this->columns = $columns;
@@ -226,10 +235,13 @@ public function getStart()
      */
     function getListQuery()
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $search	= $this->getState('filter.search');
-        $search_nation	= $this->getState('filter.search_nation');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        //$search	= $this->getState('filter.search');
+        //$search_nation	= $this->getState('filter.search_nation');
         $select_columns	= $this->getState('filter.select_columns');
         
         foreach( $select_columns as $key => $value )
@@ -251,6 +263,7 @@ public function getStart()
         if ( $select_columns )
         {
         $query->select(implode(",",$select_columns)); 
+        $query->select('v.id'); 
         }
         else
         {
@@ -276,13 +289,14 @@ public function getStart()
 //		$query->join('LEFT', '#__users AS uc ON uc.id = v.checked_out');
         
         
-        if ($search)
+        if ($this->getState('filter.search'))
 		{
-        $query->where('LOWER(v.lastname) LIKE '.$db->Quote('%'.$search.'%'));
+        $query->where('LOWER(v.lastname) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%'));
         }
-        if ($search_nation)
+        if ($this->getState('filter.search_nation'))
 		{
-        $query->where("v.country = '".$search_nation."'");
+        //$query->where("v.country = '".$search_nation."'");
+        $query->where('v.country LIKE '.$db->Quote(''.$this->getState('filter.search_nation').''));
         }
         
         //$query->limit($this->getState('list.start'));

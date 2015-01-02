@@ -43,7 +43,7 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
         
-<table width="100%">
+<table class="<?php echo $this->tableclass;?>">
 
 <thead>
 <tr>
@@ -97,9 +97,20 @@ $item->picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 ?>
 </td>
 <td>
-<a href="<?php echo $item->picture;?>" title="<?php echo $item->name;?>" class="modal">
-<img src="<?php echo $item->picture;?>" alt="<?php echo $item->name;?>" width="20" />
-</a>  
+ 
+
+
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$item->picture;?>" title="<?php echo $item->name;?>" data-toggle="modal" data-target="#c<?php echo $item->id;?>">
+<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$item->picture;?>" alt="<?php echo $item->name;?>" width="20" />
+</a>        
+<div class="modal fade" id="c<?php echo $item->id;?>" tabindex="-1" role="dialog" aria-labelledby="beispielModalLabel" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+</div>
+<?PHP
+echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$item->picture, $item->name, array('title' => $item->name,'class' => "img-rounded" ));      
+?>
+</div> 
 
 </td>
 <td>

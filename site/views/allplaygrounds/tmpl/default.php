@@ -68,7 +68,7 @@ function searchPerson(val)
         Joomla.submitform('', this.form)
 	}
 </script>
-
+<div class="container">
 <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars(JFactory::getURI()->toString());?>" method="post">
 	<fieldset class="filters">
 	<legend class="hidelabeltxt"><?php echo JText::_('JGLOBAL_FILTER_LABEL'); ?></legend>
@@ -123,5 +123,5 @@ function searchPerson(val)
 	echo "</div>";
     ?>
 </form>
-
+</div>
 

@@ -62,8 +62,11 @@ class sportsmanagementViewTeamInfo extends JViewLegacy
 	{
 		// Get a reference of the page instance in joomla
 		$document	= JFactory::getDocument();
+        // Reference global application object
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         
 		$model		= $this->getModel();
 		$config		= sportsmanagementModelProject::getTemplateConfig( $this->getName(),$model::$cfg_which_database );
@@ -147,7 +150,7 @@ class sportsmanagementViewTeamInfo extends JViewLegacy
 		}
 		$document->setTitle( $pageTitle );
         
-        $view = JRequest::getVar( "view") ;
+        $view = $jinput->getVar( "view") ;
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         

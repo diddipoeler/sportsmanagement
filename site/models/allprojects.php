@@ -66,7 +66,11 @@ var $_identifier = "allprojects";
 	 */
 	public function __construct($config = array())
         {   
-            $this->limitstart = JRequest::getVar('limitstart', 0, '', 'int');
+            // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+            $this->limitstart = $jinput->getVar('limitstart', 0, '', 'int');
                 $config['filter_fields'] = array(
                         'v.name',
                         'v.picture',
@@ -88,7 +92,10 @@ var $_identifier = "allprojects";
  */
 public function getStart()
 {
-    $app = JFactory::getApplication();
+    // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
     //$limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart');
     $this->setState('list.start', $this->limitstart );
     
@@ -129,8 +136,11 @@ public function getStart()
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Initialise variables.
 		$app = JFactory::getApplication('site');
         
@@ -207,13 +217,16 @@ public function getStart()
      */
     function getListQuery()
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $search	= $this->getState('filter.search');
-        $search_nation	= $this->getState('filter.search_nation');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        //$search	= $this->getState('filter.search');
+        //$search_nation	= $this->getState('filter.search_nation');
         
-        $search_leagues	= $this->getState('filter.search_leagues');
-        $search_seasons	= $this->getState('filter.search_seasons');
+        //$search_leagues	= $this->getState('filter.search_leagues');
+        //$search_seasons	= $this->getState('filter.search_seasons');
         
         
         // Create a new query object.
@@ -222,7 +235,7 @@ public function getStart()
 		$user	= JFactory::getUser(); 
 		
         // Select some fields
-		$query->select('v.name,v.picture');
+		$query->select('v.id,v.name,v.picture');
         $query->select('l.country,l.name as leaguename');
         $query->select('s.name as seasonname');
         $query->select('CONCAT_WS( \':\', v.id, v.alias ) AS slug');
@@ -239,22 +252,23 @@ public function getStart()
 //		$query->join('LEFT', '#__users AS uc ON uc.id = v.checked_out');
         
         
-        if ($search)
+        if ($this->getState('filter.search'))
 		{
-        $query->where('LOWER(v.name) LIKE '.$db->Quote('%'.$search.'%'));
+        $query->where('LOWER(v.name) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%'));
         }
-        if ($search_nation)
+        if ($this->getState('filter.search_nation'))
 		{
-        $query->where("l.country = '".$search_nation."'");
+        //$query->where("l.country = '".$search_nation."'");
+        $query->where('l.country LIKE '.$db->Quote(''.$this->getState('filter.search_nation').''));
         }
         
-        if ($search_leagues)
+        if ($this->getState('filter.search_leagues'))
 		{
-        $query->where('v.league_id = ' . $search_leagues);
+        $query->where('v.league_id = ' . $this->getState('filter.search_leagues'));
         }
-        if ($search_seasons)
+        if ($this->getState('filter.search_seasons'))
 		{
-        $query->where('v.season_id = ' . $search_seasons);
+        $query->where('v.season_id = ' . $this->getState('filter.search_seasons'));
         }
         
         $query->where('v.published = 1');

@@ -63,15 +63,18 @@ class sportsmanagementViewPlayer extends JViewLegacy
 	{
 		// Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
-        $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        // Reference global application object
+$app = JFactory::getApplication();
+// JInput object
+$jinput = $app->input;
+        $option = $jinput->getCmd('option');
 		$model = $this->getModel();
         
-        $model::$projectid = JRequest::getInt( 'p', 0 );
-		$model::$personid = JRequest::getInt( 'pid', 0 );
-		$model::$teamplayerid = JRequest::getInt( 'pt', 0 );
+        $model::$projectid = $jinput->getInt( 'p', 0 );
+		$model::$personid = $jinput->getInt( 'pid', 0 );
+		$model::$teamplayerid = $jinput->getInt( 'pt', 0 );
         
-        sportsmanagementModelProject::setProjectID(JRequest::getInt('p',0),$model::$cfg_which_database);
+        sportsmanagementModelProject::setProjectID($jinput->getInt('p',0),$model::$cfg_which_database);
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
         
 
@@ -234,7 +237,7 @@ class sportsmanagementViewPlayer extends JViewLegacy
 		}
 		$this->assignRef('playername', $name);
 		$document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_PLAYER_INFORMATION', $name));
-        $view = JRequest::getVar( "view") ;
+        $view = $jinput->getVar( "view") ;
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 

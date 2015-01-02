@@ -62,12 +62,16 @@ class sportsmanagementViewallprojectrounds extends JViewLegacy
 	 */
 	function display( $tpl = null )
 	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+		
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
     // Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
 		$uri = JFactory::getURI();	
-        
+        $this->tableclass = $jinput->getVar('table_class', 'table','request','string');
+        $option = $jinput->getCmd('option');
         $starttime = microtime(); 	
 				
 		$model = $this->getModel();

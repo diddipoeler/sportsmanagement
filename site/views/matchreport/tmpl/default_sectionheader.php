@@ -38,7 +38,7 @@
 */
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
-<table class="contentpaneopen">
+<table class="table">
 	<tr>
 		<td class="contentheading"><?php
 		$pageTitle = 'COM_SPORTSMANAGEMENT_MATCHREPORT_TITLE';

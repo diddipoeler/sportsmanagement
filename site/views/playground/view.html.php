@@ -60,28 +60,31 @@ class sportsmanagementViewPlayground extends JViewLegacy
 	 */
 	function display( $tpl = null )
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Get a refrence of the page instance in joomla
 		$document= JFactory::getDocument();
         
         //$document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
 
 		$model = $this->getModel();
-        sportsmanagementModelProject::setProjectID(JRequest::getInt( "p", 0 ),JRequest::getInt('cfg_which_database',0));
+        sportsmanagementModelProject::setProjectID($jinput->getInt( "p", 0 ),$jinput->:getInt('cfg_which_database',0));
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
         
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),JRequest::getInt('cfg_which_database',0));
+		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$jinput->getInt('cfg_which_database',0));
 
-		$this->assign('project', sportsmanagementModelProject::getProject(JRequest::getInt('cfg_which_database',0)) );
-		$this->assign('overallconfig', sportsmanagementModelProject::getOverallConfig(JRequest::getInt('cfg_which_database',0)) );
+		$this->assign('project', sportsmanagementModelProject::getProject($jinput->getInt('cfg_which_database',0)) );
+		$this->assign('overallconfig', sportsmanagementModelProject::getOverallConfig($jinput->getInt('cfg_which_database',0)) );
 		$this->assignRef('config', $config );
 
 		//$model = $this->getModel();
-		$games = $model->getNextGames(JRequest::getInt( "p", 0 ));
+		$games = $model->getNextGames($jinput->getInt( "p", 0 ));
 		$gamesteams = sportsmanagementModelTeams::getTeamsFromMatches( $games );
-		$this->assign('playground',  $model->getPlayground(JRequest::getInt( "pgid", 0 )) );
+		$this->assign('playground',  $model->getPlayground($jinput->getInt( "pgid", 0 )) );
         $this->assign('address_string', $model->getAddressString() );
 		$this->assign('teams', sportsmanagementModelTeams::getTeams($this->playground->id) );
 		$this->assignRef('games', $games );
@@ -118,6 +121,8 @@ class sportsmanagementViewPlayground extends JViewLegacy
         $view = JRequest::getVar( "view") ;
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
+        
+        $this->headertitle = $this->playground->name;
         
 		parent::display( $tpl );
 	}

@@ -65,8 +65,12 @@ class sportsmanagementViewResults extends JViewLegacy
 	{
 		// Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
-        $option = JRequest::getCmd('option');
+        
+        // Reference global application object
         $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         $roundcode = 0;
 //		$version = urlencode(sportsmanagementHelper::getVersion());
 //		$css		= 'components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
@@ -86,7 +90,7 @@ JHtml::_( 'behavior.mootools' );
 		$model	= $this->getModel();
 				
 		$matches = $model->getMatches($model::$cfg_which_database);
-		sportsmanagementModelProject::setProjectID(JRequest::getInt('p',0));
+		sportsmanagementModelProject::setProjectID($jinput->getInt('p',0));
 		$config	= sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
         
@@ -170,7 +174,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 
 		// add the links
 		$document->addHeadLink(JRoute::_($feed.'&type=rss'), 'alternate', 'rel', $rss);
-        $view = JRequest::getVar( "view") ;
+        $view = $jinput->getVar( "view") ;
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 

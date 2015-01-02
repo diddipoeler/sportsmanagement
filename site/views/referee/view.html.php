@@ -110,6 +110,8 @@ class sportsmanagementViewReferee extends JViewLegacy
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
+        $this->headertitle = $this->title;
+        
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
 
 		parent::display($tpl);

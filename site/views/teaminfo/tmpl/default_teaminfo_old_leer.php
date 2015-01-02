@@ -1,4 +1,4 @@
-<?php 
+<?php
 /** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
@@ -37,13 +37,19 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined('_JEXEC') or die('Restricted access'); ?>
-<!-- START: Contentheading -->
-<table class="contentpaneopen">
-	<tr>
-		<td class="contentheading"><?php
-		echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_PAGE_TITLE').' '.$this->club->name;
-		?></td>
-	</tr>
-</table><br />
-<!-- END: Contentheading -->
+defined('_JEXEC') or die('Restricted access');
+
+?>
+<div class="container">
+<!-- Columns are always 50% wide, on mobile and desktop -->
+<div class="row show-grid">
+  <div class="col-xs-6">.col-xs-6</div>
+  <div class="col-xs-6">.col-xs-6</div>
+</div>
+
+<div class="row show-grid">
+  <div class="col-md-6">.col-md-6</div>
+  <div class="col-md-6">.col-md-6</div>
+</div>
+
+</div>
