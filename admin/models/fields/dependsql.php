@@ -106,15 +106,15 @@ class JFormFieldDependSQL extends JFormField
 			$attribs .= ' size="'.$v.'"';
 		}
         
-        if ( !$value )
-        {
-        $value = $this->form->getValue($val,'params');
-        $div = 'params';
-        }
-        else
-        {
+//        if ( !$value )
+//        {
+//        $value = $this->form->getValue($val,'params');
+//        $div = 'params';
+//        }
+//        else
+//        {
         $div = 'request';
-        }
+//        }
         
         $cfg_which_database = $this->form->getValue('cfg_which_database',$div);
         
@@ -135,7 +135,7 @@ class JFormFieldDependSQL extends JFormField
 
 $script[] = "\n";       
 $script[] = "jQuery(document).ready(function ($){";
-
+/*
 $script[] = "					var value = $('#jform_".$div."_".$depends."').val();";
 //$script[] = "					var dbparam = $('#jform_".$div."_cfg_which_database').prop('checked');";
 
@@ -166,6 +166,7 @@ $script[] = "						});";
 
 $script[] = "						$('#".$this->id."').trigger('liszt:updated');";
 $script[] = "					});";
+*/
 
 $script[] = "				$('#jform_".$div."_".$depends."').change(function(){";
 $script[] = "					var value = $('#jform_".$div."_".$depends."').val();";
@@ -207,11 +208,11 @@ $script[] = "});";
        // Add the script to the document head.
     JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
         
-        if ( $ajaxtask && $value )
-        {
+        //if ( $ajaxtask && $value )
+        //{
         $ajaxtask = 'get'.$ajaxtask;    
         $result = sportsmanagementModelAjax::$ajaxtask($value,$required);
-        }
+        //}
 
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ajaxtask<br><pre>'.print_r($ajaxtask,true).'</pre>'),'Notice');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($value,true).'</pre>'),'Notice');        
