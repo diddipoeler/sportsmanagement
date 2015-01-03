@@ -31,11 +31,12 @@
 	</languages>
 
 	<config>
-		<fields name="params">
+		<fields name="params"
+    addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
 
 			<fieldset	name="basic"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_MODULE_TITLE"
-						addfieldpath="/administrator/components/com_sportsmanagement/elements" >
+						 >
       <field name="cfg_which_database" 
     type="radio" 
     default="0"
@@ -45,6 +46,15 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		
+		<field	name="s" 
+      type="seasonlist"
+      
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
+					required="">
+			</field>  
+		
 				<field 	name="template" type="templatelist" default="default_tableless"
 						addfieldpath="/modules/mod_sportsmanagement_matches/fields/"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SELECT_TEMPLATE_TITLE" 
@@ -58,6 +68,31 @@
 						directory="/modules/mod_sportsmanagement_matches/assets/images" 
 						hide_default="1" hide_none="0" />
 
+        <field 	name="project" 
+			task="projects" 
+      type="dependsql"
+      depends="s"
+      key_field="season_id"
+			value_field="s"
+			required=""
+			size="10"
+			multiple="multiple"
+						label="MOD_SPORTSMANAGEMENT_MATCHES_SELECT_PROJECTS_TITLE" 
+						description="MOD_SPORTSMANAGEMENT_MATCHES_SELECT_PROJECTS_DESCR" />
+						
+		<field 	name="project_not_used" 
+			task="projects" 
+      type="dependsql"
+      depends="s"
+      key_field="season_id"
+			value_field="s"
+			required=""
+			size="10"
+			multiple="multiple"
+						label="MOD_SPORTSMANAGEMENT_MATCHES_NOT_USED_PROJECTS_TITLE" 
+						description="MOD_SPORTSMANAGEMENT_MATCHES_NOT_USED_PROJECTS_DESCR" />
+            				
+<!--
 				<field	name="project" type="projects" default="" required="false"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SELECT_PROJECTS_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SELECT_PROJECTS_DESCR" />
@@ -65,6 +100,8 @@
 				<field 	name="project_not_used" type="projects" default="" required="false"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_NOT_USED_PROJECTS_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_NOT_USED_PROJECTS_DESCR" />
+
+-->
 
 				<field 	name="order_by_project" type="radio" default="0" 
 						label="MOD_SPORTSMANAGEMENT_MATCHES_ORDER_BY_PROJECT_TITLE"

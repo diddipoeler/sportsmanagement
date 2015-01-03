@@ -59,7 +59,7 @@ class modSportsmanagementTeamPlayersHelper
 	 * @access public
 	 * @return array
 	 */
-	function getData(&$params)
+	public static function getData(&$params)
 	{
 	   $mainframe = JFactory::getApplication();
        
@@ -127,7 +127,7 @@ class modSportsmanagementTeamPlayersHelper
 	 * @param mixed $project
 	 * @return void
 	 */
-	function getPlayerLink($item, $params, $project)
+	public static function getPlayerLink($item, $params, $project)
 	{
 		$flag = "";
 		if ($params->get('show_player_flag')) {

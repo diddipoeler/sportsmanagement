@@ -50,7 +50,7 @@ class modJSMRandomplayerHelper
 	 * @access public
 	 * @return array
 	 */
-	function getData(&$params)
+	public static function getData(&$params)
 	{
 		$mainframe = JFactory::getApplication();
         $usedp = $params->get('projects');

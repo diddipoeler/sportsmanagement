@@ -64,7 +64,7 @@ class modSportsmanagementClubBirthdayHelper
  * @param mixed $sort
  * @return
  */
-function jl_birthday_sort ($array, $sort) 
+public static function jl_birthday_sort ($array, $sort) 
 {
 
 /**
@@ -91,7 +91,7 @@ function jl_birthday_sort ($array, $sort)
  * @param mixed $limit
  * @return
  */
-function getClubs($limit)
+public static function getClubs($limit)
 	{
 	   $mainframe = JFactory::getApplication();
 $birthdaytext='';

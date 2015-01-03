@@ -57,7 +57,7 @@ class modTurtushoutHelper
      * @param mixed $list
      * @return
      */
-    function getListCommentary($list)
+    public static function getListCommentary($list)
     {
     $db		= JFactory::getDBO();  
     $query = $db->getQuery(true);
@@ -96,7 +96,7 @@ class modTurtushoutHelper
      * @param mixed $limit
      * @return
      */
-    function getList(&$params, $limit)
+    public static function getList(&$params, $limit)
     {
         // aktuelles datum
         $akt_datum = date("Y-m-d",time());
@@ -139,7 +139,7 @@ class modTurtushoutHelper
 		$db->setQuery($query, 0, $limit);
 		$rows = $db->loadObjectList();
 		
-		if ($db->_errorMsg)
+		if ($db->getErrorMsg())
         {
 //			 modTurtushoutHelper::install();
 		}

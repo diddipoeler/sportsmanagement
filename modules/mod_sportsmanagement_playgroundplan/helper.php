@@ -60,7 +60,7 @@ class modSportsmanagementPlaygroundplanHelper
 	 * @access public
 	 * @return array
 	 */
-	function getData(&$params)
+	public static function getData(&$params)
 	{
 	   $mainframe = JFactory::getApplication();
 		$usedp = $params->get('projects','0');
@@ -145,7 +145,7 @@ class modSportsmanagementPlaygroundplanHelper
 	 * @param mixed $teamformat
 	 * @return
 	 */
-	function getTeams( $team1_id, $teamformat)
+	public static function getTeams( $team1_id, $teamformat)
 	{
 	   $mainframe = JFactory::getApplication();
 	   $db  = JFactory::getDBO();
@@ -171,7 +171,7 @@ class modSportsmanagementPlaygroundplanHelper
 	 * @param mixed $team_id
 	 * @return
 	 */
-	function getTeamLogo($team_id,$logo = 'logo_big')
+	public static function getTeamLogo($team_id,$logo = 'logo_big')
 	{
 	   $mainframe = JFactory::getApplication();
 	   $db  = JFactory::getDBO();
