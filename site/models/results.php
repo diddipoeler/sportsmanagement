@@ -73,17 +73,20 @@ class sportsmanagementModelResults extends JModelLegacy
 	 */
 	function __construct()
 	{
-		$app = JFactory::getApplication();
+		 // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
         
         parent::__construct();
 
-		$this->divisionid = JRequest::getInt('division',0);
-		$this->mode = JRequest::getInt('mode',0);
-		$this->order = JRequest::getInt('order',0);
-        $this->projectid = JRequest::getInt('p',0);
-		$round = JRequest::getInt('r', 0);
+		$this->divisionid = $jinput->getInt('division',0);
+		$this->mode = $jinput->getInt('mode',0);
+		$this->order = $jinput->getInt('order',0);
+        $this->projectid = $jinput->getInt('p',0);
+		$round = $jinput->getInt('r', 0);
 		$roundid = $round;
-        self::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+        self::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
         
         sportsmanagementModelProject::$projectid = $this->projectid;
         sportsmanagementModelProject::$cfg_which_database = self::$cfg_which_database;
@@ -98,7 +101,7 @@ class sportsmanagementModelResults extends JModelLegacy
         else 
         {
 			//$this->roundid = sportsmanagementModelProject::getCurrentRound(JRequest::getVar('view'));
-            self::$roundid = sportsmanagementModelProject::getCurrentRound(JRequest::getVar('view'),self::$cfg_which_database);
+            self::$roundid = sportsmanagementModelProject::getCurrentRound($jinput->getVar('view'),self::$cfg_which_database);
             
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _current_round<br><pre>'.print_r(sportsmanagementModelProject::$_current_round,true).'</pre>'),'');
             //$roundid = sportsmanagementModelProject::$_current_round;
@@ -258,7 +261,7 @@ class sportsmanagementModelResults extends JModelLegacy
 	 * @param mixed $config
 	 * @return
 	 */
-	function getResultsRows($round,$division,&$config,$params = NULL,$cfg_which_database = 0)
+	public static function getResultsRows($round,$division,&$config,$params = NULL,$cfg_which_database = 0)
 	{
 		$option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();

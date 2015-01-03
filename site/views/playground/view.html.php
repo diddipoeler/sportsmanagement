@@ -71,7 +71,7 @@ class sportsmanagementViewPlayground extends JViewLegacy
         //$document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
 
 		$model = $this->getModel();
-        sportsmanagementModelProject::setProjectID($jinput->getInt( "p", 0 ),$jinput->:getInt('cfg_which_database',0));
+        sportsmanagementModelProject::setProjectID($jinput->getInt( "p", 0 ),$jinput->getInt('cfg_which_database',0));
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
         

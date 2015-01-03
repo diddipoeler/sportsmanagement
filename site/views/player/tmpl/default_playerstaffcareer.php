@@ -44,7 +44,7 @@ if (count($this->historyPlayerStaff) > 0)
 {
 	?>
 	<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_STAFF_CAREER'); ?></h2>
-	<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
+	<table class="table" >
 		<tr>
 			<td>
 				<table id="playerhistory">
@@ -58,8 +58,8 @@ if (count($this->historyPlayerStaff) > 0)
 					$k=0;
 					foreach ($this->historyPlayerStaff AS $station)
 					{
-						$link1=JoomleagueHelperRoute::getPlayerRoute($station->project_slug,$station->team_slug,$this->person->slug);
-						$link2=JoomleagueHelperRoute::getPlayersRoute($station->project_slug,$station->team_slug);
+						$link1=sportsmanagementHelperRoute::getPlayerRoute($station->project_slug,$station->team_slug,$this->person->slug);
+						$link2=sportsmanagementHelperRoute::getPlayersRoute($station->project_slug,$station->team_slug);
 						?>
 						<tr class="<?php echo ($k==0)? $this->config['style_class1'] : $this->config['style_class2']; ?>">
 							<td class="td_l"><?php echo JHtml::link($link1,$station->project_name); ?></td>
