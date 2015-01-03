@@ -59,7 +59,7 @@ class modSportsmanagementTeamStatHelper
 	 * @access public
 	 * @return array
 	 */
-	function getData(&$params)
+	public static function getData(&$params)
 	{
 	   $mainframe = JFactory::getApplication();
 		$db = JFactory::getDBO();
@@ -73,15 +73,20 @@ class modSportsmanagementTeamStatHelper
 //		$model = &JLGModel::getInstance('project', 'JoomleagueModel');
 
 		sportsmanagementModelProject::setProjectId($params->get('p'));
-		$stat_id		= (int)$params->get('sid');
+		$stat_id = (int)$params->get('sid');
 				
 		$project = sportsmanagementModelProject::getProject();
-		$stat = current(current(sportsmanagementModelProject::getProjectStats($stat_id)));
+		$stat = current(current(sportsmanagementModelProject::getProjectStats($stat_id,0,0)));
+        //$stat = sportsmanagementModelProject::getProjectStats($stat_id,0,0);
 		if (!$stat) 
         {
-			echo 'Undefined stat';
+			echo 'Undefined stat<br>';
 		}
 		
+//        echo ' stat<br><pre>'.print_r($stat,true).'</pre>';
+//        echo ' current stat<br><pre>'.print_r(current($stat),true).'</pre>';
+//        echo ' 2 current stat<br><pre>'.print_r(current(current($stat)),true).'</pre>';
+        
 		$ranking = $stat->getTeamsRanking($project->id, $params->get('limit'), 0, $params->get('ranking_order', 'DESC'));
 		if (empty($ranking)) 
         {
@@ -110,7 +115,7 @@ class modSportsmanagementTeamStatHelper
 //		       ;
 		$db->setQuery($query);
         
-        $mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$teams = $db->loadObjectList('id');
 		
@@ -123,7 +128,7 @@ class modSportsmanagementTeamStatHelper
 	 * @param int type = 1 for club small logo, 2 for country
 	 * @return html string
 	 */
-	function getLogo($item, $type = 1)
+	public static function getLogo($item, $type = 1)
 	{
 		if ($type == 1) // club small logo
 		{
@@ -148,7 +153,7 @@ class modSportsmanagementTeamStatHelper
 	 * @param mixed $project
 	 * @return
 	 */
-	function getTeamLink($item, $params, $project)
+	public static function getTeamLink($item, $params, $project)
 	{
 		switch ($params->get('teamlink'))
 		{
@@ -170,7 +175,7 @@ class modSportsmanagementTeamStatHelper
 	 * @param mixed $stat
 	 * @return
 	 */
-	function getStatIcon($stat)
+	public static function getStatIcon($stat)
 	{
 		if ($stat->icon == 'media/com_sportsmanagement/event_icons/event.gif')
 		{
