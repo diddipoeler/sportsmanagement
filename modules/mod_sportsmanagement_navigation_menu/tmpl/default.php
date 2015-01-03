@@ -16,11 +16,11 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <div id="jl-nav-module">
-<div class="jl-nav-module<?php echo $params->get('moduleclass_sfx'); ?>">
+<div class="jl-nav-module">
 
 <form method="post" action="<?php echo JUri::root();?>">
 
-<ul class="nav-list">
+<ul class="nav menu<?php echo $params->get('moduleclass_sfx'); ?>">
 
 	<?php if ($params->get('show_project_dropdown') == 'season') :?>
 		<?php if ($seasonselect): ?>
