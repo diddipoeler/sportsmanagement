@@ -1442,6 +1442,8 @@ $starttime = microtime();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _stats<br><pre>'.print_r(self::$_stats,true).'</pre>'),'');
 
 		if (empty(self::$_stats))
 		{
@@ -1455,6 +1457,11 @@ $starttime = microtime();
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = ps.position_id
 						  AND ppos.project_id='.$project_id);
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ps.position_id');
+            
+            if ( $statid )
+            {
+                $query->where('stat.id = '.$statid);
+            }
             $query->where('stat.published = 1');
             $query->where('pos.published = 1');
             $query->order('pos.ordering,ps.ordering');
@@ -1463,24 +1470,37 @@ $starttime = microtime();
 			self::$_stats = $db->loadObjectList();
 
 		}
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _stats<br><pre>'.print_r(self::$_stats,true).'</pre>'),'');
+        
 		// sort into positions
 		$positions = self::getProjectPositions($cfg_which_database);
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' positions<br><pre>'.print_r($positions,true).'</pre>'),'');
+        
 		$stats = array();
-		// init
-		foreach ($positions as $pos)
-		{
-			$stats[$pos->id]=array();
-		}
+		
+        // init
+//		foreach ($positions as $pos)
+//		{
+//			$stats[$pos->id] = array();
+//		}
+        
 		if (count(self::$_stats) > 0)
 		{
 			foreach (self::$_stats as $k => $row)
 			{
 				if (!$statid || $statid == $row->id || (is_array($statid) && in_array($row->id, $statid)))
 				{
-					$stat = SMStatistic::getInstance($row->class);
+					if ( !isset($stats[$row->position_id]) )
+                    {
+                    $stats[$row->position_id] = array();    
+                    }
+                    
+                    $stat = SMStatistic::getInstance($row->class);
 					$stat->bind($row);
 					$stat->set('position_id',$row->position_id);
-					$stats[$row->position_id][$row->id]=$stat;
+					$stats[$row->position_id][$row->id] = $stat;
 				}
 			}
 			if ($positionid)
@@ -1489,11 +1509,13 @@ $starttime = microtime();
 			}
 			else
 			{
+			 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' stats<br><pre>'.print_r($stats,true).'</pre>'),'');
 				return $stats;
 			}
 		}
 		else
 		{
+		  //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' stats<br><pre>'.print_r($stats,true).'</pre>'),'');
 			return $stats;
 		}
 	}
