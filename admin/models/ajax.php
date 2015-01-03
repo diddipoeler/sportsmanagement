@@ -100,8 +100,10 @@ class sportsmanagementModelAjax extends JModelLegacy
         $query->select('id, name, round_date_first, round_date_last, roundcode');
         
         $query->from('#__sportsmanagement_round');
-        
+        if ( $project_id )
+        {
         $query->where('project_id = '.$project_id);
+        }
         $query->where('published = 1');
         
         if ( $round_ids )
@@ -495,7 +497,10 @@ class sportsmanagementModelAjax extends JModelLegacy
         // From 
 		$query->from('#__sportsmanagement_project as p');
         // Where
-        $query->where('p.season_id = ' . $season_id );                        
+        if ( $season_id )
+        {
+        $query->where('p.season_id = ' . $season_id );
+        }                        
                 // Where
         $query->order('p.name');
         

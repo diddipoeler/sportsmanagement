@@ -123,6 +123,11 @@ class JFormFieldseasonlist extends JFormField
             break;
         }
         
+        if ($v = $this->element['size'])
+		{
+			$attribs .= ' size="'.$v.'"';
+		}
+        
         $cfg_which_database = $this->form->getValue('cfg_which_database',$div);
         
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' name -> <br><pre>'.print_r($this->name,true).'</pre>'),'Notice');
