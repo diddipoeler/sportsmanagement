@@ -40,6 +40,21 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+if (! defined('DS'))
+{
+	define('DS', DIRECTORY_SEPARATOR);
+}
+
+if ( !defined('JSM_PATH') )
+{
+DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
+}
+
+if ( !class_exists('sportsmanagementHelper')) 
+{
+    require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');  
+}
+
 jimport('joomla.filesystem.folder');
 JFormHelper::loadFieldClass('list');
 
@@ -74,19 +89,38 @@ class JFormFieldseasonlist extends JFormField
 	{
 		// Initialize variables.
 		$options = array();
+        // Reference global application object
         $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+       $view = $jinput->getCmd('view');
+       $option = $jinput->getCmd('option');
+       $lang = JFactory::getLanguage();
+		$lang->load("com_sportsmanagement", JPATH_ADMINISTRATOR); 
+        
+        
     $attribs = '';
     $ctrl = $this->name;
     $val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
-    $value = $this->form->getValue($val,'request');
-    if ( !$value )
+//    $value = $this->form->getValue($val,'request');
+//    if ( !$value )
+//        {
+//        $value = $this->form->getValue($val,'params');
+//        $div = 'params';
+//        }
+//        else
+//        {
+//        $div = 'request';
+//        }
+        
+        switch ($option)
         {
-        $value = $this->form->getValue($val,'params');
-        $div = 'params';
-        }
-        else
-        {
-        $div = 'request';
+            case 'com_modules':
+            $div = 'params';
+            break;
+            default:
+            $div = 'request';
+            break;
         }
         
         $cfg_which_database = $this->form->getValue('cfg_which_database',$div);

@@ -87,8 +87,16 @@ class JFormFieldDependSQL extends JFormField
      */
     protected function getInput()
 	{
-	   $app = JFactory::getApplication();
-       $view = JRequest::getCmd('view');
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+       $view = $jinput->getCmd('view');
+       $option = $jinput->getCmd('option');
+       
+       $lang = JFactory::getLanguage();
+		$lang->load("com_sportsmanagement", JPATH_ADMINISTRATOR);
+        
        $attribs = '';
 		$required = $this->element['required'] == "true" ? 'true' : 'false';
 		$key = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
@@ -96,7 +104,7 @@ class JFormFieldDependSQL extends JFormField
 		$ajaxtask = $this->element['task'];
 		$depends = $this->element['depends'];
         $query = (string)$this->element['query'];
-        $value = $this->form->getValue($val,'request');
+        
 
 		
         $project_id = $this->form->getValue('id');
@@ -104,6 +112,10 @@ class JFormFieldDependSQL extends JFormField
         if ($v = $this->element['size'])
 		{
 			$attribs .= ' size="'.$v.'"';
+		}
+        if ($v = $this->element['multiple'])
+		{
+			$attribs .= ' multiple="'.$v.'"';
 		}
         
 //        if ( !$value )
@@ -113,16 +125,35 @@ class JFormFieldDependSQL extends JFormField
 //        }
 //        else
 //        {
-        $div = 'request';
+        
+        switch ($option)
+        {
+            case 'com_modules':
+            $div = 'params';
+            break;
+            default:
+            $div = 'request';
+            break;
+        }
+        
+        $value = $this->form->getValue($val,$div);
+        
+        //$div = 'request';
 //        }
         
         $cfg_which_database = $this->form->getValue('cfg_which_database',$div);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database -> '.$this->form->getValue('cfg_which_database',$div).' name -> '.$this->name),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value -> '.$this->value.''),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' id -> '.$this->id.''),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view -> '.$view.''),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id -> '.$project_id.''),'Notice');
+//        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+//        {
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view -> '.$view.''),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' option -> '.$option.''),'Notice');
+//        
+//        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database -> '.$this->form->getValue('cfg_which_database',$div).' name -> '.$this->name),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value -> '.$this->value.''),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' id -> '.$this->id.''),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view -> '.$view.''),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id -> '.$project_id.''),'Notice');
+//        }
 
 		$ctrl = $this->name;
 		$id = $this->id;

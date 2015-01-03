@@ -134,8 +134,11 @@ class sportsmanagementModelLeagues extends JModelList
 	 */
 	protected function getListQuery()
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         //$search	= $this->getState('filter.search');
         //$search_nation	= $this->getState('filter.search_nation');
         
@@ -202,8 +205,11 @@ class sportsmanagementModelLeagues extends JModelList
      */
     public function getLeagues()
     {
+        // Reference global application object
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         $search_nation = '';
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($app,true).'</pre>'),'Notice');
