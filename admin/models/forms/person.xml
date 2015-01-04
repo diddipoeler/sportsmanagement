@@ -527,7 +527,15 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 				class="inputbox"
 				preview="show"
 				targetfolder="persons"
-				directory=""/>		
+				directory=""/>
+        
+        <field
+			name="cr_picture"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_PICTURE_CR"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_PICTURE_CR_DESC"
+			class="inputbox"/>
+        		
 	</fieldset>	
 
 <fieldset name="extended"

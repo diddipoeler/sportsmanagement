@@ -261,7 +261,7 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          * 
          * @return
          */
-        public function projectclubsoptions()
+        public function projectcluboptions()
         {
                 $model = $this->getModel('ajax');
                 $req = JRequest::getVar('required', false);

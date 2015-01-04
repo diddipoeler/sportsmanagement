@@ -89,6 +89,14 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 				label="COM_SPORTSMANAGEMENT_GLOBAL_ICON" 
 				description="COM_SPORTSMANAGEMENT_GLOBAL_ICON_DESC">
 		</field>
+		
+		<field
+			name="cr_picture"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_PICTURE_CR"
+			description="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_PICTURE_CR_DESC"
+			class="inputbox"/>
+			
 	</fieldset>
   
   

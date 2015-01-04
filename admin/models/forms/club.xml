@@ -278,6 +278,14 @@
 				preview="show"
 				targetfolder="clubs_small"
 				directory=""/>	
+				
+				<field
+			name="cr_logo_small"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL_CR"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL_CR_DESC"
+			class="inputbox"/>  
+			
 			<field
 				name="logo_middle"
 				type=""
@@ -287,7 +295,15 @@
 				class="inputbox"
 				preview="show"
 				targetfolder="clubs_medium"
-				directory=""/>				
+				directory=""/>	
+      
+      <field
+			name="cr_logo_middle"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE_CR"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE_CR_DESC"
+			class="inputbox"/>
+        			
 			<field
 				name="logo_big"
 				type=""
@@ -298,7 +314,14 @@
 				preview="show"
 				targetfolder="clubs_large"
 				directory=""/>				
-		   
+		  
+      <field
+			name="cr_logo_big"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_BIG_CR"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_BIG_CR_DESC"
+			class="inputbox"/>
+       
        <field
 				name="trikot_home"
 				type=""
