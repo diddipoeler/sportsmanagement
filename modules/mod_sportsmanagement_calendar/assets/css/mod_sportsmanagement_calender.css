@@ -1,0 +1,166 @@
+span.jlcal_jevents_time {
+	
+}
+
+span.jlcal_jevents_title {
+	font-weight: bold;
+}
+
+span.jlcal_jevents_location {
+	
+}
+
+.jlcal_matchrow tr>td {
+	border-bottom: 3px #f00 inline;
+}
+
+.jlcCalendarDayEmpty {
+	color: #ddd;
+}
+
+.jcalbox_hidden {
+	visibility: hidden;
+}
+
+.jcalbox_visible {
+	visibility: show;
+}
+
+.jcal_inject {
+	max-height: 300px;
+	overflow: auto;
+	/*margin:10px;*/
+}
+
+.jcal_inject_close {
+	float: right;
+	border: solid 2px #000;
+	padding: 1px 6px;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.jlcal_hiddenmatches {
+	display: none;
+}
+
+span.jlCalListTitle {
+	display: block;
+	text-align: center;
+}
+
+table.jlcCalendar { /* style for all the calendar table */
+	padding: 0;
+	margin: 10px auto;
+	font: normal 12px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	color: #000000;
+	text-align: center;
+	border-collapse: collapse;
+	width: 98%;
+}
+
+td.jlcCalendarHeader {
+	/* the style for The calendar header, this includes the two link arrows and the date*/
+	margin: 0;
+	padding: 0;
+	background: #616D7E;
+	color: #fff;
+	font: bold 12px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	text-align: center;
+}
+
+td.jlcheaderDate { /* td style for the header date (ex. December 2007)*/
+	background: #616D7E;
+}
+
+a.jlcheaderDate { /* link style for the header date */
+	font: bold 12px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	color: #3BB9FF;
+	text-align: center;
+	text-decoration: none;
+}
+
+td.jlcheaderArrow { /*td the style for the header link arrows */
+	background: #dcdcdc;
+}
+
+a.jlcheaderArrow { /*link style for the header link arrows*/
+	font: bold 18px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	color: #3BB9FF;
+	text-align: center;
+	text-decoration: none;
+}
+
+td.jlcdayName { /*td style of the day abreviations (S M T W T F S) */
+	font: bold 12px/20px "Trebuchet MS", Verdana, Arial, Helvetica,
+		sans-serif;
+	color: #616B76;
+	background: #FFFFFF;
+}
+
+td.jlcCalendarDay {
+	width: 14%;
+	/*height: 25px;
+text-align: center;*/
+}
+
+a.jlcCalendarDay {
+	/* style for a normal link in the calendar (that is not in the actual day) */
+	text-decoration: underline;
+	font: bold 12px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	color: #DF9496;
+	text-decoration: none;
+	font-weight: bold;
+	display: block;
+}
+
+td.jlcCalendarToday { /* the style for Today day */
+	color: #F6F4DA;
+	font-weight: bold;
+	background: #FAAFBE;
+}
+
+a.jlcCalendarToday {
+	/* link style for a link that is in the actual day */
+	font: bold 12px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;
+	color: #6aa3ae;
+}
+
+.dropList {
+	list-style: none;
+	background: #FFFFFF;
+}
+
+td.jlcal_matchdate {
+	
+}
+
+td.jlcal_hometeam {
+	white-space: nowrap;
+	width: 40%;
+	text-align: right;
+	vertical-align: middle;
+}
+
+td.jlcal_awayteam {
+	white-space: nowrap;
+	width: 40%;
+	vertical-align: middle;
+}
+
+td.jlcal_hometeam img,td.jlcal_awayteam img {
+	margin: auto 5px;
+	vertical-align: middle;
+}
+
+td.jlcal_hometeam img {
+	float: right;
+}
+
+td.jlcal_awayteam img {
+	float: left;
+}
+
+td.jlcal_result {
+	white-space: nowrap;
+}

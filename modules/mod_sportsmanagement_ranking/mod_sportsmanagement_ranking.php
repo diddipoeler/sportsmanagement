@@ -57,21 +57,21 @@ require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');   
 
 // welche tabelle soll genutzt werden
-$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
-$database_table	= $paramscomponent->get( 'cfg_which_database_table' );
-$show_debug_info = $paramscomponent->get( 'show_debug_info' );  
-$show_query_debug_info = $paramscomponent->get( 'show_query_debug_info' ); 
+//$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
+//$database_table	= $paramscomponent->get( 'cfg_which_database_table' );
+//$show_debug_info = $paramscomponent->get( 'show_debug_info' );  
+//$show_query_debug_info = $paramscomponent->get( 'show_query_debug_info' ); 
 if ( !defined('COM_SPORTSMANAGEMENT_TABLE') )
 {
-DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
+DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_table' ) );
 }
 if ( !defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO') )
 {
-DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
 }
 if ( !defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO') )
 {
-DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$show_query_debug_info );
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',JComponentHelper::getParams('com_sportsmanagement')->get( 'show_query_debug_info' ) );
 }
 
 //get helper

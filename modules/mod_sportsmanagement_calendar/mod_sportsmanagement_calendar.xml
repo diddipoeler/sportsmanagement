@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="2.5" client="site" method="upgrade">
+	<name>mod_sportsmanagement_calendar</name>
+	<creationDate>2015-01-05</creationDate>
+	<author>JSM-TEAM</author>
+	<authorEmail>diddipoeler@arcor.de</authorEmail>
+	<authorUrl>http://www.fussballineuropa.de</authorUrl>
+	<license>GNU/GPL</license>
+	<copyright>Copyright (c) 2014 diddipoeler</copyright>
+	<version>1.0</version>
+	<description>MOD_SPORTSMANAGEMENT_CALENDAR_DESC</description>
+
+	<files>
+		<filename module="mod_sportsmanagement_calendar">mod_sportsmanagement_calendar.php</filename>
+		<filename>helper.php</filename>
+		<filename>index.html</filename>
+		<filename>calendarClass.php</filename>
+		<folder>assets</folder>
+		<folder>tmpl</folder>
+		<folder>connectors</folder>
+		<folder>language</folder>
+	</files>
+
+	<config>
+		<fields name="params"
+    addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+
+			<fieldset name="basic"
+				>
+				
+				<field name="cfg_which_database" 
+    type="radio" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+		<field	name="s" 
+      type="seasonlist"
+      size="10"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
+					required="">
+			</field>
+				
+		<field 	name="project_ids" 
+			task="projects" 
+      type="dependsql"
+      depends="s"
+      key_field="season_id"
+			value_field="s"
+			required=""
+			size="10"
+						label="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITPROJECTSLBL" 
+						description="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITPROJECTSDESC" />
+<!--            		
+				<field name="project_ids" type="projects" default="" required="true"
+					label="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITPROJECTSLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITPROJECTSDESC">
+				</field>
+-->
+				<field name="club_ids" type="clubs" default="" label="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITCLUBSLBL"
+					description="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITCLUBSDESC">
+				</field>
+
+				<field name="team_ids" type="teams" default="" label="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITTEAMSLBL"
+					description="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITTEAMSDESC">
+				</field>
+				
+				<field name="time_zone" type="timezone" default="UTC" 
+					label="MOD_SPORTSMANAGEMENT_CALENDAR_LABEL_TIMEZONE"
+					description="MOD_SPORTSMANAGEMENT_CALENDAR_DESC_TIMEZONE" />
+				<field name="dateformat" type="text" default="l, d. F Y"
+					label="MOD_SPORTSMANAGEMENT_CALENDAR_LABEL_DATE_FORMAT"
+					description="MOD_SPORTSMANAGEMENT_CALENDAR_LABEL_DATE_FORMAT_DESC" />
+				<field name="timeformat" type="text" default="H:i"
+					label="MOD_SPORTSMANAGEMENT_CALENDAR_LABEL_TIME_FORMAT"
+					description="MOD_SPORTSMANAGEMENT_CALENDAR_LABEL_TIME_FORMAT_DESC" />
+									
+				<field name="cal_start_day" type="radio" default="1"
+					label="MOD_SPORTSMANAGEMENT_CALENDAR_CALSTARTDAYLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_CALSTARTDAYDESC">
+					<option value="0">0</option>
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+				</field>
+
+				<field name="cal_length_days" type="radio" default="2"
+					label="MOD_SPORTSMANAGEMENT_CALENDAR_LENGTHDAYSLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_LENGTHDAYSDESC">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+				</field>
+
+				<field type="spacer">
+				</field>
+
+				<field name="sportsmanagement" type="radio" default="sportsmanagement"
+					label="MOD_SPORTSMANAGEMENT_CALENDAR_JOOMLEAGUECONNECTORLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_JOOMLEAGUECONNECTORDESC">
+					<option value="sportsmanagement">MOD_SPORTSMANAGEMENT_CALENDAR_NO</option>
+					<option value="sportsmanagement_legacy">sportsmanagement 0.93b</option>
+				</field>
+
+				<field name="custom_prefix" type="text" default=""
+					label="MOD_SPORTSMANAGEMENT_CALENDAR_CUSTOMPREFIXLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_CUSTOMPREFIXDESC">
+				</field>
+
+				<field name="jlbirthdays" type="radio" default="0"
+					label="MOD_SPORTSMANAGEMENT_CALENDAR_SHOWBIRTHDAYSLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_SHOWBIRTHDAYSDESC">
+					<option value="0">MOD_SPORTSMANAGEMENT_CALENDAR_NO</option>
+					<option value="1">MOD_SPORTSMANAGEMENT_CALENDAR_YES</option>
+				</field>
+
+				<field name="jlbirthdaypix" type="radio" default="0"
+					label="MOD_SPORTSMANAGEMENT_CALENDAR_SHOWBIRTHDAYSPIXLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_SHOWBIRTHDAYSPIXDESC">
+					<option value="0">MOD_SPORTSMANAGEMENT_CALENDAR_NO</option>
+					<option value="1">MOD_SPORTSMANAGEMENT_CALENDAR_YES</option>
+				</field>
+
+				<field name="linkbirthday" type="radio" default="0"
+					label="MOD_SPORTSMANAGEMENT_CALENDAR_LINKBIRTHDAYSLBL" description="">
+					<option value="0">MOD_SPORTSMANAGEMENT_CALENDAR_NO</option>
+					<option value="1">MOD_SPORTSMANAGEMENT_CALENDAR_YES</option>
+				</field>
+
+				<field name="birthday_text" type="text" default="Birthdays"
+					label="MOD_SPORTSMANAGEMENT_CALENDAR_BIRTHDAYTEXT" description="MOD_SPORTSMANAGEMENT_CALENDAR_BIRTHDAYTEXTDESC">
+				</field>
+
+				<field name="jlmatches" type="radio" default="1"
+					label="MOD_SPORTSMANAGEMENT_CALENDAR_SHOWMATCHESLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_SHOWMATCHESDESC">
+					<option value="0">MOD_SPORTSMANAGEMENT_CALENDAR_NO</option>
+					<option value="1">MOD_SPORTSMANAGEMENT_CALENDAR_YES</option>
+				</field>
+
+				<field name="show_teamslist" type="radio" default="1"
+					label="MOD_SPORTSMANAGEMENT_CALENDAR_SHOWTEAMSLISTLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_SHOWTEAMSLISTDESC">
+					<option value="0">MOD_SPORTSMANAGEMENT_CALENDAR_NO</option>
+					<option value="1">MOD_SPORTSMANAGEMENT_CALENDAR_YES</option>
+				</field>
+
+				<field name="teamslist_option" type="text" default="Select Team"
+					label="MOD_SPORTSMANAGEMENT_CALENDAR_TEAMLISTDEFAULTLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_TEAMLISTDEFAULTDESC">
+				</field>
+
+				<field name="sportsmanagement_use_favteams" type="radio" default="0"
+					label="MOD_SPORTSMANAGEMENT_CALENDAR_USEJLFAVLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_USEJLFAVDESC">
+					<option value="0">MOD_SPORTSMANAGEMENT_CALENDAR_NO</option>
+					<option value="1">MOD_SPORTSMANAGEMENT_CALENDAR_YES</option>
+				</field>
+
+				<field name="team_names" type="radio" default="short_name"
+					label="MOD_SPORTSMANAGEMENT_CALENDAR_TEAMNAMESLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_TEAMNAMESDESC">
+					<option value="-">MOD_SPORTSMANAGEMENT_CALENDAR_NONAMES</option>
+					<option value="short_name">MOD_SPORTSMANAGEMENT_CALENDAR_TEAMNAMESOPTION1</option>
+					<option value="middle_name">MOD_SPORTSMANAGEMENT_CALENDAR_TEAMNAMESOPTION2</option>
+					<option value="name">MOD_SPORTSMANAGEMENT_CALENDAR_TEAMNAMESOPTION3</option>
+				</field>
+
+				<field name="team_logos" type="radio" default="-" label="MOD_SPORTSMANAGEMENT_CALENDAR_CLUBLOGOSLBL"
+					description="MOD_SPORTSMANAGEMENT_CALENDAR_CLUBLOGOSDESC">
+					<option value="-">MOD_SPORTSMANAGEMENT_CALENDAR_NONAMES</option>
+					<option value="logo_small">MOD_SPORTSMANAGEMENT_CALENDAR_CLUBLOGOSOPTION1</option>
+					<option value="logo_middle">MOD_SPORTSMANAGEMENT_CALENDAR_CLUBLOGOSOPTION2</option>
+					<option value="logo_big">MOD_SPORTSMANAGEMENT_CALENDAR_CLUBLOGOSOPTION3</option>
+					<option value="logo_country">MOD_SPORTSMANAGEMENT_CALENDAR_CLUBLOGOSOPTION4</option>
+				</field>
+
+				<field name="logo_height" type="text" default="0"
+					label="MOD_SPORTSMANAGEMENT_CALENDAR_LOGOHEIGHTLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_LOGOHEIGHTDESC">
+				</field>
+
+				<field type="spacer">
+				</field>
+
+				<field name="livescore" type="radio" default="" label="MOD_SPORTSMANAGEMENT_CALENDAR_LIVESCORELBL"
+					description="MOD_SPORTSMANAGEMENT_CALENDAR_LIVESCOREDESC">
+					<option value="">MOD_SPORTSMANAGEMENT_CALENDAR_NO</option>
+					<option value="livescore">MOD_SPORTSMANAGEMENT_CALENDAR_YES</option>
+				</field>
+
+				<field name="prefix_livescore" type="text" default=""
+					label="MOD_SPORTSMANAGEMENT_CALENDAR_LIVESCPREFIXLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_LIVESCPREFIXDESC">
+				</field>
+
+				<field type="spacer" label="Configuration for Events-Components">
+				</field>
+
+				<field name="jevents" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_CALENDAR_JEVENTSLBL"
+					description="MOD_SPORTSMANAGEMENT_CALENDAR_JEVENTSDESC">
+					<option value="0">MOD_SPORTSMANAGEMENT_CALENDAR_NO</option>
+					<option value="1">MOD_SPORTSMANAGEMENT_CALENDAR_YES</option>
+				</field>
+
+				<field name="jevents_text" type="text" default="JEvents"
+					label="MOD_SPORTSMANAGEMENT_CALENDAR_JEVENTSHEADINGLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_JEVENTSHEADINGDESC">
+				</field>
+
+				<field type="spacer">
+				</field>
+
+				<field name="convert" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_CALENDAR_CONVUTFLBL"
+					description="MOD_SPORTSMANAGEMENT_CALENDAR_CONVUTFDESC">
+					<option value="0">MOD_SPORTSMANAGEMENT_CALENDAR_NO</option>
+					<option value="1">MOD_SPORTSMANAGEMENT_CALENDAR_YES</option>
+				</field>
+
+				<field name="lightbox" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_CALENDAR_USEBOXLBL"
+					description="MOD_SPORTSMANAGEMENT_CALENDAR_USEBOXDESC">
+					<option value="0">MOD_SPORTSMANAGEMENT_CALENDAR_NO</option>
+					<option value="1">MOD_SPORTSMANAGEMENT_CALENDAR_YES</option>
+				</field>
+
+				<field name="lightbox_on_pageload" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_CALENDAR_USEBOXLBL_ON_PAGELOAD"
+					description="MOD_SPORTSMANAGEMENT_CALENDAR_USEBOX_ON_PAGELOAD_DESC">
+					<option value="0">MOD_SPORTSMANAGEMENT_CALENDAR_NO</option>
+					<option value="1">MOD_SPORTSMANAGEMENT_CALENDAR_YES</option>
+				</field>
+
+				<field name="update_module" type="radio" default="1"
+					label="MOD_SPORTSMANAGEMENT_CALENDAR_BELOWCALLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_BELOWCALDESC">
+					<option value="0">MOD_SPORTSMANAGEMENT_CALENDAR_NO</option>
+					<option value="1">MOD_SPORTSMANAGEMENT_CALENDAR_YES</option>
+				</field>
+
+				<field name="inject" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_CALENDAR_INJECTLBL"
+					description="MOD_SPORTSMANAGEMENT_CALENDAR_INJECTDESC">
+					<option value="0">MOD_SPORTSMANAGEMENT_CALENDAR_NO</option>
+					<option value="1">MOD_SPORTSMANAGEMENT_CALENDAR_YES</option>
+				</field>
+
+				<field name="inject_container" type="text" default="sportsmanagement"
+					label="MOD_SPORTSMANAGEMENT_CALENDAR_INJCONTAINERLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_INJCONTAINERDESC">
+				</field>
+
+			</fieldset>
+			<fieldset name="advanced">
+				<field name="cache" type="list" default="1" label="MOD_SPORTSMANAGEMENT_CALENDAR_CACHINGLBL"
+					description="MOD_SPORTSMANAGEMENT_CALENDAR_CACHINGDESC">
+					<option value="1">MOD_SPORTSMANAGEMENT_CALENDAR_GLOBALS</option>
+					<option value="0">MOD_SPORTSMANAGEMENT_CALENDAR_NOCACHING</option>
+				</field>
+
+				<field name="cache_time" type="text" default="900" label="MOD_SPORTSMANAGEMENT_CALENDAR_CACHETIMELBL"
+					description="MOD_SPORTSMANAGEMENT_CALENDAR_CACHETIMEDESC">
+				</field>
+
+				<field name="moduleclass_sfx" type="text" default=""
+					label="MOD_SPORTSMANAGEMENT_CALENDAR_MODULECLASSSUFFIXLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_MODULECLASSSUFFIXDESC">
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+
+</extension>

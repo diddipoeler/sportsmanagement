@@ -58,6 +58,27 @@ require_once(dirname(__FILE__).DS.'helper.php');
 $document = JFactory::getDocument();
 $show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) ;
 
+
+if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
+}
+if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
+{
+if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+{    
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) );
+}    
+}
+else
+{
+if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+{        
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );
+}    
+}
+
+
 //add css file
 $document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_birthday/css/mod_sportsmanagement_birthday.css');
 

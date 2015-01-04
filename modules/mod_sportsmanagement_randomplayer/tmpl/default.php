@@ -65,7 +65,14 @@ $text = sportsmanagementHelper::formatName(null, $person->firstname,
 												$params->get("name_format"));
 	
 $imgTitle = JText::sprintf( $picturetext .' %1$s', $text);
-$picture = $list['inprojectinfo']->picture;
+if ( isset($list['inprojectinfo']->picture) )
+{
+    $picture = $list['inprojectinfo']->picture;
+}
+else
+{
+    $picture = '';
+}
 $pic = sportsmanagementHelper::getPictureThumb($picture, $imgTitle, $params->get('picture_width'), $params->get('picture_heigth'));
 echo '<a href="'.$link.'">'.$pic.'</a>' ;
 ?></li>
@@ -109,7 +116,7 @@ echo '<a href="'.$link.'">'.$pic.'</a>' ;
 ?>
 </li>
 <?php endif; ?>
-<?php if ($params->get('show_position_name')):?>
+<?php if ( $params->get('show_position_name') && isset($list['inprojectinfo']->position_name) ):?>
 <li class="positionname"><?php 
 	$positionName = $list['inprojectinfo']->position_name;
 	echo JText::_($positionName);?>

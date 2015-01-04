@@ -120,7 +120,7 @@ class modJSMRankingHelper
 	 * @access public
 	 * @return array
 	 */
-	function getShrinkedDataAroundOneTeam($completeRankingList, $alwaysVisibleTeamId, $paramRowLimit){
+	static function getShrinkedDataAroundOneTeam($completeRankingList, $alwaysVisibleTeamId, $paramRowLimit){
 		// First Fav-Team should be always visible in the ranking view
 		$rank = $completeRankingList;
 		$i=0;
