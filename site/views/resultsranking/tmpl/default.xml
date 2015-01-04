@@ -39,11 +39,17 @@
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_DESCR"
 					required="">
 			</field>
-			<field	name="division" type="dependsql" depends="p" task="projectdivisionsoptions"
+			<field	name="division" 
+      type="dependsql" 
+      depends="p" 
+      task="projectdivisionsoptions"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_DESCR">
 			</field>
-			<field	name="r" type="dependsql" depends="p" task="projectroundoptions"
+			<field	name="r" 
+      type="dependsql" 
+      depends="p" 
+      task="projectroundoptions"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_ROUND_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_ROUND_DESCR">
 			</field>

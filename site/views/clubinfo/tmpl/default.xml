@@ -26,7 +26,8 @@
       value_field="cfg_which_database"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
-					required="">
+					required=""
+          size="">
 			</field>
 		
 			<field	name="p" 
@@ -37,7 +38,8 @@
 			value_field="s"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_DESCR"
-					required="">
+					required=""
+          size="">
 			</field>
 
 <!--			
