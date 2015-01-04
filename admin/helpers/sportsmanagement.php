@@ -60,6 +60,72 @@ abstract class sportsmanagementHelper
 	static $_jsm_db = '';
     
     
+    /**
+     * sportsmanagementHelper::getMatchDate()
+     * 
+     * @param mixed $match
+     * @param string $format
+     * @return
+     */
+    public static function getMatchDate($match, $format = 'Y-m-d')
+	{
+		return $match->match_date ? $match->match_date->format($format, true) : "xxxx-xx-xx";
+	}
+
+	/**
+	 * sportsmanagementHelper::getMatchTime()
+	 * 
+	 * @param mixed $match
+	 * @param string $format
+	 * @return
+	 */
+	public static function getMatchTime($match, $format = 'H:i')
+	{
+		return $match->match_date ? $match->match_date->format($format, true) : "xx:xx";
+	}
+
+	/**
+	 * sportsmanagementHelper::getMatchStartTimestamp()
+	 * 
+	 * @param mixed $match
+	 * @param string $format
+	 * @return
+	 */
+	public static function getMatchStartTimestamp($match, $format = 'Y-m-d H:i')
+	{
+		return $match->match_date ? $match->match_date->format($format, true) : "xxxx-xx-xx xx:xx";
+	}
+
+	/**
+	 * sportsmanagementHelper::getMatchEndTimestamp()
+	 * 
+	 * @param mixed $match
+	 * @param mixed $totalMatchDuration
+	 * @param string $format
+	 * @return
+	 */
+	public static function getMatchEndTimestamp($match, $totalMatchDuration, $format = 'Y-m-d H:i')
+	{
+		$endTimestamp = "xxxx-xx-xx xx:xx";
+		if ($match->match_date)
+		{
+			$start = new DateTime(self::getMatchStartTimestamp($match));
+			$end = $start->add(new DateInterval('PT'.$totalMatchDuration.'M'));
+			$endTimestamp = $end->format($format);
+		}
+		return $endTimestamp;
+	}
+
+	/**
+	 * sportsmanagementHelper::getMatchTimezone()
+	 * 
+	 * @param mixed $match
+	 * @return
+	 */
+	public static function getMatchTimezone($match)
+	{
+		return $match->timezone;
+	}
     
     /**
 	 * Convert the UTC timestamp of a match (stored as UTC in the database) to:
