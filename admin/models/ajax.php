@@ -68,7 +68,9 @@ class sportsmanagementModelAjax extends JModelLegacy
                         $mitems = array(JHTML::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
                         return array_merge($mitems, $elements);
                 }
-                return $elements;
+                $mitems = array(JHTML::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+                return array_merge($mitems, $elements);
+                //return $elements;
         }
         
         
@@ -555,7 +557,14 @@ class sportsmanagementModelAjax extends JModelLegacy
         $query->join('INNER',' #__sportsmanagement_project p ON p.id = pt.project_id ');
                                 
                 // Where
-        $query->where('pt.project_id = ' . $db->Quote($project_id) );
+        if ( $project_id )
+        {
+        $query->where('pt.project_id = ' . $project_id );
+        }
+        else
+        {
+            $query->where('pt.project_id = 0' );
+        }
         // order
         $query->order('t.name');
         
