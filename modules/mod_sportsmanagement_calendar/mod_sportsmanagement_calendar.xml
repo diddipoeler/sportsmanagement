@@ -114,11 +114,11 @@
 					<option value="sportsmanagement">MOD_SPORTSMANAGEMENT_CALENDAR_NO</option>
 					<option value="sportsmanagement_legacy">sportsmanagement 0.93b</option>
 				</field>
-
+<!--
 				<field name="custom_prefix" type="text" default=""
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_CUSTOMPREFIXLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_CUSTOMPREFIXDESC">
 				</field>
-
+-->
 				<field name="jlbirthdays" type="radio" default="0"
 				class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_SHOWBIRTHDAYSLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_SHOWBIRTHDAYSDESC">

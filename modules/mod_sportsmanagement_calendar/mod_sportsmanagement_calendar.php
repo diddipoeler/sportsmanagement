@@ -83,11 +83,28 @@ if(!$params->get('cal_start_date'))
 }
 else
 {
-	$startDate= new JDate($params->get('cal_start_date'));
-	$year = $jinput->getVar('year', $startDate->toFormat('%Y'));
-	$month  = $jinput->getVar('month', $startDate->toFormat('%m'));
-	$day  = $ajax? '' : $jinput->getVar('day', $startDate->toFormat('%d'));
+
+$startDate= new JDate($params->get('cal_start_date'));
+    
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+$config = JFactory::getConfig();
+$offset = $config->get('offset');    
+$year = $jinput->getVar('year', $startDate->toFormat('Y'));
+$month  = $jinput->getVar('month', $startDate->toFormat('m'));
+$day  = $ajax? '' : $jinput->getVar('day', $startDate->toFormat('d'));      
 }
+else
+{    
+$config = JFactory::getConfig();
+$offset = $config->get('offset'); 
+$year = $jinput->getVar('year', $startDate->toFormat('%Y'));
+$month  = $jinput->getVar('month', $startDate->toFormat('%m'));
+$day  = $ajax? '' : $jinput->getVar('day', $startDate->toFormat('%d'));
+}
+    
+}
+
 $helper = new modJSMCalendarHelper;
 $doc = JFactory::getDocument();
 $lightbox = $params->get('lightbox', 1);

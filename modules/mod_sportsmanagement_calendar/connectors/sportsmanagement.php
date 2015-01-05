@@ -96,7 +96,7 @@ class SportsmanagementConnector extends JSMCalendar
 	 * 
 	 * @return
 	 */
-	function getFavs()
+	static function getFavs()
 	{
 	   // Reference global application object
         $app = JFactory::getApplication();
@@ -125,10 +125,12 @@ class SportsmanagementConnector extends JSMCalendar
 		//$query = (self::$prefix != '') ? str_replace('#__', self::$prefix, $query) : $query;
 		//$database = JFactory::getDbo();
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$db->setQuery($query);
 		$fav = $db->loadObjectList();
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  'fav <br><pre>'.print_r($fav,true).'</pre>'),'Notice');
 
 		// echo '<pre>';
 		// print_r($fav);
@@ -462,7 +464,7 @@ class SportsmanagementConnector extends JSMCalendar
 			$teamids = (is_array($teamid)) ? implode(",", $teamid) : $teamid;
 			if($teamids > 0)
 			{
-				$limitingconditions[] = "pt.team_id IN (".$teamids.")";
+				$limitingconditions[] = "st.team_id IN (".$teamids.")";
                 //$query->where("pt.team_id IN (".$teamids.")");
 			}
 		}
@@ -483,7 +485,7 @@ class SportsmanagementConnector extends JSMCalendar
 		{
 			foreach (SportsmanagementConnector::$favteams as $projectfavs)
 			{
-				$favConds[] = "(pt.team_id IN (". $projectfavs->fav_team.") AND p.id =".$projectfavs->id.")";
+				$favConds[] = "(st.team_id IN (". $projectfavs->fav_team.") AND p.id =".$projectfavs->id.")";
 			}
 			if(!empty($favConds))
 			{

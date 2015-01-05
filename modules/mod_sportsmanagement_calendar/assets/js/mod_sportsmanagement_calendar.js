@@ -115,6 +115,8 @@ function jlcnewDate(month, year, modid, day) {
 		year++;
 	}
 
+  // alert('jlcteam ' + teamid + ' year ' + year + ' month ' + month);
+  
 	var ajax = jlcnewAjax();
 	ajax.open("POST", location.href, true);
 	ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
