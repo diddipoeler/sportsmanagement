@@ -468,6 +468,7 @@ echo self::getFxInitJSCode('steps');
         'laender_karten',
 		'events',
 		'leagues',
+        'positions',
 		'divisions',
 		'person_playground',
 		'associations',
