@@ -75,7 +75,7 @@ class sportsmanagementControllerImagehandler extends JController
         $option = $jinput->getCmd('option');
 
 		// Check for request forgeries
-		$jinput->checkToken() or die( 'JINVALID_TOKEN' );
+		JRequest::checkToken() or die( 'JINVALID_TOKEN' );
 
 		$file	= $jinput->getVar( 'userfile', '', 'files', 'array' );
 		//$task	= $jinput->getVar( 'task' );
