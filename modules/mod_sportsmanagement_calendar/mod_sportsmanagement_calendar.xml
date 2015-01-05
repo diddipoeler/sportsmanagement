@@ -6,7 +6,7 @@
 	<authorEmail>diddipoeler@arcor.de</authorEmail>
 	<authorUrl>http://www.fussballineuropa.de</authorUrl>
 	<license>GNU/GPL</license>
-	<copyright>Copyright (c) 2014 diddipoeler</copyright>
+	<copyright>Copyright (c) 2015 diddipoeler</copyright>
 	<version>1.0</version>
 	<description>MOD_SPORTSMANAGEMENT_CALENDAR_DESC</description>
 
@@ -21,6 +21,15 @@
 		<folder>language</folder>
 	</files>
 
+  <languages>
+		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_calendar.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_calendar.sys.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_calendar.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_calendar.sys.ini</language>
+		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_calendar.ini</language>
+		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_calendar.sys.ini</language>
+	</languages>
+	
 	<config>
 		<fields name="params"
     addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
