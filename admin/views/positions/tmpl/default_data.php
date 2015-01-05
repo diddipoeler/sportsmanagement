@@ -63,6 +63,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						?>
 					</th>
 					<th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_TRANSLATION'); ?></th>
+                    <th>
+						<?php
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IMAGE','po.picture',$this->sortDirection,$this->sortColumn);
+						?>
+					</th>
 					<th>
 						<?php
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_PARENTNAME','po.parent_id',$this->sortDirection,$this->sortColumn);
@@ -148,6 +153,42 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						}
 						?>
 					</td>
+                    
+                    <td width="5%" class="center">
+							<?php
+							if ($row->picture == '')
+							{
+								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_NO_IMAGE');
+								echo JHtml::_('image',JURI::base().'/components/com_sportsmanagement/assets/images/delete.png',
+												$imageTitle,'title= "'.$imageTitle.'"');
+
+							}
+							elseif($row->picture == sportsmanagementHelper::getDefaultPlaceholder("icon"))
+								{
+									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_DEFAULT_IMAGE');
+									echo JHtml::_(	'image',JURI::base() .'/components/com_sportsmanagement/assets/images/information.png',
+													$imageTitle,'title= "'.$imageTitle.'"');
+                                                    
+?>
+<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="20" />
+</a>
+<?PHP                                                      
+								}
+								elseif($row->picture !== '')
+									{
+										$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_CUSTOM_IMAGE');
+										echo JHtml::_('image',JURI::base().'/components/com_sportsmanagement/assets/images/ok.png',
+														$imageTitle,'title= "'.$imageTitle.'"');
+?>
+<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="20" />
+</a>
+<?PHP                                                          
+									}
+									?>
+						</td>
+                        
 					<td>
 						<?php
 							echo JHtml::_('select.genericlist',$this->lists['parent_id'],'parent_id'.$row->id,''.'class="inputbox" size="1" onchange="document.getElementById(\'cb'.$i.'\').checked=true"','value','text',$row->parent_id);

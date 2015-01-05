@@ -95,10 +95,14 @@ class sportsmanagementModelposition extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         $db		= $this->getDbo();
         $query = $db->getQuery(true);
+        $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
         
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.position', 'position', array('control' => 'jform', 'load_data' => $loadData));
@@ -108,6 +112,10 @@ class sportsmanagementModelposition extends JModelAdmin
 		}
         
         $prefix = $app->getCfg('dbprefix');
+        
+        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($option)->get('ph_player',''));
+        $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/persons');
+        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         
         //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' prefix<br><pre>'.print_r($prefix,true).'</pre>'),'');
         //$whichtabel = $this->getTable();
@@ -138,6 +146,8 @@ class sportsmanagementModelposition extends JModelAdmin
             }
             
            } 
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($form,true).'</pre>'),'Notice');
            
 		return $form;
 	}

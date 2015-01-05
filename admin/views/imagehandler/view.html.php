@@ -62,6 +62,7 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 		$app	= JFactory::getApplication();
 		$document = JFactory::getDocument();
         $uri = JFactory::getURI();
+        $tpl = '';
 
 
 		if($this->getLayout() == 'upload') {

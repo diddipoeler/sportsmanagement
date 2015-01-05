@@ -39,15 +39,16 @@
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
-$templatesToLoad = array('footer','listheader');
+$templatesToLoad = array('footer','listheader','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
+// Get the form fieldsets.
+$fieldsets = $this->form->getFieldsets();
 ?>
 
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
- 
 	
  
 <div class="col50">
@@ -62,6 +63,11 @@ echo $this->loadTemplate('events');
 echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_STATISTICS'), 'panel3');
 echo $this->loadTemplate('statistics');
 
+echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PICTURE'), 'panel4');
+//echo $this->loadTemplate('picture');
+$this->fieldset = 'picture';
+echo $this->loadTemplate('fieldsets');
+        
 echo JHtml::_('tabs.end');
 ?>	
 </div> 

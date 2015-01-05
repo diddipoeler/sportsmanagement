@@ -61,6 +61,7 @@ class sportsmanagementModelPositions extends JModelList
         {   
                 $config['filter_fields'] = array(
                         'po.name',
+                        'po.picture',
                         'po.parent_id',
                         'po.sports_type_id',
                         'po.persontype',
