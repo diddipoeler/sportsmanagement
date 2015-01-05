@@ -180,13 +180,14 @@ class modJSMCalendarHelper
 			' FROM #__joomleague_matches'.
 			' WHERE match_id=\'' . $id . '\'';
 		$query = ($prefix != '') ? str_replace('#__', $prefix, $query) : $query;
-		$db = JFactory::getDbo();
+		
+        $db = JFactory::getDbo();
 		$db->setQuery($query);
-		$row=& $db->loadObjectList();
+		$row= $db->loadObjectList();
 
 
 		jimport('joomla.utilities.date');
-		$created=new JDate($row[0]->match_date, -$offset);
+		$created = new JDate($row[0]->match_date, -$offset);
 
 
 		$createdYear=$created->toFormat('%Y');
@@ -507,7 +508,15 @@ class JSMCalendar extends PHPCalendar
 		$matches = JSMCalendar::$matches;
 		$div = '';
 		$now = new JDate();
+        
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        $today = $now->Format('%Y-%m-%d');    
+        }
+        else
+        {    
 		$today = $now->toFormat('%Y-%m-%d');
+        }
 		$todaytitle = '';
 		$pm='';
 		$offset = 0; // $mainframe->getCfg('offset');
