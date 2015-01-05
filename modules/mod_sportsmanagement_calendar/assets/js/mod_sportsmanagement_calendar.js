@@ -97,7 +97,7 @@ function jlcnewDate(month, year, modid, day) {
 			+ modid
 			+ "' style='margin-left: 10px; margin-top: -10px; margin-bottom: 10px;'>";
 	loadHtml += "<img src='" + calendar_baseurl +
-				"modules/mod_joomleague_calendar/assets/images/loading.gif'>";
+				"modules/mod_sportsmanagement_calendar/assets/images/loading.gif'>";
 	loadHtml += "</p>";
 	$('jlccalendar-' + modid).innerHTML += loadHtml;
 	jlcHide(modid);
