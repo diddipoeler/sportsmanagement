@@ -120,11 +120,13 @@ class modJSMRankingHelper
 	 * @access public
 	 * @return array
 	 */
-	static function getShrinkedDataAroundOneTeam($completeRankingList, $alwaysVisibleTeamId, $paramRowLimit){
+	static function getShrinkedDataAroundOneTeam($completeRankingList, $alwaysVisibleTeamId, $paramRowLimit)
+    {
 		// First Fav-Team should be always visible in the ranking view
 		$rank = $completeRankingList;
 		$i=0;
-		foreach( $rank as $item ){
+		foreach( $rank as $item )
+        {
 			$isFav= $item->team->id == $alwaysVisibleTeamId;
 			if( $isFav ) {
 				$limit=$paramRowLimit-1; // Limit-Parameter -1 because fav-team should be in the middle
@@ -232,7 +234,7 @@ class modJSMRankingHelper
 	 * @param int type = 1 for club small logo, 2 for country
 	 * @return html string
 	 */
-	function getLogo($item, $type = 1)
+	static function getLogo($item, $type = 1)
 	{
 		if ($type == 1) // club small logo
 		{

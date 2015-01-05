@@ -58,6 +58,10 @@ if (count($columns) != count($column_names)) {
 
 $nametype = $params->get('nametype', 'short_name');
 $colors = $list['colors'];
+
+//echo ' colors<br><pre>'.print_r($colors,true).'</pre>';
+
+
 ?>
 
 <div class="modjlgranking">
@@ -81,8 +85,8 @@ $colors = $list['colors'];
 	<tbody>
 	<?php
 		$k = 0;
-		$exParam=explode(':',$params->get('visible_team'));
-		$favTeamId=$exParam[0];
+		$exParam = explode(':',$params->get('visible_team'));
+		$favTeamId = $exParam[0];
 		$projfavTeamId = $list['project']->fav_team;
 		$favEntireRow = $params->get('fav_team_highlight_type', 0);
 
@@ -92,12 +96,18 @@ $colors = $list['colors'];
 		<?php
 			$class = $params->get('style_class2', 0);
 			if ( $k == 0 ) { $class = $params->get('style_class1', 0); }
-			$i++;
+			
+            $i++;
 			$color = "";
+            
+            //echo $item->rank.'<br>';
+            
 			if ($params->get('show_rank_colors', 0))
 			{
-			  foreach ($colors as $colorItem) {
-			    if ($i >= $colorItem['from'] && $i <= $colorItem['to']) {
+			  foreach ($colors as $colorItem) 
+              {
+			    if ($item->rank >= $colorItem['from'] && $item->rank <= $colorItem['to']) 
+                {
 						$color = $colorItem['color'];
 					}
 				}
@@ -109,11 +119,13 @@ $colors = $list['colors'];
 			{
 				if( trim( $list['project']->fav_team_color ) != "" )
 				{
-					if ($favEntireRow == 1) {
+					if ($favEntireRow == 1) 
+                    {
 						$color = $list['project']->fav_team_color;
 					}
 				}
-				if ($favEntireRow) {
+				if ($favEntireRow) 
+                {
 				  $rowStyle .= ($params->get('fav_team_bold', 0) != 0) ? 'font-weight:bold;' : '';
 				  $rowStyle .= ($list['project']->fav_team_text_color != '') ? 'color:' . $list['project']->fav_team_text_color . ';' : '';
 				}
