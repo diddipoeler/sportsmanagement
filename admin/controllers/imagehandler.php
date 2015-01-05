@@ -68,18 +68,21 @@ class sportsmanagementControllerImagehandler extends JController
 	 */
 	function upload()
 	{
-		$app	= JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
 
 		// Check for request forgeries
-		JRequest::checkToken() or die( 'JINVALID_TOKEN' );
+		$jinput->checkToken() or die( 'JINVALID_TOKEN' );
 
-		$file	= JRequest::getVar( 'userfile', '', 'files', 'array' );
-		//$task	= JRequest::getVar( 'task' );
-		$type	= JRequest::getVar( 'type' );
+		$file	= $jinput->getVar( 'userfile', '', 'files', 'array' );
+		//$task	= $jinput->getVar( 'task' );
+		$type	= $jinput->getVar( 'type' );
 		$folder	= ImageSelectSM::getfolder($type);
-		$field	= JRequest::getVar( 'field' );
-		$linkaddress	= JRequest::getVar( 'linkaddress' );
+		$field	= $jinput->getVar( 'field' );
+		$linkaddress	= $jinput->getVar( 'linkaddress' );
 		// Set FTP credentials, if given
 		jimport( 'joomla.client.helper' );
 		JClientHelper::setCredentialsFromRequest( 'ftp' );
@@ -171,15 +174,18 @@ echo "<script>  window.parent.selectImage_".$type."('$filename', '$filename','$f
 	 */
 	function delete()
 	{
-		$app	= JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
 		// Set FTP credentials, if given
 		jimport( 'joomla.client.helper' );
 		JClientHelper::setCredentialsFromRequest( 'ftp' );
 
 		// Get some data from the request
-		$images	= JRequest::getVar( 'rm', array(), '', 'array' );
-		$type	= JRequest::getVar( 'type' );
+		$images	= $jinput->getVar( 'rm', array(), '', 'array' );
+		$type	= $jinput->getVar( 'type' );
 
 		$folder	= ImageSelectSM::getfolder( $type );
 

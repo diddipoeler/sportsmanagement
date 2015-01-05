@@ -320,6 +320,11 @@ static $_foldertype = '';
       case	"playgrounds":
 				return "playgrounds";
 				break;
+                
+                case	"positions":
+				return "positions";
+				break;
+                
       case	"projects":
 				return "projects";
 				break;	

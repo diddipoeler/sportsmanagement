@@ -165,6 +165,14 @@
 				preview="show"
 				targetfolder="teamplayers"
 				directory=""/>			
+				
+				<field
+			name="cr_picture"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_PICTURE_CR"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_PICTURE_CR_DESC"
+			class="inputbox"/>	
+			
 	</fieldset>	
 	
 	<fieldset name="description"

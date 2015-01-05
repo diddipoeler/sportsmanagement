@@ -553,6 +553,14 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 				class="inputbox"
 				preview="show"				
 				directory=""/>
+				
+			<field
+			name="cr_picture"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_PICTURE_CR"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_PICTURE_CR_DESC"
+			class="inputbox"/>
+      	
 	</fieldset>
 	
 <fieldset name="extended"

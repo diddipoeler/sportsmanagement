@@ -170,6 +170,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_division` (
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
   `picture` VARCHAR(128) NOT NULL DEFAULT '' ,
+  `cr_picture` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
  KEY `project_id` (`project_id`),
  KEY `parent_id` (`parent_id`)
@@ -244,7 +245,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_league` (
   `website` VARCHAR(250) NOT NULL DEFAULT '' ,
   `agegroup_id` INT( 11 ) NOT NULL DEFAULT  '0',
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
-  
+  `cr_picture` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `country` (`country`),
   KEY `sports_type_id` (`sports_type_id`)
@@ -579,6 +580,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_person` (
   `contact_id` int(11) DEFAULT NULL,
   `jl_update` TINYINT(1) NOT NULL DEFAULT '0',
   `cr_picture` varchar(255) DEFAULT NULL,
+  `agegroup_id` INT( 11 ) NOT NULL DEFAULT  '0',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `country` (`country`),
@@ -642,6 +644,8 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_position` (
   `checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
+  `picture` VARCHAR(255) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_21.png' ,
+  `cr_picture` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `parent_id` (`parent_id`),
   KEY `sports_type_id` (`sports_type_id`),
@@ -763,7 +767,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project` (
   
   `hits` INT(11) NOT NULL DEFAULT '0' ,
   `modified_hits` INT(11) NOT NULL DEFAULT '0' ,
-  
+  `cr_picture` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `league_id` (`league_id`),
   KEY `season_id` (`season_id`),
@@ -817,6 +821,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project_referee` (
   `modified_by` INT NULL ,
   `image_copy` TINYINT(4) NOT NULL DEFAULT '0' ,
   `extendeduser` TEXT NULL ,
+  `cr_picture` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `project_id` (`project_id`),
   KEY `person_id` (`person_id`),
@@ -864,6 +869,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project_team` (
   `penalty_points` INT(11) NOT NULL DEFAULT '0' ,
   `import` TINYINT(1) NOT NULL DEFAULT '0' ,
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
+  `cr_picture` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `project_id` (`project_id`),
   KEY `team_id` (`team_id`),
@@ -921,6 +927,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_round` (
   `extendeduser` TEXT NULL ,
   `picture` VARCHAR(128) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_150.png' ,
   `tournement` TINYINT(1) NOT NULL DEFAULT '0' ,
+  `cr_picture` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `project_id` (`project_id`)
   )
@@ -965,6 +972,8 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season_team_id` (
   `logo_big` VARCHAR(250) NULL ,
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   `standard_playground` INT(11) NULL DEFAULT NULL ,
+  `cr_picture` varchar(255) DEFAULT NULL,
+  `cr_logo_big` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   UNIQUE KEY `combi` (`team_id`,`season_id`) ,
   KEY `team_id` (`team_id`),
@@ -988,6 +997,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season_person_id` (
   `picture` VARCHAR(250) NULL ,
   `persontype` TINYINT(1) NOT NULL DEFAULT '0' ,
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
+  `cr_picture` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   UNIQUE KEY `combi` (`person_id`,`season_id`,`team_id`) ,
   KEY `team_id` (`team_id`),
@@ -1026,6 +1036,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season_team_person_id` (
   
   `persontype` TINYINT(1) NOT NULL DEFAULT '0' ,
   `jl_update` TINYINT(1) NOT NULL DEFAULT '0',
+  `cr_picture` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   UNIQUE KEY `combi` (`person_id`,`season_id`,`team_id`) ,
   KEY `team_id` (`team_id`),
@@ -1117,6 +1128,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_team` (
   `sports_type_id` INT( 11 ) NOT NULL DEFAULT  '0',
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   `standard_playground` INT(11) NULL DEFAULT NULL ,
+  `cr_picture` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `club_id` (`club_id`),
   KEY `sports_type_id` (`sports_type_id`)
@@ -1441,6 +1453,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_agegroup` (
   `image_copy` TINYINT(4) NOT NULL DEFAULT '0' ,
   `country` VARCHAR(3) NULL DEFAULT NULL,
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
+  `cr_picture` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`) ,
   KEY `sportstype_id` (`sportstype_id`),
   INDEX `fk_sportstype` (`sportstype_id` ASC)
@@ -1751,6 +1764,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_rquote` (
   `person_id` INT(11) NOT NULL DEFAULT '0' ,
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
+  `cr_picture` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 

@@ -61,9 +61,12 @@ class sportsmanagementViewPerson extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
         $model = $this->getModel();
-        $option = JRequest::getCmd('option');
+        $option = $jinput->getCmd('option');
         // Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
         $starttime = microtime(); 

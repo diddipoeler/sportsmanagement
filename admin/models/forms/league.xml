@@ -137,11 +137,19 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 				type=""
 				default=""				
 				label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT_PICTURE"
-				description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT_PICTURE"
+				description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT_PICTURE_DESC"
 				class="inputbox"
 				preview="show"	
         targetfolder="leagues"			
 				directory=""/>
+				
+		<field
+			name="cr_picture"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_PICTURE_CR"
+			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_PICTURE_CR_DESC"
+			class="inputbox"/>
+      		
 	</fieldset>
 
 <fieldset name="extended"

@@ -69,6 +69,13 @@
 				class="inputbox"
 				preview="show"				
 				directory=""/>
+				
+			<field
+			name="cr_picture"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_PICTURE_CR"
+			description="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_PICTURE_CR_DESC"
+			class="inputbox"/>	
 	</fieldset>
 	
 	

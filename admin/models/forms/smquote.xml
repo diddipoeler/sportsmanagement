@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form>
+<form
 addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 	<fieldset name="details"
@@ -85,6 +85,12 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 				preview="show"	
         targetfolder="persons"			
 				directory=""/>
+		<field
+			name="cr_picture"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_PICTURE_CR"
+			description="COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_PICTURE_CR_DESC"
+			class="inputbox"/>  		
 	</fieldset> 
 		
 		

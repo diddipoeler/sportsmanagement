@@ -71,5 +71,29 @@
 				COM_SPORTSMANAGEMENT_F_CLUB_STAFF</option>
 		</field>
     		
-	</fieldset>				
+	</fieldset>	
+  
+  <fieldset name="picture"
+  label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
+  description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
+			<field
+				name="picture"
+				type=""
+				default=""				
+				label="COM_SPORTSMANAGEMENT_ADMIN_POSITION_EDIT_PICTURE"
+				description="COM_SPORTSMANAGEMENT_ADMIN_POSITION_EDIT_PICTURE_DESC"
+				class="inputbox"
+				preview="show"	
+        targetfolder="positions"			
+				directory=""/>
+				
+		<field
+			name="cr_picture"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_POSITION_PICTURE_CR"
+			description="COM_SPORTSMANAGEMENT_ADMIN_POSITION_PICTURE_CR_DESC"
+			class="inputbox"/>
+      		
+	</fieldset>
+  			
 </form>
