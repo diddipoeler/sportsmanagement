@@ -98,25 +98,37 @@ class SportsmanagementConnector extends JSMCalendar
 	 */
 	function getFavs()
 	{
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+        $query->select('id, fav_team');
+        $query->from('#__sportsmanagement_project');
+        $query->where("fav_team != ''");
 
 
-		$query = "SELECT id, fav_team FROM #__joomleague_project
-      where fav_team != '' ";
+//		$query = "SELECT id, fav_team FROM #__joomleague_project
+//      where fav_team != '' ";
 
-		$projectid		= self::$xparams->get('project_ids') ;
+		$projectid = SportsmanagementConnector::$xparams->get('project_ids') ;
 
 		if ($projectid)
 		{
 			$projectids = (is_array($projectid)) ? implode(",", $projectid) : $projectid;
-
-			$query .= " AND id IN(".$projectids.")";
+			//$query .= " AND id IN(".$projectids.")";
+            $query->where("id IN(".$projectids.")");
 		}
 
-		$query = (self::$prefix != '') ? str_replace('#__', self::$prefix, $query) : $query;
-		$database = JFactory::getDbo();
-		$database->setQuery($query);
-		$fav=$database->loadObjectList();
-
+		//$query = (self::$prefix != '') ? str_replace('#__', self::$prefix, $query) : $query;
+		//$database = JFactory::getDbo();
+        
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        
+		$db->setQuery($query);
+		$fav = $db->loadObjectList();
 
 		// echo '<pre>';
 		// print_r($fav);
@@ -424,6 +436,8 @@ class SportsmanagementConnector extends JSMCalendar
         $jinput = $app->input;
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' caldates<br><pre>'.print_r($caldates,true).'</pre>'),'Notice');
 
 		$where = '';
         $teamCondition = '';
@@ -560,7 +574,7 @@ class SportsmanagementConnector extends JSMCalendar
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
 
 		//$query = (SportsmanagementConnector::$prefix != '') ? str_replace('#__', SportsmanagementConnector::$prefix, $query) : $query;

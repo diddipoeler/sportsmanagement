@@ -106,6 +106,10 @@ case 'headingrow':
 		$sclass = ($cnt%2) ? 'sectiontableentry1' : 'sectiontableentry2';
 		$date = JHtml::date ( $row['date'] .' UTC', $params->get('dateformat'), $params->get('time_zone'));
 		$time = JHtml::date ( $row['date'] .' UTC', $params->get('timeformat'), $params->get('time_zone'));
+        
+        //echo $date.'<br>';
+        //echo $time.'<br>';
+        
 		switch ($row['type']) {
 			case 'jevents':
 				$style = ($row['color'] != '') ? ' style="border-left:4px '.$row['color'].' solid;"' : '';

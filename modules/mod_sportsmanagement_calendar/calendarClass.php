@@ -115,10 +115,10 @@ class PHPCalendar
       
         if ($showYear == 1)
         {
-          $prevMonth = $this->getCalendarLink($prev[0], $prev[1]);
-          $nextMonth = $this->getCalendarLink($next[0], $next[1]);
-          $nextYear  = $this->getCalendarLink($next[0], $next[1]);
-          $prevYear  = $this->getCalendarLink($prev[0], $prev[1]);
+          $prevMonth = JSMCalendar::getCalendarLink($prev[0], $prev[1]);
+          $nextMonth = JSMCalendar::getCalendarLink($next[0], $next[1]);
+          $nextYear  = JSMCalendar::getCalendarLink($next[0], $next[1]);
+          $prevYear  = JSMCalendar::getCalendarLink($prev[0], $prev[1]);
         }
         else
         {
@@ -129,7 +129,7 @@ class PHPCalendar
         }
         $todaylink='';
         $language= JFactory::getLanguage(); //get the current language
-        $language->load( 'mod_joomleague_calendar' ); //load the language ini file of the module
+        $language->load( 'mod_sportsmanagement_calendar' ); //load the language ini file of the module
         $header = $monthName . (($showYear > 0) ? " " . $year : "");
         $s .= '<table id="jlctableCalendar-'.$this->modid.'" class="jlcCalendar">'."\n";
         $s .= "   <tr>\n";
@@ -187,9 +187,14 @@ class PHPCalendar
                 $divday = ($d > 9) ? $d : '0'.$d;
                 $divm = ($month > 9) ? $month : '0'.$month;
                 $divid = 'jlcal_' . $year.'-'.$divm.'-'.$divday;
-                $link = $this->getDateLink($d, $month, $year);
-                $click = $this->getDateClick($d, $month, $year);
-                $modalrel = ($link == "") ? '' : " rel=\"{handler: 'adopt', adopt:'jlCalList-".$this->modid."_temp'}\"";
+                $link = JSMCalendar::getDateLink($d, $month, $year);
+                $click = JSMCalendar::getDateClick($d, $month, $year);
+                
+                //echo $link.'<br>';
+                //echo $click.'<br>';
+                
+                $modalrel = '';
+                //$modalrel = ($link == "") ? '' : " rel=\"{handler: 'adopt', adopt:'jlCalList-".$this->modid."_temp'}\"";
                 if($link && $class=="highlight jlcCalendarDay jlcCalendarToday ")
                 {
                   $todaylink=$click;
@@ -231,8 +236,8 @@ class PHPCalendar
       }
       $output = array();
       $output['calendar'] = $s;
-      $output['list'] = $this->matches_output($m, $y, $d);
-      $output['teamslist'] = $this->output_teamlist();
+      $output['list'] = JSMCalendar::matches_output($m, $y, $d);
+      $output['teamslist'] = JSMCalendar::output_teamlist();
    
       return $output;
     }

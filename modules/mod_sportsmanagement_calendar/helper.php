@@ -71,9 +71,11 @@ class modJSMCalendarHelper
 	function showCal(&$params,$year,$month,$ajax=0,$modid) //this function returns the html of the calendar for a given month
 	{
 		//global $mainframe;
-		$offset = 0; //$mainframe->getCfg('offset');
+        // Reference global application object
+        $app = JFactory::getApplication();
+	
 		$language= JFactory::getLanguage(); //get the current language
-		$language->load( 'mod_joomleague_calendar' ); //load the language ini file of the module
+		$language->load( 'mod_sportsmanagement_calendar' ); //load the language ini file of the module
 		$article= $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_VALUEMATCH');
 		$articles= $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_VALUEMATCHES'); //this strings are used for the titles of the links
 		$article2= $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_MATCHTHISDAY');
@@ -126,36 +128,90 @@ class modJSMCalendarHelper
         $cal::getMatches($month,$year);
 		$counter= Array();
 		jimport('joomla.utilities.date');
+        
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        $config = JFactory::getConfig();
+        $offset = $config->get('offset'); 
+        //$timeZone = JFactory::getConfig()->getValue('offset');
+        
+//        $dateTimeZone = new DateTimeZone($offset);
+//        $dateTime = new DateTime("now", $dateTimeZone);
+//        $offset = $dateTimeZone->getOffset($dateTime);
+           
+        $dateformat = 'Format';    
+        }
+        else
+        {    
+		$config = JFactory::getConfig();
+        $offset = $config->get('offset'); 
+        
+        //$timeZone = JFactory::getConfig()->getValue('offset');
+        
+//        $dateTimeZone = new DateTimeZone($offset);
+//        $dateTime = new DateTime("now", $dateTimeZone);
+//        $offset = $dateTimeZone->getOffset($dateTime);
+        //$offset = 0; //$mainframe->getCfg('offset');
+        $dateformat = 'toFormat';
+        }
+        
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' timeZone<br><pre>'.print_r($timeZone,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' offset<br><pre>'.print_r($offset,true).'</pre>'),'Notice');
+        
 		//foreach ( $cal->matches as $row )
         foreach ( $cal::$matches as $row )
 		{
-			$created= new JDate($row['date'], -$offset);
-			$createdYear=$created->toFormat('%Y');
-			$createdMonth=$created->toFormat('%m');
-			$createdDay=$created->toFormat('%d'); //have to use %d because %e doesn't works on windows
-			$createdDate=$createdYear . $createdMonth . $createdDay; //this makes an unique variable for every day
+			$created = new JDate($row['date'], $offset);
+            
+            if(version_compare(JVERSION,'3.0.0','ge')) 
+            {
+			$createdYear = $created->$dateformat('Y');
+			$createdMonth = $created->$dateformat('m');
+			$createdDay = $created->$dateformat('d'); //have to use %d because %e doesn't works on windows
+            }
+            else
+            {
+            $createdYear = $created->$dateformat('%Y');
+			$createdMonth = $created->$dateformat('%m');
+			$createdDay = $created->$dateformat('%d'); //have to use %d because %e doesn't works on windows    
+            }
+            
+			$createdDate = $createdYear . $createdMonth . $createdDay; //this makes an unique variable for every day
 			$counter[$createdDate]['createdYear'] = $createdYear;
 			$counter[$createdDate]['createdMonth'] = $createdMonth;
 			$counter[$createdDate]['createdDay'] = $createdDay;
-			$counter[$createdDate]['tiptitle'] = $created->toFormat('%A, %d.%m.%Y');
+            if(version_compare(JVERSION,'3.0.0','ge')) 
+            {
+			$counter[$createdDate]['tiptitle'] = $created->$dateformat('l, d.m.Y');
+            }
+            else
+            {
+            $counter[$createdDate]['tiptitle'] = $created->$dateformat('%A, %d.%m.%Y');    
+            }
+            
 			if (!isset($counter[$createdDate]['count'])) $counter[$createdDate]['count'] = 1;
 			else $counter[$createdDate]['count'] += 1; //$counter[$date] counts the number of articles in each day, to display it as a title in the link of the day
 		}
-		foreach ($counter AS $createdDate => $val) {
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' createdDate<br><pre>'.print_r($createdDate,true).'</pre>'),'Notice');
+        
+		foreach ($counter AS $createdDate => $val) 
+        {
 			$title =  $counter[$createdDate]['tiptitle'].' :: ' .$counter[$createdDate]['count'] . ' ';
 			$title .= ($counter[$createdDate]['count'] > 1)? $articles : $article;
 			$title .= ' ' . $article2;
 			$inject = $params->get('inject', 0);
 			$update_module = $params->get('update_module', 0);
-			$cal->linklist[$createdDate]['click']=	'jlCalmod_showhide(\'jlCalList-'.$modid.'\', \'jlcal_'
+			$cal::$linklist[$createdDate]['click']=	'jlCalmod_showhide(\'jlCalList-'.$modid.'\', \'jlcal_'
 			.$counter[$createdDate]['createdYear'].'-'.$counter[$createdDate]['createdMonth'].'-'.$counter[$createdDate]['createdDay'].'-'.$modid
 			.'\', \''.str_replace(' :: ', ': ',$title).'\', '.$inject.', '.$modid.');';
 			//$cal->linklist[$createdDate]['click']=	'jlcnewDate('.$counter[$createdDate]['createdMonth'].",". $counter[$createdDate]['createdYear'].",".$modid."," .$day.');';
-			$cal->linklist[$createdDate]['link']=	'javascript:void(0)';
-			$cal->linklist[$createdDate]['link'].="\" title=\""; //the calendar class sets the links this way: <a href=" . THE LINK STRING . ">
+			$cal::$linklist[$createdDate]['link']=	'javascript:void(0)';
+			$cal::$linklist[$createdDate]['link'].="\" title=\""; //the calendar class sets the links this way: <a href=" . THE LINK STRING . ">
 			//so, the easiest way to add a title to that link is by setting THE LINK STRING = the link" title="the title
 			//the result link would be <a href="the link" title="the title">
-			$cal->linklist[$createdDate]['link'].= $title;
+			$cal::$linklist[$createdDate]['link'].= $title;
 
 			//the above 3 lines output something like: 3 articles on this day. Or: 1 article on this day
 		}
@@ -174,27 +230,63 @@ class modJSMCalendarHelper
 	function getDate_byId($id)
 	{
 		//global $mainframe;
-		$offset = 0; // $mainframe->getCfg('offset');
-		$prefix = $params->get('custom_prefix');
-		$query=	' SELECT match_date' .
-			' FROM #__joomleague_matches'.
-			' WHERE match_id=\'' . $id . '\'';
-		$query = ($prefix != '') ? str_replace('#__', $prefix, $query) : $query;
-		
+        // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        $config = JFactory::getConfig();
+        $offset = $config->get('offset');    
+        $dateformat = 'Format';    
+        }
+        else
+        {    
+		$offset = 0; //$mainframe->getCfg('offset');
+        $dateformat = 'toFormat';
+        }
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' offset<br><pre>'.print_r($offset,true).'</pre>'),'Notice');
+        
+		//$offset = 0; // $mainframe->getCfg('offset');
+		//$prefix = $params->get('custom_prefix');
+        $query->select("match_date");
+        $query->from('#__sportsmanagement_matches'); 
+        $query->where('match_id=\'' . $id . '\'');
+        
+//		$query=	' SELECT match_date' .
+//			' FROM #__joomleague_matches'.
+//			' WHERE match_id=\'' . $id . '\'';
+		
+        //$query = ($prefix != '') ? str_replace('#__', $prefix, $query) : $query;
+		
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+
 		$db->setQuery($query);
 		$row= $db->loadObjectList();
 
 
 		jimport('joomla.utilities.date');
-		$created = new JDate($row[0]->match_date, -$offset);
+		$created = new JDate($row[0]->match_date, $offset);
 
 
-		$createdYear=$created->toFormat('%Y');
-		$createdMonth=$created->toFormat('%m');
-		$createdDay=$created->toFormat('%d');
+		if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+		$createdYear = $created->$dateformat('Y');
+		$createdMonth = $created->$dateformat('m');
+		$createdDay = $created->$dateformat('d'); //have to use %d because %e doesn't works on windows
+        }
+        else
+        {
+        $createdYear = $created->$dateformat('%Y');
+		$createdMonth = $created->$dateformat('%m');
+		$createdDay = $created->$dateformat('%d');
+        }
 
-		$createdDate=Array($createdYear,$createdMonth,$createdDay);
+		$createdDate = Array($createdYear,$createdMonth,$createdDay);
 
 		return $createdDate;
 	}
@@ -211,13 +303,31 @@ class modJSMCalendarHelper
 	 */
 	function showDropDown($params,$year,$month,$day,$ajax=0)
     {
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        $dateformat = 'Format';    
+        }
+        else
+        {    
+		$dateformat = 'toFormat';
+        }
 
-		$results= $this->setTheQuery($params,$year,$month,$day,$ajax,1);
+		$results = $this->setTheQuery($params,$year,$month,$day,$ajax,1);
 
-		foreach($results as $key => $result){
+		foreach($results as $key => $result)
+        {
 			$created=new JDate($results[$key]->match_date);
-			$createdYear= $created->toFormat('%Y');
-			$createdMonth= $created->toFormat('%m');
+            
+            if(version_compare(JVERSION,'3.0.0','ge')) 
+            {
+			$createdYear = $created->$dateformat('Y');
+			$createdMonth = $created->$dateformat('m');
+            }
+            else
+            {
+            $createdYear = $created->$dateformat('%Y');
+			$createdMonth = $created->$dateformat('%m');    
+            }
 
 
 			$results[$key]->year = $createdYear;
@@ -250,7 +360,7 @@ class modJSMCalendarHelper
 class JSMCalendar extends PHPCalendar
 {
 
-	var $linklist; //this variable will be an array that contains all the links of the month
+	static $linklist; //this variable will be an array that contains all the links of the month
 	static $prefix;
 	static $params;
 	static $matches = array();
@@ -287,15 +397,23 @@ class JSMCalendar extends PHPCalendar
 	 */
 	function getDateLink($day, $month, $year) //this function is called from getMonthView(month,year) to get the link of the given day
 	{										  //if this function returns nothing (""), then getMonthView wont put a link on that day
-		$link = "";
+		// Reference global application object
+        $app = JFactory::getApplication();
+        
+        $link = "";
 		if(strlen($month)<2)
 		$month = '0'.$month;
 		if(strlen($day)<2)
 		$day = '0'.$day;
 
-		$date= $year . $month . $day;
-		if(isset($this->linklist[$date]['link'])){
-			$link=$this->linklist[$date]['link'];  //$this->linklist[$date] was set for every date in the foreach bucle at lines 50-83
+		$date = $year . $month . $day;
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  'date <br><pre>'.print_r($date,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  'linklist <br><pre>'.print_r(JSMCalendar::$linklist,true).'</pre>'),'Notice');
+        
+		if(isset(JSMCalendar::$linklist[$date]['link']))
+        {
+			$link = JSMCalendar::$linklist[$date]['link'];  //$this->linklist[$date] was set for every date in the foreach bucle at lines 50-83
 		}
 
 		return $link;
@@ -317,8 +435,9 @@ class JSMCalendar extends PHPCalendar
 		$day = '0'.$day;
 
 		$date= $year . $month . $day;
-		if(isset($this->linklist[$date]['click'])){
-			$link=$this->linklist[$date]['click'];  //$this->linklist[$date] was set for every date in the foreach bucle at lines 50-83
+		if(isset(JSMCalendar::$linklist[$date]['click']))
+        {
+			$link = JSMCalendar::$linklist[$date]['click'];  //$this->linklist[$date] was set for every date in the foreach bucle at lines 50-83
 		}
 
 		return $link;
@@ -384,9 +503,12 @@ class JSMCalendar extends PHPCalendar
 	function sortObject($array, $comparefunction, $property = '')
 	{
 		$zcount=count($array);
-		for($i=1;$i<$zcount;$i++){
-			for ($a=$zcount-1;$a>=$i;$a--) {
-				if($this->$comparefunction($array[$a-1]->$property,$array[$a]->$property)>0){
+		for($i=1;$i<$zcount;$i++)
+        {
+			for ($a=$zcount-1;$a>=$i;$a--) 
+            {
+				if($this->$comparefunction($array[$a-1]->$property,$array[$a]->$property)>0)
+                {
 					$tempzal=$array[$a-1];
 					$array[$a-1]=$array[$a];
 					$array[$a]=$tempzal;
@@ -407,8 +529,10 @@ class JSMCalendar extends PHPCalendar
     {
 		$zcount=count($array);
 		for($i=1;$i<$zcount;$i++){
-			for ($a=$zcount-1;$a>=$i;$a--) {
-				if(JSMCalendar::$comparefunction($array[$a-1][$property],$array[$a][$property])>0){
+			for ($a=$zcount-1;$a>=$i;$a--) 
+            {
+				if(JSMCalendar::$comparefunction($array[$a-1][$property],$array[$a][$property])>0)
+                {
 					$tempzal=$array[$a-1];
 					$array[$a-1]=$array[$a];
 					$array[$a]=$tempzal;
@@ -457,15 +581,26 @@ class JSMCalendar extends PHPCalendar
 	static function getMatches($month, $year) 
     //function getMatches($month, $year)
     {
+        // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' year<br><pre>'.print_r($year,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' month<br><pre>'.print_r($month,true).'</pre>'),'Notice');
+        
 		$livescore = JSMCalendar::$params->get('livescore', '');
 		$joomleague = JSMCalendar::$params->get('sportsmanagement', '');
 		$caldates = array();
-		$caldates['start'] = date("$year-$month-01 00:00:00");
-		$caldates['end'] = date("$year-$month-31 23:59:59");
+//		$caldates['start'] = date("$year-$month-01 00:00:00");
+//		$caldates['end'] = date("$year-$month-31 23:59:59");
+        $caldates['start'] = "$year-$month-01 00:00:00";
+		$caldates['end'] = "$year-$month-31 23:59:59";
 		$jlrows = array();
 		$lsrows = array();
 		$usejevents = JSMCalendar::$params->get('jevents', 0);
-		if ( $usejevents == 1 ) {
+		if ( $usejevents == 1 ) 
+        {
 			$day = 0;
 			require_once (dirname(__FILE__).DS.'connectors'.DS.'jevents.php');
 			JEventsConnector::getEntries($caldates, JSMCalendar::$params, $this->matches);
@@ -497,6 +632,27 @@ class JSMCalendar extends PHPCalendar
 	function matches_output($month, $year) 
     {
 		//global $mainframe;
+        // Reference global application object
+        $app = JFactory::getApplication();
+        
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        $config = JFactory::getConfig();
+        $offset = $config->get('offset');    
+        $dateformat = 'Format';
+        $dateoutformat = 'Y-m-d';      
+        }
+        else
+        {    
+		//$offset = 0; //$mainframe->getCfg('offset');
+        $config = JFactory::getConfig();
+        $offset = $config->get('offset'); 
+        $dateformat = 'toFormat';
+        $dateoutformat = '%Y-%m-%d';
+        }
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' offset<br><pre>'.print_r($offset,true).'</pre>'),'Notice');
+        
 		$language= JFactory::getLanguage(); //get the current language
 		$language->load( 'mod_sportsmanagement_calendar' ); //load the language ini file of the module
 		$article= $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_VALUEMATCH');
@@ -509,17 +665,20 @@ class JSMCalendar extends PHPCalendar
 		$div = '';
 		$now = new JDate();
         
-        if(version_compare(JVERSION,'3.0.0','ge')) 
-        {
-        $today = $now->Format('%Y-%m-%d');    
-        }
-        else
-        {    
-		$today = $now->toFormat('%Y-%m-%d');
-        }
+        $today = $now->$dateformat($dateoutformat);
+        
+//        if(version_compare(JVERSION,'3.0.0','ge')) 
+//        {
+//        $today = $now->$dateformat('Y-m-d');
+//        }
+//        else
+//        {
+//        $today = $now->$dateformat('%Y-%m-%d');    
+//        } 
+ 
 		$todaytitle = '';
 		$pm='';
-		$offset = 0; // $mainframe->getCfg('offset');
+		//$offset = 0; // $mainframe->getCfg('offset');
 		$update_module = JSMCalendar::$params->get('update_module', 0);
 		$totalgamesstring = (count($matches)>0) ? count($matches) : $noarticle;
 		$totalgamesstring .= ' ';
@@ -532,18 +691,27 @@ class JSMCalendar extends PHPCalendar
 		$format[] = array('tag' => 'span', 'divid' => 'oldjlCalListTitle-'.$this->modid, 'class' => 'jlcal_hiddenmatches', 'text' => $totalgamesstring);
 		$format[] = array('tag' => 'span', 'divid' => 'jlCalListTitle-'.$this->modid, 'class' => 'jlCalListTitle', 'text' => $thistitle);
 		$format[] = array('tag' => 'span', 'divid' => 'jlCalListDayTitle-'.$this->modid, 'class' => 'jlCalListTitle', 'text' => '');
-		for ($x=0;$x<count($matches);$x++) {
+		for ($x=0;$x<count($matches);$x++) 
+        {
 			$sclass = ($x%2) ? 'sectiontableentry1' : 'sectiontableentry2';
 			$row = $matches[$x];
 			$thispm = $row['project_id'].'_'.$row['matchcode'].'_'.$row['type'];
-			$da= new JDate($row['date'], -$offset);
-			if ($div !=$da->toFormat('%Y-%m-%d')) {
+			
+            $da = new JDate($row['date'], $offset);
+            //$da = new DateTime($row['date'], new DateTimeZone($offset));
+            
+            
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' da<br><pre>'.print_r($da,true).'</pre>'),'Notice');
+            
+			if ($div !=$da->$dateformat($dateoutformat)) 
+            {
 				$counter = 0;
-				$div = $da->toFormat('%Y-%m-%d');
+				$div = $da->$dateformat($dateoutformat);
 				$format[] = array('tag' => 'div', 'divid' => 'jlcal_'.$div."-".$this->modid, 'class' => 'jlcal_hiddenmatches');
 				$format[] = array('tag' => 'table', 'divid' => 'jlcal_'.$div."-".$this->modid, 'class' => 'jlcal_result_table');
 			}
-			if($pm != $thispm) {
+			if($pm != $thispm) 
+            {
 				$format[] = array('tag' => 'headingrow', 'text' => $row['headingtitle']);
 				$roundname = $row['headingtitle'];
 			}
@@ -551,9 +719,11 @@ class JSMCalendar extends PHPCalendar
 			$pm = $thispm;
 			$format[] = $row;
 			$counter++;
-			if (isset($matches[$x+1])) $nd= new JDate($matches[$x+1]['date'], -$offset);
+			
+            if (isset($matches[$x+1])) $nd= new JDate($matches[$x+1]['date'], $offset);
+            //if (isset($matches[$x+1])) $nd= new JDate($matches[$x+1]['date']);
 			else $nd = false;
-			if (!$nd || $nd->toFormat('%Y-%m-%d') != $da->toFormat('%Y-%m-%d')) {
+			if (!$nd || $nd->$dateformat($dateoutformat) != $da->$dateformat($dateoutformat)) {
 
 				$pm = '';
 				$format[] = array('tag' => 'tableend');
@@ -562,8 +732,8 @@ class JSMCalendar extends PHPCalendar
 				$titletext .= ' ';
 				$titletext .= ($counter > 1)? $articles : $article;
 				$titletext .= ' ';
-				$titletext .= ($today == $da->toFormat('%Y-%m-%d')) ? $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_TODAY'): $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_AT');
-				$titletext .= ' ' .$da->toFormat('%d').'. '.$this->monthNames[$month - 1] . ' ' . $year;
+				$titletext .= ($today == $da->$dateformat($dateoutformat)) ? $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_TODAY'): $language->_('MOD_SPORTSMANAGEMENT_CALENDAR_AT');
+				$titletext .= ' ' .$da->$dateformat('%d').'. '.$this->monthNames[$month - 1] . ' ' . $year;
 				$format[] = array('tag' => 'span', 'divid' => 'jlcaltitte_'.$div."-".$this->modid, 'class' => 'jlcal_hiddenmatches', 'text' => $titletext);
 
 			}
@@ -572,6 +742,7 @@ class JSMCalendar extends PHPCalendar
 
 		return $format;
 	}
+    
 	/**
 	 * JSMCalendar::output_teamlist()
 	 * 
