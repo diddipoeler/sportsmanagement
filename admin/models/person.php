@@ -212,8 +212,11 @@ class sportsmanagementModelperson extends JModelAdmin
    */
   public function getAgeGroupID($age) 
 	{
-  $app = JFactory::getApplication();
-  $option = JRequest::getCmd('option');
+  // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
   
   if ( is_numeric($age) )
   {
@@ -268,8 +271,11 @@ class sportsmanagementModelperson extends JModelAdmin
 	 */
 	function getPerson($person_id=0,$season_person_id=0)
 	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         //// Create a new query object.
 //		$db		= $this->getDbo();
 		$query	= JFactory::getDbo()->getQuery(true);
@@ -304,9 +310,14 @@ class sportsmanagementModelperson extends JModelAdmin
 	 */
 	function saveshort()
 	{
-		// Get the input
-        $pks = JRequest::getVar('cid', null, 'post', 'array');
-        $post = JRequest::get('post');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        // Get the input
+        $pks = $jinput->getVar('cid', null, 'post', 'array');
+        $post = $jinput->get('post');
         $result=true;
 		for ($x=0; $x < count($pks); $x++)
 		{
@@ -339,8 +350,11 @@ class sportsmanagementModelperson extends JModelAdmin
 	 */
     function storeAssign($post)
     {
-    $option = JRequest::getCmd('option');
-	$app	= JFactory::getApplication();  
+    // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     $this->_project_id	= $app->getUserState( "$option.pid", '0' );
     $this->_team_id = $app->getUserState( "$option.team_id", '0' );
     $this->_project_team_id = $app->getUserState( "$option.project_team_id", '0' );
@@ -468,8 +482,11 @@ class sportsmanagementModelperson extends JModelAdmin
 	 */
 	public function save($data)
 	{
-	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
        $post = JRequest::get('post');
@@ -519,8 +536,13 @@ class sportsmanagementModelperson extends JModelAdmin
             break;
             
         }
-       
-       
+        
+       // hat der user die bildfelder geleert, werden die standards gesichert.
+       if ( empty($data['picture']) )
+       {
+       $data['picture'] = JComponentHelper::getParams($option)->get('ph_player','');
+       }
+        
        if (!empty($data['address']))
 		{
 			$address_parts[] = $data['address'];

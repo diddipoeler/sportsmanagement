@@ -77,8 +77,6 @@ DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );
 }
 
 
-
-
 //add css file
 $document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_club_birthday/css/mod_sportsmanagement_club_birthday.css');
 
@@ -108,16 +106,17 @@ $counter=0;
 //echo 'minute -> '.$minute.'<br>';
 
 
-if(count($clubs) > 0) {
+if(count($clubs) > 0) 
+{
 
 if (count($clubs)<$results)
-	{
-		$results=count($clubs);
-	}
+{
+$results=count($clubs);
+}
         
 $tickerpause = $params->def("tickerpause");
-	$scrollspeed = $params->def("scrollspeed");
-	$scrollpause = $params->def("scrollpause");
+$scrollspeed = $params->def("scrollspeed");
+$scrollpause = $params->def("scrollpause");
 
 	switch ($mode)
 	{
@@ -125,11 +124,13 @@ $tickerpause = $params->def("tickerpause");
 			include(dirname(__FILE__).DS.'js'.DS.'ticker.js');
 			break;
 		case 'V':
-			include(dirname(__FILE__).DS.'js'.DS.'qscrollerv.js');
+			//include(dirname(__FILE__).DS.'js'.DS.'qscrollerv.js');
+            $document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/qscrollerv.js');
 			$document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/qscroller.js');
 			break;
 		case 'H':
-			include(dirname(__FILE__).DS.'js'.DS.'qscrollerh.js');
+			//include(dirname(__FILE__).DS.'js'.DS.'qscrollerh.js');
+            $document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/qscrollerh.js');
 			$document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/qscroller.js');
 			break;
 	}

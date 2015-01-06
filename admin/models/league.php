@@ -91,8 +91,11 @@ class sportsmanagementModelleague extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
         //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
@@ -173,11 +176,14 @@ class sportsmanagementModelleague extends JModelAdmin
 	 */
 	public function save($data)
 	{
-	   $app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
        $post = JRequest::get('post');
-       $option = JRequest::getCmd('option');
        
        //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$app->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
@@ -237,11 +243,14 @@ class sportsmanagementModelleague extends JModelAdmin
 	 */
 	function saveshort()
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Get the input
-        $pks = JRequest::getVar('cid', null, 'post', 'array');
-        $post = JRequest::get('post');
+        $pks = $jinput->getVar('cid', null, 'post', 'array');
+        $post = $jinput->get('post');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
