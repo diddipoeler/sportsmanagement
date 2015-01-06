@@ -37,7 +37,9 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );?>
+defined( '_JEXEC' ) or die( 'Restricted access' );
+// $this->config['table_class']
+?>
 
 <!-- Main START -->
 <a name="jl_top" id="jl_top"></a>
@@ -49,7 +51,7 @@ foreach ( $this->currentRanking as $division => $cu_rk )
 	if ($division)
 	{
 	?>
-	<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
+	<table class="<?PHP echo $this->config['table_class']; ?>">
 		<tr>
 			<td class="contentheading">
 				<?php
@@ -64,7 +66,7 @@ foreach ( $this->currentRanking as $division => $cu_rk )
 		</tr>
 	</table>
 
-	<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
+	<table class="<?PHP echo $this->config['table_class']; ?>">
 	<?php
 		foreach( $cu_rk as $ptid => $team )
 		{
@@ -82,7 +84,7 @@ foreach ( $this->currentRanking as $division => $cu_rk )
 	else
 	{
 	?>
-	<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
+	<table class="<?PHP echo $this->config['table_class']; ?>">
 		<?php
 			echo $this->loadTemplate('rankingheading');
 			$this->division = $division;

@@ -369,7 +369,47 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS" 
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_ADVANCED_OPTIONS">	
+		
+    <field 	name="table_class" type="list" default="table" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
 			
+		</field>
+
+
+    <field 	name="label_class_project" type="list" default="" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_LABELS_PROJECT" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_LABELS_PROJECT">
+			<option value="">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_LABELS_NOTHING</option>	
+			<option value="label">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_LABELS</option>
+			<option value="label label-success">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_LABELS_SUCCESS</option>
+			<option value="label label-warning">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_LABELS_WARNING</option>
+			<option value="label label-important">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_LABELS_IMPORTANT</option>
+			<option value="label label-info">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_LABELS_INFO</option>
+			<option value="label label-inverse">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_LABELS_INVERSE</option>
+		</field>
+		
+		<field 	name="label_class_teams" type="list" default="" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_LABELS_PROJECT_TEAMS" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_LABELS_PROJECT_TEAMS">
+			<option value="">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_LABELS_NOTHING</option>
+      <option value="label">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_LABELS</option>
+			<option value="label label-success">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_LABELS_SUCCESS</option>
+			<option value="label label-warning">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_LABELS_WARNING</option>
+			<option value="label label-important">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_LABELS_IMPORTANT</option>
+			<option value="label label-info">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_LABELS_INFO</option>
+			<option value="label label-inverse">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_LABELS_INVERSE</option>
+		</field>
+		
+<!--    	
 		<field 	name="style_class1" type="text" 
     default="sectiontableentry1" 
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_ODD" 
@@ -381,6 +421,7 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_EVEN" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STYLE_EVEN">
 		</field>
+-->
 		
 		<field 	name="table_text_1" type="text" 
     default="Voll" 

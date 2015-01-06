@@ -65,7 +65,8 @@ foreach( $current as $ptid => $team )
 	$team->team = $this->teams[$ptid];
 
 	//Table colors
-	$class = ($k == 0)? $config['style_class1'] : $config['style_class2'];
+	//$class = ($k == 0)? $config['style_class1'] : $config['style_class2'];
+    $class = '';
 	$color = "";
 
 	if ( isset( $this->colors[$j]["from"] ) && $counter == $this->colors[$j]["from"] )

@@ -46,10 +46,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		</div>
 	</div>
 
-    <table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
+    <table class="<?PHP echo $this->config['table_class']; ?>">
         <tr>
             <td align="left">
-                <br />
+                <span class="<?PHP echo $this->config['label_class_teams']; ?>">
                 <?php 
                 if ( $this->ranking_notes )
                 {
@@ -60,6 +60,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 echo JText::_('COM_SPORTSMANAGEMENT_NO_RANKING_NOTES');
                 }
                 ?>
+                </span>
         </td>
             </tr>
     </table>
