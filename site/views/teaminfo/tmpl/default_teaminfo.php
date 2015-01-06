@@ -78,8 +78,14 @@ else
 <?PHP
 echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->team->name, array('title' => $this->team->name,'class' => $this->config['team_picture_style'],'width' => $this->config['team_picture_width'] ));      
 ?>
-
 </a>
+<br />
+<?php 
+if ( $this->team->cr_projectteam_picture )
+{
+echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$this->team->cr_projectteam_picture.'</i>');
+}
+?>
 
 <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="beispielModalLabel" aria-hidden="true">
 <div class="modal-header">

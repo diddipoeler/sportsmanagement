@@ -68,10 +68,14 @@ class sportsmanagementModelTeamInfo extends JModelLegacy
 	 */
 	function __construct( )
 	{
-		$this->projectid = JRequest::getInt( "p", 0 );
-		$this->projectteamid = JRequest::getInt( "ptid", 0 );
-		self::$teamid = JRequest::getInt( "tid", 0 );
-        self::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+		$this->projectid = $jinput->getInt( "p", 0 );
+		$this->projectteamid = $jinput->getInt( "ptid", 0 );
+		self::$teamid = $jinput->getInt( "tid", 0 );
+        self::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
         sportsmanagementModelProject::$projectid = $this->projectid; 
 		parent::__construct( );
 	}
@@ -83,8 +87,11 @@ class sportsmanagementModelTeamInfo extends JModelLegacy
 	*/
 	function getTrainigData( $projectid )
 	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -119,8 +126,11 @@ class sportsmanagementModelTeamInfo extends JModelLegacy
 	 */
 	function getTeamByProject()
 	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -129,7 +139,7 @@ class sportsmanagementModelTeamInfo extends JModelLegacy
 		if (is_null($this->team))
 		{
 		  $query->select('t.*,t.name AS tname, t.website AS team_website, pt.*, pt.notes AS notes, pt.info AS info');
-          $query->select('t.extended AS teamextended, t.picture AS team_picture, pt.picture AS projectteam_picture, c.*');
+          $query->select('t.extended AS teamextended, t.picture AS team_picture, pt.picture AS projectteam_picture,pt.cr_picture AS cr_projectteam_picture, c.*');
           $query->select('CONCAT_WS( \':\', t.id, t.alias ) AS slug ');
           $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team t '); 
 	      $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club c ON t.club_id = c.id '); 
@@ -179,8 +189,11 @@ class sportsmanagementModelTeamInfo extends JModelLegacy
 	 */
 	function getClub()
 	{
-	    $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+	    // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -219,8 +232,11 @@ class sportsmanagementModelTeamInfo extends JModelLegacy
 	 */
 	function getSeasons( $config, $history = 0 )
 	{
-	   $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+    $option = $jinput->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -338,8 +354,11 @@ $query->order('s.ordering '.$season_ordering);
      */
     function getPlayerMarketValue($projectid, $projectteamid, $season_id)
     {
+        // Reference global application object
         $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+        // JInput object
+        $jinput = $app->input;
+    $option = $jinput->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -376,8 +395,11 @@ $query->order('s.ordering '.$season_ordering);
 	 */
 	function getTeamRanking($projectid, $division_id)
 	{
-	   $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+    $option = $jinput->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -443,8 +465,11 @@ $query->order('s.ordering '.$season_ordering);
    */
   function getMergeClubs( $merge_clubs )
   {
-    $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+    $option = $jinput->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -475,8 +500,11 @@ $query->order('s.ordering '.$season_ordering);
 	 */
 	function getLeague($projectid)
 	{
-	   $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+    $option = $jinput->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -513,8 +541,11 @@ $query->order('s.ordering '.$season_ordering);
      */
     function getLeagueRankOverviewDetail( $seasonsranking )
 	{
-	   $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+    $option = $jinput->getCmd('option');
     
   $leaguesoverviewdetail = array();
   
@@ -571,8 +602,11 @@ $query->order('s.ordering '.$season_ordering);
    */
   function getLeagueRankOverview( $seasonsranking )
 	{
-	    $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+	    // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+    $option = $jinput->getCmd('option');
     
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
@@ -616,8 +650,11 @@ $query->order('s.ordering '.$season_ordering);
 	 */
 	function getPlayerMeanAge($projectid, $projectteamid, $season_id)
 	{
-	   $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+    $option = $jinput->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -680,8 +717,11 @@ $query->order('s.ordering '.$season_ordering);
 	 */
 	function getPlayerCount($projectid, $projectteamid, $season_id)
 	{
-	   $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+    $option = $jinput->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -725,6 +765,10 @@ $query->order('s.ordering '.$season_ordering);
 	 */
 	function hasEditPermission($task=null)
 	{
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
 		//check for ACL permsission and project admin/editor
 		$allowed = parent::hasEditPermission($task);
 		$user = JFactory::getUser();
