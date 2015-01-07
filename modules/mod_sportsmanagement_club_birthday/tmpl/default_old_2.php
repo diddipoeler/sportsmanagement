@@ -130,8 +130,7 @@ switch ($mode)
 
 		}
         
-        switch ($club->days_to_birthday) 
-        {
+        switch ($club->days_to_birthday) {
 			case 0: $whenmessage = $params->get('todaymessage');break;
 			case 1: $whenmessage = $params->get('tomorrowmessage');break;
 			default: $whenmessage = str_replace('%DAYS_TO%', $club->days_to_birthday, trim($params->get('futuremessage')));break;
@@ -173,14 +172,11 @@ switch ($mode)
     // wowslider
     case 'V':
     $html_li = '';
-    $html_ahref = '';
     $id = 0;
     foreach ($clubs AS $club) 
     {
     $club->default_picture = sportsmanagementHelper::getDefaultPlaceholder('clublogobig');
     $thispic = "";
-    $whenmessage = "";
-    $birthdaytext2 = "";
 	$flag = $params->get('show_club_flag')? JSMCountries::getCountryFlag($club->country) . "&nbsp;" : "";
 	$text = $club->name;
     $usedname = $flag.$text;
@@ -188,51 +184,11 @@ switch ($mode)
     $club_link = sportsmanagementHelperRoute::getClubInfoRoute($club->project_id,$club->id);
 	$showname = JHTML::link( $club_link, $usedname );
     
-    if ($params->get('show_picture')==1) 
-        {
-			if (file_exists(JPATH_BASE.'/'.$club->picture)&&$club->picture!='') 
-            {
-				$thispic = $club->picture;
-			}
-			elseif (file_exists(JPATH_BASE.'/'.$club->default_picture)&&$club->default_picture!='') 
-            {
-				$thispic = $club->default_picture;
-			}
-		}
-    
-    switch ($club->days_to_birthday) 
-        {
-			case 0: $whenmessage = $params->get('todaymessage');break;
-			case 1: $whenmessage = $params->get('tomorrowmessage');break;
-			default: $whenmessage = str_replace('%DAYS_TO%', $club->days_to_birthday, trim($params->get('futuremessage')));break;
-		}
+    $html_li .= '<li><a href="'.$club_link.'"><img src="images/slide1new.jpg" alt="" title="" id="wows_'.$id.'"/></a></li>';    
         
-        if ( $club->founded != '0000-00-00' )
-        {
-            $birthdaytext2 = htmlentities(trim(JText::_($params->get('birthdaytext'))), ENT_COMPAT , 'UTF-8');
-            $dayformat = htmlentities(trim($params->get('dayformat')));
-		    $birthdayformat = htmlentities(trim($params->get('birthdayformat')));
-		    $birthdaytext2 = str_replace('%WHEN%', $whenmessage, $birthdaytext2);
-            $birthdaytext2 = str_replace('%AGE%', $club->age, $birthdaytext2);
-            $birthdaytext2 = str_replace('%DATE%', strftime($dayformat, strtotime($club->year.'-'.$club->daymonth)), $birthdaytext2);
-    		$birthdaytext2 = str_replace('%DATE_OF_BIRTH%', strftime($birthdayformat, strtotime($club->date_of_birth)), $birthdaytext2);
-        }
-        else
-        {
-            $birthdaytext2 = htmlentities(trim(JText::_($params->get('birthdaytextyear'))), ENT_COMPAT , 'UTF-8');
-            $birthdaytext2 = str_replace('%AGE%', $club->age_year, $birthdaytext2);
-        }
-            
-            $birthdaytext2 = str_replace('%BR%', '<br />', $birthdaytext2);
-		$birthdaytext2 = str_replace('%BOLD%', '<b>', $birthdaytext2);
-		$birthdaytext2 = str_replace('%BOLDEND%', '</b>', $birthdaytext2);
-            
-            $text .= '<br> '.$birthdaytext2;
-    $html_li .= '<li><a href="'.$club_link.'"><img src="'.$thispic.'" alt="'.$text.'" title="'.$text.'" id="wows1_'.$id.'" width="'.$params->get('picture_width').'" height="auto" /></a></li>';    
-    $id++;      
-    $html_ahref .= '<a href="#" title=""><img src="'.$thispic.'" alt=""  width="'.$params->get('picture_width').'" height="auto"   />'.$id.'</a>';    
         
-          
+        
+    $id++;        
     }    
     break;    
 }            
@@ -258,26 +214,33 @@ switch ($mode)
 		<?php
 		break;
 
+	// Vertical scroll mode	template
 	case 'V':
-    ?>
-<div id="wowslider-container1">
-<div class="ws_images"><ul>
-<?php echo $html_li; ?>
-	</ul></div>
-	<div class="ws_bullets"><div>
-	<?php echo $html_ahref; ?>
-	</div></div>
-<a href="#" class="ws_frame"></a>
-<div class="ws_shadow"></div>
-</div>
-<script type="text/javascript" src="modules/mod_sportsmanagement_club_birthday/js/wowslider.js"></script>
-<script type="text/javascript" src="modules/mod_sportsmanagement_club_birthday/js/<?php echo $wowslider_style; ?>.js"></script>
-    <?PHP
-    
-    break;
-    
-    
-    
+	?>
+	<!-- Start WOWSlider.com BODY section -->
+	<div id="wowslider-container">
+	<div class="ws_images">
+    <ul>
+	<li><a href="http://www.wowslider.com/index.html#overview"><img src="<?php echo JURI::base().'modules/mod_sportsmanagement_club_birthday/'; ?>images/slide1new.jpg" alt="" title="" id="wows_0"/></a></li>
+	<li><a href="http://www.wowslider.com/demo.html"><img src="<?php echo JURI::base().'modules/mod_sportsmanagement_club_birthday/'; ?>images/slide2new.jpg" alt="You can add description to slides!" title="You can add description to slides!" id="wows_1"/></a></li>
+	<li><a href="http://www.wowslider.com/index.html#download"><img src="<?php echo JURI::base().'modules/mod_sportsmanagement_club_birthday/'; ?>images/slide3new.jpg" alt="" title="" id="wows_2"/></a></li>
+	</ul>
+    </div>
+	<div class="ws_bullets">
+    <div>
+	<a href="#" title=""><img src="<?php echo JURI::base().'modules/mod_sportsmanagement_club_birthday/'; ?>tooltips/slide1new.jpg" alt=""/>1</a>
+	<a href="#" title="You can add description to slides!"><img src="<?php echo JURI::base().'modules/mod_sportsmanagement_club_birthday/'; ?>tooltips/slide2new.jpg" alt="You can add description to slides!"/>2</a>
+	<a href="#" title=""><img src="<?php echo JURI::base().'modules/mod_sportsmanagement_club_birthday/'; ?>tooltips/slide3new.jpg" alt=""/>3</a>
+	</div>
+    </div>
+		<a href="#" class="ws_frame"></a>
+		<div class="ws_shadow"></div>
+	</div>
+    <script type="text/javascript" language="javascript">
+    jQuery("#wowslider-container").wowSlider({effect:"rotate",prev:"",next:"",duration:20*100,delay:20*100,width:580,height:212,autoPlay:true,stopOnHover:false,loop:false,bullets:true,caption:true,captionEffect:"slide",controls:true,logo:"",images:0});
+	</script> 
+    <?php
+	break;
 
 	// Horizontal scroll mode template
 	case 'H':
