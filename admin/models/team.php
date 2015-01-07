@@ -310,6 +310,12 @@ class sportsmanagementModelteam extends JModelAdmin
        //$app->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$app->enqueueMessage(JText::_('sportsmanagementModelteam post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
+       // hat der user die bildfelder geleert, werden die standards gesichert.
+       if ( empty($data['picture']) )
+       {
+       $data['picture'] = JComponentHelper::getParams($option)->get('ph_team','');
+       }
+       
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
 			// Convert the extended field to a string.

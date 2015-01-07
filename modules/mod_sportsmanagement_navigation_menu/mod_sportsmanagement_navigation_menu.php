@@ -52,9 +52,14 @@ DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 // get helper
 require_once (dirname(__FILE__).DS.'helper.php');
 
-$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
-$database_table	= $paramscomponent->get( 'cfg_which_database_table' );
-DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
+if ( !defined('COM_SPORTSMANAGEMENT_TABLE') )
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',JComponentHelper::getParams( 'com_sportsmanagement' )->get( 'cfg_which_database_table' ) );
+}
+
+//$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
+//$database_table	= $paramscomponent->get( 'cfg_which_database_table' );
+//DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
 
 //require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'sportsmanagement.php');
 

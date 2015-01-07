@@ -95,8 +95,11 @@ class sportsmanagementModelagegroup extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         $db		= $this->getDbo();
         $query = $db->getQuery(true);
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
@@ -211,16 +214,33 @@ class sportsmanagementModelagegroup extends JModelAdmin
 	 */
 	public function save($data)
 	{
-	   $app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
-       $post = JRequest::get('post');
+       $post = $jinput->get('post');
        // Set the values
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');
         
-       // Proceed with the save
-	   return parent::save($data); 
+       // zuerst sichern, damit wir bei einer neuanlage die id haben
+       if ( parent::save($data) )
+       {
+			$id =  (int) $this->getState($this->getName().'.id');
+            $isNew = $this->getState($this->getName() . '.new');
+            $data['id'] = $id;
+            
+            if ( $isNew )
+            {
+                //Here you can do other tasks with your newly saved record...
+                $app->enqueueMessage(JText::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
+            }
+           
+		}
+        
+        return true;  
     }   
     
 }

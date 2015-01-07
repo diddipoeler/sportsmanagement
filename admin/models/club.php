@@ -94,8 +94,11 @@ class sportsmanagementModelclub extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         $db		= $this->getDbo();
         $query = $db->getQuery(true);
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
@@ -329,8 +332,11 @@ class sportsmanagementModelclub extends JModelAdmin
      */
     function teamsofclub($club_id)
     {
+        // Reference global application object
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         $db	= $this->getDbo();
         $query = $db->getQuery(true);
         
@@ -353,13 +359,17 @@ return $teamsofclub;
 	 */
 	public function save($data)
 	{
-	   $app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
        $address_parts = array();
        $address_parts2 = array();
-       $post = JRequest::get('post');
-       $option = JRequest::getCmd('option');
+       $post = $jinput->get('post');
+       
        
 //       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
 //       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
@@ -381,6 +391,20 @@ return $teamsofclub;
         $result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team', $object, 'id');
         }
         
+       }
+       
+       // hat der user die bildfelder geleert, werden die standards gesichert.
+       if ( empty($data['logo_big']) )
+       {
+       $data['logo_big'] = JComponentHelper::getParams($option)->get('ph_logo_big','');
+       }
+       if ( empty($data['logo_middle']) )
+       {
+       $data['logo_middle'] = JComponentHelper::getParams($option)->get('ph_logo_medium','');
+       }
+       if ( empty($data['logo_small']) )
+       {
+       $data['logo_small'] = JComponentHelper::getParams($option)->get('ph_logo_small','');
        }
  
        // wurden jahre mitgegeben ?

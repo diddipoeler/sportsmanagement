@@ -114,11 +114,16 @@ echo JHtml::image($this->project->sport_type_picture, $this->project->sport_type
 			    	if ( $this->overallconfig['show_project_picture'] == 1 )
 					{
 						$picture = $this->project->picture;
+                        $copyright = $this->project->cr_picture;
                         if ( $picture == 'images/com_sportsmanagement/database/placeholders/placeholder_150.png' || empty($picture) )
                         {
                             $picture = $this->project->leaguepicture;
+                            $copyright = $this->project->cr_leaguepicture;
                         }
-                        
+//                        else
+//                        {
+//                            $copyright = $this->project->cr_picture;
+//                        }
                         
                         ?>
 						<td>
@@ -130,6 +135,15 @@ echo JHtml::image($this->project->sport_type_picture, $this->project->sport_type
 echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->project->name, array('title' => $this->project->name,'class' => "img-rounded",'width' => $this->overallconfig['picture_width'] ));      
 ?>
 </a>                        
+
+<br />
+<?php 
+if ( $copyright )
+{
+echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>');
+}
+?>
+
 
 <div class="modal fade" id="p<?php echo $this->project->id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
 <div class="modal-header">

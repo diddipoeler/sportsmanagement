@@ -57,12 +57,13 @@ $document = JFactory::getDocument();
 $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/jl2.noconflict.js');
 */
 
-$jquery_version =  JComponentHelper::getParams('com_sportsmanagement')->get('jqueryversionfrontend',0);
-$jquery_sub_version = JComponentHelper::getParams('com_sportsmanagement')->get('jquerysubversionfrontend',0);
-$jquery_ui_version = JComponentHelper::getParams('com_sportsmanagement')->get('jqueryuiversionfrontend',0);
-$jquery_ui_sub_version = JComponentHelper::getParams('com_sportsmanagement')->get('jqueryuisubversionfrontend',0);
+//$jquery_version =  JComponentHelper::getParams('com_sportsmanagement')->get('jqueryversionfrontend',0);
+//$jquery_sub_version = JComponentHelper::getParams('com_sportsmanagement')->get('jquerysubversionfrontend',0);
+//$jquery_ui_version = JComponentHelper::getParams('com_sportsmanagement')->get('jqueryuiversionfrontend',0);
+//$jquery_ui_sub_version = JComponentHelper::getParams('com_sportsmanagement')->get('jqueryuisubversionfrontend',0);
 
-
+$document = JFactory::getDocument();
+$document->addScript(JURI::base().'modules/mod_sportsmanagement_liveticker/js/turtushout.js');
 
 $action = JRequest::getCmd('action');
 
@@ -85,8 +86,6 @@ $rows	            = $params->get( 'rows' );
 $use_css            = $params->get( 'use_css', 'simple' );
 $class	            = $params->get( 'moduleclass_sfx', '' );
 
-
-
 $user		     = JFactory::getUser();
 $userId		     = (int) $user->get('id');
 $name		     = $user->get('name');
@@ -99,6 +98,17 @@ $display_abpfiff    = $params->get( 'display_abpfiff', 0 );
 $display_liganame    = $params->get( 'display_liganame', 0 );
 $display_ligaflagge    = $params->get( 'display_ligaflagge', 0 );
 
+if ($use_local_jquery) 
+{
+$document->addScript(JURI::base().'modules/mod_sportsmanagement_liveticker/js/jquery-1.2.3.pack.js');
+}
+
+if ($use_css) 
+{
+//add css file
+$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_liveticker/css/'.$use_css);
+}
+    
 $is_ajaxed = isset($_SERVER["HTTP_X_REQUESTED_WITH"])?($_SERVER["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest") : false;
 
 switch ($action) {

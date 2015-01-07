@@ -180,11 +180,15 @@ class sportsmanagementModelseason extends JModelAdmin
 	 */
 	public function save($data)
 	{
-	   $app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
-       $post = JRequest::get('post');
-       $option = JRequest::getCmd('option');
+       $post = $jinput->get('post');
+
        
        // Set the values
 	   $data['modified'] = $date->toSql();
@@ -231,11 +235,14 @@ class sportsmanagementModelseason extends JModelAdmin
      */
     function saveshortpersons()
     {
-        $option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+        // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         $db = JFactory::getDbo();
-        $post = JRequest::get('post');
-        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        $post = $jinput->get('post');
+        $pks = $jinput->getVar('cid', null, 'post', 'array');
         $season_id = $post['season_id'];
         
         //$app->enqueueMessage(get_class($this).' '.__FUNCTION__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','');
@@ -273,11 +280,14 @@ class sportsmanagementModelseason extends JModelAdmin
      */
     function saveshortteams()
     {
-        $option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+        // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         $db = JFactory::getDbo();
-        $post = JRequest::get('post');
-        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        $post = $jinput->get('post');
+        $pks = $jinput->getVar('cid', null, 'post', 'array');
         $season_id = $post['season_id'];
         
         //$app->enqueueMessage(get_class($this).' '.__FUNCTION__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','');

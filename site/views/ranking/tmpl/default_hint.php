@@ -40,11 +40,12 @@
 defined('_JEXEC') or die('Restricted access');
 ?>
 <div>
-    <table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
+    <table class="<?PHP echo $this->config['table_class']; ?>">
         <tr>
             <td align="left">
-                <br />
+                <span class="<?PHP echo $this->config['label_class_teams']; ?>">
                 <?php echo JText :: _('COM_SPORTSMANAGEMENT_RANKING_HINT');?>
+                </span>
         </td>
             </tr>
     </table>
