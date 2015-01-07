@@ -81,7 +81,6 @@ DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );
 
 //add css file
 $document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_club_birthday/css/mod_sportsmanagement_club_birthday.css');
-//$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_club_birthday/css/style.css');
 
 $mode = $params->def("mode");
 $results = $params->get('limit');
@@ -151,7 +150,8 @@ $document->addScriptDeclaration( $javascript );
 
         //$wowslider_style = "basic_linear";
         //$wowslider_style = "squares";
-        $wowslider_style = "fade";
+        //$wowslider_style = "fade";
+        $wowslider_style = $params->def("wowsliderstyle");
         
 			//include(dirname(__FILE__).DS.'js'.DS.'qscrollerv.js');
             //$document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/qscrollerv.js');
