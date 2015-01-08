@@ -33,26 +33,33 @@
     addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 
 			<fieldset	name="basic"
-						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_MODULE_TITLE"
+						label="MODULE_TITLE"
 						 >
+    <field name="spacer0" type="spacer" class="text" label=""/>       
 
     <field name="cfg_which_database" 
     type="radio" 
     default="0"
     class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+			label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
+      description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SETTINGS_USE_JOOMLA_DATABASE_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+
+    <field name="spacer1" type="spacer" class="text" label=""/>
+    <field name="spacer2" type="spacer" class="text" label=""/>
  
  <field	name="s" 
       type="seasonlist"
       
-					label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
-					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
+					label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_XML_SELECT_SEASON_LABEL"
+					description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_XML_SELECT_SEASON_DESCR"
 					required="">
-			</field> 
+			</field>
+      
+      <field name="spacer3" type="spacer" class="text" label=""/>
+      <field name="spacer4" type="spacer" class="text" label=""/> 
 			
 			<field 	name="project" 
 			task="projects" 
@@ -63,8 +70,8 @@
 			required=""
 			size="10"
 			multiple="multiple"
-						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_TITLE" 
-						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_DESCR" />
+			label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_TITLE" 
+			description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_DESCR" />
 <!--						
 				<field	name="project" type="projects" default="" required="false"
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_TITLE"
@@ -86,6 +93,8 @@
 			<fieldset	name="Heading settings"
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SETTINGS_FOR_HEADINGS_TITLE"
 						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
+            
+            <field name="spacer5" type="spacer" class="text" label=""/>
 
 				<field 	name="p_link_func" type="list" default="results"
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_LINK_PROJECT_TO_WHICH_VIEW_TITLE" 
@@ -100,6 +109,10 @@
 			<fieldset	name="Teams and picture settings"
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_TEAM_AND_PICTURE_SETTINGS_TITLE"
 						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
+            
+            <field name="spacer6" type="spacer" class="text" label=""/>
+            <field name="spacer7" type="spacer" class="text" label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_PICTURES"/>
+            
 
 				<field 	name="show_picture" type="radio" default="1"
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SHOW_CLUB_LOGO_TITLE"
@@ -107,6 +120,9 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
+        
+      
+        <field name="spacer9" type="spacer" class="text" label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_PICTURES_OFF"/>
 
 				<field 	name="picture_type" type="list" default="logo_big" 
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_WHICH_CLUB_LOGO_TITLE"
@@ -117,10 +133,14 @@
 					<option value="team_picture">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_CLUB_LOGO_TEAM</option>
 					<option value="country">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_CLUB_LOGO_COUNTRY</option>
 				</field>
+        
+        <field name="spacer10" type="spacer" class="text" label=""/>
 
 				<field 	name="xsize" type="text" default="50" 
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_MAX_IMAGE_WIDTH_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_MAX_IMAGE_WIDTH_DESCR" />
+        
+        <field name="spacer11" type="spacer" class="text" label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_TEXT"/>
 
 				<field 	name="team_names" type="list" default="short_name"
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_TEAM_NAME_LENGTH_TITLE"
@@ -128,13 +148,6 @@
 					<option value="short_name">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SHORT_TEAM_NAME</option>
 					<option value="middle_name">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_MEDIUM_TEAM_NAME</option>
 					<option value="name">MOD_SPORTSMANAGEMENT_MATCHESSLIDER_FULL_TEAM_NAME</option>
-				</field>
-
-        <field 	name="use_fav" type="radio" default="0" 
-						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_USE_FAVORITE_TEAM_TITLE"
-						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_USE_FAVORITE_TEAM_DESCR">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
 				</field>
 				
 
@@ -154,8 +167,17 @@
 						default="H.i"
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_TIME_FORMAT_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_TIME_FORMAT_DESCR" />
+            
+            <field name="spacer8" type="spacer" class="text" label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_TIME"/>
+            
+            <field name="spacer12" type="spacer" class="text" label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_FAV_TEAM"/>
 
-
+            <field 	name="use_fav" type="radio" default="0" 
+						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_USE_FAVORITE_TEAM_TITLE"
+						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_USE_FAVORITE_TEAM_DESCR">
+					  <option value="0">JNO</option>
+					  <option value="1">JYES</option>
+				    </field>
 
 
 
