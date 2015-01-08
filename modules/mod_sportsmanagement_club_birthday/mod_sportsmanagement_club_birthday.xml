@@ -137,9 +137,18 @@
 					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DESC_MODE">
 					<option value="T">TICKER</option>
 					<option value="L">LIST</option>
-					<option value="V">VERTICAL SCROLL</option>
-					<option value="H">HORIZONTAL SCROLL</option>
+					<option value="V">WOWSLIDER</option>
 				</field>
+				
+				<field name="wowsliderstyle" type="list" default="basic_linear" 
+					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_LABEL_WOW_STYLE"
+					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DESC_WOW_STYLE">
+					<option value="basic_linear">basic_linear</option>
+					<option value="squares">squares</option>
+					<option value="fade">fade</option>
+					<option value="domino">domino</option>
+				</field>
+				
 				<field name="@spacer" type="spacer" default="" label=""
 					description="" />
 				   <!--

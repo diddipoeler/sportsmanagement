@@ -146,9 +146,9 @@ $dateformat = "DATE_FORMAT(c.founded,'%Y-%m-%d') AS date_of_birth";
     $query->order('days_to_birthday ASC');
 
 	//$query .= " LIMIT " . $limit;
-    $query->setLimit($limit);
+    //$query->setLimit($limit);
 
-	$database->setQuery($query);
+	$database->setQuery($query." LIMIT " . $limit);
     
     //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
     
