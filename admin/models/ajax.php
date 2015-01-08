@@ -68,6 +68,7 @@ class sportsmanagementModelAjax extends JModelLegacy
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
+        $mitems = '';
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' elements<br><pre>'.print_r($elements,true).'</pre>'),'Notice');
         
@@ -78,6 +79,7 @@ class sportsmanagementModelAjax extends JModelLegacy
                 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' mitems<br><pre>'.print_r($mitems,true).'</pre>'),'Notice');
                 
                 return array_merge($mitems, $elements);
+                //return $elements;
                 }
                 else
                 {
@@ -88,10 +90,11 @@ class sportsmanagementModelAjax extends JModelLegacy
                 if ( $elements )
                 {
                 return array_merge($mitems, $elements);
+                //return $elements;
                 }
                 else
                 {
-                return $mitems;    
+                return $elements;    
                 }
                 
                 }
