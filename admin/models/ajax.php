@@ -63,13 +63,38 @@ class sportsmanagementModelAjax extends JModelLegacy
          */
         public static function addGlobalSelectElement($elements, $required=false) 
         {
+            // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' elements<br><pre>'.print_r($elements,true).'</pre>'),'Notice');
+        
                 if(!$required) 
                 {
-                        $mitems = array(JHTML::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
-                        return array_merge($mitems, $elements);
-                }
                 $mitems = array(JHTML::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+                
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' mitems<br><pre>'.print_r($mitems,true).'</pre>'),'Notice');
+                
                 return array_merge($mitems, $elements);
+                }
+                else
+                {
+                $mitems = array(JHTML::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
+                
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' mitems<br><pre>'.print_r($mitems,true).'</pre>'),'Notice');
+                
+                if ( $elements )
+                {
+                return array_merge($mitems, $elements);
+                }
+                else
+                {
+                return $mitems;    
+                }
+                
+                }
                 //return $elements;
         }
         
@@ -83,8 +108,11 @@ class sportsmanagementModelAjax extends JModelLegacy
          */
         public static function getProjectRoundOptions($project_id, $required = false, $ordering = 'ASC' , $round_ids = NULL, $slug = false, $dabse = false)
         {
-            $option = JRequest::getCmd('option');
-	   $app = JFactory::getApplication();
+            // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
        
        // Get a db connection.
         if ( !$dabse )
@@ -298,8 +326,11 @@ class sportsmanagementModelAjax extends JModelLegacy
          */
         function getAgeGroupsBySportsTypesOptions($sports_type_id, $required = false, $slug = false, $dbase = false)
         {
-            $option = JRequest::getCmd('option');
-	   $app = JFactory::getApplication();
+            // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
        
        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' sports_type_id<br><pre>'.print_r($sports_type_id,true).'</pre>'),'');
        
@@ -319,7 +350,10 @@ class sportsmanagementModelAjax extends JModelLegacy
 		$query->from('#__sportsmanagement_agegroup AS a');
         $query->join('INNER',' #__sportsmanagement_sports_type AS st ON st.id = a.sportstype_id ');
         // Where
-        $query->where('a.sports_type_id = ' . $db->Quote($sports_type_id) );
+        if ( $sports_type_id )
+        {
+        $query->where('a.sports_type_id = ' . $sports_type_id );
+        }
         // order
         $query->order('a.name');
 
