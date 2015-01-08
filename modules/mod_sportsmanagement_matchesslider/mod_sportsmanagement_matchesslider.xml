@@ -33,7 +33,7 @@
     addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 
 			<fieldset	name="basic"
-						label="MODULE_TITLE"
+						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_MODULE_TITLE"
 						 >
     <field name="spacer0" type="spacer" class="text" label=""/>       
 
