@@ -34,6 +34,7 @@
 
 			<fieldset	name="basic"
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_MODULE_TITLE"
+						description="MOD_SPORTSMANAGEMENT_BASIC_DESC"
 						 >
     <field name="spacer0" type="spacer" class="text" label=""/>       
 
@@ -90,8 +91,9 @@
 
 
 
-			<fieldset	name="Heading settings"
+			<fieldset	name="Headingsettings"
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SETTINGS_FOR_HEADINGS_TITLE"
+						description="MOD_SPORTSMANAGEMENT_HEADINGSETTINGS_DESC"
 						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
             <!--
             <field name="spacer5" type="spacer" class="text" label=""/>
@@ -106,8 +108,9 @@
 
 			</fieldset>
 			
-			<fieldset	name="Teams and picture settings"
+			<fieldset	name="Teamsandpicturesettings1"
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_TEAM_AND_PICTURE_SETTINGS_TITLE"
+						description="MOD_SPORTSMANAGEMENT_TEAMSANDPICTURESETTINGS1_DESC"
 						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
             
             <!--
@@ -160,8 +163,9 @@
 			</fieldset>
 
 
-			<fieldset	name="Teams and picture settings"
-						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_MATCH_INFO_SETTINGS_TITLE"
+			<fieldset	name="Teamsandpicturesettings2"
+						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_MATCH_INFO_SETTINGS2_TITLE"
+						description="MOD_SPORTSMANAGEMENT_TEAMSANDPICTURESETTINGS_DESC"
 						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
 						
 						<field 	name="dateformat" type="text" size=""
