@@ -41,6 +41,15 @@
 defined('_JEXEC') or die('Restricted access');
 
 
+/**
+ * modJSMRandomplayerHelper
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2015
+ * @version $Id$
+ * @access public
+ */
 class modJSMRandomplayerHelper
 {
 
@@ -123,12 +132,12 @@ class modJSMRandomplayerHelper
             require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'person.php');
 		}
 
-		$mdlPerson 	= JModel::getInstance('Person', 'sportsmanagementModel');
-        $mdlPlayer 	= JModel::getInstance('Player', 'sportsmanagementModel');
+//		$mdlPerson 	= JModel::getInstance('Person', 'sportsmanagementModel');
+//        $mdlPlayer 	= JModel::getInstance('Player', 'sportsmanagementModel');
 
-		$person 	= $mdlPerson->getPerson();
+		$person 	= sportsmanagementModelPerson::getPerson();
 		$project	= sportsmanagementModelProject::getProject();
-		$info		= $mdlPlayer->getTeamPlayer();
+		$info		= sportsmanagementModelPlayer::getTeamPlayer();
 		$infoteam	= sportsmanagementModelProject::getTeaminfo($projectteamid);
 
 		return array(	'project' 		=> $project,
