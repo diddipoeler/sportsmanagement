@@ -391,5 +391,5 @@ $document->addScriptDeclaration( $javascript );
 
 
 //require(JModuleHelper::getLayoutPath('mod_'.$module->name));
-require(JModuleHelper::getLayoutPath('mod_'.$module->name,$layout));
+require(JModuleHelper::getLayoutPath('mod_sportsmanagement_club_birthday',$layout));
 ?>
