@@ -149,8 +149,8 @@
 				</field>
 
 				<field 	name="no_matches_notice" type="textarea" default="No upcoming matches!"
-						label="JNO_MATCH_NOTICE_TITLE"
-						description="JNO_MATCH_NOTICE_DESCR" 
+						label="MOD_SPORTSMANAGEMENT_MATCHES_NO_MATCH_NOTICE_TITLE"
+						description="MOD_SPORTSMANAGEMENT_MATCHES_NO_MATCH_NOTICE_DESCR" 
 						cols="25" rows="5"
 					/>
 

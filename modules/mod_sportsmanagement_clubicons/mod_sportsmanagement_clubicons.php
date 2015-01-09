@@ -82,7 +82,18 @@ $data = new modJSMClubiconsHelper ($params);
 $cnt = count($data->teams);
 $cnt = ($cnt < $params->get('iconsperrow', 20)) ? $cnt : $params->get('iconsperrow', 20);
 
+// welche joomla version ?
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+JHTML::_('behavior.framework', true);
+}
+else
+{
 JHTML::_('behavior.mootools');
+}
+
+
+
 $doc = JFactory::getDocument();
 $doc->addStyleSheet(JURI::base() . 'modules/mod_sportsmanagement_clubicons/css/style.css');
 $css = 'img.smstarticon { width:25px;}';
