@@ -33,6 +33,7 @@
     addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
 
 			<fieldset	name="basic" 
+			description="MOD_SPORTSMANAGEMENT_BASIC_DESC"
       addfieldpath="/administrator/components/com_sportsmanagement/elements">
       <field name="cfg_which_database" 
     type="radio" 
@@ -104,10 +105,12 @@
 						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_ITEMID_FOR_LINKS_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_ITEMID_FOR_LINKS_DESCR" />
 
-				<field 	name="@spacer" type="spacer" default="" 
+            <field type="message" style="info" text="MOD_SPORTSMANAGEMENT_BIRTHDAY_SPACER_LAYOUT_SETTINGS" />
+				<!--
+        <field 	name="@spacer" type="spacer" default="" 
 						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SPACER_LAYOUT_SETTINGS"
 						description="" />
-				
+				-->
 				<field name="name_format" type="nameformat"
 						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_NAME_FORMAT_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_NAME_FORMAT_DESCR" />
@@ -134,10 +137,13 @@
 						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_PICTURE_WIDTH_LABEL"
 						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_PICTURE_WIDTH_DESCR" />
 
-				<field 	name="@spacer" type="spacer" default=""
+
+        <field type="message" style="info" text="MOD_SPORTSMANAGEMENT_BIRTHDAY_SPACER_CUSTOMIZE_MESSAGES_DESCR" />
+				<!--
+        <field 	name="@spacer" type="spacer" default=""
 						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SPACER_CUSTOMIZE_MESSAGES_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SPACER_CUSTOMIZE_MESSAGES_DESCR" />
-
+        -->
 				<field 	name="dayformat" type="text" default="%d. %B %Y"
 						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_DATE_FORMAT_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_DATE_FORMAT_DESCR" />
