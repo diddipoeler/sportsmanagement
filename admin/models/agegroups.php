@@ -135,9 +135,9 @@ class sportsmanagementModelagegroups extends JModelList
 	{
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $search	= $this->getState('filter.search');
-        $filter_sports_type	= $this->getState('filter.sports_type');
-        $search_nation	= $this->getState('filter.search_nation');
+        //$search	= $this->getState('filter.search');
+        //$filter_sports_type	= $this->getState('filter.sports_type');
+        //$search_nation	= $this->getState('filter.search_nation');
         
         //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
 //        $search_nation		= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
@@ -157,17 +157,17 @@ class sportsmanagementModelagegroups extends JModelList
         
         
         
-        if ($search )
+        if ($this->getState('filter.search') )
 		{
-        $query->where('LOWER(obj.name) LIKE '.$this->_db->Quote('%'.$search.'%'));
+        $query->where('LOWER(obj.name) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%') );
         }
-        if ($search_nation)
+        if ($this->getState('filter.search_nation'))
 		{
-        $query->where("obj.country = '".$search_nation."'");
+        $query->where('obj.country LIKE '.$db->Quote('%'.$this->getState('filter.search_nation').'%') );
         }
-        if ($filter_sports_type)
+        if ($this->getState('filter.sports_type'))
 		{
-        $query->where('obj.sportstype_id = '.$this->_db->Quote($filter_sports_type));
+        $query->where('obj.sportstype_id = '.$this->getState('filter.sports_type'));
         }
         
 		//$query->order(self::_buildContentOrderBy());

@@ -95,16 +95,22 @@ class sportsmanagementModelProjectteams extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		//$app = JFactory::getApplication('administrator');
         
-        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context ->'.$this->context.''),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
+        
+        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
+		$this->setState('filter.search_nation', $temp_user_request);
 
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.state', $published);
@@ -133,8 +139,11 @@ class sportsmanagementModelProjectteams extends JModelList
 	 */
 	protected function getListQuery()
 	{
-	   $option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
         
         $this->_project_id = JRequest::getVar('pid');
@@ -207,7 +216,7 @@ class sportsmanagementModelProjectteams extends JModelList
 		$query->select('t.name,t.club_id');
 		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t on st.team_id = t.id');
         // Join over the club
-		$query->select('c.email AS club_email,c.logo_big as club_logo');
+		$query->select('c.email AS club_email,c.logo_big as club_logo,c.country');
 		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c on t.club_id = c.id');
         
         // Join over the playground
@@ -216,11 +225,21 @@ class sportsmanagementModelProjectteams extends JModelList
 		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d on d.id = tl.division_id');
         }
         
+        if ($this->getState('filter.search'))
+		{
+        $query->where('LOWER(t.name) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%'));
+        }
+        
         // Join over the users for the checked out user.
 		$query->select('u.name AS editor,u.email AS email');
 		$query->join('LEFT', '#__users AS u on tl.admin = u.id');
         
         $query->where('tl.project_id = ' . $this->_project_id);
+        
+        if ($this->getState('filter.search_nation'))
+		{
+        $query->where('c.country LIKE '.$db->Quote('%'.$this->getState('filter.search_nation').'%') );
+        }
 
         $query->order($db->escape($this->getState('list.ordering', 't.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
@@ -246,6 +265,12 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	 */
 	function store( $data )
 	{
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        
 		$result = true;
 		$peid = $data['project_teamslist'];
 		if ( $peid == null )
@@ -327,8 +352,11 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	 */
 	function getTeams()
 	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         $db	= JFactory::getDbo(); 
 		$query = $db->getQuery(true);
         $this->_project_id = $app->getUserState( "$option.pid", '0' );
@@ -413,7 +441,11 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	 */
 	function setNewTeamID()
 	{
-		$app = JFactory::getApplication();
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
 
@@ -477,8 +509,11 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	 */
 	function getAllTeams($pid)
 	{
-	   $option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         
 	   $this->_season_id = $app->getUserState( "$option.season_id", '0' );
        
@@ -571,8 +606,11 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	 */
 	function getProjectTeams($project_id=0,$in_used=FALSE)
 	{
-		 $option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
         $this->project_art_id = $app->getUserState( "$option.project_art_id", '0' );
         $this->sports_type_id = $app->getUserState( "$option.sports_type_id", '0' );
@@ -652,8 +690,11 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
      */
     function getAllProjectTeams($projectid=0,$divisionid=0,$team_ids=NULL,$cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         $db	= sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
 		$query = $db->getQuery(true);
         $starttime = microtime(); 
@@ -707,6 +748,12 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	 */
 	function copy($dest, $ptids)
 	{
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        
 		if (!$dest)
 		{
 			$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_Destination_project_required'));
@@ -771,8 +818,11 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	 */
 	function getProjectTeamsCount($project_id)
 	{
-	   $option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         $db	= JFactory::getDbo(); 
 		$query = $db->getQuery(true);
         $starttime = microtime(); 
