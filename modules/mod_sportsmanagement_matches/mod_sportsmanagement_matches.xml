@@ -36,6 +36,7 @@
 
 			<fieldset	name="basic"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_MODULE_TITLE"
+						description="MOD_SPORTSMANAGEMENT_BASIC_DESC"
 						 >
       <field name="cfg_which_database" 
     type="radio" 
@@ -104,24 +105,27 @@
 -->
 
 				<field 	name="order_by_project" type="radio" default="0" 
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_ORDER_BY_PROJECT_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_ORDER_BY_PROJECT_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="nextlast_from_same_project" type="radio" default="1" 
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_NEXT_LAST_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_NEXT_LAST_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="use_fav" type="radio" default="0" 
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_USE_FAVORITE_TEAM_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_USE_FAVORITE_TEAM_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="teams" type="teams" default="" 
@@ -137,29 +141,32 @@
 						description="MOD_SPORTSMANAGEMENT_MATCHES_ITEM_ID_FOR_LINKS_DESCR" />
 -->
 				<field 	name="show_no_matches_notice" type="radio" default="0"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_NO_MATCHES_NOTICE_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_NO_MATCHES_NOTICE_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="no_matches_notice" type="textarea" default="No upcoming matches!"
-						label="MOD_SPORTSMANAGEMENT_MATCHES_NO_MATCH_NOTICE_TITLE"
-						description="MOD_SPORTSMANAGEMENT_MATCHES_NO_MATCH_NOTICE_DESCR" 
+						label="JNO_MATCH_NOTICE_TITLE"
+						description="JNO_MATCH_NOTICE_DESCR" 
 						cols="25" rows="5"
 					/>
 
 			</fieldset>
 
-			<fieldset	name="Last results"
+			<fieldset	name="Lastresults"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SETTINGS_FOR_LAST_RESULTS_TITLE"
+						description="MOD_SPORTSMANAGEMENT_LASTRESULTS_DESC"
 						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
 
 				<field 	name="show_played" type="radio" default="0"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_PLAYED_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_PLAYED_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="result_add_time" type="text" default="0"
@@ -179,10 +186,11 @@
 				</field>
 
 				<field 	name="upcoming_first" type="radio" default="1"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_UPCOMING_MATCH_FIRST_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_UPCOMING_MATCH_FIRST_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="lastsortorder" type="radio" default="asc"
@@ -194,8 +202,9 @@
 
 			</fieldset>
 
-			<fieldset	name="Next matches"
+			<fieldset	name="Nextmatches"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_TIME_IN_FUTURE_NEXT_MATCH_TITLE"
+						description="MOD_SPORTSMANAGEMENT_NEXTMATCHES_DESC"
 						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
 
 				<field 	name="period_int" type="text" default="0"
@@ -220,15 +229,16 @@
 
 			</fieldset>
 
-			<fieldset	name="Heading settings"
+			<fieldset	name="Headingsettings"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SETTINGS_FOR_HEADINGS_TITLE"
 						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
 
 				<field 	name="show_status_notice" type="radio" default="0"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_HEADING_ALREADY_PLAYED_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_HEADING_ALREADY_PLAYED_TITLE">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="alreadyplayed_notice" type="text" default="LAST MATCHES"
@@ -264,17 +274,19 @@
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SECOND_MATCHES_CLASS_DESCR" />
 
 				<field 	name="show_project_title" type="radio" default="0"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_PROJECT_NAME_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_PROJECT_NAME_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="link_project_title" type="radio" default="0"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_PROJECT_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_PROJECT_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="p_link_func" type="list" default="results"
@@ -286,17 +298,19 @@
 				</field>
 
 				<field 	name="show_matchday_title" type="radio" default="0"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_MATCHDAY_NAME_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_MATCHDAY_NAME_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="link_matchday_title" type="radio" default="0"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_MATCHDAY_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_MATCHDAY_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="r_link_func" type="list" default="results"
@@ -309,15 +323,17 @@
 
 			</fieldset>
 			
-			<fieldset	name="Teams and picture settings"
+			<fieldset	name="Teamsandpicturesettings1"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_TEAM_AND_PICTURE_SETTINGS_TITLE"
+						description="MOD_SPORTSMANAGEMENT_TEAMSANDPICTURESETTINGS1_DESC"
 						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
 
 				<field 	name="show_picture" type="radio" default="1"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_CLUB_LOGO_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_CLUB_LOGO_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="picture_type" type="list" default="middle" 
@@ -339,10 +355,11 @@
 						description="MOD_SPORTSMANAGEMENT_MATCHES_MAX_IMAGE_WIDTH_DESCR" />
 
 				<field 	name="new_line_after_logo" type="radio" default="1"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_NEWLINE_AFTER_LOGO_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_NEWLINE_AFTER_LOGO_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="ysize" type="text" default="" 
@@ -350,10 +367,11 @@
 						description="MOD_SPORTSMANAGEMENT_MATCHES_MAX_IMAGE_HEIGHT_DESCR" />
 
 				<field 	name="show_names" type="radio" default="1" 
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_TEAM_NAMES_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_TEAM_NAMES_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="team_names" type="list" default="short_name"
@@ -367,7 +385,7 @@
 				<field 	name="link_teams" type="list" default="0"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_TEAM_LINK_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_TEAM_LINK_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO_TEAM_LINK</option>
+					<option value="0">JNO_TEAM_LINK</option>
 					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_USED_TEAMS_ONLY</option>
 					<option value="2">MOD_SPORTSMANAGEMENT_MATCHES_ALL_TEAMS</option>
 				</field>
@@ -380,10 +398,11 @@
 				</field>
 
 				<field 	name="link_team_plan" type="radio" default="0"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_SCHEDULE_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_SCHEDULE_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="link_team_plan_text" type="text" default="Schedule"
@@ -391,10 +410,11 @@
 						description="MOD_SPORTSMANAGEMENT_MATCHES_TEAM_SCHEDULE_LINK_TEXT_DESCR" />
 
 				<field 	name="link_team_curve" type="radio" default="0"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_FEVER_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_FEVER_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="link_team_curve_text" type="text" default="Fever Chart"
@@ -402,10 +422,11 @@
 						description="MOD_SPORTSMANAGEMENT_MATCHES_TEAM_FEVER_LINK_TEXT_DESCR" />
 
 				<field 	name="link_team_teaminfo" type="radio" default="0"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_INFO_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_INFO_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="link_team_teaminfo_text" type="text" default="Team Info"
@@ -413,10 +434,11 @@
 						description="MOD_SPORTSMANAGEMENT_MATCHES_TEAM_INFO_LINK_TEXT_DESCR" />
 
 				<field 	name="link_team_roster" type="radio" default="0"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_PLAYERS_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_PLAYERS_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="link_team_roster_text" type="text" default="Roster"
@@ -424,10 +446,11 @@
 						description="MOD_SPORTSMANAGEMENT_MATCHES_TEAM_PLAYERS_LINK_TEXT_DESCR" />
 
 				<field 	name="link_team_club" type="radio" default="0"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_CLUB_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_CLUB_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="link_team_club_text" type="text" default="Club"
@@ -435,10 +458,11 @@
 						description="MOD_SPORTSMANAGEMENT_MATCHES_TEAM_CLUB_LINK_TEXT_DESCR" />
 
 				<field 	name="link_team_www" type="radio" default="0"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_CLUB_WEBSITE_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_CLUB_WEBSITE_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="link_team_www_text" type="text" default="WWW"
@@ -447,15 +471,17 @@
 
 			</fieldset>
 
-			<fieldset	name="Teams and picture settings"
+			<fieldset	name="Teamsandpicturesettings2"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_MATCH_INFO_SETTINGS_TITLE"
+						description="MOD_SPORTSMANAGEMENT_TEAMSANDPICTURESETTINGS2_DESC"
 						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
 
 				<field 	name="use_offset_matches" type="radio" default="0"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_TIME_OFFSET_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_TIME_OFFSET_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="dateformat" type="text" size="40"
@@ -474,10 +500,11 @@
 						description="MOD_SPORTSMANAGEMENT_MATCHES_TIME_FORMAT_DESCR" />
 
 				<field 	name="part_result" type="radio" default="0"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_PARTS_RESULTS_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_PARTS_RESULTS_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="part_result_count" type="radio" default="0"
@@ -492,17 +519,19 @@
 						description="MOD_SPORTSMANAGEMENT_MATCHES_PARTS_RESULTS_SEPARATOR_DESCR" />
 
 				<field	 name="show_venue" type="radio" default="0" 
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_VENUE_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_VENUE_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="link_venue" type="radio" default="0"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_VENUE_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_VENUE_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="venue_text" type="text" default="Venue:"
@@ -517,17 +546,19 @@
 				</field>
 				
 				<field	 name="show_spectators" type="radio" default="0" 
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_MATCH_SPECTATORS_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_MATCH_SPECTATORS_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="show_act_report_link" type="radio" default="0"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_MATCH_REPORT_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_MATCH_REPORT_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="show_act_report_text" type="text" default="Show Report"
@@ -535,10 +566,11 @@
 						description="MOD_SPORTSMANAGEMENT_MATCHES_MATCH_REPORT_LINK_TEXT_DESCR" />
 
 				<field 	name="show_statistic_link" type="radio" default="0"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_SEASON_STATS_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_SEASON_STATS_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="statistic_link_text" type="text" default="Season statistics"
@@ -546,17 +578,19 @@
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SEASON_STATS_LINK_TEXT_DESCR" />
 
 				<field 	name="show_match_notice" type="radio" default="1"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_MATCH_NOTICE_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_MATCH_NOTICE_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="show_nextmatch_link" type="radio" default="0"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_NEXT_MATCH_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LINK_TO_TEAM_NEXT_MATCH_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="nextmatch_link_text" type="text" default="Nextmatch"
@@ -565,23 +599,25 @@
 
 			</fieldset>
 
-			<fieldset	name="AJAX settings"
+			<fieldset	name="AJAXsettings"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_AJAX_SETTINGS_TITLE"
+						description="MOD_SPORTSMANAGEMENT_AJAXSETTINGS_DESC"
 						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
 
 				<field 	name="next_last" type="radio" default="0"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_ENABLE_ARROWS_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_ENABLE_ARROWS_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
+					<option value="0">JNO</option>
 					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_USED_TEAMS_ONLY</option>
 					<option value="2">MOD_SPORTSMANAGEMENT_MATCHES_ALL_TEAMS</option>
 				</field>
 
 				<field 	name="icons_for_ajax" type="radio" default="0"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_AJAX_NAVIGATION_ICONS_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_AJAX_NAVIGATION_ICONS_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="reset_class" type="text" default="inputbox"
@@ -597,10 +633,11 @@
 						description="MOD_SPORTSMANAGEMENT_MATCHES_LAST_MATCH_LINK_TEXT_TITLE" />
 
 				<field 	name="reset_start_match" type="radio" default="0"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_RESET_TO_FIRST_MATCH_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_RESET_TO_FIRST_MATCH_DESCR">
-					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_YES</option>
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
 				</field>
 
 				<field 	name="reset_text" type="text" default="Reset"
