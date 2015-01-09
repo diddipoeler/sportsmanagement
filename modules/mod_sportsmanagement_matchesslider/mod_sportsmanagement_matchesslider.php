@@ -58,8 +58,15 @@ if (!defined('_JLMATCHLISTSLIDERMODURL')) { define('_JLMATCHLISTSLIDERMODURL', J
 require_once (_JLMATCHLISTSLIDERMODPATH.DS.'helper.php');
 require_once (_JLMATCHLISTSLIDERMODPATH.DS.'connectors'.DS.'sportsmanagement.php');
 
-
+// welche joomla version ?
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+JHTML::_('behavior.framework', true);
+}
+else
+{
 JHTML::_('behavior.mootools');
+}
 
 $doc = JFactory::getDocument();
 $doc->addScript( _JLMATCHLISTSLIDERMODURL.'assets/js/jquery.simplyscroll.js' );
