@@ -37,6 +37,14 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
+/*
+SELECT name,unique_id ,CONCAT_WS('_', country, unique_id ) AS slug
+FROM  `j25_sportsmanagement_club` 
+WHERE  `country` LIKE  'nor'
+and unique_id is not null
+and unique_id != ''
+
+*/
 defined('_JEXEC') or die('Restricted access');
 
 if (! defined('DS'))

@@ -78,7 +78,7 @@ else
 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
 </div>
 <?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $club_emblem_title, array('title' => $club_emblem_title,'class' => "img-rounded" ));      
+echo JHtml::image($picture, $club_emblem_title, array('title' => $club_emblem_title,'class' => "img-rounded" ));      
 ?>
 </div> 
         
