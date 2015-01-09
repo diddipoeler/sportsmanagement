@@ -79,6 +79,7 @@
 						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_DESCR" />
 -->
 				<field 	name="project_season" type="radio" default="1"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_SEASON"
 						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SELECT_PROJECTS_SEASON_DESCR">
 					<option value="0">JNO</option>
@@ -120,6 +121,7 @@
             <field type="message" style="info" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_PICTURES" />
 
 				<field 	name="show_picture" type="radio" default="1"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SHOW_CLUB_LOGO_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SHOW_CLUB_LOGO_DESCR">
 					<option value="0">JNO</option>
@@ -190,6 +192,7 @@
             <field type="message" style="info" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_FAV_TEAM" />
             
             <field 	name="use_fav" type="radio" default="0" 
+            class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_USE_FAVORITE_TEAM_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_USE_FAVORITE_TEAM_DESCR">
 					  <option value="0">JNO</option>
