@@ -48,7 +48,8 @@
 
 	<config>
 
-	<fields name="params" >	
+	<fields name="params" 
+  addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">	
 	  
 		<fieldset name="basic">
 

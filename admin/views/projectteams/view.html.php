@@ -219,7 +219,21 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		unset($res1);
 		unset($notusedteams);
         
-        
+        //build the html options for nation
+		$nation[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		if ($res = JSMCountries::getCountryOptions())
+        {
+            $nation = array_merge($nation,$res);
+            $this->assignRef('search_nation',$res);
+            }
+		
+        $lists['nation']=$nation;
+        $lists['nationpt']= JHtmlSelect::genericlist(	$nation,
+																'filter_search_nation',
+																'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+																'value',
+																'text',
+																$this->state->get('filter.search_nation'));
         
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpl<br><pre>'.print_r($tpl,true).'</pre>'   ),'');
@@ -242,6 +256,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		$this->assign('request_url',$uri->toString());
         $this->assignRef('project',$project);
         $this->assignRef('project_art_id',$this->project_art_id);
+        $this->assignRef('lists',$lists);
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'   ),'');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectteam<br><pre>'.print_r($this->projectteam,true).'</pre>'   ),'');

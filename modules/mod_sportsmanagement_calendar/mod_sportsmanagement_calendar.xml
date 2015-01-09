@@ -171,7 +171,7 @@
 
 				<field name="team_names" type="radio" default="short_name"
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_TEAMNAMESLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_TEAMNAMESDESC">
-					<option value="-">JNONAMES</option>
+					<option value="-">MOD_SPORTSMANAGEMENT_CALENDAR_NONAMES</option>
 					<option value="short_name">MOD_SPORTSMANAGEMENT_CALENDAR_TEAMNAMESOPTION1</option>
 					<option value="middle_name">MOD_SPORTSMANAGEMENT_CALENDAR_TEAMNAMESOPTION2</option>
 					<option value="name">MOD_SPORTSMANAGEMENT_CALENDAR_TEAMNAMESOPTION3</option>
@@ -179,7 +179,7 @@
 
 				<field name="team_logos" type="radio" default="-" label="MOD_SPORTSMANAGEMENT_CALENDAR_CLUBLOGOSLBL"
 					description="MOD_SPORTSMANAGEMENT_CALENDAR_CLUBLOGOSDESC">
-					<option value="-">JNONAMES</option>
+					<option value="-">MOD_SPORTSMANAGEMENT_CALENDAR_NONAMES</option>
 					<option value="logo_small">MOD_SPORTSMANAGEMENT_CALENDAR_CLUBLOGOSOPTION1</option>
 					<option value="logo_middle">MOD_SPORTSMANAGEMENT_CALENDAR_CLUBLOGOSOPTION2</option>
 					<option value="logo_big">MOD_SPORTSMANAGEMENT_CALENDAR_CLUBLOGOSOPTION3</option>

@@ -96,6 +96,11 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
 								?>
 							</a>
 						</th>
+                        <th width="10%">
+						<?php
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_COUNTRY','obj.country',$this->sortDirection,$this->sortColumn);
+						?>
+					</th>
 						<th colspan="2"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MANAGE_PERSONNEL'); ?></th>
 						<th>
 							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ADMIN','tl.admin',$this->sortDirection,$this->sortColumn); ?>
@@ -343,6 +348,12 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 							}
                             echo $row->name; ?>
                             </td>
+                            <td class="center">
+                            <?php
+                            echo JSMCountries::getCountryFlag($row->country);
+                            ?>
+                            </td>
+                            
 							<td class="center"><?php
 								if($row->playercount==0) {
 									$image = "players_add.png";

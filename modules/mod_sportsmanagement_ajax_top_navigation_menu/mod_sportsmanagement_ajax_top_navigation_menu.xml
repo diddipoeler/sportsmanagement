@@ -31,9 +31,10 @@
 	</languages>
 
 	<config>  
-		<fields name="params">
+		<fields name="params"
+    addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 
-			<fieldset name="basic" addfieldpath="/modules/mod_sportsmanagement_ajax_top_navigation_menu/fields">
+			<fieldset name="basic" addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 
 				<field name="project_ordering" type="list" default="0" label="MOD_SPORTSMANAGEMENT_NAVIGATION_PROJECT_ORDERING_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_PROJECT_ORDERING_DESC">
 					<option value="0">MOD_SPORTSMANAGEMENT_NAVIGATION_PROJECT_ORDERING_PROJECT_ASC</option>
@@ -54,31 +55,40 @@
 
 				<field name="stringlength" type="text" default="20" label="MOD_SPORTSMANAGEMENT_NAVIGATION_STRING_LENGHT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_STRING_LENGHT_DESC" />
 				<field type="spacer" hr="true" />
-				<field name="show_project_dropdown" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_PROJECT_DROPDOWN_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_PROJECT_DROPDOWN_DESC">
+				<field name="show_project_dropdown" 
+        class="radio btn-group btn-group-yesno"
+        type="radio" default="1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_PROJECT_DROPDOWN_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_PROJECT_DROPDOWN_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-				<field name="text_project_dropdown" type="text" default="-&gt; Choose Project..." label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_PROJECT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_PROJECT_DESC" />
+				<field name="text_project_dropdown" 
+        class="radio btn-group btn-group-yesno"
+        type="text" default="-&gt; Choose Project..." label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_PROJECT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_PROJECT_DESC" />
 				<field type="spacer" hr="true" />
-				<field name="show_season_dropdown" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_SEASON_DROPDOWN_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_SEASON_DROPDOWN_DESC">
+				<field name="show_season_dropdown" class="radio btn-group btn-group-yesno"
+        type="radio" default="1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_SEASON_DROPDOWN_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_SEASON_DROPDOWN_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
 				<field name="seasons_text" type="text" default="-&gt; Choose Season..." label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_SEASON_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_SEASON_DESC" />
 				<field type="spacer" hr="true" />
-				<field name="show_league_dropdown" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_LEAGUE_DROPDOWN_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_LEAGUE_DROPDOWN_DESC">
+				<field name="show_league_dropdown" 
+        class="radio btn-group btn-group-yesno"
+        type="radio" default="1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_LEAGUE_DROPDOWN_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_LEAGUE_DROPDOWN_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
 				<field name="leagues_text" type="text" default="-&gt; Choose League..." label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_LEAGUE_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_LEAGUE_DESC" />
 				<field type="spacer" hr="true" />
-				<field name="show_division_dropdown" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_DIVISION_DROPDOWN_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_DIVISION_DROPDOWN_DESC">
+				<field name="show_division_dropdown" class="radio btn-group btn-group-yesno"
+        type="radio" default="1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_DIVISION_DROPDOWN_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_DIVISION_DROPDOWN_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
 				<field name="divisions_text" type="text" default="-&gt; Choose Division..." label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_DIVISIONS_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_DIVISIONS_DESC" />
 				<field type="spacer" hr="true" />
-				<field name="show_teams_dropdown" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_Show_team_dropdown_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_Show_team_dropdown_DESC">
+				<field name="show_teams_dropdown" class="radio btn-group btn-group-yesno"
+        type="radio" default="1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_Show_team_dropdown_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_Show_team_dropdown_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
@@ -109,21 +119,24 @@
 
 				<field type="spacer" hr="true" />
 
-				<field name="show_only_subdivisions" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_ONLY_SUBDIVISIONS_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_ONLY_SUBDIVISIONS_DESC">
+				<field name="show_only_subdivisions" class="radio btn-group btn-group-yesno"
+        type="radio" default="0" label="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_ONLY_SUBDIVISIONS_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_SHOW_ONLY_SUBDIVISIONS_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
 
 		<field type="spacer" hr="true" />
 
-				<field name="show_favteams_nav_links" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_FAVTEAMS_NAV_MENU_ITEM_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_FAVTEAMS_NAV_MENU_ITEM_DESC">
+				<field name="show_favteams_nav_links" class="radio btn-group btn-group-yesno"
+        type="radio" default="1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_FAVTEAMS_NAV_MENU_ITEM_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_FAVTEAMS_NAV_MENU_ITEM_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
 
 				<field type="spacer" hr="true" />
 				<field type="spacer" name="extended3" label="MOD_SPORTSMANAGEMENT_NAVIGATION_TOURNAMENT_LINKS"/>
-				<field name="show_tournament_nav_links" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_NAVIGATION_TOURNAMENT_NAV_MENU_ITEM_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_TOURNAMENT_NAV_MENU_ITEM_DESC">
+				<field name="show_tournament_nav_links" class="radio btn-group btn-group-yesno"
+        type="radio" default="0" label="MOD_SPORTSMANAGEMENT_NAVIGATION_TOURNAMENT_NAV_MENU_ITEM_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_TOURNAMENT_NAV_MENU_ITEM_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
@@ -131,7 +144,8 @@
 				<field name="show_tournament_text" type="text" default="Turnierbaum" label="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_TOURNAMENT_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_INIT_TEXT_TOURNAMENT_DESC" />
 				<field type="spacer" hr="true" />
 				<field type="spacer" name="extended4" label="MOD_SPORTSMANAGEMENT_NAVIGATION_ALLTIMETABLE_LINKS"/>
-				<field name="show_alltimetable_nav_links" type="radio" default="0" label="MOD_SPORTSMANAGEMENT_NAVIGATION_ALLTIMETABLE_NAV_MENU_ITEM_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_ALLTIMETABLE_NAV_MENU_ITEM_DESC">
+				<field name="show_alltimetable_nav_links" class="radio btn-group btn-group-yesno"
+        type="radio" default="0" label="MOD_SPORTSMANAGEMENT_NAVIGATION_ALLTIMETABLE_NAV_MENU_ITEM_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_ALLTIMETABLE_NAV_MENU_ITEM_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
@@ -153,14 +167,14 @@
 
 				<field type="spacer" hr="true" />
 
-				<field name="show_nav_links" type="radio" default="1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_MENU_ITEM_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_MENU_ITEM_DESC">
+				<field name="show_nav_links" class="radio btn-group btn-group-yesno"
+        type="radio" default="1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_MENU_ITEM_LABEL" description="MOD_SPORTSMANAGEMENT_NAVIGATION_NAV_MENU_ITEM_DESC">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
 
-				<field type="spacer" hr="true" />
-				<field type="spacer" name="extended1" label="MOD_SPORTSMANAGEMENT_NAVIGATION_PROJECT_LINKS" />
-
+				
+        <field type="message" style="info" text="MOD_SPORTSMANAGEMENT_NAVIGATION_PROJECT_LINKS" />
 				<field name="navpoint1"
 						type="JLMenuItems"
 						default=""

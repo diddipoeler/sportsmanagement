@@ -18,6 +18,7 @@
 		<folder>tmpl</folder>
 		<folder>css</folder>
 		<folder>js</folder>
+		<folder>wowslider</folder>
 	</files>
 
 	<languages>
@@ -30,7 +31,8 @@
 		</languages>
 
 	<config>
-		<fields name="params">
+		<fields name="params"
+    addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 
 			<fieldset	name="basic"
 						addfieldpath="/administrator/components/com_sportsmanagement/elements" >
@@ -62,9 +64,14 @@
 						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SELECT_ITEMID_FOR_LINKS_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SELECT_ITEMID_FOR_LINKS_DESCR" />
 
+            <field type="subtitle" title="" />
+            <field type="message" style="info" text="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SPACER_LAYOUT_SETTINGS" />
+
+<!--            
 				<field 	name="@spacer" type="spacer" default="" 
 						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SPACER_LAYOUT_SETTINGS"
 						description="" />
+-->
 
 				<field 	name="show_club_flag" type="radio" default="1" class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SHOW_FLAG_LABEL" 
@@ -88,9 +95,14 @@
 						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_PICTURE_WIDTH_LABEL"
 						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_PICTURE_WIDTH_DESCR" />
 
+        <field type="subtitle" title="" />
+        <field type="message" style="info" text="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SPACER_CUSTOMIZE_MESSAGES_LABEL" />
+
+<!--        
 				<field 	name="@spacer" type="spacer" default=""
 						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SPACER_CUSTOMIZE_MESSAGES_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SPACER_CUSTOMIZE_MESSAGES_DESCR" />
+-->
 
 				<field 	name="dayformat" type="text" default="%d. %B %Y"
 						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DATE_FORMAT_LABEL" 
@@ -120,26 +132,30 @@
 						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_MESSAGE_FOR_BIRTHDAY_LABEL"
 						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_MESSAGE_FOR_BIRTHDAY_DESCR" /> 
 
-				<field 	name="birthdaytextyear" type="textarea" 
+				<field 	name="birthdaytextyear" 
+        type="textarea" 
 						default="... wird %AGE% Jahre alt%BR%"
 						cols="25" rows="5"
 						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_MESSAGE_FOR_BIRTHDAY_YEAR_LABEL"
 						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_MESSAGE_FOR_BIRTHDAY_YEAR_DESCR" />
 
-				<field 	name="not_found_text" type="textarea" 
+				<field 	name="not_found_text" 
+        type="textarea" 
 						default="kein Jubiläum in den nächsten %DAYS% Tagen"
 						cols="25" rows="5"
 						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_NO_BIRTHDAY_MESSAGE_LABEL"
 						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_NO_BIRTHDAY_MESSAGE_DESCR" />
 
-				<field name="mode" type="list" default="" 
+				<field name="mode" type="list" default="J" 
 					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_LABEL_MODE"
 					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DESC_MODE">
 					<option value="T">TICKER</option>
 					<option value="L">LIST</option>
-					<option value="V">WOWSLIDER</option>
+<!--					<option value="V">WOWSLIDER</option> -->
+					<option value="J">Jssor Slider</option>
 				</field>
-				
+
+<!--				
 				<field name="wowsliderstyle" type="list" default="basic_linear" 
 					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_LABEL_WOW_STYLE"
 					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DESC_WOW_STYLE">
@@ -147,10 +163,17 @@
 					<option value="squares">squares</option>
 					<option value="fade">fade</option>
 					<option value="domino">domino</option>
+					<option value="style">style</option>
+					<option value="slice">slice</option>
 				</field>
-				
+-->
+			<field type="subtitle" title="" />	
+			<field type="message" style="info" text="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SPACER_CUSTOMIZE_MESSAGES_LABEL" />	
+<!--						
 				<field name="@spacer" type="spacer" default="" label=""
 					description="" />
+-->					
+					
 				   <!--
         	<field name="refresh" type="radio" default="0" 
 					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_LABEL_REFRESH"
@@ -186,6 +209,45 @@
 					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DESC_TICKER_WIDTH">
 				</field>
 
+			</fieldset>
+			
+			<fieldset name="advanced_front" label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_JSSOR_LABEL" description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_JSSOR_DESC">
+			
+      <field name="jssor_transition_use" type="radio" default="1" class="radio btn-group btn-group-yesno"
+					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_JSSOR_TRANSITION_USE_LABEL" 
+					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_JSSOR_TRANSITION_USE_DESCR">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+      
+      
+      <field type="message" style="info" text="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_TRANSITION_HELP" />
+      <field 	name="jssor_transition" 
+        type="textarea" 
+						default="{$Duration:1600,x:1,$Rows:2,$ChessMode:{$Row:3},$Easing:{$Left:$JssorEasing$.$EaseInOutQuart,$Opacity:$JssorEasing$.$EaseLinear},$Opacity:2,$Brother:{$Duration:1600,x:-1,$Rows:2,$ChessMode:{$Row:3},$Easing:{$Left:$JssorEasing$.$EaseInOutQuart,$Opacity:$JssorEasing$.$EaseLinear},$Opacity:2}}"
+						cols="25" rows="5"
+						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_JSSOR_TRANSITION_LABEL"
+						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_JSSOR_TRANSITION_DESCR" />
+			
+			<field name="jssor_playorientation" type="radio" default="1" 
+					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_LABEL_JSSOR_PLAYORIENTATION" 
+					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DESC_JSSOR_PLAYORIENTATION">
+					<option value="1">horizental</option>
+					<option value="2">vertical</option>
+					<option value="5">horizental reverse</option>
+					<option value="6">vertical reverse</option>
+				</field>
+				
+			<field name="jssor_captiontransitions" type="radio" default="L-R" 
+					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_LABEL_JSSOR_CAPTIONTRANSITIONS" 
+					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DESC_JSSOR_CAPTIONTRANSITIONS">
+					<option value="L-R">Left to Right</option>
+					<option value="R-L">Right to Left</option>
+					<option value="T-B">Top to Bottom</option>
+					<option value="B-T">Bottom to Top</option>
+				</field>	
+				
+				
 			</fieldset>
 			
 			<fieldset name="advanced">

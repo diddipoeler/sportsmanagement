@@ -52,7 +52,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 </script>
 
 
-<table cellspacing="0" border="0" width="100%">
+<table class="<?php echo $this->config['goals_table_class'];?>">
 	<tr class="sectiontableheader">
 		<th colspan="2"><?php	echo JText::_('COM_SPORTSMANAGEMENT_STATS_GOALS_STATISTIC'); ?></th>
 	</tr>

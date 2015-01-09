@@ -40,7 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 JHtml::_('behavior.switcher');
-JHtml::_( 'behavior.modal' );
+JHtml::_('behavior.modal');
 
 //echo ' config<br><pre>'.print_r($this->config,true).'</pre>';   
 //echo ' currentRanking<br><pre>'.print_r($this->currentRanking,true).'</pre>';
@@ -75,7 +75,7 @@ jQuery(window).load(function() {
 
 </script>
 
-<div class="joomleague">
+<div class="container">
 	<?php
 	echo $this->loadTemplate('projectheading');
 

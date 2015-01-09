@@ -63,6 +63,11 @@ $view = JRequest::getCmd('view', 'cpanel');
             switch ($view)
             {
             case 'projectteams':
+               
+            ?>
+            <td nowrap='nowrap' align='right'><?php echo $this->lists['nationpt'].'&nbsp;&nbsp;'; ?></td>
+            <?PHP
+            
             break;
             default:    
             if ( isset($this->lists) )
