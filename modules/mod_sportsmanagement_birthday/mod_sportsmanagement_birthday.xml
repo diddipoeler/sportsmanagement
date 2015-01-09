@@ -34,7 +34,7 @@
 
 			<fieldset	name="basic" 
 			description="MOD_SPORTSMANAGEMENT_BASIC_DESC"
-      addfieldpath="/administrator/components/com_sportsmanagement/elements">
+      >
       <field name="cfg_which_database" 
     type="radio" 
     default="0"
