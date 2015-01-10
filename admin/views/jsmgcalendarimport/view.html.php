@@ -26,7 +26,7 @@ jimport('joomla.application.component.view');
 class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView 
 {
     
-    function display( $tpl = null )
+    function init( $tpl = null )
 	{
 		$app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
@@ -47,9 +47,9 @@ class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView
         
         
         
-        $this->addToolbar();
-        
-        parent::display($tpl);
+        //$this->addToolbar();
+//        
+//        parent::display($tpl);
    }     
 
 //	protected $onlineItems = null;
@@ -70,13 +70,13 @@ class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView
             JToolBarHelper::cancel('jsmgcalendar.cancel', 'JTOOLBAR_CANCEL');
         }
         
-        JToolBarHelper::divider();
-        sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		JToolBarHelper::preferences($option);
+//        JToolBarHelper::divider();
+//        sportsmanagementHelper::ToolbarButtonOnlineHelp();
+//		JToolBarHelper::preferences($option);
 
 //		JRequest::setVar('hidemainmenu', 0);
 
-//		parent::addToolbar();
+		parent::addToolbar();
 	}
 
 //	protected function init() {

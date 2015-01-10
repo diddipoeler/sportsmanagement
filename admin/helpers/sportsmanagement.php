@@ -61,6 +61,25 @@ abstract class sportsmanagementHelper
     
     
     /**
+     * sportsmanagementHelper::getTimezone()
+     * 
+     * @param mixed $project
+     * @param mixed $overallconfig
+     * @return
+     */
+    public static function getTimezone($project, $overallconfig) 
+    {
+		if($project) 
+        {
+			return $project->timezone;
+		} 
+        else 
+        {
+			return $overallconfig['time_zone'];
+		}
+	}
+    
+    /**
      * sportsmanagementHelper::getMatchDate()
      * 
      * @param mixed $match

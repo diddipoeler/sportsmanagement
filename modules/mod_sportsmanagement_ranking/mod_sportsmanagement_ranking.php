@@ -56,6 +56,28 @@ require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'countries.php');
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');   
 
+// Reference global application object
+$app = JFactory::getApplication();
+// JInput object
+$jinput = $app->input;
+$option = $jinput->getCmd('option');
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' app<br><pre>'.print_r($app,true).'</pre>'),'');
+
+// Sitename aus der globalen Konfiguration ausgeben
+//echo 'sitename -> '.$app->getCfg('sitename');
+//echo '<br> option -> '.$option;
+
+switch ($option)
+{
+    case 'com_dmod':
+    require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'controllers'.DS.'ajax.json.php');
+    require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'fields'.DS.'dependsql.php');
+    break;
+}
+
+//echo 'sitename -> '.$app->_name();
+        
 // welche tabelle soll genutzt werden
 //$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
 //$database_table	= $paramscomponent->get( 'cfg_which_database_table' );

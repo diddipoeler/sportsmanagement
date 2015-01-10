@@ -174,7 +174,7 @@
 				</field>
 
 				
-        <field type="message" style="info" text="MOD_SPORTSMANAGEMENT_NAVIGATION_PROJECT_LINKS" />
+        <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_NAVIGATION_PROJECT_LINKS" />
 				<field name="navpoint1"
 						type="JLMenuItems"
 						default=""

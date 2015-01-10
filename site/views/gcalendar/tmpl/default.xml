@@ -100,7 +100,10 @@
 			<field name="popup_height" type="text" size="5" label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_POPUP_HEIGHT_LABEL"
 				description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_POPUP_HEIGHT_DESC" />
 		</fieldset>
-		<fieldset name="advanced">
+		<fieldset name="advanced"
+    label="COM_SPORTSMANAGEMENT_XML_ADVANCED_FIELDSET_LABEL"
+              description="COM_SPORTSMANAGEMENT_XML_ADVANCED_FIELDSET_DESC"
+              >
 			<field name="theme" type="text" size="50"
 				label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_THEME_LABEL"
 				description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_THEME_DESC" />

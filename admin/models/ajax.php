@@ -232,8 +232,12 @@ class sportsmanagementModelAjax extends JModelLegacy
             $query->join('LEFT', '#__sportsmanagement_project AS p ON p.league_id = l.id');    
             $query->where('p.id = '.$project_id);
             }
-
+            
+            if ( $sports_type_id )
+            {
             $query->where('a.sportstype_id = '.$sports_type_id);
+            }
+            
 			$query->order('a.name');    
                     
         $db->setQuery($query);

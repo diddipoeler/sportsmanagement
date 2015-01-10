@@ -26,7 +26,9 @@
 </languages>
 <config>
 		<fields name="params" addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-			<fieldset name="advanced">
+			<fieldset name="basic"
+      description="MOD_SPORTSMANAGEMENT_BASIC_DESC"
+      >
 			<field name="cfg_which_database" 
     type="radio" 
     default="0"
@@ -97,10 +99,13 @@
 		<option value="1">JYES</option>
 	</field>
 	</fieldset>
-	<fieldset name="basic">
-    <field name="@spacer" type="spacer" default="" label="" description="-" />
-		<field name="moduleclass_sfx" type="text" default="" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
-		</fieldset>
+	<fieldset name="advanced">
+
+				<field 	name="moduleclass_sfx" type="text" default="" 
+						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+
+			</fieldset>
  </fields>
  </config>
  </extension>

@@ -9,6 +9,7 @@
   addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
 		<fieldset	name="request"
 					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_DESC"
 					>
    <field name="cfg_which_database" 
     type="radio" 
@@ -39,19 +40,27 @@
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_DESCR"
 					required="">
 			</field>
+			
 			<field	name="division" 
       type="dependsql" 
       depends="p" 
-      task="projectdivisionsoptions"
+      task="projectdivisionsoptions" 
+			key_field="project_id"
+			value_field="p"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_LABEL"
-					description="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_DESCR">
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_DESCR"
+					required="false">
 			</field>
+			
 			<field	name="r" 
       type="dependsql" 
       depends="p" 
-      task="projectroundoptions"
-					label="COM_SPORTSMANAGEMENT_XML_SELECT_ROUND_LABEL"
-					description="COM_SPORTSMANAGEMENT_XML_SELECT_ROUND_DESCR">
+      task="projectroundoptions" 
+			key_field="project_id"
+			value_field="p"
+					label="COM_SPORTSMANAGEMENT_XML_RANKING_SELECT_ROUND_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_RANKING_SELECT_ROUND_DESCR"
+					required="false">
 			</field>
 
 		</fieldset>
@@ -59,7 +68,8 @@
 
     <fields name="params">
         <fieldset	name="advanced"
-        			label="COM_SPORTSMANAGEMENT_XML_ADVANCED_FIELDSET_LABEL">
+        			label="COM_SPORTSMANAGEMENT_XML_ADVANCED_FIELDSET_LABEL"
+              description="COM_SPORTSMANAGEMENT_XML_ADVANCED_FIELDSET_DESC">
 
 			<field	name="what_to_show_first" type="radio" default="0"
 			    	label="COM_SPORTSMANAGEMENT_XML_RESULTS_RANKING_SELECT_SHOWFIRST_LABEL"

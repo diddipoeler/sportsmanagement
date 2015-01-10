@@ -7,9 +7,11 @@ JLoader::import('joomla.application.component.modellist');
 
 JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'tables');
 
-class sportsmanagementModeljsmGCalendars extends JModelList {
+class sportsmanagementModeljsmGCalendars extends JModelList 
+{
 
-	protected function _getList($query, $limitstart = 0, $limit = 0) {
+	protected function _getList($query, $limitstart = 0, $limit = 0) 
+    {
 		$items = parent::_getList($query, $limitstart, $limit);
 		if ($items === null) {
 			return $items;
@@ -23,7 +25,8 @@ class sportsmanagementModeljsmGCalendars extends JModelList {
 		return $tmp;
 	}
 
-	protected function getListQuery() {
+	protected function getListQuery() 
+    {
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$user	= JFactory::getUser();

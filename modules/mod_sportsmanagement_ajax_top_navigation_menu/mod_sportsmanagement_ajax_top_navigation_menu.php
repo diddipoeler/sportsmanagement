@@ -241,7 +241,16 @@ $team_id  = JRequest::getVar('jlamtopteam',0,'default','POST');
 $helper->setProject( $project_id, $team_id, $division_id  );
 }
 
+// welche joomla version ?
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+JHTML::_('behavior.framework', true);
+}
+else
+{
 JHTML::_('behavior.mootools');
+}
+
 JHTML::_('behavior.modal');
 
 if ( $params->get('show_favteams_nav_links') )

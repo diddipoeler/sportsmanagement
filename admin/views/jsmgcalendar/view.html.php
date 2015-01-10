@@ -54,13 +54,8 @@ jimport('joomla.application.component.view');
 class sportsmanagementViewjsmgcalendar extends sportsmanagementView  
 {
 
-/**
- * sportsmanagementViewjsmgcalendar::display()
- * 
- * @param mixed $tpl
- * @return void
- */
-function display( $tpl = null )
+
+function init( $tpl = null )
 	{
 		$app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
@@ -85,9 +80,9 @@ function display( $tpl = null )
             $this->form->setValue('password', null, JComponentHelper::getParams(JRequest::getCmd('option'))->get('google_mail_password',''));
         }
             
-        $this->addToolbar();
+        //$this->addToolbar();
         
-        parent::display($tpl);
+        //parent::display($tpl);
         
      }   
 //	protected $gcalendar = null;
@@ -148,7 +143,7 @@ $option = JRequest::getCmd('option');
         sportsmanagementHelper::ToolbarButtonOnlineHelp();
 		JToolBarHelper::preferences($option);
 
-//		parent::addToolbar();
+		parent::addToolbar();
 	}
 //
 //	protected function init() {

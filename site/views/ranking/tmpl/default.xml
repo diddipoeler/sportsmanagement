@@ -6,11 +6,13 @@
 		</message>
 	</layout>
 	
-	 <fields name="request"
-   addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
+	 <fields name="request">
 		<fieldset	name="request"
 					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
-          	>
+					description="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_DESC"
+					addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
+          	
+          	
       <field name="cfg_which_database" 
     type="radio" 
     default="0"
