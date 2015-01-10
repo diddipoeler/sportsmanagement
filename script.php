@@ -205,6 +205,17 @@ class com_sportsmanagementInstallerScript
 	$mainframe = JFactory::getApplication();
     $db = JFactory::getDbo();
     
+    // sicherheitshalber 4 dateien löschen, die ich falsch angelegt habe.
+    // aber nur wenn sie vorhanden sind
+    $file_to_delete = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'models'.DS.'fields'.DS.'link.php'; 
+    JFile::delete($file_to_delete);
+    $file_to_delete = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'models'.DS.'fields'.DS.'message.php'; 
+    JFile::delete($file_to_delete);
+    $file_to_delete = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'models'.DS.'fields'.DS.'subtitle.php'; 
+    JFile::delete($file_to_delete);
+    $file_to_delete = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'models'.DS.'fields'.DS.'title.php'; 
+    JFile::delete($file_to_delete);
+    
     
     if(version_compare(JVERSION,'3.0.0','ge')) 
         {
