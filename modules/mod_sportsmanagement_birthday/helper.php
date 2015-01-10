@@ -167,11 +167,17 @@ if ($params->get('use_which') <= 1)
 
 	$query->order('days_to_birthday ASC');
 
-	if ($params->get('limit') > 0) 
-    $query->setLimit($params->get('limit'));
+	if ($params->get('limit') > 0)
+    {
+    $database->setQuery($query." LIMIT " . $params->get('limit'));    
+    }
+    else
+    {
+    $database->setQuery($query);    
+    }    
+    //$query->setLimit($params->get('limit'));
 
-
-	$database->setQuery($query);
+	//$database->setQuery($query);
 	//echo("<hr>".$database->getQuery($query));
     
     //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
@@ -230,10 +236,14 @@ if ($params->get('use_which') == 2 || $params->get('use_which') == 0)
 
 	$query->order('days_to_birthday ASC');
 
-	if ($params->get('limit') > 0) 
-    $query->setLimit($params->get('limit'));
-
-	$database->setQuery($query);
+	if ($params->get('limit') > 0)
+    {
+    $database->setQuery($query." LIMIT " . $params->get('limit'));    
+    }
+    else
+    {
+    $database->setQuery($query);    
+    }  
     
     //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
     
