@@ -10,9 +10,9 @@ defined('_JEXEC') or die ;
 jimport('joomla.form.formfield');
 jimport('joomla.version');
 
-class JFormFieldMessage extends JFormField {
+class JFormFieldJSMMessage extends JFormField {
 		
-	public $type = 'Message';
+	public $type = 'JSMMessage';
 
 	/**
 	 * Method to get the field options.

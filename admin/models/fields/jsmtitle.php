@@ -9,9 +9,9 @@ defined('_JEXEC') or die ;
 
 jimport('joomla.form.formfield');
 
-class JFormFieldSubtitle extends JFormField {
+class JFormFieldJSMTitle extends JFormField {
 		
-	public $type = 'Subtitle';
+	public $type = 'JSMTitle';
 
 	/**
 	 * Method to get the field options.
@@ -23,9 +23,13 @@ class JFormFieldSubtitle extends JFormField {
 		
 		$html = '';
 		$value = trim($this->element['title']);
+		$image_src = trim($this->element['imagesrc']);
 
 		$html .= '<div style="clear: both;"></div>';
-		$html .= '<div style="margin: 20px 0 20px 20px; font-weight: bold; padding: 5px; color: #444444; border-bottom: 1px solid #444444;">';
+		$html .= '<div style="margin: 10px 0 10px 0; text-transform: uppercase; letter-spacing: 3px; font-weight: bold; padding: 5px; background-color: #F4F4F4; color: #444444">';
+		if ($image_src) {
+			$html .= '<img style="margin: -5px 2px 0 0; float: left; padding: 0px; width: 24px; height: 24px" src="'.$image_src.'">';
+		}
 		if ($value) {
 			$html .= JText::_($value);
 		}

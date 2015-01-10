@@ -20,9 +20,9 @@ public function init ()
         $this->items = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
         
-        $this->addToolbar();
+        //$this->addToolbar();
         
-        parent::display($tpl);
+        //parent::display($tpl);
         }
 //	protected $icon = 'calendar';
 //	protected $title = 'COM_GCALENDAR_MANAGER_GCALENDAR';
@@ -45,11 +45,13 @@ public function init ()
 			JToolBarHelper::deleteList('', 'jsmgcalendars.delete', 'JTOOLBAR_DELETE');
 		}
         
-        JToolBarHelper::divider();
-        sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		JToolBarHelper::preferences($option);
+        $this->icon = 'google-calendar-48-icon.png';
+        
+//        JToolBarHelper::divider();
+//        sportsmanagementHelper::ToolbarButtonOnlineHelp();
+//		JToolBarHelper::preferences($option);
 
-		//parent::addToolbar();
+		parent::addToolbar();
 	}
 
 //	protected function init() 

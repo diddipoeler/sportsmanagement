@@ -171,6 +171,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             </div>          
           </div>
           
+         
+          
           <div class="icon-wrapper">            
             <div id="icon">              
               <?php echo $this->addIcon('github.png','index.php?option=com_sportsmanagement&view=github', JText::_('COM_SPORTSMANAGEMENT_D_MENU_GITHUB'));?>            
