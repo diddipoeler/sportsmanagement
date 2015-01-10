@@ -64,8 +64,8 @@
 						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SELECT_ITEMID_FOR_LINKS_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SELECT_ITEMID_FOR_LINKS_DESCR" />
 
-            <field type="subtitle" title="" />
-            <field type="message" style="info" text="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SPACER_LAYOUT_SETTINGS" />
+            <field type="jsmsubtitle" title="" />
+            <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SPACER_LAYOUT_SETTINGS" />
 
 <!--            
 				<field 	name="@spacer" type="spacer" default="" 
@@ -95,8 +95,8 @@
 						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_PICTURE_WIDTH_LABEL"
 						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_PICTURE_WIDTH_DESCR" />
 
-        <field type="subtitle" title="" />
-        <field type="message" style="info" text="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SPACER_CUSTOMIZE_MESSAGES_LABEL" />
+        <field type="jsmsubtitle" title="" />
+        <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SPACER_CUSTOMIZE_MESSAGES_LABEL" />
 
 <!--        
 				<field 	name="@spacer" type="spacer" default=""
@@ -167,8 +167,8 @@
 					<option value="slice">slice</option>
 				</field>
 -->
-			<field type="subtitle" title="" />	
-			<field type="message" style="info" text="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SPACER_CUSTOMIZE_MESSAGES_LABEL" />	
+			<field type="jsmsubtitle" title="" />	
+			<field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_SPACER_CUSTOMIZE_MESSAGES_LABEL" />	
 <!--						
 				<field name="@spacer" type="spacer" default="" label=""
 					description="" />
@@ -221,7 +221,7 @@
 				</field>
       
       
-      <field type="message" style="info" text="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_TRANSITION_HELP" />
+      <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_TRANSITION_HELP" />
       <field 	name="jssor_transition" 
         type="textarea" 
 						default="{$Duration:1600,x:1,$Rows:2,$ChessMode:{$Row:3},$Easing:{$Left:$JssorEasing$.$EaseInOutQuart,$Opacity:$JssorEasing$.$EaseLinear},$Opacity:2,$Brother:{$Duration:1600,x:-1,$Rows:2,$ChessMode:{$Row:3},$Easing:{$Left:$JssorEasing$.$EaseInOutQuart,$Opacity:$JssorEasing$.$EaseLinear},$Opacity:2}}"

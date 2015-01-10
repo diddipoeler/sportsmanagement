@@ -62,6 +62,8 @@
       <field name="spacer3" type="spacer" class="text" label=""/>
       <field name="spacer4" type="spacer" class="text" label=""/> 
 			
+			<field type="jsmsubtitle" title="PLG_SYSTEM_JQUERYEASY_FIELD_THEMES_LABEL" />
+			
 			<field 	name="project" 
 			task="projects" 
       type="dependsql"
@@ -118,7 +120,7 @@
             <field name="spacer6" type="spacer" class="text" label=""/>
             <field name="spacer7" type="spacer" class="text" label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_PICTURES"/>
             -->
-            <field type="message" style="info" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_PICTURES" />
+            <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_PICTURES" />
 
 				<field 	name="show_picture" type="radio" default="1"
 				class="radio btn-group btn-group-yesno"
@@ -131,7 +133,7 @@
         <!--
         <field name="spacer9" type="spacer" class="text" label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_PICTURES_OFF"/>
         -->
-        <field type="message" style="info" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_PICTURES_OFF" />
+        <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_PICTURES_OFF" />
         
 				<field 	name="picture_type" type="list" default="logo_big" 
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_WHICH_CLUB_LOGO_TITLE"
@@ -151,7 +153,7 @@
         <!--
         <field name="spacer11" type="spacer" class="text" label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_TEXT"/>
         -->
-        <field type="message" style="info" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_TEXT" />
+        <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_TEXT" />
         
 				<field 	name="team_names" type="list" default="short_name"
 						label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_TEAM_NAME_LENGTH_TITLE"
@@ -183,13 +185,13 @@
             <!--
             <field name="spacer8" type="spacer" class="text" label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_TIME"/>
             -->
-            <field type="message" style="error" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_TIME" />
+            <field type="jsmmessage" style="error" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_TIME" />
             
             <!--
             <field name="spacer12" type="spacer" class="text" label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_FAV_TEAM"/>
             -->
             
-            <field type="message" style="info" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_FAV_TEAM" />
+            <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SPACER_FAV_TEAM" />
             
             <field 	name="use_fav" type="radio" default="0" 
             class="radio btn-group btn-group-yesno"

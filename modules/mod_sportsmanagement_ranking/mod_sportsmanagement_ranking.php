@@ -65,8 +65,8 @@ $option = $jinput->getCmd('option');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' app<br><pre>'.print_r($app,true).'</pre>'),'');
 
 // Sitename aus der globalen Konfiguration ausgeben
-echo 'sitename -> '.$app->getCfg('sitename');
-echo '<br> option -> '.$option;
+//echo 'sitename -> '.$app->getCfg('sitename');
+//echo '<br> option -> '.$option;
 
 switch ($option)
 {
