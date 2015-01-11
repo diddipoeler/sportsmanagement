@@ -101,7 +101,7 @@ class sportsmanagementViewPosition extends sportsmanagementView
 		$this->script = $script;
         
         //build the html options for parent position
-		$parent_id[]=JHtml::_('select.option','',JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'));
+		$parent_id[] = JHtml::_('select.option','',JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'));
 		$mdlPositions = JModelLegacy::getInstance("Positions", "sportsmanagementModel");
 	    
         if ($res = $mdlPositions->getParentsPositions())
@@ -112,7 +112,8 @@ class sportsmanagementViewPosition extends sportsmanagementView
             }
 			$parent_id = array_merge($parent_id,$res);
 		}
-		$lists['parents'] = $parent_id;
+		//$lists['parents'] = $parent_id;
+        $lists['parents']=JHtml::_('select.genericlist',$parent_id,'parent_id','class="inputbox" size="1"','value','text',$this->item->parent_id);
         
 		unset($parent_id);
         
