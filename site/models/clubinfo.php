@@ -79,13 +79,16 @@ class sportsmanagementModelClubInfo extends JModelLegacy
 	 */
 	function __construct( )
 	{
-		
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
 
-		self::$projectid = JRequest::getInt( "p", 0 );
-		self::$clubid = JRequest::getInt( "cid", 0 );
+		self::$projectid = $jinput->getInt( "p", 0 );
+		self::$clubid = $jinput->getInt( "cid", 0 );
         
         sportsmanagementModelProject::$projectid = self::$projectid;
-        self::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+        self::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
         
         parent::__construct( );
 	}
@@ -172,8 +175,11 @@ class sportsmanagementModelClubInfo extends JModelLegacy
      */
     function getClubAssociation($associations)
 	{
-	   $option = JRequest::getCmd('option');
-	   $app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+       $option = $jinput->getCmd('option');
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -197,8 +203,11 @@ class sportsmanagementModelClubInfo extends JModelLegacy
      */
     static function getClub( )
 	{
-		$option = JRequest::getCmd('option');
-	   $app = JFactory::getApplication();
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+       $option = $jinput->getCmd('option');
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -230,8 +239,11 @@ class sportsmanagementModelClubInfo extends JModelLegacy
 	 */
 	function getTeamsByClubId()
 	{
-		$option = JRequest::getCmd('option');
-	   $app = JFactory::getApplication();
+	// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+       $option = $jinput->getCmd('option');
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -295,8 +307,11 @@ class sportsmanagementModelClubInfo extends JModelLegacy
 	 */
 	function getStadiums()
 	{
-		$option = JRequest::getCmd('option');
-	   $app = JFactory::getApplication();
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+       $option = $jinput->getCmd('option');
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -331,7 +346,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy
 				if ( $club->standard_playground > 0 )
 				{
 				    // Where
-                    $query->where('standard_playground <> '. $club->standard_playground );
+                    $query->where('pt.standard_playground <> '. $club->standard_playground );
 				}
 				$db->setQuery($query);
 				if ( $res = $db->loadResult() )
@@ -350,8 +365,11 @@ class sportsmanagementModelClubInfo extends JModelLegacy
 	 */
 	function getPlaygrounds( )
 	{
-		$option = JRequest::getCmd('option');
-	   $app = JFactory::getApplication();
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+       $option = $jinput->getCmd('option');
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -389,8 +407,11 @@ class sportsmanagementModelClubInfo extends JModelLegacy
      */
     function getClubHistory( $clubid )
 	{
-	$option = JRequest::getCmd('option');
-	   $app = JFactory::getApplication();
+	// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+       $option = $jinput->getCmd('option');
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -440,8 +461,11 @@ class sportsmanagementModelClubInfo extends JModelLegacy
          */
         function getClubHistoryHTML( $clubid )
 	{
-	   $option = JRequest::getCmd('option');
-	   $app = JFactory::getApplication();
+	  // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+       $option = $jinput->getCmd('option');
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -541,8 +565,11 @@ class sportsmanagementModelClubInfo extends JModelLegacy
          */
         function getClubHistoryTree( $clubid, $new_club_id )
 	{
-	$option = JRequest::getCmd('option');
-	   $app = JFactory::getApplication();
+	// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+       $option = $jinput->getCmd('option');
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -637,8 +664,11 @@ class sportsmanagementModelClubInfo extends JModelLegacy
          */
         function getSortClubHistoryTree( $clubtree, $root_catid, $cat_name )
 	{
-	$option = JRequest::getCmd('option');
-	   $app = JFactory::getApplication();
+	// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+       $option = $jinput->getCmd('option');
 	$script = '';
 	
   $jgcat_rows_sorted = Array();
@@ -741,55 +771,6 @@ class sportsmanagementModelClubInfo extends JModelLegacy
     
     return $children;
   }
-    
-
-/**
- * 	function getGoogleApiKey( )
- * 	{
- * 		$option = JRequest::getCmd('option');
- *         $params = JComponentHelper::getParams($option);
- * 		$apikey=$params->get('cfg_google_api_key');
- * 		return $apikey;
- * 	}
- */
-
-/**
- * 	function getGoogleMap( $mapconfig, $address_string = "" )
- * 	{
- * 		$gm = null;
-
- * 		$google_api_key = $this->getGoogleApiKey();
- * 		if ( ( trim( $google_api_key ) != "" ) &&
- * 		( trim( $address_string ) != "" ) )
- * 		{
- * 			$gm = new EasyGoogleMap( $google_api_key, "jl_pg_map" );
-
- * 			$width = ( is_int( $mapconfig['width'] ) ) ? $mapconfig['width'].'px' : $mapconfig['width'];
-
- * 			$gm->SetMapWidth( $mapconfig['width'] );
- * 			$gm->SetMapHeight( $mapconfig['height'] );
- * 			$gm->SetMapControl( $mapconfig['map_control'] );
- * 			$gm->SetMapDefaultType( $mapconfig['default_map_type'] );
-
- * 			if ( intval( $mapconfig['map_zoom'] ) > 0 )
- * 			{
- * 				$gm->SetMapZoom( intval( $mapconfig['map_zoom'] ) );
- * 			}
-
- * 			$gm->mScale = ( intval( $mapconfig['map_scale'] ) > 0 ) ? TRUE : FALSE;
- * 			$gm->mMapType = ( intval( $mapconfig['map_type_select']) > 0 ) ? TRUE : FALSE;
- * 			$gm->mContinuousZoom = ( intval( $mapconfig['cont_zoom']) > 0 ) ? TRUE : FALSE;
- * 			$gm->mDoubleClickZoom = ( intval( $mapconfig['dblclick_zoom']) > 0 ) ? TRUE : FALSE;
- * 			$gm->mInset = ( intval( $mapconfig['map_inset'] ) > 0 ) ? TRUE : FALSE;
- * 			$gm->mShowMarker = ( intval( $mapconfig['show_marker'] ) > 0 ) ? TRUE : FALSE;
- * 			$gm->SetMarkerIconStyle( $mapconfig['map_icon_style'] );
- * 			$gm->SetMarkerIconColor( $mapconfig['map_icon_color'] );
- * 			$gm->SetAddress( $address_string );
- * 		}
- * 		return $gm;
- * 	}
- */
-
 
 	/**
 	 * sportsmanagementModelClubInfo::getAddressString()
@@ -851,54 +832,6 @@ class sportsmanagementModelClubInfo extends JModelLegacy
 		}
 		return $allowed;
 	}
-    
-/**
- *     function checkUserExtraFields()
- *     {
- *         $app = JFactory::getApplication();
- *         //$app->enqueueMessage(JText::_('view -> '.'<pre>'.print_r(JRequest::getVar('view'),true).'</pre>' ),'');
- *     $query="SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_user_extra_fields WHERE template_frontend LIKE '".JRequest::getVar('view')."' and published = 1 ";
- * 			//$app->enqueueMessage(JText::_('query -> '.'<pre>'.print_r($query,true).'</pre>' ),'');
- * 			$this->_db->setQuery($query);
- * 			if ($this->_db->loadResult())
- * 			{
- * 			 //$app->enqueueMessage(JText::_('loadResult -> '.'<pre>'.print_r($this->_db->loadResult(),true).'</pre>' ),'');
- * 				return true;
- * 			}
- *             else
- *             {
- *                 return false;
- *             }    
- *         
- *     }
- */
-    
-/**
- *     function getUserExtraFields($jlid)
- *     {
- *         $app = JFactory::getApplication();
- *     	$query = "SELECT ef.*,
- *         ev.fieldvalue as fvalue,
- *         ev.id as value_id 
- *         FROM #__".COM_SPORTSMANAGEMENT_TABLE."_user_extra_fields as ef 
- *         LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."user_extra_fields_values as ev 
- *         ON ef.id = ev.field_id 
- *         AND ev.jl_id = ".$jlid." 
- *         WHERE ef.template_frontend LIKE '".JRequest::getVar('view')."'  
- *         and ef.published = 1
- *         ORDER BY ef.ordering";    
- *         $this->_db->setQuery($query);
- * 		if (!$result=$this->_db->loadObjectList())
- * 		{
- * 			$this->setError($this->_db->getErrorMsg());
- * 			return false;
- * 		}
- *         //$app->enqueueMessage(JText::_('loadResult -> '.'<pre>'.print_r($result,true).'</pre>' ),'');
- * 		return $result;
- *     
- *     }
- */
-
     
 }
 ?>
