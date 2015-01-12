@@ -17,6 +17,7 @@
 		<filename>mod_sportsmanagement_birthday.xml</filename>
 		<folder>tmpl</folder>
 		<folder>css</folder>
+		<folder>js</folder>
 	</files>
 
 	<languages>
@@ -47,13 +48,14 @@
 		
 		<field	name="s" 
       type="seasonlist"
-      
+      size="5"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
 					required="">
 			</field>
 		
-		  <field 	name="projects" 
+		  <field 	name="projects"
+      size="5" 
 			task="projects" 
       type="dependsql"
       depends="s"
@@ -106,7 +108,17 @@
 						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_ITEMID_FOR_LINKS_DESCR" />
 
             <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_BIRTHDAY_SPACER_LAYOUT_SETTINGS" />
-				<!--
+			
+       <field name="mode" type="list" default="L" 
+					label="MOD_SPORTSMANAGEMENT_BIRTHDAY_LABEL_MODE"
+					description="MOD_SPORTSMANAGEMENT_BIRTHDAY_DESC_MODE">
+<!--					<option value="T">TICKER</option> -->
+					<option value="L">LIST</option>
+<!--					<option value="V">WOWSLIDER</option> -->
+					<option value="J">Jssor Slider</option>
+				</field>
+      
+      	<!--
         <field 	name="@spacer" type="spacer" default="" 
 						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SPACER_LAYOUT_SETTINGS"
 						description="" />
@@ -178,6 +190,45 @@
 
 			</fieldset>
 
+      <fieldset name="advanced_front" label="MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_LABEL" description="MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_DESC">
+			
+      <field name="jssor_transition_use" type="radio" default="1" class="radio btn-group btn-group-yesno"
+					label="MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_TRANSITION_USE_LABEL" 
+					description="MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_TRANSITION_USE_DESCR">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+      
+      
+      <field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_BIRTHDAY_TRANSITION_HELP" />
+      <field 	name="jssor_transition" 
+        type="textarea" 
+						default="{$Duration:1600,x:1,$Rows:2,$ChessMode:{$Row:3},$Easing:{$Left:$JssorEasing$.$EaseInOutQuart,$Opacity:$JssorEasing$.$EaseLinear},$Opacity:2,$Brother:{$Duration:1600,x:-1,$Rows:2,$ChessMode:{$Row:3},$Easing:{$Left:$JssorEasing$.$EaseInOutQuart,$Opacity:$JssorEasing$.$EaseLinear},$Opacity:2}}"
+						cols="25" rows="5"
+						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_TRANSITION_LABEL"
+						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_TRANSITION_DESCR" />
+			
+			<field name="jssor_playorientation" type="radio" default="1" 
+					label="MOD_SPORTSMANAGEMENT_BIRTHDAY_LABEL_JSSOR_PLAYORIENTATION" 
+					description="MOD_SPORTSMANAGEMENT_BIRTHDAY_DESC_JSSOR_PLAYORIENTATION">
+					<option value="1">horizental</option>
+					<option value="2">vertical</option>
+					<option value="5">horizental reverse</option>
+					<option value="6">vertical reverse</option>
+				</field>
+				
+			<field name="jssor_captiontransitions" type="radio" default="L-R" 
+					label="MOD_SPORTSMANAGEMENT_BIRTHDAY_LABEL_JSSOR_CAPTIONTRANSITIONS" 
+					description="MOD_SPORTSMANAGEMENT_BIRTHDAY_DESC_JSSOR_CAPTIONTRANSITIONS">
+					<option value="L-R">Left to Right</option>
+					<option value="R-L">Right to Left</option>
+					<option value="T-B">Top to Bottom</option>
+					<option value="B-T">Bottom to Top</option>
+				</field>	
+				
+				
+			</fieldset>
+			
 			<fieldset name="advanced">
 
 					<field

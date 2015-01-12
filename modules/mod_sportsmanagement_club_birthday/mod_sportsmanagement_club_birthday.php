@@ -281,6 +281,7 @@ $html_li = '';
 			break;
             
        case 'J':
+       $container = 'slider'.$module->id.'_container';
         $layout = isset($attribs['layout'])?$attribs['layout']:'jssor';
         $document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/jssor.slider.mini.js');
 

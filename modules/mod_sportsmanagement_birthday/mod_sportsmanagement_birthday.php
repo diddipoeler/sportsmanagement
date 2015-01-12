@@ -55,9 +55,13 @@ require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.p
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php' );
 
 require_once(dirname(__FILE__).DS.'helper.php');
+
+// Reference global application object
+$app = JFactory::getApplication();
 $document = JFactory::getDocument();
 $show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) ;
 
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($module,true).'</pre>'),'Notice');
 
 if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 {
@@ -86,6 +90,7 @@ $document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_birthday/css
 // Prevent that result is null when either $players or $crew is null by casting each to an array.
 $persons = array_merge((array)$players, (array)$crew);
 if(count($persons)>1)   $persons = jl_birthday_sort($persons, array("n+days_to_birthday", "n".$params->get('sort_order')."age"), false);
+$mode = $params->def("mode");
 
 if ( $show_debug_info )
 {
@@ -95,11 +100,24 @@ echo 'this->mod_sportsmanagement_birthday params<br /><pre>~' . print_r($params,
 
 $k=0;
 $counter=0;
-?>
-<table class="birthday">
-<?php
-if(count($persons) > 0) {
-	foreach ($persons AS $person) {
+
+switch ($mode)
+	{
+		case 'L':
+        $layout = isset($attribs['layout'])?$attribs['layout']:'default';
+		break;
+        case 'J':
+        $html_li = '';
+    $html_ahref = '';
+    $id = 0;
+        $container = 'slider'.$module->id.'_container';
+        $layout = isset($attribs['layout'])?$attribs['layout']:'jssor';
+        $document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/jssor.slider.mini.js');
+        
+if(count($persons) > 0) 
+{
+	foreach ($persons AS $person) 
+    {
 		if (($params->get('limit')> 0) && ($counter == intval($params->get('limit')))) break;
 		$class = ($k == 0)? $params->get('sectiontableentry1') : $params->get('sectiontableentry2');
 
@@ -128,11 +146,7 @@ if(count($persons) > 0) {
 		}
 		$showname = JHTML::link( $person_link, $usedname );
 		?>
-	<tr class="<?php echo $params->get('heading_style');?>">
-		<td class="birthday"><?php echo $showname;?></td>
-	</tr>
-	<tr class="<?php echo $class;?>">
-		<td class="birthday">
+	
 		<?php
 		if ($params->get('show_picture')==1) {
 			if (file_exists(JPATH_BASE.'/'.$person['picture'])&&$person['picture']!='') {
@@ -141,9 +155,9 @@ if(count($persons) > 0) {
 			elseif (file_exists(JPATH_BASE.'/'.$person['default_picture'])&&$person['default_picture']!='') {
 				$thispic = $person['default_picture'];
 			}
-			echo '<img src="'.JURI::base().'/'.$thispic.'" alt="'.$text.'" title="'.$text.'"';
-			if ($params->get('picture_width') != '') echo ' width="'.$params->get('picture_width').'"';
-			echo ' /><br />';
+			//echo '<img src="'.JURI::base().'/'.$thispic.'" alt="'.$text.'" title="'.$text.'"';
+			//if ($params->get('picture_width') != '') echo ' width="'.$params->get('picture_width').'"';
+			//echo ' /><br />';
 
 		}
 		switch ($person['days_to_birthday']) {
@@ -161,19 +175,40 @@ if(count($persons) > 0) {
 		$birthdaytext = str_replace('%BR%', '<br />', $birthdaytext);
 		$birthdaytext = str_replace('%BOLD%', '<b>', $birthdaytext);
 		$birthdaytext = str_replace('%BOLDEND%', '</b>', $birthdaytext);
-			
-		echo $birthdaytext;
-		?></td>
-	</tr>
+		$text .= '<br> '.$birthdaytext;	
+		//echo $birthdaytext;
+		?>
 	<?php
+    
+    $showname = '';
+    $html_li .= '<div><a href="'.$person_link.'"><img u="image" src="'.$thispic.'" /></a>';
+//$html_li .= '<div u="caption" t="transition_name1" style="position: absolute; top: 30px; left: 30px; width: 50px;height: 50px;">';
+//$html_li .= $text;
+
+$html_li .= '<div u="caption" t="'.$params->get('jssor_captiontransitions').'" style="position:absolute;left:10px;top:80px;width:600px;height:40px;font-size:36px;color:#000;line-height:40px;">'.$showname.'</div>';
+$html_li .= '<div u="caption" t="'.$params->get('jssor_captiontransitions').'" style="position:absolute;left:10px;top:130px;width:600px;height:40px;font-size:36px;color:#000;line-height:40px;">'.$text.'</div>';
+//$html_li .= '<div u="caption" t="B-T" style="position:absolute;left:380px;top:80px;width:130px;height:40px;font-size:36px;color:#000;line-height:40px;">Please!</div>';
+
+//$html_li .= '</div>';
+$html_li .= '</div>';
+            
+    //$html_li .= '<li><a href="'.$club_link.'"><img src="'.$thispic.'" alt="'.$text.'" title="'.$text.'" id="wows1_'.$id.'" /></a></li>';    
+    //$html_li .= '<li><img src="'.$thispic.'" alt="" title="" id="wows1_'.$id.'" /></li>';
+    $id++;    
+    
+    
 	$k = 1 - $k;
 	$counter++;
 	}
-}
-else {
+}        
+        
+        
+        
+        
+        break;
+            
+   }         
+
+
+require(JModuleHelper::getLayoutPath('mod_sportsmanagement_birthday',$layout));
 ?>
-<tr>
-	<td class="birthday"><?php echo''.str_replace('%DAYS%', $params->get('maxdays'), htmlentities(trim($params->get('not_found_text')))).''; ?></td>
-</tr>
-<?php } ?>
-</table>
