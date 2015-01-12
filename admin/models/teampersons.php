@@ -97,12 +97,15 @@ class sportsmanagementModelTeamPersons extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		//$app = JFactory::getApplication('administrator');
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context<br><pre>'.print_r($this->context,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -168,13 +171,16 @@ class sportsmanagementModelTeamPersons extends JModelList
 	 */
 	function getListQuery()
 	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
         
-        $search	= $this->getState('filter.search');
+        //$search	= $this->getState('filter.search');
 		        
 //        $this->_project_id	= $app->getUserState( "$option.pid", '0' );
 //        $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
@@ -203,10 +209,11 @@ class sportsmanagementModelTeamPersons extends JModelList
 //        {
             
         //$query->select('ppl.firstname','ppl.lastname','ppl.nickname','ppl.height','ppl.weight','ppl.injury','ppl.suspension','ppl.away','ppl.id','ppl.id AS person_id');
-        $query->select('ppl.*,ppl.id as person_id');
-		$query->select('ppos.id as project_position_id,pos.id as position_id');
+        $query->select('ppl.id,ppl.firstname,ppl.lastname,ppl.nickname,ppl.picture,ppl.id as person_id,ppl.injury,ppl.suspension,ppl.away,ppl.ordering,ppl.published,ppl.checked_out ');
+		$query->select('ppos.id as project_position_id,pos.id as position_id,ppl.position_id as person_position_id');
         $query->select('tp.id as tpid, tp.market_value, tp.jerseynumber,st.id as projectteam_id');
 		$query->select('u.name AS editor');
+        $query->select('st.season_id AS season_id');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ppl');
         $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp on tp.person_id = ppl.id');
         $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = tp.team_id');
@@ -240,18 +247,20 @@ class sportsmanagementModelTeamPersons extends JModelList
         $query->where("ppl.published = 1");
         $query->where('st.team_id = '.$this->getState('filter.team_id') );
         $query->where('st.season_id = '.$this->getState('filter.season_id') );
+        $query->where('tp.season_id = '.$this->getState('filter.season_id') );
         $query->where('tp.persontype = '.$this->getState('filter.persontype') );
         
-        if ($search)
+        if ($this->getState('filter.search'))
 		{
-        $query->where('(LOWER(ppl.lastname) LIKE ' . $db->Quote( '%' . $search . '%' ).
-						   'OR LOWER(ppl.firstname) LIKE ' . $db->Quote( '%' . $search . '%' ) .
-						   'OR LOWER(ppl.nickname) LIKE ' . $db->Quote( '%' . $search . '%' ) . ')');
+        $query->where('(LOWER(ppl.lastname) LIKE ' . $db->Quote( '%' . $this->getState('filter.search') . '%' ).
+						   'OR LOWER(ppl.firstname) LIKE ' . $db->Quote( '%' . $this->getState('filter.search') . '%' ) .
+						   'OR LOWER(ppl.nickname) LIKE ' . $db->Quote( '%' . $this->getState('filter.search') . '%' ) . ')');
         }
             
         $query->order($db->escape($this->getState('list.ordering', 'ppl.lastname')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
                 
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
@@ -260,6 +269,79 @@ class sportsmanagementModelTeamPersons extends JModelList
         
         return $query;
 	}
+    
+    
+    
+    /**
+     * sportsmanagementModelTeamPersons::checkProjectPositions()
+     * 
+     * @param mixed $items
+     * @param integer $project_id
+     * @return
+     */
+    function checkProjectPositions($items=NULL,$project_id=0)
+    {
+        $option = JRequest::getCmd('option');
+		$app = JFactory::getApplication();
+        // Create a new query object.
+		$db		= JFactory::getDBO();
+		$query	= $db->getQuery(true);
+        $date = JFactory::getDate();
+	    $user = JFactory::getUser();
+        $modified = $date->toSql();
+	    $modified_by = $user->get('id');
+       
+        $mdl = JModelLegacy::getInstance("Projectposition", "sportsmanagementModel");
+        $mdlTable = $mdl->getTable();
+        $mdl = JModelLegacy::getInstance("seasonteamperson", "sportsmanagementModel");
+        $mdlSTP = $mdl->getTable();
+                
+        foreach( $items as $row)
+        {
+        if ( $row->person_position_id)
+        {
+        $query->clear();
+        $query->select('id'); 
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position');
+        $query->where('project_id = '.$project_id);
+        $query->where('position_id = '.$row->person_position_id);
+        $db->setQuery($query);
+        $result = $db->loadResult();
+        if (!$result)
+		{
+		$mdlTable->project_id = $project_id;
+        $mdlTable->position_id = $row->person_position_id;
+        $mdlTable->modified = $db->Quote(''.$modified.'');
+        $mdlTable->modified_by = $modified_by;  
+        $mdlTable->published = 1;
+        
+        if ($mdlTable->store()===false)
+		{
+        $app->enqueueMessage(__METHOD__.' '.__LINE__.' message<br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+		}
+		else
+		{
+		$row->project_position_id = $db->insertid();  
+        $mdlSTP->load($row->tpid);  
+        $mdlSTP->project_position_id = $db->insertid(); 
+        if ($mdlSTP->store()===false)
+		{
+        $app->enqueueMessage(__METHOD__.' '.__LINE__.' message<br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+		}
+		else
+		{
+		}
+        
+		}
+
+		}
+           
+        }   
+         
+        }
+        
+        return $items;
+    }
 
 
 

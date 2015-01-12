@@ -60,14 +60,20 @@ class sportsmanagementViewPersons extends sportsmanagementView
 	 */
 	public function init ()
 	{
+	   $tpl = '';
+       
 		if ( $this->getLayout() == 'assignplayers' || $this->getLayout() == 'assignplayers_3' )
 		{
-			$this->_displayAssignPlayers($tpl);
+			//$this->state = $this->get('State'); 
+            $this->_displayAssignPlayers($tpl);
 			return;
 		}
         
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         $user	= JFactory::getUser();
 		$model	= $this->getModel();
         
@@ -151,14 +157,19 @@ $starttime = microtime();
 	 */
 	function _displayAssignPlayers($tpl=null)
 	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         $user	= JFactory::getUser();
 		$model = $this->getModel();
         
         $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->state,true).'</pre>'),'');
         
 		//$project_id = $app->getUserState($option.'project');
         $this->project_id	= $app->getUserState( "$option.pid", '0' );

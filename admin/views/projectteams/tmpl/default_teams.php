@@ -56,7 +56,7 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
 	<div id="editcell">
 	<!--	<fieldset class="adminform"> -->
 			<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_LEGEND','<i>'.$this->project->name.'</i>'); ?></legend>
-			<?php $cell_count=24; ?>
+			<?php $cell_count=25; ?>
 			<table class="<?php echo $this->table_data_class; ?>">
 				<thead>
 					<tr>

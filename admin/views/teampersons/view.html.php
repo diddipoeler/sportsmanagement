@@ -62,8 +62,11 @@ class sportsmanagementViewteampersons extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app	= JFactory::getApplication();
-		$option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         $uri		= JFactory::getURI();
 		$document = JFactory::getDocument();
         $model	= $this->getModel();
@@ -74,19 +77,13 @@ class sportsmanagementViewteampersons extends sportsmanagementView
         $this->sortColumn = $this->state->get('list.ordering');
         
         //$app->enqueueMessage(__METHOD__.' '.__LINE__.' state<br><pre>'.print_r($this->state, true).'</pre><br>','Notice');
-
-/*	
-		$baseurl    = JURI::root();
-		$document->addScript($baseurl.'administrator/components/com_sportsmanagement/assets/js/autocompleter/1_4/Autocompleter.js');
-		$document->addScript($baseurl.'administrator/components/com_sportsmanagement/assets/js/autocompleter/1_4/Autocompleter.Request.js');
-		$document->addScript($baseurl.'administrator/components/com_sportsmanagement/assets/js/autocompleter/1_4/Observer.js');
-		$document->addScript($baseurl.'administrator/components/com_sportsmanagement/assets/js/autocompleter/1_4/quickaddperson.js');
-		$document->addStyleSheet($baseurl.'administrator/components/com_sportsmanagement/assets/css/Autocompleter.css');			
-*/
-
-
         
         $items = $this->get('Items');
+        $this->project_id = $app->getUserState( "$option.pid", '0' );
+        // fehlen im projekt die positionen ?
+        // wenn ja, dann fehlende positionen hinzufügen
+        $items = $model->checkProjectPositions($items,$this->project_id);
+        
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
@@ -98,8 +95,6 @@ class sportsmanagementViewteampersons extends sportsmanagementView
         
         $table = JTable::getInstance('teamperson', 'sportsmanagementTable');
 		$this->assignRef('table', $table);
-        
-        $this->project_id	= $app->getUserState( "$option.pid", '0' );
         
         $this->_persontype = JRequest::getVar('persontype');
         

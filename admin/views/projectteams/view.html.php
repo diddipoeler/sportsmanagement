@@ -173,7 +173,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 					}
 
 					if ($used == 0 && !empty($res1->info)){
-						$notusedteams[]=JHTMLSelect::option($res1->value,$res1->text.' ('.$res1->info.')');
+						$notusedteams[] = JHTMLSelect::option($res1->value,$res1->text.' ('.$res1->info.')');
 					}
 					elseif($used == 0 && empty($res1->info))
 					{

@@ -126,8 +126,11 @@ class sportsmanagementModelPersons extends JModelList
 	 */
 	function getListQuery()
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         //$this->_type = JRequest::getInt('type');
         $this->_type	= $app->getUserState( "$option.persontype", '0' );
          
