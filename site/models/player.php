@@ -153,7 +153,7 @@ class sportsmanagementModelPlayer extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getTeamPlayer($projectid=0,$personid=0,$teamplayerid=0)
+	static function getTeamPlayer($projectid=0,$personid=0,$teamplayerid=0)
 	{
 	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');

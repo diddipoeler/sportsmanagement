@@ -71,7 +71,7 @@ class sportsmanagementViewPredictionEntry extends JViewLegacy
 		$app = JFactory::getApplication();
 		$model		= $this->getModel();
    
-    
+    $this->assign('headertitle', JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_SECTION_TITLE'));
 		$this->assign('predictionGame',sportsmanagementModelPrediction::getPredictionGame());
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGame<br><pre>'.print_r($this->predictionGame,true).'</pre>'),'');
@@ -91,7 +91,8 @@ class sportsmanagementViewPredictionEntry extends JViewLegacy
 			$this->assign('predictionMember',	sportsmanagementModelPrediction::getPredictionMember($configavatar));
 			$this->assign('predictionProjectS',	sportsmanagementModelPrediction::getPredictionProjectS());
 			$this->assign('actJoomlaUser',		JFactory::getUser());
-			$this->assign('allowedAdmin',		sportsmanagementModelPrediction::getAllowed());
+			
+            $this->assign('allowedAdmin',		sportsmanagementModelPrediction::getAllowed());
 
 			$this->assign('isPredictionMember',	sportsmanagementModelPrediction::checkPredictionMembership());
 			$this->assign('isNotApprovedMember',	sportsmanagementModelPrediction::checkIsNotApprovedPredictionMember());

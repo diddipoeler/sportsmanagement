@@ -551,7 +551,8 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 				label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT_PICTURE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT_PICTURE"
 				class="inputbox"
-				preview="show"				
+				preview="show"	
+        targetfolder="projects"				
 				directory=""/>
 				
 			<field

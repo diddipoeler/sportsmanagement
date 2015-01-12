@@ -79,6 +79,7 @@ class sportsmanagementViewPredictionUsers extends JViewLegacy
 		$model		= $this->getModel();
 
 		$this->assign('predictionGame',sportsmanagementModelPrediction::getPredictionGame());
+        $this->assign('headertitle', JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_SECTION_TITLE'));
 
 		if (isset($this->predictionGame))
 		{
@@ -96,7 +97,9 @@ class sportsmanagementViewPredictionUsers extends JViewLegacy
 			$this->assignRef('model',				$model);
 			$this->assignRef('roundID',				$this->model->roundID);
 			$this->assign('config',				array_merge($overallConfig,$tipprankingconfig,$config));
-			$this->assignRef('configavatar',				$configavatar );
+			$model::$config = $this->config;
+            
+            $this->assignRef('configavatar',				$configavatar );
 			
 			$this->assign('predictionMember',	sportsmanagementModelPrediction::getPredictionMember($configavatar));
 			if (!isset($this->predictionMember->id))

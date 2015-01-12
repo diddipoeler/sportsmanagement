@@ -64,7 +64,29 @@ if($close == 1) {
 		<form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id='adminForm'>
         
         <fieldset>
-		<div class="fltlft">
+		<table class="<?php echo $this->table_data_class; ?>" border='0'>
+        <tr>
+        <td>
+        <div class="fltlft">
+        <input	type="text" name="filter_search" id="filter_search"
+								value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
+								class="text_area" onchange="$('adminForm').submit(); " />
+                                
+				<button onclick="this.form.submit(); "><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
+				<button onclick="document.getElementById('filter_search').value='';this.form.submit(); ">
+					<?php
+					echo JText::_('JSEARCH_FILTER_CLEAR');
+					?>
+				</button>
+        </div>
+        </td>
+        </tr>
+        <tr>
+        <td>
+        
+        
+        
+        <div class="fltlft">
         <button type="button" onclick="Joomla.submitform('seasons.applypersons', this.form);">
 						<?php echo JText::_('JAPPLY');?></button>
 					<button type="button" onclick="$('close').value=1; Joomla.submitform('seasons.savepersons', this.form);">
@@ -72,9 +94,14 @@ if($close == 1) {
 			<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
 				<?php echo JText::_('JCANCEL');?></button>
 		
+        
+        </div>
+        </td>        
         <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?>
         </td>
-        </div>
+        </table>
+        
+        
         </fieldset>
         
 			<table class="<?php echo $this->table_data_class; ?>" border='0'>
@@ -86,15 +113,17 @@ if($close == 1) {
 						</th>
                         <th class="title" nowrap="nowrap" ><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_ADMIN_PERSON_F_NAME'); ?></th>
 						<th class="title" nowrap="nowrap" ><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_ADMIN_PERSON_L_NAME'); ?></th>
+                        <th class="title" nowrap="nowrap" ><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_NAME'); ?></th>
                         </tr>
                 </thead>      
-                <tfoot><tr><td colspan="4"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+                <tfoot><tr><td colspan="5"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
                 <tbody>  
         <?php
 					$k=0;
 					for ($i=0,$n=count($this->items); $i < $n; $i++)
 					{
 					   $row		=& $this->items[$i];
+                       $row->team_id = 0;
 						$checked	= JHtml::_('grid.checkedout',$row,$i,'id');
 					   ?>
 						<tr class="<?php echo "row$k"; ?>">
@@ -118,7 +147,14 @@ if($close == 1) {
 								echo $row->lastname;
 								?>
 							</td>
-                            
+                            <td style="text-align:center; ">
+								<?php
+								$append='';
+                                $append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
+                                echo JHtml::_(	'select.genericlist',$this->lists['season_teams'],'team_id['.$i.']',
+												'class="inputbox select-team_id" size="1"'.$append,'value','text',$row->team_id);
+								?>
+							</td>
                         </tr>
                         <?PHP
                         $k=1 - $k;

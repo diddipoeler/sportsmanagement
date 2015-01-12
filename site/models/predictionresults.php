@@ -81,8 +81,11 @@ class sportsmanagementModelPredictionResults extends JModelLegacy
 	 */
 	function __construct()
 	{
-	   $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     
     $this->predictionGameID		= JRequest::getInt('prediction_id',		0);
 		$this->predictionMemberID	= JRequest::getInt('uid',	0);
@@ -122,8 +125,7 @@ class sportsmanagementModelPredictionResults extends JModelLegacy
 		parent::__construct();
 		
         //$this->pggrouprank			= JRequest::getInt('pggrouprank',		0);
-		$option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+
     $this->predictionGameID	= JRequest::getInt('prediction_id',0);
 
 if ( JRequest::getVar( "view") == 'predictionresults' )
@@ -151,9 +153,13 @@ if ( JRequest::getVar( "view") == 'predictionresults' )
  */
 function checkRoundID($project_id,$roundID)
 {
- $option = JRequest::getCmd('option'); 
+ // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option'); 
     $document	= JFactory::getDocument();
-    $app	= JFactory::getApplication();
+
 // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);    
@@ -271,12 +277,14 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
 	 * @param mixed $proteams_ids
 	 * @return
 	 */
-	function getMatches($roundID,$project_id,$match_ids,$round_ids,$proteams_ids)
+	function getMatches($roundID,$project_id,$match_ids,$round_ids,$proteams_ids,$show_logo_small_overview='')
 	{
-	  //global $app, $option;
-      $option = JRequest::getCmd('option'); 
+	  // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     $document	= JFactory::getDocument();
-    $app	= JFactory::getApplication();
     
 //    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($roundID,true).'</pre>'),'');
 //    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
@@ -294,14 +302,29 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
 		}
         
         $query->select('m.id AS mID,m.match_date,m.team1_result AS homeResult,m.team2_result AS awayResult,m.team1_result_decision AS homeDecision,m.team2_result_decision AS awayDecision');
-        $query->select('t1.name AS homeName,t1.short_name AS homeShortName');
-        $query->select('t2.name AS awayName,t2.short_name AS awayShortName');
-        $query->select('c1.logo_small AS homeLogo,c1.country AS homeCountry');
-        $query->select('c2.logo_small AS awayLogo,c2.country AS awayCountry');
+        $query->select('t1.name AS homeName,t1.short_name AS homeShortName,t1.id as homeid');
+        $query->select('t2.name AS awayName,t2.short_name AS awayShortName,t2.id as awayid');
         
-        // das grosse logo muss auch noch selektiert werden
-        $query->select('c1.logo_big AS homeLogobig');
-        $query->select('c2.logo_big AS awayLogobig');
+        switch($show_logo_small_overview)
+        {
+            case 'logo_small':
+            case 'logo_middle':
+            case 'logo_big':
+            $query->select('c1.'.$show_logo_small_overview.' AS homeLogo,c1.country AS homeCountry');
+            $query->select('c2.'.$show_logo_small_overview.' AS awayLogo,c2.country AS awayCountry');
+            break;
+            case 'country_flag':
+            $query->select('c1.country AS homeCountry');
+            $query->select('c2.country AS awayCountry');
+            break;
+            
+        }
+        //$query->select('c1.logo_small AS homeLogo,c1.country AS homeCountry');
+        //$query->select('c2.logo_small AS awayLogo,c2.country AS awayCountry');
+        
+//        // das grosse logo muss auch noch selektiert werden
+//        $query->select('c1.logo_big AS homeLogobig');
+//        $query->select('c2.logo_big AS awayLogobig');
         
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
         $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON r.id = m.round_id');
@@ -362,10 +385,14 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
 	 */
 	function showClubLogo($clubLogo,$teamName)
 	{
-	  $app = JFactory::getApplication();
+	  // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
 		$document	= JFactory::getDocument();
 		$uri = JFactory::getURI();
-    $option = JRequest::getCmd('option');
+
     
 		$output = '';
 		if ((!isset($clubLogo)) || ($clubLogo=='') || (!file_exists($clubLogo)))

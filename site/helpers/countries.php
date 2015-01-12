@@ -64,7 +64,8 @@ class JSMCountries
 	 * 
 	 * @return void
 	 */
-	function Countries() {
+	function Countries() 
+    {
 //      $lang = JFactory::getLanguage();
 //		$extension = "com_sportsmanagement_countries";
 //		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
@@ -103,7 +104,9 @@ class JSMCountries
 	public static function getCountryOptions($value_tag='value', $text_tag='text')
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+       // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // welche tabelle soll genutzt werden
 //$params = JComponentHelper::getParams( 'com_sportsmanagement' );
 //$database_table	= $params->get( 'cfg_which_database_table' );
@@ -143,8 +146,10 @@ $query = $db->getQuery(true);
 	 */
 	public static function convertIso2to3($iso_code_2)
 	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+	  $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // welche tabelle soll genutzt werden
 //$params = JComponentHelper::getParams( 'com_sportsmanagement' );
 //$database_table	= $params->get( 'cfg_which_database_table' );
@@ -178,7 +183,9 @@ $query = $db->getQuery(true);
 	public static function convertIso3to2($iso_code_3)
 	{
 	    $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+       // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // welche tabelle soll genutzt werden
 //$params = JComponentHelper::getParams( 'com_sportsmanagement' );
 //$database_table	= $params->get( 'cfg_which_database_table' );
@@ -237,7 +244,9 @@ $query = $db->getQuery(true);
 	public static function getCountryFlag($countrycode,$attributes='')
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+       // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 
@@ -259,6 +268,12 @@ $query = $db->getQuery(true);
 		$src = $db->loadResult();
         }
         
+        if ( !JFile::exists(JPATH_SITE.DS.$src) )
+        {
+        $src = JComponentHelper::getParams($option)->get('ph_flags','');
+        } 
+        
+        
 		$html='<img src="'.$src.'" alt="'.self::getCountryName($countrycode).'" ';
 		$html .= 'title="'.self::getCountryName($countrycode).'" '.$attributes.' />';
 		return $html;
@@ -271,7 +286,9 @@ $query = $db->getQuery(true);
 	public static function getCountryName($iso3)
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+       // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // welche tabelle soll genutzt werden
 //$params = JComponentHelper::getParams( 'com_sportsmanagement' );
 //$database_table	= $params->get( 'cfg_which_database_table' );

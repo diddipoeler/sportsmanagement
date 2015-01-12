@@ -56,6 +56,8 @@ require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'prediction.php' );
  */
 class sportsmanagementModelPredictionUsers extends JModelLegacy
 {
+    
+    static $config = null;
 
 	/**
 	 * sportsmanagementModelPredictionUsers::__construct()
@@ -64,8 +66,11 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 	 */
 	function __construct()
 	{
-	   $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     
     $this->predictionGameID		= JRequest::getInt('prediction_id',		0);
 		$this->predictionMemberID	= JRequest::getInt('uid',	0);
@@ -182,7 +187,7 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 	 * @param integer $user_id
 	 * @return void
 	 */
-	function showMemberPicture($outputUserName, $user_id = 0)
+	static function showMemberPicture($outputUserName, $user_id = 0)
 	{
 
 	$app	= JFactory::getApplication();
@@ -195,7 +200,7 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 	//$app->enqueueMessage(JText::_('user_id ->'.$user_id),'Notice');
 
 	
-	if ($this->config['show_photo'])
+	if (self::$config['show_photo'])
 	{
 	// von welcher komponente soll das bild kommen
 	// und ist die komponente installiert
@@ -203,24 +208,24 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
     // Select some fields
     $query->select('element');
     $query->from('#__extensions');
-    $query->where("element LIKE '" . $this->config['show_image_from'] . "' pt.project_id = " . (int)$project_id );
+    $query->where("element LIKE '" . self::$config['show_image_from'] . "' ");
 
 	$db->setQuery($query);
 	$results = $db->loadResult();
 	if ( !$results )
 	{
-    $app->enqueueMessage(JText::_('Die Komponente '.$this->config['show_image_from'].' ist f&uuml;r das Profilbild nicht installiert'),'Error');
+    $app->enqueueMessage(JText::_('Die Komponente '.self::$config['show_image_from'].' ist f&uuml;r das Profilbild nicht installiert'),'Error');
     }
     
     // Select some fields
     $query->select('avatar');
     $query->where('userid = ' . (int)$user_id );
 
-	switch ( $this->config['show_image_from'] )
+	switch ( self::$config['show_image_from'] )
 	{
     case 'com_sportsmanagement':
     case 'prediction':
-    $picture = $this->predictionMember->picture;
+    $picture = sportsmanagementModelPrediction::$_predictionMember->picture;
     break;
     
     case 'com_cbe':
@@ -245,7 +250,7 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
     
     }
     
-    switch ( $this->config['show_image_from'] )
+    switch ( self::$config['show_image_from'] )
 	{
 	   case 'com_community':
        case 'com_cbe':
@@ -373,9 +378,13 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 	 */
 	function getPredictionProjectTeams($project_id)
 	{
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
 	   $document	= JFactory::getDocument();
-    $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+    
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -399,11 +408,15 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 		 * 
 		 * @return
 		 */
-		function getPointsChartData( )
+		static function getPointsChartData( )
 		{
+		  // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
 		  $document	= JFactory::getDocument();
-    $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+    
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -425,8 +438,8 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
         $query->group('rounds.roundcode');
 
     		$db->setQuery( $query );
-    		$this->result = $db->loadObjectList();
-    		return $this->result;
+    		$result = $db->loadObjectList();
+    		return $result;
 		}	
 
     

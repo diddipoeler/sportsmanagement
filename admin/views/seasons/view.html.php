@@ -59,11 +59,14 @@ class sportsmanagementViewSeasons extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
-        $season_id = JRequest::getVar('id');
+        $season_id = $jinput->getVar('id');
         
         $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
@@ -115,6 +118,11 @@ $starttime = microtime();
         
         if ( $this->getLayout() == 'assignpersons' || $this->getLayout() == 'assignpersons_3' )
 		{
+		$season_teams[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
+        $res = $model->getSeasonTeams($season_id); 
+        $season_teams = array_merge($season_teams,$res); 
+        $lists['season_teams'] = $season_teams;
+        $this->assignRef('lists',$lists);
 		$this->setLayout('assignpersons');  
         }
         

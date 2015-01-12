@@ -85,7 +85,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 			<input type='hidden' name='pggroup' value='<?php echo (int)$this->model->pggroup; ?>' />
             <input type='hidden' name='pggrouprank' value='<?php echo (int)$this->model->pggrouprank; ?>' />
 
-			<table class='blog' cellpadding='0' cellspacing='0' >
+			<table class="table" >
 				<tr>
 					<td class='sectiontableheader'>
 						<?php
@@ -137,7 +137,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 			?>
 			<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement'); ?>" name='adminForm' id='adminForm' method='post'>
             <input type="hidden" name="view" value="predictionranking" />
-				<table>
+				<table class="table">
 					<tr>
 						<td><?php echo JHTML::_('select.genericlist',$this->lists['type'],'type','class="inputbox" size="1"','value','text',$this->model->type); ?></td>
 						<td><?php echo JHTML::_('select.genericlist',$from_matchday,'from','class="inputbox" size="1"','value','text',$this->model->from); ?></td>
@@ -166,7 +166,7 @@ echo $this->pagination->getListFooter();
 */			
 		}
 		?>
-		<table width='100%' cellpadding='0' cellspacing='0'>
+		<table class="<?PHP echo $this->config['table_class'];?>"  >
 			<tr>
 				<td class='sectiontableheader' style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK'); ?></td>
 				<?php

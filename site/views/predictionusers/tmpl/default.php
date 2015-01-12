@@ -53,7 +53,7 @@ echo 'this->predictionMember<br /><pre>~' . print_r($this->predictionMember,true
 $templatesToLoad = array('globalviews','predictionheading');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-?><div class='joomleague'><?php
+?><div class='container'><?php
 	echo $this->loadTemplate('predictionheading');
 	if ($this->predictionMember->pmID > 0)
 	{

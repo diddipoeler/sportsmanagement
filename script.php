@@ -476,6 +476,7 @@ echo self::getFxInitJSCode('steps');
 		'clubs/small',
 		'clubs/trikot_home',
 		'clubs/trikot_away',
+        'clubs/trikot',
         'laender_karten',
 		'events',
 		'leagues',

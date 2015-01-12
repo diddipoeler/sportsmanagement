@@ -77,6 +77,7 @@ class sportsmanagementViewPredictionRanking extends JViewLegacy
 //    $this->assignRef( 'optiontext',			$optiontext );
 
 		$this->assign('predictionGame',sportsmanagementModelPrediction::getPredictionGame());
+        $this->assign('allowedAdmin',sportsmanagementModelPrediction::getAllowed());
 
     // Get data from the model
  	$items = $this->get('Data');	
@@ -85,6 +86,8 @@ class sportsmanagementViewPredictionRanking extends JViewLegacy
 	// push data into the template
 	$this->assignRef('items', $items);	
 	$this->assignRef('pagination', $pagination);
+    
+    $this->assign('headertitle', JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_TITLE'));
 
 /*    
     // limit, limitstart und limitende

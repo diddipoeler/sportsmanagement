@@ -66,9 +66,12 @@ class sportsmanagementModelSeasons extends JModelList
      */
     public function __construct($config = array())
         {   
-                $app = JFactory::getApplication();
+                // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
                 
-                $layout = JRequest::getVar('layout');
+                $layout = $jinput->getVar('layout');
                 
                 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($layout,true).'</pre>'),'Notice');
                 
@@ -108,14 +111,17 @@ class sportsmanagementModelSeasons extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $layout = JRequest::getVar('layout');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        $layout = $jinput->getVar('layout');
         // Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		//$app = JFactory::getApplication('administrator');
         $order = '';
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context ->'.$this->context.''),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -127,7 +133,7 @@ class sportsmanagementModelSeasons extends JModelList
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
         
-        $value = JRequest::getUInt('limitstart', 0);
+        $value = $jinput->getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
 
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
@@ -171,12 +177,15 @@ class sportsmanagementModelSeasons extends JModelList
 	 */
 	protected function getListQuery()
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $search	= $this->getState('filter.search');
-        $search_nation	= $this->getState('filter.search_nation');
-        $layout = JRequest::getVar('layout');
-        $season_id = JRequest::getVar('id');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        //$search	= $this->getState('filter.search');
+        //$search_nation	= $this->getState('filter.search_nation');
+        $layout = $jinput->getVar('layout');
+        $season_id = $jinput->getVar('id');
         
         $this->setState('list.ordering', $this->_order);
         
@@ -202,10 +211,14 @@ class sportsmanagementModelSeasons extends JModelList
             $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS stp  ');
             $Subquery->where('stp.season_id = '.$season_id);
             $query->where('t.id NOT IN ('.$Subquery.')');
-            if ($search_nation)
-		      {
-                $query->where('c.country LIKE '.$db->Quote(''.$search_nation.''));
-                }
+            if ($this->getState('filter.search_nation'))
+		    {
+            $query->where('c.country LIKE '.$db->Quote(''.$this->getState('filter.search_nation').''));
+            }
+            if ($this->getState('filter.search'))
+		    {
+            $query->where(' LOWER(t.name) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%'));
+            }
             //$order = 't.name';
             break;
             
@@ -218,10 +231,18 @@ class sportsmanagementModelSeasons extends JModelList
             $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS stp  ');
             $Subquery->where('stp.season_id = '.$season_id);
             $query->where('p.id NOT IN ('.$Subquery.')');
-                        if ($search_nation)
-		      {
-                $query->where('p.country LIKE '.$db->Quote(''.$search_nation.''));
-                }
+            if ($this->getState('filter.search_nation'))
+		    {
+            $query->where('p.country LIKE '.$db->Quote(''.$this->getState('filter.search_nation').''));
+            }
+            if ($this->getState('filter.search'))
+		{
+        $query->where('(LOWER(p.lastname) LIKE ' . $db->Quote( '%' . $this->getState('filter.search') . '%' ).
+						   'OR LOWER(p.firstname) LIKE ' . $db->Quote( '%' . $this->getState('filter.search') . '%' ) .
+						   'OR LOWER(p.nickname) LIKE ' . $db->Quote( '%' . $this->getState('filter.search') . '%' ) .
+                           'OR LOWER(p.info) LIKE ' . $db->Quote( '%' . $this->getState('filter.search') . '%' ) .
+                            ')');
+        }
             //$order = 'p.lastname';
             break;
             
@@ -230,9 +251,9 @@ class sportsmanagementModelSeasons extends JModelList
 		    $query->select(implode(",",$this->filter_fields));
 		    // From the seasons table
 		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season as s');
-            if ($search)
+            if ($this->getState('filter.search'))
 		    {
-            $query->where(' LOWER(s.name) LIKE '.$db->Quote('%'.$search.'%'));
+            $query->where(' LOWER(s.name) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%'));
             }
 		    //$order = 's.name';
             break;
@@ -259,7 +280,29 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 
 
 
-	
+	/**
+	 * sportsmanagementModelSeasons::getSeasonTeams()
+	 * 
+	 * @param integer $season_id
+	 * @return void
+	 */
+	public function getSeasonTeams($season_id=0)
+    {
+    // Get a db connection.
+        $db = JFactory::getDBO();
+        // Create a new query object.
+        $query = $db->getQuery(true);    
+        // Select some fields
+		    $query->select('t.id as value, t.name as text');
+        // From the seasons table
+		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
+        $query->where('st.season_id = '.$season_id);
+        $db->setQuery($query);
+        $result = $db->loadObjectList();
+        return $result;    
+    }
+        
 	/**
      * Method to return a seasons array (id,name)
      *

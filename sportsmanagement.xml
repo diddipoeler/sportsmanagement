@@ -92,6 +92,16 @@
 	<administration>
 		<!-- Administration Menu Section -->
 		<menu img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png">COM_SPORTSMANAGEMENT_MENU</menu>
+		<submenu>
+			<!--
+				Note that all & must be escaped to &amp; for the file to be valid
+				XML and be parsed by the installer
+			-->
+			<menu link="option=com_sportsmanagement" view="clubs" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
+				alt="sportsmanagement/clubs">com_sportsmanagement_clubs</menu>
+		
+		</submenu>
+		
 		<!-- Administration Main File Copy Section -->
 		<!-- Note the folder attribute: This attribute describes the folder
 			to copy FROM in the package to install therefore files copied

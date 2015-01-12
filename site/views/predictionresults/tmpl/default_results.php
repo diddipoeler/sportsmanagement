@@ -93,7 +93,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 			<?php echo JHTML::_('form.token'); ?>
 
 
-			<table class='blog' cellpadding='0' cellspacing='0' >
+			<table class="table" >
 				<tr>
 					<td class='sectiontableheader'>
 						<?php
@@ -102,6 +102,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 					</td>
 					<td class='sectiontableheader' style='text-align:right; ' width='20%' nowrap='nowrap' >
                     <?php
+                    $round_ids = '';
                     if ( $this->config['use_pred_select_rounds'] )
       {
       $round_ids = $this->config['predictionroundid'];
@@ -140,7 +141,7 @@ echo $this->pagination->getListFooter();
                 
 			</table><br />
 		</form>
-		<table width='100%' cellpadding='0' cellspacing='0'>
+		<table class="<?PHP echo $this->config['table_class']; ?>">
 			<tr>
 				<?php $tdClassStr="class='sectiontableheader' style='text-align:center; vertical-align:middle; '"; ?>
 				<td <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK'); ?></td>
@@ -181,7 +182,7 @@ echo $this->pagination->getListFooter();
         
       
         // hier holen wir uns die spiele zu dem projekt und der runde
-				$roundMatchesList = $this->model->getMatches($this->roundID,$predictionProject->project_id,$match_ids,$round_ids,$proteams_ids);
+				$roundMatchesList = $this->model->getMatches($this->roundID,$predictionProject->project_id,$match_ids,$round_ids,$proteams_ids,$this->config['show_logo_small_overview']);
 				
 				//echo '<br />roundMatchesList<pre>~' . print_r($roundMatchesList,true) . '~</pre><br />';
 				
@@ -191,53 +192,92 @@ echo $this->pagination->getListFooter();
 					<td <?php echo $tdClassStr; ?> >
           <?php
           // clublogo oder vereinsflagge
-						if ( $this->config['show_logo_small_overview'] == 1 ) //wir nehmen das kleine logo!
+						
+                        
+                        switch($this->config['show_logo_small_overview'])
+                        //if ( $this->config['show_logo_small_overview'] == 1 ) //wir nehmen das kleine logo!
                         {
+                            case 'logo_small':
+                            case 'logo_middle':
+                            case 'logo_big':
                             ?>                                    
-                            <a href="<?php echo JURI::root().$match->homeLogo;?>" title="<?php echo $match->homeName;?>" class="modal">
-                            <img src="<?php echo JURI::root().$match->homeLogo;?>" alt="<?php echo $match->homeName;?>" width="20" />
-                            </a>
+                                                        
+<a href="<?php echo JURI::root().$match->homeLogo;?>" title="<?php echo $match->homeName;?>" data-toggle="modal" data-target="#modal<?php echo $match->homeid;?>">
+<img src="<?php echo JURI::root().$match->homeLogo;?>" alt="<?php echo $match->homeName;?>" width="20" />
+</a>        
+<div class="modal fade" id="modal<?php echo $match->homeid;?>" tabindex="-1" role="dialog" aria-labelledby="beispielModalLabel" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+</div>
+<?PHP
+echo JHtml::image(JURI::root().$match->homeLogo, $match->homeName, array('title' => $match->homeName,'class' => "img-rounded" ));      
+?>
+</div>
+                            
                             <?PHP
                             //echo sportsmanagementModelPredictionResults::showClubLogo($match->homeLogobig,$match->homeName).'<br />';
                         if ( $this->config['show_team_names'] == 1 )
                         {
                             echo $match->homeShortName.'<br />';
                         }
+                        break;
                         
-                        }
-                            
-						if ( $this->config['show_logo_small_overview'] == 2 )
-                        {
+                        case 'country_flag':    
+						//if ( $this->config['show_logo_small_overview'] == 2 )
+                        //{
                             echo JSMCountries::getCountryFlag($match->homeCountry).'<br />';
                         if ( $this->config['show_team_names'] == 1 )
                         {
                             echo $match->homeCountry.'<br />';
                         }
+                        break;
                         }
                         $outputStr = (isset($match->homeResult)) ? $match->homeResult : '-';
 						$outputStr .= '&nbsp;'.$this->config['seperator'].'&nbsp;';
-						$outputStr .= (isset($match->awayResult)) ? $match->awayResult : '-';
-						?><span class='hasTip' title="<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_RESULT_HINT',$match->homeName,$match->awayName,$outputStr); ?>"><?php echo $outputStr; ?></span><?php
-						if ( $this->config['show_logo_small_overview'] == 1 )//wir nehmen das kleine logo!
+						$outputStr .= (isset($match->awayResult)) ? $match->awayResult : '-'.'<br />';
+						?>
+                        <span class='hasTip' title="<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_RESULT_HINT',$match->homeName,$match->awayName,$outputStr); ?>"><?php echo $outputStr; ?></span>
+                        <?php
+						
+                        
+                        switch($this->config['show_logo_small_overview'])
+                        //if ( $this->config['show_logo_small_overview'] == 1 ) //wir nehmen das kleine logo!
                         {
+                            case 'logo_small':
+                            case 'logo_middle':
+                            case 'logo_big':
+                        
                             ?>                                    
-                            <a href="<?php echo JURI::root().$match->awayLogo;?>" title="<?php echo $match->awayName;?>" class="modal">
-                            <img src="<?php echo JURI::root().$match->awayLogo;?>" alt="<?php echo $match->awayName;?>" width="20" />
-                            </a>
+                            
+<a href="<?php echo JURI::root().$match->awayLogo;?>" title="<?php echo $match->awayName;?>" data-toggle="modal" data-target="#modal<?php echo $match->awayid;?>">
+<img src="<?php echo JURI::root().$match->awayLogo;?>" alt="<?php echo $match->awayName;?>" width="20" />
+</a>        
+<div class="modal fade" id="modal<?php echo $match->awayid;?>" tabindex="-1" role="dialog" aria-labelledby="beispielModalLabel" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+</div>
+<?PHP
+echo JHtml::image(JURI::root().$match->awayLogo, $match->awayName, array('title' => $match->awayName,'class' => "img-rounded" ));      
+?>
+</div>
+                            
                             <?PHP
                             //echo '<br />'.sportsmanagementModelPredictionResults::showClubLogo($match->awayLogobig,$match->awayName).'<br />';
                         if ( $this->config['show_team_names'] == 1 )
                         {
                             echo $match->awayShortName.'<br />';
                         }
-                        }
-						if ( $this->config['show_logo_small_overview'] == 2 )
-                        {
+                        break;
+                        
+                        case 'country_flag':
+						//if ( $this->config['show_logo_small_overview'] == 2 )
+                        //{
                             echo '<br />'.JSMCountries::getCountryFlag($match->awayCountry);
                         if ( $this->config['show_team_names'] == 1 )
                         {
                             echo $match->awayCountry.'<br />';
                         }
+                        break;
                         }
 						
             ?>
@@ -484,12 +524,15 @@ echo '<br />membersMatchesArray<pre>~' . print_r($membersMatchesArray,true) . '~
 }
       
 			$i=1;
+            $skipMemberCount = 0;
+
 /*			
             if ((int)$this->config['limit'] < 1){$this->config['limit']=1;}
 			$rlimit=ceil($recordCount / $this->config['limit']);
 			$this->model->page=($this->model->page > $rlimit) ? $rlimit : $this->model->page;
 			$skipMemberCount=($this->model->page > 0) ? (($this->model->page-1)*$this->config['limit']) : 0;
 */
+
 			foreach ($computedMembersRanking AS $key => $value)
 			{
 				if ($i <= $skipMemberCount) { $i++; continue; }

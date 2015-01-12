@@ -64,7 +64,28 @@ if($close == 1) {
 		<form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id='adminForm'>
         
         <fieldset>
+        <table class="<?php echo $this->table_data_class; ?>" border='0'>
+        <tr>
+        <td>
+        <div class="fltlft">
+        <input	type="text" name="filter_search" id="filter_search"
+								value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
+								class="text_area" onchange="$('adminForm').submit(); " />
+                                
+				<button onclick="this.form.submit(); "><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
+				<button onclick="document.getElementById('filter_search').value='';this.form.submit(); ">
+					<?php
+					echo JText::_('JSEARCH_FILTER_CLEAR');
+					?>
+				</button>
+        </div>
+        </td>
+        </tr>
+        <tr>
+        <td>
 		<div class="fltlft">
+        
+                
         <button type="button" onclick="Joomla.submitform('seasons.applyteams', this.form);">
 						<?php echo JText::_('JAPPLY');?></button>
 					<button type="button" onclick="$('close').value=1; Joomla.submitform('seasons.saveteams', this.form);">
@@ -72,10 +93,17 @@ if($close == 1) {
 			<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
 				<?php echo JText::_('JCANCEL');?></button>
 		
+        
+        
+        
+         </div>
+         </td>
         <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?>
         </td>
+        
         </div>
-		
+        <tr>
+		</table>  
 	</fieldset>
     
     <table class="<?php echo $this->table_data_class; ?>" border='0'>
@@ -125,9 +153,9 @@ if($close == 1) {
     </table>    
         
     <input type="hidden" name="close" id="close" value="0" />   
-    <input type='hidden' name='season_id' value='<?php echo $this->season_id; ?>' /> 
+    <input type='' name='season_id' value='<?php echo $this->season_id; ?>' /> 
     <input type='hidden' name='act' value='' />
-			<input type='hidden' name='task' value='' id='task' />
+	<input type='hidden' name='task' value='' id='task' />
 			<?php echo JHTML::_('form.token')."\n"; ?>
     
     

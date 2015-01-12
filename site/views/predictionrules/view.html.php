@@ -71,7 +71,9 @@ class sportsmanagementViewPredictionRules extends JViewLegacy
     
 		$app = JFactory::getApplication();
 
-		$this->assignRef('predictionGame',sportsmanagementModelPrediction::getPredictionGame());
+		$this->assign('predictionGame',sportsmanagementModelPrediction::getPredictionGame());
+        $this->assign('allowedAdmin',sportsmanagementModelPrediction::getAllowed());
+        $this->assign('headertitle', JText::_('COM_SPORTSMANAGEMENT_PRED_RULES_SECTION_TITLE'));
 
 		if (isset($this->predictionGame))
 		{
@@ -83,8 +85,8 @@ class sportsmanagementViewPredictionRules extends JViewLegacy
       $configavatar			= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
       $this->assignRef('configavatar',				$configavatar );
 			$this->assign('predictionMember',	sportsmanagementModelPrediction::getPredictionMember($configavatar));
-			$this->assignRef('predictionProjectS',	sportsmanagementModelPrediction::getPredictionProjectS());
-			$this->assignRef('actJoomlaUser',		JFactory::getUser());
+			$this->assign('predictionProjectS',	sportsmanagementModelPrediction::getPredictionProjectS());
+			$this->assign('actJoomlaUser',		JFactory::getUser());
 			//echo '<br /><pre>~'.print_r($this,true).'~</pre><br />';
       //$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
 			// Set page title
@@ -98,6 +100,7 @@ class sportsmanagementViewPredictionRules extends JViewLegacy
 		{
 			JError::raiseNotice(500,JText::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING'));
 		}
+        
 	}
 
 }

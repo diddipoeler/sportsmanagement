@@ -47,7 +47,7 @@ defined('_JEXEC') or die('Restricted access');
 if (!empty($this->model->_projectRoundsCount))
 {
 	?><br />
-  <table width='96%' align='center' cellpadding='0' cellspacing='0' border='0'>
+  <table class="table">
   <tr>
   <td>
   <div class='pagenav'>
