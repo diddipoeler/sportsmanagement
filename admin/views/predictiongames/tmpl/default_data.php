@@ -106,7 +106,7 @@ JHtml::_('behavior.modal');
 				//$published		= JHtml::_('grid.published',$row,$i);
         $published  = JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','predictiongames.');
         $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
-				$link			= JRoute::_('index.php?option=com_sportsmanagement&task=predictiongame.edit&id=' . $row->id);
+				$link = JRoute::_('index.php?option=com_sportsmanagement&task=predictiongame.edit&id=' . $row->id);
 				?>
 				<tr class='<?php echo "row$k"; ?>'>
 					<td style='text-align:right; '><?php echo $this->pagination->getRowOffset( $i ); ?></td>
@@ -133,10 +133,9 @@ JHtml::_('behavior.modal');
 						}
 						else
 						{
-						?><a	href="#"
-								onclick="document.adminForm.prediction_id.value='<?php echo $row->id; ?>';document.adminForm.submit();"
-								title="<?php echo JText::sprintf(	'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_SELECT_PGAME',
-																	$row->name ); ?>">
+						$link = JRoute::_('index.php?option=com_sportsmanagement&view=predictiongames&prediction_id='.$row->id);  
+						?><a href="<?php echo $link; ?>"
+								title="<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_SELECT_PGAME',$row->name); ?>">
 								<?php
 								echo $row->name;
 								?>

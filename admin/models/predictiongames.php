@@ -128,8 +128,8 @@ class sportsmanagementModelPredictionGames extends JModelList
         $option = $jinput->getCmd('option');
         
         $prediction_id = $app->getUserState( "$option.prediction_id", '0' );
-        $search	= $this->getState('filter.search');
-        $search_state	= $this->getState('filter.state');
+        //$search	= $this->getState('filter.search');
+        //$search_state	= $this->getState('filter.state');
         
         
         // Create a new query object.		
@@ -143,13 +143,13 @@ class sportsmanagementModelPredictionGames extends JModelList
 		{
 			$query->where('pre.id = ' . $prediction_id);
 		}
-        if ( $search )
+        if ( $this->getState('filter.search') )
 		{
-			$query->where("LOWER(pre.name) LIKE " . $db->Quote('%'.$search.'%'));
+			$query->where("LOWER(pre.name) LIKE " . $db->Quote('%'.$this->getState('filter.search').'%'));
 		}
-        if (is_numeric($search_state))
+        if (is_numeric($this->getState('filter.state')))
 		{
-        $query->where('pre.published = '.$search_state);
+        $query->where('pre.published = '.$this->getState('filter.state'));
         }
         
         $query->order($db->escape($this->getState('list.ordering', 'pre.name')).' '.
@@ -196,6 +196,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_project AS pro ');
         $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS joo ON joo.id = pro.project_id');
         $query->where('pro.prediction_id = ' . $pred_id);
+        $query->where('pro.project_id != 0');
         
 		$db->setQuery( $query );
         
