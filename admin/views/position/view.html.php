@@ -112,7 +112,7 @@ class sportsmanagementViewPosition extends sportsmanagementView
             }
 			$parent_id = array_merge($parent_id,$res);
 		}
-		//$lists['parents'] = $parent_id;
+		
         $lists['parents']=JHtml::_('select.genericlist',$parent_id,'parent_id','class="inputbox" size="1"','value','text',$this->item->parent_id);
         
 		unset($parent_id);

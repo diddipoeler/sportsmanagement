@@ -185,8 +185,11 @@ class sportsmanagementModelPositions extends JModelList
 	 */
 	function getParentsPositions()
 	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         $query = JFactory::getDbo()->getQuery(true);
         $results = array();
 		//$project_id=$app->getUserState($option.'project');
@@ -210,12 +213,16 @@ class sportsmanagementModelPositions extends JModelList
 //					ORDER BY pos.ordering ASC 
 //					';
 		JFactory::getDbo()->setQuery($query);
-		if (!$result=JFactory::getDbo()->loadObjectList())
+		if (!$result = JFactory::getDbo()->loadObjectList())
 		{
 			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			//return false;
             return $result;
 		}
+        
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
+        
 		return $result;
 	}
     

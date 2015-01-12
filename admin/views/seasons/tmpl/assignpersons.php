@@ -72,6 +72,20 @@ if($close == 1) {
 			<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
 				<?php echo JText::_('JCANCEL');?></button>
 		
+        
+        <?php
+				echo JText::_('JSEARCH_FILTER_LABEL');
+				?>&nbsp;<input	type="text" name="filter_search" id="filter_search"
+								value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
+								class="text_area" onchange="$('adminForm').submit(); " />
+                                
+				<button onclick="this.form.submit(); "><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
+				<button onclick="document.getElementById('filter_search').value='';this.form.submit(); ">
+					<?php
+					echo JText::_('JSEARCH_FILTER_CLEAR');
+					?>
+				</button>
+                
         <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?>
         </td>
         </div>

@@ -90,12 +90,14 @@ class sportsmanagementModelPredictionMembers extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Initialise variables.
-		$app = JFactory::getApplication('administrator');
         
-        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context ->'.$this->context.''),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -128,15 +130,18 @@ class sportsmanagementModelPredictionMembers extends JModelList
 	 */
 	function getListQuery()
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
         
-        $search	= $this->getState('filter.search');
-        $search_state	= $this->getState('filter.state');
-        $prediction_id = $this->getState('filter.prediction_id');
+        //$search	= $this->getState('filter.search');
+        //$search_state	= $this->getState('filter.state');
+        //$prediction_id = $this->getState('filter.prediction_id');
         
         // Create a new query object.
         $query = $this->_db->getQuery(true);
@@ -145,18 +150,18 @@ class sportsmanagementModelPredictionMembers extends JModelList
         ->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game AS p ON p.id = tmb.prediction_id')
         ->join('LEFT', '#__users AS u ON u.id = tmb.user_id');
 
-        if (is_numeric($prediction_id))
+        if (is_numeric($this->getState('filter.prediction_id')))
         {
-            $query->where('tmb.prediction_id = ' . $prediction_id);
+            $query->where('tmb.prediction_id = ' . $this->getState('filter.prediction_id'));
         }
-        if (is_numeric($search_state))
+        if (is_numeric($this->getState('filter.state')))
         {
-            $query->where('tmb.approved = ' . $search_state);
+            $query->where('tmb.approved = ' . $this->getState('filter.state'));
         }
         
-        if ($search)
+        if ($this->getState('filter.search'))
 		{
-        $query->where('(LOWER(u.username) LIKE ' . $db->Quote( '%' . $search . '%' ) );
+        $query->where('(LOWER(u.username) LIKE ' . $db->Quote( '%' . $this->getState('filter.search') . '%' ) );
         }
 
 
@@ -182,8 +187,11 @@ class sportsmanagementModelPredictionMembers extends JModelList
 	 */
 	function getPredictionProjectName($predictionID)
 	{
-	$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+	// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -211,8 +219,11 @@ class sportsmanagementModelPredictionMembers extends JModelList
 	 */
 	function getPredictionMembers($prediction_id)
 	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -237,8 +248,11 @@ class sportsmanagementModelPredictionMembers extends JModelList
 	 */
 	function getJLUsers($prediction_id)
 	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -287,51 +301,6 @@ class sportsmanagementModelPredictionMembers extends JModelList
 		}
 	}
 	
-	/**
-	 * sportsmanagementModelPredictionMembers::save_memberlist()
-	 * 
-	 * @return void
-	 */
-	function save_memberlist()
-	{
-	$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Create a new query object.		
-		$db = JFactory::getDBO();
-		$query = $db->getQuery(true);
-	
-  $post	= JRequest::get('post');
-	$cid	= JRequest::getVar('cid', array(0), 'post', 'array');
-  $prediction_id = (int) $cid[0];
-  //echo '<br />save_memberlist post<pre>~' . print_r($post,true) . '~</pre><br />';
-  
-  //$app->enqueueMessage(JText::_('<br />save_memberlist post<pre>~' . print_r($post,true) . '~</pre><br />'),'Notice');
-  //$app->enqueueMessage(JText::_('<br />prediction id<pre>~' . print_r($prediction_id,true) . '~</pre><br />'),'Notice');
-  
-  
-  foreach ( $post['prediction_members'] as $key => $value )
-  {
-  //$app->enqueueMessage(JText::_('<br />memberlist id<pre>~' . print_r($value,true) . '~</pre><br />'),'Notice');
-  //$table = 'predictionmember';
-  $table = 'predictionentry';
-  $rowproject = JTable::getInstance( $table, 'sportsmanagementTable' );
-  //$rowproject->load( $value );
-  $rowproject->prediction_id = $prediction_id;
-  $rowproject->user_id = $value;
-  $rowproject->registerDate = JHtml::date(time(),'%Y-%m-%d %H:%M:%S');
-  $rowproject->approved = 1;
-  if ( !$rowproject->store() )
-  {
-  //echo 'project -> '.$value. ' nicht gesichert <br>';
-  }
-  else
-  {
-  //echo 'project -> '.$value. ' gesichert <br>';
-  }
-        
-  }
-  
-  }
 	
 
 }

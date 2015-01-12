@@ -72,7 +72,57 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
 		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
 	}
     
-	/**
+	
+    /**
+     * sportsmanagementModelpredictionmember::save_memberlist()
+     * 
+     * @return void
+     */
+    function save_memberlist()
+	{
+	// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+	
+  $post	= JRequest::get('post');
+	$cid	= JRequest::getVar('cid', array(0), 'post', 'array');
+  $prediction_id = (int) $cid[0];
+  //echo '<br />save_memberlist post<pre>~' . print_r($post,true) . '~</pre><br />';
+  
+  $app->enqueueMessage(JText::_('<br />save_memberlist post<pre>~' . print_r($post,true) . '~</pre><br />'),'Notice');
+  $app->enqueueMessage(JText::_('<br />prediction id<pre>~' . print_r($prediction_id,true) . '~</pre><br />'),'Notice');
+  
+  
+  foreach ( $post['prediction_members'] as $key => $value )
+  {
+  //$app->enqueueMessage(JText::_('<br />memberlist id<pre>~' . print_r($value,true) . '~</pre><br />'),'Notice');
+  //$table = 'predictionmember';
+  $table = 'predictionentry';
+  $rowproject = JTable::getInstance( $table, 'sportsmanagementTable' );
+  //$rowproject->load( $value );
+  $rowproject->prediction_id = $prediction_id;
+  $rowproject->user_id = $value;
+  $rowproject->registerDate = JHtml::date(time(),'%Y-%m-%d %H:%M:%S');
+  $rowproject->approved = 1;
+  if ( !$rowproject->store() )
+  {
+  //echo 'project -> '.$value. ' nicht gesichert <br>';
+  }
+  else
+  {
+  //echo 'project -> '.$value. ' gesichert <br>';
+  }
+        
+  }
+  
+  }
+  
+    /**
 	 * Returns a reference to the a Table object, always creating it.
 	 *
 	 * @param	type	The table type to instantiate

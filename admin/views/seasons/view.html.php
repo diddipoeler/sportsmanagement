@@ -59,11 +59,14 @@ class sportsmanagementViewSeasons extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
-        $season_id = JRequest::getVar('id');
+        $season_id = $jinput->getVar('id');
         
         $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');

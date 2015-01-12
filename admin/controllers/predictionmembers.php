@@ -57,6 +57,20 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
 {
     
     
+    
+    function save_memberlist()
+    {
+    	
+        // Check for request forgeries
+		JRequest::checkToken() or die('JINVALID_TOKEN');
+
+        $model = $this->getModel();
+       $msg = $model->save_memberlist();
+        $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);    
+        
+        
+    }
+    
     /**
      * sportsmanagementControllerpredictionmembers::editlist()
      * 
@@ -167,11 +181,11 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
      */
     function remove()
 	{
-		//$post		= JRequest::get( 'post' );
-		//echo '<pre>'; print_r($post); echo '</pre>';
-    $option = JRequest::getCmd('option');
-    //$optiontext = strtoupper(JRequest::getCmd('option').'_');
-		$app = JFactory::getApplication();
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     
 		$d		= ' - ';
 		$msg	= '';

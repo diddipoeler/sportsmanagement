@@ -241,9 +241,10 @@ class sportsmanagementModelseason extends JModelAdmin
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $db = JFactory::getDbo();
-        $post = $jinput->get('post');
+        //$post = JRequest::get('post');
+        //$post = $jinput->post;
         $pks = $jinput->getVar('cid', null, 'post', 'array');
-        $season_id = $post['season_id'];
+        $season_id = $jinput->getVar('season_id', 0, 'post', 'array');
         
         //$app->enqueueMessage(get_class($this).' '.__FUNCTION__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','');
         //$app->enqueueMessage(get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post, true).'</pre><br>','');
@@ -253,7 +254,7 @@ class sportsmanagementModelseason extends JModelAdmin
             // Create a new query object.
         $query = $db->getQuery(true);
         // Insert columns.
-        $columns = array('team_id','season_id');
+        $columns = array('person_id','season_id');
         // Insert values.
         $values = array($value,$season_id);
         // Prepare the insert query.
@@ -286,12 +287,14 @@ class sportsmanagementModelseason extends JModelAdmin
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $db = JFactory::getDbo();
-        $post = $jinput->get('post');
+        //$post = JRequest::get('post');
+        //$post = $jinput->post;
         $pks = $jinput->getVar('cid', null, 'post', 'array');
-        $season_id = $post['season_id'];
+        $season_id = $jinput->getVar('season_id', 0, 'post', 'array');
         
-        //$app->enqueueMessage(get_class($this).' '.__FUNCTION__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','');
-        //$app->enqueueMessage(get_class($this).' '.__FUNCTION__.' post<br><pre>'.print_r($post, true).'</pre><br>','');
+//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' season_id<br><pre>'.print_r($season_id, true).'</pre><br>','');
+//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','');
+//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post, true).'</pre><br>','');
         
         foreach ( $pks as $key => $value )
         {
@@ -311,7 +314,7 @@ class sportsmanagementModelseason extends JModelAdmin
 
 		if (!$db->query())
 		{
-		  $app->enqueueMessage(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+		  $app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
 		}  
         
         }

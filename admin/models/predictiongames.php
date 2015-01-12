@@ -84,12 +84,14 @@ class sportsmanagementModelPredictionGames extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Initialise variables.
-		$app = JFactory::getApplication('administrator');
         
-        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context ->'.$this->context.''),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -119,8 +121,11 @@ class sportsmanagementModelPredictionGames extends JModelList
 	 */
 	function getListQuery()
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         
         $prediction_id = $app->getUserState( "$option.prediction_id", '0' );
         $search	= $this->getState('filter.search');
@@ -169,8 +174,11 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	 */
 	function getChilds( $pred_id, $all = false )
 	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -211,10 +219,13 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	 * @param bool $list
 	 * @return
 	 */
-	function getAdmins( $pred_id, $list = false )
+	static function getAdmins( $pred_id, $list = false )
 	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -250,8 +261,11 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 	*/
 	function getPredictionGames()
 	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);

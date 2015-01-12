@@ -62,8 +62,11 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
 		$uri 	= JFactory::getURI();
 		$user 	= JFactory::getUser();
 		$model	= $this->getModel();
@@ -124,7 +127,7 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 		//$this->addToolBar();
  
 		// Display the template
-		parent::display($tpl);
+		//parent::display($tpl);
  
 		// Set the document
 		$this->setDocument();
@@ -340,20 +343,7 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
 	}
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
 
 }
 ?>

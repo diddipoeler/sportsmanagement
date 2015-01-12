@@ -62,13 +62,23 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
   public function init ()
 	{
 	   
-       $app = JFactory::getApplication();
+       // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        $this->state = $this->get('State');
+       $tpl = '';
+       
+       
+       
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
 
     if ( $this->getLayout() == 'default' || $this->getLayout() == 'default_3' )
 		{
-			$this->_display( $tpl );
+			$app->setUserState( "$option.prediction_id", $this->state->get('filter.prediction_id') );
+            $this->_display( $tpl );
 			return;
 		}
 		
@@ -90,21 +100,24 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
    */
   function _editlist( $tpl = null )
 	{
-		$app			= JFactory::getApplication();
-    $db					= JFactory::getDBO();
-		$uri				= JFactory::getURI();
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+    //$db					= JFactory::getDBO();
+		$uri = JFactory::getURI();
 		//$document =& JFactory::getDocument();
 		//$model				=& $this->getModel();
 		// Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
-    $option = JRequest::getCmd('option');
     
      $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
         
-    $optiontext = strtoupper(JRequest::getCmd('option').'_');
-    $this->assignRef( 'optiontext',			$optiontext );
+    //$optiontext = strtoupper(JRequest::getCmd('option').'_');
+    //$this->assignRef( 'optiontext',			$optiontext );
     
 //     $baseurl    = JURI::root();
 // 		$document->addScript($baseurl.'administrator/components/com_joomleague/assets/js/autocompleter/1_4/Autocompleter.js');
@@ -115,7 +128,7 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
 		
 
     		
-		$prediction_id		= (int) $app->getUserState( $option . 'prediction_id' );
+		$prediction_id		= (int) $app->getUserState( $option . '.prediction_id' );
 		$prediction_name = $this->getModel()->getPredictionProjectName($prediction_id);
 		$this->assignRef( 'prediction_name',			$prediction_name );
 		
@@ -135,7 +148,7 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
     $lists['prediction_members'] = '<select name="prediction_members[]" id="prediction_members" style="" class="inputbox" multiple="true" size="15"></select>';
     }
     
-    $res_joomla_members =& $this->getModel()->getJLUsers($prediction_id);
+    $res_joomla_members = $this->getModel()->getJLUsers($prediction_id);
     if ( $res_joomla_members )
     {
     $lists['members']=JHtml::_(	'select.genericlist',
@@ -148,7 +161,7 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
                     																
     $this->assignRef( 'prediction_id',			$prediction_id );
     $this->assignRef( 'lists',			$lists );
-    $this->assignRef('request_url',$uri->toString());
+    $this->assign('request_url',$uri->toString());
     
 		
         
@@ -165,9 +178,12 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
      */
     function _display( $tpl = null )
 	{
-$app = JFactory::getApplication();
+// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
 		$document = JFactory::getDocument();
-		$option = JRequest::getCmd('option');
     $model	= $this->getModel();
     	$uri = JFactory::getURI();
         
@@ -238,7 +254,10 @@ $app = JFactory::getApplication();
         
         if ( $this->prediction_id )
         {
-          JToolBarHelper::custom('predictionmembers.editlist','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_BUTTON_ASSIGN'),false);
+          //JToolBarHelper::custom('predictionmembers.editlist','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_BUTTON_ASSIGN'),false);
+          
+          sportsmanagementHelper::ToolbarButton('editlist','new',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_BUTTON_ASSIGN'));
+          
           JToolBarHelper::publishList('predictionmembers.publish', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVE' ) );
 		  JToolBarHelper::unpublishList('predictionmembers.unpublish', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_REJECT' ) );
           JToolBarHelper::deleteList( '','predictionmembers.remove' );  
