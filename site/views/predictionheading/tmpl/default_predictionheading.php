@@ -45,7 +45,7 @@ defined('_JEXEC') or die('Restricted access');
 if ((isset($this->config['show_prediction_heading'])) && ($this->config['show_prediction_heading']))
 {
 	?>
-	<table class='blog' cellpadding='0' cellspacing='0' width='100%'>
+	<table class="table" >
 		<tr>
 			<td class='sectiontableheader'>
 				<?php

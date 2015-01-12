@@ -140,7 +140,7 @@ echo '<br />roundResults<pre>~' . print_r($roundResults,true) . '~</pre><br />';
 				<?php echo JHTML::_('form.token'); ?>
 
 
-				<table class='blog' cellpadding='0' cellspacing='0'>
+				<table class="table" >
 					<tr>
 						<td class='sectiontableheader'><b><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_SUBTITLE_01'); ?></b></td>
 						<td class='sectiontableheader' style='text-align:right; ' width='20%' nowrap='nowrap' >
@@ -210,7 +210,7 @@ echo '<br />memberID<pre>~' . print_r($this->predictionMember->pmID,true) . '~</
 					}
 				</script>
                 
-				<table width='100%' cellpadding='0' cellspacing='0'>
+				<table class="<?PHP echo $this->config['table_class']; ?>" >
 					<tr>
 						<th class='sectiontableheader' style='text-align:center; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_DATE_TIME'); ?></th>
 						<th class='sectiontableheader' style='text-align:center; ' colspan="5" ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MATCH'); ?></th>
@@ -355,9 +355,13 @@ echo '<br />this->use_tipp_admin<pre>~' . print_r($this->config['use_tipp_admin'
 							<td nowrap='nowrap' class="td_c">
 								<?php
                 // clublogo oder vereinsflagge
-								if ( $this->config['show_logo_small'] == 1 )
-								{
-									$logo_home = sportsmanagementModelPrediction::getMatchTeamClubLogo($result->projectteam1_id);
+								switch($this->config['show_logo_small'])
+                        //if ( $this->config['show_logo_small_overview'] == 1 ) //wir nehmen das kleine logo!
+                        {
+                            case 'logo_small':
+                            case 'logo_middle':
+                            case 'logo_big':
+									$logo_home = sportsmanagementModelPrediction::getMatchTeamClubLogo($result->projectteam1_id,$this->config['show_logo_small']);
 									if	(($logo_home == '') || (!file_exists($logo_home)))
 									{
 										$logo_home = 'images/com_sportsmanagement/database/placeholders/placeholder_small.gif';
@@ -365,18 +369,32 @@ echo '<br />this->use_tipp_admin<pre>~' . print_r($this->config['use_tipp_admin'
 									$imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $homeName);
 									//echo JHTML::image($logo_home,$imgTitle,array(' width' => 20,' title' => $imgTitle));
                                     ?>                                    
-                                    <a href="<?php echo JURI::root().$logo_home;?>" title="<?php echo $imgTitle;?>" class="modal">
-                                    <img src="<?php echo JURI::root().$logo_home;?>" alt="<?php echo $imgTitle;?>" width="20" />
-                                    </a>
+                                    
+<a href="<?php echo JURI::root().$logo_home;?>" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target="#modal<?php echo $result->projectteam1_id;?>">
+<img src="<?php echo JURI::root().$logo_home;?>" alt="<?php echo $imgTitle;?>" width="20" />
+</a>        
+<div class="modal fade" id="modal<?php echo $result->projectteam1_id;?>" tabindex="-1" role="dialog" aria-labelledby="beispielModalLabel" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+</div>
+<?PHP
+echo JHtml::image(JURI::root().$logo_home, $imgTitle, array('title' => $imgTitle,'class' => "img-rounded" ));      
+?>
+</div>
+                                    
                                     <?PHP 
                                     
                                     
 									echo ' ';
-								}
-                if ( $this->config['show_logo_small'] == 2 )
-								{
+								break;
+                                //}
+                                
+                case 'country_flag':                
+                //if ( $this->config['show_logo_small'] == 2 )
+//								{
                 $country_home = sportsmanagementModelPrediction::getMatchTeamClubFlag($result->projectteam1_id);
                 echo JSMCountries::getCountryFlag($country_home);
+                break;
                 }
 								?>
 							</td>							
@@ -388,9 +406,13 @@ echo '<br />this->use_tipp_admin<pre>~' . print_r($this->config['use_tipp_admin'
 							<td nowrap='nowrap' class="td_c">
 								<?php	
                 // clublogo oder vereinsflagge
-								if ( $this->config['show_logo_small'] == 1 )
-								{
-									$logo_away = sportsmanagementModelPrediction::getMatchTeamClubLogo($result->projectteam2_id);
+								switch($this->config['show_logo_small'])
+                        //if ( $this->config['show_logo_small_overview'] == 1 ) //wir nehmen das kleine logo!
+                        {
+                            case 'logo_small':
+                            case 'logo_middle':
+                            case 'logo_big':
+									$logo_away = sportsmanagementModelPrediction::getMatchTeamClubLogo($result->projectteam2_id,$this->config['show_logo_small']);
 									if (($logo_away=='') || (!file_exists($logo_away)))
 									{
 										$logo_away = 'images/com_sportsmanagement/database/placeholders/placeholder_small.gif';
@@ -398,16 +420,29 @@ echo '<br />this->use_tipp_admin<pre>~' . print_r($this->config['use_tipp_admin'
 									$imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $awayName);
 									echo ' ';
                                     ?>                                    
-                                    <a href="<?php echo JURI::root().$logo_away;?>" title="<?php echo $imgTitle;?>" class="modal">
-                                    <img src="<?php echo JURI::root().$logo_away;?>" alt="<?php echo $imgTitle;?>" width="20" />
-                                    </a>
+                                    
+<a href="<?php echo JURI::root().$logo_away;?>" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target="#modal<?php echo $result->projectteam2_id;?>">
+<img src="<?php echo JURI::root().$logo_away;?>" alt="<?php echo $imgTitle;?>" width="20" />
+</a>        
+<div class="modal fade" id="modal<?php echo $result->projectteam2_id;?>" tabindex="-1" role="dialog" aria-labelledby="beispielModalLabel" aria-hidden="true">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+</div>
+<?PHP
+echo JHtml::image(JURI::root().$logo_away, $imgTitle, array('title' => $imgTitle,'class' => "img-rounded" ));      
+?>
+</div>
+                                    
                                     <?PHP
 									//echo JHTML::image($logo_away,$imgTitle,array(' width' => 20,' title' => $imgTitle));
-								}
-                if ( $this->config['show_logo_small'] == 2 )
-								{
+								break;
+                                //}
+                case 'country_flag':    
+						//if ( $this->config['show_logo_small_overview'] == 2 )
+                        //{
                 $country_away = sportsmanagementModelPrediction::getMatchTeamClubFlag($result->projectteam2_id);
                 echo JSMCountries::getCountryFlag($country_away);
+                break;
                 }
 								?>
 							</td>						

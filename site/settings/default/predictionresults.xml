@@ -12,6 +12,18 @@
 			<option value="1">COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_OPTION1_SHOW_PAGE_NAV</option>
 		</field>
 
+    <field 	name="table_class" type="list" default="table" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+			
+		</field>
+		
 		<field	name="show_all_user" type="radio" default="0" class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_LABEL_SHOW_ALL_USERS"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_DESCR_SHOW_ALL_USERS">
@@ -60,6 +72,7 @@
 			<option value="1">JYES</option>
 		</field>
 
+    <!--
 		<field	name="show_logo_small_overview" type="radio" default="1"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_LABEL_SHOW_CLUB_ICON"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_DESCR_SHOW_CLUB_ICON">
@@ -67,7 +80,18 @@
 			<option value="1">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION1_LOGO_SMALL</option>
 			<option value="2">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION2_LOGO_SMALL</option>
 		</field>
-
+    -->
+    
+    <field name="show_logo_small_overview" type="list" default="logo_big"
+			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_CLUB_LOGO"
+			description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_CLUB_LOGO">
+            <option value="logo_small">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_SMALL</option>
+            <option value="logo_middle">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_MIDDLE</option>
+            <option value="logo_big">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_BIG</option>
+            <option value="country_flag">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_COUNTRY_FLAG</option>
+            <option value="no_logo">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_NO_LOGO</option>
+		</field>
+		
     <field	name="show_team_names" type="radio" default="1" class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_LABEL_SHOW_TEAM_NAMES"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONRESULTS_PARAM_DESCR_SHOW_TEAM_NAMES">

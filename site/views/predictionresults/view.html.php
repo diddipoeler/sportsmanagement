@@ -76,6 +76,7 @@ class sportsmanagementViewPredictionResults extends JViewLegacy
 		$app = JFactory::getApplication();
 
 		$this->assign('predictionGame',sportsmanagementModelPrediction::getPredictionGame());
+        $this->assign('allowedAdmin',sportsmanagementModelPrediction::getAllowed());
 
 		if (isset($this->predictionGame))
 		{
@@ -118,6 +119,9 @@ class sportsmanagementViewPredictionResults extends JViewLegacy
  	$pagination = $this->get('Pagination');
             $this->assignRef('memberList', $items );
             $this->assignRef('pagination', $pagination);
+
+//$headertitle
+$this->assign('headertitle', $pageTitle);
 
 /*    
     // limit, limitstart und limitende

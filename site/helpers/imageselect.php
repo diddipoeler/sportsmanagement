@@ -290,10 +290,12 @@ static $_foldertype = '';
 				break;
 				
 			case	"clubs_trikot_home":
-				return "clubs/trikot_home";
+				//return "clubs/trikot_home";
+                return "clubs/trikot";
 				break;
 			case	"clubs_trikot_away":
-				return "clubs/trikot_away";
+				//return "clubs/trikot_away";
+                return "clubs/trikot";
 				break;
         	case	"flags":
 				return "flags";

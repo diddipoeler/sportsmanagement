@@ -74,7 +74,7 @@ if (!empty($memberPredictionPoints))
 }
 
 ?>
-<table class='plgeneralinfo'>
+<table class='table'>
 	<tr>
 		<td class='picture'>
     <?php
@@ -83,7 +83,7 @@ if (!empty($memberPredictionPoints))
     ?>
     </td>
 		<td class='info'>
-			<table class='plinfo'>
+			<table class='table'>
 				<tr>
 					<td class='label'><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_NAME'); ?></td>
 					<td class='data'>
@@ -291,7 +291,7 @@ echo '<br />predictionuser info -> showChamp <pre>~' . print_r($showChamp,true) 
 		<td class='info'>
 			<table class='plinfo'>
 				<?php
-				if (count($this->model->_predictionProjectS) > 1)
+				if (count(sportsmanagementModelPrediction::$_predictionProjectS) > 1)
 				{
 					?>
 					<tr>

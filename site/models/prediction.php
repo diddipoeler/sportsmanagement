@@ -63,9 +63,11 @@ class sportsmanagementModelPrediction extends JModelLegacy
 {
 	static $_predictionGame		= null;
 	static $predictionGameID		= 0;
+    static $_roundNames = null;
 
 	static $_predictionMember		= null;
 	static $predictionMemberID		= 0;
+    static $_projectRoundsCount		= 0;
 
 	static $_predictionProjectS	= null;
 	static $predictionProjectSIDs	= null;
@@ -97,25 +99,28 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	 */
 	function __construct()
 	{
-		$option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         //$post	= JRequest::get('post');
 		
-		self::$predictionGameID		= JRequest::getInt('prediction_id',		0);
-		self::$predictionMemberID	= JRequest::getInt('uid',	0);
-		self::$joomlaUserID			= JRequest::getInt('juid',	0);
-		self::$roundID				= JRequest::getInt('r',		0);
-        self::$pggroup				= JRequest::getInt('pggroup',		0);
-        self::$pggrouprank			= JRequest::getInt('pggrouprank',		0);
-		self::$pjID					= JRequest::getInt('p',		0);
-		self::$isNewMember			= JRequest::getInt('s',		0);
-		self::$tippEntryDone		= JRequest::getInt('eok',	0);
+		self::$predictionGameID		= $jinput->getInt('prediction_id',		0);
+		self::$predictionMemberID	= $jinput->getInt('uid',	0);
+		self::$joomlaUserID			= $jinput->getInt('juid',	0);
+		self::$roundID				= $jinput->getInt('r',		0);
+        self::$pggroup				= $jinput->getInt('pggroup',		0);
+        self::$pggrouprank			= $jinput->getInt('pggrouprank',		0);
+		self::$pjID					= $jinput->getInt('p',		0);
+		self::$isNewMember			= $jinput->getInt('s',		0);
+		self::$tippEntryDone		= $jinput->getInt('eok',	0);
 
-		self::$from  				= JRequest::getInt('from',	self::$roundID);
-		self::$to	 				= JRequest::getInt('to',	self::$roundID);
-		self::$type  				= JRequest::getInt('type',	0);
+		self::$from  				= $jinput->getInt('from',	self::$roundID);
+		self::$to	 				= $jinput->getInt('to',	self::$roundID);
+		self::$type  				= $jinput->getInt('type',	0);
 
-		self::$page  				= JRequest::getInt('page',	1);
+		self::$page  				= $jinput->getInt('page',	1);
 
 		parent::__construct();
 	}
@@ -126,10 +131,13 @@ class sportsmanagementModelPrediction extends JModelLegacy
    * @param mixed $champ_tipp
    * @return
    */
-  function getChampionPoints($champ_tipp)
+  static function getChampionPoints($champ_tipp)
   {
-    $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+    // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -147,14 +155,17 @@ class sportsmanagementModelPrediction extends JModelLegacy
   // Select some fields
         $query->select('league_champ,points_tipp_champ');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_project');
-        $query->where('prediction_id = ' . $this->predictionGameID);
-        $query->where('project_id = ' . $this->pjID);
+        $query->where('prediction_id = ' . self::$predictionGameID);
+        $query->where('project_id = ' . self::$pjID);
         $query->where('champ = 1');
         $db->setQuery($query);
         $result = $db->loadObject();
         
+        if ( $result )
+        {
         $resultchamp = $result->league_champ;
-        $resultchamppoints = $result->points_tipp_champ;	
+        $resultchamppoints = $result->points_tipp_champ;
+        }	
 
   // user hat auch champion tip abgegeben
   if ( $champ_tipp )
@@ -197,10 +208,13 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getPredictionGame()
+	static function getPredictionGame()
 	{
-	    $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+	    // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -238,11 +252,14 @@ class sportsmanagementModelPrediction extends JModelLegacy
    * @param mixed $configavatar
    * @return
    */
-  function getPredictionMemberAvatar($members, $configavatar)
+  static function getPredictionMemberAvatar($members, $configavatar)
   {
   
-  $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+  // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -337,10 +354,13 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	 * @param mixed $configavatar
 	 * @return
 	 */
-	function getPredictionMember($configavatar)
+	static function getPredictionMember($configavatar)
 	{
-	   $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -358,7 +378,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 			 $query->select('u.name, u.username');
              $query->select('pg.id as pg_group_id,pg.name as pg_group_name');
              $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_groups as pg ON pg.id = pm.group_id');
-             $query->where('pm.id = '.$db->Quote(self::$predictionMemberID));
+             $query->where('pm.id = '.self::$predictionMemberID);
         
 
 				$db->setQuery($query,0,1);
@@ -421,10 +441,13 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getPredictionProjectS()
+	static function getPredictionProjectS()
 	{
-		 $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+		 // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -468,7 +491,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getPredictionOverallConfig()
+	static function getPredictionOverallConfig()
 	{
 		return self::getPredictionTemplateConfig('predictionoverall');
 	}
@@ -479,10 +502,13 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	 * @param mixed $template
 	 * @return
 	 */
-	function getPredictionTemplateConfig($template)
+	static function getPredictionTemplateConfig($template)
 	{
-    $option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+    // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
 		$document = JFactory::getDocument();
 
     // Create a new query object.		
@@ -499,11 +525,11 @@ class sportsmanagementModelPrediction extends JModelLegacy
 		$db->setQuery($query);
 		if ( !$result = $db->loadResult() )
 		{
-			if (isset($this->predictionGame) && ($this->predictionGame->master_template))
+			if (isset(self::$predictionGame) && (self::$predictionGame->master_template))
 			{
 			 $query->clear('where');
              $query->where('t.template = '.$db->Quote($template));
-             $query->where('p.id = '.$db->Quote($this->predictionGame->master_template));
+             $query->where('p.id = '.$db->Quote(self::$predictionGame->master_template));
 
 				$db->setQuery($query);
 				if ( !$result = $db->loadResult() )
@@ -594,10 +620,13 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	 * @param integer $project_id
 	 * @return
 	 */
-	function getPredictionProject($project_id=0)
+	static function getPredictionProject($project_id=0)
 	{
-	   $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -647,10 +676,13 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	 * @param string $teamName
 	 * @return
 	 */
-	function getMatchTeam($teamID=0,$teamName='name')
+	static function getMatchTeam($teamID=0,$teamName='name')
 	{
-	   $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -684,10 +716,13 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	 * @param integer $teamID
 	 * @return
 	 */
-	function getMatchTeamClubLogo($teamID=0,$which_logo = 'logo_big')
+	static function getMatchTeamClubLogo($teamID=0,$which_logo = 'logo_big')
 	{
-	   $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+	  // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -720,10 +755,13 @@ class sportsmanagementModelPrediction extends JModelLegacy
    * @param integer $teamID
    * @return
    */
-  function getMatchTeamClubFlag($teamID=0)
+  static function getMatchTeamClubFlag($teamID=0)
 	{
-	   $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -743,7 +781,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
                     
 		$db->setQuery($query);
 		$db->query();
-		if ($object=$db->loadObject())
+		if ($object = $db->loadObject())
 		{
 			return $object->country;
 		}
@@ -758,10 +796,13 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	 * @param integer $pid
 	 * @return
 	 */
-	function getProjectSettings($pid=0)
+	static function getProjectSettings($pid=0)
 	{
-	   $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+	  // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -786,10 +827,13 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	 * @param integer $pid
 	 * @return
 	 */
-	function getProjectRounds($pid=0)
+	static function getProjectRounds($pid=0)
 	{
-	   $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -799,11 +843,11 @@ class sportsmanagementModelPrediction extends JModelLegacy
 		  // Select some fields
         $query->select('max(id)');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
-        $query->where('project_id = '.$db->Quote($pid));
+        $query->where('project_id = '.$pid);
 
 			$db->setQuery($query);
-			$this->_projectRoundsCount = $db->loadResult();
-			return $this->_projectRoundsCount;
+			self::$_projectRoundsCount = $db->loadResult();
+			return self::$_projectRoundsCount;
 		}
 		return false;
 	}
@@ -813,10 +857,13 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function checkPredictionMembership()
+	static function checkPredictionMembership()
 	{
-	   $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -840,10 +887,13 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function checkIsNotApprovedPredictionMember()
+	static function checkIsNotApprovedPredictionMember()
 	{
-	   $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -871,10 +921,13 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	 * @param integer $pmUID
 	 * @return
 	 */
-	function getAllowed($pmUID=0)
+	static function getAllowed($pmUID=0)
 	{
-	   $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -950,8 +1003,11 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	 */
 	function getSystemAdminsEMailAdresses()
 	{
-	   $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -974,8 +1030,11 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	 */
 	function getPredictionGameAdminsEMailAdresses()
 	{
-	   $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -1001,8 +1060,11 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	 */
 	function getPredictionGameAdmins($predictionID)
 	{
-	   $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+	  // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -1023,8 +1085,11 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	 */
 	function getPredictionMemberEMailAdress($predictionMemberID)
 	{
-	   $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -1065,7 +1130,11 @@ class sportsmanagementModelPrediction extends JModelLegacy
   function sendMemberTipResults($predictionMemberID,$predictionGameID,$RoundID,$ProjectID,$joomlaUserID) 
   {
   
-  $option = JRequest::getCmd('option');
+  // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
   $document	= JFactory::getDocument();
   $app = JFactory::getApplication();
   
@@ -1331,8 +1400,11 @@ $body .= $this->createHelptText($predictionProject->mode);
 	 */
 	function sendMembershipConfirmation($cid=array())
 	{
-	   $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cid<br><pre>'.print_r($cid,true).'</pre>'),'');
     
@@ -1449,10 +1521,13 @@ $body .= $this->createHelptText($predictionProject->mode);
    * 
    * @return
    */
-  function getPredictionGroupList()
+  static function getPredictionGroupList()
 	{
-	   $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -1462,7 +1537,7 @@ $body .= $this->createHelptText($predictionProject->mode);
         $query->order('name ASC');
 
 	$db->setQuery($query);
-		$results=$db->loadObjectList();
+		$results = $db->loadObjectList();
 		return $results;
 	}
 	
@@ -1473,10 +1548,13 @@ $body .= $this->createHelptText($predictionProject->mode);
 	 * @param mixed $actUserId
 	 * @return
 	 */
-	function getPredictionMemberList(&$config,$actUserId=null)
+	static function getPredictionMemberList(&$config,$actUserId=null)
 	{
-	   $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+	  // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -1518,8 +1596,11 @@ $body .= $this->createHelptText($predictionProject->mode);
 	 */
 	function getMemberPredictionTotalCount($user_id)
 	{
-	   $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -1542,10 +1623,13 @@ $body .= $this->createHelptText($predictionProject->mode);
 	 * @param integer $project_id
 	 * @return
 	 */
-	function getMemberPredictionJokerCount($user_id,$project_id=0)
+	static function getMemberPredictionJokerCount($user_id,$project_id=0)
 	{
-	   $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -1581,7 +1665,7 @@ $body .= $this->createHelptText($predictionProject->mode);
 	 * @param integer $awayDecision
 	 * @return
 	 */
-	function createResultsObject($home,$away,$tipp,$tippHome,$tippAway,$joker,$homeDecision=0,$awayDecision=0)
+	static function createResultsObject($home,$away,$tipp,$tippHome,$tippAway,$joker,$homeDecision=0,$awayDecision=0)
 	{
 		$result=new stdClass();
 		$result->team1_result			= $home;
@@ -1603,7 +1687,7 @@ $body .= $this->createHelptText($predictionProject->mode);
 	 * @param mixed $result
 	 * @return
 	 */
-	function getMemberPredictionPointsForSelectedMatch(&$predictionProject,&$result)
+	static function getMemberPredictionPointsForSelectedMatch(&$predictionProject,&$result)
 	{
 
 		//echo '<br /><pre>~'.print_r($predictionProject,true).'~</pre><br />';
@@ -1747,10 +1831,13 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 	 * @param integer $type
 	 * @return
 	 */
-	function getPredictionMembersResultsList($project_id,$round1ID,$round2ID=0,$user_id=0,$type=0)
+	static function getPredictionMembersResultsList($project_id,$round1ID,$round2ID=0,$user_id=0,$type=0)
 	{
-	   $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -1815,7 +1902,7 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 	 * @param mixed $addTotalSelect
 	 * @return
 	 */
-	function createProjectSelector(&$predictionProjects,$current,$addTotalSelect=null)
+	static function createProjectSelector(&$predictionProjects,$current,$addTotalSelect=null)
 	{
 		//$output='<select class="inputbox" name="set_pj" onchange="this.form.submit();" >';
 		
@@ -1883,8 +1970,11 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 	 */
 	function savePredictionPoints(&$memberResult,&$predictionProject,$returnArray=false)
 	{
-	$option = JRequest::getCmd('option');
-	$app	= JFactory::getApplication();
+	// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
 	// Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -2106,19 +2196,21 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 	 * @param string $ordering
 	 * @return
 	 */
-	function getRoundNames($project_id,$ordering='ASC', $round_ids = NULL)
+	static function getRoundNames($project_id,$ordering='ASC', $round_ids = NULL)
 	{
-
+// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
   $document	= JFactory::getDocument();
-  $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
   
   //$app->enqueueMessage(JText::_('project_id -> <pre> '.print_r($project_id,true).'</pre><br>' ),'Notice');
     
-		if (empty($this->_roundNames))
+		if (empty(self::$_roundNames))
 		{
 		  // Select some fields
     $query->select('id AS value, name AS text');
@@ -2138,9 +2230,9 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
 
 			$db->setQuery($query);
-			$this->_roundNames = $db->loadObjectList();
+			self::$_roundNames = $db->loadObjectList();
 		}
-		return $this->_roundNames;
+		return self::$_roundNames;
 	}
 
 	// general comparison of two tippers results
@@ -2156,10 +2248,13 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 	 * @param mixed $b
 	 * @return
 	 */
-	function compare($a,$b)
+	static function compare($a,$b)
 	{
-	    $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+	    // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     
 		$res	= 0;
 		$i		= 1;
@@ -2208,10 +2303,13 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 	 * @param mixed $config
 	 * @return
 	 */
-	function computeMembersRanking($membersResultsArray,$config)
+	static function computeMembersRanking($membersResultsArray,$config)
 	{
-	   $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     
 		//$this->table_config = $config;
         self::$table_config = $config;
@@ -2266,10 +2364,13 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 	 * @param mixed $limit
 	 * @return
 	 */
-	function getPredictionMembersList(&$config = NULL, &$configavatar = NULL, $total = false, $limit = NULL)
+	static function getPredictionMembersList(&$config = NULL, &$configavatar = NULL, $total = false, $limit = NULL)
 	{
-	   $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);

@@ -60,6 +60,7 @@ $modalwidth = JComponentHelper::getParams($jinput->getCmd('option'))->get('modal
 
 switch ( $view )
 {
+    
     case 'matchreport':
     ?>
     <table class="table">

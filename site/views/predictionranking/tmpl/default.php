@@ -51,7 +51,7 @@ $templatesToLoad = array('globalviews','predictionheading');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 ?>
-<div class='joomleague'>
+<div class='container'>
 <?php
 
 echo $this->loadTemplate('predictionheading');
