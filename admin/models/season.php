@@ -241,6 +241,12 @@ class sportsmanagementModelseason extends JModelAdmin
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $db = JFactory::getDbo();
+        
+        $date = JFactory::getDate();
+	   $user = JFactory::getUser();
+       $modified = $date->toSql();
+	   $modified_by = $user->get('id');
+       
         //$post = JRequest::get('post');
         //$post = $jinput->post;
         $pks = $jinput->getVar('cid', null, 'post', 'array');
@@ -248,16 +254,16 @@ class sportsmanagementModelseason extends JModelAdmin
         $season_id = $jinput->getVar('season_id', 0, 'post', 'array');
         
         //$app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','');
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post, true).'</pre><br>','');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams, true).'</pre><br>','');
         
         foreach ( $pks as $key => $value )
         {
         // Create a new query object.
         $query = $db->getQuery(true);
         // Insert columns.
-        $columns = array('person_id','season_id');
+        $columns = array('person_id','season_id','modified','modified_by');
         // Insert values.
-        $values = array($value,$season_id);
+        $values = array($value,$season_id,$db->Quote(''.$modified.''),$modified_by);
         // Prepare the insert query.
         $query
             ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id'))
@@ -271,13 +277,13 @@ class sportsmanagementModelseason extends JModelAdmin
 		  $app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
 		} 
         
-        if ( isset($teams[$key]) )
+        if ( isset($teams[$value]) )
         {
         $query->clear();
         // Insert columns.
-        $columns = array('person_id','season_id','team_id');
+        $columns = array('person_id','season_id','team_id','published','persontype','modified','modified_by'   );
         // Insert values.
-        $values = array($value,$season_id,$teams[$key]);
+        $values = array($value,$season_id,$teams[$value],'1','1',$db->Quote(''.$modified.''),$modified_by);
         // Prepare the insert query.
         $query
             ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id'))

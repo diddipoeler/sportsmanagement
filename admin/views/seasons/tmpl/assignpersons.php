@@ -151,7 +151,7 @@ if($close == 1) {
 								<?php
 								$append='';
                                 $append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
-                                echo JHtml::_(	'select.genericlist',$this->lists['season_teams'],'team_id['.$i.']',
+                                echo JHtml::_(	'select.genericlist',$this->lists['season_teams'],'team_id['.$row->id.']',
 												'class="inputbox select-team_id" size="1"'.$append,'value','text',$row->team_id);
 								?>
 							</td>

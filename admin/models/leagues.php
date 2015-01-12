@@ -98,7 +98,7 @@ class sportsmanagementModelLeagues extends JModelList
         $option = $jinput->getCmd('option');
         // Initialise variables.
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context ->'.$this->context.''),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');

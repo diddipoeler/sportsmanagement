@@ -63,11 +63,15 @@ class sportsmanagementViewPredictionGames extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     $model = $this->getModel();
     $starttime = microtime();
-		$document	= JFactory::getDocument();
-    $option = JRequest::getCmd('option');
+		$document = JFactory::getDocument();
+    
     $uri = JFactory::getURI();
     
     $this->state = $this->get('State');
@@ -84,10 +88,10 @@ class sportsmanagementViewPredictionGames extends sportsmanagementView
         //echo '#' . $prediction_id . '#<br />';
     
     
-		$lists				= array();
+		$lists = array();
 
-        
-        $this->prediction_id	= $app->getUserStateFromRequest( $option .'.'.$model->_identifier, 'prediction_id', '0' );
+        $this->prediction_id = $jinput->getVar('prediction_id', 0);
+        //$this->prediction_id	= $app->getUserStateFromRequest( $option .'.'.$model->_identifier, 'prediction_id', '0' );
         //$app->enqueueMessage(JText::_('sportsmanagementViewPredictionGames prediction_id<br><pre>'.print_r($this->prediction_id,true).'</pre>'),'Notice');
 
 $items = $this->get('Items');

@@ -370,7 +370,7 @@ return $teamsofclub;
 	   $user = JFactory::getUser();
        $address_parts = array();
        $address_parts2 = array();
-       $post = $jinput->get('post');
+       $post = JRequest::get('post');
        
        
 //       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');

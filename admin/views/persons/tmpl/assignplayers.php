@@ -50,7 +50,7 @@ $userId		= $user->get('id');
 <script>
 	function searchPerson(val)
 	{
-        var s= document.getElementById("search");
+        var s= document.getElementById("filter_search");
         s.value = val;
         Joomla.submitform('', this.form)
 	}
@@ -72,11 +72,11 @@ $userId		= $user->get('id');
 			<td align="left" width="100%">
 				<?php
 				echo JText::_('JSEARCH_FILTER_LABEL');
-				?>&nbsp;<input	type="text" name="search" id="search"
-								value="<?php echo $this->lists['search']; ?>"
+				?>&nbsp;<input	type="text" name="filter_search" id="filter_search"
+								value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
 								class="text_area" onchange="$('adminForm').submit(); " />
 				<button onclick="this.form.submit(); "><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
-				<button onclick="document.getElementById('search').value='';this.form.submit(); ">
+				<button onclick="document.getElementById('filter_search').value='';this.form.submit(); ">
 					<?php
 					echo JText::_('JSEARCH_FILTER_CLEAR');
 					?>
@@ -178,13 +178,7 @@ $userId		= $user->get('id');
 								$inputappend='';
 								?>
 								<td class="center">
-									<a href="<?php echo $link; ?>">
-										<?php
-										$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_EDIT_DETAILS');
-										echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
-														$imageTitle,'title= "'.$imageTitle.'"');
-										?>
-									</a>
+								
 								</td>
 								<?php
 							}

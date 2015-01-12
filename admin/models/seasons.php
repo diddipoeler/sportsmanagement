@@ -233,7 +233,7 @@ class sportsmanagementModelSeasons extends JModelList
             $query->where('p.id NOT IN ('.$Subquery.')');
             if ($this->getState('filter.search_nation'))
 		    {
-            $query->where('p.country LIKE '.$db->Quote(''.$this->getState('filter.search_nation').''));
+            $query->where('p.country LIKE '.$db->Quote(''.$this->getState('filter.search_nation').'') );
             }
             if ($this->getState('filter.search'))
 		{

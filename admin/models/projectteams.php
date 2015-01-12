@@ -374,10 +374,10 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $db->setQuery( $query );
         $result = $db->loadObject();
     
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' _season_id<br><pre>'.print_r($this->_season_id , true).'</pre><br>','Notice');
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' project_art_id<br><pre>'.print_r($this->project_art_id, true).'</pre><br>','Notice');
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' sports_type_id<br><pre>'.print_r($this->sports_type_id, true).'</pre><br>','Notice');
-//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' country<br><pre>'.print_r($result->country, true).'</pre><br>','Notice');
+//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' _season_id -> '.$this->_season_id.'','Notice');
+//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' project_art_id -> '.$this->project_art_id.'','Notice');
+//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' sports_type_id -> '.$this->sports_type_id.'','Notice');
+//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' country -> '.$result->country.'','Notice');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
@@ -420,8 +420,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 
 		$db->setQuery( $query );
         
-        //$app->enqueueMessage(get_class($this).' '.__FUNCTION__.' query<br><pre>'.print_r($query->dump(), true).'</pre><br>','Notice');
-        //$app->enqueueMessage(get_class($this).' '.__FUNCTION__.' loadObjectList<br><pre>'.print_r($db->loadObjectList(), true).'</pre><br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' query <br><pre>'.print_r($query->dump(), true).'</pre><br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' loadObjectList<br><pre>'.print_r($db->loadObjectList(), true).'</pre><br>','Notice');
         
 		if ( !$result = $db->loadObjectList() )
 		{
