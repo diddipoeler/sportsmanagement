@@ -65,8 +65,8 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 			description="COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_SORTING_DESC"
 			class="inputbox"			
 			default="0">
-			<option value="0">COM_SPORTSMANAGEMENT_GLOBAL_DESCENDING</option>
-			<option value="1">COM_SPORTSMANAGEMENT_GLOBAL_ASCENDING</option>
+			<option value="0">COM_SPORTSMANAGEMENT_GLOBAL_DESC</option>
+			<option value="1">COM_SPORTSMANAGEMENT_GLOBAL_ASC</option>
 		</field>		
 
 		<field
