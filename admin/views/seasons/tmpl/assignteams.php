@@ -64,7 +64,10 @@ if($close == 1) {
 		<form action="<?php echo $this->request_url; ?>" method="post" name="adminForm" id='adminForm'>
         
         <fieldset>
-		<div class="fltlft">
+        <table class="<?php echo $this->table_data_class; ?>" border='0'>
+        <tr>
+        <td>
+        <div class="fltlft">
         <input	type="text" name="filter_search" id="filter_search"
 								value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
 								class="text_area" onchange="$('adminForm').submit(); " />
@@ -75,6 +78,13 @@ if($close == 1) {
 					echo JText::_('JSEARCH_FILTER_CLEAR');
 					?>
 				</button>
+        </div>
+        </td>
+        </tr>
+        <tr>
+        <td>
+		<div class="fltlft">
+        
                 
         <button type="button" onclick="Joomla.submitform('seasons.applyteams', this.form);">
 						<?php echo JText::_('JAPPLY');?></button>
@@ -86,11 +96,14 @@ if($close == 1) {
         
         
         
-        
+         </div>
+         </td>
         <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?>
         </td>
+        
         </div>
-		
+        <tr>
+		</table>  
 	</fieldset>
     
     <table class="<?php echo $this->table_data_class; ?>" border='0'>
