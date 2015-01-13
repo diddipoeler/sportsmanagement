@@ -291,7 +291,14 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
                             $defaultvalues = $jRegistry->toString('ini');
                             
                             $parameter = new JRegistry;
-			                $ini = $parameter->loadINI($defaultvalues);
+			                if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+            $ini = $parameter->loadString($defaultvalues[0]);
+        }
+        else
+        {
+            $ini = $parameter->loadINI($defaultvalues[0]);
+        }
 			                $ini = $parameter->toArray($ini);
 			                $defaultvalues = json_encode( $ini );
                             	
