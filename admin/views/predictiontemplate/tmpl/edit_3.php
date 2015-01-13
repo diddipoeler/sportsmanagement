@@ -38,38 +38,38 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-
-//require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'models'.DS.'fields'.DS.'jlgcolor.php');
-
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-//JHtmlBehavior::formvalidation();
+/*
+JHtmlBehavior::formvalidation();
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
-JHtml::_('behavior.formvalidation');
-//JHtml::_('behavior.colorpicker');
-$params = $this->form->getFieldsets('params');
-$fieldsets = $this->form->getFieldsets();
-
-JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_NAME'), 'template');
+*/
+//$component_text = 'COM_SPORTSMANAGEMENT_';
 
 $i    = 1;
-
-//echo ' params -><br><pre>'.print_r($params,true).'</pre>';
-//echo ' fieldSets -><br><pre>'.print_r($fieldsets,true).'</pre>';
-
 ?>
-
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view=template&layout=edit&id='.(int) $this->template->id); ?>" method="post" id="adminForm" name="adminForm" >
-	<div style='text-align: right;'>
-		<?php echo $this->lists['templates']; ?>
-	</div>
-	<?php
-	if ($this->project->id != $this->template->project_id) {
-		JError::raiseNotice(0, JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_MASTER_WARNING'));
-		?><input type="hidden" name="master_id" value="<?php echo $this->template->project_id; ?>"/><?php
+<style type="text/css">
+	<!--
+	fieldset.panelform label, fieldset.panelform div.paramrow label, fieldset.panelform span.faux-label {
+		max-width: 255px;
+		min-width: 255px;
+		padding: 0 5px 0 0;
 	}
+	-->
+</style>
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
+	
+	<?php
+	
 	?>
+	<fieldset class="adminform">
+		<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_LEGEND', '<i>' . JText::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_NAME') . '</i>', '<i>' . $this->predictionGame->name . '</i>'); ?></legend>
+		<fieldset class="adminform">
+			<?php
+			echo JText::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_DESCR');
+			?>
+		</fieldset>
 
 <div class="form-horizontal">
 <?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS')); ?>
@@ -113,15 +113,18 @@ echo JHtml::_('bootstrap.endTab');
 ?>    
 	
 <?php echo JHtml::_('bootstrap.endTabSet'); ?>
-</div> 	
-
-<div>		
-<input type='hidden' name='user_id' value='<?php echo $this->user->id; ?>'/>
-<input type="hidden" name="task" value="template.edit"/>
-        
-<?php echo JHtml::_('form.token'); ?>
-</div>
+</div> 			
+    
+</fieldset>    
+	<div>		
+		<input type='hidden' name='user_id' value='<?php echo $this->user->id; ?>'/>
+		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>"/>
+        <input type="hidden" name="predid" value="<?php echo $this->prediction_id; ?>"/>
+		<input type="hidden" name="task" value="predictiontemplate.edit"/>
+		<?php echo JHtml::_('form.token'); ?>
+	</div>
 </form>
+
 <?PHP
 echo "<div>";
 echo $this->loadTemplate('footer');

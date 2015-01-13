@@ -67,7 +67,7 @@ JHtml::_( 'behavior.tooltip' );
 			if ( $this->pred_id > 0 )
 			{
 				?>
-				<table class='adminlist'>
+				<table class="<?php echo $this->table_data_class; ?>">
 					<thead>
 						<tr>
 							<th class='title' width='5'>
