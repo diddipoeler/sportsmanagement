@@ -8,6 +8,16 @@
  * other free or open source software licenses.
  * See COPYRIGHT.php for copyright notices and details.
  */
+ 
+ ;/* 
+;* Modified by Sports Management Entwickler: diddipoeler, stony, svdoldie und  donclumsy
+;* http://fussballineuropa.de/
+;* Email: diddipoeler@arcor.de
+;* Date: 2014
+;* Release: 1.0.47
+;* License : http://www.gnu.org/copyleft/gpl.html GNU/GPL 
+;*/
+;****************************************************************************
 
 defined('_JEXEC') or die('Restricted access');
 
@@ -17,7 +27,7 @@ class JFormFieldNameFormat extends JFormField
 
 	function getInput() {
 		$lang = JFactory::getLanguage();
-		$extension = "com_joomleague";
+		$extension = "com_sportsmanagement";
 		$source = JPath::clean(JPATH_ADMINISTRATOR . '/components/' . $extension);
 		$lang->load($extension, JPATH_ADMINISTRATOR, null, false, false)
 		||	$lang->load($extension, $source, null, false, false)
@@ -25,25 +35,25 @@ class JFormFieldNameFormat extends JFormField
 		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		
 		$mitems = array();
-		$mitems[] = JHtml::_('select.option', 0, JText::_('COM_JOOMLEAGUE_GLOBAL_NAME_FORMAT_FIRST_NICK_LAST'));
-		$mitems[] = JHtml::_('select.option', 1, JText::_('COM_JOOMLEAGUE_GLOBAL_NAME_FORMAT_LAST_NICK_FIRST'));
-		$mitems[] = JHtml::_('select.option', 2, JText::_('COM_JOOMLEAGUE_GLOBAL_NAME_FORMAT_LAST_FIRST_NICK'));
-		$mitems[] = JHtml::_('select.option', 3, JText::_('COM_JOOMLEAGUE_GLOBAL_NAME_FORMAT_FIRST_LAST'));
-		$mitems[] = JHtml::_('select.option', 4, JText::_('COM_JOOMLEAGUE_GLOBAL_NAME_FORMAT_LAST_FIRST'));
-		$mitems[] = JHtml::_('select.option', 5, JText::_('COM_JOOMLEAGUE_GLOBAL_NAME_FORMAT_NICK_FIRST_LAST'));
-		$mitems[] = JHtml::_('select.option', 6, JText::_('COM_JOOMLEAGUE_GLOBAL_NAME_FORMAT_NICK_LAST_FIRST'));
-		$mitems[] = JHtml::_('select.option', 7, JText::_('COM_JOOMLEAGUE_GLOBAL_NAME_FORMAT_FIRST_LAST_NICK'));
-		$mitems[] = JHtml::_('select.option', 8, JText::_('COM_JOOMLEAGUE_GLOBAL_NAME_FORMAT_FIRST_LAST2'));
-		$mitems[] = JHtml::_('select.option', 9, JText::_('COM_JOOMLEAGUE_GLOBAL_NAME_FORMAT_LAST_FIRST2'));
-		$mitems[] = JHtml::_('select.option',10, JText::_('COM_JOOMLEAGUE_GLOBAL_NAME_FORMAT_LAST'));
-		$mitems[] = JHtml::_('select.option',11, JText::_('COM_JOOMLEAGUE_GLOBAL_NAME_FORMAT_FIRST_NICK_LAST2'));
-		$mitems[] = JHtml::_('select.option',12, JText::_('COM_JOOMLEAGUE_GLOBAL_NAME_FORMAT_NICK'));
-		$mitems[] = JHtml::_('select.option',13, JText::_('COM_JOOMLEAGUE_GLOBAL_NAME_FORMAT_FIRST_LAST3'));
-		$mitems[] = JHtml::_('select.option',14, JText::_('COM_JOOMLEAGUE_GLOBAL_NAME_FORMAT_LAST2_FIRST'));
-		$mitems[] = JHtml::_('select.option',15, JText::_('COM_JOOMLEAGUE_GLOBAL_NAME_FORMAT_LAST_NEWLINE_FIRST'));
-		$mitems[] = JHtml::_('select.option',16, JText::_('COM_JOOMLEAGUE_GLOBAL_NAME_FORMAT_FIRST_NEWLINE_LAST'));
-		$mitems[] = JHtml::_('select.option',17, JText::_('COM_JOOMLEAGUE_GLOBAL_NAME_FORMAT_LAST_FIRST_NICK'));
-		$mitems[] = JHtml::_('select.option',18, JText::_('COM_JOOMLEAGUE_GLOBAL_NAME_FORMAT_LAST_FIRSTNAME_FIRST_CHAR_DOT'));
+		$mitems[] = JHtml::_('select.option', 0, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_NICK_LAST'));
+		$mitems[] = JHtml::_('select.option', 1, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_NICK_FIRST'));
+		$mitems[] = JHtml::_('select.option', 2, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_FIRST_NICK'));
+		$mitems[] = JHtml::_('select.option', 3, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_LAST'));
+		$mitems[] = JHtml::_('select.option', 4, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_FIRST'));
+		$mitems[] = JHtml::_('select.option', 5, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_NICK_FIRST_LAST'));
+		$mitems[] = JHtml::_('select.option', 6, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_NICK_LAST_FIRST'));
+		$mitems[] = JHtml::_('select.option', 7, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_LAST_NICK'));
+		$mitems[] = JHtml::_('select.option', 8, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_LAST2'));
+		$mitems[] = JHtml::_('select.option', 9, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_FIRST2'));
+		$mitems[] = JHtml::_('select.option',10, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST'));
+		$mitems[] = JHtml::_('select.option',11, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_NICK_LAST2'));
+		$mitems[] = JHtml::_('select.option',12, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_NICK'));
+		$mitems[] = JHtml::_('select.option',13, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_LAST3'));
+		$mitems[] = JHtml::_('select.option',14, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST2_FIRST'));
+		$mitems[] = JHtml::_('select.option',15, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_NEWLINE_FIRST'));
+		$mitems[] = JHtml::_('select.option',16, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_FIRST_NEWLINE_LAST'));
+		$mitems[] = JHtml::_('select.option',17, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_FIRST_NICK'));
+		$mitems[] = JHtml::_('select.option',18, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME_FORMAT_LAST_FIRSTNAME_FIRST_CHAR_DOT'));
 		
 		$output= JHtml::_('select.genericlist',  $mitems,
 							$this->name,
