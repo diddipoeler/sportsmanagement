@@ -371,7 +371,7 @@ class sportsmanagementModelperson extends JModelAdmin
     $mdlPerson = JModelLegacy::getInstance("person", "sportsmanagementModel");
     $mdlPersonTable = $mdlPerson->getTable();
     
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');    
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');    
     
     switch ($post['type'])
             {

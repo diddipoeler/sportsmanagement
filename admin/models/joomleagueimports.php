@@ -342,7 +342,275 @@ $app = JFactory::getApplication();
 }
 
 
+function importjoomleaguenew()
+{
+$app = JFactory::getApplication();
+$db = JFactory::getDbo(); 
+$query = $db->getQuery(true);
+$option = JRequest::getCmd('option');
+//$post = JRequest::get('post');
+$exportfields = array();        
+$table_copy = array();        
 
+$table_copy[] = 'club';
+$table_copy[] = 'division';
+$table_copy[] = 'league';
+$table_copy[] = 'match';
+$table_copy[] = 'person';
+$table_copy[] = 'playground';
+
+$table_copy[] = 'position_statistic';
+
+$table_copy[] = 'project';
+$table_copy[] = 'project_position';
+$table_copy[] = 'round';
+$table_copy[] = 'season';
+$table_copy[] = 'statistic';
+$table_copy[] = 'team';
+$table_copy[] = 'template_config';
+
+
+$table_copy[] = 'prediction_admin';
+$table_copy[] = 'prediction_game';
+$table_copy[] = 'prediction_groups';
+$table_copy[] = 'prediction_member';
+$table_copy[] = 'prediction_project';
+$table_copy[] = 'prediction_result';
+$table_copy[] = 'prediction_template';
+        
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' table_copy <br><pre>'.print_r($table_copy,true).'</pre>'),'');        
+
+// als erstes kommen die tabellen, die nur kopiert werden !        
+foreach ( $table_copy as $key => $value )
+{
+$jsm_table = '#__sportsmanagement_'.$value;
+$jl_table = '#__joomleague_'.$value;
+                
+$jl_fields = $db->getTableFields('#__joomleague_'.$value);
+$jsm_fields = $db->getTableFields('#__sportsmanagement_'.$value);
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_fields <br><pre>'.print_r($jl_fields,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_fields <br><pre>'.print_r($jsm_fields,true).'</pre>'),'');            
+
+$query = $db->getQuery(true);
+$query->clear();
+$query->select('COUNT(id) AS total');
+$query->from($jsm_table);
+$db->setQuery($query);
+
+$totals = $db->loadResult();
+
+if ( $totals )
+{
+$app->enqueueMessage(JText::_('Daten aus der Tabelle: ( '.$jl_table.' ) koennen nicht kopiert werden. Tabelle: ( '.$jsm_table.' ) nicht leer!'),'Error');     
+}
+else
+{
+
+unset($jsm_field_array);
+unset($exportfields);    
+$jsm_field_array = $jsm_fields[$jsm_table];
+    
+foreach ( $jl_fields[$jl_table] as $key2 => $value2 )
+            {
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'key2<br><pre>'.print_r($key2,true).'</pre>'),'');
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'value2<br><pre>'.print_r($value2,true).'</pre>'),'');
+                
+                switch ($key2)
+                {
+                    case 'import':
+                    case 'ordering':
+                    case 'checked_out':
+                    case 'checked_out_time':
+                    case 'modified':
+                    case 'modified_by':
+                    case 'out':
+                    break;
+                    default:
+                    if (array_key_exists($key2, $jsm_field_array)) 
+                    {
+                    //$exportfields[] = $db->Quote($key2);
+                    $exportfields[] = $key2;
+                    }
+                    break;
+                }
+                
+            }
+            
+            $select_fields = implode(',', $exportfields);
+            
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'exportfields<br><pre>'.print_r($exportfields,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'select_fields<br><pre>'.print_r($select_fields,true).'</pre>'),'');
+            
+            $query = $db->getQuery(true);
+            $query->clear();
+            $query = 'INSERT INTO '.$jsm_table.' ('.$select_fields.') SELECT '.$select_fields.' FROM '.$jl_table;
+            $db->setQuery($query);
+            if (!$db->query())
+		    {
+			$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+		    }
+            else
+            {
+            $app->enqueueMessage(JText::_('Daten aus der Tabelle: ( '.$jl_table.' ) in die Tabelle: ( '.$jsm_table.' ) importiert!'),'Notice');    
+            }
+
+}   
+
+         
+}
+
+// jetzt kommen die positionen
+$jl_position = array(); 
+
+$query = $db->getQuery(true);
+$query->clear();
+$query->select('*');
+$query->from('#__joomleague_position');
+$query->where('parent_id = 0');
+$db->setQuery($query);
+$result = $db->loadObjectList();
+
+if ( $result )
+{
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' __joomleague_position -> <br><pre>'.print_r($result,true).'</pre>'),'');  
+foreach( $result as $row )
+{
+    
+$query = $db->getQuery(true);
+$query->clear();
+$query->select('id');
+$query->from('#__sportsmanagement_position');
+$query->where('name LIKE '. $db->Quote( '' . $row->name . '') );
+$db->setQuery($query);
+$pos_result = $db->loadResult();
+
+if ( $pos_result )
+{
+$jl_position[$row->id] = $pos_result;    
+}
+else
+{    
+$mdl = JModelLegacy::getInstance("position", "sportsmanagementModel");
+$mdlTable = $mdl->getTable();    
+
+$mdlTable->name = $row->name;
+$mdlTable->alias = $row->alias;
+$mdlTable->parent_id = $row->parent_id;
+$mdlTable->persontype = $row->persontype;
+$mdlTable->sports_type_id = $row->sports_type_id;
+$mdlTable->published = $row->published;
+
+if ($mdlTable->store()===false)
+{
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+}
+else
+{
+$jl_position[$row->id] = $db->insertid();
+}
+
+}
+
+}
+  
+}
+
+$query = $db->getQuery(true);
+$query->clear();
+$query->select('*');
+$query->from('#__joomleague_position');
+$query->where('parent_id != 0');
+$db->setQuery($query);
+$result = $db->loadObjectList();
+
+if ( $result )
+{
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' __joomleague_position -> <br><pre>'.print_r($result,true).'</pre>'),'');  
+foreach( $result as $row )
+{
+
+$query = $db->getQuery(true);
+$query->clear();
+$query->select('id');
+$query->from('#__sportsmanagement_position');
+$query->where('name LIKE '. $db->Quote( '' . $row->name . '') );
+$db->setQuery($query);
+$pos_result = $db->loadResult();
+
+if ( $pos_result )
+{
+$jl_position[$row->id] = $pos_result;    
+}
+else
+{  
+$mdl = JModelLegacy::getInstance("position", "sportsmanagementModel");
+$mdlTable = $mdl->getTable();    
+
+$mdlTable->name = $row->name;
+$mdlTable->alias = $row->alias;
+$mdlTable->parent_id = $jl_position[$row->parent_id];
+$mdlTable->persontype = $row->persontype;
+$mdlTable->sports_type_id = $row->sports_type_id;
+$mdlTable->published = $row->published;
+
+if ($mdlTable->store()===false)
+{
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+}
+else
+{
+$jl_position[$row->id] = $db->insertid();
+}
+
+}
+
+}
+  
+}
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_position -> <br><pre>'.print_r($jl_position,true).'</pre>'),'');
+
+// dann die positions id´s in den tabellen updaten
+foreach( $jl_position as $key => $value )
+{
+// Fields to update.
+    $fields = array(
+    $db->quoteName('position_id') .'=\''.$value.'\''
+        );
+     // Conditions for which records should be updated.
+    $conditions = array(
+    $db->quoteName('position_id') .'='. $key
+    );
+    $query->clear();
+     $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person'))->set($fields)->where($conditions);
+     $db->setQuery($query);  
+     if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
+		{
+		    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+		} 
+    $query->clear();    
+    $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position'))->set($fields)->where($conditions);
+     $db->setQuery($query);  
+     if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
+		{
+		    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+		}
+    $query->clear();    
+    $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic'))->set($fields)->where($conditions);
+     $db->setQuery($query);  
+     if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
+		{
+		    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+		}         
+           
+}
+
+
+
+                    
+}
+        
 /**
  * sportsmanagementModeljoomleagueimports::import()
  * 

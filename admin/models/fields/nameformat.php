@@ -9,22 +9,36 @@
  * See COPYRIGHT.php for copyright notices and details.
  */
  
- ;/* 
-;* Modified by Sports Management Entwickler: diddipoeler, stony, svdoldie und  donclumsy
-;* http://fussballineuropa.de/
-;* Email: diddipoeler@arcor.de
-;* Date: 2014
-;* Release: 1.0.47
-;* License : http://www.gnu.org/copyleft/gpl.html GNU/GPL 
-;*/
-;****************************************************************************
+/** 
+* Modified by Sports Management Entwickler: diddipoeler, stony, svdoldie und  donclumsy
+* http://fussballineuropa.de/
+* Email: diddipoeler@arcor.de
+* Date: 2014
+* Release: 1.0.47
+* License : http://www.gnu.org/copyleft/gpl.html GNU/GPL 
+*/
+
 
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * JFormFieldNameFormat
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2015
+ * @version $Id$
+ * @access public
+ */
 class JFormFieldNameFormat extends JFormField
 {
 	protected $type = 'nameformat';
 
+	/**
+	 * JFormFieldNameFormat::getInput()
+	 * 
+	 * @return
+	 */
 	function getInput() {
 		$lang = JFactory::getLanguage();
 		$extension = "com_sportsmanagement";
