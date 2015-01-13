@@ -99,7 +99,16 @@ $view = JRequest::getCmd('view', 'cpanel');
 <?PHP
 break;
 
-
+case 'help':
+?>
+<fieldset class='adminform'>
+							
+						<?php
+						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAME_HINT_1');
+						?>
+						</fieldset>
+<?php                        
+break;
 // für mannschaften des vereines
 case 'teamsofclub':
 if ( isset($this->teamsofclub) )

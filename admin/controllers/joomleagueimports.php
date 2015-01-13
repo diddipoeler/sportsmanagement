@@ -54,6 +54,20 @@ jimport('joomla.application.component.controlleradmin');
  */
 class sportsmanagementControllerjoomleagueimports extends JControllerAdmin
 {
+
+
+
+function importjoomleaguenew()
+{
+        $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $model	= $this->getModel();
+        $result = $model->importjoomleaguenew();
+        
+        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+
+}
+
   
 /**
  * sportsmanagementControllerjoomleagueimports::updateplayerproposition()

@@ -439,6 +439,451 @@ function newstructur($step,$count=5)
 }
 
 
+/**
+ * sportsmanagementModeljoomleagueimport::newstructurjlimport()
+ * 
+ * @param mixed $season_id
+ * @param mixed $jl_table
+ * @param mixed $jsm_table
+ * @return void
+ */
+function newstructurjlimport($season_id,$jl_table,$jsm_table)
+{
+    $app = JFactory::getApplication();
+    $db = JFactory::getDbo(); 
+    $option = JRequest::getCmd('option');
+    $starttime = microtime(); 
+        
+//    $season_id = $app->getUserState( "$option.season_id", '0' );
+//    $jl_table = $app->getUserState( "$option.jl_table", '' );
+//    $jsm_table = $app->getUserState( "$option.jsm_table", '' );
+    
+    // felder für den import auslesen
+    $jl_fields = $db->getTableFields($jl_table);
+    $jsm_fields = $db->getTableFields($jsm_table);
+    
+    if ( preg_match("/project_team/i", $jsm_table) )
+    {
+$my_text;
+$my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$existingInDbColor. '"<strong>Daten aus der Tabelle: ( '.$jsm_table.' ) werden in die neue Struktur umgesetzt!"!</strong>'.'</span>';
+$my_text .= '<br />';
+//$app->enqueueMessage(JText::_('Daten aus der Tabelle: ( '.$jsm_table.' ) werden in die neue Struktur umgesetzt!'),'Notice');
+
+            // Select some fields
+            $query = $db->getQuery(true);
+            $query->clear();
+		    $query->select('pt.*');
+            //$query->select('p.season_id');
+            // From joomleague table
+		    $query->from($jl_table.' AS pt');
+            $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
+            //$query->where('pt.import = 0');
+            
+            if ( $season_id )
+            {
+                $query->select('p.season_id');
+                $query->where('p.season_id = '.$season_id);
+            }
+            
+            $db->setQuery($query);
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
+            $result = $db->loadObjectList();
+            
+            foreach ( $result as $row )
+            {
+                // Create and populate an object.
+                $temp = new stdClass();
+                $temp->season_id = $row->season_id;
+                $temp->team_id = $row->team_id;
+                // Insert the object into table.
+                $result = JFactory::getDbo()->insertObject('#__sportsmanagement_season_team_id', $temp);
+                if ( $result )
+                {
+                    $new_id = $db->insertid();
+                }
+                else
+                {
+                    // Select some fields
+                    $query = $db->getQuery(true);
+                    $query->clear();
+		            $query->select('id');
+                    // From table
+                    $query->from('#__sportsmanagement_season_team_id');
+                    $query->where('season_id = '.$row->season_id);
+                    $query->where('team_id = '.$row->team_id);
+                    $db->setQuery($query);
+                    $new_id = $db->loadResult();
+                }
+                
+//                // Create an object for the record we are going to joomleague update.
+//                $object = new stdClass();
+//                // Must be a valid primary key value.
+//                $object->id = $row->id;
+//                $object->import = 1;
+//                // Update their details in the users table using id as the primary key.
+//                $result = JFactory::getDbo()->updateObject($jl_table, $object, 'id'); 
+                
+                // Create an object for the record we are going to joomleague update.
+                $object = new stdClass();
+                $jsm_field_array = $jsm_fields[$jsm_table];
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'jsm_field_array<br><pre>'.print_r($jsm_field_array,true).'</pre>'),'');
+                foreach ( $jl_fields[$jl_table] as $key2 => $value2 )
+                {
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'key<br><pre>'.print_r($key,true).'</pre>'),'');
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'value<br><pre>'.print_r($value,true).'</pre>'),'');
+                if (array_key_exists($key2, $jsm_field_array)) 
+                {
+                    $object->$key2 = $row->$key2;
+                }
+                }
+                // jetzt die neue team_id
+                $object->team_id = $new_id;
+                // Insert the object into table.
+                $result2 = JFactory::getDbo()->insertObject($jsm_table, $object);
+                
+                if ( $result2 )
+                {
+                    // alles in ordnung
+                }
+                else
+                {
+                    // eintrag schon vorhanden, ein update
+                    $tblProjectteam = JTable::getInstance('Projectteam', 'sportsmanagementtable');
+                    $tblProjectteam->load($row->id);
+                    
+                    if ( empty($tblProjectteam->team_id) )
+                    {
+                        $tblProjectteam->team_id = $new_id;
+                        if (!$tblProjectteam->store())
+				        {
+				        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+				        }
+                    }
+                    /*
+                    // eintrag schon vorhanden, ein update
+                    // Create an object for the record we are going to update.
+                    $object = new stdClass();
+                    // Must be a valid primary key value.
+                    $object->id = $row->id;
+                    $object->team_id = $new_id;
+                    // Update their details in the users table using id as the primary key.
+                    $result = JFactory::getDbo()->updateObject($jsm_table, $object, 'id');
+                    */
+                }
+                
+                
+                
+                
+$my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$storeSuccessColor. '"<strong>Projectteam: ( '.$row->team_id.' ) mit ( '.$new_id.' ) umgesetzt!</strong>'.'</span>';
+$my_text .= '<br />';
+     
+            }
+            sportsmanagementModeljoomleagueimports::$_success['Projectteam:'] = $my_text;
+            
+            }
+            elseif ( preg_match("/team_player/i", $jsm_table) )
+    {
+    
+    $team_player = array();
+    $team_player[0] = 0;
+    $my_text;
+    //$app->enqueueMessage(JText::_('Daten aus der Tabelle: ( '.$jsm_table.' ) werden in die neue Struktur umgesetzt!'),'Notice');    
+    
+$my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$existingInDbColor. '"<strong>Daten aus der Tabelle: ( '.$jsm_table.' ) werden in die neue Struktur umgesetzt!"!</strong>'.'</span>';
+$my_text .= '<br />';        
+        
+        $query = $db->getQuery(true);
+        $query->clear();
+        $query->select('tp.*,st.team_id');
+        $query->from($jl_table.' AS tp');
+        $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.id = tp.projectteam_id');
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
+        $query->join('INNER','#__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
+        //$query->where('tp.import = 0');
+        
+        if ( $season_id )
+            {
+                $query->select('p.season_id');
+                $query->where('p.season_id = '.$season_id);
+            }
+            
+            $db->setQuery($query);
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
+            $result = $db->loadObjectList();
+        
+        foreach ( $result as $row )
+            {
+                // als erstes wird der spieler der saison zugeordnet
+                // Create and populate an object.
+                $temp = new stdClass();
+                $temp->person_id = $row->person_id;
+                $temp->season_id = $row->season_id;
+                $temp->team_id = $row->team_id;
+                $temp->picture = $row->picture;
+                $temp->persontype = 1;
+                // Insert the object into the user profile table.
+                $result = JFactory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
+                
+                // ist der spieler schon in der season team person tabelle ?
+                // Select some fields
+                $query = $db->getQuery(true);
+                $query->clear();
+		        $query->select('id');
+                // From table
+                $query->from('#__sportsmanagement_season_team_person_id');
+                $query->where('person_id = '.$row->person_id);
+                $query->where('season_id = '.$row->season_id);
+                $query->where('team_id = '.$row->team_id);
+                $db->setQuery($query);
+                $new_id = $db->loadResult();
+                
+                if ( !$new_id )
+                {
+                    // Create and populate an object.
+                    $temp = new stdClass();
+                    $temp->season_id = $row->season_id;
+                    $temp->team_id = $row->team_id;
+                    $temp->person_id = $row->person_id;
+                    $temp->picture = $row->picture;
+                    $temp->project_position_id = $row->project_position_id;
+                    $temp->persontype = 1;
+                    $temp->active = 1;
+                    $temp->published = 1;
+                    // Insert the object into the user profile table.
+                    $result = JFactory::getDbo()->insertObject('#__sportsmanagement_season_team_person_id', $temp);
+                    if ( $result )
+                    {
+                        $new_id = $db->insertid();
+                    }
+                    else
+                    {
+                        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                    }
+                
+                }
+                
+//                // Create an object for the record we are going to joomleague update.
+//                $object = new stdClass();
+//                // Must be a valid primary key value.
+//                $object->id = $row->id;
+//                $object->import = $new_id;
+//                // Update their details in the users table using id as the primary key.
+//                $result_update = JFactory::getDbo()->updateObject('#__joomleague_team_player', $object, 'id'); 
+                
+                // kein update, sondern den datensatz aus der importierten tabelle löschen
+                // delete all custom keys for user 1001.
+$query->clear();
+$conditions = array(
+    $db->quoteName('id') . ' = '.$row->id
+);
+ 
+$query->delete($db->quoteName($jsm_table));
+$query->where($conditions);
+$db->setQuery($query);
+$result_update = $db->execute();
+                
+                if ( !$result_update )
+                    {
+                        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                    }
+                    else
+                    {
+                        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' update team_player id: '.$row->id.' mit season_team_person id: '.$new_id),'');
+                    }
+            
+$my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$storeSuccessColor. '"<strong>Team PLayer: ( '.$row->id.' ) mit ( '.$new_id.' ) umgesetzt!</strong>'.'</span>';
+$my_text .= '<br />';
+
+            $team_player[$row->id] = $new_id;
+            }
+            return $team_player;
+            sportsmanagementModeljoomleagueimports::$_success['Team Player:'] = $my_text;
+    }
+    elseif ( preg_match("/team_staff/i", $jsm_table) )
+    {
+        $my_text;
+        $team_staff = array();
+    $team_staff[0] = 0;
+        //$app->enqueueMessage(JText::_('Daten aus der Tabelle: ( '.$jsm_table.' ) werden in die neue Struktur umgesetzt!'),'Notice');
+$my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$existingInDbColor. '"<strong>Daten aus der Tabelle: ( '.$jsm_table.' ) werden in die neue Struktur umgesetzt!"!</strong>'.'</span>';
+$my_text .= '<br />';
+        
+    $query = $db->getQuery(true);
+        $query->clear();
+        $query->select('tp.*,st.team_id');
+        $query->from($jl_table.' AS tp');
+        $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.id = tp.projectteam_id');
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
+        $query->join('INNER','#__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
+        //$query->where('tp.import = 0');
+        
+        if ( $season_id )
+            {
+                $query->select('p.season_id');
+                $query->where('p.season_id = '.$season_id);
+            }
+            
+            $db->setQuery($query);
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        {
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        }
+        
+            $result = $db->loadObjectList();
+        
+        foreach ( $result as $row )
+            {
+                // als erstes wird der spieler der saison zugeordnet
+                // Create and populate an object.
+                $temp = new stdClass();
+                $temp->person_id = $row->person_id;
+                $temp->season_id = $row->season_id;
+                $temp->team_id = $row->team_id;
+                $temp->picture = $row->picture;
+                $temp->persontype = 2;
+                // Insert the object into the user profile table.
+                $result = JFactory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
+                
+                // ist der spieler schon in der season team person tabelle ?
+                // Select some fields
+                $query = $db->getQuery(true);
+                $query->clear();
+		        $query->select('id');
+                // From table
+                $query->from('#__sportsmanagement_season_team_person_id');
+                $query->where('person_id = '.$row->person_id);
+                $query->where('season_id = '.$row->season_id);
+                $query->where('team_id = '.$row->team_id);
+                $db->setQuery($query);
+                $new_id = $db->loadResult();
+                
+                if ( !$new_id )
+                {
+                    // Create and populate an object.
+                    $temp = new stdClass();
+                    $temp->season_id = $row->season_id;
+                    $temp->team_id = $row->team_id;
+                    $temp->person_id = $row->person_id;
+                    $temp->picture = $row->picture;
+                    $temp->project_position_id = $row->project_position_id;
+                    $temp->persontype = 2;
+                    $temp->active = 1;
+                    $temp->published = 1;
+                    // Insert the object into the user profile table.
+                    $result = JFactory::getDbo()->insertObject('#__sportsmanagement_season_team_person_id', $temp);
+                    if ( $result )
+                    {
+                        $new_id = $db->insertid();
+                    }
+                    else
+                    {
+                        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                    }
+                
+                }
+                
+//                // Create an object for the record we are going to joomleague update.
+//                $object = new stdClass();
+//                // Must be a valid primary key value.
+//                $object->id = $row->id;
+//                $object->import = $new_id;
+//                // Update their details in the users table using id as the primary key.
+//                $result_update = JFactory::getDbo()->updateObject('#__joomleague_team_staff', $object, 'id'); 
+
+$query->clear();
+$conditions = array(
+    $db->quoteName('id') . ' = '.$row->id
+);
+ 
+$query->delete($db->quoteName($jsm_table));
+$query->where($conditions);
+$db->setQuery($query);
+$result_update = $db->execute();
+                
+                if ( !$result_update )
+                    {
+                        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+                    }
+                    else
+                    {
+                        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' update team_staff id: '.$row->id.' mit season_team_person id: '.$new_id),'');
+                    }
+$my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$storeSuccessColor. '"<strong>Team Staff: ( '.$row->id.' ) mit ( '.$new_id.' ) umgesetzt!</strong>'.'</span>';
+$my_text .= '<br />';
+    $team_staff[$row->id] = $new_id;                
+    } 
+    sportsmanagementModeljoomleagueimports::$_success['Team Staff:'] = $my_text; 
+    return $team_staff;
+    }      
+    elseif ( preg_match("/project_referee/i", $jsm_table) )
+    {
+        $my_text;
+        $project_referee = array();
+    $project_referee[0] = 0;
+        //$app->enqueueMessage(JText::_('Daten aus der Tabelle: ( '.$jsm_table.' ) werden in die neue Struktur umgesetzt!'),'Notice');
+$my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$existingInDbColor. '"<strong>Daten aus der Tabelle: ( '.$jsm_table.' ) werden in die neue Struktur umgesetzt!"!</strong>'.'</span>';
+$my_text .= '<br />';
+
+
+$query = $db->getQuery(true);
+        $query->clear();
+        $query->select('tp.*');
+        $query->from($jl_table.' AS tp');
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.id = tp.project_id');
+
+
+if ( $season_id )
+            {
+                $query->select('p.season_id');
+                $query->where('p.season_id = '.$season_id);
+            }
+            
+            $db->setQuery($query);
+             $result = $db->loadObjectList();
+
+foreach ( $result as $row )
+            {
+                // als erstes wird der spieler der saison zugeordnet
+                // Create and populate an object.
+                $temp = new stdClass();
+                $temp->person_id = $row->person_id;
+                $temp->season_id = $row->season_id;
+                $temp->team_id = 0;
+                $temp->picture = $row->picture;
+                $temp->persontype = 3;
+                $temp->published = 1;
+                // Insert the object into the user profile table.
+                $result = JFactory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
+                $new_id = $db->insertid();
+$my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$storeSuccessColor. '"<strong>Project Referee person_id: ( '.$row->person_id.' ) mit ( '.$new_id.' ) umgesetzt!</strong>'.'</span>';
+$my_text .= '<br />';
+$project_referee[$row->person_id] = $new_id;  
+                
+}                
+ 
+sportsmanagementModeljoomleagueimports::$_success['Project Referee:'] = $my_text; 
+    return $project_referee;       
+}             
+
+}
+
+
+
+
             
 }    
 

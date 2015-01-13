@@ -170,7 +170,7 @@ class sportsmanagementModelLeagues extends JModelList
         
         if ($this->getState('filter.search_nation'))
 		{
-        $query->where('obj.country LIKE '.$db->Quote(''.$this->getState('filter.search_nation').''));
+        $query->where('obj.country LIKE '.$db->Quote(''.$this->getState('filter.search_nation').'') );
         }
         
         if ($this->getState('filter.search_association'))

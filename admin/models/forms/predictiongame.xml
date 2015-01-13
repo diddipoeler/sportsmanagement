@@ -28,6 +28,7 @@
 			name="auto_approve"
 			type="radio"
 			default="0"
+			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PGAME_AUTO_APPROVE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PGAME_AUTO_APPROVE_DESC">
 		<option value="0">JNO</option>
@@ -37,6 +38,7 @@
 			name="only_favteams"
 			type="radio"
 			default="0"
+			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PGAME_ONLY_FAVTEAMS"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PGAME_ONLY_FAVTEAMS_DESC">
 		<option value="0">JNO</option>
@@ -46,6 +48,7 @@
 			name="admin_tipp"
 			type="radio"
 			default="0"
+			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PGAME_ADMIN_TIPP"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PGAME_ADMIN_TIPP_DESC">
 		<option value="0">JNO</option>

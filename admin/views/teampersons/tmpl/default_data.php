@@ -128,11 +128,14 @@ JHtml::_('behavior.modal');
 				</thead>
 				<tfoot>
 					<tr>
-						<td colspan="13">
+						<td colspan="9">
 							<?php
 							echo $this->pagination->getListFooter();
 							?>
 						</td>
+                        <td colspan="4">
+            <?php echo $this->pagination->getResultsCounter(); ?>
+            </td>
 					</tr>
 				</tfoot>
 				<tbody>

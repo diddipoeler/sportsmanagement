@@ -65,6 +65,7 @@
 			type="radio" 
 			default="0"
 			onclick="change_joker();"
+			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER" 
 			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_JOKER_DESC">
 			<option value="0">JNO</option>
@@ -120,6 +121,7 @@
 			name="champ" 
 			type="radio" 
 			default="0"
+			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_CHAMP" 
 			description="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_CHAMP_DESC">
 			<option value="0">JNO</option>

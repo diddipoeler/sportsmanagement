@@ -491,9 +491,10 @@ $this->assignRef('csvstaff',$model->csv_staff);
 		$rosters = array('home' => $homeRoster,'away' => $awayRoster);
         
         $matchCommentary = $model->getMatchCommentary($this->item->id);
-        
+        $matchevents = $model->getMatchEvents($this->item->id);
         $document->addScriptDeclaration( $javascript );
         
+        $this->assignRef('matchevents',$matchevents);
         $this->assignRef('matchcommentary',$matchCommentary);
         $this->assignRef('teams',$teams);
         $this->assignRef('rosters',$rosters);
@@ -984,87 +985,87 @@ $this->assignRef('csvstaff',$model->csv_staff);
 		parent::display($tpl);
 	}
 
-	function _displayEditevents($tpl)
-	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
-        //$model = $this->getModel();
-        //$model = JModelLegacy::getInstance('match', 'sportsmanagementmodel');
-		//$project_id = $app->getUserState('com_joomleagueproject');
-        //$match_id	= $this->item->id;
-        //$project_id	= $app->getUserState( "$option.pid", '0' );
-        
-        //$this->assignRef('match_id',$match_id);
-        $this->assignRef('project_id',$this->project_id);
-  
-
-        
-		$document = JFactory::getDocument();
-		//$params =& JComponentHelper::getParams( $option );
-		//$default_name_format = $params->get("name_format");
-
-		//add the js script
-		//$version = urlencode(sportsmanagementHelper::getVersion());
-		$document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/editevents.js');
-
-		
-		$teams = $model->getMatchTeams($this->item->id);
-        
-        //$app->enqueueMessage(JText::_('sportsmanagementViewMatch _displayEditevents teams<br><pre>'.print_r($teams,true).'</pre>'   ),'');
-
-/*
-		$homeRoster = $model->getTeamPlayers($teams->projectteam1_id);
-		if (count($homeRoster)==0)
-		{
-			//$homeRoster=$model->getGhostPlayer();
-		}
-		$awayRoster=$model->getTeamPlayers($teams->projectteam2_id);
-		if (count($awayRoster)==0)
-		{
-			//$awayRoster=$model->getGhostPlayer();
-		}
-		$rosters=array('home' => $homeRoster,'away' => $awayRoster);
-		$matchevents =& $model->getMatchEvents();
-        $matchcommentary =& $model->getMatchCommentary();
-		$project_model = $this->getModel('projectws');
-*/
-		$lists=array();
-
-		// teams
-		$teamlist=array();
-		$teamlist[]=JHtml::_('select.option',$teams->projectteam1_id,$teams->team1);
-		$teamlist[]=JHtml::_('select.option',$teams->projectteam2_id,$teams->team2);
-		$lists['teams']=JHtml::_('select.genericlist',$teamlist,'team_id','class="inputbox select-team"');
-
-/*
-		// events
-		$events=$model->getEventsOptions($project_id);
-		if (!$events)
-		{
-			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS').'<br /><br />');
-			return;
-		}
-		$eventlist=array();
-		$eventlist=array_merge($eventlist,$events);
-
-		$lists['events']=JHtml::_('select.genericlist',$eventlist,'event_type_id','class="inputbox select-event"');
-*/
-
-		//$this->assignRef('overall_config',$project_model->getTemplateConfig('overall'));
-		$this->assignRef('lists',$lists);
-		//$this->assignRef('rosters',$rosters);
-		$this->assignRef('teams',$teams);
-		//$this->assignRef('matchevents',$matchevents);
-        //$this->assignRef('matchcommentary',$matchcommentary);
-        
-        // diddipoeler
-        $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
-        //$mdlMatchProject = JModelLegacy::getInstance('project','JoomleagueModel');
-        //$this->assignRef('eventsprojecttime',$mdlMatchProject->getProjectGameRegularTime($project_id) );
-        
-
-		parent::display($tpl);
-	}
+//	function _displayEditevents($tpl)
+//	{
+//		$option = JRequest::getCmd('option');
+//		$app = JFactory::getApplication();
+//        //$model = $this->getModel();
+//        //$model = JModelLegacy::getInstance('match', 'sportsmanagementmodel');
+//		//$project_id = $app->getUserState('com_joomleagueproject');
+//        //$match_id	= $this->item->id;
+//        //$project_id	= $app->getUserState( "$option.pid", '0' );
+//        
+//        //$this->assignRef('match_id',$match_id);
+//        $this->assignRef('project_id',$this->project_id);
+//  
+//
+//        
+//		$document = JFactory::getDocument();
+//		//$params =& JComponentHelper::getParams( $option );
+//		//$default_name_format = $params->get("name_format");
+//
+//		//add the js script
+//		//$version = urlencode(sportsmanagementHelper::getVersion());
+//		$document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/editevents.js');
+//
+//		
+//		$teams = $model->getMatchTeams($this->item->id);
+//        
+//        //$app->enqueueMessage(JText::_('sportsmanagementViewMatch _displayEditevents teams<br><pre>'.print_r($teams,true).'</pre>'   ),'');
+//
+///*
+//		$homeRoster = $model->getTeamPlayers($teams->projectteam1_id);
+//		if (count($homeRoster)==0)
+//		{
+//			//$homeRoster=$model->getGhostPlayer();
+//		}
+//		$awayRoster=$model->getTeamPlayers($teams->projectteam2_id);
+//		if (count($awayRoster)==0)
+//		{
+//			//$awayRoster=$model->getGhostPlayer();
+//		}
+//		$rosters=array('home' => $homeRoster,'away' => $awayRoster);
+//		$matchevents =& $model->getMatchEvents();
+//        $matchcommentary =& $model->getMatchCommentary();
+//		$project_model = $this->getModel('projectws');
+//*/
+//		$lists=array();
+//
+//		// teams
+//		$teamlist=array();
+//		$teamlist[]=JHtml::_('select.option',$teams->projectteam1_id,$teams->team1);
+//		$teamlist[]=JHtml::_('select.option',$teams->projectteam2_id,$teams->team2);
+//		$lists['teams']=JHtml::_('select.genericlist',$teamlist,'team_id','class="inputbox select-team"');
+//
+///*
+//		// events
+//		$events=$model->getEventsOptions($project_id);
+//		if (!$events)
+//		{
+//			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS').'<br /><br />');
+//			return;
+//		}
+//		$eventlist=array();
+//		$eventlist=array_merge($eventlist,$events);
+//
+//		$lists['events']=JHtml::_('select.genericlist',$eventlist,'event_type_id','class="inputbox select-event"');
+//*/
+//
+//		//$this->assignRef('overall_config',$project_model->getTemplateConfig('overall'));
+//		$this->assignRef('lists',$lists);
+//		//$this->assignRef('rosters',$rosters);
+//		$this->assignRef('teams',$teams);
+//		//$this->assignRef('matchevents',$matchevents);
+//        //$this->assignRef('matchcommentary',$matchcommentary);
+//        
+//        // diddipoeler
+//        $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
+//        //$mdlMatchProject = JModelLegacy::getInstance('project','JoomleagueModel');
+//        //$this->assignRef('eventsprojecttime',$mdlMatchProject->getProjectGameRegularTime($project_id) );
+//        
+//
+//		parent::display($tpl);
+//	}
 
 	/**
 	 * sportsmanagementViewMatch::_displayEditeventsbb()

@@ -42,122 +42,30 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
+//echo '<br><pre>'.print_r($this->success,true).'</pre>';
+
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-
-<fieldset class="adminform">
-<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXT_JOOMLEAGUE_IMPORT'); ?></legend>
-
-<table>
-		<tr>
-
-			<td class="nowrap" align="right"><?php echo $this->lists['seasons'].'&nbsp;&nbsp;'; ?></td>
-
-		</tr>
-	</table>
-    
-<table class="<?php echo $this->table_data_class; ?>">
-<thead>
-				<tr>
-					<th width="5"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
-					<th width="20">
-						<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
-					</th>
-                    <th>
-                    <?php 
-                    echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_JL'); 
-                    ?>
-                    </th>
-                    <th>
-                    <?php 
-                    echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_JSM'); 
-                    ?>
-                    </th>
-                    <th>
-                    <?php 
-                    echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_INFO'); 
-                    ?>
-                    </th>
-                    <th>
-                    <?php 
-                    echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_JL_DATA'); 
-                    ?>
-                    </th>
-                    <th>
-                    <?php 
-                    echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMPORT_JL_CHANGE_DATA'); 
-                    ?>
-                    </th>
-
-</tr>
-</thead>
-
+<div id='editcell'>
 <?PHP
-$k=0;
-for ($i=0,$n=count($this->items); $i < $n; $i++)
-{
-$row =& $this->items[$i];
-$checked = JHtml::_('grid.checkedout',$row,$i);
-//$published  = JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','joomleagueimports.');
+foreach ($this->success as $key => $value)
+		{
+			?>
+			<fieldset>
+				<legend><?php echo JText::_($key); ?></legend>
+				<table class='adminlist'><tr><td><?php echo $value; ?></td></tr></table>
+			</fieldset>
+			<?php
+		}
 ?>
-<tr class="<?php echo "row$k"; ?>">
-<td class="center"><?php echo ($i +1); ?></td>
-<td class="center"><?php echo $checked; ?></td>
-<td><?php echo $row->jl; ?></td>
-<input type='hidden' name='jl[<?php echo $row->id; ?>]' value='<?php echo $row->jl; ?>' />
-<td><?php echo $row->jsm; ?></td>
-<input type='hidden' name='jsm[<?php echo $row->id; ?>]' value='<?php echo $row->jsm; ?>' />
-<input type='hidden' name='jlid[<?php echo $row->id; ?>]' value='<?php echo $row->id; ?>' />
-
-<td style="color: <?php echo $row->color; ?>;"><font><b><?php echo $row->info; ?></b></font></td>
-
-<td class="center">
-<?php 
-if ( $row->import )
-{
-$imageTitle = JText::_('bereits importiert');
-echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png',
-$imageTitle,'title= "'.$imageTitle.'"');    
-}
-else
-{
-$imageTitle = JText::_('noch nicht importiert');
-echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/error.png',
-$imageTitle,'title= "'.$imageTitle.'"');      
-}
- 
-?>
-</td>
-
-<td class="center">
-<?php 
-if ( $row->import_data )
-{
-$imageTitle = JText::_('bereits importiert');
-echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/ok.png',
-$imageTitle,'title= "'.$imageTitle.'"');    
-}
-else
-{
-$imageTitle = JText::_('noch nicht importiert');
-echo JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/error.png',
-$imageTitle,'title= "'.$imageTitle.'"');      
-}
- 
-?>
-</td>
-
-</tr>
-<?php
-$k=1 - $k;
-}
-
-?>
+</div>
 
 
-</table>
-</fieldset>
-
+<fieldset>
+			<legend><?php echo JText::_('Post data from importform was:'); ?></legend>
+			<table class='adminlist'><tr><td><?php //echo '<pre>'.print_r($this->success,true).'</pre>'; ?></td></tr></table>
+		</fieldset>
+        
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="filter_order" value="" />

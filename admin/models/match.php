@@ -66,14 +66,73 @@ class sportsmanagementModelMatch extends JModelAdmin
 
 	
     /**
+     * sportsmanagementModelMatch::getMatchEvents()
+     * 
+     * @param integer $match_id
+     * @return
+     */
+    function getMatchEvents($match_id=0)
+	{
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        // Get a db connection.
+        $db = sportsmanagementHelper::getDBConnection();
+        // Create a new query object.
+        $query = $db->getQuery(true);
+        $query->select('me.*,t.name AS team,et.name AS event,CONCAT(t1.firstname," \'",t1.nickname,"\' ",t1.lastname) AS player1');
+        //$query->select('CONCAT(t2.firstname," \'",t2.nickname,"\' ",t2.lastname) AS player2');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp1 ON tp1.id = me.teamplayer_id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.team_id = tp1.team_id'); 
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON st1.id = pt1.team_id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS t1 ON t1.id = tp1.person_id AND t1.published = 1');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st1.team_id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et ON et.id = me.event_type_id ');
+
+/*       
+		$query=' SELECT	me.*,'
+		.' t.name AS team,'
+		.' et.name AS event,'
+		.' CONCAT(t1.firstname," \'",t1.nickname,"\' ",t1.lastname) AS player1,'
+		.' CONCAT(t2.firstname," \'",t2.nickname,"\' ",t2.lastname) AS player2 '
+		.' FROM #__joomleague_match_event AS me '
+		.' LEFT JOIN #__joomleague_team_player AS tp1 ON tp1.id=me.teamplayer_id '
+		.' LEFT JOIN #__joomleague_person AS t1 ON t1.id=tp1.person_id '
+		.' AND t1.published = 1 '
+		.' LEFT JOIN #__joomleague_project_team AS pt ON pt.id=me.projectteam_id '
+		.' LEFT JOIN #__joomleague_team AS t ON t.id=pt.team_id '
+		.' LEFT JOIN #__joomleague_eventtype AS et ON et.id=me.event_type_id '
+		.' LEFT JOIN #__joomleague_team_player AS tp2 ON tp2.id=me.teamplayer_id2 '
+		.' LEFT JOIN #__joomleague_person AS t2 ON t2.id=tp2.person_id '
+		.' AND t2.published = 1 '
+		.' WHERE me.match_id='.$this->_db->Quote((int) $this->_id)
+		.' ORDER BY me.event_time ASC ';
+*/		
+        
+        $query->where('me.match_id = '.$match_id);
+        $query->order('me.event_time ASC');
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        
+        $db->setQuery($query);
+		return $db->loadObjectList();
+	}
+    
+    /**
      * sportsmanagementModelMatch::insertgooglecalendar()
      * http://framework.zend.com/manual/1.12/de/zend.gdata.calendar.html
      * @return
      */
     function insertgooglecalendar()
     {
-        $option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+        // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         $timezone = JComponentHelper::getParams(JRequest::getCmd('option'))->get('timezone','');
         
         $app->enqueueMessage(__METHOD__.' '.__LINE__.' timezone<br><pre>'.print_r($timezone, true).'</pre><br>','Notice');

@@ -116,7 +116,8 @@ JHtml::_('behavior.modal');
             <td colspan="4">
             <?php echo $this->pagination->getResultsCounter(); ?>
             </td>
-            </tr></tfoot>
+            </tr>
+            </tfoot>
 			<tbody>
 				<?php
 				$k=0;
