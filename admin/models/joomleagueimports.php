@@ -529,9 +529,11 @@ $conditions = array(
 );
  
 $query->update($db->quoteName('#__sportsmanagement_team'))->set($fields)->where($conditions);
- 
 $db->setQuery($query);
- 
+$result = $db->execute(); 
+
+$query->update($db->quoteName('#__sportsmanagement_project'))->set($fields)->where($conditions);
+$db->setQuery($query);
 $result = $db->execute(); 
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'success<br><pre>'.print_r(self::$_success,true).'</pre>'),'');
