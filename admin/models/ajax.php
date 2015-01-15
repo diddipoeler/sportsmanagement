@@ -257,6 +257,34 @@ class sportsmanagementModelAjax extends JModelLegacy
         
         
         /**
+         * sportsmanagementModelAjax::getpredictionmembersoptions()
+         * 
+         * @param mixed $prgame_id
+         * @param bool $required
+         * @param bool $slug
+         * @param bool $dbase
+         * @return
+         */
+        static function getpredictionmembersoptions($prgame_id, $required = false, $slug = false, $dbase = false)
+        {
+        // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        $db	= JFactory::getDbo(); 
+		$query = $db->getQuery(true);
+        
+        $query->select('a.user_id AS value, concat(u.name, \' ( \',u.username,\' ) \') AS text');
+		$query->from('#__sportsmanagement_prediction_member as a');
+        $query->join('LEFT', '#__users AS u ON u.id = a.user_id');   
+        $query->where('a.prediction_id = '.$prgame_id);
+        $db->setQuery($query);
+        $result = $db->loadObjectList();
+        return self::addGlobalSelectElement($result, $required);    
+        }
+        
+        /**
          * sportsmanagementModelAjax::getpersonlistoptions()
          * 
          * @param mixed $person_art

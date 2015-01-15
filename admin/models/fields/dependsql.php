@@ -204,7 +204,11 @@ $script[] = "					var value = $('#jform_".$div."_".$depends."').val();";
 //$script[] = "					var dbparam = $('#jform_params_cfg_which_database').val();";
 //$script[] = "					var dbparam = $('#jform_home').prop('checked');";
 //$script[] = "					var dbparam = $('input:radio[name=jform_home]:checked').val();";
+
 //$script[] = " alert('value -> ' + value);";
+
+//$script[] = " alert('task -> ' + ".$ajaxtask.");";
+//$script[] = " alert('depends -> ' + ".$depends.");";
 
 $script[] = "					$.ajax({";
 switch ($view)
@@ -226,6 +230,9 @@ $script[] = "";
 $script[] = "						$.each(data, function (i, val) {";
 $script[] = "							var option = $('<option>');";
 $script[] = "							option.text(val.text).val(val.value);";
+
+//$script[] = " alert('value -> ' + val.text);";
+
 $script[] = "							$('#".$this->id."').append(option);";
 $script[] = "						});";
 

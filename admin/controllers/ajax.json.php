@@ -116,6 +116,22 @@ class sportsmanagementControllerAjax extends JControllerLegacy
                 JFactory::getApplication()->close();
         }
 
+        
+        
+        /**
+         * sportsmanagementControllerAjax::predictionmembersoptions()
+         * 
+         * @return void
+         */
+        public function predictionmembersoptions()
+        {
+                $model = $this->getModel('ajax');
+                $req = JRequest::getVar('required', false);
+                $required = ($req == 'true' || $req == '1') ? true : false;
+                echo json_encode((array) $model->getpredictionmembersoptions(JRequest::getInt( 'prediction_id' ), $required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' )));
+                JFactory::getApplication()->close();
+        }
+        
         /**
          * sportsmanagementControllerAjax::projectdivisionsoptions()
          * 

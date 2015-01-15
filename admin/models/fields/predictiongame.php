@@ -66,7 +66,7 @@ class JFormFieldPredictiongame extends JFormField
         $params = JComponentHelper::getParams( 'com_sportsmanagement' );
         $database_table	= $params->get( 'cfg_which_database_table' );
         
-		$extension = "com_sportsmanagement";
+//		$extension = "com_sportsmanagement";
 // 		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
 // 		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
 // 		||	$lang->load($extension, $source, null, false, false)
@@ -74,15 +74,31 @@ class JFormFieldPredictiongame extends JFormField
 // 		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		
 		$query = 'SELECT pg.id, pg.name FROM #__'.$database_table.'_prediction_game pg WHERE pg.published=1 ORDER BY pg.name';
-		$db->setQuery( $query );
-		$clubs = $db->loadObjectList();
+		$query = $db->getQuery(true);
+			
+			$query->select('pg.id, pg.name');
+
+            $query->from('#__sportsmanagement_prediction_game pg');    
+            
+			$query->where('pg.published = 1');
+			$query->order('pg.name');
+            
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r(COM_SPORTSMANAGEMENT_TABLE,true).'</pre>'),'Notice');
+            
+			$db->setQuery($query);
+			$options = $db->loadObjectList();
+        
+        
+        //$db->setQuery( $query );
+//		$clubs = $db->loadObjectList();
 		$mitems = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 
-		foreach ( $clubs as $club ) {
-			$mitems[] = JHtml::_('select.option',  $club->id, '&nbsp;'.$club->name. ' ('.$club->id.')' );
+		foreach ( $options as $option ) {
+			$mitems[] = JHtml::_('select.option',  $option->id, '&nbsp;'.$option->name. ' ('.$option->id.')' );
 		}
 		
-		$output= JHtml::_('select.genericlist',  $mitems, $this->name, 'class="inputbox" multiple="multiple" size="10"', 'value', 'text', $this->value, $this->id );
+		$output = JHtml::_('select.genericlist',  $mitems, $this->name, 'class="inputbox" multiple="multiple" size="10"', 'value', 'text', $this->value, $this->id );
 		return $output;
 	}
 }
