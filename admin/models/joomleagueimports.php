@@ -359,10 +359,17 @@ return self::$_success;
 function importjoomleaguenew()
 {
 // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+$app = JFactory::getApplication();
+// JInput object
+$jinput = $app->input;
+$option = $jinput->getCmd('option');
+
+$sports_type_id = $jinput->post->get('filter_sports_type', 0);
+//$this->setState('filter.sports_type', $sports_type_id);
+$app->setUserState( $option.'.filter_sports_type', $sports_type_id );
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' sports_type_id <br><pre>'.print_r($sports_type_id,true).'</pre>'),'');
+
 $db = JFactory::getDbo(); 
 $query = $db->getQuery(true);
 
@@ -504,6 +511,28 @@ $my_text .= '<br />';
 }
 
 self::$_success['Tabellenkopie:'] = $my_text;
+
+/**
+ * nach der kopie der tabellen müssen wir die sportart bei den mannschaften setzen.
+ * sonst gibt es in der übersicht der projektmannschaften eine fehlermeldung.
+ */
+$query = $db->getQuery(true);
+ 
+// Fields to update.
+$fields = array(
+    $db->quoteName('sports_type_id') . ' = ' . $sports_type_id
+);
+ 
+// Conditions for which records should be updated.
+$conditions = array(
+    $db->quoteName('sports_type_id') . ' = 0'
+);
+ 
+$query->update($db->quoteName('#__sportsmanagement_team'))->set($fields)->where($conditions);
+ 
+$db->setQuery($query);
+ 
+$result = $db->execute(); 
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'success<br><pre>'.print_r(self::$_success,true).'</pre>'),'');
 

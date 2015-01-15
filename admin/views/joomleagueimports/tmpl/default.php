@@ -46,6 +46,24 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
+
+<table>
+<tr>
+<td class="nowrap" align="right"><?php echo $this->lists['sportstypes'].'&nbsp;&nbsp;'; ?></td>
+</tr>
+</table>
+
+<table class="<?php echo $this->table_data_class; ?>">
+<tr>
+<td class="nowrap" align="center">
+<img src= "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/jl.png" width="180" height="auto" >
+</td>
+<td class="nowrap" align="center">
+<img src= "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/logo_transparent.png" width="180" height="auto" >
+</td>
+</tr>
+</table>
+    
 <div id='editcell'>
 <?PHP
 foreach ($this->success as $key => $value)
