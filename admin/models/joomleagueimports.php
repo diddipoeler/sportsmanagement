@@ -499,7 +499,7 @@ foreach ( $jl_fields[$jl_table] as $key2 => $value2 )
             {
             //$app->enqueueMessage(JText::_('Daten aus der Tabelle: ( '.$jl_table.' ) in die Tabelle: ( '.$jsm_table.' ) importiert!'),'Notice');    
 
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Daten aus der Tabelle: ( '.$jl_table.' ) in die Tabelle: ( '.$jl_table.' ) importiert!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Daten aus der Tabelle: ( '.$jl_table.' ) in die Tabelle: ( '.$jsm_table.' ) importiert!</strong>'.'</span>';
 $my_text .= '<br />';             
             
             }
