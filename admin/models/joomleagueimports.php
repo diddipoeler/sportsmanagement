@@ -525,7 +525,7 @@ $fields = array(
  
 // Conditions for which records should be updated.
 $conditions = array(
-    $db->quoteName('sports_type_id') . ' = 0'
+    $db->quoteName('sports_type_id') . ' != '. $sports_type_id
 );
  
 $query->update($db->quoteName('#__sportsmanagement_team'))->set($fields)->where($conditions);
