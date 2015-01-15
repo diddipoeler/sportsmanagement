@@ -93,7 +93,10 @@ class JFormFieldpredictionmatchid extends JFormField
 
 		$db->setQuery( $query );
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        }
         
 		$teams = $db->loadObjectList();
         

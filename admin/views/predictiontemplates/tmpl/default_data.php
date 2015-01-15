@@ -76,8 +76,7 @@ JHtml::_( 'behavior.tooltip' );
 								?>
 							</th>
 							<th class='title' width='20'>
-								<input  type="checkbox" name="toggle" value=""
-										onclick="checkAll(<?php echo count( $this->items ); ?>);" />
+								<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 							</th>
 							<th class='title' width='20'>
 								&nbsp;
