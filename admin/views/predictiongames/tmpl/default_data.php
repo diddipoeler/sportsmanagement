@@ -52,7 +52,7 @@ JHtml::_('behavior.modal');
 		if ($this->dPredictionID > 0)
 		{
 			?>
-			<fieldset class="adminform">
+<!--			<fieldset class="adminform"> -->
 				<legend>
 					<?php
 					echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TITLE2','<i>'.$this->items[0]->name.'</i>');
@@ -282,7 +282,7 @@ JHtml::_('behavior.modal');
 		if ( $this->dPredictionID > 0 )
 		{
 			?>
-			</fieldset>
+<!--			</fieldset> -->
 			<?php
 		}
 		?>

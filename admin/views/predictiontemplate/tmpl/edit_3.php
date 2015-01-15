@@ -68,7 +68,12 @@ $i    = 1;
 		</fieldset>
 
 <div class="form-horizontal">
-<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS')); ?>
+<?php 
+
+echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS')); 
+
+
+?>
 
 <?PHP    
 foreach ($fieldsets as $fieldset) 

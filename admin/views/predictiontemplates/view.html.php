@@ -88,7 +88,7 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
             $this->prediction_id = $app->getUserState( "$option.predid", '0' );
         }   
          
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prediction_id -> '.$this->prediction_id.''),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prediction_id -> '.$this->prediction_id.''),'Notice');
         
 
         
