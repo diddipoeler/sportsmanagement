@@ -20,7 +20,8 @@
 	</fieldset>
 
   <fieldset group="COM_SPORTSMANAGEMENT_FES_FLASH_PARAMS_GROUP_X_AXIS"
-  name="COM_SPORTSMANAGEMENT_FES_FLASH_PARAMS_GROUP_X_AXIS"  
+  name="COM_SPORTSMANAGEMENT_FES_FLASH_PARAMS_GROUP_X_AXIS"
+  label="COM_SPORTSMANAGEMENT_FES_FLASH_PARAMS_GROUP_X_AXIS"    
 			description="COM_SPORTSMANAGEMENT_FES_FLASH_PARAMS_DESCR_X_AXIS">	
 
 		<field 	name="x_axis_label" type="list" default="1"
@@ -65,6 +66,7 @@
 		</field>
 
 		<field 	name="y_axis_legend" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_LABEL_Y_AXIS_LEGEND"
 				description="COM_SPORTSMANAGEMENT_FES_FLASH_PARAM_DESCR_Y_AXIS_LEGEND">
 			<option value="0">JNO</option>
