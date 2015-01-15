@@ -4,6 +4,7 @@
 <!-- neuer reiter -->
 <fieldset group="COM_SPORTSMANAGEMENT_FES_PREDICTIONOVERALL_RESULT_ELEMENTS"
 	name="COM_SPORTSMANAGEMENT_FES_PREDICTIONOVERALL_RESULT_ELEMENTS"
+	label="COM_SPORTSMANAGEMENT_FES_PREDICTIONOVERALL_RESULT_ELEMENTS"
 			description="COM_SPORTSMANAGEMENT_FES_PREDICTIONOVERALL_RESULT_ELEMENTS">
 			
 			<field name="use_match_result" type="list" default="0"
@@ -19,9 +20,11 @@
 <!-- reiter 1 -->
 	<fieldset group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 	name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
+	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 
 		<field name="show_prediction_heading" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_PREDICTIONOVERALL_PARAM_LABEL_SHOW_PREDICTION_HEADING"
 			description="COM_SPORTSMANAGEMENT_FES_PREDICTIONOVERALL_PARAM_DESCR_SHOW_PREDICTION_HEADING">
 			<option value="0">JNO</option>
@@ -29,6 +32,7 @@
 		</field>
 
 		<field	name="show_predictiongame_dropdown" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONOVERALL_PARAM_LABEL_SHOW_PREDICTION_GAME_SELECTOR"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONOVERALL_PARAM_DESCR_SHOW_PREDICTION_GAME_SELECTOR">
 			<option value="0">JNO</option>
@@ -36,6 +40,7 @@
 		</field>
 
     <field	name="show_pred_group_link" type="radio" default="0"
+    class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONRANKING_PARAM_LABEL_SHOW_PRED_GROUP_LINK"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONRANKING_PARAM_DESCR_SHOW_PRED_GROUP_LINK">
 			<option value="0">JNO</option>
@@ -85,6 +90,7 @@
 <!-- reiter 2 -->
 	<fieldset	group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONAL_OPTIONS"
 	name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONAL_OPTIONS"
+	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONAL_OPTIONS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PERSONAL_OPTIONS">
 
 		<field name="seperator" type="text" size="4" maxlength="4"
@@ -124,6 +130,7 @@
 		</field>
 
 		<field	name="allow_alias" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONOVERALL_PARAM_LABEL_ALLOW_ALIAS"
 				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONOVERALL_PARAM_DESCR_ALLOW_ALIAS">
 			<option value="0">JNO</option>
@@ -147,6 +154,7 @@
 <!-- reiter 3 -->
 	<fieldset	group= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 	name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
+	label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
 
 		<field	name="sort_order_1" default="points" type="list"

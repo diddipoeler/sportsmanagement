@@ -3,6 +3,7 @@
 <!-- register 1 -->
 	<fieldset	group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 	name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
+	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS"
       addfieldpath="/administrator/components/com_sportsmanagement/elements">
 
@@ -141,6 +142,7 @@
 <!-- register 2 -->
 	<fieldset	group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONAL_OPTIONS_EDIT"
 	name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONAL_OPTIONS_EDIT"
+	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONAL_OPTIONS_EDIT"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PERSONAL_OPTIONS_EDIT">
 
 		<field	name="edit_favteam" type="radio" default="1" class="radio btn-group btn-group-yesno"
