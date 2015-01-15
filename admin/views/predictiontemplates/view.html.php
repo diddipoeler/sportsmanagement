@@ -63,10 +63,13 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app			= JFactory::getApplication();
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
-    $option = JRequest::getCmd('option');
     $model = $this->getModel();
     $starttime = microtime(); 
     
@@ -85,7 +88,7 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
             $this->prediction_id = $app->getUserState( "$option.predid", '0' );
         }   
          
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' prediction_id<br><pre>'.print_r($this->prediction_id,true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prediction_id -> '.$this->prediction_id.''),'Notice');
         
 
         
@@ -98,13 +101,13 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
         //$this->prediction_id	= $app->getUserStateFromRequest( $option .'.'.$model->_identifier, 'prediction_id', '0' );
         $mdlPredictionGame = JModelLegacy::getInstance("PredictionGame", "sportsmanagementModel");
         $mdlPredictionGames = JModelLegacy::getInstance("PredictionGames", "sportsmanagementModel");
-        $mdlPredictionTemplates = JModelLegacy::getInstance("PredictionTemplates", "sportsmanagementModel");
+        //$mdlPredictionTemplates = JModelLegacy::getInstance("PredictionTemplates", "sportsmanagementModel");
         
         
         
         if ( isset($this->prediction_id) )
         {
-        $checkTemplates = $mdlPredictionTemplates->checklist($this->prediction_id);    
+        $checkTemplates = $model->checklist($this->prediction_id);    
         $predictiongame	= $mdlPredictionGame->getPredictionGame( $this->prediction_id );
         }
         else
@@ -180,6 +183,7 @@ $this->icon = 'templates';
 //        JToolBarHelper::divider();
 //		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 //        JToolBarHelper::preferences($option);
+JToolBarHelper::deleteList('', 'predictiontemplates.delete');
 JToolbarHelper::checkin('predictiontemplates.checkin');
 parent::addToolbar();
        

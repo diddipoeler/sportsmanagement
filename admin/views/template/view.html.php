@@ -62,8 +62,11 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
 		$uri = JFactory::getURI();
 		$user = JFactory::getUser();
 		$app = JFactory::getApplication();

@@ -42,8 +42,8 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_( 'behavior.tooltip' );
 ?>
 
-	<div id='editcell'>
-		<fieldset class='adminform'>
+<!--	<div id='editcell'> -->
+<!--		<fieldset class='adminform'> -->
 			<legend>
 				<?php
 				if ( $this->pred_id > 0 )
@@ -170,6 +170,6 @@ JHtml::_( 'behavior.tooltip' );
 			<?php
 			}
 			?>
-		</fieldset>
-	</div>
+<!--		</fieldset> -->
+<!--	</div> -->
   

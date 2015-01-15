@@ -63,8 +63,11 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
 
@@ -73,7 +76,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         $this->sortColumn = $this->state->get('list.ordering');
         
         
-        $this->project_id = JRequest::getVar('pid');
+        $this->project_id = $jinput->getVar('pid');
         if ( !$this->project_id )
         {
         $this->project_id = $app->getUserState( "$option.pid", '0' );
@@ -120,10 +123,10 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 	    $projectdivisions = $mdlDivisions->getDivisions($this->project_id);
         
         
-        $divisionsList[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
+        $divisionsList[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
         if ($projectdivisions)
         { 
-            $projectdivisions=array_merge($divisionsList,$projectdivisions);
+            $projectdivisions = array_merge($divisionsList,$projectdivisions);
         }
         $lists['divisions'] = $projectdivisions;
         
@@ -280,8 +283,11 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-	   $option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         
         
 	//// Get a refrence of the page instance in joomla

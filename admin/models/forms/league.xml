@@ -111,8 +111,8 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 			depends="sports_type_id"
 			task="personagegroupoptions" 
       size="10"
-      varname="id"
-      targettable="person"
+      
+      
       
       key_field="sports_type_id"
 			value_field="sports_type_id"

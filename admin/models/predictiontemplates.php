@@ -94,7 +94,7 @@ class sportsmanagementModelPredictionTemplates extends JModelList
         // Initialise variables.
 		//$app = JFactory::getApplication('administrator');
         
-        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -191,6 +191,10 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
+        // Create a new query object.		
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+        
 		//$prediction_id	= $this->_prediction_id;
 		//$defaultpath	= JLG_PATH_EXTENSION_PREDICTIONGAME.DS.'settings';
 		$defaultpath	= JPATH_COMPONENT_SITE.DS.'settings';
@@ -207,24 +211,47 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         }
 
 		// get info from prediction game
-		$query = 'SELECT master_template 
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game 
-					WHERE id = ' . (int) $prediction_id;
+        // Select some fields
+        $query->select('master_template');
+		// From table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game ');
+        $query->where('id = ' . $prediction_id );
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
+//		$query = 'SELECT master_template 
+//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game 
+//					WHERE id = ' . (int) $prediction_id;
 
-		$this->_db->setQuery($query);
-		$params = $this->_db->loadObject();
+		$db->setQuery($query);
+		$params = $db->loadObject();
 
 		// if it's not a master template, do not create records.
-		if ($params->master_template){return true;}
+		if ($params->master_template)
+        {
+            return true;
+        }
 
 		// otherwise, compare the records with the files // get records
-		$query = 'SELECT template 
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_template 
-					WHERE prediction_id = ' . (int) $prediction_id;
+        $query->clear('');
+        // Select some fields
+        $query->select('template');
+		// From table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_template ');
+        $query->where('prediction_id = ' . $prediction_id );
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
+//		$query = 'SELECT template 
+//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_template 
+//					WHERE prediction_id = ' . (int) $prediction_id;
 
-		$this->_db->setQuery($query);
-		$records = $this->_db->loadResultArray();
-		if (empty($records)){$records=array();}
+		$db->setQuery($query);
+		$records = $db->loadResultArray();
+		if (empty($records))
+        {
+            $records = array();
+        }
     
 		// add default folder
 		$xmldirs[] = $defaultpath . DS . 'default';
@@ -290,19 +317,21 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 							
                             $defaultvalues = $jRegistry->toString('ini');
                             
+                            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' defaultvalues<br><pre>'.print_r($defaultvalues,true).'</pre>'),'');
+                            
                             $parameter = new JRegistry;
 			                if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-            $ini = $parameter->loadString($defaultvalues[0]);
+            $ini = $parameter->loadString($defaultvalues);
         }
         else
         {
-            $ini = $parameter->loadINI($defaultvalues[0]);
+            $ini = $parameter->loadINI($defaultvalues);
         }
 			                $ini = $parameter->toArray($ini);
 			                $defaultvalues = json_encode( $ini );
                             	
-                            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' defaultvalues<br><pre>'.print_r($defaultvalues,true).'</pre>'),'');
+                            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' defaultvalues<br><pre>'.print_r($defaultvalues,true).'</pre>'),'');
 
                             
 							//$defaultvalues = ereg_replace('"', '', $defaultvalues);
@@ -311,6 +340,26 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 							//echo 'defaultvalues<br /><pre>~' . print_r($defaultvalues,true) . '~</pre><br />';
 							
 							//$tblTemplate_Config = JTable::getInstance('predictiontemplate', 'table');
+                            
+                            // otherwise, compare the records with the files // get records
+        $query->clear('');
+        // Select some fields
+        $query->select('id');
+		// From table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_template ');
+        $query->where('prediction_id = ' . $prediction_id );
+        $query->where('template LIKE '.$db->Quote(''.$template.''));
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
+//		$query = 'SELECT template 
+//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_template 
+//					WHERE prediction_id = ' . (int) $prediction_id;
+
+		$db->setQuery($query);
+		$record_tpl = $db->loadResult();
+        if( !$record_tpl )
+        {
                             $mdl = JModelLegacy::getInstance("predictiontemplate", "sportsmanagementModel");
                             $tblTemplate_Config = $mdl->getTable();
 							
@@ -334,7 +383,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 								return false;
 							}
 							array_push($records,$template);
-							
+		}					
 							
 						}
 					}

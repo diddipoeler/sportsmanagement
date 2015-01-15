@@ -63,11 +63,14 @@ class sportsmanagementViewPredictionTemplate extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app	= JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         $model = $this->getModel();
         
-        $this->prediction_id		= $app->getUserState( "$option.predid", '0' );
+        $this->prediction_id = $app->getUserState( "$option.predid", '0' );
         $predictionGame = $model->getPredictionGame( $this->prediction_id );
 
         
@@ -75,6 +78,7 @@ class sportsmanagementViewPredictionTemplate extends sportsmanagementView
 		//$form = $this->get('Form');
 		$item = $this->get('Item');
 		$script = $this->get('Script');
+        $this->state = $this->get('State'); 
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -83,8 +87,8 @@ class sportsmanagementViewPredictionTemplate extends sportsmanagementView
 			return false;
 		}
 		// Assign the Data
-        $templatepath=JPATH_COMPONENT_SITE.DS.'settings';
-    $xmlfile=$templatepath.DS.'default'.DS.$item->template.'.xml';
+        $templatepath = JPATH_COMPONENT_SITE.DS.'settings';
+    $xmlfile = $templatepath.DS.'default'.DS.$item->template.'.xml';
     
     //$jRegistry = new JRegistry;
 //		$jRegistry->loadString($item->params, 'ini');
@@ -98,11 +102,13 @@ class sportsmanagementViewPredictionTemplate extends sportsmanagementView
 		$form = JForm::getInstance($item->template, $xmlfile,array('control'=> 'params'));
 		//$form->bind($jRegistry);
         $form->bind($item->params);
+        
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
         $this->assign('user',JFactory::getUser() );
-        $this->assignRef( 'predictionGame',		$predictionGame );
+        $this->assignRef('predictionGame',$predictionGame );
+        $this->assignRef('item',$item );
 
 	}
 
@@ -119,6 +125,8 @@ class sportsmanagementViewPredictionTemplate extends sportsmanagementView
         JRequest::setVar('hidemainmenu', true);
         $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATE_NEW');
         $this->icon = 'predtemplate';
+        
+        $this->item->name = $this->item->template;
 
         parent::addToolbar();
 

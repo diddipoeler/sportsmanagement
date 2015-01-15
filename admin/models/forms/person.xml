@@ -282,9 +282,8 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
       size="10"
 			key_field="sports_type_id"
 			value_field="sports_type_id"
-			
-      varname="id"
-      targettable="person"
+			query="getpersonagegroupoptions"
+      
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP_DESC"
 			class="inputbox">

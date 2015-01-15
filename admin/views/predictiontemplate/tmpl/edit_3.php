@@ -40,6 +40,10 @@
 defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+
+$params = $this->form->getFieldsets('params');
+$fieldsets = $this->form->getFieldsets();
+
 /*
 JHtmlBehavior::formvalidation();
 JHtml::_('behavior.tooltip');
@@ -49,15 +53,7 @@ JHtml::_('behavior.modal');
 
 $i    = 1;
 ?>
-<style type="text/css">
-	<!--
-	fieldset.panelform label, fieldset.panelform div.paramrow label, fieldset.panelform span.faux-label {
-		max-width: 255px;
-		min-width: 255px;
-		padding: 0 5px 0 0;
-	}
-	-->
-</style>
+
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
 	
 	<?php
@@ -116,13 +112,13 @@ echo JHtml::_('bootstrap.endTab');
 </div> 			
     
 </fieldset>    
-	<div>		
-		<input type='hidden' name='user_id' value='<?php echo $this->user->id; ?>'/>
-		<input type="hidden" name="id" value="<?php echo $this->item->id; ?>"/>
-        <input type="hidden" name="predid" value="<?php echo $this->prediction_id; ?>"/>
-		<input type="hidden" name="task" value="predictiontemplate.edit"/>
-		<?php echo JHtml::_('form.token'); ?>
-	</div>
+<div>		
+<input type='hidden' name='user_id' value='<?php echo $this->user->id; ?>'/>
+<input type="hidden" name="id" value="<?php echo $this->item->id; ?>"/>
+<input type="hidden" name="predid" value="<?php echo $this->prediction_id; ?>"/>
+<input type="hidden" name="task" value="predictiontemplate.edit"/>
+<?php echo JHtml::_('form.token'); ?>
+</div>
 </form>
 
 <?PHP
