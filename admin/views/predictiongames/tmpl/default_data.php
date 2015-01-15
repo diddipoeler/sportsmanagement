@@ -47,7 +47,7 @@ JHtml::_('behavior.modal');
 
 ?>
 
-	<div id='editcell'>
+<!--	<div id='editcell'> -->
 		<?php
 		if ($this->dPredictionID > 0)
 		{
@@ -286,4 +286,4 @@ JHtml::_('behavior.modal');
 			<?php
 		}
 		?>
-	</div>
+<!--	</div> -->

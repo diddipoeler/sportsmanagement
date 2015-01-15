@@ -38,7 +38,7 @@
 */ 
 
 defined('_JEXEC') or die('Restricted access');
-$templatesToLoad = array('footer','listheader');
+$templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
@@ -160,7 +160,8 @@ function change_champ () {
 		if (isset($fieldset->description) && !empty($fieldset->description)) :
 				echo '<p class="tab-description">'.JText::_($fieldset->description).'</p>';
 			endif;
-		echo $this->loadTemplate($fieldset->name);
+            $this->fieldset = $fieldset->name;
+		echo $this->loadTemplate('fieldsets');
 		endforeach; ?>
 		<?php echo JHtml::_('sliders.end'); ?>
 
@@ -169,16 +170,16 @@ function change_champ () {
             
 </div>        
 
-		<div class='clr'></div>
-	<div>	
-		<input type='hidden' name='id' value='<?php echo $this->item->id; ?>' />
-		<input type='hidden' name='task' value='predictionproject.edit' />
-		<input type='hidden' name='psapply'	value='1' />
-	</div>
-	<?php 
-    echo JHtml::_('form.token'); 
+<div class='clr'></div>
+<div>	
+<input type='hidden' name='id' value='<?php echo $this->item->id; ?>' />
+<input type='hidden' name='task' value='predictionproject.edit' />
+<input type='hidden' name='psapply'	value='1' />
+</div>
+<?php 
+echo JHtml::_('form.token'); 
 
-    ?>
+?>
 </form>
 <script type="text/javascript">change_published();</script>
 <?PHP

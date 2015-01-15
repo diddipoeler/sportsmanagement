@@ -110,6 +110,7 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 		// Assign the Data
 		$this->form = $form;
 		$this->item = $item;
+        $this->item->name = '';
 		$this->script = $script;
 		
         $app->setUserState( "$option.pid", $this->item->project_id );
@@ -343,6 +344,7 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 	protected function setDocument() 
 	{
 		$isNew = $this->item->id == 0;
+        //$this->name = $this->item->name;
 		$document = JFactory::getDocument();
 		$document->setTitle($isNew ? JText::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : JText::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
 		$document->addScript(JURI::root() . $this->script);
