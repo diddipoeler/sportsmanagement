@@ -421,8 +421,12 @@ $table_copy[] = 'prediction_template';
         
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' table_copy <br><pre>'.print_r($table_copy,true).'</pre>'),'');        
 
-// als erstes kommen die tabellen, die nur kopiert werden !        
+/**
+* als erstes kommen die tabellen, die nur kopiert werden !
+*/        
 $my_text = '';  
+$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
+$my_text .= '<br />';
 foreach ( $table_copy as $key => $value )
 {
 $jsm_table = '#__sportsmanagement_'.$value;
@@ -527,7 +531,8 @@ self::$_success['Tabellenkopie:'] = $my_text;
  */
 $query = $db->getQuery(true);
 $my_text = '';
- 
+$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
+$my_text .= '<br />'; 
 // Fields to update.
 $fields = array(
     $db->quoteName('sports_type_id') . ' = '. $sports_type_id 
@@ -561,6 +566,8 @@ self::$_success['Tabellenaktualisierung:'] = $my_text;
  */
 $jl_position = array(); 
 $my_text = '';
+$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
+$my_text .= '<br />';
 $query = $db->getQuery(true);
 $query->clear();
 $query->select('*');
@@ -687,6 +694,8 @@ self::$_success['Positionen:'] = $my_text;
  */
 $jl_eventtype = array(); 
 $my_text = '';
+$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
+$my_text .= '<br />';
 $query = $db->getQuery(true);
 $query->clear();
 $query->select('*');
@@ -750,6 +759,10 @@ self::$_success['Eventtypes:'] = $my_text;
  * jetzt werden die ereignisse zu den positionen verarbeitet
  */
 $my_text = '';
+
+$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
+$my_text .= '<br />';
+
 $query = $db->getQuery(true);
 $query->clear();
 $query->select('*');
@@ -789,6 +802,8 @@ self::$_success['Position Eventtypes:'] = $my_text;
  * dann die positions id´s in den tabellen updaten
  */
 $my_text = '';
+$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
+$my_text .= '<br />';
 foreach( $jl_position as $key => $value )
 {
 // Fields to update.
@@ -983,7 +998,7 @@ self::$_success['Match Event:'] = $my_text;
  * jetzt werden die project referees importiert
  */
 $my_text = '';
-$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
 $my_text .= '<br />';
 $query = $db->getQuery(true);
 $query->clear();
@@ -1055,6 +1070,8 @@ self::$_success['Project Referee:'] = $my_text;
  * jetzt werden die match player importiert
  */
 $my_text = '';
+$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
+$my_text .= '<br />';
 $query = $db->getQuery(true);
 $query->clear();
 $query->select('me.*,r.project_id');
@@ -1131,6 +1148,8 @@ self::$_success['Match Player:'] = $my_text;
  * jetzt werden die match staff importiert
  */
 $my_text = '';
+$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
+$my_text .= '<br />';
 $query = $db->getQuery(true);
 $query->clear();
 $query->select('me.*,r.project_id');
@@ -1201,6 +1220,8 @@ self::$_success['Match Staff:'] = $my_text;
  * jetzt werden die match staff statistic importiert
  */
 $my_text = '';
+$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
+$my_text .= '<br />';
 $query = $db->getQuery(true);
 $query->clear();
 $query->select('me.*,r.project_id');
@@ -1278,6 +1299,8 @@ self::$_success['Match Staff Statistic:'] = $my_text;
  * jetzt werden die templates umgesetzt
  */
 $my_text = '';
+$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
+$my_text .= '<br />';
 $defaultpath = JPATH_COMPONENT_SITE.DS.'settings'.DS.'default';
 $query = $db->getQuery(true); 
 $query->clear();
@@ -1378,6 +1401,58 @@ $my_text .= '<br />';
 
 }        
 self::$_success['Template:'] = $my_text;        
+
+/**
+ * und zum schluss müssen wir noch die  konfiguration der komponente änder
+ * damit der import nicht 2 mal durchgeführt wird
+ */
+$params = JComponentHelper::getParams($option);
+$xmlfile = JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'config.xml';
+
+$jRegistry = new JRegistry;
+//$jRegistry->loadString($params->toString('ini'), 'ini');
+$ini = $jRegistry->loadString($params);
+
+$newparams = array();
+$xml = JFactory::getXML($xmlfile,true);
+foreach ($xml->fieldset as $paramGroup)
+{
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' paramGroup -> '.$template.' <pre>'.print_r($paramGroup,true).'</pre>'),'');
+foreach ($paramGroup->field as $param)
+{
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' param -> '.$template.' <pre>'.print_r($param,true).'</pre>'),'');
+$newparams[(string)$param->attributes()->name] = (string)$param->attributes()->default;
+}
+} 
+
+foreach ( $newparams as $key => $value )
+{
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' key -> '.$template.' <pre>'.print_r($key,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' key ini -> '.$template.' <pre>'.print_r($ini->get($key),true).'</pre>'),'');
+    
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+$value = $ini->get($key);
+}
+else
+{
+//$value = $ini->getValue($key);
+}
+if ( isset($value) )
+{
+$newparams[$key] = $value;
+}
+} 
+
+$newparams['cfg_jl_import'] = 0;
+
+$t_params = json_encode( $newparams ); 
+$db->setQuery('UPDATE #__extensions SET params = ' .
+                                $db->quote( $t_params ) .
+                                ' WHERE name = "com_sportsmanagement"' );
+                                $db->query();
+                                
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params ->  <pre>'.print_r($t_params,true).'</pre>'),'');
 
 $app->setUserState( "$option.success", self::$_success );
                     

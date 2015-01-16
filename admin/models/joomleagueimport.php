@@ -465,7 +465,7 @@ function newstructurjlimport($season_id,$jl_table,$jsm_table,$project_id)
     if ( preg_match("/project_team/i", $jsm_table) )
     {
 $my_text;
-$my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$existingInDbColor. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
+$my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
 $my_text .= '<br />';
 $my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$existingInDbColor. '"<strong>Daten aus der Tabelle: ( '.$jl_table.' ) werden in die neue Struktur umgesetzt!"!</strong>'.'</span>';
 $my_text .= '<br />';
@@ -595,7 +595,7 @@ $my_text .= '<br />';
     //$team_player = array();
     sportsmanagementModeljoomleagueimports::$team_player[$project_id][0] = 0;
     $my_text;
-    $my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$existingInDbColor. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
+    $my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
 $my_text .= '<br />';
     //$app->enqueueMessage(JText::_('Daten aus der Tabelle: ( '.$jsm_table.' ) werden in die neue Struktur umgesetzt!'),'Notice');    
     
@@ -729,7 +729,7 @@ $result_update = $db->execute();
     elseif ( preg_match("/team_staff/i", $jsm_table) )
     {
         $my_text;
-        $my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$existingInDbColor. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
+        $my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
 $my_text .= '<br />';
 //        $team_staff = array();
 //    $team_staff[0] = 0;
@@ -859,7 +859,7 @@ $result_update = $db->execute();
     elseif ( preg_match("/project_referee/i", $jsm_table) )
     {
         $my_text;
-        $my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$existingInDbColor. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
+        $my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
 $my_text .= '<br />';
 //        $project_referee = array();
 //    $project_referee[0] = 0;
