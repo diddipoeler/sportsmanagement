@@ -800,26 +800,43 @@ foreach( $jl_position as $key => $value )
     $db->quoteName('position_id') .'='. $key
     );
     $query->clear();
-     $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person'))->set($fields)->where($conditions);
+     $query->update($db->quoteName('#__sportsmanagement_person'))->set($fields)->where($conditions);
      $db->setQuery($query);  
-     if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
+     if (!sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__))
 		{
 		    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		} 
+        else
+{
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.self::$db_num_rows.' Daten in der Tabelle: ( __sportsmanagement_person ) aktualisiert!</strong>'.'</span>';
+$my_text .= '<br />';  
+}
+
     $query->clear();    
-    $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position'))->set($fields)->where($conditions);
+    $query->update($db->quoteName('#__sportsmanagement_project_position'))->set($fields)->where($conditions);
      $db->setQuery($query);  
-     if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
+     if (!sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__))
 		{
 		    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		}
+else
+{
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.self::$db_num_rows.' Daten in der Tabelle: ( __sportsmanagement_project_position ) aktualisiert!</strong>'.'</span>';
+$my_text .= '<br />';  
+}
+
     $query->clear();    
-    $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic'))->set($fields)->where($conditions);
+    $query->update($db->quoteName('#__sportsmanagement_position_statistic'))->set($fields)->where($conditions);
      $db->setQuery($query);  
-     if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
+     if (!sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__))
 		{
 		    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		}         
+else
+{
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.self::$db_num_rows.' Daten in der Tabelle: ( __sportsmanagement_position_statistic ) aktualisiert!</strong>'.'</span>';
+$my_text .= '<br />';  
+}
            
 $my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Position: ( '.$key.' ) mit ( '.$value.' ) aktualisiert!</strong>'.'</span>';
 $my_text .= '<br />'; 
