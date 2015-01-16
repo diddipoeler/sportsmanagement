@@ -64,6 +64,31 @@ require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' 
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'models'.DS.'databasetool.php');
 require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'csvhelper.php');
 
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Joomla! 3.0 code here
+}
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
+//JFactory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/css/bootstrap.min.css');
+//JFactory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/css/bootstrap-responsive.min.css');
+//JFactory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/js/bootstrap.min.js');
+} 
+elseif(version_compare(JVERSION,'1.7.0','ge')) 
+{
+// Joomla! 1.7 code here
+} 
+elseif(version_compare(JVERSION,'1.6.0','ge')) 
+{
+// Joomla! 1.6 code here
+} 
+else 
+{
+// Joomla! 1.5 code here
+}
+
+
 // welche joomla version ?
 sportsmanagementHelper::isJoomlaVersion('2.5');
 
@@ -77,38 +102,38 @@ $app = JFactory::getApplication();
 
 // welche tabelle soll genutzt werden
 $params = JComponentHelper::getParams( 'com_sportsmanagement' );
-$database_table	= $params->get( 'cfg_which_database_table' ); 
-$show_debug_info = $params->get( 'show_debug_info' );  
-$show_query_debug_info = $params->get( 'show_query_debug_info' );  
+//$database_table	= $params->get( 'cfg_which_database_table' ); 
+//$show_debug_info = $params->get( 'show_debug_info' );  
+//$show_query_debug_info = $params->get( 'show_query_debug_info' );  
 
-$cfg_help_server = $params->get( 'cfg_help_server' );
-$modal_popup_width = $params->get( 'modal_popup_width' );
-$modal_popup_height = $params->get( 'modal_popup_height' );
+//$cfg_help_server = $params->get( 'cfg_help_server' );
+//$modal_popup_width = $params->get( 'modal_popup_width' );
+//$modal_popup_height = $params->get( 'modal_popup_height' );
 
 //$app->setUserState( "com_sportsmanagement.cfg_which_database", $params->get( 'cfg_which_database' ) );
 
-$cfg_which_database_server = $params->get( 'cfg_which_database_server' );
+//$cfg_which_database_server = $params->get( 'cfg_which_database_server' );
 
 DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',$params->get( 'cfg_which_database' ) );
-DEFINE( 'COM_SPORTSMANAGEMENT_HELP_SERVER',$cfg_help_server );
-DEFINE( 'COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH',$modal_popup_width );
-DEFINE( 'COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT',$modal_popup_height );
+DEFINE( 'COM_SPORTSMANAGEMENT_HELP_SERVER',$params->get( 'cfg_help_server' ) );
+DEFINE( 'COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH',$params->get( 'modal_popup_width' ) );
+DEFINE( 'COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT',$params->get( 'modal_popup_height' ) );
 
-DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
-DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$show_query_debug_info );
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$params->get( 'show_debug_info' ) );
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$params->get( 'show_query_debug_info' ) );
 
 if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
 {
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$cfg_which_database_server );    
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$params->get( 'cfg_which_database_server' ) );    
 }
 else
 {
 DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );    
 }
 
-if ( $database_table )
+if ( $params->get( 'cfg_which_database_table' ) )
 {
-DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
+DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$params->get( 'cfg_which_database_table' ) );
 }
 else
 {
@@ -117,7 +142,7 @@ DEFINE( 'COM_SPORTSMANAGEMENT_TABLE','sportsmanagement' );
 
 DEFINE( 'COM_SPORTSMANAGEMENT_FIELDSETS_TEMPLATE',dirname(__FILE__).DS.'helpers'.DS.'tmpl'.DS.'edit_fieldsets.php' );
 
-if ( $database_table == 'sportsmanagement' )		
+if ( $params->get( 'cfg_which_database_table' ) == 'sportsmanagement' )		
 {
 DEFINE( 'COM_SPORTSMANAGEMENT_USE_NEW_TABLE',true);    
 }

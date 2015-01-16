@@ -90,6 +90,46 @@ require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.p
 $langtag = JFactory::getLanguage();
 //echo 'Current language is: ' . $langtag->getTag();
 
+$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
+if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',$paramscomponent->get( 'cfg_which_database' ) );
+}
+
+if (! defined('COM_SPORTSMANAGEMENT_LOAD_BOOTSTRAP'))
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_LOAD_BOOTSTRAP',$paramscomponent->get( 'cfg_load_bootstrap' ) );
+}
+
+
+if (! defined('COM_SPORTSMANAGEMENT_TABLE'))
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$paramscomponent->get( 'cfg_which_database_table' ) );
+}
+if (! defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO'))
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$paramscomponent->get( 'show_debug_info' ) );
+}
+if (! defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO'))
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$paramscomponent->get( 'show_query_debug_info' ) );
+}
+
+if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
+{
+if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+{    
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$paramscomponent->get( 'cfg_which_database_server' ) );
+}    
+}
+else
+{
+if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+{        
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );
+}    
+}
+
 $document = JFactory::getDocument();
 $app = JFactory::getApplication();
 $config = JFactory::getConfig();
@@ -102,10 +142,17 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 }
 elseif(version_compare(JVERSION,'2.5.0','ge')) 
 {
+
+if ( COM_SPORTSMANAGEMENT_LOAD_BOOTSTRAP )
+{    
 // Joomla! 2.5 code here
-JFactory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/css/bootstrap.min.css');
-JFactory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/css/bootstrap-responsive.min.css');
+//JFactory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/css/bootstrap.min.css');
+//JFactory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/css/bootstrap-responsive.min.css');
 //JFactory::getDocument()->addScript(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/js/bootstrap.min.js');
+JFactory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css');
+JFactory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css');
+}
+
 } 
 elseif(version_compare(JVERSION,'1.7.0','ge')) 
 {
@@ -129,43 +176,13 @@ $reload = true;
 $lang->load($extension, $base_dir, $language_tag, $reload);
     
 // welche tabelle soll genutzt werden
-$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
-$database_table	= $paramscomponent->get( 'cfg_which_database_table' );
-$show_debug_info = $paramscomponent->get( 'show_debug_info' );  
-$show_query_debug_info = $paramscomponent->get( 'show_query_debug_info' ); 
-$cfg_which_database_server = $paramscomponent->get( 'cfg_which_database_server' );
+//$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
+//$database_table	= $paramscomponent->get( 'cfg_which_database_table' );
+//$show_debug_info = $paramscomponent->get( 'show_debug_info' );  
+//$show_query_debug_info = $paramscomponent->get( 'show_query_debug_info' ); 
+//$cfg_which_database_server = $paramscomponent->get( 'cfg_which_database_server' );
 
-if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
-{
-DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',$paramscomponent->get( 'cfg_which_database' ) );
-}
-if (! defined('COM_SPORTSMANAGEMENT_TABLE'))
-{
-DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
-}
-if (! defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO'))
-{
-DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
-}
-if (! defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO'))
-{
-DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$show_query_debug_info );
-}
 
-if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
-{
-if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
-{    
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$cfg_which_database_server );
-}    
-}
-else
-{
-if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
-{        
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );
-}    
-}
 
 
 
@@ -229,13 +246,13 @@ $option = JRequest::getCmd('option');
 
 $view = JRequest::getVar( "view") ;
 $view = ucfirst(strtolower($view));
-$cfg_help_server = JComponentHelper::getParams($option)->get('cfg_help_server','') ;
+//$cfg_help_server = JComponentHelper::getParams($option)->get('cfg_help_server','') ;
 $modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width',0) ;
 $modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height',0) ;
-$cfg_bugtracker_server = JComponentHelper::getParams($option)->get('cfg_bugtracker_server','') ;
+//$cfg_bugtracker_server = JComponentHelper::getParams($option)->get('cfg_bugtracker_server','') ;
 
-DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_HELP_SERVER',$cfg_help_server );
-DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_BUGTRACKER_SERVER',$cfg_bugtracker_server );
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_HELP_SERVER',JComponentHelper::getParams($option)->get('cfg_help_server','') );
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_BUGTRACKER_SERVER',JComponentHelper::getParams($option)->get('cfg_bugtracker_server','') );
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_VIEW',$view );
 
 if ( $app->isAdmin() )

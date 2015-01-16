@@ -86,7 +86,7 @@ class sportsmanagementModelMatch extends JModelAdmin
         //$query->select('CONCAT(t2.firstname," \'",t2.nickname,"\' ",t2.lastname) AS player2');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp1 ON tp1.id = me.teamplayer_id');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.team_id = tp1.team_id'); 
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.team_id = tp1.team_id and st1.season_id = tp1.season_id'); 
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON st1.id = pt1.team_id');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS t1 ON t1.id = tp1.person_id AND t1.published = 1');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st1.team_id');
@@ -875,7 +875,7 @@ class sportsmanagementModelMatch extends JModelAdmin
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS sp ON sp.person_id = pl.id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = sp.team_id ');
+        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = sp.team_id and st.season_id = sp.season_id ');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = pl.position_id ');
         //$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = pos.id ');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id ');

@@ -87,12 +87,15 @@ class sportsmanagementModelMatches extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		//$app = JFactory::getApplication('administrator');
         
-        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -124,10 +127,13 @@ class sportsmanagementModelMatches extends JModelList
 	 */
 	protected function getListQuery()
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
-        $search_division	= $this->getState('filter.division');
+        //$search_division	= $this->getState('filter.division');
         
         $this->_rid = JRequest::getvar('rid', 0);
         
@@ -160,7 +166,7 @@ class sportsmanagementModelMatches extends JModelList
         // join player home
         $subQueryPlayerHome->select('tp.id');
         $subQueryPlayerHome->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ');
-        $subQueryPlayerHome->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = tp.team_id');
+        $subQueryPlayerHome->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
         $subQueryPlayerHome->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pthome ON pthome.team_id = st.id');
         $subQueryPlayerHome->where('pthome.id = mc.projectteam1_id');
         $subQueryPlayerHome->where('tp.season_id = '.$this->_season_id);
@@ -175,7 +181,7 @@ class sportsmanagementModelMatches extends JModelList
         // join staff home
         $subQueryStaffHome->select('tp.id');
         $subQueryStaffHome->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ');
-        $subQueryStaffHome->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = tp.team_id');
+        $subQueryStaffHome->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
         $subQueryStaffHome->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pthome ON pthome.team_id = st.id');
         $subQueryStaffHome->where('pthome.id = mc.projectteam1_id');
         $subQueryStaffHome->where('tp.season_id = '.$this->_season_id);
@@ -190,7 +196,7 @@ class sportsmanagementModelMatches extends JModelList
         // join player away
         $subQueryPlayerAway->select('tp.id');
         $subQueryPlayerAway->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ');
-        $subQueryPlayerAway->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = tp.team_id');
+        $subQueryPlayerAway->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
         $subQueryPlayerAway->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pthome ON pthome.team_id = st.id');
         $subQueryPlayerAway->where('pthome.id = mc.projectteam2_id');
         $subQueryPlayerAway->where('tp.season_id = '.$this->_season_id);
@@ -205,7 +211,7 @@ class sportsmanagementModelMatches extends JModelList
         // join staff away
         $subQueryStaffAway->select('tp.id');
         $subQueryStaffAway->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ');
-        $subQueryStaffAway->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = tp.team_id');
+        $subQueryStaffAway->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
         $subQueryStaffAway->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pthome ON pthome.team_id = st.id');
         $subQueryStaffAway->where('pthome.id = mc.projectteam2_id');
         $subQueryStaffAway->where('tp.season_id = '.$this->_season_id);
@@ -279,9 +285,9 @@ class sportsmanagementModelMatches extends JModelList
         
         $query->where(' mc.round_id = ' . $this->_rid);
         
-        if ($search_division)
+        if ($this->getState('filter.division'))
 		{
-        $query->where(' divhome.id = '.$this->_db->Quote($division));
+        $query->where(' divhome.id = '.$this->_db->Quote($this->getState('filter.division')));
         }
 		
         
