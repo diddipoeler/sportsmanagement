@@ -593,7 +593,7 @@ $pos_result = $db->loadResult();
 if ( $pos_result )
 {
 $jl_position[$row->id] = $pos_result;   
-$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Position: ( '.$row->name.' ) in der Tabelle vorhanden!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Position: ( '.$row->name.' ) in der Tabelle alt -> ('.$row->id.')  neu -> ('.$pos_result.') vorhanden!</strong>'.'</span>';
 $my_text .= '<br />';    
 }
 else
@@ -615,7 +615,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->g
 else
 {
 $jl_position[$row->id] = $db->insertid();
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Position: ( '.$row->name.' ) in der Tabelle angelegt!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Position: ( '.$row->name.' ) in der Tabelle alt -> ('.$row->id.')  neu -> ('.$db->insertid().') angelegt!</strong>'.'</span>';
 $my_text .= '<br />'; 
 }
 
@@ -653,7 +653,7 @@ $pos_result = $db->loadResult();
 if ( $pos_result )
 {
 $jl_position[$row->id] = $pos_result; 
-$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Position: ( '.$row->name.' ) in der Tabelle vorhanden!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Position: ( '.$row->name.' ) in der Tabelle alt -> ('.$row->id.')  neu -> ('.$pos_result.') vorhanden!</strong>'.'</span>';
 $my_text .= '<br />';     
 }
 else
@@ -675,7 +675,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->g
 else
 {
 $jl_position[$row->id] = $db->insertid();
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Position: ( '.$row->name.' ) in der Tabelle angelegt!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Position: ( '.$row->name.' ) in der Tabelle alt -> ('.$row->id.')  neu -> ('.$db->insertid().') angelegt!</strong>'.'</span>';
 $my_text .= '<br />'; 
 }
 
@@ -1447,10 +1447,11 @@ $newparams[$key] = $value;
 $newparams['cfg_jl_import'] = 0;
 
 $t_params = json_encode( $newparams ); 
-$db->setQuery('UPDATE #__extensions SET params = ' .
-                                $db->quote( $t_params ) .
-                                ' WHERE name = "com_sportsmanagement"' );
-                                $db->query();
+
+//$db->setQuery('UPDATE #__extensions SET params = ' .
+//                                $db->quote( $t_params ) .
+//                                ' WHERE name = "com_sportsmanagement"' );
+//                                $db->query();
                                 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params ->  <pre>'.print_r($t_params,true).'</pre>'),'');
 
