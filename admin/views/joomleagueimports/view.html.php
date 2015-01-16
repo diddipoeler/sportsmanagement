@@ -67,6 +67,17 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         
+        $this->cfg_jl_import = JComponentHelper::getParams($option)->get( 'cfg_jl_import',1 );
+        
+        if ( $this->cfg_jl_import )
+        {
+        $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_JL_IMPORT_ALLOWED_YES'),'Notice');    
+        }
+        else
+        {
+        $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_JL_IMPORT_ALLOWED_NO'),'Error');    
+        }
+        
         $stateVar = $app->getUserStateFromRequest( "$option.success", 'success', '' );
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' stateVar <br><pre>'.print_r($stateVar,true).'</pre>'),'');
@@ -150,8 +161,10 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
         $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT');
         $this->icon = 'joomleague-import';
         
+        if ( $this->cfg_jl_import )
+        {
         JToolBarHelper::custom('joomleagueimports.importjoomleaguenew','edit','edit',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'),false);
-        
+        }
 //        JToolBarHelper::custom('joomleagueimports.positions','edit','edit',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'),false);
 //        
 //        JToolBarHelper::custom('joomleagueimports.checkimport','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
