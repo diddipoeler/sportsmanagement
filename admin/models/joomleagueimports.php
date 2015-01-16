@@ -398,6 +398,8 @@ $table_copy[] = 'project';
 $table_copy[] = 'project_position';
 $table_copy[] = 'match_referee';
 
+$table_copy[] = 'rosterposition';
+
 $table_copy[] = 'round';
 $table_copy[] = 'season';
 $table_copy[] = 'statistic';
