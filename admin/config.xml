@@ -456,7 +456,86 @@ class="radio btn-group btn-group-yesno"
 		
   	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-	
+<!--	
+<field name="jl_database_server" 
+  type="text" 
+  default=""
+		size="100"
+    label="COM_SPORTSMANAGEMENT_SETTINGS_JL_DATABASE_SERVER_TITLE"
+		description="COM_SPORTSMANAGEMENT_SETTINGS_JL_DATABASE_SERVER_DESC">
+		</field>
+-->		
+<!--		
+		<field
+			name="jl_server_user"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_DATABASE_JL_SERVER_USERID_TITLE"
+			description="COM_SPORTSMANAGEMENT_SETTINGS_DATABASE_JL_SERVER_USERID_DESC"
+			filter="string"
+			size="30" />
+-->
+			
+<!--			
+			<field
+			name="jsm_server_password"
+			type="password"
+			label="JGLOBAL_PASSWORD"
+			description="JGLOBAL_PASSWORD"
+			filter="string"
+			size="30" />
+-->			
+			
+		<field
+			name="jl_dbtype"
+			type="databaseconnection"
+			label="COM_CONFIG_FIELD_DATABASE_TYPE_LABEL"
+			description="COM_CONFIG_FIELD_DATABASE_TYPE_DESC"
+			supported="mysql,mysqli,postgresql,sqlsrv,sqlazure"
+			filter="string" />
+
+		<field
+			name="jl_host"
+			type="text"
+			label="COM_CONFIG_FIELD_DATABASE_HOST_LABEL"
+			description="COM_CONFIG_FIELD_DATABASE_HOST_DESC"
+			filter="string"
+			size="30" />
+
+		<field
+			name="jl_user"
+			type="text"
+			label="COM_CONFIG_FIELD_DATABASE_USERNAME_LABEL"
+			description="COM_CONFIG_FIELD_DATABASE_USERNAME_DESC"
+			filter="string"
+			size="30" />
+			
+			<field
+			name="jl_password"
+			type="password"
+			label="JGLOBAL_PASSWORD"
+			description="COM_ADMIN_USER_FIELD_PASSWORD_DESC"
+			filter="string"
+			size="30" />
+
+		<field
+			name="jl_db"
+			type="text"
+			label="COM_CONFIG_FIELD_DATABASE_NAME_LABEL"
+			description="COM_CONFIG_FIELD_DATABASE_NAME_DESC"
+			filter="string"
+			size="30" />
+
+		<field
+			name="jl_dbprefix"
+			type="text"
+			default="j25_"
+			label="COM_CONFIG_FIELD_DATABASE_PREFIX_LABEL"
+			description="COM_CONFIG_FIELD_DATABASE_PREFIX_DESC"
+			filter="string"
+			size="10" />
+      
+      
+      	
 <field name="backend_xmlimport_step" type="list" default="1000"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_XMLIMPORT_STEPS" description="COM_SPORTSMANAGEMENT_SETTINGS_XMLIMPORT_STEPS_DESC">
 			<option value="1">sports-type</option>

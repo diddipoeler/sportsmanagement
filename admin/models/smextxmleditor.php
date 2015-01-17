@@ -144,6 +144,13 @@ class sportsmanagementModelsmextxmleditor extends JModelAdmin
 		$app = JFactory::getApplication();
     $option = JRequest::getCmd('option');
         $item = new stdClass;
+        
+        $config = new stdClass;
+        $configPath = JPATH_SITE.DS.'configuration.php';
+        $config->source	= JFile::read($configPath);
+        
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' source<br><pre>'.print_r($config->source,true).'</pre>'),'');
+        
 //		if (!$this->_template) {
 //			$this->getTemplate();
 //		}

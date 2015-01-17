@@ -66,6 +66,8 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
+        $model = $this->getModel();
+        $uri = JFactory::getURI();
         
         $this->cfg_jl_import = JComponentHelper::getParams($option)->get( 'cfg_jl_import',1 );
         
@@ -80,13 +82,14 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
         
         $stateVar = $app->getUserStateFromRequest( "$option.success", 'success', '' );
         
+        $model->check_database();
+        
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' stateVar <br><pre>'.print_r($stateVar,true).'</pre>'),'');
         
         //$post = JRequest::get('post');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' post <br><pre>'.print_r($post,true).'</pre>'),'');
         
-        $model = $this->getModel();
-        $uri = JFactory::getURI();
+        
         
         //$this->state = $this->get('State'); 
         

@@ -69,6 +69,31 @@ static $_success = array();
 static $team_player = array();
 static $project_referee = array();
 static $team_staff = array();
+
+
+function check_database()
+{
+$app = JFactory::getApplication();
+$params = JComponentHelper::getParams( 'com_sportsmanagement' );    
+
+$option = array(); //prevent problems
+$option['driver']   = $params->get( 'jl_dbtype' );            // Database driver name
+$option['host']     = $params->get( 'jl_host' );    // Database host name
+$option['user']     = $params->get( 'jl_user' );       // User for database authentication
+$option['password'] = $params->get( 'jl_password' );   // Password for database authentication
+$option['database'] = $params->get( 'jl_db' );      // Database name
+$option['prefix']   = $params->get( 'jl_dbprefix' );             // Database prefix (may be empty)
+ 
+// zuerst noch überprüfen, ob der user
+// überhaupt den zugriff auf die datenbank hat.
+$jl_access = JDatabase::getInstance( $option );    
+
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_access<br><pre>'.print_r($jl_access,true).'</pre>'),'');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<br><pre>'.print_r($jl_access->getErrorMsg(),true).'</pre>'),'Error');
+
+    
+}
+
     
 /**
  * sportsmanagementModeljoomleagueimports::updateplayerproposition()
