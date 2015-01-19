@@ -210,16 +210,21 @@ class sportsmanagementModelTeamPersons extends JModelList
             
         //$query->select('ppl.firstname','ppl.lastname','ppl.nickname','ppl.height','ppl.weight','ppl.injury','ppl.suspension','ppl.away','ppl.id','ppl.id AS person_id');
         $query->select('ppl.id,ppl.firstname,ppl.lastname,ppl.nickname,ppl.picture,ppl.id as person_id,ppl.injury,ppl.suspension,ppl.away,ppl.ordering,ppl.published,ppl.checked_out ');
-		$query->select('ppos.id as project_position_id,pos.id as position_id,ppl.position_id as person_position_id');
+		$query->select('ppl.position_id as person_position_id');
+        //$query->select('pos.id as position_id');
         $query->select('tp.id as tpid, tp.market_value, tp.jerseynumber,st.id as projectteam_id');
 		$query->select('u.name AS editor');
         $query->select('st.season_id AS season_id');
+        $query->select('ppos.id as project_position_id');
+        //$query->select('tp.project_position_id as project_position_id');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ppl');
         $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp on tp.person_id = ppl.id');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = tp.team_id');
+        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
         
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON tp.project_position_id = ppos.id ');
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id ');
+        
+        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = tp.project_position_id ');
+        //$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id ');
+        //$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppl.position_id ');
         
         $query->join('LEFT', '#__users AS u ON u.id = tp.checked_out');
 //        }
@@ -281,8 +286,11 @@ class sportsmanagementModelTeamPersons extends JModelList
      */
     function checkProjectPositions($items=NULL,$project_id=0)
     {
-        $option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+        // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Create a new query object.
 		$db		= JFactory::getDBO();
 		$query	= $db->getQuery(true);
@@ -353,8 +361,11 @@ class sportsmanagementModelTeamPersons extends JModelList
 	 */
 	function getProjectTeamplayers($team_id = 0,$season_id = 0)
     {
-        $option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+        // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Create a new query object.
 		$db		= JFactory::getDBO();
 		$query	= $db->getQuery(true);

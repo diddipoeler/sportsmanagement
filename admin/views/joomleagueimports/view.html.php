@@ -168,6 +168,10 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
         {
         JToolBarHelper::custom('joomleagueimports.importjoomleaguenew','edit','edit',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'),false);
         }
+        
+        JToolBarHelper::custom('joomleagueimports.importjoomleaguenew','edit','edit',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'),false);
+
+
 //        JToolBarHelper::custom('joomleagueimports.positions','edit','edit',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'),false);
 //        
 //        JToolBarHelper::custom('joomleagueimports.checkimport','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);

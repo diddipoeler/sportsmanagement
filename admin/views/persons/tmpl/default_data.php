@@ -253,7 +253,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 																'value',
 																'text',
 																$row->position_id);
-								?>
+//								echo 'position_id -> '.$row->position_id;
+                                ?>
 							</td>
 							<td class="center"><?php echo $published; ?></td>
 							<td class="center"><?php echo $row->id; ?></td>

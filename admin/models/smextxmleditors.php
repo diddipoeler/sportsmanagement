@@ -67,8 +67,11 @@ class sportsmanagementModelsmextxmleditors extends JModelLegacy
  */
 function getXMLFiles()
     {
+        // Reference global application object
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         $path = JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'assets'.DS.'extended';
         // Get a list of files in the search path with the given filter.
        //$files = JFolder::files($path, $filter);

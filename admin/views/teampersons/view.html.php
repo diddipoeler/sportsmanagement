@@ -82,7 +82,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView
         $this->project_id = $app->getUserState( "$option.pid", '0' );
         // fehlen im projekt die positionen ?
         // wenn ja, dann fehlende positionen hinzufügen
-        $items = $model->checkProjectPositions($items,$this->project_id);
+        //$items = $model->checkProjectPositions($items,$this->project_id);
         
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )

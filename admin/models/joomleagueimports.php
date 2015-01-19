@@ -37,6 +37,8 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
+//  $db->__destruct();
+
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 jimport('joomla.filesystem.file');
@@ -73,8 +75,10 @@ static $team_staff = array();
 
 function check_database()
 {
+$conf = JFactory::getConfig();
 $app = JFactory::getApplication();
 $params = JComponentHelper::getParams( 'com_sportsmanagement' );    
+$debug = $conf->getValue('config.debug');
 
 $option = array(); //prevent problems
 $option['driver']   = $params->get( 'jl_dbtype' );            // Database driver name
@@ -90,8 +94,18 @@ $jl_access = JDatabase::getInstance( $option );
 
 $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_access<br><pre>'.print_r($jl_access,true).'</pre>'),'');
 $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<br><pre>'.print_r($jl_access->getErrorMsg(),true).'</pre>'),'Error');
+/*
+if ( JError::isError($jl_access) ) {
+			header('HTTP/1.1 500 Internal Server Error');
+			jexit('Database Error: ' . $jl_access->toString() );
+		}
 
-    
+		if ($jl_access->getErrorNum() > 0) {
+			JError::raiseError(500 , 'JDatabase::getInstance: Could not connect to database ' . 'joomla.library:'.$jl_access->getErrorNum().' - '.$jl_access->getErrorMsg() );
+		}
+
+		$jl_access->debug( $debug );
+*/            
 }
 
     
@@ -630,7 +644,7 @@ $mdlTable->name = $row->name;
 $mdlTable->alias = $row->alias;
 $mdlTable->parent_id = $row->parent_id;
 $mdlTable->persontype = $row->persontype;
-$mdlTable->sports_type_id = $row->sports_type_id;
+$mdlTable->sports_type_id = $sports_type_id;
 $mdlTable->published = $row->published;
 
 if ($mdlTable->store()===false)
@@ -690,7 +704,7 @@ $mdlTable->name = $row->name;
 $mdlTable->alias = $row->alias;
 $mdlTable->parent_id = $jl_position[$row->parent_id];
 $mdlTable->persontype = $row->persontype;
-$mdlTable->sports_type_id = $row->sports_type_id;
+$mdlTable->sports_type_id = $sports_type_id;
 $mdlTable->published = $row->published;
 
 if ($mdlTable->store()===false)
@@ -829,6 +843,7 @@ self::$_success['Position Eventtypes:'] = $my_text;
 $my_text = '';
 $my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
 $my_text .= '<br />';
+
 foreach( $jl_position as $key => $value )
 {
 // Fields to update.
@@ -881,6 +896,7 @@ $my_text .= '<br />';
 $my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Position: ( '.$key.' ) mit ( '.$value.' ) aktualisiert!</strong>'.'</span>';
 $my_text .= '<br />'; 
 }
+
 self::$_success['Positions:'] = $my_text;
 
 /**

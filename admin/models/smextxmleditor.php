@@ -68,8 +68,11 @@ class sportsmanagementModelsmextxmleditor extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
         //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
@@ -116,8 +119,11 @@ class sportsmanagementModelsmextxmleditor extends JModelAdmin
 	 */
 	public function save($data)
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         jimport('joomla.filesystem.file');
         //$app->enqueueMessage(JText::_('sportsmanagementModelsmextxmleditor save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
@@ -141,15 +147,18 @@ class sportsmanagementModelsmextxmleditor extends JModelAdmin
 	 */
 	public function &getSource()
 	{
-		$app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         $item = new stdClass;
         
         $config = new stdClass;
         $configPath = JPATH_SITE.DS.'configuration.php';
         $config->source	= JFile::read($configPath);
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' source<br><pre>'.print_r($config->source,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' source<br><pre>'.print_r($config->source,true).'</pre>'),'');
         
 //		if (!$this->_template) {
 //			$this->getTemplate();

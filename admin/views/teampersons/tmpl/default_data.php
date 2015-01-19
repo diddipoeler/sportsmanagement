@@ -268,7 +268,11 @@ JHtml::_('behavior.modal');
 									$append=' style="background-color:#FFCCCC"';
 								}
 								echo JHtml::_( 'select.genericlist', $this->lists['project_position_id'], 'project_position_id' . $row->id, $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
-								?>
+								
+//                                echo '<br>project_position_id -> '.$row->project_position_id.'';
+//                                echo '<br>position_id -> '.$row->position_id.'';
+//                                echo '<br>person_position_id -> '.$row->person_position_id.'';
+                                ?>
                                 <input type="hidden" name="position_id<?php echo $row->id; ?>"	value="<?php echo $row->position_id; ?>" />
                                 <input type="hidden" name="person_id<?php echo $row->id; ?>"	value="<?php echo $row->tpid; ?>" />
                                 
