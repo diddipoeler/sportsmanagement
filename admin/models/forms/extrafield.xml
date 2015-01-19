@@ -30,11 +30,11 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 			label="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TEMPLATE_BACKEND"
 			description="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TEMPLATE_BACKEND_DESC">
 			<option	value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
-		<option value="club">Verein</option>
-		<option value="team">Mannschaft</option>
-		<option value="person">Personen</option>
-		<option value="project">Projekt</option>
-		<option value="template">Template</option>
+		<option value="club">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_CLUB</option>
+		<option value="team">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_TEAM</option>
+		<option value="person">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_PERSON</option>
+		<option value="project">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_PROJECT</option>
+		<option value="template">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_TEMPLATE</option>
 		</field>		
 
     <field
@@ -61,7 +61,7 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 			label="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_VIEWS_BACKEND_SELECT_OPTION"
 			description="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_VIEWS_BACKEND_SELECT_OPTION_DESC">
 			<option	value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
-		<option value="matches">Spiele</option>
+		<option value="matches">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_MATCHES</option>
 
 		</field>
 
@@ -72,7 +72,7 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 			label="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_VIEWS_BACKEND_SELECT_OPTION_FIELD"
 			description="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_VIEWS_BACKEND_SELECT_OPTION_FIELD_DESC">
 			<option	value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
-		<option value="result_type">Ergebnistyp</option>
+		<option value="result_type">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_RESULT_TYP</option>
 
 		</field>	
 
