@@ -337,14 +337,15 @@ default:
 			<table class="admintable">
 					<?php 
                     foreach ($this->form->getFieldset($this->fieldset) as $field): 
+                    //echo 'name -><pre> '.print_r($field->getFieldAttribute(),true).'</pre>';
                     ?>
 					<tr>
 						<td class="key"><?php echo $field->label; ?></td>
 						<td><?php echo $field->input; ?></td>
                         <td>
                         <?PHP
-                        $suchmuster = array ("jform[","]");
-                $ersetzen = array ('', '');
+                        $suchmuster = array ("jform[","]","request[");
+                $ersetzen = array ('', '', '');
                 $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
                 
                 switch ($var_onlinehelp)

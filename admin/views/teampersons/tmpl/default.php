@@ -114,6 +114,7 @@ echo $this->loadTemplate('data');
 	<input type="hidden" name="project_team_id"		value="<?php echo $this->project_team_id; ?>" />
     <input type="hidden" name="team_id"		value="<?php echo $this->team_id; ?>" />
     <input type="hidden" name="pid"		value="<?php echo $this->project_id; ?>" />
+    <input type="hidden" name="persontype"		value="<?php echo $this->_persontype; ?>" />
 	<input type="hidden" name="search_mode"			value="<?php echo $this->lists['search_mode'];?>" id="search_mode" />
 	<input type="hidden" name="task"				value="" />
 	<input type="hidden" name="boxchecked"			value="0" />

@@ -10,7 +10,7 @@
 	<copyright>Copyright Info</copyright>
 	<license>License Info</license>
 	<!--  The version string is recorded in the components table -->
-	<version>1.0.47</version>
+	<version>1.0.48</version>
 	<!-- The description is optional and defaults to the name -->
 	<description>COM_SPORTSMANAGEMENT_DESCRIPTION</description>
  
@@ -97,8 +97,8 @@
 				Note that all & must be escaped to &amp; for the file to be valid
 				XML and be parsed by the installer
 			-->
-			<menu link="option=com_sportsmanagement" view="clubs" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
-				alt="sportsmanagement/clubs">com_sportsmanagement_clubs</menu>
+			<menu view="clubs" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
+				alt="COM_SPORTSMANAGEMENT_D_MENU_CLUBS">COM_SPORTSMANAGEMENT_D_MENU_CLUBS</menu>
 		
 		</submenu>
 		

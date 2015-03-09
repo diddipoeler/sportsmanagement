@@ -103,6 +103,9 @@ class sportsmanagementModelclub extends JModelAdmin
         $query = $db->getQuery(true);
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
         $show_team_community = JComponentHelper::getParams($option)->get('show_team_community',0);
+        
+        $cfg_use_plz_table = JComponentHelper::getParams($option)->get('cfg_use_plz_table',0);
+        
         //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.club', 'club', array('control' => 'jform', 'load_data' => $loadData));
@@ -110,6 +113,14 @@ class sportsmanagementModelclub extends JModelAdmin
 		{
 			return false;
 		}
+        
+        if ( $cfg_use_plz_table )
+        {
+        $form->setFieldAttribute('zipcode', 'type', 'dependsql', 'request');
+        $form->setFieldAttribute('zipcode', 'size', '10', 'request');     
+        $form->setFieldAttribute('location', 'type', 'dependsql', 'request');
+        $form->setFieldAttribute('location', 'size', '10', 'request');
+        }
         
         if ( !$show_team_community )
         {
@@ -368,13 +379,55 @@ return $teamsofclub;
         $option = $jinput->getCmd('option');
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
+       $db = JFactory::getDBO();
+       
+       $query = $db->getQuery(true);
        $address_parts = array();
        $address_parts2 = array();
        $post = JRequest::get('post');
        
+       $cfg_use_plz_table = JComponentHelper::getParams($option)->get('cfg_use_plz_table',0);
+       
        
 //       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
 //       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+
+       $data['country'] = $data['request']['country'];
+       $data['zipcode'] = $data['request']['zipcode'];
+       $data['location'] = $data['request']['location'];
+       
+/**
+ *        wenn die plz tabelle genutzt werden soll
+ *        dann können wir vorher schon einmal die latitude und longitude selektieren.
+ */
+       if ( $cfg_use_plz_table )
+       {
+       $query->select('a.latitude,a.longitude ');
+        $query->from('#__sportsmanagement_countries_plz as a');
+        $query->join('INNER', '#__sportsmanagement_countries AS c ON c.alpha2 = a.country_code'); 
+        if ( $data['zipcode'] )
+        {
+        $query->where('a.postal_code LIKE ' . $db->Quote(''.$data['zipcode'].'') );
+        }
+        if ( $data['country'] )
+        {
+        $query->where('c.alpha3 LIKE ' . $db->Quote(''.$data['country'].'') );
+        } 
+        if ( $data['location'] )
+        {
+        $query->where('a.place_name LIKE ' . $db->Quote(''.$data['location'].'') );
+        }
+       $db->setQuery($query);
+        $result = $db->loadObject(); 
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_use_plz_table<br><pre>'.print_r($result,true).'</pre>'),'Notice');
+        
+        $data['latitude'] = $result->latitude;
+		$data['longitude'] = $result->longitude;
+        
+       }
+       
+       
        
        // gibt es vereinsnamen zum ändern ?
        if (isset($post['team_id']) && is_array($post['team_id'])) 
@@ -416,10 +469,11 @@ return $teamsofclub;
        }
        if ( !empty($data['dissolved']) )
        {
-       $data['dissolved']	= sportsmanagementHelper::convertDate($data['dissolved'],0);
+       $data['dissolved'] = sportsmanagementHelper::convertDate($data['dissolved'],0);
        }
         
-       if ( $data['founded'] != '00-00-0000' && $data['founded'] != '' )
+       //if ( $data['founded'] != '00-00-0000'  )
+       if ( $data['founded'] != '0000-00-00'  )
         {
         $data['founded_year'] = date('Y',strtotime($data['founded']));
         //$post['founded_year'] = date('Y',strtotime($data['founded']));
@@ -429,7 +483,8 @@ return $teamsofclub;
             $data['founded_year'] = $data['founded_year'];
         }
         
-        if ( $data['dissolved'] != '00-00-0000' && $data['dissolved'] != '' )
+        //if ( $data['dissolved'] != '00-00-0000' )
+        if ( $data['dissolved'] != '0000-00-00' )  
         {
         $data['dissolved_year'] = date('Y',strtotime($data['dissolved']));
         //$post['dissolved_year'] = date('Y',strtotime($data['dissolved']));

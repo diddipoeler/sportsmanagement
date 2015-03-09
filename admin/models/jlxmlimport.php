@@ -80,6 +80,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 	var $storeFailedColor = 'red';
 	var $storeSuccessColor = 'green';
 	var $existingInDbColor = 'orange';
+    var $existingStaff = 'blue';
     var $show_debug_info = false;
     var $_league_new_country = '';
     var $_import_project_id = 0;
@@ -251,7 +252,25 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
         
         $this->_import_project_id = $app->getUserState($option.'projectidimport'); ;
         
-        //$app->enqueueMessage(JText::_('getData post<br><pre>'.print_r($post ,true).'</pre>'),'');
+        $this->pl_import = $app->getUserState($option.'pltree'); ;
+        
+        //$app->enqueueMessage(JText::_('pl_import<br><pre>'.print_r($this->pl_import ,true).'</pre>'),'');
+        
+        //$app->enqueueMessage(JText::_('exportplayer<br><pre>'.print_r($app->getUserState($option.'exportplayer'),true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_('exportteamplayer<br><pre>'.print_r($app->getUserState($option.'exportteamplayer'),true).'</pre>'),'');
+        
+        //$app->enqueueMessage(JText::_('exportmatchplayer<br><pre>'.print_r($app->getUserState($option.'exportmatchplayer'),true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_('exportmatchstaff<br><pre>'.print_r($app->getUserState($option.'exportmatchstaff'),true).'</pre>'),'');
+        
+        //$app->enqueueMessage(JText::_('exportevent<br><pre>'.print_r($app->getUserState($option.'exportevent'),true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_('exportmatchevent<br><pre>'.print_r($app->getUserState($option.'exportmatchevent'),true).'</pre>'),'');
+        
+        //$app->enqueueMessage(JText::_('exportteamstaff<br><pre>'.print_r($app->getUserState($option.'exportteamstaff'),true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_('exportreferee<br><pre>'.print_r($app->getUserState($option.'exportreferee'),true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_('pl_matchreferee<br><pre>'.print_r($app->getUserState($option.'pl_matchreferee'),true).'</pre>'),'');
+        
+        //$app->enqueueMessage(JText::_('tempexportteamplayer<br><pre>'.print_r($app->getUserState($option.'tempexportteamplayer'),true).'</pre>'),'');
+        
         //$app->enqueueMessage(JText::_('getData _import_project_id<br><pre>'.print_r($this->_import_project_id ,true).'</pre>'),'');
         
         libxml_use_internal_errors(true);
@@ -788,7 +807,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
                 
                 if ( $pos_error )
                 {
-                    $app->enqueueMessage(JText::sprintf('Spieler %1$s %2$s hat fehlende Importposition-ID ( %3$s )',$person->firstname,$person->lastname,$person->position_id ),'Error');
+                    //$app->enqueueMessage(JText::sprintf('Spieler %1$s %2$s hat fehlende Importposition-ID ( %3$s )',$person->firstname,$person->lastname,$person->position_id ),'Error');
                 } 
                         
             }
@@ -4727,15 +4746,15 @@ $t_params = json_encode( $ini );
 //$this->dump_variable("this->_convertProjectPositionID", $this->_convertProjectPositionID);
 		foreach ($this->_datas['matchplayer'] as $key => $matchplayer)
 		{
-			$import_matchplayer=$this->_datas['matchplayer'][$key];
+			$import_matchplayer = $this->_datas['matchplayer'][$key];
 //$this->dump_variable("import_matchplayer", $import_matchplayer);
-			$oldID=$this->_getDataFromObject($import_matchplayer,'id');
+			$oldID = $this->_getDataFromObject($import_matchplayer,'id');
 			
             $mdl = JModelLegacy::getInstance("matchplayer", "sportsmanagementModel");
             $p_matchplayer = $mdl->getTable();
             
-			$oldMatchID=$this->_getDataFromObject($import_matchplayer,'match_id');
-			$oldTeamPlayerID=$this->_getDataFromObject($import_matchplayer,'teamplayer_id');
+			$oldMatchID = $this->_getDataFromObject($import_matchplayer,'match_id');
+			$oldTeamPlayerID = $this->_getDataFromObject($import_matchplayer,'teamplayer_id');
 			if (!isset($this->_convertMatchID[$oldMatchID]) ||
 				!isset($this->_convertTeamPlayerID[$oldTeamPlayerID]))
 			{
@@ -4748,7 +4767,9 @@ $t_params = json_encode( $ini );
 			}
 			$p_matchplayer->set('match_id',$this->_convertMatchID[$oldMatchID]);
 			$p_matchplayer->set('teamplayer_id',$this->_convertTeamPlayerID[$oldTeamPlayerID]);
-			$oldPositionID=$this->_getDataFromObject($import_matchplayer,'project_position_id');
+            $newTeamPlayerID = $this->_convertTeamPlayerID[$oldTeamPlayerID];
+            
+			$oldPositionID = $this->_getDataFromObject($import_matchplayer,'project_position_id');
 			if (isset($this->_convertProjectPositionID[$oldPositionID]))
 			{
 				$p_matchplayer->set('project_position_id',$this->_convertProjectPositionID[$oldPositionID]);
@@ -4756,7 +4777,7 @@ $t_params = json_encode( $ini );
 			$p_matchplayer->set('came_in',$this->_getDataFromObject($import_matchplayer,'came_in'));
 			if ($import_matchplayer->in_for > 0)
 			{
-				$oldTeamPlayerID=$this->_getDataFromObject($import_matchplayer,'in_for');
+				$oldTeamPlayerID = $this->_getDataFromObject($import_matchplayer,'in_for');
 				if (isset($this->_convertTeamPlayerID[$oldTeamPlayerID]))
 				{
 					$p_matchplayer->set('in_for',$this->_convertTeamPlayerID[$oldTeamPlayerID]);
@@ -4777,16 +4798,18 @@ $t_params = json_encode( $ini );
 			}
 			else
 			{
-				$dPerson=$this->_getPersonFromTeamPlayer($p_matchplayer->teamplayer_id);
-				$dPosName=(($p_matchplayer->project_position_id==0) ?
+				$dPerson = $this->_getPersonFromTeamPlayer($p_matchplayer->teamplayer_id);
+				$dPosName = (($p_matchplayer->project_position_id==0) ?
 							'<span style="color:orange">'.JText::_('Has no position').'</span>' :
 							$this->_getProjectPositionName($p_matchplayer->project_position_id));
 				$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
-				$my_text .= JText::sprintf(	'Created new matchplayer data. MatchID: %1$s - Player: %2$s,%3$s - Position: %4$s',
+				$my_text .= JText::sprintf(	'Created new matchplayer data. MatchID: %1$s - Player: %2$s,%3$s - Position: %4$s - oldTeamPlayerID : %5$s - newTeamPlayerID : %6$s',
 								'</span><strong>'.$p_matchplayer->match_id.'</strong><span style="color:'.$this->storeSuccessColor.'">',
 								'</span><strong>'.$dPerson->lastname,
 								$dPerson->firstname.'</strong><span style="color:'.$this->storeSuccessColor.'">',
-								"</span><strong>$dPosName</strong>");
+								"</span><strong>$dPosName</strong>",
+                                "</span><strong>$oldTeamPlayerID</strong>",
+                                "</span><strong>$newTeamPlayerID</strong>");
 				$my_text .= '<br />';
 			}
 //$this->dump_variable("p_matchplayer", $p_matchplayer);
@@ -5008,8 +5031,8 @@ $t_params = json_encode( $ini );
 
 		foreach ($this->_datas['matchevent'] as $key => $matchevent)
 		{
-			$import_matchevent=$this->_datas['matchevent'][$key];
-			$oldID=$this->_getDataFromObject($import_matchevent,'id');
+			$import_matchevent = $this->_datas['matchevent'][$key];
+			$oldID = $this->_getDataFromObject($import_matchevent,'id');
 
 			
             $mdl = JModelLegacy::getInstance("matchevent", "sportsmanagementModel");
@@ -6246,16 +6269,34 @@ $t_params = json_encode( $ini );
 		}
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::dump_header()
+	 * 
+	 * @param mixed $text
+	 * @return void
+	 */
 	private function dump_header($text)
 	{
 		echo "<h1>$text</h1>";
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::dump_variable()
+	 * 
+	 * @param mixed $description
+	 * @param mixed $variable
+	 * @return void
+	 */
 	private function dump_variable($description, $variable)
 	{
 		echo "<b>$description</b><pre>".print_r($variable,true)."</pre>";
 	}
     
+    /**
+     * sportsmanagementModelJLXMLImport::setNewDataStructur()
+     * 
+     * @return void
+     */
     function setNewDataStructur()
     {
         $app = JFactory::getApplication();
@@ -6461,7 +6502,13 @@ $t_params = json_encode( $ini );
 */
             
             // die spieler verarbeiten
-            $query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player where projectteam_id = '.$proteam->id ;
+            $query = $db->getQuery(true);
+            $query->select('tp.*');
+            $query->select('p.position_id');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp');
+            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person as p ON p.id = tp.person_id ');
+            $query->where('tp.projectteam_id = '.$proteam->id);
+            //$query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player where projectteam_id = '.$proteam->id ;
             JFactory::getDbo()->setQuery($query);
 		    $result_tp = JFactory::getDbo()->loadObjectList();
             foreach ( $result_tp as $team_member )
@@ -6492,9 +6539,9 @@ $t_params = json_encode( $ini );
                 // Create a new query object.
                 $insertquery = $db->getQuery(true);
                 // Insert columns.
-                $columns = array('person_id','season_id','persontype','picture');
+                $columns = array('person_id','season_id','persontype','picture','position_id');
                 // Insert values.
-                $values = array($team_member->person_id,$this->_season_id,1,'\''.$team_member->picture.'\'');
+                $values = array($team_member->person_id,$this->_season_id,1,'\''.$team_member->picture.'\'',$team_member->position_id);
                 // Prepare the insert query.
                 $insertquery
                 ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id'))
@@ -6541,9 +6588,9 @@ $t_params = json_encode( $ini );
                 // Create a new query object.
                 $insertquery = $db->getQuery(true);
                 // Insert columns.
-                $columns = array('person_id','season_id','team_id','persontype','published','picture','project_position_id');
+                $columns = array('person_id','season_id','team_id','persontype','published','picture','project_position_id','jerseynumber','position_id');
                 // Insert values.
-                $values = array($team_member->person_id,$this->_season_id,$new_team_id,1,1,'\''.$team_member->picture.'\'',$team_member->project_position_id);
+                $values = array($team_member->person_id,$this->_season_id,$new_team_id,1,1,'\''.$team_member->picture.'\'',$team_member->project_position_id,$team_member->jerseynumber,$team_member->position_id);
                 // Prepare the insert query.
                 $insertquery
                 ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id'))
@@ -6571,6 +6618,42 @@ $t_params = json_encode( $ini );
                 }
                 
                 }
+                
+                // projekt position eintragen
+                // Create a new query object.
+                $insertquery = $db->getQuery(true);
+                // Insert columns.
+                $columns = array('person_id','project_id','project_position_id','persontype');
+                // Insert values.
+                $values = array($team_member->person_id,$this->_project_id,$team_member->project_position_id,1);
+                // Prepare the insert query.
+                $insertquery
+                ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position'))
+                ->columns($db->quoteName($columns))
+                ->values(implode(',', $values));
+                // Set the query using our newly populated query object and execute it.
+                $db->setQuery($insertquery);
+                if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
+			    {
+			    $my_text .= '<span style="color:'.$this->existingInDbColor.'">';
+						$my_text .= JText::sprintf(	'spieler vorhanden _person_project_position: person id: %1$s - projekt: %2$s - project_position_id: %3$s',
+													"</span><strong>$team_member->person_id</strong>",
+													"<strong>$this->_project_id</strong>",
+                                                    "<strong>$team_member->project_position_id</strong>"
+													);
+						$my_text .= '<br />'; 
+			    }
+			    else
+			    {
+                $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+						$my_text .= JText::sprintf(	'spieler nicht vorhanden und angelegt _person_project_position: person id: %1$s - projekt: %2$s - project_position_id: %3$s',
+													"</span><strong>$team_member->person_id</strong>",
+													"<strong>$this->_project_id</strong>",
+                                                    "<strong>$team_member->project_position_id</strong>"
+													);
+						$my_text .= '<br />';
+                }
+                
                 
                 // Fields to update. match ids = $update_match_ids
                 $query = $db->getQuery(true);
@@ -6617,12 +6700,24 @@ $t_params = json_encode( $ini );
             }
             
             // staffs verarbeiten
-            $query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff where projectteam_id = '.$proteam->id ;
+            $query = $db->getQuery(true);
+            $query->select('tp.*');
+            $query->select('p.position_id');
+            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS tp');
+            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person as p ON p.id = tp.person_id ');
+            $query->where('tp.projectteam_id = '.$proteam->id);
+            //$query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff where projectteam_id = '.$proteam->id ;
             JFactory::getDbo()->setQuery($query);
+            
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            
 		    $result_tp = JFactory::getDbo()->loadObjectList();
             foreach ( $result_tp as $team_member )
             {
-                
+                if ( !$team_member->position_id )
+                {
+                $team_member->position_id = 0;
+                }
                 // ist der spieler schon durch ein anderes projekt angelegt ?
                 $query = $db->getQuery(true);
 		        $query->select('id');		
@@ -6649,9 +6744,9 @@ $t_params = json_encode( $ini );
                 // Create a new query object.
                 $insertquery = $db->getQuery(true);
                 // Insert columns.
-                $columns = array('person_id','season_id','persontype','picture');
+                $columns = array('person_id','season_id','persontype','picture','position_id');
                 // Insert values.
-                $values = array($team_member->person_id,$this->_season_id,2,'\''.$team_member->picture.'\'');
+                $values = array($team_member->person_id,$this->_season_id,2,'\''.$team_member->picture.'\'',$team_member->position_id);
                 // Prepare the insert query.
                 $insertquery
                 ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id'))
@@ -6662,6 +6757,7 @@ $t_params = json_encode( $ini );
                 
 	            if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 			    {
+			    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Notice');  
 			    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__); 
 			    }
 			    else
@@ -6697,9 +6793,9 @@ $t_params = json_encode( $ini );
                 // Create a new query object.
                 $insertquery = $db->getQuery(true);
                 // Insert columns.
-                $columns = array('person_id','season_id','team_id','persontype','published','picture','project_position_id');
+                $columns = array('person_id','season_id','team_id','persontype','published','picture','project_position_id','position_id');
                 // Insert values.
-                $values = array($team_member->person_id,$this->_season_id,$new_team_id,2,1,'\''.$team_member->picture.'\'',$team_member->project_position_id);
+                $values = array($team_member->person_id,$this->_season_id,$new_team_id,2,1,'\''.$team_member->picture.'\'',$team_member->project_position_id,$team_member->position_id);
                 // Prepare the insert query.
                 $insertquery
                 ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id'))
@@ -6710,6 +6806,7 @@ $t_params = json_encode( $ini );
                 
 	            if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 			    {
+			    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Notice'); 
 			    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__); 
 			    }
 			    else
@@ -6727,6 +6824,41 @@ $t_params = json_encode( $ini );
                 }
                 
                 } 
+                
+                // projekt position eintragen
+                // Create a new query object.
+                $insertquery = $db->getQuery(true);
+                // Insert columns.
+                $columns = array('person_id','project_id','project_position_id','persontype');
+                // Insert values.
+                $values = array($team_member->person_id,$this->_project_id,$team_member->project_position_id,2);
+                // Prepare the insert query.
+                $insertquery
+                ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position'))
+                ->columns($db->quoteName($columns))
+                ->values(implode(',', $values));
+                // Set the query using our newly populated query object and execute it.
+                $db->setQuery($insertquery);
+                if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
+			    {
+			    $my_text .= '<span style="color:'.$this->existingStaff.'">';
+						$my_text .= JText::sprintf(	'trainer vorhanden _person_project_position: person id: %1$s - projekt: %2$s - project_position_id: %3$s',
+													"</span><strong>$team_member->person_id</strong>",
+													"<strong>$this->_project_id</strong>",
+                                                    "<strong>$team_member->project_position_id</strong>"
+													);
+						$my_text .= '<br />'; 
+			    }
+			    else
+			    {
+                $my_text .= '<span style="color:'.$this->existingStaff.'">';
+						$my_text .= JText::sprintf(	'trainer nicht vorhanden und angelegt _person_project_position: person id: %1$s - projekt: %2$s - project_position_id: %3$s',
+													"</span><strong>$team_member->person_id</strong>",
+													"<strong>$this->_project_id</strong>",
+                                                    "<strong>$team_member->project_position_id</strong>"
+													);
+						$my_text .= '<br />';
+                }
                 
                 // Fields to update.
                 $query = $db->getQuery(true);
@@ -6764,6 +6896,11 @@ $t_params = json_encode( $ini );
         
     }
     
+    /**
+     * sportsmanagementModelJLXMLImport::setNewRoundDates()
+     * 
+     * @return void
+     */
     function setNewRoundDates()
     {
         $app = JFactory::getApplication();

@@ -341,12 +341,9 @@ jQuery("#sub-" + substid).remove();
 
 function updatePlayerSelect() 
 {
-//	if(jQuery("#cell-player"))
-//	jQuery("#cell-player").empty().appendChild(
-//			getPlayerSelect(jQuery("#team_id").val());
-//      );
-
-//getPlayerSelect(jQuery("#team_id").val());
+if($('cell-player'))
+	$('cell-player').empty().appendChild(
+			getPlayerSelect($('team_id').selectedIndex));
       
 }
 
@@ -361,35 +358,16 @@ function getPlayerSelect(index)
 {
 	// homeroster and awayroster must be defined globally (in the view calling
 	// the script)
-
-	//alert(index);
-
-	//alert(rosters + " rosters Zahlen sind definiert");
-	//alert(Mitarbeiter.length + " Mitarbeiter Zahlen sind definiert");
-	//alert(rosters);
-	//var roster = rosters + index;
-	//alert(roster);
-	//alert(roster.length);
-	
-  // build select
+	var roster = rosters[index];
+	// build select
 	var select = new Element('select', {
 		id : "teamplayer_id"
 	});
-	
-//	jQuery("#ajaxresponse").text(roster);
-	
-//	for (var i = 0; i < 1; i++) 
-//  {
-//  var roster_value = roster[i];
-//  alert( roster[i] );
-//  }
-
-//	for ( var i = 0, n = roster.length; i < n; i++) 
-//  {
-//		new Element('option', {
-//			value : roster[i].value
-//		}).set('text',roster[i].text).injectInside(select);
-//	}
+	for ( var i = 0, n = roster.length; i < n; i++) {
+		new Element('option', {
+			value : roster[i].value
+		}).set('text',roster[i].text).injectInside(select);
+	}
 	
 	return select;
 }

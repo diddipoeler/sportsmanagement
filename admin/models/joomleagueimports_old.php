@@ -37,8 +37,6 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-//  $db->__destruct();
-
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 jimport('joomla.filesystem.file');
@@ -64,50 +62,8 @@ static $db_num_rows = 0;
 static $storeFailedColor = 'red';
 static $storeSuccessColor = 'green';
 static $existingInDbColor = 'orange';
-static $storeInfo = 'black';
 
 static $_success = array();
-
-static $team_player = array();
-static $project_referee = array();
-static $team_staff = array();
-
-
-function check_database()
-{
-$conf = JFactory::getConfig();
-$app = JFactory::getApplication();
-$params = JComponentHelper::getParams( 'com_sportsmanagement' );    
-$debug = $conf->getValue('config.debug');
-
-$option = array(); //prevent problems
-$option['driver']   = $params->get( 'jl_dbtype' );            // Database driver name
-$option['host']     = $params->get( 'jl_host' );    // Database host name
-$option['user']     = $params->get( 'jl_user' );       // User for database authentication
-$option['password'] = $params->get( 'jl_password' );   // Password for database authentication
-$option['database'] = $params->get( 'jl_db' );      // Database name
-$option['prefix']   = $params->get( 'jl_dbprefix' );             // Database prefix (may be empty)
- 
-// zuerst noch überprüfen, ob der user
-// überhaupt den zugriff auf die datenbank hat.
-$jl_access = JDatabase::getInstance( $option );    
-
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_access<br><pre>'.print_r($jl_access,true).'</pre>'),'');
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<br><pre>'.print_r($jl_access->getErrorMsg(),true).'</pre>'),'Error');
-/*
-if ( JError::isError($jl_access) ) {
-			header('HTTP/1.1 500 Internal Server Error');
-			jexit('Database Error: ' . $jl_access->toString() );
-		}
-
-		if ($jl_access->getErrorNum() > 0) {
-			JError::raiseError(500 , 'JDatabase::getInstance: Could not connect to database ' . 'joomla.library:'.$jl_access->getErrorNum().' - '.$jl_access->getErrorMsg() );
-		}
-
-		$jl_access->debug( $debug );
-*/            
-}
-
     
 /**
  * sportsmanagementModeljoomleagueimports::updateplayerproposition()
@@ -395,8 +351,6 @@ function get_success()
 {
 return self::$_success;    
 }
-
-
 /**
  * sportsmanagementModeljoomleagueimports::importjoomleaguenew()
  * 
@@ -405,25 +359,16 @@ return self::$_success;
 function importjoomleaguenew()
 {
 // Reference global application object
-$app = JFactory::getApplication();
-// JInput object
-$jinput = $app->input;
-$option = $jinput->getCmd('option');
-
-$sports_type_id = $jinput->post->get('filter_sports_type', 0);
-//$this->setState('filter.sports_type', $sports_type_id);
-$app->setUserState( $option.'.filter_sports_type', $sports_type_id );
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' sports_type_id <br><pre>'.print_r($sports_type_id,true).'</pre>'),'');
-
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
 $db = JFactory::getDbo(); 
 $query = $db->getQuery(true);
 
 //$post = JRequest::get('post');
 $exportfields = array();        
 $table_copy = array();        
-
-$table_copy[] = 'associations';
 
 $table_copy[] = 'club';
 $table_copy[] = 'division';
@@ -438,8 +383,6 @@ $table_copy[] = 'position_statistic';
 $table_copy[] = 'project';
 $table_copy[] = 'project_position';
 $table_copy[] = 'match_referee';
-
-$table_copy[] = 'rosterposition';
 
 $table_copy[] = 'round';
 $table_copy[] = 'season';
@@ -462,12 +405,8 @@ $table_copy[] = 'prediction_template';
         
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' table_copy <br><pre>'.print_r($table_copy,true).'</pre>'),'');        
 
-/**
-* als erstes kommen die tabellen, die nur kopiert werden !
-*/        
+// als erstes kommen die tabellen, die nur kopiert werden !        
 $my_text = '';  
-$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-$my_text .= '<br />';
 foreach ( $table_copy as $key => $value )
 {
 $jsm_table = '#__sportsmanagement_'.$value;
@@ -489,15 +428,6 @@ $my_text .= '<br />';
 }
 else
 {
-
-/**
-* die landesverbände übernehmen
-*/    
-if ( $value == 'associations' )
-{
-$db->truncateTable($jsm_table);    
-}    
-
 $query = $db->getQuery(true);
 $query->clear();
 $query->select('COUNT(id) AS total');
@@ -509,7 +439,7 @@ $totals = $db->loadResult();
 if ( $totals )
 {
 //$app->enqueueMessage(JText::_('Daten aus der Tabelle: ( '.$jl_table.' ) koennen nicht kopiert werden. Tabelle: ( '.$jsm_table.' ) nicht leer!'),'Error');  
-$my_text .= '<span style="color:'.self::$storeFailedColor. '"<strong>Daten aus der Tabelle: ( '.$jl_table.' ) koennen nicht kopiert werden. Tabelle: ( '.$jsm_table.' ) nicht leer!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$storeFailedColor. '"<strong>Daten aus der Tabelle: ( '.$jl_table.' ) koennen nicht kopiert werden. Tabelle: ( '.$jl_table.' ) nicht leer!</strong>'.'</span>';
 $my_text .= '<br />';   
 }
 else
@@ -562,7 +492,7 @@ foreach ( $jl_fields[$jl_table] as $key2 => $value2 )
             {
             //$app->enqueueMessage(JText::_('Daten aus der Tabelle: ( '.$jl_table.' ) in die Tabelle: ( '.$jsm_table.' ) importiert!'),'Notice');    
 
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Daten aus der Tabelle: ( '.$jl_table.' ) in die Tabelle: ( '.$jsm_table.' ) importiert!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Daten aus der Tabelle: ( '.$jl_table.' ) in die Tabelle: ( '.$jl_table.' ) importiert!</strong>'.'</span>';
 $my_text .= '<br />';             
             
             }
@@ -575,40 +505,6 @@ $my_text .= '<br />';
 
 self::$_success['Tabellenkopie:'] = $my_text;
 
-/**
- * nach der kopie der tabellen müssen wir die sportart bei den mannschaften setzen.
- * sonst gibt es in der übersicht der projektmannschaften eine fehlermeldung.
- */
-$query = $db->getQuery(true);
-$my_text = '';
-$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-$my_text .= '<br />'; 
-// Fields to update.
-$fields = array(
-    $db->quoteName('sports_type_id') . ' = '. $sports_type_id 
-);
- 
-// Conditions for which records should be updated.
-$conditions = array(
-    $db->quoteName('sports_type_id') . ' != '. $sports_type_id
-);
- 
-$query->update($db->quoteName('#__sportsmanagement_team'))->set($fields)->where($conditions);
-$db->setQuery($query);
-sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
-
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.self::$db_num_rows.' Daten in der Tabelle: ( __sportsmanagement_team ) aktualisiert!</strong>'.'</span>';
-$my_text .= '<br />';     
-
-$query->update($db->quoteName('#__sportsmanagement_project'))->set($fields)->where($conditions);
-$db->setQuery($query);
-sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
-
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.self::$db_num_rows.' Daten in der Tabelle: ( __sportsmanagement_project ) aktualisiert!</strong>'.'</span>';
-$my_text .= '<br />';     
-
-self::$_success['Tabellenaktualisierung:'] = $my_text; 
-
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'success<br><pre>'.print_r(self::$_success,true).'</pre>'),'');
 
 /**
@@ -616,8 +512,6 @@ self::$_success['Tabellenaktualisierung:'] = $my_text;
  */
 $jl_position = array(); 
 $my_text = '';
-$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-$my_text .= '<br />';
 $query = $db->getQuery(true);
 $query->clear();
 $query->select('*');
@@ -643,7 +537,7 @@ $pos_result = $db->loadResult();
 if ( $pos_result )
 {
 $jl_position[$row->id] = $pos_result;   
-$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Position: ( '.$row->name.' ) in der Tabelle alt -> ('.$row->id.')  neu -> ('.$pos_result.') vorhanden!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Position: ( '.$row->name.' ) in der Tabelle vorhanden!</strong>'.'</span>';
 $my_text .= '<br />';    
 }
 else
@@ -655,7 +549,7 @@ $mdlTable->name = $row->name;
 $mdlTable->alias = $row->alias;
 $mdlTable->parent_id = $row->parent_id;
 $mdlTable->persontype = $row->persontype;
-$mdlTable->sports_type_id = $sports_type_id;
+$mdlTable->sports_type_id = $row->sports_type_id;
 $mdlTable->published = $row->published;
 
 if ($mdlTable->store()===false)
@@ -665,7 +559,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->g
 else
 {
 $jl_position[$row->id] = $db->insertid();
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Position: ( '.$row->name.' ) in der Tabelle alt -> ('.$row->id.')  neu -> ('.$db->insertid().') angelegt!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Position: ( '.$row->name.' ) in der Tabelle angelegt!</strong>'.'</span>';
 $my_text .= '<br />'; 
 }
 
@@ -703,7 +597,7 @@ $pos_result = $db->loadResult();
 if ( $pos_result )
 {
 $jl_position[$row->id] = $pos_result; 
-$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Position: ( '.$row->name.' ) in der Tabelle alt -> ('.$row->id.')  neu -> ('.$pos_result.') vorhanden!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Position: ( '.$row->name.' ) in der Tabelle vorhanden!</strong>'.'</span>';
 $my_text .= '<br />';     
 }
 else
@@ -715,7 +609,7 @@ $mdlTable->name = $row->name;
 $mdlTable->alias = $row->alias;
 $mdlTable->parent_id = $jl_position[$row->parent_id];
 $mdlTable->persontype = $row->persontype;
-$mdlTable->sports_type_id = $sports_type_id;
+$mdlTable->sports_type_id = $row->sports_type_id;
 $mdlTable->published = $row->published;
 
 if ($mdlTable->store()===false)
@@ -725,7 +619,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->g
 else
 {
 $jl_position[$row->id] = $db->insertid();
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Position: ( '.$row->name.' ) in der Tabelle alt -> ('.$row->id.')  neu -> ('.$db->insertid().') angelegt!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Position: ( '.$row->name.' ) in der Tabelle angelegt!</strong>'.'</span>';
 $my_text .= '<br />'; 
 }
 
@@ -744,8 +638,6 @@ self::$_success['Positionen:'] = $my_text;
  */
 $jl_eventtype = array(); 
 $my_text = '';
-$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-$my_text .= '<br />';
 $query = $db->getQuery(true);
 $query->clear();
 $query->select('*');
@@ -809,10 +701,6 @@ self::$_success['Eventtypes:'] = $my_text;
  * jetzt werden die ereignisse zu den positionen verarbeitet
  */
 $my_text = '';
-
-$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-$my_text .= '<br />';
-
 $query = $db->getQuery(true);
 $query->clear();
 $query->select('*');
@@ -852,9 +740,6 @@ self::$_success['Position Eventtypes:'] = $my_text;
  * dann die positions id´s in den tabellen updaten
  */
 $my_text = '';
-$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-$my_text .= '<br />';
-
 foreach( $jl_position as $key => $value )
 {
 // Fields to update.
@@ -866,48 +751,30 @@ foreach( $jl_position as $key => $value )
     $db->quoteName('position_id') .'='. $key
     );
     $query->clear();
-     $query->update($db->quoteName('#__sportsmanagement_person'))->set($fields)->where($conditions);
+     $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person'))->set($fields)->where($conditions);
      $db->setQuery($query);  
-     if (!sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__))
+     if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 		{
 		    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		} 
-        else
-{
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.self::$db_num_rows.' Daten in der Tabelle: ( __sportsmanagement_person ) aktualisiert!</strong>'.'</span>';
-$my_text .= '<br />';  
-}
-
     $query->clear();    
-    $query->update($db->quoteName('#__sportsmanagement_project_position'))->set($fields)->where($conditions);
+    $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position'))->set($fields)->where($conditions);
      $db->setQuery($query);  
-     if (!sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__))
+     if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 		{
 		    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		}
-else
-{
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.self::$db_num_rows.' Daten in der Tabelle: ( __sportsmanagement_project_position ) aktualisiert!</strong>'.'</span>';
-$my_text .= '<br />';  
-}
-
     $query->clear();    
-    $query->update($db->quoteName('#__sportsmanagement_position_statistic'))->set($fields)->where($conditions);
+    $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic'))->set($fields)->where($conditions);
      $db->setQuery($query);  
-     if (!sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__))
+     if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 		{
 		    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		}         
-else
-{
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.self::$db_num_rows.' Daten in der Tabelle: ( __sportsmanagement_position_statistic ) aktualisiert!</strong>'.'</span>';
-$my_text .= '<br />';  
-}
            
 $my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Position: ( '.$key.' ) mit ( '.$value.' ) aktualisiert!</strong>'.'</span>';
 $my_text .= '<br />'; 
 }
-
 self::$_success['Positions:'] = $my_text;
 
 /**
@@ -933,24 +800,23 @@ foreach( $result as $row )
 $jl_table = '#__joomleague_project_team';
 $jsm_table = '#__sportsmanagement_project_team';
 $mdl = JModelLegacy::getInstance("joomleagueimport", "sportsmanagementModel");
-$mdl->newstructurjlimport($row->season_id,$jl_table,$jsm_table,$row->id);
+$mdl->newstructurjlimport($row->season_id,$jl_table,$jsm_table);
 /**
  * jetzt werden die team spieler umgesetzt
  */
 $jl_table = '#__sportsmanagement_team_player';
 $jsm_table = '#__sportsmanagement_team_player';
 $mdl = JModelLegacy::getInstance("joomleagueimport", "sportsmanagementModel");
-//$team_player = $mdl->newstructurjlimport($row->season_id,$jl_table,$jsm_table,$row->project_id);
-$mdl->newstructurjlimport($row->season_id,$jl_table,$jsm_table,$row->id);
-
+$team_player = $mdl->newstructurjlimport($row->season_id,$jl_table,$jsm_table);
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' __joomleague_team_player -> <br><pre>'.print_r($team_player,true).'</pre>'),'');
 /**
  * jetzt werden die team mitarbeiter umgesetzt
  */
 $jl_table = '#__sportsmanagement_team_staff';
 $jsm_table = '#__sportsmanagement_team_staff';
 $mdl = JModelLegacy::getInstance("joomleagueimport", "sportsmanagementModel");
-//$team_staff = $mdl->newstructurjlimport($row->season_id,$jl_table,$jsm_table,$row->project_id);
-$mdl->newstructurjlimport($row->season_id,$jl_table,$jsm_table,$row->id);
+$team_staff = $mdl->newstructurjlimport($row->season_id,$jl_table,$jsm_table);
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' __joomleague_team_staff -> <br><pre>'.print_r($team_staff,true).'</pre>'),'');
 
 /**
  * jetzt werden die project referees umgesetzt
@@ -958,14 +824,12 @@ $mdl->newstructurjlimport($row->season_id,$jl_table,$jsm_table,$row->id);
 $jl_table = '#__joomleague_project_referee';
 $jsm_table = '#__sportsmanagement_project_referee';
 $mdl = JModelLegacy::getInstance("joomleagueimport", "sportsmanagementModel");
-//$project_referee = $mdl->newstructurjlimport($row->season_id,$jl_table,$jsm_table,$row->project_id);
-$mdl->newstructurjlimport($row->season_id,$jl_table,$jsm_table,$row->id);
+$project_referee = $mdl->newstructurjlimport($row->season_id,$jl_table,$jsm_table);
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' __joomleague_team_staff -> <br><pre>'.print_r($team_staff,true).'</pre>'),'');
 
 }
  
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' __sportsmanagement_team_player -> <br><pre>'.print_r(self::$team_player,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' __sportsmanagement_team_staff -> <br><pre>'.print_r(self::$team_staff,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' __joomleague_project_referee -> <br><pre>'.print_r(self::$project_referee,true).'</pre>'),'');
+
 
 }    
 
@@ -973,16 +837,11 @@ $mdl->newstructurjlimport($row->season_id,$jl_table,$jsm_table,$row->id);
  * jetzt werden die match events importiert
  */
 $my_text = '';
-$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-$my_text .= '<br />';
 $query = $db->getQuery(true);
 $query->clear();
-$query->select('me.*,r.project_id');
+$query->select('me.*');
 $query->from('#__joomleague_match_event as me');
 $query->join('INNER', '#__sportsmanagement_match AS m ON m.id = me.match_id');
-$query->join('INNER', '#__sportsmanagement_round AS r ON r.id = m.round_id');
-$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = r.project_id');
-
 $db->setQuery($query);
 $result = $db->loadObjectList();
 
@@ -1002,7 +861,7 @@ $query->select('me.id');
 $query->from('#__sportsmanagement_match_event as me');
 $query->where('me.match_id = '.$row->match_id );
 $query->where('me.projectteam_id = '.$row->projectteam_id );
-$query->where('me.teamplayer_id = '.self::$team_player[$row->project_id][$row->teamplayer_id] );
+$query->where('me.teamplayer_id = '.$team_player[$row->teamplayer_id] );
 $query->where('me.event_time = '.$row->event_time );
 $query->where('me.event_type_id = '.$jl_eventtype[$row->event_type_id] );
 //$query->where('me.event_sum = '.$row->event_sum );
@@ -1011,7 +870,7 @@ $result_me = $db->loadResult();
 
 if ( $result_me )
 {
-$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Project ('.$row->project_id.') Match Event: ( '.$row->id.' ) in der Tabelle vorhanden!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Match Event: ( '.$row->id.' ) in der Tabelle vorhanden!</strong>'.'</span>';
 $my_text .= '<br />';     
 }
 else
@@ -1021,7 +880,7 @@ $mdlTable = $mdl->getTable();
 
 $mdlTable->match_id = $row->match_id;
 $mdlTable->projectteam_id = $row->projectteam_id;
-$mdlTable->teamplayer_id = self::$team_player[$row->project_id][$row->teamplayer_id];
+$mdlTable->teamplayer_id = $team_player[$row->teamplayer_id];
 $mdlTable->event_time = $row->event_time;
 $mdlTable->event_type_id = $jl_eventtype[$row->event_type_id];
 $mdlTable->event_sum = $row->event_sum;
@@ -1030,12 +889,12 @@ $mdlTable->notes = $row->notes;
 if ($mdlTable->store()===false)
 {
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Project ('.$row->project_id.') Match Event: ( '.$row->id.' ) in der Tabelle vorhanden!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Match Event: ( '.$row->id.' ) in der Tabelle vorhanden!</strong>'.'</span>';
 $my_text .= '<br />'; 
 }
 else
 {
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Project ('.$row->project_id.') Match Event: ( '.$row->id.' ) in der Tabelle angelegt!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Match Event: ( '.$row->id.' ) in der Tabelle angelegt!</strong>'.'</span>';
 $my_text .= '<br />'; 
 }
 
@@ -1050,8 +909,6 @@ self::$_success['Match Event:'] = $my_text;
  * jetzt werden die project referees importiert
  */
 $my_text = '';
-$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-$my_text .= '<br />';
 $query = $db->getQuery(true);
 $query->clear();
 $query->select('me.*');
@@ -1075,7 +932,7 @@ $query->clear();
 $query->select('me.id');
 $query->from('#__sportsmanagement_project_referee as me');
 $query->where('me.project_id = '.$row->project_id );
-$query->where('me.person_id = '.self::$project_referee[$row->project_id][$row->person_id] );
+$query->where('me.person_id = '.$project_referee[$row->person_id] );
 $query->where('me.project_position_id = '.$row->project_position_id );
 
 $db->setQuery($query);
@@ -1083,7 +940,7 @@ $result_me = $db->loadResult();
 
 if ( $result_me )
 {
-$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Project ('.$row->project_id.') Referee person_id: ( '.$row->person_id.' ) person_season_id: ( '.self::$project_referee[$row->project_id][$row->person_id].' ) in der Tabelle vorhanden!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Project Referee person_id: ( '.$row->person_id.' ) in der Tabelle vorhanden!</strong>'.'</span>';
 $my_text .= '<br />';     
 }
 else
@@ -1092,7 +949,7 @@ $mdl = JModelLegacy::getInstance("projectreferee", "sportsmanagementModel");
 $mdlTable = $mdl->getTable();   
 
 $mdlTable->project_id = $row->project_id;
-$mdlTable->person_id = self::$project_referee[$row->project_id][$row->person_id];
+$mdlTable->person_id = $project_referee[$row->person_id];
 
 $mdlTable->project_position_id = $row->project_position_id;
 
@@ -1102,12 +959,12 @@ $mdlTable->published = 1;
 if ($mdlTable->store()===false)
 {
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Project ('.$row->project_id.') Referee person_id: ( '.$row->person_id.' ) person_season_id: ( '.self::$project_referee[$row->project_id][$row->person_id].' ) in der Tabelle vorhanden!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Project Referee person_id: ( '.$row->person_id.' ) in der Tabelle vorhanden!</strong>'.'</span>';
 $my_text .= '<br />'; 
 }
 else
 {
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Project ('.$row->project_id.') Referee person_id: ( '.$row->person_id.' ) person_season_id: ( '.self::$project_referee[$row->project_id][$row->person_id].' ) in der Tabelle angelegt!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Project Referee person_id: ( '.$row->person_id.' ) in der Tabelle angelegt!</strong>'.'</span>';
 $my_text .= '<br />'; 
 }
 
@@ -1122,15 +979,11 @@ self::$_success['Project Referee:'] = $my_text;
  * jetzt werden die match player importiert
  */
 $my_text = '';
-$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-$my_text .= '<br />';
 $query = $db->getQuery(true);
 $query->clear();
-$query->select('me.*,r.project_id');
+$query->select('me.*');
 $query->from('#__joomleague_match_player as me');
 $query->join('INNER', '#__sportsmanagement_match AS m ON m.id = me.match_id');
-$query->join('INNER', '#__sportsmanagement_round AS r ON r.id = m.round_id');
-$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = r.project_id');
 $db->setQuery($query);
 $result = $db->loadObjectList();
 
@@ -1149,7 +1002,7 @@ $query->clear();
 $query->select('me.id');
 $query->from('#__sportsmanagement_match_player as me');
 $query->where('me.match_id = '.$row->match_id );
-$query->where('me.teamplayer_id = '.self::$team_player[$row->project_id][$row->teamplayer_id] );
+$query->where('me.teamplayer_id = '.$team_player[$row->teamplayer_id] );
 $query->where('me.project_position_id = '.$row->project_position_id );
 $query->where('me.came_in = '.$row->came_in );
 //$query->where('me.in_for = '.$row->in_for );
@@ -1160,7 +1013,7 @@ $result_me = $db->loadResult();
 
 if ( $result_me )
 {
-$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Project ('.$row->project_id.') Match Player: ( '.$row->id.' ) in der Tabelle vorhanden!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Match Player: ( '.$row->id.' ) in der Tabelle vorhanden!</strong>'.'</span>';
 $my_text .= '<br />';     
 }
 else
@@ -1169,21 +1022,21 @@ $mdl = JModelLegacy::getInstance("matchplayer", "sportsmanagementModel");
 $mdlTable = $mdl->getTable();   
 
 $mdlTable->match_id = $row->match_id;
-$mdlTable->teamplayer_id = self::$team_player[$row->project_id][$row->teamplayer_id];
+$mdlTable->teamplayer_id = $team_player[$row->teamplayer_id];
 $mdlTable->project_position_id = $row->project_position_id;
 $mdlTable->came_in = $row->came_in;
-$mdlTable->in_for = self::$team_player[$row->project_id][$row->in_for];
+$mdlTable->in_for = $row->in_for;
 $mdlTable->out = $row->out;
 $mdlTable->in_out_time = $row->in_out_time;
 if ($mdlTable->store()===false)
 {
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Project ('.$row->project_id.') Match Player: ( '.$row->id.' ) in der Tabelle vorhanden!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Match Player: ( '.$row->id.' ) in der Tabelle vorhanden!</strong>'.'</span>';
 $my_text .= '<br />'; 
 }
 else
 {
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Project ('.$row->project_id.') Match Player: ( '.$row->id.' ) in der Tabelle angelegt!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Match Player: ( '.$row->id.' ) in der Tabelle angelegt!</strong>'.'</span>';
 $my_text .= '<br />'; 
 }
 
@@ -1200,15 +1053,11 @@ self::$_success['Match Player:'] = $my_text;
  * jetzt werden die match staff importiert
  */
 $my_text = '';
-$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-$my_text .= '<br />';
 $query = $db->getQuery(true);
 $query->clear();
-$query->select('me.*,r.project_id');
+$query->select('me.*');
 $query->from('#__joomleague_match_staff as me');
 $query->join('INNER', '#__sportsmanagement_match AS m ON m.id = me.match_id');
-$query->join('INNER', '#__sportsmanagement_round AS r ON r.id = m.round_id');
-$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = r.project_id');
 $db->setQuery($query);
 $result = $db->loadObjectList();
 
@@ -1227,7 +1076,7 @@ $query->clear();
 $query->select('me.id');
 $query->from('#__sportsmanagement_match_staff as me');
 $query->where('me.match_id = '.$row->match_id );
-$query->where('me.team_staff_id = '.self::$team_staff[$row->project_id][$row->team_staff_id] );
+$query->where('me.team_staff_id = '.$team_staff[$row->team_staff_id] );
 $query->where('me.project_position_id = '.$row->project_position_id );
 
 $db->setQuery($query);
@@ -1235,7 +1084,7 @@ $result_me = $db->loadResult();
 
 if ( $result_me )
 {
-$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Project ('.$row->project_id.') Match Staff: ( '.$row->id.' ) in der Tabelle vorhanden!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Match Staff: ( '.$row->id.' ) in der Tabelle vorhanden!</strong>'.'</span>';
 $my_text .= '<br />';     
 }
 else
@@ -1244,18 +1093,18 @@ $mdl = JModelLegacy::getInstance("matchstaff", "sportsmanagementModel");
 $mdlTable = $mdl->getTable();   
 
 $mdlTable->match_id = $row->match_id;
-$mdlTable->team_staff_id = self::$team_staff[$row->project_id][$row->team_staff_id];
+$mdlTable->team_staff_id = $team_staff[$row->team_staff_id];
 $mdlTable->project_position_id = $row->project_position_id;
 
 if ($mdlTable->store()===false)
 {
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Project ('.$row->project_id.') Match Staff: ( '.$row->id.' ) in der Tabelle vorhanden!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Match Staff: ( '.$row->id.' ) in der Tabelle vorhanden!</strong>'.'</span>';
 $my_text .= '<br />'; 
 }
 else
 {
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Project ('.$row->project_id.') Match Staff: ( '.$row->id.' ) in der Tabelle angelegt!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Match Staff: ( '.$row->id.' ) in der Tabelle angelegt!</strong>'.'</span>';
 $my_text .= '<br />'; 
 }
 
@@ -1272,15 +1121,11 @@ self::$_success['Match Staff:'] = $my_text;
  * jetzt werden die match staff statistic importiert
  */
 $my_text = '';
-$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-$my_text .= '<br />';
 $query = $db->getQuery(true);
 $query->clear();
-$query->select('me.*,r.project_id');
+$query->select('me.*');
 $query->from('#__joomleague_match_staff_statistic as me');
 $query->join('INNER', '#__sportsmanagement_match AS m ON m.id = me.match_id');
-$query->join('INNER', '#__sportsmanagement_round AS r ON r.id = m.round_id');
-$query->join('INNER', '#__sportsmanagement_project AS p ON p.id = r.project_id');
 $db->setQuery($query);
 $result = $db->loadObjectList();
 
@@ -1300,7 +1145,7 @@ $query->select('me.id');
 $query->from('#__sportsmanagement_match_staff_statistic as me');
 $query->where('me.match_id = '.$row->match_id );
 $query->where('me.projectteam_id = '.$row->projectteam_id );
-$query->where('me.team_staff_id = '.self::$team_staff[$row->project_id][$row->team_staff_id] );
+$query->where('me.team_staff_id = '.$team_staff[$row->team_staff_id] );
 $query->where('me.statistic_id = '.$row->statistic_id );
 
 
@@ -1309,7 +1154,7 @@ $result_me = $db->loadResult();
 
 if ( $result_me )
 {
-$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Project ('.$row->project_id.') Match Staff Statistic: ( '.$row->id.' ) in der Tabelle vorhanden!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Match Staff Statistic: ( '.$row->id.' ) in der Tabelle vorhanden!</strong>'.'</span>';
 $my_text .= '<br />';     
 }
 else
@@ -1319,18 +1164,18 @@ $mdlTable = $mdl->getTable();
 
 $mdlTable->match_id = $row->match_id;
 $mdlTable->projectteam_id = $row->projectteam_id;
-$mdlTable->team_staff_id = self::$team_staff[$row->project_id][$row->team_staff_id];
+$mdlTable->team_staff_id = $team_staff[$row->team_staff_id];
 $mdlTable->statistic_id = $row->statistic_id;
 
 if ($mdlTable->store()===false)
 {
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Project ('.$row->project_id.') Match Staff Statistic: ( '.$row->id.' ) in der Tabelle vorhanden!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Match Staff Statistic: ( '.$row->id.' ) in der Tabelle vorhanden!</strong>'.'</span>';
 $my_text .= '<br />'; 
 }
 else
 {
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Project ('.$row->project_id.') Match Staff Statistic: ( '.$row->id.' ) in der Tabelle angelegt!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Match Staff Statistic: ( '.$row->id.' ) in der Tabelle angelegt!</strong>'.'</span>';
 $my_text .= '<br />'; 
 }
 
@@ -1347,165 +1192,8 @@ $my_text .= '<br />';
 }
 self::$_success['Match Staff Statistic:'] = $my_text;
 
-/**
- * jetzt werden die templates umgesetzt
- */
-$my_text = '';
-$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-$my_text .= '<br />';
-$defaultpath = JPATH_COMPONENT_SITE.DS.'settings'.DS.'default';
-$query = $db->getQuery(true); 
-$query->clear();
-// Select some fields
-$query->select('*');
-// From the table
-$query->from('#__sportsmanagement_template_config');
-$db->setQuery($query);
-$result = $db->loadObjectList();
 
-if ( $result )
-{
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' __sportsmanagement_template_config -> <br><pre>'.print_r($result,true).'</pre>'),'');
 
-foreach( $result as $row )
-{
-$defaultvalues = array();
-$defaultvalues = explode('\n', $row->params);
-$parameter = new JRegistry;
-                    
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-$ini = $parameter->loadString($defaultvalues[0]);
-}
-else
-{
-$ini = $parameter->loadINI($defaultvalues[0]);
-}
-
-$xmlfile = $defaultpath.DS.$row->template.'.xml';
-
-/**
- * ist die datei vorhanden ?
- */
-if( file_exists($xmlfile) )
-{
-
-$newparams = array();
-$xml = JFactory::getXML($xmlfile,true);
-foreach ($xml->fieldset as $paramGroup)
-{
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' paramGroup -> '.$template.' <pre>'.print_r($paramGroup,true).'</pre>'),'');
-foreach ($paramGroup->field as $param)
-{
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' param -> '.$template.' <pre>'.print_r($param,true).'</pre>'),'');
-$newparams[(string)$param->attributes()->name] = (string)$param->attributes()->default;
-}
-} 
-
-foreach ( $newparams as $key => $value )
-{
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' key -> '.$template.' <pre>'.print_r($key,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' key ini -> '.$template.' <pre>'.print_r($ini->get($key),true).'</pre>'),'');
-    
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-$value = $ini->get($key);
-}
-else
-{
-//$value = $ini->getValue($key);
-}
-if ( isset($value) )
-{
-$newparams[$key] = $value;
-}
-} 
-
-$t_params = json_encode( $newparams ); 
-                            
-}
-else
-{
-$ini = $parameter->toArray($ini);
-$t_params = json_encode( $ini );     
-}   
-
-// Create an object for the record we are going to update.
-$object = new stdClass();
-// Must be a valid primary key value.
-$object->id = $row->id;
-$object->params = $t_params;
-// Update their details in the table using id as the primary key.
-$result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_template_config', $object, 'id');
-if ($result_update)
-{
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Project ('.$row->project_id.') Template: ( '.$row->id.' '.$row->template.' ) umgesetzt!</strong>'.'</span>';
-$my_text .= '<br />'; 
-}
-else
-{
-$my_text .= '<span style="color:'.self::$storeFailedColor. '"<strong>Project ('.$row->project_id.') Template: ( '.$row->id.' '.$row->template.' ) nicht umgesetzt!</strong>'.'</span>';
-$my_text .= '<br />'; 
-}
-             
-}
-
-}        
-self::$_success['Template:'] = $my_text;        
-
-/**
- * und zum schluss müssen wir noch die  konfiguration der komponente änder
- * damit der import nicht 2 mal durchgeführt wird
- */
-$params = JComponentHelper::getParams($option);
-$xmlfile = JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'config.xml';
-
-$jRegistry = new JRegistry;
-//$jRegistry->loadString($params->toString('ini'), 'ini');
-$ini = $jRegistry->loadString($params);
-
-$newparams = array();
-$xml = JFactory::getXML($xmlfile,true);
-foreach ($xml->fieldset as $paramGroup)
-{
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' paramGroup -> '.$template.' <pre>'.print_r($paramGroup,true).'</pre>'),'');
-foreach ($paramGroup->field as $param)
-{
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' param -> '.$template.' <pre>'.print_r($param,true).'</pre>'),'');
-$newparams[(string)$param->attributes()->name] = (string)$param->attributes()->default;
-}
-} 
-
-foreach ( $newparams as $key => $value )
-{
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' key -> '.$template.' <pre>'.print_r($key,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' key ini -> '.$template.' <pre>'.print_r($ini->get($key),true).'</pre>'),'');
-    
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-$value = $ini->get($key);
-}
-else
-{
-//$value = $ini->getValue($key);
-}
-if ( isset($value) )
-{
-$newparams[$key] = $value;
-}
-} 
-
-$newparams['cfg_jl_import'] = 0;
-
-$t_params = json_encode( $newparams ); 
-
-//$db->setQuery('UPDATE #__extensions SET params = ' .
-//                                $db->quote( $t_params ) .
-//                                ' WHERE name = "com_sportsmanagement"' );
-//                                $db->query();
-                                
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params ->  <pre>'.print_r($t_params,true).'</pre>'),'');
 
 $app->setUserState( "$option.success", self::$_success );
                     

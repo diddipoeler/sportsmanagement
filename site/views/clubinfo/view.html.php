@@ -158,16 +158,30 @@ class sportsmanagementViewClubInfo extends JViewLegacy
 			$pageTitle .= ': ' . $this->club->name;
 		}
 		
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' overallconfig<br><pre>'.print_r($this->overallconfig,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' overallconfig<br><pre>'.print_r($this->overallconfig,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
         
-        $this->assignRef( 'modid',			$this->club->id );
+        $this->assignRef( 'modid',$this->club->id );
 		// clubhistory
-        $this->assign( 'clubhistory',			$model->getClubHistory($this->club->id) );
-		$this->assign( 'clubhistoryhtml',			$model->getClubHistoryHTML($this->club->id) );
+        $this->assign('clubhistory',$model->getClubHistory($this->club->id) );
+		$this->assign('clubhistoryhtml',$model->getClubHistoryHTML($this->club->id) );
     // clubhistorytree
-		$this->assign( 'clubhistorytree',			$model->getClubHistoryTree($this->club->id,$this->club->new_club_id) );
-		$this->assign( 'clubhistorysorttree',			$model->getSortClubHistoryTree($this->clubhistorytree,$this->club->id,$this->club->name) );
+		$this->assign('clubhistorytree',$model->getClubHistoryTree($this->club->id,$this->club->new_club_id) );
+		$this->assign('clubhistorysorttree',$model->getSortClubHistoryTree($this->clubhistorytree,$this->club->id,$this->club->name) );
+        
+        $historyobj = $model::$historyobj;
+        
+        if ( !$historyobj )
+        {
+        $this->clubhistorysorttree = '';    
+        }
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' historyobj<br><pre>'.print_r($historyobj,true).'</pre>'),'');
+        
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubhistory<br><pre>'.print_r($this->clubhistory,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubhistoryhtml<br><pre>'.print_r($this->clubhistoryhtml,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubhistorytree<br><pre>'.print_r($this->clubhistorytree,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubhistorysorttree<br><pre>'.print_r($this->clubhistorysorttree,true).'</pre>'),'');
         
         $document->addScript( JURI::base().'components/'.$option.'/assets/js/dtree.js' );        
         $document->addStyleSheet(JURI::base().'components/'.$option.'/assets/css/dtree.css');  

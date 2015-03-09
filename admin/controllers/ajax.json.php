@@ -65,6 +65,44 @@ class sportsmanagementControllerAjax extends JControllerLegacy
                 parent::__construct();
         }
         
+        
+        /**
+         * sportsmanagementControllerAjax::locationzipcodeoptions()
+         * 
+         * @return void
+         */
+        public function locationzipcodeoptions()
+        {
+        $model = $this->getModel('ajax');
+                $req = JRequest::getVar('required', false);
+                $required = ($req == 'true' || $req == '1') ? true : false;
+                echo json_encode((array) $model->getlocationzipcodeoptions(JRequest::getVar( 'zipcode' ), $required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' ),JRequest::getVar( 'country' ) ));
+                JFactory::getApplication()->close();    
+        } 
+        
+        
+        /**
+         * sportsmanagementControllerAjax::countryzipcodeoptions()
+         * 
+         * @return void
+         */
+        public function countryzipcodeoptions()
+        {
+        $model = $this->getModel('ajax');
+                $req = JRequest::getVar('required', false);
+                $required = ($req == 'true' || $req == '1') ? true : false;
+                echo json_encode((array) $model->getcountryzipcodeoptions(JRequest::getVar( 'country' ), $required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' ) ));
+                JFactory::getApplication()->close();    
+        } 
+        
+        
+        
+        
+        /**
+         * sportsmanagementControllerAjax::projects()
+         * 
+         * @return void
+         */
         public function projects()
         {
         $model = $this->getModel('ajax');

@@ -56,7 +56,7 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
 {
 	?>
 <!--	<div class="componentheading"> -->
-		<div class="container">
+<!--		<div class="container"> -->
         <table class="table">
 			<tbody>
 				<?php
@@ -230,7 +230,7 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->project->
 				</tr>
 			</tbody>
 		</table>
-	</div>
+<!--	</div> -->
 <?php 
 } else {
 	if ($this->overallconfig['show_print_button'] == 1) {

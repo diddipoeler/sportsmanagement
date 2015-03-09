@@ -183,18 +183,18 @@ class sportsmanagementModelEventtypes extends JModelList
 
 
     
-    /**
-	* Method to return a events array (id,name)
-	*
-	* @access  public
-	* @return  array
-	* @since 0.1
-	*/
-	function getEvents($sports_type_id  = 0)
+    
+	/**
+	 * sportsmanagementModelEventtypes::getEvents()
+	 * 
+	 * @param integer $sports_type_id
+	 * @return
+	 */
+	public static function getEvents($sports_type_id  = 0)
 	{
 		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
-        $query = $this->_db->getQuery(true);
+        $query = JFactory::getDbo()->getQuery(true);
         // Select some fields
 		$query->select('evt.id AS value, concat(evt.name, " (" , st.name, ")") AS text,evt.name as posname,st.name AS stname');
         // From table
@@ -208,10 +208,10 @@ class sportsmanagementModelEventtypes extends JModelList
         }
         $query->order('evt.name ASC');
                 
-		$this->_db->setQuery($query);
-		if (!$result=$this->_db->loadObjectList())
+		JFactory::getDbo()->setQuery($query);
+		if ( !$result = JFactory::getDbo()->loadObjectList() )
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			return false;
 		}
 		foreach ($result as $position)
@@ -233,8 +233,8 @@ class sportsmanagementModelEventtypes extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
-        $db		= $this->getDbo();
-		$query	= $db->getQuery(true);
+        //$db		= $this->getDbo();
+		$query = JFactory::getDbo()->getQuery(true);
         // Select some fields
 		$query->select('p.id AS value,p.name as posname,st.name AS stname,concat(p.name, \' (\' , st.name, \')\') AS text');
         // From table
@@ -258,10 +258,10 @@ class sportsmanagementModelEventtypes extends JModelList
 //					WHERE pe.position_id='. $id.'
 //					ORDER BY pe.ordering ASC ';
 
-		$db->setQuery($query);
-		if ( !$result = $db->loadObjectList())
+		JFactory::getDbo()->setQuery($query);
+		if ( !$result = JFactory::getDbo()->loadObjectList())
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			return false;
 		}
 		foreach ($result as $event)

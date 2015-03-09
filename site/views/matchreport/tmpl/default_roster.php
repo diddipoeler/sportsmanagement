@@ -82,7 +82,8 @@ if (!empty($this->matchplayerpositions))
 								  {
                   $player->jerseynumber = $player->trikot_number;
                   }
-                  
+
+
 									//echo 'player->position_id -> '.$player->position_id.'<br>';
                                     //echo 'pos->position_id -> '.$pos->position_id.'<br>';
                                     //echo 'player->ptid -> '.$player->ptid.'<br>';
@@ -95,6 +96,13 @@ if (!empty($this->matchplayerpositions))
 										?>
 										<li <?php echo ($this->config['show_player_picture'] == 2 ? 'class="list_pictureonly_left"' : 'class="list"') ?>>
 											<?php
+/**
+* ist der spieler ein spielführer ?
+*/                  
+if ( $player->captain != 0 )
+{
+echo ' '.'&copy;';                  
+}                                            
 											$player_link = sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$player->team_slug,$player->person_slug);
 											$prefix = $player->jerseynumber ? $player->jerseynumber."." : null;
 											$match_player = sportsmanagementHelper::formatName($prefix,$player->firstname,$player->nickname,$player->lastname, $this->config["name_format"]);
@@ -321,6 +329,13 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $imgTitle, array
                           echo $match_player;
 												}
                                             }
+/**
+* ist der spieler ein spielführer ?
+*/                  
+if ( $player->captain != 0 )
+{
+echo ' '.'&copy;';                  
+} 
 											?>
 										</li>
 										<?php

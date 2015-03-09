@@ -153,9 +153,9 @@ public function __construct($config = array())
 	{
 		$app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
-        $search	= $this->getState('filter.search');
-        $search_nation	= $this->getState('filter.search_nation');
-        $search_project_position_id	= $this->getState('filter.project_position_id');
+        //$search	= $this->getState('filter.search');
+        //$search_nation	= $this->getState('filter.search_nation');
+        //$search_project_position_id	= $this->getState('filter.project_position_id');
         
         $this->_project_id	= $app->getUserState( "$option.pid", '0' );
         $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
@@ -190,16 +190,16 @@ public function __construct($config = array())
         $query->where('tp.season_id = '.$this->_season_id);
         $query->where('pref.project_id = '.$this->_project_id);
         
-        if ($search_project_position_id)
+        if ($this->getState('filter.project_position_id'))
 		{
-        $query->where('pref.project_position_id = '.$search_project_position_id);
+        $query->where('pref.project_position_id = '.$this->getState('filter.project_position_id'));
         }
         
-        if ($search)
+        if ($this->getState('filter.search'))
 		{
-        $query->where('(LOWER(p.lastname) LIKE ' . JFactory::getDbo()->Quote( '%' . $search . '%' ).
-						   'OR LOWER(p.firstname) LIKE ' . JFactory::getDbo()->Quote( '%' . $search . '%' ) .
-						   'OR LOWER(p.nickname) LIKE ' . JFactory::getDbo()->Quote( '%' . $search . '%' ) . ')');
+        $query->where('(LOWER(p.lastname) LIKE ' . JFactory::getDbo()->Quote( '%' . $this->getState('filter.search') . '%' ).
+						   'OR LOWER(p.firstname) LIKE ' . JFactory::getDbo()->Quote( '%' . $this->getState('filter.search') . '%' ) .
+						   'OR LOWER(p.nickname) LIKE ' . JFactory::getDbo()->Quote( '%' . $this->getState('filter.search') . '%' ) . ')');
         }
         
 //        $query->select(array('p.firstname',
@@ -225,7 +225,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 
 		return $query;
         

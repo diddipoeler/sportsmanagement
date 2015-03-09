@@ -272,7 +272,10 @@ $query = $db->getQuery(true);
         {
         $src = JComponentHelper::getParams($option)->get('ph_flags','');
         } 
-        
+        else
+        {
+        $src = COM_SPORTSMANAGEMENT_PICTURE_SERVER.$src;    
+        }
         
 		$html='<img src="'.$src.'" alt="'.self::getCountryName($countrycode).'" ';
 		$html .= 'title="'.self::getCountryName($countrycode).'" '.$attributes.' />';

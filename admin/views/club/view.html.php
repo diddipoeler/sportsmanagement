@@ -106,6 +106,10 @@ class sportsmanagementViewClub extends sportsmanagementView
 		$this->item = $item;
 		$this->script = $script;
         
+        $this->form->setValue('country', 'request', $this->item->country);
+        $this->form->setValue('zipcode', 'request', $this->item->zipcode);
+        $this->form->setValue('location', 'request', $this->item->location);
+        
         if ( $this->item->id )
         {
             // alles ok

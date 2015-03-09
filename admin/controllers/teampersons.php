@@ -66,9 +66,10 @@ class sportsmanagementControllerteampersons extends JControllerAdmin
 	 */
     function saveshort()
 	{
+	   $post = JRequest::get( 'post' );
 	   $model = $this->getModel();
        $model->saveshort();
-       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));
     } 
   
   /**

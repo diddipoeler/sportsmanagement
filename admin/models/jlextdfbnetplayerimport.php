@@ -93,6 +93,11 @@ var $import_version='';
 var $debug_info = false;
 var $_project_id = 0;
 
+/**
+ * sportsmanagementModeljlextdfbnetplayerimport::__construct()
+ * 
+ * @return void
+ */
 function __construct( )
 	{
 	   $option = JRequest::getCmd('option');
@@ -110,6 +115,12 @@ function __construct( )
 	
 	}
 
+/**
+ * sportsmanagementModeljlextdfbnetplayerimport::dump_header()
+ * 
+ * @param mixed $text
+ * @return void
+ */
 private function dump_header($text)
 	{
 		echo "<h1>$text</h1>";
@@ -120,6 +131,19 @@ private function dump_header($text)
 		echo "<b>$description</b><pre>".print_r($variable,true)."</pre>";
 	}
     
+/**
+ * sportsmanagementModeljlextdfbnetplayerimport::multisort()
+ * 
+ * @param mixed $array
+ * @param mixed $sort_by
+ * @param mixed $key1
+ * @param mixed $key2
+ * @param mixed $key3
+ * @param mixed $key4
+ * @param mixed $key5
+ * @param mixed $key6
+ * @return
+ */
 function multisort($array, $sort_by, $key1, $key2=NULL, $key3=NULL, $key4=NULL, $key5=NULL, $key6=NULL)
 {
 // usage (only enter the keys you want sorted):
@@ -153,6 +177,12 @@ function multisort($array, $sort_by, $key1, $key2=NULL, $key3=NULL, $key4=NULL, 
     }
 
 
+/**
+ * sportsmanagementModeljlextdfbnetplayerimport::super_unique()
+ * 
+ * @param mixed $array
+ * @return
+ */
 function super_unique($array) 
 { 
 $result = array_map("unserialize", array_unique(array_map("serialize", $array)));
@@ -168,6 +198,14 @@ $result[$key] = $this->super_unique($value);
 return $result; 
 }
 
+/**
+ * sportsmanagementModeljlextdfbnetplayerimport::property_value_in_array()
+ * 
+ * @param mixed $array
+ * @param mixed $property
+ * @param mixed $value
+ * @return
+ */
 function property_value_in_array($array, $property, $value) 
 {
     $flag = false;
@@ -202,6 +240,11 @@ function property_value_in_array($array, $property, $value)
 }
 
 
+/**
+ * sportsmanagementModeljlextdfbnetplayerimport::getUpdateData()
+ * 
+ * @return
+ */
 function getUpdateData()
 	{
   $option = JRequest::getCmd('option');
@@ -345,6 +388,13 @@ $my_text .= '<span style="color:green">';
 	return $this->_success_text;
 	}
 
+/**
+ * sportsmanagementModeljlextdfbnetplayerimport::getProjectUpdateData()
+ * 
+ * @param mixed $csvdata
+ * @param mixed $project
+ * @return
+ */
 function getProjectUpdateData($csvdata,$project)
 	{
   //global $app, $option;
@@ -421,6 +471,11 @@ $exportmatch[] = $tempmatch;
   }
   
   	
+/**
+ * sportsmanagementModeljlextdfbnetplayerimport::getData()
+ * 
+ * @return
+ */
 function getData()
 	{
   //global $app, $option;
@@ -580,7 +635,9 @@ $startline = 1 ;
 }
 elseif ( $whichfile == 'icsfile' )
 {
-// kalender file vom bfv anfang    
+/**
+* kalender file vom bfv anfang
+*/    
 $ical = new ical();
 $ical->parse($file);
 
@@ -1115,7 +1172,9 @@ echo $this->pane->endPanel();
 }     
    
 }    
-// kalender file vom bfv ende  
+/**
+ * kalender file vom bfv ende
+ */  
 
 
 
@@ -1401,9 +1460,9 @@ elseif ( $whichfile == 'matchfile' )
 $valueheim = $csv->data[$a]['Heim Mannschaft'];
 if ( empty($valueheim) )
 {
-	$valueheim = $csv->data[$a]['Heimmannschaft'];
+$valueheim = $csv->data[$a]['Heimmannschaft'];
 }
-if ( $valueheim != 'Spielfrei' )
+if ( $valueheim != 'Spielfrei' && $valueheim )
 {
 if (in_array($valueheim, $exportteamstemp)) 
 {
@@ -1506,9 +1565,9 @@ $lfdnumberteam++;
 $valuegast = $csv->data[$a]['Gast Mannschaft'];
 if ( empty($valuegast) )
 {
-	$valuegast = $csv->data[$a]['Gastmannschaft'];
+$valuegast = $csv->data[$a]['Gastmannschaft'];
 }
-if ( $valuegast != 'Spielfrei' )
+if ( $valuegast != 'Spielfrei' && $valuegast )
 {
 if (in_array($valuegast, $exportteamstemp)) 
 {
@@ -1655,26 +1714,28 @@ if (array_key_exists($valueperson, $exportpersonstemp))
 {
 
 if ( isset($csv->data[$a]['Heimmannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Heimmannschaft'];    
-    }
-    if ( isset($csv->data[$a]['Gastmannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Gastmannschaft'];    
-    }
-    if ( isset($csv->data[$a]['Heim Mannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Heim Mannschaft'];    
-    }
-    if ( isset($csv->data[$a]['Gast Mannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Gast Mannschaft'];    
-    }  
+{
+$bemerkung = $csv->data[$a]['Heimmannschaft'];    
+}
+if ( isset($csv->data[$a]['Gastmannschaft']) )
+{
+$bemerkung = $csv->data[$a]['Gastmannschaft'];    
+}
+if ( isset($csv->data[$a]['Heim Mannschaft']) )
+{
+$bemerkung = $csv->data[$a]['Heim Mannschaft'];    
+}
+if ( isset($csv->data[$a]['Gast Mannschaft']) )
+{
+$bemerkung = $csv->data[$a]['Gast Mannschaft'];    
+}  
     
-if ( $bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' )
-  {
-  // nichts machen
-  }
+if ( $bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' || $bemerkung == '')
+{
+/**
+ * nichts machen
+ */
+}
 else
 {
     $tempmatchreferee = new stdClass();
@@ -1718,26 +1779,28 @@ $temp->info = 'Schiri';
 $exportpersons[] = $temp; 
 
 if ( isset($csv->data[$a]['Heimmannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Heimmannschaft'];    
-    }
-    if ( isset($csv->data[$a]['Gastmannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Gastmannschaft'];    
-    }
-    if ( isset($csv->data[$a]['Heim Mannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Heim Mannschaft'];    
-    }
-    if ( isset($csv->data[$a]['Gast Mannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Gast Mannschaft'];    
-    }  
+{
+$bemerkung = $csv->data[$a]['Heimmannschaft'];    
+}
+if ( isset($csv->data[$a]['Gastmannschaft']) )
+{
+$bemerkung = $csv->data[$a]['Gastmannschaft'];    
+}
+if ( isset($csv->data[$a]['Heim Mannschaft']) )
+{
+$bemerkung = $csv->data[$a]['Heim Mannschaft'];    
+}
+if ( isset($csv->data[$a]['Gast Mannschaft']) )
+{
+$bemerkung = $csv->data[$a]['Gast Mannschaft'];    
+}  
     
-if ( $bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' )
-  {
-  // nichts machen
-  }
+if ( $bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' || $bemerkung == '' )
+{
+/**
+ * nichts machen
+ */
+}
 else
 {
     $tempmatchreferee = new stdClass();
@@ -1758,26 +1821,28 @@ if (array_key_exists($valueperson1, $exportpersonstemp))
 {
 
 if ( isset($csv->data[$a]['Heimmannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Heimmannschaft'];    
-    }
-    if ( isset($csv->data[$a]['Gastmannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Gastmannschaft'];    
-    }
-    if ( isset($csv->data[$a]['Heim Mannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Heim Mannschaft'];    
-    }
-    if ( isset($csv->data[$a]['Gast Mannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Gast Mannschaft'];    
-    }  
+{
+$bemerkung = $csv->data[$a]['Heimmannschaft'];    
+}
+if ( isset($csv->data[$a]['Gastmannschaft']) )
+{
+$bemerkung = $csv->data[$a]['Gastmannschaft'];    
+}
+if ( isset($csv->data[$a]['Heim Mannschaft']) )
+{
+$bemerkung = $csv->data[$a]['Heim Mannschaft'];    
+}
+if ( isset($csv->data[$a]['Gast Mannschaft']) )
+{
+$bemerkung = $csv->data[$a]['Gast Mannschaft'];    
+}  
     
-if ( $bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' )
-  {
-  // nichts machen
-  }
+if ( $bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' || $bemerkung == '' )
+{
+/**
+ * nichts machen
+ */
+}
 else
 {
     $tempmatchreferee = new stdClass();
@@ -1821,26 +1886,28 @@ $temp->info = 'Schiri';
 $exportpersons[] = $temp; 
 
 if ( isset($csv->data[$a]['Heimmannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Heimmannschaft'];    
-    }
-    if ( isset($csv->data[$a]['Gastmannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Gastmannschaft'];    
-    }
-    if ( isset($csv->data[$a]['Heim Mannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Heim Mannschaft'];    
-    }
-    if ( isset($csv->data[$a]['Gast Mannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Gast Mannschaft'];    
-    }  
+{
+$bemerkung = $csv->data[$a]['Heimmannschaft'];    
+}
+if ( isset($csv->data[$a]['Gastmannschaft']) )
+{
+$bemerkung = $csv->data[$a]['Gastmannschaft'];    
+}
+if ( isset($csv->data[$a]['Heim Mannschaft']) )
+{
+$bemerkung = $csv->data[$a]['Heim Mannschaft'];    
+}
+if ( isset($csv->data[$a]['Gast Mannschaft']) )
+{
+$bemerkung = $csv->data[$a]['Gast Mannschaft'];    
+}  
     
-if ( $bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' )
-  {
-  // nichts machen
-  }
+if ( $bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' || $bemerkung == '' )
+{
+/**
+ * nichts machen
+ */
+}
 else
 {
     $tempmatchreferee = new stdClass();
@@ -1861,26 +1928,28 @@ if (array_key_exists($valueperson2, $exportpersonstemp))
 {
 
 if ( isset($csv->data[$a]['Heimmannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Heimmannschaft'];    
-    }
-    if ( isset($csv->data[$a]['Gastmannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Gastmannschaft'];    
-    }
-    if ( isset($csv->data[$a]['Heim Mannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Heim Mannschaft'];    
-    }
-    if ( isset($csv->data[$a]['Gast Mannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Gast Mannschaft'];    
-    }  
+{
+$bemerkung = $csv->data[$a]['Heimmannschaft'];    
+}
+if ( isset($csv->data[$a]['Gastmannschaft']) )
+{
+$bemerkung = $csv->data[$a]['Gastmannschaft'];    
+}
+if ( isset($csv->data[$a]['Heim Mannschaft']) )
+{
+$bemerkung = $csv->data[$a]['Heim Mannschaft'];    
+}
+if ( isset($csv->data[$a]['Gast Mannschaft']) )
+{
+$bemerkung = $csv->data[$a]['Gast Mannschaft'];    
+}  
     
-if ( $bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' )
-  {
-  // nichts machen
-  }
+if ( $bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' || $bemerkung == '' )
+{
+/**
+ * nichts machen
+ */
+}
 else
 {
     $tempmatchreferee = new stdClass();
@@ -1924,25 +1993,27 @@ $temp->info = 'Schiri';
 $exportpersons[] = $temp; 
 
 if ( isset($csv->data[$a]['Heimmannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Heimmannschaft'];    
-    }
-    if ( isset($csv->data[$a]['Gastmannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Gastmannschaft'];    
-    }
-    if ( isset($csv->data[$a]['Heim Mannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Heim Mannschaft'];    
-    }
-    if ( isset($csv->data[$a]['Gast Mannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Gast Mannschaft'];    
-    }  
-if ( $bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' )
-  {
-  // nichts machen
-  }
+{
+$bemerkung = $csv->data[$a]['Heimmannschaft'];    
+}
+if ( isset($csv->data[$a]['Gastmannschaft']) )
+{
+$bemerkung = $csv->data[$a]['Gastmannschaft'];    
+}
+if ( isset($csv->data[$a]['Heim Mannschaft']) )
+{
+$bemerkung = $csv->data[$a]['Heim Mannschaft'];    
+}
+if ( isset($csv->data[$a]['Gast Mannschaft']) )
+{
+$bemerkung = $csv->data[$a]['Gast Mannschaft'];    
+}  
+if ( $bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' || $bemerkung == '')
+{
+/**
+ * nichts machen
+ */
+}
 else
 {
     $tempmatchreferee = new stdClass();
@@ -1960,26 +2031,28 @@ $lfdnumberperson++;
 
 
 if ( isset($csv->data[$a]['Heimmannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Heimmannschaft'];    
-    }
-    if ( isset($csv->data[$a]['Gastmannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Gastmannschaft'];    
-    }
-    if ( isset($csv->data[$a]['Heim Mannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Heim Mannschaft'];    
-    }
-    if ( isset($csv->data[$a]['Gast Mannschaft']) )
-    {
-    $bemerkung = $csv->data[$a]['Gast Mannschaft'];    
-    }  
-//   echo 'paarung -> '.$csv->data[$a]['Heimmannschaft']." <-> ".$csv->data[$a]['Gastmannschaft'].'<br>';
-  if ( $bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' )
-  {
-  // nichts machen
-  }
+{
+$bemerkung = $csv->data[$a]['Heimmannschaft'];    
+}
+if ( isset($csv->data[$a]['Gastmannschaft']) )
+{
+$bemerkung = $csv->data[$a]['Gastmannschaft'];    
+}
+if ( isset($csv->data[$a]['Heim Mannschaft']) )
+{
+$bemerkung = $csv->data[$a]['Heim Mannschaft'];    
+}
+if ( isset($csv->data[$a]['Gast Mannschaft']) )
+{
+$bemerkung = $csv->data[$a]['Gast Mannschaft'];    
+}  
+
+if ( $bemerkung == 'Spielfrei' || $bemerkung == 'Spielfrei' || $bemerkung == '' )
+{
+/**
+ * nichts machen
+ */
+}
   else
   {
   $round_id = $csv->data[$a]['Spieltag'];
@@ -2058,17 +2131,26 @@ if ( isset($csv->data[$a]['Heimmannschaft']) )
   {
   $tempmatch->playground_id = $exportplaygroundtemp[$valueplayground];
   }
-	
-	if ( array_key_exists($tempmatch->match_number,$temp_match_number) )
-	{
-  $exportmatch[] = $tempmatch;
-  }
-  else
-  {
-  $temp_match_number[$tempmatch->match_number] = $tempmatch->match_number;
-  $exportmatch[] = $tempmatch;
-  }
-  
+
+
+if ( empty($tempmatch->projectteam1_dfbnet) || empty($tempmatch->projectteam2_dfbnet) )
+{
+/**
+ * keine spiele anfügen
+ */    
+}
+else
+{	
+if ( array_key_exists($tempmatch->match_number,$temp_match_number) )
+{
+$exportmatch[] = $tempmatch;
+}
+else
+{
+$temp_match_number[$tempmatch->match_number] = $tempmatch->match_number;
+$exportmatch[] = $tempmatch;
+}
+}  
   $lfdnumbermatch++; 
   $lfdnumber++;
   }

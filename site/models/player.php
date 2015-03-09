@@ -589,7 +589,7 @@ class sportsmanagementModelPlayer extends JModelLegacy
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
        
-       
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cards<br><pre>'.print_r($cards,true).'</pre>'),'');
        
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {

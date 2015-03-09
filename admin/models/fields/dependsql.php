@@ -131,12 +131,17 @@ class JFormFieldDependSQL extends JFormField
             case 'com_modules':
             $div = 'params';
             break;
+            case 'com_sportsmanagement':
+            //$div = '';
+            $div = 'request';
+            break;
             default:
             $div = 'request';
             break;
         }
         
         $value = $this->form->getValue($val,$div);
+        $key_value = $this->form->getValue($key,$div);
         
         //$div = 'request';
 //        }
@@ -149,10 +154,14 @@ class JFormFieldDependSQL extends JFormField
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' option -> '.$option.''),'Notice');
 //        
 //        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database -> '.$this->form->getValue('cfg_which_database',$div).' name -> '.$this->name),'Notice');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value -> '.$this->value.''),'Notice');
+        
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' div -> '.$div.''),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value -> '.$value.''),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->value -> '.$this->value.''),'Notice');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' id -> '.$this->id.''),'Notice');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view -> '.$view.''),'Notice');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id -> '.$project_id.''),'Notice');
+
 //        }
 
 		$ctrl = $this->name;
@@ -215,6 +224,9 @@ switch ($view)
 {
     case 'project':
     $script[] = "						url: 'index.php?option=com_sportsmanagement&format=json&dbase=".$cfg_which_database."&slug=false&task=ajax.".$ajaxtask."&project=".$project_id."&".$depends."=' + value,";
+    break;
+    case 'club':
+    $script[] = "						url: 'index.php?option=com_sportsmanagement&format=json&dbase=".$cfg_which_database."&slug=false&task=ajax.".$ajaxtask."&country=".$key_value."&".$depends."=' + value,";
     break;
     default:
     $script[] = "						url: 'index.php?option=com_sportsmanagement&format=json&dbase=".$cfg_which_database."&slug=false&task=ajax.".$ajaxtask."&".$depends."=' + value,";

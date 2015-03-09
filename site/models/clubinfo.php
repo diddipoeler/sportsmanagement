@@ -60,7 +60,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy
     
     var $new_club_id = 0;
     var $historyhtml = '';
-	var $historyobj = array();
+	static $historyobj = array();
 
   var $catssorted = array();
   	
@@ -435,7 +435,7 @@ class sportsmanagementModelClubInfo extends JModelLegacy
   $temp->id = $row->id;
 	$temp->name = $row->name;
   $temp->slug = $row->slug;	
-  $this->historyobj[] = $temp;
+  self::$historyobj[] = $temp;
   
   if ( $row->new_club_id )
   {
@@ -443,12 +443,12 @@ class sportsmanagementModelClubInfo extends JModelLegacy
   }
   else
   {
-  return $this->historyobj;
+  return self::$historyobj;
   }
   
   }
 
-  return $this->historyobj;
+  return self::$historyobj;
   
 	}
     
@@ -673,6 +673,11 @@ class sportsmanagementModelClubInfo extends JModelLegacy
 	
   $jgcat_rows_sorted = Array();
   $jgcat_rows_sorted = $this->sortCategoryList($clubtree, $jgcat_rows_sorted);
+  
+//  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubtree<br><pre>'.print_r($clubtree,true).'</pre>'),'');
+//  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' root_catid<br><pre>'.print_r($root_catid,true).'</pre>'),'');
+//  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cat_name<br><pre>'.print_r($cat_name,true).'</pre>'),'');
+//  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jgcat_rows_sorted<br><pre>'.print_r($jgcat_rows_sorted,true).'</pre>'),'');
 
 
 

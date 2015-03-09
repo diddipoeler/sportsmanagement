@@ -103,6 +103,112 @@ class sportsmanagementModelAjax extends JModelLegacy
         
         
         /**
+         * sportsmanagementModelAjax::getlocationzipcodeoptions()
+         * 
+         * @param mixed $zipcode
+         * @param bool $required
+         * @param bool $slug
+         * @param bool $dabse
+         * @param integer $project_id
+         * @return
+         */
+        static function getlocationzipcodeoptions($zipcode, $required = false, $slug = false, $dabse = false, $country = NULL)
+        {
+            // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        
+        $result = array();
+
+        // Get a db connection.
+        if ( $dabse )
+        {
+            $db = JFactory::getDBO();
+        }
+        else
+        {
+            $db = sportsmanagementHelper::getDBConnection(TRUE,FALSE);
+        }
+        $query = $db->getQuery(true);
+        
+        $query->select('a.place_name AS value, concat(a.place_name, \' ( \',a.country_code,\' ) ( \',a.postal_code,\' ) \',a.admin_name1) AS text');
+        $query->from('#__sportsmanagement_countries_plz as a');
+        $query->join('INNER', '#__sportsmanagement_countries AS c ON c.alpha2 = a.country_code'); 
+        if ( $zipcode )
+        {
+        $query->where('a.postal_code LIKE ' . $db->Quote(''.$zipcode.'') );
+        $query->order('a.postal_code'); 
+        }
+        if ( $country )
+        {
+        $query->where('c.alpha3 LIKE ' . $db->Quote(''.$country.'') );
+        $query->order('a.place_name'); 
+        }
+        
+        //$query->order('a.postal_code');    
+                    
+        $db->setQuery($query);
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        
+        $result = $db->loadObjectList();
+            
+        return self::addGlobalSelectElement($result, $required); 
+            
+        }
+        
+        /**
+         * sportsmanagementModelAjax::getcountryzipcodeoptions()
+         * 
+         * @param mixed $country
+         * @param bool $required
+         * @param bool $slug
+         * @param bool $dabse
+         * @param integer $project_id
+         * @return
+         */
+        static function getcountryzipcodeoptions($country, $required = false, $slug = false, $dabse = false, $project_id = 0)
+        {
+            // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        
+        $result = array();
+
+        // Get a db connection.
+        if ( $dabse )
+        {
+            $db = JFactory::getDBO();
+        }
+        else
+        {
+            $db = sportsmanagementHelper::getDBConnection(TRUE,FALSE);
+        }
+        $query = $db->getQuery(true);
+        
+        $query->select('a.postal_code AS value, concat(a.postal_code, \' ( \',a.country_code,\' )  \',a.admin_name1) AS text');
+        $query->from('#__sportsmanagement_countries_plz as a');
+        $query->join('INNER', '#__sportsmanagement_countries AS c ON c.alpha2 = a.country_code'); 
+        $query->where('c.alpha3 LIKE ' . $db->Quote(''.$country.'') );
+        $query->group('a.postal_code'); 
+        $query->order('a.postal_code');    
+                    
+        $db->setQuery($query);
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        
+        $result = $db->loadObjectList();
+            
+        return self::addGlobalSelectElement($result, $required);    
+        }
+        
+        
+        
+        /**
          * sportsmanagementModelAjax::getProjectRoundOptions()
          * 
          * @param mixed $sports_type_id
@@ -209,8 +315,12 @@ class sportsmanagementModelAjax extends JModelLegacy
          */
         public static function getpersonagegroupoptions($sports_type_id, $required = false, $slug = false, $dabse = false, $project_id = 0 )
         {
-            $option = JRequest::getCmd('option');
-	   $app = JFactory::getApplication();
+            // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        
        $result = array();
 
         // Get a db connection.

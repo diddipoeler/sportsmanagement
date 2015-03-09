@@ -58,7 +58,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 
 	var $matchid = 0;
 	var $match = null;
-    var $projectid= 0;
+    var $projectid = 0;
     
     static $cfg_which_database = 0;
 
@@ -284,7 +284,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
        switch($which)
         {
             case 'player':
-            $query->select('mp.trikot_number,mp.teamplayer_id');
+            $query->select('mp.trikot_number,mp.teamplayer_id,mp.captain');
             $query->select('tp.jerseynumber');
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp');
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = mp.teamplayer_id ');
@@ -302,8 +302,14 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	   $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id ');
 	   $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st.team_id ');
 	   $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON tp.person_id = p.id ');
-	   $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = mp.project_position_id ');
+//	   $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = mp.project_position_id ');
+//	   $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id = pos.id ');
+       
+       $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position AS ppp on ppp.person_id = tp.person_id and ppp.persontype = tp.persontype');
+       $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = ppp.project_position_id ');
 	   $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id = pos.id ');
+       
+       $query->where('ppp.project_id = '.$this->projectid);
        
        $query->where('mp.match_id = '.(int)$this->matchid);
        $query->where('p.published = 1');

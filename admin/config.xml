@@ -27,7 +27,15 @@
 		description="COM_SPORTSMANAGEMENT_SETTINGS_PLZSERVER_DESC">
 		</field>
 		
-
+ <field name="cfg_use_plz_table" 
+    type="radio" 
+    default="1"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_PLZ_TABLE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_PLZ_TABLE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 	
 	<field name="cfg_images_server" 
   type="textarea" 

@@ -109,8 +109,8 @@ class sportsmanagementViewallprojectrounds extends JViewLegacy
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
 		    
-    
-
+    //$this->headertitle = JText::_( 'COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS2' );
+$this->headertitle = JText::sprintf('COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS2',$this->project->name);
 		parent::display( $tpl );
 	}
 }

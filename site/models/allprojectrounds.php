@@ -273,8 +273,10 @@ $this->ProjectTeams[$value] = $db->loadResult();
     $query->select('mp.in_out_time,mp.teamplayer_id,mp.in_for');
     $query->select('pt.team_id,pt.id AS ptid');
     $query->select('p.firstname,p.nickname,p.lastname');
-    $query->select('tp.person_id,tp.jerseynumber');
-    $query->select('tp2.person_id AS out_person_id');
+    //$query->select('tp.person_id,tp.jerseynumber');
+    $query->select('stp1.person_id,stp1.jerseynumber');
+    //$query->select('tp2.person_id AS out_person_id');
+    $query->select('stp2.person_id AS out_person_id');
     $query->select('p2.id AS out_ptid,p2.firstname AS out_firstname,p2.nickname AS out_nickname,p2.lastname AS out_lastname');
     $query->select('pos.name AS in_position');
     $query->select('pos2.name AS out_position');
@@ -313,6 +315,8 @@ $this->ProjectTeams[$value] = $db->loadResult();
 		$result = $db->loadObjectList();
 		//return $result;
 		
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
+        
         if ( !$result )
         {
         JError::raiseWarning(0, 'Keine Auswechselungen vorhanden');      
@@ -452,6 +456,9 @@ if ( !$res )
 		$db->setQuery($query);
 		$matchplayers = $db->loadObjectList();
         
+            
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
+
         if ( !$matchplayers )
         {
         JError::raiseWarning(0, 'Keine Spieler vorhanden');    
@@ -513,6 +520,10 @@ if ( !$res )
    */
   function getRoundsColumn($rounds,$config)
   {
+  $app = JFactory::getApplication();
+  
+  //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' rounds'.'<pre>'.print_r($rounds,true).'</pre>' ),'Error');
+  //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config'.'<pre>'.print_r($config,true).'</pre>' ),'');
   
   //$countrows = count($rounds) %2;
   //echo 'countrows -> '.$countrows.'<br>';
@@ -576,6 +587,7 @@ if ( !$res )
   
   if ( $config['show_firstroster'] )
   {
+  //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' show_firstroster'.''.$config['show_firstroster'].'' ),'');  
   $htmlcontent[$a]['firstroster'] = '<b>'.JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE-UP').' : </b>';
   $this->matchid = $match->id;
   $this->projectteam_id = $value;

@@ -67,7 +67,7 @@ class sportsmanagementTableTeamStaff extends JTable
 		parent::__construct( '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff', 'id', $db );
 	}
 
-	function canDelete($id)
+	function canDelete($id, $joins = NULL)
 	{
 		// the staff cannot be deleted if assigned to games
 		$query = ' SELECT COUNT(id) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff '

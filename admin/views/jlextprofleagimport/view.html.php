@@ -44,8 +44,22 @@ jimport( 'joomla.application.component.view' );
 
 
 
+/**
+ * sportsmanagementViewjlextprofleagimport
+ * 
+ * @package 
+ * @author diddi
+ * @copyright 2015
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementViewjlextprofleagimport extends sportsmanagementView
 {
+	/**
+	 * sportsmanagementViewjlextprofleagimport::init()
+	 * 
+	 * @return void
+	 */
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
@@ -72,10 +86,15 @@ class sportsmanagementViewjlextprofleagimport extends sportsmanagementView
     
 
     //$this->assignRef('form',  $this->get('form'));
-    $this->addToolbar ();
-		parent::display($tpl);
+//    $this->addToolbar ();
+//		parent::display($tpl);
 	}
     
+    /**
+     * sportsmanagementViewjlextprofleagimport::addToolbar()
+     * 
+     * @return void
+     */
     protected function addToolbar() 
     {
         // Get a refrence of the page instance in joomla
@@ -92,8 +111,9 @@ class sportsmanagementViewjlextprofleagimport extends sportsmanagementView
         // Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROF_LEAGUE_IMPORT_TITLE_1'),'profleage-cpanel');
         JToolBarHelper::divider();
-            sportsmanagementHelper::ToolbarButtonOnlineHelp();
-			JToolBarHelper::preferences($option);
+//            sportsmanagementHelper::ToolbarButtonOnlineHelp();
+//			JToolBarHelper::preferences($option);
+            parent::addToolbar();
 
 	}
     

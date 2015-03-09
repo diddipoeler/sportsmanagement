@@ -100,8 +100,11 @@ class sportsmanagementModelProject extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Create a new query object.
         $db = JFactory::getDBO();
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
@@ -235,6 +238,9 @@ class sportsmanagementModelProject extends JModelAdmin
 	function getProjectTeam($projectteam_id)
 	{
 	   $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
        $query = JFactory::getDbo()->getQuery(true);
        
        $query->select('t.*');
@@ -262,7 +268,9 @@ class sportsmanagementModelProject extends JModelAdmin
 	function getProject($project_id)
 	{
 	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+       // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
        //// Create a new query object.
 //		$db = JFactory::getDbo();
 		$query	= JFactory::getDbo()->getQuery(true);
@@ -324,8 +332,10 @@ class sportsmanagementModelProject extends JModelAdmin
 	 */
 	function getProjectTeamsOptions($project_id,$iDivisionId=0)
 	{
-		$option = JRequest::getCmd('option');
 		$app	= JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         //$db	= $this->getDbo();
 		$query = JFactory::getDbo()->getQuery(true);
         $this->project_art_id	= $app->getUserState( "$option.project_art_id", '0' );
@@ -385,7 +395,9 @@ class sportsmanagementModelProject extends JModelAdmin
 	public function delete(&$pks)
 	{
 	$app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     $success = $this->deleteProjectsData($pks);  
     
     if ( $success )
@@ -406,6 +418,9 @@ class sportsmanagementModelProject extends JModelAdmin
 	function deleteProjectsData($pk=array())
 	{
 	$app = JFactory::getApplication();
+    // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
 
     $query = JFactory::getDbo()->getQuery(true);
     
@@ -464,6 +479,13 @@ class sportsmanagementModelProject extends JModelAdmin
             $temp->field = $field;
             $temp->id = $id;
             $export[] = $temp;
+            
+            $temp = new stdClass();
+            $temp->table = '_person_project_position';
+            $temp->field = $field;
+            $temp->id = $id;
+            $export[] = $temp;
+            
             $temp = new stdClass();
             $temp->table = '_project_referee';
             $temp->field = $field;
@@ -574,7 +596,9 @@ class sportsmanagementModelProject extends JModelAdmin
 	public function saveshort()
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         
@@ -622,6 +646,9 @@ class sportsmanagementModelProject extends JModelAdmin
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
        $post = JRequest::get('post');
+       // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
        // Set the values
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');
@@ -656,12 +683,35 @@ class sportsmanagementModelProject extends JModelAdmin
 		}
         
        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask -> '.JRequest::getVar('task').''),'');
        
-       //-------extra fields-----------//
-        sportsmanagementHelper::saveExtraFields($post,$data['id']);
+       // for save as copy
+		if (JRequest::getVar('task') == 'save2copy')
+		{
+			$data['current_round'] = 0;
+		}
         
-       // Proceed with the save
-		return parent::save($data);   
+       // zuerst sichern, damit wir bei einer neuanlage die id haben
+       if ( parent::save($data) )
+       {
+			$id =  (int) $this->getState($this->getName().'.id');
+            $isNew = $this->getState($this->getName() . '.new');
+            $data['id'] = $id;
+            
+            if ( $isNew )
+            {
+                //Here you can do other tasks with your newly saved record...
+                $app->enqueueMessage(JText::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
+            }
+           
+		}
+       //-------extra fields-----------//
+        sportsmanagementHelper::saveExtraFields($post,$data['id']); 
+       
+        return true;  
+       
+        
+       
     }    
     
 	

@@ -190,8 +190,13 @@ class sportsmanagementModelround extends JModelAdmin
 	 */
 	public function saveshort()
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		// Reference global application object
+        $app = JFactory::getApplication();
+        $date = JFactory::getDate();
+	   $user = JFactory::getUser();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         
@@ -217,6 +222,12 @@ class sportsmanagementModelround extends JModelAdmin
             $tblRound->roundcode	= $post['roundcode'.$pks[$x]];
             $tblRound->tournement	= $post['tournementround'.$pks[$x]];
 			$tblRound->name	= $post['name'.$pks[$x]];
+            
+            $tblRound->alias = JFilterOutput::stringURLSafe( $post['name'.$pks[$x]] );
+            // Set the values
+		    $tblRound->modified = $date->toSql();
+		    $tblRound->modified_by = $user->get('id');
+        
             $tblRound->round_date_first	= sportsmanagementHelper::convertDate($post['round_date_first'.$pks[$x]], 0);
             $tblRound->round_date_last	= sportsmanagementHelper::convertDate($post['round_date_last'.$pks[$x]], 0);;
             
@@ -521,7 +532,7 @@ class sportsmanagementModelround extends JModelAdmin
 	   $app = JFactory::getApplication();
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
-       $post=JRequest::get('post');
+       $post = JRequest::get('post');
        
 //       $app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
 //       $app->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');

@@ -448,7 +448,38 @@ $this->assignRef('csvstaff',$model->csv_staff);
         $javascript .= "var projecttime = ".$this->eventsprojecttime.";" . "\n";
         $javascript .= "var str_delete = '".JText::_('JACTION_DELETE')."';" . "\n";
         
+        $javascript .= 'jQuery(document).ready(function() {' . "\n";
+        $javascript .= "updatePlayerSelect();". "\n";
+        $javascript .= "$('team_id').addEvent('change', updatePlayerSelect);". "\n";
+        $javascript .= '  });' . "\n";
+        $javascript .= "\n";
         
+        
+        $javascript .= "function updatePlayerSelect() {". "\n";
+        //$javascript .= " alert('value -> ' + matchid);";
+        
+        $javascript .= "if($('cell-player'))". "\n";
+	    $javascript .= "$('cell-player').empty().appendChild(". "\n";
+		$javascript .= "getPlayerSelect($('team_id').selectedIndex));". "\n";
+            
+        $javascript .= "}". "\n";
+
+
+$javascript .= "function getPlayerSelect(index) {". "\n";
+	$javascript .= "// homeroster and awayroster must be defined globally (in the view calling". "\n";
+	$javascript .= "// the script)". "\n";
+	$javascript .= "var roster = rosters[index];". "\n";
+	$javascript .= "// build select". "\n";
+	$javascript .= "var select = new Element('select', {". "\n";
+		$javascript .= "id : 'teamplayer_id'". "\n";
+	$javascript .= "});". "\n";
+	$javascript .= "for ( var i = 0, n = roster.length; i < n; i++) {". "\n";
+		$javascript .= "new Element('option', {". "\n";
+			$javascript .= "value : roster[i].value". "\n";
+		$javascript .= "}).set('text',roster[i].text).injectInside(select);". "\n";
+	$javascript .= "}". "\n";
+	$javascript .= "return select;". "\n";
+$javascript .= "}". "\n";
         
         //$app->enqueueMessage(JText::_('sportsmanagementViewMatch editevents browser<br><pre>'.print_r($browser,true).'</pre>'   ),'');
         
@@ -460,9 +491,9 @@ $this->assignRef('csvstaff',$model->csv_staff);
 		$teamlist=array();
 		$teamlist[]=JHtml::_('select.option',$teams->projectteam1_id,$teams->team1);
 		$teamlist[]=JHtml::_('select.option',$teams->projectteam2_id,$teams->team2);
-		$lists['teams']=JHtml::_('select.genericlist',$teamlist,'team_id','class="inputbox select-team" onchange="javascript:updatePlayerSelect()"');
+		$lists['teams']=JHtml::_('select.genericlist',$teamlist,'team_id','class="inputbox select-team" ');
         // events
-		$events = $model->getEventsOptions($this->project_id,$this->item->id);
+		$events = $model->getEventsOptions($this->project_id,0);
 		if (!$events)
 		{
 			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS').'<br /><br />');
@@ -674,6 +705,13 @@ $this->assignRef('csvstaff',$model->csv_staff);
 															'style="font-size:12px;height:auto;min-width:15em;" size="4" class="position-staff" multiple="true" ',
 															'value','text');
 		}
+        
+        // build the html select booleanlist
+        $myoptions = array();
+		$myoptions[] = JHtml::_( 'select.option', '0', JText::_( 'JNO' ) );
+		$myoptions[] = JHtml::_( 'select.option', '1', JText::_( 'JYES' ) );
+        $lists['captain'] = $myoptions;
+
 
         $this->assignRef('positions',$projectpositions);
 		$this->assignRef('staffpositions',$staffpositions);

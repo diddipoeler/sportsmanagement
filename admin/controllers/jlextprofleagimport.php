@@ -176,13 +176,25 @@ $convert = array (
 
 
 $convert = array (
-'charset=' => ''
+'charset=' => '',
+'encoding="ISO-8859-1"' => 'encoding="utf-8"',
+'<h2>' => '',
+'</h2>' => '',
+'<h3>' => '',
+'</h3>' => '',
+'<br>' => '',
+'</br>' => '',
+'<b>' => '',
+'</b>' => '',
+'<![CDATA[' => '',
+']]>' => ''
   );
   
 
       
 $source	= JFile::read($importFile);
 $source = str_replace(array_keys($convert), array_values($convert), $source  );
+$source = utf8_encode ( $source );
 $return = JFile::write($importFile,$source );
 
     $model->getData();

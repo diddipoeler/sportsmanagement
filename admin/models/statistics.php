@@ -217,7 +217,7 @@ class sportsmanagementModelStatistics extends JModelList
 
 		$db->setQuery($query);
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		return $db->loadObjectList();
 	}
@@ -258,7 +258,7 @@ class sportsmanagementModelStatistics extends JModelList
 
 		$db->setQuery($query);
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		return $db->loadObjectList();
 	}
@@ -286,7 +286,7 @@ class sportsmanagementModelStatistics extends JModelList
                 
 		$db->setQuery($query);
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		return $db->loadObjectList();
 	}

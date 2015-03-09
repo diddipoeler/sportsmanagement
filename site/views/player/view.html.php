@@ -90,6 +90,19 @@ $jinput = $app->input;
 		$this->assignRef('nickname',$nickname);
 		$this->assign('teamPlayers',$model->getTeamPlayers($model::$cfg_which_database));
         
+        if ( isset($this->overallconfig['person_events']) )
+        {
+        // alles ok    
+        }
+        else
+        {
+        $person_events = sportsmanagementModelEventtypes::getEvents($project->sports_type_id);
+        foreach ($person_events as $events)
+        {
+            $this->overallconfig['person_events'][] = $events->value;
+        }
+    
+        }
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
         

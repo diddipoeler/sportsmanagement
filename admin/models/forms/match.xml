@@ -45,6 +45,13 @@
 					value="0">
 					COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYGROUND</option>
 		</field>	
+		
+		<field
+				name="overtime"
+				type="text"
+				label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_OVERTIME"
+				description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_OVERTIME_DESC"/>
+				
 	</fieldset>	
   		
 	<fieldset name="matchreport">

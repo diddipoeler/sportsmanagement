@@ -86,11 +86,11 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
 											}
 											?>?subject=[<?php echo $app->getCfg('sitename'); ?>]">
 								<?php
-								$imageFile='administrator/components/com_sportsmanagement/assets/images/mail.png';
-								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SEND_MAIL_TEAMS');
-								$imageParams='title= "'.$imageTitle.'"';
-								$image=JHtml::image($imageFile,$imageTitle,$imageParams);
-								$linkParams='';
+								$imageFile = 'administrator/components/com_sportsmanagement/assets/images/mail.png';
+								$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SEND_MAIL_TEAMS');
+								$imageParams = 'title= "'.$imageTitle.'"';
+								$image = JHtml::image($imageFile,$imageTitle,$imageParams);
+								$linkParams = '';
 								//echo JHtml::link($link3,$image);
 								echo $image;
 								?>
@@ -232,7 +232,7 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
 							?>
 							<td>
                             <?php 
-                            
+                            //echo JSMCountries::getCountryFlag($row->country); 
                             if ($row->club_logo == '')
 							{
 								$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');

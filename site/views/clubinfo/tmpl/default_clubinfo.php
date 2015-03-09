@@ -216,7 +216,7 @@ echo JHtml::image($picture, $club_emblem_title, array('title' => $club_emblem_ti
 		{
 			?>
 			<span class="clubinfo_listing_item"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_FOUNDED' ); ?></span>
-			<span class="clubinfo_listing_value"><?php echo $this->club->founded; ?></span>
+			<span class="clubinfo_listing_value"><?php echo sportsmanagementHelper::convertDate($this->club->founded,1) ; ?></span>
 			<?php
 		}
     if ( $this->club->founded_year )
@@ -231,7 +231,7 @@ echo JHtml::image($picture, $club_emblem_title, array('title' => $club_emblem_ti
       ?>
 			
       <span class="clubinfo_listing_item"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_DISSOLVED' ); ?></span>
-			<span class="clubinfo_listing_value"><?php echo $this->club->dissolved; ?></span>      
+			<span class="clubinfo_listing_value"><?php echo sportsmanagementHelper::convertDate($this->club->dissolved,1) ?></span>      
 			<?php
     }
     if ( $this->club->dissolved_year )
@@ -288,6 +288,8 @@ echo JHtml::link($link, $desc);
 <?PHP
 		}
 
+if ( $this->clubhistorysorttree )
+{
 ?>
 <fieldset>
 <legend>
@@ -314,6 +316,7 @@ echo JHtml::link($link, $desc);
 </fieldset>
 
 <?PHP        
+}
         
 		?>
 	</div>

@@ -112,9 +112,9 @@ echo JHtml::_('bootstrap.endTab');
 echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel3', JText::_('COM_SPORTSMANAGEMENT_TABS_SCOREDETAILS'));
 echo $this->loadTemplate('scoredetails');
 echo JHtml::_('bootstrap.endTab');
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel4', JText::_('COM_SPORTSMANAGEMENT_TABS_ALTDECISION'));
-echo $this->loadTemplate('altdecision');
-echo JHtml::_('bootstrap.endTab');
+//echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel4', JText::_('COM_SPORTSMANAGEMENT_TABS_ALTDECISION'));
+//echo $this->loadTemplate('altdecision');
+//echo JHtml::_('bootstrap.endTab');
 echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel5', JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHREPORT'));
 echo $this->loadTemplate('matchreport');
 echo JHtml::_('bootstrap.endTab');
@@ -138,8 +138,8 @@ echo JHtml::_('bootstrap.endTabSet');
 		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_SCOREDETAILS'), 'panel3');
 		echo $this->loadTemplate('scoredetails');
 		
-		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_ALTDECISION'), 'panel4');
-		echo $this->loadTemplate('altdecision');
+		//echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_ALTDECISION'), 'panel4');
+		//echo $this->loadTemplate('altdecision');
 		
 		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_MATCHREPORT'), 'panel5');
 		echo $this->loadTemplate('matchreport');

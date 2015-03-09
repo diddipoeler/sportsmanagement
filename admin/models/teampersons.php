@@ -182,7 +182,7 @@ class sportsmanagementModelTeamPersons extends JModelList
         
         //$search	= $this->getState('filter.search');
 		        
-//        $this->_project_id	= $app->getUserState( "$option.pid", '0' );
+        $this->_project_id	= $app->getUserState( "$option.pid", '0' );
 //        $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
 //        $this->_team_id = JRequest::getVar('team_id');
 //        $this->_persontype = JRequest::getVar('persontype');
@@ -221,8 +221,9 @@ class sportsmanagementModelTeamPersons extends JModelList
         $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp on tp.person_id = ppl.id');
         $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
         
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position AS ppp on ppp.person_id = ppl.id');
         
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = tp.project_position_id ');
+        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = ppp.project_position_id ');
         //$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id ');
         //$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppl.position_id ');
         
@@ -254,6 +255,10 @@ class sportsmanagementModelTeamPersons extends JModelList
         $query->where('st.season_id = '.$this->getState('filter.season_id') );
         $query->where('tp.season_id = '.$this->getState('filter.season_id') );
         $query->where('tp.persontype = '.$this->getState('filter.persontype') );
+        
+        $query->where('ppp.persontype = '.$this->getState('filter.persontype') );
+        
+        $query->where('ppp.project_id = '.$this->_project_id );
         
         if ($this->getState('filter.search'))
 		{

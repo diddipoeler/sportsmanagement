@@ -90,7 +90,7 @@ if (!empty($this->matchplayerpositions ))
 
 
 ?>
-<!-- <div class="joomleague"> -->
+
 <div class="container">
 
 <?php
@@ -204,6 +204,7 @@ if (!empty($this->matchplayerpositions ))
 
 
     if(version_compare(JVERSION,'3.0.0','ge')) 
+    //if(version_compare(JVERSION,'2.5.0','ge'))
         {
         $count = 0;
     foreach ($output as $templ)
@@ -251,7 +252,7 @@ if (!empty($this->matchplayerpositions ))
     <?PHP    
     echo JHtml::_('bootstrap.startPane', 'ID-Tabs-Group', $tabsOptions);
     $count = 0;  
-    foreach ($output as $templ)
+    foreach ($output as $key => $templ)
     {
     echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab'.$count.'_id');
     echo $this->loadTemplate($templ);
@@ -260,7 +261,7 @@ if (!empty($this->matchplayerpositions ))
     }
     echo JHtml::_('bootstrap.endPane', 'ID-Tabs-Group');    
     }
-    else if($this->config['show_result_tabs'] == "show_tabs" ) 
+    else if($this->config['show_result_tabs'] == "show_slider" ) 
     {
     // This renders the beginning of the slides code.
     echo JHtml::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions);  

@@ -351,7 +351,21 @@
 <associations><assocname country="DEU" icon="fk_wuerttemberg_zollern.gif" flag="" website="" shortname="" main="346" parentmain="19">Kreis Zollen</assocname></associations>
 
 
-
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="1" parentmain="0">Berlin</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="2" parentmain="0">Cottbus</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="3" parentmain="0">Dresden</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="4" parentmain="0">Erfurt</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="5" parentmain="0">Frankfurt (Oder)</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="6" parentmain="0">Gera</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="7" parentmain="0">Halle</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="8" parentmain="0">Karl-Marx-Stadt</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="9" parentmain="0">Leipzig</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="10" parentmain="0">Magedeburg</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="11" parentmain="0">Neubrandenburg</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="12" parentmain="0">Potsdam</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="13" parentmain="0">Rostock</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="14" parentmain="0">Schwerin</assocname></associations>
+<associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="15" parentmain="0">Suhl</assocname></associations>
 
 
 <associations><assocname country="SWE" icon="" flag="" website="" shortname="" main="1" parentmain="0">Blekinge FF</assocname></associations>
@@ -496,5 +510,19 @@
 <associations><assocname country="NOR" icon="" flag="" website="" shortname="" main="16" parentmain="0">Trøndelag</assocname></associations>
 <associations><assocname country="NOR" icon="" flag="" website="" shortname="" main="17" parentmain="0">Vestfold</assocname></associations>
 <associations><assocname country="NOR" icon="" flag="" website="" shortname="" main="18" parentmain="0">Østfold</assocname></associations>
+
+<associations><assocname country="CHE" icon="" flag="" website="" shortname="" main="1" parentmain="0">Aargauer Fussballverband</assocname></associations>
+<associations><assocname country="CHE" icon="" flag="" website="" shortname="" main="2" parentmain="0">Fussballverband Bern/Jura</assocname></associations>
+<associations><assocname country="CHE" icon="" flag="" website="" shortname="" main="3" parentmain="0">Innerschweizerischer Fussballverband</assocname></associations>
+<associations><assocname country="CHE" icon="" flag="" website="" shortname="" main="4" parentmain="0">Fussballverband Nordwestschweiz</assocname></associations>
+<associations><assocname country="CHE" icon="" flag="" website="" shortname="" main="5" parentmain="0">Ostschweizer Fussballverband</assocname></associations>
+<associations><assocname country="CHE" icon="" flag="" website="" shortname="" main="6" parentmain="0">Solothurner Kantonal-Fussballverband</assocname></associations>
+<associations><assocname country="CHE" icon="" flag="" website="" shortname="" main="7" parentmain="0">Fussballverband Region Zürich</assocname></associations>
+<associations><assocname country="CHE" icon="" flag="" website="" shortname="" main="8" parentmain="0">Federazione Ticilnese di Calcio</assocname></associations>
+<associations><assocname country="CHE" icon="" flag="" website="" shortname="" main="9" parentmain="0">Freiburger Fussballverband</assocname></associations>
+<associations><assocname country="CHE" icon="" flag="" website="" shortname="" main="10" parentmain="0">Association cantonale genevoise de football</assocname></associations>
+<associations><assocname country="CHE" icon="" flag="" website="" shortname="" main="11" parentmain="0">Association neuchâteloise de football</assocname></associations>
+<associations><assocname country="CHE" icon="" flag="" website="" shortname="" main="12" parentmain="0">Association cantonale vaudoise de football</assocname></associations>
+<associations><assocname country="CHE" icon="" flag="" website="" shortname="" main="13" parentmain="0">Association valaisanne de football</assocname></associations>
 
 </structur>

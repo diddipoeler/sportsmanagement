@@ -155,10 +155,15 @@ class sportsmanagementModelteamperson extends JModelAdmin
 	 */
 	function saveshort()
 	{
-		$app =& JFactory::getApplication();
+		$app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
         // Get the input
         $pks = JRequest::getVar('cid', null, 'post', 'array');
         $post = JRequest::get('post');
+        $this->_project_id	= $post['pid'];
+        $this->persontype	= $post['persontype'];
         
         //$app->enqueueMessage('saveshort $pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
         //$app->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
@@ -206,6 +211,17 @@ class sportsmanagementModelteamperson extends JModelAdmin
 	            {
 		        $app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($tblperson->getErrorMsg(), true).'</pre><br>','Error');
 	            }
+                
+                // Create and populate an object.
+                $profile = new stdClass();
+                $profile->person_id = $post['person_id'.$pks[$x]];
+                $profile->project_id = $this->_project_id;
+                $profile->project_position_id = $post['project_position_id'.$pks[$x]];
+                $profile->persontype = $this->persontype;
+                // Insert the object into table.
+                $result = JFactory::getDbo()->insertObject('#__sportsmanagement_person_project_position', $profile);
+                
+                
             }
 		}
 		return $result;

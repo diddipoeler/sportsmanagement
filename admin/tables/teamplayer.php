@@ -97,7 +97,7 @@ class sportsmanagementTableTeamPlayer extends JTable
 		}
 	}
 
-	function canDelete($id)
+	function canDelete($id, $joins = NULL)
 	{
 		// cannot be deleted if assigned to games
 		$query = ' SELECT COUNT(id) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player '
