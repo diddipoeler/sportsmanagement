@@ -292,7 +292,12 @@ class sportsmanagementModelAjax extends JModelLegacy
         
         $query->select('pos.id AS value, pos.name AS text');
 			$query->from('#__sportsmanagement_position as pos');
+            
+            if ( $sports_type_id )
+            {
 			$query->where('pos.sports_type_id = '.$sports_type_id);
+            }
+            
             $query->order('pos.name');  
 			$db->setQuery($query);    
             
