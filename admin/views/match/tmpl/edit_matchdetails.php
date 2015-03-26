@@ -97,8 +97,8 @@ function toggle_altdecision() {
 								<option	value="0"<?php if ( $this->match->alt_decision == 0 ){echo ' selected="selected"'; } ?>>
 									<?php echo JText::_('JNO');?>
 								</option>
-								<option	value="1"<?php if ($this->match->alt_decision==1) echo ' selected="selected"' ?>>
-									<?php echo JText::_( 'JYES' );?>
+								<option	value="1"<?php if ( $this->match->alt_decision == 1 ) echo ' selected="selected"' ?>>
+									<?php echo JText::_('JYES');?>
 								</option>
 							</select>
 						</td>
