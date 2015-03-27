@@ -139,7 +139,9 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         $result = $databasetool->checkQuotes($sm_quotes);
         $model->_success_text['Zitate:'] = $result;
         }
-            
+        
+        if ( $sporttypes )
+        {    
         foreach ( $sporttypes as $key => $type )
         {
         $checksporttype = $model->checksporttype($type);    
@@ -198,7 +200,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         }
         
         }
-        
+        }
         // Get data from the model
 		$items = $this->get('Items');
 		$pagination = $this->get('Pagination');

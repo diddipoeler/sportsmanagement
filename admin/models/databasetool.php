@@ -763,7 +763,9 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
     $app = JFactory::getApplication();
     $option = JRequest::getCmd('option');    
     /* Ein Datenbankobjekt beziehen */
-    $db = JFactory::getDbo();   
+    $db = JFactory::getDbo();  
+    
+    $country_assoc_del = ''; 
     
     if(version_compare(JVERSION,'3.0.0','ge')) 
         {
