@@ -225,6 +225,7 @@ $query = $db->getQuery(true);
 		if ($iso2)
 		{
 			$path = COM_SPORTSMANAGEMENT_PICTURE_SERVER.'images/com_sportsmanagement/database/flags/'.strtolower($iso2).'.png';
+            $path = '/images/com_sportsmanagement/database/flags/'.strtolower($iso2).'.png';
 //            if ( !JFile::exists(COM_SPORTSMANAGEMENT_PICTURE_SERVER.'images/com_sportsmanagement/database/flags/'.strtolower($iso2).'.png') )
 //			{
 //                $path = COM_SPORTSMANAGEMENT_PICTURE_SERVER.'administrator/components/com_sportsmanagement/assets/images/delete.png';
@@ -268,9 +269,9 @@ $query = $db->getQuery(true);
 		$src = $db->loadResult();
         }
         
-        if ( !JFile::exists(JPATH_SITE.DS.$src) )
+        if ( !JFile::exists(JPATH_ROOT.DS.$src) )
         {
-        $src = JComponentHelper::getParams($option)->get('ph_flags','');
+        $src = COM_SPORTSMANAGEMENT_PICTURE_SERVER.JComponentHelper::getParams($option)->get('ph_flags','');
         } 
         else
         {
