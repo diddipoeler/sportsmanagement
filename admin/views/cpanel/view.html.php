@@ -165,8 +165,13 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         foreach ( $country as $keyc => $typec )
         {    
         $insert_agegroup = $databasetool->insertAgegroup($typec,$insert_sport_type);    
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($insert_agegroup,true).'</pre>'),'');
-        $model->_success_text['Altersgruppen:'] .= $insert_agegroup;  
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($insert_agegroup,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($model->_success_text,true).'</pre>'),'');
+        if ( !isset($model->_success_text['Altersgruppen:']) )
+        {
+        $model->_success_text['Altersgruppen:'] = '';
+        }  
+        $model->_success_text['Altersgruppen:'] .= $insert_agegroup;
         }
         }
         

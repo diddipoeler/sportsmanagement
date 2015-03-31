@@ -53,7 +53,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					<th width="20">
 						<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 					</th>
-					<th width="20">&nbsp;</th>
+					
 					<th>
 						<?php
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PERSONS_F_NAME','pl.firstname',$this->sortDirection,$this->sortColumn);
@@ -112,35 +112,49 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					if (($row->firstname != '!Unknown') && ($row->lastname != '!Player')) // Ghostplayer for match-events
 					{
 						$link       = JRoute::_('index.php?option=com_sportsmanagement&task=person.edit&id='.$row->id);
-						$checked    = JHtml::_('grid.checkedout',$row,$i);
+						$canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                         $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
+                        $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'persons.', $canCheckin);
 						//$is_checked = $this->table->isCheckedOut($this->user->get('id'),$row->checked_out);
                         $published  = JHtml::_('grid.published',$row,$i, 'tick.png','publish_x.png','persons.');
 						?>
 						<tr class="<?php echo "row$k"; ?>">
-							<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
-							<td class="center"><?php echo $checked; ?></td>
+							<td class="center">
+                        <?php
+                        echo $this->pagination->getRowOffset($i);
+                        ?>
+                        </td>
+                        <td class="center">
+                        <?php 
+                        echo JHtml::_('grid.id', $i, $row->id);  
+                        ?>
+                        </td>
 							<?php
 							
 								$inputappend='';
 								?>
 								<td class="center">
-                                <?php
-                            if ($row->checked_out) : ?>
-										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'persons.', $canCheckin); ?>
-									<?php endif; ?>
-									<a href="<?php echo $link; ?>">
-										<?php
-										$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_EDIT_DETAILS');
-										echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
-														$imageTitle,'title= "'.$imageTitle.'"');
-										?>
-									</a>
-								</td>
+                                <?php if ($row->checked_out) : ?>
+						<?php echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'persons.', $canCheckin); ?>
+					<?php endif; ?>
+					<?php if ($canEdit) : ?>
+						<a href="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=person.edit&id='.(int) $row->id); ?>">
+							<?php echo $this->escape($row->firstname.' '.$row->lastname); ?></a>
+					<?php else : ?>
+							<?php echo $this->escape($row->firstname.' '.$row->lastname); ?>
+					<?php endif; ?>
+                        
+                        
+                        
+                        <?php //echo $checked; ?>
+                        
+                        <?php //echo $row->name; ?>
+                        
+								
 								<?php
 							
 							?>
-							<td class="center">
+							
 								<input	<?php echo $inputappend; ?> type="text" size="15"
 										class="inputbox" name="firstname<?php echo $row->id; ?>"
 										value="<?php echo stripslashes(htmlspecialchars($row->firstname)); ?>"

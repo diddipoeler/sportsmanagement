@@ -147,7 +147,9 @@ JHtml::_('behavior.modal');
 						$row =& $this->items[$i];
 						$link			= JRoute::_('index.php?option=com_sportsmanagement&task=teamperson.edit&project_team_id=' .
 													$row->projectteam_id . '&person_id=' . $row->id. '&id=' . $row->tpid. '&pid=' .$this->project->id.'&team_id='.$this->team_id.'&persontype='.$this->_persontype);
-						$checked		= JHtml::_( 'grid.checkedout', $row, $i );
+						$canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
+                        $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
+						$checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'teampersons.', $canCheckin);
 						$inputappend	= '';
 						?>
 						<tr class="<?php echo "row$k"; ?>">
@@ -158,23 +160,18 @@ JHtml::_('behavior.modal');
 							</td>
 							<td class="center">
 								<?php
-								echo $checked;
+								echo JHtml::_('grid.id', $i, $row->id);
 								?>
 							</td>
-							<?php
-							if ( $this->table->isCheckedOut( $this->user->get ('id'), $row->checked_out ) )
-							{
-								$inputappend = ' disabled="disabled"';
-								?>
-								<td>
-									&nbsp;
-								</td>
-								<?php
-							}
-							else
-							{
-								?>
-								<td class="center">
+							
+                            	<td>
+<?php if ($row->checked_out) : ?>
+						<?php echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'teampersons.', $canCheckin); ?>
+					<?php endif; ?>
+                    
+                    <?php if ($canEdit && !$row->checked_out ) : ?>
+						
+						
 									<a href="<?php echo $link; ?>">
 										<?php
 										$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_EDIT_DETAILS' );
@@ -183,9 +180,22 @@ JHtml::_('behavior.modal');
 														'title= "' . $imageTitle . '"' );
 										?>
 									</a>
+										
+
+									
+					<?php else : ?>
+							<?php //echo $this->escape($row->name); ?>
+					<?php endif; ?> 
 								</td>
-								<?php
-							}
+                            
+                            
+                            
+                            
+                            
+                            <?php
+                                                      
+                            
+							
 							?>
 							<td>
 								<?php echo sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, 0) ?>

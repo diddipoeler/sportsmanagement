@@ -155,34 +155,48 @@ $userId		= $user->get('id');
 					if (($row->firstname != '!Unknown') && ($row->lastname != '!Player')) // Ghostplayer for match-events
 					{
 						$link       = JRoute::_('index.php?option=com_sportsmanagement&task=person.edit&id='.$row->id);
-						$checked    = JHtml::_('grid.checkedout',$row,$i);
+						//$checked    = JHtml::_('grid.checkedout',$row,$i);
+                        
+                        $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                         $canCheckin	= $user->authorise('core.manage','com_checkin') || $row->checked_out == $userId || $row->checked_out == 0;
+                        $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'persons.', $canCheckin);
+                        
 						$is_checked = $this->table->isCheckedOut($this->user->get('id'),$row->checked_out);
                         $published  = JHtml::_('grid.published',$row,$i, 'tick.png','publish_x.png','persons.');
 						?>
 						<tr class="<?php echo "row$k"; ?>">
-							<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
-							<td class="center"><?php echo $checked; ?></td>
+							<td class="center">
+                            <?php 
+                            echo $this->pagination->getRowOffset($i); 
+                            ?>
+                            </td>
+							<td class="center">
+                            <?php 
+                            echo JHtml::_('grid.id', $i, $row->id);  
+                            ?>
+                            </td>
+                            
 							<?php
 							if ($is_checked)
 							{
 								$inputappend=' disabled="disabled" ';
-								?><td class="center">
-                                	<?php if ($row->checked_out) : ?>
-						<?php echo JHtml::_('grid.checkedout', $row, $i, $row->checked_out_time, 'persons.', $canCheckin); ?>
-					<?php endif; ?>
-                    </td><?php
 							}
-							else
-							{
-								$inputappend='';
-								?>
-								<td class="center">
+                            else
+                            {
+                                $inputappend='';
+                            }	
+                                
+                                
+                                ?>
+                                <td class="center">
+                                <?php if ($row->checked_out) : ?>
+						<?php 
+                        //echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'persons.', $canCheckin); 
+                        ?>
+					<?php endif; ?>	
 								
 								</td>
-								<?php
-							}
-							?>
+
 							<td class="center">
 								<input	<?php echo $inputappend; ?> type="text" size="15"
 										class="inputbox" name="firstname<?php echo $row->id; ?>"

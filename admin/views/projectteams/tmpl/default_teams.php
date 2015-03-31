@@ -198,24 +198,32 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
 						//$link3=JRoute::_('index.php?option=com_sportsmanagement&view=teamstaffs&project_team_id='.$row->id."&team_id=".$row->team_id.'&pid='.$this->project->id);
                         $link2 = JRoute::_('index.php?option=com_sportsmanagement&view=teampersons&persontype=1&project_team_id='.$row->id."&team_id=".$row->team_id.'&pid='.$this->project->id);
 						$link3 = JRoute::_('index.php?option=com_sportsmanagement&view=teampersons&persontype=2&project_team_id='.$row->id."&team_id=".$row->team_id.'&pid='.$this->project->id);
+                        $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                         $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
-						$checked=JHtml::_('grid.checkedout',$row,$i);
+						$checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'projectteams.', $canCheckin);
 						?>
 						<tr class="">
-							<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
-							<td class="center"><?php echo $checked;?></td>
+							<td class="center">
+                        <?php
+                        echo $this->pagination->getRowOffset($i);
+                        ?>
+                        </td>
+                        <td class="center">
+                        <?php 
+                        echo JHtml::_('grid.id', $i, $row->id);  
+                        ?>
+                        </td>
 							<?php
 							
 								$inputappend='';
 								?>
 								<td style="text-align:center; ">
-                                <?php
-                            if ( ( $row->checked_out != $this->user->get ('id') ) && $row->checked_out ) : ?>
-										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'projectteams.', $canCheckin); ?>
-									<?php else: ?>	
                                 
-                                
-                                <?php
+                                <?php if ($row->checked_out) : ?>
+						<?php echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'projectteams.', $canCheckin); ?>
+					<?php endif; ?>
+					<?php if ($canEdit && !$row->checked_out ) : ?>
+						<?php
 									$imageFile = 'administrator/components/com_sportsmanagement/assets/images/edit.png';
 									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_EDIT_DETAILS');
 									$imageParams = 'title= "'.$imageTitle.'"';
@@ -223,7 +231,14 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
 									$linkParams = '';
 									echo JHtml::link($link1,$image);
                                     
-                                    endif;
+
+									?>
+					<?php else : ?>
+							<?php //echo $this->escape($row->name); ?>
+					<?php endif; 
+                    
+                    
+                            
 									?>
                                     
                                     </td>

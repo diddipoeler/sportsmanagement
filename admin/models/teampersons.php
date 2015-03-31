@@ -209,7 +209,7 @@ class sportsmanagementModelTeamPersons extends JModelList
 //        {
             
         //$query->select('ppl.firstname','ppl.lastname','ppl.nickname','ppl.height','ppl.weight','ppl.injury','ppl.suspension','ppl.away','ppl.id','ppl.id AS person_id');
-        $query->select('ppl.id,ppl.firstname,ppl.lastname,ppl.nickname,ppl.picture,ppl.id as person_id,ppl.injury,ppl.suspension,ppl.away,ppl.ordering,ppl.published,ppl.checked_out ');
+        $query->select('ppl.id,ppl.firstname,ppl.lastname,ppl.nickname,ppl.picture,ppl.id as person_id,ppl.injury,ppl.suspension,ppl.away,ppl.ordering,ppl.published,ppl.checked_out,ppl.checked_out_time  ');
 		$query->select('ppl.position_id as person_position_id');
         //$query->select('pos.id as position_id');
         $query->select('tp.id as tpid, tp.market_value, tp.jerseynumber,st.id as projectteam_id');

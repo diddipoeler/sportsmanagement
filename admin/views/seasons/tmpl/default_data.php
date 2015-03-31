@@ -98,12 +98,21 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     
                     $assignteams = JRoute::_('index.php?option=com_sportsmanagement&tmpl=component&view=seasons&layout=assignteams&id='.$row->id);
                     $assignpersons = JRoute::_('index.php?option=com_sportsmanagement&tmpl=component&view=seasons&layout=assignpersons&id='.$row->id);
-                    
-					$checked = JHtml::_('grid.checkedout',$row,$i);
+                    $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
+                    $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
+					$checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'seasons.', $canCheckin);
 					?>
 					<tr class="<?php echo "row$k"; ?>">
-						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
-						<td class="center"><?php echo $checked; ?></td>
+						<td class="center">
+                        <?php
+                        echo $this->pagination->getRowOffset($i);
+                        ?>
+                        </td>
+                        <td class="center">
+                        <?php 
+                        echo JHtml::_('grid.id', $i, $row->id);  
+                        ?>
+                        </td>
 						<?php
 						if ($this->table->isCheckedOut($this->user->get('id'),$row->checked_out))
 						{
@@ -115,13 +124,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							$inputappend='';
 							?>
 							<td class="center" nowrap="nowrap">
-								<a href="<?php echo $link; ?>">
-									<?php
-									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_EDIT_DETAILS');
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
-													$imageTitle,'title= "'.$imageTitle.'"');
-									?>
-								</a>
+								
                                 
                                 <a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
 									href="<?php echo $assignteams; ?>"
@@ -130,7 +133,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 									 <?php
 									 
 								 	$image = 'teams.png';
-								 	$title=  '';
+								 	$title=  'COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_TEAM';
 								 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
 													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_TEAM'),
 													 'title= "' .$title. '"');
@@ -146,7 +149,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 									 <?php
 									 
 								 	$image = 'players.png';
-								 	$title=  '';
+								 	$title=  'COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_PERSON';
 								 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
 													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_PERSON'),
 													 'title= "' .$title. '"');
@@ -159,7 +162,22 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							<?php
 						}
 						?>
-						<td><?php echo $row->name; ?>
+						<td>
+                        <?php if ($row->checked_out) : ?>
+						<?php echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'seasons.', $canCheckin); ?>
+					<?php endif; ?>
+					<?php if ($canEdit) : ?>
+						<a href="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=season.edit&id='.(int) $row->id); ?>">
+							<?php echo $this->escape($row->name); ?></a>
+					<?php else : ?>
+							<?php echo $this->escape($row->name); ?>
+					<?php endif; ?>
+                        
+                        
+                        
+                        <?php //echo $checked; ?>
+                        
+                        <?php //echo $row->name; ?>
                         <p class="smallsub">
 						<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias));?></p>
                         </td>

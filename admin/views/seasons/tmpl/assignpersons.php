@@ -124,7 +124,10 @@ if($close == 1) {
 					{
 					   $row		=& $this->items[$i];
                        $row->team_id = 0;
-						$checked	= JHtml::_('grid.checkedout',$row,$i,'id');
+						//$checked	= JHtml::_('grid.checkedout',$row,$i,'id');
+                        $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
+                    $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
+                    $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'seasons.', $canCheckin);
 					   ?>
 						<tr class="<?php echo "row$k"; ?>">
                         <td style="<?php echo $style;?>">
@@ -134,7 +137,7 @@ if($close == 1) {
 							</td>
 							<td style="text-align:center; ">
 								<?php
-								echo $checked;
+								echo JHtml::_('grid.id', $i, $row->id); 
 								?>
 							</td>
                             <td style="text-align:center; ">

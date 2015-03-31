@@ -90,13 +90,16 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						$row =& $this->matchday[$i];
 						$link1 = JRoute::_('index.php?option=com_sportsmanagement&task=round.edit&id='.$row->id.'&pid='.$this->project->id);
 						$link2 = JRoute::_('index.php?option=com_sportsmanagement&view=matches&rid='.$row->id.'&pid='.$this->project->id);
-						$checked = JHtml::_('grid.checkedout',$row,$i);
+						//$checked = JHtml::_('grid.checkedout',$row,$i);
                         $published = JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','rounds.');
+                        
+                        $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                         $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
+                        $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'rounds.', $canCheckin);
 						?>
 						<tr class="<?php echo "row$k"; ?>">
 							<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
-							<td class="center"><?php echo $checked; ?></td>
+							<td class="center"><?php echo JHtml::_('grid.id', $i, $row->id); ?></td>
 							<td class="center">
                             
                             <?php
@@ -104,10 +107,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'rounds.', $canCheckin); ?>
 									<?php endif; ?>
                             <?php
+                            if ($canEdit && !$row->checked_out ) :
 								$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_EDIT_DETAILS');
 								$imageFile = 'administrator/components/com_sportsmanagement/assets/images/edit.png';
 								$imageParams = "title='$imageTitle'";
 								echo JHtml::link($link1,JHtml::image($imageFile,$imageTitle,$imageParams));
+                            endif;    
 							?></td>
 							<td class="center">
 								<input tabindex="1" type="text" style="text-align: center" size="5" class="inputbox" name="roundcode<?php echo $row->id; ?>" value="<?php echo $row->roundcode; ?>" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />

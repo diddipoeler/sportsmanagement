@@ -71,6 +71,7 @@ class sportsmanagementModeljlextfederations extends JModelList
                 $config['filter_fields'] = array(
                         'objassoc.name',
                         'objassoc.short_name',
+                        'objassoc.alias',
                         'objassoc.id',
                         'objassoc.ordering',
                         'objassoc.picture',

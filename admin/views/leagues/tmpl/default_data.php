@@ -60,7 +60,7 @@ JHtml::_('behavior.modal');
 					<th width="20">
 						<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 					</th>
-					<th width="20">&nbsp;</th>
+					
 					<th>
 						<?php
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_NAME','obj.name',$this->sortDirection,$this->sortColumn);
@@ -125,38 +125,46 @@ JHtml::_('behavior.modal');
 				{
 					$row =& $this->items[$i];
 					$link = JRoute::_('index.php?option=com_sportsmanagement&task=league.edit&id='.$row->id);
-					$checked = JHtml::_('grid.checkedout',$row,$i);
+                    $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
+					//$checked = JHtml::_('grid.checkedout',$row,$i);
                     $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
+                    $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'leagues.', $canCheckin);
 					?>
 					<tr class="<?php echo "row$k"; ?>">
-						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
-						<td class="center"><?php echo $checked; ?></td>
+						<td class="center">
+                        <?php
+                        echo $this->pagination->getRowOffset($i);
+                        ?>
+                        </td>
+                        <td class="center">
+                        <?php 
+                        echo JHtml::_('grid.id', $i, $row->id);  
+                        ?>
+                        </td>
 						<?php
 						
 							$inputappend='';
 							?>
 							<td class="center">
-                            <?php
-                            if ( ( $row->checked_out != $this->user->get ('id') ) && $row->checked_out ) : 
-                             ?>
-										<?php echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'leagues.', $canCheckin); ?>
-									<?php else: ?>
-								<a href="<?php echo $link; ?>">
-									<?php
-									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_EDIT_DETAILS');
-									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/edit.png',
-													$imageTitle,'title= "'.$imageTitle.'"');
-									?>
-								</a>
-                                <?php endif; ?>
+                            <?php if ($row->checked_out) : ?>
+						<?php echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'leagues.', $canCheckin); ?>
+					<?php endif; ?>
+					<?php if ($canEdit) : ?>
+						<a href="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=league.edit&id='.(int) $row->id); ?>">
+							<?php echo $this->escape($row->name); ?></a>
+					<?php else : ?>
+							<?php echo $this->escape($row->name); ?>
+					<?php endif; ?>
+                        <p class="smallsub">
+						<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias));?></p>
+                        
+                        
+                        <?php //echo $checked; ?>
 							</td>
 							<?php
 						
 						?>
-						<td><?php echo $row->name; ?>
-                        <p class="smallsub">
-						<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias));?></p>
-                        </td>
+						
 						<td><?php echo $row->short_name; ?></td>
 						<td class="center">
                         <?php 

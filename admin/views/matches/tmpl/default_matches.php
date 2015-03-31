@@ -153,8 +153,12 @@ fieldset button {
 					for ($i=0,$n=count($this->matches); $i < $n; $i++)
 					{
 						$row		=& $this->matches[$i];
-						$checked	= JHtml::_('grid.checkedout',$row,$i,'id');
+						//$checked	= JHtml::_('grid.checkedout',$row,$i,'id');
 						$published	= JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','matches.');
+                        
+                        $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
+                        $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
+                        $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'matches.', $canCheckin);
 
 						list($date,$time) = explode(" ",$row->match_date);
 						$time = strftime("%H:%M",strtotime($time));
@@ -176,10 +180,20 @@ fieldset button {
 							</td>
 							<td class="center">
 								<?php
-								echo $checked;
+								echo JHtml::_('grid.id', $i, $row->id);
 								?>
 							</td>
 							<td class="center">
+                            
+                            <?php
+                            if ($row->checked_out) : ?>
+										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'matches.', $canCheckin); ?>
+									<?php endif; 
+                                    
+                                    if ($canEdit && !$row->checked_out ) :
+                                    ?>
+                            
+                            
 								<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
 									href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=edit&id=<?php echo $row->id; ?>"
 									 class="modal">
@@ -190,6 +204,8 @@ fieldset button {
 									?>
 								</a>
                                 <?PHP
+                                endif; 
+                                
                                 //$pcture_link = 'index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=picture&id='.$row->id;
                                 $pcture_link = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/matchreport/'.$row->id;
                                 //$pcture_link = 'index.php?option=com_media&view=images&tmpl=component&asset=com_sportsmanagement&author=&folder=com_sportsmanagement/database/matchreport/';

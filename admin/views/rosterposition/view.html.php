@@ -245,6 +245,7 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
         // neuanlage
         $addposition	= JRequest::getVar('addposition');
         $position = 1;
+        $object = new stdClass();
         $object->id = 0;
     $object->name = $addposition;
     $object->short_name = $addposition;
@@ -320,7 +321,7 @@ $javascript .= "\n";
         $this->assignRef('form', $this->form);
         $this->assignRef('option', $option);
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item -> <br><pre>'.print_r($this->item,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item -> <br><pre>'.print_r($this->item,true).'</pre>'),'');
         
         $this->setLayout('edit');
 	}

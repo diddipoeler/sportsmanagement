@@ -122,9 +122,9 @@ class sportsmanagementModelsmquotes extends JModelList
 	{
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $search	= $this->getState('filter.search');
-        $filter_state = $this->getState('filter.state');
-        $filter_catid = $this->getState('filter.category_id');
+        //$search	= $this->getState('filter.search');
+        //$filter_state = $this->getState('filter.state');
+        //$filter_catid = $this->getState('filter.category_id');
 
         
 		$query = JFactory::getDBO()->getQuery(true);
@@ -142,17 +142,17 @@ class sportsmanagementModelsmquotes extends JModelList
         
         
 
-        if ( $search  )
+        if ( $this->getState('filter.search')  )
 		{
-        $query->where('LOWER(obj.author) LIKE '.JFactory::getDBO()->Quote('%'.$search.'%'));
+        $query->where('LOWER(obj.author) LIKE '.JFactory::getDBO()->Quote('%'.$this->getState('filter.search').'%'));
         }
-        if ( $filter_state )
+        if ( $this->getState('filter.state') )
 		{
-        $query->where('obj.published = '.$filter_state);
+        $query->where('obj.published = '.$this->getState('filter.state'));
         }
-        if ( $filter_catid )
+        if ( $this->getState('filter.category_id') )
 		{
-        $query->where('obj.catid = '.$filter_catid);
+        $query->where('obj.catid = '.$this->getState('filter.category_id'));
         }
         
 

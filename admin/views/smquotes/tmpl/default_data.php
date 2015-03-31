@@ -86,7 +86,13 @@ JHtml::_('behavior.modal');
 					</th>
 				</tr>
 			</thead>
-			<tfoot><tr><td colspan="8"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+			<tfoot>
+            <tr>
+            <td colspan="6"><?php echo $this->pagination->getListFooter(); ?>
+            </td>
+            <td colspan="3"><?php echo $this->pagination->getResultsCounter();?></td>
+            </tr>
+            </tfoot>
 			<tbody>
 				<?php
 				$k=0;
@@ -94,13 +100,14 @@ JHtml::_('behavior.modal');
 				{
 					$row =& $this->items[$i];
 					$link = JRoute::_('index.php?option=com_sportsmanagement&task=smquote.edit&id='.$row->id);
-					$checked = JHtml::_('grid.checkedout',$row,$i);
+					$canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
 					$published = JHtml::_('grid.published',$row,$i, 'tick.png','publish_x.png','smquotes.');
                     $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
+                    $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'smquotes.', $canCheckin);
                     ?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
-						<td class="center"><?php echo $checked; ?></td>
+						<td class="center"><?php echo JHtml::_('grid.id', $i, $row->id); ?></td>
 						<?php
 						
 							$inputappend='';
@@ -109,7 +116,10 @@ JHtml::_('behavior.modal');
                             <?php
                             if ($row->checked_out) : ?>
 										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'smquotes.', $canCheckin); ?>
-									<?php endif; ?>
+									<?php endif; 
+                                    
+                                    if ($canEdit && !$row->checked_out ) :
+                                    ?>
 								<a href="<?php echo $link; ?>">
 									<?php
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_QUOTES_EDIT_DETAILS');
@@ -117,6 +127,10 @@ JHtml::_('behavior.modal');
 													$imageTitle,'title= "'.$imageTitle.'"');
 									?>
 								</a>
+                                <?php 
+                                endif; 
+                                    
+                                    ?>
 							</td>
 							<?php
 						

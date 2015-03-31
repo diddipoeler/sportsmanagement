@@ -1777,6 +1777,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_rquote` (
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
   `cr_picture` varchar(255) DEFAULT NULL,
+  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8;
 
