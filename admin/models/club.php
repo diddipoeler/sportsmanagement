@@ -114,13 +114,40 @@ class sportsmanagementModelclub extends JModelAdmin
 			return false;
 		}
         
+        $row = $this->getTable();
+        $row->load((int) $form->getValue('id'));
+        $country = $row->country;
+        
+        /**
+         * soll die postleitzahlendatentabelle genutzt werden ?
+         */        
         if ( $cfg_use_plz_table )
         {
+        /**
+        * wenn es aber zu dem land keine einträge
+        * in der plz tabelle gibt, dann die normale
+        * eingabe dem user anbieten        
+        */
+        $query->select('count(*) as anzahl');
+        $query->from('#__sportsmanagement_countries_plz as a');
+        $query->join('INNER', '#__sportsmanagement_countries AS c ON c.alpha2 = a.country_code'); 
+        $query->where('c.alpha3 LIKE ' . $db->Quote(''.$country.'') );
+        $db->setQuery($query);
+        $result = $db->loadResult();
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
+        
+        if ( $result )
+        {    
         $form->setFieldAttribute('zipcode', 'type', 'dependsql', 'request');
         $form->setFieldAttribute('zipcode', 'size', '10', 'request');     
         $form->setFieldAttribute('location', 'type', 'dependsql', 'request');
         $form->setFieldAttribute('location', 'size', '10', 'request');
         }
+        
+        }
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' row<br><pre>'.print_r($row,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' country<br><pre>'.print_r($country,true).'</pre>'),'');
         
         if ( !$show_team_community )
         {
@@ -167,6 +194,7 @@ class sportsmanagementModelclub extends JModelAdmin
         //$whichtabel = $this->getTable();
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' whichtabel<br><pre>'.print_r($whichtabel,true).'</pre>'),'');
         
+        $query->clear();
         $query->select('*');
 			$query->from('information_schema.columns');
             $query->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_club' ");

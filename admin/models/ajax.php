@@ -133,9 +133,12 @@ class sportsmanagementModelAjax extends JModelLegacy
         }
         $query = $db->getQuery(true);
         
+        if ( $zipcode || $country )
+        {
         $query->select('a.place_name AS value, concat(a.place_name, \' ( \',a.country_code,\' ) ( \',a.postal_code,\' ) \',a.admin_name1) AS text');
         $query->from('#__sportsmanagement_countries_plz as a');
         $query->join('INNER', '#__sportsmanagement_countries AS c ON c.alpha2 = a.country_code'); 
+        }
         if ( $zipcode )
         {
         $query->where('a.postal_code LIKE ' . $db->Quote(''.$zipcode.'') );
@@ -148,12 +151,14 @@ class sportsmanagementModelAjax extends JModelLegacy
         }
         
         //$query->order('a.postal_code');    
-                    
+        if ( $zipcode || $country )
+        {            
         $db->setQuery($query);
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
         $result = $db->loadObjectList();
+        }
             
         return self::addGlobalSelectElement($result, $required); 
             
