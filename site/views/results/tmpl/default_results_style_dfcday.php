@@ -89,7 +89,7 @@ if ($this->config['show_comments_count'] > 0){
 }
 ?>
 
-<table class='fixtures-results'>
+<table class="<?PHP echo $this->config['table_class']; ?>">
 	<?php
 	foreach( $dates as $date => $games )
 	{

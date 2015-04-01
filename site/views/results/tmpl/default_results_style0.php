@@ -101,7 +101,7 @@ else
 }
 ?>
 
-<table class="table table-striped">
+<table class="<?PHP echo $this->config['table_class']; ?>">
 	<?php
 	foreach( $dates as $date => $games )
 	{
