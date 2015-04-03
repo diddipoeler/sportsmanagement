@@ -106,7 +106,7 @@ JHtml::_( 'behavior.mootools' );
         
 		// add the ranking model
 		$rankingmodel = new sportsmanagementModelRanking();
-		$project = sportsmanagementModelProject::getProject($cfg_which_database);
+		$project = sportsmanagementModelProject::getProject($cfg_which_database,__METHOD__,1);
 		// add the ranking config file
 		$rankingconfig = sportsmanagementModelProject::getTemplateConfig('ranking',$cfg_which_database);
 		$rankingmodel->computeRanking($cfg_which_database);
