@@ -205,17 +205,45 @@ class sportsmanagementModelProject extends JModelLegacy
         self::$matchid = $jinput->getInt('mid',0);
         //$app->setUserState( "com_sportsmanagement.cfg_which_database", JRequest::getInt('cfg_which_database',0) );
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
-        
+        //self::updateHits(self::$projectid);
 		parent::__construct();
 	}
 
 
 	/**
+	 * sportsmanagementModelProject::updateHits()
+	 * 
+	 * @param integer $projectid
+	 * @return void
+	 */
+	public static function updateHits($projectid=0,$inserthits=0)
+    {
+        $option = JRequest::getCmd('option');
+	$app = JFactory::getApplication();
+    $db = JFactory::getDbo();
+ $query = $db->getQuery(true);
+ 
+ if ( $inserthits )
+ {
+ $query->update($db->quoteName('#__sportsmanagement_project'))->set('hits = hits + 1')->where('id = '.$projectid);
+ 
+$db->setQuery($query);
+ 
+$result = $db->execute();
+}  
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');     
+    }
+    
+    
+	/**
 	 * sportsmanagementModelProject::getProject()
 	 * 
+	 * @param integer $cfg_which_database
+	 * @param string $call_function
+	 * @param integer $inserthits
 	 * @return
 	 */
-	public static function getProject($cfg_which_database = 0,$call_function = '')
+	public static function getProject($cfg_which_database = 0,$call_function = '',$inserthits=0)
 	{
 		$option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
@@ -228,7 +256,9 @@ class sportsmanagementModelProject extends JModelLegacy
         if ( !self::$projectid )
         {
             self::$projectid = JRequest::getInt('p',0);
-        } 
+        }
+        
+        self::updateHits(self::$projectid,$inserthits); 
 
       // $this->projectid = JRequest::getInt('p',0);
     

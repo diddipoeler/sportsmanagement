@@ -224,8 +224,14 @@ class sportsmanagementModelJLXMLExports extends JModelLegacy
 	 */
 	public function exportData()
 	{
-		$option='com_sportsmanagement';
-		$app	=& JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        $db	= $this->getDbo();
+        $query = $db->getQuery(true);
+
 		$user = JFactory::getUser();
 
 		//$this->_project_id = $app->getUserState($option.'project');
@@ -234,7 +240,7 @@ class sportsmanagementModelJLXMLExports extends JModelLegacy
 		//$this->_project_id = $app->getUserState('project');
 		if (empty($this->_project_id) || $this->_project_id == 0)
 		{
-			JError::raiseWarning('ERROR_CODE',JText::_('JL_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
+			JError::raiseWarning('ERROR_CODE',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
 		}
 		else
 		{
@@ -248,7 +254,7 @@ class sportsmanagementModelJLXMLExports extends JModelLegacy
             $this->_project_id = JRequest::getInt('p');
 			if (empty($this->_project_id) || $this->_project_id == 0)
 			{
-				JError::raiseWarning('ERROR_CODE',JText::_('JL_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
+				JError::raiseWarning('ERROR_CODE',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));
 			}
 			else 
       {
@@ -307,7 +313,7 @@ class sportsmanagementModelJLXMLExports extends JModelLegacy
 			$output .= $this->_addToXml($this->_getDivisionData());
 
 			// get the projectteams data
-			$output .= $this->_addToXml($this->_getprojectteamData());
+			$output .= $this->_addToXml($this->_getProjectTeamData());
 
 			// get referee data of project
 			$output .= $this->_addToXml($this->_getProjectRefereeData());
@@ -414,8 +420,14 @@ $xmlfile = $xmlfile.$output;
 	 */
 	function downloadXml($data, $table)
 	{
-		$option='com_sportsmanagement';
-		$app	=& JFactory::getApplication();
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        $db	= $this->getDbo();
+        $query = $db->getQuery(true);
+        
 		jimport('joomla.filter.output');
 		$filename = $this->_getIdFromData('name', $this->_project);
 		if(empty($filename)) {
@@ -553,18 +565,35 @@ $xmlfile = $xmlfile.$output;
 	 */
 	private function _getJoomLeagueVersion()
 	{
-		$exportRoutine='2010-09-23 15:00:00';
-		$query = "SELECT CONCAT(major,'.',minor,'.',build,'.',revision) AS version FROM #__joomleague_version ORDER BY date DESC LIMIT 1";
-		$this->_db->setQuery($query);
-		$this->_db->query();
-		if ($this->_db->getNumRows() > 0)
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        $db	= $this->getDbo();
+        $query = $db->getQuery(true);
+        
+		$exportRoutine = '2010-09-23 15:00:00';
+//		$query = "SELECT CONCAT(major,'.',minor,'.',build,'.',revision) AS version FROM #__joomleague_version ORDER BY date DESC LIMIT 1";
+//		$this->_db->setQuery($query);
+//		$this->_db->query();
+        
+        // Select some fields
+        $query->select('manifest_cache');
+		// From the table
+		$query->from('#__extensions');
+        $query->where('name LIKE '.JFactory::getDbo()->Quote(''.'com_sportsmanagement'.'') );
+        JFactory::getDbo()->setQuery( $query );
+       $manifest_cache = json_decode( JFactory::getDbo()->loadResult(), true );
+       
+		if ( $manifest_cache['version'] )
 		{
-			$result = $this->_db->loadAssocList();
-			$result[0]['exportRoutine']=$exportRoutine;
-			$result[0]['exportDate']=date('Y-m-d');
-			$result[0]['exportTime']=date('H:i:s');
-			$result[0]['exportSystem']=JFactory::getConfig()->getValue('config.sitename');
-			$result[0]['object']='JoomLeagueVersion';
+			$result[0]['version'] = $manifest_cache['version'];
+			$result[0]['exportRoutine'] = $exportRoutine;
+			$result[0]['exportDate'] = date('Y-m-d');
+			$result[0]['exportTime'] = date('H:i:s');
+			$result[0]['exportSystem'] = JFactory::getConfig()->getValue('config.sitename');
+			$result[0]['object'] = 'JoomLeagueVersion';
 			return $result;
 		}
 		return false;
@@ -582,12 +611,24 @@ $xmlfile = $xmlfile.$output;
 	 */
 	private function _getProjectData()
 	{
-		$query = "SELECT * FROM #__sportsmanagement_project WHERE id=$this->_project_id";
-		$this->_db->setQuery($query);
-		$this->_db->query();
-		if ($this->_db->getNumRows() > 0)
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        $db	= $this->getDbo();
+        $query = $db->getQuery(true);
+        
+        $query->select('*');
+        $query->from('#__sportsmanagement_project');
+        $query->where('id = ' . $this->_project_id );
+        
+		//$query = "SELECT * FROM #__sportsmanagement_project WHERE id=$this->_project_id";
+		$db->setQuery($query);
+		$db->query();
+		if ($db->getNumRows() > 0)
 		{
-			$result = $this->_db->loadAssocList();
+			$result = $db->loadAssocList();
 			$result[0]['object'] = 'JoomLeague15';
 			$this->_project = $result;
 			return $result;
@@ -607,8 +648,16 @@ $xmlfile = $xmlfile.$output;
 	 */
 	private function _getTemplateData()
 	{
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        $db	= $this->getDbo();
+        $query = $db->getQuery(true);
+        
 		// this is the master template
-		if ($this->_project[0]['master_template']==0)
+		if ( $this->_project[0]['master_template'] == 0 )
 		{
 			$master_template_id = $this->_project_id;
 		}
@@ -616,13 +665,17 @@ $xmlfile = $xmlfile.$output;
 		{
 			$master_template_id = $this->_project[0]['master_template'];
 		}
+        
+        $query->select('*');
+        $query->from('#__sportsmanagement_template_config');
+        $query->where('project_id = ' . $master_template_id );
 
-		$query = "SELECT * FROM #__sportsmanagement_template_config WHERE project_id=$master_template_id";
-		$this->_db->setQuery($query);
-		$this->_db->query();
-		if ($this->_db->getNumRows() > 0)
+		//$query = "SELECT * FROM #__sportsmanagement_template_config WHERE project_id=$master_template_id";
+		$db->setQuery($query);
+		$db->query();
+		if ($db->getNumRows() > 0)
 		{
-			$result = $this->_db->loadAssocList();
+			$result = $db->loadAssocList();
 			$result[0]['object'] = 'Template';
 
 			return $result;
@@ -642,12 +695,24 @@ $xmlfile = $xmlfile.$output;
 	 */
 	private function _getLeagueData()
 	{
-		$query = "SELECT * FROM #__sportsmanagement_league WHERE id=".$this->_project[0]['league_id'];
-		$this->_db->setQuery($query);
-		$this->_db->query();
-		if ($this->_db->getNumRows() > 0)
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        $db	= $this->getDbo();
+        $query = $db->getQuery(true);
+        
+        $query->select('*');
+        $query->from('#__sportsmanagement_league');
+        $query->where('id = ' . $this->_project[0]['league_id'] );
+        
+		//$query = "SELECT * FROM #__sportsmanagement_league WHERE id=".$this->_project[0]['league_id'];
+		$db->setQuery($query);
+		$db->query();
+		if ($db->getNumRows() > 0)
 		{
-			$result = $this->_db->loadAssocList();
+			$result = $db->loadAssocList();
 			$result[0]['object'] = 'League';
 
 			return $result;
@@ -667,12 +732,24 @@ $xmlfile = $xmlfile.$output;
 	 */
 	private function _getSportsTypeData()
 	{
-		$query = "SELECT * FROM #__sportsmanagement_sports_type WHERE id=".$this->_project[0]['sports_type_id'];
-		$this->_db->setQuery($query);
-		$this->_db->query();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        $db	= $this->getDbo();
+        $query = $db->getQuery(true);
+        
+        $query->select('*');
+        $query->from('#__sportsmanagement_sports_type');
+        $query->where('id = ' . $this->_project[0]['sports_type_id'] );
+        
+		//$query = "SELECT * FROM #__sportsmanagement_sports_type WHERE id=".$this->_project[0]['sports_type_id'];
+		$db->setQuery($query);
+		$db->query();
 		if ($this->_db->getNumRows() > 0)
 		{
-			$result = $this->_db->loadAssocList();
+			$result = $db->loadAssocList();
 			$result[0]['object'] = 'SportsType';
 
 			return $result;
@@ -692,12 +769,24 @@ $xmlfile = $xmlfile.$output;
 	 */
 	private function _getSeasonData()
 	{
-		$query = "SELECT * FROM #__sportsmanagement_season WHERE id=".$this->_project[0]['season_id'];
-		$this->_db->setQuery($query);
-		$this->_db->query();
-		if ($this->_db->getNumRows() > 0)
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        $db	= $this->getDbo();
+        $query = $db->getQuery(true);
+        
+        $query->select('*');
+        $query->from('#__sportsmanagement_season');
+        $query->where('id = ' . $this->_project[0]['season_id'] );
+        
+		//$query = "SELECT * FROM #__sportsmanagement_season WHERE id=".$this->_project[0]['season_id'];
+		$db->setQuery($query);
+		$db->query();
+		if ($db->getNumRows() > 0)
 		{
-			$result = $this->_db->loadAssocList();
+			$result = $db->loadAssocList();
 			$result[0]['object'] = 'Season';
 
 			return $result;
@@ -717,12 +806,24 @@ $xmlfile = $xmlfile.$output;
 	 */
 	private function _getDivisionData()
 	{
-		$query = "SELECT * FROM #__sportsmanagement_division WHERE project_id=$this->_project_id";
-		$this->_db->setQuery($query);
-		$this->_db->query();
-		if ($this->_db->getNumRows() > 0)
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        $db	= $this->getDbo();
+        $query = $db->getQuery(true);
+        
+        $query->select('*');
+        $query->from('#__sportsmanagement_division');
+        $query->where('project_id = ' . $this->_project_id );
+        
+		//$query = "SELECT * FROM #__sportsmanagement_division WHERE project_id=$this->_project_id";
+		$db->setQuery($query);
+		$db->query();
+		if ($db->getNumRows() > 0)
 		{
-			$result = $this->_db->loadAssocList();
+			$result = $db->loadAssocList();
 			$result[0]['object'] = 'LeagueDivision';
 
 			return $result;
@@ -740,14 +841,26 @@ $xmlfile = $xmlfile.$output;
 	 *
 	 * @return array
 	 */
-	private function _getprojectteamData()
+	private function _getProjectTeamData()
 	{
-		$query = "SELECT * FROM #__sportsmanagement_project_team WHERE project_id=$this->_project_id";
-		$this->_db->setQuery($query);
-		$this->_db->query();
-		if ($this->_db->getNumRows() > 0)
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        $db	= $this->getDbo();
+        $query = $db->getQuery(true);
+        
+        $query->select('*');
+        $query->from('#__sportsmanagement_project_team');
+        $query->where('project_id = ' . $this->_project_id );
+        
+		//$query = "SELECT * FROM #__sportsmanagement_project_team WHERE project_id=$this->_project_id";
+		$db->setQuery($query);
+		$db->query();
+		if ($db->getNumRows() > 0)
 		{
-			$result = $this->_db->loadAssocList();
+			$result = $db->loadAssocList();
 			$result[0]['object'] = 'ProjectTeam';
 			$this->_projectteam =& $result;
 			return $result;
@@ -767,12 +880,24 @@ $xmlfile = $xmlfile.$output;
 	 */
 	private function _getProjectPositionData()
 	{
-		$query = "SELECT * FROM #__sportsmanagement_project_position WHERE project_id=$this->_project_id";
-		$this->_db->setQuery($query);
-		$this->_db->query();
-		if ($this->_db->getNumRows() > 0)
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        $db	= $this->getDbo();
+        $query = $db->getQuery(true);
+        
+        $query->select('*');
+        $query->from('#__sportsmanagement_project_position');
+        $query->where('project_id = ' . $this->_project_id );
+        
+		//$query = "SELECT * FROM #__sportsmanagement_project_position WHERE project_id=$this->_project_id";
+		$db->setQuery($query);
+		$db->query();
+		if ($db->getNumRows() > 0)
 		{
-			$result = $this->_db->loadAssocList();
+			$result = $db->loadAssocList();
 			$result[0]['object'] = 'ProjectPosition';
 			$this->_projectposition =& $result;
 			return $result;
@@ -792,12 +917,24 @@ $xmlfile = $xmlfile.$output;
 	 */
 	private function _getProjectRefereeData()
 	{
-		$query = "SELECT * FROM #__sportsmanagement_project_referee WHERE project_id=$this->_project_id";
-		$this->_db->setQuery($query);
-		$this->_db->query();
-		if ($this->_db->getNumRows() > 0)
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        $db	= $this->getDbo();
+        $query = $db->getQuery(true);
+        
+        $query->select('*');
+        $query->from('#__sportsmanagement_project_referee');
+        $query->where('project_id = ' . $this->_project_id );
+        
+		//$query = "SELECT * FROM #__sportsmanagement_project_referee WHERE project_id=$this->_project_id";
+		$db->setQuery($query);
+		$db->query();
+		if ($db->getNumRows() > 0)
 		{
-			$result = $this->_db->loadAssocList();
+			$result = $db->loadAssocList();
 			$result[0]['object'] = 'ProjectReferee';
 			$this->_projectreferee =& $result;
 			return $result;
@@ -817,18 +954,34 @@ $xmlfile = $xmlfile.$output;
 	 */
 	private function _getTeamData()
 	{
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        $db	= $this->getDbo();
+        $query = $db->getQuery(true);
+        
 		$team_ids = $this->_getIdFromData('team_id', $this->_projectteam);
 
 		if (is_array($team_ids) && count($team_ids) > 0)
 		{
 			$ids = implode(",", array_unique($team_ids));
+            
+            $query->select('t.*');
+            $query->from('#__sportsmanagement_team as t');
+            $query->join('LEFT', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
+            $query->join('LEFT', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+            $query->where('st.id IN (' . $ids .')' );
+            $query->where('pt.project_id = ' . $this->_project_id );
+            $query->order('name');
 
-			$query = "SELECT * FROM #__sportsmanagement_team WHERE id IN ($ids) ORDER BY name";
-			$this->_db->setQuery($query);
-			$this->_db->query();
-			if ($this->_db->getNumRows() > 0)
+			//$query = "SELECT * FROM #__sportsmanagement_team WHERE id IN ($ids) ORDER BY name";
+			$db->setQuery($query);
+			$db->query();
+			if ($db->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $db->loadAssocList();
 				$result[0]['object'] = 'JL_Team';
 				$this->_team =& $result;
 				return $result;
@@ -850,6 +1003,14 @@ $xmlfile = $xmlfile.$output;
 	 */
 	private function _getClubData()
 	{
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        $db	= $this->getDbo();
+        $query = $db->getQuery(true);
+        
 		$cIDs=array();
 
 		$teamClub_ids = $this->_getIdFromData('club_id', $this->_team);
@@ -861,13 +1022,18 @@ $xmlfile = $xmlfile.$output;
 		if (is_array($cIDs) && count($cIDs) > 0)
 		{
 			$ids = implode(",", array_unique($cIDs));
+            
+            $query->select('*');
+            $query->from('#__sportsmanagement_club');
+            $query->where('id IN (' . $ids .')' );
+            $query->order('name');
 
-			$query = "SELECT * FROM #__sportsmanagement_club WHERE id IN ($ids) ORDER BY name";
-			$this->_db->setQuery($query);
-			$this->_db->query();
-			if ($this->_db->getNumRows() > 0)
+			//$query = "SELECT * FROM #__sportsmanagement_club WHERE id IN ($ids) ORDER BY name";
+			$db->setQuery($query);
+			$db->query();
+			if ($db->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $db->loadAssocList();
 				$result[0]['object'] = 'Club';
 				$this->_club = $result;
 				return $result;
@@ -889,12 +1055,24 @@ $xmlfile = $xmlfile.$output;
 	 */
 	private function _getRoundData()
 	{
-		$query = "SELECT * FROM #__sportsmanagement_round WHERE project_id=$this->_project_id";
-		$this->_db->setQuery($query);
-		$this->_db->query();
-		if ($this->_db->getNumRows() > 0)
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        $db	= $this->getDbo();
+        $query = $db->getQuery(true);
+        
+        $query->select('*');
+        $query->from('#__sportsmanagement_round');
+        $query->where('project_id = ' . $this->_project_id );
+            
+		//$query = "SELECT * FROM #__sportsmanagement_round WHERE project_id=$this->_project_id";
+		$db->setQuery($query);
+		$db->query();
+		if ($db->getNumRows() > 0)
 		{
-			$result = $this->_db->loadAssocList();
+			$result = $db->loadAssocList();
 			$result[0]['object'] = 'Round';
 
 			return $result;
@@ -914,12 +1092,25 @@ $xmlfile = $xmlfile.$output;
 	 */
 	private function _getMatchData()
 	{
-		$query = "SELECT m.* FROM #__sportsmanagement_match as m INNER JOIN #__sportsmanagement_round as r ON r.id=m.round_id WHERE r.project_id=$this->_project_id";
-		$this->_db->setQuery($query);
-		$this->_db->query();
-		if ($this->_db->getNumRows() > 0)
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        $db	= $this->getDbo();
+        $query = $db->getQuery(true);
+        
+        $query->select('*');
+        $query->from('#__sportsmanagement_match as m');
+        $query->join('INNER', '#__sportsmanagement_round as r ON r.id = m.round_id');
+        $query->where('r.project_id = ' . $this->_project_id );
+        
+		//$query = "SELECT m.* FROM #__sportsmanagement_match as m INNER JOIN #__sportsmanagement_round as r ON r.id=m.round_id WHERE r.project_id=$this->_project_id";
+		$db->setQuery($query);
+		$db->query();
+		if ($db->getNumRows() > 0)
 		{
-			$result = $this->_db->loadAssocList();
+			$result = $db->loadAssocList();
 			$result[0]['object'] = 'Match';
 			$this->_match = $result;
 			return $result;
@@ -939,6 +1130,14 @@ $xmlfile = $xmlfile.$output;
 	 */
 	private function _getPlaygroundData()
 	{
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        $db	= $this->getDbo();
+        $query = $db->getQuery(true);
+        
 		$pgIDs=array();
 		$clubsPlayground_ids = $this->_getIdFromData('standard_playground',$this->_club);
 		if (is_array($clubsPlayground_ids)){$pgIDs=array_merge($pgIDs,$clubsPlayground_ids);}
@@ -952,12 +1151,17 @@ $xmlfile = $xmlfile.$output;
 		if (is_array($pgIDs) && count($pgIDs) > 0)
 		{
 			$ids = implode(",",array_unique($pgIDs));
-			$query = "SELECT * FROM #__sportsmanagement_playground WHERE id IN ($ids)";
-			$this->_db->setQuery($query);
-			$this->_db->query();
-			if ($this->_db->getNumRows() > 0)
+            
+            $query->select('*');
+            $query->from('#__sportsmanagement_playground');
+            $query->where('id IN (' . $ids .')' );
+            
+			//$query = "SELECT * FROM #__sportsmanagement_playground WHERE id IN ($ids)";
+			$db->setQuery($query);
+			$db->query();
+			if ($db->getNumRows() > 0)
 			{
-				$result = $this->_db->loadAssocList();
+				$result = $db->loadAssocList();
 				$result[0]['object'] = 'Playground';
 				$this->_playground = $result;
 				return $result;

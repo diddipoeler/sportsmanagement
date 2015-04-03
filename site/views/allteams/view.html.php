@@ -73,15 +73,15 @@ class sportsmanagementViewallteams extends JViewLegacy
         $jinput = $app->input;
         $inputappend = '';
         $this->tableclass = $jinput->getVar('table_class', 'table','request','string');
-		$user		= JFactory::getUser();
+		$user = JFactory::getUser();
         $starttime = microtime(); 
         $option = $jinput->getCmd('option');
         //$limitstart = JRequest::getVar('limitstart', 0, '', 'int');
 
-		$state 		= $this->get('State');
+		$state = $this->get('State');
         //$state->setState('list.start', $limitstart);
 
-		$items 		= $this->get('Items');
+		$items = $this->get('Items');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {

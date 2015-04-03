@@ -85,7 +85,7 @@ class sportsmanagementViewRanking extends JViewLegacy
         $mdlTeams = JModelLegacy::getInstance("Teams", "sportsmanagementModel");
         
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database,__METHOD__);
-		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database,__METHOD__);
+		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database,__METHOD__,1);
 		
 		$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true,NULL,$model::$cfg_which_database);
 		

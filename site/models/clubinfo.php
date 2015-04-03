@@ -197,11 +197,37 @@ class sportsmanagementModelClubInfo extends JModelLegacy
 	}
 	
     /**
+     * sportsmanagementModelClubInfo::updateHits()
+     * 
+     * @param integer $clubid
+     * @param integer $inserthits
+     * @return void
+     */
+    public static function updateHits($clubid=0,$inserthits=0)
+    {
+        $option = JRequest::getCmd('option');
+	$app = JFactory::getApplication();
+    $db = JFactory::getDbo();
+ $query = $db->getQuery(true);
+ 
+ if ( $inserthits )
+ {
+ $query->update($db->quoteName('#__sportsmanagement_club'))->set('hits = hits + 1')->where('id = '.$clubid);
+ 
+$db->setQuery($query);
+ 
+$result = $db->execute();
+}  
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');     
+    }
+    
+    /**
      * sportsmanagementModelClubInfo::getClub()
      * 
+     * @param integer $inserthits
      * @return
      */
-    static function getClub( )
+    static function getClub($inserthits=0)
 	{
 		// Reference global application object
         $app = JFactory::getApplication();
@@ -214,6 +240,9 @@ class sportsmanagementModelClubInfo extends JModelLegacy
         
         self::$projectid = JRequest::getInt( "p", 0 );
 		self::$clubid = JRequest::getInt( "cid", 0 );
+        
+        self::updateHits(self::$clubid,$inserthits); 
+        
         if ( is_null( self::$club ) )
 		{
 			if ( self::$clubid > 0 )

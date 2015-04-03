@@ -84,7 +84,7 @@ class sportsmanagementViewTeamInfo extends JViewLegacy
 			$overallconfig = sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
 			$this->assignRef('overallconfig',  $overallconfig);
 			$this->assignRef('config', $config );
-			$team = $model->getTeamByProject();
+			$team = $model->getTeamByProject(1);
 			$this->assignRef('team',  $team );
 			$club = $model->getClub() ;
 			$this->assignRef('club', $club);

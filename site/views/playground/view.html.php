@@ -84,7 +84,7 @@ class sportsmanagementViewPlayground extends JViewLegacy
 		//$model = $this->getModel();
 		$games = $model->getNextGames($jinput->getInt( "p", 0 ));
 		$gamesteams = sportsmanagementModelTeams::getTeamsFromMatches( $games );
-		$this->assign('playground',  $model->getPlayground($jinput->getInt( "pgid", 0 )) );
+		$this->assign('playground',  $model->getPlayground($jinput->getInt( "pgid", 0 )),1 );
         $this->assign('address_string', $model->getAddressString() );
 		$this->assign('teams', sportsmanagementModelTeams::getTeams($this->playground->id) );
 		$this->assignRef('games', $games );

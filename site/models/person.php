@@ -99,18 +99,47 @@ class sportsmanagementModelPerson extends JModelLegacy
 
 
 
+	 /**
+	  * sportsmanagementModelPerson::updateHits()
+	  * 
+	  * @param integer $personid
+	  * @param integer $inserthits
+	  * @return void
+	  */
+	 public static function updateHits($personid=0,$inserthits=0)
+    {
+        $option = JRequest::getCmd('option');
+	$app = JFactory::getApplication();
+    $db = JFactory::getDbo();
+ $query = $db->getQuery(true);
+ 
+ if ( $inserthits )
+ {
+ $query->update($db->quoteName('#__sportsmanagement_person'))->set('hits = hits + 1')->where('id = '.$personid);
+ 
+$db->setQuery($query);
+ 
+$result = $db->execute();
+}  
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');     
+    }
+    
 	/**
 	 * sportsmanagementModelPerson::getPerson()
 	 * 
 	 * @param integer $personid
+	 * @param integer $cfg_which_database
+	 * @param integer $inserthits
 	 * @return
 	 */
-	public static function getPerson($personid = 0, $cfg_which_database = 0)
+	public static function getPerson($personid = 0, $cfg_which_database = 0,$inserthits=0)
 	{
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         self::$personid	= JRequest::getInt( 'pid', 0 );
         $starttime = microtime(); 
+        
+        self::updateHits(self::$personid,$inserthits); 
         
         //$app->enqueueMessage(JText::_('getPerson personid<br><pre>'.print_r($this->personid,true).'</pre>'),'');
         

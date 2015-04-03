@@ -72,7 +72,7 @@ class sportsmanagementViewClubInfo extends JViewLegacy
         $option = $jinput->getCmd('option');
         
 		$model			= $this->getModel();
-		$club			= $model->getClub() ;
+		$club			= $model->getClub(1) ;
 		
 		$config			= sportsmanagementModelProject::getTemplateConfig( $this->getName(),$model::$cfg_which_database );	
 		$project 		= sportsmanagementModelProject::getProject($model::$cfg_which_database);

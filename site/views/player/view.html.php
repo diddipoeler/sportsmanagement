@@ -78,7 +78,7 @@ $jinput = $app->input;
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
         
 
-		$person = sportsmanagementModelPerson::getPerson(0,$model::$cfg_which_database);
+		$person = sportsmanagementModelPerson::getPerson(0,$model::$cfg_which_database,1);
 		$nickname = isset($person->nickname) ? $person->nickname : "";
 		if(!empty($nickname)){$nickname="'".$nickname."'";}
 		$this->assign('isContactDataVisible',sportsmanagementModelPerson::isContactDataVisible($config['show_contact_team_member_only']));

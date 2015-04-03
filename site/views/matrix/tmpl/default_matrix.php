@@ -49,6 +49,7 @@ defined('_JEXEC') or die('Restricted access');
       {
          writing-mode: tb-rl;
          filter: flipH() flipV();
+         position: absolute;
       }
       .rotated_cell
       {
@@ -59,13 +60,57 @@ defined('_JEXEC') or die('Restricted access');
          padding-left: 5px;
          padding-right: 5px;
          white-space:nowrap; 
-         vertical-align:bottom
+         vertical-align:bottom;
       }
    </style>
 <![endif]-->
 
 <!--[if !IE]><!-->
-<style>  
+<style> 
+.table-header-rotated th.rotate-45{
+  height: 80px;
+  width: 40px;
+  min-width: 40px;
+  max-width: 40px;
+  position: relative;
+  vertical-align: bottom;
+  padding: 0;
+  font-size: 12px;
+  line-height: 0.8;
+}
+
+.table-header-rotated th.rotate-45 > div{
+  position: relative;
+  top: 0px;
+  left: 40px; /* 80 * tan(45) / 2 = 40 where 80 is the height on the cell and 45 is the transform angle*/
+  height: 100%;
+  -ms-transform:skew(-45deg,0deg);
+  -moz-transform:skew(-45deg,0deg);
+  -webkit-transform:skew(-45deg,0deg);
+  -o-transform:skew(-45deg,0deg);
+  transform:skew(-45deg,0deg);
+  overflow: hidden;
+  border-left: 1px solid #dddddd;
+  border-right: 1px solid #dddddd;
+  border-top: 1px solid #dddddd;
+}
+
+.table-header-rotated th.rotate-45 span {
+  -ms-transform:skew(45deg,0deg) rotate(315deg);
+  -moz-transform:skew(45deg,0deg) rotate(315deg);
+  -webkit-transform:skew(45deg,0deg) rotate(315deg);
+  -o-transform:skew(45deg,0deg) rotate(315deg);
+  transform:skew(45deg,0deg) rotate(315deg);
+  position: absolute;
+  bottom: 30px; /* 40 cos(45) = 28 with an additional 2px margin*/
+  left: -25px; /*Because it looked good, but there is probably a mathematical link here as well*/
+  display: inline-block;
+  // width: 100%;
+  width: 85px; /* 80 / cos(45) - 40 cos (45) = 85 where 80 is the height of the cell, 40 the width of the cell and 45 the transform angle*/
+  text-align: left;
+  // white-space: nowrap; /*whether to display in one line or not*/
+}
+ 
 .rotate_text
       {
          text-align: center;
@@ -77,6 +122,7 @@ defined('_JEXEC') or die('Restricted access');
                 padding-right: 3px;
                 padding-top: 10px;
                 white-space: nowrap;
+                position: absolute; 
                 -webkit-transform: rotate(-90deg); 
                 -moz-transform: rotate(-90deg); 
                 -o-transform: rotate(-90deg);
@@ -91,7 +137,9 @@ defined('_JEXEC') or die('Restricted access');
          padding-left: 5px;
          padding-right: 5px;
          white-space:nowrap; 
-         vertical-align:bottom
+         vertical-align:bottom;
+         position: relative;
+         //position: absolute; 
       }
    </style>
 <!--<![endif]--> 
@@ -105,7 +153,7 @@ defined('_JEXEC') or die('Restricted access');
 	//$matrix = '<table class="matrix">';
     
     $matrix = '<div class="row">';
-    $matrix .= '<table class="'.$this->config['table_class'].'">';
+    $matrix .= '<table class="'.$this->config['table_class'].' table-header-rotated">';
 	$k = 1;
 	$crosstable_icons_horizontal = (isset ($this->config['crosstable_icons_horizontal'])) ? $this->config['crosstable_icons_horizontal'] : 0;
 	$crosstable_icons_vertical = (isset ($this->config['crosstable_icons_vertical'])) ? $this->config['crosstable_icons_vertical'] : 0;
@@ -140,14 +188,14 @@ defined('_JEXEC') or die('Restricted access');
 					$desc = sportsmanagementHelper::getPictureThumb($picture, $title,0,0,3);
 				}
 				if ($this->config['link_teams'] == 1) {
-					$header = '<th class="rotated_cell"><div class="rotate_text">';
+					$header = '<th class="rotate-45"><div ><span>';
 					$header .= JHTML :: link($link, $desc);
-					$header .= '</div></th>';
+					$header .= '</span></div></th>';
 					$matrix .= $header;
 				} else {
-					$header = '<th class="rotated_cell"<div class="rotate_text">>';
+					$header = '<th class="rotate-45"><div ><span>';
 					$header .= $desc;
-					$header .= '</div></th>';
+					$header .= '</span></div></th>';
 					$matrix .= $header;
 				}
                 
@@ -417,4 +465,3 @@ defined('_JEXEC') or die('Restricted access');
 	echo $matrix;
 ?>
 </div>
-

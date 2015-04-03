@@ -79,6 +79,31 @@ class sportsmanagementModelTeamInfo extends JModelLegacy
         sportsmanagementModelProject::$projectid = $this->projectid; 
 		parent::__construct( );
 	}
+    
+    /**
+     * sportsmanagementModelTeamInfo::updateHits()
+     * 
+     * @param integer $teamid
+     * @param integer $inserthits
+     * @return void
+     */
+    public static function updateHits($teamid=0,$inserthits=0)
+    {
+        $option = JRequest::getCmd('option');
+	$app = JFactory::getApplication();
+    $db = JFactory::getDbo();
+ $query = $db->getQuery(true);
+ 
+ if ( $inserthits )
+ {
+ $query->update($db->quoteName('#__sportsmanagement_team'))->set('hits = hits + 1')->where('id = '.$teamid);
+ 
+$db->setQuery($query);
+ 
+$result = $db->execute();
+}  
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');     
+    }
 
 	/**
 	* Method to return a team trainingdata array
@@ -120,11 +145,14 @@ class sportsmanagementModelTeamInfo extends JModelLegacy
 		return $trainingData;
 	}
     
-    /**
-	 * get team info
-	 * @return object
+    
+	/**
+	 * sportsmanagementModelTeamInfo::getTeamByProject()
+	 * 
+	 * @param integer $inserthits
+	 * @return
 	 */
-	function getTeamByProject()
+	function getTeamByProject($inserthits=0)
 	{
 	   // Reference global application object
         $app = JFactory::getApplication();
@@ -135,6 +163,8 @@ class sportsmanagementModelTeamInfo extends JModelLegacy
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
        $starttime = microtime(); 
+       
+       self::updateHits(self::$teamid,$inserthits); 
        
 		if (is_null($this->team))
 		{
