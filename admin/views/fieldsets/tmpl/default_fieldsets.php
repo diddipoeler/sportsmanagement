@@ -172,9 +172,52 @@ case 'extra_fields':
 break;
 
 // für google maps    
+case 'maps2':
+$plugin = JPluginHelper::getPlugin('system', 'plugin_googlemap3');
+$paramsPlugin = new JRegistry($plugin->params);
+
+$arrPluginParams = array();
+
+$arrPluginParams[] = "mapType='".$paramsPlugin->get('mapType','')."'";
+$arrPluginParams[] = "zoomWheel='".$paramsPlugin->get('zoomWheel','')."'";
+$arrPluginParams[] = "zoom='".$paramsPlugin->get('zoom','')."'";
+$arrPluginParams[] = "corzoom='".$paramsPlugin->get('corzoom','')."'";
+$arrPluginParams[] = "minzoom='".$paramsPlugin->get('minzoom','')."'";
+$arrPluginParams[] = "maxzoom='".$paramsPlugin->get('maxzoom','')."'";
+$arrPluginParams[] = "showEarthMaptype='".$paramsPlugin->get('showEarthMaptype','')."'";
+
+//$arrPluginParams[] = "kml='".$this->kmlpath."'";
+$arrPluginParams[] = "kmlrenderer='".$paramsPlugin->get('kmlrenderer','')."'";
+$arrPluginParams[] = "kmlsidebar='".$paramsPlugin->get('kmlsidebar','')."'";
+$arrPluginParams[] = "kmlsbwidth='".$paramsPlugin->get('kmlsbwidth','')."'";
+$arrPluginParams[] = "overview='1'";
+$arrPluginParams[] = "lightbox='1'";
+
+$arrPluginParams[] = "width='".$paramsPlugin->get('width','')."'";
+$arrPluginParams[] = "height='".$paramsPlugin->get('height','')."'";
+
+/*
+$params  = "{mosmap mapType='".$paramsPlugin->get('mapType','')."'|dir='1'|zoomWheel='1'|zoom='".$paramsPlugin->get('zoom','')."'|corzoom='0'|minzoom='0'|maxzoom='19'|
+showEarthMaptype='1'|
+showNormalMaptype='1' |showSatelliteMaptype='1' |showTerrainMaptype='1' |showHybridMaptype='1'   
+|kml=''|kmlrenderer='geoxml'|controltype='user'|kmlsidebar='left'|kmlsbwidth='200'|
+lightbox='1'|
+width='".$paramsPlugin->get('width','')."'|height='".$paramsPlugin->get('height','')."' |overview='1'  }";  
+*/
+
+$params  = "{mosmap width='500'\|height='400'\|lat='52.052312'\|lon='4.447141'\|
+zoom='3'\|mapType='Satellite'\|text='sv DWO'\|tooltip='DWO'\|
+marker='1'\|align='center' } ";
+//$params  = "{mosmap mapType='".$paramsPlugin->get('mapType','')."'}";  
+echo JHtml::_('content.prepare', $params);
+
+break;
+
+// für google maps    
 case 'maps':
 $document = JFactory::getDocument();
-$document->addScript('http://maps.google.com/maps/api/js?&sensor=false');
+$document->addScript('http://maps.google.com/maps/api/js?&sensor=true');
+//$document->addScript('https://maps.googleapis.com/maps/api/js?v=3.exp');
 ?>
 <script language="javascript" type="text/javascript">
 var map;
@@ -187,8 +230,8 @@ function initialize() {
       center: start,
       mapTypeId: google.maps.MapTypeId.HYBRID
     };
-    map = new google.maps.Map($('map'), myOptions);
-    
+    //map = new google.maps.Map($('map'), myOptions);
+    map = new google.maps.Map(document.getElementById('map'),myOptions);
     var marker = new google.maps.Marker({
       position: start,
       map: map,
@@ -199,6 +242,9 @@ function initialize() {
     kartenwerte();
 	}
 	
+    //google.maps.event.addDomListener(window, 'load', initialize);
+    //google.maps.event.trigger(map,'resize');
+    
 	function kartenwerte() {
 	var mapcenter =  map.getCenter();
 	$('conf_center_lat').value =mapcenter.lat();
@@ -206,11 +252,16 @@ function initialize() {
 	$('conf_start_zoom').value = map.getZoom();
 	
 	} 
+    
+//    $(document).ready(function() {
+//  google.maps.event.trigger(map, 'resize');
+//          });
+          
 </script>
 
 <fieldset class="adminform">
 			
-<body onLoad="initialize()">              
+<body onLoad="initialize()">             
 
 <div id="map" style="width:400px; height:400px;"></div>
 </fieldset>

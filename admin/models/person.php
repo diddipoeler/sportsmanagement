@@ -263,13 +263,16 @@ class sportsmanagementModelperson extends JModelAdmin
 		return $data;
 	}
 	
-    /**
-	 * return 
-	 *
-	 * @param int person_id
-	 * @return int
+    
+	/**
+	 * sportsmanagementModelperson::getPerson()
+	 * 
+	 * @param integer $person_id
+	 * @param integer $season_person_id
+	 * @param integer $inserthits
+	 * @return
 	 */
-	function getPerson($person_id=0,$season_person_id=0)
+	function getPerson($person_id=0,$season_person_id=0,$inserthits=0)
 	{
 	   // Reference global application object
         $app = JFactory::getApplication();

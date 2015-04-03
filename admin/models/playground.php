@@ -419,12 +419,38 @@ class sportsmanagementModelPlayground extends JModelAdmin
     
     
     /**
+     * sportsmanagementModelPlayground::updateHits()
+     * 
+     * @param integer $pgid
+     * @param integer $inserthits
+     * @return void
+     */
+    public static function updateHits($pgid=0,$inserthits=0)
+    {
+        $option = JRequest::getCmd('option');
+	$app = JFactory::getApplication();
+    $db = JFactory::getDbo();
+ $query = $db->getQuery(true);
+ 
+ if ( $inserthits )
+ {
+ $query->update($db->quoteName('#__sportsmanagement_playground'))->set('hits = hits + 1')->where('id = '.$pgid);
+ 
+$db->setQuery($query);
+ 
+$result = $db->execute();
+}  
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');     
+    }
+    
+    /**
      * sportsmanagementModelPlayground::getPlayground()
      * 
      * @param integer $pgid
+     * @param integer $inserthits
      * @return
      */
-    public static function getPlayground( $pgid = 0 )
+    public static function getPlayground( $pgid = 0,$inserthits=0 )
     {
         $option = JRequest::getCmd('option');
 	    $app = JFactory::getApplication();
@@ -435,6 +461,8 @@ class sportsmanagementModelPlayground extends JModelAdmin
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playground<br><pre>'.print_r(self::$playground,true).'</pre>'),'');
         }
+        
+        self::updateHits($pgid,$inserthits); 
         
         if ( is_null( self::$playground ) )
         {

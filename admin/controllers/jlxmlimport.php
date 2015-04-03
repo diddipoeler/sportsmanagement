@@ -155,11 +155,11 @@ class sportsmanagementControllerJLXMLImport extends JControllerLegacy
         
         if ( $post['importupdate'] )
         {
-        $europalink = "http://www.fussballineuropa.de/index.php?option=com_joomleague&view=jlxmlexports&p=".$projectid."&update=1";    
+        $europalink = "http://www.fussballineuropa.de/index.php?option=com_sportsmanagement&view=jlxmlexports&p=".$projectid."&update=1";    
         }
         else
         {
-        $europalink = "http://www.fussballineuropa.de/index.php?option=com_joomleague&view=jlxmlexports&p=".$projectid."&update=0";    
+        $europalink = "http://www.fussballineuropa.de/index.php?option=com_sportsmanagement&view=jlxmlexports&p=".$projectid."&update=0";    
         }
         
         $app->enqueueMessage(JText::_('hole daten von -> '.$europalink.''),'Notice');

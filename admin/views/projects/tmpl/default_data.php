@@ -171,16 +171,19 @@ JHtml::_('behavior.modal');
 					$link2 = JRoute::_('index.php?option=com_sportsmanagement&view=projects&task=project.display&id='.$row->id);
 					$link2panel = JRoute::_('index.php?option=com_sportsmanagement&task=project.edit&layout=panel&pid='.$row->id.'&stid='.$row->sports_type_id.'&id='.$row->id   );
                     $link2teams = JRoute::_('index.php?option=com_sportsmanagement&view=projectteams&pid='.$row->id.'&id='.$row->id   );
-                    $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
+                    
                     $link2rounds = JRoute::_('index.php?option=com_sportsmanagement&view=rounds&pid='.$row->id );
                     $link2divisions = JRoute::_('index.php?option=com_sportsmanagement&view=divisions&pid='.$row->id );
+                    
+                    $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
+                    $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
 
-					$checked = JHtml::_('grid.checkedout',$row,$i);
+					$checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'projects.', $canCheckin);
 					$published = JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','projects.');
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
-						<td width="5%" class="center"><?php echo $checked; ?></td>
+						<td width="5%" class="center"><?php echo JHtml::_('grid.id', $i, $row->id); ?></td>
 						<?php
                         						
 							$inputappend = '';
