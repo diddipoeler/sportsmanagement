@@ -1747,7 +1747,7 @@ $starttime = microtime();
         $query->select('tp1.person_id,tp1.jerseynumber');
         $query->select('tp2.person_id AS out_person_id');
         $query->select('p2.id AS out_ptid,p2.firstname AS out_firstname,p2.nickname AS out_nickname,p2.lastname AS out_lastname');
-        $query->select('p.firstname,p.nickname,p.lastname');
+        $query->select('p.firstname,p.nickname,p.lastname,p.id AS playerid');
         $query->select('pos.name AS in_position');
         $query->select('ppos.id AS pposid1');
         $query->select('pos2.name AS out_position');

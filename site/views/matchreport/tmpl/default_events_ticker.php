@@ -37,7 +37,8 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+?>
 <!-- START of match events -->
 
 <h2><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'); ?></h2>		
@@ -75,7 +76,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
         
         foreach ($matchevents AS $me)
             {
-                if (!array_key_exists('in_out_time', $me)) {
+                if (!array_key_exists('in_out_time', $me)) 
+                {
                 ?>
                     
                     <tr class="<?php echo ($k == 0)? $this->config['style_class1'] : $this->config['style_class2']; ?>" id="event-<?php echo $me->event_id; ?>">
@@ -191,7 +193,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                 } 
                 else
                 {
-		?>
+		
+//echo ' me<br><pre>'.print_r($me,true).'</pre>';        
+        ?>
                     
                     <tr class="<?php echo ($k == 0)? $this->config['style_class1'] : $this->config['style_class2']; ?>" id="event-tpidin<?php echo $me->teamplayer_id; ?>-tpidout<?php echo $me->in_for; ?>">
                     
@@ -200,9 +204,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                     //$pic_tab=$IconArr[$me->event_type_id];
                     //$eventname=JText::_($TextArr[$me->event_type_id]);
 		    
-		    $pic_time='images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/playtime.gif';
-		    $pic_out='images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png';
-		    $pic_in='images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png';
+		    $pic_time = 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/playtime.gif';
+		    $pic_out = 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png';
+		    $pic_in = 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png';
                     
                     //Time
                     $prefix = '';
@@ -213,12 +217,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                     echo '<td class="tcenter">' . $prefix . '</td>';
                     
                         
-		    $imgTitle_in    = JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT');
-		    $imgTitle_in2   = array(' title' => $imgTitle_in);
-		    $imgTitle_out   = JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN');
-		    $imgTitle_out2  = array(' title' => $imgTitle_out);
-		    $txt_tab_out = JHtml::image($pic_out,$imgTitle,$imgTitle_in2).'&nbsp;';
-		    $txt_tab_in  = JHtml::image($pic_in,$imgTitle,$imgTitle_out2).'&nbsp;';
+		    $imgTitle_in = JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT');
+		    $imgTitle_in2 = array(' title' => $imgTitle_in);
+		    $imgTitle_out = JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN');
+		    $imgTitle_out2 = array(' title' => $imgTitle_out);
+		    $txt_tab_out = JHtml::image($pic_out,$imgTitle_in,$imgTitle_in2).'&nbsp;';
+		    $txt_tab_in = JHtml::image($pic_in,$imgTitle_out,$imgTitle_out2).'&nbsp;';
                         
 		    echo  '<td class="ecenter">' . $txt_tab_out . '</td>';
                         

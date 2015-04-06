@@ -142,8 +142,8 @@ class sportsmanagementViewMatchReport extends JViewLegacy
 		$this->assign('staffstats',$model->getMatchStaffStats());
 		$this->assignRef('model',$model);
         
-        
-        
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchevents<br><pre>'.print_r($this->matchevents,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' substitutes<br><pre>'.print_r($this->substitutes,true).'</pre>'),'Notice');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {

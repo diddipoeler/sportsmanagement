@@ -42,6 +42,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport('joomla.application.component.view');
 jimport( 'joomla.filesystem.file' );
 
+// welche joomla version ?
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+jimport('joomla.html.html.bootstrap');
+}
 
 /**
  * sportsmanagementViewResults
@@ -97,9 +102,9 @@ JHtml::_( 'behavior.mootools' );
         sportsmanagementModelPagination::pagenav($project,$model::$cfg_which_database);
 		$mdlPagination = JModelLegacy::getInstance("Pagination","sportsmanagementModel");
         
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' Pagination'.'<pre>'.print_r($mdlPagination,true).'</pre>' ),'');
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' Pagination->prev'.'<pre>'.print_r($mdlPagination->get('prevlink'),true).'</pre>' ),'');
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' Pagination->next'.'<pre>'.print_r($mdlPagination->getnextlink(),true).'</pre>' ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Pagination'.'<pre>'.print_r($mdlPagination,true).'</pre>' ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Pagination->prev'.'<pre>'.print_r($mdlPagination->get('prevlink'),true).'</pre>' ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Pagination->next'.'<pre>'.print_r($mdlPagination->getnextlink(),true).'</pre>' ),'');
         
 		//$roundcode = sportsmanagementModelRound::getRoundcode($model->roundid);
         $roundcode = sportsmanagementModelRound::getRoundcode($model::$roundid,$model::$cfg_which_database);
@@ -722,20 +727,20 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 	{
 		//echo '<br /><pre>~'.print_r($game,true).'~</pre><br />';
 
-		$output='';
-		$report_link=sportsmanagementHelperRoute::getMatchReportRoute($game->project_id,$game->id);
+		$output = '';
+		$report_link = sportsmanagementHelperRoute::getMatchReportRoute($game->project_id,$game->id);
 
 		if ((($game->show_report) && (trim($game->summary) != '')) || ($game->alt_decision) || ($game->match_result_type > 0))
 		{
 			if ($game->alt_decision)
 			{
-				$imgTitle=JText::_($game->decision_info);
-				$img='media/com_sportsmanagement/jl_images/court.gif';
+				$imgTitle = JText::_($game->decision_info);
+				$img = 'media/com_sportsmanagement/jl_images/court.gif';
 			}
 			else
 			{
-				$imgTitle=JText::_('Has match summary');
-				$img='media/com_sportsmanagement/jl_images/zoom.png';
+				$imgTitle = JText::_('Has match summary');
+				$img = 'media/com_sportsmanagement/jl_images/zoom.png';
 			}
 			$output .= JHtml::_(	'link',
 			$report_link,
@@ -760,16 +765,33 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 	 * @param array $config
 	 * @return string
 	 */
-	function showEventsContainerInResults($matchInfo,$projectevents,$matchevents,$substitutions=null,$config)
+	function showEventsContainerInResults($matchInfo,$projectevents,$matchevents,$substitutions=null,$config=array() )
 	{
-		$output='';
-		$result='';
+	   $app = JFactory::getApplication();
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config'.'<pre>'.print_r($config,true).'</pre>' ),'');
+       
+		$output = '';
+		$result = '';
 
-		if ($this->config['use_tabs_events'])
+		if ($config['use_tabs_events'])
 		{
-			// Make event tabs with JPane integrated function in Joomla 1.5 API
-			$result	=& JPane::getInstance('tabs',array('startOffset'=>0));
+			
+            if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+            // Define tabs options for version of Joomla! 3.0
+        $tabsOptions = array(
+            "active" => "tab0_id" // It is the ID of the active tab.
+        );  
+        
+        $output .= JHtml::_('bootstrap.startTabSet', 'ID-Tabs-Group', $tabsOptions);
+        
+            }
+            else
+            {
+            // Make event tabs with JPane integrated function in Joomla 1.5 API
+			$result	= JPane::getInstance('tabs',array('startOffset'=>0));
 			$output .= $result->startPane('pane');
+            }
 
 			// Size of the event icons in the tabs (when used)
 			$width = 20; $height = 20; $type = 4;
@@ -791,7 +813,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 				}
 				if($cnt==0){continue;}
 				
-				if ($this->config['show_events_with_icons'] == 1)
+				if ($config['show_events_with_icons'] == 1)
 				{
 					// Event icon as thumbnail on the tab (a placeholder icon is used when the icon does not exist)
 					$imgTitle = JText::_($event->name);
@@ -801,9 +823,18 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 				{
 					$tab_content = JText::_($event->name);
 				}
-
+                
+                if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+            $output .=  JHtml::_('bootstrap.addTab', 'ID-Tabs-Group', 'tab'.$event->id.'_id',JText::_($event->name) ); 
+            //$output .=  JHtml::_('bootstrap.addTab', 'ID-Tabs-Group', 'tab'.$event->id.'_id',$tab_content);
+            }
+            else
+            {
 				$output .= $result->startPanel($tab_content, $event->id);
-				$output .= '<table class="matchreport" border="0">';
+                }
+                
+				$output .= '<table class="table table-striped" border="0">';
 				$output .= '<tr>';
 
 				// Home team events
@@ -811,7 +842,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 				$output .= '<ul>';
 				foreach ($matchevents AS $me)
 				{
-					$output .= self::_formatEventContainerInResults($me, $event, $matchInfo->projectteam1_id, $showEventInfo);
+					$output .= self::_formatEventContainerInResults($me, $event, $matchInfo->projectteam1_id, $showEventInfo,$config);
 				}
 				$output .= '</ul>';
 				$output .= '</td>';
@@ -821,18 +852,26 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 				$output .= '<ul>';
 				foreach ($matchevents AS $me)
 				{
-					$output .= self::_formatEventContainerInResults($me, $event, $matchInfo->projectteam2_id, $showEventInfo);
+					$output .= self::_formatEventContainerInResults($me, $event, $matchInfo->projectteam2_id, $showEventInfo,$config);
 				}
 				$output .= '</ul>';
 				$output .= '</td>';
 				$output .= '</tr>';
 				$output .= '</table>';
+                
+                if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+            $output .= JHtml::_('bootstrap.endTab');
+            }
+            else
+            {
 				$output .= $result->endPanel();
+                }
 			}
 
 			if (!empty($substitutions))
 			{
-				if ($this->config['show_events_with_icons'] == 1)
+				if ($config['show_events_with_icons'] == 1)
 				{
 					// Event icon as thumbnail on the tab (a placeholder icon is used when the icon does not exist)
 					$imgTitle = JText::_('COM_SPORTSMANAGEMENT_IN_OUT');
@@ -851,35 +890,61 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 				$imgOut  = JHtml::image($pic_out,JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT'),array(' title' => JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT')));
 				$imgIn   = JHtml::image($pic_in,JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN'),array(' title' => JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN')));
 
-				$output .= $result->startPanel($tab_content,'0');
-				$output .= '<table class="matchreport" border="0">';
+				if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+            //$output .= JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab1_id','COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE'); 
+            $output .= JHtml::_('bootstrap.addTab', 'ID-Tabs-Group', 'tab0_id','COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE');
+            }
+            else
+            {
+                $output .= $result->startPanel($tab_content,'0');
+                }
+                
+				$output .= '<table class="table table-striped" border="0">';
 				$output .= '<tr>';
 				$output .= '<td class="list">';
-				$output .= '<ul>';
+				$output .= '<ul class="" id="">';
 				foreach ($substitutions AS $subs)
 				{
-					$output .= self::_formatSubstitutionContainerInResults($subs,$matchInfo->projectteam1_id,$imgTime,$imgOut,$imgIn);
+					$output .= self::_formatSubstitutionContainerInResults($subs,$matchInfo->projectteam1_id,$imgTime,$imgOut,$imgIn,$config);
 				}
 				$output .= '</ul>';
 				$output .= '</td>';
 				$output .= '<td class="list">';
-				$output .= '<ul>';
+				$output .= '<ul class="" id="">';
 				foreach ($substitutions AS $subs)
 				{
-					$output .= self::_formatSubstitutionContainerInResults($subs,$matchInfo->projectteam2_id,$imgTime,$imgOut,$imgIn);
+					$output .= self::_formatSubstitutionContainerInResults($subs,$matchInfo->projectteam2_id,$imgTime,$imgOut,$imgIn,$config);
 				}
 				$output .= '</ul>';
 				$output .= '</td>';
 				$output .= '</tr>';
 				$output .= '</table>';
+				
+                if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+            $output .= JHtml::_('bootstrap.endTab');
+            }
+            else
+            {
 				$output .= $result->endPanel();
+                }
+                
 			}
+            
+            if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+            $output .= JHtml::_('bootstrap.endTabSet', 'ID-Tabs-Group');
+            }
+            else
+            {
 			$output .= $result->endPane();
+            }
 		}
 		else
 		{
-			$showEventInfo = ($this->config['show_events_with_icons'] == 1) ? 1 : 2;
-			$output .= '<table class="matchreport" border="0">';
+			$showEventInfo = ($config['show_events_with_icons'] == 1) ? 1 : 2;
+			$output .= '<table class="table table-striped" border="0">';
 			$output .= '<tr>';
 
 			// Home team events
@@ -889,7 +954,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 			{
 				if ($me->ptid == $matchInfo->projectteam1_id)
 				{
-					$output .= self::_formatEventContainerInResults($me, $projectevents[$me->event_type_id], $matchInfo->projectteam1_id, $showEventInfo);
+					$output .= self::_formatEventContainerInResults($me, $projectevents[$me->event_type_id], $matchInfo->projectteam1_id, $showEventInfo,$config);
 				}
 			}
 			$output .= '</ul>';
@@ -902,7 +967,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 			{
 				if ($me->ptid == $matchInfo->projectteam2_id)
 				{
-					$output .= self::_formatEventContainerInResults($me, $projectevents[$me->event_type_id], $matchInfo->projectteam2_id, $showEventInfo);
+					$output .= self::_formatEventContainerInResults($me, $projectevents[$me->event_type_id], $matchInfo->projectteam2_id, $showEventInfo,$config);
 			    }
 			}
 			$output .= '</ul>';
@@ -910,6 +975,8 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 			$output .= '</tr>';
 			$output .= '</table>';
 		}
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' output'.'<pre>'.print_r($output,true).'</pre>' ),'');
 
 		return $output;
 	}
@@ -990,7 +1057,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 	 * @param mixed $showEventInfo
 	 * @return
 	 */
-	function _formatEventContainerInResults($matchevent, $event, $projectteamId, $showEventInfo)
+	function _formatEventContainerInResults($matchevent, $event, $projectteamId, $showEventInfo,$config=array())
 	{
 		// Meaning of $showEventInfo:
 		// 0 : do not show event as text or as icon in a list item
@@ -1011,7 +1078,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 			}
 
 			$event_minute = str_pad($matchevent->event_time, 2 ,'0', STR_PAD_LEFT);
-			if ($this->config['show_event_minute'] == 1 && $matchevent->event_time > 0)
+			if ($config['show_event_minute'] == 1 && $matchevent->event_time > 0)
 			{
 				$output .= '<b>'.$event_minute.'\'</b> ';
 			} 
@@ -1023,7 +1090,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 
 			if (strlen($matchevent->firstname1.$matchevent->lastname1) > 0)
 			{
-				$output .= sportsmanagementHelper::formatName(null, $matchevent->firstname1, $matchevent->nickname1, $matchevent->lastname1, $this->config["name_format"]);
+				$output .= sportsmanagementHelper::formatName(null, $matchevent->firstname1, $matchevent->nickname1, $matchevent->lastname1, $config["name_format"]);
 			}
 			else
 			{
@@ -1031,20 +1098,20 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 			}
 			
 			// only show event sum and match notice when set to on in template cofig
-			if($this->config['show_event_sum'] == 1 || $this->config['show_event_notice'] == 1)
+			if($config['show_event_sum'] == 1 || $config['show_event_notice'] == 1)
 			{
-				if (($this->config['show_event_sum'] == 1 && $matchevent->event_sum > 0) || ($this->config['show_event_notice'] == 1 && strlen($matchevent->notice) > 0))
+				if (($config['show_event_sum'] == 1 && $matchevent->event_sum > 0) || ($config['show_event_notice'] == 1 && strlen($matchevent->notice) > 0))
 				{
 					$output .= ' (';
-						if ($this->config['show_event_sum'] == 1 && $matchevent->event_sum > 0)
+						if ($config['show_event_sum'] == 1 && $matchevent->event_sum > 0)
 						{
 							$output .= $matchevent->event_sum;
 						}
-						if (($this->config['show_event_sum'] == 1 && $matchevent->event_sum > 0) && ($this->config['show_event_notice'] == 1 && strlen($matchevent->notice) > 0))
+						if (($config['show_event_sum'] == 1 && $matchevent->event_sum > 0) && ($config['show_event_notice'] == 1 && strlen($matchevent->notice) > 0))
 						{
 							$output .= ' | ';
 						}
-						if ($this->config['show_event_notice'] == 1 && strlen($matchevent->notice) > 0)
+						if ($config['show_event_notice'] == 1 && strlen($matchevent->notice) > 0)
 						{
 							$output .= $matchevent->notice;
 						}
@@ -1067,7 +1134,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 	 * @param mixed $imgIn
 	 * @return
 	 */
-	function _formatSubstitutionContainerInResults($subs,$projectteamId,$imgTime,$imgOut,$imgIn)
+	function _formatSubstitutionContainerInResults($subs,$projectteamId,$imgTime,$imgOut,$imgIn,$config=array())
 	{
 		$output='';
 		if ($subs->ptid == $projectteamId)
@@ -1078,12 +1145,12 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 			$output .= '<br />';
 
 			$output .= $imgOut;
-			$output .= '&nbsp;'.sportsmanagementHelper::formatName(null, $subs->out_firstname, $subs->out_nickname, $subs->out_lastname, $this->config["name_format"]);
+			$output .= '&nbsp;'.sportsmanagementHelper::formatName(null, $subs->out_firstname, $subs->out_nickname, $subs->out_lastname, $config["name_format"]);
 			$output .= '&nbsp;('.JText :: _($subs->out_position).')';
 			$output .= '<br />';
 
 			$output .= $imgIn;
-			$output .= '&nbsp;'.sportsmanagementHelper::formatName(null, $subs->firstname, $subs->nickname, $subs->lastname, $this->config["name_format"]);
+			$output .= '&nbsp;'.sportsmanagementHelper::formatName(null, $subs->firstname, $subs->nickname, $subs->lastname, $config["name_format"]);
 			$output .= '&nbsp;('.JText :: _($subs->in_position).')';
 			$output .= '<br /><br />';
 			$output .= '</li>';

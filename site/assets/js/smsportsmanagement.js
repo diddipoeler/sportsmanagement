@@ -76,6 +76,8 @@ jQuery('div.rankingteam').hide();
 //alert(obj);
 jQuery("#page-" + obj ).show();
 
+jQuery('div.resultsevents').hide();
+jQuery("#" + obj ).show();
 
 //  	var joomleague_el = document.getElementById(obj);
 //  	if ( joomleague_el.style.display != "none" ) {

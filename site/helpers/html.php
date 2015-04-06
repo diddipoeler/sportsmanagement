@@ -312,12 +312,15 @@ class sportsmanagementHelperHtml
 		return JHtml::_('select.genericlist',$options,'select-round','onchange="top.location.href=this.options[this.selectedIndex].value;"','value','text',$currenturl);
 	}
 
+	
 	/**
-	 * display match playground
-	 *
-	 * @param object $game
+	 * sportsmanagementHelperHtml::showMatchPlayground()
+	 * 
+	 * @param mixed $game
+	 * @param mixed $config
+	 * @return
 	 */
-	function showMatchPlayground(&$game)
+	public static function showMatchPlayground(&$game,$config = array())
 	{
 		
         $cfg_which_database = JRequest::getInt('cfg_which_database',0);
@@ -325,7 +328,7 @@ class sportsmanagementHelperHtml
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         
-        if (($this->config['show_playground'] || $this->config['show_playground_alert']) && isset($game->playground_id))
+        if (($config['show_playground'] || $config['show_playground_alert']) && isset($game->playground_id))
 		{
 			if (empty($game->playground_id)){
 				$game->playground_id=$this->teams[$game->projectteam1_id]->standard_playground;
@@ -349,7 +352,7 @@ class sportsmanagementHelperHtml
 				$this->teams[$game->projectteam1_id]->standard_playground = $cinfo->standard_playground;
 			}
 
-			if (!$this->config['show_playground'] && $this->config['show_playground_alert'])
+			if (!$config['show_playground'] && $config['show_playground_alert'])
 			{
 				if ($this->teams[$game->projectteam1_id]->standard_playground==$game->playground_id)
 				{
@@ -364,7 +367,7 @@ class sportsmanagementHelperHtml
 			$toolTipText	= '';
 			$playgroundID	= $this->teams[$game->projectteam1_id]->standard_playground;
 
-			if (($this->config['show_playground_alert']) && ($this->teams[$game->projectteam1_id]->standard_playground!=$game->playground_id))
+			if (($config['show_playground_alert']) && ($this->teams[$game->projectteam1_id]->standard_playground!=$game->playground_id))
 			{
 				$boldStart		= '<b style="color:red; ">';
 				$boldEnd		= '</b>';
@@ -389,8 +392,8 @@ class sportsmanagementHelperHtml
 			$toolTipText	.= $pginfo->address.'&lt;br /&gt;';
 			$toolTipText	.= $pginfo->zipcode.' '.$pginfo->city. '&lt;br /&gt;';
 
-			$link=sportsmanagementHelperRoute::getPlaygroundRoute($this->project->id,$game->playground_id,$cfg_which_database);
-			$playgroundName=($this->config['show_playground_name'] == 'name') ? $pginfo->name : $pginfo->short_name;
+			$link = sportsmanagementHelperRoute::getPlaygroundRoute($this->project->id,$game->playground_id,$cfg_which_database);
+			$playgroundName = ($config['show_playground_name'] == 'name') ? $pginfo->name : $pginfo->short_name;
 			?>
 <span class='hasTip'
 	title='<?php echo $toolTipTitle; ?> :: <?php echo $toolTipText; ?>'> 

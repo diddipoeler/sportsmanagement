@@ -39,18 +39,29 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+//echo '<pre>'.print_r($this->config,true).'</pre>';
+
 if ( !isset ( $this->club ) )
 {
 	JError::raiseWarning( 'ERROR_CODE', JText::_( 'Error: ClubID was not submitted in URL or Club was not found in database' ) );
 }
 else
 {
-    if(!$this->config['show_club_info'] == 0){
-        echo '<div class="left-column">';
+    if( $this->config['show_club_info'] == 1)
+    {
+        ?>
+<!--        <div class="container-fluid"> -->
+        <div class="row">
+        <div class="span4">
+        <?PHP
     }
     else
     {
-        echo'<div style="text-align:center; width:100%;">';
+        ?>
+<!--        <div class="container-fluid"> -->
+        <div class="row">
+        <div style="text-align:center; width:100%;">
+        <?PHP
     }
 	?>
 		<!-- SHOW LOGO - START -->
@@ -108,10 +119,12 @@ echo JHtml::image($picture, $club_emblem_title, array('title' => $club_emblem_ti
 		?>
 		<!-- SHOW SMALL LOGO - END -->
 	</div>
+    
 	<?php
-        if(!$this->config['show_club_info'] == 0){
+        if( $this->config['show_club_info'] == 1 )
+        {
         ?>
-	<div class="right-column">
+	<div class="span4">
 		<?php
 		if ( ( $this->club->address ) || ( $this->club->zipcode ) )
 		{
@@ -299,7 +312,7 @@ if ( $this->clubhistorysorttree )
 </strong>
 </legend>
 
-<div class="left-column-teamlist">
+<div class="span4">
 <div class="dtree">
       <a href="javascript: d<?PHP echo $this->modid; ?>.openAll();">
         <?php echo JText::_('&ouml;ffnen'); ?>&nbsp;&nbsp;</a>
@@ -320,6 +333,9 @@ if ( $this->clubhistorysorttree )
         
 		?>
 	</div>
+    </div> 
+<!--    </div> -->
+    
 	<?php
 	}
 }

@@ -58,6 +58,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 $this->kmlpath = JURI::root().'tmp'.DS.$this->club->id.'-club.kml';
 $this->kmlfile = $this->club->id.'-club.kml';
 
+// container
 ?>
 <div class="container">
 

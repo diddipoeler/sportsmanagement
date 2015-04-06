@@ -290,7 +290,7 @@ $link = "javascript:void(0);";
 		?>
 		<!-- show playground -->
 		<td>
-			<?php sportsmanagementHelperHtml::showMatchPlayground($match); ?>
+			<?php sportsmanagementHelperHtml::showMatchPlayground($match,$this->config); ?>
 		</td>
 		<?php
 		}
@@ -449,7 +449,7 @@ $link = "javascript:void(0);";
 			?>
 		<!-- show only playground or playgroundalert if playgrund differs from normal -->
 			<td>
-			<?php sportsmanagementHelperHtml::showMatchPlayground($game); ?>
+			<?php sportsmanagementHelperHtml::showMatchPlayground($game,$this->config); ?>
 			</td>
 		<?php
 		}
@@ -584,7 +584,7 @@ $link = "javascript:void(0);";
 	<!-- show icon for editing events in edit mode -->
 	<tr class="events <?php echo ($k == 0) ? '' : 'alt'; ?>">
 		<td colspan="<?php echo $nbcols; ?>">
-		<div id="info<?php echo $game->id; ?>" style="display: none;">
+		<div id="info<?php echo $game->id; ?>" style="display: none;" class="resultsevents" >
 		<table class='matchreport' border='0'>
 			<tr>
 				<td><?php
