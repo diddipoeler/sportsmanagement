@@ -3966,8 +3966,13 @@ $t_params = json_encode( $ini );
 	 */
 	private function _importProjectPositions()
 	{
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        $db	= $this->getDbo();
+        $query = $db->getQuery(true);
+        
 //$this->dump_header("function _importProjectPositions");
-		$my_text='';
+		$my_text = '';
 //$this->dump_variable("this->_datas['projectposition']", $this->_datas['projectposition']);
 //$this->dump_variable("this->_newpositionsid", $this->_newpositionsid);
 //$this->dump_variable("this->_dbpositionsid", JFactory::getDbo()positionsid);
@@ -3979,7 +3984,7 @@ $t_params = json_encode( $ini );
 
 		foreach ($this->_datas['projectposition'] as $key => $projectposition)
 		{
-			$import_projectposition=$this->_datas['projectposition'][$key];
+			$import_projectposition = $this->_datas['projectposition'][$key];
 //$this->dump_variable("import_projectposition", $import_projectposition);
 			$oldID=$this->_getDataFromObject($import_projectposition,'id');
 			
@@ -3988,7 +3993,8 @@ $t_params = json_encode( $ini );
             
 			$p_projectposition->set('project_id',$this->_project_id);
 			$oldPositionID = $this->_getDataFromObject($import_projectposition,'position_id');
-			if (!isset($this->_convertPositionID[$oldPositionID]))
+			
+            if (!isset($this->_convertPositionID[$oldPositionID]))
 			{
 				$my_text .= '<span style="color:red">';
 				$my_text .= JText::sprintf(	'Skipping import of ProjectPosition-ID %1$s. Old-PositionID: %2$s',
@@ -3996,13 +4002,32 @@ $t_params = json_encode( $ini );
 								"</span><strong>$oldPositionID</strong>").'<br />';
 				continue;
 			}
+            
 			$p_projectposition->set('position_id',$this->_convertPositionID[$oldPositionID]);
-			if ($p_projectposition->store()===false)
+            
+            $query->clear();
+            // Select some fields
+            $query->select('id');
+		      // From the table
+		      $query->from('#__sportsmanagement_project_position');
+            $query->where('project_id = ' . $this->_project_id );
+        $query->where('position_id = ' . $this->_convertPositionID[$oldPositionID] );
+        $db->setQuery($query);
+		$db->query();
+        $p_projectposition->id = $db->loadResult();
+        
+        if ( $p_projectposition->id )
+        {
+            
+        }
+        else
+        {
+			if ( $p_projectposition->store() === false )
 			{
 				$my_text .= 'error on ProjectPosition import: ';
 				$my_text .= '#'.$oldID.'#';
 				//$my_text .= "<br />Error: _importProjectpositions<br />#$my_text#<br />#<pre>".print_r($p_projectposition,true).'</pre>#';
-				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 				//return false;
                 sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			}
@@ -4014,12 +4039,13 @@ $t_params = json_encode( $ini );
 								"</span><strong>".$p_projectposition->position_id.'</strong>');
 				$my_text .= '<br />';
 			}
+            }
 //$this->dump_variable("p_projectposition", $p_projectposition);
-			$insertID=$p_projectposition->id;//JFactory::getDbo()->insertid();
-			$this->_convertProjectPositionID[$oldID]=$insertID;
+			$insertID = $p_projectposition->id;//JFactory::getDbo()->insertid();
+			$this->_convertProjectPositionID[$oldID] = $insertID;
 		}
 //$this->dump_variable("this->_convertProjectPositionID", $this->_convertProjectPositionID);
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 
@@ -6513,6 +6539,17 @@ $t_params = json_encode( $ini );
 		    $result_tp = JFactory::getDbo()->loadObjectList();
             foreach ( $result_tp as $team_member )
             {
+                if ( !$team_member->position_id || $team_member->position_id == '' )
+                {
+                $team_member->position_id = 0;
+                }
+                if ( !$team_member->project_position_id || $team_member->project_position_id == '' )
+                {
+                $team_member->project_position_id = 0;
+                }
+                
+
+                
                 // ist der spieler schon durch ein anderes projekt angelegt ?
                 $query = $db->getQuery(true);
 		        $query->select('id');		
@@ -6619,6 +6656,26 @@ $t_params = json_encode( $ini );
                 
                 }
                 
+                
+                $query->clear();
+            // Select some fields
+            $query->select('person_id');
+		      // From the table
+		      $query->from('#__sportsmanagement_person_project_position');
+            $query->where('person_id = ' . $team_member->person_id );
+        $query->where('project_id = ' . $this->_project_id );
+        $query->where('project_position_id = ' . $team_member->project_position_id );
+        $query->where('persontype = 1');
+        $db->setQuery($query);
+		$db->query();
+        $result_ppp = $db->loadResult();
+        
+                if ( $result_ppp )
+                {
+                    
+                }
+                else
+                {
                 // projekt position eintragen
                 // Create a new query object.
                 $insertquery = $db->getQuery(true);
@@ -6653,7 +6710,7 @@ $t_params = json_encode( $ini );
 													);
 						$my_text .= '<br />';
                 }
-                
+                }
                 
                 // Fields to update. match ids = $update_match_ids
                 $query = $db->getQuery(true);
@@ -6714,7 +6771,7 @@ $t_params = json_encode( $ini );
 		    $result_tp = JFactory::getDbo()->loadObjectList();
             foreach ( $result_tp as $team_member )
             {
-                if ( !$team_member->position_id )
+                if ( !$team_member->position_id || $team_member->position_id == '' )
                 {
                 $team_member->position_id = 0;
                 }
@@ -6825,6 +6882,25 @@ $t_params = json_encode( $ini );
                 
                 } 
                 
+                 $query->clear();
+            // Select some fields
+            $query->select('person_id');
+		      // From the table
+		      $query->from('#__sportsmanagement_person_project_position');
+            $query->where('person_id = ' . $team_member->person_id );
+        $query->where('project_id = ' . $this->_project_id );
+        $query->where('project_position_id = ' . $team_member->project_position_id );
+        $query->where('persontype = 2');
+        $db->setQuery($query);
+		$db->query();
+        $result_ppp = $db->loadResult();
+        
+                if ( $result_ppp )
+                {
+                    
+                }
+                else
+                {
                 // projekt position eintragen
                 // Create a new query object.
                 $insertquery = $db->getQuery(true);
@@ -6859,7 +6935,7 @@ $t_params = json_encode( $ini );
 													);
 						$my_text .= '<br />';
                 }
-                
+                }
                 // Fields to update.
                 $query = $db->getQuery(true);
                 $fields = array(

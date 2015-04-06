@@ -72,7 +72,9 @@ class sportsmanagementModelTemplates extends JModelList
                         'tmpl.id',
                         'tmpl.ordering',
                         'tmpl.checked_out_time',
-                        'tmpl.checked_out'
+                        'tmpl.checked_out',
+                        'tmpl.modified',
+                        'tmpl.modified_by'
                         );
                 parent::__construct($config);
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
@@ -125,17 +127,18 @@ class sportsmanagementModelTemplates extends JModelList
 	{
 		$app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
-        $search	= $this->getState('filter.search');
+        //$search	= $this->getState('filter.search');
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
         
         $this->_project_id	= $app->getUserState( "$option.pid", '0' );
         
-        $query->select('tmpl.template,tmpl.title,tmpl.id,tmpl.checked_out,u.name AS editor,(0) AS isMaster,tmpl.checked_out_time');
+        $query->select('tmpl.template,tmpl.title,tmpl.id,tmpl.checked_out,u.name AS editor,(0) AS isMaster,tmpl.checked_out_time,tmpl.modified,tmpl.modified_by');
+        $query->select('u1.username');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config AS tmpl');
         $query->join('LEFT', '#__users AS u ON u.id = tmpl.checked_out');
-        
+        $query->join('LEFT', '#__users AS u1 ON u1.id = tmpl.modified_by');
         $query->where('tmpl.project_id = '.(int) $this->_project_id);
         
         $oldTemplates="frontpage'";
@@ -145,9 +148,9 @@ class sportsmanagementModelTemplates extends JModelList
         
         $query->where("tmpl.template NOT IN ('".$oldTemplates."')");
         
-        if ($search)
+        if ($this->getState('filter.search'))
 		{
-        $query->where(' ( LOWER(tmpl.title) LIKE '.$db->Quote('%'.$search.'%') .' OR '.' LOWER(tmpl.template) LIKE '.$db->Quote('%'.$search.'%').' )'  );
+        $query->where(' ( LOWER(tmpl.title) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%') .' OR '.' LOWER(tmpl.template) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%').' )'  );
         }
 
 

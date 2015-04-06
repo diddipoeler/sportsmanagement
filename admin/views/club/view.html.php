@@ -64,8 +64,8 @@ class sportsmanagementViewClub extends sportsmanagementView
 		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
         $document = JFactory::getDocument();
-		$uri	= JFactory::getURI();
-        $model	= $this->getModel();
+		$uri = JFactory::getURI();
+        $model = $this->getModel();
         $starttime = microtime(); 
         
         $this->option = $option;
@@ -153,6 +153,9 @@ class sportsmanagementViewClub extends sportsmanagementView
         }
         
         $this->assignRef( 'lists', $lists );
+        
+        $document->addScript('http://maps.google.com/maps/api/js?&sensor=false&language=de');
+        $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
 
 
 	}

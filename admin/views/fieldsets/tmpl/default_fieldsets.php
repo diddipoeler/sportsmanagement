@@ -172,7 +172,51 @@ case 'extra_fields':
 break;
 
 // für google maps    
-case 'maps2':
+case 'maps':
+?>
+<style type="text/css">
+<!--
+/* die Map */			
+			#map {
+				height: 350px;
+				width: 600px;
+				margin: 20px auto;
+				//border: 5px solid #969696;
+			}
+-->
+</style>
+
+<script type="text/javascript">
+jQuery(function(){ // document.ready
+// Map initialisieren	 
+				jQuery("#map").gmap3(
+//				{
+//				action: 'init',    
+//				options: {
+//					streetViewControl: true,
+//					}    
+//				}    
+				);
+
+
+                
+});
+
+setTimeout(function(){
+  jQuery('#map')
+    .width("600px")
+    .height("350px") 
+    .gmap3({trigger:"resize"});
+}, 4000);
+
+</script>
+
+<div id="map" class="ui-widget ui-corner-all ui-helper-clearfix"></div>
+<?PHP
+break;
+
+// für google maps    
+case 'maps1':
 $plugin = JPluginHelper::getPlugin('system', 'plugin_googlemap3');
 $paramsPlugin = new JRegistry($plugin->params);
 
@@ -214,7 +258,7 @@ echo JHtml::_('content.prepare', $params);
 break;
 
 // für google maps    
-case 'maps':
+case 'maps2':
 $document = JFactory::getDocument();
 $document->addScript('http://maps.google.com/maps/api/js?&sensor=true');
 //$document->addScript('https://maps.googleapis.com/maps/api/js?v=3.exp');

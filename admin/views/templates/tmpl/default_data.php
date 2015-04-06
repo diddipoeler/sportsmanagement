@@ -85,9 +85,30 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 						<th>
 							<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','tmpl.id',$this->sortDirection,$this->sortColumn); ?>
 						</th>
+                        
+                        <th width="" class="title">
+						<?php
+						echo JText::_('JGLOBAL_FIELD_MODIFIED_LABEL');
+						?>
+					</th>
+                    <th width="" class="title">
+						<?php
+						echo JText::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL');
+						?>
+					</th>
 					</tr>
 				</thead>
-				<tfoot><tr><td colspan="9"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+				<tfoot>
+                <tr>
+                <td colspan="5">
+                <?php 
+                echo $this->pagination->getListFooter(); 
+                ?>
+                </td>
+                <td colspan="6"><?php echo $this->pagination->getResultsCounter(); ?>
+            </td>
+                </tr>
+                </tfoot>
 				<tbody>
 					<?php
 					$k=0;
@@ -130,7 +151,10 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 								?></td>
 							<td class="center"><?php
 								echo $row->id;
-								?><input type='hidden' name='isMaster[<?php echo $row->id; ?>]' value='<?php echo $row->isMaster; ?>' /><?php ?></td>
+								?><input type='hidden' name='isMaster[<?php echo $row->id; ?>]' value='<?php echo $row->isMaster; ?>' /><?php ?>
+                                </td>
+                            <td><?php echo $row->modified; ?></td>
+                            <td><?php echo $row->username; ?></td>    
 						</tr>
 						<?php
 						$k=1 - $k;

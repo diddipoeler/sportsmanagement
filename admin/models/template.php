@@ -228,7 +228,7 @@ class sportsmanagementModeltemplate extends JModelAdmin
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.
-		$db		= $this->getDbo();
+		$db	= $this->getDbo();
 		$query1	= $db->getQuery(true);
         $query2	= $db->getQuery(true);
         $query3	= $db->getQuery(true);
@@ -242,6 +242,7 @@ class sportsmanagementModeltemplate extends JModelAdmin
         $db->setQuery($query1);
 		$current = $db->loadResultArray();
         $current = implode("','",$current);
+        
         // Select some fields
 		$query2->select('id as value, title as text');
         // From table
@@ -249,6 +250,7 @@ class sportsmanagementModeltemplate extends JModelAdmin
         $query2->where('project_id='.$master_id.' and template NOT IN (\''.$current.'\') ');
         $db->setQuery($query2);
         $result1 = $db->loadObjectList();
+        
         // Select some fields
 		$query3->select('id as value, title as text');
         // From table
