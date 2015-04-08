@@ -90,6 +90,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
         
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $projectws = $mdlProject->getProject($this->project_id);
+        $this->assignRef('projectws',$projectws);
         $this->assignRef('eventsprojecttime',$projectws->game_regular_time);
         
         //JRequest::setVar('hidemainmenu', true);
@@ -137,7 +138,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
         
         $match = $model->getMatchData($this->item->id);
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'match');
-		$this->assignRef( 'extended', $extended );
+		$this->assignRef('extended', $extended );
         $this->assignRef('match',$match);
 		$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
         
@@ -216,6 +217,11 @@ class sportsmanagementViewMatch extends sportsmanagementView
  
 	}
     
+    /**
+     * sportsmanagementViewMatch::initEditEeventsBB()
+     * 
+     * @return
+     */
     public function initEditEeventsBB()
 	{
 	$option = JRequest::getCmd('option');
@@ -264,12 +270,46 @@ class sportsmanagementViewMatch extends sportsmanagementView
         $this->setLayout('editeventsbb');		   
     }   
     
+    /**
+     * sportsmanagementViewMatch::initEdit()
+     * 
+     * @return void
+     */
     public function initEdit()
 	{
 	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 	$document = JFactory::getDocument();
     $model = $this->getModel();
+    $project_id = $app->getUserState( "$option.pid", '0' );
+    
+    // match relation tab
+		//$mdlMatch = JModelLegacy::getInstance ( 'match', 'JoomleagueModel' );
+		$oldmatches [] = JHtml::_ ( 'select.option', '0', JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_OLD_MATCH' ) );
+		$res = array ();
+		$new_match_id = ($this->item->new_match_id) ? $this->item->new_match_id : 0;
+		if ($res = $model->getMatchRelationsOptions ( $project_id, $this->item->id . "," . $new_match_id )) {
+			foreach ( $res as $m ) {
+				$m->text = '(' . sportsmanagementHelper::getMatchStartTimestamp ( $m ) . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
+			}
+			$oldmatches = array_merge ( $oldmatches, $res );
+		}
+		$lists ['old_match'] = JHtml::_ ( 'select.genericlist', $oldmatches, 'old_match_id', 'class="inputbox" size="1"', 'value', 'text', $this->item->old_match_id );
+
+		$newmatches [] = JHtml::_ ( 'select.option', '0', JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_NEW_MATCH' ) );
+		$res = array ();
+		$old_match_id = ($this->item->old_match_id) ? $this->item->old_match_id : 0;
+		if ($res = $model->getMatchRelationsOptions ( $project_id, $this->item->id . "," . $old_match_id )) {
+			foreach ( $res as $m ) {
+				$m->text = '(' . sportsmanagementHelper::getMatchStartTimestamp ( $m ) . ') - ' . $m->t1_name . ' - ' . $m->t2_name;
+			}
+			$newmatches = array_merge ( $newmatches, $res );
+		}
+		$lists ['new_match'] = JHtml::_ ( 'select.genericlist', $newmatches, 'new_match_id', 'class="inputbox" size="1"', 'value', 'text', $this->item->new_match_id );
+    
+    
+    
+    
     
     $match = $model->getMatchTeams($this->item->id);
     $lists['count_result'] = JHtml::_('select.booleanlist','count_result','class="inputbox"',$match->count_result);
@@ -288,6 +328,11 @@ class sportsmanagementViewMatch extends sportsmanagementView
     
     }
     
+    /**
+     * sportsmanagementViewMatch::initPicture()
+     * 
+     * @return void
+     */
     public function initPicture()
 	{
 	   $app = JFactory::getApplication();
@@ -300,6 +345,11 @@ class sportsmanagementViewMatch extends sportsmanagementView
     
     }
     
+    /**
+     * sportsmanagementViewMatch::initPressebericht()
+     * 
+     * @return
+     */
     public function initPressebericht()
 	{
 	   $app = JFactory::getApplication();
@@ -428,6 +478,11 @@ $this->assignRef('csvstaff',$model->csv_staff);
         $this->setLayout('editstats');
     }
     
+    /**
+     * sportsmanagementViewMatch::initEditEevents()
+     * 
+     * @return
+     */
     public function initEditEevents()
 	{
 	   $app = JFactory::getApplication();
@@ -539,6 +594,11 @@ $javascript .= "}". "\n";
     
     }
     
+    /**
+     * sportsmanagementViewMatch::initEditLineup()
+     * 
+     * @return
+     */
     public function initEditLineup()
 	{
 	   $app = JFactory::getApplication();
@@ -736,6 +796,11 @@ $javascript .= "}". "\n";
         $this->setLayout('editlineup');
     }
     
+    /**
+     * sportsmanagementViewMatch::initEditReferees()
+     * 
+     * @return
+     */
     public function initEditReferees()
 	{
 	   $app = JFactory::getApplication();
@@ -926,235 +991,11 @@ $this->assignRef('csvstaff',$model->csv_staff);
         parent::display($tpl);
     }
 
-	/**
-	 * sportsmanagementViewMatch::_displayEditReferees()
-	 * 
-	 * @param mixed $tpl
-	 * @return void
-	 */
-	function _displayEditReferees($tpl)
-	{
-		$app = JFactory::getApplication();
-		$document = JFactory::getDocument();
-		//$project_id=$app->getUserState('com_joomleagueproject');
-		$option = JRequest::getCmd('option');
-        //$project_id	= $app->getUserState( "$option.pid", '0' );
-		$params = JComponentHelper::getParams( $option );
-		//$default_name_format = $params->get("name_format");
 
-		//add the js script
-		$version = urlencode(sportsmanagementHelper::getVersion());
-		$document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/startinglineup.js');
 
-		//$model = $this->getModel();
-		//$match =& $this->get('data');
 
-//		$allreferees = array();
-//		//$allreferees = $model->getRefereeRoster(0,$this->item->id);
-//        $allreferees = $this->getRefereeRoster(0,$this->item->id);
-//		$inroster = array();
-//		$projectreferees = array();
-//		$projectreferees2 = array();
-//
-//		if (isset($allreferees))
-//		{
-//			foreach ($allreferees AS $referee) {
-//				$inroster[] = $referee->value;
-//			}
-//		}
-//		$projectreferees = $model->getProjectReferees($inroster,$this->project_id);
-//
-//		if (count($projectreferees) > 0)
-//		{
-//			foreach ($projectreferees AS $referee)
-//			{
-//				$projectreferees2[]=JHtml::_('select.option',$referee->value,
-//				  sportsmanagementHelper::formatName(null, $referee->firstname, $referee->nickname, $referee->lastname, $default_name_format) .
-//				  ' - ('.strtolower(JText::_($referee->positionname)).')');
-//			}
-//		}
-//		$lists['team_referees']=JHtml::_(	'select.genericlist',$projectreferees2,'roster[]',
-//											'style="font-size:12px;height:auto;min-width:15em;" ' .
-//											'class="inputbox" multiple="true" size="'.max(10,count($projectreferees2)).'"',
-//											'value','text');
 
-//		$selectpositions[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_FUNCTION'));
-//		if ($projectpositions = $model->getProjectPositionsOptions(0, 3,$project_id))
-//		{
-//			$selectpositions=array_merge($selectpositions,$projectpositions);
-//		}
-//		$lists['projectpositions']=JHtml::_('select.genericlist',$selectpositions,'project_position_id','class="inputbox" size="1"','value','text');
-//
-//		$squad=array();
-//		if (!$projectpositions)
-//		{
-//			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS').'<br /><br />');
-//			return;
-//		}
-//
-//		// generate selection list for each position
-//		foreach ($projectpositions AS $key => $pos)
-//		{
-//			// get referees assigned to this position
-//			$squad[$key]=$model->getRefereeRoster($pos->value);
-//		}
-//		if (count($squad) > 0)
-//		{
-//			foreach ($squad AS $key => $referees)
-//			{
-//				$temp[$key]=array();
-//				if (isset($referees))
-//				{
-//					foreach ($referees AS $referee)
-//					{
-//						$temp[$key][]=JHtml::_('select.option',$referee->value,
-//						  sportsmanagementHelper::formatName(null, $referee->firstname, $referee->nickname, $referee->lastname, $default_name_format));
-//					}
-//				}
-//				$lists['team_referees'.$key]=JHtml::_(	'select.genericlist',$temp[$key],'position'.$key.'[]',
-//														'id="testing" style="font-size:12px;height:auto;min-width:15em;" '.
-//														'class="inputbox position-starters" multiple="true" ',
-//														'value','text');
-//			}
-//		}
-		$this->assignRef('project_id',$this->project_id);
-		$this->assignRef('match',$match);
-		$this->assignRef('positions',$projectpositions);
-		$this->assignRef('lists',$lists);
-		parent::display($tpl);
-	}
 
-//	function _displayEditevents($tpl)
-//	{
-//		$option = JRequest::getCmd('option');
-//		$app = JFactory::getApplication();
-//        //$model = $this->getModel();
-//        //$model = JModelLegacy::getInstance('match', 'sportsmanagementmodel');
-//		//$project_id = $app->getUserState('com_joomleagueproject');
-//        //$match_id	= $this->item->id;
-//        //$project_id	= $app->getUserState( "$option.pid", '0' );
-//        
-//        //$this->assignRef('match_id',$match_id);
-//        $this->assignRef('project_id',$this->project_id);
-//  
-//
-//        
-//		$document = JFactory::getDocument();
-//		//$params =& JComponentHelper::getParams( $option );
-//		//$default_name_format = $params->get("name_format");
-//
-//		//add the js script
-//		//$version = urlencode(sportsmanagementHelper::getVersion());
-//		$document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/editevents.js');
-//
-//		
-//		$teams = $model->getMatchTeams($this->item->id);
-//        
-//        //$app->enqueueMessage(JText::_('sportsmanagementViewMatch _displayEditevents teams<br><pre>'.print_r($teams,true).'</pre>'   ),'');
-//
-///*
-//		$homeRoster = $model->getTeamPlayers($teams->projectteam1_id);
-//		if (count($homeRoster)==0)
-//		{
-//			//$homeRoster=$model->getGhostPlayer();
-//		}
-//		$awayRoster=$model->getTeamPlayers($teams->projectteam2_id);
-//		if (count($awayRoster)==0)
-//		{
-//			//$awayRoster=$model->getGhostPlayer();
-//		}
-//		$rosters=array('home' => $homeRoster,'away' => $awayRoster);
-//		$matchevents =& $model->getMatchEvents();
-//        $matchcommentary =& $model->getMatchCommentary();
-//		$project_model = $this->getModel('projectws');
-//*/
-//		$lists=array();
-//
-//		// teams
-//		$teamlist=array();
-//		$teamlist[]=JHtml::_('select.option',$teams->projectteam1_id,$teams->team1);
-//		$teamlist[]=JHtml::_('select.option',$teams->projectteam2_id,$teams->team2);
-//		$lists['teams']=JHtml::_('select.genericlist',$teamlist,'team_id','class="inputbox select-team"');
-//
-///*
-//		// events
-//		$events=$model->getEventsOptions($project_id);
-//		if (!$events)
-//		{
-//			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS').'<br /><br />');
-//			return;
-//		}
-//		$eventlist=array();
-//		$eventlist=array_merge($eventlist,$events);
-//
-//		$lists['events']=JHtml::_('select.genericlist',$eventlist,'event_type_id','class="inputbox select-event"');
-//*/
-//
-//		//$this->assignRef('overall_config',$project_model->getTemplateConfig('overall'));
-//		$this->assignRef('lists',$lists);
-//		//$this->assignRef('rosters',$rosters);
-//		$this->assignRef('teams',$teams);
-//		//$this->assignRef('matchevents',$matchevents);
-//        //$this->assignRef('matchcommentary',$matchcommentary);
-//        
-//        // diddipoeler
-//        $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
-//        //$mdlMatchProject = JModelLegacy::getInstance('project','JoomleagueModel');
-//        //$this->assignRef('eventsprojecttime',$mdlMatchProject->getProjectGameRegularTime($project_id) );
-//        
-//
-//		parent::display($tpl);
-//	}
-
-	/**
-	 * sportsmanagementViewMatch::_displayEditeventsbb()
-	 * 
-	 * @param mixed $tpl
-	 * @return
-	 */
-	function _displayEditeventsbb($tpl)
-	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
-		$project_id = $app->getUserState('com_joomleagueproject');
-		$document = JFactory::getDocument();
-		$params = JComponentHelper::getParams( $option );
-		$default_name_format = $params->get("name_format");
-
-		$model = $this->getModel();
-		$teams =& $model->getMatchTeams();
-
-		$homeRoster = $model->getTeamPlayers($teams->projectteam1_id);
-		//if (count($homeRoster)==0)
-//		{
-//			$homeRoster=$model->getGhostPlayerbb($teams->projectteam1_id);
-//		}
-		$awayRoster = $model->getTeamPlayers($teams->projectteam2_id);
-		//if (count($awayRoster)==0)
-//		{
-//			$awayRoster=$model->getGhostPlayerbb($teams->projectteam2_id);
-//		}
-		$project_model = $this->getModel('projectws');
-		// events
-		$events=$model->getEventsOptions($project_id);
-		if (!$events)
-		{
-			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS').'<br /><br />');
-			return;
-		}
-
-		$this->assignRef('homeRoster',$homeRoster);
-		$this->assignRef('awayRoster',$awayRoster);
-		$this->assignRef('teams',$teams);
-		$this->assignRef('events',$events);
-        
-        // diddipoeler
-        $this->assignRef('eventsprojecttime',$project_model->_data->game_regular_time);
-        
-
-		$this->addToolbar_Editeventsbb();			
-		parent::display($tpl);
-	}
 	/**
 	* Add the page title and toolbar.
 	*
@@ -1170,253 +1011,9 @@ $this->assignRef('csvstaff',$model->csv_staff);
 		//JLToolBarHelper::onlinehelp();	
 	}
 	
-	function _displayEditstats($tpl)
-	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
-		//$project_id=$app->getUserState($option.'project');
-		$document = JFactory::getDocument();
-		$params = JComponentHelper::getParams( $option );
-		//$default_name_format = $params->get("name_format");
+	
 
-		//add the js script
-		$version = urlencode(sportsmanagementHelper::getVersion());
-		$document->addScript(JURI::base().'components/com_joomleague/assets/js/editmatchstats.js?v='.$version);
-
-		$model = $this->getModel();
-		$match =& $this->get('data');
-		$teams =& $this->get('MatchTeams');
-		$positions =& $this->get('ProjectPositions');
-		$staffpositions =& $this->get('ProjectStaffPositions');
-
-		$homeRoster=$model->getMatchPlayers($teams->projectteam1_id);
-		//if (count($homeRoster)==0)
-//		{
-//			$homeRoster=$model->getGhostPlayerbb($teams->projectteam1_id);
-//		}
-		$awayRoster=$model->getMatchPlayers($teams->projectteam2_id);
-		//if (count($awayRoster)==0)
-//		{
-//			$awayRoster=$model->getGhostPlayerbb($teams->projectteam2_id);
-//		}
-
-		$homeStaff=$model->getMatchStaffs($teams->projectteam1_id);
-		$awayStaff=$model->getMatchStaffs($teams->projectteam2_id);
-
-		// stats
-		$stats=$model->getInputStats();
-		if (!$stats)
-		{
-			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_STATS_POS').'<br /><br />');
-			return;
-		}
-		$playerstats=$model->getMatchStatsInput();
-		$staffstats=$model->getMatchStaffStatsInput();
-
-		$this->assignRef('homeRoster',$homeRoster);
-		$this->assignRef('awayRoster',$awayRoster);
-		$this->assignRef('homeStaff',$homeStaff);
-		$this->assignRef('awayStaff',$awayStaff);
-		$this->assignRef('teams',$teams);
-		$this->assignRef('stats',$stats);
-		$this->assignRef('playerstats',$playerstats);
-		$this->assignRef('staffstats',$staffstats);
-		$this->assignRef('match',$match);
-		$this->assignRef('positions',$positions);
-		$this->assignRef('staffpositions',$staffpositions);
-
-		parent::display($tpl);
-	}
-
-	function _displayEditlineup($tpl)
-	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
-		$project_id=$app->getUserState($option.'project');
-		$document = JFactory::getDocument();
-		$tid=JRequest::getVar('team','0');
-		$params =& JComponentHelper::getParams( $option );
-		$default_name_format = $params->get("name_format");
-
-		//add the js script
-		$version = urlencode(sportsmanagementHelper::getVersion());
-		$document->addScript(JURI::base().'components/com_joomleague/assets/js/startinglineup.js?v='.$version);
-
-		$model = $this->getModel();
-		$match =& $model->getMatchTeams();
-
-		if (!$match)
-		{
-			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_TEAM_MATCH').'<br /><br />');
-		}
-		$teamname = ($tid == $match->projectteam1_id) ? $match->team1 : $match->team2;
-
-		if($params->get('use_prefilled_match_roster')>0) {
-			$bDeleteCurrrentRoster = $params->get('on_prefill_delete_current_match_roster', 0);
-			$prefillType = JRequest::getInt('prefill',0);
-			if($prefillType==0) {
-				$prefillType = $params->get('use_prefilled_match_roster');
-			}
-			$projectteam_id = ($tid == $match->projectteam1_id) ? $match->projectteam1_id : $match->projectteam2_id;
-			if($prefillType == 2) {
-				$preFillSuccess = false;
-				if(!$model->prefillMatchPlayersWithProjectteamPlayers($projectteam_id, $bDeleteCurrrentRoster)) {
-					if($model->getError() != '') {
-						JError::raiseWarning(440,'<br />'.$model->getError().'<br /><br />');
-						return;
-					} else {
-						$preFillSuccess = false;
-					}
-				} else {
-					$preFillSuccess = true;
-				}
-			} elseif($prefillType == 1) {
-				if(!$model->prefillMatchPlayersWithLastMatch($projectteam_id, $bDeleteCurrrentRoster)) {
-					if($model->getError() != '') {
-						JError::raiseWarning(440,'<br />'.$model->getError().'<br /><br />');
-						return;
-					} else {
-						$preFillSuccess = false;
-					}
-				} else {
-					$preFillSuccess = true;
-				}
-			}
-		}
-
-		// get starters
-		$starters = $model->getRoster($tid);
-		$starters_id = array_keys($starters);
-
-		// get players not already assigned to starter
-		$not_assigned=$model->getTeamPlayers($tid,$starters_id);
-		if (!$not_assigned && !$starters_id)
-		{
-			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_PLAYERS_MATCH').'<br /><br />');
-			return;
-		}
-
-		$projectpositions =& $model->getProjectPositions();
-		if (!$projectpositions)
-		{
-			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_POS').'<br /><br />');
-			return;
-		}
-
-		// build select list for not assigned players
-		$not_assigned_options=array();
-		foreach ((array) $not_assigned AS $p)
-		{
-			$not_assigned_options[] = JHtml::_( 'select.option',$p->value,'['.$p->jerseynumber.'] '.
-			  									sportsmanagementHelper::formatName(null, $p->firstname, $p->nickname, $p->lastname, $default_name_format) .
-			  									' - ('.JText::_($p->positionname).')');
-		}
-		$lists['team_players']=JHtml::_(	'select.genericlist',$not_assigned_options,'roster[]',
-											'style="font-size:12px;height:auto;min-width:15em;" class="inputbox" multiple="true" size="18"',
-											'value','text');
-
-		// build position select
-		$selectpositions[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_IN_POSITION'));
-		$selectpositions=array_merge($selectpositions,$model->getProjectPositionsOptions(0,1));
-		$lists['projectpositions']=JHtml::_('select.genericlist',$selectpositions,'project_position_id','class="inputbox" size="1"','value','text', NULL, false, true);
-		// build player select
-		$allplayers=$model->getTeamPlayers($tid);
-		$playersoptions=array();
-		$playersoptions[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER'));
-		foreach ((array)$allplayers AS $player)
-		{
-			$playersoptions[]=JHtml::_('select.option',$player->value,
-			  sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format).' - ('.JText::_($player->positionname).')');
-		}
-		$lists['all_players']=JHtml::_(	'select.genericlist',$playersoptions,'roster[]',
-										'id="roster" style="font-size:12px;height:auto;min-width:15em;" class="inputbox" size="4"',
-										'value','text');
-
-		// generate selection list for each position
-		$starters=array();
-		foreach ($projectpositions AS $position_id => $pos)
-		{
-			// get players assigned to this position
-			$starters[$position_id] = $model->getRoster($tid, $pos->pposid);
-		}
-
-		foreach ($starters AS $position_id => $players)
-		{
-			$options=array();
-			foreach ((array) $players AS $p)
-			{
-				$options[]=JHtml::_('select.option',$p->value,'['.$p->jerseynumber.'] '.
-				  sportsmanagementHelper::formatName(null, $p->firstname, $p->nickname, $p->lastname, $default_name_format));
-			}
-
-			$lists['team_players'.$position_id]=JHtml::_(	'select.genericlist',$options,'position'.$position_id.'[]',
-															'style="font-size:12px;height:auto;min-width:15em;" size="4" class="inputbox position-starters" multiple="true" ',
-															'value','text');
-		}
-
-		$substitutions=$model->getSubstitutions($tid);
-
-		/**
-		 * staff positions
-		 */
-		$staffpositions =& $model->getProjectStaffPositions();	// get staff not already assigned to starter
-		//echo '<pre>'.print_r($staffpositions,true).'</pre>';
-
-		// assigned staff
-		$assigned=$model->getMatchStaffs($tid);
-		$assigned_id=array_keys($assigned);
-		// not assigned staff
-		$not_assigned=$model->getTeamStaffs($tid,$assigned_id);
-
-		// build select list for not assigned
-		$not_assigned_options=array();
-		foreach ((array) $not_assigned AS $p)
-		{
-			$not_assigned_options[]=JHtml::_('select.option',$p->value,
-				  sportsmanagementHelper::formatName(null, $p->firstname, $p->nickname, $p->lastname, $default_name_format).' - ('.JText::_($p->positionname).')');
-		}
-		$lists['team_staffs']=JHtml::_(	'select.genericlist',$not_assigned_options,'staff[]',
-										'style="font-size:12px;height:auto;min-width:15em;" size="18" class="inputbox" multiple="true" size="18"',
-										'value','text');
-
-		// generate selection list for each position
-		$options=array();
-		foreach ($staffpositions AS $position_id => $pos)
-		{
-			// get players assigned to this position
-			$options=array();
-			foreach ($assigned as $staff)
-			{
-				if ($staff->project_position_id == $pos->pposid)
-				{
-					$options[]=JHtml::_('select.option',$staff->team_staff_id,
-					  sportsmanagementHelper::formatName(null, $staff->firstname, $staff->nickname, $staff->lastname, $default_name_format));
-				}
-			}
-			$lists['team_staffs'.$position_id]=JHtml::_(	'select.genericlist',$options,'staffposition'.$position_id.'[]',
-															'style="font-size:12px;height:auto;min-width:15em;" size="4" class="inputbox position-staff" multiple="true" ',
-															'value','text');
-		}
-
-		$this->assignRef('match',			$match);
-		$this->assignRef('tid',				$tid);
-		$this->assignRef('teamname',		$teamname);
-		$this->assignRef('positions',		$projectpositions);
-		$this->assignRef('staffpositions',	$staffpositions);
-		$this->assignRef('substitutions',	$substitutions[$tid]);
-		$this->assignRef('playersoptions',	$playersoptions);
-		$this->assignRef('lists',			$lists);
-		$this->assignRef('preFillSuccess',	$preFillSuccess);
-        
-        // diddipoeler
-        $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
-        $mdlMatchProject = JModelLegacy::getInstance('project','JoomleagueModel');
-        $this->assignRef('eventsprojecttime',$mdlMatchProject->getProjectGameRegularTime($project_id) );
-        
-    $this->assignRef('starters',			$starters);
-    
-		parent::display($tpl);
-	}
+	
 
 
 

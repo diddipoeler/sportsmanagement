@@ -802,6 +802,73 @@ class sportsmanagementModelMatch extends JModelAdmin
         
         return $result;    
     }
+    
+    /**
+     * sportsmanagementModelMatch::getMatchRelationsOptions()
+     * 
+     * @param mixed $project_id
+     * @param integer $excludeMatchId
+     * @return
+     */
+    function getMatchRelationsOptions($project_id,$excludeMatchId=0)
+	{
+	   $option = JRequest::getCmd('option');
+	   $app = JFactory::getApplication();
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        // Select some fields
+        $query->select('m.id AS value,m.match_date, p.timezone, t1.name AS t1_name, t2.name AS t2_name');
+        // From 
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
+        
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id');
+        
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt1.team_id ');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 ON st2.id = pt2.team_id ');
+        
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id = st1.team_id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id = st2.team_id');
+        
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt1.project_id');
+        
+        // Where
+        $query->where('pt1.project_id = '.(int) $project_id );
+        $query->where('m.id NOT in ('.$excludeMatchId.')' );
+        $query->where('m.published = 1' );
+        
+        $query->order('m.match_date DESC,t1.short_name' );
+
+/*        
+		$query  = ' SELECT	m.id AS value,'
+				. ' m.match_date, p.timezone, t1.name AS t1_name, t2.name AS t2_name'
+				. '	FROM #__joomleague_match AS m'
+				. ' INNER JOIN #__joomleague_project_team AS pt1 ON m.projectteam1_id=pt1.id'
+				. '	INNER JOIN #__joomleague_project_team AS pt2 ON m.projectteam2_id=pt2.id'
+				. ' INNER JOIN #__joomleague_team AS t1 ON pt1.team_id=t1.id'
+				. ' INNER JOIN #__joomleague_team AS t2 ON pt2.team_id=t2.id'
+				. ' INNER JOIN #__joomleague_project AS p ON p.id=pt1.project_id'
+				. ' WHERE pt1.project_id='.$project_id
+				. '   AND m.id NOT in ('.$excludeMatchId.')'
+				. '   AND m.published=1'
+				. ' ORDER BY m.match_date DESC,t1.short_name';
+*/                
+		$db->setQuery($query);
+		$matches = $db->loadObjectList();
+		if ($matches)
+		{
+			foreach ($matches as $match)
+			{
+			 if ( empty( $match->timezone ) )
+             {
+                $match->timezone = 'Europe/Berlin';
+             }
+				sportsmanagementHelper::convertMatchDateToTimezone($match);
+			}
+		}
+		return $matches;
+	}
         
      /**
 	 * Method to load content matchday data
