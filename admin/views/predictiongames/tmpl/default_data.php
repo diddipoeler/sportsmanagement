@@ -86,12 +86,33 @@ JHtml::_('behavior.modal');
 						echo JHtml::_('grid.sort',JText::_('JGRID_HEADING_ID'),'pre.id',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
+                    
+                    <th width="" class="title">
+						<?php
+						echo JText::_('JGLOBAL_FIELD_MODIFIED_LABEL');
+						?>
+					</th>
+                    <th width="" class="title">
+						<?php
+						echo JText::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL');
+						?>
+					</th>
+                    
 				</tr>
 			</thead>
 			<?php
 			if ($this->dPredictionID==0)
 			{
-				?><tfoot><tr><td colspan='10'><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot><?php
+				?>
+                <tfoot>
+                <tr>
+                <td colspan='7'><?php echo $this->pagination->getListFooter(); ?>
+                </td>
+                <td colspan="5"><?php echo $this->pagination->getResultsCounter(); ?>
+            </td>
+                </tr>
+                </tfoot>
+                <?php
 			}
 			?>
 			<tbody>
@@ -102,15 +123,17 @@ JHtml::_('behavior.modal');
 				$row			=& $this->items[$i];
 				$pred_projects	= $this->getModel()->getChilds($row->id);
 				$pred_admins	= $this->getModel()->getAdmins($row->id);
-				$checked		= JHtml::_('grid.checkedout',$row,$i);
+				//$checked		= JHtml::_('grid.checkedout',$row,$i);
 				//$published		= JHtml::_('grid.published',$row,$i);
         $published  = JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','predictiongames.');
+        $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
         $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
+        $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'predictiongames.', $canCheckin);
 				$link = JRoute::_('index.php?option=com_sportsmanagement&task=predictiongame.edit&id=' . $row->id);
 				?>
 				<tr class='<?php echo "row$k"; ?>'>
 					<td style='text-align:right; '><?php echo $this->pagination->getRowOffset( $i ); ?></td>
-					<td><?php echo $checked; ?></td>
+					<td><?php echo JHtml::_('grid.id', $i, $row->id); ?></td>
 					<td style='text-align:center; '>
                     <?php
                             if ($row->checked_out) : ?>
@@ -127,12 +150,12 @@ JHtml::_('behavior.modal');
 					?></td>
 					<td>
 						<?php
-						if ( $this->table->isCheckedOut($this->user->get ('id'), $row->checked_out ) )
-						{
-							echo $row->name;
-						}
-						else
-						{
+//						if ( $this->table->isCheckedOut($this->user->get ('id'), $row->checked_out ) )
+//						{
+//							echo $row->name;
+//						}
+//						else
+//						{
 						$link = JRoute::_('index.php?option=com_sportsmanagement&view=predictiongames&prediction_id='.$row->id);  
 						?><a href="<?php echo $link; ?>"
 								title="<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_SELECT_PGAME',$row->name); ?>">
@@ -141,13 +164,15 @@ JHtml::_('behavior.modal');
 								?>
 							</a>
 						<?php
-						}
+						//}
 						?>
 					</td>
 					<td style='text-align:center; ' colspan='2'><?php echo count( $pred_projects ); ?></td>
 					<td style='text-align:center; ' colspan='2'><?php echo count( $pred_admins ); ?></td>
 					<td style='text-align:center; '><?php echo $published; ?></td>
 					<td style='text-align:center; '><?php echo $row->id; ?></td>
+                    <td><?php echo $row->modified; ?></td>
+                            <td><?php echo $row->username; ?></td> 
 				</tr>
 				<?php
 				$k = 1 - $k;

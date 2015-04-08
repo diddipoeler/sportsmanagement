@@ -70,7 +70,9 @@ class sportsmanagementModelPredictionGames extends JModelList
                         'pre.name',
                         'pre.published',
                         'pre.id',
-                        'pre.ordering'
+                        'pre.ordering',
+                        'pre.modified',
+                        'pre.modified_by'
                         );
                 parent::__construct($config);
         }
@@ -135,9 +137,10 @@ class sportsmanagementModelPredictionGames extends JModelList
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
-        $query->select(array('pre.*', 'u.name AS editor'))
+        $query->select(array('pre.*', 'u.name AS editor,u1.username'))
         ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game AS pre')
-        ->join('LEFT', '#__users AS u ON u.id = pre.checked_out');
+        ->join('LEFT', '#__users AS u ON u.id = pre.checked_out')
+        ->join('LEFT', '#__users AS u1 ON u1.id = pre.modified_by');
 
         if ( $prediction_id > 0 )
 		{

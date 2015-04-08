@@ -105,7 +105,7 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 			return false;
 		}
 		
-        $this->project_id	= $app->getUserState( "$option.pid", '0' );
+        $this->project_id = $app->getUserState( "$option.pid", '0' );
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         
@@ -162,7 +162,7 @@ class sportsmanagementViewTemplate extends sportsmanagementView
         $templates=array();
         $res = $model->getAllTemplatesList($project->id,$master_id);
         $templates=array_merge($templates,$res);
-        $lists['templates'] = JHtml::_('select.genericlist',	$templates,
+        $lists['templates'] = JHtml::_('select.genericlist',$templates,
 														'new_id',
 														'class="inputbox" size="1" onchange="javascript: Joomla.submitbutton(\'templates.changetemplate\');"',
 														'value',

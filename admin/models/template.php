@@ -232,33 +232,47 @@ class sportsmanagementModeltemplate extends JModelAdmin
 		$query1	= $db->getQuery(true);
         $query2	= $db->getQuery(true);
         $query3	= $db->getQuery(true);
-        
-        
+                
         // Select some fields
 		$query1->select('template');
         // From table
 		$query1->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config');
-        $query1->where('project_id='.$project_id);
+        $query1->where('project_id = '.$project_id);
         $db->setQuery($query1);
 		$current = $db->loadResultArray();
+        if ( $current )
+        {
         $current = implode("','",$current);
+        }
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current<br><pre>'.print_r($current,true).'</pre>'),'Notice');
         
         // Select some fields
 		$query2->select('id as value, title as text');
         // From table
 		$query2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config');
-        $query2->where('project_id='.$master_id.' and template NOT IN (\''.$current.'\') ');
+        $query2->where('project_id = '.$master_id.' and template NOT IN (\''.$current.'\') ');
         $db->setQuery($query2);
         $result1 = $db->loadObjectList();
+        
+        foreach ($result1 as $template)
+        {
+			$template->text = JText::_($template->text);
+		}
         
         // Select some fields
 		$query3->select('id as value, title as text');
         // From table
 		$query3->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config');
-        $query3->where('project_id='.$project_id);
+        $query3->where('project_id = '.$project_id);
         $query3->order('title');
         $db->setQuery($query3);
 		$result2 = $db->loadObjectList();
+        
+        foreach ($result2 as $template)
+        {
+			$template->text = JText::_($template->text);
+		}
         
 		return array_merge($result2,$result1);
 	}

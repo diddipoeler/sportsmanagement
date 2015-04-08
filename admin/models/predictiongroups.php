@@ -68,7 +68,9 @@ class sportsmanagementModelpredictiongroups extends JModelList
                 $config['filter_fields'] = array(
                         's.name',
                         's.ordering',
-                        's.id'
+                        's.id',
+                        's.modified',
+                        's.modified_by'
                         );
                 parent::__construct($config);
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
@@ -130,9 +132,10 @@ class sportsmanagementModelpredictiongroups extends JModelList
         
         $search	= $this->getState('filter.search');
         
-        $query->select(array('s.*', 'u.name AS editor'))
+        $query->select(array('s.*', 'u.name AS editor','u1.username'))
         ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_groups AS s')
-        ->join('LEFT', '#__users AS u ON u.id = s.checked_out');
+        ->join('LEFT', '#__users AS u ON u.id = s.checked_out')
+        ->join('LEFT', '#__users AS u1 ON u1.id = s.modified_by');
         
         if ($search)
 		{

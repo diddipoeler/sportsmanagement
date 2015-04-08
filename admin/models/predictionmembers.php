@@ -74,7 +74,9 @@ class sportsmanagementModelPredictionMembers extends JModelList
                         'tmb.receipt',
                         'tmb.show_profile',
                         'tmb.admintipp',
-                        'tmb.approved'
+                        'tmb.approved',
+                        'tmb.modified',
+                        'tmb.modified_by'
                         );
                 parent::__construct($config);
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
@@ -145,10 +147,11 @@ class sportsmanagementModelPredictionMembers extends JModelList
         
         // Create a new query object.
         $query = $this->_db->getQuery(true);
-        $query->select(array('tmb.*','u.name AS realname', 'u.username AS username', 'p.name AS predictionname' ))
+        $query->select(array('tmb.*','u.name AS realname', 'u.username AS username', 'p.name AS predictionname','u1.username' ))
         ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member AS tmb')
         ->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game AS p ON p.id = tmb.prediction_id')
-        ->join('LEFT', '#__users AS u ON u.id = tmb.user_id');
+        ->join('LEFT', '#__users AS u ON u.id = tmb.user_id')
+        ->join('LEFT', '#__users AS u1 ON u1.id = tmb.modified_by');
 
         if (is_numeric($this->getState('filter.prediction_id')))
         {

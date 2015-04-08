@@ -172,7 +172,7 @@ class sportsmanagementModelSportsTypes extends JModelList
         $query->order('name ASC');
 		//$query='SELECT id, name, name AS text FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type ORDER BY name ASC ';
 		$db->setQuery($query);
-		if (!$result=$db->loadObjectList())
+		if ( !$result = $db->loadObjectList() )
 		{
 			//$this->setError($db->getErrorMsg());COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_NO_RESULT
             //$app->enqueueMessage(JText::_('getSportsTypes<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
@@ -180,7 +180,7 @@ class sportsmanagementModelSportsTypes extends JModelList
 			return array();
 		}
 		foreach ($result as $sportstype){
-			$sportstype->name=JText::_($sportstype->name);
+			$sportstype->name = JText::_($sportstype->name);
 		}
 		return $result;
 	}

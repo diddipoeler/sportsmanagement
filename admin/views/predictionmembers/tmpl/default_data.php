@@ -103,15 +103,29 @@ JHtml::_( 'behavior.tooltip' );
 						echo JHtml::_( 'grid.sort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVED' ), 'tmb.approved', $this->sortDirection, $this->sortColumn );
 						?>
 					</th>
+                    
+                    <th width="" class="title">
+						<?php
+						echo JText::_('JGLOBAL_FIELD_MODIFIED_LABEL');
+						?>
+					</th>
+                    <th width="" class="title">
+						<?php
+						echo JText::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL');
+						?>
+					</th>
+                    
 				</tr>
 			</thead>
 			<tfoot>
 				<tr>
-					<td colspan='11'>
+					<td colspan='8'>
 						<?php
 						echo $this->pagination->getListFooter();
 						?>
 					</td>
+                    <td colspan="5"><?php echo $this->pagination->getResultsCounter(); ?>
+            </td>
 				</tr>
 			</tfoot>
 			<tbody>
@@ -126,9 +140,11 @@ JHtml::_( 'behavior.tooltip' );
 				$link	= JRoute::_( 'index.php?option=com_sportsmanagement&task=prediction.edit&id=' . $row->id );
 				//$link2	= JRoute::_( 'index.php?option=com_users&view=user&layout=edit&cid[]=' . $row->user_id );
                 $link2	= JRoute::_( 'index.php?option=com_sportsmanagement&task=predictionmember.edit&id=' . $row->id );
+                $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                 $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
+                $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'predictionmembers.', $canCheckin);
 
-				$checked = JHtml::_( 'grid.checkedout', $row, $i );
+				//$checked = JHtml::_( 'grid.checkedout', $row, $i );
 				?>
 				<tr class="<?php echo "row$k"; ?>">
 					<td>
@@ -138,7 +154,7 @@ JHtml::_( 'behavior.tooltip' );
 					</td>
 					<td>
 						<?php
-						echo $checked;
+						echo JHtml::_('grid.id', $i, $row->id);
 						?>
 					</td>
 					<td>
@@ -235,6 +251,8 @@ JHtml::_( 'behavior.tooltip' );
 										$imgtitle, 'title= "' . $imgtitle . '"' );
 						?>
 					</td>
+                    <td><?php echo $row->modified; ?></td>
+                            <td><?php echo $row->username; ?></td> 
 				</tr>
 				<?php
 				$k = 1 - $k;

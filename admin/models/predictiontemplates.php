@@ -70,7 +70,9 @@ class sportsmanagementModelPredictionTemplates extends JModelList
                         'tmpl.title',
                         'tmpl.template',
                         'tmpl.id',
-                        'tmpl.ordering'
+                        'tmpl.ordering',
+                        'tmpl.modified',
+                        'tmpl.modified_by'
                         );
                 parent::__construct($config);
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
@@ -148,9 +150,10 @@ class sportsmanagementModelPredictionTemplates extends JModelList
         $search	= $this->getState('filter.search');
         $prediction_id	= $this->getState('filter.prediction_id_select');
 
-        $query->select(array('tmpl.*', 'u.name AS editor'))
+        $query->select(array('tmpl.*', 'u.name AS editor','u1.username'))
         ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_template AS tmpl')
-        ->join('LEFT', '#__users AS u ON u.id = tmpl.checked_out');
+        ->join('LEFT', '#__users AS u ON u.id = tmpl.checked_out')
+        ->join('LEFT', '#__users AS u1 ON u1.id = tmpl.modified_by');
         
         if (is_numeric($prediction_id) )
 		{

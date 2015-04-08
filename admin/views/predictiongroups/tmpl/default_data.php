@@ -65,9 +65,29 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 					<th width="20">
 						<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','s.id',$this->sortDirection,$this->sortColumn); ?>
 					</th>
+                    
+                    <th width="" class="title">
+						<?php
+						echo JText::_('JGLOBAL_FIELD_MODIFIED_LABEL');
+						?>
+					</th>
+                    <th width="" class="title">
+						<?php
+						echo JText::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL');
+						?>
+					</th>
+                    
 				</tr>
 			</thead>
-			<tfoot><tr><td colspan="6"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+			<tfoot>
+            <tr>
+            <td colspan="6"><?php echo $this->pagination->getListFooter(); ?>
+            </td>
+            </td>
+                    <td colspan="2"><?php echo $this->pagination->getResultsCounter(); ?>
+            </td>
+            </tr>
+            </tfoot>
 			<tbody>
 				<?php
 				$k=0;
@@ -75,12 +95,14 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 				{
 					$row =& $this->items[$i];
 					$link = JRoute::_('index.php?option=com_sportsmanagement&task=predictiongroup.edit&id='.$row->id);
-					$checked = JHtml::_('grid.checkedout',$row,$i);
+					//$checked = JHtml::_('grid.checkedout',$row,$i);
+                    $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                     $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
+                    $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'predictiongroups.', $canCheckin);
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
-						<td class="center"><?php echo $checked; ?></td>
+						<td class="center"><?php echo JHtml::_('grid.id', $i, $row->id); ?></td>
 						<?php
 						
 							$inputappend='';
@@ -114,6 +136,8 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 									class="text_area" style="text-align: center" />
 						</td>
 						<td class="center"><?php echo $row->id; ?></td>
+                        <td><?php echo $row->modified; ?></td>
+                            <td><?php echo $row->username; ?></td> 
 					</tr>
 					<?php
 					$k=1 - $k;

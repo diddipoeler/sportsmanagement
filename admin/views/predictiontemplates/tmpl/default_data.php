@@ -97,6 +97,18 @@ JHtml::_( 'behavior.tooltip' );
 								echo JHtml::_( 'grid.sort', JText::_( 'JGRID_HEADING_ID' ), 'tmpl.id', $this->sortDirection, $this->sortColumn );
 								?>
 							</th>
+                            
+                            <th width="" class="title">
+						<?php
+						echo JText::_('JGLOBAL_FIELD_MODIFIED_LABEL');
+						?>
+					</th>
+                    <th width="" class="title">
+						<?php
+						echo JText::_('JGLOBAL_FIELD_MODIFIED_BY_LABEL');
+						?>
+					</th>
+                    
 						</tr>
 					</thead>
 						<tfoot>
@@ -106,6 +118,8 @@ JHtml::_( 'behavior.tooltip' );
 									echo $this->pagination->getListFooter();
 									?>
 								</td>
+                                <td colspan="2"><?php echo $this->pagination->getResultsCounter(); ?>
+            </td>
 							</tr>
 						</tfoot>
 						<tbody>
@@ -116,8 +130,10 @@ JHtml::_( 'behavior.tooltip' );
 							$row =& $this->items[$i];
 
 							$link = JRoute::_( 'index.php?option=com_sportsmanagement&task=predictiontemplate.edit&id=' . $row->id.'&predid='.$this->prediction_id );
-							$checked = JHtml::_( 'grid.checkedout', $row, $i );
+							//$checked = JHtml::_( 'grid.checkedout', $row, $i );
+                            $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                             $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
+                            $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'predictiontemplates.', $canCheckin);
 							?>
 							<tr class='<?php echo "row$k"; ?>'>
 								<td>
@@ -127,7 +143,7 @@ JHtml::_( 'behavior.tooltip' );
 								</td>
 								<td>
 									<?php
-									echo $checked;
+									echo JHtml::_('grid.id', $i, $row->id);
 									?>
 								</td>
 								<td style='text-align:center; '>
@@ -159,6 +175,8 @@ JHtml::_( 'behavior.tooltip' );
 									echo $row->id;
 									?>
 								</td>
+                                <td><?php echo $row->modified; ?></td>
+                            <td><?php echo $row->username; ?></td> 
 							</tr>
 							<?php
 							$k = 1 - $k;
