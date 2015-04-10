@@ -88,11 +88,11 @@ function toggle_altdecision() {
 				<table class='admintable'>
 					<tr>
 						<td class="key"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL' );?></td>
-						<td colspan="2"><?php echo $this->lists['count_result'];?></td>
+						<td colspan="3"><?php echo $this->lists['count_result'];?></td>
 					</tr>
 					<tr>
 						<td class="key"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC' );?></td>
-						<td colspan="2">
+						<td colspan="3">
 							<select	name="alt_decision" id="alt_decision">
 								<option	value="0"<?php if ( $this->match->alt_decision == 0 ){echo ' selected="selected"'; } ?>>
 									<?php echo JText::_('JNO');?>
@@ -104,14 +104,14 @@ function toggle_altdecision() {
 						</td>
 					</tr>
 					<tr>
-						<td colspan="3">
+						<td colspan="4">
 							<div id="alt_decision_enter" style="display:<?php echo ( $this->match->alt_decision == 0 ) ? 'none' : 'block'; ?>">
 								<table class='adminForm' cellpadding='0' cellspacing='7' border='0'>
 									<tr>
 										<td class="key"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE' ).' ' .$this->match->hometeam; ?></td>
 										<td>
 											<input	type="text" class="inputbox" id="team1_result_decision" name="team1_result_decision"
-													size="3"
+													size="4"
 													value="<?php if ($this->match->alt_decision == 1) if (isset($this->match->team1_result_decision)) echo $this->match->team1_result_decision; else echo 'X'; ?>" <?php if ($this->match->alt_decision == 0) echo 'DISABLED '; ?>/>
 										</td>
 									</tr>
@@ -119,7 +119,7 @@ function toggle_altdecision() {
 										<td class="key"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_NEW_SCORE' ).' ' .$this->match->awayteam;?></td>
 										<td>
 											<input	type="text" class="inputbox" id="team2_result_decision" name="team2_result_decision"
-													size="3" value="<?php
+													size="4" value="<?php
 													if ( $this->match->alt_decision == 1 ) if ( isset( $this->match->team2_result_decision ) ) echo $this->match->team2_result_decision; else echo 'X'; ?>" <?php
 													if ( $this->match->alt_decision == 0 ) echo 'DISABLED '; ?>/>
 										</td>

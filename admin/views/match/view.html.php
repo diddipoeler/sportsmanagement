@@ -243,6 +243,8 @@ class sportsmanagementViewMatch extends sportsmanagementView
     $model = $this->getModel();
     $project_id = $app->getUserState( "$option.pid", '0' );
     
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($this->item,true).'</pre>'),'Notice');
+    
     // match relation tab
 		//$mdlMatch = JModelLegacy::getInstance ( 'match', 'JoomleagueModel' );
 		$oldmatches [] = JHtml::_ ( 'select.option', '0', JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_OLD_MATCH' ) );
@@ -266,13 +268,11 @@ class sportsmanagementViewMatch extends sportsmanagementView
 			$newmatches = array_merge ( $newmatches, $res );
 		}
 		$lists ['new_match'] = JHtml::_ ( 'select.genericlist', $newmatches, 'new_match_id', 'class="inputbox" size="1"', 'value', 'text', $this->item->new_match_id );
-    
-    
-    
-    
-    
-    $match = $model->getMatchTeams($this->item->id);
-    $lists['count_result'] = JHtml::_('select.booleanlist','count_result','class="inputbox"',$match->count_result);
+
+    //$match = $model->getMatchTeams($this->item->id);
+    $lists['count_result'] = JHtml::_('select.booleanlist','count_result','class="inputbox"',$this->item->count_result);
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match<br><pre>'.print_r($match,true).'</pre>'),'Notice');
         
         // build the html select booleanlist which team got the won
         $myoptions = array();
@@ -281,7 +281,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
         $myoptions[] = JHtml::_('select.option','2',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_AWAY_TEAM'));
         $myoptions[] = JHtml::_('select.option','3',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_LOSS_BOTH_TEAMS'));
         $myoptions[] = JHtml::_('select.option','4',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_WON_BOTH_TEAMS'));
-        $lists['team_won'] = JHtml::_('select.genericlist',$myoptions,'team_won','class="inputbox" size="1"','value','text',$match->team_won);
+        $lists['team_won'] = JHtml::_('select.genericlist',$myoptions,'team_won','class="inputbox" size="1"','value','text',$this->item->team_won);
         
         $this->assignRef('lists',$lists);
         $this->setLayout('edit');

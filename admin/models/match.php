@@ -774,8 +774,21 @@ class sportsmanagementModelMatch extends JModelAdmin
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
-        // Proceed with the save
-		return parent::save($data);   
+         // zuerst sichern, damit wir bei einer neuanlage die id haben
+       if ( parent::save($data) )
+       {
+			$id =  (int) $this->getState($this->getName().'.id');
+            $isNew = $this->getState($this->getName() . '.new');
+            $data['id'] = $id;
+            
+            if ( $isNew )
+            {
+                //Here you can do other tasks with your newly saved record...
+                $app->enqueueMessage(JText::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
+            }
+           
+		}
+          
     }
       
     /**
@@ -1234,36 +1247,10 @@ class sportsmanagementModelMatch extends JModelAdmin
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id = st2.team_id ');
         $query->join('LEFT','#__users u ON u.id = mc.checked_out');
         $query->where('mc.id = ' . $match_id );
-        
-        
-	//	$query='	SELECT	mc.*,'
-//		.' t1.name AS team1,'
-//		.' t2.name AS team2,'
-//		.' u.name AS editor '
-//		.' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS mc '
-//		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id=mc.projectteam1_id '
-//		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id=pt1.team_id '
-//		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON pt2.id=mc.projectteam2_id '
-//		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id=pt2.team_id '
-//		.' LEFT JOIN #__users u ON u.id=mc.checked_out '
-//		.' WHERE mc.id='.(int) $match_id;
+
 		JFactory::getDbo()->setQuery($query);
 		return	JFactory::getDbo()->loadObject();
-        
-        /* diddi test
-       	SELECT	mc.*,
-		t1.name AS team1,
-		t2.name AS team2,
-		u.name AS editor 
-		FROM jos_sportsmanagement_match AS mc 
-		INNER JOIN jos_sportsmanagement_project_team AS pt1 ON pt1.id=mc.projectteam1_id 
-		INNER JOIN jos_sportsmanagement_team AS t1 ON t1.id=pt1.team_id 
-		INNER JOIN jos_sportsmanagement_project_team AS pt2 ON pt2.id=mc.projectteam2_id 
-		INNER JOIN jos_sportsmanagement_team AS t2 ON t2.id=pt2.team_id 
-		LEFT JOIN jos_users u ON u.id=mc.checked_out 
-		WHERE mc.id= 8
-        */
-        
+
 	}
     
     /**

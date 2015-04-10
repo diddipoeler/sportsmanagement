@@ -110,20 +110,32 @@ class sportsmanagementControllermatch extends JControllerForm
 		$post = JRequest::get('post');
 		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
 		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
+        $post['count_result'] = 1;
+        $post['published'] = 1;
 		$model = $this->getModel('match');
         $row = $model->getTable();
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' row<br><pre>'.print_r($row,true).'</pre>'),'');
+        
         // bind the form fields to the table
-        if (!$row->bind($post)) {
+        if (!$row->bind($post)) 
+        {
         $this->setError($this->_db->getErrorMsg());
         return false;
         }
-         // make sure the record is valid
-        if (!$row->check()) {
+        // make sure the record is valid
+        if (!$row->check()) 
+        {
         $this->setError($this->_db->getErrorMsg());
         return false;
         }
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' row<br><pre>'.print_r($row,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
+        
         // store to the database
-		if ($row->store($post))
+		//if ($row->store($post))
+        if ($row->save($post))
 		{
 			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ADD_MATCH');
 		}
