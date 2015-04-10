@@ -1,4 +1,45 @@
-<?php defined( '_JEXEC' ) or die( 'Restricted access' );
+<?php 
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
+
+
+
+defined( '_JEXEC' ) or die( 'Restricted access' );
 if ( !$this->showediticon )
 {
 	JFactory::getApplication()->redirect( str_ireplace('layout=form','',JFactory::getURI()->toString()), JText::_('ALERTNOTAUTH') );
@@ -17,22 +58,22 @@ else
 {
 JHtml::_( 'behavior.mootools' );    
 }
-$version = urlencode(JoomleagueHelper::getVersion());
-$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eventsediting.js?v='.$version);
+//$version = urlencode(JoomleagueHelper::getVersion());
+$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eventsediting.js?v=');
 ?>
 <div style="overflow:auto;">
 	<a name="jl_top" id="jl_top"></a>
 	<!-- section header e.g. ranking, results etc. -->
-	<table width='100%' class='contentpaneopen'>
+	<table class="table">
 		<tr>
 			<td class="contentheading">
 				<?php
 				if ($this->roundid>0)
 				{
-					JoomleagueHelperHtml::showMatchdaysTitle(JText::_('Round results'), $this->roundid, $this->config );
+					sportsmanagementHelperHtml::showMatchdaysTitle(JText::_('Round results'), $this->roundid, $this->config );
 					if ($this->showediticon) //Needed to check if the user is still allowed to get into the match edit
 					{
-						$link = JoomleagueHelperRoute::getResultsRoute( $this->project->id, $this->roundid );
+						$link = sportsmanagementHelperRoute::getResultsRoute( $this->project->id, $this->roundid );
 						$imgTitle = JText::_('Exit Edit Mode');
 						$desc = JHtml::image('media/com_sportsmanagement/jl_images/edit_exit.png', $imgTitle, array(' title' => $imgTitle));
 						echo '&nbsp;';
@@ -45,7 +86,7 @@ $document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eve
 		</tr>
 	</table>
 	<form name="adminForm" id="adminForm" method="post" action="<?php echo JFactory::getURI()->toString(); ?>">
-		<table width='100%' class='contentpaneopen' border='0'>
+		<table class="<?php echo $this->config['table_class']; ?>" >
 			<!-- Main START -->
 			<?php
 			if ( count( $this->matches ) > 0 )
@@ -94,11 +135,11 @@ $document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eve
 				$i = 0;
 				foreach( $this->matches as $match )
 				{
-					$this->config['class'] = $this->config['style_class2'];
-					if ( $k == 0 )
-					{
-						$this->config['class'] = $this->config['style_class1'];
-					}
+//					$this->config['class'] = $this->config['style_class2'];
+//					if ( $k == 0 )
+//					{
+//						$this->config['class'] = $this->config['style_class1'];
+//					}
 					if ((isset($match->allowed)) && ($match->allowed))
 					{
 						$this->assignRef('game', $match);
@@ -114,6 +155,7 @@ $document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eve
 		</table>
 		<br/>
 		<input type='hidden' name='option' value='com_sportsmanagement' />
+        <input type='hidden' name='layout' value='form_dfcday' />
 		<input type='hidden' name='task' value='results.saveshort' />
 		<input type='hidden' name='p' value='<?php echo $this->project->id; ?>' />
 		<input type='hidden' name='r' value='<?php echo $this->roundid; ?>' />
@@ -136,7 +178,7 @@ $document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eve
 <div class='pagenav'>
 <table width='96%' align='center' cellpadding='0' cellspacing='0'>
 	<tr>
-		<?php echo JoomleaguePagination::pagenav($this->project); ?>
+		<?php //echo JoomleaguePagination::pagenav($this->project); ?>
 	</tr>
 </table>
 <!-- matchdays pageNav END -->

@@ -79,11 +79,12 @@ class sportsmanagementControllerResults extends JControllerLegacy
     // Get the input
     $pks = JRequest::getVar('cid', null, 'post', 'array');
     $post = JRequest::get('post');
+    $layout = JRequest::getCmd('layout', 'form');
     
 //    $app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
 //    $app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
     $model->saveshort();
-    $this->setRedirect('index.php?option=com_sportsmanagement&view=results&p='.$post['p'].'&division='.$post['division'].'&r='.$post['r'].'&layout=form' );
+    $this->setRedirect('index.php?option=com_sportsmanagement&view=results&p='.$post['p'].'&division='.$post['division'].'&r='.$post['r'].'&layout='.$layout );
                
     }   
 

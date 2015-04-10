@@ -71,7 +71,12 @@ defined('_JEXEC') or die('Restricted access');
         {
             $teamsoptions[] = JHtml::_('select.option',$team->projectteamid,$team->name,'value','text');
         }
-		$checked	= JHtml::_('grid.checkedout',$match,$i,'id');
+        $user = JFactory::getUser();
+        $canEdit = $user->authorise('core.edit','com_sportsmanagement');
+        $canCheckin = $user->authorise('core.manage','com_checkin') || $thismatch->checked_out == $user->get ('id') || $thismatch->checked_out == 0;
+        $checked = JHtml::_('jgrid.checkedout', $i, $user->get ('id'), $thismatch->checked_out_time, 'matches.', $canCheckin);
+        
+		//$checked	= JHtml::_('grid.checkedout',$match,$i,'id');
 		$published	= JHtml::_('grid.published',$match,$i);
 
 		list($date,$time) = explode(" ",$match->match_date);
@@ -79,7 +84,7 @@ defined('_JEXEC') or die('Restricted access');
 		?>
 <tr id="result-<?php echo $match->id; ?>" class="row-result">
 	<td valign="top"><?php
-	$user = JFactory::getUser();
+	
 	if ($thismatch->checked_out && $thismatch->checked_out != $my->id)
 	{
 		$db= JFactory::getDBO();
@@ -151,12 +156,12 @@ defined('_JEXEC') or die('Restricted access');
 			class='inputbox' onchange="$('cb<?php echo $i; ?>').checked=true; " />
 	</td>
 	<!-- Edit home team -->
-	<td align="center" class="nowrap" valign="top">
+	<td align="center" nowrap="nowrap" valign="top">
 		<!-- Edit home line-up -->
 		<?php
         
         // über das backend/administrator bearbeiten
-		$url = sportsmanagementHelperRoute::getEditLineupRoute($this->project->id,$thismatch->id,null,null,$team1->projectteamid);
+		$url = sportsmanagementHelperRoute::getEditLineupRoute($this->project->id,$thismatch->id,null,$team1->projectteamid);
 		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_HOME');
 		$desc = JHtml::image(	JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
 		?>
@@ -188,7 +193,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php
         
         // über das backend/administrator bearbeiten
-		$url = sportsmanagementHelperRoute::getEditLineupRoute($this->project->id,$thismatch->id,null,null,$team2->projectteamid);
+		$url = sportsmanagementHelperRoute::getEditLineupRoute($this->project->id,$thismatch->id,null,$team2->projectteamid);
 		$imgTitle=JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_AWAY');
 		$desc=JHtml::image(	JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
 		?>

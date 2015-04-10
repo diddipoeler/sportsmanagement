@@ -62,12 +62,12 @@ require ( JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'ed
   
 }
 //$version = urlencode(JoomleagueHelper::getVersion());
-$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eventsediting.js?v='.$version);
+$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eventsediting.js?v=');
 ?>
 <div style="overflow:auto;">
 	<a name="jl_top" id="jl_top"></a>
 	<!-- section header e.g. ranking, results etc. -->
-	<table width='100%' class='contentpaneopen'>
+	<table class="table">
 		<tr>
 			<td class="contentheading">
 				<?php
@@ -89,7 +89,7 @@ $document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eve
 		</tr>
 	</table>
 	<form name="adminForm" id="adminForm" method="post" action="<?php echo JFactory::getURI()->toString(); ?>">
-		<table width='100%' class='contentpaneopen' border='0'>
+		<table class="<?php echo $this->config['table_class']; ?>" >
 			<!-- Main START -->
 			<?php
 			if ( count( $this->matches ) > 0 )
@@ -140,11 +140,11 @@ $document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eve
 				$i = 0;
 				foreach( $this->matches as $match )
 				{
-					$this->config['class'] = $this->config['style_class2'];
-					if ( $k == 0 )
-					{
-						$this->config['class'] = $this->config['style_class1'];
-					}
+//					$this->config['class'] = $this->config['style_class2'];
+//					if ( $k == 0 )
+//					{
+//						$this->config['class'] = $this->config['style_class1'];
+//					}
 					if ((isset($match->allowed)) && ($match->allowed))
 					{
 						$this->assignRef('game', $match);
@@ -160,7 +160,8 @@ $document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eve
 		</table>
 		<br/>
 		<input type='hidden' name='option' value='com_sportsmanagement' />
-		<input type='hidden' name='task' value='results.saveshort' />
+        <input type='hidden' name='layout' value='form' />
+        <input type='hidden' name='task' value='results.saveshort' />
 		<input type='hidden' name='p' value='<?php echo $this->project->id; ?>' />
 		<input type='hidden' name='r' value='<?php echo $this->roundid; ?>' />
 		<input type='hidden' name='sel_r' value='<?php echo $this->roundid; ?>' />

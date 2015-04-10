@@ -1,4 +1,43 @@
-<?php defined('_JEXEC') or die('Restricted access'); 
+<?php 
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
+
+defined('_JEXEC') or die('Restricted access'); 
 
 //FIXME not functional ? 
 // this code was copied from results model, editablerow function
@@ -7,7 +46,7 @@
 <?php 
 		$match = $this->game;
 		$i = $this->i;
-		$thismatch =& JTable::getInstance('Match','Table');
+		$thismatch = JTable::getInstance('Match','sportsmanagementTable');
 		$thismatch->bind(get_object_vars($match));
 
 		list($datum,$uhrzeit)=explode(' ',$thismatch->match_date);
@@ -28,15 +67,21 @@
 		$teams=$this->teams;
 		$teamsoptions[]=JHtml::_('select.option','0','- '.JText::_('Select Team').' -');
 		foreach ($teams AS $team){$teamsoptions[]=JHtml::_('select.option',$team->projectteamid,$team->name,'value','text');}
-		$checked	= JHtml::_('grid.checkedout',$match,$i,'id');
+		
+        $user = JFactory::getUser();
+        $canEdit = $user->authorise('core.edit','com_sportsmanagement');
+        $canCheckin = $user->authorise('core.manage','com_checkin') || $thismatch->checked_out == $user->get ('id') || $thismatch->checked_out == 0;
+        $checked = JHtml::_('jgrid.checkedout', $i, $user->get ('id'), $thismatch->checked_out_time, 'matches.', $canCheckin);
+        
+        //$checked	= JHtml::_('grid.checkedout',$match,$i,'id');
 		$published	= JHtml::_('grid.published',$match,$i);
 
 		list($date,$time)=explode(" ",$match->match_date);
 		$time=strftime("%H:%M",strtotime($time));
 		?>
-<tr id="result-<?php echo $match->id; ?>" class="row-result">
+<tr id="result-<?php echo $match->id; ?>" class="">
 	<td valign="top"><?php
-	$user = JFactory::getUser();
+	
 	if ($thismatch->checked_out && $thismatch->checked_out != $my->id)
 	{
 		$db= JFactory::getDBO();
@@ -58,9 +103,9 @@
 	<td valign="top">
 		<?php
 		JHtml::_('behavior.modal','a.mymodal');
-		$url=JoomleagueHelperRoute::getEditMatchRoute($this->project->id,$thismatch->id);
-		$imgTitle=JText::_('Edit match details');
-		$desc=JHtml::image(JURI::root().'media/com_sportsmanagement/jl_images/edit.png',$imgTitle, array('id' => 'edit'.$thismatch->id,'border' => 0,'title' => $imgTitle));
+		$url = sportsmanagementHelperRoute::getEditMatchRoute($this->project->id,$thismatch->id);
+		$imgTitle = JText::_('Edit match details');
+		$desc = JHtml::image(JURI::root().'media/com_sportsmanagement/jl_images/edit.png',$imgTitle, array('id' => 'edit'.$thismatch->id,'border' => 0,'title' => $imgTitle));
 		?>
 		<a class="mymodal" title="example" href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
 	</td>
@@ -81,9 +126,9 @@
 	<td align="center" class="nowrap" valign="top">
 		<!-- Edit home line-up -->
 		<?php
-		$url=JoomleagueHelperRoute::getEditEventsRoute($this->project->id,$thismatch->id);
-		$imgTitle=JText::_('Edit Home Team');
-		$desc=JHtml::image(	JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
+		$url = sportsmanagementHelperRoute::getEditLineupRoute($this->project->id,$thismatch->id,null,$team1->projectteamid);
+		$imgTitle = JText::_('Edit Home Team');
+		$desc = JHtml::image(	JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
 		?>
 		<a class='mymodal' title='example' href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
 		<!-- Edit home team -->
@@ -111,9 +156,9 @@
 		?>
 		<!-- Edit away line-up -->
 		<?php
-		$url=JoomleagueHelperRoute::getEditEventsRoute($this->project->id,$thismatch->id);
-		$imgTitle=JText::_('Edit Away Team');
-		$desc=JHtml::image(	JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
+		$url = sportsmanagementHelperRoute::getEditLineupRoute($this->project->id,$thismatch->id,null,$team2->projectteamid);
+		$imgTitle = JText::_('Edit Away Team');
+		$desc = JHtml::image(	JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
 		?>
 		<a class='mymodal' title='example' href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
 	</td>
@@ -121,8 +166,8 @@
 	<?php
 		if ($this->config['results_below'])
 		{
-			$partresults1=explode(';',$thismatch->team1_result_split);
-			$partresults2=explode(';',$thismatch->team2_result_split);
+			$partresults1 = explode(';',$thismatch->team1_result_split);
+			$partresults2 = explode(';',$thismatch->team2_result_split);
 
 			for ($x=0; $x<($this->project->game_parts); $x++)
 			{
@@ -220,18 +265,18 @@
 	<!-- Edit match events -->
 	<td valign="top">
 		<?php
-		$url=JoomleagueHelperRoute::getEditEventsRoute($this->project->id,$thismatch->id);
-		$imgTitle=JText::_('Edit all Match Events');
-		$desc=JHtml::image(	JURI::root().'media/com_sportsmanagement/jl_images/events.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
+		$url = sportsmanagementHelperRoute::getEditEventsRoute($this->project->id,$thismatch->id);
+		$imgTitle = JText::_('Edit all Match Events');
+		$desc = JHtml::image(	JURI::root().'media/com_sportsmanagement/jl_images/events.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
 		?>
 		<a class='mymodal' title='example' href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
 	</td>
 	<!-- Edit match statistics -->
 	<td valign="top">
 		<?php
-		$url=JoomleagueHelperRoute::getEditEventsRoute($this->project->id,$thismatch->id);
-		$imgTitle=JText::_('Edit all Match Statistics');
-		$desc=JHtml::image(	JURI::root().'administrator/components/com_sportsmanagement/assets/images/calc16.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
+		$url = sportsmanagementHelperRoute::getEditStatisticsRoute($this->project->id,$thismatch->id);
+		$imgTitle = JText::_('Edit all Match Statistics');
+		$desc = JHtml::image(	JURI::root().'administrator/components/com_sportsmanagement/assets/images/calc16.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
 		?>
 		<a class='mymodal' title='example' href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
 	</td>
