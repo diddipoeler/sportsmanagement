@@ -88,6 +88,8 @@ class sportsmanagementViewMatch extends sportsmanagementView
         $this->assignRef('project_id',$project_id);
         $default_name_format = '';
         
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id -> '.$project_id.''),'');
+        
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $projectws = $mdlProject->getProject($this->project_id);
         $this->assignRef('projectws',$projectws);
@@ -107,34 +109,13 @@ class sportsmanagementViewMatch extends sportsmanagementView
 			return false;
 		}
         
-        /*
-        $mdlPlaygrounds = JModelLegacy::getInstance("Playgrounds", "sportsmanagementModel");
-        
-        //build the html select list for playgrounds
-		$playgrounds[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYGROUND'));
-		if ($res = $mdlPlaygrounds->getPlaygrounds())
-		{
-			$playgrounds=array_merge($playgrounds,$res);
-		}
-		$lists['playgrounds']=JHtml::_(	'select.genericlist',$playgrounds,'playground_id','class="inputbox" size="1"','value',
-										'text',$item->playground_id);
-
-		// build the html select booleanlist for cancel
-		$lists['cancel']=JHtml::_('select.booleanlist','cancel','class="inputbox"',$item->cancel);
-
-		// build the html select booleanlist for show_report
-		$lists['show_report']=JHtml::_('select.booleanlist','show_report','class="inputbox"',$item->show_report);
-
-		// build the html select booleanlist for count match result
-		$lists['count_result']=JHtml::_('select.booleanlist','count_result','class="inputbox"',$item->count_result);
-        */
-        
 		// Assign the Data
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
         
-		//$app->enqueueMessage(JText::_('sportsmanagementViewMatch item<br><pre>'.print_r($this->item,true).'</pre>'   ),'');
+		//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($this->item,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout -> '.$this->getLayout().''),'');
         
         $match = $model->getMatchData($this->item->id);
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'match');
@@ -193,28 +174,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		{
 		$this->initPicture();  
         }
-        
-        // Set the toolbar
-		//$this->addToolBar();
-		
-//		echo '<pre>'.print_r($this->item,true).'</pre><br>'; 
- 
-//		// build the html select booleanlist for count match result
-//        $lists['count_result'] = JHtml::_('select.booleanlist','count_result','class="inputbox"',$match->count_result);
-//        
-//        // build the html select booleanlist which team got the won
-//        $myoptions = array();
-//        $myoptions[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_NO_TEAM'));
-//        $myoptions[] = JHtml::_('select.option','1',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_HOME_TEAM'));
-//        $myoptions[] = JHtml::_('select.option','2',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_AWAY_TEAM'));
-//        $myoptions[] = JHtml::_('select.option','3',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_LOSS_BOTH_TEAMS'));
-//        $myoptions[] = JHtml::_('select.option','4',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_WON_BOTH_TEAMS'));
-//        $lists['team_won'] = JHtml::_('select.genericlist',$myoptions,'team_won','class="inputbox" size="1"','value','text',$match->team_won);
-//        
-//        $this->assignRef('lists',$lists);
-        
-        //$this->setLayout('edit');
- 
+
 	}
     
     /**
@@ -424,6 +384,8 @@ $this->assignRef('csvstaff',$model->csv_staff);
         $document->addScript(JURI::base().'components/'.$option.'/assets/js/editmatchstats.js');
         $teams = $model->getMatchTeams($this->item->id);
         
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');
+        
         $positions = $model->getProjectPositionsOptions(0, 1,$this->project_id);
 		$staffpositions = $model->getProjectPositionsOptions(0, 2,$this->project_id);
         
@@ -450,7 +412,7 @@ $this->assignRef('csvstaff',$model->csv_staff);
 		if (!$stats)
 		{
 			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_STATS_POS').'<br /><br />');
-			return;
+			//return;
 		}
 		$playerstats = $model->getMatchStatsInput($this->item->id,$teams->projectteam1_id,$teams->projectteam2_id);
 		$staffstats = $model->getMatchStaffStatsInput($this->item->id,$teams->projectteam1_id,$teams->projectteam2_id);
@@ -459,7 +421,6 @@ $this->assignRef('csvstaff',$model->csv_staff);
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' stats<br><pre>'.print_r($stats,true).'</pre>'),'');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playerstats<br><pre>'.print_r($playerstats,true).'</pre>'),'');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' staffstats<br><pre>'.print_r($staffstats,true).'</pre>'),'');
-
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' homeStaff<br><pre>'.print_r($homeStaff,true).'</pre>'),'');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' awayStaff<br><pre>'.print_r($awayStaff,true).'</pre>'),'');
         
@@ -473,7 +434,10 @@ $this->assignRef('csvstaff',$model->csv_staff);
         $this->assignRef('homeRoster',$homeRoster);
 		$this->assignRef('awayRoster',$awayRoster);
         $this->assignRef('teams',$teams);
+        //$this->teams = $teams;
         $this->assignRef('lists',$lists);
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
         
         $this->setLayout('editstats');
     }

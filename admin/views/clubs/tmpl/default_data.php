@@ -128,7 +128,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					$row =& $this->items[$i];
 					$link = JRoute::_('index.php?option=com_sportsmanagement&task=club.edit&id='.$row->id);
 					$link2 = JRoute::_('index.php?option=com_sportsmanagement&view=teams&club_id='.$row->id);
-					$canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
+					$canEdit = $this->user->authorise('core.edit','com_sportsmanagement');
                     $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
                     $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'clubs.', $canCheckin);
 					?>

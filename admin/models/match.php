@@ -63,6 +63,8 @@ class sportsmanagementModelMatch extends JModelAdmin
 	const MATCH_ROSTER_SUBSTITUTE_IN	= 1;
 	const MATCH_ROSTER_SUBSTITUTE_OUT	= 2;
 	const MATCH_ROSTER_RESERVE			= 3;
+    
+    var $teams = NULL;
 
 	
     /**
@@ -995,57 +997,6 @@ class sportsmanagementModelMatch extends JModelAdmin
         return $result;
 	}
     
-/**
- *  
- * 	function getTeamPlayers($projectteam_id,$filter=false)
- * 	{
- * 	   $option = JRequest::getCmd('option');
- * 		$app = JFactory::getApplication();
- *         $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
- *         // Get a db connection.
- *         $db = JFactory::getDbo();
- *         $query = $db->getQuery(true);
- *         
- *         // Select some fields
- *         $query->select('sp.id AS value');
- *         $query->select('pl.firstname,pl.nickname,pl.lastname,pl.info,sp.jerseynumber,pl.ordering');
- *         $query->select('pos.name AS positionname');
- *         $query->select('ppos.position_id,ppos.id AS pposid');
- * //        $query->select('');
- * //        $query->select('');
- * //        $query->select('');
- *         // From 
- * 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl');
- *         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS sp ON sp.person_id = pl.id ');
- *         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = pl.position_id ');
- *         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = pos.id ');
- *         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = sp.team_id ');
- *         $query->where('pt.id = '.  $projectteam_id);
- *         $query->where('pl.published = 1');
- *         $query->where('sp.persontype = 1');
- *         $query->where('sp.season_id = '.$this->_season_id);
- * //        $query->where('tpl.published = 1');
-
- * 		if (is_array($filter) && count($filter) > 0)
- * 		{
- * 			//$query .= " AND tpl.id NOT IN (".implode(',',$filter).")";
- *             // Where
- *             $query->where("sp.id NOT IN (".implode(',',$filter).")");
- * 		}
- * 		//$query .= " ORDER BY pos.ordering, pl.lastname ASC ";
- *         $query->order("pos.ordering, pl.lastname ASC");
- * 		$db->setQuery($query);
- * 		
- *         $result = $db->loadObjectList();
- *             if ( !$result )
- * 		    {
- * 			$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
- * 		    }
- *         
- *         
- *         return $result;
- * 	}
- */
     
     /**
 	 * Method to return substitutions made by a team during a match
@@ -1373,41 +1324,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 		return JFactory::getDbo()->loadObjectList('value');
 	}
     
-    
-    /**
-	 * Returns the team players
-	 * @param in project team id
-	 * @param array teamplayer_id to exclude
-	 * @return array
-	 */
-/**
- * 	function getTeamStaffs($projectteam_id,$filter=false)
- * 	{
- * 		$query='	SELECT	ts.id AS value,
- * 							pl.firstname,
- * 							pl.nickname,
- * 							pl.lastname,
- * 							ts.projectteam_id,
- * 							pl.info,
- * 							pos.name AS positionname,
- * 							ppos.position_id
- * 					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl
- * 					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS ts ON ts.person_id=pl.id
- * 					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id=ts.project_position_id
- * 					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id=ppos.position_id
- * 					WHERE ts.projectteam_id='.JFactory::getDbo()->Quote($projectteam_id)
- * 					.' AND pl.published = 1'
- * 					.' AND ts.published = 1';
- * 		if (is_array($filter) && count($filter) > 0)
- * 		{
- * 			$query .= " AND ts.id NOT IN (".implode(',',$filter).")";
- * 		}
- * 		$query .= " ORDER BY pl.lastname ASC ";
- * 		JFactory::getDbo()->setQuery($query);
- * 		return JFactory::getDbo()->loadObjectList();
- * 	}
- */
-    
+ 
     
     /**
 	 * returns players who played for the specified team
@@ -1515,117 +1432,14 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
         }
         
 		return $result;
-        
+       
 
-/*
 
-SELECT mp.teamplayer_id,mp.project_position_id,mp.match_id,mp.id as update_id,sp.id AS value,pl.firstname,pl.nickname,pl.lastname,pos.name AS positionname,ppos.position_id,ppos.id AS pposid
-FROM e5zrq_sportsmanagement_match_player AS mp
-INNER JOIN  e5zrq_sportsmanagement_season_team_person_id AS sp ON mp.teamplayer_id = sp.id 
-INNER JOIN  e5zrq_sportsmanagement_person AS pl ON pl.id = sp.person_id 
-INNER JOIN  e5zrq_sportsmanagement_project_position as ppos ON ppos.id = mp.project_position_id 
-INNER JOIN  e5zrq_sportsmanagement_position AS pos ON pos.id = ppos.position_id
-INNER JOIN e5zrq_sportsmanagement_season_team_id AS st1 ON st1.team_id = sp.team_id 
-LEFT JOIN  e5zrq_sportsmanagement_project_team AS pt ON pt.team_id = st1.id 
-WHERE mp.match_id = 1236 AND pl.published = 1 AND pt.id = 118
-ORDER BY mp.project_position_id, mp.ordering,	pl.lastname, pl.firstname ASC
-
-SELECT mp.teamplayer_id,mp.project_position_id,mp.match_id,mp.id as update_id
-,sp.id AS value,pl.firstname,pl.nickname,pl.lastname
-,pos.name AS positionname,ppos.position_id,ppos.id AS pposid
-FROM e5zrq_sportsmanagement_match_player AS mp
-INNER JOIN  e5zrq_sportsmanagement_season_team_person_id AS sp ON mp.teamplayer_id = sp.id
-INNER JOIN  e5zrq_sportsmanagement_project_position as ppos ON ppos.id = mp.project_position_id 
-INNER JOIN  e5zrq_sportsmanagement_project_team AS pt ON pt.project_id = ppos.project_id 
-INNER JOIN e5zrq_sportsmanagement_season_team_id AS st1 ON st1.id = pt.team_id 
-INNER JOIN  e5zrq_sportsmanagement_person AS pl ON pl.id = sp.person_id 
-INNER JOIN  e5zrq_sportsmanagement_position AS pos ON pos.id = ppos.position_id
-
-WHERE mp.match_id = 1236
-AND pt.id = 110
-
-*/        
-        //return JFactory::getDbo()->loadObjectList();
 	}
     
-    /**
-	 * returns players who played for the specified team
-	 *
-	 * @param int $team_id
-	 * @param int $project_position_id
-	 * @return array of players
-	 */
-/*
-	function getMatchPlayers($projectteam_id,$project_position_id=0,$match_id)
-	{
-		$query='	SELECT	mp.teamplayer_id,
-        tpl.id AS value,pos.name AS positionname,
-							pl.firstname,
-							pl.nickname,
-							pl.lastname,
-							mp.project_position_id,
-							tpl.projectteam_id,
-							ppos.position_id,
-							ppos.id AS pposid
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tpl ON tpl.id = mp.teamplayer_id
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl ON pl.id = tpl.person_id
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position as ppos ON ppos.id = tpl.project_position_id
-                    INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id
-					WHERE mp.match_id='.$match_id.'
-					AND pl.published = 1
-					AND tpl.published = 1
-					AND tpl.projectteam_id='.$projectteam_id;
-                    
 
-		if ($project_position_id > 0)
-		{
-			$query .= " AND mp.project_position_id='".$project_position_id."'";
-		}
-		$query .= " ORDER BY mp.project_position_id, mp.ordering,
-					pl.lastname, pl.firstname ASC";
-		JFactory::getDbo()->setQuery($query);
-		//return JFactory::getDbo()->loadObjectList('team_staff_id');
-        return JFactory::getDbo()->loadObjectList();
-	}
-*/
     
-    /**
-	 * returns players who played for the specified team
-	 *
-	 * @param int $team_id
-	 * @param int $project_position_id
-	 * @return array of players
-	 */
-/*
-	function getMatchStaffs($projectteam_id,$project_position_id=0,$match_id)
-	{
-		$query='	SELECT	mp.team_staff_id,
-							pl.firstname,
-							pl.nickname,
-							pl.lastname,
-							mp.project_position_id,
-							tpl.projectteam_id,
-							ppos.position_id,
-							ppos.id AS pposid
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff AS mp
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS tpl ON tpl.id=mp.team_staff_id
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl ON pl.id=tpl.person_id
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position as ppos ON ppos.id = mp.project_position_id
-					WHERE mp.match_id='.$match_id.'
-					AND pl.published = 1
-					AND tpl.published = 1
-					AND tpl.projectteam_id='.$projectteam_id;
-		if ($project_position_id > 0)
-		{
-			$query .= " AND mp.project_position_id='".$project_position_id."'";
-		}
-		$query .= " ORDER BY mp.project_position_id, mp.ordering,
-					pl.lastname, pl.firstname ASC";
-		JFactory::getDbo()->setQuery($query);
-		return JFactory::getDbo()->loadObjectList('team_staff_id');
-	}
-*/    
+
     
     /**
      * sportsmanagementModelMatch::getInputStats()

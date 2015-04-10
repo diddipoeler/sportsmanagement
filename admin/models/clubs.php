@@ -136,7 +136,7 @@ class sportsmanagementModelClubs extends JModelList
 	{
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $search	= $this->getState('filter.search');
+        //$search	= $this->getState('filter.search');
         //$search_nation	= $this->getState('filter.search_nation');
         //$search_season = $this->getState('filter.season');
 
@@ -148,10 +148,10 @@ class sportsmanagementModelClubs extends JModelList
 		// From the club table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club as a');
         
-        if ($search)
+        if ($this->getState('filter.search'))
 		{
         //$query->where('LOWER(a.name) LIKE '.$db->Quote('%'.$search.'%'));
-        $query->where(' ( LOWER(a.name) LIKE '.$db->Quote('%'.$search.'%') .' OR LOWER(a.unique_id) LIKE '.$db->Quote('%'.$search.'%') .')' );
+        $query->where(' ( LOWER(a.name) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%') .' OR LOWER(a.unique_id) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%') .')' );
         }
         if ($this->getState('filter.search_nation'))
 		{
