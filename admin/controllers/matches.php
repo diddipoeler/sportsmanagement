@@ -311,6 +311,11 @@ class sportsmanagementControllermatches extends JControllerAdmin
 	}
     
     
+    /**
+     * sportsmanagementControllermatches::savestats()
+     * 
+     * @return void
+     */
     function savestats()
     {
         $option = JRequest::getCmd('option');
@@ -434,6 +439,30 @@ class sportsmanagementControllermatches extends JControllerAdmin
 		$this->setRedirect($link,$msg);
     }
     
+    
+    /**
+     * sportsmanagementControllermatches::count_result_yes()
+     * 
+     * @return void
+     */
+    function count_result_yes()
+    {
+        $model = $this->getModel();
+       $model->count_result(1);
+       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+    }
+    
+    /**
+     * sportsmanagementControllermatches::count_result_no()
+     * 
+     * @return void
+     */
+    function count_result_no()
+    {
+        $model = $this->getModel();
+       $model->count_result(0);
+       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+    }
     
     /**
 	 * Method to update checked matches

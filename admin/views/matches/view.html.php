@@ -259,6 +259,38 @@ class sportsmanagementViewMatches extends sportsmanagementView
 		$this->assignRef('pagination',$pagination);
 		$this->assign('request_url',$uri->toString());
 		//$this->assignRef('prefill', $params->get('use_prefilled_match_roster',0));
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'Notice');
+        
+        if ( $this->getLayout() == 'massadd' || $this->getLayout() == 'massadd_3')
+		{
+		//build the html options for massadd create type
+		$createTypes=array(	0 => JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD'),
+				1 => JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_1'),
+				2 => JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_2')
+		);
+		$ctOptions=array();
+		foreach($createTypes AS $key => $value)
+        {
+			$ctOptions[] = JHtmlSelect::option($key,$value);
+		}
+		$lists['createTypes'] = JHtmlSelect::genericlist($ctOptions,'ct[]','class="inputbox" onchange="javascript:displayTypeView();"','value','text',1,'ct');
+		unset($createTypes);
+
+		// build the html radio for adding into one round / all rounds
+		$createYesNo = array(0 => JText::_('JNO'),1 => JText::_('JYES'));
+		$ynOptions = array();
+		foreach($createYesNo AS $key => $value)
+        {
+			$ynOptions[] = JHtmlSelect::option($key,$value);
+		}
+		$lists['addToRound'] = JHtmlSelect::radiolist($ynOptions,'addToRound','class="inputbox"','value','text',0);
+
+		// build the html radio for auto publish new matches
+		$lists['autoPublish'] = JHtmlSelect::radiolist($ynOptions,'autoPublish','class="inputbox"','value','text',0);  
+        $this->assignRef('lists',$lists);
+		$this->setLayout('massadd');  
+        }
 		
 	}
 
@@ -293,7 +325,10 @@ class sportsmanagementViewMatches extends sportsmanagementView
 			//JToolBarHelper::unpublishList('matches.unpublish');
             
             JToolBarHelper::publish('match.insertgooglecalendar', 'JLIB_HTML_CALENDAR', true);
-            
+            JToolBarHelper::divider();
+            JToolBarHelper::publish('matches.count_result_yes', 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL', true);
+            JToolBarHelper::unpublish('matches.count_result_no', 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL', true);
+            JToolBarHelper::divider();
             JToolBarHelper::publish('matches.publish', 'JTOOLBAR_PUBLISH', true);
             JToolBarHelper::unpublish('matches.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 			JToolBarHelper::divider();

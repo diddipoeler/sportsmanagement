@@ -69,7 +69,7 @@ fieldset button {
 		<!-- Start games list -->
 		<form action="<?php echo $this->request_url; ?>" method="post" id='adminForm' name='adminForm'>
 			<?php
-			$colspan = ($this->projectws->allow_add_time) ? 19 : 18;
+			$colspan = ($this->projectws->allow_add_time) ? 20 : 19;
 			?>
 			<table class="<?php echo $this->table_data_class; ?>">
 				<thead>
@@ -132,6 +132,7 @@ fieldset button {
 						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EVENTS'); ?></th>
 						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_STATISTICS'); ?></th>
 						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_REFEREE'); ?></th>
+                        <th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL'); ?></th>
 						<th width="1%" ><?php echo JText::_('JSTATUS'); ?></th>
 						<th width="1%" class="title" >
 							<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','mc.id',$this->sortDirection,$this->sortColumn); ?>
@@ -634,7 +635,23 @@ fieldset button {
 									 ?>
 								</a>
 							</td>
-							<td class="center">
+							<td style='text-align:center; ' >
+								<?php
+									if ( $row->count_result )
+									{
+										$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_PUBLISHED' );
+										$imageFile = 'administrator/components/com_sportsmanagement/assets/images/ok.png';
+									}
+									else
+									{
+										$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_UNPUBLISHED' );
+										$imageFile = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
+									}
+									echo JHtml::_(	'image', $imageFile, $imageTitle, 'title= "' . $imageTitle . '"' );
+								?>
+							</td>
+                            
+                            <td class="center">
 								<?php
 								echo $published;
 								?>

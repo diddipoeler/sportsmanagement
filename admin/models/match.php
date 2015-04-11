@@ -96,29 +96,8 @@ class sportsmanagementModelMatch extends JModelAdmin
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st1.team_id');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et ON et.id = me.event_type_id ');
         
-        //$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position AS ppp on ppp.person_id = tp1.id');
         $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position AS ppp on ppp.person_id = tp1.id and ppp.project_id = pt1.project_id');
-
-/*       
-		$query=' SELECT	me.*,'
-		.' t.name AS team,'
-		.' et.name AS event,'
-		.' CONCAT(t1.firstname," \'",t1.nickname,"\' ",t1.lastname) AS player1,'
-		.' CONCAT(t2.firstname," \'",t2.nickname,"\' ",t2.lastname) AS player2 '
-		.' FROM #__joomleague_match_event AS me '
-		.' LEFT JOIN #__joomleague_team_player AS tp1 ON tp1.id=me.teamplayer_id '
-		.' LEFT JOIN #__joomleague_person AS t1 ON t1.id=tp1.person_id '
-		.' AND t1.published = 1 '
-		.' LEFT JOIN #__joomleague_project_team AS pt ON pt.id=me.projectteam_id '
-		.' LEFT JOIN #__joomleague_team AS t ON t.id=pt.team_id '
-		.' LEFT JOIN #__joomleague_eventtype AS et ON et.id=me.event_type_id '
-		.' LEFT JOIN #__joomleague_team_player AS tp2 ON tp2.id=me.teamplayer_id2 '
-		.' LEFT JOIN #__joomleague_person AS t2 ON t2.id=tp2.person_id '
-		.' AND t2.published = 1 '
-		.' WHERE me.match_id='.$this->_db->Quote((int) $this->_id)
-		.' ORDER BY me.event_time ASC ';
-*/		
-        
+       
         $query->where('pt1.project_id = '.$project_id);
         
         $query->where('me.match_id = '.$match_id);
@@ -127,6 +106,78 @@ class sportsmanagementModelMatch extends JModelAdmin
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
         $db->setQuery($query);
+		return $db->loadObjectList();
+	}
+    
+    
+    /**
+     * sportsmanagementModelMatch::count_result()
+     * 
+     * @param integer $count_result
+     * @return void
+     */
+    function count_result($count_result=0)
+    {
+        // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+	   // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        $post = JRequest::get('post');
+        $result=true;
+		for ($x=0; $x < count($pks); $x++)
+		{
+		// Create an object for the record we are going to update.
+            $object = new stdClass();
+            // Must be a valid primary key value.
+            $object->id = $pks[$x];  
+          $object->count_result = $count_result;
+          // Update their details in the table using id as the primary key.
+        $result_update = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match', $object, 'id', true);
+            if(!$result_update) 
+            {
+				//$this->setError(JFactory::getDbo()->getErrorMsg());
+                $app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(), true).'</pre><br>','Error');
+				$result = false;
+			}
+            else
+            {
+
+                sprintf(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'),$pks[$x]);
+                $app->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_SAVED'),$pks[$x]),'Notice');
+            }
+        }  
+    }
+    
+    /**
+     * sportsmanagementModelMatch::getProjectRoundCodes()
+     * 
+     * @param mixed $project_id
+     * @return
+     */
+    function getProjectRoundCodes($project_id)
+	{
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+	   // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+        $query->select('id,roundcode,round_date_first');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+        $query->where('project_id = '.$project_id);
+        $query->order('roundcode,round_date_first ASC');
+        
+//		$query="SELECT id,roundcode,round_date_first FROM #__joomleague_round
+//				WHERE project_id=".$project_id."
+//				ORDER by roundcode,round_date_first ASC";
+		$db->setQuery($query);
 		return $db->loadObjectList();
 	}
     
@@ -590,13 +641,13 @@ class sportsmanagementModelMatch extends JModelAdmin
                 
             }
 
-			$object->match_number	= $post['match_number'.$pks[$x]];
+			$object->match_number = $post['match_number'.$pks[$x]];
             $object->match_date = $post['match_date'.$pks[$x]];
             $object->result_type = $post['result_type'.$pks[$x]];
             $object->match_result_type = $post['match_result_type'.$pks[$x]];
             $object->crowd = $post['crowd'.$pks[$x]];
-            $object->round_id	= $post['round_id'.$pks[$x]];
-            $object->division_id	= $post['division_id'.$pks[$x]];
+            $object->round_id = $post['round_id'.$pks[$x]];
+            $object->division_id = $post['division_id'.$pks[$x]];
             $object->projectteam1_id = $post['projectteam1_id'.$pks[$x]];
             $object->projectteam2_id = $post['projectteam2_id'.$pks[$x]];
             
@@ -664,7 +715,7 @@ class sportsmanagementModelMatch extends JModelAdmin
             if(!$result_update) 
             {
 				//$this->setError(JFactory::getDbo()->getErrorMsg());
-                $app->enqueueMessage('sportsmanagementModelMatch saveshort<br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(), true).'</pre><br>','Error');
+                $app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(), true).'</pre><br>','Error');
 				$result = false;
 			}
             else
@@ -746,6 +797,9 @@ class sportsmanagementModelMatch extends JModelAdmin
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
        $post = JRequest::get('post');
+       $option = JRequest::getCmd('option');
+       /* Ein Datenbankobjekt beziehen */
+       $db = JFactory::getDbo();
        // Set the values
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');
@@ -786,9 +840,19 @@ class sportsmanagementModelMatch extends JModelAdmin
                 //Here you can do other tasks with your newly saved record...
                 $app->enqueueMessage(JText::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
             }
-           
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getState<pre>'.print_r($this->getState(),true).'</pre>' ),'Error');
+        
+        return true;   
 		}
-          
+        else
+        {
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+        return false;    
+        }  
+        
+        return true; 
     }
       
     /**
