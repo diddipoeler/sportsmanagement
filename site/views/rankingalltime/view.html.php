@@ -83,6 +83,9 @@ class sportsmanagementViewRankingAllTime extends JViewLegacy
 
          $this->assignRef('projectids', $model->getAllProject());
          $project_ids = implode(",", $this->projectids);
+         
+         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_ids<br><pre>'.print_r($project_ids,true).'</pre>'),'');
+         
          $this->assignRef('project_ids', $project_ids);
          $this->assignRef('teams', $model->getAllTeamsIndexedByPtid($project_ids));
          
@@ -95,6 +98,7 @@ class sportsmanagementViewRankingAllTime extends JViewLegacy
 
         $this->assign('action', $uri->toString());
         $this->assignRef('colors', $model->getColors($this->config['colors']));
+        
         
 
         // Set page title

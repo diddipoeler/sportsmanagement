@@ -204,7 +204,9 @@ $this->_params[$attributes['name']] = $attributes['default'];
     function getAllTeamsIndexedByPtid($project_ids)
     {
         $app = JFactory::getApplication();
-        $result = $this->getAllTeams($project_ids);
+        $result = self::getAllTeams($project_ids);
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_ids<br><pre>'.print_r($project_ids,true).'</pre>'),'Notice');
         
         $count_teams = count($result);
     $app->enqueueMessage(JText::_('Wir verarbeiten '.$count_teams.' Vereine !'),'');
@@ -254,7 +256,10 @@ $option = JRequest::getCmd('option');
         $query = $db->getQuery(true);
         $query->clear();
         
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_ids<br><pre>'.print_r($project_ids,true).'</pre>'),'');
         
+if ( $project_ids )
+{        
         $query->select('tl.id AS projectteamid,tl.division_id');
         $query->select('tl.standard_playground,tl.admin,tl.start_points');
         $query->select('tl.use_finally,tl.points_finally,tl.neg_points_finally,tl.matches_finally,tl.won_finally,tl.draws_finally,tl.lost_finally,tl.homegoals_finally,tl.guestgoals_finally,tl.diffgoals_finally');
@@ -291,30 +296,14 @@ $query->group('st.team_id' );
             $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
             $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         }
-        
-        
-        
-        //foreach ( $this->_teams as $team )
-//    {
-//    if ( $team->use_finally ) 
-//			{
-//				$team->sum_points = $team->points_finally;
-//				$team->neg_points = $team->neg_points_finally;
-//				$team->cnt_matches = $team->matches_finally;
-//				$team->cnt_won = $team->won_finally;
-//				$team->cnt_draw = $team->draws_finally;
-//				$team->cnt_lost = $team->lost_finally;
-//				$team->sum_team1_result = $team->homegoals_finally;
-//				$team->sum_team2_result = $team->guestgoals_finally;
-//				$team->diff_team_results = $team->diffgoals_finally;
-//			}    
-//        
-//        
-//    }
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_teams,true).'</pre>'),'Error');
 
         return $this->_teams;
+}
+else
+{
+JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO') );
+			return false;    
+}
 
     }
     
@@ -328,11 +317,16 @@ $query->group('st.team_id' );
     {
         $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
+    $res = '';
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         $query->clear();
-        
+   
+   //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projects<br><pre>'.print_r($projects,true).'</pre>'),'');
+   
+   if ( $projects )
+   {     
         $query->select('m.id,m.projectteam1_id,m.projectteam2_id,m.team1_result AS home_score,m.team2_result AS away_score,m.team1_bonus AS home_bonus,m.team2_bonus AS away_bonus');
 		$query->select('m.team1_legs AS l1,m.team2_legs AS l2,m.match_result_type AS match_result_type,m.alt_decision as decision,m.team1_result_decision AS home_score_decision');
 		$query->select('m.team2_result_decision AS away_score_decision,m.team1_result_ot AS home_score_ot,m.team2_result_ot AS away_score_ot,m.team1_result_so AS home_score_so,m.team2_result_so AS away_score_so');
@@ -369,8 +363,15 @@ $query->group('st.team_id' );
     
     $count_matches = count($res);
     $app->enqueueMessage(JText::_('Wir verarbeiten '.$count_matches.' Spiele !'),'');
-           
-    return $res;    
+    }
+    else
+    {
+    JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO') );
+			return false;    
+    }  
+         
+    return $res;
+        
     }
     
     /**
@@ -745,26 +746,60 @@ $query->group('st.team_id' );
     function getAllProject()
     {
         $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        //$search	= $this->getState('filter.search');
+        
+        //$this->_project_id	= JRequest::getVar('pid');
+        //$this->_project_id	= $app->getUserState( "$option.pid", '0' );
+        
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = JFactory::getDbo()->getQuery(true);
+
         $league = JRequest::getInt("l", 0);
 
-        if (!$league) {
+        if (!$league) 
+        {
             $projekt = JRequest::getInt("p", 0);
-            $query = 'select league_id 
-  from #__sportsmanagement_project
-  where id = ' . $projekt . ' order by name ';
-            $this->_db->setQuery($query);
-            $league = $this->_db->loadResult();
+            $query->clear();
+            // Select some fields
+		$query->select('league_id');
+		// From the rounds table
+		$query->from('#__sportsmanagement_project');
+        $query->where('id = ' . $projekt);
+        $query->order('name ');
+        
+//            $query = 'select league_id 
+//  from #__sportsmanagement_project
+//  where id = ' . $projekt . ' order by name ';
+            $db->setQuery($query);
+            $league = $db->loadResult();
 
         }
 
-        $query = 'select id 
-  from #__sportsmanagement_project
-  where league_id = ' . $league . ' order by name ';
-        $this->_db->setQuery($query);
+$query->clear();
+// Select some fields
+		$query->select('id');
+		// From the rounds table
+		$query->from('#__sportsmanagement_project');
+        $query->where('league_id = ' . $league);
+        $query->order('name ');
+        
+//        $query = 'select id 
+//  from #__sportsmanagement_project
+//  where league_id = ' . $league . ' order by name ';
+  
+        $db->setQuery($query);
         //$result = $this->_db->loadObjectList();
-        $result = $this->_db->loadResultArray();
+        //$result = $db->loadResultArray();
+        $result = $db->loadColumn(0);
         $this->project_ids = implode(",", $result);
         $this->project_ids_array = $result;
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' league<br><pre>'.print_r($league,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projekt<br><pre>'.print_r($projekt,true).'</pre>'),'Notice');
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
         
         $count_project = count($result);
     $app->enqueueMessage(JText::_('Wir verarbeiten '.$count_project.' Projekte/Saisons !'),'');
