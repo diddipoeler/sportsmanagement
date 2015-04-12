@@ -89,6 +89,13 @@ class sportsmanagementHelperRoute
 }
   
   
+  /**
+   * sportsmanagementHelperRoute::getAllProjectsRoute()
+   * 
+   * @param mixed $country
+   * @param mixed $league_id
+   * @return
+   */
   public static function getAllProjectsRoute( $country, $league_id )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
