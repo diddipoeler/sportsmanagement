@@ -69,7 +69,9 @@ class sportsmanagementModelRounds extends JModelList
             $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
                 //$this->_project_id	= $app->getUserState( "$option.pid", '0' );
-                self::$_project_id	= $app->getUserState( "$option.pid", '0' );
+                //self::$_project_id	= $app->getUserState( "$option.pid", '0' );
+                self::$_project_id	= JRequest::getInt('pid',0);
+                $app->setUserState( "$option.pid", self::$_project_id ); 
                 $config['filter_fields'] = array(
                         'r.name',
                         'r.alias',
@@ -133,7 +135,7 @@ class sportsmanagementModelRounds extends JModelList
 	{
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $search	= $this->getState('filter.search');
+        //$search	= $this->getState('filter.search');
         
         //$this->_project_id	= JRequest::getVar('pid');
         //$this->_project_id	= $app->getUserState( "$option.pid", '0' );
@@ -170,9 +172,9 @@ class sportsmanagementModelRounds extends JModelList
        //$query->where(' r.project_id = '.$this->_project_id);
        $query->where(' r.project_id = '.self::$_project_id);
         
-       if ($search)
+       if ($this->getState('filter.search'))
 		{
-        $query->where(' LOWER(r.name) LIKE '.JFactory::getDbo()->Quote('%'.$search.'%'));
+        $query->where(' LOWER(r.name) LIKE '.JFactory::getDbo()->Quote('%'.$this->getState('filter.search').'%'));
 		}
        
         $query->order(JFactory::getDbo()->escape($this->getState('list.ordering', 'r.roundcode')).' '.

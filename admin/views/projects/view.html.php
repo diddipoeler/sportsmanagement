@@ -59,10 +59,10 @@ class sportsmanagementViewProjects extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option 	= JRequest::getCmd('option');
-		$app	= JFactory::getApplication();
-		$uri		= JFactory::getUri();
-        $model	= $this->getModel();
+		$option = JRequest::getCmd('option');
+		$app = JFactory::getApplication();
+		$uri = JFactory::getUri();
+        $model = $this->getModel();
         $inputappend = '';
         $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
@@ -74,7 +74,7 @@ class sportsmanagementViewProjects extends sportsmanagementView
 		$starttime = microtime(); 
 		// Get data from the model
 		$items = $this->get('Items');
-        
+                        
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
@@ -109,7 +109,12 @@ class sportsmanagementViewProjects extends sportsmanagementView
 									'id',
 									'name',
 									$this->state->get('filter.userfields'));
-		unset($leagues);
+		unset($userfields);
+        
+        foreach ( $items as $row )
+        {
+            $row->user_field = $mdluserfields->getExtraFieldsProject($row->id);;
+        }
         
         //build the html select list for leagues
 		$leagues[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER'),'id','name');
@@ -246,7 +251,7 @@ class sportsmanagementViewProjects extends sportsmanagementView
 		$this->assignRef('lists',$lists);
 		$this->assignRef('items',$items);
 		$this->assignRef('pagination',$pagination);
-		$url=$uri->toString();
+		$url = $uri->toString();
 		$this->assignRef('request_url',$url);
         
 

@@ -131,7 +131,7 @@ class sportsmanagementModelextrafields extends JModelList
 	{
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $search	= $this->getState('filter.search');
+        //$search	= $this->getState('filter.search');
 
         // Create a new query object.		
 		$db = JFactory::getDBO();
@@ -144,9 +144,9 @@ class sportsmanagementModelextrafields extends JModelList
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id = objcountry.checked_out');
 		
-        if ($search)
+        if ($this->getState('filter.search'))
 		{
-        $query->where('LOWER(objcountry.name) LIKE '.$this->_db->Quote('%'.$search.'%'));
+        $query->where('LOWER(objcountry.name) LIKE '.$this->_db->Quote('%'.$this->getState('filter.search').'%'));
         }
 		
         $query->order($db->escape($this->getState('list.ordering', 'objcountry.name')).' '.
@@ -160,6 +160,42 @@ class sportsmanagementModelextrafields extends JModelList
         return $query;
 	}
 
+/**
+ * sportsmanagementModelextrafields::getExtraFieldsProject()
+ * 
+ * @param integer $project_id
+ * @return
+ */
+function getExtraFieldsProject($project_id=0)
+{
+$app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $result = '';
+
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+        
+        $query->select('ef.name');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields_values as ev ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields as ef ON ef.id = ev.field_id');
+        $query->where('ev.jl_id = '.$project_id);
+        $query->where('ef.template_backend LIKE '.$db->Quote(''.'project'.''));
+        $query->where('ev.fieldvalue != '.$db->Quote(''.'')); 
+        
+        $db->setQuery($query);
+        //$result = $db->loadObjectList();
+        $column = $db->loadColumn(0);
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($result,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($column,true).'</pre>'),'Notice');
+        
+        if ( $column )
+        {
+            $result = implode('<br>', $column);
+        }
+        return $result;   
+}
 
 /**
  * sportsmanagementModelextrafields::getExtraFields()

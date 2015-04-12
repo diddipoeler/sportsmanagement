@@ -270,7 +270,7 @@ class sportsmanagementModelTeamPersons extends JModelList
         $query->order($db->escape($this->getState('list.ordering', 'ppl.lastname')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
                 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {

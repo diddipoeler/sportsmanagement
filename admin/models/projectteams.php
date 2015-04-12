@@ -56,7 +56,7 @@ jimport('joomla.application.component.modellist');
 class sportsmanagementModelProjectteams extends JModelList
 {
 	var $_identifier = "pteams";
-    var $_project_id = 0;
+    static $_project_id = 0;
     var $_season_id = 0;
     static $_pro_teams_in_used = array();
     var $project_art_id  = 0;
@@ -69,7 +69,12 @@ class sportsmanagementModelProjectteams extends JModelList
      * @return void
      */
     public function __construct($config = array())
-        {   
+        {
+            $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+            self::$_project_id	= JRequest::getInt('pid',0);
+                $app->setUserState( "$option.pid", self::$_project_id ); 
+                
                 $config['filter_fields'] = array(
                         't.name',
                         't.lastname',
@@ -146,10 +151,10 @@ class sportsmanagementModelProjectteams extends JModelList
         $option = $jinput->getCmd('option');
         $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
         
-        $this->_project_id = JRequest::getVar('pid');
-        if ( !$this->_project_id )
+        self::$_project_id = JRequest::getVar('pid');
+        if ( !self::$_project_id )
         {
-        $this->_project_id = $app->getUserState( "$option.pid", '0' );
+        self::$_project_id = $app->getUserState( "$option.pid", '0' );
         }
         $this->project_art_id = $app->getUserState( "$option.project_art_id", '0' );
         $this->sports_type_id = $app->getUserState( "$option.sports_type_id", '0' );
@@ -234,7 +239,7 @@ class sportsmanagementModelProjectteams extends JModelList
 		$query->select('u.name AS editor,u.email AS email');
 		$query->join('LEFT', '#__users AS u on tl.admin = u.id');
         
-        $query->where('tl.project_id = ' . $this->_project_id);
+        $query->where('tl.project_id = ' . self::$_project_id);
         
         if ($this->getState('filter.search_nation'))
 		{
@@ -359,7 +364,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $option = $jinput->getCmd('option');
         $db	= JFactory::getDbo(); 
 		$query = $db->getQuery(true);
-        $this->_project_id = $app->getUserState( "$option.pid", '0' );
+        self::$_project_id = $app->getUserState( "$option.pid", '0' );
         $this->_season_id = $app->getUserState( "$option.season_id", '0' );
         $this->project_art_id = $app->getUserState( "$option.project_art_id", '0' );
         $this->sports_type_id = $app->getUserState( "$option.sports_type_id", '0' );
@@ -369,7 +374,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $query->select('l.country,p.season_id,p.project_type');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league as l');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p on p.league_id = l.id');
-        $query->where('p.id = '.$this->_project_id);
+        $query->where('p.id = '.self::$_project_id);
 
         $db->setQuery( $query );
         $result = $db->loadObject();
