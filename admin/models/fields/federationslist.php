@@ -101,7 +101,7 @@ class JFormFieldFederationsList extends JFormFieldList
 			$db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 			
-			$query->select('t.id AS value, t.name AS text');
+			$query->select('t.id,t.id AS value, t.name AS text');
 			$query->from('#__sportsmanagement_federations AS t');
 			//$query->where("t.country = '".$country."'");
 			$query->where('t.parent_id = 0');
@@ -110,7 +110,10 @@ class JFormFieldFederationsList extends JFormFieldList
 			//$options = $db->loadObjectList();
 			
 			$sections = $db->loadObjectList ();
-  $categoryparent = empty($sections) ? 0 : $sections->id;
+            
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sections<br><pre>'.print_r($sections,true).'</pre>'),'Notice');
+            
+  //$categoryparent = empty($sections) ? 0 : $sections->id;
   //echo 'categoryparent<br /><pre>~' . print_r($categoryparent,true) . '~</pre><br />';
   //$options = $this->JJ_categoryArray();
 $list = $this->JJ_categoryArray(0);
@@ -134,6 +137,12 @@ foreach ( $list as $item )
 		return $options;
 	}
 	
+/**
+ * JFormFieldFederationsList::JJ_categoryArray()
+ * 
+ * @param integer $admin
+ * @return
+ */
 function JJ_categoryArray($admin=0) 
   {
 $db = JFactory::getDBO(); 
@@ -170,6 +179,18 @@ $db = JFactory::getDBO();
     return $array;
     }    	
 	
+/**
+ * JFormFieldFederationsList::fbTreeRecurse()
+ * 
+ * @param mixed $id
+ * @param mixed $indent
+ * @param mixed $list
+ * @param mixed $children
+ * @param integer $maxlevel
+ * @param integer $level
+ * @param integer $type
+ * @return
+ */
 function fbTreeRecurse( $id, $indent, $list, &$children, $maxlevel=9999, $level=0, $type=1 ) 
     {
 
@@ -201,6 +222,14 @@ function fbTreeRecurse( $id, $indent, $list, &$children, $maxlevel=9999, $level=
     return $list;
 }    
 	
+/**
+ * JFormFieldFederationsList::sm_htmlspecialchars()
+ * 
+ * @param mixed $string
+ * @param mixed $quote_style
+ * @param string $charset
+ * @return
+ */
 function sm_htmlspecialchars($string, $quote_style=ENT_COMPAT, $charset='UTF-8') 
   {
 	return htmlspecialchars($string, $quote_style, $charset);

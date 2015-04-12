@@ -55,6 +55,7 @@ $fieldsets = $this->form->getFieldsets();
  
 	
 <div class="form-horizontal">
+<fieldset>
 <?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
 
 <?PHP    
@@ -103,6 +104,7 @@ echo JHtml::_('bootstrap.endTab');
 ?>    
 	
 <?php echo JHtml::_('bootstrap.endTabSet'); ?>
+</fieldset>
 </div> 
 
 	<div>

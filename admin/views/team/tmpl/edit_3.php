@@ -53,6 +53,7 @@ $fieldsets = $this->form->getFieldsets();
 	
  
 <div class="form-horizontal">
+<fieldset>
 <?php 
 
 if ( $this->change_training_date )
@@ -112,6 +113,7 @@ echo JHtml::_('bootstrap.endTab');
 ?>    
 	
 <?php echo JHtml::_('bootstrap.endTabSet'); ?>
+</fieldset>
 </div> 
 
 

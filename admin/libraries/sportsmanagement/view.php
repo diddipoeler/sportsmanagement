@@ -151,7 +151,13 @@ class sportsmanagementView extends JViewLegacy
                 break;
             }
             
+        if ( $this->layout == 'edit')
+        {}
+        else
+        {    
         $this->sidebar = JHtmlSidebar::render();
+        }
+        
         }
         
 		parent::display($tpl);

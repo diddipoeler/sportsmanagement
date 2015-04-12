@@ -54,6 +54,7 @@ $fieldsets = $this->form->getFieldsets();
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" id="adminForm" name="adminForm">
 
 <div class="form-horizontal">
+<fieldset>
 <?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
 
 <?PHP    
@@ -105,6 +106,7 @@ echo JHtml::_('bootstrap.endTab');
 ?>    
 	
 <?php echo JHtml::_('bootstrap.endTabSet'); ?>
+</fieldset>
 </div> 
     
     
