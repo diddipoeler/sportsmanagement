@@ -262,9 +262,13 @@ $favteams  = $helper->getFavTeams($project_id);
 foreach( $points as $row )
 {
 $federationselect[$row->name] = $helper->getFederationSelect($row->name,$row->id);
+$countryassocselect[$row->name] = '';
+$leagueselect[$row->name] = '';
 }
 
 $federationselect['NON'] = $helper->getFederationSelect('NON',0);
+$countryassocselect['NON'] = '';
+$leagueselect['NON'] = '';
 
 $country_federation	= $helper->getCountryFederation($country_id);
 

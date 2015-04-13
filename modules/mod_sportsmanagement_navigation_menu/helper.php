@@ -362,11 +362,11 @@ class modsportsmanagementNavigationMenuHelper {
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt');
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt.team_id ');
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON st.team_id = t.id ');
-            $query->where('pt.division_id = '.intval($this->_division_id));
             
+            $query->where('pt.project_id = '.intval($this->_project_id));
             if ( $this->_division_id )
             {
-                $query->where('pt.project_id = '.intval($this->_project_id));
+                $query->where('pt.division_id = '.intval($this->_division_id));
             }
             $query->order('t.name ASC');
         

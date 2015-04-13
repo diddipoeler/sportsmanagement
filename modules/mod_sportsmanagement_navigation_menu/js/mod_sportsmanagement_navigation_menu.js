@@ -1,10 +1,14 @@
+//jQuery(document).ready(function() {
+//	$('div#jl-nav-module .jlnav-select').addEvent('change',function(){ alert('w00t'); });
+//});
+
 
 /**
  * js script for sportsmanagement navigation module
  */
-window.addEvent('domready', function(){
-	
-	$$('div#jl-nav-module .jlnav-select').addEvent('change', function(){
+// window.addEvent('domready', function(){
+jQuery(document).ready(function($) {	
+	$$('#jl-nav-module .jlnav-select').addEvent('change', function(){
 		var form = $(this.form);
 		$$('.nav-item').setStyle( "display", "none");
 		$$('.team-select').setStyle( "display", "none");
@@ -84,7 +88,7 @@ var modjlnav = {
 			query += '&tid='+form.tid.value;
 		}
 
-	    var url = 'index.php?option=com_sportsmanagement&ajax&task=ajax.getroute&tmpl=component&format=json';
+	    var url = 'index.php?option=com_sportsmanagement&task=ajax.getroute&tmpl=component&format=json';
 	    var myXhr = new Request(
 	                    {
 	                    	url: url,

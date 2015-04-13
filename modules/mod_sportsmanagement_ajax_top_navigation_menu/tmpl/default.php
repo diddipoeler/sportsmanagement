@@ -175,7 +175,7 @@ echo JHTML::_('select.genericlist', $federationselect[$value], 'jlamtopfederatio
 
 
 <?PHP
-if ( $countryassocselect[$fed_array]['assocs'] )
+if ( isset($countryassocselect[$fed_array]['assocs']) )
 {
 ?>
 <tr>
@@ -192,7 +192,7 @@ echo JHTML::_('select.genericlist', $countryassocselect[$fed_array]['assocs'], '
 
 
 <?PHP
-if ( $countrysubassocselect[$fed_array]['assocs'] )
+if ( isset($countrysubassocselect[$fed_array]['assocs']) )
 {
 ?>
 <tr>
@@ -209,7 +209,7 @@ echo JHTML::_('select.genericlist', $countrysubassocselect[$fed_array]['assocs']
 
 
 <?PHP
-if ( $countrysubsubassocselect[$fed_array]['subassocs'] )
+if ( isset($countrysubsubassocselect[$fed_array]['subassocs']) )
 {
 ?>
 <tr>
@@ -226,7 +226,7 @@ echo JHTML::_('select.genericlist', $countrysubsubassocselect[$fed_array]['subas
 
 
 <?PHP
-if ( $countrysubsubsubassocselect[$fed_array]['subsubassocs'] )
+if ( isset($countrysubsubsubassocselect[$fed_array]['subsubassocs']) )
 {
 ?>
 <tr>
@@ -243,7 +243,7 @@ echo JHTML::_('select.genericlist', $countrysubsubsubassocselect[$fed_array]['su
 
 
 <?PHP
-if ( $leagueselect[$fed_array]['leagues'] )
+if ( isset($leagueselect[$fed_array]['leagues']) )
 {
 ?>
 <tr>
@@ -260,7 +260,7 @@ echo JHTML::_('select.genericlist', $leagueselect[$fed_array]['leagues'], 'jlamt
 
 
 <?PHP
-if ( $projectselect[$fed_array]['projects'] )
+if ( isset($projectselect[$fed_array]['projects']) )
 {
 ?>
 <tr>
@@ -276,7 +276,7 @@ echo JHTML::_('select.genericlist', $projectselect[$fed_array]['projects'], 'jla
 
 
 <?PHP
-if ( $projectselect[$fed_array]['teams'] )
+if ( isset($projectselect[$fed_array]['teams']) )
 {
 ?>
 <tr>

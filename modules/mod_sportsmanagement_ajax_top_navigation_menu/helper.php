@@ -72,7 +72,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 	var $_project_id;
   var $_league_id;
 	var $_team_id;
-	var $_country_fed = array();
+	static $_country_fed = array();
 	var $_club_id;
 	var $_division_id = 0;
 	var $_round_id = null;
@@ -148,7 +148,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project_id<br><pr
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_federations');
         $db->setQuery($query);
         
-        $this->query_getFederations = $query->dump();
+        self::$query_getFederations = $query->dump();
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
         $result = $db->loadObjectList();
@@ -300,7 +300,7 @@ if ($res)
 			
 			foreach ( $res as $row )
 			{
-      $this->_country_fed[$row->value] = $fedtext;
+      self::$_country_fed[$row->value] = $fedtext;
       }
 			
 		}
@@ -320,7 +320,13 @@ if ($res)
 	 */
 	public function getCountryFederation($country_id)
 	{
-  return $this->_country_fed[$country_id];
+	   $mainframe = JFactory::getApplication();
+       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' country_id<br><pre>'.print_r($country_id,true).'</pre>'),'Notice');
+       if ( $country_id )
+       {
+       self::$_country_fed[$country_id]; 
+       }
+  return true;
   }
 	
   /**
@@ -574,7 +580,8 @@ return $user->username ;
 	   $mainframe = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $query = $db->getQuery(true);
-        
+       if ( $assoc_id )
+       { 
         $query->select('parent_id');
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations ');
             $query->where('id = '. $assoc_id );
@@ -593,7 +600,11 @@ return $user->username ;
     {
     return false;
     }
-    
+    }
+    else
+    {
+        return false;
+    }
   }
   
 	/**
@@ -606,7 +617,9 @@ return $user->username ;
 	   $mainframe = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $query = $db->getQuery(true);
-        
+    
+    if ( $this->_league_id )
+    {    
         $query->select('associations');
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league ');
             $query->where('id = '. $this->_league_id );
@@ -625,6 +638,12 @@ return $user->username ;
     {
     return false;
     }
+    }
+    else
+    {
+    return false;    
+    }
+    
 	}
 	
 	/**
