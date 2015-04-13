@@ -49,7 +49,72 @@ $buttons = array(
 						'text' => JText::_('COM_SPORTSMANAGEMENT_D_MENU_SPORTSTYPES'),
 						'access' => array('core.manage', 'com_sportsmanagement'),
 						'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'
-						));
+						),
+                    array(
+						'link' => JRoute::_('index.php?option=com_sportsmanagement&view=seasons'),
+						'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+						'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+						'text' => JText::_('COM_SPORTSMANAGEMENT_D_MENU_SEASONS'),
+						'access' => array('core.manage', 'com_sportsmanagement'),
+						'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'
+						),
+                    array(
+						'link' => JRoute::_('index.php?option=com_sportsmanagement&view=leagues'),
+						'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+						'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+						'text' => JText::_('COM_SPORTSMANAGEMENT_D_MENU_LEAGUES'),
+						'access' => array('core.manage', 'com_sportsmanagement'),
+						'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'
+						),      
+                    array(
+						'link' => JRoute::_('index.php?option=com_sportsmanagement&view=jlextfederations'),
+						'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+						'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+						'text' => JText::_('COM_SPORTSMANAGEMENT_D_MENU_FEDERATIONS'),
+						'access' => array('core.manage', 'com_sportsmanagement'),
+						'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'
+						),    
+                    array(
+						'link' => JRoute::_('index.php?option=com_sportsmanagement&view=jlextcountries'),
+						'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+						'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+						'text' => JText::_('COM_SPORTSMANAGEMENT_D_MENU_COUNTRIES'),
+						'access' => array('core.manage', 'com_sportsmanagement'),
+						'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'
+						),    
+                    array(
+						'link' => JRoute::_('index.php?option=com_sportsmanagement&view=jlextassociations'),
+						'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+						'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+						'text' => JText::_('COM_SPORTSMANAGEMENT_D_MENU_ASSOCIATIONS'),
+						'access' => array('core.manage', 'com_sportsmanagement'),
+						'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'
+						),    
+                     array(
+						'link' => JRoute::_('index.php?option=com_sportsmanagement&view=positions'),
+						'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+						'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+						'text' => JText::_('COM_SPORTSMANAGEMENT_D_MENU_POSITIONS'),
+						'access' => array('core.manage', 'com_sportsmanagement'),
+						'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'
+						),
+                      array(
+						'link' => JRoute::_('index.php?option=com_sportsmanagement&view=eventtypes'),
+						'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+						'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+						'text' => JText::_('COM_SPORTSMANAGEMENT_D_MENU_EVENTS'),
+						'access' => array('core.manage', 'com_sportsmanagement'),
+						'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'
+						),
+                      array(
+						'link' => JRoute::_('index.php?option=com_sportsmanagement&view=agegroups'),
+						'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+						'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+						'text' => JText::_('COM_SPORTSMANAGEMENT_D_MENU_AGEGROUPS'),
+						'access' => array('core.manage', 'com_sportsmanagement'),
+						'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'
+						)          
+                        );
 
 $groupedButtons = array();
 
