@@ -552,7 +552,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 		$jRegistry = new JRegistry;
 		if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-        $jRegistry->loadString($data); 
+        $jRegistry->loadString($result); 
         }
         else
         {
