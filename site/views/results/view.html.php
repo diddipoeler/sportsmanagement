@@ -112,6 +112,8 @@ JHtml::_( 'behavior.mootools' );
 		
 		$this->assign('roundsoption', $rounds);
 		$this->assignRef('project', $project);
+        sportsmanagementHelperHtml::$project = $project;
+        
 		$lists = array();
 		
 		if (isset($this->project))

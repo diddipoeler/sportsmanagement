@@ -259,7 +259,7 @@ $link = "javascript:void(0);";
 			echo '<td width="5" class="ko" nowrap="nowrap">';
 			echo sportsmanagementHelperHtml::showDivisonRemark(	$this->teams[$game->projectteam1_id],
 			$this->teams[$game->projectteam2_id],
-			$this->config );
+			$this->config,$game->division_id );
 			echo '</td>';
 		}
 		if ($this->config['show_time'])

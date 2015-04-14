@@ -136,20 +136,50 @@ class sportsmanagementHelperHtml
 		return $output;
 	}
 
+
 	/**
-	 * prints teams names and divisions...
-	 *
-	 * @param object $hometeam
-	 * @param object $guestteam
-	 * @param array $config
-	 * @return string html
+	 * sportsmanagementHelperHtml::showDivisonRemark()
+	 * 
+	 * @param mixed $hometeam
+	 * @param mixed $guestteam
+	 * @param mixed $config
+	 * @param integer $division_id
+	 * @return
 	 */
-	public function showDivisonRemark(&$hometeam,&$guestteam,&$config)
+	public static function showDivisonRemark(&$hometeam,&$guestteam,&$config,$division_id = 0)
 	{
-		$output='';
+	   $app = JFactory::getApplication();
+       
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' division_id'.'<pre>'.print_r($division_id,true).'</pre>' ),'');
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project'.'<pre>'.print_r(self::$project,true).'</pre>' ),'');
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config'.'<pre>'.print_r($config,true).'</pre>' ),'');
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' hometeam'.'<pre>'.print_r($hometeam,true).'</pre>' ),'');
+       
+		$output = '';
 		if ($config['switch_home_guest']) {
 			$tmpteam =& $hometeam; $hometeam =& $guestteam; $guestteam =& $tmpteam;
 		}
+        
+/**
+* die gruppen aus der spielpaarung setzen
+*/        
+        if ( empty($hometeam->division_id) )
+        {
+            $hometeam->division_id = $division_id;
+            $division = JTable::getInstance( 'division', 'sportsmanagementTable' );
+		    $division->load( $division_id );
+            $hometeam->division_name = $division->name;
+            $hometeam->division_shortname = $division->shortname;
+        }
+        if ( empty($guestteam->division_id) )
+        {
+            $guestteam->division_id = $division_id;
+            $division = JTable::getInstance( 'division', 'sportsmanagementTable' );
+		    $division->load( $division_id );
+            $guestteam->division_name = $division->name;
+            $guestteam->division_shortname = $division->shortname;
+        }
+        
 		if	((isset($hometeam) && $hometeam->division_id > 0) && (isset($guestteam) && $guestteam->division_id > 0))
 		{
 			//TO BE FIXED: Where is spacer defined???
@@ -157,17 +187,23 @@ class sportsmanagementHelperHtml
 				$config['spacer']='/';
 			}
 
-			$nametype='division_'.$config['show_division_name'];
+			$nametype = 'division_'.$config['show_division_name'];
 
 			if ($config['show_division_link'])
 			{
-				$link=sportsmanagementHelperRoute::getRankingRoute($this->project->id,null,null,null,0,$hometeam->division_id);
+				$link = sportsmanagementHelperRoute::getRankingRoute(self::$project->id,null,null,null,0,$hometeam->division_id);
 				$output .= JHtml::link($link,$hometeam->$nametype);
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' link'.'<pre>'.print_r($link,true).'</pre>' ),'');
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' output'.'<pre>'.print_r($output,true).'</pre>' ),'');
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' hometeam->nametype'.'<pre>'.print_r($hometeam->$nametype,true).'</pre>' ),'');
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nametype'.'<pre>'.print_r($nametype,true).'</pre>' ),'');
 			}
 			else
 			{
 				$output .= $hometeam->$nametype;
 			}
+            
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' output'.'<pre>'.print_r($output,true).'</pre>' ),'');
 
 			if ($hometeam->division_id != $guestteam->division_id)
 			{
@@ -175,8 +211,9 @@ class sportsmanagementHelperHtml
 
 				if ($config['show_division_link'] == 1)
 				{
-					$link=sportsmanagementHelperRoute::getRankingRoute($this->project->id,null,null,null,0,$guestteam->division_id);
+					$link = sportsmanagementHelperRoute::getRankingRoute(self::$project->id,null,null,null,0,$guestteam->division_id);
 					$output .= JHtml::link($link,$guestteam->$nametype);
+                    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' link'.'<pre>'.print_r($link,true).'</pre>' ),'');
 				}
 				else
 				{

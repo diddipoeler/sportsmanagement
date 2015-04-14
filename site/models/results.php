@@ -336,8 +336,11 @@ class sportsmanagementModelResults extends JModelLegacy
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id = st2.team_id');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c2 ON c2.id = t2.club_id');
         
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d1 ON pt1.division_id = d1.id');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d2 ON pt2.division_id = d2.id');
+        //$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d1 ON pt1.division_id = d1.id');
+        //$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d2 ON pt2.division_id = d2.id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d1 ON m.division_id = d1.id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d2 ON m.division_id = d2.id');
+        
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS playground ON playground.id = m.playground_id');
 		
         // where
@@ -349,18 +352,20 @@ class sportsmanagementModelResults extends JModelLegacy
         // order
         $query->order('m.match_date ASC,m.match_number');    
 
-		if ($division>0)
+		if ( $division>0 )
 		{
 		  $query->where('(d1.id = '.$division.' OR d1.parent_id = '.$division.' OR d2.id = '.$division.' OR d2.parent_id = '.$division.')');
 		}
 
-		if (!is_null($round)) 
+		if ( !is_null($round) ) 
         {
 			$db->setQuery($query);
             //$result = $db->loadObjectList();
             $result = $db->loadObjectList('id');
 		}
 		
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+        
         if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	    {
 		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
