@@ -135,16 +135,18 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					{
 						$row =& $this->items[$i];
 						$link = JRoute::_( 'index.php?option=com_sportsmanagement&task=division.edit&id=' . $row->id );
-						$checked = JHtml::_( 'grid.checkedout',   $row, $i );
+						//$checked = JHtml::_( 'grid.checkedout',   $row, $i );
                         $published = JHtml::_('grid.published',$row,$i, 'tick.png','publish_x.png','divisions.');
+                        $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                         $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
+                        $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'divisions.', $canCheckin);
 						?>
 						<tr class="<?php echo "row$k"; ?>">
 							<td style="text-align:center; ">
 								<?php echo $this->pagination->getRowOffset( $i ); ?>
 							</td>
 							<td style="text-align:center; ">
-								<?php echo $checked; ?>
+								<?php echo JHtml::_('grid.id', $i, $row->id); ?>
 							</td>
 							<?php
 							
@@ -154,7 +156,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                                 <?php
                             if ($row->checked_out) : ?>
 										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'divisions.', $canCheckin); ?>
-									<?php endif; ?>
+									<?php else: ?>
 									<a href="<?php echo $link; ?>">
 										<?php
 										$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_EDIT_DETAILS' );
@@ -163,6 +165,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 														'title= "' . $imageTitle . '"' );
 										?>
 									</a>
+                                    <?php endif; ?>
 								</td>
 								<?php
 							
