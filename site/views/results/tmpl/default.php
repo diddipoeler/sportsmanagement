@@ -44,8 +44,15 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<div class="container">
+<div class="">
 	<?php
+    
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{
+echo $this->loadTemplate('debug');
+}    
+    
+    
 	echo $this->loadTemplate('projectheading');
 
 	if ($this->config['show_sectionheader'])

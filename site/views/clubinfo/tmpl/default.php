@@ -60,7 +60,7 @@ $this->kmlfile = $this->club->id.'-club.kml';
 
 // container
 ?>
-<div class="container">
+<div class="">
 
 	<?php 
 	echo $this->loadTemplate('projectheading');

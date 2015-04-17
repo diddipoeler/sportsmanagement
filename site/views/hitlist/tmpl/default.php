@@ -68,7 +68,7 @@ function searchPerson(val)
         Joomla.submitform('', this.form)
 	}
 </script>
-<div class="container">
+<div class="">
 <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars(JFactory::getURI()->toString());?>" method="post">
 
 

@@ -53,7 +53,7 @@ $this->kmlfile = $this->playground->id.'-playground.kml';
 
 ?>
 <!-- <div class="joomleague"> -->
-<div class="container">
+<div class="">
 	<?php 
 	echo $this->loadTemplate('projectheading');
 

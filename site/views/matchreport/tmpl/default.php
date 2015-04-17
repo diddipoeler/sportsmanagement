@@ -91,7 +91,7 @@ if (!empty($this->matchplayerpositions ))
 
 ?>
 
-<div class="container">
+<div class="">
 
 <?php
 	echo $this->loadTemplate('projectheading');

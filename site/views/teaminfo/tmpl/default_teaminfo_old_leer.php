@@ -40,7 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>
-<div class="container">
+<div class="">
 <!-- Columns are always 50% wide, on mobile and desktop -->
 <div class="row show-grid">
   <div class="col-xs-6">.col-xs-6</div>

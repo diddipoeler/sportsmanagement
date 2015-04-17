@@ -75,7 +75,7 @@ jQuery(window).load(function() {
 
 </script>
 
-<div class="container">
+<div class="">
 	<?php
 	echo $this->loadTemplate('projectheading');
 

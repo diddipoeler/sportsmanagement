@@ -46,7 +46,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 
 
-<div class="container">
+<div class="">
 <!-- projectheading -->
 
 <?php echo $this->loadTemplate('projectheading'); ?>

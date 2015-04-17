@@ -144,7 +144,7 @@ if (!empty($css))
 
 ?>
 <!-- <div class="joomleague"> -->
-<div class="container">
+<div class="">
 	<?php 
 	if ($this->config['show_projectheader'] == 1)
 	{

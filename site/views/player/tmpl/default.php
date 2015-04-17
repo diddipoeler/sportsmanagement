@@ -62,7 +62,7 @@ if (isset($this->person))
 {
 	?>
 <!-- <div class="joomleague"> -->
-<div class="container">
+<div class="">
 	<?php
 	echo $this->loadTemplate('projectheading');
 

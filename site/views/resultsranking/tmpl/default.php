@@ -48,7 +48,7 @@ $this->kmlpath = JURI::root().'tmp'.DS.$this->project->id.'-ranking.kml';
 $this->kmlfile = $this->project->id.'-ranking.kml';
 
 ?>
-<div class="container">
+<div class="">
 	<a name="jl_top" id="jl_top"></a>
 	<?php 
 	echo $this->loadTemplate('projectheading');

@@ -45,7 +45,7 @@ $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <!-- <div class="joomleague"> -->
-<div class="container">
+<div class="">
 	<?php 
 	echo $this->loadTemplate('projectheading');
 

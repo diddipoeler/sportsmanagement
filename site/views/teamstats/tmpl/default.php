@@ -81,7 +81,7 @@ if ( $this->config['show_goals_stats_flash'] == 0 )
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<div class="container">
+<div class="">
 	<?php 
 	echo $this->loadTemplate('projectheading'); 
 
