@@ -88,21 +88,6 @@ class sportsmanagementViewPredictionRanking extends JViewLegacy
 	$this->assignRef('pagination', $pagination);
     
     $this->assign('headertitle', JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_TITLE'));
-
-/*    
-    // limit, limitstart und limitende
-    $limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
-    $limitstart = JRequest::getVar('limitstart', 0, '', 'int');
-    $limitend = $limitstart + $limit;
-    $this->assignRef('limit',$limit);
-    $this->assignRef('limitstart',$limitstart);
-    $this->assignRef('limitend',$limitend);
-*/
-    
-//     $mdlProject = JModelLegacy::getInstance("Project", "JoomleagueModel");
-//     $mdlProject->setProjectId($project->id);
-//     $map_config		= $mdlProject->getMapConfig();
-// 		$this->assignRef( 'mapconfig',		$map_config ); // Loads the project-template -settings for the GoogleMap
 		
 		if (isset($this->predictionGame))
 		{
@@ -151,8 +136,8 @@ class sportsmanagementViewPredictionRanking extends JViewLegacy
       $mdlProject->setProjectId($project->project_id);
       }
       
-      $map_config		= $mdlProject->getMapConfig();
-		  $this->assignRef( 'mapconfig',		$map_config ); // Loads the project-template -settings for the GoogleMap
+      $map_config		= $mdlProject->getMapConfig($mdlProject::$cfg_which_database);
+		  $this->assignRef('mapconfig',$map_config ); // Loads the project-template -settings for the GoogleMap
 			
       $this->assign('PredictionMembersList',	sportsmanagementModelPrediction::getPredictionMembersList($this->config,$this->configavatar) );
       

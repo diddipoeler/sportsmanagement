@@ -199,7 +199,7 @@ class sportsmanagementModelProject extends JModelLegacy
         $app = JFactory::getApplication();
         // JInput object
         $jinput = $app->input;
-        
+        //sportsmanagementHelper::$_success_text[__CLASS__] = array();
         self::$projectid = $jinput->getInt('p',0);
         self::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
         self::$matchid = $jinput->getInt('mid',0);
@@ -269,7 +269,14 @@ $result = $db->execute();
     
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
+        $my_text = 'projectid -> '.self::$projectid.'<br>' ;   
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['class'] = __CLASS__;
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['zeile'] = __LINE__;
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['text'] = $my_text;
+sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        
+
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
     }
     
         //if (is_null(self::$_project) && self::$projectid > 0)
@@ -341,7 +348,15 @@ $result = $db->execute();
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
+            $my_text = 'projectid -> '.self::$projectid.'<br>' ;
+        
+        //sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['class'] = __CLASS__;
+        //sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['zeile'] = __LINE__;
+        //sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['text'] = $my_text;
+        
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
         }
         
 	}
@@ -548,7 +563,14 @@ $result = $db->execute();
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
+            $my_text = 'result <br><pre>'.print_r($result,true).'</pre>'; 
+   
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['class'] = __CLASS__;
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['zeile'] = __LINE__;
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['text'] = $my_text;
+        
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
         }
        
             
@@ -1272,9 +1294,22 @@ $result = $db->execute();
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' template<br><pre>'.print_r($template,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xmlfile<br><pre>'.print_r($xmlfile,true).'</pre>'),'');
+
+            
+        $my_text = ' template -> '.$template.'<br>';    
+        $my_text .= ' projectid -> '.self::$projectid.'<br>';
+        $my_text .= ' xmlfile -> '.$xmlfile.'<br>';
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['class'] = __CLASS__;
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['zeile'] = __LINE__;
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['text'] = $my_text;
+        
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+
+        
+            
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' template<br><pre>'.print_r($template,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xmlfile<br><pre>'.print_r($xmlfile,true).'</pre>'),'');
         }
        
 
@@ -1291,11 +1326,7 @@ $starttime = microtime();
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
-        
+       
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
@@ -1388,7 +1419,14 @@ $starttime = microtime();
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' settings<br><pre>'.print_r($settings,true).'</pre>'),'');
+            $my_text = 'query <br><pre>'.print_r($query->dump(),true).'</pre>'; 
+            $my_text .= 'settings <br><pre>'.print_r($settings,true).'</pre>';    
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['class'] = __CLASS__;
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['zeile'] = __LINE__;
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['text'] = $my_text;
+        
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' settings<br><pre>'.print_r($settings,true).'</pre>'),'');
         }
         
         return $settings;
@@ -1406,12 +1444,14 @@ $starttime = microtime();
 		return self::getTemplateConfig('overall',$cfg_which_database,__METHOD__);
 	}
 
+	
 	/**
 	 * sportsmanagementModelProject::getMapConfig()
 	 * 
+	 * @param integer $cfg_which_database
 	 * @return
 	 */
-	function getMapConfig()
+	function getMapConfig($cfg_which_database = 0)
 	{
 		return self::getTemplateConfig('map',$cfg_which_database,__METHOD__);
 	}
@@ -1930,7 +1970,11 @@ $starttime = microtime();
 	    {
 	       if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-		$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+        $my_text = ' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>';    
+        //sportsmanagementHelper::$_success_text[__METHOD__][__LINE__] = $my_text;
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        
+		//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
         }
 	    }
         

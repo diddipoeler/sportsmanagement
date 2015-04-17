@@ -120,7 +120,14 @@ if ((isset($this->config['show_prediction_heading'])) && ($this->config['show_pr
 				
                 $imgTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_HEAD_MEMBER_IMAGE_TITLE');
 				$img = JHTML::image(JURI::root().'media/com_sportsmanagement/jl_images/prediction_member.png',$imgTitle,array('border' => 0, 'title' => $imgTitle));
-				if ($this->predictionMember->pmID > 0){$pmVar=$this->predictionMember->pmID;}else{$pmVar=null;}
+				if ($this->predictionMember->pmID > 0)
+                {
+                    $pmVar=$this->predictionMember->pmID;
+                    }
+                    else
+                    {
+                        $pmVar = null;
+                        }
 				$link = JSMPredictionHelperRoute::getPredictionMemberRoute($this->predictionGame->id,$pmVar);
 				$output .= JHTML::link($link,$img,array('title' => $imgTitle));
 				$output .= '&nbsp;';

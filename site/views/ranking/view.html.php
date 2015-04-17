@@ -95,8 +95,7 @@ class sportsmanagementViewRanking extends JViewLegacy
 		
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($model::$cfg_which_database,true).'</pre>'),'');
         
-		//$map_config		= $model->getMapConfig();
-		//$this->assignRef( 'mapconfig',		$map_config ); // Loads the project-template -settings for the GoogleMap
+
 		$this->assignRef('model',$model);
 		$this->assignRef('project', $project);
         $this->assignRef('projectinfo', $project->projectinfo);

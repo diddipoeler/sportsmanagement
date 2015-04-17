@@ -89,17 +89,7 @@ class sportsmanagementViewPlayground extends JViewLegacy
 		$this->assign('teams', sportsmanagementModelTeams::getTeams($this->playground->id) );
 		$this->assignRef('games', $games );
 		$this->assignRef('gamesteams', $gamesteams );
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playground<br><pre>'.print_r($this->playground,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
-
-		//$this->assignRef( 'mapconfig', $model->getMapConfig() );
-		
-
-		//$this->assignRef( 'gmap', $model->getGoogleMap( $this->mapconfig, $this->address_string ) );
-        
-		// $gm = $this->getModel( 'googlemap' );
-		// $this->assignRef('gm', $gm->getGoogleMap( $model->getMapConfig(), $model->getAddressString() ) );
+       
         
         // diddipoeler
         $this->geo = new JSMsimpleGMapGeocoder();

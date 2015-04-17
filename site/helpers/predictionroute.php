@@ -69,9 +69,12 @@ class JSMPredictionHelperRoute extends sportsmanagementHelperRoute
  */
 public static function getPredictionResultsRoute($predictionID,$roundID=0,$projectID=0,$userID=0,$anchor='',$groupID=0)
 	{
+	   $app = JFactory::getApplication();
+       
 		$params = array('option' => 'com_sportsmanagement', 
 						'view' => 'predictionresults', 
 						'prediction_id' => $predictionID);
+
 
         // diddipoeler
 //        if (!is_null($projectID)){$params['p']=$projectID;}
@@ -80,15 +83,19 @@ public static function getPredictionResultsRoute($predictionID,$roundID=0,$proje
 //		if (!is_null($roundID)){$params['r']=$roundID;}
 //		if (!is_null($userID)){$params['uid']=$userID;}
         
-        $params['p']=$projectID;
-        $params['pggroup']=$groupID;
-        $params['pj']=$projectID;
-        $params['r']=$roundID;
-        $params['uid']=$userID;
+        $params['p'] = $projectID;
+        $params['pggroup'] = $groupID;
+        $params['pj'] = $projectID;
+        $params['r'] = $roundID;
+        $params['uid'] = $userID;
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'   ),'');
         
 		$query = JSMPredictionHelperRoute::buildQuery($params);
 		//echo $query; die();
 		$link = JRoute::_('index.php?' . $query . $anchor, false);
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'   ),'');
 
 		return $link;
 	}
@@ -106,6 +113,8 @@ public static function getPredictionResultsRoute($predictionID,$roundID=0,$proje
  */
 public static function getPredictionRankingRoute($predictionID,$projectID=0,$roundID=0,$anchor='',$groupID=0,$groupRank=0)
 	{
+	   $app = JFactory::getApplication();
+       
 		$params = array('option' => 'com_sportsmanagement', 
 						'view' => 'predictionranking', 
 						'prediction_id' => $predictionID);
@@ -117,14 +126,18 @@ public static function getPredictionRankingRoute($predictionID,$projectID=0,$rou
 //		if (!is_null($roundID)){$params['r']=$roundID;}
         
         //if (!is_null($groupRank)){$params['pggrouprank']=$groupRank;}
-        $params['p']=$projectID;
-        $params['pggroup']=$groupID;
-        $params['pj']=$projectID;
-        $params['r']=$roundID;
-        $params['pggrouprank']=$groupRank;
+        $params['p'] = $projectID;
+        $params['pggroup'] = $groupID;
+        $params['pj'] = $projectID;
+        $params['r'] = $roundID;
+        $params['pggrouprank'] = $groupRank;
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'   ),'');
 
 		$query = JSMPredictionHelperRoute::buildQuery($params);
 		$link = JRoute::_('index.php?' . $query, false);
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'   ),'');
 
 		return $link;
 	}

@@ -54,6 +54,8 @@ function sportsmanagementBuildRoute( &$query )
     $show_debug_info = $paramscomponent->get( 'show_debug_info' );  
     //DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
     
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+    
     if ( $show_debug_info )
         {
     $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'   ),'');
@@ -71,12 +73,27 @@ function sportsmanagementBuildRoute( &$query )
 		return $segments;
 	}
 
-	// project id, always just after the view if specified
+	
+    
+    // now, the specifics
+	switch ($view)
+	{
+	case 'predictionrules':
+    case 'predictionranking':
+    case 'predictionentry':
+    case 'predictionresults':
+    case 'predictionusers':
+    break;   
+    default:
+    // project id, always just after the view if specified
 	if (isset($query['p']))
 	{
 		$segments[] = $query['p'];
 		unset( $query['p'] );
 	}
+    break;
+    }   
+    
 
 	// now, the specifics
 	switch ($view)
@@ -132,11 +149,8 @@ function sportsmanagementBuildRoute( &$query )
 				$segments[] = $query['pggrouprank'];
 				unset( $query['pggrouprank'] );
 			}
-
-
-
-
-            
+          
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'   ),'');
 
 			break;    
         case 'predictionentry':
@@ -477,6 +491,8 @@ function sportsmanagementParseRoute( $segments )
     $app = JFactory::getApplication();
     $paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
     $show_debug_info = $paramscomponent->get( 'show_debug_info' );  
+    
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'   ),'');
     
     if ( $show_debug_info )
         {

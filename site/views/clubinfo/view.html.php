@@ -82,8 +82,7 @@ class sportsmanagementViewClubInfo extends JViewLegacy
 		$playgrounds	= $model->getPlaygrounds();
 		$isEditor		= sportsmanagementModelProject::hasEditPermission('club.edit');
 		$address_string = $model->getAddressString();
-//		$map_config		= sportsmanagementModelProject::getMapConfig();
-//		$google_map		= $model->getGoogleMap( $map_config, $address_string );
+
         $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
                         
         //$app->enqueueMessage(JText::_('clubinfo checkextrafields -> '.'<pre>'.print_r($this->checkextrafields,true).'</pre>' ),'');

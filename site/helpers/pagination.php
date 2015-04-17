@@ -71,7 +71,11 @@ class sportsmanagementModelPagination extends JModelLegacy
        $app = JFactory::getApplication();
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-        $app->enqueueMessage(JText::_(__CLASS__.' '.__FUNCTION__.' nextink'.'<pre>'.print_r($this->nextlink,true).'</pre>' ),'');
+        $my_text = 'nextink -> '.$this->nextlink.'<br>'; 
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['class'] = __CLASS__;
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['zeile'] = __LINE__;
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['text'] = $my_text;
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
         }
         
         return $this->nextlink;
@@ -151,10 +155,14 @@ class sportsmanagementModelPagination extends JModelLegacy
             self::$prevlink = $link;
 			$prevlink = JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PREV'));
             
-            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-            {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prevlink'.'<pre>'.print_r($link,true).'</pre>' ),'');
-            }
+//            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+//            {
+//            $my_text = 'prevlink -> '.$link.'<br>'; 
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['class'] = __CLASS__;
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['zeile'] = __LINE__;
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['text'] = $my_text;    
+//            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prevlink'.'<pre>'.print_r($link,true).'</pre>' ),'');
+//            }
 
 			$params['r'] = $firstRound['id'];
 			$query = JURI::buildQuery($params);
@@ -224,10 +232,18 @@ class sportsmanagementModelPagination extends JModelLegacy
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' firstlink'.'<pre>'.print_r($firstlink,true).'</pre>' ),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prevlink'.'<pre>'.print_r($prevlink,true).'</pre>' ),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nextlink'.'<pre>'.print_r($nextlink,true).'</pre>' ),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' lastlink'.'<pre>'.print_r($lastlink,true).'</pre>' ),'');
+   
+        
+        $my_text = 'firstlink -> '.$firstlink.'<br>' ;
+        $my_text .= 'prevlink -> '.$prevlink.'<br>' ;
+        $my_text .= 'nextlink -> '.$nextlink.'<br>' ;
+        $my_text .= 'lastlink -> '.$lastlink.'<br>' ;
+        
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['class'] = __CLASS__;
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['zeile'] = __LINE__;
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['text'] = $my_text;
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        
         }
         
 		return '<span class="pageNav">&laquo;' . $spacer2 . $firstlink . $prevlink . $pageNav . $nextlink .  $lastlink . $spacer2 . '&raquo;</span>';

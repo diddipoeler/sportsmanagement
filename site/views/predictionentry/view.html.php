@@ -69,7 +69,7 @@ class sportsmanagementViewPredictionEntry extends JViewLegacy
 		$document	= JFactory::getDocument();
     $option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
-		$model		= $this->getModel();
+		$model = $this->getModel();
    
     $this->assign('headertitle', JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_SECTION_TITLE'));
 		$this->assign('predictionGame',sportsmanagementModelPrediction::getPredictionGame());
@@ -84,22 +84,29 @@ class sportsmanagementViewPredictionEntry extends JViewLegacy
 
       
       
-			$this->assignRef('model',				$model);
-			$this->assign('config',				array_merge($overallConfig,$config));
+			$this->assignRef('model',$model);
+			$this->assign('config',array_merge($overallConfig,$config));
       $configavatar			= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
-      $this->assignRef('configavatar',				$configavatar );
-			$this->assign('predictionMember',	sportsmanagementModelPrediction::getPredictionMember($configavatar));
-			$this->assign('predictionProjectS',	sportsmanagementModelPrediction::getPredictionProjectS());
-			$this->assign('actJoomlaUser',		JFactory::getUser());
+      $this->assignRef('configavatar',$configavatar );
+			$this->assign('predictionMember',sportsmanagementModelPrediction::getPredictionMember($configavatar));
+			$this->assign('predictionProjectS',sportsmanagementModelPrediction::getPredictionProjectS());
+			$this->assign('actJoomlaUser',JFactory::getUser());
 			
-            $this->assign('allowedAdmin',		sportsmanagementModelPrediction::getAllowed());
+            $this->assign('allowedAdmin',sportsmanagementModelPrediction::getAllowed());
 
-			$this->assign('isPredictionMember',	sportsmanagementModelPrediction::checkPredictionMembership());
-			$this->assign('isNotApprovedMember',	sportsmanagementModelPrediction::checkIsNotApprovedPredictionMember());
-			$this->assign('isNewMember',			$model->newMemberCheck());
-			$this->assign('tippEntryDone',		$model->tippEntryDoneCheck());
-
-			$this->assign('websiteName',			JFactory::getConfig()->getValue('config.sitename'));
+			$this->assign('isPredictionMember',sportsmanagementModelPrediction::checkPredictionMembership());
+			$this->assign('isNotApprovedMember',sportsmanagementModelPrediction::checkIsNotApprovedPredictionMember());
+			$this->assign('isNewMember',$model->newMemberCheck());
+			$this->assign('tippEntryDone',$model->tippEntryDoneCheck());
+            
+if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+            $this->assign('websiteName',JFactory::getConfig()->get('config.sitename'));
+            }
+            else
+            {
+			$this->assign('websiteName',JFactory::getConfig()->getValue('config.sitename'));
+            }
 			
 			//echo $this->loadTemplate( 'assignRefs' );
 			//echo '<br /><pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';
