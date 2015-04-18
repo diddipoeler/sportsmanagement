@@ -54,17 +54,17 @@ defined('_JEXEC') or die('Restricted access');
 
 <thead>
 <tr class="sectiontableheader">
-<th class="title" nowrap="nowrap" style="vertical-align:top;background:#BDBDBD; ">
+<th class="" nowrap="" style="background:#BDBDBD;">
 <?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_LEAGUE' ); ?>
 </th>
-<th class="title" nowrap="nowrap" style="vertical-align:top;background:#BDBDBD; ">
+<th class="" nowrap="" style="background:#BDBDBD;">
 <?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GAMES' ); ?>
 </th>
-<th class="title" nowrap="nowrap" style="vertical-align:top;background:#BDBDBD; ">
+<th class="" nowrap="" style="background:#BDBDBD;">
 <?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_WDL' ); ?>
 </th>
 
-<th class="title" nowrap="nowrap" style="vertical-align:top;background:#BDBDBD; ">
+<th class="" nowrap="" style="background:#BDBDBD;">
 <?PHP echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_GOALS' ); ?>
 </th>
 
