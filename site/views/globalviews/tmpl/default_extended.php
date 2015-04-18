@@ -83,8 +83,9 @@ if(count($this->extended->getFieldsets()) > 0)
 			<?php echo '&nbsp;' . JText::_($fieldset->name); ?>
 		</div>
 	</div>
-				<table>
-					<tbody>
+    <div class="row">
+    
+				
 				<?php
 				foreach ($fields as $field)
 				{
@@ -92,9 +93,11 @@ if(count($this->extended->getFieldsets()) > 0)
 					if (!empty($value)) // && !$field->backendonly)
 					{
 						?>
-						<tr>
-							<td class="label"><?php echo $field->label; ?></td>
-							<td class="data">
+                        <div class="col-xs-6">
+                        
+                        <strong><?php echo JText::_( $field->label); ?></strong>
+                        </div>
+                        <div class="col-xs-6">
                             <?php
                             if ( is_array($field->value) )
                             {
@@ -110,14 +113,16 @@ if(count($this->extended->getFieldsets()) > 0)
                             echo JText::_( $field->value );
                             }
                             ?>
-                            </td>
-						<tr>
+                        
+                        
+						</div>
 						<?php
 					}
 				}
 				?>
-					</tbody>
-				</table>
+
+                </div>
+                
 				<br/>
 				<?php
 			}

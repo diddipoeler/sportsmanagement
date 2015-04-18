@@ -52,7 +52,7 @@ else
         ?>
 <!--        <div class="container-fluid"> -->
         <div class="row">
-        <div class="span4">
+        <div class="col-md-6">
         <?PHP
     }
     else
@@ -124,9 +124,9 @@ echo JHtml::image($picture, $club_emblem_title, array('title' => $club_emblem_ti
         if( $this->config['show_club_info'] == 1 )
         {
         ?>
-	<div class="span4">
+	<div class="col-md-6">
 		<?php
-		if ( ( $this->club->address ) || ( $this->club->zipcode ) )
+		if (  $this->club->address  ||  $this->club->zipcode ||  $this->club->location )
 		{
 
 			$addressString = JSMCountries::convertAddressString(	$this->club->name,
@@ -137,14 +137,15 @@ echo JHtml::image($picture, $club_emblem_title, array('title' => $club_emblem_ti
 																$this->club->country,
 																'COM_SPORTSMANAGEMENT_CLUBINFO_ADDRESS_FORM' );
 			?>
-			<span class="clubinfo_listing_item"><?php
+            <address>
+			<strong><?php
 				echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_ADDRESS' );
-				$dummyStr = explode('<br />', $addressString);
-				for ($i = 0; $i < count($dummyStr); $i++) { echo '<br />'; }
-				echo '<br />';
-				?></span>
-			<span class="clubinfo_listing_value"><?php echo $addressString; ?>
-			</span>
+				//$dummyStr = explode('<br />', $addressString);
+				//for ($i = 0; $i < count($dummyStr); $i++) { echo '<br />'; }
+				//echo '<br />';
+				?></strong>
+			<?php echo $addressString; ?>
+			
 			<span class="clubinfo_listing_value">
 			<?php 
             if ( isset($this->clubassoc->name) )
@@ -154,7 +155,7 @@ echo JHtml::image($picture, $club_emblem_title, array('title' => $club_emblem_ti
             ?>
       <br />
       </span>
-			
+		</address>	
 			
 			<?php
 		}
@@ -162,24 +163,29 @@ echo JHtml::image($picture, $club_emblem_title, array('title' => $club_emblem_ti
 		if ( $this->club->phone )
 		{
 			?>
-			<span class="clubinfo_listing_item"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_PHONE' ); ?></span>
-			<span class="clubinfo_listing_value"><?php echo $this->club->phone; ?></span>
+            <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_PHONE' ); ?></strong>
+			<?php echo $this->club->phone; ?>
+            </address>
 			<?php
 		}
 
 		if ( $this->club->fax)
 		{
 			?>
-			<span class="clubinfo_listing_item"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_FAX' ); ?></span>
-			<span class="clubinfo_listing_value"><?php echo $this->club->fax; ?></span>
+            <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_FAX' ); ?></strong>
+			<?php echo $this->club->fax; ?>
+            </address>
 			<?php
 		}
 
 		if ($this->club->email)
 		{
 			?>
-			<span class="clubinfo_listing_item"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_EMAIL' ); ?></span>
-			<span class="clubinfo_listing_value">
+            <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_EMAIL' ); ?></strong>
+			
 				<?php
 				// to prevent spam, crypt email display if nospam_email is selected
 				//or user is a guest
@@ -190,20 +196,23 @@ echo JHtml::image($picture, $club_emblem_title, array('title' => $club_emblem_ti
 				}
 				else
 				{
-					echo JHtml::_('email.cloak', $this->club->email );
+					//echo JHtml::_('email.cloak', $this->club->email );
+                    echo $this->club->email;
 				}
 				?>
-			</span>
+			</address>
 			<?php
 		}
 
 		if ( $this->club->website )
 		{
 			?>
-			<span class="clubinfo_listing_item"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_WWW' ); ?></span>
-			<span class="clubinfo_listing_value">
+            <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_WWW' ); ?></strong>
+			
 				<?php echo JHtml::_( 'link', $this->club->website, $this->club->website, array( "target" => "_blank" ) ); ?>
-			</span>
+			
+            <address>
 			<?php
       
       
@@ -212,53 +221,66 @@ echo JHtml::image($picture, $club_emblem_title, array('title' => $club_emblem_ti
 		if ( $this->club->president )
 		{
 			?>
-			<span class="clubinfo_listing_item"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_PRESIDENT' ); ?></span>
-			<span class="clubinfo_listing_value"><?php echo $this->club->president; ?></span>
+            <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_PRESIDENT' ); ?></strong>
+			<?php echo $this->club->president; ?>
+            </address>
 			<?php
 		}
 
 		if ( $this->club->manager )
 		{
 			?>
-			<span class="clubinfo_listing_item"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_MANAGER' ); ?></span>
-			<span class="clubinfo_listing_value"><?php echo $this->club->manager; ?></span>
+            <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_MANAGER' ); ?></strong>
+			<?php echo $this->club->manager; ?>
+            </address>
 			<?php
 		}
 
 		if ( $this->club->founded && $this->club->founded != '0000-00-00' )
 		{
 			?>
-			<span class="clubinfo_listing_item"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_FOUNDED' ); ?></span>
-			<span class="clubinfo_listing_value"><?php echo sportsmanagementHelper::convertDate($this->club->founded,1) ; ?></span>
+            <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_FOUNDED' ); ?></strong>
+			<?php echo sportsmanagementHelper::convertDate($this->club->founded,1) ; ?>
+            </address>
 			<?php
 		}
     if ( $this->club->founded_year )
 		{    
       ?>
-			<span class="clubinfo_listing_item"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_FOUNDED_YEAR' ); ?></span>
-			<span class="clubinfo_listing_value"><?php echo $this->club->founded_year; ?></span>
+      <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_FOUNDED_YEAR' ); ?></strong>
+			<?php echo $this->club->founded_year; ?>
+            </address>
 			<?php
     }
     if ( $this->club->dissolved && $this->club->dissolved != '0000-00-00' )
 		{  
       ?>
-			
-      <span class="clubinfo_listing_item"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_DISSOLVED' ); ?></span>
-			<span class="clubinfo_listing_value"><?php echo sportsmanagementHelper::convertDate($this->club->dissolved,1) ?></span>      
+		<address>	
+      <strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_DISSOLVED' ); ?></strong>
+			<?php echo sportsmanagementHelper::convertDate($this->club->dissolved,1) ?>   
+            </address>   
 			<?php
     }
     if ( $this->club->dissolved_year )
 		{  
       ?>
-			<span class="clubinfo_listing_item"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_DISSOLVED_YEAR' ); ?></span>
-			<span class="clubinfo_listing_value"><?php echo $this->club->dissolved_year; ?></span>
+      <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_DISSOLVED_YEAR' ); ?></strong>
+			<?php echo $this->club->dissolved_year; ?>
+            </address>
 			<?php
     }
     if ( $this->club->unique_id )
 		{  
       ?>
-			<span class="clubinfo_listing_item"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_UNIQUE_ID' ); ?></span>
-			<span class="clubinfo_listing_value"><?php echo $this->club->unique_id; ?></span>
+      <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_UNIQUE_ID' ); ?></strong>
+			<?php echo $this->club->unique_id; ?>
+            </address>
 			<?php
     }        
 
@@ -273,8 +295,10 @@ echo JHtml::image($picture, $club_emblem_title, array('title' => $club_emblem_ti
 					$link = sportsmanagementHelperRoute::getPlaygroundRoute( $this->project->slug, $playground->slug,JRequest::getInt('cfg_which_database',0) );
 					$pl_dummy = JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_PLAYGROUND' );
 					?>
-					<span class="clubinfo_listing_item"><?php echo str_replace( "%NUMBER%", $playground_number, $pl_dummy ); ?></span>
-					<span class="clubinfo_listing_value"><?php echo JHtml::link( $link, $playground->name ); ?></span>
+                    <address>
+					<strong><?php echo str_replace( "%NUMBER%", $playground_number, $pl_dummy ); ?></strong>
+					<?php echo JHtml::link( $link, $playground->name ); ?>
+                    </address>
 					<?php
 					$playground_number++;
 				}
