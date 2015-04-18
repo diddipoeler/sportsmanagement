@@ -198,7 +198,7 @@ class sportsmanagementViewTemplate extends sportsmanagementView
         $this->item->name = $this->item->template;
 		//$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_NEW');
         //$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT');
-        $this->title = JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT',$this->item->title);
+        $this->title = JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT',(JText::_($this->item->title)));
         $this->icon = 'template';
         
         parent::addToolbar();
