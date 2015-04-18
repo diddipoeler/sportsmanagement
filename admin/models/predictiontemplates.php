@@ -171,9 +171,10 @@ class sportsmanagementModelPredictionTemplates extends JModelList
         $query->order($db->escape($this->getState('list.ordering', 'tmpl.title')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
  
-if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $my_text .= ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
 
 		

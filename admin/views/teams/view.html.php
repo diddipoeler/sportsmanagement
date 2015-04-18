@@ -117,11 +117,19 @@ $starttime = microtime();
 																'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
 																'value',
 																'text',
-																$this->state->get('filter.search_nation'));
+															$this->state->get('filter.search_nation'));
 
-
-
-		$this->assign('user',JFactory::getUser());
+		$myoptions = array();
+        $myoptions[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
+        $mdlagegroup = JModelLegacy::getInstance("agegroups", "sportsmanagementModel");
+        if ( $res = $mdlagegroup->getAgeGroups() )
+        {
+            $myoptions = array_merge($myoptions,$res);
+        }
+        $lists['agegroup'] = $myoptions;
+        unset($myoptions);
+        
+        $this->assign('user',JFactory::getUser());
 		$this->assign('config',JFactory::getConfig());
 		$this->assignRef('lists',$lists);
 		$this->assignRef('items',$items);

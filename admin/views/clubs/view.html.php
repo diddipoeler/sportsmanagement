@@ -67,6 +67,7 @@ class sportsmanagementViewClubs extends sportsmanagementView
 		$app = JFactory::getApplication();
 		$uri = JFactory::getURI();
         $model = $this->getModel();
+        $my_text = '';
         
         $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
@@ -74,7 +75,9 @@ class sportsmanagementViewClubs extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->state,true).'</pre>'),'');
+        $my_text .= ' <br><pre>'.print_r($this->state,true).'</pre>';    
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->state,true).'</pre>'),'');
         }
         
         $starttime = microtime(); 

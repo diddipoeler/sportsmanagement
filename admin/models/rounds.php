@@ -135,10 +135,6 @@ class sportsmanagementModelRounds extends JModelList
 	{
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        //$search	= $this->getState('filter.search');
-        
-        //$this->_project_id	= JRequest::getVar('pid');
-        //$this->_project_id	= $app->getUserState( "$option.pid", '0' );
         
         // Create a new query object.		
 		$db = JFactory::getDBO();
@@ -180,9 +176,10 @@ class sportsmanagementModelRounds extends JModelList
         $query->order(JFactory::getDbo()->escape($this->getState('list.ordering', 'r.roundcode')).' '.
                 JFactory::getDbo()->escape($this->getState('list.direction', 'ASC')));
 
-if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $my_text .= ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
         
         return $query;

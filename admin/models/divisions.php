@@ -126,7 +126,6 @@ class sportsmanagementModelDivisions extends JModelList
 		$app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
         $this->_project_id	= $app->getUserState( "$option.pid", '0' );
-        $search	= $this->getState('filter.search');
         
         //$app->enqueueMessage(JText::_('sportsmanagementModelDivisions _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'Notice');
         
@@ -140,17 +139,18 @@ class sportsmanagementModelDivisions extends JModelList
 
         $query->where(' dv.project_id = ' . $this->_project_id);
         
-        if ($search )
+        if ($this->getState('filter.search') )
 		{
-        $query->where('LOWER(dv.name) LIKE ' . $this->_db->Quote( '%' . $search . '%' ));
+        $query->where('LOWER(dv.name) LIKE ' . $this->_db->Quote( '%' . $this->getState('filter.search') . '%' ));
         }
         
         $query->order($this->_db->escape($this->getState('list.ordering', 'dv.name')).' '.
                 $this->_db->escape($this->getState('list.direction', 'ASC')));
 
-if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $my_text = ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
 
 		return $query;

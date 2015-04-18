@@ -58,7 +58,36 @@ abstract class sportsmanagementHelper
     static $latitude = '';
     static $longitude = '';
 	static $_jsm_db = '';
+    static $_success_text = array();
     
+    
+    /**
+     * sportsmanagementHelper::setDebugInfoText()
+     * 
+     * @param mixed $methode
+     * @param mixed $funktion
+     * @param mixed $klasse
+     * @param mixed $zeile
+     * @param mixed $text
+     * @return void
+     */
+    public static function setDebugInfoText($methode,$funktion,$klasse,$zeile,$text)
+    {
+    // Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->methode = $methode;
+        $object->function = $funktion;
+        $object->class = $klasse;    
+        $object->line = $zeile;
+        $object->text = $text;
+        if ( !isset(self::$_success_text[$klasse]) )
+        {
+            self::$_success_text[$klasse] = array();
+        }
+        $export[] = $object;
+    self::$_success_text[$klasse] = array_merge(self::$_success_text[$klasse],$export);    
+    }
     
     /**
      * sportsmanagementHelper::getTimezone()
@@ -1635,7 +1664,9 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
-                $app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.'<br><pre>'.print_r($team,true).'</pre>'),'');
+                $my_text = 'team <br><pre>'.print_r($team,true).'</pre>';    
+        sportsmanagementHelper::$_success_text[__METHOD__][__LINE__] = $my_text;
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.'<br><pre>'.print_r($team,true).'</pre>'),'');
             }
             
         if(!isset($team->projectteamid)) return "";

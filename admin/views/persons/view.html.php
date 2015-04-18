@@ -83,7 +83,9 @@ class sportsmanagementViewPersons extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->state,true).'</pre>'),'');
+            $my_text = 'state <pre>'.print_r($this->state,true).'</pre>';    
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->state,true).'</pre>'),'');
         }
 
 
@@ -137,6 +139,17 @@ $starttime = microtime();
 										$filter_nation);
 		*/
         unset($nation);
+        
+        $myoptions = array();
+        $myoptions[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
+        $mdlagegroup = JModelLegacy::getInstance("agegroups", "sportsmanagementModel");
+        if ( $res = $mdlagegroup->getAgeGroups() )
+        {
+            $myoptions = array_merge($myoptions,$res);
+        }
+        $lists['agegroup'] = $myoptions;
+        unset($myoptions);
+        
 
 		$this->assign('user',JFactory::getUser());
 		$this->assign('config',JFactory::getConfig());

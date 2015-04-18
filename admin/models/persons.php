@@ -57,6 +57,12 @@ class sportsmanagementModelPersons extends JModelList
 {
 	var $_identifier = "persons";
     
+    /**
+     * sportsmanagementModelPersons::__construct()
+     * 
+     * @param mixed $config
+     * @return void
+     */
     public function __construct($config = array())
         {   
                 $config['filter_fields'] = array(
@@ -71,7 +77,9 @@ class sportsmanagementModelPersons extends JModelList
                         'pl.ordering',
                         'pl.published',
                         'pl.checked_out',
-                        'pl.checked_out_time'
+                        'pl.checked_out_time',
+                        'pl.agegroup_id',
+                        'ag.name'
                         );
                    
                 parent::__construct($config);
@@ -139,34 +147,37 @@ class sportsmanagementModelPersons extends JModelList
         $this->_season_id = $app->getUserState( "$option.season_id", '0' );
         $this->_project_team_id = $app->getUserState( "$option.project_team_id", '0' );
         
-        //$search	= $this->getState('filter.search');
-        //$search_nation	= $this->getState('filter.search_nation');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' layout<br><pre>'.print_r(JRequest::getVar('layout'),true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _type<br><pre>'.print_r($this->_type,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' search<br><pre>'.print_r($search,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _team_id<br><pre>'.print_r($this->_team_id,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project_team_id<br><pre>'.print_r($this->_project_team_id,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' filter_fields<br><pre>'.print_r($this->filter_fields,true).'</pre>'),'');
+        $my_text = 'layout -> '.JRequest::getVar('layout').'</br>';
+        $my_text .= '_type -> '.$this->_type.'</br>';
+        $my_text .= 'search -> '.$this->getState('filter.search').'</br>';
+        $my_text .= '_project_id -> '.$this->_project_id.'</br>';
+        $my_text .= '_team_id -> '.$this->_team_id.'</br>';
+        $my_text .= '_project_team_id -> '.$this->_project_team_id.'</br>';
+        $my_text .= 'filter_fields -> <pre>'.print_r($this->filter_fields,true).'</pre>';
+        
+        
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);    
         }
         
 
 
 
         // Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
-        $Subquery	= $db->getQuery(true);
-		$user	= JFactory::getUser(); 
+		$db	= $this->getDbo();
+		$query = $db->getQuery(true);
+        $Subquery = $db->getQuery(true);
+		$user = JFactory::getUser(); 
 		
         // Select some fields
-		$query->select(implode(",",$this->filter_fields));
+		//$query->select(implode(",",$this->filter_fields));
+        $query->select('pl.*');
         $query->select('pl.id as id2');
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person as pl');
+        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup AS ag ON ag.id = pl.agegroup_id');
         // Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id = pl.checked_out');
@@ -249,9 +260,10 @@ class sportsmanagementModelPersons extends JModelList
                 $db->escape($this->getState('list.direction', 'ASC')));
                 
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $my_text = ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
                 
         

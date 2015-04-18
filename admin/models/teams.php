@@ -78,7 +78,9 @@ class sportsmanagementModelTeams extends JModelList
                         't.id',
                         't.ordering',
                         't.checked_out',
-                        't.checked_out_time'
+                        't.checked_out_time',
+                        't.agegroup_id',
+                        'ag.name'
                         );
                 parent::__construct($config);
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
@@ -138,8 +140,6 @@ class sportsmanagementModelTeams extends JModelList
 	{
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $search	= $this->getState('filter.search');
-        $search_nation	= $this->getState('filter.search_nation');
 
         // Create a new query object.
 		$db		= $this->getDbo();
@@ -147,11 +147,14 @@ class sportsmanagementModelTeams extends JModelList
 		$user	= JFactory::getUser(); 
 		
         // Select some fields
-		$query->select(implode(",",$this->filter_fields));
+		//$query->select(implode(",",$this->filter_fields));
+        $query->select('t.*');
         $query->select('st.name AS sportstype');
+        $query->select('ag.name AS agename');
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
         $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = t.sports_type_id');
+        $query->join('LEFT', '#__sportsmanagement_agegroup as ag ON ag.id = t.agegroup_id');
         // Join over the clubs
 		$query->select('c.name As clubname,c.country');
 		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON c.id = t.club_id');
@@ -160,14 +163,14 @@ class sportsmanagementModelTeams extends JModelList
 		$query->join('LEFT', '#__users AS uc ON uc.id = t.checked_out');
         
         
-        if ($search)
+        if ($this->getState('filter.search'))
 		{
-        $query->where('LOWER(t.name) LIKE '.$db->Quote('%'.$search.'%'));
+        $query->where('LOWER(t.name) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%'));
         }
         
-        if ($search_nation)
+        if ($this->getState('filter.search_nation'))
 		{
-        $query->where('c.country LIKE '.$db->Quote(''.$search_nation.''));
+        $query->where('c.country LIKE '.$db->Quote(''.$this->getState('filter.search_nation').''));
         }
         if ($this->getState('filter.sports_type'))
 		{
@@ -184,9 +187,10 @@ class sportsmanagementModelTeams extends JModelList
         $query->order($db->escape($this->getState('list.ordering', 't.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
         
-if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $my_text = ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
 
 		return $query;

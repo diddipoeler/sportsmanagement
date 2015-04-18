@@ -133,42 +133,8 @@ if ( $this->tmpl )
 		</fieldset>
 	</div>
 
-<div class="width-40 fltrt">
-		<?php
-		echo JHtml::_('sliders.start');
-		foreach ($fieldsets as $fieldset) :
-        
-//        echo 'fieldset name'.$fieldset->name.'<br>';
-        
-			if ($fieldset->name == 'details') :
-				continue;
-			endif;
-			echo JHtml::_('sliders.panel', JText::_($fieldset->label), $fieldset->name);
-		if (isset($fieldset->description) && !empty($fieldset->description)) :
-				echo '<p class="tab-description">'.JText::_($fieldset->description).'</p>';
-			endif;
-		//echo $this->loadTemplate($fieldset->name);
-        $this->fieldset = $fieldset->name;
-        echo $this->loadTemplate('fieldsets');
-		endforeach; ?>
-		<?php echo JHtml::_('sliders.end'); ?>
-
-	
-	</div>
-
-
-    
- <div class="clr"></div>	
- 
-
- 
-	<div>
-		<input type="hidden" name="task" value="person.edit" />
-		<?php echo JHtml::_('form.token'); ?>
-	</div>
-</form>
 <?PHP
-echo "<div>";
-echo $this->loadTemplate('footer');
-echo "</div>";
-?>   
+echo $this->loadTemplate('editdata');
+?>
+
+

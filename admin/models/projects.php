@@ -77,6 +77,8 @@ class sportsmanagementModelProjects extends JModelList
                         'p.ordering',
                         'p.picture',
                         'ag.name',
+                        'p.agegroup_id',
+                        'ag.name'
                         );
                 parent::__construct($config);
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
@@ -176,7 +178,7 @@ class sportsmanagementModelProjects extends JModelList
         $subQuery2->where('ev.fieldvalue != '.$db->Quote(''.''));
         
 
-        $query->select('p.id,p.ordering,p.published,p.project_type,p.name,p.alias,p.checked_out,p.checked_out_time,p.sports_type_id,p.current_round,p.picture ');
+        $query->select('p.id,p.ordering,p.published,p.project_type,p.name,p.alias,p.checked_out,p.checked_out_time,p.sports_type_id,p.current_round,p.picture,p.agegroup_id ');
         
         $query->select('p.modified,p.modified_by');
         $query->select('u1.username');

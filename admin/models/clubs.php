@@ -136,9 +136,7 @@ class sportsmanagementModelClubs extends JModelList
 	{
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        //$search	= $this->getState('filter.search');
-        //$search_nation	= $this->getState('filter.search_nation');
-        //$search_season = $this->getState('filter.season');
+        
 
         // Create a new query object.		
 		$db = JFactory::getDBO();
@@ -147,6 +145,10 @@ class sportsmanagementModelClubs extends JModelList
 		$query->select(implode(",",$this->filter_fields));
 		// From the club table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club as a');
+        
+        // Join over the users for the checked out user.
+		$query->select('uc.name AS editor');
+		$query->join('LEFT', '#__users AS uc ON uc.id = a.checked_out');
         
         if ($this->getState('filter.search'))
 		{
@@ -169,9 +171,10 @@ class sportsmanagementModelClubs extends JModelList
         $query->order($db->escape($this->getState('list.ordering', 'a.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $my_text = 'query <pre>'.print_r($query->dump(),true).'</pre>';    
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
         
 

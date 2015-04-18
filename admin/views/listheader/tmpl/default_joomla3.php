@@ -142,6 +142,12 @@ $html = JHtml::_('links.linksgroups', $groupedButtons);
 	<div id="j-main-container">
 <?php endif;?>
 
+<?PHP
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{
+echo $this->loadTemplate('debug');
+}
+?>
 
     
 <div id="filter-bar" class="btn-toolbar">

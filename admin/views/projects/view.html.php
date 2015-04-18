@@ -203,6 +203,15 @@ class sportsmanagementViewProjects extends sportsmanagementView
 									$this->state->get('filter.project_type'));
         unset($myoptions);
         
+        $myoptions[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
+        $mdlagegroup = JModelLegacy::getInstance("agegroups", "sportsmanagementModel");
+        if ( $res = $mdlagegroup->getAgeGroups() )
+        {
+            $myoptions = array_merge($myoptions,$res);
+        }
+        $lists['agegroup'] = $myoptions;
+        unset($myoptions);
+        
         unset($nation);
         $nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
         $mdlassociation = JModelLegacy::getInstance("jlextassociations", "sportsmanagementModel");

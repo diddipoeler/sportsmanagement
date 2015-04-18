@@ -39,8 +39,16 @@
 
 defined('_JEXEC') or die('Restricted access');
 $view = JRequest::getCmd('view', 'cpanel');
+
 ?>
 <div id="j-main-container" class="span10">
+
+<?PHP
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{
+echo $this->loadTemplate('debug');
+}
+?>
 <table>
 		<tr>
 			<td align="left" width="100%">

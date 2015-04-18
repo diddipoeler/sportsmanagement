@@ -133,8 +133,6 @@ class sportsmanagementModeljlextfederations extends JModelList
 	{
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $search	= $this->getState('filter.search');
-        $search_nation	= $this->getState('filter.search_nation');
 
         // Create a new query object.		
 		$db = JFactory::getDBO();
@@ -146,22 +144,23 @@ class sportsmanagementModeljlextfederations extends JModelList
         // Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id = objassoc.checked_out');
-        if ($search )
+        if ($this->getState('filter.search') )
 		{
-        $query->where('LOWER(objassoc.name) LIKE '.$this->_db->Quote('%'.$search.'%'));
+        $query->where('LOWER(objassoc.name) LIKE '.$this->_db->Quote('%'.$this->getState('filter.search').'%'));
         }
-        if ( $search_nation )
+        if ( $this->getState('filter.search_nation') )
 		{
-        $query->where("objassoc.country = '".$search_nation."'");
+        $query->where("objassoc.country = '".$this->getState('filter.search_nation')."'");
         }
 
         
         $query->order($db->escape($this->getState('list.ordering', 'objassoc.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
  
-		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+		if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $my_text .= ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
         
         return $query;

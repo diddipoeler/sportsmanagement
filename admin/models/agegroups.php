@@ -135,9 +135,6 @@ class sportsmanagementModelagegroups extends JModelList
 	{
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        //$search	= $this->getState('filter.search');
-        //$filter_sports_type	= $this->getState('filter.sports_type');
-        //$search_nation	= $this->getState('filter.search_nation');
         
         //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
 //        $search_nation		= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
@@ -174,14 +171,49 @@ class sportsmanagementModelagegroups extends JModelList
         $query->order($db->escape($this->getState('list.ordering', 'obj.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $my_text = ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
         
 		return $query;
         
 	}
+    
+    /**
+     * sportsmanagementModelagegroups::getAgeGroups()
+     * 
+     * @return
+     */
+    function getAgeGroups()
+    {
+        $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $search_nation = '';
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($app,true).'</pre>'),'Notice');
+        
+        
+        // Get a db connection.
+        $db = sportsmanagementHelper::getDBConnection();
+        // Create a new query object.
+        $query = $db->getQuery(true);
+         $query->select('a.id AS value, concat(a.name, \' von: \',a.age_from,\' bis: \',a.age_to,\' Stichtag: \',a.deadline_day) AS text');
+			$query->from('#__sportsmanagement_agegroup as a');
+                       
+        $query->order('a.name ASC');
+
+        $db->setQuery($query);
+        if (!$result = $db->loadObjectList())
+        {
+            sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            return array();
+        }
+
+        return $result;
+    }
 
 
 

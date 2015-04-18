@@ -91,6 +91,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_TEAMS_INFO','t.info',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
+                    
+                    <th class="title">
+						<?php
+						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP','ag.name',$this->sortDirection,$this->sortColumn);
+						?>
+					</th>
+                    
                     <th class="title">
 						<?php
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE','st.name',$this->sortDirection,$this->sortColumn);
@@ -188,6 +195,21 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						<td><?php echo $row->middle_name; ?></td>
 						<td class="center"><?php echo $row->short_name; ?></td>
 						<td><?php echo $row->info; ?></td>
+                        
+                        <td class="center">
+                        <?php 
+                        //echo JText::_($row->agegroup); 
+                        $inputappend = '';
+                        $append = ' style="background-color:#bbffff"';
+									echo JHtml::_(	'select.genericlist',
+													$this->lists['agegroup'],
+													'agegroup'.$row->id,
+													$inputappend.'class="inputbox" size="1" onchange="document.getElementById(\'cb' .
+													$i.'\').checked=true"'.$append,
+													'value','text',$row->agegroup_id);
+                        ?>
+                        </td>
+                        
                         <td class="center">
                         <?php 
                         //echo JText::_($row->sportstype); 

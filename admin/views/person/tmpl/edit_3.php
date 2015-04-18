@@ -76,74 +76,12 @@ if ( $this->tmpl )
 			</fieldset>
 <?PHP                
 }
+
+echo $this->loadTemplate('editdata');
 ?> 
  
-<div class="form-horizontal">
-<fieldset>
-<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
 
-<?PHP    
-foreach ($fieldsets as $fieldset) 
-{
-echo JHtml::_('bootstrap.addTab', 'myTab', $fieldset->name, JText::_($fieldset->label, true));    
-
-switch ($fieldset->name)
-{
-    case 'details':
-    ?>
-    <div class="row-fluid">
-			<div class="span9">
-				<div class="row-fluid form-horizontal-desktop">
-					<div class="span6">
-    <?PHP
-    foreach( $this->form->getFieldset($fieldset->name) as $field ) 
-    {
-        ?>
-					<div class="control-group">
-						<div class="control-label">
-							<?php echo $field->label; ?>
-						</div>
-						<div class="controls">
-							<?php echo $field->input; ?>
-						</div>
-					</div>
-				<?php
-
-    }
-    ?>
-    </div>
-				</div>
-			</div>
-            </div>
-    <?PHP
-    break;
-    default:
-    $this->fieldset = $fieldset->name;
-    echo $this->loadTemplate('fieldsets');
-    break;
-}    
-echo JHtml::_('bootstrap.endTab');    
-}    
-
-?>    
-	
-<?php echo JHtml::_('bootstrap.endTabSet'); ?>
-</fieldset>
-</div> 
 
 
     
- <div class="clr"></div>	
  
-
- 
-	<div>
-		<input type="hidden" name="task" value="person.edit" />
-		<?php echo JHtml::_('form.token'); ?>
-	</div>
-</form>
-<?PHP
-echo "<div>";
-echo $this->loadTemplate('footer');
-echo "</div>";
-?>   

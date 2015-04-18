@@ -117,12 +117,15 @@ class sportsmanagementModelPlaygrounds extends JModelList
 		parent::populateState('v.name', 'asc');
 	}
     
+	/**
+	 * sportsmanagementModelPlaygrounds::getListQuery()
+	 * 
+	 * @return
+	 */
 	function getListQuery()
 	{
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $search	= $this->getState('filter.search');
-        $search_nation	= $this->getState('filter.search_nation');
         
         // Create a new query object.
 		$db		= $this->getDbo();
@@ -141,13 +144,13 @@ class sportsmanagementModelPlaygrounds extends JModelList
 		$query->join('LEFT', '#__users AS uc ON uc.id = v.checked_out');
         
         
-        if ($search)
+        if ($this->getState('filter.search'))
 		{
-        $query->where('LOWER(v.name) LIKE '.$db->Quote('%'.$search.'%'));
+        $query->where('LOWER(v.name) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%'));
         }
-        if ($search_nation)
+        if ($this->getState('filter.search_nation'))
 		{
-        $query->where("v.country LIKE '".$search_nation."'");
+        $query->where("v.country LIKE '".$this->getState('filter.search_nation')."'");
         }
 
         
@@ -155,9 +158,10 @@ class sportsmanagementModelPlaygrounds extends JModelList
                 $db->escape($this->getState('list.direction', 'ASC')));
         
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $my_text .= ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
         
         
@@ -198,6 +202,11 @@ class sportsmanagementModelPlaygrounds extends JModelList
 		return $result;
 	}
     
+    /**
+     * sportsmanagementModelPlaygrounds::getPlaygroundListSelect()
+     * 
+     * @return
+     */
     public function getPlaygroundListSelect()
 	{
 	   $app = JFactory::getApplication();

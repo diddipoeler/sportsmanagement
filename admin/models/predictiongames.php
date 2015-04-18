@@ -130,8 +130,6 @@ class sportsmanagementModelPredictionGames extends JModelList
         $option = $jinput->getCmd('option');
         
         $prediction_id = $app->getUserState( "$option.prediction_id", '0' );
-        //$search	= $this->getState('filter.search');
-        //$search_state	= $this->getState('filter.state');
         
         
         // Create a new query object.		
@@ -158,9 +156,10 @@ class sportsmanagementModelPredictionGames extends JModelList
         $query->order($db->escape($this->getState('list.ordering', 'pre.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
  
-if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $my_text .= ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
 
 		

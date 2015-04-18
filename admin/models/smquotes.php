@@ -122,10 +122,6 @@ class sportsmanagementModelsmquotes extends JModelList
 	{
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        //$search	= $this->getState('filter.search');
-        //$filter_state = $this->getState('filter.state');
-        //$filter_catid = $this->getState('filter.category_id');
-
         
 		$query = JFactory::getDBO()->getQuery(true);
 		// Select some fields
@@ -160,9 +156,10 @@ class sportsmanagementModelsmquotes extends JModelList
         $query->order(JFactory::getDBO()->escape($this->getState('list.ordering', 'obj.quote')).' '.
                 JFactory::getDBO()->escape($this->getState('list.direction', 'ASC')));
  
-		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+		if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $my_text .= ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
         
         //$app->enqueueMessage(JText::_('leagues query<br><pre>'.print_r($query,true).'</pre>'   ),'');

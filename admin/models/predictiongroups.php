@@ -130,22 +130,26 @@ class sportsmanagementModelpredictiongroups extends JModelList
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
         
-        $search	= $this->getState('filter.search');
         
         $query->select(array('s.*', 'u.name AS editor','u1.username'))
         ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_groups AS s')
         ->join('LEFT', '#__users AS u ON u.id = s.checked_out')
         ->join('LEFT', '#__users AS u1 ON u1.id = s.modified_by');
         
-        if ($search)
+        if ($this->getState('filter.search'))
 		{
-        $query->where('(LOWER(s.name) LIKE ' . $db->Quote( '%' . $search . '%' ) );
+        $query->where('(LOWER(s.name) LIKE ' . $db->Quote( '%' . $this->getState('filter.search') . '%' ) );
         }
         
          $query->order($db->escape($this->getState('list.ordering', 's.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
- 
-//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $my_text .= ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
+        } 
+
 
 		
 		return $query;
