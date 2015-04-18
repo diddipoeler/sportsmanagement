@@ -2478,14 +2478,14 @@ $app = JFactory::getApplication();
 }    
     
     
+    
     /**
-	 * Method to check extra fields
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	1.5
-	 */
-    static function checkUserExtraFields()
+     * sportsmanagementHelper::checkUserExtraFields()
+     * 
+     * @param string $template
+     * @return
+     */
+    static function checkUserExtraFields($template='backend')
     {
          $app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
@@ -2494,9 +2494,8 @@ $app = JFactory::getApplication();
         
         $query->select('ef.id');
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields as ef ');
-        $query->where('ef.template_backend LIKE ' . $db->Quote(''.JRequest::getVar('view').'') );
-    //$query="SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_user_extra_fields WHERE template_backend LIKE '".JRequest::getVar('view')."' ";
-			//echo '<pre>'.print_r($query,true).'</pre>';
+        $query->where('ef.template_'.$template.' LIKE ' . $db->Quote(''.JRequest::getVar('view').'') );
+    
 			$db->setQuery($query);
 			if ($db->loadResult())
 			{
@@ -2509,14 +2508,15 @@ $app = JFactory::getApplication();
         
     }
     
+    
     /**
-	 * Method to get extra fields
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	1.5
-	 */
-    static function getUserExtraFields($jlid)
+     * sportsmanagementHelper::getUserExtraFields()
+     * 
+     * @param mixed $jlid
+     * @param string $template
+     * @return
+     */
+    static function getUserExtraFields($jlid,$template='backend')
     {
         $app = JFactory::getApplication();
     	$db = JFactory::getDBO();
@@ -2527,7 +2527,7 @@ $app = JFactory::getApplication();
         $query->select('ef.*,ev.fieldvalue as fvalue,ev.id as value_id ');
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields as ef ');
         $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields_values as ev ON ( ef.id = ev.field_id AND ev.jl_id = '.$jlid .')' );
-        $query->where('ef.template_backend LIKE ' . $db->Quote(''.JRequest::getVar('view').'') );
+        $query->where('ef.template_'.$template.' LIKE ' . $db->Quote(''.JRequest::getVar('view').'') );
         //$query->where('ev.jl_id = '.$jlid );
         $query->order('ef.ordering');
         
@@ -2538,6 +2538,9 @@ $app = JFactory::getApplication();
             $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
 			return false;
 		}
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($result,true).'</pre>'),'Error');
+        
 		return $result;
     
     }

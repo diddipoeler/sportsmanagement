@@ -38,6 +38,17 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 		</field>		
 
     <field
+			name="template_frontend"
+			type="list"
+			default=""
+			label="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TEMPLATE_FRONTEND"
+			description="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TEMPLATE_FRONTEND_DESC">
+			<option	value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT</option>
+		<option value="clubinfo">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_VALUE_CLUBINFO</option>
+
+		</field>	
+		
+    <field
 			name="fieldtyp"
 			type="list"
 			class="inputbox"
