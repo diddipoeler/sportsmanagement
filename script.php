@@ -37,6 +37,15 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
+
+
+/**
+ * wichtige links
+ * 
+ * bootstrap css
+ * http://getbootstrap.com/css/
+ */
+
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
