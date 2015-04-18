@@ -41,8 +41,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view' );
 
-//require_once( JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php' );
-
 /**
  * sportsmanagementViewClubInfo
  * 
@@ -83,40 +81,40 @@ class sportsmanagementViewClubInfo extends JViewLegacy
 		$isEditor		= sportsmanagementModelProject::hasEditPermission('club.edit');
 		$address_string = $model->getAddressString();
 
-        $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
+        $this->assign('checkextrafields', sportsmanagementHelper::checkUserExtraFields('frontend') );
                         
         //$app->enqueueMessage(JText::_('clubinfo checkextrafields -> '.'<pre>'.print_r($this->checkextrafields,true).'</pre>' ),'');
 		
         if ( $this->checkextrafields )
         {
-            $this->assignRef( 'extrafields', sportsmanagementHelper::getUserExtraFields($club->id) );
+            $this->assign('extrafields', sportsmanagementHelper::getUserExtraFields($club->id,'frontend') );
         }
         
 		$lat ='';
     $lng ='';
 		
-		$this->assignRef( 'project',		$project );
+		$this->assignRef('project',		$project );
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($this->project,true).'</pre>'),'');
         
-		$this->assignRef( 'overallconfig',	$overallconfig );
-		$this->assignRef( 'config',			$config );
+		$this->assignRef('overallconfig',	$overallconfig );
+		$this->assignRef('config',			$config );
 
-		$this->assignRef( 'showclubconfig',	$showclubconfig );
-		$this->assignRef( 'club',			$club);
+		$this->assignRef('showclubconfig',	$showclubconfig );
+		$this->assignRef('club',			$club);
 		$clubassoc			= $model->getClubAssociation($this->club->associations) ;
-		$this->assignRef( 'clubassoc',			$clubassoc);
+		$this->assignRef('clubassoc',			$clubassoc);
 
 		$extended = sportsmanagementHelper::getExtended($club->extended, 'club');
-		$this->assignRef( 'extended', $extended );
+		$this->assignRef('extended', $extended );
         $this->assignRef('model',				$model);
 
-		$this->assignRef( 'teams',			$teams );
-		$this->assignRef( 'stadiums',		$stadiums );
-		$this->assignRef( 'playgrounds',	$playgrounds );
-		$this->assignRef( 'showediticon',	$isEditor );
+		$this->assignRef('teams',			$teams );
+		$this->assignRef('stadiums',		$stadiums );
+		$this->assignRef('playgrounds',	$playgrounds );
+		$this->assignRef('showediticon',	$isEditor );
 
-		$this->assignRef( 'address_string', $address_string);
-		$this->assignRef( 'mapconfig',		$map_config ); // Loads the project-template -settings for the GoogleMap
+		$this->assignRef('address_string', $address_string);
+		$this->assignRef('mapconfig',		$map_config ); // Loads the project-template -settings for the GoogleMap
 
 		//$this->assignRef( 'gmap',			$google_map );
 

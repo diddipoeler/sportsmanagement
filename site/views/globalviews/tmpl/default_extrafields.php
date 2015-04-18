@@ -40,32 +40,57 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>
-<table width="100%" class="contentpaneopen">
-	<tr>
-		<td class="contentheading"><?php echo '&nbsp;' . JText::_('COM_SPORTSMANAGEMENT_EXTRA_FIELDS'); ?>
-		</td>
-	</tr>
-</table>
 
-<table>
-<tbody>
+<div class="contentpaneopen">
+		<div class="contentheading">
+			<?php echo '&nbsp;' . JText::_('COM_SPORTSMANAGEMENT_EXTRA_FIELDS'); ?>
+		</div>
+	</div>
+    
+<div class="row">
+
 <?php
 if ( isset($this->extrafields) )
 {
 foreach ($this->extrafields as $field)
 {
 $value = $field->fvalue;
+$field_type = $field->field_type;
 if (!empty($value)) // && !$field->backendonly)
 {
 ?>
-<tr>
-<td class="label"><?php echo $field->name; ?></td>
-<td class="data"><?php echo $field->fvalue; ?></td>
-<tr>
+
+<div class="col-xs-6">
+<strong><?php echo JText::_( $field->name); ?></strong>
+</div>
+<div class="col-xs-6">
+<?php 
+switch (JRequest::getVar('view'))
+{
+    case 'clubinfo':
+    $title = $this->club->name;
+    break;
+    
+}    
+switch ($field_type)
+{
+    case 'link':
+    echo JHtml::_( 'link', $field->fvalue,$title,  array( "target" => "_blank" ) );
+    break;
+    default:
+    echo JText::_( $field->fvalue); 
+    break;
+}
+
+
+?>
+</div>
+
 <?php
 }
 }
 }
 ?>
-</tbody>
-</table>
+
+
+</div>
