@@ -39,7 +39,7 @@
 		
     <field 	name="show_player_market_value" type="radio" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_MARKET_VALUE"
-				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_MARKET_VALUE">
+				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_MARKET_VALUE">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
