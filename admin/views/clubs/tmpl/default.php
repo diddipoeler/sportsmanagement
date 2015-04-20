@@ -47,6 +47,9 @@ JHtml::_('behavior.modal');
 
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+
+//echo ' _success_text<br><pre>'.print_r(sportsmanagementHelper::$_success_text,true).'</pre>';
+
 ?>
 <script>
 
@@ -62,15 +65,6 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	}
 
 </script>
-
-<?PHP
-//echo ' _success_text<br><pre>'.print_r(sportsmanagementHelper::$_success_text,true).'</pre>';
-
-//if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-//{
-//echo $this->loadTemplate('debug');
-//}
-?>
 
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 	

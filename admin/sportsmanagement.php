@@ -52,7 +52,11 @@ if (!JFactory::getUser()->authorise('core.manage', 'com_sportsmanagement'))
 }
  
 // require helper file
-JLoader::register('SportsManagementHelper', dirname(__FILE__) . DS . 'helpers' . DS . 'sportsmanagement.php');
+//JLoader::register('SportsManagementHelper', dirname(__FILE__) . DS . 'helpers' . DS . 'sportsmanagement.php');
+if ( !class_exists('sportsmanagementHelper') ) 
+{
+    JLoader::register('SportsManagementHelper', dirname(__FILE__) . DS . 'helpers' . DS . 'sportsmanagement.php');
+}
 JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
 
 // zur unterscheidung von joomla 2.5 und 3
@@ -120,6 +124,7 @@ DEFINE( 'COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH',$params->get( 'modal_popup_widt
 DEFINE( 'COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT',$params->get( 'modal_popup_height' ) );
 
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$params->get( 'show_debug_info' ) );
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO_TEXT','' );
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$params->get( 'show_query_debug_info' ) );
 
 if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )

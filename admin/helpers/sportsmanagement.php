@@ -73,6 +73,7 @@ abstract class sportsmanagementHelper
      */
     public static function setDebugInfoText($methode,$funktion,$klasse,$zeile,$text)
     {
+        $app = JFactory::getApplication();
     // Create an object for the record we are going to update.
         $object = new stdClass();
         // Must be a valid primary key value.
@@ -81,12 +82,18 @@ abstract class sportsmanagementHelper
         $object->class = $klasse;    
         $object->line = $zeile;
         $object->text = $text;
-        if ( !isset(self::$_success_text[$klasse]) )
+        //if ( !isset(self::$_success_text[$klasse]) )
+        //if ( !is_array(self::$_success_text) )
+        if ( !array_key_exists($klasse, self::$_success_text) )
         {
             self::$_success_text[$klasse] = array();
+            //$app->enqueueMessage(__METHOD__.' '.__LINE__.'klasse <pre>'.print_r($klasse, true).'</pre><br>','');
         }
         $export[] = $object;
     self::$_success_text[$klasse] = array_merge(self::$_success_text[$klasse],$export);    
+    
+    //$app->enqueueMessage(__METHOD__.' '.__LINE__.'_success_text <pre>'.print_r(self::$_success_text, true).'</pre><br>','');
+    
     }
     
     /**
@@ -2322,7 +2329,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 		$app = JFactory::getApplication();
         $db = self::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
-        $query->select('id as value');
+        //$query->select('id as value');
+        $query->select('CONCAT_WS( \':\', id, alias ) AS value');
         $query->select('name AS text');
         $query->select('id, name, round_date_first, round_date_last, roundcode');
         

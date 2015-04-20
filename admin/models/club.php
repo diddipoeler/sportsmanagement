@@ -304,8 +304,9 @@ class sportsmanagementModelclub extends JModelAdmin
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage('saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        $app->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        $my_text = 'pks <pre>'.print_r($pks,true).'</pre>';    
+        $my_text .= 'post <pre>'.print_r($post,true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
         
         $result=true;
@@ -348,10 +349,28 @@ class sportsmanagementModelclub extends JModelAdmin
 		$address = implode(', ', $address_parts);
 		$coords = sportsmanagementHelper::resolveLocation($address);
         
+//        $app->enqueueMessage(__METHOD__.' '.__LINE__.'coords <pre>'.print_r($coords, true).'</pre><br>','');
+//        $app->enqueueMessage(__METHOD__.' '.__LINE__.'address_parts <pre>'.print_r($address_parts, true).'</pre><br>','');
+//        $app->enqueueMessage(__METHOD__.' '.__LINE__.'address_parts2 <pre>'.print_r($address_parts2, true).'</pre><br>','');
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $my_text = 'coords <pre>'.print_r($coords,true).'</pre>';    
+        $my_text .= 'address_parts <pre>'.print_r($address_parts,true).'</pre>';
+        $my_text .= 'address_parts2 <pre>'.print_r($address_parts2,true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
+        
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.'_success_text <pre>'.print_r(sportsmanagementHelper::$_success_text, true).'</pre><br>','');
+        }
+        
         if ( $coords )
         {
 		$tblClub->latitude = $coords['latitude'];
 		$tblClub->longitude = $coords['longitude'];
+        }
+        else
+        {
+            
         }
 
 			if(!$tblClub->store()) 

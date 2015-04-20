@@ -229,7 +229,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         $query = $db->getQuery(true);
         
         // Select some fields
-        $query->select('id, roundcode');
+        $query->select('CONCAT_WS( \':\', id, alias ) AS id');
+        $query->select('roundcode');
         // From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
         $query->where('project_id = '.$projectid);  
@@ -263,7 +264,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         $query = $db->getQuery(true);
         
         // Select some fields
-        $query->select('id, roundcode');
+        $query->select('CONCAT_WS( \':\', id, alias ) AS id');
+        $query->select('roundcode');
         // From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
         $query->where('project_id = '.$projectid);  
@@ -295,7 +297,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         $query = $db->getQuery(true);
         
         // Select some fields
-        $query->select('id, roundcode');
+        $query->select('CONCAT_WS( \':\', id, alias ) AS id');
+        $query->select('roundcode');
         // From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
         $query->where('project_id = '.$projectid);  
@@ -331,7 +334,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         $query = $db->getQuery(true);
         
        // Select some fields
-        $query->select('id, roundcode');
+       $query->select('CONCAT_WS( \':\', id, alias ) AS id');
+        $query->select('roundcode');
         // From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
         $query->where('project_id = '.$projectid);  
@@ -401,7 +405,10 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'   ),'');
         
       // Select some fields
-        $query->select('id as value,name as text, id, name, round_date_first, round_date_last, roundcode');
+        //$query->select('id as value,name as text, id, name, round_date_first, round_date_last, roundcode');
+        $query->select('CONCAT_WS( \':\', id, alias ) AS value');
+        $query->select('name AS text');
+        $query->select('id, name, round_date_first, round_date_last, roundcode');
         // From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
         $query->where('project_id = '.$project_id);  

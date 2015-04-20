@@ -363,7 +363,8 @@ class sportsmanagementModelround extends JModelAdmin
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         // select some fields
-		$query->select('id');
+		//$query->select('id');
+        $query->select('CONCAT_WS( \':\', id, alias ) AS id');
 		// from table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
         // where
