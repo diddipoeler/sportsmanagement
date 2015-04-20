@@ -43,8 +43,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
-echo 'this->overallconfig<br /><pre>~' . print_r($this->overallconfig,true) . '~</pre><br />';
-echo 'this->project<br /><pre>~' . print_r($this->project,true) . '~</pre><br />';
+//echo 'this->overallconfig<br /><pre>~' . print_r($this->overallconfig,true) . '~</pre><br />';
+//echo 'this->project<br /><pre>~' . print_r($this->project,true) . '~</pre><br />';
 }
 
 $nbcols = 2;

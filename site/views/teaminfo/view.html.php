@@ -91,14 +91,14 @@ class sportsmanagementViewTeamInfo extends JViewLegacy
 			$seasons = $model->getSeasons( $config,0 );
 			$this->assignRef('seasons', $seasons );
 			$this->assignRef('showediticon', $isEditor);
-			$this->assignRef('projectteamid', $model->projectteamid);
+			$this->assignRef('projectteamid', $model::$projectteamid);
             $this->assignRef('teamid', $model::$teamid);
             
             $trainingData = $model->getTrainigData($this->project->id);
 			$this->assignRef( 'trainingData', $trainingData );
             if ( $this->checkextrafields )
             {
-            $this->assignRef( 'extrafields', sportsmanagementHelper::getUserExtraFields($model->teamid) );
+            $this->assignRef( 'extrafields', sportsmanagementHelper::getUserExtraFields($model::$teamid) );
             }
 
 			$daysOfWeek=array(
@@ -132,8 +132,11 @@ class sportsmanagementViewTeamInfo extends JViewLegacy
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team<br><pre>'.print_r($this->team,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' seasons<br><pre>'.print_r($seasons,true).'</pre>'),'');
+                $my_text = 'team -><pre>'.print_r($this->team,true).'</pre>';
+            $my_text .= 'seasons -><pre>'.print_r($seasons,true).'</pre>'; 
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team<br><pre>'.print_r($this->team,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' seasons<br><pre>'.print_r($seasons,true).'</pre>'),'');
 }
 
     	

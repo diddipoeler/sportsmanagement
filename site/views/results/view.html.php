@@ -121,6 +121,7 @@ JHtml::_( 'behavior.mootools' );
 			$this->assign('overallconfig', sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database));
 			$this->assign('config',	array_merge($this->overallconfig, $config));
 			$this->assign('teams', sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$model::$cfg_which_database));
+            sportsmanagementHelperHtml::$teams = $this->teams;
 			$this->assign('showediticon', $model->getShowEditIcon());
 			$this->assign('division', $model->getDivision($model::$cfg_which_database));
 			$this->assignRef('matches',	$matches);

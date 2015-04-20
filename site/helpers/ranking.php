@@ -182,7 +182,10 @@ class JSMRanking
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($this->_projectid,true).'</pre>'),'');
+            $my_text = 'projectid -> '.$this->_projectid.'<br>'; 
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+          
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($this->_projectid,true).'</pre>'),'');
     }
 
 		// wipe data
@@ -790,12 +793,19 @@ class JSMRanking
         
         if ( !$res && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+            $my_text = 'dump -><pre>'.print_r($query->dump(),true).'</pre>';
+            $my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+          
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         } 
         elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            $my_text = 'dump -><pre>'.print_r($query->dump(),true).'</pre>';
+            //$my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
         
         //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
@@ -1005,10 +1015,16 @@ class JSMRanking
     
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' game<br><pre>'.print_r($game,true).'</pre>'),'');
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' from<br><pre>'.print_r($from,true).'</pre>'),'');
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' to<br><pre>'.print_r($to,true).'</pre>'),'');
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ptids<br><pre>'.print_r($ptids,true).'</pre>'),'');
+            $my_text = 'game -><pre>'.print_r($game,true).'</pre>';
+            $my_text .= 'from -><pre>'.print_r($from,true).'</pre>';
+            $my_text .= 'to -><pre>'.print_r($to,true).'</pre>'; 
+            $my_text .= 'ptids -><pre>'.print_r($ptids,true).'</pre>';  
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' game<br><pre>'.print_r($game,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' from<br><pre>'.print_r($from,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' to<br><pre>'.print_r($to,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ptids<br><pre>'.print_r($ptids,true).'</pre>'),'');
     }
     
 //	$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' game<br><pre>'.print_r($game,true).'</pre>'),'');
@@ -1063,8 +1079,13 @@ class JSMRanking
             
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
+            $my_text = 'round_id -><pre>'.print_r($round_id,true).'</pre>';
+//            $my_text .= 'from -><pre>'.print_r($from,true).'</pre>';
+//            $my_text .= 'to -><pre>'.print_r($to,true).'</pre>'; 
+//            $my_text .= 'ptids -><pre>'.print_r($ptids,true).'</pre>';  
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
     //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' _roundcodes<br><pre>'.print_r($this->_roundcodes,true).'</pre>'),'');
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round_id<br><pre>'.print_r($round_id,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round_id<br><pre>'.print_r($round_id,true).'</pre>'),'');
     }
         
 		if (empty($this->_roundcodes))
@@ -1089,8 +1110,13 @@ class JSMRanking
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');    
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _roundcodes<br><pre>'.print_r($this->_roundcodes,true).'</pre>'),'');
+                        $my_text = 'dump -><pre>'.print_r($query->dump(),true).'</pre>';
+            $my_text .= '_roundcodes -><pre>'.print_r($this->_roundcodes,true).'</pre>';
+//            $my_text .= 'to -><pre>'.print_r($to,true).'</pre>'; 
+//            $my_text .= 'ptids -><pre>'.print_r($ptids,true).'</pre>';  
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');    
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _roundcodes<br><pre>'.print_r($this->_roundcodes,true).'</pre>'),'');
     }
 		}
         

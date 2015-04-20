@@ -161,7 +161,7 @@ class sportsmanagementControllerAjax extends JControllerLegacy
             default:
             case "ranking":
                 $link = sportsmanagementHelperRoute::getRankingRoute(JRequest::getVar('p'),
-                JRequest::getVar('r'), null, null, 0, JRequest::getVar('division'));
+                JRequest::getVar('r'), 0, 0, 0, JRequest::getVar('division'));
         }
 
         echo json_encode($link);

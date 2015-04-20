@@ -37,14 +37,6 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-/*
-SELECT name,unique_id ,CONCAT_WS('_', country, unique_id ) AS slug
-FROM  `j25_sportsmanagement_club` 
-WHERE  `country` LIKE  'nor'
-and unique_id is not null
-and unique_id != ''
-
-*/
 defined('_JEXEC') or die('Restricted access');
 
 if (! defined('DS'))
@@ -770,7 +762,8 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
         if (empty(self::$_rounds))
 		{
 			// Select some fields
-                $query->select('id,round_date_first,round_date_last,CASE LENGTH(name) when 0 then roundcode	else name END as name,roundcode');
+            $query->select('CONCAT_WS( \':\', id, alias ) AS id');
+                $query->select('round_date_first,round_date_last,CASE LENGTH(name) when 0 then roundcode	else name END as name,roundcode');
                 // From 
 		          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
                 // Where
@@ -824,7 +817,9 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
         } 
         
         // Select some fields
-        $query->select("id as value, CASE LENGTH(name) when 0 then CONCAT('".JText::_('COM_SPORTSMANAGEMENT_MATCHDAY_NAME'). "',' ', id) else name END as text");
+        $query->select('CONCAT_WS( \':\', id, alias ) AS slug');
+        $query->select('id AS value');
+        $query->select("CASE LENGTH(name) when 0 then CONCAT('".JText::_('COM_SPORTSMANAGEMENT_MATCHDAY_NAME'). "',' ', id) else name END as text");
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round ');
         $query->where('project_id = '.(int)self::$projectid);
         $query->order('roundcode '.$ordering);
@@ -1840,7 +1835,10 @@ $starttime = microtime();
 	    {
 	       if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+        $my_text = 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>';
+          $my_text .= 'dump -><pre>'.print_r($query->dump(),true).'</pre>';  
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+		//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
         }
 	    }
         

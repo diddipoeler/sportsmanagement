@@ -390,17 +390,26 @@ class sportsmanagementModelResults extends JModelLegacy
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         $starttime = microtime(); 
+        $query->select('pref.id AS person_id,p.firstname,p.lastname,pos.name AS position_name');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pref ON mr.project_referee_id=pref.id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON pref.person_id=p.id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON mr.project_position_id=ppos.id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id=pos.id');
+        $query->where('mr.match_id = '.$match_id);
+        $query->where('p.published = 1');
+        $query->order('pos.name,mr.ordering');  
         
-        $query='	SELECT	pref.id AS person_id,
-								p.firstname,
-								p.lastname,
-								pos.name AS position_name
-						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr
-							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pref ON mr.project_referee_id=pref.id
-							INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON pref.person_id=p.id
-							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON mr.project_position_id=ppos.id
-							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id=pos.id
-						WHERE mr.match_id='.(int)$match_id.' AND p.published = 1 ORDER BY pos.name,mr.ordering ';
+//        $query='	SELECT	pref.id AS person_id,
+//								p.firstname,
+//								p.lastname,
+//								pos.name AS position_name
+//						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr
+//							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pref ON mr.project_referee_id=pref.id
+//							INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON pref.person_id=p.id
+//							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON mr.project_position_id=ppos.id
+//							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id=pos.id
+//						WHERE mr.match_id='.(int)$match_id.' AND p.published = 1 ORDER BY pos.name,mr.ordering ';
 		$db->setQuery($query);
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
@@ -412,7 +421,10 @@ class sportsmanagementModelResults extends JModelLegacy
         
         if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	    {
-		$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+	       $my_text = 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>';
+          $my_text .= 'dump -><pre>'.print_r($query->dump(),true).'</pre>';  
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+		//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 	    }
         
 		return $result;

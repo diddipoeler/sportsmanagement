@@ -51,11 +51,19 @@ else
 {
 	if($this->config['show_club_info'] || $this->config['show_team_info'])
 	{
-		echo '<div class="left-column">';
+	?>
+<!--        <div class="container-fluid"> -->
+        <div class="row">
+        <div class="col-md-6">
+        <?PHP
 	}
 	else
 	{
-		echo'<div style="text-align:center; width:100%;">';
+		 ?>
+<!--        <div class="container-fluid"> -->
+        <div class="row">
+        <div style="text-align:center; width:100%;">
+        <?PHP
 	}
 	//dynamic object property string
 	$pic = $this->config['show_picture'];
@@ -104,7 +112,7 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->team->nam
 	if($this->config['show_club_info'] || $this->config['show_team_info'])
 	{
 		?>
-<div class="right-column">
+<div class="col-md-6">
 		<?php
 		if ($this->config['show_club_info'])
 		{
@@ -138,10 +146,12 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->team->nam
 			if ($this->club->phone)
 			{
 				?>
-	<div class="jl_parentContainer">
-		<span class="clubinfo_listing_item"> <?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_PHONE'); ?></span>
-		<span class="clubinfo_listing_value"> <?php echo $this->club->phone; ?></span>
-	</div>
+                <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_PHONE' ); ?></strong>
+			<?php echo $this->club->phone; ?>
+            </address>
+            
+	
 				<?php
 			}
 
@@ -177,24 +187,30 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->team->nam
 			if ($this->club)
 			{
 				?>
-	<div class="jl_parentContainer">
-		<span class="clubinfo_listing_item"> <?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_NAME'); ?></span>
-		<span class="clubinfo_listing_value"> <?php
-		$link = sportsmanagementHelperRoute::getClubInfoRoute($this->project->slug, $this->club->slug);
+                
+                <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_NAME' ); ?></strong>
+			<?php 
+            $link = sportsmanagementHelperRoute::getClubInfoRoute($this->project->slug, $this->club->slug);
 		echo JHtml::link($link, $this->club->name);
-		?>
-		</span>
-	</div>
+            ?>
+            </address>
+            
+	
 				<?php
 			}
 
 			if ($this->club->website)
 			{
 				?>
-	<div class="jl_parentContainer">
-		<span class="clubinfo_listing_item"> <?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_SITE'); ?></span>
-		<span class="clubinfo_listing_value"> <?php echo JHtml::link($this->club->website, $this->club->website, array( "target" => "_blank")); ?></span>
-	</div>
+                <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_SITE' ); ?></strong>
+			<?php 
+            echo JHtml::link($this->club->website, $this->club->website, array( "target" => "_blank"));
+            ?>
+            </address>
+                
+
 			<?php
 			}
 			
@@ -230,40 +246,51 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->team->nam
 		if ($this->config['show_team_info'])
 		{
 			?>
-	<div class="jl_parentContainer">
-		<span class="clubinfo_listing_item"> <?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_NAME'); ?></span>
-		<span class="clubinfo_listing_value"> <?php
-		$link = sportsmanagementHelperRoute::getTeamInfoRoute($this->project->slug, $this->team->slug);
+            
+            <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_NAME' ); ?></strong>
+			<?php 
+            $link = sportsmanagementHelperRoute::getTeamInfoRoute($this->project->slug, $this->team->slug);
 		echo JHtml::link($link, $this->team->tname);
-		?>
-		</span>
-	</div>
-	<div class="jl_parentContainer">
-		<span class="clubinfo_listing_item"> <?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_NAME_SHORT'); ?></span>
-		<span class="clubinfo_listing_value"> <?php
-		$link = sportsmanagementHelperRoute::getTeamStatsRoute($this->project->slug, $this->team->slug);
+            ?>
+            </address>
+            
+	<address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_NAME_SHORT' ); ?></strong>
+			<?php 
+            $link = sportsmanagementHelperRoute::getTeamStatsRoute($this->project->slug, $this->team->slug);
 		echo JHtml::link($link, $this->team->short_name);
-		?>
-		</span>
-	</div>
+            ?>
+            </address>
+            
+	
 			<?php
 			if ($this->team->info)
 			{
 				?>
-	<div class="jl_parentContainer">
-		<span class="clubinfo_listing_item"> <?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_INFO'); ?></span>
-		<span class="clubinfo_listing_value"> <?php echo $this->team->info; ?></span>
-	</div>
+                
+                <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_INFO' ); ?></strong>
+			<?php 
+            echo $this->team->info;
+            ?>
+            </address>
+            
+
 			<?php
 			}
 
 			if ($this->team->website)
 			{
 				?>
-	<div class="jl_parentContainer">
-		<span class="clubinfo_listing_item"> <?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_SITE'); ?></span>
-		<span class="clubinfo_listing_value"> <?php echo JHtml::link($this->team->team_website, $this->team->team_website, array( "target" => "_blank")); ?></span>
-	</div>
+                <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_SITE' ); ?></strong>
+			<?php 
+            echo JHtml::link($this->team->team_website, $this->team->team_website, array( "target" => "_blank"));
+            ?>
+            </address>
+            
+
 			<?php
 			}
 		}
@@ -277,4 +304,5 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->team->nam
     <?PHP
 }
 ?>
+</div>
 </div>

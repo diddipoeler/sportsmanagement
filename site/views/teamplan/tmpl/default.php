@@ -46,6 +46,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <div class="">
 	<?php
+    if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+		{
+		echo $this->loadTemplate('debug');  
+        }
+          
 	if (!empty($this->project->id))
 	{
 		echo $this->loadTemplate('projectheading');

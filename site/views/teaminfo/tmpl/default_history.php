@@ -40,8 +40,6 @@
 defined('_JEXEC') or die('Restricted access'); 
 ?>
 
-
-
 <fieldset>
 <legend>
 <strong>
@@ -49,7 +47,7 @@ defined('_JEXEC') or die('Restricted access');
 </strong>
 </legend>
 
-<table class="table table-striped">
+<table class="<?PHP echo $this->config['table_class']; ?>">
 <thead>
 	<tr class="sectiontableheader">
 		<th class="" nowrap="" style="background:#BDBDBD;"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON'); ?></th>
@@ -91,13 +89,13 @@ defined('_JEXEC') or die('Restricted access');
 	$k=0;
 	foreach ($this->seasons as $season)
 	{
-		$ranking_link   = sportsmanagementHelperRoute::getRankingRoute($season->project_slug, $season->current_round, null, null, 0, $season->division_slug,JRequest::getInt('cfg_which_database',0));
-		$results_link   = sportsmanagementHelperRoute::getResultsRoute($season->project_slug, $season->current_round, $season->division_slug,0,0,NULL,JRequest::getInt('cfg_which_database',0));
-		$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($season->project_slug, $this->team->slug, $season->division_slug, NULL,$season->ptid,JRequest::getInt('cfg_which_database',0));
+		$ranking_link   = sportsmanagementHelperRoute::getRankingRoute($season->project_slug, $season->round_slug, 0, 0, 0, $season->division_slug,JRequest::getInt('cfg_which_database',0));
+		$results_link   = sportsmanagementHelperRoute::getResultsRoute($season->project_slug, $season->round_slug, $season->division_slug,0,0,0,JRequest::getInt('cfg_which_database',0));
+		$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($season->project_slug, $this->team->slug, $season->division_slug, 0,$season->ptid,JRequest::getInt('cfg_which_database',0));
 		$teamstats_link = sportsmanagementHelperRoute::getTeamStatsRoute($season->project_slug, $this->team->slug,JRequest::getInt('cfg_which_database',0));
-		$players_link   = sportsmanagementHelperRoute::getPlayersRoute($season->project_slug, $season->team_slug,null,$season->ptid,JRequest::getInt('cfg_which_database',0));
+		$players_link   = sportsmanagementHelperRoute::getPlayersRoute($season->project_slug, $season->team_slug,0,$season->ptid,JRequest::getInt('cfg_which_database',0));
 		?>
-	<tr class="<?php echo ($k==0)? $this->config['style_class1'] : $this->config['style_class2']; ?>">
+	<tr class="">
 		<td><?php echo $season->season; ?></td>
 		<td><?php echo $season->league; ?></td>
 		<?php if($this->project->project_type=='DIVISIONS_LEAGUE') { ?> 

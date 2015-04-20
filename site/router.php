@@ -40,6 +40,30 @@
 * 
 */
 
+// No direct access to this file
+defined('_JEXEC') or die('Restricted access');
+
+
+if (! defined('DS'))
+{
+	define('DS', DIRECTORY_SEPARATOR);
+}
+
+if (! defined('JSM_PATH'))
+{
+DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
+}
+
+$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
+if (! defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO'))
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$paramscomponent->get( 'show_debug_info' ) );
+}
+
+if ( !class_exists('sportsmanagementHelper') ) 
+{
+    require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');
+}
 
 /**
  * sportsmanagementBuildRoute()
@@ -50,15 +74,24 @@
 function sportsmanagementBuildRoute( &$query )
 {
     $app = JFactory::getApplication();
-    $paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
-    $show_debug_info = $paramscomponent->get( 'show_debug_info' );  
-    //DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
-    
+    //$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
+//    $show_debug_info = $paramscomponent->get( 'show_debug_info' );  
+//    DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
+    //if (! defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO'))
+//{
+//DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$paramscomponent->get( 'show_debug_info' ) );
+//}
+
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'   ),'');
     
-    if ( $show_debug_info )
+   
+    
+    if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'   ),'');
+            $my_text = 'query -><pre>'.print_r($query,true).'</pre>';
+          //$my_text .= 'dump -><pre>'.print_r($query->dump(),true).'</pre>';  
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,'sportsmanagementRoute',__LINE__,$my_text);
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'   ),'');
     }
     
 	$segments = array();
@@ -366,6 +399,11 @@ function sportsmanagementBuildRoute( &$query )
 				$segments[] = $query['ttid'];
 				unset( $query['ttid'] );
 			}
+            if (isset($query['cfg_which_database']))
+			{
+				$segments[] = $query['cfg_which_database'];
+				unset( $query['cfg_which_database'] );
+			}
 			break;
 		case 'teamplan':
 			if (isset($query['tid']))
@@ -388,6 +426,11 @@ function sportsmanagementBuildRoute( &$query )
 			{
 				$segments[] = $query['ptid'];
 				unset( $query['ptid'] );
+			}
+            if (isset($query['cfg_which_database']))
+			{
+				$segments[] = $query['cfg_which_database'];
+				unset( $query['cfg_which_database'] );
 			}
 			break;
 		case 'results':
@@ -413,10 +456,15 @@ function sportsmanagementBuildRoute( &$query )
 				$segments[] = $query['order'];
 				unset( $query['order'] );
 			}
-			if (isset($query['form']))
+			if (isset($query['layout']))
 			{
-				$segments[] = $query['form'];
-				unset( $query['form'] );
+				$segments[] = $query['layout'];
+				unset( $query['layout'] );
+			}
+            if (isset($query['cfg_which_database']))
+			{
+				$segments[] = $query['cfg_which_database'];
+				unset( $query['cfg_which_database'] );
 			}
 			break;
 		case 'player':
@@ -471,11 +519,15 @@ function sportsmanagementBuildRoute( &$query )
 		default:
 			break;
 	}
-    
-    if ( $show_debug_info )
+
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
+            $my_text = 'segments -><pre>'.print_r($segments,true).'</pre>';
+          //$my_text .= 'dump -><pre>'.print_r($query->dump(),true).'</pre>';  
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,'sportsmanagementRoute',__LINE__,$my_text);
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'   ),'');
-    }
+    }    
+   
     
 	return $segments;
 }
@@ -489,14 +541,22 @@ function sportsmanagementBuildRoute( &$query )
 function sportsmanagementParseRoute( $segments )
 {
     $app = JFactory::getApplication();
-    $paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
-    $show_debug_info = $paramscomponent->get( 'show_debug_info' );  
-    
+    //$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
+//    $show_debug_info = $paramscomponent->get( 'show_debug_info' );  
+//    DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'   ),'');
     
-    if ( $show_debug_info )
+//    if (! defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO'))
+//{
+//DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$paramscomponent->get( 'show_debug_info' ) );
+//}
+
+    if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'   ),'');
+            $my_text = 'segments -><pre>'.print_r($segments,true).'</pre>';
+          //$my_text .= 'dump -><pre>'.print_r($query->dump(),true).'</pre>';  
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,'sportsmanagementRoute',__LINE__,$my_text);
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'   ),'');
     }
     
 	$vars = array();
@@ -737,6 +797,9 @@ function sportsmanagementParseRoute( $segments )
             if (isset($segments[5])) {
 				$vars['ptid'] = $segments[5];
 			}
+            if (isset($segments[6])) {
+				$vars['cfg_which_database'] = $segments[6];
+			}
 			break;
 		case 'roster':
 		case 'teaminfo':
@@ -750,6 +813,9 @@ function sportsmanagementParseRoute( $segments )
             //diddipoeler
             if (isset($segments[3])) {
 				$vars['ttid'] = $segments[3];
+			}
+            if (isset($segments[4])) {
+				$vars['cfg_which_database'] = $segments[4];
 			}
 			break;
 				
@@ -773,6 +839,9 @@ function sportsmanagementParseRoute( $segments )
 			}
 			if (isset($segments[6])) {
 				$vars['layout'] = $segments[6];
+			}
+            if (isset($segments[7])) {
+				$vars['cfg_which_database'] = $segments[7];
 			}
 			break;
 				
@@ -850,11 +919,15 @@ function sportsmanagementParseRoute( $segments )
 		}
 		break;
 	}
-    
-    if ( $show_debug_info )
+
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' vars<br><pre>'.print_r($vars,true).'</pre>'   ),'');
+            $my_text = 'vars -><pre>'.print_r($vars,true).'</pre>';
+          //$my_text .= 'dump -><pre>'.print_r($query->dump(),true).'</pre>';  
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,'sportsmanagementRoute',__LINE__,$my_text);
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'   ),'');
     }
+        
     
 	return $vars;
 }

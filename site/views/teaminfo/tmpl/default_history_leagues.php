@@ -50,7 +50,7 @@ defined('_JEXEC') or die('Restricted access');
 </legend>
 
 
-<table width="100%" class="table table-striped">
+<table class="<?PHP echo $this->config['table_class']; ?>">
 
 <thead>
 <tr class="sectiontableheader">

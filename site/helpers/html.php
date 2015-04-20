@@ -54,6 +54,7 @@ class sportsmanagementHelperHtml
 {
     static $roundid = 0;
     static $project = array(); 
+    static $teams = array(); 
 
 
 	/**
@@ -191,7 +192,7 @@ class sportsmanagementHelperHtml
 
 			if ($config['show_division_link'])
 			{
-				$link = sportsmanagementHelperRoute::getRankingRoute(self::$project->id,null,null,null,0,$hometeam->division_id);
+				$link = sportsmanagementHelperRoute::getRankingRoute(self::$project->id,0,0,0,0,$hometeam->division_id);
 				$output .= JHtml::link($link,$hometeam->$nametype);
                 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' link'.'<pre>'.print_r($link,true).'</pre>' ),'');
                 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' output'.'<pre>'.print_r($output,true).'</pre>' ),'');
@@ -251,6 +252,7 @@ class sportsmanagementHelperHtml
         $query->clear();
         // select some fields
         $query->select('*');
+        $query->select('CONCAT_WS( \':\', id, alias ) AS project_slug');
         // from table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
         // where
@@ -267,6 +269,7 @@ class sportsmanagementHelperHtml
             $query->clear();
             // select some fields
 		    $query->select('*');
+            $query->select('CONCAT_WS( \':\', id, alias ) AS round_slug');
 		    // from table
 		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
             // where
@@ -278,7 +281,7 @@ class sportsmanagementHelperHtml
 			{
 				if ($mode == 1)
 				{
-					$link=sportsmanagementHelperRoute::getRankingRoute($projectid,$thisround->id,null,null,0,0,$cfg_which_database);
+					$link=sportsmanagementHelperRoute::getRankingRoute($thisproject->project_slug,$thisround->round_slug,0,0,0,0,$cfg_which_database);
 					echo JHtml::link($link,$thisround->name);
 				}
 				else
@@ -319,10 +322,11 @@ class sportsmanagementHelperHtml
 		$app = JFactory::getApplication();
         $rounds = sportsmanagementModelProject::getRoundOptions('ASC',$cfg_which_database);
 		$division = JRequest::getInt('division',0);
+        $roundid = JRequest::getInt('r',0);
 
 		if($form)
         {
-			$currenturl = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, self::$roundid, $division,0,0,null,$cfg_which_database);
+			$currenturl = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, $roundid, $division,0,0,null,$cfg_which_database);
 			$options = array();
 			foreach ($rounds as $r)
 			{
@@ -332,7 +336,7 @@ class sportsmanagementHelperHtml
 		} 
         else 
         {
-			$currenturl = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, self::$roundid, $division,0,0,NULL,$cfg_which_database);
+			$currenturl = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, $roundid, $division,0,0,NULL,$cfg_which_database);
 			$options = array();
 			foreach ($rounds as $r)
 			{
@@ -367,8 +371,9 @@ class sportsmanagementHelperHtml
         
         if (($config['show_playground'] || $config['show_playground_alert']) && isset($game->playground_id))
 		{
-			if (empty($game->playground_id)){
-				$game->playground_id=$this->teams[$game->projectteam1_id]->standard_playground;
+			if (empty($game->playground_id))
+            {
+				$game->playground_id = self::$teams[$game->projectteam1_id]->standard_playground;
 			}
 			if (empty($game->playground_id))
 			{
@@ -381,12 +386,12 @@ class sportsmanagementHelperHtml
 		        // from table
 		        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club');
                 // where
-                $query->where('id = '.$this->teams[$game->projectteam1_id]->club_id);
+                $query->where('id = '.self::$teams[$game->projectteam1_id]->club_id);
 		        $db->setQuery($query);
 		        $cinfo = $db->loadObject();
                 
 				$game->playground_id = $cinfo->standard_playground;
-				$this->teams[$game->projectteam1_id]->standard_playground = $cinfo->standard_playground;
+				self::$teams[$game->projectteam1_id]->standard_playground = $cinfo->standard_playground;
 			}
 
 			if (!$config['show_playground'] && $config['show_playground_alert'])
@@ -402,14 +407,14 @@ class sportsmanagementHelperHtml
 			$boldEnd	= '';
 			$toolTipTitle	= JText::_('COM_SPORTSMANAGEMENT_PLAYGROUND_MATCH');
 			$toolTipText	= '';
-			$playgroundID	= $this->teams[$game->projectteam1_id]->standard_playground;
+			$playgroundID	= self::$teams[$game->projectteam1_id]->standard_playground;
 
-			if (($config['show_playground_alert']) && ($this->teams[$game->projectteam1_id]->standard_playground!=$game->playground_id))
+			if (($config['show_playground_alert']) && (self::$teams[$game->projectteam1_id]->standard_playground!=$game->playground_id))
 			{
 				$boldStart		= '<b style="color:red; ">';
 				$boldEnd		= '</b>';
 				$toolTipTitle	= JText::_('COM_SPORTSMANAGEMENT_PLAYGROUND_NEW');
-				$playgroundID	= $this->teams[$game->projectteam1_id]->standard_playground;
+				$playgroundID	= self::$teams[$game->projectteam1_id]->standard_playground;
 			}
 
 			//$pginfo =& JTable::getInstance('Playground','sportsmanagementTable');
@@ -424,12 +429,23 @@ class sportsmanagementHelperHtml
             $query->where('id = '.$game->playground_id);
 		    $db->setQuery($query);
 		    $pginfo = $db->loadObject();
-
+            
+            if ( $pginfo )
+            {
 			$toolTipText	.= $pginfo->name.'&lt;br /&gt;';
 			$toolTipText	.= $pginfo->address.'&lt;br /&gt;';
 			$toolTipText	.= $pginfo->zipcode.' '.$pginfo->city. '&lt;br /&gt;';
+            }
+            else
+            {
+            // Create an object for the record we are going to update.
+            $pginfo = new stdClass();
+            // Must be a valid primary key value.
+            $pginfo->name = '';    
+            $pginfo->short_name = '';
+            }
 
-			$link = sportsmanagementHelperRoute::getPlaygroundRoute($this->project->id,$game->playground_id,$cfg_which_database);
+			$link = sportsmanagementHelperRoute::getPlaygroundRoute(sportsmanagementModelProject::$_project->id,$game->playground_id,$cfg_which_database);
 			$playgroundName = ($config['show_playground_name'] == 'name') ? $pginfo->name : $pginfo->short_name;
 			?>
 <span class='hasTip'

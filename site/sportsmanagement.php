@@ -84,7 +84,12 @@ require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'projectteam.php');
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'match.php');
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'eventtypes.php');
-require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');    
+
+if ( !class_exists('sportsmanagementHelper') ) 
+{
+    require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');
+}
+    
 
 // sprachdatei aus dem backend laden
 $langtag = JFactory::getLanguage();

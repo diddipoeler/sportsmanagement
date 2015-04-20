@@ -41,15 +41,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 //echo 'club config<pre>',print_r($this->config,true),'</pre><br>'; 
 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo 'club config<pre>',print_r($this->config,true),'</pre><br>';    
-echo 'club address_string<pre>',print_r($this->address_string,true),'</pre><br>';
-echo 'club teams<pre>',print_r($this->teams,true),'</pre><br>';
-echo 'club extended<pre>',print_r($this->extended,true),'</pre><br>';
-echo 'club <pre>',print_r($this->club,true),'</pre><br>';
-echo 'club clubassoc<pre>',print_r($this->clubassoc,true),'</pre><br>';
-}
+//if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+//{
+//echo 'club config<pre>',print_r($this->config,true),'</pre><br>';    
+//echo 'club address_string<pre>',print_r($this->address_string,true),'</pre><br>';
+//echo 'club teams<pre>',print_r($this->teams,true),'</pre><br>';
+//echo 'club extended<pre>',print_r($this->extended,true),'</pre><br>';
+//echo 'club <pre>',print_r($this->club,true),'</pre><br>';
+//echo 'club clubassoc<pre>',print_r($this->clubassoc,true),'</pre><br>';
+//}
 
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view

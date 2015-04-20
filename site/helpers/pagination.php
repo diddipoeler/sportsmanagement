@@ -42,9 +42,6 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-//require_once (JLG_PATH_ADMIN .DS.'models'.DS.'round.php');
-//require_once (JLG_PATH_ADMIN .DS.'models'.DS.'rounds.php');
-
 /**
  * sportsmanagementPagination
  * 
@@ -128,7 +125,9 @@ class sportsmanagementModelPagination extends JModelLegacy
 		$params = array();
 		$params['option'] = $option;
 		if ($view){$params['view'] = $view;}
-		$params['p'] = $project->id;
+        
+		$params['p'] = $project->slug;
+        
 		if ($controller){$params['controller'] = $controller;}
 		if ($layout){$params['layout'] = $layout;}
 		if ($mytask){$params['task'] = $mytask;}
@@ -140,7 +139,7 @@ class sportsmanagementModelPagination extends JModelLegacy
 			$params['prediction_id']= $prediction_id;
 		}
 		
-        $params['cfg_which_database']= $cfg_which_database;
+        //$params['cfg_which_database']= $cfg_which_database;
         
 		$query = JURI::buildQuery($params);
 		$link = JRoute::_('index.php?' . $query);
@@ -150,6 +149,10 @@ class sportsmanagementModelPagination extends JModelLegacy
 		if ($firstRound['id'] != $roundid)
 		{
 			$params['r'] = $backward;
+            $params['division'] = $division;
+            $params['mode'] = 0;
+            $params['order'] = 0;
+            $params['cfg_which_database']= $cfg_which_database;
 			$query = JURI::buildQuery($params);
 			$link = JRoute::_('index.php?' . $query . '#'.$option.'_top');
             self::$prevlink = $link;
@@ -165,6 +168,10 @@ class sportsmanagementModelPagination extends JModelLegacy
 //            }
 
 			$params['r'] = $firstRound['id'];
+            $params['division'] = $division;
+            $params['mode'] = 0;
+            $params['order'] = 0;
+            $params['cfg_which_database']= $cfg_which_database;
 			$query = JURI::buildQuery($params);
 			$link = JRoute::_('index.php?' . $query . '#'.$option.'_top');
 			$firstlink = JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_START')) . $spacer4;
@@ -178,19 +185,32 @@ class sportsmanagementModelPagination extends JModelLegacy
         if ($lastRound['id'] != $roundid)
 		{
 			$params['r'] = $forward;
+            $params['division'] = $division;
+            $params['mode'] = 0;
+            $params['order'] = 0;
+            $params['cfg_which_database']= $cfg_which_database;
 			$query = JURI::buildQuery($params);
 			$link = JRoute::_('index.php?'.$query.'#'.$option.'_top');
             self::$nextlink = $link;
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nextink'.'<pre>'.print_r($link,true).'</pre>' ),'');
+        $my_text = 'nextink -> '.$link.'<br>'; 
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['class'] = __CLASS__;
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['zeile'] = __LINE__;
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['text'] = $my_text;
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nextink'.'<pre>'.print_r($link,true).'</pre>' ),'');
             }
             
 			$nextlink = $spacer4;
 			$nextlink .= JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NEXT'));
 
 			$params['r'] = $lastRound['id'];
+            $params['division'] = $division;
+            $params['mode'] = 0;
+            $params['order'] = 0;
+            $params['cfg_which_database']= $cfg_which_database;
 			$query = JURI::buildQuery($params);
 			$link = JRoute::_('index.php?' . $query . '#'.$option.'_top');
 			$lastlink = $spacer4 . JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_END'));
@@ -220,6 +240,10 @@ class sportsmanagementModelPagination extends JModelLegacy
 				if ($round->id != $roundid)
 				{
 					$params['r']= $round->id;
+                    $params['division'] = $division;
+            $params['mode'] = 0;
+            $params['order'] = 0;
+            $params['cfg_which_database']= $cfg_which_database;
 					$query		= JURI::buildQuery($params);
 					$link		= JRoute::_('index.php?' . $query . '#'.$option.'_top');
 					$pageNav   .= $spacer4 . JHtml::link($link,$pagenumber);

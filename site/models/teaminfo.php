@@ -53,8 +53,8 @@ jimport( 'joomla.application.component.model' );
 class sportsmanagementModelTeamInfo extends JModelLegacy
 {
 	var $project = null;
-	var $projectid = 0;
-	var $projectteamid = 0;
+	static $projectid = 0;
+	static $projectteamid = 0;
 	static $teamid = 0;
 	var $team = null;
 	var $club = null;
@@ -72,11 +72,11 @@ class sportsmanagementModelTeamInfo extends JModelLegacy
         $app = JFactory::getApplication();
         // JInput object
         $jinput = $app->input;
-		$this->projectid = $jinput->getInt( "p", 0 );
-		$this->projectteamid = $jinput->getInt( "ptid", 0 );
+		self::$projectid = $jinput->getInt( "p", 0 );
+		self::$projectteamid = $jinput->getInt( "ptid", 0 );
 		self::$teamid = $jinput->getInt( "tid", 0 );
         self::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
-        sportsmanagementModelProject::$projectid = $this->projectid; 
+        sportsmanagementModelProject::$projectid = self::$projectid; 
 		parent::__construct( );
 	}
     
@@ -125,13 +125,13 @@ $result = $db->execute();
 //       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
        
 		$trainingData = array();
-		if($this->projectteamid == 0) 
+		if(self::$projectteamid == 0) 
         {
 			$projectTeamID  = sportsmanagementModelProject::getprojectteamID(self::$teamid,self::$cfg_which_database);
 		}
         else
         {
-            $projectTeamID = $this->projectteamid;
+            $projectTeamID = self::$projectteamid;
         }
         
         $query->select('*');
@@ -176,11 +176,11 @@ $result = $db->execute();
           $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = t.id');
           $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt ON pt.team_id = st.id ');
                 
-            $query->where('pt.project_id = '. $this->projectid );            
+            $query->where('pt.project_id = '. self::$projectid );            
                         
-			if($this->projectteamid > 0) 
+			if(self::$projectteamid > 0) 
             {
-                $query->where('pt.id = '. $this->projectteamid );
+                $query->where('pt.id = '. self::$projectteamid );
 			} 
             else 
             {
@@ -199,11 +199,17 @@ $result = $db->execute();
             
             if ( !$this->team && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $my_text = 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>';
+          $my_text .= 'dump -><pre>'.print_r($query->dump(),true).'</pre>';  
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
         elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
-                $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+                $my_text = 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>';
+          $my_text .= 'dump -><pre>'.print_r($query->dump(),true).'</pre>';  
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+                //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             } 
             
 //            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
@@ -291,6 +297,7 @@ $result = $db->execute();
 		$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
 		$query->select('CONCAT_WS( \':\', t.id, t.alias ) AS team_slug');
 		$query->select('CONCAT_WS( \':\', d.id, d.alias ) AS division_slug');
+        $query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
 		$query->select('d.name AS division_name');
 		$query->select('d.shortname AS division_short_name');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ');
@@ -300,7 +307,8 @@ $result = $db->execute();
 		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id ');
 		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id = p.season_id ');
 		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON l.id = p.league_id ');
-                        
+        
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON r.id = p.current_round ');                
         
         if ( $history )
         {
@@ -308,9 +316,9 @@ $result = $db->execute();
         }
         else
         {
-        if($this->projectteamid > 0) 
+        if(self::$projectteamid > 0) 
         {
-                    $query->where('pt.id = '. $this->projectteamid );
+                    $query->where('pt.id = '. self::$projectteamid );
 				} 
                 else 
                 {
@@ -331,14 +339,23 @@ $query->order('s.ordering '.$season_ordering);
         
         if ( !$seasons && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+            $my_text = 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>';
+          $my_text .= 'dump -><pre>'.print_r($query->dump(),true).'</pre>';  
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         } 
         elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' seasons<br><pre>'.print_r($seasons,true).'</pre>'),'');
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' history<br><pre>'.print_r($history,true).'</pre>'),'');
+            $my_text = 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>';
+          $my_text .= 'dump -><pre>'.print_r($query->dump(),true).'</pre>';
+          $my_text .= 'seasons -><pre>'.print_r($seasons,true).'</pre>';  
+          $my_text .= 'history -><pre>'.print_r($history,true).'</pre>';    
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+          
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' seasons<br><pre>'.print_r($seasons,true).'</pre>'),'');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' history<br><pre>'.print_r($history,true).'</pre>'),'');
         }
 
 	    foreach ($seasons as $k => $season)
@@ -436,7 +453,10 @@ $query->order('s.ordering '.$season_ordering);
        
        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($projectid,true).'</pre>'),'');
+            $my_text = 'projectid -><pre>'.print_r($projectid,true).'</pre>';
+            //$my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($projectid,true).'</pre>'),'');
         }
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($projectid,true).'</pre>'),'');
@@ -454,7 +474,7 @@ $query->order('s.ordering '.$season_ordering);
 		$this->ranking = $ranking->getRanking(0,sportsmanagementModelProject::getCurrentRound(null,self::$cfg_which_database),$division_id,self::$cfg_which_database);
 		foreach ($this->ranking as $ptid => $value)
 		{
-			if ($value->getPtid() == $this->projectteamid)
+			if ($value->getPtid() == self::$projectteamid)
 			{
 				$rank['rank']   = $value->rank;
 				$rank['games']  = $value->cnt_matches;
@@ -479,7 +499,10 @@ $query->order('s.ordering '.$season_ordering);
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' rank<br><pre>'.print_r($rank,true).'</pre>'),'');
+            $my_text = 'rank -><pre>'.print_r($rank,true).'</pre>';
+            //$my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' rank<br><pre>'.print_r($rank,true).'</pre>'),'');
         }
         
         
@@ -512,12 +535,18 @@ $query->order('s.ordering '.$season_ordering);
 			
             if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+            $my_text = 'dump -><pre>'.print_r($query->dump(),true).'</pre>';
+            $my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         } 
         elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            $my_text = 'dump -><pre>'.print_r($query->dump(),true).'</pre>';
+            //$my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
         
 		return $result;
@@ -550,12 +579,18 @@ $query->order('s.ordering '.$season_ordering);
         
         if ( !$league && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+            $my_text = 'dump -><pre>'.print_r($query->dump(),true).'</pre>';
+            $my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         } 
         elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            $my_text = 'dump -><pre>'.print_r($query->dump(),true).'</pre>';
+            //$my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
         
         
@@ -640,7 +675,10 @@ $query->order('s.ordering '.$season_ordering);
     
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' seasonsranking<br><pre>'.print_r($seasonsranking,true).'</pre>'),'');    
+            $my_text = 'seasonsranking -><pre>'.print_r($seasonsranking,true).'</pre>';
+            //$my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' seasonsranking<br><pre>'.print_r($seasonsranking,true).'</pre>'),'');    
     }
     
     
@@ -711,12 +749,18 @@ $query->order('s.ordering '.$season_ordering);
         
         if ( !$players && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+            $my_text = 'dump -><pre>'.print_r($query->dump(),true).'</pre>';
+            $my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         } 
         elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');    
+            $my_text = 'dump -><pre>'.print_r($query->dump(),true).'</pre>';
+            //$my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');    
     }
     
     foreach ( $players as $player )
@@ -775,12 +819,17 @@ $query->order('s.ordering '.$season_ordering);
         
         if ( !$player && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+            $my_text = 'dump -><pre>'.print_r($query->dump(),true).'</pre>';
+            $my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         } 
         elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        {$my_text = 'dump -><pre>'.print_r($query->dump(),true).'</pre>';
+            //$my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
         
         
