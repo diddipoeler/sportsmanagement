@@ -146,7 +146,9 @@ class sportsmanagementModelLeagues extends JModelList
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
 		// Select some fields
-		$query->select('obj.name,obj.short_name,obj.alias,obj.associations,obj.country,obj.ordering,obj.id,obj.picture,obj.checked_out,obj.checked_out_time');
+		$query->select('obj.name,obj.short_name,obj.alias,obj.associations,obj.country,obj.ordering,obj.id,obj.picture,obj.checked_out,obj.checked_out_time,obj.agegroup_id');
+        
+        $query->select('obj.modified,obj.modified_by');
         $query->select('st.name AS sportstype');
 		// From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league as obj');
@@ -185,7 +187,7 @@ class sportsmanagementModelLeagues extends JModelList
  
 		if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $my_text .= ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        $my_text = ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
         

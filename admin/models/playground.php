@@ -224,6 +224,11 @@ class sportsmanagementModelPlayground extends JModelAdmin
 	   $data['modified_by'] = $user->get('id');
        $address_parts = array();
        
+       $data['country'] = $data['request']['country'];
+       $data['zipcode'] = $data['request']['zipcode'];
+       $data['city'] = $data['request']['city'];
+       $data['address'] = $data['request']['address'];
+       
        //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$app->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        

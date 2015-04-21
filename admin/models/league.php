@@ -254,8 +254,11 @@ class sportsmanagementModelleague extends JModelAdmin
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage('saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        $app->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        //$app->enqueueMessage('saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        //$app->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        $my_text = 'pks <pre>'.print_r($pks,true).'</pre>';    
+        $my_text .= 'post <pre>'.print_r($post,true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
         }
         
         $result=true;
@@ -267,6 +270,7 @@ class sportsmanagementModelleague extends JModelAdmin
 			$tblLeague->id	= $pks[$x];
             $tblLeague->associations = $post['association' . $pks[$x]];
             $tblLeague->country = $post['country' . $pks[$x]];
+            $tblLeague->agegroup_id = $post['agegroup'.$pks[$x]];
 
 			if(!$tblLeague->store()) 
             {

@@ -73,6 +73,10 @@ class sportsmanagementModelProjectteams extends JModelList
             $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
             self::$_project_id	= JRequest::getInt('pid',0);
+            if ( !self::$_project_id )
+                {
+                self::$_project_id	= $app->getUserState( "$option.pid", '0' );    
+                }
                 $app->setUserState( "$option.pid", self::$_project_id ); 
                 
                 $config['filter_fields'] = array(

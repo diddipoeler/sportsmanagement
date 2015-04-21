@@ -54,7 +54,14 @@
 			label="COM_CONTACT_SELECT_CONTACT_LABEL"
 			required="false"/>
 
-          
+	<field
+			name="country"
+			type="country"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_NATIONALITY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_NATIONALITY_DESC"
+			class="inputbox">
+		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
+		</field>          
 
 
 		
@@ -125,14 +132,7 @@
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_REGISTRATION_NUMBER_DESC"
 			class="inputbox"/>				
 			
-		<field
-			name="country"
-			type="country"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_NATIONALITY"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_NATIONALITY_DESC"
-			class="inputbox">
-		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
-		</field>
+	
     <field
 			name="associations"
 			type="countryassociation" 
@@ -147,38 +147,7 @@
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
 		</field>	
-		<field
-			name="address"
-			type="textarea"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ADDRESS"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ADDRESS_DESC"
-			class="inputbox"/>		
-		<field
-			name="zipcode"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_POSTAL_CODE"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_POSTAL_CODE_DESC"
-			class="inputbox"/>	
-		<field
-			name="location"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_CITY"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_CITY_DESC"
-			class="inputbox"/>	
-		<field
-			name="state"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_STATE"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_STATE_DESC"
-			class="inputbox"/>				
-		<field
-			name="address_country"
-			type="country"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_COUNTRY"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_COUNTRY_DESC"
-			class="inputbox">
-		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
-	</field>	
+		
 	<field
 			name="phone"
 			type="text"
@@ -344,6 +313,49 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PERSON</option>
 		</field>	
+</fieldset>
+
+
+<fieldset name="request2"
+label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
+  description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS_DESC">  
+
+
+<field
+			name="address_country"
+			type="country"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_COUNTRY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_COUNTRY_DESC"
+			class="inputbox">
+		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
+	</field>	
+	
+<field
+			name="address"
+			type="textarea"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ADDRESS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ADDRESS_DESC"
+			class="inputbox"/>		
+		<field
+			name="zipcode"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_POSTAL_CODE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_POSTAL_CODE_DESC"
+			class="inputbox"/>	
+		<field
+			name="location"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_CITY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_CITY_DESC"
+			class="inputbox"/>	
+		<field
+			name="state"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_STATE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_STATE_DESC"
+			class="inputbox"/>				
+		
+
 </fieldset>
 
 </fields>		

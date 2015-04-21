@@ -442,6 +442,7 @@ return $teamsofclub;
        $data['country'] = $data['request']['country'];
        $data['zipcode'] = $data['request']['zipcode'];
        $data['location'] = $data['request']['location'];
+       $data['address'] = $data['request']['address'];
        
 /**
  *        wenn die plz tabelle genutzt werden soll

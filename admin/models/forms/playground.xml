@@ -32,6 +32,7 @@
 			description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_S_NAME_DESC"
 			class="inputbox"
 			required="true"/>				
+<!--
 		<field
 			name="address"
 			type="textarea"
@@ -57,7 +58,9 @@
 			description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_COUNTRY_DESC"
 			class="inputbox">
 		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
-	</field>		
+	</field>	
+-->  
+  	
 	<field
 			name="website"
 			type="text"
@@ -99,6 +102,65 @@
 			class="inputbox"/>      			
 	
   </fieldset>	
+
+
+
+<fields name="request">
+<fieldset name="request"
+label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
+  description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS_DESC">    
+
+<field
+			name="country"
+			type="country"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_DESC"
+			class="inputbox">
+		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
+	</field>
+
+  	<field
+			name="address"
+			type="textarea"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_ADDRESS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_ADDRESS_DESC"
+			class="inputbox"/>
+			
+		<field
+			name="zipcode"
+			size="10"
+			type="text"
+			
+			depends="country"
+			task="countryzipcodeoptions" 
+			key_field="country"
+			value_field="country"
+      varname="id"
+      targettable="countries_plz"
+			required=""
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE_DESC"
+			class="inputbox"/>
+      	
+		<field
+			name="city"
+			size="50"
+			type="text"
+			
+			depends="zipcode"
+			task="locationzipcodeoptions" 
+			key_field="country"
+			value_field="zipcode"
+      varname="id"
+      targettable="countries_plz"
+      required=""
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY_DESC"
+			class="inputbox"/>
+    
+</fieldset>
+</fields>		
+
   
  <fieldset name="maps"
   label="COM_SPORTSMANAGEMENT_TABS_MAP"

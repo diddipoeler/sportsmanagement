@@ -95,9 +95,16 @@ class sportsmanagementViewPerson extends sportsmanagementView
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
-        
+                
         // name für den titel setzen
         $this->item->name = $this->item->lastname.' - '.$this->item->firstname;
+        
+        $this->form->setValue('address_country', 'request', $this->item->address_country);
+        $this->form->setValue('zipcode', 'request', $this->item->zipcode);
+        $this->form->setValue('location', 'request', $this->item->location);
+        $this->form->setValue('address', 'request', $this->item->address);
+        $this->form->setValue('state', 'request', $this->item->state);
+        
         
         $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
         $this->form->setValue('position_id', 'request', $this->item->position_id);
@@ -164,6 +171,9 @@ class sportsmanagementViewPerson extends sportsmanagementView
 		$jlang->load('com_contact', JPATH_ADMINISTRATOR, 'en-GB', true);
 		$jlang->load('com_contact', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
 		$jlang->load('com_contact', JPATH_ADMINISTRATOR, null, true);
+        
+        $document->addScript('http://maps.google.com/maps/api/js?&sensor=false&language=de');
+        $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
     
 	}
  

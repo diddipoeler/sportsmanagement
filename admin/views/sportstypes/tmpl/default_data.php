@@ -62,7 +62,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_NAME','s.name',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
-					
+					<th>
+						<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_TRANSLATION'); ?>
+					</th>
 					<th width="10%" class="title">
 						<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_ICON'); ?>
 					</th>
@@ -131,8 +133,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						
 						<td class="center">
 							<?php
-							$picture=JPATH_SITE.DS.$row->icon;
-							$desc=JText::_($row->name);
+							$picture = JPATH_SITE.DS.$row->icon;
+							$desc = JText::_($row->name);
 							//echo sportsmanagementHelper::getPictureThumb($picture, $desc, 0, 21, 4);
                             ?>                                    
 <a href="<?php echo JURI::root().$row->icon;?>" title="<?php echo $desc;?>" class="modal">

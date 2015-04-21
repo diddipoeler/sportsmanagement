@@ -187,28 +187,59 @@ case 'maps':
 </style>
 
 <script type="text/javascript">
+// var start;
+/*calculate center points*/
+var start= new google.maps.LatLng(<?php echo $this->item->latitude?>,<?php echo $this->item->longitude?>);
+var image = 'http://maps.google.com/mapfiles/kml/pal2/icon49.png';
+    
 jQuery(function(){ // document.ready
-// Map initialisieren	 
-				jQuery("#map").gmap3(
-//				{
-//				action: 'init',    
-//				options: {
-//					streetViewControl: true,
-//					}    
-//				}    
-				);
 
-
+jQuery("#map").gmap3({
+  map:{
+    options: {
+      center: start,
+      zoom: 9,
+      maxZoom: 14 ,
+//      mapTypeId: google.maps.MapTypeId.SATELLITE,
+      mapTypeId: google.maps.MapTypeId.HYBRID,
+      navigationControl: true,
+      mapTypeControlOptions: {
+       style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+     },
+     //scrollwheel: true,
+      streetViewControl: true
+    }
+  }
+  ,
+  marker:{
+    latLng: start,
+    //position: start,
+    options: {
+     icon: new google.maps.MarkerImage(
+       "http://maps.google.com/mapfiles/kml/pal2/icon49.png",
+       new google.maps.Size(32, 37, "px", "px")
+     )
+    }
+ }
+  
+  }
+  ,
+"autofit" )
                 
 });
 
+
+  
 setTimeout(function(){
   jQuery('#map')
     .width("600px")
     .height("350px") 
-    .gmap3({trigger:"resize"});
+    .gmap3({trigger:"resize"})
+    ;
 }, 4000);
 
+
+    
 </script>
 
 <div id="map" class="ui-widget ui-corner-all ui-helper-clearfix"></div>
@@ -266,7 +297,8 @@ $document->addScript('http://maps.google.com/maps/api/js?&sensor=true');
 <script language="javascript" type="text/javascript">
 var map;
 
-function initialize() {
+jQuery(function(){ // document.ready
+//function initialize() {
 	var start = new google.maps.LatLng(<?php echo $this->item->latitude?>,<?php echo $this->item->longitude?>);
  	var image = 'http://maps.google.com/mapfiles/kml/pal2/icon49.png';
      var myOptions = {
@@ -284,8 +316,8 @@ function initialize() {
   });
     
     kartenwerte();
-	}
-	
+//	}
+});	
     //google.maps.event.addDomListener(window, 'load', initialize);
     //google.maps.event.trigger(map,'resize');
     
@@ -297,18 +329,22 @@ function initialize() {
 	
 	} 
     
-//    $(document).ready(function() {
-//  google.maps.event.trigger(map, 'resize');
-//          });
+setTimeout(function(){
+  jQuery('#map')
+    .width("400px")
+    .height("400px") 
+    .gmap3({trigger:"resize"})
+    ;
+}, 4000);
           
 </script>
 
-<fieldset class="adminform">
-			
-<body onLoad="initialize()">             
 
-<div id="map" style="width:400px; height:400px;"></div>
-</fieldset>
+			
+       
+
+<div id="map" class="ui-widget ui-corner-all ui-helper-clearfix" style="width:400px; height:400px;"></div>
+
 <?PHP
 break;
 

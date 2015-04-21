@@ -175,7 +175,20 @@ JHtml::_('behavior.modal');
                         ?>
                         </td>
                         <td class="center"><?php echo JText::_($row->sportstype); ?></td>
-                        <td class="center"><?php echo JText::_($row->agegroup); ?></td>
+                        <td class="center">
+                        <?php 
+                        //echo JText::_($row->agegroup); 
+                        $inputappend = '';
+                        $append = ' style="background-color:#bbffff"';
+									echo JHtml::_(	'select.genericlist',
+													$this->lists['agegroup'],
+													'agegroup'.$row->id,
+													$inputappend.'class="inputbox" size="1" onchange="document.getElementById(\'cb' .
+													$i.'\').checked=true"'.$append,
+													'value','text',$row->agegroup_id);
+                        
+                        ?>
+                        </td>
                         <td class="center">
                         <?php 
                         //echo JText::_($row->fedname); 

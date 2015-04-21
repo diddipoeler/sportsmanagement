@@ -143,6 +143,17 @@ class sportsmanagementViewLeagues extends sportsmanagementView
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' association<br><pre>'.print_r($lists['association'],true).'</pre>'),'');
         
+        unset($myoptions);
+        
+        $myoptions[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
+        $mdlagegroup = JModelLegacy::getInstance("agegroups", "sportsmanagementModel");
+        if ( $res = $mdlagegroup->getAgeGroups() )
+        {
+            $myoptions = array_merge($myoptions,$res);
+        }
+        $lists['agegroup'] = $myoptions;
+        unset($myoptions);
+        
         $this->assign('user',JFactory::getUser());
 		$this->assignRef('lists',$lists);
 		$this->assignRef('items',$items);

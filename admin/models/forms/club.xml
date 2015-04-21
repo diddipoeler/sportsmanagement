@@ -33,7 +33,7 @@
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADMIN"
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADMIN_DESC"
 			/>
-
+<!-- 
 		<field
 			name="address"
 			type="textarea"
@@ -41,7 +41,7 @@
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS_DESC"
 			class="inputbox"/>
 
-<!--      		
+     		
 		<field
 			name="zipcode"
 			size="10"
@@ -281,8 +281,8 @@
   
 <fields name="request">
 <fieldset name="request"
-label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY"
-  description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_DESC">    
+label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
+  description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS_DESC">    
 
 <field
 			name="country"
@@ -293,6 +293,13 @@ label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY"
 		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
 	</field>
 
+  	<field
+			name="address"
+			type="textarea"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS_DESC"
+			class="inputbox"/>
+			
 		<field
 			name="zipcode"
 			size="10"

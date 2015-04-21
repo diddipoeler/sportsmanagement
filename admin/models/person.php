@@ -536,6 +536,13 @@ class sportsmanagementModelperson extends JModelAdmin
        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
        // request variablen umbauen
+       $data['address_country'] = $data['request']['address_country'];
+       $data['zipcode'] = $data['request']['zipcode'];
+       $data['location'] = $data['request']['location'];
+       $data['address'] = $data['request']['address'];
+       $data['state'] = $data['request']['state'];
+       
+       
        $data['person_art'] = $data['request']['person_art'];
        $data['person_id1'] = $data['request']['person_id1'];
        $data['person_id2'] = $data['request']['person_id2'];
@@ -592,9 +599,9 @@ class sportsmanagementModelperson extends JModelAdmin
 				$address_parts[] = $data['location'];
 			}
 		}
-		if (!empty($data['country']))
+		if (!empty($data['address_country']))
 		{
-			$address_parts[] = JSMCountries::getShortCountryName($data['country']);
+			$address_parts[] = JSMCountries::getShortCountryName($data['address_country']);
 		}
 		$address = implode(', ', $address_parts);
 		$coords = sportsmanagementHelper::resolveLocation($address);
@@ -622,9 +629,9 @@ class sportsmanagementModelperson extends JModelAdmin
 		{
 		$address_parts[] = $data['location'];
 		}
-		if (!empty($data['country']))
+		if (!empty($data['address_country']))
 		{
-		$address_parts[] = JSMCountries::getShortCountryName($data['country']);
+		$address_parts[] = JSMCountries::getShortCountryName($data['address_country']);
 		}
         $address = implode(',', $address_parts);
         $coords = sportsmanagementHelper::getOSMGeoCoords($address);

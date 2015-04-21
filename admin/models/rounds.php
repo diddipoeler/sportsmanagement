@@ -71,6 +71,12 @@ class sportsmanagementModelRounds extends JModelList
                 //$this->_project_id	= $app->getUserState( "$option.pid", '0' );
                 //self::$_project_id	= $app->getUserState( "$option.pid", '0' );
                 self::$_project_id	= JRequest::getInt('pid',0);
+                
+                if ( !self::$_project_id )
+                {
+                self::$_project_id	= $app->getUserState( "$option.pid", '0' );    
+                }
+                
                 $app->setUserState( "$option.pid", self::$_project_id ); 
                 $config['filter_fields'] = array(
                         'r.name',
@@ -178,7 +184,7 @@ class sportsmanagementModelRounds extends JModelList
 
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $my_text .= ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        $my_text = ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
         

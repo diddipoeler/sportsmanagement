@@ -61,6 +61,7 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 	public function init ()
 	{
 		$app = JFactory::getApplication();
+        $document = JFactory::getDocument();
         $starttime = microtime(); 
         
         // get the Data
@@ -85,6 +86,11 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 		$this->item = $item;
 		$this->script = $script;
         
+        $this->form->setValue('country', 'request', $this->item->country);
+        $this->form->setValue('zipcode', 'request', $this->item->zipcode);
+        $this->form->setValue('city', 'request', $this->item->city);
+        $this->form->setValue('address', 'request', $this->item->address);
+        
         if ( $this->item->latitude == 255 )
         {
             $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_NO_GEOCODE'),'Error');
@@ -97,6 +103,10 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 		
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'playground');
 		$this->assignRef( 'extended', $extended );
+        
+        $document->addScript('http://maps.google.com/maps/api/js?&sensor=false&language=de');
+        $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
+        
         //$app->enqueueMessage(JText::_('sportsmanagementViewPlayground display<br><pre>'.print_r($this->extended,true).'</pre>'),'Notice');
 
 
