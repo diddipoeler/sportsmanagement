@@ -44,6 +44,9 @@
  * 
  * bootstrap css
  * http://getbootstrap.com/css/
+ * 
+ * Retrieving request data using JInput
+ * https://docs.joomla.org/Retrieving_request_data_using_JInput
  */
 
 // No direct access to this file
