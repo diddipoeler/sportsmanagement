@@ -77,6 +77,12 @@ jQuery(window).load(function() {
 
 <div class="">
 	<?php
+    
+    if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{
+    echo $this->loadTemplate('debug');
+}
+
 	echo $this->loadTemplate('projectheading');
 
 	if ($this->config['show_sectionheader'])

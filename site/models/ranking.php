@@ -85,17 +85,25 @@ class sportsmanagementModelRanking extends JModelLegacy
 	function __construct( )
 	{
 	   $app = JFactory::getApplication();
-		self::$projectid = JRequest::getInt( "p", 0 );
-		$this->round = JRequest::getInt( "r", $this->current_round);
-		$this->part  = JRequest::getInt( "part", 0);
-		$this->from  = JRequest::getInt( 'from', 0 );
-		$this->to	 = JRequest::getInt( 'to', $this->round);
-		$this->type  = JRequest::getInt( 'type', 0 );
-		$this->last  = JRequest::getInt( 'last', 0 );
-        $this->viewName = JRequest::getVar( "view");
-    	$this->selDivision = JRequest::getInt( 'division', 0 );
+       // JInput object
+       $jinput = $app->input;
+       $from = 0;
+       $to = 0;
+		self::$projectid = (int) $jinput->get->get('p', 0, '');
+		//$this->round = JRequest::getInt("r", $this->current_round);
+        $this->round = $jinput->get->get('r', $this->current_round, '');
+		$this->part  = JRequest::getInt("part", 0);
+		//$this->from  = JRequest::getInt('from', 0 );
+		//$this->to	 = JRequest::getInt('to', $this->round);
+        $this->from = $jinput->post->get('from', 0, '');
+        $this->to = $jinput->post->get('to', $this->round, '');
         
-        self::$cfg_which_database = JRequest::getInt( 'cfg_which_database', 0 );
+		$this->type  = $jinput->post->get('type', 0, '');
+		$this->last  = JRequest::getInt('last', 0 );
+        $this->viewName = $jinput->get->get("view");
+    	$this->selDivision = JRequest::getInt('division', 0 );
+        
+        self::$cfg_which_database = $jinput->get->get('cfg_which_database', 0 ,'');
         
         sportsmanagementModelProject::$projectid = self::$projectid; 
         
@@ -125,6 +133,22 @@ class sportsmanagementModelRanking extends JModelLegacy
         sportsmanagementModelProject::$_round_from = $this->from; 
         sportsmanagementModelProject::$_round_to = $this->round;
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $my_text = 'from '.$from.'<br>';    
+        $my_text .= 'to '.$to.'<br>';
+        $my_text .= 'projectid '.self::$projectid.'<br>';
+        $my_text .= 'round '.$this->round.'<br>';
+        $my_text .= 'current_round '.$this->current_round.'<br>';
+        $my_text .= 'self from '.$this->from.'<br>';
+        $my_text .= 'self to '.$this->to.'<br>';
+        
+        $my_text .= 'self part '.$this->part.'<br>';
+        $my_text .= 'self type '.$this->type.'<br>';
+        $my_text .= 'viewName '.$this->viewName.'<br>';
+        
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        }
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' from<br><pre>'.print_r($from,true).'</pre>'),'');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' to<br><pre>'.print_r($to,true).'</pre>'),'');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($this->projectid,true).'</pre>'),'');
@@ -290,12 +314,19 @@ class sportsmanagementModelRanking extends JModelLegacy
         
         if ( !$games && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+            
+            $my_text = 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';
+            $my_text .= 'dump <pre>'.print_r($query->dump(),true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        
         } 
         elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            $my_text = 'dump <pre>'.print_r($query->dump(),true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');

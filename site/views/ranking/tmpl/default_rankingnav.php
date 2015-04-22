@@ -40,9 +40,8 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 ?>
 
-<form name="adminForm" id="adminForm" method="post"
-	action="<?php echo $this->action;?>">
-<table>
+<form name="adminForm" id="adminForm" method="post"	action="<?php echo $this->action;?>">
+<table class="table">
 	<tr>
 	<?php
 	//echo " [" . $this->startdate. " / " . $this->enddate. "]";

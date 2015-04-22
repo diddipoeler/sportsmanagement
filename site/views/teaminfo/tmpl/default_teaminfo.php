@@ -116,32 +116,39 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->team->nam
 		<?php
 		if ($this->config['show_club_info'])
 		{
-			if ((($this->club->address) || ($this->club->zipcode)))
+			if ( $this->club->address || $this->club->zipcode || $this->club->location )
 			{
 				?>
 	<div class="jl_parentContainer">
-		<span class="clubinfo_listing_item"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_ADDRESS'); ?></span>
+    <address>
+			<strong>
+		<?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_ADDRESS'); ?>
+        </strong>
 				<?php
-				$dummy = JSMCountries::convertAddressString(	$this->club->name,
+				$addressString = JSMCountries::convertAddressString(	$this->club->name,
 															$this->club->address,
 															$this->club->state,
 															$this->club->zipcode,
 															$this->club->location,
 															$this->club->country,
 															'COM_SPORTSMANAGEMENT_TEAMINFO_CLUB_ADDRESS_FORM' );
-				$dummy = explode('<br />', $dummy);
 
-				for ($i = 0; $i < count($dummy); $i++)
-				{
-					if ($i > 0)
-					{
-						echo'<span class="clubinfo_listing_item">&nbsp;</span>';
-					}
-
-					echo'<span class="clubinfo_listing_value">'.$dummy[$i].'</span>';
-				}
-				echo '</div>';
+//				$dummy = explode('<br />', $dummy);
+//				for ($i = 0; $i < count($dummy); $i++)
+//				{
+//					if ($i > 0)
+//					{
+//						echo'<span class="clubinfo_listing_item">&nbsp;</span>';
+//					}
+//					echo'<span class="clubinfo_listing_value">'.$dummy[$i].'</span>';
+//				}
+//				echo '</div>';
+                
+                echo $addressString;
 			}
+            ?>
+            </address>	
+            <?PHP 
 
 			if ($this->club->phone)
 			{

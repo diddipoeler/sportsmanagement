@@ -50,7 +50,7 @@ DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
 jimport('joomla.application.component.model');
-jimport( 'joomla.utilities.arrayhelper' );
+jimport('joomla.utilities.arrayhelper');
 
 if (!class_exists('sportsmanagementModeldatabasetool')) 
 {
@@ -198,6 +198,20 @@ class sportsmanagementModelProject extends JModelLegacy
         //$app->setUserState( "com_sportsmanagement.cfg_which_database", JRequest::getInt('cfg_which_database',0) );
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
         //self::updateHits(self::$projectid);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $my_text = 'from '.self::$_round_from.'<br>';    
+        $my_text .= 'to '.self::$_round_to.'<br>';
+        $my_text .= 'projectid '.self::$projectid.'<br>';
+//        $my_text .= 'round '.$this->round.'<br>';
+//        $my_text .= 'current_round '.$this->current_round.'<br>';
+//        $my_text .= 'self from '.$this->from.'<br>';
+//        $my_text .= 'self to '.$this->to.'<br>';
+        
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        }
+        
 		parent::__construct();
 	}
 

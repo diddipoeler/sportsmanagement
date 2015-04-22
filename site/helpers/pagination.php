@@ -239,7 +239,7 @@ class sportsmanagementModelPagination extends JModelLegacy
 				}
 				if ($round->id != $roundid)
 				{
-					$params['r']= $round->id;
+					$params['r']= $round->value;
                     $params['division'] = $division;
             $params['mode'] = 0;
             $params['order'] = 0;
@@ -256,18 +256,11 @@ class sportsmanagementModelPagination extends JModelLegacy
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-   
-        
         $my_text = 'firstlink -> '.$firstlink.'<br>' ;
         $my_text .= 'prevlink -> '.$prevlink.'<br>' ;
         $my_text .= 'nextlink -> '.$nextlink.'<br>' ;
         $my_text .= 'lastlink -> '.$lastlink.'<br>' ;
-        
-//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['class'] = __CLASS__;
-//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['zeile'] = __LINE__;
-//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['text'] = $my_text;
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        
         }
         
 		return '<span class="pageNav">&laquo;' . $spacer2 . $firstlink . $prevlink . $pageNav . $nextlink .  $lastlink . $spacer2 . '&raquo;</span>';

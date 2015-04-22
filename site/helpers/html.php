@@ -320,9 +320,13 @@ class sportsmanagementHelperHtml
 	public static function getRoundSelectNavigation($form,$cfg_which_database = 0)
 	{
 		$app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
         $rounds = sportsmanagementModelProject::getRoundOptions('ASC',$cfg_which_database);
-		$division = JRequest::getInt('division',0);
-        $roundid = JRequest::getInt('r',0);
+//		$division = JRequest::getInt('division',0);
+//        $roundid = JRequest::getInt('r',0);
+        $division = $jinput->get->get('division', 0, '');
+        $roundid = $jinput->get->get('r', 0, '');
 
 		if($form)
         {
@@ -330,7 +334,8 @@ class sportsmanagementHelperHtml
 			$options = array();
 			foreach ($rounds as $r)
 			{
-				$link = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, $r->value, $division,0,0,NULL,$cfg_which_database);
+				//$link = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, $r->value, $division,0,0,NULL,$cfg_which_database);
+                $link = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, $r->slug, $division,0,0,NULL,$cfg_which_database);
 				$options[] = JHtml::_('select.option', $link, $r->text);
 			}
 		} 
@@ -340,15 +345,18 @@ class sportsmanagementHelperHtml
 			$options = array();
 			foreach ($rounds as $r)
 			{
-				$link = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, $r->value, $division,0,0,NULL,$cfg_which_database);
+				//$link = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, $r->value, $division,0,0,NULL,$cfg_which_database);
+                $link = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, $r->slug, $division,0,0,NULL,$cfg_which_database);
 				$options[] = JHtml::_('select.option', $link, $r->text);
 			}
 		}
         
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundid'.'<pre>'.print_r(self::$roundid,true).'</pre>' ),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' rounds'.'<pre>'.print_r($rounds,true).'</pre>' ),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' currenturl'.'<pre>'.print_r($currenturl,true).'</pre>' ),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' options'.'<pre>'.print_r($options,true).'</pre>' ),'');
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $my_text = 'rounds <pre>'.print_r($rounds,true).'</pre>';    
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
+        }
+
         
 		return JHtml::_('select.genericlist',$options,'select-round','onchange="top.location.href=this.options[this.selectedIndex].value;"','value','text',$currenturl);
 	}
