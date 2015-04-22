@@ -425,6 +425,12 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'   ),'');
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $my_text = 'result <pre>'.print_r($result,true).'</pre>';    
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
+        }
+        
         return $result;
 	}
 	
