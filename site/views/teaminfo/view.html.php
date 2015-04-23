@@ -95,10 +95,10 @@ class sportsmanagementViewTeamInfo extends JViewLegacy
             $this->assignRef('teamid', $model::$teamid);
             
             $trainingData = $model->getTrainigData($this->project->id);
-			$this->assignRef( 'trainingData', $trainingData );
+			$this->assignRef('trainingData', $trainingData );
             if ( $this->checkextrafields )
             {
-            $this->assignRef( 'extrafields', sportsmanagementHelper::getUserExtraFields($model::$teamid) );
+            $this->assignRef('extrafields', sportsmanagementHelper::getUserExtraFields($model::$teamid,'frontend') );
             }
 
 			$daysOfWeek=array(
