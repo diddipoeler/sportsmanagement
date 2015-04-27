@@ -52,11 +52,11 @@ if (!JFactory::getUser()->authorise('core.manage', 'com_sportsmanagement'))
 }
  
 // require helper file
-//JLoader::register('SportsManagementHelper', dirname(__FILE__) . DS . 'helpers' . DS . 'sportsmanagement.php');
 if ( !class_exists('sportsmanagementHelper') ) 
 {
-    JLoader::register('SportsManagementHelper', dirname(__FILE__) . DS . 'helpers' . DS . 'sportsmanagement.php');
+JLoader::register('SportsManagementHelper', dirname(__FILE__) . DS . 'helpers' . DS . 'sportsmanagement.php');
 }
+
 JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
 
 // zur unterscheidung von joomla 2.5 und 3

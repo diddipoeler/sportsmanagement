@@ -115,7 +115,11 @@ class sportsmanagementViewMatches extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' projectws<br><pre>'.print_r($projectws,true).'</pre>'),'');
+        $my_text = 'projectws <pre>'.print_r($projectws,true).'</pre>';
+        //$my_text .= 'inoutstats <pre>'.print_r($inoutstats,true).'</pre>';   
+        //$my_text .= 'form_value <pre>'.print_r($form_value,true).'</pre>';       
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);    
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' projectws<br><pre>'.print_r($projectws,true).'</pre>'),'');
         }
         
         $mdlRound = JModelLegacy::getInstance("Round", "sportsmanagementModel");
@@ -129,13 +133,13 @@ class sportsmanagementViewMatches extends sportsmanagementView
 			$datum = sportsmanagementHelper::convertDate($res->round_date_first, 1).' - '.sportsmanagementHelper::convertDate($res->round_date_last, 1);
 			$project_roundslist[]=JHtml::_('select.option',$res->id,sprintf("%s (%s)",$res->name,$datum));
 		}
-		$lists['project_rounds']=JHtml::_(	'select.genericList',$project_roundslist,'rid',
+		$lists['project_rounds'] = JHtml::_(	'select.genericList',$project_roundslist,'rid',
 				'class="inputbox" ' .
 				'onChange="document.getElementById(\'short_act\').value=\'rounds\';' .
 				'document.roundForm.submit();" ',
 				'value','text',$roundws->id);
 
-		$lists['project_rounds2']=JHtml::_('select.genericList',$project_roundslist,'rid','class="inputbox" ','value','text',$roundws->id);
+		$lists['project_rounds2'] = JHtml::_('select.genericList',$project_roundslist,'rid','class="inputbox" ','value','text',$roundws->id);
         // diddipoeler rounds for change in match
         $project_change_roundslist = array();
         if ( $ress = sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', true) )

@@ -46,6 +46,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 //echo 'selectlist <br><pre>'.print_r($this->selectlist,true).'</pre>';
 
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{
+echo $this->loadTemplate('debug');
+}
 ?>
 
 <div id="alt_decision_enter" style="display:<?php echo ($massadd == 0) ? 'none' : 'block'; ?>">

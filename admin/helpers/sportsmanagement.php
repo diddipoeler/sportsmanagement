@@ -115,6 +115,33 @@ abstract class sportsmanagementHelper
 		}
 	}
     
+    
+    /**
+     * sportsmanagementHelper::getMatchContent()
+     * 
+     * @param mixed $match_id
+     * @return void
+     */
+    public static function getMatchContent($content_id)
+	{
+	   $app	= JFactory::getApplication();
+		// Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);
+
+
+        // Select some fields
+        
+        $query->select('introtext');
+		// From the table
+		$query->from('#__content');
+        $query->where('id = ' . $content_id );
+        
+    $db->setQuery($query);
+    $result = $db->loadResult();
+    return $result;
+	}
+    
     /**
      * sportsmanagementHelper::getMatchDate()
      * 
@@ -192,6 +219,11 @@ abstract class sportsmanagementHelper
 	 */
 	public static function convertMatchDateToTimezone(&$match)
 	{
+	   $app	= JFactory::getApplication();
+       // Get some system objects.
+		$config = JFactory::getConfig();
+		$user = JFactory::getUser();
+        
 		if ($match->match_date > 0)
 		{
 			$app = JFactory::getApplication();
@@ -203,18 +235,30 @@ abstract class sportsmanagementHelper
 			else
 			{
 				// Otherwise use user timezone for display, and if not set use the project timezone
-				$user = JFactory::getUser();
 	 			$timezone = $user->getParam('timezone', $match->timezone);
 			}
 
 	 		$matchDate = new JDate($match->match_date, 'UTC');
+            if ( $timezone )
+            {
 	 		$matchDate->setTimezone(new DateTimeZone($timezone));
+            }
+            else
+            {
+            $timezone = $config->get('offset');   
+            $matchDate->setTimezone(new DateTimeZone($config->get('offset')));
+            }
 
 	 		$match->match_date = $matchDate;
 	 		$match->timezone = $timezone;
 		} else {
 			$match->match_date = null;
 		}
+        
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' offset<br><pre>'.print_r($config->get('offset'),true).'</pre>'),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' user<br><pre>'.print_r($user,true).'</pre>'),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' timezone<br><pre>'.print_r($timezone,true).'</pre>'),'Notice');
+        
 	}
     
     /**
@@ -1273,6 +1317,12 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 //		return $arrExtensions;
 //	}
 	
+		/**
+		 * sportsmanagementHelper::getExtensionsOverlay()
+		 * 
+		 * @param mixed $project_id
+		 * @return
+		 */
 		public static function getExtensionsOverlay($project_id)
 	{
 		$option='com_sportsmanagement';
@@ -2338,7 +2388,15 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
         $db = self::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         //$query->select('id as value');
-        $query->select('CONCAT_WS( \':\', id, alias ) AS value');
+        
+        if( $app->isAdmin() ) 
+{
+        $query->select('id AS value');
+        }
+        else
+        {
+        $query->select('CONCAT_WS( \':\', id, alias ) AS value');    
+        }
         $query->select('name AS text');
         $query->select('id, name, round_date_first, round_date_last, roundcode');
         

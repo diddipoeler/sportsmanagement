@@ -968,6 +968,8 @@ class sportsmanagementModelMatch extends JModelAdmin
         $query->select('t1.name AS hometeam, t1.id AS t1id');
         $query->select('t2.name as awayteam, t2.id AS t2id');
         $query->select('pt1.project_id');
+        $query->select('CONCAT_WS(\':\',pg.id,pg.alias) AS playground_slug ');
+        $query->select('pg.picture AS playground_picture,pg.name AS playground_name ');
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id = m.projectteam1_id ');
@@ -976,6 +978,7 @@ class sportsmanagementModelMatch extends JModelAdmin
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON pt2.id = m.projectteam2_id ');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = pt2.team_id ');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id = st2.team_id ');
+        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS pg ON pg.id = m.playground_id ');
         // Where
         $query->where('m.id = '.(int) $match_id );
                 
@@ -983,11 +986,18 @@ class sportsmanagementModelMatch extends JModelAdmin
             $result = $db->loadObject();
             if ( !$result )
 		    {
-			$app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-		    }
+			//$app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+		    $my_text = 'getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
+        $my_text .= 'dump<pre>'.print_r($query->dump(),true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            }
+            
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-        $app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' team_id'.'<pre>'.print_r($result,true).'</pre>' ),'');
+        $my_text = 'match_id<pre>'.print_r($result,true).'</pre>'; 
+        //$my_text .= 'dump<pre>'.print_r($query->dump(),true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        //$app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' team_id'.'<pre>'.print_r($result,true).'</pre>' ),'');
         }
         
 			//$this->_data=JFactory::getDbo()->loadObject();
@@ -1278,8 +1288,12 @@ class sportsmanagementModelMatch extends JModelAdmin
         
         if ( !$db->loadObject() && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	    {
-		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+//		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+        
+        $my_text = 'getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
+        $my_text .= 'dump<pre>'.print_r($query->dump(),true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
 	    }
         
 		return $db->loadObject();
