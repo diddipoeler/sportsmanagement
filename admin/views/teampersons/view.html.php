@@ -179,6 +179,9 @@ class sportsmanagementViewteampersons extends sportsmanagementView
         
         $PersonProjectPosition = $model->PersonProjectPosition($this->project_id,$this->_persontype);
         
+        $my_text = 'PersonProjectPosition<pre>'.print_r($PersonProjectPosition,true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        
         //$app->enqueueMessage(__METHOD__.' '.__LINE__.' PersonProjectPosition<br><pre>'.print_r($PersonProjectPosition, true).'</pre><br>','Notice');
         }
 
