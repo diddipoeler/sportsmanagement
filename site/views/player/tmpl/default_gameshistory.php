@@ -39,12 +39,6 @@
 
 defined('_JEXEC') or die('Restricted access'); 
 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo 'GAMES_HISTORY gamesstats<br /><pre>~' . print_r($this->gamesstats,true) . '~</pre><br />';
-echo 'GAMES_HISTORY config<br /><pre>~' . print_r($this->config,true) . '~</pre><br />';
-echo 'GAMES_HISTORY games<br /><pre>~' . print_r($this->games,true) . '~</pre><br />';
-}
 
 ?>
 <!-- Player stats History START -->
@@ -53,7 +47,7 @@ if (count($this->games))
 {
 	?>
 <h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_GAMES_HISTORY'); ?></h2>
-<table align="center" border="0" cellpadding="0" class="table"	cellspacing="0">
+<table class="<?PHP echo $this->config['history_table_class']; ?>" >
 	<tr>
 		<td>
 		<table id="gameshistory">

@@ -45,13 +45,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <!-- person data START -->
 <h2><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PERSONAL_DATA' );	?></h2>
 
-<table class="plgeneralinfo">
-	<tr>
+<div class="row">
+<div class="col-md-6">
+
 	<?php
 	if ( $this->config['show_player_photo'] == 1 )
 	{
-		?>
-		<td class="picture"><?php
+		
+		
 		$picturetext = JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PICTURE' );
 		$imgTitle = JText::sprintf( $picturetext , sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]) );
 		$picture = isset($this->teamPlayer) ? $this->teamPlayer->picture : null;
@@ -59,67 +60,62 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		{
 			$picture = $this->person->picture;
 		}
-		
-        /*
-        if ( !file_exists( $picture ) )
-		{
-			$picture = sportsmanagementHelper::getDefaultPlaceholder("player") ;
-		}
-        */
-        
-		/*
-    echo sportsmanagementHelper::getPictureThumb($picture, $imgTitle,
-												$this->config['picture_width'],
-												$this->config['picture_height']);
-    */
-    //echo JHtml::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['picture_width'] ));
+	
+
     ?>
 
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target="#p<?php echo $this->person->id;?>">
+<a href="#" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target=".person<?php echo $this->person->id;?>">
 <?PHP
 echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $imgTitle, array('title' => $imgTitle,'class' => "img-rounded",'width' => $this->config['picture_width'] ));      
 ?>
 </a>
 
-<div class="modal fade" id="p<?php echo $this->person->id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div id="" style="display: none;" class="modal fade person<?php echo $this->person->id;?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
 <div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+<h4 class="modal-title" id="myLargeModalLabel"><?php echo $imgTitle;?></h4>
 </div>
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $imgTitle, array('title' => $imgTitle,'class' => "img-rounded" ));      
-?>
+<div class="modal-body">
+<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" class="img-responsive img-rounded center-block">
 </div>
+<div class="modal-footer">
+<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_('JLIB_HTML_BEHAVIOR_CLOSE');?> </button>
+</div>
+</div>
+</div>
+</div>    
 
 
 <?PHP                    
-		?></td>
+		?>
 		<?php
 	}
 	?>
-		<td class="info">
-		<table class="plinfo">
+
+</div>    
+<div class="col-md-6">    
+		
+        
+		
 			<?php
 			if(!empty($this->person->country) && ($this->config["show_nationality"] == 1))
 			{
 			?>
-			<tr>
-				<td class="label"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_NATIONALITY' ); ?>
-				</td>
-				<td class="data">
-				<?php
+			
+            
+            <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_NATIONALITY' ); ?></strong>
+			<?php
 					echo JSMCountries::getCountryFlag( $this->person->country ) . " " .
 					JText::_( JSMCountries::getCountryName($this->person->country));
 					?>
-				</td>
-			</tr>
+            </address>
 			<?php
 			}
 			?>
-			<tr>
-				<td class="label">
-					<?php	echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_NAME' ); ?>
-				</td>
-				<td class="data">
+			
 				<?php 
 				
 				$outputName = sportsmanagementHelper::formatName(null ,$this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]);
@@ -142,20 +138,24 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $imgTitle, array
 						default:	break;
 					}
 				}
-				echo $outputName; ?>
-				</td>
-			</tr>
+				 ?>
+				
+            
+            
+            <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_NAME' ); ?></strong>
+			<?php echo $outputName; ?>
+            </address>
+            
 			<?php if ( ! empty( $this->person->nickname ) )
 			{
 				?>
-			<tr>
-				<td class="label"><?php
-				echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_NICKNAME' );
-				?></td>
-				<td class="data"><?php
-				echo $this->person->nickname;
-				?></td>
-			</tr>
+			
+            
+            <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_NICKNAME' ); ?></strong>
+			<?php echo $this->person->nickname; ?>
+            </address>
 			<?php
 			}
 
@@ -165,9 +165,7 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $imgTitle, array
 			( $this->person->birthday != '0000-00-00' ))
 			{
 				#$this->config['show_birthday'] = 4;
-				?>
-			<tr>
-				<td class="label"><?php
+			
 				switch ( $this->config['show_birthday'] )
 				{
 					case 	1:			// show Birthday and Age
@@ -186,9 +184,7 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $imgTitle, array
 						$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_YEAR_OF_BIRTH';
 						break;
 				}
-				echo JText::_( $outputStr );
-				?></td>
-				<td class="data"><?php
+				
 				#$this->assignRef( 'playerage', $model->getAge( $this->player->birthday, $this->project->start_date ) );
 				switch ( $this->config['show_birthday'] )
 				{
@@ -215,83 +211,87 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $imgTitle, array
 					default:	$birthdateStr = "";
 					break;
 				}
-				echo $birthdateStr;
-				?></td>
-			</tr>
+
+				?>
+            
+            <address>
+			<strong><?php echo JText::_( $outputStr ); ?></strong>
+			<?php echo $birthdateStr; ?>
+            </address>
+            
 			<?php
 			}
 			if 	( $this->person->deathday != '0000-00-00' )
 			{
 			?>
-			<tr>
-				<td class="label">
-					<?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_DEATHDAY' ); ?>
-				</td>
-				<td class="data">
-					<?php 
+			
+            
+            <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_DEATHDAY' ); ?></strong>
+			<?php 
 					$deathdateStr =	JHtml::date( $this->person->deathday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DEATHDATE')) ;
 					echo '&dagger; '.$deathdateStr;
 					?>
-				</td>
-			</tr>		
+            </address>	
 			<?php
 			}
 
 			if (( $this->person->address != "" ) && ( $this->config[ 'show_person_address' ] ==1  ) && ($this->isContactDataVisible) )
 			{
 				?>
-			<tr>
-				<td class="label"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_ADDRESS' ); ?></td>
-				<td class="data"><?php
-					echo JSMCountries::convertAddressString(	'',
+			
+            
+            <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_ADDRESS' ); ?></strong>
+			<?php 
+            echo JSMCountries::convertAddressString(	'',
 															$this->person->address,
 															$this->person->state,
 															$this->person->zipcode,
 															$this->person->location,
 															$this->person->address_country,
-															'COM_SPORTSMANAGEMENT_PERSON_ADDRESS_FORM' );
-				?></td>
-			</tr>
+															'COM_SPORTSMANAGEMENT_PERSON_ADDRESS_FORM' ); 
+            
+            ?>
+            </address>
+            
 			<?php
 			}
 
 			if (( $this->person->phone != "" ) && ( $this->config[ 'show_person_phone' ] ==1  ) && ($this->isContactDataVisible) )
 			{
 				?>
-			<tr>
-				<td class="label"><?php
-				echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PHONE' );
-				?></td>
-				<td class="data"><?php
-				echo $this->person->phone;
-				?></td>
-			</tr>
+			
+            
+            <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PHONE' ); ?></strong>
+			<?php echo $this->person->phone; ?>
+            </address>
+            
 			<?php
 			}
 
 			if (( $this->person->mobile != "" ) && ( $this->config[ 'show_person_mobile' ] ==1  ) && ($this->isContactDataVisible) )
 			{
 				?>
-			<tr>
-				<td class="label"><?php
-				echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_MOBILE' );
-				?></td>
-				<td class="data"><?php
-				echo $this->person->mobile;
-				?></td>
-			</tr>
+			            
+            <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_MOBILE' ); ?></strong>
+			<?php echo $this->person->mobile; ?>
+            </address>
+            
 			<?php
 			}
 
 			if (( $this->person->email != "" ) && ($this->config['show_person_email'] == 1) && ($this->isContactDataVisible) )
 			{
 					?>
-			<tr>
-				<td class="label"><?php
-				echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_EMAIL' );
-				?></td>
-				<td class="data"><?php
-				$user = JFactory::getUser();
+			
+            
+            <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_EMAIL' ); ?></strong>
+			<?php 
+            $user = JFactory::getUser();
 				if ( ( $user->id ) || ( ! $this->overallconfig['nospam_email'] ) )
 				{
 					?> <a href="mailto: <?php echo $this->person->email; ?>"> <?php
@@ -302,64 +302,62 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $imgTitle, array
 				{
 					echo JHtml::_('email.cloak', $this->person->email );
 				}
-				?></td>
-			</tr>
+            ?>
+            </address>
 			<?php
 			}
 
 			if (( $this->person->website != "" ) && ($this->config['show_person_website'] == 1))
 			{
 				?>
-			<tr>
-				<td class="label"><?php
-				echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_WEBSITE' );
-				?></td>
-				<td class="data"><?php
-				echo JHtml::_(	'link',
+		
+            
+            <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_WEBSITE' ); ?></strong>
+			<?php echo JHtml::_(	'link',
 				$this->person->website,
 				$this->person->website,
 				array( 'target' => '_blank' ) );
-				?></td>
-			</tr>
+                 ?>
+            </address>
 			<?php
 			}
 
 			if (( $this->person->height > 0 ) && ($this->config['show_person_height'] == 1))
 			{
 				?>
-			<tr>
-				<td class="label"><?php
-				echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_HEIGHT' );
-				?></td>
-				<td class="data"><?php
-				echo str_replace( "%HEIGHT%", $this->person->height, JText::_( 'COM_SPORTSMANAGEMENT_PERSON_HEIGHT_FORM' ) );
-				?></td>
-			</tr>
+			
+            
+             <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_HEIGHT' ); ?></strong>
+			<?php echo str_replace( "%HEIGHT%", $this->person->height, JText::_( 'COM_SPORTSMANAGEMENT_PERSON_HEIGHT_FORM' ) ); ?>
+            </address>
+            
+            
 			<?php
 			}
 			if (( $this->person->weight > 0 ) && ($this->config['show_person_weight'] == 1))
 			{
 				?>
-			<tr>
-				<td class="label"><?php
-				echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_WEIGHT' );
-				?></td>
-				<td class="data"><?php
-				echo str_replace( "%WEIGHT%", $this->person->weight, JText::_( 'COM_SPORTSMANAGEMENT_PERSON_WEIGHT_FORM' ) );
-				?></td>
-			</tr>
+			
+            
+            <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_WEIGHT' ); ?></strong>
+			<?php echo str_replace( "%WEIGHT%", $this->person->weight, JText::_( 'COM_SPORTSMANAGEMENT_PERSON_WEIGHT_FORM' ) );; ?>
+            </address>
 			<?php
 			}
+            
 			if ( ( $this->config['show_player_number'] ) &&
 			isset($this->teamPlayer->jerseynumber) &&
 			( $this->teamPlayer->jerseynumber > 0 ) )
 			{
 				?>
-			<tr>
-				<td class="label"><?php
-				echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_NUMBER' );
-				?></td>
-				<td class="data"><?php
+			
+            
+            <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_NUMBER' ); ?></strong>
+			<?php
 				if ( $this->config['player_number_picture'] )
 				{
 					$posnumber = $this->teamPlayer->jerseynumber;
@@ -371,35 +369,36 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $imgTitle, array
 				{
 					echo $this->teamPlayer->jerseynumber;
 				}
-				?></td>
-			</tr>
+				?>
+                
+            </address>
+            
 			<?php
 			}
 			if ( isset($this->teamPlayer->position_id) && $this->teamPlayer->position_id != "" )
 			{
 				?>
-			<tr>
-				<td class="label"><?php
-				echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_ROSTERPOSITION' );
-				?></td>
-				<td class="data"><?php
-				echo JText::_( $this->teamPlayer->position_name );
-				?></td>
-			</tr>
+			
+            
+            <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_ROSTERPOSITION' ); ?></strong>
+			<?php echo JText::_( $this->teamPlayer->position_name ); ?>
+            </address>
+            
 			<?php
 			}
 			if (( ! empty( $this->person->knvbnr ) ) && ($this->config['show_person_regnr'] == 1))
 			{
 				?>
-			<tr>
-				<td class="label"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_REGISTRATIONNR' ); ?>
-				</td>
-				<td class="data"><?php echo $this->person->knvbnr; ?></td>
-			</tr>
+			
+            
+            <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_REGISTRATIONNR' ); ?></strong>
+			<?php echo $this->person->knvbnr; ?>
+            </address>
 			<?php
 			}
 			?>
-		</table>
-		</td>
-	</tr>
-</table>
+
+</div>  
+</div>  

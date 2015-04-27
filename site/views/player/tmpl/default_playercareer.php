@@ -44,10 +44,10 @@ if (count($this->historyPlayer) > 0)
 	?>
 	<!-- Player history START -->
 	<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_PLAYING_CAREER'); ?></h2>
-	<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
+	<table class="<?PHP echo $this->config['history_table_class']; ?>" >
 		<tr>
 			<td>
-				<table id="playerhistory">
+				<table id="playerhistory" class="<?PHP echo $this->config['history_table_class']; ?>" >
 					<tr class="sectiontableheader">
 						<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION');
 							?></th>

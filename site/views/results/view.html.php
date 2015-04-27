@@ -297,15 +297,35 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
             if ( !empty($team->logo_big) )
 			{
 				//$image = JHtml::image($team->logo_big,$title,$attribs);
-                $image="<a href=\"".COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->logo_big."\" title=\"".$title."\" data-toggle=\"modal\" data-target=\"#pt".$team->projectteamid."\">";
+                $image="<a href=\"#\" title=\"".$title."\" data-toggle=\"modal\" data-target=\".resultsteam".$team->projectteamid."\">";
 				$image.=JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->logo_big,$title,$attribs);
 				$image.="</a>";
-                $image.="<div class=\"modal fade\" id=\"pt".$team->projectteamid."\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal\" aria-hidden=\"true\">";
-                $image.="<div class=\"modal-header\">";
-                $image.="<button type=\"button\" class=\"close\" data-dismiss=\"modal\"><span aria-hidden=\"true\">&times;</span></button>";
-                $image.="</div>";
-                $image.= JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->logo_big, $title, array('title' => $title,'class' => "img-rounded" ));
-                $image.="</div>";
+                
+$image.="<div id=\"\" style=\"display: none;\" class=\"modal fade resultsteam".$team->projectteamid."\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myLargeModalLabel\" aria-hidden=\"true\">";
+$image.="<div class=\"modal-dialog modal-lg\">";
+$image.="<div class=\"modal-content\">";
+$image.="<div class=\"modal-header\">";
+$image.="<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">X</button>";
+$image.="<h4 class=\"modal-title\" id=\"myLargeModalLabel\">".$title."</h4>";
+$image.="</div>";
+$image.="<div class=\"modal-body\">";
+$image.="<img src=\"".COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->logo_big."\" class=\"img-responsive img-rounded center-block\">";
+$image.="</div>";
+$image.="<div class=\"modal-footer\">";
+$image.="<button class=\"btn\" data-dismiss=\"modal\" aria-hidden=\"true\">".JText::_('JLIB_HTML_BEHAVIOR_CLOSE')."</button>";
+$image.="</div>";
+$image.="</div>";
+$image.="</div>";
+$image.="</div>";               
+                
+                
+                
+//                $image.="<div class=\"modal fade\" id=\"pt".$team->projectteamid."\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal\" aria-hidden=\"true\">";
+//                $image.="<div class=\"modal-header\">";
+//                $image.="<button type=\"button\" class=\"close\" data-dismiss=\"modal\"><span aria-hidden=\"true\">&times;</span></button>";
+//                $image.="</div>";
+//                $image.= JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->logo_big, $title, array('title' => $title,'class' => "img-rounded" ));
+//                $image.="</div>";
                 
                 
 			}
@@ -330,16 +350,34 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 			{
 				$attribs = array_merge(array('width' => '20',$attribs));
                 //$image = JHtml::image($team->logo_big,$title,$attribs).' '.JSMCountries::getCountryFlag($team->country);
-                $image="<a href=\"".COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->logo_big."\" title=\"".$title."\" data-toggle=\"modal\" data-target=\"#pt".$team->projectteamid."\">";
+                $image="<a href=\"#\" title=\"".$title."\" data-toggle=\"modal\" data-target=\".resultsteam".$team->projectteamid."\">";
 				$image.=JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->logo_big,$title,$attribs);
 				$image.="</a>";
                 $image.=' '.JSMCountries::getCountryFlag($team->country);
-                $image.="<div class=\"modal fade\" id=\"pt".$team->projectteamid."\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal\" aria-hidden=\"true\">";
-                $image.="<div class=\"modal-header\">";
-                $image.="<button type=\"button\" class=\"close\" data-dismiss=\"modal\"><span aria-hidden=\"true\">&times;</span></button>";
-                $image.="</div>";
-                $image.= JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->logo_big, $title, array('title' => $title,'class' => "img-rounded" ));
-                $image.="</div>";
+
+$image.="<div id=\"\" style=\"display: none;\" class=\"modal fade resultsteam".$team->projectteamid."\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myLargeModalLabel\" aria-hidden=\"true\">";
+$image.="<div class=\"modal-dialog modal-lg\">";
+$image.="<div class=\"modal-content\">";
+$image.="<div class=\"modal-header\">";
+$image.="<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">X</button>";
+$image.="<h4 class=\"modal-title\" id=\"myLargeModalLabel\">".$title."</h4>";
+$image.="</div>";
+$image.="<div class=\"modal-body\">";
+$image.="<img src=\"".COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->logo_big."\" class=\"img-responsive img-rounded center-block\">";
+$image.="</div>";
+$image.="<div class=\"modal-footer\">";
+$image.="<button class=\"btn\" data-dismiss=\"modal\" aria-hidden=\"true\">".JText::_('JLIB_HTML_BEHAVIOR_CLOSE')."</button>";
+$image.="</div>";
+$image.="</div>";
+$image.="</div>";
+$image.="</div>";                 
+                
+//                $image.="<div class=\"modal fade\" id=\"pt".$team->projectteamid."\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal\" aria-hidden=\"true\">";
+//                $image.="<div class=\"modal-header\">";
+//                $image.="<button type=\"button\" class=\"close\" data-dismiss=\"modal\"><span aria-hidden=\"true\">&times;</span></button>";
+//                $image.="</div>";
+//                $image.= JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->logo_big, $title, array('title' => $title,'class' => "img-rounded" ));
+//                $image.="</div>";
 			}
 		}
         elseif ($type==7 && !empty($team->country) && !empty($team->logo_big) && !JFile::exists($team->logo_big) )
@@ -668,23 +706,26 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
     return $game->summary;
     }   
 
+	
 	/**
 	 * sportsmanagementViewResults::showMatchRefereesAsTooltip()
 	 * 
 	 * @param mixed $game
+	 * @param mixed $project
+	 * @param mixed $config
 	 * @return void
 	 */
-	function showMatchRefereesAsTooltip(&$game)
+	public static function showMatchRefereesAsTooltip(&$game,$project=array(),$config=array())
 	{
-		if ($this->config['show_referee'])
+		if ($config['show_referee'])
 		{
-			if ($this->project->teams_as_referees)
+			if ($project->teams_as_referees)
 			{
-				$referees=$this->model->getMatchRefereeTeams($game->id);
+				$referees = sportsmanagementModelResults::getMatchRefereeTeams($game->id);
 			}
 			else
 			{
-				$referees=$this->model->getMatchReferees($game->id);
+				$referees = sportsmanagementModelResults::getMatchReferees($game->id);
 			}
 
 			if (!empty($referees))
@@ -694,7 +735,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 
 				foreach ($referees as $ref)
 				{
-					if ($this->project->teams_as_referees)
+					if ($project->teams_as_referees)
 					{
 						$toolTipText .= $ref->teamname.' ('.$ref->position_name.')'.'&lt;br /&gt;';
 					}
@@ -759,16 +800,19 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 	}
 	
 	
+	
 	/**
-	 * returns html for events in tabs
-	 * @param object match
-	 * @param array project events
-	 * @param array match events
-	 * @param aray match substitutions
-	 * @param array $config
-	 * @return string
+	 * sportsmanagementViewResults::showEventsContainerInResults()
+	 * 
+	 * @param mixed $matchInfo
+	 * @param mixed $projectevents
+	 * @param mixed $matchevents
+	 * @param mixed $substitutions
+	 * @param mixed $config
+	 * @param mixed $project
+	 * @return
 	 */
-	function showEventsContainerInResults($matchInfo,$projectevents,$matchevents,$substitutions=null,$config=array() )
+	public static function showEventsContainerInResults($matchInfo,$projectevents,$matchevents,$substitutions=null,$config=array(),$project=array() )
 	{
 	   $app = JFactory::getApplication();
        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config'.'<pre>'.print_r($config,true).'</pre>' ),'');
@@ -878,7 +922,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 				{
 					// Event icon as thumbnail on the tab (a placeholder icon is used when the icon does not exist)
 					$imgTitle = JText::_('COM_SPORTSMANAGEMENT_IN_OUT');
-					$pic_tab	= 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/subst.png';
+					$pic_tab	= 'images/com_sportsmanagement/database/events/'.$project->fs_sport_type_name.'/subst.png';
 					$tab_content = sportsmanagementHelper::getPictureThumb($pic_tab, $imgTitle, $width, $height, $type);
 				}
 				else
@@ -886,9 +930,9 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 					$tab_content = JText::_('COM_SPORTSMANAGEMENT_IN_OUT');
 				}
 
-				$pic_time	= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/playtime.gif';
-				$pic_out	= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png';
-				$pic_in		= JURI::root().'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png';
+				$pic_time	= JURI::root().'images/com_sportsmanagement/database/events/'.$project->fs_sport_type_name.'/playtime.gif';
+				$pic_out	= JURI::root().'images/com_sportsmanagement/database/events/'.$project->fs_sport_type_name.'/out.png';
+				$pic_in		= JURI::root().'images/com_sportsmanagement/database/events/'.$project->fs_sport_type_name.'/in.png';
 				$imgTime = JHtml::image($pic_time,JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE'),array(' title' => JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_MINUTE')));
 				$imgOut  = JHtml::image($pic_out,JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT'),array(' title' => JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_WENT_OUT')));
 				$imgIn   = JHtml::image($pic_in,JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN'),array(' title' => JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTION_CAME_IN')));
@@ -1060,7 +1104,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 	 * @param mixed $showEventInfo
 	 * @return
 	 */
-	function _formatEventContainerInResults($matchevent, $event, $projectteamId, $showEventInfo,$config=array())
+	public static function _formatEventContainerInResults($matchevent, $event, $projectteamId, $showEventInfo,$config=array())
 	{
 		// Meaning of $showEventInfo:
 		// 0 : do not show event as text or as icon in a list item
@@ -1137,7 +1181,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 	 * @param mixed $imgIn
 	 * @return
 	 */
-	function _formatSubstitutionContainerInResults($subs,$projectteamId,$imgTime,$imgOut,$imgIn,$config=array())
+	public static function _formatSubstitutionContainerInResults($subs,$projectteamId,$imgTime,$imgOut,$imgIn,$config=array())
 	{
 		$output='';
 		if ($subs->ptid == $projectteamId)

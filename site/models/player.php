@@ -137,11 +137,19 @@ class sportsmanagementModelPlayer extends JModelLegacy
         
         if ( !self::$_teamplayers && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $my_text = 'dump <pre>'.print_r($query->dump(),true).'</pre>';
+        $my_text .= 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';   
+        //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
         elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            $my_text = 'dump <pre>'.print_r($query->dump(),true).'</pre>';
+        //$my_text .= 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';   
+        //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
 
 		return self::$_teamplayers;
@@ -209,11 +217,19 @@ class sportsmanagementModelPlayer extends JModelLegacy
  		self::$_inproject = $db->loadObjectList();
         if ( !self::$_inproject && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $my_text = 'dump <pre>'.print_r($query->dump(),true).'</pre>';
+        $my_text .= 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';   
+        //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
         elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            $my_text = 'dump <pre>'.print_r($query->dump(),true).'</pre>';
+        //$my_text .= 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';   
+        //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
 
 		return self::$_inproject;
@@ -373,12 +389,21 @@ class sportsmanagementModelPlayer extends JModelLegacy
     
     if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            $my_text = 'dump <pre>'.print_r($query->dump(),true).'</pre>';
+        $my_text .= 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';   
+        //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        
+//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         } 
         elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
-                $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+                $my_text = 'dump <pre>'.print_r($query->dump(),true).'</pre>';
+        //$my_text .= 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';   
+        //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+                //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             } 
        
 
@@ -593,9 +618,14 @@ class sportsmanagementModelPlayer extends JModelLegacy
        
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' player_id<br><pre>'.print_r($player_id,true).'</pre>'),'');
-       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' game_regular_time<br><pre>'.print_r($game_regular_time,true).'</pre>'),'');
-       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cards<br><pre>'.print_r($cards,true).'</pre>'),'');
+       $my_text = 'player_id <pre>'.print_r($player_id,true).'</pre>';
+        $my_text .= 'game_regular_time <pre>'.print_r($game_regular_time,true).'</pre>';   
+        $my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+         
+//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' player_id<br><pre>'.print_r($player_id,true).'</pre>'),'');
+//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' game_regular_time<br><pre>'.print_r($game_regular_time,true).'</pre>'),'');
+//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cards<br><pre>'.print_r($cards,true).'</pre>'),'');
        }   
        
     
@@ -621,8 +651,12 @@ class sportsmanagementModelPlayer extends JModelLegacy
     
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' totalmatch<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' totalresult<br><pre>'.print_r($totalresult,true).'</pre>'),'');
+            $my_text = 'dump <pre>'.print_r($query->dump(),true).'</pre>';
+        $my_text .= 'totalresult <pre>'.print_r($totalresult,true).'</pre>';   
+        //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' totalmatch<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' totalresult<br><pre>'.print_r($totalresult,true).'</pre>'),'');
         }
         
     // einwechselung
@@ -643,8 +677,13 @@ class sportsmanagementModelPlayer extends JModelLegacy
     
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' totalin<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' cameinresult<br><pre>'.print_r($cameinresult,true).'</pre>'),'');
+            $my_text = 'dump <pre>'.print_r($query->dump(),true).'</pre>';
+        $my_text .= 'cameinresult <pre>'.print_r($cameinresult,true).'</pre>';   
+        //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        
+//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' totalin<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' cameinresult<br><pre>'.print_r($cameinresult,true).'</pre>'),'');
         }
     
     if ( $cameinresult )
@@ -669,8 +708,13 @@ class sportsmanagementModelPlayer extends JModelLegacy
     
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' totalout<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' cameautresult<br><pre>'.print_r($cameautresult,true).'</pre>'),'');
+            $my_text = 'dump <pre>'.print_r($query->dump(),true).'</pre>';
+        $my_text .= 'cameautresult <pre>'.print_r($cameautresult,true).'</pre>';   
+        //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        
+//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' totalout<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' cameautresult<br><pre>'.print_r($cameautresult,true).'</pre>'),'');
         }
     
     if ( $cameautresult )
@@ -704,8 +748,13 @@ class sportsmanagementModelPlayer extends JModelLegacy
     
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' match_event<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' cardsresult<br><pre>'.print_r($cardsresult,true).'</pre>'),'');
+            $my_text = 'dump <pre>'.print_r($query->dump(),true).'</pre>';
+        $my_text .= 'cardsresult <pre>'.print_r($cardsresult,true).'</pre>';   
+        //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        
+//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' match_event<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' cardsresult<br><pre>'.print_r($cardsresult,true).'</pre>'),'');
         }
         
     }
@@ -731,13 +780,20 @@ class sportsmanagementModelPlayer extends JModelLegacy
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
 	   $query = $db->getQuery(true);
 		
-       if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-       {
-       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
-       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($projectteam_id,true).'</pre>'),'');
-       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' teamplayer_id<br><pre>'.print_r($teamplayer_id,true).'</pre>'),'');
-       }
+//       if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+//       {
+//       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
+//       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($projectteam_id,true).'</pre>'),'');
+//       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' teamplayer_id<br><pre>'.print_r($teamplayer_id,true).'</pre>'),'');
+//       }
        
+       if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $my_text = 'project_id <pre>'.print_r($project_id,true).'</pre>';
+        $my_text .= 'projectteam_id <pre>'.print_r($projectteam_id,true).'</pre>';   
+        $my_text .= 'teamplayer_id <pre>'.print_r($teamplayer_id,true).'</pre>';       
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
+        }
        
        
        $query->select('m.id AS mid, mp.came_in, mp.out, mp.teamplayer_id, mp.in_for, mp.in_out_time');
@@ -766,11 +822,19 @@ class sportsmanagementModelPlayer extends JModelLegacy
        
        if ( !$rows && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' rows<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $my_text = 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';
+        $my_text .= 'dump <pre>'.print_r($query->dump(),true).'</pre>';   
+        //$my_text .= 'teamplayer_id <pre>'.print_r($teamplayer_id,true).'</pre>';       
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' rows<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         } 
         elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            $my_text = 'dump <pre>'.print_r($query->dump(),true).'</pre>';
+//        $my_text .= 'projectteam_id <pre>'.print_r($projectteam_id,true).'</pre>';   
+//        $my_text .= 'teamplayer_id <pre>'.print_r($teamplayer_id,true).'</pre>';       
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
         
        $inoutstat = new stdclass;
@@ -789,7 +853,11 @@ class sportsmanagementModelPlayer extends JModelLegacy
        
        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' inoutstat<br><pre>'.print_r($inoutstat,true).'</pre>'),'');
+       $my_text = 'inoutstat <pre>'.print_r($inoutstat,true).'</pre>';
+//        $my_text .= 'projectteam_id <pre>'.print_r($projectteam_id,true).'</pre>';   
+//        $my_text .= 'teamplayer_id <pre>'.print_r($teamplayer_id,true).'</pre>';       
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
+       //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' inoutstat<br><pre>'.print_r($inoutstat,true).'</pre>'),'');
        }
        
        
@@ -892,7 +960,11 @@ class sportsmanagementModelPlayer extends JModelLegacy
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
+    $my_text = 'dump <pre>'.print_r($query_core->dump(),true).'</pre>';
+        //$my_text .= 'cardsresult <pre>'.print_r($cardsresult,true).'</pre>';   
+        //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
  }
             
 			$this->_careerStats = $db->loadObjectList();
@@ -991,9 +1063,14 @@ class sportsmanagementModelPlayer extends JModelLegacy
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamplayer<br><pre>'.print_r($teamplayer,true).'</pre>'),'');
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' stats<br><pre>'.print_r($stats,true).'</pre>'),'');
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' history<br><pre>'.print_r($history,true).'</pre>'),'');
+    $my_text = 'teamplayer <pre>'.print_r($teamplayer,true).'</pre>';
+        $my_text .= 'stats <pre>'.print_r($stats,true).'</pre>';   
+        $my_text .= 'history <pre>'.print_r($history,true).'</pre>';       
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamplayer<br><pre>'.print_r($teamplayer,true).'</pre>'),'');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' stats<br><pre>'.print_r($stats,true).'</pre>'),'');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' history<br><pre>'.print_r($history,true).'</pre>'),'');
  }
             
 			if(count($history)>0)
@@ -1006,11 +1083,17 @@ class sportsmanagementModelPlayer extends JModelLegacy
 						{
 
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{							
-       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' person_id<br><pre>'.print_r($player->person_id,true).'</pre>'),'');
-       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($player->ptid,true).'</pre>'),'');
-       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($player->project_id,true).'</pre>'),'');
-       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sportstype<br><pre>'.print_r($sportstype,true).'</pre>'),'');
+{						
+    $my_text = 'person_id <pre>'.print_r($player->person_id,true).'</pre>';
+        $my_text .= 'ptid <pre>'.print_r($player->ptid,true).'</pre>';   
+        $my_text .= 'project_id <pre>'.print_r($player->project_id,true).'</pre>';       
+        $my_text .= 'sportstype <pre>'.print_r($sportstype,true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        
+//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' person_id<br><pre>'.print_r($player->person_id,true).'</pre>'),'');
+//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($player->ptid,true).'</pre>'),'');
+//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($player->project_id,true).'</pre>'),'');
+//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sportstype<br><pre>'.print_r($sportstype,true).'</pre>'),'');
  }
                             
                             $result[$stat->id][$player->project_id][$player->ptid] = $stat->getPlayerStatsByProject($player->person_id, $player->ptid, $player->project_id, $sportstype);
@@ -1092,12 +1175,21 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         
         if ( !$games && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $my_text = 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';
+        $my_text .= 'dump <pre>'.print_r($query->dump(),true).'</pre>';   
+        //$my_text .= 'teamplayer_id <pre>'.print_r($teamplayer_id,true).'</pre>';       
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
         elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpid_list<br><pre>'.print_r($tpid_list,true).'</pre>'),'');
+            $my_text = 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';
+        $my_text .= 'dump <pre>'.print_r($query->dump(),true).'</pre>';   
+        $my_text .= 'tpid_list <pre>'.print_r($tpid_list,true).'</pre>';       
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpid_list<br><pre>'.print_r($tpid_list,true).'</pre>'),'');
         }
         
         foreach ($games as $game)
@@ -1113,8 +1205,13 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' games<br><pre>'.print_r($games,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' inoutstats<br><pre>'.print_r($inoutstats,true).'</pre>'),'');
+        $my_text = 'games <pre>'.print_r($games,true).'</pre>';
+        $my_text .= 'inoutstats <pre>'.print_r($inoutstats,true).'</pre>';   
+        //$my_text .= 'form_value <pre>'.print_r($form_value,true).'</pre>';       
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' games<br><pre>'.print_r($games,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' inoutstats<br><pre>'.print_r($inoutstats,true).'</pre>'),'');
         }
         
 		return $games;

@@ -83,17 +83,28 @@ foreach ($players as $row): ?>
 				//echo JHtml::image( $picture, $imgTitle, array( ' title' => $imgTitle ) );
 				
 ?>                                    
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>"  title="<?php echo $playerName;?>" data-toggle="modal" data-target="#pl<?php echo $row->person_id;?>">
+<a href="#"  title="<?php echo $playerName;?>" data-toggle="modal" data-target=".rosterplayer<?php echo $row->person_id;?>">
 <img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $playerName;?>" width="<?php echo $this->config['player_picture_width'];?>" />
 </a>
-<div class="modal fade" id="pl<?php echo $row->person_id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+
+<div id="" style="display: none;" class="modal fade rosterplayer<?php echo $row->person_id;?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
 <div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+<h4 class="modal-title" id="myLargeModalLabel"><?php echo $playerName;?></h4>
 </div>
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $playerName, array('title' => $playerName,'class' => "img-rounded" ));      
-?>
+<div class="modal-body">
+<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" class="img-responsive img-rounded center-block">
 </div>
+<div class="modal-footer">
+<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_('JLIB_HTML_BEHAVIOR_CLOSE');?> </button>
+</div>
+</div>
+</div>
+</div> 
+
+
 
 <?PHP
 

@@ -49,7 +49,7 @@ if (count($this->history) > 0)
 <table class="<?php echo $this->config['career_table_class']; ?>">
 	<tr>
 		<td><br />
-			<table class="gameshistory">
+			<table class="<?php echo $this->config['career_table_class']; ?>">
 				<tr class="sectiontableheader">
 					<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION'); ?></th>
 					<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_SEASON'); ?></th>

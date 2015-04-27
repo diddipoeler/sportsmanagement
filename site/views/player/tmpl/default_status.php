@@ -46,7 +46,7 @@ if (	( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 ) ||
 	?>
 	<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_STATUS');	?></h2>
 	
-	<table class="status">
+	<table class="<?PHP echo $this->config['player_table_class']; ?>" >
 		<?php
 		if ($this->teamPlayer->injury > 0)
 		{

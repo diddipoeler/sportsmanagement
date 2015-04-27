@@ -39,19 +39,14 @@
 
 defined('_JEXEC') or die('Restricted access'); 
 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo 'PERSON_PERSONAL_STATISTICS stats<br /><pre>~' . print_r($this->stats,true) . '~</pre><br />';
-}
-
 ?>
 
 <!-- Player stats History START -->
 <h2><?php	echo JText::_('COM_SPORTSMANAGEMENT_PERSON_PERSONAL_STATISTICS');	?></h2>
-<table class="table table-striped">
+<table class="<?PHP echo $this->config['player_table_class']; ?>" >
 	<tr>
 		<td>
-		<table class="table table-striped">
+		<table class="<?PHP echo $this->config['player_table_class']; ?>" >
 			<thead>
 			<tr class="sectiontableheader">
 				<th class="td_l" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION'); ?></th>
@@ -142,11 +137,7 @@ echo 'PERSON_PERSONAL_STATISTICS stats<br /><pre>~' . print_r($this->stats,true)
 			$career['out'] = 0;
             $career['playedtime'] = 0;
 			$player = JModelLegacy::getInstance("Person","sportsmanagementModel");
-            
-            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-            {
-            echo ' games<br><pre>'.print_r($this->historyPlayer,true).'</pre><br>';
-            }
+      
 
 			if (count($this->historyPlayer) > 0)
 			{

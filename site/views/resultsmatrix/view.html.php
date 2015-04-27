@@ -193,6 +193,10 @@ JHtml::_( 'behavior.mootools' );
 		 // add the links
 		 $document->addHeadLink(JRoute::_($feed.'&type=rss'), 'alternate', 'rel', $rss);
 		 */
+         
+         sportsmanagementHelperHtml::$project = $project;
+         sportsmanagementHelperHtml::$teams = $this->teams;
+         
 		JViewLegacy::display($tpl);
 	}
 

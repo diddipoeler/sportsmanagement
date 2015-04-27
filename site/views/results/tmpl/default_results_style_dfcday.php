@@ -418,7 +418,7 @@ $link = "javascript:void(0);";
 			?>
 		<!-- show matchreferees icon with tooltip -->
 			<td width="5" class="referees">
-			<?php $this->showMatchRefereesAsTooltip($game); ?>
+			<?php sportsmanagementViewResults::showMatchRefereesAsTooltip($game,$this->project,$this->config); ?>
 			</td>
 		<?php
 		}
@@ -565,7 +565,8 @@ $link = "javascript:void(0);";
 												$this->projectevents,
 												$events,
 												$subs,
-												$this->config );
+												$this->config,
+                        $this->project );
 				?></td>
 			</tr>
 		</table>

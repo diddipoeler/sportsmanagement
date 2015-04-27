@@ -66,34 +66,19 @@ class sportsmanagementModelMatrix extends JModelLegacy
 	 */
 	function __construct( )
 	{
+	   $app = JFactory::getApplication();
+       // JInput object
+       $jinput = $app->input;
+       
 		parent::__construct( );
 
-		self::$divisionid = JRequest::getInt( 'division', 0 );
-		self::$roundid = JRequest::getInt( 'r', 0 );
-		self::$projectid = JRequest::getInt( 'p', 0 );
+		self::$divisionid = (int) $jinput->get->get('division', 0, '');
+		self::$roundid = (int) $jinput->get->get('r', 0, '');
+		self::$projectid = (int) $jinput->get->get('p', 0, '');
 		sportsmanagementModelProject::$projectid = self::$projectid;
-        self::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+        self::$cfg_which_database = $jinput->get->get('cfg_which_database', 0 ,'');
 	}
 
-//	/**
-//	 * sportsmanagementModelMatrix::getDivisionID()
-//	 * 
-//	 * @return
-//	 */
-//	function getDivisionID( )
-//	{
-//		return $this->divisionid;
-//	}
-
-//	/**
-//	 * sportsmanagementModelMatrix::getRoundID()
-//	 * 
-//	 * @return
-//	 */
-//	function getRoundID( )
-//	{
-//		return $this->roundid;
-//	}
 
 	/**
 	 * sportsmanagementModelMatrix::getDivision()

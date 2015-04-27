@@ -726,6 +726,7 @@ class JSMRanking
         $query->select('t.name, t.id as teamid, pt.neg_points_finally');
         $query->select('pt.use_finally, pt.points_finally,pt.matches_finally,pt.won_finally,pt.draws_finally,pt.lost_finally');
         $query->select('pt.homegoals_finally, pt.guestgoals_finally,pt.diffgoals_finally,pt.penalty_points');
+        $query->select('CONCAT_WS(\':\',pt.id,t.alias) AS ptid_slug');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt.team_id'); 
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON st1.team_id = t.id ');
@@ -734,21 +735,6 @@ class JSMRanking
         
     if ( $division )
     {
-//    		$query =' SELECT pt.id AS ptid, pt.is_in_score, pt.start_points, pt.division_id, '
-//				. ' t.name, t.id as teamid, pt.neg_points_finally, '	
-//				// new for use_finally
-//				. ' pt.use_finally, pt.points_finally,pt.matches_finally,pt.won_finally,pt.draws_finally,pt.lost_finally, '
-//				. ' pt.homegoals_finally, pt.guestgoals_finally,pt.diffgoals_finally,pt.penalty_points '	
-//				. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt '
-//				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = pt.team_id '
-//				
-//        . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m 
-//        ON ( m.projectteam1_id = pt.id OR m.projectteam2_id = pt.id )'
-//        
-//				. ' WHERE pt.project_id = ' . $db->Quote($pid)
-//				//only show it in ranking when is_in_score=1
-//				. ' AND pt.is_in_score = 1'
-//				. ' AND m.division_id = '.$division;
                 
                 $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON ( m.projectteam1_id = pt.id OR m.projectteam2_id = pt.id ) ');
                 $query->where('m.division_id = ' . $division);
@@ -756,29 +742,6 @@ class JSMRanking
     else
     {
 
-//		$query->select('pt.id AS ptid, pt.is_in_score, pt.start_points, pt.division_id');
-//        $query->select('t.name, t.id as teamid, pt.neg_points_finally');
-//        $query->select('pt.use_finally, pt.points_finally,pt.matches_finally,pt.won_finally,pt.draws_finally,pt.lost_finally');
-//        $query->select('pt.homegoals_finally, pt.guestgoals_finally,pt.diffgoals_finally,pt.penalty_points');
-//        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ');
-//        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt.team_id'); 
-//        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON st1.team_id = t.id ');
-//        $query->where('pt.project_id = ' . $db->Quote($pid));
-//        $query->where('pt.is_in_score = 1');
-
-/*        
-        $query =' SELECT pt.id AS ptid, pt.is_in_score, pt.start_points, pt.division_id, '
-				. ' t.name, t.id as teamid, pt.neg_points_finally, '	
-				// new for use_finally
-				. ' pt.use_finally, pt.points_finally,pt.matches_finally,pt.won_finally,pt.draws_finally,pt.lost_finally, '
-				. ' pt.homegoals_finally, pt.guestgoals_finally,pt.diffgoals_finally,pt.penalty_points '	
-				
-				. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt '
-				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = pt.team_id '
-				. ' WHERE pt.project_id = ' . $db->Quote($pid)
-				//only show it in ranking when is_in_score=1
-				. ' AND pt.is_in_score=1';
-*/                
 		}
         
         		
@@ -818,6 +781,7 @@ class JSMRanking
 			$t = new JSMRankingTeam($r->ptid);
 			$t->setTeamid($r->teamid);
 			// diddipoeler
+            $t->ptid_slug = $r->ptid_slug;
 			$t->setDivisionid($division);
 			//$t->setDivisionid($r->division_id);
 			$t->setStartpoints($r->start_points);
@@ -865,11 +829,11 @@ class JSMRanking
       			
 			$teams[$r->ptid] = $t;
 		}
-		
-// echo '_initTeams teams<br><pre>';
-// print_r($teams);
-// echo '</pre>';
-		
+/*		
+ echo '_initTeams teams<br><pre>';
+ print_r($teams);
+ echo '</pre>';
+*/		
 		return $teams;
 	}
 

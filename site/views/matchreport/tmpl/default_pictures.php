@@ -41,7 +41,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
-echo 'this->matchimages<br /><pre>~' . print_r($this->matchimages,true) . '~</pre><br />';
+//echo 'this->matchimages<br /><pre>~' . print_r($this->matchimages,true) . '~</pre><br />';
+$my_text = 'matchimages <pre>'.print_r($this->matchimages,true).'</pre>';
+//$my_text .= 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';   
+//$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
+sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,'sportsmanagementViewMatchReportdefault_pictures',__LINE__,$my_text);
+        
 }
 
 $actualItems = count( $this->matchimages );

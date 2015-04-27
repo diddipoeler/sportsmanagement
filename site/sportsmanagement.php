@@ -40,6 +40,37 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Joomla! 3.0 code here
+}
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+
+//if ( COM_SPORTSMANAGEMENT_LOAD_BOOTSTRAP )
+//{    
+
+// Joomla! 2.5 code here
+//JFactory::getDocument()->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js');
+//JFactory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css');
+//JFactory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css');
+
+//}
+
+} 
+elseif(version_compare(JVERSION,'1.7.0','ge')) 
+{
+// Joomla! 1.7 code here
+} 
+elseif(version_compare(JVERSION,'1.6.0','ge')) 
+{
+// Joomla! 1.6 code here
+} 
+else 
+{
+// Joomla! 1.5 code here
+}
+
 if (! defined('DS'))
 {
 	define('DS', DIRECTORY_SEPARATOR);
@@ -55,12 +86,19 @@ DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.view', JPATH_ADMINISTRATOR);
 */
 
+/*
 //require_once(JPATH_SITE.DS.JSM_PATH.DS.'controller.php' );
 if ( !class_exists('sportsmanagementHelper') ) 
 {
     require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');
 }
+*/
 
+//add the classes for handling
+$classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
+JLoader::register('sportsmanagementHelper', $classpath);
+
+        
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'html.php' );
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'countries.php');
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'ranking.php' );
@@ -142,41 +180,7 @@ $config = JFactory::getConfig();
 
 $lang = JFactory::getLanguage();
 
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-// Joomla! 3.0 code here
-}
-elseif(version_compare(JVERSION,'2.5.0','ge')) 
-{
 
-if ( COM_SPORTSMANAGEMENT_LOAD_BOOTSTRAP )
-{    
-// Joomla! 2.5 code here
-//JFactory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/css/bootstrap.min.css');
-//JFactory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/css/bootstrap-responsive.min.css');
-//JFactory::getDocument()->addScript(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/js/bootstrap.min.js');
-
-JFactory::getDocument()->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js');
-JFactory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css');
-JFactory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css');
-//require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'libraries'.DS.'bootstrap'.DS.'bootstrap.php' );
-//require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'libraries'.DS.'bootstrap'.DS.'jquery.php' );
-
-}
-
-} 
-elseif(version_compare(JVERSION,'1.7.0','ge')) 
-{
-// Joomla! 1.7 code here
-} 
-elseif(version_compare(JVERSION,'1.6.0','ge')) 
-{
-// Joomla! 1.6 code here
-} 
-else 
-{
-// Joomla! 1.5 code here
-}
 
 //$document->setMetaData( 'viewport', "width=device-width, initial-scale=1.0" );
 
@@ -205,6 +209,8 @@ $lang->load($extension, $base_dir, $language_tag, $reload);
 
 $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
 
+$document->addScriptDeclaration('jQuery.noConflict();');
+        
 // meta daten der komponente setzen
 $meta_keys = array();
 

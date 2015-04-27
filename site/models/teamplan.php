@@ -41,9 +41,6 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-//require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
-//require_once('results.php');
-
 /**
  * sportsmanagementModelTeamPlan
  * 
@@ -74,14 +71,17 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 	 */
 	function __construct()
 	{
-		
+		$app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
 
-		self::$projectid = JRequest::getInt('p',0);
-		self::$teamid = JRequest::getInt('tid',0);
-        self::$projectteamid = JRequest::getInt('ptid',0);
-		self::$divisionid = JRequest::getInt('division',0);
-		self::$mode = JRequest::getInt("mode",0);
-        self::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+		self::$projectid = (int) $jinput->get->get('p',0, '');
+		self::$teamid = (int) $jinput->get->get('tid',0, '');
+        self::$projectteamid = (int) $jinput->get->get('ptid',0, '');
+        self::$pro_teamid = (int) $jinput->get->get('ptid',0, '');
+		self::$divisionid = (int) $jinput->get->get('division',0, '');
+		self::$mode = (int) $jinput->get->get("mode",0, '');
+        self::$cfg_which_database = (int) $jinput->get->get('cfg_which_database',0, '');
         parent::__construct();
 	}
 
@@ -186,7 +186,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 		if ( !$result = $db->loadResult())
 		{
 			//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-            $this->pro_teamid = 0;
+            self::$pro_teamid = 0;
             return 0;
 		}
         
@@ -340,7 +340,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 		if ((self::$mode)== 1)
 		{
 		  //$query->where('( (m.projectteam1_id= ' .$team. ' AND m.team1_result > m.team2_result)'.' OR (m.projectteam2_id= ' .$team. ' AND m.team1_result < m.team2_result) )');
-          $query->where('( (m.projectteam1_id = ' .$this->projectteamid. ' AND m.team1_result > m.team2_result)'.' OR (m.projectteam2_id = ' .$this->projectteamid. ' AND m.team1_result < m.team2_result) )');
+          $query->where('( (m.projectteam1_id = ' .self::$projectteamid. ' AND m.team1_result > m.team2_result)'.' OR (m.projectteam2_id = ' .self::$projectteamid. ' AND m.team1_result < m.team2_result) )');
 		}
 //draw matches
 		if ((self::$mode)== 2)

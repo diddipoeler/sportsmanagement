@@ -292,14 +292,19 @@ class sportsmanagementModelResults extends JModelLegacy
         $query->select('d2.name as divaway');
         $query->select('CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) ELSE m.id END AS slug ');
         
+        $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
+        $query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
+        $query->select('CONCAT_WS( \':\', playground.id, playground.alias ) AS playground_slug');
+            
         if ( $params )
         {
             $query->select('c1.'.$params->get('picture_type').' as logohome');
             $query->select('c2.'.$params->get('picture_type').' as logoaway');
             $query->select('t1.'.$params->get('team_names').' as teamhome');
             $query->select('t2.'.$params->get('team_names').' as teamaway');
-            $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
-            $query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
+//            $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
+//            $query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
+//            $query->select('CONCAT_WS( \':\', playground.id, playground.alias ) AS playground_slug');
             
             // favorisierte teams nutzen
             if ( $params->get('use_fav') )
@@ -372,6 +377,12 @@ class sportsmanagementModelResults extends JModelLegacy
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
 	    }
         
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+	    {
+		//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<pre>'.print_r($result,true).'</pre>' ),'Error');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+	    }
+        
 		return $result;
 	}
 
@@ -382,7 +393,7 @@ class sportsmanagementModelResults extends JModelLegacy
 	 * @param mixed $match_id
 	 * @return
 	 */
-	function getMatchReferees($match_id,$cfg_which_database = 0)
+	public static function getMatchReferees($match_id,$cfg_which_database = 0)
 	{
 		$option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();

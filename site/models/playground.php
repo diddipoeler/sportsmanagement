@@ -78,28 +78,6 @@ class sportsmanagementModelPlayground extends JModelLegacy
         parent::__construct( ); 
     }
 
-//    /**
-//     * sportsmanagementModelPlayground::getPlayground()
-//     * 
-//     * @return
-//     */
-//    function getPlayground( )
-//    {
-//        if ( is_null( $this->playground ) )
-//        {
-//            $pgid = JRequest::getInt( "pgid", 0 );
-//            if ( $pgid > 0 )
-//            {
-//                $this->playground = $this->getTable( 'Playground', 'sportsmanagementTable' );
-//                $this->playground->load( $pgid );
-//            }
-//        }
-//        return $this->playground;
-//    }
-
-    
-    
-
     /**
      * sportsmanagementModelPlayground::getTeams()
      * 
@@ -121,10 +99,7 @@ class sportsmanagementModelPlayground extends JModelLegacy
             $query->select('id, team_id, project_id');
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team ');
             $query->where('standard_playground = '. (int)$playground->id);
-            
-//            $query = "SELECT id, team_id, project_id
-//                      FROM #__joomleague_project_team
-//                      WHERE standard_playground = ".(int)$playground->id;
+
             $db->setQuery( $query );
             $rows = $db->loadObjectList();
 			
@@ -136,10 +111,6 @@ class sportsmanagementModelPlayground extends JModelLegacy
                 $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t ');
                 $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.team_id = t.id ');
                 $query->where('st.id = '. (int)$row->team_id);
-
-//                $query = "SELECT name, short_name, notes
-//                          FROM #__joomleague_team
-//                          WHERE id=".(int)$row->team_id;
                           
                 $db->setQuery( $query );
                 $teams[ $row->id ]->teaminfo[] = $db->loadObjectList();
@@ -148,9 +119,6 @@ class sportsmanagementModelPlayground extends JModelLegacy
                 $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project ');
                 $query->where('id = '. (int)$row->project_id);
 
-//                $query= "SELECT name
-//                         FROM #__joomleague_project
-//                         WHERE id=".(int)$row->project_id;
                 $db->setQuery( $query );
             	$teams[ $row->id ]->project = $db->loadResult();
             }
@@ -178,107 +146,12 @@ class sportsmanagementModelPlayground extends JModelLegacy
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ');
         $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON c.id = t.club_id  ');
         $query->where('t.id = '. $team_id);
-            
-//        $query = "
-//            SELECT c.logo_small,
-//                   c.country
-//            FROM #__joomleague_team t
-//            LEFT JOIN #__joomleague_club c ON c.id = t.club_id
-//            WHERE t.id = ".$team_id."
-//        ";
 
         $db->setQuery( $query );
         $result = $db->loadObjectList();
 
         return $result;
     }
-
-//    /**
-//     * sportsmanagementModelPlayground::getTeamsFromMatches()
-//     * 
-//     * @param mixed $games
-//     * @return
-//     */
-//    function getTeamsFromMatches( & $games )
-//    {
-//        $option = JRequest::getCmd('option');
-//	    $app = JFactory::getApplication();
-//        // Get a db connection.
-//        $db = JFactory::getDbo();
-//        $query = $db->getQuery(true);
-//        
-//        $teams = Array();
-//
-//        if ( !count( $games ) )
-//        {
-//            return $teams;
-//        }
-//
-//        foreach ( $games as $m )
-//        {
-//            $teamsId[] = $m->team1;
-//            $teamsId[] = $m->team2;
-//        }
-//        $listTeamId = implode( ",", array_unique( $teamsId ) );
-//
-//        $query = "SELECT t.id, t.name
-//                 FROM #__joomleague_team t
-//                 WHERE t.id IN (".$listTeamId.")";
-//        $db->setQuery( $query );
-//        $result = $db->loadObjectList();
-//
-//        foreach ( $result as $r )
-//        {
-//            $teams[$r->id] = $r;
-//        }
-//
-//        return $teams;
-//    }
-
-//    function getGoogleApiKey( )
-//    {
-//    	$params =& JComponentHelper::getParams('com_joomleague');
-//    	$apikey=$params->get('cfg_google_api_key');
-//
-//      return $apikey;
-//    }
-
-
-
-//    function getGoogleMap( $mapconfig, $address_string = "" )
-//    {
-//        $gm = null;
-//
-//        $google_api_key = $this->getGoogleApiKey();
-//        if ( ( trim( $google_api_key ) != "" ) &&
-//             ( trim( $address_string ) != "" ) )
-//        {
-//            $gm = new EasyGoogleMap( $google_api_key, "jl_pg_map" );
-//
-//            $width = ( is_int( $mapconfig['width'] ) ) ? $mapconfig['width'].'px' : $mapconfig['width'];
-//
-//            $gm->SetMapWidth( $mapconfig['width'] );
-//            $gm->SetMapHeight( $mapconfig['height'] );
-//            $gm->SetMapControl( $mapconfig['map_control'] );
-//            $gm->SetMapDefaultType( $mapconfig['default_map_type'] );
-//
-//            if ( intval( $mapconfig['map_zoom'] ) > 0 )
-//            {
-//                $gm->SetMapZoom( intval( $mapconfig['map_zoom'] ) );
-//            }
-//
-//            $gm->mScale = ( intval( $mapconfig['map_scale'] ) > 0 ) ? TRUE : FALSE;
-//            $gm->mMapType = ( intval( $mapconfig['map_type_select']) > 0 ) ? TRUE : FALSE;
-//            $gm->mContinuousZoom = ( intval( $mapconfig['cont_zoom']) > 0 ) ? TRUE : FALSE;
-//            $gm->mDoubleClickZoom = ( intval( $mapconfig['dblclick_zoom']) > 0 ) ? TRUE : FALSE;
-//            $gm->mInset = ( intval( $mapconfig['map_inset'] ) > 0 ) ? TRUE : FALSE;
-//            $gm->mShowMarker = ( intval( $mapconfig['show_marker'] ) > 0 ) ? TRUE : FALSE;
-//            $gm->SetMarkerIconStyle( $mapconfig['map_icon_style'] );
-//            $gm->SetMarkerIconColor( $mapconfig['map_icon_color'] );
-//            $gm->SetAddress( $address_string );
-//        }
-//        return $gm;
-//    }
 
 }
 ?>

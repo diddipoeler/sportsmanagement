@@ -58,6 +58,48 @@ class sportsmanagementHelperHtml
 
 
 	/**
+	 * sportsmanagementHelperHtml::getBootstrapModalImage()
+	 * 
+	 * @param string $target
+	 * @param string $picture
+	 * @param string $text
+	 * @param string $picturewidth
+	 * @return
+	 */
+	public static function getBootstrapModalImage($target='',$picture='',$text='',$picturewidth='150')
+    {
+    $app = JFactory::getApplication();
+    // JInput object
+    $jinput = $app->input;    
+    
+$modaltext = '<a href="#" title="'.$text.'" data-toggle="modal" data-target=".'.$target.'">';
+$modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';
+$modaltext .= '</a>';
+$modaltext .= '<div id="" style="display: none;" class="modal fade '.$target.'" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">';
+$modaltext .= '<div class="modal-dialog modal-lg">';
+$modaltext .= '<div class="modal-content">';
+$modaltext .= '<div class="modal-header">';
+$modaltext .= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>';
+$modaltext .= '<h4 class="modal-title" id="myLargeModalLabel">'.$text.'</h4>';
+$modaltext .= '</div>';
+$modaltext .= '<div class="modal-body">';
+$modaltext .= '<img src="'.$picture.'" class="img-responsive img-rounded center-block">';
+$modaltext .= '</div>';
+$modaltext .= '<div class="modal-footer">';
+$modaltext .= '<button class="btn" data-dismiss="modal" aria-hidden="true">'.JText::_('JLIB_HTML_BEHAVIOR_CLOSE').'</button>';
+$modaltext .= '</div>';
+$modaltext .= '</div>';
+$modaltext .= '</div>';
+$modaltext .= '</div>';   
+    
+return $modaltext;    
+    
+    
+        
+    }
+    
+    
+    /**
 	 * Return formated match time
 	 *
 	 * @param object $game
@@ -181,6 +223,9 @@ class sportsmanagementHelperHtml
             $guestteam->division_shortname = $division->shortname;
         }
         
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' hometeam'.'<pre>'.print_r($hometeam,true).'</pre>' ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project'.'<pre>'.print_r(self::$project,true).'</pre>' ),'');
+        
 		if	((isset($hometeam) && $hometeam->division_id > 0) && (isset($guestteam) && $guestteam->division_id > 0))
 		{
 			//TO BE FIXED: Where is spacer defined???
@@ -226,6 +271,14 @@ class sportsmanagementHelperHtml
 		{
 			$output .= '&nbsp;';
 		}
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+	    {
+        $my_text = 'hometeam -><pre>'.print_r($hometeam,true).'</pre>';
+          $my_text .= 'guestteam -><pre>'.print_r($guestteam,true).'</pre>';  
+          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+          }
+          
 		return $output;
 	}
 
@@ -453,7 +506,8 @@ class sportsmanagementHelperHtml
             $pginfo->short_name = '';
             }
 
-			$link = sportsmanagementHelperRoute::getPlaygroundRoute(sportsmanagementModelProject::$_project->id,$game->playground_id,$cfg_which_database);
+			//$link = sportsmanagementHelperRoute::getPlaygroundRoute(sportsmanagementModelProject::$_project->id,$game->playground_id,$cfg_which_database);
+            $link = sportsmanagementHelperRoute::getPlaygroundRoute($game->project_slug,$game->playground_slug,$cfg_which_database);
 			$playgroundName = ($config['show_playground_name'] == 'name') ? $pginfo->name : $pginfo->short_name;
 			?>
 <span class='hasTip'

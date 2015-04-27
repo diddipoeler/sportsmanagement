@@ -45,12 +45,26 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 jimport('joomla.html.html.bootstrap');
 }
 
+//echo 'player view games<pre>',print_r($this->config,true),'</pre><br>'; 
+
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
-echo 'player view games<pre>',print_r($this->games,true),'</pre><br>'; 
-echo 'player view teams<pre>',print_r($this->teams,true),'</pre><br>';  
-echo 'player view person_position<pre>',print_r($this->person_position,true),'</pre><br>'; 
-echo 'player view person_parent_positions<pre>',print_r($this->person_parent_positions,true),'</pre><br>';   
+
+$my_text = 'player view games <pre>'.print_r($this->games,true).'</pre>';
+$my_text .= 'player view teams <pre>'.print_r($this->teams,true).'</pre>';   
+$my_text .= 'player view person_position <pre>'.print_r($this->person_position,true).'</pre>';       
+$my_text .= 'player view person_parent_positions <pre>'.print_r($this->person_parent_positions,true).'</pre>';
+$my_text .= 'stats <br><pre>'.print_r($this->stats,true).'</pre>';
+$my_text .= 'gamesstats <br><pre>'.print_r($this->gamesstats,true).'</pre>'; 
+$my_text .= 'config <br><pre>'.print_r($this->config,true).'</pre>';
+$my_text .= 'historyPlayer <br><pre>'.print_r($this->historyPlayer,true).'</pre>'; 
+
+$my_text .= 'person_position <pre>'.print_r($this->person_position,true).'</pre>';
+$my_text .= 'person_parent_positions <pre>'.print_r($this->person_parent_positions,true).'</pre>';
+$my_text .= 'position_name <pre>'.print_r($this->teamPlayer->position_name,true).'</pre>';
+   
+sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,'sportsmanagementViewPlayerdefault',__LINE__,$my_text);
+        
 }
 
 
@@ -64,6 +78,10 @@ if (isset($this->person))
 <!-- <div class="joomleague"> -->
 <div class="">
 	<?php
+    if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{
+echo $this->loadTemplate('debug');
+}
 	echo $this->loadTemplate('projectheading');
 
 	if ($this->config['show_sectionheader']==1)

@@ -301,29 +301,29 @@ $nbcols = 0;
 	$counter	= 1;
 	$round_date	= '';
 
-	foreach($this->matches as $match)
+	foreach( $this->matches as $match )
 	{
-		$hometeam=$this->teams[$match->projectteam1_id];
-		$home_projectteam_id=$hometeam->projectteamid;
+		$hometeam = $this->teams[$match->projectteam1_id];
+		$home_projectteam_id = $hometeam->projectteamid;
 
-		$guestteam=$this->teams[$match->projectteam2_id];
-		$guest_projectteam_id=$guestteam->projectteamid;
+		$guestteam = $this->teams[$match->projectteam2_id];
+		$guest_projectteam_id = $guestteam->projectteamid;
 
 		//$class = ($k==0)? $this->config['style_class1'] : $this->config['style_class2'];
         $class = '';
 
-		if ($match->team1==$this->favteams)
+		if ( $match->team1 == $this->favteams )
 		{
-			$highlight="highlight";
+			$highlight = "highlight";
 		}
 		else
 		{
-			$highlight=$class;
+			$highlight = $class;
 		}
 
 		if (!empty($this->ptid))
 		{
-			$home=$hometeam->name;
+			$home = $hometeam->name;
 			if ($match->team1==$this->ptid)
 			{
 				$home=sprintf('%s',$hometeam->name);
@@ -331,7 +331,7 @@ $nbcols = 0;
 		}
 		else
 		{
-			$home=$hometeam->name;
+			$home = $hometeam->name;
 			if ($match->team2)
 			{
 				$home=sprintf('%s',$hometeam->name);
@@ -518,8 +518,8 @@ $nbcols = 0;
 			$class2	= 'left';
 		}
 		if ($this->config['show_teamplan_link']) {
-			$homelink=sportsmanagementHelperRoute::getTeamPlanRoute($this->project->slug,$hometeam->team_slug,0,NULL,0,JRequest::getInt('cfg_which_database',0));
-			$awaylink=sportsmanagementHelperRoute::getTeamPlanRoute($this->project->slug,$guestteam->team_slug,0,NULL,JRequest::getInt('cfg_which_database',0));
+			$homelink=sportsmanagementHelperRoute::getTeamPlanRoute($this->project->slug,$hometeam->team_slug,0,NULL,0,JRequest::getInt('cfg_which_database',0) );
+			$awaylink=sportsmanagementHelperRoute::getTeamPlanRoute($this->project->slug,$guestteam->team_slug,0,NULL,JRequest::getInt('cfg_which_database',0) );
 		} else {
 			$homelink = null;
 			$awaylink = null;
@@ -535,11 +535,11 @@ $nbcols = 0;
 			case 1 :
 				{
 					$teamA .= '<td class="'.$class1.'">';
-					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1,0,'logo_small');
+					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1,0,'logo_small',JRequest::getInt('cfg_which_database',0),$match->roundcode );
 					$teamA .= '</td>';
 
 					$teamB .= '<td class="'.$class2.'">';
-					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1,0,'logo_small').' ';
+					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1,0,'logo_small',JRequest::getInt('cfg_which_database',0),$match->roundcode).' ';
 					$teamB .= '</td>';
 				}
 				break;
@@ -547,11 +547,11 @@ $nbcols = 0;
             case 5 :
             {
 					$teamA .= '<td class="'.$class1.'">';
-					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1,0,'logo_middle');
+					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1,0,'logo_middle',JRequest::getInt('cfg_which_database',0),$match->roundcode);
 					$teamA .= '</td>';
 
 					$teamB .= '<td class="'.$class2.'">';
-					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1,0,'logo_middle').' ';
+					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1,0,'logo_middle',JRequest::getInt('cfg_which_database',0),$match->roundcode).' ';
 					$teamB .= '</td>';
 				}
             break;
@@ -559,11 +559,11 @@ $nbcols = 0;
             case 6 :
             {
 					$teamA .= '<td class="'.$class1.'">';
-					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1,0,'logo_big');
+					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1,0,'logo_big',JRequest::getInt('cfg_which_database',0),$match->roundcode);
 					$teamA .= '</td>';
 
 					$teamB .= '<td class="'.$class2.'">';
-					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1,0,'logo_big').' ';
+					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1,0,'logo_big',JRequest::getInt('cfg_which_database',0),$match->roundcode).' ';
 					$teamB .= '</td>';
 				}
             break;

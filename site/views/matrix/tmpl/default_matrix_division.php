@@ -140,7 +140,7 @@ echo 'this->results<br /><pre>~' . print_r($this->results,true) . '~</pre><br />
 				if ( $divisions->id == $team_row_header->division_id )
         {
         $title = JText :: _('COM_SPORTSMANAGEMENT_MATRIX_CLUB_PAGE_LINK') . ' ' . $team_row_header->name;
-				$link = sportsmanagementHelperRoute :: getClubInfoRoute($this->project->id, $team_row_header->club_id);
+				$link = sportsmanagementHelperRoute :: getClubInfoRoute($this->project->slug, $team_row_header->club_slug);
 				$desc = $team_row_header->short_name;
 				if ($crosstable_icons_horizontal) // icons at the top of matrix
 					{
@@ -175,7 +175,7 @@ echo 'this->results<br /><pre>~' . print_r($this->results,true) . '~</pre><br />
 			if ($k_c == 0) // Header columns
 				{
 				$title = JText :: _('COM_SPORTSMANAGEMENT_MATRIX_PLAYERS_PAGE_LINK') . ' ' . $trow->name;
-				$link = sportsmanagementHelperRoute :: getPlayersRoute($this->project->id, $trow->id);
+				$link = sportsmanagementHelperRoute :: getPlayersRoute($this->project->slug, $trow->team_slug);
 				$desc = $trow->short_name;
 
 				if ($crosstable_icons_vertical) // icons on the left side of matrix
@@ -245,7 +245,7 @@ echo 'this->results<br /><pre>~' . print_r($this->results,true) . '~</pre><br />
 						// result with matchreport
 						$title = "";
 						$arrayString = array ();
-						$link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->id, $result->id);
+						$link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug, $result->id);
 						if (($e1 != "") && ($e2 != "")) {
 							$colorStr = "color:" . $this->project->fav_team_text_color . ";";
 							$bgColorStr = "background-color:" . $this->project->fav_team_color . ";";
@@ -274,7 +274,7 @@ echo 'this->results<br /><pre>~' . print_r($this->results,true) . '~</pre><br />
 						} else {
 							switch ($this->config['which_link']) {
 								case 1 : // Link to Next Match page
-									$link = sportsmanagementHelperRoute :: getNextMatchRoute($this->project->id, $result->id);
+									$link = sportsmanagementHelperRoute :: getNextMatchRoute($this->project->slug, $result->id);
 									//FIXME
 									// $title = str_replace( "%TEAMHOME%",
 									//                       $this->teams[$result->projectteam1_id]->name,
@@ -298,7 +298,7 @@ echo 'this->results<br /><pre>~' . print_r($this->results,true) . '~</pre><br />
 								$match_result = JHtml::link($link, $desc);
 								$new_match = "";
 								if($result->new_match_id > 0) {
-									$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->id, $result->new_match_id);
+									$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $result->new_match_id);
 									$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 									$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
 									$new_match = JHtml::link($link, $desc);
@@ -326,7 +326,7 @@ echo 'this->results<br /><pre>~' . print_r($this->results,true) . '~</pre><br />
 						$match_result = $resultStr;
 					} else {
 						// Any result available so "bullet_black.png" is shown with a link to the gameday of the match
-						$link = sportsmanagementHelperRoute :: getResultsRoute($this->project->id, $result->roundid);
+						$link = sportsmanagementHelperRoute :: getResultsRoute($this->project->slug, $result->roundid);
 						$title = str_replace("%NR_OF_MATCHDAY%", $result->roundcode, JText :: _('COM_SPORTSMANAGEMENT_MATCHDAY_FORM'));
 						$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 						$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
@@ -430,7 +430,7 @@ echo 'this->results<br /><pre>~' . print_r($this->results,true) . '~</pre><br />
 
 			foreach ($this->teams as $team_row_header) {
 				$title = JText :: _('COM_SPORTSMANAGEMENT_MATRIX_CLUB_PAGE_LINK') . ' ' . $team_row_header->name;
-				$link = sportsmanagementHelperRoute :: getClubInfoRoute($this->project->id, $team_row_header->club_id);
+				$link = sportsmanagementHelperRoute :: getClubInfoRoute($this->project->slug, $team_row_header->club_id);
 				$desc = $team_row_header->short_name;
 				if ($crosstable_icons_horizontal) // icons at the top of matrix
 					{
@@ -462,7 +462,7 @@ echo 'this->results<br /><pre>~' . print_r($this->results,true) . '~</pre><br />
 			if ($k_c == 0) // Header columns
 				{
 				$title = JText :: _('COM_SPORTSMANAGEMENT_MATRIX_PLAYERS_PAGE_LINK') . ' ' . $trow->name;
-				$link = sportsmanagementHelperRoute :: getPlayersRoute($this->project->id, $trow->id);
+				$link = sportsmanagementHelperRoute :: getPlayersRoute($this->project->slug, $trow->team_slug);
 				$desc = $trow->short_name;
 
 				if ($crosstable_icons_vertical) // icons on the left side of matrix
@@ -532,7 +532,7 @@ echo 'this->results<br /><pre>~' . print_r($this->results,true) . '~</pre><br />
 						// result with matchreport
 						$title = "";
 						$arrayString = array ();
-						$link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->id, $result->id);
+						$link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug, $result->id);
 						if (($e1 != "") && ($e2 != "")) {
 							$colorStr = "color:" . $this->project->fav_team_text_color . ";";
 							$bgColorStr = "background-color:" . $this->project->fav_team_color . ";";
@@ -561,7 +561,7 @@ echo 'this->results<br /><pre>~' . print_r($this->results,true) . '~</pre><br />
 						} else {
 							switch ($this->config['which_link']) {
 								case 1 : // Link to Next Match page
-									$link = sportsmanagementHelperRoute :: getNextMatchRoute($this->project->id, $result->id);
+									$link = sportsmanagementHelperRoute :: getNextMatchRoute($this->project->slug, $result->id);
 									//FIXME
 									// $title = str_replace( "%TEAMHOME%",
 									//                       $this->teams[$result->projectteam1_id]->name,
@@ -585,7 +585,7 @@ echo 'this->results<br /><pre>~' . print_r($this->results,true) . '~</pre><br />
 								$match_result = JHtml::link($link, $desc);
 								$new_match = "";
 								if($result->new_match_id > 0) {
-									$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->id, $result->new_match_id);
+									$link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $result->new_match_id);
 									$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 									$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);
 									$new_match = JHtml::link($link, $desc);
@@ -613,7 +613,7 @@ echo 'this->results<br /><pre>~' . print_r($this->results,true) . '~</pre><br />
 						$match_result = $resultStr;
 					} else {
 						// Any result available so "bullet_black.png" is shown with a link to the gameday of the match
-						$link = sportsmanagementHelperRoute :: getResultsRoute($this->project->id, $result->roundid);
+						$link = sportsmanagementHelperRoute :: getResultsRoute($this->project->slug, $result->roundid);
 						$title = str_replace("%NR_OF_MATCHDAY%", $result->roundcode, JText :: _('COM_SPORTSMANAGEMENT_MATCHDAY_FORM'));
 						$picture = 'media/com_sportsmanagement/jl_images/bullet_black.png';
 						$desc = sportsmanagementHelper::getPictureThumb($picture, $title, 16,16, 99);

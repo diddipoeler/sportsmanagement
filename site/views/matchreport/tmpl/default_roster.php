@@ -143,60 +143,35 @@ echo ' '.'&copy;';
                                                 }
                                                 if ( ($this->config['show_player_picture'] == 2) && ($this->config['show_player_profile_link'] == 1) )
                                                 {
-												/*
-                                                	echo JHtml::link($player_link,sportsmanagementHelper::getPictureThumb($picture,
-																													$imgTitle,
-																													$this->config['player_picture_width'],
-																													$this->config['player_picture_height']));
-												*/
+
+
+echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer'.$player->person_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$imgTitle,$this->config['player_picture_width']);
                                                 ?>
                                                 
 
 
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target="#pl<?php echo $player->person_id;?>">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['player_picture_width'];?>" />
-</a>
-<div class="modal fade" id="pl<?php echo $player->person_id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-</div>
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $imgTitle, array('title' => $imgTitle,'class' => "img-rounded" ));      
-?>
-</div>    
+
+
+
+    
                                                 
                                                 <?PHP
                                                 //echo JHtml::link($player_link,JHtml::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['player_picture_width'] )));
                                                 ?>
-                                                </a>
+                                                
                                                 <?PHP
                                                 } 
                                                 else 
                                                 {
-													/*
-                                                    echo sportsmanagementHelper::getPictureThumb($picture,
-																							$imgTitle,
-																							$this->config['player_picture_width'],
-																							$this->config['player_picture_height']);
-													
-                                                    */
+echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer'.$player->person_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$imgTitle,$this->config['player_picture_width']);
                                                     ?>
 
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target="#pl<?php echo $player->person_id;?>">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['player_picture_width'];?>" />
-</a>
-<div class="modal fade" id="pl<?php echo $player->person_id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-</div>
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $imgTitle, array('title' => $imgTitle,'class' => "img-rounded" ));      
-?>
-</div>                                                   
+ 
+
                                                 <?PHP
                                                 //    echo JHtml::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['player_picture_width'] ));
                         ?>
-                                                </a>
+                                                
                                                 <?PHP
                         if ( $this->config['show_player_profile_link_alignment'] == 1 )
 												{
@@ -275,30 +250,18 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $imgTitle, array
                                                 }
                                                 else 
                                                 {
-													/*
-                                                    echo sportsmanagementHelper::getPictureThumb($picture,
-																							$imgTitle,
-																							$this->config['player_picture_width'],
-																							$this->config['player_picture_height']);
-													*/                         ?>
+echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer'.$player->person_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$imgTitle,$this->config['player_picture_width']);                         
+                                                    ?>
     
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target="#pl<?php echo $player->person_id;?>">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['player_picture_width'];?>" />
-</a>
-<div class="modal fade" id="pl<?php echo $player->person_id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-</div>
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $imgTitle, array('title' => $imgTitle,'class' => "img-rounded" ));      
-?>
-</div> 
+
+
+
                                                 <?PHP
                                                     
                                                     //echo JHtml::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['player_picture_width'] ));
                                                     
                                                      ?>
-                                                     </a>
+                                                     
                                                      <?PHP
                                                     if ( $this->config['show_player_profile_link_alignment'] == 1 )
 												                            {

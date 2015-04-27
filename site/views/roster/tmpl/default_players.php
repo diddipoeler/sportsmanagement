@@ -323,26 +323,32 @@ if (!empty($this->rows))
             */
             ?>
 		<td width="40" class="td_c" nowrap="nowrap">
-        <?php
-		
-        	/*
-          echo sportsmanagementHelper::getPictureThumb($picture, $playerName,
-													$this->config['player_picture_width'],
-													$this->config['player_picture_height']);
-        */
-        //echo JHtml::image($picture, $playerName, array('title' => $playerName,'width' => $this->config['player_picture_width'] ));
-?>
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>"  title="<?php echo $playerName;?>" data-toggle="modal" data-target="#pl<?php echo $row->playerid;?>">
+
+<a href="#"  title="<?php echo $playerName;?>" data-toggle="modal" data-target=".player<?php echo $row->playerid;?>">
 <img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $playerName;?>" width="<?php echo $this->config['player_picture_width'];?>" />
 </a>
-<div class="modal fade" id="pl<?php echo $row->playerid;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+
+
+<div id="" style="display: none;" class="modal fade player<?php echo $row->playerid;?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+<!--  <div class="modal-dialog"> -->
+    <div class="modal-content">
+    
+    <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+          <h4 class="modal-title" id="myLargeModalLabel"><?php echo $playerName;?></h4>
+        </div>
+        
+        <div class="modal-body">
+            <img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" class="img-responsive img-rounded center-block">
+        </div>
+        <div class="modal-footer">
+<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_('JLIB_HTML_BEHAVIOR_CLOSE');?> </button>
 </div>
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $playerName, array('title' => $playerName,'class' => "img-rounded" ));      
-?>
-</div>
+    </div>
+<!--  </div> -->
+  </div>
+</div>       
 
 
 <?PHP

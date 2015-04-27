@@ -68,19 +68,19 @@ else
 
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
-echo 'this->formation1<br /><pre>~' . print_r($this->formation1,true) . '~</pre><br />';
-echo 'this->formation2<br /><pre>~' . print_r($this->formation2,true) . '~</pre><br />';
-echo 'this->extended2<br /><pre>~' . print_r($this->extended2,true) . '~</pre><br />';
 
-echo 'this->schemahome<br /><pre>~' . print_r($this->schemahome,true) . '~</pre><br />';
-echo 'this->schemaaway<br /><pre>~' . print_r($this->schemaaway,true) . '~</pre><br />';
+$my_text = 'formation1 <pre>'.print_r($this->formation1,true).'</pre>';
+$my_text .= 'formation2 <pre>'.print_r($this->formation2,true).'</pre>';
+$my_text .= 'extended2 <pre>'.print_r($this->extended2,true).'</pre>';
+$my_text .= 'schemahome <pre>'.print_r($this->schemahome,true).'</pre>';
+$my_text .= 'schemaaway <pre>'.print_r($this->schemaaway,true).'</pre>';
+$my_text .= 'matchplayerpositions <pre>'.print_r($this->matchplayerpositions,true).'</pre>';
+$my_text .= 'matchplayers <pre>'.print_r($this->matchplayers,true).'</pre>';
+$my_text .= 'match <pre>'.print_r($this->match,true).'</pre>';
+$my_text .= 'overallconfig <pre>'.print_r($this->overallconfig,true).'</pre>';
+$my_text .= 'config <pre>'.print_r($this->config,true).'</pre>';
+sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,'sportsmanagementViewMatchReportdefault_rosterplayground',__LINE__,$my_text);
 
-echo 'this->matchplayerpositions<br /><pre>~' . print_r($this->matchplayerpositions,true) . '~</pre><br />';
-echo 'this->matchplayers<br /><pre>~' . print_r($this->matchplayers,true) . '~</pre><br />';
-echo 'this->match<br /><pre>~' . print_r($this->match,true) . '~</pre><br />';
-
-echo 'this->overallconfig<br /><pre>~' . print_r($this->overallconfig,true) . '~</pre><br />';
-echo 'this->config<br /><pre>~' . print_r($this->config,true) . '~</pre><br />';
 }
 
 

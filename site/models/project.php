@@ -895,12 +895,18 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
         
             if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 		    {
-			$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+		    $my_text = 'getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
+        $my_text .= 'dump<pre>'.print_r($query->dump(),true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);  
+			//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 		    }
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_id'.'<pre>'.print_r($result,true).'</pre>' ),'');
+        $my_text = 'dump<pre>'.print_r($query->dump(),true).'</pre>'; 
+        $my_text .= 'team_id<pre>'.print_r($result,true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_id'.'<pre>'.print_r($result,true).'</pre>' ),'');
         }
         
         
@@ -1643,7 +1649,7 @@ $starttime = microtime();
 	 * @param integer $with_space
 	 * @return
 	 */
-	public static function getClubIconHtml(&$team,$type=1,$with_space=0,$club_icon='logo_small',$cfg_which_database = 0)
+	public static function getClubIconHtml(&$team,$type=1,$with_space=0,$club_icon='logo_small',$cfg_which_database = 0,$roundcode = 0)
 	{
 	   $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
@@ -1676,6 +1682,9 @@ $starttime = microtime();
                 $small_club_icon = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
                 break;
             }
+            
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' small_club_icon<br><pre>'.print_r($small_club_icon,true).'</pre>'),'');
+            
 //			if ($small_club_icon=='')
 //			{
 //				$small_club_icon = sportsmanagementHelper::getDefaultPlaceholder("clublogosmall");
@@ -1686,15 +1695,33 @@ $starttime = microtime();
 //			$image.=JHtml::image($team->$club_icon,$title,$params);
 //			$image.="</a>";
             
-            $image="<a href=\"".COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->$club_icon."\" title=\"".$title."\" data-toggle=\"modal\" data-target=\"#pt".$team->team_id."\">";
+            $image="<a href=\"#\" title=\"".$title."\" data-toggle=\"modal\" data-target=\".tplan".$team->team_id."-".$roundcode."\">";
 			$image.=JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->$club_icon,$title,$params);
 			$image.="</a>";
-            $image.="<div class=\"modal fade\" id=\"pt".$team->team_id."\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal\" aria-hidden=\"true\">";
-            $image.="<div class=\"modal-header\">";
-            $image.="<button type=\"button\" class=\"close\" data-dismiss=\"modal\"><span aria-hidden=\"true\">&times;</span></button>";
-            $image.="</div>";
-            $image.= JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->$club_icon, $title, array('title' => $title,'class' => "img-rounded" ));
-            $image.="</div>";
+
+$image.="<div id=\"\" style=\"display: none;\" class=\"modal fade tplan".$team->team_id."-".$roundcode."\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"myLargeModalLabel\" aria-hidden=\"true\">";
+$image.="<div class=\"modal-dialog modal-lg\">";
+$image.="<div class=\"modal-content\">";
+$image.="<div class=\"modal-header\">";
+$image.="<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-hidden=\"true\">X</button>";
+$image.="<h4 class=\"modal-title\" id=\"myLargeModalLabel\">".$title."</h4>";
+$image.="</div>";
+$image.="<div class=\"modal-body\">";
+$image.="<img src=\"".COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->$club_icon."\" class=\"img-responsive img-rounded center-block\">";
+$image.="</div>";
+$image.="<div class=\"modal-footer\">";
+$image.="<button class=\"btn\" data-dismiss=\"modal\" aria-hidden=\"true\">".JText::_('JLIB_HTML_BEHAVIOR_CLOSE')."</button>";
+$image.="</div>";
+$image.="</div>";
+$image.="</div>";
+$image.="</div>";  
+            
+//            $image.="<div class=\"modal fade\" id=\"pt".$team->team_id."\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal\" aria-hidden=\"true\">";
+//            $image.="<div class=\"modal-header\">";
+//            $image.="<button type=\"button\" class=\"close\" data-dismiss=\"modal\"><span aria-hidden=\"true\">&times;</span></button>";
+//            $image.="</div>";
+//            $image.= JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->$club_icon, $title, array('title' => $title,'class' => "img-rounded" ));
+//            $image.="</div>";
                     
             //return JHtml::image($small_club_icon,'',$params);
             return $image;

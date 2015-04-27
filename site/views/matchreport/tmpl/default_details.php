@@ -41,20 +41,22 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
 <!-- Details-->
 <h2><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS'); ?></h2>
-<table class="table">
+<div class="row">
+<div class="col-md-12">
+
+
 	<!-- Prev Match-->
 	<?php
 	if ($this->match->old_match_id > 0)
 	{
 		?>
-		<tr>
-			<td colspan="3" >
-				<span class="label"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_OLD_MATCH' ); ?></span>
-				<span><?php echo JHTML :: link(sportsmanagementHelperRoute::getMatchReportRoute( $this->project->id, 
-																							$this->match->old_match_id ), 
-												$this->oldmatchtext); ?></span>
-			</td>
-		</tr>
+		
+        
+        <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_OLD_MATCH' ); ?></strong>
+			<?php echo JHTML :: link(sportsmanagementHelperRoute::getNextMatchRoute( $this->project->slug,$this->match->old_match_id ),$this->oldmatchtext); ?>
+            </address>
+            
 		<?php
 	}
 	?>
@@ -63,14 +65,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 	if ($this->match->new_match_id > 0)
 	{
 		?>
-		<tr>
-			<td colspan="3" >
-				<span class="label"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_NEW_MATCH' ); ?></span>
-				<span><?php echo JHTML :: link(sportsmanagementHelperRoute::getNextMatchRoute( $this->project->id, 
-																							$this->match->new_match_id ), 
-												$this->newmatchtext); ?></span>
-			</td>
-		</tr>
+		
+        
+        <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_NEW_MATCH' ); ?></strong>
+			<?php echo JHTML :: link(sportsmanagementHelperRoute::getNextMatchRoute( $this->project->slug,$this->match->new_match_id ),$this->newmatchtext); ?>
+            </address>
+            
 		<?php
 	}
 	?>	
@@ -81,12 +82,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
         if ($this->match->match_date > 0)
         {
             ?>
-            <tr>
-                <td colspan="3" >
-                    <span class="label"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_DATE' ); ?></span>
-                    <span><?php echo JHtml::date($this->match->match_date, JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_GAMES_DATE')); ?></span>
-                </td>
-            </tr>
+            
+            
+            <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_DATE' ); ?></strong>
+			<?php echo JHtml::date($this->match->match_date, JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_GAMES_DATE')); ?>
+            </address>
             <?php
         }
     }
@@ -99,24 +100,24 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
         if ($this->match->match_date > 0)
         {
             ?>
-            <tr>
-                <td colspan="3" >
-                    <span class="label"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_TIME' ); ?></span>
-                    <span><?php echo sportsmanagementHelperHtml::showMatchTime($this->match, $this->config, $this->overallconfig, $this->project); ?></span>
-                </td>
-            </tr>
+            
+            
+             <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_TIME' ); ?></strong>
+			<?php echo sportsmanagementHelperHtml::showMatchTime($this->match, $this->config, $this->overallconfig, $this->project); ?>
+            </address>
             <?php
         }
 	?>
 
         <!-- present -->
         <?php if ($this->match->time_present > 0): ?>
-        <tr>
-            <td colspan="3" >
-                <span class="label"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_PRESENT' ); ?></span>
-                <span><?php echo $this->match->time_present; ?></span>
-            </td>
-        </tr>
+        
+        
+         <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_PRESENT' ); ?></strong>
+			<?php echo $this->match->time_present; ?>
+            </address>
         <?php endif;
     
     }
@@ -127,17 +128,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
     if ($this->config['show_match_number'] == 1)
     {
         if ($this->match->match_number > 0): ?>
-        <tr>
-            <td colspan="3" >
-                <span class="label"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_NUMBER' ); ?></span>
-                <span><?php echo $this->match->match_number; ?></span>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="3" >
-            &nbsp;
-            </td>
-        </tr>
+       
+        
+        <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_NUMBER' ); ?></strong>
+			<?php echo $this->match->match_number; ?>
+            </address>
+        
         <?php endif;
     }
     ?>
@@ -146,12 +143,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
     if ($this->config['show_match_playground'] == 1)
     {
         if ($this->match->playground_id > 0): ?>
-        <?php $playground_link = sportsmanagementHelperRoute::getPlaygroundRoute( $this->project->id, $this->match->playground_id);?>
-        <tr>
-            <td colspan="3" >
-                <span class="label"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_PLAYGROUND' ); ?></span>
-                <span>
-                <?php 
+        <?php $playground_link = sportsmanagementHelperRoute::getPlaygroundRoute( $this->project->slug, $this->match->playground_slug);?>
+        
+        
+        <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_PLAYGROUND' ); ?></strong>
+			<?php 
                 if ( isset($this->playground->name) )
                     { 
                     echo JHtml::link ($playground_link, $this->playground->name);
@@ -160,10 +157,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                     {
                     echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_PLAYGROUND_NO_ASSIGN' );    
                     } 
+if ( $this->config["show_playground_picture"] )
+{
+echo sportsmanagementHelperHtml::getBootstrapModalImage('matchpg'.$this->match->playground_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$this->match->playground_picture,$this->match->playground_name,$this->config['playground_picture_width']);
+}                     
                     ?>
-                </span>
-            </td>
-        </tr>
+            </address>
+        
         <?php endif;
     }
     ?>
@@ -174,29 +174,31 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
         if ( $this->matchreferees )
         {
             ?>
-            <tr>
-                <td colspan="3" >
-                    <span class="label"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_REFEREE' ); ?></span>
-                    <?php
-                    $first = true;
+                        
+            <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_REFEREE' ); ?></strong>
+			<?php 
+            
+            $first = true;
                     foreach ( $this->matchreferees as $referee ) : 
-                        $referee_link = sportsmanagementHelperRoute::getRefereeRoute( $this->project->id, $referee->id );
+                        $referee_link = sportsmanagementHelperRoute::getRefereeRoute( $this->project->slug, $referee->person_slug );
                         if (!$first) {
                             echo ', ';
                         }
-                        $link = JHtml::link( $referee_link, sportsmanagementHelper::formatName(null,$referee->firstname,$referee->nickname,$referee->lastname, $this->config["name_format"]));
+                        $referee_name = sportsmanagementHelper::formatName(null,$referee->firstname,$referee->nickname,$referee->lastname, $this->config["name_format"]);
+                        $link = JHtml::link( $referee_link, $referee_name);
                         if ($this->config["show_referee_position"] == 1) $link .= ' ('.$referee->position_name.')';
-                        ?><span><?php echo $link; ?></span>
-                        <?php
+                        echo $link; 
                         $first = false;
-                    endforeach;	?>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="3" >
-                &nbsp;
-                </td>
-            </tr>            
+if ( $this->config["show_referee_picture"] )
+{
+echo sportsmanagementHelperHtml::getBootstrapModalImage('matchreferee'.$referee->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$referee->picture,$referee_name,$this->config['referee_picture_width']);                        
+}                        
+                    endforeach;	
+            
+            ?>
+            </address>
+                       
             <?php
         }
     }
@@ -206,14 +208,17 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
     if ($this->config['show_match_crowd'] == 1)
     {
         if ( $this->match->crowd > 0 ): ?>
-            <tr>
-            <td>
-                <span class="label"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_ATTENDANCES' ); ?></span>
-                <span><?php echo ': ' . number_format( $this->match->crowd, 0, ',' , '.' ); ?></span>
-            </td>
-            </tr>
+            
+            
+            <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_ATTENDANCES' ); ?></strong>
+			<?php echo ': ' . number_format( $this->match->crowd, 0, ',' , '.' ); ?>
+            </address>
+            
         <?php endif;
     }
     ?>
-</table>
+
+</div>
+</div>
 <br/>

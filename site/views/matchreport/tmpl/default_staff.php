@@ -73,26 +73,32 @@ if (!empty($this->matchstaffpositions))
 										$picture=$player->picture;
 										if (!file_exists($picture)){$picture = sportsmanagementHelper::getDefaultPlaceholder("player");}
 										echo '&nbsp;';
-                                        /*
-										echo sportsmanagementHelper::getPictureThumb($picture, 
-												$imgTitle,
-												$this->config['staff_picture_width'],
-												$this->config['staff_picture_height']);
-										*/
+
                                         ?>
                                         
                                         
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target="#st<?php echo $player->person_id;?>">
+<a href="#" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target=".matchstaff<?php echo $player->person_id;?>">
 <img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['staff_picture_width'];?>" />
 </a>
-<div class="modal fade" id="st<?php echo $player->person_id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+
+<div id="" style="display: none;" class="modal fade matchstaff<?php echo $player->person_id;?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
 <div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+<h4 class="modal-title" id="myLargeModalLabel"><?php echo $imgTitle;?></h4>
 </div>
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $imgTitle, array('title' => $imgTitle,'class' => "img-rounded" ));      
-?>
-</div>                                            
+<div class="modal-body">
+<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" class="img-responsive img-rounded center-block">
+</div>
+<div class="modal-footer">
+<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_('JLIB_HTML_BEHAVIOR_CLOSE');?> </button>
+</div>
+</div>
+</div>
+</div> 
+
+
                                         
 									</li>
 									<?php
@@ -118,25 +124,31 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $imgTitle, array
 										$imgTitle=JText::sprintf('Picture of %1$s',$match_player);
 										$picture=$player->picture;
 										if (!file_exists($picture)){$picture = sportsmanagementHelper::getDefaultPlaceholder("player");}
-										/*
-                                        echo sportsmanagementHelper::getPictureThumb($picture, 
-												$imgTitle,
-												$this->config['staff_picture_width'],
-												$this->config['staff_picture_height']);
-										*/
+
                                         ?>
                                         
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target="#st<?php echo $player->person_id;?>">
+<a href="#" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target=".matchstaff<?php echo $player->person_id;?>">
 <img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['staff_picture_width'];?>" />
 </a>
-<div class="modal fade" id="st<?php echo $player->person_id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+
+<div id="" style="display: none;" class="modal fade matchstaff<?php echo $player->person_id;?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
 <div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+<h4 class="modal-title" id="myLargeModalLabel"><?php echo $imgTitle;?></h4>
 </div>
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $imgTitle, array('title' => $imgTitle,'class' => "img-rounded" ));      
-?>
-</div>                                         
+<div class="modal-body">
+<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" class="img-responsive img-rounded center-block">
+</div>
+<div class="modal-footer">
+<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_('JLIB_HTML_BEHAVIOR_CLOSE');?> </button>
+</div>
+</div>
+</div>
+</div> 
+
+
                                         <?php
                                         echo '&nbsp;';
 										$player_link=sportsmanagementHelperRoute::getStaffRoute($this->project->slug,$player->team_slug,$player->person_slug);

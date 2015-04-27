@@ -218,12 +218,39 @@
 			<option value="1">JYES</option>
 		</field>
 		
+		<field name="show_playground_picture" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_PLAYGROUND_PARAM_LABEL_SHOW_VENUE_PICTURE"
+			description="COM_SPORTSMANAGEMENT_FES_PLAYGROUND_PARAM_DESCR_SHOW_VENUE_PICTURE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+    <field name="playground_picture_width" type="text" default="150"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PLAYGROUND_PICTURE_WIDTH"
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PLAYGROUND_PICTURE_WIDTH">
+		</field>
+		
 		<field 	name="show_match_referees" type="radio" default="1"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_MATCH_REFEREES"
 				description="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_DESCR_SHOW_MATCH_REFEREES">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>		
+		
+		<field 	name="show_referee_picture" type="radio" default="1" 
+		class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_REFEREE_PARAM_LABEL_SHOW_PHOTO" 
+				description="COM_SPORTSMANAGEMENT_FES_REFEREE_PARAM_DESCR_SHOW_PHOTO">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field 	name="referee_picture_width" type="text" default="50"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_REF_PICTURE_WIDTH" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_REF_PICTURE_WIDTH">
+		</field>
+		
 		
 		<field 	name="show_referee_position" type="radio" default="0" class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_MATCHREPORT_PARAM_LABEL_SHOW_REFEREE_POSITION"
@@ -471,7 +498,19 @@ stripext=""
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS"
   label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS"  
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_ADVANCED_OPTIONS">	
+
+      <field 	name="table_class" type="list" default="table" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_CAREER_TABLE_STYLE" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_CAREER_TABLE_STYLE">
+			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
 			
+		</field>
+<!--			
 		<field 	name="style_class1" type="text" default="sectiontableentry1" 
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_ODD" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STYLE_ODD">
@@ -481,6 +520,7 @@ stripext=""
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_EVEN" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STYLE_EVEN">
 		</field>
+-->
 		
 	</fieldset>
 			

@@ -70,28 +70,13 @@ else
 		{
 			$club_emblem_title = str_replace( "%CLUBNAME%", $this->club->name, JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_EMBLEM_TITLE' ) );
 			$picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.$this->club->logo_big;
-      /*
-			echo sportsmanagementHelper::getPictureThumb($picture, 
-								$club_emblem_title,
-								$this->config['team_picture_width'],
-								$this->config['team_picture_height'],
-								1);
-                */
-     //echo JHtml::image($picture, $club_emblem_title, array('title' => $club_emblem_title,'width' => $this->config['team_picture_width'] ));           			
+           			
 		}
-		?>
+		
+echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo',$picture,$club_emblem_title,$this->config['team_picture_width']);        
         
-<a href="<?php echo $picture;?>" title="<?php echo $club_emblem_title;?>" data-toggle="modal" data-target="#modal">
-<img src="<?php echo $picture;?>" alt="<?php echo $club_emblem_title;?>" width="<?php echo $this->config['team_picture_width'];?>" />
-</a>        
-<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="beispielModalLabel" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-</div>
-<?PHP
-echo JHtml::image($picture, $club_emblem_title, array('title' => $club_emblem_title,'class' => "img-rounded" ));      
-?>
-</div> 
+        ?>
+
         
 		<!-- SHOW LOGO - END -->
 		<!-- SHOW SMALL LOGO - START -->

@@ -167,8 +167,6 @@ class sportsmanagementViewMatrix extends JViewLegacy
 		if(!is_null($project)) {
 			$this->assign('favteams', sportsmanagementModelProject::getFavTeams($model::$cfg_which_database) );
 		}
-    
-    //$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
 		
     // Set page title
 		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_MATRIX_PAGE_TITLE' );
@@ -180,6 +178,16 @@ class sportsmanagementViewMatrix extends JViewLegacy
 		$view = $jinput->getVar( "view") ;
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
+        
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $my_text = 'results<pre>'.print_r($this->results,true).'</pre>';
+        $my_text .= 'teams<pre>'.print_r($this->teams,true).'</pre>';
+        $my_text .= 'config<pre>'.print_r($this->config,true).'</pre>';    
+        $my_text .= 'project<pre>'.print_r($this->project,true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        }
         
 		parent::display( $tpl );
 	}

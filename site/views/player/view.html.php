@@ -108,11 +108,11 @@ $jinput = $app->input;
         
         //$app->enqueueMessage(JText::_('sportsmanagementViewPlayer teamPlayers<br><pre>'.print_r($this->teamPlayers,true).'</pre>'),'');
         
-        $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
+        $this->assign('checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
 //        $app->enqueueMessage(JText::_('player checkextrafields -> '.'<pre>'.print_r($this->checkextrafields,true).'</pre>' ),'');
         if ( $this->checkextrafields )
         {
-            $this->assignRef( 'extrafields', sportsmanagementHelper::getUserExtraFields($person->id) );
+            $this->assignRef('extrafields', sportsmanagementHelper::getUserExtraFields($person->id) );
         }
 
 		// Select the teamplayer that is currently published (in case the player played in multiple teams in the project)
@@ -148,7 +148,11 @@ $jinput = $app->input;
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' stats<br><pre>'.print_r($this->stats,true).'</pre>'),'');
+            $my_text = 'stats <pre>'.print_r($this->stats,true).'</pre>';
+        //$my_text .= 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';   
+        //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' stats<br><pre>'.print_r($this->stats,true).'</pre>'),'');
         }
 
 		// Get events and stats for current project
@@ -162,7 +166,11 @@ $jinput = $app->input;
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' gamesstats<br><pre>'.print_r($this->gamesstats,true).'</pre>'),'');
+            $my_text = 'gamesstats <pre>'.print_r($this->gamesstats,true).'</pre>';
+        //$my_text .= 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';   
+        //$my_text .= 'cards <pre>'.print_r($cards,true).'</pre>';       
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' gamesstats<br><pre>'.print_r($this->gamesstats,true).'</pre>'),'');
         }
 
 		// Get events and stats for all projects where player played in (possibly restricted to sports type of current project)
@@ -183,9 +191,14 @@ $jinput = $app->input;
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' extended<br><pre>'.print_r($this->extended,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectstats<br><pre>'.print_r($this->projectstats,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COM_SPORTSMANAGEMENT_EXT_PERSON_PARENT_POSITIONS<br><pre>'.print_r($form_value,true).'</pre>'),'');
+        $my_text = 'extended <pre>'.print_r($this->extended,true).'</pre>';
+        $my_text .= 'projectstats <pre>'.print_r($this->projectstats,true).'</pre>';   
+        $my_text .= 'form_value <pre>'.print_r($form_value,true).'</pre>';       
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' extended<br><pre>'.print_r($this->extended,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectstats<br><pre>'.print_r($this->projectstats,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COM_SPORTSMANAGEMENT_EXT_PERSON_PARENT_POSITIONS<br><pre>'.print_r($form_value,true).'</pre>'),'');
         }
         
         // nebenposition vorhanden ?
@@ -200,7 +213,11 @@ $jinput = $app->input;
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COM_SPORTSMANAGEMENT_EXT_PERSON_POSITION<br><pre>'.print_r($form_value,true).'</pre>'),'');
+        //$my_text = 'extended <pre>'.print_r($this->extended,true).'</pre>';
+        //$my_text .= 'projectstats <pre>'.print_r($this->projectstats,true).'</pre>';   
+        $my_text = 'form_value <pre>'.print_r($form_value,true).'</pre>';       
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);    
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COM_SPORTSMANAGEMENT_EXT_PERSON_POSITION<br><pre>'.print_r($form_value,true).'</pre>'),'');
         }
         
         if ( $form_value )

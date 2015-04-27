@@ -50,13 +50,13 @@ $backimage = 'images/com_sportsmanagement/database/person_playground/' . $this->
 $hauptimage = 'images/com_sportsmanagement/database/person_playground/hauptposition.png';
 $nebenimage = 'images/com_sportsmanagement/database/person_playground/nebenposition.png';
 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo 'person_playground <pre>'.print_r($backimage,true).'</pre>';
-echo 'person_position <pre>'.print_r($this->person_position,true).'</pre>';
-echo 'person_parent_positions <pre>'.print_r($this->person_parent_positions,true).'</pre>';
-echo 'position_name <pre>'.print_r($this->teamPlayer->position_name,true).'</pre>';
-}
+//if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+//{
+//echo 'person_playground <pre>'.print_r($backimage,true).'</pre>';
+//echo 'person_position <pre>'.print_r($this->person_position,true).'</pre>';
+//echo 'person_parent_positions <pre>'.print_r($this->person_parent_positions,true).'</pre>';
+//echo 'position_name <pre>'.print_r($this->teamPlayer->position_name,true).'</pre>';
+//}
 
 if ( isset($this->person_position) )
 {

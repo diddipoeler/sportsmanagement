@@ -128,110 +128,20 @@ jQuery(window).load(function() {
             <div role="tabpanel">
     	<!-- Tabs-Navs -->
   <ul class="nav nav-tabs" role="tablist">
-    <?PHP
-    if ($this->config['show_table_1']==1)
-	{
-	?>
-    <li role="presentation" class="active"><a href="#<?PHP echo JText::_($this->config['table_text_1']); ?>" role="tab" data-toggle="tab"><?PHP echo JText::_($this->config['table_text_1']); ?></a>
-    </li>
-    <?PHP
-    }
-    
-    if ($this->config['show_table_2']==1)
-	{
-	?>
-    <li role="presentation" class=""><a href="#<?PHP echo JText::_($this->config['table_text_2']); ?>" role="tab" data-toggle="tab"><?PHP echo JText::_($this->config['table_text_2']); ?></a>
-    </li>
-    <?PHP
-    }
-    
-    if ($this->config['show_table_3']==1)
-	{
-	?>
-    <li role="presentation" class=""><a href="#<?PHP echo JText::_($this->config['table_text_3']); ?>" role="tab" data-toggle="tab"><?PHP echo JText::_($this->config['table_text_3']); ?></a>
-    </li>
-    <?PHP
-    }
-    
-    if ($this->config['show_table_4']==1)
-	{
-	?>
-    <li role="presentation" class=""><a href="#<?PHP echo JText::_($this->config['table_text_4']); ?>" role="tab" data-toggle="tab"><?PHP echo JText::_($this->config['table_text_4']); ?></a>
-    </li>
-    <?PHP
-    }
-    
-    if ($this->config['show_table_5']==1)
-	{
-	?>
-    <li role="presentation" class=""><a href="#<?PHP echo JText::_($this->config['table_text_5']); ?>" role="tab" data-toggle="tab"><?PHP echo JText::_($this->config['table_text_5']); ?></a>
-    </li>
-    <?PHP
-    }
-    ?>
+    <li role="presentation" class="active"><a href="#start" role="tab" data-toggle="tab">Start</a></li>
+    <li role="presentation"><a href="#profil" role="tab" data-toggle="tab">Profil</a></li>
+    <li role="presentation"><a href="#nachrichten" role="tab" data-toggle="tab">Nachrichten</a></li>
+    <li role="presentation"><a href="#einstellungen" role="tab" data-toggle="tab">Einstellungen</a></li>
   </ul>
 
   <!-- Tab-Inhalte -->
   <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="start">
     
-    <?PHP
-    if ($this->config['show_table_1']==1)
-	{
-	?>
-    <div role="tabpanel" class="tab-pane fade in active" id="<?PHP echo JText::_($this->config['table_text_1']); ?>">
-    <?PHP   
-    echo $this->loadTemplate('ranking');
-    ?>
     </div>
-    <?PHP
-    }
-    
-    if ($this->config['show_table_2']==1)
-	{
-	?>
-    <div role="tabpanel" class="tab-pane fade" id="<?PHP echo JText::_($this->config['table_text_2']); ?>">
-    <?PHP   
-    echo $this->loadTemplate('ranking_home');
-    ?>
-    </div>
-    <?PHP
-    }
-    
-    if ($this->config['show_table_3']==1)
-	{
-	?>
-    <div role="tabpanel" class="tab-pane fade" id="<?PHP echo JText::_($this->config['table_text_3']); ?>">
-    <?PHP   
-    echo $this->loadTemplate('ranking_away');
-    ?>
-    </div>
-    <?PHP
-    }
-    
-    if ($this->config['show_table_4']==1)
-	{
-	?>
-    <div role="tabpanel" class="tab-pane fade" id="<?PHP echo JText::_($this->config['table_text_4']); ?>">
-    <?PHP   
-    echo $this->loadTemplate('ranking_first');
-    ?>
-    </div>
-    <?PHP
-    }
-    
-    if ($this->config['show_table_5']==1)
-	{
-	?>
-    <div role="tabpanel" class="tab-pane fade" id="<?PHP echo JText::_($this->config['table_text_5']); ?>">
-    <?PHP   
-    echo $this->loadTemplate('ranking_second');
-    ?>
-    </div>
-    <?PHP
-    }
-    ?>
-    
-    
+    <div role="tabpanel" class="tab-pane" id="profil">...</div>
+    <div role="tabpanel" class="tab-pane" id="nachrichten">...</div>
+    <div role="tabpanel" class="tab-pane" id="einstellungen">...</div>
   </div>
         
         
@@ -239,8 +149,78 @@ jQuery(window).load(function() {
     <?PHP        
    
    
+    if ( JPluginHelper::isEnabled('content', 'jw_ts') )
+    {
+    $params = '';
+    $startoutput = '{tab=';
+    $endoutput = '{/tabs}';
+    if ($this->config['show_table_1']==1)
+	{
+    $params .= $startoutput.JText::_($this->config['table_text_1']).'}';
+    $params .= $this->loadTemplate('ranking');
+    }
+    if ($this->config['show_table_2']==1)
+	{
+    $params .= $startoutput.JText::_($this->config['table_text_2']).'}';
+    $params .= $this->loadTemplate('ranking_home');
+    }
+    if ($this->config['show_table_3']==1)
+	{ 
+    $params .= $startoutput.JText::_($this->config['table_text_3']).'}';
+    $params .= $this->loadTemplate('ranking_away');  
+    }
+    if ($this->config['show_half_of_season']==1)
+	{
+	if ($this->config['show_table_4']==1)
+	{   
+	$params .= $startoutput.JText::_($this->config['table_text_4']).'}';
+    $params .= $this->loadTemplate('ranking_first');
+    }
+    if ($this->config['show_table_5']==1)
+	{ 
+    $params .= $startoutput.JText::_($this->config['table_text_5']).'}';
+    $params .= $this->loadTemplate('ranking_second');
+    } 
+    }
     
-    
+    $params .= $endoutput;
+    echo JHtml::_('content.prepare', $params);
+    }
+    else
+    {
+    $idxTab = 1;
+  echo JHtml::_('tabs.start','tabs_ranking', array('useCookie'=>1));
+  if ($this->config['show_table_1']==1)
+	{
+  echo JHtml::_('tabs.panel', JText::_($this->config['table_text_1']), 'panel'.($idxTab++));
+		echo $this->loadTemplate('ranking');
+        }
+        if ($this->config['show_table_2']==1)
+	{
+        echo JHtml::_('tabs.panel', JText::_($this->config['table_text_2']), 'panel'.($idxTab++));
+		echo $this->loadTemplate('ranking_home');
+        }
+        if ($this->config['show_table_3']==1)
+	{
+        echo JHtml::_('tabs.panel', JText::_($this->config['table_text_3']), 'panel'.($idxTab++));
+		echo $this->loadTemplate('ranking_away');
+    }
+    if ($this->config['show_half_of_season']==1)
+	{
+	if ($this->config['show_table_4']==1)
+	{   
+	echo JHtml::_('tabs.panel', JText::_($this->config['table_text_4']), 'panel'.($idxTab++));
+	echo $this->loadTemplate('ranking_first');
+    }
+    if ($this->config['show_table_5']==1)
+	{
+    echo JHtml::_('tabs.panel', JText::_($this->config['table_text_5']), 'panel'.($idxTab++));
+	echo $this->loadTemplate('ranking_second');
+    }
+    }   
+        
+echo JHtml::_('tabs.end');    
+    }
     
     }
 

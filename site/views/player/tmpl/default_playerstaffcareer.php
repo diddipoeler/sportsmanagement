@@ -44,10 +44,10 @@ if (count($this->historyPlayerStaff) > 0)
 {
 	?>
 	<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_STAFF_CAREER'); ?></h2>
-	<table class="table" >
+	<table class="<?PHP echo $this->config['history_table_class']; ?>" >
 		<tr>
 			<td>
-				<table id="playerhistory">
+				<table id="playerhistory" class="<?PHP echo $this->config['history_table_class']; ?>" >
 					<tr class="sectiontableheader">
 						<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION'); ?></th>
 						<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_SEASON'); ?></th>

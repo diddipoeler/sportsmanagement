@@ -146,6 +146,10 @@ if (!empty($css))
 <!-- <div class="joomleague"> -->
 <div class="">
 	<?php 
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{
+    echo $this->loadTemplate('debug');
+}
 	if ($this->config['show_projectheader'] == 1)
 	{
 		echo $this->loadTemplate('projectheading');

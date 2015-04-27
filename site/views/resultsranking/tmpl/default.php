@@ -51,6 +51,11 @@ $this->kmlfile = $this->project->id.'-ranking.kml';
 <div class="">
 	<a name="jl_top" id="jl_top"></a>
 	<?php 
+    if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+{
+    echo $this->loadTemplate('debug');
+}
+
 	echo $this->loadTemplate('projectheading');
 
 	if ($this->config['show_matchday_dropdown'])
@@ -58,56 +63,35 @@ $this->kmlfile = $this->project->id.'-ranking.kml';
 		echo $this->loadTemplate('selectround');
 	}
     
-    if ( !JPluginHelper::isEnabled('content', 'jw_ts') )
-    {
+?>    
+    
+<div role="tabpanel">
 
-	$results = '';
-	if ($this->config['show_sectionheader'])
-	{
-		$results .= $this->loadTemplate('sectionheaderres');
-	}
-	$results .= $this->loadTemplate('results');
-		
-	if ($this->params->get('what_to_show_first', 0) == 0)
-	{
-		echo $results;
-	}
+  <!-- Tabs-Navs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#ranking" role="tab" data-toggle="tab"><?PHP echo JText::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE'); ?></a></li>
+    <li role="presentation"><a href="#results" role="tab" data-toggle="tab"><?PHP echo JText::_('COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS'); ?></a></li>
 
-	if ($this->config['show_ranking']==1)
-	{
-		if ($this->config['show_sectionheader'])
-		{
-			echo $this->loadTemplate('sectionheaderrank');
-		}
-		echo $this->loadTemplate('ranking');
-		
-		if ($this->config['show_colorlegend'])
-		{
-			echo $this->loadTemplate('colorlegend');
-		}
-		
-		if ($this->config['show_explanation']==1)
-		{
-			echo $this->loadTemplate('explanation');
-		}
-	}
+  </ul>
 
-	if ($this->params->get('what_to_show_first', 0) == 1)
-	{
-		echo '<br />'.$results;
-	}
-	
-    }
-    else
-    {
-    // diddipoeler
-    // anzeige als tabs von joomlaworks
-    $params  = '{tab='.JText::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE' ).'}';
-	$params .= $this->loadTemplate('ranking');
-    $params .= '{tab='.JText::_( 'COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS' ).'}';
-	$params .= $this->loadTemplate('results');
-	$params .= "{/tabs}";
-    echo JHTML::_('content.prepare', $params);     
+  <!-- Tab-Inhalte -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane fade in active" id="ranking">
+    <?PHP   
+    echo $this->loadTemplate('ranking');
+    ?>
+    </div>
+    <div role="tabpanel" class="tab-pane fade" id="results">
+    <?PHP   
+    echo $this->loadTemplate('results');
+    ?>
+    </div>
+  </div>
+
+</div>
+    
+<?PHP    
+    
     
     if ($this->config['show_colorlegend'])
 		{
@@ -121,9 +105,7 @@ $this->kmlfile = $this->project->id.'-ranking.kml';
         if (($this->config['show_ranking_maps'])==1)
 	{ 
 		echo $this->loadTemplate('googlemap');
-	}    
-        
-    }
+	}   
     	
 	if ($this->config['show_pagnav']==1)
 	{

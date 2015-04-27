@@ -52,7 +52,7 @@ foreach ( $this->firstRank as $division => $cu_rk )
 	if ($division)
 	{
 	?>
-	<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
+	<table class="<?PHP echo $this->config['table_class']; ?>">
 		<tr>
 			<td class="contentheading">
 				<?php
@@ -67,7 +67,7 @@ foreach ( $this->firstRank as $division => $cu_rk )
 		</tr>
 	</table>
 
-	<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
+	<table class="<?PHP echo $this->config['table_class']; ?>">
 	<?php
 		foreach( $cu_rk as $ptid => $team )
 		{

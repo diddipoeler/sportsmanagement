@@ -189,30 +189,37 @@ foreach( $current as $ptid => $team )
         else 
         {
 			$pic = $config['show_logo_small_table'];
-//			echo sportsmanagementHelper::getPictureThumb($team->team->$pic,
-//					$team->team->name,
-//					$config['team_picture_width'],
-//					$config['team_picture_height'],3);
 		
 ?>    
                                 
 
 
 
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->team->$pic;?>" title="<?php echo $team->team->name;?>" data-toggle="modal" data-target="#t<?php echo $team->team->id;?>">
+<a href="#" title="<?php echo $team->team->name;?>" data-toggle="modal" data-target=".teamranking<?php echo $team->team->id;?>">
 <?PHP
 echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->team->$pic, $team->team->name, array('title' => $team->team->name,'class' => "img-rounded",'width' => 20 ));      
 ?>
 </a>                        
 
-<div class="modal fade" id="t<?php echo $team->team->id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
+<div id="" style="display: none;" class="modal fade teamranking<?php echo $team->team->id;?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
 <div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+<h4 class="modal-title" id="myLargeModalLabel"><?php echo $team->team->name;?></h4>
 </div>
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->team->$pic, $team->team->name, array('title' => $team->team->name,'class' => "img-rounded" ));
-?>
+<div class="modal-body">
+<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->team->$pic;?>" class="img-responsive img-rounded center-block">
 </div>
+<div class="modal-footer">
+<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_('JLIB_HTML_BEHAVIOR_CLOSE');?> </button>
+</div>
+</div>
+</div>
+</div>   
+
+
+
 
 <?PHP        
         }
@@ -234,6 +241,8 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->team->$pic, $team->
     echo sportsmanagementHelper::formatTeamName( $team->team, $this->teamrow . $team->team->id, $config, $isFavTeam, NULL,JRequest::getInt('cfg_which_database',0) );
 	echo '</td>';
 	echo "\n";
+
+//echo 'teams<pre>'.print_r($team,true).'</pre><br>';
 
 	//**********START OPTIONAL COLUMNS DISPLAY
 	foreach ( $columns AS $c )
@@ -259,7 +268,7 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->team->$pic, $team->
 				echo '>';
 				if (( $config['show_wdl_teamplan_link'])==1)
 				{
-					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->id, $team->_teamid, 0, 1,$team->team->projectteamid,JRequest::getInt('cfg_which_database',0));
+					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->slug, $team->team->team_slug, 0, 1,$team->ptid_slug,JRequest::getInt('cfg_which_database',0));
 					echo JHtml::link($teamplan_link, $team->cnt_won);
 				}
 				else
@@ -278,7 +287,7 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->team->$pic, $team->
 				echo '>';
 				if (( $config['show_wdl_teamplan_link'])==1)
 				{
-					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->id, $team->_teamid, 0, 2,$team->team->projectteamid,JRequest::getInt('cfg_which_database',0));
+					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->slug, $team->team->team_slug, 0, 2,$team->ptid_slug,JRequest::getInt('cfg_which_database',0));
 					echo JHtml::link($teamplan_link, $team->cnt_draw);
 				}
 				else
@@ -297,7 +306,7 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->team->$pic, $team->
 				echo '>';
 				if (( $config['show_wdl_teamplan_link'])==1)
 				{
-					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->id, $team->_teamid, 0, 3,$team->team->projectteamid,JRequest::getInt('cfg_which_database',0));
+					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->slug, $team->team->team_slug, 0, 3,$team->ptid_slug,JRequest::getInt('cfg_which_database',0));
 					echo JHtml::link($teamplan_link, $team->cnt_lost);
 				}
 				else

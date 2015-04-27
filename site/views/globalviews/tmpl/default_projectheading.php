@@ -81,33 +81,34 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
 						?>
 						<td>
 
-<a href="<?php echo $this->project->sport_type_picture;?>" title="<?php echo $this->project->sport_type_name;?>" data-toggle="modal" data-target="#s<?php echo $this->project->sport_type_id;?>">
+<a href="#" title="<?php echo $this->project->sport_type_name;?>" data-toggle="modal" data-target=".s<?php echo $this->project->sport_type_id;?>">
 <?PHP
 echo JHtml::image($this->project->sport_type_picture, $this->project->sport_type_name, array('title' => $this->project->sport_type_name,'class' => "img-rounded",'width' => $this->overallconfig['picture_width'] ));      
 ?>
 </a>                        
 
-<div class="modal fade" id="s<?php echo $this->project->sport_type_id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
+<div id="" style="display: none;" class="modal fade s<?php echo $this->project->sport_type_id;?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+<!--  <div class="modal-dialog"> -->
+    <div class="modal-content">
+    
+    <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+          <h4 class="modal-title" id="myLargeModalLabel"><?php echo $this->project->sport_type_name;?></h4>
+        </div>
+        
+        <div class="modal-body">
+            <img src="<?php echo $this->project->sport_type_picture;?>" class="img-responsive img-rounded center-block">
+        </div>
+        <div class="modal-footer">
+<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_('JLIB_HTML_BEHAVIOR_CLOSE');?> </button>
 </div>
-<?PHP
-echo JHtml::image($this->project->sport_type_picture, $this->project->sport_type_name, array('title' => $this->project->sport_type_name,'class' => "img-rounded" ));
-?>
-</div>
+    </div>
+<!--  </div> -->
+  </div>
+</div>                    
                         
-                        
-						<?php
-                        // diddipoeler
-//                        echo JHtml::image($this->project->sport_type_picture, $this->project->sport_type_name, array('title' => $this->project->sport_type_name,'width' => $this->overallconfig['picture_width'] ));
-						/*
-                        echo JoomleagueHelper::getPictureThumb($this->project->sport_type_picture,
-																$this->project->sport_type_name,
-																$this->overallconfig['picture_width'],
-																$this->overallconfig['picture_height'], 
-																2);
-						*/
-                        ?>
+
 						</td>
 					<?php	
 			    	}	

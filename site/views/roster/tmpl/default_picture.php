@@ -64,18 +64,32 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
       ?>
 
 
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $this->team->name;?>" data-toggle="modal" data-target="#modal">
+<a href="#" title="<?php echo $this->team->name;?>" data-toggle="modal" data-target=".teamroster">
 <img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $this->team->name;?>" width="<?php echo $this->config['team_picture_width'];?>" />
 </a>
 
-<div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="beispielModalLabel" aria-hidden="true">
-<div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
 
-      </div>
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $this->team->name;?>"  />
-
-</div>      
+<div id="" style="display: none;" class="modal fade teamroster" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+<!--  <div class="modal-dialog"> -->
+    <div class="modal-content">
+    
+    <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
+          <h4 class="modal-title" id="myLargeModalLabel"><?php echo $this->team->name;?></h4>
+        </div>
+        
+        <div class="modal-body">
+            <img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" class="img-responsive img-rounded center-block">
+        </div>
+        <div class="modal-footer">
+<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_('JLIB_HTML_BEHAVIOR_CLOSE');?> </button>
+</div>
+    </div>
+<!--  </div> -->
+  </div>
+</div>    
+     
 
     <?php
       	
