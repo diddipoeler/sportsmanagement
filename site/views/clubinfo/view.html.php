@@ -116,6 +116,8 @@ class sportsmanagementViewClubInfo extends JViewLegacy
 		$this->assignRef('address_string', $address_string);
 		$this->assignRef('mapconfig',		$map_config ); // Loads the project-template -settings for the GoogleMap
 
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
+
 		//$this->assignRef( 'gmap',			$google_map );
 
     if ( ($this->config['show_club_rssfeed']) == 1 )

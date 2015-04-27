@@ -282,7 +282,11 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo',$picture,$clu
 					?>
                     <address>
 					<strong><?php echo str_replace( "%NUMBER%", $playground_number, $pl_dummy ); ?></strong>
-					<?php echo JHtml::link( $link, $playground->name ); ?>
+					<?php echo JHtml::link( $link, $playground->name ); 
+                    
+echo sportsmanagementHelperHtml::getBootstrapModalImage('playground'.$playground->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$playground->picture,$playground->name,$this->config['playground_picture_width']);                    
+                    
+                    ?>
                     </address>
 					<?php
 					$playground_number++;

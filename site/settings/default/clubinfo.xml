@@ -119,6 +119,7 @@
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
+		
 		<field name="show_club_logo" type="radio" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_CLUB_LOGO"
@@ -126,6 +127,7 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		
 		<field name="team_picture_width" type="text" default="150"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_WIDTH"
 			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_WIDTH">
@@ -145,6 +147,7 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		
 		<field name="show_playgrounds_of_club" type="radio" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_VENUES_CLUB"
@@ -152,6 +155,20 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		
+		<field name="show_playground_picture" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_PLAYGROUND_PARAM_LABEL_SHOW_VENUE_PICTURE"
+			description="COM_SPORTSMANAGEMENT_FES_PLAYGROUND_PARAM_DESCR_SHOW_VENUE_PICTURE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+    <field name="playground_picture_width" type="text" default="100"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PLAYGROUND_PICTURE_WIDTH"
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PLAYGROUND_PICTURE_WIDTH">
+		</field>
+		
 		<field name="show_club_season_calendar" type="radio" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_SEASON"
@@ -159,6 +176,7 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		
 		<field name="show_club_shirt" type="radio" default="0"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_SHIRT"
