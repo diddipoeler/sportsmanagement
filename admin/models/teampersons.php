@@ -272,7 +272,7 @@ class sportsmanagementModelTeamPersons extends JModelList
                 
              
         
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	    {
         $my_text = 'dump<pre>'.print_r($query->dump(),true).'</pre>';
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
@@ -322,14 +322,17 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         
     }
     
+    
     /**
      * sportsmanagementModelTeamPersons::checkProjectPositions()
      * 
-     * @param mixed $items
-     * @param integer $project_id
+     * @param mixed $project_id
+     * @param mixed $persontype
+     * @param mixed $team_id
+     * @param mixed $season_id
      * @return
      */
-    function checkProjectPositions($items=NULL,$project_id=0)
+    function checkProjectPositions($project_id,$persontype,$team_id,$season_id)
     {
         // Reference global application object
         $app = JFactory::getApplication();
@@ -337,63 +340,48 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.
-		$db		= JFactory::getDBO();
-		$query	= $db->getQuery(true);
+		$db	= JFactory::getDBO();
+		$query = $db->getQuery(true);
         $date = JFactory::getDate();
 	    $user = JFactory::getUser();
         $modified = $date->toSql();
 	    $modified_by = $user->get('id');
        
-        $mdl = JModelLegacy::getInstance("Projectposition", "sportsmanagementModel");
-        $mdlTable = $mdl->getTable();
-        $mdl = JModelLegacy::getInstance("seasonteamperson", "sportsmanagementModel");
-        $mdlSTP = $mdl->getTable();
-                
-        foreach( $items as $row)
-        {
-        if ( $row->person_position_id)
-        {
-        $query->clear();
-        $query->select('id'); 
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position');
-        $query->where('project_id = '.$project_id);
-        $query->where('position_id = '.$row->person_position_id);
+       // Select some fields
+		$query->select('person_id,project_position_id');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id');
+        $query->where('team_id = '.$team_id);
+        $query->where('season_id = '.$season_id);
+        $query->where('persontype = '.$persontype);
         $db->setQuery($query);
-        $result = $db->loadResult();
-        if (!$result)
-		{
-		$mdlTable->project_id = $project_id;
-        $mdlTable->position_id = $row->person_position_id;
-        $mdlTable->modified = $db->Quote(''.$modified.'');
-        $mdlTable->modified_by = $modified_by;  
-        $mdlTable->published = 1;
-        
-        if ($mdlTable->store()===false)
-		{
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' message<br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
-		}
-		else
-		{
-		$row->project_position_id = $db->insertid();  
-        $mdlSTP->load($row->tpid);  
-        $mdlSTP->project_position_id = $db->insertid(); 
-        if ($mdlSTP->store()===false)
-		{
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' message<br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
-		}
-		else
-		{
-		}
-        
-		}
-
-		}
-           
-        }   
-         
+        $result = $db->loadObjectList();
+        if ( $result )
+        {
+            foreach( $result as $row )
+            {
+            // projekt position eintragen
+                // Create a new query object.
+                $insertquery = $db->getQuery(true);
+                // Insert columns.
+                $columns = array('person_id','project_id','project_position_id','persontype');
+                // Insert values.
+                $values = array($row->person_id,$project_id,$row->project_position_id,$persontype);
+                // Prepare the insert query.
+                $insertquery
+                ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position'))
+                ->columns($db->quoteName($columns))
+                ->values(implode(',', $values));
+                // Set the query using our newly populated query object and execute it.
+                $db->setQuery($insertquery);
+                if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
+                {}
+                else
+                {}
+                
+            }
         }
-        
-        return $items;
+
+        return true;
     }
 
 

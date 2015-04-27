@@ -80,9 +80,36 @@ class sportsmanagementViewteampersons extends sportsmanagementView
         
         $items = $this->get('Items');
         $this->project_id = $app->getUserState( "$option.pid", '0' );
+        $this->_persontype = JRequest::getVar('persontype');
+        if ( empty($this->_persontype) )
+        {
+            $this->_persontype	= $app->getUserState( "$option.persontype", '0' );
+        }
+        $this->project_team_id	= JRequest::getVar('project_team_id');
+        $this->team_id	= JRequest::getVar('team_id');
+                
+        if ( !$this->team_id )
+        {
+            $this->team_id	= $app->getUserState( "$option.team_id", '0' );
+        }
+        if ( !$this->project_team_id )
+        {
+            $this->project_team_id	= $app->getUserState( "$option.project_team_id", '0' );
+        }
+        
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+	    $project = $mdlProject->getProject($this->project_id);
+        
+        $this->season_id = $project->season_id;
+        
+        if ( !$items )
+        {
         // fehlen im projekt die positionen ?
         // wenn ja, dann fehlende positionen hinzufügen
-        //$items = $model->checkProjectPositions($items,$this->project_id);
+        $items = $model->checkProjectPositions($this->project_id,$this->_persontype,$this->team_id,$this->season_id);    
+        $items = $this->get('Items');
+        }
+        
         
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
@@ -96,37 +123,23 @@ class sportsmanagementViewteampersons extends sportsmanagementView
         $table = JTable::getInstance('teamperson', 'sportsmanagementTable');
 		$this->assignRef('table', $table);
         
-        $this->_persontype = JRequest::getVar('persontype');
+        
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _persontype<br><pre>'.print_r($this->_persontype,true).'</pre>'),'');
         
-        if ( empty($this->_persontype) )
-        {
-            $this->_persontype	= $app->getUserState( "$option.persontype", '0' );
-        }
         
-        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
-	    $project = $mdlProject->getProject($this->project_id);
         
-        $this->season_id = $project->season_id;
+//        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+//	    $project = $mdlProject->getProject($this->project_id);
+//        
+//        $this->season_id = $project->season_id;
         
         $app->setUserState( "$option.pid", $project->id );
         $app->setUserState( "$option.season_id", $project->season_id );
         $app->setUserState( "$option.project_art_id", $project->project_art_id );
         $app->setUserState( "$option.sports_type_id", $project->sports_type_id );
         
-        $this->project_team_id	= JRequest::getVar('project_team_id');
-        $this->team_id	= JRequest::getVar('team_id');
         
-        
-        if ( !$this->team_id )
-        {
-            $this->team_id	= $app->getUserState( "$option.team_id", '0' );
-        }
-        if ( !$this->project_team_id )
-        {
-            $this->project_team_id	= $app->getUserState( "$option.project_team_id", '0' );
-        }
         
         
         
