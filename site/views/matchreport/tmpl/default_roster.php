@@ -235,12 +235,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer'.$player->p
                                                 }
                                                  if ( ($this->config['show_player_picture'] == 2) && ($this->config['show_player_profile_link'] == 1) )
                                                  {
-													/*
-                                                    echo JHtml::link($player_link,sportsmanagementHelper::getPictureThumb($picture,
-																													$imgTitle,
-																													$this->config['player_picture_width'],
-																													$this->config['player_picture_height']));
-                                                    */
+
                                                     echo JHtml::link($player_link,JHtml::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['player_picture_width'] )));                                                                
 												                            if ( $this->config['show_player_profile_link_alignment'] == 1 )
 												                            {

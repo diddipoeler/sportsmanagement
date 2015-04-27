@@ -81,33 +81,10 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
 						?>
 						<td>
 
-<a href="#" title="<?php echo $this->project->sport_type_name;?>" data-toggle="modal" data-target=".s<?php echo $this->project->sport_type_id;?>">
 <?PHP
-echo JHtml::image($this->project->sport_type_picture, $this->project->sport_type_name, array('title' => $this->project->sport_type_name,'class' => "img-rounded",'width' => $this->overallconfig['picture_width'] ));      
+echo sportsmanagementHelperHtml::getBootstrapModalImage('sporttype_picture',$this->project->sport_type_picture,$this->project->sport_type_name,$this->overallconfig['picture_width']);
 ?>
-</a>                        
-
-<div id="" style="display: none;" class="modal fade s<?php echo $this->project->sport_type_id;?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-<!--  <div class="modal-dialog"> -->
-    <div class="modal-content">
-    
-    <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-          <h4 class="modal-title" id="myLargeModalLabel"><?php echo $this->project->sport_type_name;?></h4>
-        </div>
-        
-        <div class="modal-body">
-            <img src="<?php echo $this->project->sport_type_picture;?>" class="img-responsive img-rounded center-block">
-        </div>
-        <div class="modal-footer">
-<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_('JLIB_HTML_BEHAVIOR_CLOSE');?> </button>
-</div>
-    </div>
-<!--  </div> -->
-  </div>
-</div>                    
-                        
+          
 
 						</td>
 					<?php	
@@ -121,56 +98,19 @@ echo JHtml::image($this->project->sport_type_picture, $this->project->sport_type
                             $picture = $this->project->leaguepicture;
                             $copyright = $this->project->cr_leaguepicture;
                         }
-//                        else
-//                        {
-//                            $copyright = $this->project->cr_picture;
-//                        }
                         
                         ?>
 						<td>
 
-
-
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $this->project->name;?>" data-toggle="modal" data-target="#p<?php echo $this->project->id;?>">
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->project->name, array('title' => $this->project->name,'class' => "img-rounded",'width' => $this->overallconfig['picture_width'] ));      
-?>
-</a>                        
-
 <br />
 <?php 
+echo sportsmanagementHelperHtml::getBootstrapModalImage('project_picture',COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$this->project->name,$this->overallconfig['picture_width']);
 if ( $copyright )
 {
 echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>');
 }
 ?>
 
-
-<div class="modal fade" id="p<?php echo $this->project->id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-</div>
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->project->name, array('title' => $this->project->name,'class' => "img-rounded" ));
-?>
-</div>
-
-
-
-
-
-                       
-						<?php
-                        // diddipoeler
-                        //echo JHtml::image($picture, $this->project->name, array('title' => $this->project->name,'width' => $this->overallconfig['picture_width'] ));
-						/*
-                        echo JoomleagueHelper::getPictureThumb($this->project->picture,
-																$this->project->name,
-																$this->overallconfig['picture_width'],
-																$this->overallconfig['picture_height'], 
-																2);
-						*/
-                        ?>
 						</td>
 					<?php	
 			    	}

@@ -44,6 +44,32 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('globalviews', 'results', 'matrix');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
+<style>
+/*** PANEL PRIMARY ***/
+.with-nav-tabs.panel-primary .nav-tabs > li > a,
+.with-nav-tabs.panel-primary .nav-tabs > li > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > li > a:focus {
+    color: #fff;
+}
+.with-nav-tabs.panel-primary .nav-tabs > .open > a,
+.with-nav-tabs.panel-primary .nav-tabs > .open > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > .open > a:focus,
+.with-nav-tabs.panel-primary .nav-tabs > li > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > li > a:focus {
+	color: #fff;
+	background-color: #3071a9;
+	border-color: transparent;
+}
+.with-nav-tabs.panel-primary .nav-tabs > li.active > a,
+.with-nav-tabs.panel-primary .nav-tabs > li.active > a:hover,
+.with-nav-tabs.panel-primary .nav-tabs > li.active > a:focus {
+	color: #428bca;
+	background-color: #fff;
+	border-color: #428bca;
+	border-bottom-color: transparent;
+}
+
+</style>
 <div class="row">
 <a name="jl_top" id="jl_top"></a>
 	<?php 
@@ -58,7 +84,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 ?>    
   
-<div role="tabpanel" data-example-id="togglable-tabs">
+<div role="tabpanel" data-example-id="togglable-tabs" class="panel with-nav-tabs panel-primary">
 
   <!-- Tabs-Navs -->
   <ul class="nav nav-tabs" role="tablist" data-tabs="tabs" id="tabs">
