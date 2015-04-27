@@ -292,7 +292,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
      * 
      * @return void
      */
-    function PersonProjectPosition($project_id)
+    function PersonProjectPosition($project_id,$_persontype)
     {
     // Reference global application object
         $app = JFactory::getApplication();
@@ -308,6 +308,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         // From table
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position AS ppl');
         $query->where('ppl.project_id = '.$project_id);
+        $query->where('ppl.persontype = '.$_persontype);
         
         $db->setQuery($query);
         //$db->query();

@@ -300,6 +300,7 @@ $userId		= $user->get('id');
 	<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
 	<input type="hidden" name="filter_order_Dir" value="" />
     <input type="hidden" name="type" value="<?php echo $this->type; ?>" />
+    <input type="hidden" name="persontype" value="<?php echo $this->persontype; ?>" />
     <input type="hidden" name="component" value="com_sportsmanagement" />
 	<?php echo JHtml::_('form.token')."\n"; ?>
 </form>

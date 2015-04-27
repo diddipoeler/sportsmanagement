@@ -387,9 +387,9 @@ class sportsmanagementModelperson extends JModelAdmin
     
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');    
     
-    switch ($post['type'])
+    switch ($post['persontype'])
             {
-                case 0:
+                case 1:
                 $mdl = JModelLegacy::getInstance("seasonteamperson", "sportsmanagementModel");
                 $mdlTable = $mdl->getTable();
                 for ($x=0; $x < count($cid); $x++)
@@ -414,10 +414,28 @@ class sportsmanagementModelperson extends JModelAdmin
 				else
 				{
 				}
+                // projekt position eintragen
+                // Create a new query object.
+                $insertquery = $db->getQuery(true);
+                // Insert columns.
+                $columns = array('person_id','project_id','project_position_id','persontype');
+                // Insert values.
+                $values = array($cid[$x],$this->_project_id,0,1);
+                // Prepare the insert query.
+                $insertquery
+                ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position'))
+                ->columns($db->quoteName($columns))
+                ->values(implode(',', $values));
+                // Set the query using our newly populated query object and execute it.
+                $db->setQuery($insertquery);
+                if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
+                {}
+                else
+                {}
                  
 		        }
                 break;
-                case 1:
+                case 2:
                 $mdl = JModelLegacy::getInstance("seasonteamperson", "sportsmanagementModel");
                 $mdlTable = $mdl->getTable();
                 for ($x=0; $x < count($cid); $x++)
@@ -442,31 +460,28 @@ class sportsmanagementModelperson extends JModelAdmin
 				else
 				{
 				}
+                // projekt position eintragen
+                // Create a new query object.
+                $insertquery = $db->getQuery(true);
+                // Insert columns.
+                $columns = array('person_id','project_id','project_position_id','persontype');
+                // Insert values.
+                $values = array($cid[$x],$this->_project_id,0,2);
+                // Prepare the insert query.
+                $insertquery
+                ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position'))
+                ->columns($db->quoteName($columns))
+                ->values(implode(',', $values));
+                // Set the query using our newly populated query object and execute it.
+                $db->setQuery($insertquery);
+                if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
+                {}
+                else
+                {}
                  
 		        }
                 break;
-                /*
-                case 2:
-                $mdl = JModelLegacy::getInstance("seasonteamperson", "sportsmanagementModel");
-                $mdlTable = $mdl->getTable();
-                for ($x=0; $x < count($cid); $x++)
-                {
-                $mdlPersonTable->load($cid[$x]); 
-                $mdlTable = $mdl->getTable();
-                $mdlTable->project_id = $this->_project_id;
-                $mdlTable->picture = $mdlPersonTable->picture;
-                $mdlTable->person_id = $cid[$x];   
-                if ($mdlTable->store()===false)
-				{
-				    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-				}
-				else
-				{
-				}
-                 
-		        }
-                break;
-                */
+                
                 
             }
     

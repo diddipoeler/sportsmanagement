@@ -255,9 +255,11 @@ class sportsmanagementModelProjectteams extends JModelList
  
  //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
  
-if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $my_text = 'dump<pre>'.print_r($query->dump(),true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
 
 
@@ -385,10 +387,16 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' _season_id<br><pre>'.print_r($this->_season_id , true).'</pre><br>','Notice');
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' project_art_id<br><pre>'.print_r($this->project_art_id, true).'</pre><br>','Notice');
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' sports_type_id<br><pre>'.print_r($this->sports_type_id, true).'</pre><br>','Notice');
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' country -> '.$result->country.'','Notice');
+        $my_text = '_season_id<pre>'.print_r($this->_season_id,true).'</pre>';
+        $my_text .= 'project_art_id<pre>'.print_r($this->project_art_id,true).'</pre>';
+        $my_text .= 'sports_type_id<pre>'.print_r($this->sports_type_id,true).'</pre>';
+        $my_text .= 'country<pre>'.print_r($result->country,true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            
+//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' _season_id<br><pre>'.print_r($this->_season_id , true).'</pre><br>','Notice');
+//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' project_art_id<br><pre>'.print_r($this->project_art_id, true).'</pre><br>','Notice');
+//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' sports_type_id<br><pre>'.print_r($this->sports_type_id, true).'</pre><br>','Notice');
+//        $app->enqueueMessage(__METHOD__.' '.__LINE__.' country -> '.$result->country.'','Notice');
         }
        
         if ( $this->project_art_id == 3 )
@@ -427,7 +435,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' query <br><pre>'.print_r($query->dump(), true).'</pre><br>','Notice');
+        $my_text = 'dump<pre>'.print_r($query->dump(),true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         //$app->enqueueMessage(__METHOD__.' '.__LINE__.' loadObjectList<br><pre>'.print_r($db->loadObjectList(), true).'</pre><br>','Notice');
         }
         
@@ -633,7 +642,9 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(get_class($this).' '.__FUNCTION__.' project_id<br><pre>'.print_r($project_id, true).'</pre><br>','Notice');
+            $my_text = 'project_id<pre>'.print_r($project_id,true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        //$app->enqueueMessage(get_class($this).' '.__FUNCTION__.' project_id<br><pre>'.print_r($project_id, true).'</pre><br>','Notice');
         }
         
         if ( $this->project_art_id == 3 )

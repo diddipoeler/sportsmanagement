@@ -177,9 +177,9 @@ class sportsmanagementViewteampersons extends sportsmanagementView
         $my_text .= 'items<pre>'.print_r($items,true).'</pre>';
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);    
         
-        $PersonProjectPosition = $model->PersonProjectPosition($this->project_id);
+        $PersonProjectPosition = $model->PersonProjectPosition($this->project_id,$this->_persontype);
         
-        $app->enqueueMessage(__METHOD__.' '.__LINE__.' PersonProjectPosition<br><pre>'.print_r($PersonProjectPosition, true).'</pre><br>','Notice');
+        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' PersonProjectPosition<br><pre>'.print_r($PersonProjectPosition, true).'</pre><br>','Notice');
         }
 
 		$this->assign('user',JFactory::getUser());
@@ -227,7 +227,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView
 
 		JToolBarHelper::publishList('teampersons.publish');
 		JToolBarHelper::unpublishList('teampersons.unpublish');
-		JToolBarHelper::apply( 'teampersons.saveshort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_APPLY' ) );
+		JToolBarHelper::apply('teampersons.saveshort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_APPLY' ) );
 		JToolBarHelper::divider();
 
 		//JToolBarHelper::custom( 'teamplayer.assign', 'upload.png', 'upload_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN' ), false );

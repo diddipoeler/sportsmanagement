@@ -156,6 +156,8 @@ class sportsmanagementModelteamperson extends JModelAdmin
 	function saveshort()
 	{
 		$app = JFactory::getApplication();
+        /* Ein Datenbankobjekt beziehen */
+        $db = JFactory::getDbo();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -179,12 +181,13 @@ class sportsmanagementModelteamperson extends JModelAdmin
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
-            $app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' id<br><pre>'.print_r($pks[$x], true).'</pre><br>','');
-            $app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' project_position_id<br><pre>'.print_r($post['project_position_id'.$pks[$x]], true).'</pre><br>','');
-            $app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' jerseynumber<br><pre>'.print_r($post['jerseynumber'.$pks[$x]], true).'</pre><br>','');
-            $app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' market_value<br><pre>'.print_r($post['market_value'.$pks[$x]], true).'</pre><br>','');
-            $app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' position_id<br><pre>'.print_r($post['position_id'.$pks[$x]], true).'</pre><br>','');
-            $app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' person_id<br><pre>'.print_r($post['person_id'.$pks[$x]], true).'</pre><br>','');
+            $my_text = 'id<br><pre>'.print_r($pks[$x], true).'</pre><br>';
+            $my_text .= 'project_position_id<br><pre>'.print_r($post['project_position_id'.$pks[$x]], true).'</pre><br>';
+            $my_text .= 'jerseynumber<br><pre>'.print_r($post['jerseynumber'.$pks[$x]], true).'</pre><br>';
+            $my_text .= 'market_value<br><pre>'.print_r($post['market_value'.$pks[$x]], true).'</pre><br>';
+            $my_text .= 'position_id<br><pre>'.print_r($post['position_id'.$pks[$x]], true).'</pre><br>';
+            $my_text .= 'person_id<br><pre>'.print_r($post['person_id'.$pks[$x]], true).'</pre><br>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
             }
 
 			if(!$tblPerson->store()) 
@@ -212,15 +215,43 @@ class sportsmanagementModelteamperson extends JModelAdmin
 		        $app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($tblperson->getErrorMsg(), true).'</pre><br>','Error');
 	            }
                 
+                // alten eintrag löschen
+                // Create a new query object.
+                $query = $db->getQuery(true);
+                // delete all
+                $conditions = array(
+                $db->quoteName('person_id') . '='.$pks[$x],
+                $db->quoteName('project_id') . '='.$this->_project_id,
+                $db->quoteName('project_position_id') . '= 0',
+                $db->quoteName('persontype') . '='.$this->persontype
+                );
+ 
+                $query->delete($db->quoteName('#__sportsmanagement_person_project_position'));
+                $query->where($conditions);
+ 
+                $db->setQuery($query);  
+
+                if (!$db->query())
+		          {
+			      //      $app->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields delete<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+		          }
+                  
                 // Create and populate an object.
                 $profile = new stdClass();
-                $profile->person_id = $post['person_id'.$pks[$x]];
+                //$profile->person_id = $post['person_id'.$pks[$x]];
+                $profile->person_id = $pks[$x];
                 $profile->project_id = $this->_project_id;
                 $profile->project_position_id = $post['project_position_id'.$pks[$x]];
                 $profile->persontype = $this->persontype;
                 // Insert the object into table.
                 $result = JFactory::getDbo()->insertObject('#__sportsmanagement_person_project_position', $profile);
                 
+                if (!$result)
+	            {
+		        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+	            }
+                
+                //$app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($profile, true).'</pre><br>','Error');
                 
             }
 		}

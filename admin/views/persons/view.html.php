@@ -186,6 +186,7 @@ $starttime = microtime();
         
 		//$project_id = $app->getUserState($option.'project');
         $this->project_id	= $app->getUserState( "$option.pid", '0' );
+        $this->persontype	= $app->getUserState( "$option.persontype", '0' );
 		$mdlProject = JModelLegacy::getInstance("project", "sportsmanagementModel");
         $project = $mdlProject->getProject($this->project_id);
 		$project_name = $project->name;
