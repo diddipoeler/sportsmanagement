@@ -42,8 +42,14 @@
 /**
  * wichtige links
  * 
+ * bootstrap beispiele
+ * http://bootsnipp.com/
+ * 
  * bootstrap css
  * http://getbootstrap.com/css/
+ * 
+ * bootstrap javascript
+ * http://getbootstrap.com/javascript/
  * 
  * Retrieving request data using JInput
  * https://docs.joomla.org/Retrieving_request_data_using_JInput
