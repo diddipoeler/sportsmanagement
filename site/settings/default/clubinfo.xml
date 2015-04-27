@@ -82,12 +82,26 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		
 		<field name="show_teams_of_club" type="radio" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_TEAMS_CLUB"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_TEAMS_CLUB">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
+		</field>
+		
+		<field name="show_teams_picture" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_TEAM_PICTURE"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_TEAM_PICTURE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+		<field name="team_picture_width" type="text" default="100"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_WIDTH" 
+      description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_WIDTH">
 		</field>
 		
 		<field name="show_teams_description_of_club" type="radio" default="1"
@@ -128,9 +142,9 @@
 			<option value="1">JYES</option>
 		</field>
 		
-		<field name="team_picture_width" type="text" default="150"
-			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_WIDTH"
-			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_WIDTH">
+		<field name="club_logo_width" type="text" default="150"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_CLUB_PICTURE_WIDTH"
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_CLUB_PICTURE_WIDTH">
 		</field>
 
 <!--     

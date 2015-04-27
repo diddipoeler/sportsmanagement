@@ -73,7 +73,7 @@ else
            			
 		}
 		
-echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo',$picture,$club_emblem_title,$this->config['team_picture_width']);        
+echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo',$picture,$club_emblem_title,$this->config['club_logo_width']);        
         
         ?>
 

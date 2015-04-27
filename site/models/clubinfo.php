@@ -283,7 +283,7 @@ $result = $db->execute();
 		if ( self::$clubid > 0 )
 		{
 		  // Select some fields
-          $query->select('t.id,prot.trikot_home,prot.trikot_away');
+          $query->select('t.id,prot.trikot_home,prot.trikot_away,prot.picture as project_team_picture');
           $query->select('CONCAT_WS( \':\', t.id, t.alias ) AS team_slug');
           $query->select('t.name as team_name,t.short_name as team_shortcut,t.info as team_description');
           $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t ');
@@ -321,9 +321,20 @@ $result = $db->execute();
             
             if ( !$teams )
             {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
+            $my_text = 'getErrorMsg<pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
+        $my_text .= 'dump<pre>'.print_r($query->dump(),true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);    
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
             }
+            
+            if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+	    {
+        $my_text = 'teams<pre>'.print_r($teams,true).'</pre>'; 
+        $my_text .= 'dump<pre>'.print_r($query->dump(),true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+	    }
+            
 
 		}
 		return $teams;

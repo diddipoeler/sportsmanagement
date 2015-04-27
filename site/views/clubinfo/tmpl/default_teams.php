@@ -39,14 +39,14 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
-<div class="no-column">
+<div class="row">
 	<div class="contentpaneopen">
 		<div class="contentheading">
 			<?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_TEAMS'); ?>
 		</div>
 	</div>
 	<table>
-	<div class="left-column-teamlist">
+	
 	<?php
 	$params=array();
 	$params['width']="30";
@@ -61,14 +61,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
                 //$link = sportsmanagementHelperRoute::getTeamInfoRoute( $team->pid, $team->id );
                 $link = sportsmanagementHelperRoute::getTeamInfoRoute( $team->pid, $team->team_slug , $team->ptid,JRequest::getInt('cfg_which_database',0));
 				?>
-				<tr>
-				<td>
-				<span class="">
+                <address>
+			
 					<?php
-					//echo JHtml::link( $link, $team->team_name );
-						//echo JHtml::image($team->trikot_home, $team->team_name, $params).JHtml::link( $link, $team->team_name );
-						
-//            echo JHtml::link( $link, $team->team_name.JHtml::image($team->trikot_home, $team->team_name, $params) );
 						
 						if ( $team->team_shortcut ) 
             { 
@@ -114,10 +109,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
             }
             echo "&nbsp;";
 					?>
-				</span>
-				</td>
-				<td>
-				<span class="clubinfo_team_value">
+				
 				<?php
 				if ( $team->team_description && $this->config['show_teams_description_of_club'] )
 				{
@@ -127,14 +119,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 				{
 					echo "&nbsp;";
 				}
-				?>
-				</span>
-				</td>
-				</tr>
-				<?php
+			
+            if ( $this->config['show_teams_picture'] )
+            {
+            echo sportsmanagementHelperHtml::getBootstrapModalImage('clubteam'.$team->id,$team->project_team_picture,$team->team_name,$this->config['team_picture_width']);       
+            }
+            	
 			}
+            ?>
+            </address>
+            <?PHP
 		}
 	?>
-	</div>
+	
 	</table>
 </div>
