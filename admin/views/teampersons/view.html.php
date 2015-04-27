@@ -132,11 +132,17 @@ class sportsmanagementViewteampersons extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($this->project_id,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _persontype<br><pre>'.print_r($this->_persontype,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_team_id<br><pre>'.print_r($this->project_team_id,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($this->team_id,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' season_id<br><pre>'.print_r($this->season_id,true).'</pre>'),'');
+        $my_text = 'project_id<pre>'.print_r($this->project_id,true).'</pre>';
+        $my_text .= '_persontype<pre>'.print_r($this->_persontype,true).'</pre>';
+        $my_text .= 'project_team_id<pre>'.print_r($this->project_team_id,true).'</pre>';
+        $my_text .= 'team_id<pre>'.print_r($this->team_id,true).'</pre>';
+        $my_text .= 'season_id<pre>'.print_r($this->season_id,true).'</pre>';
+        
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($this->project_id,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _persontype<br><pre>'.print_r($this->_persontype,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_team_id<br><pre>'.print_r($this->project_team_id,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($this->team_id,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' season_id<br><pre>'.print_r($this->season_id,true).'</pre>'),'');
         }
         
         $mdlProjectTeam = JModelLegacy::getInstance("ProjectTeam", "sportsmanagementModel");
@@ -168,7 +174,12 @@ class sportsmanagementViewteampersons extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(get_class($this).' '.__FUNCTION__.' items<br><pre>'.print_r($items, true).'</pre><br>','Notice');
+        $my_text .= 'items<pre>'.print_r($items,true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);    
+        
+        $PersonProjectPosition = $model->PersonProjectPosition($this->project_id);
+        
+        $app->enqueueMessage(__METHOD__.' '.__LINE__.' PersonProjectPosition<br><pre>'.print_r($PersonProjectPosition, true).'</pre><br>','Notice');
         }
 
 		$this->assign('user',JFactory::getUser());

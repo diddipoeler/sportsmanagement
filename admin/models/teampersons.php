@@ -270,7 +270,13 @@ class sportsmanagementModelTeamPersons extends JModelList
         $query->order($db->escape($this->getState('list.ordering', 'ppl.lastname')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
                 
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+             
+        
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+	    {
+        $my_text = 'dump<pre>'.print_r($query->dump(),true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        }
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
@@ -281,6 +287,39 @@ class sportsmanagementModelTeamPersons extends JModelList
 	}
     
     
+    /**
+     * sportsmanagementModelTeamPersons::PersonProjectPosition()
+     * 
+     * @return void
+     */
+    function PersonProjectPosition($project_id)
+    {
+    // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        // Create a new query object.		
+		$db = JFactory::getDBO();
+		$query = $db->getQuery(true);    
+        
+        // Select some fields
+		$query->select('ppl.*');
+        // From table
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position AS ppl');
+        $query->where('ppl.project_id = '.$project_id);
+        
+        $db->setQuery($query);
+        //$db->query();
+        $result = $db->loadObjectList();
+        
+		if (!$result)
+		{
+			return false;
+		}
+		return $result;
+        
+    }
     
     /**
      * sportsmanagementModelTeamPersons::checkProjectPositions()
