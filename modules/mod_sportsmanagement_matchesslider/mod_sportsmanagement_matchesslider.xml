@@ -39,11 +39,11 @@
     <field name="spacer0" type="spacer" class="text" label=""/>       
 
     <field name="cfg_which_database" 
-    type="radio" 
+    type="list" 
     default="0"
     class="radio btn-group btn-group-yesno"
-			label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
-      description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
@@ -52,10 +52,13 @@
     <field name="spacer2" type="spacer" class="text" label=""/>
  
  <field	name="s" 
-      type="seasonlist"
-      
-					label="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_XML_SELECT_SEASON_LABEL"
-					description="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_XML_SELECT_SEASON_DESCR"
+    task="seasons" 
+      type="dependsql"
+      depends="cfg_which_database"
+      value_field="cfg_which_database"
+      key_field="season_id"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
 					required="">
 			</field>
       
