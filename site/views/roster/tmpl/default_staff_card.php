@@ -152,7 +152,13 @@ defined('_JEXEC') or die('Restricted access');
 				echo  $row->position;
 				?></div>
 					  <div class="player-name"><?php $projectid = $this->project->id;
-							$link = sportsmanagementHelperRoute::getStaffRoute( $this->project->slug, $this->team->slug, $row->slug );
+					  $routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $this->project->slug;
+       $routeparameter['tid'] = $this->team->slug;
+       $routeparameter['pid'] = $row->slug;
+							$link = sportsmanagementHelperRoute::getSportsmanagementRoute('staff',$routeparameter);
 							echo JHtml::link($link,'<i>'.$playerName.'</i>'); ?></div>	  	  
 					</td>
 				  </tr>

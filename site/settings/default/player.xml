@@ -15,12 +15,12 @@
 			<option value="1">JYES</option>
 		</field>
 
-		<field 	name="show_players_layout" type="radio" default="player_standard" 
+		<field 	name="show_players_layout" type="radio" default="no_tabs" 
 				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_PLAYERS_LAYOUT" 
 				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_PLAYERS_LAYOUT">
-			<option value="player_standard">COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_OPTION1_PLAYER_STANDARD</option>
-			<option value="player_tabbed">COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_OPTION2_PLAYER_TABBED</option>
-			<option value="player_slider">COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_OPTION3_PLAYER_SLIDER</option>
+			<option value="no_tabs">COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_OPTION1_PLAYER_STANDARD</option>
+			<option value="show_tabs">COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_OPTION2_PLAYER_TABBED</option>
+			<option value="show_slider">COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_OPTION3_PLAYER_SLIDER</option>
 		</field>
 		
 		<field 	name="show_plinfo" type="radio" default="1"  class="radio btn-group btn-group-yesno"

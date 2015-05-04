@@ -207,141 +207,91 @@ echo $this->loadTemplate('debug');
     
 }       
 
+if($this->config['show_result_tabs'] == "show_slider") 
+{
+?>    
+<div class="panel-group" id="accordion-matchreport">
+<?PHP    
+foreach ( $output as $key => $templ ) 
+    {
+?>    
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title">
+<a data-toggle="collapse" data-parent="#accordion-matchreport" href="#<?php echo $key; ?>"><?php echo JText::_($key); ?></a>
+</h4>
+</div>
 
-    if(version_compare(JVERSION,'3.0.0','ge')) 
-    //if(version_compare(JVERSION,'2.5.0','ge'))
-        {
-        $count = 0;
-    foreach ($output as $templ)
-    {
-    
-    if ( !$count )
-    {
-    // Define slides options
-        $slidesOptions = array(
-            "active" => "slide".$count."_id" // It is the ID of the active tab.
-        );    
-    // Define tabs options for version of Joomla! 3.0
-        $tabsOptions = array(
-            "active" => "tab".$count."_id" // It is the ID of the active tab.
-        );      
-    }    
-    $count++;	   
-    }
-    
-    if( $this->config['show_result_tabs'] == "show_tabs" ) 
-    {
-    $count = 0;    
+<div id="<?php echo $key; ?>" class="panel-collapse collapse">
+<div class="panel-body">
+<?PHP    
+echo $this->loadTemplate($templ); 
+?>
+</div>
+</div>
+</div>
+
+<?PHP	    
+    }         
+        
     ?>
-        <!-- This is a list with tabs names. -->
-    	<ul class="nav nav-tabs" id="ID-Tabs-Group">
-        <?PHP
-        foreach ($output as $key => $templ)
-        {
-        $active = '';    
-        if ( $count == 0 )
-        {
-            $active = 'active';
-        }    
-        ?>
-        <li class="<?php echo $active; ?>">
-        <a data-toggle="tab" href="#tab<?php echo $count; ?>_id"><?php echo JText::_($key); ?>
-        </a>
-       	</li>
-        <?PHP
-        $count++;
-        }
-        ?>
-        </ul>
-            
-    <?PHP    
-    echo JHtml::_('bootstrap.startPane', 'ID-Tabs-Group', $tabsOptions);
-    $count = 0;  
-    foreach ($output as $key => $templ)
-    {
-    echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab'.$count.'_id');
-    echo $this->loadTemplate($templ);
-    echo JHtml::_('bootstrap.endPanel'); 
-    $count++;
-    }
-    echo JHtml::_('bootstrap.endPane', 'ID-Tabs-Group');    
-    }
-    else if($this->config['show_result_tabs'] == "show_slider" ) 
-    {
-    // This renders the beginning of the slides code.
-    echo JHtml::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions);  
-    $count = 0;  
-    foreach ($output as $key => $templ)
-    {
-        // Open the first slide
-        echo JHtml::_('bootstrap.addSlide', 'slide-group-id', JText::_($key), 'slide'.$count.'_id');
-        echo $this->loadTemplate($templ);
-        // This is the closing tag of the first slide
-        echo JHtml::_('bootstrap.endSlide');  
-        $count++;
-    } 
-    // This renders the end part of the slides code.	
-    echo JHtml::_('bootstrap.endAccordion');
+    </div>
+    <?PHP       
+}
+    
+if( $this->config['show_result_tabs'] == "show_tabs" ) 
+{
+?>    
+    
+<div role="tabpanel">
 
-    }
-    else 
-    {
+<!-- Tabs-Navs -->
+<ul class="nav nav-tabs" role="tablist">
+<?PHP
+$count = 0;
+$active = 'active';
+foreach ($output as $key => $templ)
+{
+if ( $count )
+{
+$active = '';
+}
+?>  
+<li role="presentation" class="<?PHP echo $active; ?>"><a href="#<?PHP echo $templ; ?>" role="tab" data-toggle="tab"><?PHP echo JText::_($key); ?></a></li>
+<?PHP
+$count++;
+}
+?>
+</ul>
+<!-- Tab-Inhalte -->
+<div class="tab-content">
+<?PHP
+$count = 0;
+$active = 'in active';
+foreach ($output as $key => $templ)
+{
+if ( $count )
+{
+$active = '';
+}
+?>
+<div role="tabpanel" class="tab-pane fade <?PHP echo $active; ?>" id="<?PHP echo $templ; ?>">
+<?PHP   
+echo $this->loadTemplate($templ);
+?>
+</div>
+<?PHP
+}
+?>
+</div>
 
-	foreach ($output as $templ)
-	{
-	echo $this->loadTemplate($templ);
-	}
-	
+</div>
+    
+<?PHP            
+    
     }
         
-            }
-            else
-            {
-  // diddipoeler
-  // anzeige als tabs oder slider von joomlaworks
-  
-  //echo 'output<pre>',print_r($output,true),'</pre>';
-  
-  $startoutput = '';
-    $params = '';
-    if($this->config['show_result_tabs'] == "show_tabs") 
-    {
-    $startoutput = '{tab=';
-    $endoutput = '{/tabs}';
-        
-    foreach ( $output as $key => $templ ) 
-    {
-    $params .= $startoutput.JText::_($key).'}';
-    $params .= $this->loadTemplate($templ);    
-    }    
-    $params .= $endoutput;   
-       
-    }    
-    else if($this->config['show_result_tabs'] == "show_slider") 
-    {
-    $startoutput = '{slider=';
-    $endoutput = '{/slider}';
-    foreach ( $output as $key => $templ ) 
-    {
-    $params .= $startoutput.JText::_($key).'}';
-    $params .= $this->loadTemplate($templ);    
-    $params .= $endoutput;
-    }    
-        
-    }
-    else 
-    {
 
-	foreach ($output as $templ)
-	{
-	echo $this->loadTemplate($templ);
-	}
-	
-    }    
-
-    echo JHtml::_('content.prepare', $params); 
-    }
-  //}
   
 	echo "<div>";
 		echo $this->loadTemplate('backbutton');

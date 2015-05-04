@@ -88,10 +88,10 @@ class sportsmanagementViewEditPerson extends JViewLegacy
         $extended = sportsmanagementHelper::getExtended($this->item->extended, 'person');
 		$this->assignRef( 'extended', $extended ); 
         
-        $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
+        $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields('frontend',$model::$cfg_which_database) );
         if ( $this->checkextrafields )
         {
-            $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id);
+            $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id,'frontend',$model::$cfg_which_database);
         }
                
  

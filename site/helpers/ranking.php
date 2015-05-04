@@ -387,6 +387,7 @@ class JSMRanking
 			else
 			{
 				$home = new JSMRankingTeam(0); //in that case, $data wont be affected
+                //$home::$sum_points = 0;
 			}
 			if ($mode == 0 || $mode == 2)
 			{
@@ -395,6 +396,7 @@ class JSMRanking
 			else
 			{
 				$away = new JSMRankingTeam(0); //in that case, $data wont be affected
+                //$away::$sum_points = 0;
 			}
 			
 			$shownegpoints = 1;
@@ -492,6 +494,8 @@ class JSMRanking
 					
 					$home->sum_points += $win_points; //home_score can't be null...						
 					$away->sum_points += ( $decision == 0 || isset($away_score) ? $loss_points : 0);
+                    //$home::$sum_points += $win_points; //home_score can't be null...						
+					//$away::$sum_points += ( $decision == 0 || isset($away_score) ? $loss_points : 0);
 
 					if ( $shownegpoints == 1 )
 					{
@@ -565,6 +569,8 @@ class JSMRanking
 					}
 					$home->sum_points += ( $decision == 0 || isset($home_score) ? $draw_points : 0);
 					$away->sum_points += ( $decision == 0 || isset($away_score) ? $draw_points : 0);
+                    //$home::$sum_points += ( $decision == 0 || isset($home_score) ? $draw_points : 0);
+					//$away::$sum_points += ( $decision == 0 || isset($away_score) ? $draw_points : 0);
 
 					if ($shownegpoints==1)
 					{
@@ -612,6 +618,8 @@ class JSMRanking
 									
 					$home->sum_points += ( $decision == 0 || isset($home_score) ? $loss_points : 0);			
 					$away->sum_points += $win_points;
+                    //$home::$sum_points += ( $decision == 0 || isset($home_score) ? $loss_points : 0);			
+					//$away::$sum_points += $win_points;
 
 					if ( $shownegpoints==1)
 					{
@@ -661,9 +669,11 @@ class JSMRanking
 			
 			/* bonus points */
 			$home->sum_points += $match->home_bonus;
+            //$home::$sum_points += $match->home_bonus;
 			$home->bonus_points += $match->home_bonus;
 
 			$away->sum_points += $match->away_bonus;
+            //$away::$sum_points += $match->away_bonus;
 			$away->bonus_points += $match->away_bonus;
 
 			/* goals for/against/diff */
@@ -1593,7 +1603,7 @@ class JSMRankingTeam
 	 * start point / penalty
 	 * @var int
 	 */
-	//static $_startpoints = 0;
+	//public static $_startpoints = 0;
     var $_startpoints = 0;
 	/**
 	 * team name
@@ -1625,7 +1635,7 @@ class JSMRankingTeam
 	var $cnt_lot_away	= 0;
 	var $cnt_lso_away	= 0;	
 	
-	//static $sum_points    	= 0;
+	//public static $sum_points    	= 0;
     var $sum_points    	= 0;
 	var $neg_points    	= 0;
 	var $bonus_points  	= 0;

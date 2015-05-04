@@ -71,7 +71,7 @@ class sportsmanagementViewTeamInfo extends JViewLegacy
 		$model		= $this->getModel();
 		$config		= sportsmanagementModelProject::getTemplateConfig( $this->getName(),$model::$cfg_which_database );
 		$project	= sportsmanagementModelProject::getProject($model::$cfg_which_database);
-        $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields($model::$cfg_which_database) );
+        $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields('frontend',$model::$cfg_which_database) );
 //        $app->enqueueMessage(JText::_('teaminfo checkextrafields -> '.'<pre>'.print_r($this->checkextrafields,true).'</pre>' ),'');
 		$this->assignRef( 'project', $project );
         
@@ -98,7 +98,7 @@ class sportsmanagementViewTeamInfo extends JViewLegacy
 			$this->assignRef('trainingData', $trainingData );
             if ( $this->checkextrafields )
             {
-            $this->assignRef('extrafields', sportsmanagementHelper::getUserExtraFields($model::$teamid,'frontend') );
+            $this->assignRef('extrafields', sportsmanagementHelper::getUserExtraFields($model::$teamid,'frontend',$model::$cfg_which_database) );
             }
 
 			$daysOfWeek=array(

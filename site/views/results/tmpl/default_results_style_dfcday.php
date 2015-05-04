@@ -141,7 +141,13 @@ if ($this->config['show_comments_count'] > 0){
 		{
 			if (isset($game->team1_result))
 			{
-				$report_link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug, $game->slug);
+			$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $game->slug;
+$report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
+				
 			}
 			else
 			{
@@ -495,7 +501,13 @@ $link = "javascript:void(0);";
 				//Link
 				if (isset($game->team1_result))
 				{
-					$link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug, $game->slug).'#comments';
+				$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $game->slug;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
+					
 				}
 				else
 				{
@@ -514,7 +526,13 @@ $link = "javascript:void(0);";
 				//Link
 				if (isset($game->team1_result))
 				{
-					$link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug, $game->slug).'#comments';
+				$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $game->slug;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
+					
 				}
 				else
 				{
@@ -533,7 +551,13 @@ $link = "javascript:void(0);";
 				//Link
 				if (isset($game->team1_result))
 				{
-					$link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug, $game->slug).'#comments';
+				$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $game->slug;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
+					
 				}
 				else
 				{

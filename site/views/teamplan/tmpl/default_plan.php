@@ -699,7 +699,12 @@ $nbcols = 0;
             //Link
             if (isset($match->team1_result))
                 {
-                    $link=sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug,$match->id,JRequest::getInt('cfg_which_database',0));
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $match->id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
+                    
             } else {
                     $link=sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug,$match->id,JRequest::getInt('cfg_which_database',0));
                 }
@@ -903,8 +908,12 @@ $nbcols = 0;
 				} else {
 					$href_text = JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_VIEW_MATCHREPORT');
 				}
-
-				$link=sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug,$match->id);
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $match->id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
+				
 				$viewReport=JHtml::link($link, $href_text);
 				echo $viewReport;
 			}
@@ -973,7 +982,12 @@ $nbcols = 0;
 				//Link
 	            if (isset($match->team1_result))
 	            {
-					$link=sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug,$match->id).'#comments';
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $match->id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
+					
 	            } else {
 					$link=sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug,$match->id).'#comments';
 	            }
@@ -990,7 +1004,12 @@ $nbcols = 0;
 				//Link
 	            if (isset($match->team1_result))
 	            {
-					$link=sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug,$match->id).'#comments';
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $match->id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
+					
 	            } else {
 					$link=sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug,$match->id).'#comments';
 	            }
@@ -1007,7 +1026,13 @@ $nbcols = 0;
 				//Link
 	            if (isset($match->team1_result))
 	            {
-					$link=sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug,$match->id).'#comments';
+	            $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $match->id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
+					
 	            } else {
 					$link=sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug,$match->id).'#comments';
 	            }

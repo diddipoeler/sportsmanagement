@@ -71,32 +71,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 					$picture = sportsmanagementHelper::getDefaultPlaceholder("player") ;
 				}
 			
-                                                       
-				?>
-
-<a href="#"  title="<?php echo $imgTitle;?>" data-toggle="modal" data-target=".referee<?php echo $this->referee->id;?>">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['picture_width'];?>" />
-</a>
-
-<div id="" style="display: none;" class="modal fade referee<?php echo $this->referee->id;?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-lg">
-<div class="modal-content">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-<h4 class="modal-title" id="myLargeModalLabel"><?php echo $imgTitle;?></h4>
-</div>
-<div class="modal-body">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" class="img-responsive img-rounded center-block">
-</div>
-<div class="modal-footer">
-<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_('JLIB_HTML_BEHAVIOR_CLOSE');?> </button>
-</div>
-</div>
-</div>
-</div>
-			
-            
-			<?php
+echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$imgTitle,$this->config['picture_width']);                                                       
+				
 		}
 		?>
 </div>        

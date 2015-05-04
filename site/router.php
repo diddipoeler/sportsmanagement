@@ -118,7 +118,20 @@ function sportsmanagementBuildRoute( &$query )
     case 'predictionusers':
     break;   
     default:
-    // project id, always just after the view if specified
+/**
+ * die ersten parameter im query
+ */
+    if (isset($query['cfg_which_database']))
+	{
+		$segments[] = $query['cfg_which_database'];
+		unset( $query['cfg_which_database'] );
+	}
+    if (isset($query['s']))
+	{
+		$segments[] = $query['s'];
+		unset( $query['s'] );
+	}
+    
 	if (isset($query['p']))
 	{
 		$segments[] = $query['p'];
@@ -394,17 +407,28 @@ function sportsmanagementBuildRoute( &$query )
 				unset( $query['tid'] );
 			}
             // diddipoeler
-            if (isset($query['ttid']))
+            if (isset($query['ptid']))
 			{
-				$segments[] = $query['ttid'];
-				unset( $query['ttid'] );
+				$segments[] = $query['ptid'];
+				unset( $query['ptid'] );
 			}
-            if (isset($query['cfg_which_database']))
-			{
-				$segments[] = $query['cfg_which_database'];
-				unset( $query['cfg_which_database'] );
-			}
+            
 			break;
+            
+        case 'clubplan':
+			if (isset($query['cid']))
+			{
+				$segments[] = $query['cid'];
+				unset( $query['cid'] );
+			}
+			if (isset($query['task']))
+			{
+				$segments[] = $query['task'];
+				unset( $query['task'] );
+			}
+            
+			break;
+                
 		case 'teamplan':
 			if (isset($query['tid']))
 			{
@@ -427,11 +451,7 @@ function sportsmanagementBuildRoute( &$query )
 				$segments[] = $query['ptid'];
 				unset( $query['ptid'] );
 			}
-            if (isset($query['cfg_which_database']))
-			{
-				$segments[] = $query['cfg_which_database'];
-				unset( $query['cfg_which_database'] );
-			}
+            
 			break;
 		case 'results':
 		case 'resultsmatrix':
@@ -461,11 +481,7 @@ function sportsmanagementBuildRoute( &$query )
 				$segments[] = $query['layout'];
 				unset( $query['layout'] );
 			}
-            if (isset($query['cfg_which_database']))
-			{
-				$segments[] = $query['cfg_which_database'];
-				unset( $query['cfg_which_database'] );
-			}
+            
 			break;
 		case 'player':
 		case 'staff':
@@ -562,6 +578,37 @@ function sportsmanagementParseRoute( $segments )
 	$vars = array();
 
 	$vars['view'] = $segments[0];
+    
+    
+    // now, the specifics
+	switch ($vars['view'])
+	{
+	case 'predictionrules':
+    case 'predictionranking':
+    case 'predictionentry':
+    case 'predictionresults':
+    case 'predictionusers':
+    break;   
+    default:
+/**
+ * die ersten parameter im query
+ */
+    if (isset($segments[1])) 
+                {
+				$vars['cfg_which_database'] = $segments[1];
+			}
+    if (isset($segments[2])) 
+    {
+				$vars['s'] = $segments[2];
+			}
+                
+			if (isset($segments[3])) 
+            {
+				$vars['p'] = $segments[3];
+			}
+    break;
+    }   
+    
 
 	switch( $vars['view'] ) // the view...
 	{
@@ -693,236 +740,210 @@ function sportsmanagementParseRoute( $segments )
 			break;
             
         case 'clubinfo':
-			if (isset($segments[1])) {
-				$vars['p'] = $segments[1];
-			}
-			if (isset($segments[2])) {
-				$vars['cid'] = $segments[2];
+        
+			if (isset($segments[4])) {
+				$vars['cid'] = $segments[4];
 			}
 			break;
 		case 'curve':
-			if (isset($segments[1])) {
-				$vars['p'] = $segments[1];
-			}
-			if (isset($segments[2])) {
-				$vars['tid1'] = $segments[2];
-			}
-			if (isset($segments[3])) {
-				$vars['tid2'] = $segments[3];
-			}
+			
 			if (isset($segments[4])) {
-				$vars['division'] = $segments[4];
-			}
-				
-			break;
-		case 'eventsranking':
-			if (isset($segments[1])) {
-				$vars['p'] = $segments[1];
-			}
-			if (isset($segments[2])) {
-				$vars['division'] = $segments[2];
-			}
-			if (isset($segments[3])) {
-				$vars['tid'] = $segments[3];
-			}
-			if (isset($segments[4])) {
-				$vars['evid'] = $segments[4];
+				$vars['tid1'] = $segments[4];
 			}
 			if (isset($segments[5])) {
-				$vars['mid'] = $segments[5];
-			}
-			break;
-		case 'editmatch':
-		case 'editevents':
-			if (isset($segments[1])) {
-				$vars['p'] = $segments[1];
-			}
-			if (isset($segments[2])) {
-				$vars['mid'] = $segments[2];
-			}
-			break;
-		case 'matrix':
-			if (isset($segments[1])) {
-				$vars['p'] = $segments[1];
-			}
-			if (isset($segments[2])) {
-				$vars['division'] = $segments[2];
-			}
-			if (isset($segments[3])) {
-				$vars['r'] = $segments[3];
-			}
-			break;
-		case 'playground':
-			if (isset($segments[1])) {
-				$vars['p'] = $segments[1];
-			}
-			if (isset($segments[2])) {
-				$vars['pgid'] = $segments[2];
-			}
-			break;
-		case "ranking":
-			if (isset($segments[1])) {
-				$vars['p'] = $segments[1];
-			}
-			if (isset($segments[2])) {
-				$vars['type'] = $segments[2];
-			}
-			if (isset($segments[3])) {
-				$vars['r'] = $segments[3];
-			}
-			if (isset($segments[4])) {
-				$vars['from'] = $segments[4];
-			}
-			if (isset($segments[5])) {
-				$vars['to'] = $segments[5];
+				$vars['tid2'] = $segments[5];
 			}
 			if (isset($segments[6])) {
 				$vars['division'] = $segments[6];
 			}
+				
 			break;
-		case 'teamplan':
-			if (isset($segments[1])) {
-				$vars['p'] = $segments[1];
-			}
-			if (isset($segments[2])) {
-				$vars['tid'] = $segments[2];
-			}
-			if (isset($segments[3])) {
-				$vars['division'] = $segments[3];
-			}
+		case 'eventsranking':
+			
 			if (isset($segments[4])) {
-				$vars['mode'] = $segments[4];
+				$vars['division'] = $segments[4];
+			}
+			if (isset($segments[5])) {
+				$vars['tid'] = $segments[5];
+			}
+			if (isset($segments[6])) {
+				$vars['evid'] = $segments[6];
+			}
+			if (isset($segments[7])) {
+				$vars['mid'] = $segments[7];
+			}
+			break;
+		case 'editmatch':
+		case 'editevents':
+			
+			if (isset($segments[4])) {
+				$vars['mid'] = $segments[4];
+			}
+			break;
+		case 'matrix':
+		
+			if (isset($segments[4])) {
+				$vars['division'] = $segments[4];
+			}
+			if (isset($segments[5])) {
+				$vars['r'] = $segments[5];
+			}
+			break;
+		case 'playground':
+			
+			if (isset($segments[4])) {
+				$vars['pgid'] = $segments[4];
+			}
+			break;
+		case "ranking":
+
+			if (isset($segments[4])) {
+				$vars['type'] = $segments[4];
+			}
+			if (isset($segments[5])) {
+				$vars['r'] = $segments[5];
+			}
+			if (isset($segments[6])) {
+				$vars['from'] = $segments[6];
+			}
+			if (isset($segments[7])) {
+				$vars['to'] = $segments[7];
+			}
+			if (isset($segments[8])) {
+				$vars['division'] = $segments[8];
+			}
+			break;
+
+		case 'teamplan':
+			
+			if (isset($segments[4])) {
+				$vars['tid'] = $segments[4];
+			}
+			if (isset($segments[5])) {
+				$vars['division'] = $segments[5];
+			}
+			if (isset($segments[6])) {
+				$vars['mode'] = $segments[6];
 			}
             // diddipoeler
-            if (isset($segments[5])) {
-				$vars['ptid'] = $segments[5];
+            if (isset($segments[7])) {
+				$vars['ptid'] = $segments[7];
 			}
-            if (isset($segments[6])) {
-				$vars['cfg_which_database'] = $segments[6];
-			}
+            
 			break;
+        
+ 		case 'clubplan':
+			
+			if (isset($segments[4])) {
+				$vars['cid'] = $segments[4];
+			}
+			if (isset($segments[5])) {
+				$vars['task'] = $segments[5];
+			}
+            
+			break;
+                
 		case 'roster':
 		case 'teaminfo':
 		case 'teamstats':
-			if (isset($segments[1])) {
-				$vars['p'] = $segments[1];
-			}
-			if (isset($segments[2])) {
-				$vars['tid'] = $segments[2];
+
+			if (isset($segments[4])) {
+				$vars['tid'] = $segments[4];
 			}
             //diddipoeler
-            if (isset($segments[3])) {
-				$vars['ttid'] = $segments[3];
+            if (isset($segments[5])) {
+				$vars['ptid'] = $segments[5];
 			}
-            if (isset($segments[4])) {
-				$vars['cfg_which_database'] = $segments[4];
-			}
+        
 			break;
 				
 		case 'results':
 		case 'resultsmatrix':
 		case 'resultsranking':
-			if (isset($segments[1])) {
-				$vars['p'] = $segments[1];
-			}
-			if (isset($segments[2])) {
-				$vars['r'] = $segments[2];
-			}
-			if (isset($segments[3])) {
-				$vars['division'] = $segments[3];
-			}
+
 			if (isset($segments[4])) {
-				$vars['mode'] = $segments[4];
+				$vars['r'] = $segments[4];
 			}
 			if (isset($segments[5])) {
-				$vars['order'] = $segments[5];
+				$vars['division'] = $segments[5];
 			}
 			if (isset($segments[6])) {
-				$vars['layout'] = $segments[6];
+				$vars['mode'] = $segments[6];
 			}
-            if (isset($segments[7])) {
-				$vars['cfg_which_database'] = $segments[7];
+			if (isset($segments[7])) {
+				$vars['order'] = $segments[7];
 			}
+			if (isset($segments[8])) {
+				$vars['layout'] = $segments[8];
+			}
+            
 			break;
 				
 		case 'matchreport':
 		case 'nextmatch':
-			if (isset($segments[1])) {
-				$vars['p'] = $segments[1];
-			}
-			if (isset($segments[2])) {
-				$vars['mid'] = $segments[2];
-			}
-			if (isset($segments[3])) {
-				$vars['pics'] = $segments[3];
-			}
+			
 			if (isset($segments[4])) {
-				$vars['ptid'] = $segments[4];
+				$vars['mid'] = $segments[4];
+			}
+			if (isset($segments[5])) {
+				$vars['pics'] = $segments[5];
+			}
+			if (isset($segments[6])) {
+				$vars['ptid'] = $segments[6];
 			}
 			break;
 
 			// /esl-dods-fall-league-2010-roster/staff/44-ED - DODS Fall League 2010/1-zj/2-and-one
 		case 'player':
 		case 'staff':
-			if (isset($segments[1])) {
-				$vars['p'] = $segments[1];
+			
+			if (isset($segments[4])) {
+				$vars['tid'] = $segments[4];
 			}
-			if (isset($segments[2])) {
-				$vars['tid'] = $segments[2];
-			}
-			if (isset($segments[3])) {
-				$vars['pid'] = $segments[3];
+			if (isset($segments[5])) {
+				$vars['pid'] = $segments[5];
 			}
 			break;
 		case 'clubs':
 		case 'stats':
 		case 'teams':
-			if (isset($segments[1])) {
-				$vars['p'] = $segments[1];
-			}
-			if (isset($segments[2])) {
-				$vars['division'] = $segments[2];
+			
+			if (isset($segments[4])) {
+				$vars['division'] = $segments[4];
 			}
 			break;
 		case 'statsranking':
-			if (isset($segments[1])) {
-				$vars['p'] = $segments[1];
+			
+			if (isset($segments[4])) {
+				$vars['division'] = $segments[4];
 			}
-			if (isset($segments[2])) {
-				$vars['division'] = $segments[2];
-			}
-			if (isset($segments[3])) {
-				$vars['tid'] = $segments[3];
+			if (isset($segments[5])) {
+				$vars['tid'] = $segments[5];
 			}
 			break;
 			// /standard-referee/referee/46/2
 		case 'referee':
-			if (isset($segments[1])) {
-				$vars['p'] = $segments[1];
-			}
-			if (isset($segments[2])) {
-				$vars['pid'] = $segments[2];
+			
+			if (isset($segments[4])) {
+				$vars['pid'] = $segments[4];
 			}
 			break;
 		case 'tree':
-			if (isset($segments[1])) {
-				$vars['p'] = $segments[1];
-			}
-			if (isset($segments[2])) {
-				$vars['did'] = $segments[2];
+			
+			if (isset($segments[5])) {
+				$vars['did'] = $segments[5];
 			}
 			break;
 				
 		default:
-			if (isset($segments[1])) {
-			$vars['p'] = $segments[1];
-		}
+			
 		break;
 	}
 
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $my_text = 'vars -><pre>'.print_r($vars,true).'</pre>';
+            $my_text .= 'segments -><pre>'.print_r($segments,true).'</pre>';
           //$my_text .= 'dump -><pre>'.print_r($query->dump(),true).'</pre>';  
           sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,'sportsmanagementRoute',__LINE__,$my_text);
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'   ),'');

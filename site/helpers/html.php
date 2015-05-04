@@ -237,7 +237,17 @@ return $modaltext;
 
 			if ($config['show_division_link'])
 			{
-				$link = sportsmanagementHelperRoute::getRankingRoute(self::$project->id,0,0,0,0,$hometeam->division_id);
+			$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = self::$project->id;
+$routeparameter['type'] = 0;
+$routeparameter['r'] = 0;
+$routeparameter['from'] = 0;
+$routeparameter['to'] = 0;
+$routeparameter['division'] = $hometeam->division_id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);
+
 				$output .= JHtml::link($link,$hometeam->$nametype);
                 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' link'.'<pre>'.print_r($link,true).'</pre>' ),'');
                 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' output'.'<pre>'.print_r($output,true).'</pre>' ),'');
@@ -257,7 +267,18 @@ return $modaltext;
 
 				if ($config['show_division_link'] == 1)
 				{
-					$link = sportsmanagementHelperRoute::getRankingRoute(self::$project->id,null,null,null,0,$guestteam->division_id);
+				$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = self::$project->id;
+$routeparameter['type'] = 0;
+$routeparameter['r'] = 0;
+$routeparameter['from'] = 0;
+$routeparameter['to'] = 0;
+$routeparameter['division'] = $guestteam->division_id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);
+
+					
 					$output .= JHtml::link($link,$guestteam->$nametype);
                     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' link'.'<pre>'.print_r($link,true).'</pre>' ),'');
 				}
@@ -293,10 +314,17 @@ return $modaltext;
 	 */
 	public static function showMatchdaysTitle($title,$current_round,&$config,$mode=0)
 	{
-		$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+		$app = JFactory::getApplication();
+        $cfg_which_database = JRequest::getInt('cfg_which_database',0);
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $my_text = 'current_round <pre>'.print_r($current_round,true).'</pre>';    
+        }
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'current_round<pre>'.print_r($current_round,true).'</pre>'),'Error');
         
         $projectid = JRequest::getInt('p',0);
 		//$thisproject = JTable::getInstance('Project','sportsmanagementTable');
@@ -314,7 +342,7 @@ return $modaltext;
 		$thisproject = $db->loadObject();
 
 		echo ($title != '') ? $title.' - ' : $title;
-		if ($current_round > 0)
+		if ( (int)$current_round > 0)
 		{
 			//$thisround = JTable::getInstance('Round','sportsmanagementTable');
 			//$thisround->load($current_round);
@@ -326,7 +354,7 @@ return $modaltext;
 		    // from table
 		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
             // where
-            $query->where('id = '.$current_round);
+            $query->where('id = '.(int)$current_round);
 		    $db->setQuery($query);
 		    $thisround = $db->loadObject();
 
@@ -334,7 +362,18 @@ return $modaltext;
 			{
 				if ($mode == 1)
 				{
-					$link=sportsmanagementHelperRoute::getRankingRoute($thisproject->project_slug,$thisround->round_slug,0,0,0,0,$cfg_which_database);
+				$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $thisproject->project_slug;
+$routeparameter['type'] = 0;
+$routeparameter['r'] = $thisround->round_slug;
+$routeparameter['from'] = 0;
+$routeparameter['to'] = 0;
+$routeparameter['division'] = 0;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);
+
+					
 					echo JHtml::link($link,$thisround->name);
 				}
 				else
@@ -362,6 +401,12 @@ return $modaltext;
 				echo ")";
 			}
 		}
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
+        }
+        
 	}
 
 	/**
@@ -370,36 +415,46 @@ return $modaltext;
 	 * @param mixed $form
 	 * @return
 	 */
-	public static function getRoundSelectNavigation($form,$cfg_which_database = 0)
+	public static function getRoundSelectNavigation($form,$cfg_which_database = 0,$s=0)
 	{
 		$app = JFactory::getApplication();
         // JInput object
         $jinput = $app->input;
         $rounds = sportsmanagementModelProject::getRoundOptions('ASC',$cfg_which_database);
-//		$division = JRequest::getInt('division',0);
-//        $roundid = JRequest::getInt('r',0);
         $division = $jinput->get->get('division', 0, '');
         $roundid = $jinput->get->get('r', 0, '');
 
-		if($form)
+		$routeparameter = array();
+                $routeparameter['cfg_which_database'] = $cfg_which_database;
+                $routeparameter['s'] = JRequest::getInt('s',0); 
+        $routeparameter["p"] = sportsmanagementModelProject::$_project->slug;
+        $routeparameter['r'] = 0;
+        $routeparameter['division'] = $division;
+        $routeparameter['mode'] = '';
+        $routeparameter['order'] = '';
+        $routeparameter['layout'] = '';
+        
+        if($form)
         {
-			$currenturl = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, $roundid, $division,0,0,null,$cfg_which_database);
+            $routeparameter['r'] = $roundid;
+            $currenturl = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
 			$options = array();
 			foreach ($rounds as $r)
 			{
-				//$link = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, $r->value, $division,0,0,NULL,$cfg_which_database);
-                $link = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, $r->slug, $division,0,0,NULL,$cfg_which_database);
+                $routeparameter['r'] = $r->slug;
+                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
 				$options[] = JHtml::_('select.option', $link, $r->text);
 			}
 		} 
         else 
         {
-			$currenturl = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, $roundid, $division,0,0,NULL,$cfg_which_database);
+            $routeparameter['r'] = $roundid;
+            $currenturl = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
 			$options = array();
 			foreach ($rounds as $r)
 			{
-				//$link = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, $r->value, $division,0,0,NULL,$cfg_which_database);
-                $link = sportsmanagementHelperRoute::getResultsRoute(sportsmanagementModelProject::$_project->slug, $r->slug, $division,0,0,NULL,$cfg_which_database);
+                $routeparameter['r'] = $r->slug;
+                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
 				$options[] = JHtml::_('select.option', $link, $r->text);
 			}
 		}

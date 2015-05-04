@@ -42,10 +42,6 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport( 'joomla.application.component.model');
 
-//require_once (JLG_PATH_ADMIN .DS.'models'.DS.'rounds.php');
-//require_once( JPATH_COMPONENT.DS.'helpers'.DS.'ranking.php');
-//require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
-
 /**
  * sportsmanagementModelCurve
  * 
@@ -58,10 +54,10 @@ jimport( 'joomla.application.component.model');
 class sportsmanagementModelCurve extends JModelLegacy
 {
 	var $project = null;
-	var $projectid = 0;
-	var $teamid1 = 0;
+	static $projectid = 0;
+	static $teamid1 = 0;
 	var $team1 = array();
-	var $teamid2 = 0;
+	static $teamid2 = 0;
 	var $team2 = array();
 	var $allteams = null;
 	var $divisions = null;
@@ -72,7 +68,7 @@ class sportsmanagementModelCurve extends JModelLegacy
 	var $teamlist2options = array();
 
 	// Chart Data
-	var $division = 0;
+	static $division = 0;
 	var $round = 0;
 	var $roundsName = array();
 	var $ranking1 = array();
@@ -90,13 +86,13 @@ class sportsmanagementModelCurve extends JModelLegacy
 	function __construct( )
 	{
 		parent::__construct( );
-		$this->projectid = JRequest::getInt('p', 0);
-		$this->division  = JRequest::getInt('division', 0);
-		$this->teamid1   = JRequest::getInt('tid1', 0);
-		$this->teamid2   = JRequest::getInt('tid2', 0);
-		$this->both      = JRequest::getInt('both', 0);
-        sportsmanagementModelProject::$projectid = $this->projectid;
-        self::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+		self::$projectid = JFactory::getApplication()->input->get->get('p', 0, 'INT');
+		self::$division = JFactory::getApplication()->input->get->get('division', 0, 'INT');
+		self::$teamid1 = JFactory::getApplication()->input->get->get('tid1', 0, 'INT');
+		self::$teamid2 = JFactory::getApplication()->input->get->get('tid2', 0, 'INT');
+		$this->both = JRequest::getInt('both', 0);
+        sportsmanagementModelProject::$projectid = self::$projectid;
+        self::$cfg_which_database = JFactory::getApplication()->input->get->get('cfg_which_database', 0, 'INT');
         
 		$this->determineTeam1And2();
 	}
@@ -116,23 +112,23 @@ class sportsmanagementModelCurve extends JModelLegacy
         $starttime = microtime(); 
         
 		// Use favorite team(s) in case both teamids are 0
-		if (($this->teamid1 == 0) && ($this->teamid2 == 0))
+		if ((self::$teamid1 == 0) && (self::$teamid2 == 0))
 		{
 			$favteams = sportsmanagementModelProject::getFavTeams();
 			$selteam1 = ( isset( $favteams[0] ) ) ? $favteams[0] : 0;
 			$selteam2 = ( isset( $favteams[1] ) ) ? $favteams[1] : 0;
-			$this->teamid1 = ($this->teamid1 == 0 ) ? $selteam1 : $this->teamid1;
-			$this->teamid2 = ($this->teamid2 == 0 ) ? $selteam2 : $this->teamid2;
+			self::$teamid1 = (self::$teamid1 == 0 ) ? $selteam1 : self::$teamid1;
+			self::$teamid2 = (self::$teamid2 == 0 ) ? $selteam2 : self::$teamid2;
 		}
 
 		// When (one of) the teams are not specified, search for the next unplayed or the latest played match
-		if (($this->teamid1 == 0) || ($this->teamid2 == 0))
+		if ((self::$teamid1 == 0) || (self::$teamid2 == 0))
 		{
 			
             $query->select('t1.id AS teamid1, t2.id AS teamid2');
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
-            $query->where('pt1.project_id='.$db->Quote($this->projectid));
+            $query->where('pt1.project_id = '.self::$projectid);
             
 //            $query  = ' SELECT t1.id AS teamid1, t2.id AS teamid2'
 //				. ' FROM #__joomleague_match AS m'
@@ -141,14 +137,14 @@ class sportsmanagementModelCurve extends JModelLegacy
 			if ($this->division)
 			{
 //				$query .= ' AND pt1.division_id='.$this->_db->Quote($this->division);
-                $query->where('pt1.division_id='.$db->Quote($this->division));
+                $query->where('pt1.division_id = '.self::$division);
 			}
             
             
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.id = pt1.team_id ');
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON st1.team_id = t1.id ');
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
-            $query->where('pt2.project_id='.$db->Quote($this->projectid));
+            $query->where('pt2.project_id = '.self::$projectid);
             
 //			$query .= ' INNER JOIN #__joomleague_team AS t1 ON pt1.team_id=t1.id'
 //				. ' INNER JOIN #__joomleague_project_team AS pt2 ON m.projectteam2_id=pt2.id'
@@ -157,7 +153,7 @@ class sportsmanagementModelCurve extends JModelLegacy
 			if ($this->division)
 			{
 //				$query .= ' AND pt2.division_id='.$this->_db->Quote($this->division);
-                $query->where('pt2.division_id='.$db->Quote($this->division));
+                $query->where('pt2.division_id = '.self::$division);
 			}
             
             
@@ -171,15 +167,15 @@ class sportsmanagementModelCurve extends JModelLegacy
 //			$where = ' WHERE m.published=1 AND m.cancel=0';
             $query->where('m.published = 1 AND m.cancel = 0');
             
-			if ($this->teamid1)
+			if (self::$teamid1)
 			{
-				$quoted_team_id = $db->Quote($this->teamid1);
+				$quoted_team_id = self::$teamid1;
 				//$team = 't1';
                 $team = 'st1';
 			}
 			else
 			{
-				$quoted_team_id = $db->Quote($this->teamid2);
+				$quoted_team_id = $this->teamid2;
 				//$team = 't2';
                 $team = 'st2';
 			}
@@ -244,8 +240,8 @@ class sportsmanagementModelCurve extends JModelLegacy
 			}
 			if (isset($match))
 			{
-				$this->teamid1 = $match->teamid1;
-				$this->teamid2 = $match->teamid2;
+				self::$teamid1 = $match->teamid1;
+				self::$teamid2 = $match->teamid2;
 			}
 		}
 	}
@@ -273,13 +269,13 @@ class sportsmanagementModelCurve extends JModelLegacy
 	 */
 	function getTeam1($division=0)
 	{
-		if (!$this->teamid1) {
+		if (!self::$teamid1) {
 			return false;
 		}
 		$data = self::getDataByDivision($division);
 		foreach ($data as $team)
 		{
-			if ($team->id == $this->teamid1) {
+			if ($team->id == self::$teamid1) {
 				return $team;
 			}
 		}
@@ -294,13 +290,13 @@ class sportsmanagementModelCurve extends JModelLegacy
 	 */
 	function getTeam2($division=0)
 	{
-		if (!$this->teamid2) {
+		if (!self::$teamid2) {
 			return false;
 		}
 		$data = self::getDataByDivision($division);
 		foreach ($data as $team)
 		{
-			if ($team->id == $this->teamid2) {
+			if ($team->id == self::$teamid2) {
 				return $team;
 			}
 		}
@@ -314,7 +310,7 @@ class sportsmanagementModelCurve extends JModelLegacy
 	 */
 	function getDivision( )
 	{
-		return sportsmanagementModelProject::getDivision($this->division,self::$cfg_which_database);
+		return sportsmanagementModelProject::getDivision(self::$division,self::$cfg_which_database);
 	}
 
 	/**

@@ -102,7 +102,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('sporttype_picture',$thi
                         ?>
 						<td>
 
-<br />
+
 <?php 
 echo sportsmanagementHelperHtml::getBootstrapModalImage('project_picture',COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$this->project->name,$this->overallconfig['picture_width']);
 if ( $copyright )

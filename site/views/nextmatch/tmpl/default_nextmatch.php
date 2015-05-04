@@ -136,7 +136,13 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->teams[1]-
 </table>
 
 	<?php 
-        $report_link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->id,$this->match->id,JRequest::getInt('cfg_which_database',0));
+	$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->id;
+$routeparameter['mid'] = $this->match->id;
+$report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
+        
 					
         if(isset($this->match->team1_result) && isset($this->match->team2_result))
             { ?>

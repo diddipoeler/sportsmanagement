@@ -66,37 +66,25 @@ if (!empty($this->matchstaffpositions))
 									?>
 									<li class="list">
 										<?php
-										$player_link=sportsmanagementHelperRoute::getStaffRoute($this->project->slug,$player->team_slug,$player->person_slug);
-										$match_player=sportsmanagementHelper::formatName(null,$player->firstname,$player->nickname,$player->lastname, $this->config["name_format"]);
+                                        $routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $this->project->slug;
+       $routeparameter['tid'] = $player->team_slug;
+       $routeparameter['pid'] = $player->person_slug;
+                                        
+										$player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('staff',$routeparameter);
+										$match_player = sportsmanagementHelper::formatName(null,$player->firstname,$player->nickname,$player->lastname, $this->config["name_format"]);
 										echo JHtml::link($player_link,$match_player);
-										$imgTitle=JText::sprintf('Picture of %1$s',$match_player);
-										$picture=$player->picture;
+										$imgTitle = JText::sprintf('Picture of %1$s',$match_player);
+										$picture = $player->picture;
 										if (!file_exists($picture)){$picture = sportsmanagementHelper::getDefaultPlaceholder("player");}
 										echo '&nbsp;';
-
+echo sportsmanagementHelperHtml::getBootstrapModalImage('matchstaff'.$player->person_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$imgTitle,$this->config['staff_picture_width']);
                                         ?>
                                         
                                         
-<a href="#" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target=".matchstaff<?php echo $player->person_id;?>">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['staff_picture_width'];?>" />
-</a>
 
-<div id="" style="display: none;" class="modal fade matchstaff<?php echo $player->person_id;?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-lg">
-<div class="modal-content">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-<h4 class="modal-title" id="myLargeModalLabel"><?php echo $imgTitle;?></h4>
-</div>
-<div class="modal-body">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" class="img-responsive img-rounded center-block">
-</div>
-<div class="modal-footer">
-<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_('JLIB_HTML_BEHAVIOR_CLOSE');?> </button>
-</div>
-</div>
-</div>
-</div> 
 
 
                                         
@@ -120,38 +108,28 @@ if (!empty($this->matchstaffpositions))
 									?>
 									<li class="list">
 										<?php
-										$match_player=sportsmanagementHelper::formatName(null,$player->firstname,$player->nickname,$player->lastname, $this->config["name_format"]);
-										$imgTitle=JText::sprintf('Picture of %1$s',$match_player);
-										$picture=$player->picture;
+										$match_player = sportsmanagementHelper::formatName(null,$player->firstname,$player->nickname,$player->lastname, $this->config["name_format"]);
+										$imgTitle = JText::sprintf('Picture of %1$s',$match_player);
+										$picture = $player->picture;
 										if (!file_exists($picture)){$picture = sportsmanagementHelper::getDefaultPlaceholder("player");}
+
+echo sportsmanagementHelperHtml::getBootstrapModalImage('matchstaff'.$player->person_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$imgTitle,$this->config['staff_picture_width']);
 
                                         ?>
                                         
-<a href="#" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target=".matchstaff<?php echo $player->person_id;?>">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['staff_picture_width'];?>" />
-</a>
-
-<div id="" style="display: none;" class="modal fade matchstaff<?php echo $player->person_id;?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-lg">
-<div class="modal-content">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-<h4 class="modal-title" id="myLargeModalLabel"><?php echo $imgTitle;?></h4>
-</div>
-<div class="modal-body">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" class="img-responsive img-rounded center-block">
-</div>
-<div class="modal-footer">
-<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_('JLIB_HTML_BEHAVIOR_CLOSE');?> </button>
-</div>
-</div>
-</div>
-</div> 
+ 
 
 
                                         <?php
                                         echo '&nbsp;';
-										$player_link=sportsmanagementHelperRoute::getStaffRoute($this->project->slug,$player->team_slug,$player->person_slug);
+                                        $routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $this->project->slug;
+       $routeparameter['tid'] = $player->team_slug;
+       $routeparameter['pid'] = $player->person_slug;
+										$player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('staff',$routeparameter);
+
 										echo JHtml::link($player_link,$match_player);
 										?>
 									</li>

@@ -80,8 +80,24 @@ if ( $this->games )
 					?>
 					<?php
 					$class = ($k == 0)? 'sectiontableentry1' : 'sectiontableentry2';
-					$result_link = sportsmanagementHelperRoute::getResultsRoute( $game->project_id,$game->roundid);
-					$report_link = sportsmanagementHelperRoute::getMatchReportRoute( $game->project_id,$game->id);
+                    $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $game->project_slug;
+$routeparameter['r'] = $game->round_slug;
+$routeparameter['division'] = 0;
+$routeparameter['mode'] = 0;
+$routeparameter['order'] = '';
+$routeparameter['layout'] = '';
+$result_link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
+			
+					$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $game->project_slug;
+$routeparameter['mid'] = $game->match_slug;
+$report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
+
 					$home = $this->gamesteams[$game->projectteam1_id];
 					$away = $this->gamesteams[$game->projectteam2_id];
 					?>

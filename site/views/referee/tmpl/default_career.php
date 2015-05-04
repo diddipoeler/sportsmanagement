@@ -59,9 +59,15 @@ if (count($this->history) > 0)
 					$k=0;
 					foreach ($this->history AS $station)
 					{
-						$link1=sportsmanagementHelperRoute::getRefereeRoute($station->project_slug,$this->referee->slug);
+					   $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $station->project_slug;
+$routeparameter['pid'] = $this->referee->slug;
+$link1 = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routeparameter);
+
 						?>
-						<tr class="<?php echo ($k==0)? $this->config['style_class1'] : $this->config['style_class2']; ?>">
+						<tr class="">
 							<td class="td_l"><?php echo JHtml::link($link1,$station->project_name); ?></td>
 							<td class="td_l"><?php echo $station->season_name; ?></td>
 							<td class="td_l"><?php echo ($station->position_name ? JText::_($station->position_name) : ""); ?></td>

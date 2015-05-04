@@ -89,32 +89,8 @@ if ( !empty( $this->rows  ) )
 					$refereeName = sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, $this->config["name_format"] );
 					if ( $this->config['show_icon'] == 1)
 					{
+echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$row->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$row->picture,$refereeName,$this->config['referee_picture_width']);
 
-?>
-<a href="#"  title="<?php echo $refereeName;?>" data-toggle="modal" data-target=".referee<?php echo $row->id;?>">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$row->picture;?>" alt="<?php echo $refereeName;?>" width="<?php echo $this->config['referee_picture_width'];?>" />
-</a>
-
-<div id="" style="display: none;" class="modal fade referee<?php echo $row->id;?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-lg">
-<div class="modal-content">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-<h4 class="modal-title" id="myLargeModalLabel"><?php echo $refereeName;?></h4>
-</div>
-<div class="modal-body">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$row->picture;?>" class="img-responsive img-rounded center-block">
-</div>
-<div class="modal-footer">
-<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_('JLIB_HTML_BEHAVIOR_CLOSE');?> </button>
-</div>
-</div>
-</div>
-</div>
-
-
-
-<?PHP 
 					}
 					?>
 				</td>
@@ -122,7 +98,13 @@ if ( !empty( $this->rows  ) )
 					<?php
 					if ( $this->config['link_name'] == 1 )
 					{
-						$link = sportsmanagementHelperRoute::getRefereeRoute( $this->project->slug, $row->slug );
+					   $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['pid'] = $row->slug;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routeparameter);
+
 						echo JHtml::link( $link, '<i>' . $refereeName . '</i>' );
 					}
 					else

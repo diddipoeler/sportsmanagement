@@ -131,10 +131,23 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 						<?php if (!empty($this->highest_home)): ?>
 					<td class="statvalue">
 						<?php 
-							$link=sportsmanagementHelperRoute::getMatchReportRoute($this->project->id,$this->highest_home->matchid,JRequest::getInt('cfg_which_database',0));
+                        $routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $this->project->id;
+       $routeparameter['mid'] = $this->highest_home->matchid;
+							$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
 							$highest_home_result = $this->highest_home->homegoals . $this->overallconfig['seperator'] . $this->highest_home->guestgoals;
-							$team1 	= sportsmanagementHelperRoute::getTeamInfoRoute( $this->project->id, $this->highest_home->team1_id, $this->highest_home->pt1_id,JRequest::getInt('cfg_which_database',0) );
-							$team2 	= sportsmanagementHelperRoute::getTeamInfoRoute( $this->project->id, $this->highest_home->team2_id, $this->highest_home->pt2_id,JRequest::getInt('cfg_which_database',0) );
+							$routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $this->project->id;
+       $routeparameter['tid'] = $this->highest_home->team1_id;
+       $routeparameter['ptid'] = $this->highest_home->pt1_id;
+                            $team1 	= sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
+                            $routeparameter['tid'] = $this->highest_home->team2_id;
+       $routeparameter['ptid'] = $this->highest_home->pt2_id;
+							$team2 	= sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
 							$match	= JHTML::link($link,$highest_home_result) . " -  " . JHTML::link($team2,$this->highest_home->guestteam);
 							echo $match;
 						?>
@@ -148,10 +161,23 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 						<?php if (!empty($this->highest_away)): ?>
 					<td class="statvalue">
 						<?php 
-							$link=sportsmanagementHelperRoute::getMatchReportRoute($this->project->id,$this->highest_away->matchid,JRequest::getInt('cfg_which_database',0));
+                        $routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $this->project->id;
+       $routeparameter['mid'] = $this->highest_away->matchid;
+							$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
 							$highest_away_result = $this->highest_away->guestgoals . $this->overallconfig['seperator'] . $this->highest_away->homegoals;
-							$team1 	= sportsmanagementHelperRoute::getTeamInfoRoute( $this->project->id, $this->highest_away->team1_id, $this->highest_away->pt1_id,JRequest::getInt('cfg_which_database',0) );
-							$team2 	= sportsmanagementHelperRoute::getTeamInfoRoute( $this->project->id, $this->highest_away->team2_id, $this->highest_away->pt2_id,JRequest::getInt('cfg_which_database',0) );
+							$routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $this->project->id;
+       $routeparameter['tid'] = $this->highest_away->team1_id;
+       $routeparameter['ptid'] = $this->highest_away->pt1_id;
+                            $team1 	= sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
+                            $routeparameter['tid'] = $this->highest_away->team2_id;
+       $routeparameter['ptid'] = $this->highest_away->pt2_id;
+							$team2 	= sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
 							$match	= JHTML::link($link,$highest_away_result) . " - " . JHTML::link($team1,$this->highest_away->hometeam) ;
 							echo $match;
 						?>
@@ -177,10 +203,24 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 						<?php if (!empty($this->highestdef_home)): ?>
 					<td class="statvalue">
 						<?php 
-							$link=sportsmanagementHelperRoute::getMatchReportRoute($this->project->id,$this->highestdef_home->matchid,JRequest::getInt('cfg_which_database',0));
+                        $routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $this->project->id;
+       $routeparameter['mid'] = $this->highestdef_home->matchid;
+							$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
 							$highestdef_home_result = $this->highestdef_home->homegoals . $this->overallconfig['seperator'] . $this->highestdef_home->guestgoals;
-							$team1 	= sportsmanagementHelperRoute::getTeamInfoRoute( $this->project->id, $this->highestdef_home->team1_id, $this->highestdef_home->pt1_id,JRequest::getInt('cfg_which_database',0) );
-							$team2 	= sportsmanagementHelperRoute::getTeamInfoRoute( $this->project->id, $this->highestdef_home->team2_id, $this->highestdef_home->pt2_id,JRequest::getInt('cfg_which_database',0) );
+							
+                            $routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $this->project->id;
+       $routeparameter['tid'] = $this->highestdef_home->team1_id;
+       $routeparameter['ptid'] = $this->highestdef_home->pt1_id;
+                            $team1 	= sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
+                            $routeparameter['tid'] = $this->highestdef_home->team2_id;
+       $routeparameter['ptid'] = $this->highestdef_home->pt2_id;
+							$team2 	= sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
 							$match	= JHTML::link($link,$highestdef_home_result) . " - " . JHTML::link($team2,$this->highestdef_home->guestteam);
 							echo $match;
 						?>
@@ -194,10 +234,23 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 						<?php if (!empty($this->highestdef_away)): ?>
 					<td class="statvalue">
 						<?php 
-							$link=sportsmanagementHelperRoute::getMatchReportRoute($this->project->id,$this->highestdef_away->matchid,JRequest::getInt('cfg_which_database',0));
+                        $routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $this->project->id;
+       $routeparameter['mid'] = $this->highestdef_away->matchid;
+							$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
 							$highestdef_away_result = $this->highestdef_away->guestgoals . $this->overallconfig['seperator'] . $this->highestdef_away->homegoals;
-							$team1 	= sportsmanagementHelperRoute::getTeamInfoRoute( $this->project->id, $this->highestdef_away->team1_id, $this->highestdef_away->pt1_id,JRequest::getInt('cfg_which_database',0) );
-							$team2 	= sportsmanagementHelperRoute::getTeamInfoRoute( $this->project->id, $this->highestdef_away->team2_id, $this->highestdef_away->pt2_id,JRequest::getInt('cfg_which_database',0) );
+                            $routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $this->project->id;
+       $routeparameter['tid'] = $this->highestdef_away->team1_id;
+       $routeparameter['ptid'] = $this->highestdef_away->pt1_id;
+							$team1 	= sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
+                            $routeparameter['tid'] = $this->highestdef_away->team2_id;
+       $routeparameter['ptid'] = $this->highestdef_away->pt2_id;
+							$team2 	= sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
 							$match	= JHTML::link($link,$highestdef_away_result) . " - " . JHTML::link($team1,$this->highestdef_away->hometeam);
 							echo $match;
 						?>
@@ -222,10 +275,23 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 						<?php if (!empty($this->highestdraw_home)): ?>
 					<td class="statvalue">
 						<?php 
-							$link=sportsmanagementHelperRoute::getMatchReportRoute($this->project->id,$this->highestdraw_home->matchid,JRequest::getInt('cfg_which_database',0));
+                        $routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $this->project->id;
+       $routeparameter['mid'] = $this->highestdraw_home->matchid;
+							$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
 							$highestdef_home_result = $this->highestdraw_home->homegoals . $this->overallconfig['seperator'] . $this->highestdraw_home->guestgoals;
-							$team1 	= sportsmanagementHelperRoute::getTeamInfoRoute( $this->project->id, $this->highestdraw_home->team1_id, $this->highestdraw_home->pt1_id,JRequest::getInt('cfg_which_database',0) );
-							$team2 	= sportsmanagementHelperRoute::getTeamInfoRoute( $this->project->id, $this->highestdraw_home->team2_id, $this->highestdraw_home->pt2_id,JRequest::getInt('cfg_which_database',0) );
+                            $routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $this->project->id;
+       $routeparameter['tid'] = $this->highestdraw_home->team1_id;
+       $routeparameter['ptid'] = $this->highestdraw_home->pt1_id;
+							$team1 	= sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
+                            $routeparameter['tid'] = $this->highestdraw_home->team2_id;
+       $routeparameter['ptid'] = $this->highestdraw_home->pt2_id;
+							$team2 	= sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
 							$match	= JHTML::link($link,$highestdef_home_result) . " - " . JHTML::link($team2,$this->highestdraw_home->guestteam);
 							echo $match;
 						?>
@@ -239,10 +305,23 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 						<?php if (!empty($this->highestdraw_away)): ?>
 					<td class="statvalue">
 						<?php 
-							$link=sportsmanagementHelperRoute::getMatchReportRoute($this->project->id,$this->highestdraw_away->matchid,JRequest::getInt('cfg_which_database',0));
+                        $routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $this->project->id;
+       $routeparameter['mid'] = $this->highestdraw_away->matchid;
+							$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
 							$highestdef_away_result = $this->highestdraw_away->guestgoals . $this->overallconfig['seperator'] . $this->highestdraw_away->homegoals;
-							$team1 	= sportsmanagementHelperRoute::getTeamInfoRoute( $this->project->id, $this->highestdraw_away->team1_id, $this->highestdraw_away->pt1_id,JRequest::getInt('cfg_which_database',0) );
-							$team2 	= sportsmanagementHelperRoute::getTeamInfoRoute( $this->project->id, $this->highestdraw_away->team2_id, $this->highestdraw_away->pt2_id,JRequest::getInt('cfg_which_database',0) );
+                            $routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $this->project->id;
+       $routeparameter['tid'] = $this->highestdraw_away->team1_id;
+       $routeparameter['ptid'] = $this->highestdraw_away->pt1_id;
+							$team1 	= sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
+                            $routeparameter['tid'] = $this->highestdraw_away->team2_id;
+       $routeparameter['ptid'] = $this->highestdraw_away->pt2_id;
+							$team2 	= sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
 							$match	= JHTML::link($link,$highestdef_away_result) . " - " . JHTML::link($team1,$this->highestdraw_away->hometeam);
 							echo $match;
 						?>

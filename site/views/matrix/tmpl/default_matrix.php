@@ -218,7 +218,15 @@ defined('_JEXEC') or die('Restricted access');
 			if ($k_c == 0) // Header columns
 				{
 				$title = JText :: _('COM_SPORTSMANAGEMENT_MATRIX_PLAYERS_PAGE_LINK') . ' ' . $trow->name;
-				$link = sportsmanagementHelperRoute :: getPlayersRoute($this->project->slug, $trow->team_slug,NULL,0,JRequest::getInt('cfg_which_database',0));
+				$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['tid'] = $trow->team_slug;
+$routeparameter['ptid'] = 0;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('roster',$routeparameter);  
+
+				
 				//$desc = $trow->short_name;
                 $name = $this->config['teamnames'];
                 $desc = $trow->$name;
@@ -312,7 +320,13 @@ defined('_JEXEC') or die('Restricted access');
 						// result with matchreport
 						$title = "";
 						$arrayString = array ();
-						$link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug, $result->id,JRequest::getInt('cfg_which_database',0));
+						$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $result->match_slug;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
+						
 						if (($e1 != "") && ($e2 != "")) {
 							$colorStr = "color:" . $this->project->fav_team_text_color . ";";
 							$bgColorStr = "background-color:" . $this->project->fav_team_color . ";";

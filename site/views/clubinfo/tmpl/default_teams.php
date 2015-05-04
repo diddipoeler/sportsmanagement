@@ -55,11 +55,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 		{
 			if ( $team->team_name )
 			{
-				//$link = sportsmanagementHelperRoute::getProjectTeamInfoRoute( $team->pid, $team->ptid );
-                
-                // diddipoeler
-                //$link = sportsmanagementHelperRoute::getTeamInfoRoute( $team->pid, $team->id );
-                $link = sportsmanagementHelperRoute::getTeamInfoRoute( $team->pid, $team->team_slug , $team->ptid,JRequest::getInt('cfg_which_database',0));
+               $routeparameter = array();
+              $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+              $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $team->pid;
+       $routeparameter['tid'] = $team->team_slug;
+       $routeparameter['ptid'] = $team->ptid;
+                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
 				?>
                 <address>
 			

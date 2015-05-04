@@ -96,8 +96,15 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $personName, arr
 			<h3>
 				<span class="jl_rosterperson_name">
 				<?php
+				$routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $this->project->slug;
+       $routeparameter['tid'] = $this->team->slug;
+       $routeparameter['pid'] = $this->row->slug;
+										
 		echo ($this->config['link_staff']==1) ? 
-			JHtml::link(sportsmanagementHelperRoute::getStaffRoute($this->project->slug,$this->team->slug,$this->row->slug),$personName)
+			JHtml::link(sportsmanagementHelperRoute::getSportsmanagementRoute('staff',$routeparameter),$personName)
 			: $personName;
 ?>
 					<br />&nbsp;

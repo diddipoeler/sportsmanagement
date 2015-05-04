@@ -165,7 +165,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($model::$cfg_which_database,true).'</pre>'),'');
 
-		$this->assignRef('round',$model->round);
+		$this->assignRef('round',$model::$round);
 		$this->assignRef('part',$model->part);
 		$this->assignRef('rounds',$rounds);
 		//$this->assign('divisions',$mdlDivisions->getDivisions($project->id));

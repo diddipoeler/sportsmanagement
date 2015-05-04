@@ -379,7 +379,15 @@ if (!empty($this->rows))
 		<td class="td_l"><?php
 		if ($this->config['link_player']==1)
 		{
-			$link = sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$this->team->slug,$row->slug,NULL,JRequest::getInt('cfg_which_database',0));
+		  $routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $this->project->slug;
+       $routeparameter['tid'] = $this->team->slug;
+       $routeparameter['pid'] = $row->slug;
+		
+//			JHtml::link(sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter),$personName)
+			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
 			echo JHtml::link($link,'<span class="playername">'.$playerName.'</span>');
 		}
 		else

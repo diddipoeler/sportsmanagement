@@ -1369,7 +1369,14 @@ $starttime = microtime();
                 
                 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-                $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            $my_text = 'query <br><pre>'.print_r($query->dump(),true).'</pre>'; 
+            //$my_text .= 'settings <br><pre>'.print_r($settings,true).'</pre>';    
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['class'] = __CLASS__;
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['zeile'] = __LINE__;
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['text'] = $my_text;
+        
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
                 }
                 
                 if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
@@ -1385,7 +1392,14 @@ $starttime = microtime();
                     
                     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-                    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' arrStandardSettings<br><pre>'.print_r($arrStandardSettings,true).'</pre>'),'');
+            $my_text = 'arrStandardSettings <br><pre>'.print_r($arrStandardSettings,true).'</pre>'; 
+            //$my_text .= 'settings <br><pre>'.print_r($settings,true).'</pre>';    
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['class'] = __CLASS__;
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['zeile'] = __LINE__;
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['text'] = $my_text;
+        
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+                    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' arrStandardSettings<br><pre>'.print_r($arrStandardSettings,true).'</pre>'),'');
                     }
                     
 					return $arrStandardSettings;
@@ -1398,7 +1412,14 @@ $starttime = microtime();
                 
                 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-                $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' arrStandardSettings<br><pre>'.print_r($arrStandardSettings,true).'</pre>'),'');
+            $my_text = 'arrStandardSettings <br><pre>'.print_r($arrStandardSettings,true).'</pre>'; 
+            //$my_text .= 'settings <br><pre>'.print_r($settings,true).'</pre>';    
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['class'] = __CLASS__;
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['zeile'] = __LINE__;
+//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['text'] = $my_text;
+        
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' arrStandardSettings<br><pre>'.print_r($arrStandardSettings,true).'</pre>'),'');
                 }
                 
 				return $arrStandardSettings;

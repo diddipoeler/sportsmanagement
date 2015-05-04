@@ -48,7 +48,7 @@ $this->kmlpath = JURI::root().'tmp'.DS.$this->project->id.'-ranking.kml';
 $this->kmlfile = $this->project->id.'-ranking.kml';
 
 ?>
-<div class="">
+<div class="row">
 	<a name="jl_top" id="jl_top"></a>
 	<?php 
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -62,36 +62,16 @@ $this->kmlfile = $this->project->id.'-ranking.kml';
 	{
 		echo $this->loadTemplate('selectround');
 	}
-    
-?>    
-    
-<div role="tabpanel">
 
-  <!-- Tabs-Navs -->
-  <ul class="nav nav-tabs" role="tablist">
-    <li role="presentation" class="active"><a href="#ranking" role="tab" data-toggle="tab"><?PHP echo JText::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE'); ?></a></li>
-    <li role="presentation"><a href="#results" role="tab" data-toggle="tab"><?PHP echo JText::_('COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS'); ?></a></li>
-
-  </ul>
-
-  <!-- Tab-Inhalte -->
-  <div class="tab-content">
-    <div role="tabpanel" class="tab-pane fade in active" id="ranking">
-    <?PHP   
-    echo $this->loadTemplate('ranking');
-    ?>
-    </div>
-    <div role="tabpanel" class="tab-pane fade" id="results">
-    <?PHP   
-    echo $this->loadTemplate('results');
-    ?>
-    </div>
-  </div>
-
-</div>
-    
-<?PHP    
-    
+// diddipoeler
+  // aufbau der templates
+  $this->output = array();
+  
+  $this->output['COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE'] = 'ranking';
+  $this->output['COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS'] = 'results';
+  
+echo $this->loadTemplate('show_tabs');
+   
     
     if ($this->config['show_colorlegend'])
 		{

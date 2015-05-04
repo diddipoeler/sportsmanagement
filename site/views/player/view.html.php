@@ -108,11 +108,11 @@ $jinput = $app->input;
         
         //$app->enqueueMessage(JText::_('sportsmanagementViewPlayer teamPlayers<br><pre>'.print_r($this->teamPlayers,true).'</pre>'),'');
         
-        $this->assign('checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
+        $this->assign('checkextrafields', sportsmanagementHelper::checkUserExtraFields('frontend',$model::$cfg_which_database) );
 //        $app->enqueueMessage(JText::_('player checkextrafields -> '.'<pre>'.print_r($this->checkextrafields,true).'</pre>' ),'');
         if ( $this->checkextrafields )
         {
-            $this->assignRef('extrafields', sportsmanagementHelper::getUserExtraFields($person->id) );
+            $this->assignRef('extrafields', sportsmanagementHelper::getUserExtraFields($person->id,'frontend',$model::$cfg_which_database) );
         }
 
 		// Select the teamplayer that is currently published (in case the player played in multiple teams in the project)

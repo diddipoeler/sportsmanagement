@@ -50,7 +50,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 	<tr>
 		<td colspan="3"><span class=""><?php echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_OLD_MATCH' ); ?></span>
 		<span><?php 
-        echo JHTML :: link(sportsmanagementHelperRoute::getMatchReportRoute($this->project->id,$this->match->old_match_id,JRequest::getInt('cfg_which_database',0) ),$this->oldmatchtext); 
+		$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->id;
+$routeparameter['mid'] = $this->match->old_match_id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
+        echo JHTML :: link($link,$this->oldmatchtext); 
         ?></span></td>
 	</tr>
 	<?php

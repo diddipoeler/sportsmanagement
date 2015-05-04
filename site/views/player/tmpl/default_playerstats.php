@@ -158,9 +158,22 @@ defined('_JEXEC') or die('Restricted access');
                     $timePlayed = 0;
                     $this->assign('timePlayed',$model->getTimePlayed($player_hist->tpid,$this->project->game_regular_time,NULL,$this->overallconfig['person_events']));
                     $timePlayed  = $this->timePlayed;
+                    
+                    $routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $player_hist->project_slug;
+       $routeparameter['tid'] = $player_hist->team_slug;
+       $routeparameter['pid'] = $this->person->slug;
             
-                    $link1=sportsmanagementHelperRoute::getPlayerRoute($player_hist->project_slug,$player_hist->team_slug,$this->person->slug);
-					$link2=sportsmanagementHelperRoute::getTeamInfoRoute($player_hist->project_slug,$player_hist->team_slug);
+                    $link1 = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
+                     $routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $player_hist->project_slug;
+       $routeparameter['tid'] = $player_hist->team_slug;
+       $routeparameter['ptid'] = 0;
+					$link2 = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
 					?>
 			<tr class="<?php echo ($k==0)? $this->config['style_class1'] : $this->config['style_class2']; ?>">
 				<td class="td_l" nowrap="nowrap"><?php echo JHtml::link($link1,$player_hist->project_name); ?>

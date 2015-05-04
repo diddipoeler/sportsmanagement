@@ -54,7 +54,7 @@ if (!empty($this->match->preview))
 {
 	?>
 <h2><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIEW'); ?></h2>
-<table class="matchreport">
+<table class="table">
 	<tr>
 		<td><?php
 		$preview = $this->match->preview;

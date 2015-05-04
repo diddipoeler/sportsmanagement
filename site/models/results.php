@@ -54,12 +54,12 @@ JHtml::_('behavior.tooltip');
  */
 class sportsmanagementModelResults extends JModelLegacy
 {
-	var $projectid	= 0;
-	var $divisionid	= 0;
+	static $projectid	= 0;
+	static $divisionid	= 0;
 	static $roundid = 0;
 	var $rounds = array(0);
-	var $mode = 0;
-	var $order = 0;
+	static $mode = 0;
+	static $order = 0;
 	var $config = 0;
 	var $project = null;
 	var $matches = null;
@@ -80,20 +80,21 @@ class sportsmanagementModelResults extends JModelLegacy
         
         parent::__construct();
 
-		$this->divisionid = $jinput->getInt('division',0);
-		$this->mode = $jinput->getInt('mode',0);
-		$this->order = $jinput->getInt('order',0);
-        $this->projectid = $jinput->getInt('p',0);
-		$round = $jinput->getInt('r', 0);
+		self::$divisionid = $jinput->getInt('division',0);
+		self::$mode = $jinput->getInt('mode',0);
+		self::$order = $jinput->getInt('order',0);
+        self::$projectid = $jinput->getInt('p',0);
+		$round = $jinput->getString('r', '');
 		$roundid = $round;
         self::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
         
-        sportsmanagementModelProject::$projectid = $this->projectid;
+        sportsmanagementModelProject::$projectid = self::$projectid;
         sportsmanagementModelProject::$cfg_which_database = self::$cfg_which_database;
         
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jinput<br><pre>'.print_r($jinput,true).'</pre>'),'');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($round,true).'</pre>'),'');
         
-		if( $round > 0 ) 
+		if( (int)$round > 0 ) 
         {
 			//$this->roundid = $round;
             self::$roundid = $round;
@@ -124,7 +125,7 @@ class sportsmanagementModelResults extends JModelLegacy
 	 */
 	function getDivisionID($cfg_which_database = 0)
 	{
-		return $this->divisionid;
+		return self::$divisionid;
 	}
 
 	/**
@@ -135,7 +136,7 @@ class sportsmanagementModelResults extends JModelLegacy
 	function getDivision($cfg_which_database = 0)
 	{
 		$division=null;
-		if ($this->divisionid > 0)
+		if (self::$divisionid > 0)
 		{
 			$division = $this->getTable('Division','sportsmanagementTable');
 			$division->load($this->divisionid);
@@ -230,7 +231,7 @@ class sportsmanagementModelResults extends JModelLegacy
     
 		if (is_null($this->matches))
 		{
-			$this->matches = self::getResultsRows(self::$roundid,$this->divisionid,$this->config,NULL,$cfg_which_database);
+			$this->matches = self::getResultsRows((int)self::$roundid,(int)self::$divisionid,$this->config,NULL,$cfg_which_database);
 		}
 		
 		$allowed = $this->isAllowed();
@@ -410,17 +411,7 @@ class sportsmanagementModelResults extends JModelLegacy
         $query->where('mr.match_id = '.$match_id);
         $query->where('p.published = 1');
         $query->order('pos.name,mr.ordering');  
-        
-//        $query='	SELECT	pref.id AS person_id,
-//								p.firstname,
-//								p.lastname,
-//								pos.name AS position_name
-//						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr
-//							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pref ON mr.project_referee_id=pref.id
-//							INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON pref.person_id=p.id
-//							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON mr.project_position_id=ppos.id
-//							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id=pos.id
-//						WHERE mr.match_id='.(int)$match_id.' AND p.published = 1 ORDER BY pos.name,mr.ordering ';
+
 		$db->setQuery($query);
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
@@ -470,18 +461,6 @@ class sportsmanagementModelResults extends JModelLegacy
           $query->where('mr.match_id = '.(int) $match_id);
           $query->order('pos.name,mr.ordering ASC');
 
-          
-//        $query='	SELECT	mr.project_referee_id AS value,
-//								t.name AS teamname,
-//								pos.name AS position_name
-//
-//						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr
-//							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.id=mr.project_referee_id
-//							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id=pt.team_id
-//							LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON mr.project_position_id=pos.id
-//
-//						WHERE mr.match_id='.(int) $match_id.' ORDER BY pos.name,mr.ordering ASC ';
-
 		$db->setQuery($query);
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
@@ -521,16 +500,9 @@ class sportsmanagementModelResults extends JModelLegacy
 		  $query->select('tt.admin');
           $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt ');
           $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON (m.projectteam1_id = tt.id OR m.projectteam2_id = tt.id)');
-          $query->where('tt.project_id = '. $db->Quote($this->projectid));
-          $query->where('tt.admin = '. $db->Quote($userid));
-          
-//			$query=' SELECT tt.admin '
-//			. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt '
-//			. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON (m.projectteam1_id=tt.id OR m.projectteam2_id=tt.id)'
-//			. ' WHERE tt.project_id='. $this->_db->Quote($this->projectid)
-//			. '   AND tt.admin= '. $this->_db->Quote($userid)
-//			;
-            
+          $query->where('tt.project_id = '. self::$projectid);
+          $query->where('tt.admin = '. $userid );
+           
             
 			$db->setQuery($query);
             
@@ -567,14 +539,7 @@ class sportsmanagementModelResults extends JModelLegacy
           $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
           $query->where('m.id = '.$matchid);
           $query->where('(pt1.admin = '.$userid.' OR pt2.admin = '.$userid.')');
-          
-//		$query=' SELECT COUNT(*) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m '
-//		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id=pt1.id '
-//		. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id=pt2.id '
-//		. ' WHERE m.id='.$matchid
-//		. ' AND (pt1.admin='.$userid.' OR pt2.admin='.$userid.')'
-//		;
-		
+
         $db->setQuery($query);
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
@@ -631,106 +596,7 @@ class sportsmanagementModelResults extends JModelLegacy
 		return $showediticon;
 	}
 
-//	/**
-//	 * sportsmanagementModelResults::save_array()
-//	 * 
-//	 * @param mixed $cid
-//	 * @param mixed $post
-//	 * @param bool $zusatz
-//	 * @param mixed $project_id
-//	 * @return
-//	 */
-//	function save_array($cid=null,$post=null,$zusatz=false,$project_id)
-//	{
-//		$datatable[0]='#__'.COM_SPORTSMANAGEMENT_TABLE.'_match';
-//		$fields=$this->_db->getTableFields($datatable);
-//
-//		foreach($fields as $field)
-//		{
-//			$query='';
-//			$datafield=array_keys($field);
-//			if ($zusatz){$fieldzusatz=$cid;}
-//
-//			foreach($datafield as $keys)
-//			{
-//				if (isset($post[$keys.$fieldzusatz]))
-//				{
-//					$result=$post[$keys.$fieldzusatz];
-//
-//					if ($keys=='match_date')
-//					{
-//						if(strpos($post['match_time'.$fieldzusatz],":")!==false)
-//						{
-//							$result .= ' '.$post['match_time'.$fieldzusatz];
-//						}
-//						// to support short time inputs
-//						// for example 2158 is used instead of 21:58
-//						else {
-//							$result .= ' '.substr($post['match_time'.$fieldzusatz], 0, -2) . ':' . substr($post['match_time'.$fieldzusatz], -2);
-//						}
-//					}
-//					if ($keys=='team1_result_split' || $keys=='team2_result_split' || $keys=='homeroster' || $keys=='awayroster')
-//					{
-//						$result=trim(join(';',$result));
-//					}
-//					if ($keys=='alt_decision' && $post[$keys.$fieldzusatz]==0)
-//					{
-//						$query.=",team1_result_decision=NULL,team2_result_decision=NULL,decision_info=''";
-//					}
-//					if ($keys=='team1_result_decision' && strtoupper($post[$keys.$fieldzusatz])=='X' && $post['alt_decision'.$fieldzusatz]==1)
-//					{
-//						$result='';
-//					}
-//					if ($keys=='team2_result_decision' && strtoupper($post[$keys.$fieldzusatz])=='X' && $post['alt_decision'.$fieldzusatz]==1)
-//					{
-//						$result='';
-//					}
-//					if (!is_numeric($result) || ($keys == 'match_number') || ($keys == 'time_present'))
-//					{
-//						$vorzeichen="'";
-//					}
-//					else
-//					{
-//						$vorzeichen='';
-//					}
-//					if (strstr("crowd,formation1,formation2,homeroster,awayroster,show_report,team1_result,team1_bonus,team1_legs,
-//									team2_result,team2_bonus,team2_legs,team1_result_decision,team2_result_decision,team1_result_split,
-//			 						team2_result_split,team1_result_ot,team2_result_ot,published,",$keys.',') &&
-//					$result=='' && isset($post[$keys.$fieldzusatz]))
-//					{
-//						$result='NULL';
-//						$vorzeichen='';
-//					}
-//					if ($keys=='crowd' && $post['crowd'.$fieldzusatz]==''){$result='0';}
-//
-//					if ($result!='' || $keys=='summary' || $keys=='match_result_detail')
-//					{
-//						if ($query){$query .= ',';}
-//						$query .= $keys.'='.$vorzeichen.$result.$vorzeichen;
-//					}
-//					if ($result=='' && $keys=='time_present')
-//					{
-//						if ($query){$query .= ',';}
-//						$query .= $keys.'=null';
-//					}
-//					if ($result=='' && $keys=='match_number')
-//					{
-//						if ($query){$query .= ',';}
-//						$query .= $keys.'=null';
-//					}
-//				}
-//			}
-//		}
-//
-//		$user 	= JFactory::getUser();
-//		$query	= 'UPDATE #__'.COM_SPORTSMANAGEMENT_TABLE.'_match SET '.$query.',`modified`=NOW(),`modified_by`='.$user->id.' WHERE id='.$cid;
-////		echo '<br /><pre>'.print_r($query,true).'</pre><br />';
-//		$this->_db->setQuery($query);
-//
-//		return $this->_db->query($query);
-//	}
 
-	
     
     /**
      * sportsmanagementModelResults::saveshort()
@@ -879,19 +745,7 @@ class sportsmanagementModelResults extends JModelLegacy
 		}
 		return $result;
 	}
-    
-//    /**
-//	 * sportsmanagementModelResults::getFavTeams()
-//	 * 
-//	 * @param mixed $project
-//	 * @return
-//	 */
-//	function getFavTeams(&$project)
-//	{
-//		$favteams=explode(',',$project->fav_team);
-//		return $favteams;
-//	}
-    
+   
     
     /**
 	 * Returns a reference to the a Table object, always creating it.

@@ -70,12 +70,11 @@ class sportsmanagementModelTeamInfo extends JModelLegacy
 	{
 	   // Reference global application object
         $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-		self::$projectid = $jinput->getInt( "p", 0 );
-		self::$projectteamid = $jinput->getInt( "ptid", 0 );
-		self::$teamid = $jinput->getInt( "tid", 0 );
-        self::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
+        
+		self::$projectid = JFactory::getApplication()->input->get->get('p', 0, 'INT');
+		self::$projectteamid = JFactory::getApplication()->input->get->get('ptid', 0, 'INT');
+		self::$teamid = JFactory::getApplication()->input->get->get('tid', 0, 'INT');
+        self::$cfg_which_database = JFactory::getApplication()->input->get->get('cfg_which_database', 0, 'INT');
         sportsmanagementModelProject::$projectid = self::$projectid; 
 		parent::__construct( );
 	}

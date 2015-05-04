@@ -84,7 +84,7 @@ class sportsmanagementModelPagination extends JModelLegacy
 	 * @param object $project
 	 * @return string
 	 */
-	public static function pagenav($project,$cfg_which_database = 0)
+	public static function pagenav($project,$cfg_which_database = 0,$s=0)
 	{
 	   $option = JRequest::getCmd('option');
        $app = JFactory::getApplication();
@@ -126,6 +126,8 @@ class sportsmanagementModelPagination extends JModelLegacy
 		$params['option'] = $option;
 		if ($view){$params['view'] = $view;}
         
+        $params['s']= $s;
+        $params['cfg_which_database']= $cfg_which_database;
 		$params['p'] = $project->slug;
         
 		if ($controller){$params['controller'] = $controller;}
@@ -138,9 +140,8 @@ class sportsmanagementModelPagination extends JModelLegacy
         {
 			$params['prediction_id']= $prediction_id;
 		}
-		
-        //$params['cfg_which_database']= $cfg_which_database;
-        
+	
+       
 		$query = JURI::buildQuery($params);
 		$link = JRoute::_('index.php?' . $query);
 		$backward = sportsmanagementModelRound::getRoundId($currentRoundcode-1, $project->id,$cfg_which_database);
@@ -152,7 +153,7 @@ class sportsmanagementModelPagination extends JModelLegacy
             $params['division'] = $division;
             $params['mode'] = 0;
             $params['order'] = 0;
-            $params['cfg_which_database']= $cfg_which_database;
+            
 			$query = JURI::buildQuery($params);
 			$link = JRoute::_('index.php?' . $query . '#'.$option.'_top');
             self::$prevlink = $link;
@@ -171,7 +172,7 @@ class sportsmanagementModelPagination extends JModelLegacy
             $params['division'] = $division;
             $params['mode'] = 0;
             $params['order'] = 0;
-            $params['cfg_which_database']= $cfg_which_database;
+
 			$query = JURI::buildQuery($params);
 			$link = JRoute::_('index.php?' . $query . '#'.$option.'_top');
 			$firstlink = JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_START')) . $spacer4;
@@ -188,7 +189,7 @@ class sportsmanagementModelPagination extends JModelLegacy
             $params['division'] = $division;
             $params['mode'] = 0;
             $params['order'] = 0;
-            $params['cfg_which_database']= $cfg_which_database;
+
 			$query = JURI::buildQuery($params);
 			$link = JRoute::_('index.php?'.$query.'#'.$option.'_top');
             self::$nextlink = $link;
@@ -210,7 +211,7 @@ class sportsmanagementModelPagination extends JModelLegacy
             $params['division'] = $division;
             $params['mode'] = 0;
             $params['order'] = 0;
-            $params['cfg_which_database']= $cfg_which_database;
+
 			$query = JURI::buildQuery($params);
 			$link = JRoute::_('index.php?' . $query . '#'.$option.'_top');
 			$lastlink = $spacer4 . JHtml::link($link,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_PAGINATION_END'));
@@ -243,7 +244,7 @@ class sportsmanagementModelPagination extends JModelLegacy
                     $params['division'] = $division;
             $params['mode'] = 0;
             $params['order'] = 0;
-            $params['cfg_which_database']= $cfg_which_database;
+
 					$query		= JURI::buildQuery($params);
 					$link		= JRoute::_('index.php?' . $query . '#'.$option.'_top');
 					$pageNav   .= $spacer4 . JHtml::link($link,$pagenumber);

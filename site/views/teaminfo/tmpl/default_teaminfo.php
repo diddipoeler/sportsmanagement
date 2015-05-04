@@ -40,7 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>
-<div class="jsm">
+
 
 <?PHP
 if (!isset($this->team))
@@ -261,7 +261,13 @@ echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$this->team->cr_
             <address>
 			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_NAME' ); ?></strong>
 			<?php 
-            $link = sportsmanagementHelperRoute::getTeamInfoRoute($this->project->slug, $this->team->slug);
+            $routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $this->project->slug;
+       $routeparameter['tid'] = $this->team->slug;
+       $routeparameter['ptid'] = JRequest::getInt('ptid',0);
+            $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
 		echo JHtml::link($link, $this->team->tname);
             ?>
             </address>
@@ -269,7 +275,13 @@ echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$this->team->cr_
 	<address>
 			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_NAME_SHORT' ); ?></strong>
 			<?php 
-            $link = sportsmanagementHelperRoute::getTeamStatsRoute($this->project->slug, $this->team->slug);
+             $routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $this->project->slug;
+       $routeparameter['tid'] = $this->team->slug;
+       
+            $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats',$routeparameter);
 		echo JHtml::link($link, $this->team->short_name);
             ?>
             </address>

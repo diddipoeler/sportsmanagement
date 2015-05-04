@@ -115,15 +115,42 @@ if ($season->projectname)
 	}
 	?> <br />
 	<?php
-	$link = JoomleagueHelperRoute::getPlayersRoute($season->project_slug, $season->team_slug);
+	$routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $season->project_slug;
+       $routeparameter['tid'] = $season->team_slug;
+       $routeparameter['ptid'] = 0;
+       		$link = sportsmanagementHelperRoute::getSportsmanagementRoute('roster',$routeparameter);
+	
 	echo JHtml::link($link, JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_PLAYERS'));
 	?> <br />
 	<?php
-	$link = JoomleagueHelperRoute::getResultsRoute($season->project_slug);
+	$routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $season->project_slug;
+       $routeparameter['r'] = 0;
+       $routeparameter['division'] = 0;
+       $routeparameter['mode'] = 0;
+       $routeparameter['order'] = 0;
+       $routeparameter['layout'] = 0;
+       		$link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
+
 	echo JHtml::link($link, JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_RESULTS'));
 	?> <br />
 	<?php
-	$link = JoomleagueHelperRoute::getRankingRoute($season->project_slug);
+	$routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $season->project_slug;
+       $routeparameter['type'] = 0;
+       $routeparameter['r'] = 0;
+       $routeparameter['from'] = 0;
+       $routeparameter['to'] = 0;
+       $routeparameter['division'] = 0;
+       		$link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);
+	
 	echo JHtml::link($link, JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON_TABLES'));
 	?> <br />
 </div>

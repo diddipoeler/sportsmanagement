@@ -46,7 +46,7 @@ require_once(JPATH_COMPONENT_SITE.DS.'views'.DS.'results' . DS . 'view.html.php'
 
 jimport('joomla.application.component.view');
 jimport('joomla.filesystem.file');
-jimport('joomla.html.pane');
+//jimport('joomla.html.pane');
 
 /**
  * sportsmanagementViewResultsranking
@@ -118,8 +118,8 @@ JHtml::_( 'behavior.mootools' );
 		// add the results config file
 
 		$mdlRound = JModelLegacy::getInstance("Round", "sportsmanagementModel");
-		$roundcode = $mdlRound->getRoundcode($rankingmodel->round,$cfg_which_database);
-		$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true,NULL,$cfg_which_database);
+		$roundcode = $mdlRound->getRoundcode($rankingmodel::$round,$cfg_which_database);
+		//$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true,NULL,$cfg_which_database);
 		
 		$resultsconfig = sportsmanagementModelProject::getTemplateConfig('results',$cfg_which_database);
 		if (!isset($resultsconfig['switch_home_guest'])){$resultsconfig['switch_home_guest']=0;}
@@ -147,7 +147,17 @@ JHtml::_( 'behavior.mootools' );
 		$options = $this->getRoundSelectNavigation($rounds,$cfg_which_database);
 		
 		$this->assignRef('matchdaysoptions',$options);
-		$this->assign('currenturl',sportsmanagementHelperRoute::getResultsRankingRoute($project->slug, $this->round,0,$cfg_which_database));
+        $routeparameter = array();
+$routeparameter['cfg_which_database'] = $jinput->getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $project->slug;
+$routeparameter['r'] = $this->roundid;
+$routeparameter['division'] = 0;
+$routeparameter['mode'] = 0;
+$routeparameter['order'] = 0;
+$routeparameter['layout'] = 0;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking',$routeparameter);
+		$this->assign('currenturl',$link);
 		$this->assign('rounds',sportsmanagementModelProject::getRounds('ASC',$cfg_which_database));
 		$this->assign('favteams',sportsmanagementModelProject::getFavTeams($cfg_which_database));
 		$this->assign('projectevents',sportsmanagementModelProject::getProjectEvents(0,$cfg_which_database));
@@ -252,7 +262,18 @@ JHtml::_( 'behavior.mootools' );
 		$options = array();
 		foreach ($rounds as $r)
 		{
-			$link = sportsmanagementHelperRoute::getResultsRankingRoute($this->project->slug, $r->value,0,$cfg_which_database);
+		  $routeparameter = array();
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['r'] = $r->slug;
+$routeparameter['division'] = 0;
+$routeparameter['mode'] = 0;
+$routeparameter['order'] = 0;
+$routeparameter['layout'] = 0;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking',$routeparameter);
+
+
 			$options[] = JHTML::_('select.option', $link, $r->text);
 		}
 		return $options;

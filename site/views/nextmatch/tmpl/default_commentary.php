@@ -44,7 +44,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 if (!empty($this->matchcommentary))
 {
 	?>
-	<table width="100%" class="contentpaneopen">
+	<table class="table">
 		<tr>
 			<td class="contentheading">
 				<?php
@@ -54,7 +54,7 @@ if (!empty($this->matchcommentary))
 		</tr>
 	</table>
     
-<table class="matchreport" border="0">
+<table class="table" >
 			<?php
 			foreach ( $this->matchcommentary as $commentary )
 			{

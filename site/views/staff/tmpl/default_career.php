@@ -58,8 +58,21 @@ if (count($this->history) > 0)
 					$k=0;
 					foreach ($this->history AS $station)
 					{
-						$link1=sportsmanagementHelperRoute::getStaffRoute($station->project_slug,$station->team_slug,$this->person->slug);
-						$link2=sportsmanagementHelperRoute::getPlayersRoute($station->project_slug,$station->team_slug);
+					$routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $station->project_slug;
+       $routeparameter['tid'] = $station->team_slug;
+       $routeparameter['pid'] = $this->person->slug;
+						$link1 = sportsmanagementHelperRoute::getSportsmanagementRoute('staff',$routeparameter);
+				$routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $station->project_slug;
+       $routeparameter['tid'] = $station->team_slug;
+       $routeparameter['ptid'] = 0;
+       		$link2 = sportsmanagementHelperRoute::getSportsmanagementRoute('roster',$routeparameter);
+						
 						?>
 						<tr class="<?php echo ($k==0)? $this->config['style_class1'] : $this->config['style_class2']; ?>">
 							<td class="td_l"><?php echo JHtml::link($link1,$station->project_name); ?></td>

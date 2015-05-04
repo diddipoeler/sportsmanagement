@@ -44,7 +44,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<!-- <div class="joomleague"> -->
+
 <div class="">
 	<?php
 	echo $this->loadTemplate('projectheading');
@@ -60,240 +60,46 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		{
 			echo $this->loadTemplate('nextmatch');
 		}
-		
-    // anzeige mit tabs ?
-  if ( ($this->config['show_nextmatch_tabs']) == "no_tabs" )
-	{
-	
-		if (($this->config['show_details'])==1)
+
+
+$this->output = array();
+if (($this->config['show_details'])==1)
 		{
-			echo $this->loadTemplate('details');
+            $this->output['COM_SPORTSMANAGEMENT_NEXTMATCH_DETAILS'] = 'details';
 		}
 
 		if (($this->config['show_preview'])==1)
 		{
-			echo $this->loadTemplate('preview');
+            $this->output['COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIEW'] = 'preview';
 		}
 
 		if (($this->config['show_stats'])==1)
 		{
-			echo $this->loadTemplate('stats');
+            $this->output['COM_SPORTSMANAGEMENT_NEXTMATCH_H2H'] = 'stats';
 		}
 
 		if (($this->config['show_history'])==1)
 		{
-			echo $this->loadTemplate('history');
+            $this->output['COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY'] = 'history';
 		}
 
-		if (($this->config['show_previousx'])==1)
+if (($this->config['show_previousx'])==1)
 		{
-			$this->currentteam = $this->match->projectteam1_id;
-			echo $this->loadTemplate('previousx');
-			$this->currentteam = $this->match->projectteam2_id;
-			echo $this->loadTemplate('previousx');
+            $this->output['COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIOUS'] = 'previousx';
 		}
         
         if (($this->config['show_commentary'])==1 && $this->matchcommentary )
 	{
-        echo $this->loadTemplate('commentary');
+        $this->output['COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_COMMENTARY'] = 'commentary';
 	}
-		
-		}
-		else if ( ($this->config['show_nextmatch_tabs']) == "show_tabs" )
-	{
-	
-    if ( JPluginHelper::isEnabled('content', 'jw_ts') )
-    {
-        $params = '';
-    $startoutput = '{tab=';
-    $endoutput = '{/tabs}';
-    if (($this->config['show_details'])==1)
-		{
-    $params .= $startoutput.JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DETAILS').'}';
-    $params .= $this->loadTemplate('details');
-    }
-    if (($this->config['show_preview'])==1)
-		{
-    $params .= $startoutput.JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIEW').'}';
-    $params .= $this->loadTemplate('preview'); 
-    }
-    if (($this->config['show_stats'])==1)
-		{
-    $params .= $startoutput.JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_H2H').'}';
-    $params .= $this->loadTemplate('stats');
-    }
-    if (($this->config['show_history'])==1)
-		{
-    $params .= $startoutput.JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY').'}';
-    $params .= $this->loadTemplate('history'); 
-    }
-    if (($this->config['show_previousx'])==1)
-		{
-    $params .= $startoutput.JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIOUS_TEAMS').'}';
-    $this->currentteam = $this->match->projectteam1_id;
-    $params .= $this->loadTemplate('previousx');
-    $this->currentteam = $this->match->projectteam2_id;
-    $params .= $this->loadTemplate('previousx');      
-    }
-    
-    if (($this->config['show_commentary'])==1 && $this->matchcommentary )
-	{
-    $params .= $startoutput.JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_COMMENTARY').'}';
-    $params .= $this->loadTemplate('commentary'); 
-	}
-    
-    $params .= $endoutput;
-    echo JHtml::_('content.prepare', $params);
 
-        }
-        else
-        {
-    $idxTab = 1;
-  echo JHtml::_('tabs.start','tabs_nextmatch', array('useCookie'=>1));
-	if (($this->config['show_details'])==1)
-		{
-		echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DETAILS'), 'panel'.($idxTab++));
-			echo $this->loadTemplate('details');
-		}
 
-		if (($this->config['show_preview'])==1)
-		{
-		echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIEW'), 'panel'.($idxTab++));
-			echo $this->loadTemplate('preview');
-		}
 
-		if (($this->config['show_stats'])==1)
-		{
-		echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_H2H'), 'panel'.($idxTab++));
-			echo $this->loadTemplate('stats');
-		}
+echo $this->loadTemplate($this->config['show_nextmatch_tabs']);
+            
 
-		if (($this->config['show_history'])==1)
-		{
-		echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY'), 'panel'.($idxTab++));
-			echo $this->loadTemplate('history');
-		}
 
-		if (($this->config['show_previousx'])==1)
-		{
-		echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIOUS_TEAMS'), 'panel'.($idxTab++));
-			$this->currentteam = $this->match->projectteam1_id;
-			echo $this->loadTemplate('previousx');
-			$this->currentteam = $this->match->projectteam2_id;
-			echo $this->loadTemplate('previousx');
-		}
-        
-        if (($this->config['show_commentary'])==1 && $this->matchcommentary )
-	{
-	   echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_COMMENTARY'), 'panel'.($idxTab++));
-        echo $this->loadTemplate('commentary');
-	}
-        
-	
-	echo JHtml::_('tabs.end');
-    }
-    
-	}
-	else if ( ($this->config['show_nextmatch_tabs']) == "show_slider" )
-	{
-	if ( JPluginHelper::isEnabled('content', 'jw_ts') )
-    {
-    $params = '';    
-    $startoutput = '{slider=';
-    $endoutput = '{/slider}';    
-    if (($this->config['show_details'])==1)
-		{
-    $params .= $startoutput.JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DETAILS').'}';
-    $params .= $this->loadTemplate('details');
-    $params .= $endoutput;
-    }
-    if (($this->config['show_preview'])==1)
-		{
-    $params .= $startoutput.JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIEW').'}';
-    $params .= $this->loadTemplate('preview'); 
-    $params .= $endoutput;
-    }
-    if (($this->config['show_stats'])==1)
-		{
-    $params .= $startoutput.JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_H2H').'}';
-    $params .= $this->loadTemplate('stats');
-    $params .= $endoutput;
-    }
-    if (($this->config['show_history'])==1)
-		{
-    $params .= $startoutput.JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY').'}';
-    $params .= $this->loadTemplate('history'); 
-    $params .= $endoutput;
-    }
-    if (($this->config['show_previousx'])==1)
-		{
-    $params .= $startoutput.JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIOUS_TEAMS').'}';
-    $this->currentteam = $this->match->projectteam1_id;
-    $params .= $this->loadTemplate('previousx');
-    $this->currentteam = $this->match->projectteam2_id;
-    $params .= $this->loadTemplate('previousx'); 
-    $params .= $endoutput;     
-    }
-    
-    if (($this->config['show_commentary'])==1 && $this->matchcommentary )
-	{
-    $params .= $startoutput.JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_COMMENTARY').'}';
-    $params .= $this->loadTemplate('commentary'); 
-    $params .= $endoutput; 
-	}   
-        
-        
-        
-        echo JHtml::_('content.prepare', $params);
-        }
-        else
-        {   
-	$idxTab = 1;
-  echo JHtml::_('sliders.start','slider_nextmatch', array('useCookie'=>1));
-	if (($this->config['show_details'])==1)
-		{
-		echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DETAILS'), 'panel'.($idxTab++));
-			echo $this->loadTemplate('details');
-		}
 
-		if (($this->config['show_preview'])==1)
-		{
-		echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIEW'), 'panel'.($idxTab++));
-			echo $this->loadTemplate('preview');
-		}
-
-		if (($this->config['show_stats'])==1)
-		{
-		echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_H2H'), 'panel'.($idxTab++));
-			echo $this->loadTemplate('stats');
-		}
-
-		if (($this->config['show_history'])==1)
-		{
-		echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY'), 'panel'.($idxTab++));
-			echo $this->loadTemplate('history');
-		}
-
-		if (($this->config['show_previousx'])==1)
-		{
-		echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIOUS_TEAMS'), 'panel'.($idxTab++));
-			$this->currentteam = $this->match->projectteam1_id;
-			echo $this->loadTemplate('previousx');
-			$this->currentteam = $this->match->projectteam2_id;
-			echo $this->loadTemplate('previousx');
-		}
-        
-        if (($this->config['show_commentary'])==1 && $this->matchcommentary )
-	{
-	   echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_COMMENTARY'), 'panel'.($idxTab++));
-        echo $this->loadTemplate('commentary');
-	}
-        
-	
-	echo JHtml::_('sliders.end');
-    }
-    
-	}
 
 		echo "<div>";
 			echo $this->loadTemplate('backbutton');

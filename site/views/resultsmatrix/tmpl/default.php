@@ -44,32 +44,7 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('globalviews', 'results', 'matrix');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<style>
-/*** PANEL PRIMARY ***/
-.with-nav-tabs.panel-primary .nav-tabs > li > a,
-.with-nav-tabs.panel-primary .nav-tabs > li > a:hover,
-.with-nav-tabs.panel-primary .nav-tabs > li > a:focus {
-    color: #fff;
-}
-.with-nav-tabs.panel-primary .nav-tabs > .open > a,
-.with-nav-tabs.panel-primary .nav-tabs > .open > a:hover,
-.with-nav-tabs.panel-primary .nav-tabs > .open > a:focus,
-.with-nav-tabs.panel-primary .nav-tabs > li > a:hover,
-.with-nav-tabs.panel-primary .nav-tabs > li > a:focus {
-	color: #fff;
-	background-color: #3071a9;
-	border-color: transparent;
-}
-.with-nav-tabs.panel-primary .nav-tabs > li.active > a,
-.with-nav-tabs.panel-primary .nav-tabs > li.active > a:hover,
-.with-nav-tabs.panel-primary .nav-tabs > li.active > a:focus {
-	color: #428bca;
-	background-color: #fff;
-	border-color: #428bca;
-	border-bottom-color: transparent;
-}
 
-</style>
 <div class="row">
 <a name="jl_top" id="jl_top"></a>
 	<?php 
@@ -81,51 +56,25 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		
 	echo $this->loadTemplate('selectround');
 
-
-?>    
+// diddipoeler
+  // aufbau der templates
+  $this->output = array();
   
-<div role="tabpanel" data-example-id="togglable-tabs" class="panel with-nav-tabs panel-primary">
-
-  <!-- Tabs-Navs -->
-  <ul class="nav nav-tabs" role="tablist" data-tabs="tabs" id="tabs">
-    <li role="presentation" class="active">
-    <a href="#results" role="tab" data-toggle="tab" id="results-tab" ><?PHP echo JText::_('COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS'); ?>
-    </a>
-    </li>
-    <li role="presentation">
-    <a href="#matrix" role="tab" data-toggle="tab"  id="matrix-tab" >
-    <?PHP echo JText::_('COM_SPORTSMANAGEMENT_MATRIX'); ?>
-    </a>
-    </li>
-
-  </ul>
-
-  <!-- Tab-Inhalte -->
-  <div class="tab-content">
-    <div role="tabpanel" class="tab-pane fade in active" id="results">
-    <?PHP   
-    echo $this->loadTemplate('results');
-    ?>
-    </div>
-    <div role="tabpanel" class="tab-pane fade" id="matrix">
-    <?PHP   
-    if(isset($this->divisions) && count($this->divisions) > 1) 
+  $this->output['COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS'] = 'results';
+  if(isset($this->divisions) && count($this->divisions) > 1) 
   {
 	echo $this->loadTemplate('matrix_division');
+    $this->output['COM_SPORTSMANAGEMENT_MATRIX'] = 'matrix_division';
     }
     else
     {
 	echo $this->loadTemplate('matrix');
+    $this->output['COM_SPORTSMANAGEMENT_MATRIX'] = 'matrix';
     }
-    ?>
-    </div>
-  </div>
 
+echo $this->loadTemplate('show_tabs');
+  
 
-</div>
-
-      
-<?PHP    
 
 	echo "<div>";
 		echo $this->loadTemplate('backbutton');

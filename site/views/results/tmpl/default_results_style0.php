@@ -156,11 +156,23 @@ else
 		{
 			if (isset($game->team1_result))
 			{
-				$report_link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug, $game->slug,JRequest::getInt('cfg_which_database',0));
+			$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $game->slug;
+$report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter); 
+				
 			}
 			else
 			{
-				$report_link = sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug, $game->slug,JRequest::getInt('cfg_which_database',0));
+			 $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $game->slug;
+$report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);
+				
 			}
 
 			$events	= sportsmanagementModelProject::getMatchEvents($game->id,0,0,JRequest::getInt('cfg_which_database',0));
@@ -571,7 +583,13 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$imgcontent, $imgTitle);
 				//Link
 				if (isset($game->team1_result))
 				{
-					$link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug, $game->slug,JRequest::getInt('cfg_which_database',0)).'#comments';
+				$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $game->slug;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter); 
+					
 				}
 				else
 				{
@@ -594,7 +612,13 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$imgcontent, $imgTitle);
 				//Link
 				if (isset($game->team1_result))
 				{
-					$link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug, $game->slug,JRequest::getInt('cfg_which_database',0)).'#comments';
+				$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $game->slug;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
+					
 				}
 				else
 				{
@@ -614,7 +638,13 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$imgcontent, $imgTitle);
 				//Link
 				if (isset($game->team1_result))
 				{
-					$link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug, $game->slug,JRequest::getInt('cfg_which_database',0)).'#comments';
+				$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $game->slug;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
+					
 				}
 				else
 				{

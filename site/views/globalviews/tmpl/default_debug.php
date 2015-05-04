@@ -68,41 +68,85 @@ echo JHtml::_('bootstrap.endAccordion');
 }
 else
 {   
-$options = array(
-    'onActive' => 'function(title, description){
-        description.setStyle("display", "block");
-        title.addClass("open").removeClass("closed");
-    }',
-    'onBackground' => 'function(title, description){
-        description.setStyle("display", "none");
-        title.addClass("closed").removeClass("open");
-    }',
-    'startOffset' => 1,  // 0 starts on the first tab, 1 starts the second, etc...
-    'useCookie' => true, // this must not be a string. Don't use quotes.
-);    
-echo JHtml::_('sliders.start', 'debug_info',$options);   
-echo JHtml::_('sliders.panel', JText::_('COM_SPORTSMANAGEMENT_DEBUG_INFO'), 'debug_info'); 
+?>
 
+
+<div class="panel-group" id="accordion">
+<?PHP
 $array_schluessel = array_keys(sportsmanagementHelper::$_success_text);
 
-echo JHtml::_('sliders.start', 'debug_info_text',$options);
 for($a=0; $a < sizeof($array_schluessel); $a++ )
 {
-echo JHtml::_('sliders.panel', JText::_($array_schluessel[$a]), 'debug_info_text');
+?>    
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title">
+<a data-toggle="collapse" data-parent="#accordion" href="#<?php echo JText::_($array_schluessel[$a]); ?>"><?php echo JText::_($array_schluessel[$a]); ?></a>
+</h4>
+</div>
+<?PHP    
 foreach (sportsmanagementHelper::$_success_text[$array_schluessel[$a] ] as $row)
 {
 ?>
-			<fieldset>
-				<legend><?php echo JText::_($row->methode); ?></legend>
-				<table class='adminlist' width="100%"><tr><td><?php echo $row->line; ?></td><td><?php echo $row->text; ?></td></tr></table>
-			</fieldset>
-			<?php
-}		  
+<div id="<?php echo JText::_($array_schluessel[$a]); ?>" class="panel-collapse collapse">
+<div class="panel-body">
+<table class="adminlist"><tr><td><?php echo $row->line; ?></td><td><?php echo $row->text; ?></td></tr></table>
+</div>
+</div>
+
+<?php
 }
-echo JHtml::_('sliders.end');
+?>
+</div>
+
+<?PHP		  
+}
+?>
+</div>
 
 
-echo JHtml::_('sliders.end');
+<!--
+<div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">1. What is HTML?</a>
+                </h4>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    <p>HTML stands for HyperText Markup Language. HTML is the main markup language for describing the structure of Web pages. <a href="http://www.tutorialrepublic.com/html-tutorial/" target="_blank">Learn more.</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">2. What is Bootstrap?</a>
+                </h4>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p>Bootstrap is a powerful front-end framework for faster and easier web development. It is a collection of CSS and HTML conventions. <a href="http://www.tutorialrepublic.com/twitter-bootstrap-tutorial/" target="_blank">Learn more.</a></p>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">3. What is CSS?</a>
+                </h4>
+            </div>
+            <div id="collapseThree" class="panel-collapse collapse">
+                <div class="panel-body">
+                    <p>CSS stands for Cascading Style Sheet. CSS allows you to specify various style properties for a given HTML element such as colors, backgrounds, fonts etc. <a href="http://www.tutorialrepublic.com/css-tutorial/" target="_blank">Learn more.</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+-->
+<?PHP
+
 }
 
 

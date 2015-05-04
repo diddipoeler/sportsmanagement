@@ -41,8 +41,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.model');
 
-//require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
-
 
 /**
  * sportsmanagementModelTeamStats
@@ -55,8 +53,9 @@ jimport( 'joomla.application.component.model');
  */
 class sportsmanagementModelTeamStats extends JModelLegacy
 {
-	var $projectid = 0;
-	var $teamid = 0;
+	static $projectid = 0;
+	static $teamid = 0;
+    static $projectteamid = 0;
 	var $highest_home = null;
 	var $highest_away = null;
 	var $highestdef_home = null;
@@ -81,10 +80,11 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	{
 		parent::__construct();
 
-		$this->projectid = JRequest::getInt( "p", 0 );
-		$this->teamid = JRequest::getInt( "tid", 0 );
-		sportsmanagementModelProject::$projectid = $this->projectid;
-        self::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+		self::$projectid = JFactory::getApplication()->input->get->get('p', 0, 'INT');
+		self::$teamid = JFactory::getApplication()->input->get->get('tid', 0, 'INT');
+        self::$projectteamid = JFactory::getApplication()->input->get->get('ptid', 0, 'INT');
+		sportsmanagementModelProject::$projectid = self::$projectid;
+        self::$cfg_which_database = JFactory::getApplication()->input->get->get('cfg_which_database', 0, 'INT');
 		//preload the team;
 		self::getTeam();
 	}
@@ -109,11 +109,11 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 		# if ( is_null( $this->team ) )
 		if ( !isset( $this->team ) )
 		{
-			if ( $this->teamid > 0 )
+			if ( self::$teamid > 0 )
 			{
 			 $query->select('*');
              $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team');
-             $query->where('id = '. $this->teamid );
+             $query->where('id = '. self::$teamid );
              $db->setQuery($query);
              $this->team = $db->loadObject();
 //				$this->team = $this->getTable( 'Team', 'sportsmanagementTable' );
@@ -165,7 +165,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = pt2.team_id ');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON st2.team_id = t2.id ');
         
-        $query->where('pt1.project_id = '.$this->projectid);
+        $query->where('pt1.project_id = '.self::$projectid);
         
         $query->where('matches.published = 1');
         $query->where('alt_decision = 0');
@@ -224,7 +224,9 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         
        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.$homeaway.' '.$which.   ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        $my_text = 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';
+            $my_text .= 'dump <pre>'.print_r($query->dump(),true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
         }
         
         $result= $db->loadObject( );
@@ -269,7 +271,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
            $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = pt2.team_id ');
            $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON st2.team_id = t2.id ');
         
-           $query->where('pt1.project_id = '.$this->projectid);
+           $query->where('pt1.project_id = '.self::$projectid);
            $query->where('matches.published = 1 ');
            $query->where('alt_decision = 0');
            $query->where('( (t1.id = '.$this->team->id.' AND team2_result=0 ) OR (t2.id = '.$this->team->id.' AND team1_result=0 ) ) ');
@@ -325,7 +327,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt1.team_id ');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON st.team_id = t.id ');
         
-        $query->where('pt1.project_id = '.$this->projectid);
+        $query->where('pt1.project_id = '.self::$projectid);
         $query->where('matches.published = 1');
         $query->where('t.id = '.$this->team->id);
         $query->where('(matches.cancel IS NULL OR matches.cancel = 0)');
@@ -346,7 +348,9 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        $my_text = 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';
+            $my_text .= 'dump <pre>'.print_r($query->dump(),true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
         }
         
         switch ($which)
@@ -385,8 +389,8 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $query = $db->getQuery(true);
         
         $query->select('rounds.id');
-        $query->select('SUM(CASE WHEN st1.team_id ='.$this->teamid.' THEN matches.team1_result ELSE matches.team2_result END) AS goalsfor');
-        $query->select('SUM(CASE WHEN st1.team_id ='.$this->teamid.' THEN matches.team2_result ELSE matches.team1_result END) AS goalsagainst');
+        $query->select('SUM(CASE WHEN st1.team_id ='.self::$teamid.' THEN matches.team1_result ELSE matches.team2_result END) AS goalsfor');
+        $query->select('SUM(CASE WHEN st1.team_id ='.self::$teamid.' THEN matches.team2_result ELSE matches.team1_result END) AS goalsagainst');
         $query->select('rounds.roundcode');
         
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS rounds ');
@@ -401,8 +405,8 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = pt2.team_id ');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON st2.team_id = t2.id ');
         
-        $query->where('rounds.project_id = '.$this->projectid);
-        $query->where('( (st1.team_id ='.$this->teamid.' ) OR (st2.team_id ='.$this->teamid.' ) )' );
+        $query->where('rounds.project_id = '.self::$projectid);
+        $query->where('( (st1.team_id ='.self::$teamid.' ) OR (st2.team_id ='.self::$teamid.' ) )' );
         $query->where('(matches.cancel IS NULL OR matches.cancel = 0)');
         $query->where('team1_result IS NOT NULL');
         $query->group('rounds.roundcode');   
@@ -414,7 +418,9 @@ class sportsmanagementModelTeamStats extends JModelLegacy
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            $my_text = 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';
+            $my_text .= 'dump <pre>'.print_r($query->dump(),true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
             }
             
             if ( !$this->matchdaytotals )
@@ -460,8 +466,8 @@ class sportsmanagementModelTeamStats extends JModelLegacy
            $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = pt2.team_id ');
            $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON st2.team_id = t2.id ');
            
-           $query->where('rounds.project_id = '.$this->projectid);
-           $query->where('( (st1.team_id ='.$this->teamid.' ) OR (st2.team_id ='.$this->teamid.' ) )' );
+           $query->where('rounds.project_id = '.self::$projectid);
+           $query->where('( (st1.team_id ='.self::$teamid.' ) OR (st2.team_id ='.self::$teamid.' ) )' );
            $query->where('(matches.cancel IS NULL OR matches.cancel = 0)');
            $query->group('rounds.roundcode');
         
@@ -470,7 +476,9 @@ class sportsmanagementModelTeamStats extends JModelLegacy
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            $my_text = 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';
+            $my_text .= 'dump <pre>'.print_r($query->dump(),true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
          }
             
     		$this->matchdaytotals = $db->loadObjectList();
@@ -504,7 +512,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         {
             $query->select('COUNT(id)');
            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round ');
-           $query->where('project_id = '.$this->projectid);
+           $query->where('project_id = '.self::$projectid);
 
 //            $query= "SELECT COUNT(id)
 //                     FROM #__joomleague_round
@@ -522,7 +530,9 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        $my_text = 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';
+            $my_text .= 'dump <pre>'.print_r($query->dump(),true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
         }
         
         if ( !$this->totalrounds )
@@ -558,7 +568,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON st1.team_id = t1.id ');
         $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS playground ON pt1.standard_playground = playground.id ');
         
-        $query->where('st1.team_id = '.$this->teamid);
+        $query->where('st1.team_id = '.self::$teamid);
         $query->where('matches.crowd > 0 ');
         $query->where('matches.published = 1');
 
@@ -575,7 +585,9 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        $my_text = 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';
+            $my_text .= 'dump <pre>'.print_r($query->dump(),true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
         }
             
     	         
@@ -639,7 +651,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	 */
 	function getChartURL( )
 	{
-		$url = sportsmanagementHelperRoute::getTeamStatsChartDataRoute( $this->projectid, $this->teamid,self::$cfg_which_database );
+		$url = sportsmanagementHelperRoute::getTeamStatsChartDataRoute( self::$projectid, self::$teamid,self::$cfg_which_database );
 		$url = str_replace( '&', '%26', $url );
 		return $url;
 	}
@@ -660,7 +672,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 		$query->select('logo_big');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS clubs ');
         $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS teams ON clubs.id = teams.club_id ');
-        $query->where('teams.id = '.$this->teamid);
+        $query->where('teams.id = '.self::$teamid);
     	$db->setQuery( $query );
     	$logo = JURI::root().$db->loadResult();
 
@@ -696,8 +708,8 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = pt2.team_id ');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON st2.team_id = t2.id ');
            
-        $query->where('pt1.project_id = '.$this->projectid);
-        $query->where('( (st1.team_id = '.$this->teamid.' ) OR (st2.team_id = '.$this->teamid.' ) )' );
+        $query->where('pt1.project_id = '.self::$projectid);
+        $query->where('( (st1.team_id = '.self::$teamid.' ) OR (st2.team_id = '.self::$teamid.' ) )' );
            
         $query->where('(m.team1_result IS NOT NULL OR m.alt_decision > 0)');
         $query->where('(m.cancel IS NULL OR m.cancel = 0)');
@@ -715,7 +727,9 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        $my_text = 'getErrorMsg <pre>'.print_r($db->getErrorMsg(),true).'</pre>';
+            $my_text .= 'dump <pre>'.print_r($query->dump(),true).'</pre>';
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
         }
             
     	         
@@ -731,7 +745,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 		{
 			if (!$match->alt_decision)
 			{
-				if ($match->team1_id == $this->teamid)
+				if ($match->team1_id == self::$teamid)
 				{
 					// We are the home team
 					if ($match->team1_result > $match->team2_result)

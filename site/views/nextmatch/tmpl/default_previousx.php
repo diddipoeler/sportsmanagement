@@ -43,10 +43,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 <!-- Start of last 5 matches -->
 
 <h2><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIOUS', $this->allteams[$this->currentteam]->name); ?></h2>
-<table width="100%">
+<table class="table">
 	<tr>
 		<td>
-		<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
+		<table class="<?php echo $this->config['hystory_table_class']; ?>">
 			<?php
 			$pr_id = 0;
 			$k=0;
@@ -54,8 +54,24 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 			foreach ( $this->previousx[$this->currentteam] as $game )
 			{
 				$class = ($k == 0)? 'sectiontableentry1' : 'sectiontableentry2';
-				$result_link = sportsmanagementHelperRoute::getResultsRoute($game->project_id,$game->roundid,0,0,0,null,JRequest::getInt('cfg_which_database',0));
-				$report_link = sportsmanagementHelperRoute::getMatchReportRoute($game->project_id,$game->id,JRequest::getInt('cfg_which_database',0));
+                $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $game->project_slug;
+$routeparameter['r'] = $game->round_slug;
+$routeparameter['division'] = 0;
+$routeparameter['mode'] = 0;
+$routeparameter['order'] = '';
+$routeparameter['layout'] = '';
+$result_link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
+				
+				$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $game->project_slug;
+$routeparameter['mid'] = $game->match_slug;
+$report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
+				
 				$home = $this->allteams[$game->projectteam1_id];
 				$away = $this->allteams[$game->projectteam2_id];
 				?>

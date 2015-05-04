@@ -42,9 +42,6 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.switcher');
 JHtml::_('behavior.modal');
 
-//echo ' config<br><pre>'.print_r($this->config,true).'</pre>';   
-//echo ' currentRanking<br><pre>'.print_r($this->currentRanking,true).'</pre>';
-
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews');
@@ -98,7 +95,7 @@ jQuery(window).load(function() {
 
 </script>
 
-<div class="">
+<div class="row">
 	<?php
     
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -124,8 +121,10 @@ jQuery(window).load(function() {
    
         
     ?>
-            <!-- This is a list with tabs names. -->
-            <div role="tabpanel">
+
+<!-- This is a list with tabs names. -->
+            <div class="panel with-nav-tabs panel-default">
+                <div class="panel-heading">
     	<!-- Tabs-Navs -->
   <ul class="nav nav-tabs" role="tablist">
     <?PHP
@@ -170,8 +169,9 @@ jQuery(window).load(function() {
     }
     ?>
   </ul>
-
+</div>
   <!-- Tab-Inhalte -->
+  <div class="panel-body">
   <div class="tab-content">
     
     <?PHP
@@ -230,17 +230,14 @@ jQuery(window).load(function() {
     <?PHP
     }
     ?>
-    
+    </div>
     
   </div>
         
         
-        </div>
-    <?PHP        
-   
-   
-    
-    
+</div>
+
+<?PHP        
     
     }
 

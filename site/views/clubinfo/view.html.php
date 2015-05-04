@@ -81,13 +81,13 @@ class sportsmanagementViewClubInfo extends JViewLegacy
 		$isEditor		= sportsmanagementModelProject::hasEditPermission('club.edit');
 		$address_string = $model->getAddressString();
 
-        $this->assign('checkextrafields', sportsmanagementHelper::checkUserExtraFields('frontend') );
+        $this->assign('checkextrafields', sportsmanagementHelper::checkUserExtraFields('frontend',$model::$cfg_which_database) );
                         
         //$app->enqueueMessage(JText::_('clubinfo checkextrafields -> '.'<pre>'.print_r($this->checkextrafields,true).'</pre>' ),'');
 		
         if ( $this->checkextrafields )
         {
-            $this->assign('extrafields', sportsmanagementHelper::getUserExtraFields($club->id,'frontend') );
+            $this->assign('extrafields', sportsmanagementHelper::getUserExtraFields($club->id,'frontend',$model::$cfg_which_database) );
         }
         
 		$lat ='';

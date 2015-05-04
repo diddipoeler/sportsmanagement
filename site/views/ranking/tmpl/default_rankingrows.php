@@ -247,6 +247,15 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->team->$pic, $team->
 	//**********START OPTIONAL COLUMNS DISPLAY
 	foreach ( $columns AS $c )
 	{
+	   $routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $this->project->slug;
+       $routeparameter['tid'] = $team->team->team_slug;
+       $routeparameter['division'] = 0;
+       $routeparameter['mode'] = 0;
+       $routeparameter['ptid'] = $team->ptid_slug;
+       
 		switch ( trim( strtoupper( $c ) ) )
 		{
 			case 'PLAYED':
@@ -268,7 +277,8 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->team->$pic, $team->
 				echo '>';
 				if (( $config['show_wdl_teamplan_link'])==1)
 				{
-					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->slug, $team->team->team_slug, 0, 1,$team->ptid_slug,JRequest::getInt('cfg_which_database',0));
+					$routeparameter['mode'] = 1;
+                    $teamplan_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
 					echo JHtml::link($teamplan_link, $team->cnt_won);
 				}
 				else
@@ -287,7 +297,8 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->team->$pic, $team->
 				echo '>';
 				if (( $config['show_wdl_teamplan_link'])==1)
 				{
-					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->slug, $team->team->team_slug, 0, 2,$team->ptid_slug,JRequest::getInt('cfg_which_database',0));
+					$routeparameter['mode'] = 2;
+                    $teamplan_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
 					echo JHtml::link($teamplan_link, $team->cnt_draw);
 				}
 				else
@@ -306,7 +317,8 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->team->$pic, $team->
 				echo '>';
 				if (( $config['show_wdl_teamplan_link'])==1)
 				{
-					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($this->project->slug, $team->team->team_slug, 0, 3,$team->ptid_slug,JRequest::getInt('cfg_which_database',0));
+					$routeparameter['mode'] = 3;
+                    $teamplan_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
 					echo JHtml::link($teamplan_link, $team->cnt_lost);
 				}
 				else

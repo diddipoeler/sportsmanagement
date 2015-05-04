@@ -772,7 +772,13 @@ $image.="</div>";
 		//echo '<br /><pre>~'.print_r($game,true).'~</pre><br />';
 
 		$output = '';
-		$report_link = sportsmanagementHelperRoute::getMatchReportRoute($game->project_id,$game->id);
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $game->project_id;
+$routeparameter['mid'] = $game->id;
+$report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter); 		
+		
 
 		if ((($game->show_report) && (trim($game->summary) != '')) || ($game->alt_decision) || ($game->match_result_type > 0))
 		{

@@ -52,7 +52,7 @@ jimport( 'joomla.application.component.model' );
 class sportsmanagementModelRanking extends JModelLegacy
 {
 	static $projectid = 0;
-	var $round = 0;
+	static $round = 0;
 	var $rounds = array(0);
 	var $part = 0;
 	var $type = 0;
@@ -73,6 +73,7 @@ class sportsmanagementModelRanking extends JModelLegacy
 	var $viewName = '';
     
     static $cfg_which_database = 0;
+    static $season = 0;
 
 	/**
 	 * sportsmanagementModelRanking::__construct()
@@ -88,12 +89,12 @@ class sportsmanagementModelRanking extends JModelLegacy
        $to = 0;
 		self::$projectid = (int) $jinput->get->get('p', 0, '');
 		//$this->round = JRequest::getInt("r", $this->current_round);
-        $this->round = $jinput->get->get('r', $this->current_round, '');
+        self::$round = $jinput->get->get('r', $this->current_round, '');
 		$this->part  = JRequest::getInt("part", 0);
 		//$this->from  = JRequest::getInt('from', 0 );
 		//$this->to	 = JRequest::getInt('to', $this->round);
         $this->from = $jinput->post->get('from', 0, '');
-        $this->to = $jinput->post->get('to', $this->round, '');
+        $this->to = $jinput->post->get('to', self::$round, '');
         
 		$this->type  = $jinput->post->get('type', 0, '');
 		$this->last  = JRequest::getInt('last', 0 );
@@ -101,6 +102,7 @@ class sportsmanagementModelRanking extends JModelLegacy
     	$this->selDivision = JRequest::getInt('division', 0 );
         
         self::$cfg_which_database = $jinput->get->get('cfg_which_database', 0 ,'');
+        self::$season = $jinput->get->get('s', 0 ,'');
         
         sportsmanagementModelProject::$projectid = self::$projectid; 
         
@@ -117,25 +119,25 @@ class sportsmanagementModelRanking extends JModelLegacy
         }
         else
         {
-        $this->round = $this->to;    
+        self::$round = $this->to;    
         }
         
         
-        if ( empty($this->round) )
+        if ( empty(self::$round) )
         {
-            $this->round = sportsmanagementModelProject::getCurrentRound(NULL,self::$cfg_which_database);
-            $this->current_round = $this->round;
+            self::$round = sportsmanagementModelProject::getCurrentRound(NULL,self::$cfg_which_database);
+            $this->current_round = self::$round;
         }
         
         sportsmanagementModelProject::$_round_from = $this->from; 
-        sportsmanagementModelProject::$_round_to = $this->round;
+        sportsmanagementModelProject::$_round_to = self::$round;
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
         $my_text = 'from '.$from.'<br>';    
         $my_text .= 'to '.$to.'<br>';
         $my_text .= 'projectid '.self::$projectid.'<br>';
-        $my_text .= 'round '.$this->round.'<br>';
+        $my_text .= 'round '.self::$round.'<br>';
         $my_text .= 'current_round '.$this->current_round.'<br>';
         $my_text .= 'self from '.$this->from.'<br>';
         $my_text .= 'self to '.$this->to.'<br>';
@@ -147,6 +149,8 @@ class sportsmanagementModelRanking extends JModelLegacy
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
         }
 
+
+    
 		parent::__construct( );
 	}
 
@@ -197,7 +201,7 @@ class sportsmanagementModelRanking extends JModelLegacy
 		{
 		$options['rssUrl'] 		= $rssId; 
         
-        $rssDoc =& JFactory::getXMLparser('RSS', $options);
+        $rssDoc = JFactory::getXMLparser('RSS', $options);
 		$feed = new stdclass();
         if ($rssDoc != false)
 			{
@@ -242,15 +246,15 @@ class sportsmanagementModelRanking extends JModelLegacy
        
        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($this->round,true).'</pre>'),'');
        
-       if ( !$this->round )
+       if ( !self::$round )
         {
-            $this->round = sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.$this->viewName,$cfg_which_database);
+            self::$round = sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.$this->viewName,$cfg_which_database);
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($this->round,true).'</pre>'),'');
         }
         
        
        
-		if (!$this->round) 
+		if (!self::$round) 
         {
 			return false;
 		}
@@ -260,7 +264,7 @@ class sportsmanagementModelRanking extends JModelLegacy
 		$current = null;
 		foreach ($rounds as $r)
 		{
-			if ($r->id == $this->round) 
+			if ($r->id == self::$round) 
             {
 			$current = $r;
 				break;
@@ -356,7 +360,7 @@ class sportsmanagementModelRanking extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function computeRanking($cfg_which_database = 0)
+	function computeRanking($cfg_which_database = 0,$s=0)
 	{
 		$app	= JFactory::getApplication();
         
@@ -374,10 +378,15 @@ class sportsmanagementModelRanking extends JModelLegacy
 		$lastRound	= sportsmanagementModelRounds::getLastRound($project->id,$cfg_which_database);
 
 		// url if no sef link comes along (ranking form)
-		$url = sportsmanagementHelperRoute::getRankingRoute( self::$projectid );
+        $routeparameter = array();
+              $routeparameter['cfg_which_database'] = $cfg_which_database;
+              $routeparameter['s'] = $s;
+       $routeparameter['p'] = self::$projectid;
+		$url = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);
+        
 		$tableconfig= sportsmanagementModelProject::getTemplateConfig( "ranking" , $cfg_which_database,__METHOD__);
 
-		$this->round = ($this->round == 0 || $this->round == '' ) ? sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.$this->viewName,$cfg_which_database) : $this->round;
+		self::$round = (self::$round == 0 || self::$round == '' ) ? sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.$this->viewName,$cfg_which_database) : self::$round;
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' firstRound<br><pre>'.print_r($firstRound,true).'</pre>'),'');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' lastRound<br><pre>'.print_r($lastRound,true).'</pre>'),'');
@@ -403,7 +412,7 @@ class sportsmanagementModelRanking extends JModelLegacy
 		else
 		{
 			$this->from = JRequest::getInt( 'from', $firstRound['id'] );
-			$this->to   = JRequest::getInt( 'to', $this->round, $lastRound['id'] );
+			$this->to   = JRequest::getInt( 'to', self::$round, $lastRound['id'] );
 		}
 		if( $this->part > 0 )
 		{
@@ -530,7 +539,7 @@ class sportsmanagementModelRanking extends JModelLegacy
 				}
 			}
 		}
-		$this->current_round = $this->round;
+		$this->current_round = self::$round;
 		return ;
 	}
 	
