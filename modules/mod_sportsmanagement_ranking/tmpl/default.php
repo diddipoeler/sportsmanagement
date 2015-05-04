@@ -171,7 +171,16 @@ $colors = $list['colors'];
 <p class="fulltablelink"><?php 
 	$divisionid = explode(':', $params->get('division_id', 0));
 	$divisionid = $divisionid[0];
-	echo JHtml::link(sportsmanagementHelperRoute::getRankingRoute($list['project']->slug, null, null, null, null, $divisionid,$params->get('cfg_which_database')), 
-			         JText::_('MOD_SPORTSMANAGEMENT_RANKING_VIEW_FULL_TABLE')); ?></p>
+    $routeparameter = array();
+$routeparameter['cfg_which_database'] = $params->get('cfg_which_database');
+$routeparameter['s'] = $params->get('s');
+$routeparameter['p'] = $list['project']->slug;
+$routeparameter['type'] = 0;
+$routeparameter['r'] = 0;
+$routeparameter['from'] = 0;
+$routeparameter['to'] = 0;
+$routeparameter['division'] = $divisionid;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);    
+	echo JHtml::link($link,JText::_('MOD_SPORTSMANAGEMENT_RANKING_VIEW_FULL_TABLE')); ?></p>
 <?php endif; ?>
 </div>

@@ -60,15 +60,21 @@ if(count($persons) > 0)
 		
 		$person_link = "";
 		$person_type = $person['type'];
-		if($person_type==1) {
-			$person_link = sportsmanagementHelperRoute::getPlayerRoute($person['project_id'],
-																$person['team_id'],
-																$person['id']);
-		} else if($person_type==2) {
+        
+		if($person_type==1) 
+        {
+			$person_link = sportsmanagementHelperRoute::getPlayerRoute($person['project_slug'],
+																$person['team_slug'],
+																$person['person_slug']);
+		} 
+        else if($person_type==2) 
+        {
 			$person_link = sportsmanagementHelperRoute::getStaffRoute($person['project_id'],
 																$person['team_id'],
 																$person['id']);
-		} else if($person_type==3) {
+		} 
+        else if($person_type==3) 
+        {
 			$person_link = sportsmanagementHelperRoute::getRefereeRoute($person['project_id'],
 																$person['team_id'],
 																$person['id']);

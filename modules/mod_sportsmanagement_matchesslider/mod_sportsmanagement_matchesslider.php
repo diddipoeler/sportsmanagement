@@ -116,11 +116,20 @@ $slidermatches = array_merge($matches);
 
 foreach( $slidermatches as $match )
 {
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = $params->get('cfg_which_database');
+$routeparameter['s'] = $params->get('s');
+$routeparameter['p'] = $match->project_slug;
 
 switch ( $params->get('p_link_func') )
 {
     case 'results':
-    $link = sportsmanagementHelperRoute::getResultsRoute( $match->project_slug, $match->round_slug, 0 );
+    $routeparameter['r'] = $match->round_slug;
+$routeparameter['division'] = 0;
+$routeparameter['mode'] = 0;
+$routeparameter['order'] = '';
+$routeparameter['layout'] = '';
+    $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
     break;
     case 'ranking':
     $link = sportsmanagementHelperRoute::getRankingRoute( $match->project_slug, $match->round_slug,null,null,0,0 );

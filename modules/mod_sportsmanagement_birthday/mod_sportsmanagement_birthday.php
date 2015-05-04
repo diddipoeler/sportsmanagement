@@ -131,18 +131,27 @@ if(count($persons) > 0)
 		
 		$person_link = "";
 		$person_type = $person['type'];
-		if($person_type==1) {
-			$person_link = sportsmanagementHelperRoute::getPlayerRoute($person['project_id'],
-																$person['team_id'],
-																$person['id']);
-		} else if($person_type==2) {
-			$person_link = sportsmanagementHelperRoute::getStaffRoute($person['project_id'],
-																$person['team_id'],
-																$person['id']);
-		} else if($person_type==3) {
-			$person_link = sportsmanagementHelperRoute::getRefereeRoute($person['project_id'],
-																$person['team_id'],
-																$person['id']);
+        $routeparameter = array();
+$routeparameter['cfg_which_database'] = $params->get('cfg_which_database');
+$routeparameter['s'] = $params->get('s');
+$routeparameter['p'] = $person['project_slug'];
+		if($person_type==1) 
+        {
+            $routeparameter['tid'] = $person['team_slug'];
+$routeparameter['pid'] = $person['person_slug'];
+			$person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
+		} 
+        else if($person_type==2) 
+        {
+            $routeparameter['tid'] = $person['team_slug'];
+$routeparameter['pid'] = $person['person_slug'];
+			$person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('staff',$routeparameter);
+		} 
+        else if($person_type==3) 
+        {
+            
+$routeparameter['pid'] = $person['person_slug'];
+			$person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routeparameter);;
 		}
 		$showname = JHTML::link( $person_link, $usedname );
 		?>

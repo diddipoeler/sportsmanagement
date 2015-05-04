@@ -216,34 +216,23 @@ class SportsmanagementConnector extends JSMCalendar
                      'showPlayer' AS func_to_call,
                      'pid' AS id_to_append,
                      team.short_name, team.id as teamid");
+        
+        $query->select('CONCAT_WS(\':\',team.id,team.alias) AS team_slug');
+        $query->select('CONCAT_WS(\':\',pro.id,pro.alias) AS project_slug');
+        $query->select('CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
+        
         $query->from('#__sportsmanagement_person AS p'); 
         $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = p.id');
         $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id'); 
         $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         $query->join('INNER','#__sportsmanagement_team AS team ON team.id = pt.team_id ');
         $query->join('INNER','#__sportsmanagement_club AS club ON club.id = team.club_id ');
+        $query->join('INNER','#__sportsmanagement_project AS pro ON pro.id = pt.project_id'); 
         
         $query->where("p.published = 1");
         $query->where("p.birthday != '0000-00-00'");
         $query->where("DATE_FORMAT(p.birthday, '%m') = DATE_FORMAT('".$caldates['start']."', '%m')");
 
-/*
-		$query="SELECT p.id, p.firstname, p.lastname, p.picture, p.country,
-                     DATE_FORMAT(p.birthday, '%m-%d') AS month_day,
-                     YEAR( CURRENT_DATE( ) ) as year,
-                     DATE_FORMAT('".$caldates['start']."', '%Y') - YEAR( p.birthday ) AS age,
-                     DATE_FORMAT(p.birthday,'%Y-%m-%d') AS date_of_birth,
-                     pt.project_id as project_id,
-                     'showPlayer' AS func_to_call,
-                     'pid' AS id_to_append,
-                     team.short_name, team.id as teamid
-              FROM #__joomleague_person AS p
-              inner JOIN #__joomleague_team_player AS tp ON (p.id = tp.person_id)
-              inner JOIN #__joomleague_project_team AS pt ON (pt.id = tp.projectteam_id)
-              inner JOIN #__joomleague_team AS team ON (team.id = pt.team_id )
-              inner JOIN #__joomleague_club AS club ON (club.id = team.club_id )
-              WHERE p.published = 1 AND p.birthday != '0000-00-00' and DATE_FORMAT(p.birthday, '%m') = DATE_FORMAT('".$caldates['start']."', '%m')";
-*/
 		$projectid = SportsmanagementConnector::$xparams->get('project_ids') ;
 
 
@@ -252,18 +241,13 @@ class SportsmanagementConnector extends JSMCalendar
 			$projectids = (is_array($projectid)) ? implode(",", $projectid) : $projectid;
 			if($projectids > 0)
             {
-            //$query .= " AND (pt.project_id IN (".$projectids.") )";   
             $query->where("(pt.project_id IN (".$projectids.") )"); 
             } 	
 
 		}
 
-//		$query .= $limitingcondition;
-//		$query .= "  GROUP BY p.id ORDER BY p.birthday";
-
 		$query->group('p.id');
         $query->order('p.birthday');
-        //$query = (self::$prefix != '') ? str_replace('#__', self::$prefix, $query) : $query;
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
@@ -271,7 +255,6 @@ class SportsmanagementConnector extends JSMCalendar
         }
         
 		$db->setQuery($query);
-		//echo($database->getQuery());
 
 		$players = $db->loadObjectList();
 
@@ -317,9 +300,14 @@ class SportsmanagementConnector extends JSMCalendar
 
 			// new insert for link to player profile
 			//$newrows[$key]['link'] = 'index.php?option=com_joomleague&view=player&p='.$row->project_id.'&pid='.$row->id;
-			$newrows[$key]['link'] = sportsmanagementHelperRoute::getPlayerRoute( $row->project_id, $row->teamid, $row->id);
-
-
+            $routeparameter = array();
+$routeparameter['cfg_which_database'] = self::$params->get('cfg_which_database');
+$routeparameter['s'] = self::$params->get('s');
+$routeparameter['p'] = $row->project_slug;
+$routeparameter['tid'] = $row->team_slug;
+$routeparameter['pid'] = $row->person_slug;
+$newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
+			
 			$matches[] = $newrows[$key];
 		}
 		return $newrows;
@@ -356,7 +344,13 @@ class SportsmanagementConnector extends JSMCalendar
 			$newrows[$key]['project_id'] = $row->project_id;
 
 			// insert matchdetaillinks
-			$newrows[$key]['link'] = sportsmanagementHelperRoute::getNextMatchRoute( $row->project_id, $row->matchcode);
+			$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $row->project_slug;
+$routeparameter['mid'] = $row->match_slug;
+$newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);
+		
 			$matches[] = $newrows[$key];
 			parent::addTeam($row->projectteam1_id, parent::jl_utf8_convert ($teams[$row->projectteam1_id]->name, 'iso-8859-1', 'utf-8'), $newrows[$key]['homepic']);
 			parent::addTeam($row->projectteam2_id, parent::jl_utf8_convert ($teams[$row->projectteam2_id]->name, 'iso-8859-1', 'utf-8'), $newrows[$key]['awaypic']);
@@ -465,7 +459,6 @@ class SportsmanagementConnector extends JSMCalendar
 			if($teamids > 0)
 			{
 				$limitingconditions[] = "st.team_id IN (".$teamids.")";
-                //$query->where("pt.team_id IN (".$teamids.")");
 			}
 		}
 
@@ -477,7 +470,6 @@ class SportsmanagementConnector extends JSMCalendar
 			if($clubids > 0)
 			{
 				$limitingconditions[] = "team.club_id IN (".$clubids.")";
-                //$query->where("team.club_id IN (".$clubids.")");
 			}
 		}
 
@@ -495,18 +487,14 @@ class SportsmanagementConnector extends JSMCalendar
 
 		if (count($limitingconditions) > 0)
 		{
-//			$limitingcondition .=' AND (';
-//			$limitingcondition .= implode(' OR ', $limitingconditions);
-            
             $query->where(" ( ".implode(' OR ', $limitingconditions)." ) ");
-            
-//			$limitingcondition .=')';
 		}
 
 		$limit = (isset($caldates['limitstart'])&&isset($caldates['limitend'])) ? ' LIMIT '.$caldates['limitstart'].', '.$caldates['limitend'] :'';
 
-
 		$query->select('m.*,p.*,match_date AS caldate,r.roundcode, r.name AS roundname, r.round_date_first, r.round_date_last,m.id as matchcode, p.id as project_id');
+        $query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
+        $query->select('CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) AS match_slug ');
         $query->from('#__sportsmanagement_match as m');
         $query->join('INNER','#__sportsmanagement_round as r ON r.id = m.round_id');
         $query->join('INNER','#__sportsmanagement_project as p ON p.id = r.project_id');
@@ -515,37 +503,26 @@ class SportsmanagementConnector extends JSMCalendar
         $query->join('INNER','#__sportsmanagement_team as team ON team.id = st.team_id');
         $query->join('INNER','#__sportsmanagement_club as club ON club.id = team.club_id');
         
-//        $query = "SELECT  m.*,p.*,
-//                      match_date AS caldate,
-//                      r.roundcode, r.name AS roundname, r.round_date_first, r.round_date_last,
-//                      m.id as matchcode, p.id as project_id
-//              FROM #__joomleague_match m
-//              inner JOIN #__joomleague_round r ON r.id = m.round_id
-//              inner JOIN #__joomleague_project p ON p.id = r.project_id
-//              inner JOIN #__joomleague_project_team pt ON (pt.id = m.projectteam1_id OR pt.id = m.projectteam2_id)
-//              inner JOIN #__joomleague_team team ON team.id = pt.team_id
-//              inner JOIN #__joomleague_club club ON club.id = team.club_id
-//               ";
-
-//		$where = " WHERE m.published = 1
-//               AND p.published = 1 ";
+        $query->join('LEFT','#__sportsmanagement_project_team AS tt1 ON m.projectteam1_id = tt1.id');
+        $query->join('LEFT','#__sportsmanagement_project_team AS tt2 ON m.projectteam2_id = tt2.id');
+        $query->join('LEFT','#__sportsmanagement_season_team_id AS st1 ON st1.id = tt1.team_id ');
+        $query->join('LEFT','#__sportsmanagement_season_team_id AS st2 ON st2.id = tt2.team_id ');
+        $query->join('LEFT','#__sportsmanagement_team AS t1 ON t1.id = st1.team_id');
+        $query->join('LEFT','#__sportsmanagement_team AS t2 ON t2.id = st2.team_id');
         
         $query->where("m.published = 1");
         $query->where("p.published = 1");
                
 		if (isset($caldates['start']))
         { 
-        //$where .= " AND m.match_date >= '".$caldates['start']."'";
         $query->where("m.match_date >= ".$db->Quote(''.$caldates['start'].'')."");
         }
 		if (isset($caldates['end'])) 
         {
-        //$where .= " AND m.match_date <= '".$caldates['end']."'";
         $query->where("m.match_date <= ".$db->Quote(''.$caldates['end'].'')."");
         }
 		if (isset($caldates['matchcode']))
         {
-        //$where .= " AND r.matchcode = '".$caldates['matchcode']."'";
         $query->where("r.matchcode LIKE ".$db->Quote(''.$caldates['matchcode'].'')."");
         }
 		$projectid = SportsmanagementConnector::$xparams->get('project_ids') ;
@@ -555,21 +532,16 @@ class SportsmanagementConnector extends JSMCalendar
 			$projectids = (is_array($projectid)) ? implode(",", $projectid) : $projectid;
 			if($projectids > 0)
             {
-            //$where .= " AND p.id IN (".$projectids.")";
             $query->where("p.id IN (".$projectids.")");
             }
 		}
 
 		if(isset($caldates['resultsonly']) && $caldates['resultsonly']== 1) 
         {
-        //$where .= " AND m.team1_result IS NOT NULL";
         $query->where("m.team1_result IS NOT NULL");
         }
 
 		$where .= $limitingcondition;
-
-//		$where .= " GROUP BY m.id";
-//		$where .=" ORDER BY m.match_date ".$ordering;
         
         $query->group('m.id');
         $query->order('m.match_date '.$ordering);
@@ -579,9 +551,6 @@ class SportsmanagementConnector extends JSMCalendar
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
 
-		//$query = (SportsmanagementConnector::$prefix != '') ? str_replace('#__', SportsmanagementConnector::$prefix, $query) : $query;
-		
-        //$db->setQuery($query.$where.$limit);
         $db->setQuery($query.$limit);
         
 		$result = $db->loadObjectList();

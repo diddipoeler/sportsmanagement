@@ -138,13 +138,18 @@ if ($params->get('use_which') <= 1)
     $query->select('(TO_DAYS(DATE_ADD(p.birthday, INTERVAL (YEAR(CURDATE()) - YEAR(p.birthday) + IF(DATE_FORMAT(CURDATE(), \'%m.%d\') >	DATE_FORMAT(p.birthday, \'%m.%d\'), 1, 0)) YEAR)) - TO_DAYS( CURDATE())+0) AS days_to_birthday');
     $query->select('\'person\' AS func_to_call, \'\' project_id, \'\' team_id');
     $query->select('\'pid\' AS id_to_append, 1 AS type');
-    $query->select('pt.team_id, pt.project_id');
+    $query->select('st.team_id, pt.project_id');
+    
+    $query->select('CONCAT_WS(\':\',pro.id,pro.alias) AS project_slug');
+    $query->select('CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
+    $query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
     
     $query->from('#__sportsmanagement_person AS p ');
-    $query->join('INNER',' #__sportsmanagement_season_team_person_id as stp ON stp.person_id = p.id ');
-    $query->join('INNER',' #__sportsmanagement_season_team_id as st ON st.team_id = stp.team_id ');
-    $query->join('INNER',' #__sportsmanagement_project_team as pt ON st.id = pt.team_id ');
-    
+    $query->join('INNER','#__sportsmanagement_season_team_person_id as stp ON stp.person_id = p.id ');
+    $query->join('INNER','#__sportsmanagement_season_team_id as st ON st.team_id = stp.team_id ');
+    $query->join('INNER','#__sportsmanagement_project_team as pt ON st.id = pt.team_id ');
+    $query->join('INNER','#__sportsmanagement_project AS pro ON pro.id = pt.project_id');
+    $query->join('INNER','#__sportsmanagement_team AS t ON t.id = st.team_id');
     $query->where('p.published = 1 AND p.birthday != \'0000-00-00\'');
     $query->where('stp.persontype = 1');
 
@@ -198,13 +203,19 @@ if ($params->get('use_which') == 2 || $params->get('use_which') == 0)
     $query->select('stp.picture');
     $query->select('(TO_DAYS(DATE_ADD(p.birthday, INTERVAL (YEAR(CURDATE()) - YEAR(p.birthday) + IF(DATE_FORMAT(CURDATE(), \'%m.%d\') >	DATE_FORMAT(p.birthday, \'%m.%d\'), 1, 0)) YEAR)) - TO_DAYS( CURDATE())+0) AS days_to_birthday');
     $query->select('\'staff\' AS func_to_call, \'\' project_id, \'\' team_id');
-    $query->select('pt.team_id, pt.project_id');
+    $query->select('st.team_id, pt.project_id');
     $query->select('\'tsid\' AS id_to_append, 2 AS type');
     
+    $query->select('CONCAT_WS(\':\',pro.id,pro.alias) AS project_slug');
+    $query->select('CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
+    $query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
+    
     $query->from('#__sportsmanagement_person AS p ');
-    $query->join('INNER',' #__sportsmanagement_season_team_person_id as stp ON stp.person_id = p.id ');
-    $query->join('INNER',' #__sportsmanagement_season_team_id as st ON st.team_id = stp.team_id ');
-    $query->join('INNER',' #__sportsmanagement_project_team as pt ON st.id = pt.team_id ');
+    $query->join('INNER','#__sportsmanagement_season_team_person_id as stp ON stp.person_id = p.id ');
+    $query->join('INNER','#__sportsmanagement_season_team_id as st ON st.team_id = stp.team_id ');
+    $query->join('INNER','#__sportsmanagement_project_team as pt ON st.id = pt.team_id ');
+    $query->join('INNER','#__sportsmanagement_project AS pro ON pro.id = pt.project_id'); 
+    $query->join('INNER','#__sportsmanagement_team AS t ON t.id = st.team_id');
     
     $query->where('p.published = 1 AND p.birthday != \'0000-00-00\'');
     $query->where('stp.persontype = 2');

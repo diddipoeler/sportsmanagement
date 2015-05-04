@@ -160,16 +160,28 @@ class modJSMClubiconsHelper
 	 */
 	function getLink( &$item )
 	{
+	    $routeparameter = array();
+$routeparameter['cfg_which_database'] = $this->params->get('cfg_which_database');
+$routeparameter['s'] = $this->params->get('s');
+$routeparameter['p'] = $this->project->slug;
 		switch ($this->params->get('teamlink'))
 		{
 			case 0:
 				return '';
 			case 1:
-				return sportsmanagementHelperRoute::getTeamInfoRoute($this->project->slug, $item->team_slug);
+            $routeparameter['tid'] = $item->team_slug;
+$routeparameter['ptid'] = 0;
+				return sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
 			case 2:
-				return sportsmanagementHelperRoute::getPlayersRoute($this->project->slug, $item->team_slug);
+            $routeparameter['tid'] = $item->team_slug;
+$routeparameter['ptid'] = 0;
+				return sportsmanagementHelperRoute::getSportsmanagementRoute('roster',$routeparameter);
 			case 3:
-				return sportsmanagementHelperRoute::getTeamPlanRoute($this->project->slug, $item->team_slug);
+            $routeparameter['tid'] = $item->team_slug;
+$routeparameter['division'] = 0;
+$routeparameter['mode'] = 0;
+$routeparameter['ptid'] = 0;
+				return sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
 			case 4:
 				return sportsmanagementHelperRoute::getClubInfoRoute($this->project->slug, $item->club_slug);
 			case 5:

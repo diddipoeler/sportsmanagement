@@ -40,7 +40,6 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-//require_once (JPATH_SITE.DS.'components'.DS.'com_content'.DS.'helpers'.DS.'route.php');
 require_once (dirname(__FILE__).DS.'calendarClass.php');
 
 

@@ -83,14 +83,6 @@ class modSportsmanagementTeamPlayersHelper
         
         $query->where('tt.project_id = '. $p);
         $query->where('st.team_id = '. $t);
-
-//		$query = "SELECT tt.id AS id, t.name AS team_name
-//					FROM #__sportsmanagement_project_team tt
-//					INNER JOIN #__sportsmanagement_team t ON t.id = tt.team_id
-//					WHERE tt.project_id = ". $p . "
-//					AND tt.team_id = ". $t;
-                    
-//		$query .= " LIMIT 1";
 		
         $query->setLimit('1');
         
@@ -112,7 +104,7 @@ class modSportsmanagementTeamPlayersHelper
 			require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'roster.php');
 		}
 		$model 	= JModel::getInstance('Roster', 'sportsmanagementModel');
-		sportsmanagementModelProject::$projectid= $p;
+		sportsmanagementModelProject::$projectid = $p;
 		$project = sportsmanagementModelProject::getProject();
 		$project->team_name = $team_name;
         $model->seasonid = $season_id;
@@ -139,9 +131,17 @@ class modSportsmanagementTeamPlayersHelper
 													$params->get("name_format")) . "</i>";
 		if ($params->get('show_player_link'))
 		{
-			$link = sportsmanagementHelperRoute::getPlayerRoute($params->get('p'), 
-															$params->get('team'), 
-															$item->slug );
+		  $routeparameter = array();
+$routeparameter['cfg_which_database'] = $params->get('cfg_which_database');
+$routeparameter['s'] = $params->get('s');
+$routeparameter['p'] = $item->project_slug;
+$routeparameter['tid'] = $item->team_slug;
+$routeparameter['pid'] = $item->person_slug;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
+
+//			$link = sportsmanagementHelperRoute::getPlayerRoute($params->get('p'), 
+//															$params->get('team'), 
+//															$item->slug );
 			echo $flag . JHTML::link($link, $text);
 		}
 		else

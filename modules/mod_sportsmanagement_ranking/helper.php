@@ -261,14 +261,27 @@ class modJSMRankingHelper
 	 */
 	public static function getTeamLink($item, $params, $project)
 	{
+	   $routeparameter = array();
+$routeparameter['cfg_which_database'] = $params->get('cfg_which_database');
+$routeparameter['s'] = $params->get('s');
+$routeparameter['p'] = $project->slug;
+
 		switch ($params->get('teamlink'))
 		{
 			case 'teaminfo':
-				return sportsmanagementHelperRoute::getTeamInfoRoute($project->slug,$item->team->team_slug,$item->team->projectteamid,$params->get('cfg_which_database'));
+            $routeparameter['tid'] = $item->team->team_slug;
+$routeparameter['ptid'] = $item->team->projectteamid;
+				return sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
 			case 'roster':
-				return sportsmanagementHelperRoute::getPlayersRoute($project->slug,$item->team->team_slug,NULL,$item->team->projectteamid,$params->get('cfg_which_database'));
+            $routeparameter['tid'] = $item->team->team_slug;
+$routeparameter['ptid'] = $item->team->projectteamid;
+				return sportsmanagementHelperRoute::getSportsmanagementRoute('roster',$routeparameter);
 			case 'teamplan':
-				return sportsmanagementHelperRoute::getTeamPlanRoute($project->slug,$item->team->team_slug,$item->team->division_slug,NULL,$item->team->projectteamid,$params->get('cfg_which_database'));
+            $routeparameter['tid'] = $item->team->team_slug;
+$routeparameter['division'] = $item->team->division_slug;
+$routeparameter['mode'] = 0;
+$routeparameter['ptid'] = $item->team->projectteamid;
+				return sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
 			case 'clubinfo':
 				return sportsmanagementHelperRoute::getClubInfoRoute($project->slug,$item->team->club_slug,NULL,$params->get('cfg_which_database'));
 

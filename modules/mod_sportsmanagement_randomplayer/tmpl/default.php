@@ -51,10 +51,18 @@ if (!$items) {
 <?php if ($params->get('show_project_name')):?>
 <li class="projectname"><?php echo $list['project']->name; ?></li>
 <?php endif; ?> <?php
-$person=$list['player'];
-$link = sportsmanagementHelperRoute::getPlayerRoute( $list['project']->slug, 
-												$list['infoteam']->team_id, 
-												$person->slug );
+$person = $list['player'];
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = $params->get('cfg_which_database');
+$routeparameter['s'] = $params->get('s');
+$routeparameter['p'] = $list['project']->slug;
+$routeparameter['tid'] = $list['infoteam']->team_slug;
+$routeparameter['pid'] = $person->slug;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
+
+//$link = sportsmanagementHelperRoute::getPlayerRoute( $list['project']->slug, 
+//												$list['infoteam']->team_id, 
+//												$person->slug );
 ?>
 
 <li class="modjlgrandomplayer"><?php
@@ -83,9 +91,16 @@ echo '<a href="'.$link.'">'.$pic.'</a>' ;
 	}
 	if ($params->get('show_player_link'))
 	{
-		$link = sportsmanagementHelperRoute::getPlayerRoute($list['project']->slug, 
-														$list['infoteam']->team_id, 
-														$person->slug );
+	   $routeparameter = array();
+$routeparameter['cfg_which_database'] = $params->get('cfg_which_database');
+$routeparameter['s'] = $params->get('s');
+$routeparameter['p'] = $list['project']->slug;
+$routeparameter['tid'] = $list['infoteam']->team_slug;
+$routeparameter['pid'] = $person->slug;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
+//		$link = sportsmanagementHelperRoute::getPlayerRoute($list['project']->slug, 
+//														$list['infoteam']->team_id, 
+//														$person->slug );
 		echo JHTML::link($link, $text);
 	}
 	else
@@ -105,8 +120,15 @@ echo '<a href="'.$link.'">'.$pic.'</a>' ;
 	$text = $list['infoteam']->name;
 	if ($params->get('show_team_link'))
 	{
-		$link = sportsmanagementHelperRoute::getTeamInfoRoute($list['project']->slug, 
-														$list['infoteam']->team_id);
+	   $routeparameter = array();
+$routeparameter['cfg_which_database'] = $params->get('cfg_which_database');
+$routeparameter['s'] = $params->get('s');
+$routeparameter['p'] = $list['project']->slug;
+$routeparameter['tid'] = $list['infoteam']->team_slug;
+$routeparameter['ptid'] = 0;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
+//		$link = sportsmanagementHelperRoute::getTeamInfoRoute($list['project']->slug, 
+//														$list['infoteam']->team_id);
 		echo JHTML::link($link, $text);
 	}
 	else
