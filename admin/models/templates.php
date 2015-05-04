@@ -315,7 +315,9 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
                         {
                         $xml = JFactory::getXML($metafile,true);
                         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml<br><pre>'.print_r($xml->layout,true).'</pre>'),'Notice');
+                        
                         $attributetitle = (string)$xml->layout->attributes()->title;
+                        
                         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml<br><pre>'.print_r($attributetitle,true).'</pre>'),'Notice');
                             
                         /*    
