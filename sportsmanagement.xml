@@ -188,6 +188,7 @@
 <plugin plugin="jw_ts" group="content" />
 <plugin plugin="plugin_googlemap3" group="system" />
 <plugin plugin="jsm_siscron" group="system" />	
+<plugin plugin="jsm_bootstrap" group="system" />
 <plugin plugin="jsm_search" group="search" />
 <plugin plugin="jsm_userprofile" group="user" />		
 </plugins>
