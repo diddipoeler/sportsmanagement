@@ -76,30 +76,12 @@ defined('_JEXEC') or die('Restricted access');
 			if ( $this->club )
 			{
 				$picture = $this->club->logo_big;
+echo sportsmanagementHelperHtml::getBootstrapModalImage('clplan'.$this->club->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$this->club->name,'50');
 
-?>                                    
-
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $this->club->name;?>" data-toggle="modal" data-target="#cl<?php echo $this->club->id;?>">
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->club->name, array('title' => $this->club->name,'class' => "img-rounded",'width' => 50 ));      
-?>
-</a>                        
-
-<div class="modal fade" id="cl<?php echo $this->club->id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-</div>
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->club->name, array('title' => $this->club->name,'class' => "img-rounded" ));
-?>
-</div>
-
-
-
-
-<?PHP            
+           
             }
-			?></td>
+			?>
+            </td>
 		</tr>
         
 	</table>

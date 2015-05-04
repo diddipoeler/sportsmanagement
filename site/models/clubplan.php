@@ -40,8 +40,6 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-//require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
-
 /**
  * sportsmanagementModelClubPlan
  * 
@@ -418,6 +416,7 @@ class sportsmanagementModelClubPlan extends JModelLegacy
         $query->select('r.id AS roundid,r.roundcode AS roundcode,r.name AS roundname');
         $query->select('l.name AS l_name');
         $query->select('playground.name AS pl_name');
+        $query->select('CONCAT_WS(\':\',playground.id,playground.alias) AS playground_slug');
         $query->select('t1.club_id as t1club_id,t1.id AS team1_id,t1.name AS tname1,t1.short_name AS tname1_short,t1.middle_name AS tname1_middle,t1.club_id AS club1_id,CONCAT_WS(\':\',t1.id,t1.alias) AS team1_slug');
         $query->select('t2.club_id as t2club_id,t2.id AS team2_id,t2.name AS tname2,t2.short_name AS tname2_short,t2.middle_name AS tname2_middle,t2.club_id AS club2_id,CONCAT_WS(\':\',t2.id,t2.alias) AS team2_slug');
         $query->select('c1.logo_small AS home_logo_small,CONCAT_WS(\':\',c1.id,c1.alias) AS club1_slug,c1.country AS club1_country');
@@ -428,22 +427,26 @@ class sportsmanagementModelClubPlan extends JModelLegacy
         $query->select('c2.logo_middle AS away_logo_middle');
         $query->select('tj1.division_id');
         $query->select('d.name AS division_name, d.shortname AS division_shortname, d.parent_id AS parent_division_id,CONCAT_WS(\':\',d.id,d.alias) AS division_slug');
+        
+        $query->select('CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) AS match_slug ');
+        $query->select('CONCAT_WS(\':\',r.id,r.alias) AS round_slug');
+        
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
         // Join 
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as tj1 ON tj1.id = m.projectteam1_id ');
-		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as tj2 ON tj2.id = m.projectteam2_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.id = tj1.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = tj2.team_id ');
-		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t1 ON t1.id = st1.team_id ');
-		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t2 ON t2.id = st2.team_id ');
-		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = tj1.project_id ');
-		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_league as l ON p.league_id = l.id ');
-		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_club as c1 ON c1.id = t1.club_id ');
-		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_round as r ON m.round_id = r.id ');
-		$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_club as c2 ON c2.id = t2.club_id ');
-		$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS playground ON playground.id = m.playground_id ');
-		$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_division as d ON d.id = tj1.division_id');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as tj1 ON tj1.id = m.projectteam1_id ');
+		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as tj2 ON tj2.id = m.projectteam2_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.id = tj1.team_id ');
+        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = tj2.team_id ');
+		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t1 ON t1.id = st1.team_id ');
+		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t2 ON t2.id = st2.team_id ');
+		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = tj1.project_id ');
+		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_league as l ON p.league_id = l.id ');
+		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club as c1 ON c1.id = t1.club_id ');
+		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round as r ON m.round_id = r.id ');
+		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club as c2 ON c2.id = t2.club_id ');
+		$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS playground ON playground.id = m.playground_id ');
+		$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division as d ON d.id = tj1.division_id');
         // Where
         $query->where('p.published = 1');
         

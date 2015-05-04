@@ -46,7 +46,7 @@ $column_names	= explode( ',', $config['ordered_columns_names'] );
 ?>
 
 <br />
-<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
+<table class="table">
 	<tr class="explanation">
 		<td>
 		<?php

@@ -108,15 +108,46 @@ if ($this->config['type_matches'] != 0) {
 				}
 			}
 
-
-			//$class = ($k==0)? $this->config['style_class1'] : $this->config['style_class2'];
-			$result_link = sportsmanagementHelperRoute::getResultsRoute($game->project_id,$game->roundid);
-			$nextmatch_link = sportsmanagementHelperRoute::getNextmatchRoute($game->project_id,$game->match_id);
-			$teaminfo1_link = sportsmanagementHelperRoute::getTeamInfoRoute($game->project_id,$game->team1_id);
-			$teaminfo2_link = sportsmanagementHelperRoute::getTeamInfoRoute($game->project_id,$game->team2_id);
-			$teamstats1_link = sportsmanagementHelperRoute::getTeamStatsRoute($game->project_id,$game->team1_id);
-			$teamstats2_link = sportsmanagementHelperRoute::getTeamStatsRoute($game->project_id,$game->team2_id);
-			$playground_link = sportsmanagementHelperRoute::getPlaygroundRoute($game->project_id,$game->playground_id);
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $game->project_slug;
+$routeparameter['r'] = $game->round_slug;
+$routeparameter['division'] = 0;
+$routeparameter['mode'] = 0;
+$routeparameter['order'] = '';
+$routeparameter['layout'] = '';
+$result_link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);            
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $game->project_slug;
+$routeparameter['mid'] = $game->match_slug;
+$nextmatch_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);            
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $game->project_slug;
+$routeparameter['tid'] = $game->team1_slug;
+$routeparameter['ptid'] = 0;
+$teaminfo1_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);            
+$routeparameter['tid'] = $game->team2_slug;            
+$teaminfo2_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);            
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $game->project_slug;
+$routeparameter['tid'] = $game->team1_slug;
+$teamstats1_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats',$routeparameter);
+$routeparameter['tid'] = $game->team2_slug;
+$teamstats2_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats',$routeparameter);
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $game->project_slug;
+$routeparameter['pgid'] = $game->playground_id;
+$playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$routeparameter);
+            
 			$favs = sportsmanagementHelper::getProjectFavTeams($game->project_id);
 			$favteams = explode(",",$favs->fav_team);
 
@@ -247,47 +278,33 @@ if ($this->config['type_matches'] != 0) {
 						echo $tname1;
 					?>
 				</td>
-					<?php if ($this->config['show_club_logo']==1) { 
+					<?php if ($this->config['show_club_logo']==1) 
+                    { 
 					   $picture = 'home_'.$this->config['team_picture'];
                        ?>
 				<td>
-                <a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$game->$picture;?>" title="<?php echo $game->tname1;?>" data-toggle="modal" data-target="#t<?php echo $game->team1_id;?>">
-					<?php echo sportsmanagementModelClubPlan::getClubIconHtmlSimple($game->$picture,$game->club1_country,1); ?>
-				</a>
-
-<div class="modal fade" id="t<?php echo $game->team1_id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-</div>
-<?PHP
-echo sportsmanagementModelClubPlan::getClubIconHtmlSimple($game->$picture,$game->club1_country,1);
-?>
-</div>
-                  
+                <?PHP
+                echo sportsmanagementHelperHtml::getBootstrapModalImage('clubplan'.$game->match_id.'-'.$game->team1_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$game->$picture,$game->tname1,'20')
+                ?>
+                
                 </td>
 					<?php } ?>				
 				<td>
 					-
 				</td>
-					<?php if ($this->config['show_club_logo']==1) { 
+					<?php 
+                    if ($this->config['show_club_logo']==1) 
+                    { 
 					   $picture = 'away_'.$this->config['team_picture'];
                        ?>
 				<td>
-                <a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$game->$picture;?>" title="<?php echo $game->tname2;?>" data-toggle="modal" data-target="#t<?php echo $game->team2_id;?>">
-					<?php echo sportsmanagementModelClubPlan::getClubIconHtmlSimple($game->$picture,$game->club2_country,1); ?>
-				</a>
-
-<div class="modal fade" id="t<?php echo $game->team2_id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-</div>
-<?PHP
-echo sportsmanagementModelClubPlan::getClubIconHtmlSimple($game->$picture,$game->club2_country,1);
-?>
-</div>
-                
+                <?PHP
+                echo sportsmanagementHelperHtml::getBootstrapModalImage('clubplan'.$game->match_id.'-'.$game->team2_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$game->$picture,$game->tname2,'20')
+                ?>
                 </td>
-					<?php } ?>
+					<?php 
+                    } 
+                    ?>
 				<td>
 					<?php
 						echo $tname2;

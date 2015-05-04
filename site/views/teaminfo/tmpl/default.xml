@@ -30,7 +30,7 @@
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
 					required="">
-			</field>"">
+			
 			</field>
 			
 		<field	name="p" 

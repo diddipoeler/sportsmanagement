@@ -1148,6 +1148,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             $query->select('t2.id AS team2');
             $query->select('mp.teamplayer_id');
             $query->select('r.roundcode,r.project_id');
+            $query->select('CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) AS match_slug ');
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp ON mp.match_id = m.id');
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round r ON m.round_id = r.id ');

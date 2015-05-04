@@ -427,7 +427,17 @@ $nbcols = 0;
 		?>
 			<td width='5%'>
 			<?php
-			$link = sportsmanagementHelperRoute::getResultsRoute($this->project->slug,$match->roundid,0,0,0,NULL,JRequest::getInt('cfg_which_database',0));
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['r'] = $match->round_slug;
+$routeparameter['division'] = 0;
+$routeparameter['mode'] = 0;
+$routeparameter['order'] = '';
+$routeparameter['layout'] = '';
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
+			
 			echo JHtml::link($link,$match->roundcode);
 			?>
 			</td>
@@ -517,9 +527,23 @@ $nbcols = 0;
 			$class1	= 'right';
 			$class2	= 'left';
 		}
-		if ($this->config['show_teamplan_link']) {
-			$homelink=sportsmanagementHelperRoute::getTeamPlanRoute($this->project->slug,$hometeam->team_slug,0,NULL,0,JRequest::getInt('cfg_which_database',0) );
-			$awaylink=sportsmanagementHelperRoute::getTeamPlanRoute($this->project->slug,$guestteam->team_slug,0,NULL,JRequest::getInt('cfg_which_database',0) );
+		if ($this->config['show_teamplan_link']) 
+        {
+            $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['tid'] = $hometeam->team_slug;
+$routeparameter['division'] = 0;
+$routeparameter['mode'] = 0;
+$routeparameter['ptid'] = 0;
+$homelink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
+$routeparameter['tid'] = $guestteam->team_slug;
+$routeparameter['division'] = 0;
+$routeparameter['mode'] = 0;
+$routeparameter['ptid'] = 0;
+$awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
+
 		} else {
 			$homelink = null;
 			$awaylink = null;
@@ -697,16 +721,19 @@ $nbcols = 0;
             }
 
             //Link
-            if (isset($match->team1_result))
-                {
+$routeparameter = array();                    
 $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
 $routeparameter['s'] = JRequest::getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
-$routeparameter['mid'] = $match->id;
+$routeparameter['mid'] = $match->match_slug;            
+            if (isset($match->team1_result))
+                {
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
                     
-            } else {
-                    $link=sportsmanagementHelperRoute::getNextMatchRoute($this->project->slug,$match->id,JRequest::getInt('cfg_which_database',0));
+            } 
+            else 
+            {
+                    $link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);
                 }
 
             $ResultsTooltipTitle = $result;

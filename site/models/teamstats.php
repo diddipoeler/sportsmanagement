@@ -147,13 +147,16 @@ class sportsmanagementModelTeamStats extends JModelLegacy
             $query->select('team2_result AS guestgoals');
             $query->select('t1.id AS team1_id');
             $query->select('t2.id AS team2_id');
+            
+            $query->select('CONCAT_WS(\':\',t1.id,t1.alias) AS team1_slug');
+            $query->select('CONCAT_WS(\':\',t2.id,t2.alias) AS team2_slug');
         
         $query->select('pt1.id AS pt1_id');
         $query->select('pt2.id AS pt2_id');
         
         $query->select('st1.id AS st1_id');
         $query->select('st2.id AS st2_id');
-        
+        $query->select('CONCAT_WS(\':\',matches.id,CONCAT_WS("_",t1.alias,t2.alias)) AS match_slug ');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match as matches ');
         
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id = matches.projectteam1_id ');

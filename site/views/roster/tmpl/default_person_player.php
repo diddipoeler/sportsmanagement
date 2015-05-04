@@ -57,45 +57,14 @@ if ($this->config['show_player_icon'])
 		$picture = $this->row->ppic;
 	}
 	
-    //echo 'picture -> '.$this->row->picture.'<br>';
-    //echo 'ppic -> '.$this->row->ppic.'<br>';
     
-    /*
-    if ( !file_exists( $picture ) )
-	{
-		$picture = 'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png';
-	}
-    */
-    
-	/*
-  $thumbnail = sportsmanagementHelper::getPictureThumb($picture, $imgTitle,
-		$this->config['player_picture_width'],
-		$this->config['player_picture_height']
-	);
-	*/
+	
 ?>
 			<div class="jl_rosterperson_picture_column">
 				<div class="jl_rosterperson_pic">
 <?php
-
-      ?>
-
-
-
-
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $personName;?>" data-toggle="modal" data-target="#pl<?php echo $this->row->person_id;?>">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $personName;?>" width="<?php echo $this->config['player_picture_width'];?>" />
-</a>
-<div class="modal fade" id="pl<?php echo $this->row->person_id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-</div>
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $personName, array('title' => $personName,'class' => "img-rounded" ));      
-?>
-</div>
-
-    <?php
+echo sportsmanagementHelperHtml::getBootstrapModalImage('personplayer'.$this->row->person_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$personName,$this->config['player_picture_width']);
+     
       	
     
 ?>
@@ -131,7 +100,7 @@ if ($this->config['show_player_numbers'])
        $routeparameter['s'] = JRequest::getInt('s',0);
        $routeparameter['p'] = $this->project->slug;
        $routeparameter['tid'] = $this->team->slug;
-       $routeparameter['pid'] = $this->row->slug;
+       $routeparameter['pid'] = $this->row->person_slug;
 		echo ($this->config['link_player']==1) ? 
 			JHtml::link(sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter),$personName)
 			: $personName;

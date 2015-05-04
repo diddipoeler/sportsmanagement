@@ -873,6 +873,7 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
         
         // Select some fields
         $query->select('t.*,t.id as team_id,t.picture as team_picture,t.extended as teamextended ');
+        $query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
         $query->select('pt.division_id,pt.picture AS projectteam_picture');
         $query->select('c.logo_small,c.logo_middle,c.logo_big');
         $query->select('IF((ISNULL(pt.picture) OR (pt.picture="")),(IF((ISNULL(t.picture) OR (t.picture="")), c.logo_big , t.picture)) , pt.picture) as picture');

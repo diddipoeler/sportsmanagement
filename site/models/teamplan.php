@@ -294,10 +294,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
         $query = $db->getQuery(true);
         $query2 = $db->getQuery(true);
         $starttime = microtime(); 
-        
-        // $this->projectteamid
-        
-		//$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+
         $matches = array();
 		$joomleague = sportsmanagementModelProject::getProject();
 
@@ -319,6 +316,9 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
         $query->select('m.*,DATE_FORMAT(m.time_present,"%H:%i") time_present,r.roundcode,r.id roundid,r.project_id,r.name');
         $query->select('t1.id AS team1');
         $query->select('t2.id AS team2');
+        $query->select('CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) AS match_slug ');
+        $query->select('CONCAT_WS(\':\',r.id,r.alias) AS round_slug');
+        $query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
         // Join 

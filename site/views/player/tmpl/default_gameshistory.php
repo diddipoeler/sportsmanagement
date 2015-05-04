@@ -143,9 +143,22 @@ if (count($this->games))
 			
             foreach ($this->games as $game)
 			{
-				$report_link = sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug,$game->id);
-				$teaminfo_home_link = sportsmanagementHelperRoute::getTeamInfoRoute($this->project->slug,$this->teams[$game->projectteam1_id]->team_id);
-				$teaminfo_away_link = sportsmanagementHelperRoute::getTeamInfoRoute($this->project->slug,$this->teams[$game->projectteam2_id]->team_id);
+			 $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $game->match_slug;
+$report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter); 
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['tid'] = $this->teams[$game->projectteam1_id]->team_slug;
+$routeparameter['ptid'] = 0;
+$teaminfo_home_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);				
+$routeparameter['tid'] = $this->teams[$game->projectteam2_id]->team_slug;				
+$teaminfo_away_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
+				
 				// gespielte zeit
                 $model = $this->getModel();
                 $timePlayed = 0;

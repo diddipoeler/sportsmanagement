@@ -80,14 +80,47 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				}			
 			
 
-			$class=($k==0)? 'sectiontableentry1' : 'sectiontableentry2';
-			$result_link=sportsmanagementHelperRoute::getResultsRoute($game->project_id,$game->roundid);
-			$nextmatch_link=sportsmanagementHelperRoute::getNextmatchRoute($game->project_id,$game->id);
-			$teaminfo1_link =sportsmanagementHelperRoute::getTeamInfoRoute($game->project_id,$game->team1_id);
-			$teaminfo2_link =sportsmanagementHelperRoute::getTeamInfoRoute($game->project_id,$game->team2_id);
-			$teamstats1_link =sportsmanagementHelperRoute::getTeamStatsRoute($game->project_id,$game->team1_id);
-			$teamstats2_link =sportsmanagementHelperRoute::getTeamStatsRoute($game->project_id,$game->team2_id);
-			$playground_link =sportsmanagementHelperRoute::getPlaygroundRoute($game->project_id,$game->playground_id);			
+
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $game->project_slug;
+$routeparameter['r'] = $game->round_slug;
+$routeparameter['division'] = 0;
+$routeparameter['mode'] = 0;
+$routeparameter['order'] = '';
+$routeparameter['layout'] = '';
+$result_link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);            
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $game->project_slug;
+$routeparameter['mid'] = $game->match_slug;
+$nextmatch_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);            
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $game->project_slug;
+$routeparameter['tid'] = $game->team1_slug;
+$routeparameter['ptid'] = 0;
+$teaminfo1_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);            
+$routeparameter['tid'] = $game->team2_slug;            
+$teaminfo2_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);            
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $game->project_slug;
+$routeparameter['tid'] = $game->team1_slug;
+$teamstats1_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats',$routeparameter);
+$routeparameter['tid'] = $game->team2_slug;
+$teamstats2_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats',$routeparameter);
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $game->project_slug;
+$routeparameter['pgid'] = $game->playground_id;
+$playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$routeparameter);            
+		
 
 			$hometeam				= $game;
 			$awayteam				= $game;
@@ -143,30 +176,8 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			}
 
 			?>
-			<tr class="<?php echo $class; ?>"<?php echo $favStyle; ?>>
-					<?php
-				/*	
-					if ($this->config['show_matchday']==1) { ?>
-				<td>
-					<?php if ($this->config['which_link']==0) { ?>
-					<?php
-					echo $game->roundid ;
-					}
-					?>
-					<?php if ($this->config['which_link']==1) { ?>
-					<?php
-					echo JHtml::link($result_link,$game->roundid);
-					}
-					?>
-					<?php if ($this->config['which_link']==2) { ?>
-					<?php
-					echo JHtml::link($nextmatch_link,$game->roundid);
-					}
-					?>
-				</td>
-					<?php } ;
+			<tr <?php echo $favStyle; ?>>
 					
-					*/?>
 					
 					<?php if ($this->config['show_match_nr']==1) { ?>
 				<td>

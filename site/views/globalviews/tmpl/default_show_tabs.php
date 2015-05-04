@@ -67,18 +67,18 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 <div class="panel-heading">
 
 <!-- Tabs-Navs -->
-<ul class="nav nav-tabs" role="tablist">
+<ul class="nav nav-tabs" >
 <?PHP
 $count = 0;
 $active = 'active';
 foreach ($this->output as $key => $templ)
 {
-if ( $count )
+if ( $count > 0 )
 {
 $active = '';
 }
 ?>  
-<li role="presentation" class="<?PHP echo $active; ?>"><a href="#<?PHP echo $templ; ?>" role="tab" data-toggle="tab"><?PHP echo JText::_($key); ?></a></li>
+<li class="<?PHP echo $active; ?>"><a href="#<?PHP echo $templ; ?>" data-toggle="tab"><?PHP echo JText::_($key); ?></a></li>
 <?PHP
 $count++;
 }
@@ -98,7 +98,7 @@ if ( $count )
 $active = '';
 }
 ?>
-<div role="tabpanel" class="tab-pane fade <?PHP echo $active; ?>" id="<?PHP echo $templ; ?>">
+<div class="tab-pane fade <?PHP echo $active; ?>" id="<?PHP echo $templ; ?>">
 <?PHP   
 switch ($templ)
 {

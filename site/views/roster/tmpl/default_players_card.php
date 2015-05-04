@@ -80,33 +80,8 @@ foreach ($players as $row): ?>
 				{
 					$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 				}
-				//echo JHtml::image( $picture, $imgTitle, array( ' title' => $imgTitle ) );
 				
-?>                                    
-<a href="#"  title="<?php echo $playerName;?>" data-toggle="modal" data-target=".rosterplayer<?php echo $row->person_id;?>">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $playerName;?>" width="<?php echo $this->config['player_picture_width'];?>" />
-</a>
-
-<div id="" style="display: none;" class="modal fade rosterplayer<?php echo $row->person_id;?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-lg">
-<div class="modal-content">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-<h4 class="modal-title" id="myLargeModalLabel"><?php echo $playerName;?></h4>
-</div>
-<div class="modal-body">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" class="img-responsive img-rounded center-block">
-</div>
-<div class="modal-footer">
-<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_('JLIB_HTML_BEHAVIOR_CLOSE');?> </button>
-</div>
-</div>
-</div>
-</div> 
-
-
-
-<?PHP
+echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplayer'.$row->person_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$playerName,$this->config['player_picture_width']);				
 
 				?>			  
 				</td>
@@ -116,7 +91,14 @@ foreach ($players as $row): ?>
 				  <?php 
 				  	if ($this->config['link_player']==1)
 					{
-						$link=sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$this->team->slug,$row->slug);
+					   $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['tid'] = $this->team->slug;
+$routeparameter['pid'] = $row->person_slug;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
+
 						echo JHtml::link($link,'<i>'.$playerName.'</i>');
 					}
 					else

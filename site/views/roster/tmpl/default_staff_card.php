@@ -81,7 +81,15 @@ defined('_JEXEC') or die('Restricted access');
 					  	$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, $this->config["name_format"]);
 						if ($this->config['link_player']==1)
 						{
-							$link=sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$this->team->slug,$row->slug);
+						  $routeparameter = array();
+       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['p'] = $this->project->slug;
+       $routeparameter['tid'] = $this->team->slug;
+       $routeparameter['pid'] = $row->person_slug;
+       
+					$link = sportsmanagementHelperRoute::getSportsmanagementRoute('staff',$routeparameter);
+							
 							echo JHtml::link($link,'<i>'.$playerName.'</i>');
 						}
 						else
@@ -115,35 +123,9 @@ defined('_JEXEC') or die('Restricted access');
 		{
 			$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 		}
-		//echo JHtml::image( $picture, $imgTitle, array( ' title' => $imgTitle ) );
-?>                                    
-<a href="#" title="<?php echo $playerName;?>" data-toggle="modal" data-target=".rosterstaff<?php echo $row->person_id;?>">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $playerName;?>" width="<?php echo $this->config['staff_picture_width'];?>" />
-</a>
-
-<div id="" style="display: none;" class="modal fade rosterstaff<?php echo $row->person_id;?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-<!--  <div class="modal-dialog"> -->
-    <div class="modal-content">
-    
-    <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-          <h4 class="modal-title" id="myLargeModalLabel"><?php echo $playerName;?></h4>
-        </div>
-        
-        <div class="modal-body">
-            <img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" class="img-responsive img-rounded center-block">
-        </div>
-        <div class="modal-footer">
-<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_('JLIB_HTML_BEHAVIOR_CLOSE');?> </button>
-</div>
-    </div>
-<!--  </div> -->
-  </div>
-</div> 
-
-
-<?PHP        
+echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterstaff'.$row->person_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$playerName,$this->config['staff_picture_width']);
+		
+  
 		?>
 					  
 					</td>

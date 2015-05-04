@@ -243,16 +243,20 @@ class sportsmanagementModelRoster extends JModelLegacy
 			
         // Select some fields
 		$query->select('pr.firstname,pr.nickname,pr.lastname,pr.country,pr.birthday,pr.deathday,pr.id AS pid,pr.id AS person_id,pr.picture AS ppic');
-        $query->select('pr.suspension AS suspension,pr.away AS away,pr.injury AS injury,pr.id AS pid,pr.picture AS ppic,CONCAT_WS(\':\',pr.id,pr.alias) AS slug');
+        $query->select('pr.suspension AS suspension,pr.away AS away,pr.injury AS injury,pr.id AS pid,pr.picture AS ppic,CONCAT_WS(\':\',pr.id,pr.alias) AS person_slug');
         $query->select('tp.id AS playerid,tp.id AS season_team_person_id,tp.jerseynumber AS position_number,tp.notes AS description,tp.market_value AS market_value,tp.picture');    
         $query->select('st.id AS season_team_id');
         $query->select('pt.project_id AS project_id');
         $query->select('pos.name AS position');
         $query->select('ppos.position_id,ppos.id as pposid');
+        $query->select('CONCAT_WS(\':\',pro.id,pro.alias) AS project_slug');
+        $query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id');    
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pr ON tp.person_id = pr.id');
+        $query->join('INNER','#__sportsmanagement_project AS pro ON pro.id = pt.project_id'); 
+        $query->join('INNER','#__sportsmanagement_team AS t ON t.id = st.team_id');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = tp.project_position_id');
         switch ( $persontype )
         {

@@ -44,8 +44,7 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<!-- <div class="joomleague"> -->
-<div class="">
+<div class="row">
 	<?php
 	echo $this->loadTemplate('projectheading');
 
