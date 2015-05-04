@@ -102,6 +102,47 @@ class sportsmanagementModelAjax extends JModelLegacy
         }
         
         
+        
+        /**
+         * sportsmanagementModelAjax::getseasons()
+         * 
+         * @param bool $dabse
+         * @param bool $required
+         * @return
+         */
+        static function getseasons($dabse = false, $required = false)
+        {
+        // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        $required = 0;
+        
+        // Get a db connection.
+        if ( !$dabse )
+        {
+            $db = JFactory::getDBO();
+        }
+        else
+        {
+            $db = sportsmanagementHelper::getDBConnection(TRUE,TRUE);
+        }
+        $query = $db->getQuery(true);
+        // Select some fields
+        //$query->select('CONCAT_WS(\':\', id, alias) AS value,name AS text');
+        $query->select('id AS value,name AS text');
+        // From 
+		$query->from('#__sportsmanagement_season');
+        $query->order('name DESC'); 
+        
+        $db->setQuery($query);
+                //return $db->loadObjectList();
+                return self::addGlobalSelectElement($db->loadObjectList(), $required);    
+            
+            
+        }
+        
         /**
          * sportsmanagementModelAjax::getlocationzipcodeoptions()
          * 
@@ -239,8 +280,14 @@ class sportsmanagementModelAjax extends JModelLegacy
         }
         
        $query = $db->getQuery(true);
-        $query->select('id as value');
-        $query->select('name AS text');
+       if ( $slug )
+        {
+        $query->select('CONCAT_WS(\':\', id, alias) AS value,name AS text');
+        }
+        else
+        {
+        $query->select('id AS value,name AS text');    
+        }
         $query->select('id, name, round_date_first, round_date_last, roundcode');
         
         $query->from('#__sportsmanagement_round');
@@ -701,11 +748,10 @@ class sportsmanagementModelAjax extends JModelLegacy
         {
         $query->where('p.season_id = 0');    
         }                       
-                // Where
+        // order
         $query->order('p.name');
         
                 $db->setQuery($query);
-                //return $db->loadObjectList();
                 return self::addGlobalSelectElement($db->loadObjectList(), $required);
         }
         

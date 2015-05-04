@@ -97,7 +97,6 @@ class sportsmanagementControllerAjax extends JControllerLegacy
         
         
         
-        
         /**
          * sportsmanagementControllerAjax::projects()
          * 
@@ -106,9 +105,24 @@ class sportsmanagementControllerAjax extends JControllerLegacy
         public function projects()
         {
         $model = $this->getModel('ajax');
+        $req = JRequest::getVar('required', false);
+        $required = ($req == 'true' || $req == '1') ? true : false;
+        echo json_encode((array) $model->getProjects( JRequest::getInt( 's' ), $required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' ) ));
+        JFactory::getApplication()->close();    
+        } 
+        
+        
+        /**
+         * sportsmanagementControllerAjax::seasons()
+         * 
+         * @return void
+         */
+        public function seasons()
+        {
+        $model = $this->getModel('ajax');
                 $req = JRequest::getVar('required', false);
                 $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) $model->getProjects(JRequest::getInt( 's' ), $required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' ) ));
+                echo json_encode((array) $model->getseasons(JRequest::getInt( 'cfg_which_database' ), $required ));
                 JFactory::getApplication()->close();    
         }    
         

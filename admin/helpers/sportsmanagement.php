@@ -1720,7 +1720,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 	 * @param mixed $config
 	 * @return
 	 */
-	public static function showTeamIcons(&$team,&$config,$cfg_which_database = 0)
+	public static function showTeamIcons(&$team,&$config,$cfg_which_database = 0,$s=0)
 	{
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
@@ -1746,7 +1746,14 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 
 		if ($config['show_team_link'])
 		{
-			$link = sportsmanagementHelperRoute::getPlayersRoute($projectSlug,$teamSlug,NULL,$projectteamid,$cfg_which_database);
+		  $routeparameter = array();
+       $routeparameter['s'] = $s;
+       $routeparameter['cfg_which_database'] = $cfg_which_database;
+       $routeparameter['p'] = $projectSlug;
+       $routeparameter['tid'] = $teamSlug;
+       $routeparameter['ttid'] = $projectteamid;
+       
+			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('roster',$routeparameter);
 			$title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_ROSTER_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/team_icon.png';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
@@ -1755,8 +1762,16 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 
 		if (((!isset($team_plan)) || ($teamid!=$team_plan->id)) && ($config['show_plan_link']))
 		{
-			$link =sportsmanagementHelperRoute::getTeamPlanRoute($projectSlug,$teamSlug,$division_slug,NULL,$projectteamid,$cfg_which_database);
-			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMPLAN_LINK').'&nbsp;'.$teamname;
+		  $routeparameter = array();
+       $routeparameter['s'] = $s;
+       $routeparameter['cfg_which_database'] = $cfg_which_database;
+       $routeparameter['p'] = $projectSlug;
+       $routeparameter['tid'] = $teamSlug;
+       $routeparameter['division'] = $division_slug;
+       $routeparameter['mode'] = 0;
+       $routeparameter['ptid'] = $projectteamid;
+			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
+			$title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMPLAN_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/calendar_icon.gif';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
 			$output .= JHtml::link($link,$desc);
@@ -1764,8 +1779,16 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 
 		if ($config['show_curve_link'])
 		{
-			$link =sportsmanagementHelperRoute::getCurveRoute($projectSlug,$teamSlug,0,$division_slug,$cfg_which_database);
-			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_CURVE_LINK').'&nbsp;'.$teamname;
+		  $routeparameter = array();
+       $routeparameter['s'] = $s;
+       $routeparameter['cfg_which_database'] = $cfg_which_database;
+       $routeparameter['p'] = $projectSlug;
+       $routeparameter['tid1'] = $teamSlug;
+       $routeparameter['tid2'] = 0;
+       $routeparameter['division'] = $division_slug;
+
+			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('curve',$routeparameter);
+			$title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_CURVE_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/curve_icon.gif';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
 			$output .= JHtml::link($link,$desc);
@@ -1773,9 +1796,15 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 
 		if ($config['show_teaminfo_link'])
 		{
-//    		$link =JoomleagueHelperRoute::getProjectTeamInfoRoute($projectSlug,$projectteamid);
-			$link = sportsmanagementHelperRoute::getTeamInfoRoute($projectSlug,$teamSlug,$projectteamid,$cfg_which_database);
-//            $link = sportsmanagementHelperRoute::getTeamInfoRoute($projectSlug,$projectteamid);
+		  $routeparameter = array();
+       $routeparameter['s'] = $s;
+       $routeparameter['cfg_which_database'] = $cfg_which_database;
+       $routeparameter['p'] = $projectSlug;
+       $routeparameter['tid'] = $teamSlug;
+       $routeparameter['ptid'] = $projectteamid;
+
+
+			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
             $title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMINFO_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/teaminfo_icon.png';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
@@ -1784,7 +1813,15 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 
 		if ($config['show_club_link'])
 		{
-			$link =sportsmanagementHelperRoute::getClubInfoRoute($projectSlug,$clubSlug,NULL,$cfg_which_database);
+		  $routeparameter = array();
+       $routeparameter['s'] = $s;
+       $routeparameter['cfg_which_database'] = $cfg_which_database;
+       $routeparameter['p'] = $projectSlug;
+       $routeparameter['cid'] = $clubSlug;
+       $routeparameter['task'] = NULL;
+
+       
+			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('clubinfo',$routeparameter);
 			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_CLUBINFO_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/mail.gif';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
@@ -1793,7 +1830,12 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 
 		if ($config['show_teamstats_link'])
 		{
-			$link =sportsmanagementHelperRoute::getTeamStatsRoute($projectSlug,$teamSlug,$cfg_which_database);
+		  $routeparameter = array();
+       $routeparameter['s'] = $s;
+       $routeparameter['cfg_which_database'] = $cfg_which_database;
+       $routeparameter['p'] = $projectSlug;
+       $routeparameter['tid'] = $teamSlug;
+			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats',$routeparameter);
 			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMSTATS_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/teamstats_icon.png';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
@@ -1802,7 +1844,13 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 
 		if ($config['show_clubplan_link'])
 		{
-			$link =sportsmanagementHelperRoute::getClubPlanRoute($projectSlug,$clubSlug,NULL,$cfg_which_database);
+		  $routeparameter = array();
+       $routeparameter['s'] = $s;
+       $routeparameter['cfg_which_database'] = $cfg_which_database;
+       $routeparameter['p'] = $projectSlug;
+       $routeparameter['cid'] = $clubSlug;
+       $routeparameter['task'] = NULL;
+			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('clubplan',$routeparameter);
 			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_CLUBPLAN_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/clubplan_icon.png';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
@@ -2416,7 +2464,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' ordering'.'<pre>'.print_r($ordering,true).'</pre>' ),'');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' required'.'<pre>'.print_r($required,true).'</pre>' ),'');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' round_ids'.'<pre>'.print_r($round_ids,true).'</pre>' ),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
 
 		$db->setQuery($query);
 		if(!$required) {
@@ -2553,18 +2601,21 @@ $app = JFactory::getApplication();
     
     
     
+    
     /**
      * sportsmanagementHelper::checkUserExtraFields()
      * 
      * @param string $template
      * @return
      */
-    static function checkUserExtraFields($template='backend')
+    static function checkUserExtraFields($template='backend',$cfg_which_database=0)
     {
          $app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
         $db = JFactory::getDBO();
         $query = $db->getQuery(true);
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' template<br><pre>'.print_r($template,true).'</pre>'),'Notice');
         
         $query->select('ef.id');
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields as ef ');
@@ -2590,13 +2641,14 @@ $app = JFactory::getApplication();
      * @param string $template
      * @return
      */
-    static function getUserExtraFields($jlid,$template='backend')
+    static function getUserExtraFields($jlid,$template='backend',$cfg_which_database=0)
     {
         $app = JFactory::getApplication();
     	$db = JFactory::getDBO();
         $query = $db->getQuery(true);
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' db-id<br><pre>'.print_r($jlid,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' template<br><pre>'.print_r($template,true).'</pre>'),'Notice');
         
         $query->select('ef.*,ev.fieldvalue as fvalue,ev.id as value_id ');
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields as ef ');
