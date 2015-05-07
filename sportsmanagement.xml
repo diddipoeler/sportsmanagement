@@ -181,6 +181,7 @@
 <module module="mod_sportsmanagement_navigation_menu" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_gcalendar" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_calendar" client="site"  position="" published=""/>
+<module module="mod_sportsmanagement_sports_type_statistics" client="site"  position="" published=""/>
 </modules>
 
 <plugins>
