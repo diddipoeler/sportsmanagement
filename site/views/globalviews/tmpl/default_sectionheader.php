@@ -200,7 +200,7 @@ switch ( $view )
     <!-- section header e.g. ranking, results etc. -->
 <a id="jl_top"></a>
 
-<table class="contentpaneopen">
+<table class="table">
 	<tr>
 		<td class="contentheading">
 		<?php
@@ -215,7 +215,17 @@ switch ( $view )
 
 			if ( $this->showediticon )
 			{
-				$link = sportsmanagementHelperRoute::getResultsRoute( $this->project->id, $this->roundid, $this->model->divisionid, $this->model->mode, $this->model->order, $this->config['result_style_edit'] );
+			 $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->id;
+$routeparameter['r'] = $this->roundid;
+$routeparameter['division'] = $this->model->divisionid;
+$routeparameter['mode'] = $this->model->mode;
+$routeparameter['order'] = $this->model->order;
+$routeparameter['layout'] = $this->config['result_style_edit'];
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
+				
 				$imgTitle = JText::_( 'COM_SPORTSMANAGEMENT_RESULTS_ENTER_EDIT_RESULTS' );
 				$desc = JHtml::image( 'media/com_sportsmanagement/jl_images/edit.png', $imgTitle, array( ' title' => $imgTitle ) );
 				echo ' ';
