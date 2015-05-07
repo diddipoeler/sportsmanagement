@@ -497,7 +497,7 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
 					break;
 			}
             
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             
 			$db->setQuery($query);
 			$result = $db->loadObject();
@@ -507,7 +507,7 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
 			if (!$result)
 			{
 			 
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
 //            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
              
 			$query->clear();
@@ -793,7 +793,7 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
             {
             $query->select('id');    
             }
-                $query->select('round_date_first,round_date_last,CASE LENGTH(name) when 0 then roundcode	else name END as name,roundcode');
+                $query->select('round_date_first,round_date_last,CASE LENGTH(name) when 0 then roundcode else name END as name,roundcode');
                 // From 
 		          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
                 // Where
@@ -823,6 +823,8 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
 			return array_reverse(self::$_rounds);
 		}
 		
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query'.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
+        
         return self::$_rounds;
 	}
 
@@ -874,6 +876,8 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
 		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid'.'<pre>'.print_r(self::$projectid,true).'</pre>' ),'Error');
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query'.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
 	    }
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query'.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
         
 		return $result;
 	}

@@ -384,6 +384,8 @@ class sportsmanagementModelResults extends JModelLegacy
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
 	    }
         
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
 		return $result;
 	}
 

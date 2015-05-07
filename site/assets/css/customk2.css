@@ -1,0 +1,14 @@
+.itemEditLink .modal {
+display: inline-block;
+position: inherit;
+width: auto !important;
+top: auto !important;
+overflow: hidden;
+}
+.k2Container .modal {
+display: inline-block;
+position: inherit;
+width: auto !important;
+top: auto !important;
+overflow: hidden;
+}
