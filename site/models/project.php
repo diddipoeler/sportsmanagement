@@ -178,6 +178,10 @@ class sportsmanagementModelProject extends JModelLegacy
     static $cfg_which_database = 0;
     
     static $favteams = NULL;
+    
+    static $projectslug	= '';
+	static $divisionslug = '';
+	static $roundslug = '';
 
 
 	/**
@@ -317,6 +321,9 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
 
     
 			self::$_project = $db->loadObject();
+            
+            self::$projectslug = self::$_project->slug;
+            
             if ( !self::$seasonid )
             {
             self::$seasonid = self::$_project->season_id;
@@ -452,7 +459,7 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
             
 			$current_date = strftime("%Y-%m-%d %H:%M:%S");
             $query->clear();
-            $query->select('r.id, r.roundcode');
+            $query->select('r.id, r.roundcode, CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ');
             
 	
@@ -504,7 +511,7 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
 //            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
              
 			$query->clear();
-            $query->select('r.id, r.roundcode');
+            $query->select('r.id, r.roundcode,CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ');
             $query->where('r.id = '.$project->current_round);
 
@@ -516,7 +523,7 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
 				    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($project,true).'</pre>'),'');
                     
 				    $query->clear();
-                    $query->select('r.id, r.roundcode');
+                    $query->select('r.id, r.roundcode,CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
                     $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ');
                     $query->where('r.project_id = '. $project->id);
                         
@@ -582,6 +589,8 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
             
 			self::$_current_round = $result;
 		}
+        
+        self::$roundslug = self::$_current_round->round_slug;
         
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _current_round<br><pre>'.print_r($this->_current_round,true).'</pre>'),'');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');

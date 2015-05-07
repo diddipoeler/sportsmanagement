@@ -76,7 +76,17 @@ $document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eve
 					sportsmanagementHelperHtml::showMatchdaysTitle(JText::_('Round results'), $this->roundid, $this->config );
 					if ($this->showediticon) //Needed to check if the user is still allowed to get into the match edit
 					{
-						$link = sportsmanagementHelperRoute::getResultsRoute( $this->project->id, $this->roundid );
+					   $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = sportsmanagementModelProject::$projectslug;
+$routeparameter['r'] = sportsmanagementModelProject::$roundslug;
+$routeparameter['division'] = 0;
+$routeparameter['mode'] = 0;
+$routeparameter['order'] = '';
+$routeparameter['layout'] = '';
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
+
 						$imgTitle = JText::_('Exit Edit Mode');
 						$desc = JHtml::image('media/com_sportsmanagement/jl_images/edit_exit.png', $imgTitle, array(' title' => $imgTitle));
 						echo '&nbsp;';

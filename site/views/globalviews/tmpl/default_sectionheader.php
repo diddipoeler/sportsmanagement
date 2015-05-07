@@ -218,11 +218,11 @@ switch ( $view )
 			 $routeparameter = array();
 $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
 $routeparameter['s'] = JRequest::getInt('s',0);
-$routeparameter['p'] = $this->project->id;
-$routeparameter['r'] = $this->roundid;
-$routeparameter['division'] = $this->model->divisionid;
-$routeparameter['mode'] = $this->model->mode;
-$routeparameter['order'] = $this->model->order;
+$routeparameter['p'] = sportsmanagementModelProject::$projectslug;
+$routeparameter['r'] = sportsmanagementModelProject::$roundslug;
+$routeparameter['division'] = sportsmanagementModelResults::$divisionid;
+$routeparameter['mode'] = sportsmanagementModelResults::$mode;
+$routeparameter['order'] = sportsmanagementModelResults::$order;
 $routeparameter['layout'] = $this->config['result_style_edit'];
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
 				

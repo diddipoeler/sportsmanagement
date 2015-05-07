@@ -40,6 +40,9 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access'); 
 
+
+
+
 //FIXME not functional ? 
 // this code was copied from results model, editablerow function
 ?>
@@ -49,6 +52,8 @@ defined('_JEXEC') or die('Restricted access');
 		$i = $this->i;
 		$thismatch = JTable::getInstance('Match','sportsmanagementTable');
 		$thismatch->bind(get_object_vars($match));
+
+//echo ' thismatch<br><pre>'.print_r($thismatch,true).'</pre>';
 
 		list($datum,$uhrzeit)=explode(' ',$thismatch->match_date);
 
@@ -121,6 +126,7 @@ defined('_JEXEC') or die('Restricted access');
     <td style="text-align:center; " >
     <?PHP
     echo JHtml::_('select.genericlist', $this->roundsoption, 'round_id'.$thismatch->id, $append, 'value', 'text', $thismatch->round_id);
+    //echo JHtml::_('select.genericlist', $this->roundsoption, 'round_id'.$thismatch->id, $append, 'value', 'text', $thismatch->round_slug);
     ?>
     </td>
 		<?php 

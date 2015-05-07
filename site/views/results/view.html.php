@@ -108,8 +108,10 @@ JHtml::_( 'behavior.mootools' );
         
 		//$roundcode = sportsmanagementModelRound::getRoundcode($model->roundid);
         $roundcode = sportsmanagementModelRound::getRoundcode($model::$roundid,$model::$cfg_which_database);
-		$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', $model::$cfg_which_database);
 		
+        //$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', $model::$cfg_which_database);
+		$rounds = sportsmanagementModelProject::getRoundOptions('ASC', $model::$cfg_which_database);
+        
 		$this->assign('roundsoption', $rounds);
 		$this->assignRef('project', $project);
         sportsmanagementHelperHtml::$project = $project;

@@ -63,7 +63,7 @@ class sportsmanagementModelResults extends JModelLegacy
 	var $config = 0;
 	var $project = null;
 	var $matches = null;
-    
+
     static $cfg_which_database = 0;
 
 	/**
@@ -108,7 +108,7 @@ class sportsmanagementModelResults extends JModelLegacy
             //$roundid = sportsmanagementModelProject::$_current_round;
 		}
         
-        sportsmanagementHelperHtml::$roundid = self::$roundid;
+        sportsmanagementHelperHtml::$roundid = (int)self::$roundid;
         //sportsmanagementHelperHtml::$roundid = $this->roundid;
         
 		//$this->roundid = $roundid;

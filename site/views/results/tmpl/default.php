@@ -44,7 +44,7 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<div class="">
+<div class="row">
 	<?php
     
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
