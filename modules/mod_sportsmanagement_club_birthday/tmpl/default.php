@@ -82,8 +82,98 @@ if(count($clubs) > 0)
     
 switch ($mode)
 {
-	// ticker mode template
-	case 'T':
+	// bootstrap mode template
+	case 'B':
+?>
+<div id="myClubBirthday" class="carousel slide" data-ride="carousel">
+<!-- Indicators -->
+<ol class="carousel-indicators">
+<?PHP
+for ($a=0; $a < count($clubs);$a++)
+{
+$active = ($a==0) ? 'class="active"' : '';    
+?>    
+<li data-target="#myClubBirthday" data-slide-to="<?php echo $a; ?>" <?php echo $active; ?> ></li></li>
+<?PHP    
+}
+?>
+</ol>
+
+<!-- Wrapper for slides -->
+<div class="carousel-inner" role="listbox">
+<?PHP
+$a = 0;
+foreach ($clubs AS $club) 
+{
+$active = ($a==0) ? 'active' : '';  
+$thispic = '';
+$club->default_picture = sportsmanagementHelper::getDefaultPlaceholder('clublogobig');  
+if ($params->get('show_picture')==1) 
+{
+if (file_exists(JPATH_BASE.'/'.$club->picture)&&$club->picture!='') 
+{
+$thispic = $club->picture;
+}
+elseif (file_exists(JPATH_BASE.'/'.$club->default_picture)&&$club->default_picture!='') 
+{
+$thispic = $club->default_picture;
+}
+}
+switch ($club->days_to_birthday) 
+{
+case 0: $whenmessage = $params->get('todaymessage');break;
+case 1: $whenmessage = $params->get('tomorrowmessage');break;
+default: $whenmessage = str_replace('%DAYS_TO%', $club->days_to_birthday, trim($params->get('futuremessage')));break;
+}
+        
+if ( $club->founded != '0000-00-00' )
+{
+$birthdaytext2 = htmlentities(trim(JText::_($params->get('birthdaytext'))), ENT_COMPAT , 'UTF-8');
+$dayformat = htmlentities(trim($params->get('dayformat')));
+$birthdayformat = htmlentities(trim($params->get('birthdayformat')));
+$birthdaytext2 = str_replace('%WHEN%', $whenmessage, $birthdaytext2);
+$birthdaytext2 = str_replace('%AGE%', $club->age, $birthdaytext2);
+$birthdaytext2 = str_replace('%DATE%', strftime($dayformat, strtotime($club->year.'-'.$club->daymonth)), $birthdaytext2);
+$birthdaytext2 = str_replace('%DATE_OF_BIRTH%', strftime($birthdayformat, strtotime($club->date_of_birth)), $birthdaytext2);
+}
+else
+{
+$birthdaytext2 = htmlentities(trim(JText::_($params->get('birthdaytextyear'))), ENT_COMPAT , 'UTF-8');
+$birthdaytext2 = str_replace('%AGE%', $club->age_year, $birthdaytext2);
+}
+            
+$birthdaytext2 = str_replace('%BR%', '<br />', $birthdaytext2);
+$birthdaytext2 = str_replace('%BOLD%', '<b>', $birthdaytext2);
+$birthdaytext2 = str_replace('%BOLDEND%', '</b>', $birthdaytext2);
+?>    
+<div class="item <?php echo $active; ?>">
+<img src="<?php echo $thispic; ?>" alt="<?php echo $club->name; ?>" width="<?php echo $params->get('picture_width'); ?>" >
+<div class="carousel-caption">
+<h3><?php echo $club->name; ?></h3>
+<p><?php echo $birthdaytext2; ?></p>
+</div>
+</div>
+<?PHP 
+$a++;   
+}
+?>
+
+
+
+</div>
+<!-- Left and right controls -->
+<a class="left carousel-control" href="#myClubBirthday" role="button" data-slide="prev">
+<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+<span class="sr-only">Previous</span>
+</a>
+<a class="right carousel-control" href="#myClubBirthday" role="button" data-slide="next">
+<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+<span class="sr-only">Next</span>
+</a>
+</div>
+<?PHP    
+    break;
+    case 'T':
 	case 'L':	
 	foreach ($clubs AS $club) 
     {

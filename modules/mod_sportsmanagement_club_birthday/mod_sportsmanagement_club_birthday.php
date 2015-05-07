@@ -146,7 +146,11 @@ $document->addScriptDeclaration( $javascript );
     
 	switch ($mode)
 	{
-		case 'T':
+		case 'B':
+        $layout = isset($attribs['layout'])?$attribs['layout']:'default';
+            $document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_club_birthday/css/mod_sportsmanagement_club_birthday.css');
+			break;
+        case 'T':
         $layout = isset($attribs['layout'])?$attribs['layout']:'default';
 			include(dirname(__FILE__).DS.'js'.DS.'ticker.js');
             $document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_club_birthday/css/mod_sportsmanagement_club_birthday.css');
@@ -360,36 +364,15 @@ $html_li .= '</div>';
         
           
     }    
-
-
-
-
-
-
-
-
-/*
-$javascript = "\n";
-$javascript .= "jQuery(document).ready(function ($) {"."\n";
-$javascript .= "        var options = { $AutoPlay: true };"."\n";
-$javascript .= "        var jssor_slider1 = new $JssorSlider$('slider1_container', options);"."\n";
-$javascript .= "    });"."\n";
-$javascript .= "\n";
-$document->addScriptDeclaration( $javascript );
-*/    
-
         
-			//include(dirname(__FILE__).DS.'js'.DS.'qscrollerh.js');
-            //$document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/qscrollerh.js');
-			//$document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/qscroller.js');
-            //$document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/wowslider.js');
+
             $document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_club_birthday/css/mod_sportsmanagement_club_birthday.css');
 			break;     
 	}
     
 }
 
-
+//echo 'layout '.$layout.'<br>';
 
 //require(JModuleHelper::getLayoutPath('mod_'.$module->name));
 require(JModuleHelper::getLayoutPath('mod_sportsmanagement_club_birthday',$layout));

@@ -159,12 +159,12 @@
 						label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_NO_BIRTHDAY_MESSAGE_LABEL"
 						description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_NO_BIRTHDAY_MESSAGE_DESCR" />
 
-				<field name="mode" type="list" default="J" 
+				<field name="mode" type="list" default="B" 
 					label="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_LABEL_MODE"
 					description="MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_DESC_MODE">
 					<option value="T">TICKER</option>
 					<option value="L">LIST</option>
-<!--					<option value="V">WOWSLIDER</option> -->
+					<option value="B">BOOTSTRAP</option>
 					<option value="J">Jssor Slider</option>
 				</field>
 
