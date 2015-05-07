@@ -40,7 +40,8 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access'); ?>
 
-<div style="direction: <?php echo $rssrtl ? 'rtl' :'ltr'; ?>; text-align: <?php echo $rssrtl ? 'right' :'left'; ?>">
+<!-- <div style="direction: <?php echo $rssrtl ? 'rtl' :'ltr'; ?>; text-align: <?php echo $rssrtl ? 'right' :'left'; ?>"> -->
+<div class="row">
 <?php
 $rssitems_colums = $this->overallconfig['rssitems_colums'] ;
 
@@ -52,7 +53,7 @@ foreach ($this->rssfeeditems as $feed)
 		$iUrl 	= isset($feed->image->url)   ? $feed->image->url   : null;
 		$iTitle = isset($feed->image->title) ? $feed->image->title : null;
 		?>
-		<table cellpadding="0" cellspacing="0" class="moduletable<?php //echo $params->get('moduleclass_sfx'); ?>">
+		<table class="table">
 		<?php
 		// feed description
 		if (!is_null( $feed->title ) && $this->overallconfig['rsstitle'] ) {
@@ -96,7 +97,7 @@ foreach ($this->rssfeeditems as $feed)
 		?>
 		<tr>
 			<td colspan="2">
-				<table class="jefeedpro<?php //echo $params->get( 'moduleclass_sfx'); ?>">
+				<table class="table table-striped">
 				<?php
 				$words = $this->overallconfig['word_count'] ;
 				$word_tooltip = $this->overallconfig['tooltip_wordcount_desc'] ;

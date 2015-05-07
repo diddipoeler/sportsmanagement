@@ -120,27 +120,26 @@ JHtml::_( 'behavior.mootools' );
 		
 		if (isset($this->project))
 		{
-			$this->assign('overallconfig', sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database));
-			$this->assign('config',	array_merge($this->overallconfig, $config));
-			$this->assign('teams', sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$model::$cfg_which_database));
+			$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database));
+			$this->assign('config',array_merge($this->overallconfig, $config));
+			$this->assign('teams',sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$model::$cfg_which_database));
             sportsmanagementHelperHtml::$teams = $this->teams;
-			$this->assign('showediticon', $model->getShowEditIcon());
-			$this->assign('division', $model->getDivision($model::$cfg_which_database));
-			$this->assignRef('matches',	$matches);
-			//$this->assignRef('roundid',	$model->roundid);
-            $this->assignRef('roundid',	$model::$roundid);
-			$this->assignRef('roundcode', $roundcode);
-			$this->assign('rounds',	sportsmanagementModelProject::getRounds('ASC',$model::$cfg_which_database));
-			$this->assign('favteams', sportsmanagementModelProject::getFavTeams($model::$cfg_which_database));
-			$this->assign('projectevents', sportsmanagementModelProject::getProjectEvents(0,$model::$cfg_which_database));
-			$this->assignRef('model', $model);
-			$this->assign('isAllowed', $model->isAllowed());
+			$this->assign('showediticon',$model->getShowEditIcon());
+			$this->assign('division',$model->getDivision($model::$cfg_which_database));
+			$this->assignRef('matches',$matches);
+            $this->assignRef('roundid',$model::$roundid);
+			$this->assignRef('roundcode',$roundcode);
+			$this->assign('rounds',sportsmanagementModelProject::getRounds('ASC',$model::$cfg_which_database));
+			$this->assign('favteams',sportsmanagementModelProject::getFavTeams($model::$cfg_which_database));
+			$this->assign('projectevents',sportsmanagementModelProject::getProjectEvents(0,$model::$cfg_which_database));
+			$this->assignRef('model',$model);
+			$this->assign('isAllowed',$model->isAllowed());
             $extended = sportsmanagementHelper::getExtended($this->project->extended, 'project');
-            $this->assignRef( 'extended', $extended );
+            $this->assignRef('extended',$extended );
 
 if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 	  {
-	  $mod_name               = "mod_jw_srfr";
+	  $mod_name = "mod_jw_srfr";
 	  $rssfeeditems = '';
     $rssfeedlink = $this->extended->getValue('COM_SPORTSMANAGEMENT_PROJECT_RSS_FEED_LIVE_RESULTS');
     if ( $rssfeedlink )
@@ -151,12 +150,12 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
     {
     $this->assignRef( 'rssfeeditems', $rssfeeditems );
     }
-    //echo 'rssfeed<br><pre>'.print_r($rssfeedlink,true).'</pre><br>';
+    echo 'rssfeed<br><pre>'.print_r($rssfeedlink,true).'</pre><br>';
     
   
        }
       
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current_round'.'<pre>'.print_r($project->current_round,true).'</pre>' ),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' extended'.'<pre>'.print_r($this->extended,true).'</pre>' ),'');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' matches'.'<pre>'.print_r($this->matches,true).'</pre>' ),'');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundid'.'<pre>'.print_r($this->roundid,true).'</pre>' ),'');       
             

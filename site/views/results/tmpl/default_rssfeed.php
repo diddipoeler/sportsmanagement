@@ -52,7 +52,7 @@ foreach ($this->rssfeeditems as $feed)
 		$iUrl 	= isset($feed->image->url)   ? $feed->image->url   : null;
 		$iTitle = isset($feed->image->title) ? $feed->image->title : null;
 		?>
-		<table cellpadding="0" cellspacing="0" class="moduletable<?php //echo $params->get('moduleclass_sfx'); ?>">
+		<table class="table table-striped">
 		<?php
 		// feed description
 		if (!is_null( $feed->title ) && $this->overallconfig['rsstitle'] ) {

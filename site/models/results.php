@@ -135,7 +135,7 @@ class sportsmanagementModelResults extends JModelLegacy
 	 */
 	function getDivision($cfg_which_database = 0)
 	{
-		$division=null;
+		$division = null;
 		if (self::$divisionid > 0)
 		{
 			$division = $this->getTable('Division','sportsmanagementTable');
@@ -189,9 +189,9 @@ class sportsmanagementModelResults extends JModelLegacy
         $lists = array();
 		foreach ($rssIds as $rssId)
 		{
-		$options['rssUrl'] 		= $rssId; 
+		$options['rssUrl'] = $rssId; 
         
-        $rssDoc =& JFactory::getXMLparser('RSS', $options);
+        $rssDoc = JFactory::getXMLparser('RSS', $options);
 		$feed = new stdclass();
         if ($rssDoc != false)
 			{
