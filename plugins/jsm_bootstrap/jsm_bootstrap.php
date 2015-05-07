@@ -92,14 +92,7 @@ public function __construct( &$subject, $params )
 		}
 
 	}
-    
-    
 
-    
-    
-
-    
-    
 	/**
 	 * PlgSystemjsm_bootstrap::onBeforeRender()
 	 * 
@@ -107,7 +100,7 @@ public function __construct( &$subject, $params )
 	 */
 	public function onBeforeRender()
 	{
-	
+	        $app = JFactory::getApplication();
        
         
         
@@ -120,10 +113,8 @@ public function __construct( &$subject, $params )
      */
     public function onAfterRender()
 	{
-		
-//        $app = JFactory::getApplication();
-//        $projectid = JRequest::getInt('p',0);
-//        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectid<br><pre>'.print_r($projectid,true).'</pre>'   ),'');
+        $app = JFactory::getApplication();
+
 	}
     
     /**
@@ -133,12 +124,8 @@ public function __construct( &$subject, $params )
      */
     public function onAfterRoute()
 	{
+        $app = JFactory::getApplication();
 
-	
-		
-//        $app = JFactory::getApplication();
-//        $projectid = JRequest::getInt('p',0);
-//        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectid<br><pre>'.print_r($projectid,true).'</pre>'   ),'');
 	}
     
     /**
@@ -150,11 +137,29 @@ public function __construct( &$subject, $params )
 	{
 
  $app = JFactory::getApplication();
-		
+// Get a refrence of the page instance in joomla
+$document	= JFactory::getDocument();
+
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Joomla! 3.0 code here
+
+// Check for component
+if ( JComponentHelper::getComponent('com_k2', true)->enabled )
+{
+$css = 'components/com_sportsmanagement/assets/css/customk2.css';
+$document->addStyleSheet($css);
+}
+
+}
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here		
 if(!$app->isAdmin())
                     {
 						CBootstrap::load();
 					}
+    }
                     
 	}
     
@@ -166,9 +171,8 @@ if(!$app->isAdmin())
     public function onAfterInitialise()
 	{
 		
-//        $app = JFactory::getApplication();
-//        $projectid = JRequest::getInt('p',0);
-//        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' projectid<br><pre>'.print_r($projectid,true).'</pre>'   ),'');
+        $app = JFactory::getApplication();
+
 	}
     
     
