@@ -70,13 +70,11 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 <ul class="nav nav-tabs" >
 <?PHP
 $count = 0;
-$active = 'active';
+
 foreach ($this->output as $key => $templ)
 {
-if ( $count > 0 )
-{
-$active = '';
-}
+$active = ($count==0) ? 'active' : '';   
+
 ?>  
 <li class="<?PHP echo $active; ?>"><a href="#<?PHP echo $templ; ?>" data-toggle="tab"><?PHP echo JText::_($key); ?></a></li>
 <?PHP
@@ -90,13 +88,11 @@ $count++;
 <div class="tab-content">
 <?PHP
 $count = 0;
-$active = 'in active';
+
 foreach ($this->output as $key => $templ)
 {
-if ( $count )
-{
-$active = '';
-}
+$active = ($count==0) ? 'in active' : '';
+
 ?>
 <div class="tab-pane fade <?PHP echo $active; ?>" id="<?PHP echo $templ; ?>">
 <?PHP   
@@ -115,6 +111,7 @@ echo $this->loadTemplate($templ);
 ?>
 </div>
 <?PHP
+$count++;
 }
 ?>
 </div>

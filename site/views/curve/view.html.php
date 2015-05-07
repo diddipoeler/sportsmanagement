@@ -85,8 +85,8 @@ class sportsmanagementViewCurve extends JViewLegacy
 
 		if ( isset( $this->project ) )
 		{
-			$teamid1 = $model->teamid1;
-			$teamid2 = $model->teamid2;
+			$teamid1 = $model::$teamid1;
+			$teamid2 = $model::$teamid2;
 			$options = array(	JHtml::_( 'select.option', '0', JText::_('COM_SPORTSMANAGEMENT_CURVE_CHOOSE_TEAM') ) );
 			$divisions = sportsmanagementModelProject::getDivisions(0,$model::$cfg_which_database);
 			if (count($divisions)>0 && $division == 0)
@@ -99,10 +99,10 @@ class sportsmanagementViewCurve extends JViewLegacy
 					foreach ((array) $teams as $t) {
 						$options[] = JHtml::_( 'select.option', $t->id, $t->name );
 						if($i==0) {
-							$teamid1=$t->id;
+							$teamid1 = $t->id;
 						}
 						if($i==1) {
-							$teamid2=$t->id;
+							$teamid2 = $t->id;
 						}
 						$i++;
 					}
@@ -149,17 +149,17 @@ class sportsmanagementViewCurve extends JViewLegacy
 			{
 				$this->overallconfig['seperator'] = ":";
 			}
-			$this->assignRef( 'config', $config );
-			$this->assignRef( 'model', $model);
-			$this->assign( 'colors',          sportsmanagementModelProject::getColors($rankingconfig['colors'],$model::$cfg_which_database) );
-			$this->assignRef( 'divisions',       $divisions );
-			$this->assign( 'division',        $model->getDivision($division) );
-			$this->assign( 'favteams',        sportsmanagementModelProject::getFavTeams($model::$cfg_which_database) );
-			$this->assign( 'team1',           $model->getTeam1() );
-			$this->assign( 'team2',           $model->getTeam2() );
-			$this->assign( 'allteams',        sportsmanagementModelProject::getTeams($division,'name',$model::$cfg_which_database) );
-			$this->assignRef( 'team1select',     $team1select );
-			$this->assignRef( 'team2select',     $team2select );
+			$this->assignRef('config',$config );
+			$this->assignRef('model',$model);
+			$this->assign('colors',sportsmanagementModelProject::getColors($rankingconfig['colors'],$model::$cfg_which_database) );
+			$this->assignRef('divisions',$divisions );
+			$this->assign('division',$model->getDivision($division) );
+			$this->assign('favteams',sportsmanagementModelProject::getFavTeams($model::$cfg_which_database) );
+			$this->assign('team1',$model->getTeam1() );
+			$this->assign('team2',$model->getTeam2() );
+			$this->assign('allteams',sportsmanagementModelProject::getTeams($division,'name',$model::$cfg_which_database) );
+			$this->assignRef('team1select',$team1select );
+			$this->assignRef('team2select',$team2select );
 			$this->_setChartdata(array_merge($flashconfig, $rankingconfig));
 			// Set page title
 			$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_CURVE_PAGE_TITLE' );
@@ -241,8 +241,8 @@ class sportsmanagementViewCurve extends JViewLegacy
 				
 				if(($t->division_id == $division->id 
 				 	&& $t->team_id != $team1id 
-				 	&& $model->teamid1 == 0)
-				 	|| ($model->teamid1 != 0 && $model->teamid1 == $t->team_id) 
+				 	&& $model::$teamid1 == 0)
+				 	|| ($model::$teamid1 != 0 && $model::$teamid1 == $t->team_id) 
 				) {
 					$team1id = $team->team_id;
 
@@ -263,8 +263,8 @@ class sportsmanagementViewCurve extends JViewLegacy
 					break;
 				}
 			}
-			if($model->teamid1!=0) {
-				$team1id = $model->teamid1;
+			if($model::$teamid1!=0) {
+				$team1id = $model::$teamid1;
 			}
 			//load team2, second team in the dropdown
 			foreach ($allteams as $t) {
@@ -272,8 +272,8 @@ class sportsmanagementViewCurve extends JViewLegacy
 				$team = $data[$t->projectteamid];
 				if(($t->division_id == $division->id 
 				 	&& $t->team_id != $team1id 
-				 	&& $model->teamid2 == 0)
-				 	|| ($model->teamid2 != 0 && $model->teamid2 == $t->team_id) 
+				 	&& $model::$teamid2 == 0)
+				 	|| ($model::$teamid2 != 0 && $model::$teamid2 == $t->team_id) 
 				) {
 					$d = new $config['dotstyle_2']();
 					$d->size((int) $config['line2_dot_strength']);

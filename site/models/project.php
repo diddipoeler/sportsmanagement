@@ -759,7 +759,7 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
 	 * @param string ordering 'ASC or 'DESC'
 	 * @return array
 	 */
-	public static function getRounds($ordering='ASC',$cfg_which_database = 0)
+	public static function getRounds($ordering='ASC',$cfg_which_database = 0,$slug = TRUE)
 	{
 		$option = JRequest::getCmd('option');
 	   $app = JFactory::getApplication();
@@ -776,7 +776,14 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
         if (empty(self::$_rounds))
 		{
 			// Select some fields
+            if ( $slug )
+            {
             $query->select('CONCAT_WS( \':\', id, alias ) AS id');
+            }
+            else
+            {
+            $query->select('id');    
+            }
                 $query->select('round_date_first,round_date_last,CASE LENGTH(name) when 0 then roundcode	else name END as name,roundcode');
                 // From 
 		          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
@@ -810,13 +817,16 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
         return self::$_rounds;
 	}
 
+	
 	/**
-	 * return project rounds as array of objects(roundid as value,name as text)
-	 *
+	 * sportsmanagementModelProject::getRoundOptions()
+	 * 
 	 * @param string $ordering
-	 * @return array
+	 * @param integer $cfg_which_database
+	 * @param bool $slug
+	 * @return
 	 */
-	public static function getRoundOptions($ordering='ASC',$cfg_which_database = 0)
+	public static function getRoundOptions($ordering='ASC',$cfg_which_database = 0,$slug = TRUE)
 	{
 		$option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
@@ -831,7 +841,10 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
         } 
         
         // Select some fields
+        if ( $slug )
+        {
         $query->select('CONCAT_WS( \':\', id, alias ) AS slug');
+        }
         $query->select('id AS value');
         $query->select("CASE LENGTH(name) when 0 then CONCAT('".JText::_('COM_SPORTSMANAGEMENT_MATCHDAY_NAME'). "',' ', id) else name END as text");
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round ');

@@ -560,9 +560,14 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
             $pginfo->name = '';    
             $pginfo->short_name = '';
             }
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $game->project_slug;
+$routeparameter['pgid'] = $game->playground_slug;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$routeparameter);            
 
-			//$link = sportsmanagementHelperRoute::getPlaygroundRoute(sportsmanagementModelProject::$_project->id,$game->playground_id,$cfg_which_database);
-            $link = sportsmanagementHelperRoute::getPlaygroundRoute($game->project_slug,$game->playground_slug,$cfg_which_database);
+			
 			$playgroundName = ($config['show_playground_name'] == 'name') ? $pginfo->name : $pginfo->short_name;
 			?>
 <span class='hasTip'

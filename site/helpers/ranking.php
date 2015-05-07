@@ -1096,12 +1096,12 @@ class JSMRanking
         
       
         
-		if (!isset($this->_roundcodes[$round_id])) 
+		if (!isset($this->_roundcodes[(int)$round_id])) 
         {
 			JError::raiseWarning(0, JText::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_UNKOWN_ROUND_ID').': '.$round_id);
 			return false;
 		}
-		return $this->_roundcodes[$round_id];
+		return $this->_roundcodes[(int)$round_id];
 	}
 
 	/**

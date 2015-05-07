@@ -134,7 +134,7 @@ class sportsmanagementModelCurve extends JModelLegacy
 //				. ' FROM #__joomleague_match AS m'
 //				. ' INNER JOIN #__joomleague_project_team AS pt1 ON m.projectteam1_id=pt1.id'
 //				. ' AND pt1.project_id='.$this->_db->Quote($this->projectid);
-			if ($this->division)
+			if (self::$division)
 			{
 //				$query .= ' AND pt1.division_id='.$this->_db->Quote($this->division);
                 $query->where('pt1.division_id = '.self::$division);
@@ -150,7 +150,7 @@ class sportsmanagementModelCurve extends JModelLegacy
 //				. ' INNER JOIN #__joomleague_project_team AS pt2 ON m.projectteam2_id=pt2.id'
 //				. ' AND pt2.project_id='.$this->_db->Quote($this->projectid);
                 
-			if ($this->division)
+			if (self::$division)
 			{
 //				$query .= ' AND pt2.division_id='.$this->_db->Quote($this->division);
                 $query->where('pt2.division_id = '.self::$division);
@@ -335,7 +335,7 @@ class sportsmanagementModelCurve extends JModelLegacy
         $option = JRequest::getCmd('option');
         
 		$project = sportsmanagementModelProject::getProject(self::$cfg_which_database);
-		$rounds  = sportsmanagementModelProject::getRounds('ASC',self::$cfg_which_database);
+		$rounds  = sportsmanagementModelProject::getRounds('ASC',self::$cfg_which_database,FALSE);
 		$teams   = sportsmanagementModelProject::getTeamsIndexedByPtid($division,'name',self::$cfg_which_database);
 		
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');

@@ -277,7 +277,12 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo',$picture,$clu
 				$playground_number = 1;
 				foreach ( $this->playgrounds AS $playground )
 				{
-					$link = sportsmanagementHelperRoute::getPlaygroundRoute( $this->project->slug, $playground->slug,JRequest::getInt('cfg_which_database',0) );
+				    $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['pgid'] = $playground->slug;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$routeparameter);
 					$pl_dummy = JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_PLAYGROUND' );
 					?>
                     <address>
