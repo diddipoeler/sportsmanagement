@@ -39,9 +39,100 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access'); 
+
+switch ($mode)
+{
+	// bootstrap mode template
+	case 'B':
+
+?>
+<div id="myBirthday" class="carousel slide" data-ride="carousel">
+<!-- Indicators -->
+<ol class="carousel-indicators">
+<?PHP
+for ($a=0; $a < count($persons);$a++)
+{
+$active = ($a==0) ? 'class="active"' : '';    
+?>    
+<li data-target="#myBirthday" data-slide-to="<?php echo $a; ?>" <?php echo $active; ?> ></li></li>
+<?PHP    
+}
+?>
+</ol>
+
+<!-- Wrapper for slides -->
+<div class="carousel-inner" role="listbox">
+<?PHP
+$a = 0;
+foreach ($persons AS $person) 
+{
+$active = ($a==0) ? 'active' : '';  
+$thispic = "";
+$text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['firstname'], 
+													$person['nickname'], 
+													$person['lastname'], 
+													$params->get("name_format")), ENT_QUOTES, 'UTF-8');
+if ($params->get('show_picture')==1) 
+{
+if (file_exists(JPATH_BASE.'/'.$person['picture'])&&$person['picture']!='') 
+{
+$thispic = $person['picture'];
+}
+elseif (file_exists(JPATH_BASE.'/'.$person['default_picture'])&&$person['default_picture']!='') 
+{
+$thispic = $person['default_picture'];
+}
+}
+
+switch ($person['days_to_birthday']) 
+{
+case 0: $whenmessage = $params->get('todaymessage');break;
+case 1: $whenmessage = $params->get('tomorrowmessage');break;
+default: $whenmessage = str_replace('%DAYS_TO%', $person['days_to_birthday'], trim($params->get('futuremessage')));break;
+}
+        
+$birthdaytext = htmlentities(trim(JText::_($params->get('birthdaytext'))), ENT_COMPAT , 'UTF-8');
+$dayformat = htmlentities(trim($params->get('dayformat')));
+$birthdayformat = htmlentities(trim($params->get('birthdayformat')));
+$birthdaytext = str_replace('%WHEN%', $whenmessage, $birthdaytext);
+$birthdaytext = str_replace('%AGE%', $person['age'], $birthdaytext);
+$birthdaytext = str_replace('%DATE%', strftime($dayformat, strtotime($person['year'].'-'.$person['daymonth'])), $birthdaytext);
+$birthdaytext = str_replace('%DATE_OF_BIRTH%', strftime($birthdayformat, strtotime($person['date_of_birth'])), $birthdaytext);
+$birthdaytext = str_replace('%BR%', '<br />', $birthdaytext);
+$birthdaytext = str_replace('%BOLD%', '<b>', $birthdaytext);
+$birthdaytext = str_replace('%BOLDEND%', '</b>', $birthdaytext);
+        
+?>    
+<div class="item <?php echo $active; ?>">
+<img src="<?php echo $thispic; ?>" alt="<?php echo $text; ?>" width="<?php echo $params->get('picture_width'); ?>"  >
+<div class="carousel-caption">
+<h3><?php echo $text; ?></h3>
+<p><?php echo $birthdaytext; ?></p>
+</div>
+</div>
+<?PHP 
+$a++;   
+}
 ?>
 
-<table class="birthday">
+</div>
+<!-- Left and right controls -->
+<a class="left carousel-control" href="#myBirthday" role="button" data-slide="prev">
+<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+<span class="sr-only">Previous</span>
+</a>
+<a class="right carousel-control" href="#myBirthday" role="button" data-slide="next">
+<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+<span class="sr-only">Next</span>
+</a>
+</div>
+<?PHP    
+
+    break;
+    default:
+?>
+
+<table class="table">
 <?php
 if(count($persons) > 0) 
 {
@@ -63,21 +154,35 @@ if(count($persons) > 0)
         
 		if($person_type==1) 
         {
-			$person_link = sportsmanagementHelperRoute::getPlayerRoute($person['project_slug'],
-																$person['team_slug'],
-																$person['person_slug']);
+            $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $person['project_slug'];
+$routeparameter['tid'] = $person['team_slug'];
+$routeparameter['pid'] = $person['person_slug'];
+$person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
+
 		} 
         else if($person_type==2) 
         {
-			$person_link = sportsmanagementHelperRoute::getStaffRoute($person['project_id'],
-																$person['team_id'],
-																$person['id']);
+            $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $person['project_slug'];
+$routeparameter['tid'] = $person['team_slug'];
+$routeparameter['pid'] = $person['person_slug'];
+$person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('staff',$routeparameter);
+
 		} 
         else if($person_type==3) 
         {
-			$person_link = sportsmanagementHelperRoute::getRefereeRoute($person['project_id'],
-																$person['team_id'],
-																$person['id']);
+            $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $person['project_slug'];
+$routeparameter['pid'] = $person['person_slug'];
+$person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routeparameter);
+
 		}
 		$showname = JHTML::link( $person_link, $usedname );
 		?>
@@ -130,3 +235,7 @@ else {
 </tr>
 <?php } ?>
 </table>
+<?PHP
+
+break;
+}

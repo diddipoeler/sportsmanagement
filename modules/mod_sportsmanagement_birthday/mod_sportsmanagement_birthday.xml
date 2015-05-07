@@ -118,7 +118,7 @@
 					description="MOD_SPORTSMANAGEMENT_BIRTHDAY_DESC_MODE">
 <!--					<option value="T">TICKER</option> -->
 					<option value="L">LIST</option>
-<!--					<option value="V">WOWSLIDER</option> -->
+					<option value="B">BOOTSTRAP</option> -->
 					<option value="J">Jssor Slider</option>
 				</field>
       

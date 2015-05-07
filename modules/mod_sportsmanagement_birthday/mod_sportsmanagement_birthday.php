@@ -103,7 +103,10 @@ $counter=0;
 
 switch ($mode)
 	{
-		case 'L':
+		case 'B':
+        $layout = isset($attribs['layout'])?$attribs['layout']:'default';
+		break;
+        case 'L':
         $layout = isset($attribs['layout'])?$attribs['layout']:'default';
 		break;
         case 'J':
