@@ -152,8 +152,11 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 // Check for component
 if ( JComponentHelper::getComponent('com_k2', true)->enabled )
 {
-$css = 'components/com_sportsmanagement/assets/css/customk2.css';
+    if(!$app->isAdmin())
+                    {
+$css = JUri::base().'components/com_sportsmanagement/assets/css/customk2.css';
 $document->addStyleSheet($css);
+}
 }
 
 }
