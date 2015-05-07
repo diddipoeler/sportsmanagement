@@ -458,8 +458,8 @@ class sportsmanagementModelSportsTypes extends JModelList
         $query->from('#__sportsmanagement_sports_type AS st');
         $query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
         $query->join('INNER','#__sportsmanagement_project_team AS ptt ON ptt.project_id = p.id');
-        $query->join('INNER','#__sportsmanagement_season_team_id as st ON st.id = ptt.team_id ');
-        $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp1 ON tp1.team_id = st.team_id');
+        $query->join('INNER','#__sportsmanagement_season_team_id as st2 ON st2.id = ptt.team_id ');
+        $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp1 ON tp1.team_id = st2.team_id');
         
         $query->where('st.id = '.$sporttypeid);
 		
