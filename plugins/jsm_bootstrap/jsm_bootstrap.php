@@ -54,6 +54,11 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+if (! defined('DS'))
+{
+	define('DS', DIRECTORY_SEPARATOR);
+}
+
 jimport('joomla.plugin.plugin');
 jimport('joomla.html.parameter');
 
