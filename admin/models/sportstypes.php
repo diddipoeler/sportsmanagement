@@ -41,18 +41,27 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.modellist');
-//require_once (JPATH_COMPONENT.DS.'models'.DS.'list.php');
+
+if ( !class_exists('sportsmanagementHelper') ) 
+{
+//add the classes for handling
+$classpath = JPATH_ADMINISTRATOR.DS.'components/com_sportsmanagement'.DS.'helpers'.DS.'sportsmanagement.php';
+JLoader::register('sportsmanagementHelper', $classpath);
+}
 
 /**
- * Sportsmanagement Component sportstypes Model
- *
- * @package	Sportsmanagement
- * @since	1.5
+ * sportsmanagementModelSportsTypes
+ * 
+ * @package 
+ * @author abcde
+ * @copyright 2015
+ * @version $Id$
+ * @access public
  */
 class sportsmanagementModelSportsTypes extends JModelList
 {
 	var $_identifier = "sportstypes";
-    //var $setError = '';
+    static $setError = '';
     
     /**
      * sportsmanagementModelSportsTypes::__construct()
@@ -167,8 +176,8 @@ class sportsmanagementModelSportsTypes extends JModelList
 		$app = JFactory::getApplication();
         $db = JFactory::getDBO();
         $query	= $db->getQuery(true);
-        $query->select('id, name, name AS text');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type');
+        $query->select('id, name, name AS text,icon');
+        $query->from('#__sportsmanagement_sports_type');
         $query->order('name ASC');
 		//$query='SELECT id, name, name AS text FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type ORDER BY name ASC ';
 		$db->setQuery($query);
@@ -185,5 +194,470 @@ class sportsmanagementModelSportsTypes extends JModelList
 		return $result;
 	}
 
+	
+	/**
+	 * sportsmanagementModelSportsTypes::getProjectsCount()
+	 * 
+	 * @param integer $sporttypeid
+	 * @return
+	 */
+	public function getProjectsCount($sporttypeid=0) 
+    {
+        $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.
+		$db	= $this->getDbo();
+		$query = $db->getQuery(true);
+        $query->select('count(*) AS count');
+        $query->from('#__sportsmanagement_sports_type AS st');
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
+        $query->where('st.id = '.$sporttypeid);
+
+		$db->setQuery($query);
+		if (!$db->query())
+		{
+			$this->setError($db->getErrorMsg());
+			return false;
+		}
+		return $db->loadObject()->count;
+	}
+	
+  
+  
+	/**
+	 * sportsmanagementModelSportsTypes::getPlaygroundsOnlyCount()
+	 * 
+	 * @param integer $sporttypeid
+	 * @return
+	 */
+	public function getPlaygroundsOnlyCount($sporttypeid=0) 
+    {
+        $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.
+		$db	= $this->getDbo();
+		$query = $db->getQuery(true);
+        $query->select('count(*) AS count');
+        $query->from('#__sportsmanagement_playground AS p ');
+
+		$db->setQuery($query);
+		if (!$db->query())
+		{
+			$this->setError($db->getErrorMsg());
+			return false;
+		}
+		return $db->loadObject()->count;
+	}
+  
+  
+	/**
+	 * sportsmanagementModelSportsTypes::getLeaguesOnlyCount()
+	 * 
+	 * @param integer $sporttypeid
+	 * @return
+	 */
+	public function getLeaguesOnlyCount($sporttypeid=0) 
+    {
+        $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.
+		$db	= $this->getDbo();
+		$query = $db->getQuery(true);
+        $query->select('count(*) AS count');
+        $query->from('#__sportsmanagement_league AS l');
+
+		$db->setQuery($query);
+		if (!$db->query())
+		{
+			$this->setError($db->getErrorMsg());
+			return false;
+		}
+		return $db->loadObject()->count;
+	}
+  
+  
+	/**
+	 * sportsmanagementModelSportsTypes::getPersonsOnlyCount()
+	 * 
+	 * @param integer $sporttypeid
+	 * @return
+	 */
+	public function getPersonsOnlyCount($sporttypeid=0) 
+    {
+        $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.
+		$db	= $this->getDbo();
+		$query = $db->getQuery(true);
+        $query->select('count(*) AS count');
+        $query->from('#__sportsmanagement_person AS c');
+
+		$db->setQuery($query);
+		if (!$db->query())
+		{
+			$this->setError($db->getErrorMsg());
+			return false;
+		}
+		return $db->loadObject()->count;
+	}
+  
+  
+	/**
+	 * sportsmanagementModelSportsTypes::getClubsOnlyCount()
+	 * 
+	 * @param integer $sporttypeid
+	 * @return
+	 */
+	public function getClubsOnlyCount($sporttypeid=0) 
+    {
+        $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.
+		$db	= $this->getDbo();
+		$query = $db->getQuery(true);
+        $query->select('count(*) AS count');
+        $query->from('#__sportsmanagement_club AS c');
+
+		$db->setQuery($query);
+		if (!$db->query())
+		{
+			$this->setError($db->getErrorMsg());
+			return false;
+		}
+		return $db->loadObject()->count;
+	}
+	
+	
+	/**
+	 * sportsmanagementModelSportsTypes::getLeaguesCount()
+	 * 
+	 * @param integer $sporttypeid
+	 * @return
+	 */
+	public function getLeaguesCount($sporttypeid=0) 
+    {
+        $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.
+		$db	= $this->getDbo();
+		$query = $db->getQuery(true);
+        $query->select('count(*) AS count');
+        $query->from('#__sportsmanagement_sports_type AS st');
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
+        $query->join('INNER','#__sportsmanagement_league AS l ON l.id = p.league_id');
+        $query->where('st.id = '.$sporttypeid);
+
+		$db->setQuery($query);
+		if (!$db->query())
+		{
+			$this->setError($db->getErrorMsg());
+			return false;
+		}
+		return $db->loadObject()->count;
+	}
+	
+  
+	/**
+	 * sportsmanagementModelSportsTypes::getSeasonsOnlyCount()
+	 * 
+	 * @param integer $sporttypeid
+	 * @return
+	 */
+	public function getSeasonsOnlyCount($sporttypeid=0) 
+    {
+        $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.
+		$db	= $this->getDbo();
+		$query = $db->getQuery(true);
+        $query->select('count(*) AS count');
+        $query->from('#__sportsmanagement_season AS s ');
+
+		$db->setQuery($query);
+		if (!$db->query())
+		{
+			$this->setError($db->getErrorMsg());
+			return false;
+		}
+		return $db->loadObject()->count;
+	}
+  
+
+	/**
+	 * sportsmanagementModelSportsTypes::getSeasonsCount()
+	 * 
+	 * @param integer $sporttypeid
+	 * @return
+	 */
+	public function getSeasonsCount($sporttypeid=0) 
+    {
+        $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.
+		$db	= $this->getDbo();
+		$query = $db->getQuery(true);
+        $query->select('count(*) AS count');
+        $query->from('#__sportsmanagement_sports_type AS st');
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
+        $query->join('INNER','#__sportsmanagement_season AS s ON s.id = p.season_id');
+        $query->where('st.id = '.$sporttypeid);
+
+		$db->setQuery($query);
+		if (!$db->query())
+		{
+			$this->setError($db->getErrorMsg());
+			return false;
+		}
+		return $db->loadObject()->count;
+	}
+	
+	
+	/**
+	 * sportsmanagementModelSportsTypes::getProjectTeamsCount()
+	 * 
+	 * @param integer $sporttypeid
+	 * @return
+	 */
+	public function getProjectTeamsCount($sporttypeid=0) 
+    {
+        $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.
+		$db	= $this->getDbo();
+		$query = $db->getQuery(true);
+        $query->select('count(*) AS count');
+        $query->from('#__sportsmanagement_sports_type AS st');
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
+        $query->join('INNER','#__sportsmanagement_project_team AS ptt ON ptt.project_id = p.id');
+        $query->where('st.id = '.$sporttypeid);
+
+		$db->setQuery($query);
+		if (!$db->query())
+		{
+			$this->setError($db->getErrorMsg());
+			return false;
+		}
+		return $db->loadObject()->count;
+	}
+
+	
+	/**
+	 * sportsmanagementModelSportsTypes::getProjectTeamsPlayersCount()
+	 * 
+	 * @param integer $sporttypeid
+	 * @return
+	 */
+	public function getProjectTeamsPlayersCount($sporttypeid=0) 
+    {
+        $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.
+		$db	= $this->getDbo();
+		$query = $db->getQuery(true);
+        $query->select('count(*) AS count');
+        $query->from('#__sportsmanagement_sports_type AS st');
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
+        $query->join('INNER','#__sportsmanagement_project_team AS ptt ON ptt.project_id = p.id');
+        $query->join('INNER','#__sportsmanagement_season_team_id as st ON st.id = ptt.team_id ');
+        $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp1 ON tp1.team_id = st.team_id');
+        
+        $query->where('st.id = '.$sporttypeid);
+		
+		$db->setQuery($query);
+		if (!$db->query())
+		{
+			$this->setError($db->getErrorMsg());
+			return false;
+		}
+		return $db->loadObject()->count;
+	}
+	
+	
+	/**
+	 * sportsmanagementModelSportsTypes::getProjectDivisionsCount()
+	 * 
+	 * @param integer $sporttypeid
+	 * @return
+	 */
+	public function getProjectDivisionsCount($sporttypeid=0) 
+    {
+        $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.
+		$db	= $this->getDbo();
+		$query = $db->getQuery(true);
+        $query->select('count(*) AS count');
+        $query->from('#__sportsmanagement_sports_type AS st');
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
+        $query->join('INNER','#__sportsmanagement_division AS d ON d.project_id = p.id');
+        $query->where('st.id = '.$sporttypeid);
+	
+	$db->setQuery($query);
+	if (!$db->query())
+	{
+	$this->setError($db->getErrorMsg());
+	return false;
+	}
+	return $db->loadObject()->count;
+	}
+
+
+	/**
+	 * sportsmanagementModelSportsTypes::getProjectRoundsCount()
+	 * 
+	 * @param integer $sporttypeid
+	 * @return
+	 */
+	public function getProjectRoundsCount($sporttypeid=0) 
+    {
+        $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.
+		$db	= $this->getDbo();
+		$query = $db->getQuery(true);
+        $query->select('count(*) AS count');
+        $query->from('#__sportsmanagement_sports_type AS st');
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
+        $query->join('INNER','#__sportsmanagement_round AS r ON r.project_id = p.id');
+        $query->where('st.id = '.$sporttypeid);
+		
+		$db->setQuery($query);
+		if (!$db->query())
+		{
+			$this->setError($db->getErrorMsg());
+			return false;
+		}
+		return $db->loadObject()->count;
+	}
+
+	
+	/**
+	 * sportsmanagementModelSportsTypes::getProjectMatchesCount()
+	 * 
+	 * @param integer $sporttypeid
+	 * @return
+	 */
+	public function getProjectMatchesCount($sporttypeid=0) 
+    {
+        $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.
+		$db	= $this->getDbo();
+		$query = $db->getQuery(true);
+        $query->select('count(*) AS count');
+        $query->from('#__sportsmanagement_sports_type AS st');
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
+        $query->join('INNER','#__sportsmanagement_round AS r ON r.project_id = p.id');
+        $query->join('INNER','#__sportsmanagement_match AS m ON m.round_id = r.id');
+        $query->where('st.id = '.$sporttypeid);
+		
+		$db->setQuery($query);
+		if (!$db->query())
+		{
+			$this->setError($db->getErrorMsg());
+			return false;
+		}
+		return $db->loadObject()->count;
+	}
+
+	
+   
+	/**
+	 * sportsmanagementModelSportsTypes::getProjectMatchesEventsNameCount()
+	 * 
+	 * @param integer $sporttypeid
+	 * @return
+	 */
+	public function getProjectMatchesEventsNameCount($sporttypeid=0) 
+  {
+    $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.
+		$db	= $this->getDbo();
+		$query = $db->getQuery(true);
+        $query->select('count( me.id ) as total');
+        $query->select('me.event_type_id,p.sports_type_id,et.name,et.icon');
+        $query->from('#__sportsmanagement_match_event as me');
+        $query->join('INNER','#__sportsmanagement_match AS m ON me.match_id= m.id');
+        $query->join('INNER','#__sportsmanagement_round AS r ON m.round_id = r.id');
+        $query->join('INNER','#__sportsmanagement_project AS p ON r.project_id = p.id');
+        $query->join('INNER','#__sportsmanagement_eventtype AS et ON me.event_type_id = et.id');
+        $query->where('st.id = '.$sporttypeid);
+        $query->group('me.event_type_id');
+       
+
+	$db->setQuery($query);
+			if (!$result = $db->loadObjectList())
+	    {
+			$this->setError($db->getErrorMsg());
+			return false;
+		}
+		return $result;
+	}
+  
+  
+	/**
+	 * sportsmanagementModelSportsTypes::getProjectMatchesEventsCount()
+	 * 
+	 * @param integer $sporttypeid
+	 * @return
+	 */
+	public function getProjectMatchesEventsCount($sporttypeid=0) 
+    {
+	  $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.
+		$db	= $this->getDbo();
+		$query = $db->getQuery(true);
+        $query->select('count(*) AS count');
+        $query->from('#__sportsmanagement_sports_type AS st');
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
+        $query->join('INNER','#__sportsmanagement_round AS r ON r.project_id = p.id');
+        $query->join('INNER','#__sportsmanagement_match AS m ON m.round_id = r.id');
+        $query->join('INNER','#__sportsmanagement_match_event AS me ON me.match_id = m.id');
+        $query->where('st.id = '.$sporttypeid);
+		
+		$db->setQuery($query);
+		if (!$db->query())
+		{
+			$this->setError($db->getErrorMsg());
+			return false;
+		}
+		return $db->loadObject()->count;
+	}
+
+
+	/**
+	 * sportsmanagementModelSportsTypes::getProjectMatchesStatsCount()
+	 * 
+	 * @param integer $sporttypeid
+	 * @return
+	 */
+	public function getProjectMatchesStatsCount($sporttypeid=0) 
+    {
+        $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // Create a new query object.
+		$db	= $this->getDbo();
+		$query = $db->getQuery(true);
+        $query->select('count(*) AS count');
+        $query->from('#__sportsmanagement_sports_type AS st');
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
+        $query->join('INNER','#__sportsmanagement_round AS r ON r.project_id = p.id');
+        $query->join('INNER','#__sportsmanagement_match AS m ON m.round_id = r.id');
+        $query->join('INNER','#__sportsmanagement_match_statistic AS ms ON ms.match_id = m.id');
+        $query->where('st.id = '.$sporttypeid);
+		
+		$db->setQuery($query);
+		if (!$db->query())
+		{
+			$this->setError($db->getErrorMsg());
+			return false;
+		}
+		return $db->loadObject()->count;
+	}
+
+ 
+        
 }
 ?>

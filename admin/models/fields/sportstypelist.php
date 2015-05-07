@@ -43,6 +43,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport('joomla.filesystem.folder');
 JFormHelper::loadFieldClass('list');
 
+if ( !class_exists('sportsmanagementHelper') ) 
+{
+//add the classes for handling
+$classpath = JPATH_ADMINISTRATOR.DS.'components/com_sportsmanagement'.DS.'helpers'.DS.'sportsmanagement.php';
+JLoader::register('sportsmanagementHelper', $classpath);
+}
 
 /**
  * JFormFieldsportstypelist
