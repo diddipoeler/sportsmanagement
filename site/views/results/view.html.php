@@ -107,7 +107,7 @@ JHtml::_( 'behavior.mootools' );
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Pagination->next'.'<pre>'.print_r($mdlPagination->getnextlink(),true).'</pre>' ),'');
         
 		//$roundcode = sportsmanagementModelRound::getRoundcode($model->roundid);
-        $roundcode = sportsmanagementModelRound::getRoundcode($model::$roundid,$model::$cfg_which_database);
+        $roundcode = sportsmanagementModelRound::getRoundcode((int)$model::$roundid,$model::$cfg_which_database);
 		
         //$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', $model::$cfg_which_database);
 		$rounds = sportsmanagementModelProject::getRoundOptions('ASC', $model::$cfg_which_database);
@@ -150,7 +150,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
     {
     $this->assignRef( 'rssfeeditems', $rssfeeditems );
     }
-    echo 'rssfeed<br><pre>'.print_r($rssfeedlink,true).'</pre><br>';
+    //echo 'rssfeed<br><pre>'.print_r($rssfeedlink,true).'</pre><br>';
     
   
        }
