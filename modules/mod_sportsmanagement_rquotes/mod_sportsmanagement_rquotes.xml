@@ -51,7 +51,8 @@
 	<fields name="params" 
   addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">	
 	  
-		<fieldset name="basic">
+		<fieldset name="basic"
+    description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
 
  <field name="cfg_which_database" 
     type="list" 

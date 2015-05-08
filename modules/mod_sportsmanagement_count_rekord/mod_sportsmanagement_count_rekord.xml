@@ -32,7 +32,7 @@
 addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
 
 	<fieldset 	name="basic"
-						addfieldpath="/administrator/components/com_sportsmanagement/elements">
+						description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
 <field name="cfg_which_database" 
     type="list" 
     default="0"
