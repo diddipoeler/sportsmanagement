@@ -29,6 +29,7 @@
 				<field name="search_clubs" 
         type="radio" 
         default="1" 
+        class="radio btn-group btn-group-yesno"
         label="PLG_SEARCH_SPORTSMANAGEMENT_XML_CLUBS"
 					description="PLG_SEARCH_SPORTSMANAGEMENT_XML_CLUBS_DESC">
 					<option value="0">JNO</option>
@@ -37,6 +38,7 @@
 				<field name="search_players" 
         type="radio" 
         default="1" 
+        class="radio btn-group btn-group-yesno"
         label="PLG_SEARCH_SPORTSMANAGEMENT_XML_PLAYER"
 					description="PLG_SEARCH_SPORTSMANAGEMENT_XML_PLAYER_DESC">
 					<option value="0">JNO</option>
@@ -45,6 +47,7 @@
 				<field name="search_playgrounds" 
         type="radio" 
         default="1"
+        class="radio btn-group btn-group-yesno"
 					label="PLG_SEARCH_SPORTSMANAGEMENT_XML_PLAYGROUND" 
           description="PLG_SEARCH_SPORTSMANAGEMENT_XML_PLAYGROUND_DESC">
 					<option value="0">JNO</option>
@@ -53,6 +56,7 @@
 				<field name="search_referees" 
         type="radio" 
         default="1" 
+        class="radio btn-group btn-group-yesno"
         label="PLG_SEARCH_SPORTSMANAGEMENT_XML_REFEREES"
 					description="PLG_SEARCH_SPORTSMANAGEMENT_XML_REFEREES_DESC">
 					<option value="0">JNO</option>
@@ -61,6 +65,7 @@
 				<field name="search_staffs" 
         type="radio" 
         default="1" 
+        class="radio btn-group btn-group-yesno"
         label="PLG_SEARCH_SPORTSMANAGEMENT_XML_STAFF"
 					description="PLG_SEARCH_SPORTSMANAGEMENT_XML_STAFF_DESC">
 					<option value="0">JNO</option>
@@ -69,6 +74,7 @@
 				<field name="search_teams" 
         type="radio" 
         default="1" 
+        class="radio btn-group btn-group-yesno"
         label="PLG_SEARCH_SPORTSMANAGEMENT_XML_TEAMS"
 					description="PLG_SEARCH_SPORTSMANAGEMENT_XML_TEAMS_DESC">
 					<option value="0">JNO</option>
@@ -77,6 +83,7 @@
 				<field name="search_projects" 
         type="radio" 
         default="1" 
+        class="radio btn-group btn-group-yesno"
         label="PLG_SEARCH_SPORTSMANAGEMENT_XML_PROJECTS"
 					description="PLG_SEARCH_SPORTSMANAGEMENT_XML_PROJECTS_DESC">
 					<option value="0">JNO</option>

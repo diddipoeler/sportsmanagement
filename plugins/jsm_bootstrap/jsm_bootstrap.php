@@ -137,28 +137,55 @@ class PlgSystemjsm_bootstrap extends JPlugin
         $app = JFactory::getApplication();
         // Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();
+        $load_bootstrap = $this->params->def('load_bootstrap', 1);
+        $load_k2css = $this->params->def('load_k2css', 1);
 
         if (version_compare(JVERSION, '3.0.0', 'ge')) {
             // Joomla! 3.0 code here
-
-            /**
-             * wenn man die k2 komponente installiert hat, kann es zu problemen im frontend kommen.
-             * dazu gibt es diesen hilfreichen link: 
-             * http://www.optimumtheme.com/support/forum/k2-image-and-link-edit,-add-item-problem-solution.html
-             */
-
-            // Check for component
-            if (JComponentHelper::getComponent('com_k2', true)->enabled) {
+            if ($load_bootstrap) {
                 if (!$app->isAdmin()) {
-                    $css = JUri::base() . 'components/com_sportsmanagement/assets/css/customk2.css';
-                    $document->addStyleSheet($css);
+                    CBootstrap::load();
+                }
+            }
+            if ($load_k2css) {
+                /**
+                 * wenn man die k2 komponente installiert hat, kann es zu problemen im frontend kommen.
+                 * dazu gibt es diesen hilfreichen link: 
+                 * http://www.optimumtheme.com/support/forum/k2-image-and-link-edit,-add-item-problem-solution.html
+                 */
+
+                // Check for component
+                if (JComponentHelper::getComponent('com_k2', true)->enabled) {
+                    if (!$app->isAdmin()) {
+                        $css = JUri::base() . 'components/com_sportsmanagement/assets/css/customk2.css';
+                        $document->addStyleSheet($css);
+                    }
                 }
             }
 
         } elseif (version_compare(JVERSION, '2.5.0', 'ge')) {
             // Joomla! 2.5 code here
-            if (!$app->isAdmin()) {
-                CBootstrap::load();
+
+
+            if ($load_bootstrap) {
+                if (!$app->isAdmin()) {
+                    CBootstrap::load();
+                }
+            }
+            if ($load_k2css) {
+                /**
+                 * wenn man die k2 komponente installiert hat, kann es zu problemen im frontend kommen.
+                 * dazu gibt es diesen hilfreichen link: 
+                 * http://www.optimumtheme.com/support/forum/k2-image-and-link-edit,-add-item-problem-solution.html
+                 */
+
+                // Check for component
+                if (JComponentHelper::getComponent('com_k2', true)->enabled) {
+                    if (!$app->isAdmin()) {
+                        $css = JUri::base() . 'components/com_sportsmanagement/assets/css/customk2.css';
+                        $document->addStyleSheet($css);
+                    }
+                }
             }
         }
 

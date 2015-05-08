@@ -22,4 +22,30 @@
 		<language tag="de-DE">de-DE/de-DE.plg_jsm_bootstrap.ini</language>
 		<language tag="de-DE">de-DE/de-DE.plg_jsm_bootstrap.sys.ini</language>
 	</languages> 
-</extension>	
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="load_bootstrap" 
+        type="radio" 
+        default="1" 
+        class="radio btn-group btn-group-yesno"
+        label="PLUGIN_JSM_BOOTSTRAP_XML_LOAD_BOOTSTRAP"
+					description="PLUGIN_JSM_BOOTSTRAP_XML_LOAD_BOOTSTRAP_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+			<field name="load_k2css" 
+        type="radio" 
+        default="1" 
+        class="radio btn-group btn-group-yesno"
+        label="PLUGIN_JSM_BOOTSTRAP_XML_LOAD_K2CSS"
+					description="PLUGIN_JSM_BOOTSTRAP_XML_LOAD_K2CSS_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>	
+  </fieldset>
+		</fields>
+	</config>
+  
+</extension>        	
