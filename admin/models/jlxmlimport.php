@@ -4474,21 +4474,35 @@ $t_params = json_encode( $ini );
 
 				if ($match->projectteam1_id > 0)
 				{
-					$team1=$this->_convertProjectTeamID[intval($this->_getDataFromObject($match,'projectteam1_id'))];
+				    if ( isset($this->_convertProjectTeamID[intval($this->_getDataFromObject($match,'projectteam1_id'))]) )
+                    {
+					$team1 = $this->_convertProjectTeamID[intval($this->_getDataFromObject($match,'projectteam1_id'))];
+                    }
+                    else
+                    {
+                    $team1 = 0;    
+                    }
 				}
 				else
 				{
-					$team1=0;
+					$team1 = 0;
 				}
 				$p_match->set('projectteam1_id',$team1);
 
 				if ($match->projectteam2_id > 0)
 				{
-					$team2=$this->_convertProjectTeamID[intval($this->_getDataFromObject($match,'projectteam2_id'))];
+				    if ( isset($this->_convertProjectTeamID[intval($this->_getDataFromObject($match,'projectteam2_id'))]) )
+                    {
+					$team2 = $this->_convertProjectTeamID[intval($this->_getDataFromObject($match,'projectteam2_id'))];
+                    }
+                    else
+                    {
+                    $team2 = 0;    
+                    }
 				}
 				else
 				{
-					$team2=0;
+					$team2 = 0;
 				}
 				$p_match->set('projectteam2_id',$team2);
 
