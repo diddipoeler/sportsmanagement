@@ -49,9 +49,17 @@ if ( !defined('JSM_PATH') )
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
-//require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'sportsmanagement.php');
+// prüft vor Benutzung ob die gewünschte Klasse definiert ist
+if ( !class_exists('sportsmanagementHelper') ) 
+{
+//add the classes for handling
+$classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
+JLoader::register('sportsmanagementHelper', $classpath);
+JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+}
+
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'countries.php');
-require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');  
+//require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');  
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php' );
 
 require_once(dirname(__FILE__).DS.'helper.php');
@@ -83,19 +91,28 @@ DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );
 }    
 }
 
+$mode = $params->def("mode");
 
+switch ($mode)
+	{
+		case 'B':
+		break;
+        default:
 //add css file
 $document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_birthday/css/mod_sportsmanagement_birthday.css');
+break;
+}
 
 // Prevent that result is null when either $players or $crew is null by casting each to an array.
 $persons = array_merge((array)$players, (array)$crew);
 if(count($persons)>1)   $persons = jl_birthday_sort($persons, array("n+days_to_birthday", "n".$params->get('sort_order')."age"), false);
-$mode = $params->def("mode");
+
 
 if ( $show_debug_info )
 {
-echo 'this->mod_sportsmanagement_birthday persons<br /><pre>~' . print_r($persons,true) . '~</pre><br />';
-echo 'this->mod_sportsmanagement_birthday params<br /><pre>~' . print_r($params,true) . '~</pre><br />';
+$my_text = 'persons <pre>'.print_r($persons,true).'</pre>';
+$my_text .= 'params <pre>'.print_r($params,true).'</pre>';    
+sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,$module->module,__LINE__,$my_text);
 }
 
 $k=0;
@@ -219,8 +236,10 @@ $html_li .= '</div>';
         
         break;
             
-   }         
-
-
-require(JModuleHelper::getLayoutPath('mod_sportsmanagement_birthday',$layout));
+   } 
+?>           
+<div class="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+<?PHP
+require(JModuleHelper::getLayoutPath($module->module,$layout));
 ?>
+</div>

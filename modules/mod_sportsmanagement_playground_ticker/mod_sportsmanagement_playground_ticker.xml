@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="2.5" client="site" method="upgrade">
+	<name>MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER</name>
+	<author>diddipoeler</author>
+	<creationDate>Mai 2015</creationDate>
+	<copyright>(C) 2015</copyright>
+	<license>GPL2</license>
+	<authorEmail>diddipoeler@arcor.de</authorEmail>
+	<authorUrl>www.fussballineuropa.de</authorUrl>
+	<version>1.0.00</version>
+	<description>MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_DESC</description>
+
+	<files>
+		<filename module="mod_sportsmanagement_playground_ticker">mod_sportsmanagement_playground_ticker.php</filename>
+		<filename>index.html</filename>
+		<filename>helper.php</filename>
+		<folder>tmpl</folder>
+		<folder>css</folder>
+	</files>
+
+	<languages>
+		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_playground_ticker.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_playground_ticker.sys.ini</language>
+	</languages>
+	
+	<config>
+		<fields name="params">
+			<fieldset	name="basic"
+			description="MOD_SPORTSMANAGEMENT_BASIC_DESC"
+						addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+      <field name="cfg_which_database" 
+    type="list" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+		<field 	name="limit" type="text" default="1"
+						label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_MAX_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_MAX_DESCR" />
+		<field 	name="picture_width" type="text" default="150"
+						label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_PICTURE_WIDTH_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_PICTURE_WIDTH_DESCR" />
+			</fieldset>
+		</fields>
+	</config>		
+</extension>

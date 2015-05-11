@@ -1,0 +1,89 @@
+@CHARSET "UTF-8";
+
+#modjlglogo {
+	list-style: none;
+}
+
+#modjlglogo li.logo0 {
+	display: inline-block;
+	margin: 0 5px 0;
+	padding: 0px;
+	width: 21px;
+	height: 21px;
+}
+
+#modjlglogo li.logo1 {
+	display: inline-block;
+	margin: 0 5px 0;
+	padding: 0px;
+	height: 50px;
+	width: 50px;
+}
+
+#modjlglogo li.logo2 {
+	display: inline-block;
+	margin: 0 5px 0;
+	padding: 0px;
+	height: 150px;
+	width: 150px;
+}
+
+#modjlglogo .logo_small {
+	width: 21px;
+	height: 21px;
+}
+
+#modjlglogo .logo_middle {
+	width: 50px;
+	height: 50px;
+}
+
+#modjlglogo .logo_big {
+	width: 150px;
+	height: 150px;
+}
+
+#modjlglogo .team_picture {
+	width: 150px;
+	height: 150px;
+}
+
+#modjlglogo .projectteam_picture {
+	width: 150px;
+	height: 150px;
+}
+
+#modjlglogo li.0 li.1 li.2 a img {
+	position: relative;
+	border: none;
+}
+
+div.modjlglogo {
+	border: none;
+	margin: 0px;
+}
+
+div.modjlglogo .projectname {
+	font-weight: bold;
+}
+
+.tool-tip {
+	color: #fff;
+	width: 139px;
+	z-index: 13000;
+}
+
+.tool-title {
+	font-weight: bold;
+	font-size: 11px;
+	margin: 0;
+	color: #9FD4FF;
+	padding: 8px 8px 4px;
+	background: url(bubble.png) top left;
+}
+
+.tool-text {
+	font-size: 11px;
+	padding: 4px 8px 8px;
+	background: url(bubble.png) bottom right;
+}

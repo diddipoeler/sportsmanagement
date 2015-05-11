@@ -43,13 +43,13 @@ defined('_JEXEC') or die('Restricted access');
 // get helper
 require_once (dirname(__FILE__).DS.'helper.php');
 
-//require_once(JPATH_SITE.DS.'components'.DS.'com_joomleague'.DS.'joomleague.core.php');
 $sportstypes = $params->get('sportstypes');
 $data = modJSMSportsHelper::getData($params);
 
 $document = JFactory::getDocument();
+
 //add css file
-$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_sports_type_statistics/css/mod_sportsmanagement_sports_type_statistics.css');
+//$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_sports_type_statistics/css/mod_sportsmanagement_sports_type_statistics.css');
 
 /**
  * wenn die komponente im frontend nicht geladen oder aufgerufen wurde,
@@ -66,5 +66,9 @@ $reload = true;
 $lang->load($extension, $base_dir, $language_tag, $reload);
 }
 
-
-require(JModuleHelper::getLayoutPath('mod_sportsmanagement_sports_type_statistics'));
+?>           
+<div class="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+<?PHP
+require(JModuleHelper::getLayoutPath($module->module));
+?>
+</div>

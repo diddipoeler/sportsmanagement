@@ -40,13 +40,109 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access'); 
 
+
 switch ($mode)
 {
 	// bootstrap mode template
 	case 'B':
 
+?>    
+<div class="row">
+        <div class="row">
+           
+            <div class="col-md-12">
+                <!-- Controls -->
+                <div class="controls pull-right hidden-xs">
+                    <a class="left fa fa-chevron-left btn btn-primary" href="#carousel-<?php echo $module->module; ?>-<?php echo $module->id; ?>"
+                        data-slide="prev"></a><a class="right fa fa-chevron-right btn btn-primary" href="#carousel-<?php echo $module->module; ?>-<?php echo $module->id; ?>"
+                            data-slide="next"></a>
+                </div>
+            </div>
+        </div>
+        
+        <div id="carousel-<?php echo $module->module; ?>-<?php echo $module->id; ?>" class="carousel slide hidden-xs" data-ride="carousel">
+            <!-- Wrapper for slides -->
+            <div class="carousel-inner">
+            
+<?PHP
+$a = 0;
+foreach ($persons AS $person) 
+{
+$text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['firstname'], 
+													$person['nickname'], 
+													$person['lastname'], 
+													$params->get("name_format")), ENT_QUOTES, 'UTF-8');
+                                                        
+$active = ($a==0) ? 'active' : '';    
+if ($params->get('show_picture')==1) 
+{
+if (file_exists(JPATH_BASE.'/'.$person['picture'])&&$person['picture']!='') 
+{
+$thispic = $person['picture'];
+}
+elseif (file_exists(JPATH_BASE.'/'.$person['default_picture'])&&$person['default_picture']!='') 
+{
+$thispic = $person['default_picture'];
+}
+}
+
+switch ($person['days_to_birthday']) 
+{
+case 0: $whenmessage = $params->get('todaymessage');break;
+case 1: $whenmessage = $params->get('tomorrowmessage');break;
+default: $whenmessage = str_replace('%DAYS_TO%', $person['days_to_birthday'], trim($params->get('futuremessage')));break;
+}
+        
+$birthdaytext = htmlentities(trim(JText::_($params->get('birthdaytext'))), ENT_COMPAT , 'UTF-8');
+$dayformat = htmlentities(trim($params->get('dayformat')));
+$birthdayformat = htmlentities(trim($params->get('birthdayformat')));
+$birthdaytext = str_replace('%WHEN%', $whenmessage, $birthdaytext);
+$birthdaytext = str_replace('%AGE%', $person['age'], $birthdaytext);
+$birthdaytext = str_replace('%DATE%', strftime($dayformat, strtotime($person['year'].'-'.$person['daymonth'])), $birthdaytext);
+$birthdaytext = str_replace('%DATE_OF_BIRTH%', strftime($birthdayformat, strtotime($person['date_of_birth'])), $birthdaytext);
+$birthdaytext = str_replace('%BR%', '<br />', $birthdaytext);
+$birthdaytext = str_replace('%BOLD%', '<b>', $birthdaytext);
+$birthdaytext = str_replace('%BOLDEND%', '</b>', $birthdaytext);
+
+?>              
+                <div class="item <?php echo $active; ?>">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-item">
+                                <div class="photo">
+                                    <img src="<?php echo $thispic; ?>" class="img-responsive" alt="a" />
+                                </div>
+                            </div>
+                        </div>        
+        </div>
+        
+        <div class="info">
+                                    <div class="row">
+                                    <div class="price col-md-6">
+                                            <h5><?php echo $text; ?></h5>
+                                            
+                                        </div>
+                                    <div class="price col-md-6">
+                                            
+                                            <h5 class="price-text-color"><?php echo $birthdaytext; ?></h5>
+                                        </div>    
+                                    </div>
+                                    </div>
+        </div>  
+<?PHP 
+$a++;   
+}
+?>            
+        </div>
+</div>
+</div>         
+<?PHP    
+    break;
+    // bootstrap mode template
+	case 'B2':
+
 ?>
-<div id="myBirthday" class="carousel slide" data-ride="carousel">
+<div id="myBirthday<?php echo $module->id; ?>" class="carousel slide" data-interval="3000" data-ride="carousel">
 <!-- Indicators -->
 <ol class="carousel-indicators">
 <?PHP
@@ -54,7 +150,7 @@ for ($a=0; $a < count($persons);$a++)
 {
 $active = ($a==0) ? 'class="active"' : '';    
 ?>    
-<li data-target="#myBirthday" data-slide-to="<?php echo $a; ?>" <?php echo $active; ?> ></li></li>
+<li data-target="#myBirthday<?php echo $module->id; ?>" data-slide-to="<?php echo $a; ?>" <?php echo $active; ?> ></li></li>
 <?PHP    
 }
 ?>
@@ -117,11 +213,11 @@ $a++;
 
 </div>
 <!-- Left and right controls -->
-<a class="left carousel-control" href="#myBirthday" role="button" data-slide="prev">
+<a class="left carousel-control" href="#myBirthday<?php echo $module->id; ?>" role="button" data-slide="prev">
 <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
 <span class="sr-only">Previous</span>
 </a>
-<a class="right carousel-control" href="#myBirthday" role="button" data-slide="next">
+<a class="right carousel-control" href="#myBirthday<?php echo $module->id; ?>" role="button" data-slide="next">
 <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
 <span class="sr-only">Next</span>
 </a>

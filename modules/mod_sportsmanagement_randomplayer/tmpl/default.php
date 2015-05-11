@@ -46,10 +46,12 @@ if (!$items) {
 	return;
 }?>
 
-<div class="modjlgrandomplayer">
-<ul>
+<div class="row">
+<div class="col-md-10 blogShort">
 <?php if ($params->get('show_project_name')):?>
-<li class="projectname"><?php echo $list['project']->name; ?></li>
+
+<h1><?php echo $list['project']->name; ?></h1>
+
 <?php endif; ?> <?php
 $person = $list['player'];
 $routeparameter = array();
@@ -65,8 +67,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 //												$person->slug );
 ?>
 
-<li class="modjlgrandomplayer"><?php
-$picturetext=JText::_( 'JL_PERSON_PICTURE' );
+<?php
+$picturetext = JText::_( 'JL_PERSON_PICTURE' );
 $text = sportsmanagementHelper::formatName(null, $person->firstname, 
 												$person->nickname, 
 												$person->lastname, 
@@ -83,8 +85,10 @@ else
 }
 $pic = sportsmanagementHelper::getPictureThumb($picture, $imgTitle, $params->get('picture_width'), $params->get('picture_heigth'));
 echo '<a href="'.$link.'">'.$pic.'</a>' ;
-?></li>
-<li class="playerlink">
+?>
+
+<article>
+<p>
 <?php 
 	if($params->get('show_player_flag')) {
 		echo JSMCountries::getCountryFlag($person->country)." ";
@@ -108,9 +112,9 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 		echo JText::sprintf( '%1$s', $text);
 	}
 ?>
-</li>
+</p>
 <?php if ($params->get('show_team_name')):?>
-<li class="teamname">
+<p>
 <?php 
 	echo sportsmanagementHelper::getPictureThumb($list['infoteam']->team_picture,
 											$list['infoteam']->name,
@@ -136,13 +140,16 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routep
 		echo JText::sprintf( '%1$s', $text);
 	}
 ?>
-</li>
+</p>
 <?php endif; ?>
 <?php if ( $params->get('show_position_name') && isset($list['inprojectinfo']->position_name) ):?>
-<li class="positionname"><?php 
+<p>
+<?php 
 	$positionName = $list['inprojectinfo']->position_name;
 	echo JText::_($positionName);?>
-</li>
+</p>
 <?php endif; ?>
-</ul>
+</article>
+</div>
+
 </div>
