@@ -46,7 +46,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 
 <div class="row">
-<a name="jl_top" id="jl_top"></a>
+<!-- <a name="jl_top" id="jl_top"></a> -->
 	<?php 
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
@@ -63,12 +63,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
   $this->output['COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS'] = 'results';
   if(isset($this->divisions) && count($this->divisions) > 1) 
   {
-	echo $this->loadTemplate('matrix_division');
+	//echo $this->loadTemplate('matrix_division');
     $this->output['COM_SPORTSMANAGEMENT_MATRIX'] = 'matrix_division';
     }
     else
     {
-	echo $this->loadTemplate('matrix');
+	//echo $this->loadTemplate('matrix');
     $this->output['COM_SPORTSMANAGEMENT_MATRIX'] = 'matrix';
     }
 

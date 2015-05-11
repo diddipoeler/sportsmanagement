@@ -49,7 +49,7 @@ $this->kmlfile = $this->project->id.'-ranking.kml';
 
 ?>
 <div class="row">
-	<a name="jl_top" id="jl_top"></a>
+<!--	<a name="jl_top" id="jl_top"></a> -->
 	<?php 
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
