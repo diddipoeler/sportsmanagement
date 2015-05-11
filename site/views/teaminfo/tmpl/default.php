@@ -47,18 +47,19 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 
 <div class="row">
-
+<!-- <div class="col-md-12"> -->
+<div class="">
 	<?php
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
     echo $this->loadTemplate('debug');
 }
-	if ($this->config['show_projectheader']==1)
+	if ( $this->config['show_projectheader'] )
 	{	
 		echo $this->loadTemplate('projectheading');
 	}
 		
-	if ($this->config['show_sectionheader']==1)
+	if ( $this->config['show_sectionheader'] )
 	{
 		echo $this->loadTemplate('sectionheader');
 	}
@@ -67,38 +68,37 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
   // diddipoeler
   // aufbau der templates
   $this->output = array();
- if ($this->config['show_teaminfo']==1)
+ if ( $this->config['show_teaminfo'] )
 	{
 		echo $this->loadTemplate('teaminfo');
-        //$this->output['COM_SPORTSMANAGEMENT_TEAMINFO'] = 'teaminfo';
 	}
     
-	if ($this->config['show_description']==1)
+	if ( $this->config['show_description'] )
 	{
         $this->output['COM_SPORTSMANAGEMENT_TEAMINFO_TEAMINFORMATION'] = 'description';
 	}
 	
-    if ($this->config['show_extra_fields']==1)
+    if ( $this->config['show_extra_fields'] )
 	{
         $this->output['COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS'] = 'extra_fields';
 	}
     //fix me css	
-	if ($this->config['show_extended']==1)
+	if ( $this->config['show_extended'] )
 	{
         $this->output['COM_SPORTSMANAGEMENT_TABS_EXTENDED'] = 'extended';
 	}	
 		
-	if ($this->config['show_history']==1)
+	if ($this->config['show_history'] )
 	{
         $this->output['COM_SPORTSMANAGEMENT_TEAMINFO_HISTORY'] = 'history';
 	}
     
-    if ($this->config['show_history_leagues']==1)
+    if ( $this->config['show_history_leagues'] )
 	{
         $this->output['COM_SPORTSMANAGEMENT_TEAMINFO_HISTORY_PER_LEAGUE_SUMMARY'] = 'history_leagues';
 	}
     
-    if ($this->config['show_training']==1)
+    if ( $this->config['show_training'] )
 	{
         $this->output['COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING'] = 'training';
 	}
@@ -115,4 +115,5 @@ echo $this->loadTemplate($this->config['show_teaminfo_tabs']);
 		echo $this->loadTemplate('footer');
 	echo "</div>";
 	?>
+</div>
 </div>

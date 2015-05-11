@@ -41,6 +41,19 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
+if (! defined('JSM_PATH'))
+{
+DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
+}
+
+// prüft vor Benutzung ob die gewünschte Klasse definiert ist
+if ( !class_exists('sportsmanagementHelperHtml') ) 
+{
+//add the classes for handling
+$classpath = JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'html.php';
+JLoader::register('sportsmanagementHelperHtml', $classpath);
+}
+
 /**
  * sportsmanagementViewallplaygrounds
  * 

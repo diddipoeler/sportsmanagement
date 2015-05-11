@@ -273,6 +273,8 @@ public function getStart()
         $query->select('CONCAT_WS( \':\', v.id, v.alias ) AS slug');
         $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS projectslug');
         $query->select('CONCAT_WS( \':\', t.id, t.alias ) AS teamslug');
+        
+        $query->select('po.name as position_name'); 
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person as v');
         // Join over the clubs
@@ -283,6 +285,7 @@ public function getStart()
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = stp.team_id');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS po ON po.id = v.position_id');
         
 //        // Join over the users for the checked out user.
 //		$query->select('uc.name AS editor');

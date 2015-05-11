@@ -39,6 +39,8 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+//echo 'output <pre>'.print_r($this->output,true).'</pre>';
+
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 // Joomla! 3.0 code here
@@ -47,12 +49,25 @@ $view = Jrequest::getCmd('view');
 			
 foreach ($this->output as $key => $templ) 
 {
+
+switch ($view)
+{
+    case 'player':
+ $template = $templ['template'];
+$text = $templ['text'];   
+    break;
+default:
+$template = $templ;
+$text = $key;
+break;
+}    
+    
 if ( $idxTab == 1 )
 {
 echo JHtml::_('bootstrap.startTabSet', $view, array('active'=>'panel'.$idxTab));
 }
-echo JHtml::_('bootstrap.addTab', $view, 'panel'.$idxTab++, JText::_($key));
-echo $this->loadTemplate($templ);
+echo JHtml::_('bootstrap.addTab', $view, 'panel'.$idxTab++, JText::_($text));
+echo $this->loadTemplate($template);
 echo JHtml::_('bootstrap.endTab');
 }
 echo JHtml::_('bootstrap.endTabSet');
@@ -61,6 +76,7 @@ echo JHtml::_('bootstrap.endTabSet');
 elseif(version_compare(JVERSION,'2.5.0','ge')) 
 {
 // Joomla! 2.5 code here
+$view = Jrequest::getCmd('view');
 ?>
 
 <div class="panel with-nav-tabs panel-default">
@@ -75,8 +91,19 @@ foreach ($this->output as $key => $templ)
 {
 $active = ($count==0) ? 'active' : '';   
 
+switch ($view)
+{
+    case 'player':
+ $template = $templ['template'];
+$text = $templ['text'];   
+    break;
+default:
+$template = $templ;
+$text = $key;
+break;
+}
 ?>  
-<li class="<?PHP echo $active; ?>"><a href="#<?PHP echo $templ; ?>" data-toggle="tab"><?PHP echo JText::_($key); ?></a></li>
+<li class="<?PHP echo $active; ?>"><a href="#<?PHP echo $template; ?>" data-toggle="tab"><?PHP echo JText::_($text); ?></a></li>
 <?PHP
 $count++;
 }
@@ -92,20 +119,30 @@ $count = 0;
 foreach ($this->output as $key => $templ)
 {
 $active = ($count==0) ? 'in active' : '';
-
+switch ($view)
+{
+    case 'player':
+ $template = $templ['template'];
+$text = $templ['text'];      
+    break;
+default:
+$template = $templ;
+$text = $key;
+break;
+}
 ?>
-<div class="tab-pane fade <?PHP echo $active; ?>" id="<?PHP echo $templ; ?>">
+<div class="tab-pane fade <?PHP echo $active; ?>" id="<?PHP echo $template; ?>">
 <?PHP   
-switch ($templ)
+switch ($template)
 {
     case 'previousx':
     $this->currentteam = $this->match->projectteam1_id;
-echo $this->loadTemplate($templ);
+echo $this->loadTemplate($template);
 $this->currentteam = $this->match->projectteam2_id;
-echo $this->loadTemplate($templ);
+echo $this->loadTemplate($template);
     break;
     default:
-    echo $this->loadTemplate($templ);
+    echo $this->loadTemplate($template);
     break;
 }  
 ?>

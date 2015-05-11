@@ -134,8 +134,8 @@ class sportsmanagementModelRanking extends JModelLegacy
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $my_text = 'from '.$from.'<br>';    
-        $my_text .= 'to '.$to.'<br>';
+        $my_text = 'from <pre>'.print_r($from,true).'</pre>';    
+        $my_text .= 'to <pre>'.print_r($to,true).'</pre>';
         $my_text .= 'projectid '.self::$projectid.'<br>';
         $my_text .= 'round '.self::$round.'<br>';
         $my_text .= 'current_round '.$this->current_round.'<br>';

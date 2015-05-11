@@ -219,7 +219,6 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
         {
         $my_text = 'divisions <pre>'.print_r($this->divisions,true).'</pre>';    
         $my_text .= 'currentRanking <pre>'.print_r($this->currentRanking,true).'</pre>';
-        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($model::$cfg_which_database,true).'</pre>'),'');
@@ -298,21 +297,17 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' overallconfig<br><pre>'.print_r($this->overallconfig,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');   
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' currentRanking<br><pre>'.print_r($this->currentRanking,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' previousRanking<br><pre>'.print_r($this->previousRanking,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' homeRank<br><pre>'.print_r($this->homeRank,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' awayRank<br><pre>'.print_r($this->awayRank,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' allteams<br><pre>'.print_r($this->allteams,true).'</pre>'),'');
-        
-        $my_text = 'overallconfig <pre>'.print_r($this->overallconfig,true).'</pre>';    
+        $my_text .= 'overallconfig <pre>'.print_r($this->overallconfig,true).'</pre>';    
         $my_text .= 'config <pre>'.print_r($this->config,true).'</pre>';
-        $my_text .= 'currentRanking <pre>'.print_r($this->currentRanking,true).'</pre>';
         $my_text .= 'previousRanking <pre>'.print_r($this->previousRanking,true).'</pre>';
+        if ( isset($this->homeRank) )
+        {
         $my_text .= 'homeRank <pre>'.print_r($this->homeRank,true).'</pre>';
+        }
+        if ( isset($this->awayRank) )
+        {
         $my_text .= 'awayRank <pre>'.print_r($this->awayRank,true).'</pre>';
+        }
         $my_text .= 'teams <pre>'.print_r($this->teams,true).'</pre>';
         $my_text .= 'allteams <pre>'.print_r($this->allteams,true).'</pre>';
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);

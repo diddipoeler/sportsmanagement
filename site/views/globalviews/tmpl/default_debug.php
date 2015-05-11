@@ -59,7 +59,7 @@ foreach (sportsmanagementHelper::$_success_text as $key => $value)
 			?>
 			<fieldset>
 				<legend><?php echo JText::_($key); ?></legend>
-				<table class='adminlist'><tr><td><?php echo $value; ?></td></tr></table>
+				<table class='adminlist'><tr><td><?php echo '<pre>'.print_r($value,true).'</pre>' ; ?></td></tr></table>
 			</fieldset>
 			<?php
 		}

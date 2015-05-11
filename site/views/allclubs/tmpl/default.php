@@ -43,9 +43,6 @@ JHtml::_('behavior.tooltip');
 JHtml::_('behavior.framework');
 JHtml::_('behavior.modal');
 
-//$listOrder	= $this->escape($this->state->get('list.ordering'));
-//$listDirn	= $this->escape($this->state->get('list.direction'));
-
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews');
@@ -68,7 +65,7 @@ function searchPerson(val)
         Joomla.submitform('', this.form)
 	}
 </script>
-<div class="">
+<div class="row">
 <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars(JFactory::getURI()->toString());?>" method="post">
 	<fieldset class="filters">
 	<legend class="hidelabeltxt"><?php echo JText::_('JGLOBAL_FILTER_LABEL'); ?></legend>

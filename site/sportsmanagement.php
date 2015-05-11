@@ -46,17 +46,7 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 }
 elseif(version_compare(JVERSION,'2.5.0','ge')) 
 {
-
-//if ( COM_SPORTSMANAGEMENT_LOAD_BOOTSTRAP )
-//{    
-
 // Joomla! 2.5 code here
-//JFactory::getDocument()->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js');
-//JFactory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css');
-//JFactory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css');
-
-//}
-
 } 
 elseif(version_compare(JVERSION,'1.7.0','ge')) 
 {
@@ -94,9 +84,15 @@ if ( !class_exists('sportsmanagementHelper') )
 }
 */
 
+// prüft vor Benutzung ob die gewünschte Klasse definiert ist
+if ( !class_exists('sportsmanagementHelper') ) 
+{
 //add the classes for handling
 $classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
 JLoader::register('sportsmanagementHelper', $classpath);
+JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+}
+
 
         
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'html.php' );

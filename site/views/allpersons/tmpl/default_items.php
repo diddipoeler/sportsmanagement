@@ -78,7 +78,13 @@ switch ($value)
     case 'lastname':
     if ( $item->projectslug )
     {
-    $link = sportsmanagementHelperRoute::getPlayerRoute( $item->projectslug, $item->teamslug, $item->slug );
+    $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $item->projectslug;
+$routeparameter['tid'] = $item->teamslug;
+$routeparameter['pid'] = $item->slug;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);    
     echo JHtml::link( $link, $item->$value );
     }
     else
@@ -90,29 +96,17 @@ switch ($value)
     echo JSMCountries::getCountryFlag($item->$value);
     break;
     case 'picture':
-    ?>
-    
-    
-    <a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$item->$value;?>" title="<?php echo $item->lastname;?>" data-toggle="modal" data-target="#c<?php echo $item->id;?>">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$item->$value;?>" alt="<?php echo $item->lastname;?>" width="20" />
-</a>        
-<div class="modal fade" id="c<?php echo $item->id;?>" tabindex="-1" role="dialog" aria-labelledby="beispielModalLabel" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-</div>
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$item->$value, $item->lastname, array('title' => $item->lastname,'class' => "img-rounded" ));      
-?>
-</div> 
-    
-    
-    
-    
-     
-    <?PHP 
+    echo sportsmanagementHelperHtml::getBootstrapModalImage('allperson'.$item->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$item->$value,$item->lastname,'20');
     break;
     case 'website':
     echo JHtml::link( $item->$value, $item->$value, array( 'target' => '_blank' ) );
+    break;
+    case 'birthday':
+    case 'deathday':
+    echo sportsmanagementHelper::convertDate($item->$value,1) ;
+    break;
+    case 'position_id':
+    echo JText::_( $item->position_name );
     break;
     default:
     echo $item->$value;

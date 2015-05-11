@@ -99,21 +99,9 @@ $item->logo_big = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 ?>
 </td>
 <td>
- 
-
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$item->logo_big;?>" title="<?php echo $item->name;?>" data-toggle="modal" data-target="#c<?php echo $item->id;?>">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$item->logo_big;?>" alt="<?php echo $item->name;?>" width="20" />
-</a>        
-<div class="modal fade" id="c<?php echo $item->id;?>" tabindex="-1" role="dialog" aria-labelledby="beispielModalLabel" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-</div>
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$item->logo_big, $item->name, array('title' => $item->name,'class' => "img-rounded" ));      
-?>
-</div> 
-
-
+<?PHP 
+echo sportsmanagementHelperHtml::getBootstrapModalImage('allclub'.$item->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$item->logo_big,$item->name,'20')
+?> 
 </td>
 <td>
 <?php echo JHtml::link( $item->website, $item->website, array( 'target' => '_blank' ) ); ?>

@@ -152,10 +152,13 @@ class sportsmanagementViewTeamInfo extends JViewLegacy
 			$pageTitle .= ': ' . $this->team->tname;
 		}
 		$document->setTitle( $pageTitle );
-        
-        $view = $jinput->getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+
+/**
+ * da wir komplett mit bootstrap arbeiten benötigen wir das nicht mehr        
+ * $view = $jinput->getVar( "view") ;
+ * $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+ * $document->addCustomTag($stylelink);
+ */
         
 
 		parent::display( $tpl );

@@ -893,7 +893,6 @@ function sportsmanagementParseRoute( $segments )
 			}
 			break;
 
-			// /esl-dods-fall-league-2010-roster/staff/44-ED - DODS Fall League 2010/1-zj/2-and-one
 		case 'player':
 		case 'staff':
 			
