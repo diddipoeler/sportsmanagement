@@ -786,6 +786,8 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
             //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' position<br><pre>'.print_r($this->_datas['position'],true).'</pre>'),'');
             //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' parentposition<br><pre>'.print_r($this->_datas['parentposition'],true).'</pre>'),'');
             
+            if ( isset($this->_datas['person']) )
+            {
             // jetzt werden die positionen in den personen überprüft.
             foreach ( $this->_datas['person'] as $person )
             {
@@ -811,7 +813,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
                 } 
                         
             }
-            
+            }
             
             
             // länder bei den spielorten vervollständigen
