@@ -101,67 +101,154 @@ class sportsmanagementControllerAjax extends JControllerLegacy
 
         switch ($view) {
             case "matrix":
-                $link = sportsmanagementHelperRoute::getMatrixRoute(JRequest::getVar('p'),
-                JRequest::getVar('division'), JRequest::getVar('r'));
+                $routeparameter = array();
+                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
+                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['p'] = JRequest::getVar('p');
+                $routeparameter['division'] = JRequest::getVar('division');
+                $routeparameter['r'] = JRequest::getVar('r');
+                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matrix', $routeparameter);
                 break;
 
             case "teaminfo":
-                $link = sportsmanagementHelperRoute::getTeamInfoRoute(JRequest::getVar('p'),
-                JRequest::getVar('tid'));
+                $routeparameter = array();
+                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
+                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['p'] = JRequest::getVar('p');
+                $routeparameter['tid'] = JRequest::getVar('tid');
+                $routeparameter['ptid'] = 0;
+                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo', $routeparameter);
                 break;
 
             case "referees":
-                $link = sportsmanagementHelperRoute::getRefereesRoute(JRequest::getVar('p'));
+                $routeparameter = array();
+                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
+                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['p'] = JRequest::getVar('p');
+                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('referees', $routeparameter);
                 break;
 
             case "results":
-                $link = sportsmanagementHelperRoute::getResultsRoute(JRequest::getVar('p'),
-                JRequest::getVar('r'), JRequest::getVar('division'));
+                $routeparameter = array();
+                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
+                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['p'] = JRequest::getVar('p');
+                $routeparameter['r'] = JRequest::getVar('r');
+                $routeparameter['division'] = JRequest::getVar('division');
+                $routeparameter['mode'] = 0;
+                $routeparameter['order'] = '';
+                $routeparameter['layout'] = '';
+                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
                 break;
 
             case "resultsranking":
-                $link = sportsmanagementHelperRoute::getResultsRankingRoute(JRequest::getVar('p'));
+                $routeparameter = array();
+                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
+                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['p'] = JRequest::getVar('p');
+                $routeparameter['r'] = 0;
+                $routeparameter['division'] = 0;
+                $routeparameter['mode'] = 0;
+                $routeparameter['order'] = '';
+                $routeparameter['layout'] = '';
+                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
                 break;
 
             case "rankingmatrix":
-                $link = sportsmanagementHelperRoute::getRankingMatrixRoute(JRequest::getVar('p'),
-                JRequest::getVar('r'), JRequest::getVar('division'));
+                $routeparameter = array();
+                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
+                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['p'] = JRequest::getVar('p');
+                $routeparameter['type'] = 0;
+                $routeparameter['r'] = JRequest::getVar('r');
+                $routeparameter['from'] = 0;
+                $routeparameter['to'] = 0;
+                $routeparameter['division'] = JRequest::getVar('division');
+                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('rankingmatrix', $routeparameter);
                 break;
 
             case "resultsrankingmatrix":
-                $link = sportsmanagementHelperRoute::getResultsRankingMatrixRoute(JRequest::
-                getVar('p'), JRequest::getVar('r'), JRequest::getVar('division'));
+                $routeparameter = array();
+                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
+                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['p'] = JRequest::getVar('p');
+                $routeparameter['r'] = JRequest::getVar('r');
+                $routeparameter['division'] = JRequest::getVar('division');
+                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsrankingmatrix',
+                    $routeparameter);
                 break;
 
             case "teamplan":
-                $link = sportsmanagementHelperRoute::getTeamPlanRoute(JRequest::getVar('p'),
-                JRequest::getVar('tid'), JRequest::getVar('division'));
+                $routeparameter = array();
+                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
+                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['p'] = JRequest::getVar('p');
+                $routeparameter['tid'] = JRequest::getVar('tid');
+                $routeparameter['division'] = JRequest::getVar('division');
+                $routeparameter['mode'] = 0;
+                $routeparameter['ptid'] = 0;
+                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan', $routeparameter);
                 break;
 
             case "roster":
-                $link = sportsmanagementHelperRoute::getPlayersRoute(JRequest::getVar('p'),
-                JRequest::getVar('tid'), null, JRequest::getVar('division'));
+                $routeparameter = array();
+                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
+                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['p'] = JRequest::getVar('p');
+                $routeparameter['tid'] = JRequest::getVar('tid');
+                $routeparameter['ptid'] = 0;
+                $routeparameter['division'] = JRequest::getVar('division');
+                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('roster', $routeparameter);
                 break;
 
             case "eventsranking":
-                $link = sportsmanagementHelperRoute::getEventsRankingRoute(JRequest::getVar('p'),
-                JRequest::getVar('division'), JRequest::getVar('tid'));
+                $routeparameter = array();
+                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
+                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['p'] = JRequest::getVar('p');
+                $routeparameter['division'] = JRequest::getVar('division');
+                $routeparameter['tid'] = JRequest::getVar('tid');
+                $routeparameter['evid'] = 0;
+                $routeparameter['mid'] = 0;
+                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('eventsranking', $routeparameter);
                 break;
 
             case "curve":
-                $link = sportsmanagementHelperRoute::getCurveRoute(JRequest::getVar('p'),
-                JRequest::getVar('tid'), 0, JRequest::getVar('division'));
+                $routeparameter = array();
+                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
+                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['p'] = JRequest::getVar('p');
+                $routeparameter['tid1'] = JRequest::getVar('tid');
+                $routeparameter['tid2'] = 0;
+                $routeparameter['division'] = JRequest::getVar('division');
+                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('curve', $routeparameter);
                 break;
 
             case "statsranking":
-                $link = sportsmanagementHelperRoute::getStatsRankingRoute(JRequest::getVar('p'),
-                JRequest::getVar('division'));
+                $routeparameter = array();
+                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
+                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['p'] = JRequest::getVar('p');
+                $routeparameter['division'] = JRequest::getVar('division');
+                $routeparameter['tid'] = 0;
+                $routeparameter['sid'] = 0;
+                $routeparameter['order'] = '';
+                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('statsranking', $routeparameter);
                 break;
 
             default:
             case "ranking":
-                $link = sportsmanagementHelperRoute::getRankingRoute(JRequest::getVar('p'),
-                JRequest::getVar('r'), 0, 0, 0, JRequest::getVar('division'));
+                $routeparameter = array();
+                $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database', 0);
+                $routeparameter['s'] = JRequest::getInt('s', 0);
+                $routeparameter['p'] = JRequest::getVar('p');
+                $routeparameter['type'] = 0;
+                $routeparameter['r'] = JRequest::getVar('r');
+                $routeparameter['from'] = 0;
+                $routeparameter['to'] = 0;
+                $routeparameter['division'] = JRequest::getVar('division');
+                $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking', $routeparameter);
+                break;
         }
 
         echo json_encode($link);

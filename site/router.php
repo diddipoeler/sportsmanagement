@@ -372,6 +372,7 @@ function sportsmanagementBuildRoute( &$query )
 			}
 			break;
 		case 'ranking':
+        case 'rankingmatrix':
 			if (isset($query['type']))
 			{
 				$segments[] = $query['type'];
@@ -412,7 +413,11 @@ function sportsmanagementBuildRoute( &$query )
 				$segments[] = $query['ptid'];
 				unset( $query['ptid'] );
 			}
-            
+            if (isset($query['division']))
+			{
+				$segments[] = $query['division'];
+				unset( $query['division'] );
+			}
 			break;
             
         case 'clubplan':
@@ -796,6 +801,7 @@ function sportsmanagementParseRoute( $segments )
 			}
 			break;
 		case "ranking":
+        case 'rankingmatrix':
 
 			if (isset($segments[4])) {
 				$vars['type'] = $segments[4];
@@ -854,7 +860,9 @@ function sportsmanagementParseRoute( $segments )
             if (isset($segments[5])) {
 				$vars['ptid'] = $segments[5];
 			}
-        
+        if (isset($segments[6])) {
+				$vars['division'] = $segments[6];
+			}
 			break;
 				
 		case 'results':
