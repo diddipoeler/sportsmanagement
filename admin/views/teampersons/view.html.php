@@ -71,7 +71,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView
 		$document = JFactory::getDocument();
         $model	= $this->getModel();
         $starttime = microtime(); 
-        
+        $this->restartpage = FALSE;
         $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
@@ -106,8 +106,8 @@ class sportsmanagementViewteampersons extends sportsmanagementView
         {
         // fehlen im projekt die positionen ?
         // wenn ja, dann fehlende positionen hinzufügen
-        $items = $model->checkProjectPositions($this->project_id,$this->_persontype,$this->team_id,$this->season_id);    
-        $items = $this->get('Items');
+        $this->restartpage = $model->checkProjectPositions($this->project_id,$this->_persontype,$this->team_id,$this->season_id);    
+//        $this->restartpage = $restartpage;
         }
         
         

@@ -381,7 +381,7 @@ class sportsmanagementModelTeamPersons extends JModelList
             }
         }
 
-        return true;
+        return TRUE;
     }
 
 

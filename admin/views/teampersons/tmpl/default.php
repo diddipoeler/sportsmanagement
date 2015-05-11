@@ -36,7 +36,15 @@
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
+
 defined('_JEXEC') or die('Restricted access');
+
+
+if ( $this->restartpage )
+{
+echo '<meta http-equiv="refresh" content="1; URL='.$this->request_url.'">';    
+}  
+  
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 //Ordering allowed ?
