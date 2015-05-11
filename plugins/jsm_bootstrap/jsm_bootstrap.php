@@ -74,6 +74,7 @@ jimport('joomla.html.parameter');
 class PlgSystemjsm_bootstrap extends JPlugin
 {
 
+    var $config;
 
     /**
      * PlgSystemjsm_bootstrap::__construct()
@@ -87,14 +88,17 @@ class PlgSystemjsm_bootstrap extends JPlugin
         parent::__construct($subject, $params);
 
         $app = JFactory::getApplication();
+        $this->config = $params;
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'params <br><pre>'.print_r($params,true).'</pre>'),'');
 
+        /*
         //add the classes for handling
         $classpath = JPATH_ADMINISTRATOR . DS . 'components' . DS .
-            'com_sportsmanagement' . DS . 'libraries' . DS . 'cbootstrap.php';
+        'com_sportsmanagement' . DS . 'libraries' . DS . 'cbootstrap.php';
         if (file_exists($classpath)) {
-            JLoader::register('CBootstrap', $classpath);
+        JLoader::register('CBootstrap', $classpath);
         }
-
+        */
     }
 
     /**
@@ -135,16 +139,26 @@ class PlgSystemjsm_bootstrap extends JPlugin
     public function onAfterDispatch()
     {
         $app = JFactory::getApplication();
+
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'isEnabled <br><pre>'.print_r(JComponentHelper::isEnabled('com_k2', true),true).'</pre>'),'');
+
         // Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();
         $load_bootstrap = $this->params->def('load_bootstrap', 1);
+        $load_bootstrap_version = $this->params->def('load_bootstrap_version', '3.3.4');
         $load_k2css = $this->params->def('load_k2css', 1);
 
         if (version_compare(JVERSION, '3.0.0', 'ge')) {
             // Joomla! 3.0 code here
             if ($load_bootstrap) {
                 if (!$app->isAdmin()) {
-                    CBootstrap::load();
+                    //CBootstrap::load();
+                    JFactory::getDocument()->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/' .
+                        $load_bootstrap_version . '/js/bootstrap.min.js');
+                    JFactory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/' .
+                        $load_bootstrap_version . '/css/bootstrap.min.css');
+                    JFactory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/' .
+                        $load_bootstrap_version . '/css/bootstrap-theme.min.css');
                 }
             }
             if ($load_k2css) {
@@ -155,9 +169,14 @@ class PlgSystemjsm_bootstrap extends JPlugin
                  */
 
                 // Check for component
-                if (JComponentHelper::getComponent('com_k2', true)->enabled) {
+                $db = JFactory::getDbo();
+                $db->setQuery("SELECT enabled FROM #__extensions WHERE name = 'com_k2'");
+                $is_enabled = $db->loadResult();
+                //if (JComponentHelper::getComponent('com_k2', true)->enabled) {
+                if ($is_enabled) {
                     if (!$app->isAdmin()) {
-                        $css = JUri::base() . 'components/com_sportsmanagement/assets/css/customk2.css';
+                        $css = JUri::base() . 'plugins' . DS . $this->config['type'] . DS . $this->
+                            config['name'] . DS . 'css/customk2.css';
                         $document->addStyleSheet($css);
                     }
                 }
@@ -169,7 +188,13 @@ class PlgSystemjsm_bootstrap extends JPlugin
 
             if ($load_bootstrap) {
                 if (!$app->isAdmin()) {
-                    CBootstrap::load();
+                    //CBootstrap::load();
+                    JFactory::getDocument()->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/' .
+                        $load_bootstrap_version . '/js/bootstrap.min.js');
+                    JFactory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/' .
+                        $load_bootstrap_version . '/css/bootstrap.min.css');
+                    JFactory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/' .
+                        $load_bootstrap_version . '/css/bootstrap-theme.min.css');
                 }
             }
             if ($load_k2css) {
@@ -180,9 +205,14 @@ class PlgSystemjsm_bootstrap extends JPlugin
                  */
 
                 // Check for component
-                if (JComponentHelper::getComponent('com_k2', true)->enabled) {
+                $db = JFactory::getDbo();
+                $db->setQuery("SELECT enabled FROM #__extensions WHERE name = 'com_k2'");
+                $is_enabled = $db->loadResult();
+                //if (JComponentHelper::getComponent('com_k2', true)->enabled) {
+                if ($is_enabled) {
                     if (!$app->isAdmin()) {
-                        $css = JUri::base() . 'components/com_sportsmanagement/assets/css/customk2.css';
+                        $css = JUri::base() . 'plugins' . DS . $this->config['type'] . DS . $this->
+                            config['name'] . DS . 'css/customk2.css';
                         $document->addStyleSheet($css);
                     }
                 }
