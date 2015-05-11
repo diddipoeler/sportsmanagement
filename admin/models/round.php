@@ -344,7 +344,7 @@ class sportsmanagementModelround extends JModelAdmin
 		// from table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
         // where
-        $query->where('id = '.$round_id);
+        $query->where('id = '.(int) $round_id);
         
 
 		$db->setQuery($query);
@@ -394,7 +394,7 @@ class sportsmanagementModelround extends JModelAdmin
 		// from table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
         // where
-        $query->where('id = '.$round_id);
+        $query->where('id = '.(int) $round_id);
 
 		$db->setQuery($query);
 		return $db->loadObject();
