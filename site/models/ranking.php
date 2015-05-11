@@ -54,13 +54,13 @@ class sportsmanagementModelRanking extends JModelLegacy
 	static $projectid = 0;
 	static $round = 0;
 	var $rounds = array(0);
-	var $part = 0;
-	var $type = 0;
-	
-    var $from = 0;
-	var $to = 0;
+	static $part = 0;
+	static $type = 0;
+	static $last = 0;
+    static $from = 0;
+	static $to = 0;
     
-	var $divLevel = 0;
+	static $divLevel = 0;
 	var $currentRanking = array();
 	var $previousRanking = array();
 	var $homeRank = array();
@@ -69,9 +69,9 @@ class sportsmanagementModelRanking extends JModelLegacy
 	var $result = array();
 	var $pageNav = array();
 	var $pageNav2 = array();
-	var $current_round = 0;
-	var $viewName = '';
-    
+	static $current_round = 0;
+	static $viewName = '';
+    static $selDivision = 0;
     static $cfg_which_database = 0;
     static $season = 0;
 
@@ -89,47 +89,47 @@ class sportsmanagementModelRanking extends JModelLegacy
        $to = 0;
 		self::$projectid = (int) $jinput->get->get('p', 0, '');
 		//$this->round = JRequest::getInt("r", $this->current_round);
-        self::$round = $jinput->get->get('r', $this->current_round, '');
-		$this->part  = JRequest::getInt("part", 0);
+        self::$round = $jinput->get->get('r', self::$current_round, '');
+		self::$part  = JRequest::getInt("part", 0);
 		//$this->from  = JRequest::getInt('from', 0 );
 		//$this->to	 = JRequest::getInt('to', $this->round);
-        $this->from = $jinput->post->get('from', 0, '');
-        $this->to = $jinput->post->get('to', self::$round, '');
+        self::$from = $jinput->post->get('from', 0, '');
+        self::$to = $jinput->post->get('to', self::$round, '');
         
-		$this->type  = $jinput->post->get('type', 0, '');
-		$this->last  = JRequest::getInt('last', 0 );
-        $this->viewName = $jinput->get->get("view");
-    	$this->selDivision = JRequest::getInt('division', 0 );
+		self::$type  = $jinput->post->get('type', 0, '');
+		self::$last  = JRequest::getInt('last', 0 );
+        self::$viewName = $jinput->get->get("view");
+    	self::$selDivision = JRequest::getInt('division', 0 );
         
         self::$cfg_which_database = $jinput->get->get('cfg_which_database', 0 ,'');
         self::$season = $jinput->get->get('s', 0 ,'');
         
         sportsmanagementModelProject::$projectid = self::$projectid; 
         
-        if ( empty($this->from)  )
+        if ( empty(self::$from)  )
         {
         $from	= sportsmanagementModelRounds::getFirstRound(self::$projectid,self::$cfg_which_database);
-        $this->from	= $from['id'];
+        self::$from	= $from['id'];
         }
         
-        if ( empty($this->to)  )
+        if ( empty(self::$to)  )
         {
 		$to	= sportsmanagementModelRounds::getLastRound(self::$projectid,self::$cfg_which_database);
-        $this->to	= $to['id'];
+        self::$to = $to['id'];
         }
         else
         {
-        self::$round = $this->to;    
+        self::$round = self::$to;    
         }
         
         
         if ( empty(self::$round) )
         {
             self::$round = sportsmanagementModelProject::getCurrentRound(NULL,self::$cfg_which_database);
-            $this->current_round = self::$round;
+            self::$current_round = self::$round;
         }
         
-        sportsmanagementModelProject::$_round_from = $this->from; 
+        sportsmanagementModelProject::$_round_from = self::$from; 
         sportsmanagementModelProject::$_round_to = self::$round;
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -138,13 +138,13 @@ class sportsmanagementModelRanking extends JModelLegacy
         $my_text .= 'to <pre>'.print_r($to,true).'</pre>';
         $my_text .= 'projectid '.self::$projectid.'<br>';
         $my_text .= 'round '.self::$round.'<br>';
-        $my_text .= 'current_round '.$this->current_round.'<br>';
-        $my_text .= 'self from '.$this->from.'<br>';
-        $my_text .= 'self to '.$this->to.'<br>';
+        $my_text .= 'current_round '.self::$current_round.'<br>';
+        $my_text .= 'self from '.self::$from.'<br>';
+        $my_text .= 'self to '.self::$to.'<br>';
         
-        $my_text .= 'self part '.$this->part.'<br>';
-        $my_text .= 'self type '.$this->type.'<br>';
-        $my_text .= 'viewName '.$this->viewName.'<br>';
+        $my_text .= 'self part '.self::$part.'<br>';
+        $my_text .= 'self type '.self::$type.'<br>';
+        $my_text .= 'viewName '.self::$viewName.'<br>';
         
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
         }
@@ -395,40 +395,40 @@ class sportsmanagementModelRanking extends JModelLegacy
 
 		$this->rounds = sportsmanagementModelProject::getRounds($cfg_which_database);
         
-		if ( $this->part == 1 )
+		if ( self::$part == 1 )
 		{
-			$this->from = $firstRound['id'];
+			self::$from = $firstRound['id'];
             // diddipoeler: das ist ein bug
 			//$this->to = $this->rounds[intval(count($this->rounds)/2)]->id;
-            $this->to = $this->rounds[intval(count($this->rounds)/2)-1]->id;
+            self::$to = $this->rounds[intval(count($this->rounds)/2)-1]->id;
 		}
-		elseif ( $this->part == 2 )
+		elseif ( self::$part == 2 )
 		{
 		  // diddipoeler: das ist ein bug
 			//$this->from = $this->rounds[intval(count($this->rounds)/2)+1]->id;
-            $this->from = $this->rounds[intval(count($this->rounds)/2)]->id;
-			$this->to = $lastRound['id'];
+            self::$from = $this->rounds[intval(count($this->rounds)/2)]->id;
+			self::$to = $lastRound['id'];
 		}
 		else
 		{
-			$this->from = JRequest::getInt( 'from', $firstRound['id'] );
-			$this->to   = JRequest::getInt( 'to', self::$round, $lastRound['id'] );
+			self::$from = JRequest::getInt( 'from', $firstRound['id'] );
+			self::$to   = JRequest::getInt( 'to', self::$round, $lastRound['id'] );
 		}
-		if( $this->part > 0 )
+		if( self::$part > 0 )
 		{
-			$url.='&amp;part='.$this->part;
+			$url.='&amp;part='.self::$part;
 		}
-		elseif ( $this->from != 1 || $this->to != $this->round )
+		elseif ( self::$from != 1 || self::$to != self::$round )
 		{
-			$url.='&amp;from='.$this->from.'&amp;to='.$this->to;
+			$url.='&amp;from='.self::$from.'&amp;to='.self::$to;
 		}
-		$this->type = JRequest::getInt( 'type', 0 );
-		if ( $this->type > 0 )
+		self::$type = JRequest::getInt( 'type', 0 );
+		if ( self::$type > 0 )
 		{
-			$url.='&amp;type='.$this->type;
+			$url.='&amp;type='.self::$type;
 		}
 
-		$this->divLevel = 0;
+		self::$divLevel = 0;
 
 
 
@@ -443,7 +443,7 @@ class sportsmanagementModelRanking extends JModelLegacy
 		if ( $project->project_type=='DIVISIONS_LEAGUE' )
 		{
 			$selDivision = JRequest::getInt( 'division', 0 );
-			$this->divLevel = JRequest::getInt( 'divLevel', $tableconfig['default_division_view'] );
+			self::$divLevel = JRequest::getInt( 'divLevel', $tableconfig['default_division_view'] );
 
 			if ( $selDivision > 0 )
 			{
@@ -453,16 +453,16 @@ class sportsmanagementModelRanking extends JModelLegacy
 			else
 			{
 				// check if division level view is allowed. if not, replace with default
-				if ( ( $this->divLevel == 0 && $tableconfig['show_project_table']==0 ) ||
-					 ( $this->divLevel == 1 && $tableconfig['show_level1_table']== 0 ) ||
-					 ( $this->divLevel == 2 && $tableconfig['show_level2_table']==0  ) )
+				if ( ( self::$divLevel == 0 && $tableconfig['show_project_table']==0 ) ||
+					 ( self::$divLevel == 1 && $tableconfig['show_level1_table']== 0 ) ||
+					 ( self::$divLevel == 2 && $tableconfig['show_level2_table']==0  ) )
 				{
-					$this->divLevel = $tableconfig['default_division_view'];
+					self::$divLevel = $tableconfig['default_division_view'];
 				}
-				$url .= '&amp;divLevel='.$this->divLevel;
-				if ( $this->divLevel )
+				$url .= '&amp;divLevel='.self::$divLevel;
+				if ( self::$divLevel )
 				{
-					$divisions = sportsmanagementModelProject::getDivisionsId( $this->divLevel,$cfg_which_database );
+					$divisions = sportsmanagementModelProject::getDivisionsId( self::$divLevel,$cfg_which_database );
 				//	print_r( $divisions);
 				}
 				else
@@ -498,18 +498,18 @@ class sportsmanagementModelRanking extends JModelLegacy
 		{
 
 			//away rank
-			if ($this->type == 2) {
-				$this->currentRanking[$division] = $ranking->getRankingAway($this->from,$this->to,$division,$cfg_which_database);
+			if (self::$type == 2) {
+				$this->currentRanking[$division] = $ranking->getRankingAway(self::$from,self::$to,$division,$cfg_which_database);
 			}
 			//home rank
-			else if ($this->type == 1) {
-				$this->currentRanking[$division] = $ranking->getRankingHome($this->from,$this->to,$division,$cfg_which_database);
+			else if (self::$type == 1) {
+				$this->currentRanking[$division] = $ranking->getRankingHome(self::$from,self::$to,$division,$cfg_which_database);
 			}
 			//total rank
 			else {
-				$this->currentRanking[$division] = $ranking->getRanking($this->from,$this->to,$division,$cfg_which_database);
-				$this->homeRank[$division] = $ranking->getRankingHome($this->from,$this->to,$division,$cfg_which_database);
-				$this->awayRank[$division] = $ranking->getRankingAway($this->from,$this->to,$division,$cfg_which_database);
+				$this->currentRanking[$division] = $ranking->getRanking(self::$from,self::$to,$division,$cfg_which_database);
+				$this->homeRank[$division] = $ranking->getRankingHome(self::$from,self::$to,$division,$cfg_which_database);
+				$this->awayRank[$division] = $ranking->getRankingAway(self::$from,self::$to,$division,$cfg_which_database);
 			}
 			$this->_sortRanking($this->currentRanking[$division]);
 
@@ -517,29 +517,29 @@ class sportsmanagementModelRanking extends JModelLegacy
 			//previous rank
 			if( $tableconfig['last_ranking']==1 )
 			{
-				if ( $this->to == 1 || ( $this->to == $this->from ) )
+				if ( self::$to == 1 || ( self::$to == self::$from ) )
 				{
 					$this->previousRanking[$division] = &$this->currentRanking[$division];
 				}
 				else
 				{	
 					//away rank
-					if ($this->type == 2) {
-						$this->previousRanking[$division] = $ranking->getRankingAway($this->from,$this->_getPreviousRoundId($this->to,$cfg_which_database),$division,$cfg_which_database);
+					if (self::$type == 2) {
+						$this->previousRanking[$division] = $ranking->getRankingAway(self::$from,$this->_getPreviousRoundId(self::$to,$cfg_which_database),$division,$cfg_which_database);
 					}
 					//home rank
-					else if ($this->type == 1) {
-						$this->previousRanking[$division] = $ranking->getRankingHome($this->from,$this->_getPreviousRoundId($this->to,$cfg_which_database),$division,$cfg_which_database);
+					else if (self::$type == 1) {
+						$this->previousRanking[$division] = $ranking->getRankingHome(self::$from,$this->_getPreviousRoundId(self::$to,$cfg_which_database),$division,$cfg_which_database);
 					}
 					//total rank
 					else {
-						$this->previousRanking[$division] = $ranking->getRanking($this->from,$this->_getPreviousRoundId($this->to,$cfg_which_database),$division,$cfg_which_database);
+						$this->previousRanking[$division] = $ranking->getRanking(self::$from,$this->_getPreviousRoundId(self::$to,$cfg_which_database),$division,$cfg_which_database);
 					}
 					$this->_sortRanking($this->previousRanking[$division]);
 				}
 			}
 		}
-		$this->current_round = self::$round;
+		self::$current_round = self::$round;
 		return ;
 	}
 	

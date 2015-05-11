@@ -137,7 +137,7 @@ JHtml::_( 'behavior.mootools' );
 		$this->assign('showediticon',$resultsmodel->getShowEditIcon());
 		$this->assign('division',$resultsmodel->getDivision());
 		$this->assign('divisions',sportsmanagementModelProject::getDivisions(0,$cfg_which_database));
-		$this->assignRef('divLevel',$rankingmodel->divLevel);
+		$this->assignRef('divLevel',$rankingmodel::$divLevel);
 		$this->assign('matches',$resultsmodel->getMatches($cfg_which_database));
 		$this->assignRef('round',$resultsmodel::$roundid);
 		$this->assignRef('roundid',$resultsmodel::$roundid);
@@ -164,15 +164,15 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking',$
 		$this->assignRef('model',$resultsmodel);
 		$this->assign('isAllowed',$resultsmodel->isAllowed());
 
-		$this->assignRef('type',$rankingmodel->type);
-		$this->assignRef('from',$rankingmodel->from);
-		$this->assignRef('to',$rankingmodel->to);
+		$this->assignRef('type',$rankingmodel::$type);
+		$this->assignRef('from',$rankingmodel::$from);
+		$this->assignRef('to',$rankingmodel::$to);
 
 		$this->assignRef('currentRanking',$rankingmodel->currentRanking);
 		$this->assignRef('previousRanking',$rankingmodel->previousRanking);
 		$this->assignRef('homeRank',$rankingmodel->homeRank);
 		$this->assignRef('awayRank',$rankingmodel->awayRank);
-		$this->assignRef('current_round',$rankingmodel->current_round);
+		$this->assignRef('current_round',$rankingmodel::$current_round);
 		$this->assign('teams',sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$cfg_which_database));
 		$this->assign('previousgames',$rankingmodel->getPreviousGames($cfg_which_database));
 		

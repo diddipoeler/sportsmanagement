@@ -156,7 +156,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
        
      }  
        
-       $model->part = 0;
+       $model::$part = 0;
        unset ($model->currentRanking);
 	   unset ($model->previousRanking);
 	   }
@@ -166,18 +166,18 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($model::$cfg_which_database,true).'</pre>'),'');
 
 		$this->assignRef('round',$model::$round);
-		$this->assignRef('part',$model->part);
+		$this->assignRef('part',$model::$part);
 		$this->assignRef('rounds',$rounds);
 		//$this->assign('divisions',$mdlDivisions->getDivisions($project->id));
         $this->assign('divisions',sportsmanagementModelProject::getDivisions(0,$model::$cfg_which_database));
-		$this->assignRef('type',$model->type);
+		$this->assignRef('type',$model::$type);
 		//$this->assignRef('from',$model->from);
 		//$this->assignRef('to',$model->to);
         
         $this->assignRef('from',sportsmanagementModelProject::$_round_from);
 		$this->assignRef('to',sportsmanagementModelProject::$_round_to);
         
-		$this->assignRef('divLevel',$model->divLevel);
+		$this->assignRef('divLevel',$model::$divLevel);
         
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($this->round,true).'</pre>'),'');
