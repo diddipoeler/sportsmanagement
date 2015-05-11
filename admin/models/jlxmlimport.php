@@ -5175,6 +5175,7 @@ $t_params = json_encode( $ini );
 			$p_positionstatistic->set('statistic_id',$this->_convertStatisticID[$this->_getDataFromObject($import_positionstatistic,'statistic_id')]);
 			//$p_positionstatistic->set('ordering',$this->_getDataFromObject($import_positionstatistic,'ordering'));
 
+$query->clear();
 			// Select some fields
         $query->select('id');
 		// From the table
