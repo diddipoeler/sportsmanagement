@@ -62,8 +62,56 @@ static $view = 0;
 static $option = 'com_sportsmanagement';
 static $cfg_which_database = 0;
 
-/*	
+/*
 
+        
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = 0;
+$routeparameter['r'] = 0;
+$routeparameter['division'] = 0;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsrankingmatrix',$routeparameter);				
+        
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = 0;
+$routeparameter['division'] = 0;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('stats',$routeparameter);
+                
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = 0;
+$routeparameter['division'] = 0;
+$routeparameter['tid'] = 0;
+$routeparameter['evid'] = 0;
+$routeparameter['mid'] = 0;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('eventsranking',$routeparameter);
+		
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = 0;
+$routeparameter['tid1'] = 0;
+$routeparameter['tid2'] = 0;
+$routeparameter['division'] = 0;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('curve',$routeparameter);
+                    
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = 0;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('referees',$routeparameter);
+        
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = 0;
+$routeparameter['division'] = 0;
+$routeparameter['r'] = 0;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matrix',$routeparameter);
 
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
@@ -140,19 +188,19 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
 $routeparameter['s'] = JRequest::getInt('s',0);
-$routeparameter['p'] = $this->project->slug;
-$routeparameter['mid'] = $game->slug;
+$routeparameter['p'] = 0;
+$routeparameter['mid'] = $0;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch',$routeparameter);
 
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
 $routeparameter['s'] = JRequest::getInt('s',0);
-$routeparameter['p'] = $projectid;
-$routeparameter['r'] = $roundid;
-$routeparameter['division'] = $divisionid;
-$routeparameter['mode'] = $mode;
-$routeparameter['order'] = $order;
-$routeparameter['layout'] = $layout;
+$routeparameter['p'] = 0;
+$routeparameter['r'] = 0;
+$routeparameter['division'] = 0;
+$routeparameter['mode'] = 0;
+$routeparameter['order'] = '';
+$routeparameter['layout'] = '';
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
 
 
@@ -613,30 +661,30 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
 //		return $link;
 //	}
 
-	/**
-	 * sportsmanagementHelperRoute::getMatrixRoute()
-	 * 
-	 * @param mixed $projectid
-	 * @param integer $division
-	 * @param integer $round
-	 * @return
-	 */
-	public static function getMatrixRoute( $projectid, $division=0, $round=0,$cfg_which_database = 0,$s=0 )
-	{
-		$params = array(	"option" => "com_sportsmanagement",
-					"view" => "matrix" );
-
-		$params["s"] = $s;
-        $params["cfg_which_database"] = $cfg_which_database;
-        $params["p"] = $projectid;
-        $params["division"] = $division;
-		$params["r"] = $round;
-		//if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
-		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query, false );
-
-		return $link;
-	}
+//	/**
+//	 * sportsmanagementHelperRoute::getMatrixRoute()
+//	 * 
+//	 * @param mixed $projectid
+//	 * @param integer $division
+//	 * @param integer $round
+//	 * @return
+//	 */
+//	public static function getMatrixRoute( $projectid, $division=0, $round=0,$cfg_which_database = 0,$s=0 )
+//	{
+//		$params = array(	"option" => "com_sportsmanagement",
+//					"view" => "matrix" );
+//
+//		$params["s"] = $s;
+//        $params["cfg_which_database"] = $cfg_which_database;
+//        $params["p"] = $projectid;
+//        $params["division"] = $division;
+//		$params["r"] = $round;
+//		//if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
+//		$query = self::buildQuery( $params );
+//		$link = JRoute::_( 'index.php?' . $query, false );
+//
+//		return $link;
+//	}
 
 //	/**
 //	 * sportsmanagementHelperRoute::getResultsRankingRoute()
@@ -723,28 +771,28 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
 		return $link;
 	}
 
-	/**
-	 * sportsmanagementHelperRoute::getResultsRankingMatrixRoute()
-	 * 
-	 * @param mixed $projectid
-	 * @param mixed $round
-	 * @param integer $division
-	 * @return
-	 */
-	public static function getResultsRankingMatrixRoute( $projectid, $round=0, $division=0 ,$cfg_which_database = 0,$s=0)
-	{
-		$params = array("option" => "com_sportsmanagement",
-					"view" => "resultsrankingmatrix",
-					"p" => $projectid );
-
-		if ( ! is_null( $round ) ) { $params["r"] = $round; }
-		$params["division"] = $division;
-		if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
-		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query, false );
-
-		return $link;
-	}
+//	/**
+//	 * sportsmanagementHelperRoute::getResultsRankingMatrixRoute()
+//	 * 
+//	 * @param mixed $projectid
+//	 * @param mixed $round
+//	 * @param integer $division
+//	 * @return
+//	 */
+//	public static function getResultsRankingMatrixRoute( $projectid, $round=0, $division=0 ,$cfg_which_database = 0,$s=0)
+//	{
+//		$params = array("option" => "com_sportsmanagement",
+//					"view" => "resultsrankingmatrix",
+//					"p" => $projectid );
+//
+//		if ( ! is_null( $round ) ) { $params["r"] = $round; }
+//		$params["division"] = $division;
+//		if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
+//		$query = self::buildQuery( $params );
+//		$link = JRoute::_( 'index.php?' . $query, false );
+//
+//		return $link;
+//	}
 
 //	/**
 //	 * sportsmanagementHelperRoute::getTeamPlanRoute()
@@ -987,50 +1035,50 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 //		return $link;
 //	}
 
-	/**
-	 * sportsmanagementHelperRoute::getRefereesRoute()
-	 * 
-	 * @param mixed $projectid
-	 * @return
-	 */
-	public static function getRefereesRoute( $projectid,$cfg_which_database = 0,$s=0 )
-	{
-		$params = array(	"option" => "com_sportsmanagement",
-					"view" => "referees",
-					"p" => $projectid );
-if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
-		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query, false );
+//	/**
+//	 * sportsmanagementHelperRoute::getRefereesRoute()
+//	 * 
+//	 * @param mixed $projectid
+//	 * @return
+//	 */
+//	public static function getRefereesRoute( $projectid,$cfg_which_database = 0,$s=0 )
+//	{
+//		$params = array(	"option" => "com_sportsmanagement",
+//					"view" => "referees",
+//					"p" => $projectid );
+//if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
+//		$query = self::buildQuery( $params );
+//		$link = JRoute::_( 'index.php?' . $query, false );
+//
+//		return $link;
+//	}
 
-		return $link;
-	}
-
-	/**
-	 * sportsmanagementHelperRoute::getEventsRankingRoute()
-	 * 
-	 * @param mixed $projectid
-	 * @param integer $divisionid
-	 * @param integer $teamid
-	 * @param integer $eventid
-	 * @param integer $matchid
-	 * @return
-	 */
-	public static function getEventsRankingRoute( $projectid, $divisionid=0, $teamid=0, $eventid=0, $matchid=0,$cfg_which_database = 0,$s=0)
-	{
-		$params = array(	"option" => "com_sportsmanagement",
-					"view" => "eventsranking",
-					"p" => $projectid );
-
-		$params["division"] = $divisionid;
-		$params["tid"] = $teamid;
-		$params["evid"] = $eventid;
-		$params["mid"] = $matchid;
-		if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
-		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query, false );
-
-		return $link;
-	}
+//	/**
+//	 * sportsmanagementHelperRoute::getEventsRankingRoute()
+//	 * 
+//	 * @param mixed $projectid
+//	 * @param integer $divisionid
+//	 * @param integer $teamid
+//	 * @param integer $eventid
+//	 * @param integer $matchid
+//	 * @return
+//	 */
+//	public static function getEventsRankingRoute( $projectid, $divisionid=0, $teamid=0, $eventid=0, $matchid=0,$cfg_which_database = 0,$s=0)
+//	{
+//		$params = array(	"option" => "com_sportsmanagement",
+//					"view" => "eventsranking",
+//					"p" => $projectid );
+//
+//		$params["division"] = $divisionid;
+//		$params["tid"] = $teamid;
+//		$params["evid"] = $eventid;
+//		$params["mid"] = $matchid;
+//		if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
+//		$query = self::buildQuery( $params );
+//		$link = JRoute::_( 'index.php?' . $query, false );
+//
+//		return $link;
+//	}
 
 //	/**
 //	 * sportsmanagementHelperRoute::getCurveRoute()
@@ -1102,26 +1150,26 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 		return $link;
 	}
 
-	/**
-	 * sportsmanagementHelperRoute::getStatsRoute()
-	 * 
-	 * @param mixed $projectid
-	 * @param integer $division
-	 * @return
-	 */
-	public static function getStatsRoute( $projectid, $division = 0 ,$cfg_which_database = 0,$s=0)
-	{
-		$params = array(	"option" => "com_sportsmanagement",
-					"view" => "stats",
-					"p" => $projectid );
-
-		$params["division"] = $division;
-if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
-		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query, false );
-
-		return $link;
-	}
+//	/**
+//	 * sportsmanagementHelperRoute::getStatsRoute()
+//	 * 
+//	 * @param mixed $projectid
+//	 * @param integer $division
+//	 * @return
+//	 */
+//	public static function getStatsRoute( $projectid, $division = 0 ,$cfg_which_database = 0,$s=0)
+//	{
+//		$params = array(	"option" => "com_sportsmanagement",
+//					"view" => "stats",
+//					"p" => $projectid );
+//
+//		$params["division"] = $division;
+//if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
+//		$query = self::buildQuery( $params );
+//		$link = JRoute::_( 'index.php?' . $query, false );
+//
+//		return $link;
+//	}
 
 	/**
 	 * sportsmanagementHelperRoute::getBracketsRoute()

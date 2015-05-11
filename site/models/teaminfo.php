@@ -71,10 +71,10 @@ class sportsmanagementModelTeamInfo extends JModelLegacy
 	   // Reference global application object
         $app = JFactory::getApplication();
         
-		self::$projectid = JFactory::getApplication()->input->get->get('p', 0, 'INT');
-		self::$projectteamid = JFactory::getApplication()->input->get->get('ptid', 0, 'INT');
-		self::$teamid = JFactory::getApplication()->input->get->get('tid', 0, 'INT');
-        self::$cfg_which_database = JFactory::getApplication()->input->get->get('cfg_which_database', 0, 'INT');
+		self::$projectid = JFactory::getApplication()->input->get('p', 0, 'INT');
+		self::$projectteamid = JFactory::getApplication()->input->get('ptid', 0, 'INT');
+		self::$teamid = JFactory::getApplication()->input->get('tid', 0, 'INT');
+        self::$cfg_which_database = JFactory::getApplication()->input->get('cfg_which_database', 0, 'INT');
         sportsmanagementModelProject::$projectid = self::$projectid; 
 		parent::__construct( );
 	}
@@ -139,6 +139,8 @@ $result = $db->execute();
         $query->where('project_team_id = '. $projectTeamID);
         $query->order('dayofweek ASC');
 		
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump'.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
+        
         $db->setQuery($query);
 		$trainingData = $db->loadObjectList();
 		return $trainingData;
