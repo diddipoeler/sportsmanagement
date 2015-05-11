@@ -206,7 +206,8 @@ class sportsmanagementModelLeagues extends JModelList
      * @return	array seasons
      * @since	1.5.0a
      */
-    public static function getLeagues()
+    //public static function getLeagues()
+    function getLeagues()
     {
         // Reference global application object
         $app = JFactory::getApplication();
