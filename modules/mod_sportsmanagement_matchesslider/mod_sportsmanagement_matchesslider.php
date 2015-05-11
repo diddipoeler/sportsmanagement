@@ -143,7 +143,12 @@ $routeparameter['layout'] = '';
 
 
 
-require(JModuleHelper::getLayoutPath('mod_sportsmanagement_matchesslider'));
-
-
 ?>
+<div class="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+<?PHP
+require(JModuleHelper::getLayoutPath($module->module));
+?>
+</div>
+
+
+

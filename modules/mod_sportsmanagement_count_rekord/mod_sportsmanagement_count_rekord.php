@@ -55,10 +55,11 @@ DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 // get helper
 require_once (dirname(__FILE__).DS.'helper.php');
 
-//require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'sportsmanagement.php');
-
-
 $document  = JFactory::getDocument();
 
-
-require(JModuleHelper::getLayoutPath('mod_sportsmanagement_count_rekord'));
+?>
+<div class="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+<?PHP
+require(JModuleHelper::getLayoutPath($module->module));
+?>
+</div>

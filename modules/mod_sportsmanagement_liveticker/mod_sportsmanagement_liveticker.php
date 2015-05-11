@@ -357,4 +357,9 @@ if ($is_ajaxed) {
 
 
 
-require(JModuleHelper::getLayoutPath('mod_sportsmanagement_liveticker'));
+?>
+<div class="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+<?PHP
+require(JModuleHelper::getLayoutPath($module->module));
+?>
+</div>

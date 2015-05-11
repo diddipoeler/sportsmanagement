@@ -39,6 +39,7 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access'); 
+
 if (! defined('DS'))
 {
 	define('DS', DIRECTORY_SEPARATOR);
@@ -66,8 +67,8 @@ DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',JComponentHelper::getParams( 'com_sportsman
 JHtml::_('behavior.framework');
 $document = JFactory::getDocument();
 //add css file
-$document->addStyleSheet(JUri::base().'modules/mod_sportsmanagement_navigation_menu/css/mod_sportsmanagement_navigation_menu.css');
-$document->addScript(JUri::base().'modules/mod_sportsmanagement_navigation_menu/js/mod_sportsmanagement_navigation_menu.js');
+$document->addStyleSheet(JUri::base().'modules'.DS.$module->module.DS.'css'.DS.$module->module.'.css');
+$document->addScript(JUri::base().'modules'.DS.$module->module.DS.'js'.DS.$module->module.'.js');
 
 $helper = new modsportsmanagementNavigationMenuHelper($params);
 
@@ -80,4 +81,9 @@ $teamselect		= $helper->getTeamSelect();
 $defaultview   = $params->get('project_start');
 $defaultitemid = $params->get('custom_item_id');
 
-require(JModuleHelper::getLayoutPath('mod_sportsmanagement_navigation_menu'));
+?>
+<div class="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+<?PHP
+require(JModuleHelper::getLayoutPath($module->module));
+?>
+</div>
