@@ -120,7 +120,7 @@ if (!empty($this->rows))
 	}
 	?>
     
-<table border="0" cellpadding="0" cellspacing="0" style="text-align: center;" class="table table-striped">
+<table class="<?php echo $this->config['table_class'];?>">
 	<?php
     // jetzt kommt die schleife über die positionen
 	foreach ($this->rows as $position_id => $players)

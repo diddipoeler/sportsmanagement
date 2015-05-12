@@ -82,7 +82,7 @@ if (count($this->stafflist) > 0)
 
 	?>
 	<br>
-	<table class="table table-striped">
+	<table class="table">
 		<tr>
 			<td class="contentheading">
 				<?php
@@ -100,7 +100,7 @@ if (count($this->stafflist) > 0)
 		</tr>
 	</table>
 	<br />
-	<table style="text-align:center; " border="0" cellpadding="0" cellspacing="0" class="table table-striped">
+	<table class="<?php echo $this->config['table_class'];?>">
 		<thead>
 			<tr class="sectiontableheader rosterheader">
 				<th width="60%" colspan="<?php echo $positionHeaderSpan; ?>">
