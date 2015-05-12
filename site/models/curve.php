@@ -85,14 +85,18 @@ class sportsmanagementModelCurve extends JModelLegacy
 	 */
 	function __construct( )
 	{
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
 		parent::__construct( );
-		self::$projectid = JFactory::getApplication()->input->get->get('p', 0, 'INT');
-		self::$division = JFactory::getApplication()->input->get->get('division', 0, 'INT');
-		self::$teamid1 = JFactory::getApplication()->input->get->get('tid1', 0, 'INT');
-		self::$teamid2 = JFactory::getApplication()->input->get->get('tid2', 0, 'INT');
+		self::$projectid = $jinput->get('p', 0, 'INT');
+		self::$division = $jinput->get('division', 0, 'INT');
+		self::$teamid1 = $jinput->get('tid1', 0, 'INT');
+		self::$teamid2 = $jinput->get('tid2', 0, 'INT');
 		$this->both = JRequest::getInt('both', 0);
         sportsmanagementModelProject::$projectid = self::$projectid;
-        self::$cfg_which_database = JFactory::getApplication()->input->get->get('cfg_which_database', 0, 'INT');
+        self::$cfg_which_database = $jinput->get('cfg_which_database', 0, 'INT');
         
 		$this->determineTeam1And2();
 	}
@@ -129,14 +133,9 @@ class sportsmanagementModelCurve extends JModelLegacy
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
             $query->where('pt1.project_id = '.self::$projectid);
-            
-//            $query  = ' SELECT t1.id AS teamid1, t2.id AS teamid2'
-//				. ' FROM #__joomleague_match AS m'
-//				. ' INNER JOIN #__joomleague_project_team AS pt1 ON m.projectteam1_id=pt1.id'
-//				. ' AND pt1.project_id='.$this->_db->Quote($this->projectid);
+
 			if (self::$division)
 			{
-//				$query .= ' AND pt1.division_id='.$this->_db->Quote($this->division);
                 $query->where('pt1.division_id = '.self::$division);
 			}
             
@@ -145,14 +144,9 @@ class sportsmanagementModelCurve extends JModelLegacy
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON st1.team_id = t1.id ');
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
             $query->where('pt2.project_id = '.self::$projectid);
-            
-//			$query .= ' INNER JOIN #__joomleague_team AS t1 ON pt1.team_id=t1.id'
-//				. ' INNER JOIN #__joomleague_project_team AS pt2 ON m.projectteam2_id=pt2.id'
-//				. ' AND pt2.project_id='.$this->_db->Quote($this->projectid);
                 
 			if (self::$division)
 			{
-//				$query .= ' AND pt2.division_id='.$this->_db->Quote($this->division);
                 $query->where('pt2.division_id = '.self::$division);
 			}
             
@@ -161,35 +155,25 @@ class sportsmanagementModelCurve extends JModelLegacy
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON st2.team_id = t2.id ');
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON pt1.project_id = p.id AND pt2.project_id = p.id ');
             
-//			$query .= ' INNER JOIN #__joomleague_team AS t2 ON pt2.team_id=t2.id'
-//				. ' INNER JOIN #__joomleague_project AS p ON pt1.project_id=p.id AND pt2.project_id=p.id';
-
-//			$where = ' WHERE m.published=1 AND m.cancel=0';
             $query->where('m.published = 1 AND m.cancel = 0');
             
 			if (self::$teamid1)
 			{
 				$quoted_team_id = self::$teamid1;
-				//$team = 't1';
                 $team = 'st1';
 			}
 			else
 			{
-				$quoted_team_id = $this->teamid2;
-				//$team = 't2';
+				$quoted_team_id = self::$teamid2;
                 $team = 'st2';
 			}
             
 			if ($this->both)
 			{
-//				$where .= ' AND (t1.id='.$quoted_team_id.' OR t2.id='.$quoted_team_id.')';
-                //$query->where('(t1.id='.$quoted_team_id.' OR t2.id='.$quoted_team_id.')');
                 $query->where('(st1.team_id='.$quoted_team_id.' OR st2.team_id='.$quoted_team_id.')');
 			}
 			else
 			{
-//				$where .= ' AND '.$team.'.id='.$quoted_team_id;
-                //$query->where($team.'.id='.$quoted_team_id);
                 $query->where($team.'.team_id='.$quoted_team_id);
 			}
             
@@ -198,13 +182,7 @@ class sportsmanagementModelCurve extends JModelLegacy
             
             $query->where('(m.team1_result IS NULL OR m.team2_result IS NULL)');
             $query->where('DATE_ADD(m.match_date, INTERVAL '.$this->_db->Quote($expiry_time).' MINUTE) >= NOW()');
-            
-//			$where_unplayed = ' AND (m.team1_result IS NULL OR m.team2_result IS NULL)'
-//					. ' AND DATE_ADD(m.match_date, INTERVAL '.$this->_db->Quote($expiry_time).' MINUTE)'
-//					// . '    >= CONVERT_TZ(UTC_TIMESTAMP(), '.$this->_db->Quote('UTC').', p.timezone)';
-//                    . ' >= NOW()';
-                    
-//			$order = ' ORDER BY m.match_date';
+
             $query->order('m.match_date');
             
 			$db->setQuery($query);
@@ -222,7 +200,6 @@ class sportsmanagementModelCurve extends JModelLegacy
 			// If there is no unplayed match left, take the latest match played
 			if (!isset($match))
 			{
-//				$order = ' ORDER BY m.match_date DESC';
                 $query->clear('order');
                 $query->order('m.match_date DESC');
                 
@@ -320,7 +297,7 @@ class sportsmanagementModelCurve extends JModelLegacy
 	 */
 	function getDivisionId( )
 	{
-		return $this->division;
+		return self::$division;
 	}
 	
 	/**
