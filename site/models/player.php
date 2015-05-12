@@ -81,10 +81,10 @@ class sportsmanagementModelPlayer extends JModelLegacy
         $app = JFactory::getApplication();
         
 		parent::__construct();
-		self::$projectid = JFactory::getApplication()->input->get->get('p', 0, 'INT');
-		self::$personid = JFactory::getApplication()->input->get->get('pid', 0, 'INT');
-		self::$teamplayerid = JFactory::getApplication()->input->get->get('pt', 0, 'INT');
-        self::$cfg_which_database = JFactory::getApplication()->input->get->get('cfg_which_database', 0, 'INT');
+		self::$projectid = JFactory::getApplication()->input->get('p', 0, 'INT');
+		self::$personid = JFactory::getApplication()->input->get('pid', 0, 'INT');
+		self::$teamplayerid = JFactory::getApplication()->input->get('pt', 0, 'INT');
+        self::$cfg_which_database = JFactory::getApplication()->input->get('cfg_which_database', 0, 'INT');
 	}
 
 

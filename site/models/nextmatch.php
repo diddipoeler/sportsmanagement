@@ -79,11 +79,11 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	   // Reference global application object
         $app = JFactory::getApplication();
 		parent::__construct( );
-		self::$projectid = JFactory::getApplication()->input->get->get('p', 0, 'INT' );
-		self::$matchid = JFactory::getApplication()->input->get->get('mid', 0, 'INT' );
-		self::$showpics = JFactory::getApplication()->input->get->get('pics', 0, 'INT' );
-		self::$projectteamid = JFactory::getApplication()->input->get->get('ptid', 0, 'INT' );
-        self::$cfg_which_database = JFactory::getApplication()->input->get->get('cfg_which_database',0, 'INT');
+		self::$projectid = JFactory::getApplication()->input->get('p', 0, 'INT' );
+		self::$matchid = JFactory::getApplication()->input->get('mid', 0, 'INT' );
+		self::$showpics = JFactory::getApplication()->input->get('pics', 0, 'INT' );
+		self::$projectteamid = JFactory::getApplication()->input->get('ptid', 0, 'INT' );
+        self::$cfg_which_database = JFactory::getApplication()->input->get('cfg_which_database',0, 'INT');
         
         sportsmanagementModelProject::$projectid = self::$projectid; 
         

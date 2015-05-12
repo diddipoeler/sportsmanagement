@@ -72,11 +72,11 @@ class sportsmanagementModelMatrix extends JModelLegacy
        
 		parent::__construct( );
 
-		self::$divisionid = (int) $jinput->get->get('division', 0, '');
-		self::$roundid = (int) $jinput->get->get('r', 0, '');
-		self::$projectid = (int) $jinput->get->get('p', 0, '');
+		self::$divisionid = (int) $jinput->get('division', 0, '');
+		self::$roundid = (int) $jinput->get('r', 0, '');
+		self::$projectid = (int) $jinput->get('p', 0, '');
 		sportsmanagementModelProject::$projectid = self::$projectid;
-        self::$cfg_which_database = $jinput->get->get('cfg_which_database', 0 ,'');
+        self::$cfg_which_database = $jinput->get('cfg_which_database', 0 ,'');
 	}
 
 

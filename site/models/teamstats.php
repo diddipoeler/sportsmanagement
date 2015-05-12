@@ -80,11 +80,11 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	{
 		parent::__construct();
 
-		self::$projectid = JFactory::getApplication()->input->get->get('p', 0, 'INT');
-		self::$teamid = JFactory::getApplication()->input->get->get('tid', 0, 'INT');
-        self::$projectteamid = JFactory::getApplication()->input->get->get('ptid', 0, 'INT');
+		self::$projectid = JFactory::getApplication()->input->get('p', 0, 'INT');
+		self::$teamid = JFactory::getApplication()->input->get('tid', 0, 'INT');
+        self::$projectteamid = JFactory::getApplication()->input->get('ptid', 0, 'INT');
 		sportsmanagementModelProject::$projectid = self::$projectid;
-        self::$cfg_which_database = JFactory::getApplication()->input->get->get('cfg_which_database', 0, 'INT');
+        self::$cfg_which_database = JFactory::getApplication()->input->get('cfg_which_database', 0, 'INT');
 		//preload the team;
 		self::getTeam();
 	}

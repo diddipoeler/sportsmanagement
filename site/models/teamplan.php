@@ -75,13 +75,13 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
         // JInput object
         $jinput = $app->input;
 
-		self::$projectid = (int) $jinput->get->get('p',0, '');
-		self::$teamid = (int) $jinput->get->get('tid',0, '');
-        self::$projectteamid = (int) $jinput->get->get('ptid',0, '');
-        self::$pro_teamid = (int) $jinput->get->get('ptid',0, '');
-		self::$divisionid = (int) $jinput->get->get('division',0, '');
-		self::$mode = (int) $jinput->get->get("mode",0, '');
-        self::$cfg_which_database = (int) $jinput->get->get('cfg_which_database',0, '');
+		self::$projectid = (int) $jinput->get('p',0, '');
+		self::$teamid = (int) $jinput->get('tid',0, '');
+        self::$projectteamid = (int) $jinput->get('ptid',0, '');
+        self::$pro_teamid = (int) $jinput->get('ptid',0, '');
+		self::$divisionid = (int) $jinput->get('division',0, '');
+		self::$mode = (int) $jinput->get("mode",0, '');
+        self::$cfg_which_database = (int) $jinput->get('cfg_which_database',0, '');
         parent::__construct();
 	}
 

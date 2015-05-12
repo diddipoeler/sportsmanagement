@@ -421,8 +421,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
         // JInput object
         $jinput = $app->input;
         $rounds = sportsmanagementModelProject::getRoundOptions('ASC',$cfg_which_database);
-        $division = $jinput->get->get('division', 0, '');
-        $roundid = $jinput->get->get('r', 0, '');
+        $division = $jinput->get('division', 0, '');
+        $roundid = $jinput->get('r', 0, '');
 
 		$routeparameter = array();
                 $routeparameter['cfg_which_database'] = $cfg_which_database;
