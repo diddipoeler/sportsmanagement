@@ -41,8 +41,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.model' );
 
-//require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
-
 /**
  * sportsmanagementModelPerson
  * 
@@ -86,12 +84,13 @@ class sportsmanagementModelPerson extends JModelLegacy
   	{
   	    $option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
-        
+        // JInput object
+       $jinput = $app->input;
  		parent::__construct();
-  		self::$projectid = JRequest::getInt( 'p', 0 );
- 		self::$personid	= JRequest::getInt( 'pid', 0 );
- 		$this->teamplayerid	= JRequest::getInt( 'pt', 0 );
-        self::$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+  		self::$projectid = (int) $jinput->get( 'p', 0 );
+ 		self::$personid	= (int) $jinput->get( 'pid', 0 );
+ 		$this->teamplayerid	= (int) $jinput->get( 'pt', 0 );
+        self::$cfg_which_database = (int) $jinput->get('cfg_which_database',0);
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid <br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' personid <br><pre>'.print_r(self::$personid,true).'</pre>'),'');
@@ -206,85 +205,8 @@ $result = $db->execute();
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
-//        $query='	SELECT	p.*,
-//								CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS slug,
-//								pr.id,
-//								pr.notes AS prnotes,
-//								pos.name AS position_name,
-//								pr.picture
-//						FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr
-//						INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON p.id=pr.person_id
-//						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id=pr.project_position_id
-//						LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id=ppos.position_id						
-//						WHERE pr.project_id='.$this->_db->Quote($this->projectid).' 
-//						  AND p.published = 1 
-//						  AND pr.person_id='.$this->_db->Quote($this->personid);
-                            
-//			$query = ' SELECT tp.*, pos.name AS position_name '
-//					. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS tp '
-//							. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = tp.project_position_id '
-//									. ' WHERE tp.project_id = '. $this->_db->Quote($this->projectid)
-//									. '   AND tp.person_id = '. $this->_db->Quote($this->personid)
-//									;
-//									$this->_db->setQuery($query);
-//									$this->_inproject = $this->_db->loadObject();
-		
-        
-        
-        //}
 		return self::$_inproject;
 	}
-
-//	/**
-//	 * sportsmanagementModelPerson::getPositionEventTypes()
-//	 * 
-//	 * @param integer $positionId
-//	 * @return
-//	 */
-//	function getPositionEventTypes( $positionId = 0 )
-//	{
-//	   // Create a new query object.		
-//		$db = JFactory::getDBO();
-//		$query = $db->getQuery(true);
-//        
-//		$result = array();
-//
-//		$query = '	SELECT	pet.*,
-//				et.name,
-//				et.icon
-//
-//				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet
-//				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et ON et.id = pet.eventtype_id
-//				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me ON et.id = me.event_type_id
-//				WHERE me.project_id=' . $this->projectid;
-//
-//		if ( $positionId > 0 )
-//		{
-//			$query .= ' AND pet.position_id = ' . (int)$positionId;
-//		}
-//		$query .= ' ORDER BY pet.ordering';
-//
-//		$this->_db->setQuery( $query );
-//		$result = $this->_db->loadObjectList();
-//
-//		if ( $result )
-//		{
-//			if ( $positionId )
-//			{
-//				return $result;
-//			}
-//			else
-//			{
-//				$posEvents = array();
-//				foreach ( $result as $r )
-//				{
-//					$posEvents[$r->position_id][] = $r;
-//				}
-//				return ( $posEvents );
-//			}
-//		}
-//		return array();
-//	}
 
 
 	/**
@@ -351,33 +273,6 @@ $result = $db->execute();
 		return $contact_id;
 	}
 
-//	function getRounds( $roundcodestart, $roundcodeend )
-//	{
-//		$projectid = $this->projectid;
-//
-//		$thisround = 0;
-//		$query = "	SELECT	id
-//				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_round
-//				WHERE project_id='" . (int)$projectid . "'
-//				AND roundcode>='" . (int)$roundcodestart . "'
-//				AND roundcode<='" . (int)$roundcodeend . "'
-//				ORDER BY round_date_first";
-//
-//		$this->_db->setQuery( $query );
-//		$rows = $this->_db->loadResultArray();
-//
-//		$rounds = array();
-//		if ( count( $rows ) > 0 )
-//		{
-//			$startround =& $this->getTable( 'Round', 'Table' );
-//			$startround->load( $rows[0] );
-//			$rounds[0] = $startround;
-//			$endround =& $this->getTable( 'Round', 'Table' );
-//			$endround->load( end( $rows ) );
-//			$rounds[1] = $endround;
-//		}
-//		return $rounds;
-//	}
 
 	/**
 	 * get all positions the player was assigned too in different projects
@@ -441,20 +336,17 @@ $result = $db->execute();
        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.team_id = tp1.team_id'); 
        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON st1.id = pt.team_id');
 
-        $query->where('me.event_type_id =' . $db->Quote((int) $eventid));
-        $query->where('tp1.person_id = ' . $db->Quote((int) self::$personid));
+        $query->where('me.event_type_id = ' . (int) $eventid);
+        $query->where('tp1.person_id = ' . (int) self::$personid);
                         
 				if ($projectteamid)
 				{
-					//$query .= ' AND pt.id='.$this->_db->Quote((int) $projectteamid);
-                    $query->where('pt.id ='.$db->Quote((int) $projectteamid));
+                    $query->where('pt.id = '.(int) $projectteamid);
 				}
 				if ($projectid)
 				{
-					//$query .= ' AND pt.project_id=' . $this->_db->Quote((int) $projectid);
-                    $query->where('pt.project_id =' . $db->Quote((int) $projectid));
+                    $query->where('pt.project_id =' . (int) $projectid);
 				}
-				//$query .= ' GROUP BY tp.person_id';
                 $query->group('tp1.person_id');
 
 				$db->setQuery($query);
@@ -650,7 +542,7 @@ $result = $db->execute();
        $query->select('tp.projectteam_id');
        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pr'); 
        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.person_id = pr.id');
-       $query->where('pr.user_id ='.$userId);
+       $query->where('pr.user_id = '.$userId);
        $query->where('pr.published = 1');
        $query->where('tp.persontype = 1');
                         
@@ -669,7 +561,7 @@ $result = $db->execute();
         $query->select('tp.projectteam_id');
        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pr'); 
        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.person_id = pr.id');
-       $query->where('pr.user_id ='.$userId);
+       $query->where('pr.user_id = '.$userId);
        $query->where('pr.published = 1');
        $query->where('tp.persontype = 2');
                         
