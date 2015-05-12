@@ -36,6 +36,7 @@
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
+
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.model' );
@@ -87,9 +88,9 @@ class sportsmanagementModelRanking extends JModelLegacy
        $jinput = $app->input;
        $from = 0;
        $to = 0;
-		self::$projectid = (int) $jinput->get->get('p', 0, '');
+		self::$projectid = (int) $jinput->get('p', 0, '');
 		//$this->round = JRequest::getInt("r", $this->current_round);
-        self::$round = $jinput->get->get('r', self::$current_round, '');
+        self::$round = $jinput->get('r', self::$current_round, '');
 		self::$part  = JRequest::getInt("part", 0);
 		//$this->from  = JRequest::getInt('from', 0 );
 		//$this->to	 = JRequest::getInt('to', $this->round);
@@ -98,11 +99,11 @@ class sportsmanagementModelRanking extends JModelLegacy
         
 		self::$type  = $jinput->post->get('type', 0, '');
 		self::$last  = JRequest::getInt('last', 0 );
-        self::$viewName = $jinput->get->get("view");
+        self::$viewName = $jinput->get('view','','STR');
     	self::$selDivision = JRequest::getInt('division', 0 );
         
-        self::$cfg_which_database = $jinput->get->get('cfg_which_database', 0 ,'');
-        self::$season = $jinput->get->get('s', 0 ,'');
+        self::$cfg_which_database = $jinput->get('cfg_which_database', 0 ,'');
+        self::$season = $jinput->get('s', 0 ,'');
         
         sportsmanagementModelProject::$projectid = self::$projectid; 
         
