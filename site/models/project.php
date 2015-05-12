@@ -971,6 +971,7 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
           $query->select('plg.name AS playground_name,plg.short_name AS playground_short_name');
           $query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
           $query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
+          $query->select('CONCAT_WS(\':\',tl.id,t.alias) AS rojectteam_slug');
           $query->select('CONCAT_WS(\':\',d.id,d.alias) AS division_slug');
           $query->select('CONCAT_WS(\':\',c.id,c.alias) AS club_slug');
           
@@ -1143,25 +1144,13 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
         
         $query->select('et.id AS etid,et.name,et.icon');
         $query->select('me.event_type_id AS id');
+        $query->select('CONCAT_WS( \':\', et.id, et.alias ) AS event_slug');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et');
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me ON et.id = me.event_type_id');
 
-//		$query="SELECT	et.id AS etid,
-//							me.event_type_id AS id,
-//							et.id AS etid,
-//							FROM #__".COM_SPORTSMANAGEMENT_TABLE."_eventtype AS et
-//							LEFT JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_match_event AS me ON et.id=me.event_type_id";
 		if ($evid != 0)
 		{
-//			if ($this->projectid > 0)
-//			{
-//				$query .= " AND";
-//			}
-//			else
-//			{
-//				$query .= " WHERE";
-//			}
-//			$query .= " me.event_type_id=".(int)$evid;
+
             $query->where('me.event_type_id = '.(int)$evid);
 		}
         

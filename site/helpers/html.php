@@ -80,7 +80,7 @@ $modaltext .= '<div class="modal-dialog modal-lg">';
 $modaltext .= '<div class="modal-content">';
 $modaltext .= '<div class="modal-header">';
 $modaltext .= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>';
-$modaltext .= '<h4 class="modal-title" id="myLargeModalLabel">'.$text.'</h4>';
+$modaltext .= '<h4 class="modal-title" id="myLargeModalLabel">'.JText::_($text).'</h4>';
 $modaltext .= '</div>';
 $modaltext .= '<div class="modal-body">';
 $modaltext .= '<img src="'.$picture.'" class="img-responsive img-rounded center-block">';

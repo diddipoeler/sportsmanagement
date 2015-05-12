@@ -54,13 +54,13 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
 	<tr class="sectiontableheader">
 		<th class="rank"><?php echo JText::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_RANK'); ?></th>
 
-		<?php if ($this->config['show_picture_thumb'] == 1): ?>
+		<?php if ( $this->config['show_picture_thumb'] ): ?>
 		<th class="td_c">&nbsp;</th>
 		<?php endif; ?>
 
 		<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_PLAYER_NAME'); ?></th>
 
-		<?php if($this->config['show_nation'] == 1): ?>
+		<?php if( $this->config['show_nation'] ): ?>
 		<th class="td_c">&nbsp;</th>
 		<?php endif; ?>
 
@@ -84,13 +84,14 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
 	<?php
 	if ( isset($this->eventranking[$rows->id]) && count($this->eventranking[$rows->id]) > 0)
 	{
-		$k=0;
-		$lastrank=0;
+		$k = 0;
+        $counter = 0;
+		$lastrank = 0;
 		foreach($this->eventranking[$rows->id] as $row)
 		{
 			if ($lastrank == $row->rank)
 			{
-				$rank='-';
+				$rank = '-';
 			}
 			else
 			{
@@ -98,11 +99,6 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
 			}
 			$lastrank = $row->rank;
 
-//			$class=$this->config['style_class2'];
-//			if ($k==0)
-//			{
-//				$class=$this->config['style_class1'];
-//			}
 			$favStyle = '';
 			$isFavTeam = in_array($row->tid,$this->favteams);
 			$highlightFavTeam = $this->config['highlight_fav'] == 1 && $isFavTeam;
@@ -126,7 +122,7 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
 	<tr class=""<?php echo $favStyle; ?>>
 		<td class="rank"><?php echo $rank; ?></td>
 		<?php $playerName = sportsmanagementHelper::formatName(null, $row->fname, $row->nname, $row->lname, $this->config['name_format']); ?>
-		<?php if ($this->config['show_picture_thumb']==1): ?>
+		<?php if ( $this->config['show_picture_thumb'] ): ?>
 		<td class="td_c playerpic">
 		<?php
  		$picture = isset($row->teamplayerpic) ? $row->teamplayerpic : null;
@@ -138,35 +134,24 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
  		{
  			$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
  		}
-//		echo sportsmanagementHelper::getPictureThumb($picture, $playerName,
-//												$this->config['player_picture_width'],
-//												$this->config['player_picture_height']);
-		?>
-        
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $playerName;?>" data-toggle="modal" data-target="#pl<?php echo $row->pid;?>">
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $playerName, array('title' => $playerName,'class' => "img-rounded",'width' => $this->config['player_picture_width'] ));      
-?>
-</a>
+		
+ echo sportsmanagementHelperHtml::getBootstrapModalImage('evplayer' . $row->pid, COM_SPORTSMANAGEMENT_PICTURE_SERVER . $picture, $playerName, $this->config['player_picture_width'])        
+        ?>
 
-<div class="modal fade" id="pl<?php echo $row->pid;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-</div>
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $playerName, array('title' => $playerName,'class' => "img-rounded" ));      
-?>
-</div>        
-        
-        
 		</td>
 		<?php endif; ?>
 
 		<td class="td_l playername" width="30%">
 		<?php			
-			if ($this->config['link_to_player'] == 1)
+			if ( $this->config['link_to_player'] )
 			{
-				$link=sportsmanagementHelperRoute::getPlayerRoute($this->project->id, $row->tid, $row->pid);
+			 $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['tid'] = $row->team_slug;
+$routeparameter['pid'] = $row->person_slug;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
 				echo JHtml::link($link, $playerName);
 			}
 			else
@@ -176,20 +161,26 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $playerName, arr
 		?>
 		</td>
 
-		<?php if ($this->config['show_nation']==1): ?>
+		<?php if ( $this->config['show_nation'] ): ?>
 		<td class="td_c playercountry"><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
 		<?php endif; ?>
 
 		<td class="td_l playerteam" width="30%">
 			<?php
-			$team=$this->teams[$row->tid];
-			if (($this->config['link_to_team']==1) &&
+			$team = $this->teams[$row->tid];
+			if (( $this->config['link_to_team'] ) &&
 				($this->project->id > 0) && ($row->tid > 0)) {
-				$link = sportsmanagementHelperRoute::getTeamInfoRoute($this->project->id, $row->tid);
+				    $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['tid'] = $row->team_slug;
+$routeparameter['ptid'] = $row->projectteam_slug;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
 			} else {
 				$link = null;
 			} 
-			$teamName = sportsmanagementHelper::formatTeamName($team,"t".$row->tid,$this->config, $highlightFavTeam, $link);
+			$teamName = sportsmanagementHelper::formatTeamName($team,'e'.$rows->id.'c'.$counter.'t'.$row->tid,$this->config, $highlightFavTeam, $link);
 			echo $teamName;
 			?>
 		</td>
@@ -201,6 +192,7 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $playerName, arr
 	</tr>
 	<?php
 		$k=(1-$k);
+        $counter++;
 		}
 	}
 	?>
@@ -209,7 +201,16 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $playerName, arr
 <?php if ($this->multiple_events == 1):?>
 <div class="fulltablelink">
 <?php 
-echo JHtml::link($link=sportsmanagementHelperRoute::getEventsRankingRoute($this->project->id, (isset($this->division->id) ? $this->division->id : 0), $this->teamid, $rows->id, (isset($this->matchid) ? $this->matchid : 0)), JText::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_MORE')); ?>
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['division'] = (isset($this->division->id) ? $this->division->id : 0);
+$routeparameter['tid'] = $this->teamid;
+$routeparameter['evid'] = $rows->event_slug;
+$routeparameter['mid'] = (isset($this->matchid) ? $this->matchid : 0);
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('eventsranking',$routeparameter);
+echo JHtml::link($link, JText::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_MORE')); ?>
 </div>
 <?php else: ?>
 <div class="pageslinks">

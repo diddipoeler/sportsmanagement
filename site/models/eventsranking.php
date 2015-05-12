@@ -42,8 +42,6 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-//require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
-
 /**
  * sportsmanagementModelEventsRanking
  * 
@@ -78,11 +76,11 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
         $jinput = $app->input;
         
 		parent::__construct();
-		self::$projectid = $jinput->getInt('p',0);
-		self::$divisionid = $jinput->getInt( 'division', 0 );
-		self::$teamid = $jinput->getInt( 'tid', 0 );
-		self::setEventid($jinput->getVar('evid', '0'));
-		self::$matchid = $jinput->getInt('mid',0);
+		self::$projectid = $jinput->get('p',0,'INT');
+		self::$divisionid = $jinput->get( 'division', 0,'INT' );
+		self::$teamid = $jinput->get( 'tid', 0 ,'INT');
+		self::setEventid($jinput->get('evid', '0','INT'));
+		self::$matchid = $jinput->get('mid',0,'INT');
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName());
 		$defaultLimit = self::$eventid != 0 ? $config['max_events'] : $config['count_events'];
 		self::$limit = $jinput->getInt('limit',$defaultLimit);
@@ -202,41 +200,26 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 	{
 	   $app = JFactory::getApplication();
     $option = JRequest::getCmd('option');
-        // Create a new query object.		
+         //Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
        
        $query->select('et.id as etid,me.event_type_id as id,et.*');
-       $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype as et ');
-       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event as me ON et.id=me.event_type_id ');
-       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m ON m.id=me.match_id ');
-       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round as r ON m.round_id=r.id ');
-       
-//		$query=	 ' SELECT	et.id as etid,me.event_type_id as id,et.* '
-//				.' FROM #__joomleague_eventtype as et '
-//				.' INNER JOIN #__joomleague_match_event as me ON et.id=me.event_type_id '
-//				.' INNER JOIN #__joomleague_match as m ON m.id=me.match_id '
-//				.' INNER JOIN #__joomleague_round as r ON m.round_id=r.id ';
+       $query->select('CONCAT_WS( \':\', et.id, et.alias ) AS event_slug');
+       $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype as et');
+       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event as me ON et.id = me.event_type_id');
+       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m ON m.id = me.match_id');
+       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round as r ON m.round_id = r.id');
                 
 		if (self::$projectid > 0)
 		{
-			//$query .= " WHERE r.project_id=".$this->projectid;
 		$query->where('r.project_id = ' . self::$projectid );
         }
 		if (self::$eventid != 0)
 		{
-//			if ($this->projectid > 0)
-//			{
-//				$query .= " AND";
-//			}
-//			else
-//			{
-//				$query .= " WHERE";
-//			}
             $query->where("me.event_type_id IN (".implode(",", self::$eventid).")");
-			//$query .= " me.event_type_id IN (".implode(",", $this->eventid).")";
 		}
-		//$query .= " ORDER BY et.ordering";
+
 		$query->order('et.ordering');
         
         $db->setQuery($query);
@@ -276,38 +259,23 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st.team_id');
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl ON tp.person_id = pl.id');
             
-            /*
-			$query=	 ' SELECT	COUNT(DISTINCT(teamplayer_id)) as count_player'
-					.' FROM #__joomleague_match_event AS me '
-					.' INNER JOIN #__joomleague_team_player AS tp ON tp.id=me.teamplayer_id '
-					.' INNER JOIN #__joomleague_person pl ON tp.person_id=pl.id '
-					.' INNER JOIN #__joomleague_project_team AS pt ON pt.id=tp.projectteam_id '
-					.' INNER JOIN #__joomleague_team AS t ON t.id=pt.team_id '
-					.' WHERE me.event_type_id IN('.implode("," ,$eventids).")"
-					.'   AND pl.published = 1 '
-					;
-            */        
 			$query->where('me.event_type_id IN('.implode("," ,$eventids).')' );
             $query->where('pl.published = 1');
             
             if (self::$projectid > 0)
 			{
-				//$query .= " AND pt.project_id=".$this->projectid;
                 $query->where('pt.project_id = ' . self::$projectid );
 			}
 			if (self::$divisionid > 0)
 			{
-				//$query .= " AND pt.division_id=".$this->divisionid;
                 $query->where('pt.division_id = ' . self::$divisionid );
 			}
 			if (self::$teamid > 0)
 			{
-				//$query .= " AND pt.team_id = ".$this->teamid;
                 $query->where('st.team_id = ' . self::$teamid );
 			}
 			if (self::$matchid > 0)
 			{
-				//$query .= " AND me.match_id=".$this->matchid;
                 $query->where('me.match_id = ' . self::$matchid );
 			}
 			
@@ -339,28 +307,11 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
-       
-       /*
-		$query=	 ' SELECT	SUM(me.event_sum) as p,'
-				.' pl.firstname AS fname,'
-				.' pl.nickname AS nname,'
-				.' pl.lastname AS lname,'
-				.' pl.country,'
-				.' pl.id AS pid,'
-				.' pl.picture,'
-				.' tp.picture AS teamplayerpic,'
-				.' t.id AS tid,'
-				.' t.name AS tname '
-				.' FROM #__joomleague_match_event AS me '
-				.' INNER JOIN #__joomleague_team_player AS tp ON tp.id=me.teamplayer_id '
-				.' INNER JOIN #__joomleague_person pl ON tp.person_id=pl.id '
-				.' INNER JOIN #__joomleague_project_team AS pt ON pt.id=tp.projectteam_id '
-				.' INNER JOIN #__joomleague_team AS t ON t.id=pt.team_id '
-				.' WHERE me.event_type_id='.$eventtype_id
-				.' AND pl.published = 1 '
-				;
-                */
+
         $query->select('SUM(me.event_sum) as p,pl.firstname AS fname,pl.nickname AS nname,pl.lastname AS lname,pl.country,pl.id AS pid,pl.picture,tp.picture AS teamplayerpic,t.id AS tid,t.name AS tname');
+        $query->select('CONCAT_WS( \':\', pl.id, pl.alias ) AS person_slug');
+        $query->select('CONCAT_WS( \':\', t.id, t.alias ) AS team_slug');
+        $query->select('CONCAT_WS( \':\', pt.id, t.alias ) AS projectteam_slug');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me ');
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON me.teamplayer_id = tp.id');
             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id');  
@@ -373,26 +324,21 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
                     
 		if (self::$projectid > 0)
 			{
-				//$query .= " AND pt.project_id=".$this->projectid;
                 $query->where('pt.project_id = ' . self::$projectid );
 			}
 			if (self::$divisionid > 0)
 			{
-				//$query .= " AND pt.division_id=".$this->divisionid;
                 $query->where('pt.division_id = ' . self::$divisionid );
 			}
 			if (self::$teamid > 0)
 			{
-				//$query .= " AND pt.team_id = ".$this->teamid;
                 $query->where('st.team_id = ' . self::$teamid );
 			}
 			if (self::$matchid > 0)
 			{
-				//$query .= " AND me.match_id=".$this->matchid;
                 $query->where('me.match_id = ' . self::$matchid );
 			}
             
-		//$query .= " GROUP BY me.teamplayer_id ORDER BY p $order, me.match_id";
 		$query->group('me.teamplayer_id');
         $query->order('me.match_id,p '.$order);
         
@@ -428,7 +374,7 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 	function getEventRankings($limit, $limitstart=0, $order=null)
 	{
 		$order = ($order ? $order : $this->order);
-		$eventtypes=$this->getEventTypes();
+		$eventtypes = self::getEventTypes();
 		if (array_keys($eventtypes))
 		{
 			foreach (array_keys($eventtypes) AS $eventkey)

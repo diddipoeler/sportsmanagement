@@ -90,6 +90,11 @@ $jinput = $app->input;
 		$this->assignRef('nickname',$nickname);
 		$this->assign('teamPlayers',$model->getTeamPlayers($model::$cfg_which_database));
         
+        if ( !isset($this->config['show_players_layout']) )
+        {
+            $this->config['show_players_layout'] = 'no_tabs';
+        }
+        
         if ( isset($this->overallconfig['person_events']) )
         {
         // alles ok    
