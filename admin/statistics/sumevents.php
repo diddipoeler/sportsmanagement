@@ -72,48 +72,7 @@ class SMStatisticSumevents extends SMStatistic
 		parent::__construct();
 	}
 	
-//	function getSids()
-//	{
-//		$params = SMStatistic::getParams();
-//		//$stat_ids = explode(',', $params->get('stat_ids'));
-//        $stat_ids = $params->get('stat_ids');
-//		if (!count($stat_ids)) {
-//			JError::raiseWarning(0, get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
-//			return(array(0));
-//		}
-//				
-//		$db = &JFactory::getDBO();
-//		$sids = array();
-//		foreach ($stat_ids as $s) {
-//			$sids[] = (int)$s;
-//		}		
-//		return $sids;
-//	}
-	
-//	function getQuotedSids()
-//	{
-//	   $app = JFactory::getApplication();
-//        $option = JRequest::getCmd('option');
-//        
-//		$params = SMStatistic::getParams();
-//        
-//        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
-//        
-//		//$stat_ids = explode(',', $params->get('stat_ids'));
-//        $stat_ids = $params->get('stat_ids');
-//		if (!count($stat_ids)) {
-//			JError::raiseWarning(0, get_class($this).' '.__FUNCTION__.' '.__LINE__.' '.JText::sprintf('STAT %s/%s WRONG CONFIGURATION', $this->_name, $this->id));
-//			return(array(0));
-//		}
-//				
-//		$db = JFactory::getDBO();
-//		$sids = array();
-//		foreach ($stat_ids as $s) {
-//			$sids[] = $db->Quote($s);
-//		}		
-//		return $sids;
-//	}
-	
+
 	/**
 	 * SMStatisticSumevents::getMatchPlayerStat()
 	 * 
@@ -156,13 +115,6 @@ class SMStatisticSumevents extends SMStatistic
         {
 			$quoted_tpids[] = $db->Quote($tpid);
 		}
-		
-//		$query = ' SELECT SUM(ms.event_sum) AS value, ms.match_id '
-//		       . ' FROM #__joomleague_match_event AS ms '
-//		       . ' WHERE ms.teamplayer_id IN ('. implode(',', $quoted_tpids) .')'
-//		       . '   AND ms.event_type_id IN ('. implode(',', $sids) .')'
-//		       . ' GROUP BY ms.match_id '
-//		       ;
         
         $query->select('SUM(ms.event_sum) AS value, ms.match_id');       
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS ms ');
@@ -272,46 +224,6 @@ class SMStatisticSumevents extends SMStatistic
 							  . ' p.firstname, p.nickname, p.lastname, p.picture, p.country,'
 							  . ' st.team_id, pt.picture AS projectteam_picture,'
 							  . ' t.picture AS team_picture, t.name AS team_name, t.short_name AS team_short_name';
-
-
-
-
-/*
-		$query_core->select($query_select_count);
-        $query_core->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp');
-        $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON p.id = tp.person_id ');
-        $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-        $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON st.team_id = t.id');
-        $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me ON me.teamplayer_id = tp.id AND me.event_type_id IN ('. implode(',', $sids) .')');
-        $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = me.match_id AND m.published = 1');
-        $query_core->where('pt.project_id = ' . $project_id);
-        $query_core->where('p.published = 1');
-        
-//        $query_core	= ' FROM #__joomleague_team_player AS tp'
-//					. ' INNER JOIN #__joomleague_person AS p ON p.id = tp.person_id'
-//					. ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id'
-//					. ' INNER JOIN #__joomleague_team AS t ON pt.team_id = t.id'
-//					. ' INNER JOIN #__joomleague_match_event AS me ON me.teamplayer_id = tp.id'
-//					. '   AND me.event_type_id IN ('. implode(',', $sids) .')'
-//					. ' INNER JOIN #__joomleague_match AS m ON m.id = me.match_id'
-//					. '   AND m.published = 1'
-//					. ' WHERE pt.project_id = '. $db->Quote($project_id)
-//					. '   AND p.published = 1 ';
-		if ($division_id != 0)
-		{
-			//$query_core .= '   AND pt.division_id = '. $db->Quote($division_id);
-            $query_core->where('pt.division_id = ' . $division_id);
-		}
-		if ($team_id != 0)
-		{
-			//$query_core .= '   AND pt.team_id = ' . $db->Quote($team_id);
-            $query_core->where('st.team_id = ' . $team_id);
-		}
-        */
-//		$query_end_details	= ' GROUP BY tp.id '
-//							. ' ORDER BY total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).', tp.id';
-
 		
         $query_core	= SMStatistic::getPlayersRankingStatisticQuery($project_id, $division_id, $team_id, $sids, $query_select_count,'event');
         
