@@ -1735,7 +1735,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
             }
             
         if(!isset($team->projectteamid)) return "";
-		$projectteamid = $team->projectteamid;
+		$projectteamid = $team->rojectteam_slug;
 		$teamname      = $team->name;
 		$teamid        = $team->team_id;
 		$teamSlug      = (isset($team->team_slug) ? $team->team_slug : $teamid);
@@ -1751,7 +1751,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
        $routeparameter['cfg_which_database'] = $cfg_which_database;
        $routeparameter['p'] = $projectSlug;
        $routeparameter['tid'] = $teamSlug;
-       $routeparameter['ttid'] = $projectteamid;
+       $routeparameter['ptid'] = $projectteamid;
        
 			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('roster',$routeparameter);
 			$title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_ROSTER_LINK').'&nbsp;'.$teamname;
@@ -1872,6 +1872,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 	 */
 	public static function formatTeamName($team,$containerprefix,&$config,$isfav=0,$link=null,$cfg_which_database = 0)
 	{
+	   $app = JFactory::getApplication();
+       
 		$output			= '';
 		$desc			= '';
 
@@ -1966,6 +1968,8 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 		{
 			$output = JHtml::link($link, $output);
 		}
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' output<br><pre>'.print_r($output,true).'</pre>'),'');
 
 		return $output;
 	}
