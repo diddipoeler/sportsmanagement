@@ -38,6 +38,8 @@
 */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
+
 ?>
 <script>
 function findSWF(movieName) {
@@ -99,6 +101,7 @@ function reload_curve_chart_<?php echo $division->id; ?>() {
 	document.forms['curveform<?php echo $division->id; ?>'].tid1.value = document.getElementById('tid1_<?php echo $division->id; ?>').options[document.getElementById('tid1_<?php echo $division->id; ?>').selectedIndex].value;
 	document.forms['curveform<?php echo $division->id; ?>'].tid2.value = document.getElementById('tid2_<?php echo $division->id; ?>').options[document.getElementById('tid2_<?php echo $division->id; ?>').selectedIndex].value;
 	x = tmp.reload(baseurl+reloadstring);
+//    alert(reloadstring);
 }
 </script>
 

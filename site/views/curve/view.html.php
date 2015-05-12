@@ -36,11 +36,12 @@
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
+
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 
-require_once(JPATH_SITE.DS.JSM_PATH.DS."assets".DS."classes".DS."open-flash-chart".DS."open-flash-chart.php" );
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'assets'.DS.'classes'.DS.'open-flash-chart'.DS.'open-flash-chart.php' );
 
 /**
  * sportsmanagementViewCurve
@@ -74,12 +75,12 @@ class sportsmanagementViewCurve extends JViewLegacy
 		$js = $this->baseurl . '/components/'.$option.'/assets/js/swfobject.js';
 		$document->addScript($js);
 
-		$division	= $jinput->getInt('division', 0);
+		$division = $jinput->getInt('division', 0);
 
 		$model = $this->getModel();
 		$rankingconfig = sportsmanagementModelProject::getTemplateConfig( "ranking",$model::$cfg_which_database );
-		$flashconfig   = sportsmanagementModelProject::getTemplateConfig( "flash",$model::$cfg_which_database );
-		$config        = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
+		$flashconfig = sportsmanagementModelProject::getTemplateConfig( "flash",$model::$cfg_which_database );
+		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 
 		$this->assign( 'project', sportsmanagementModelProject::getProject($model::$cfg_which_database) );
 
@@ -155,8 +156,8 @@ class sportsmanagementViewCurve extends JViewLegacy
 			$this->assignRef('divisions',$divisions );
 			$this->assign('division',$model->getDivision($division) );
 			$this->assign('favteams',sportsmanagementModelProject::getFavTeams($model::$cfg_which_database) );
-			$this->assign('team1',$model->getTeam1() );
-			$this->assign('team2',$model->getTeam2() );
+			$this->assign('team1',$model->getTeam1($division) );
+			$this->assign('team2',$model->getTeam2($division) );
 			$this->assign('allteams',sportsmanagementModelProject::getTeams($division,'name',$model::$cfg_which_database) );
 			$this->assignRef('team1select',$team1select );
 			$this->assignRef('team2select',$team2select );
@@ -185,14 +186,14 @@ class sportsmanagementViewCurve extends JViewLegacy
         $jinput = $app->input;
 	   $option = $jinput->getCmd('option');
         
-		$model 			= $this->getModel();
-		$rounds			= sportsmanagementModelProject::getRounds('ASC',$model::$cfg_which_database);
-		$round_labels	= array();
+		$model = $this->getModel();
+		$rounds	= sportsmanagementModelProject::getRounds('ASC',$model::$cfg_which_database);
+		$round_labels = array();
 		foreach ($rounds as $r) 
         {
 			$round_labels[] = $r->name;
 		}
-		//$data		= $this->get('Data');
+
 		$divisions	= $this->divisions;
 
 		//create a line

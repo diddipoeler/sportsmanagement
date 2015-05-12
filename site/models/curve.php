@@ -319,8 +319,7 @@ class sportsmanagementModelCurve extends JModelLegacy
         	
 		$rankinghelper = JSMRanking::getInstance($project,self::$cfg_which_database);
 		$rankinghelper->setProjectId( $project->id,self::$cfg_which_database );
-		//$mdlRounds = JModelLegacy::getInstance("Rounds", "sportsmanagementModel");
-		//$mdlRounds->setProjectId($project->id);
+
         sportsmanagementModelRounds::$_project_id = $project->id;
 		$firstRound = sportsmanagementModelRounds::getFirstRound($project->id,self::$cfg_which_database);
 		$firstRoundId = $firstRound['id'];

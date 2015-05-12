@@ -1,11 +1,65 @@
-<?php defined( '_JEXEC' ) or die( 'Restricted access' );
+<?php 
+/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
+* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
+* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License f?r weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
+
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 
-require_once( JLG_PATH_SITE.DS."assets".DS."classes".DS."open-flash-chart".DS."open-flash-chart.php" );
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'assets'.DS.'classes'.DS.'open-flash-chart'.DS.'open-flash-chart.php' );
 
-class JoomleagueViewCurve extends JLGView
+/**
+ * sportsmanagementViewCurve
+ * 
+ * @package 
+ * @author abcde
+ * @copyright 2015
+ * @version $Id$
+ * @access public
+ */
+class sportsmanagementViewCurve extends JViewLegacy
 {
+	/**
+	 * sportsmanagementViewCurve::display()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function display($tpl = null)
 	{
 		$option = JRequest::getCmd('option');
@@ -18,29 +72,29 @@ class JoomleagueViewCurve extends JLGView
 		$js = $this->baseurl . '/components/'.$option.'/assets/js/swfobject.js';
 		$document->addScript($js);
 
-		$division	= JRequest::getInt('division', 0);
+		$division = JRequest::getInt('division', 0);
 
 		$model = $this->getModel();
-		$rankingconfig = $model->getTemplateConfig( "ranking" );
-		$flashconfig   = $model->getTemplateConfig( "flash" );
-		$config        = $model->getTemplateConfig($this->getName());
+		$rankingconfig = sportsmanagementModelProject::getTemplateConfig( "ranking",$model::$cfg_which_database );
+		$flashconfig = sportsmanagementModelProject::getTemplateConfig( "flash",$model::$cfg_which_database );
+		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 
-		$this->assignRef( 'project', $model->getProject() );
+		$this->assignRef('project', sportsmanagementModelProject::getProject($model::$cfg_which_database) );
 
 		if ( isset( $this->project ) )
 		{
-			$this->assignRef( 'overallconfig', $model->getOverallConfig() );
+			$this->assignRef('overallconfig',sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database) );
 			if ( !isset( $this->overallconfig['seperator'] ) )
 			{
 				$this->overallconfig['seperator'] = ":";
 			}
-			$this->assignRef( 'config', $config );
-			$this->assignRef( 'model', $model);
+			$this->assignRef('config',$config );
+			$this->assignRef('model',$model);
 			
-			$this->assignRef( 'colors',          $model->getColors($rankingconfig['colors']) );
-			$this->assignRef( 'division',        $model->getDivision($division));
-			$this->assignRef( 'team1',           $model->getTeam1($division) );
-			$this->assignRef( 'team2',           $model->getTeam2($division) );
+			$this->assignRef('colors',sportsmanagementModelProject::getColors($rankingconfig['colors'],$model::$cfg_which_database) );
+			$this->assignRef('division',$model->getDivision($division));
+			$this->assignRef('team1',$model->getTeam1($division) );
+			$this->assignRef('team2',$model->getTeam2($division) );
 			
 			$this->_setChartdata(array_merge($flashconfig, $rankingconfig));
 		}
@@ -54,13 +108,13 @@ class JoomleagueViewCurve extends JLGView
 	 */
 	function _setChartdata($config)
 	{
-		$model 			= $this->getModel();
-		$rounds			= $this->get('Rounds');
-		$round_labels	= array();
+		$model = $this->getModel();
+		$rounds	= sportsmanagementModelProject::getRounds('ASC',$model::$cfg_which_database);
+		$round_labels = array();
 		foreach ($rounds as $r) {
 			$round_labels[] = $r->name;
 		}
-		$division	=& $this->get('division');
+		$division	= $this->get('division');
 		$data = $model->getDataByDivision($division->id);
 		//create a line
 		$length = (count($rounds)-0.5);
@@ -137,7 +191,7 @@ class JoomleagueViewCurve extends JLGView
 		$x->set_labels($xlabels);
 		$x->set_colours($config['x_axis_colour'], $config['x_axis_colour_inner']);
 		$chart->set_x_axis( $x );
-		$x_legend = new x_legend( JText::_('COM_JOOMLEAGUE_CURVE_ROUNDS') );
+		$x_legend = new x_legend( JText::_('COM_SPORTSMANAGEMENT_CURVE_ROUNDS') );
 		$x_legend->set_style( '{font-size: 15px; color: #778877}' );
 		$chart->set_x_legend( $x_legend );
 
@@ -145,7 +199,7 @@ class JoomleagueViewCurve extends JLGView
 		$y->set_range( count($data), 1, -1);
 		$y->set_colours($config['x_axis_colour'], $config['x_axis_colour_inner']);
 		$chart->set_y_axis( $y );
-		$y_legend = new y_legend( JText::_('COM_JOOMLEAGUE_CURVE_RANK') );
+		$y_legend = new y_legend( JText::_('COM_SPORTSMANAGEMENT_CURVE_RANK') );
 		$y_legend->set_style( '{font-size: 15px; color: #778877}' );
 		$chart->set_y_legend( $y_legend );
 		
@@ -154,6 +208,15 @@ class JoomleagueViewCurve extends JLGView
 	}
 }
 
+/**
+ * hline()
+ * 
+ * @param mixed $color
+ * @param mixed $length
+ * @param mixed $ypoint
+ * @param mixed $linewidth
+ * @return
+ */
 function hline($color, $length, $ypoint, $linewidth)
 {
 	$hline = new shape( $color );
