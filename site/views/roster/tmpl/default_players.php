@@ -58,9 +58,9 @@ defined('_JEXEC') or die('Restricted access');
 // Show team-players as defined
 if (!empty($this->rows))
 {
-	$k=0;
-	$position='';
-	$totalEvents=array();
+	$k = 0;
+	$position = '';
+	$totalEvents = array();
 
 	// Layout of the columns in the table
 	//  1. Position number  (optional : $this->config['show_player_numbers'])
@@ -360,7 +360,6 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,
        $routeparameter['tid'] = $this->team->slug;
        $routeparameter['pid'] = $row->person_slug;
 		
-//			JHtml::link(sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter),$personName)
 			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
 			echo JHtml::link($link,'<span class="playername">'.$playerName.'</span>');
 		}

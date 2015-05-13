@@ -143,8 +143,7 @@ if (!empty($css))
 
 
 ?>
-<!-- <div class="joomleague"> -->
-<div class="">
+<div class="row">
 	<?php 
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {

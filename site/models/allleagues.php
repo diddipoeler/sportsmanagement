@@ -204,8 +204,6 @@ public function getStart()
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        //$search	= $this->getState('filter.search');
-        //$search_nation	= $this->getState('filter.search_nation');
         
         // Create a new query object.
 		$db		= $this->getDbo();
@@ -214,19 +212,9 @@ public function getStart()
 		
         // Select some fields
 		$query->select('v.id,v.name,v.picture,v.country');
-//        $query->select('CASE WHEN CHAR_LENGTH( v.alias ) THEN CONCAT_WS( \':\', v.id, v.alias ) ELSE v.id END AS slug');
-//        $query->select('CASE WHEN CHAR_LENGTH( p.alias ) THEN CONCAT_WS( \':\', p.id, p.alias ) ELSE p.id END AS projectslug');
         // From table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS v');
-//        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.club_id = v.id');
-//        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = t.id');
-//        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-//        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id');
-        
-//        // Join over the users for the checked out user.
-//		$query->select('uc.name AS editor');
-//		$query->join('LEFT', '#__users AS uc ON uc.id = v.checked_out');
-        
+      
         
         if ($this->getState('filter.search'))
 		{
@@ -234,7 +222,6 @@ public function getStart()
         }
         if ($this->getState('filter.search_nation'))
 		{
-        //$query->where("v.country = '".$search_nation."'");
         $query->where('v.country LIKE '.$db->Quote(''.$this->getState('filter.search_nation').''));
         }
         

@@ -581,20 +581,14 @@ class sportsmanagementModelPlayer extends JModelLegacy
 	 * @param mixed $teamplayer_id
 	 * @return
 	 */
-	public static function getInOutStats($project_id = 0, $projectteam_id = 0, $teamplayer_id = 0, $game_regular_time = 90, $match_id = 0,$cfg_which_database = 0)
+	public static function getInOutStats($project_id = 0, $projectteam_id = 0, $teamplayer_id = 0, $game_regular_time = 90, $match_id = 0,$cfg_which_database = 0,$team_id = 0,$person_id = 0)
 	{
 	   $app = JFactory::getApplication();
     $option = JRequest::getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
 	   $query = $db->getQuery(true);
-		
-//       if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-//       {
-//       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
-//       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' projectteam_id<br><pre>'.print_r($projectteam_id,true).'</pre>'),'');
-//       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' teamplayer_id<br><pre>'.print_r($teamplayer_id,true).'</pre>'),'');
-//       }
+	
        
        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
@@ -606,23 +600,39 @@ class sportsmanagementModelPlayer extends JModelLegacy
        
        
        $query->select('m.id AS mid, mp.came_in, mp.out, mp.teamplayer_id, mp.in_for, mp.in_out_time');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m'); 
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp ON mp.match_id = m.id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt1.team_id'); 
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 ON st2.id = pt2.team_id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt1.project_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp1 ON ( tp1.id = mp.teamplayer_id OR tp1.id = mp.in_for)');
+        $query->from('#__sportsmanagement_match AS m'); 
+        $query->join('INNER','#__sportsmanagement_match_player AS mp ON mp.match_id = m.id');
+        $query->join('INNER','#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id'); 
+        $query->join('INNER','#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id');
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt1.project_id ');
+        $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp1 ON ( tp1.id = mp.teamplayer_id OR tp1.id = mp.in_for)');
         
+        if ( $team_id )
+        {
+            $query->where('( st1.team_id = '.(int)$team_id.' OR st2.team_id = '.(int)$team_id.' )');
+        }
+        if ( $person_id )
+        {
+            $query->where('tp1.person_id = '.(int)$person_id);
+        }
         if ( $match_id )
         {
-            $query->where('m.id='.$db->Quote((int)$match_id));
+            $query->where('m.id = '.(int)$match_id);
         }
-        
-        $query->where('tp1.id='.$db->Quote((int)$teamplayer_id));
-        $query->where('( pt1.project_id='.$db->Quote((int)$project_id).' OR pt2.project_id='.$db->Quote((int)$project_id).' )');
-        $query->where('( pt1.id = '.$db->Quote((int)$projectteam_id).' OR pt2.id = '.$db->Quote((int)$projectteam_id).' )');
+        if ( $teamplayer_id )
+        {
+        $query->where('tp1.id = '.(int)$teamplayer_id);
+        }
+        if ( $project_id )
+        {
+        $query->where('( pt1.project_id = '.(int)$project_id.' OR pt2.project_id = '.(int)$project_id.' )');
+        }
+        if ( $projectteam_id )
+        {
+        $query->where('( pt1.id = '.(int)$projectteam_id.' OR pt2.id = '.(int)$projectteam_id.' )');
+        }
         $query->where('m.published = 1');
         $query->where('p.published = 1');
        

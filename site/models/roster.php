@@ -251,22 +251,22 @@ class sportsmanagementModelRoster extends JModelLegacy
         $query->select('ppos.position_id,ppos.id as pposid');
         $query->select('CONCAT_WS(\':\',pro.id,pro.alias) AS project_slug');
         $query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id');    
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pr ON tp.person_id = pr.id');
+        $query->from('#__sportsmanagement_season_team_person_id AS tp ');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id');    
+        $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+        $query->join('INNER','#__sportsmanagement_person AS pr ON tp.person_id = pr.id');
         $query->join('INNER','#__sportsmanagement_project AS pro ON pro.id = pt.project_id'); 
         $query->join('INNER','#__sportsmanagement_team AS t ON t.id = st.team_id');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = tp.project_position_id');
+        $query->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id = tp.project_position_id');
         switch ( $persontype )
         {
             case 1:
-            $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');
+            $query->join('LEFT','#__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
             break;
             case 2:
             $query->select('posparent.name AS parentname');
-            $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');
-            $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS posparent ON pos.parent_id = posparent.id');
+            $query->join('LEFT','#__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
+            $query->join('LEFT','#__sportsmanagement_position AS posparent ON pos.parent_id = posparent.id');
             break;
         }
         
