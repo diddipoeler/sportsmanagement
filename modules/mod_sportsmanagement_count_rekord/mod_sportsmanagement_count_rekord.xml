@@ -42,9 +42,9 @@ addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>      	
-<field name="jsm_stat_spielpaarungen" type="radio" default="1" label="SHOW MATCHES" description="SHOW MATCHES DESC">
-<option value="0">No</option>
-<option value="1">Yes</option>
+<field name="jsm_stat_spielpaarungen" type="radio" default="1" label="SHOW_MATCHES" description="SHOW_MATCHES_DESC">
+<option value="0">JNO</option>
+<option value="1">JYES</option>
 </field>
 
 	<field 	name="jsm_stat_paarungen" type="text" default="10000000" 

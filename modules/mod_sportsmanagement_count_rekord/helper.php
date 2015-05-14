@@ -47,9 +47,9 @@ class modJSMStatistikRekordHelper
 
 if ( $params->get('jsm_stat_spielpaarungen'))
 {		
-$query  = '	SELECT count(*) as total
-FROM #__sportsmanagement_match
-';
+$query  =	'	SELECT count(*) as total
+			FROM #__sportsmanagement_match
+			';
 
 $db->setQuery( $query );
 $anzahl  = $db->loadResult();
@@ -61,9 +61,10 @@ $temp->image  = 'modules/mod_sportsmagement_count_rekord/images/matches.png';
 $temp->anzahl  = $anzahl;
 $temp->anzahlbis  = $params->get('jsm_stat_paarungen');
 $temp->anzahldiff  = $params->get('jsm_stat_paarungen') - $anzahl;
-$temp->text  = JText::sprintf( 'SHOW MATCHES DIFF',"<strong>".number_format($temp->anzahldiff,0, ",", ".")."</strong>","<strong>".number_format($temp->anzahlbis,0, ",", ".")."</strong>" );
+$temp->text  = JText::sprintf( 'SHOW_MATCHES_DIFF',"<strong>".number_format($temp->anzahldiff,0, ",", ".")."</strong>","<strong>".number_format($temp->anzahlbis,0, ",", ".")."</strong>" );
 $result[]  = $temp;
 $result  = array_merge($result);
+unset($temp);
 }
 		
 		
