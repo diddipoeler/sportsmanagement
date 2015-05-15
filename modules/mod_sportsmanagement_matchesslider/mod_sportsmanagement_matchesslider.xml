@@ -65,7 +65,7 @@
       <field name="spacer3" type="spacer" class="text" label=""/>
       <field name="spacer4" type="spacer" class="text" label=""/> 
 			
-			<field type="jsmsubtitle" title="PLG_SYSTEM_JQUERYEASY_FIELD_THEMES_LABEL" />
+			<field type="jsmsubtitle" title="MOD_SPORTSMANAGEMENT_MATCHESSLIDER_FIELD_THEMES_LABEL" />
 			
 			<field 	name="project" 
 			task="projects" 
