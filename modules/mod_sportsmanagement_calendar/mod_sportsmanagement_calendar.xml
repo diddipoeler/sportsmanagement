@@ -114,10 +114,10 @@
 				<field type="spacer">
 				</field>
 
-				<field name="sportsmanagement" type="radio" default="sportsmanagement"
+				<field name="sportsmanagement" type="radio" default="MOD_SPORTSMANAGEMENT_CALENDAR_JSMCONNECTOR"
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_JOOMLEAGUECONNECTORLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_JOOMLEAGUECONNECTORDESC">
 					<option value="sportsmanagement">MOD_SPORTSMANAGEMENT_CALENDAR_NO</option>
-					<option value="sportsmanagement_legacy">sportsmanagement 0.93b</option>
+					<option value="sportsmanagement_legacy">MOD_SPORTSMANAGEMENT_CALENDAR_JSMCONNECTOR</option>
 				</field>
 <!--
 				<field name="custom_prefix" type="text" default=""
@@ -208,10 +208,12 @@
 				<field name="prefix_livescore" type="text" default=""
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_LIVESCPREFIXLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_LIVESCPREFIXDESC">
 				</field>
-
+<!--
 				<field type="spacer" label="Configuration for Events-Components">
 				</field>
-
+-->
+				<field type="jsmmessage" style="info" text="MOD_SPORTSMANAGEMENT_CALENDAR_SPACER_EVENTS" />
+				
 				<field name="jevents" type="radio" default="0" class="radio btn-group btn-group-yesno"
         label="MOD_SPORTSMANAGEMENT_CALENDAR_JEVENTSLBL"
 					description="MOD_SPORTSMANAGEMENT_CALENDAR_JEVENTSDESC">
