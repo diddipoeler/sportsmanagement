@@ -215,19 +215,19 @@
 			<field name="jssor_playorientation" type="radio" default="1" 
 					label="MOD_SPORTSMANAGEMENT_BIRTHDAY_LABEL_JSSOR_PLAYORIENTATION" 
 					description="MOD_SPORTSMANAGEMENT_BIRTHDAY_DESC_JSSOR_PLAYORIENTATION">
-					<option value="1">horizental</option>
-					<option value="2">vertical</option>
-					<option value="5">horizental reverse</option>
-					<option value="6">vertical reverse</option>
+					<option value="1">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_PLAYORIENTATION_HORIZENTAL</option>
+					<option value="2">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_PLAYORIENTATION_VERTICAL</option>
+					<option value="5">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_PLAYORIENTATION_HORIZENTAL_REVERSE</option>
+					<option value="6">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_PLAYORIENTATION_VERTICAL_REVERSE</option>
 				</field>
 				
 			<field name="jssor_captiontransitions" type="radio" default="L-R" 
 					label="MOD_SPORTSMANAGEMENT_BIRTHDAY_LABEL_JSSOR_CAPTIONTRANSITIONS" 
 					description="MOD_SPORTSMANAGEMENT_BIRTHDAY_DESC_JSSOR_CAPTIONTRANSITIONS">
-					<option value="L-R">Left to Right</option>
-					<option value="R-L">Right to Left</option>
-					<option value="T-B">Top to Bottom</option>
-					<option value="B-T">Bottom to Top</option>
+					<option value="L-R">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_CAPTIONTRANSITIONS_LEFT_TO_RIGHT</option>
+					<option value="R-L">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_CAPTIONTRANSITIONS_RIGHT_TO_LEFT</option>
+					<option value="T-B">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_CAPTIONTRANSITIONS_TOP_TO_BOTTOM</option>
+					<option value="B-T">MOD_SPORTSMANAGEMENT_BIRTHDAY_JSSOR_CAPTIONTRANSITIONS_BOTTOM_TO_TOP</option>
 				</field>	
 				
 				
