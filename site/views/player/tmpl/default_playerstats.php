@@ -211,7 +211,7 @@ $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
        $routeparameter['ptid'] = 0;
 					$link2 = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
 					?>
-			<tr class="<?php echo ($k==0)? $this->config['style_class1'] : $this->config['style_class2']; ?>">
+			<tr class="">
 				<td class="td_l" nowrap="nowrap"><?php echo JHtml::link($link1,$player_hist->project_name); ?>
 				</td>
 				<td class="td_l" class="nowrap">

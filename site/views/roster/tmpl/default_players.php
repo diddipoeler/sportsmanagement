@@ -318,7 +318,7 @@ $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
 	foreach ($players as $row)
 	{
 		?>
-	<tr class="<?php echo ($k==0)? $this->config['style_class1'] : $this->config['style_class2']; ?>">
+	<tr class="">
 		<?php
 		$pnr = ($row->position_number !='') ? $row->position_number : '&nbsp;';
 		if ($this->config['show_player_numbers'])

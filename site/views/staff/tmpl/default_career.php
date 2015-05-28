@@ -44,11 +44,11 @@ if (count($this->history) > 0)
 	?>
 	<!-- staff history START -->
 	<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_STAFF_CAREER'); ?></h2>	
-	<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
+	<table class="<?php echo $this->config['table_class'];?>">
 		<tr>
 			<td>
 				<br/>
-				<table id="player_history" width="96%" align="center" cellspacing="0" cellpadding="0" border="0">
+				<table id="player_history" class="<?php echo $this->config['table_class'];?>">
 					<tr class="sectiontableheader"><th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION'); ?></th>
 						<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_SEASON'); ?></th>
 						<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_TEAM'); ?></th>
@@ -74,7 +74,7 @@ if (count($this->history) > 0)
        		$link2 = sportsmanagementHelperRoute::getSportsmanagementRoute('roster',$routeparameter);
 						
 						?>
-						<tr class="<?php echo ($k==0)? $this->config['style_class1'] : $this->config['style_class2']; ?>">
+						<tr class="">
 							<td class="td_l"><?php echo JHtml::link($link1,$station->project_name); ?></td>
 							<td class="td_l"><?php echo $station->season_name; ?></td>
 							<td class="td_l"><?php echo JHtml::link($link2,$station->team_name); ?></td>

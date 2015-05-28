@@ -102,12 +102,7 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
 			}
 			$lastrank  = $row->rank;
 			
-            $class = '';
-//			$class = $this->config['style_class2'];
-//			if ( $k == 0 ) 
-//            {
-//				$class = $this->config['style_class1'];
-//			}
+
 			$favStyle = '';
 			$isFavTeam = in_array($row->team_id,$this->favteams);
 			if ( $this->config['highlight_fav'] == 1 && $isFavTeam && $this->project->fav_team_highlight_type == 1 )
@@ -128,7 +123,7 @@ if ($this->config['show_icons'] == 1) $show_icons = 1;
 
 			?>
 			
-	<tr class="<?php echo $class; ?>"<?php echo $favStyle; ?>>
+	<tr class=""<?php echo $favStyle; ?>>
 		<td class="td_r rank"><?php	echo $rank;	?></td>
 		<?php	$playerName = sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, $this->config["name_format"]);?>
 		<?php	if ( $this->config['show_picture_thumb'] == 1 ): ?>

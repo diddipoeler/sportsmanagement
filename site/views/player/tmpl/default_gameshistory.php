@@ -199,7 +199,7 @@ $teaminfo_away_link = sportsmanagementHelperRoute::getSportsmanagementRoute('tea
 //                echo ' timePlayed<br><pre>'.print_r($timePlayed,true).'</pre><br>';
                 
                 ?>
-				<tr class="<?php echo ($k==0)? $this->config['style_class1'] : $this->config['style_class2']; ?>">
+				<tr class="">
 					<td class="td_l"><?php
 					echo JHtml::link($report_link,strftime($this->config['games_date_format'],strtotime($game->match_date)));
 					?></td>

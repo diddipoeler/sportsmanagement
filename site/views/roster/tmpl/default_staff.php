@@ -131,7 +131,7 @@ if (count($this->stafflist) > 0)
                 //echo 'getTeamPlayers stafflist<br><pre>'.print_r($row,true).'</pre><br>';
                 
 				?>
-			<tr class="<?php echo ($k==0)? $this->config['style_class1'] : $this->config['style_class2']; ?>">
+			<tr class="">
 				<?php
 				if ($this->config['show_player_numbers'])
 				{

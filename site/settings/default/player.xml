@@ -471,17 +471,6 @@
 			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
 			
 		</field>
-<!--		
-		<field 	name="style_class1" type="text" default="sectiontableentry1" 
-				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_ODD" 
-				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STYLE_ODD">
-		</field>
-		
-		<field 	name="style_class2" type="text" default="sectiontableentry2" 
-				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_EVEN" 
-				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STYLE_EVEN">
-		</field>
--->
 		
 	</fieldset>		
 </form>

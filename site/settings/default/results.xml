@@ -462,17 +462,6 @@
   label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS"  
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_ADVANCED_OPTIONS">	
 
-<!--			
-		<field 	name="style_class1" type="text" default="sectiontableentry1" 
-				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_ODD" 
-				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STYLE_ODD">
-		</field>
-		
-		<field 	name="style_class2" type="text" default="sectiontableentry2" 
-				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_EVEN" 
-				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STYLE_EVEN">
-		</field>
--->
 
 <field 	name="table_class" type="list" default="table" 
 		class=""

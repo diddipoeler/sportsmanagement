@@ -41,11 +41,11 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 <!-- Player stats History START -->
 <h2><?php	echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PERSONAL_STATISTICS' );	?></h2>
-<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
+<table class="<?php echo $this->config['table_class'];?>" >
 	<tr>
 		<td>
 			<br/>
-			<table id="stats_history" width="96%" align="center" cellspacing="0" cellpadding="0" border="0">
+			<table id="stats_history" class="<?php echo $this->config['table_class'];?>">
 				<tr class="sectiontableheader">
 					<th class="td_l" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION'); ?></th>
 					<th class="td_l" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_TEAM'); ?></th>
@@ -76,7 +76,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						$model = $this->getModel();
 						$present=$model->getPresenceStats($player_hist->project_id,$player_hist->pid);
 						?>
-						<tr class="<?php echo ($k==0)? $this->config['style_class1'] : $this->config['style_class2']; ?>">
+						<tr class="">
 							<td class="td_l" nowrap="nowrap"><?php
 								echo $player_hist->project_name;
 								# echo " (".$player_hist->project_id.")";

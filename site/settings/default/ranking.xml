@@ -408,21 +408,7 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 			<option value="label label-info">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_LABELS_INFO</option>
 			<option value="label label-inverse">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_LABELS_INVERSE</option>
 		</field>
-		
-<!--    	
-		<field 	name="style_class1" type="text" 
-    default="sectiontableentry1" 
-				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_ODD" 
-				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STYLE_ODD">
-		</field>
-		
-		<field 	name="style_class2" type="text" 
-    default="sectiontableentry2" 
-				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_STYLE_EVEN" 
-				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_STYLE_EVEN">
-		</field>
--->
-		
+	
 		<field 	name="table_text_1" type="text" 
     default="Voll" 
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_TEXT1" 

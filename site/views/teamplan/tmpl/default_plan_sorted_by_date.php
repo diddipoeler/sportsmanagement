@@ -88,15 +88,14 @@ $teamid=JRequest::getInt('tid');
 		$guestteam=$this->teams[$match->projectteam2_id];
 		$guest_projectteam_id=$guestteam->projectteamid;
 
-		$class=($k==0)? $this->config['style_class1'] : $this->config['style_class2'];
 
 		if ($match->team1==$this->favteams)
 		{
-			$highlight="highlight";
+			$highlight = "highlight";
 		}
 		else
 		{
-			$highlight=$class;
+			$highlight = '';
 		}
 
 		if (!empty($this->ptid))

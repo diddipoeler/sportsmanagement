@@ -69,7 +69,7 @@ if (count($this->historyPlayerStaff) > 0)
        		$link2 = sportsmanagementHelperRoute::getSportsmanagementRoute('roster',$routeparameter);
 						
 						?>
-						<tr class="<?php echo ($k==0)? $this->config['style_class1'] : $this->config['style_class2']; ?>">
+						<tr class="">
 							<td class="td_l"><?php echo JHtml::link($link1,$station->project_name); ?></td>
 							<td class="td_l"><?php echo $station->season_name; ?></td>
 							<td class="td_l">

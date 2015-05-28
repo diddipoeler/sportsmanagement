@@ -204,12 +204,9 @@ defined('_JEXEC') or die('Restricted access');
 			$matrix .= '</tr>';
 		}
 
-		//$class = ($k_r % 2 == 0) ? $this->config['style_class1'] : $this->config['style_class2'];
-        $class = '';
-        //echo 'class '.$class.'<br>';
-        
+      
 		$trow = $team_row;
-		$matrix .= '<tr class="' . $class . '">';
+		$matrix .= '<tr class="">';
 		$k_c = 0; //count columns
 
 		foreach ($this->teams as $team_col_id => $team_col) 

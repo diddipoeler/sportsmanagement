@@ -145,11 +145,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 				$i = 0;
 				foreach( $this->matches as $match )
 				{
-//					$this->config['class'] = $this->config['style_class2'];
-//					if ( $k == 0 )
-//					{
-//						$this->config['class'] = $this->config['style_class1'];
-//					}
+
 					if ((isset($match->allowed)) && ($match->allowed))
 					{
 						$this->assignRef('game', $match);

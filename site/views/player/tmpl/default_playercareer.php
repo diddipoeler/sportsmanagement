@@ -80,7 +80,7 @@ if (count($this->historyPlayer) > 0)
                     
 
 						?>
-						<tr class="<?php echo ($k==0)? $this->config['style_class1'] : $this->config['style_class2']; ?>">
+						<tr class="">
 							<td class="td_l">
 							<?php 
 								echo JHtml::link($link1,$station->project_name);

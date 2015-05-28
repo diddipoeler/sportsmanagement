@@ -309,16 +309,13 @@ $nbcols = 0;
 		$guestteam = $this->teams[$match->projectteam2_id];
 		$guest_projectteam_id = $guestteam->projectteamid;
 
-		//$class = ($k==0)? $this->config['style_class1'] : $this->config['style_class2'];
-        $class = '';
-
 		if ( $match->team1 == $this->favteams )
 		{
 			$highlight = "highlight";
 		}
 		else
 		{
-			$highlight = $class;
+			$highlight = '';
 		}
 
 		if (!empty($this->ptid))

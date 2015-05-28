@@ -43,7 +43,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 <h2><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_EVENTS'); ?></h2>		
 
-<table class="eventstable" border="0">
+<table class="table" border="0">
 
 		<thead>
 	        <tr class="sectiontableheader">
@@ -80,7 +80,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 {
                 ?>
                     
-                    <tr class="<?php echo ($k == 0)? $this->config['style_class1'] : $this->config['style_class2']; ?>" id="event-<?php echo $me->event_id; ?>">
+                    <tr class="" id="event-<?php echo $me->event_id; ?>">
                     
                     <?php
                     //Icon
@@ -197,7 +197,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 //echo ' me<br><pre>'.print_r($me,true).'</pre>';        
         ?>
                     
-                    <tr class="<?php echo ($k == 0)? $this->config['style_class1'] : $this->config['style_class2']; ?>" id="event-tpidin<?php echo $me->teamplayer_id; ?>-tpidout<?php echo $me->in_for; ?>">
+                    <tr class="" id="event-tpidin<?php echo $me->teamplayer_id; ?>-tpidout<?php echo $me->in_for; ?>">
                     
                     <?php
                     //Icon
@@ -269,7 +269,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			echo '</tr>';
 			?>
 			
-			 <tr class="<?php echo ($k == 0)? $this->config['style_class1'] : $this->config['style_class2']; ?>" id="event-tpidin<?php echo $me->teamplayer_id; ?>-tpidout<?php echo $me->in_for; ?>">
+			 <tr class="" id="event-tpidin<?php echo $me->teamplayer_id; ?>-tpidout<?php echo $me->in_for; ?>">
 			 <?php
 			echo '<td>&nbsp;</td>';
 			echo '<td class="ecenter">' . $txt_tab_in . '</td>';

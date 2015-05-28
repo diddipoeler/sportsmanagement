@@ -76,7 +76,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 			$mins=(($training->time_end - (3600*$hours)) / 60); $mins=(int)$mins;
 			$endTime=sprintf('%02d',$hours).':'.sprintf('%02d',$mins);
 			?>
-			<tr class="<?php echo ($k==0)? $this->config['style_class1'] : $this->config['style_class2']; ?>">
+			<tr class="">
 				<td><?php echo $this->daysOfWeek[$training->dayofweek]; ?></td>
 				<td><?php echo $startTime; ?></td>
 				<td><?php echo $endTime; ?></td>
@@ -105,7 +105,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<?php if($training->notes != ""):
 		$count_note++;
 		?>
-		<tr class="<?php echo ($k==0)? $this->config['style_class1'] : $this->config['style_class2']; ?>note" >
+		<tr class="" >
 			<td align="right">*<sup><?php echo $count_note; ?></sup></td>
 			<td align="left" colspan="4" ><?php echo $training->notes; ?></td>
 		</tr>

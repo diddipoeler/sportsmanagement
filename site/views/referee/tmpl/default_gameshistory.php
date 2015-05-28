@@ -62,7 +62,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					$report_link=sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug,$game->id);
 					?>
 
-					<tr class="<?php echo ($k==0)? $this->config['style_class1'] : $this->config['style_class2']; ?>">
+					<tr class="">
 						<td><?php
 						echo JHtml::link($report_link,strftime($this->config['games_date_format'],strtotime($game->match_date)));
 						?>

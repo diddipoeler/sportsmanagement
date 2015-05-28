@@ -163,9 +163,8 @@ echo 'this->results<br /><pre>~' . print_r($this->results,true) . '~</pre><br />
 			$matrix .= '</tr>';
 		}
 
-		$class = ($k_r % 2 == 0) ? $this->config['style_class1'] : $this->config['style_class2'];
 		$trow = $team_row;
-		$matrix .= '<tr class="' . $class . '">';
+		$matrix .= '<tr class="">';
 		$k_c = 0; //count columns
 
 		foreach ($this->teams as $team_col_id => $team_col) 
@@ -464,9 +463,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 			$matrix .= '</tr>';
 		}
 
-		$class = ($k_r % 2 == 0) ? $this->config['style_class1'] : $this->config['style_class2'];
 		$trow = $team_row;
-		$matrix .= '<tr class="' . $class . '">';
+		$matrix .= '<tr class="">';
 		$k_c = 0; //count columns
 
 		foreach ($this->teams as $team_col_id => $team_col) 
