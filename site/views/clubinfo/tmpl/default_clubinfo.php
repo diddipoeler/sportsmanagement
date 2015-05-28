@@ -47,10 +47,9 @@ if ( !isset ( $this->club ) )
 }
 else
 {
-    if( $this->config['show_club_info'] == 1)
+    if( $this->config['show_club_info'] )
     {
         ?>
-<!--        <div class="container-fluid"> -->
         <div class="row">
         <div class="col-md-6">
         <?PHP
@@ -58,7 +57,6 @@ else
     else
     {
         ?>
-<!--        <div class="container-fluid"> -->
         <div class="row">
         <div style="text-align:center; width:100%;">
         <?PHP
@@ -73,7 +71,7 @@ else
            			
 		}
 		
-echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo',$picture,$club_emblem_title,$this->config['club_logo_width']);        
+echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo'.$this->club->id,$picture,$club_emblem_title,$this->config['club_logo_width']);        
         
         ?>
 
@@ -85,11 +83,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo',$picture,$clu
 		{
 			$club_trikot_title = str_replace( "%CLUBNAME%", $this->club->name, JText::_( "COM_SPORTSMANAGEMENT_CLUBINFO_TRIKOT_TITLE" ) );
 			$picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.$this->club->logo_small;
-			echo sportsmanagementHelper::getPictureThumb($picture, 
-								$club_emblem_title,
-								20,
-								20,
-								3);				
+			echo sportsmanagementHelper::getPictureThumb($picture,$club_emblem_title,20,20,3);				
 		}
     if ( $this->club->website )
 		{
@@ -106,7 +100,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo',$picture,$clu
 	</div>
     
 	<?php
-        if( $this->config['show_club_info'] == 1 )
+        if( $this->config['show_club_info'] )
         {
         ?>
 	<div class="col-md-6">
@@ -269,7 +263,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo',$picture,$clu
 			<?php
     }        
 
-		if ( ( $this->config['show_playgrounds_of_club'] == 1 ) && ( isset( $this->stadiums ) ) && ( count( $this->stadiums ) > 0 ) )
+		if ( $this->config['show_playgrounds_of_club'] && ( isset( $this->stadiums ) ) && ( count( $this->stadiums ) > 0 ) )
 		{
 			?>
 			<!-- SHOW PLAYGROUNDS - START -->
@@ -301,7 +295,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playground'.$playground
 			<?php
 		}
         
-        if ( $this->config['show_club_kunena_link'] == 1 && $this->club->sb_catid )
+        if ( $this->config['show_club_kunena_link'] && $this->club->sb_catid )
 		{
 		  ?>
 <span class="clubinfo_listing_item">

@@ -296,6 +296,7 @@ class sportsmanagementModelPlayer extends JModelLegacy
 	   $query = $db->getQuery(true);
     
     $query->select('pr.id AS pid,pr.firstname,pr.lastname');
+    $query->select('CONCAT_WS(\':\',pr.id,pr.alias) AS person_slug');
     $query->select('tp.person_id,tp.id AS tpid,tp.project_position_id,tp.market_value');
     $query->select('p.name AS project_name,CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
     $query->select('s.name AS season_name,s.id AS season_id');
@@ -1043,7 +1044,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 			$quoted_tpids = array();
 			foreach ($teamplayers as $teamplayer)
 			{
-				$quoted_tpids[]=$this->_db->Quote($teamplayer->id);
+				$quoted_tpids[] = $this->_db->Quote($teamplayer->id);
 			}
             
             $query->select('SUM(me.event_sum) as value,me.*');
@@ -1054,6 +1055,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 			$db->setQuery($query);
 			$events = $db->loadObjectList();
             
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' events<br><pre>'.print_r($events,true).'</pre>'),'Error');
             
 			foreach ((array) $events as $ev)

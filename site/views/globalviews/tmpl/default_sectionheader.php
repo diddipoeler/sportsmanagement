@@ -407,7 +407,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
     ?>
 <!-- START: Contentheading -->
 <div class="contentpaneopen">
-	<div class="contentheading">
+	<h4>
 		<?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_PAGE_TITLE') . " - " . $this->team->tname;
 		if ( $this->showediticon )
 		{
@@ -427,7 +427,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 			//echo "no permission";
 		}
 		?>
-	</div>
+	</h4>
 </div>
 <!-- END: Contentheading -->
 <?PHP
@@ -436,7 +436,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 ?>
 
 	<div class="contentpaneopen">
-		<div class="contentheading">
+		<h4>
 			<?php
 				echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_TITLE' ) . " " . $this->club->name;
 
@@ -468,7 +468,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
                 
                 }
 			?>
-		</div>
+		</h4>
 	</div>
     <?PHP    
     break;

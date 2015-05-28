@@ -55,7 +55,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 		?>
 <div class="description">
 		<br />
-		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+		<table class="table">
 			<tr class="sectiontableheader">
 				<td>
 					<?php
@@ -65,7 +65,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 			</tr>
 		</table>
 
-		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+		<table class="table">
 			<tr>
 				<td>
 					<?php

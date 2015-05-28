@@ -41,11 +41,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
 <div class="row">
 	<div class="contentpaneopen">
-		<div class="contentheading">
+		<h4>
 			<?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_TEAMS'); ?>
-		</div>
+		</h4>
 	</div>
-	<table>
+	<table class="table">
 	
 	<?php
 	$params=array();

@@ -135,8 +135,9 @@ $result = $db->execute();
         
         $query->select('*');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_trainingdata'); 
-        $query->where('project_id = '. $projectid);  
-        $query->where('project_team_id = '. $projectTeamID);
+        //$query->where('project_id = '. $projectid);  
+        //$query->where('project_team_id = '. $projectTeamID);
+        $query->where('team_id = '. self::$teamid);
         $query->order('dayofweek ASC');
 		
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump'.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');

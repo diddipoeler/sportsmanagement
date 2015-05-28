@@ -49,23 +49,23 @@ if (!isset($this->team))
 }
 else
 {
-	if($this->config['show_club_info'] || $this->config['show_team_info'])
-	{
+
+//	if($this->config['show_club_info'] || $this->config['show_team_info'])
+//	{
 	?>
-<!--        <div class="container-fluid"> -->
-        <div class="row">
-        <div class="col-md-6">
+        <div class="row" id="default_teaminfo">
+        <div class="col-md-6" id="default_teaminfo-left">
         <?PHP
-	}
-	else
-	{
+//	}
+//	else
+//	{
 		 ?>
-<!--        <div class="container-fluid"> -->
-        <div class="row">
-        <div style="text-align:center; width:100%;">
+<!--        <div class="row"> -->
+<!--        <div style="text-align:center; width:100%;"> -->
         <?PHP
-	}
-	//dynamic object property string
+//	}
+	
+    //dynamic object property string
 	$pic = $this->config['show_picture'];
     $picture = $this->team->$pic;
         if ( !JFile::exists(JPATH_SITE.DS.$picture) )
@@ -73,50 +73,21 @@ else
         $picture = sportsmanagementHelper::getDefaultPlaceholder("team");
         } 
         
+echo sportsmanagementHelperHtml::getBootstrapModalImage('teaminfo'.$this->team->id,$picture,$this->team->name,$this->config['team_picture_width']);
 
-	?>
-    
-<a href="#" title="<?php echo $this->team->name;?>" data-toggle="modal" data-target=".teaminfo">
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->team->name, array('title' => $this->team->name,'class' => $this->config['team_picture_style'],'width' => $this->config['team_picture_width'] ));      
-?>
-</a>
-<br />
-<?php 
 if ( $this->team->cr_projectteam_picture )
 {
 echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$this->team->cr_projectteam_picture.'</i>');
 }
-?>
-
-<div id="" style="display: none;" class="modal fade teaminfo" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-lg">
-<div class="modal-content">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-<h4 class="modal-title" id="myLargeModalLabel"><?php echo $this->team->name;?></h4>
-</div>
-<div class="modal-body">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" class="img-responsive img-rounded center-block">
-</div>
-<div class="modal-footer">
-<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_('JLIB_HTML_BEHAVIOR_CLOSE');?> </button>
-</div>
-</div>
-</div>
-</div>
-
-
-   
-
-<?PHP  
+ 
   ?>
 </div>
+<div class="col-md-6" id="default_teaminfo_right">
 	<?php
 	if($this->config['show_club_info'] || $this->config['show_team_info'])
 	{
 		?>
-<div class="col-md-6">
+
 		<?php
 		if ($this->config['show_club_info'])
 		{
@@ -327,5 +298,7 @@ echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$this->team->cr_
     <?PHP
 }
 ?>
+<!-- ende default_teaminfo_right -->
 </div>
+<!-- ende default_teaminfo -->
 </div>

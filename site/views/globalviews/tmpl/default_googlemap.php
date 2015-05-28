@@ -42,9 +42,9 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <div style="width: 100%; float: left">
 	<div class="contentpaneopen">
-		<div class="contentheading">
+		<h4>
 			<?php echo JText::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>
-		</div>
+		</h4>
 	</div>
 <?php
 

@@ -79,11 +79,13 @@ if(count($this->extended->getFieldsets()) > 0)
 				?>
 				
                 <div class="contentpaneopen">
-		<div class="contentheading">
-			<?php echo '&nbsp;' . JText::_($fieldset->name); ?>
-		</div>
+		<h4>
+			<?php 
+            echo JText::_($fieldset->name); 
+            ?>
+		</h4>
 	</div>
-    <div class="row">
+    
     
 				
 				<?php
@@ -93,6 +95,7 @@ if(count($this->extended->getFieldsets()) > 0)
 					if (!empty($value)) // && !$field->backendonly)
 					{
 						?>
+                        <div class="row">
                         <div class="col-xs-6">
                         
                         <strong><?php echo JText::_( $field->label); ?></strong>
@@ -116,12 +119,13 @@ if(count($this->extended->getFieldsets()) > 0)
                         
                         
 						</div>
+                        </div>
 						<?php
 					}
 				}
 				?>
 
-                </div>
+                
                 
 				<br/>
 				<?php

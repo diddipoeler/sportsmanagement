@@ -67,7 +67,7 @@ if (count($this->historyPlayer) > 0)
        $routeparameter['s'] = JRequest::getInt('s',0);
        $routeparameter['p'] = $station->project_slug;
        $routeparameter['tid'] = $station->team_slug;
-       $routeparameter['pid'] = $station->person->slug;
+       $routeparameter['pid'] = $station->person_slug;
             
                     $link1 = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
                      $routeparameter = array();

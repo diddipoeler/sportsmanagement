@@ -43,6 +43,7 @@ defined('_JEXEC') or die('Restricted access');
 //echo 'rows <pre>',print_r($this->rows,true),'</pre>';
 //echo 'playereventstats <pre>',print_r($this->playereventstats,true),'</pre>';
 
+$picture_path_sport_type_name = 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name;
 
 /**
  * das sind alle projektdaten
@@ -176,39 +177,54 @@ if (!empty($this->rows))
 			?>
 		<th class="td_c">&nbsp;</th><?php
 		}
-		if ($this->overallconfig['use_jl_substitution']==1)
+		if ( $this->overallconfig['use_jl_substitution'] )
 		{
-			if ($this->config['show_games_played'])
+			if ( $this->config['show_games_played'] )
 			{ ?>
 		<th class="td_c"><?php
-				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ROSTER_PLAYED');
-				echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/played.png',
-				$imageTitle,array('title'=> $imageTitle,'height'=> 20));
+				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ROSTER_PLAYED');
+                if ( !JFile::exists(JPATH_SITE.DS.$picture_path_sport_type_name.'/played.png') )
+{
+$picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
+}
+				echo JHtml::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
 			<?php 
 			}
-			if ($this->config['show_substitution_stats'])
+			if ( $this->config['show_substitution_stats'] )
 			{ ?>
 		<th class="td_c"><?php
-				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ROSTER_STARTING_LINEUP');
-				echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/startroster.png',
-				$imageTitle,array('title'=> $imageTitle,'height'=> 20));
+				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ROSTER_STARTING_LINEUP');
+                if ( !JFile::exists(JPATH_SITE.DS.$picture_path_sport_type_name.'/startroster.png') )
+{
+$picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
+}
+				echo JHtml::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
 		<th class="td_c"><?php
-				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ROSTER_IN');
-				echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/in.png',
-				$imageTitle,array('title'=> $imageTitle,'height'=> 20));
+				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ROSTER_IN');
+                if ( !JFile::exists(JPATH_SITE.DS.$picture_path_sport_type_name.'/in.png') )
+{
+$picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
+}
+				echo JHtml::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
 		<th class="td_c"><?php
-				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ROSTER_OUT');
-				echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/out.png',
-				$imageTitle,array('title'=> $imageTitle,'height'=> 20));
+				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ROSTER_OUT');
+                if ( !JFile::exists(JPATH_SITE.DS.$picture_path_sport_type_name.'/out.png') )
+{
+$picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
+}
+				echo JHtml::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 20));
 		?></th>
         
         <th class="td_c"><?php
-				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
-				echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/uhr.png',
-				$imageTitle,array('title'=> $imageTitle,'height'=> 11));
+				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
+                if ( !JFile::exists(JPATH_SITE.DS.$picture_path_sport_type_name.'/uhr.png') )
+{
+$picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
+}
+				echo JHtml::image($picture,$imageTitle,array('title'=> $imageTitle,'height'=> 11));
 		?></th>
         
 			<?php
@@ -235,8 +251,12 @@ if (!empty($this->rows))
                             //echo $iconPath.'<br>';
 							if (!strpos(' '.$iconPath,'/'))
 							{
-								$iconPath='images/com_sportsmanagement/database/events/'.$iconPath;
+								$iconPath = 'images/com_sportsmanagement/database/events/'.$iconPath;
 							}
+                            if ( !JFile::exists(JPATH_SITE.DS.$iconPath) )
+{
+$iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
+}
 							$eventtype_header = JHtml::image(	$iconPath,
 																JText::_($eventtype->name),
 																array(	'title'=> JText::_($eventtype->name),

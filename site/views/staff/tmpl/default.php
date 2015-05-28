@@ -44,50 +44,58 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<div class="joomleague">
+<div class="row" id="staff">
 	<?php
 	echo $this->loadTemplate('projectheading');
 
-	if ($this->config['show_sectionheader']==1)
+	if ( $this->config['show_sectionheader'] )
 	{
 		echo $this->loadTemplate('sectionheader');
 	}
 
-	// General part of person view START
-	if ($this->config['show_info']==1)
+/**
+ * diddipoeler
+ * aufbau der templates
+ */
+  $this->output = array();
+
+	if ( $this->config['show_info'] )
 	{
 		echo $this->loadTemplate('info');
 	}
 
-	if (($this->config['show_extended'])==1)
+	if ( $this->config['show_extended'] )
 	{
 		echo $this->loadTemplate('extended');
 	}
 
-	if ($this->config['show_status']==1)
+	if ( $this->config['show_status'] )
 	{
 		echo $this->loadTemplate('status');
 	}
 
-	if ($this->config['show_description']==1)
+	if ( $this->config['show_description'] )
 	{
 		echo $this->loadTemplate('description');
 	}
 	// General part of person view END
 
-	if ($this->config['show_careerstats']==1)
+	if ( $this->config['show_careerstats'] )
 	{
 		echo $this->loadTemplate('careerstats');
 	}
 
-	if ($this->config['show_career']==1)
+	if ( $this->config['show_career'] )
 	{
 		echo $this->loadTemplate('career');
 	}
 
-	echo "<div>";
+	?>
+    <div class="row" id="backbuttonfooter">
+    <?PHP
 		echo $this->loadTemplate('backbutton');
 		echo $this->loadTemplate('footer');
-	echo "</div>";
+	
 	?>
+</div>
 </div>

@@ -47,7 +47,7 @@ $this->kmlpath = JURI::root().'tmp'.DS.$this->club->id.'-club.kml';
 $this->kmlfile = $this->club->id.'-club.kml';
 
 ?>
-<div class="row">
+<div class="row" id="clubinfo">
 
 	<?php 
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -69,25 +69,27 @@ echo $this->loadTemplate('debug');
  */
   $this->output = array();
   
-  if (($this->config['show_extra_fields'])==1)
+  if ( $this->config['show_extra_fields'] )
 	{
 	$this->output['COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS'] = 'extrafields';
 	}
     
-    if (($this->config['show_extended'])==1)
+    if ( $this->config['show_extended'] )
 	{
 	$this->output['COM_SPORTSMANAGEMENT_TABS_EXTENDED'] = 'extended';
 	}
     
-    if (($this->config['show_maps'])==1 && (JPluginHelper::isEnabled('system', 'plugin_googlemap2') || JPluginHelper::isEnabled('system', 'plugin_googlemap3')) )
+    if ( $this->config['show_maps'] && (JPluginHelper::isEnabled('system', 'plugin_googlemap2') || JPluginHelper::isEnabled('system', 'plugin_googlemap3')) )
 	{ 
         $this->output['COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'] = 'googlemap';
 	}
-    if (($this->config['show_teams_of_club'])==1)
+    
+    if ( $this->config['show_teams_of_club'] )
 	{ 
         $this->output['COM_SPORTSMANAGEMENT_CLUBINFO_TEAMS'] = 'teams';
 	}
-    if (($this->config['show_club_rssfeed']) == 1  )
+    
+    if ( $this->config['show_club_rssfeed'] )
 	{
 		if ( $this->rssfeeditems )
         {
@@ -106,7 +108,7 @@ echo $this->loadTemplate('debug');
 echo $this->loadTemplate($this->config['show_clubinfo_tabs']);
 
 ?>
-<div>
+<div id="backbuttonfooter">
 <?PHP    
 echo $this->loadTemplate('backbutton');
 echo $this->loadTemplate('footer');
@@ -114,4 +116,5 @@ echo $this->loadTemplate('footer');
 </div>
 <?PHP
 	?>
+<!-- ende clubinfo -->    
 </div>

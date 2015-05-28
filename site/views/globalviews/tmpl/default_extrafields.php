@@ -42,12 +42,12 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 <div class="contentpaneopen">
-		<div class="contentheading">
-			<?php echo '&nbsp;' . JText::_('COM_SPORTSMANAGEMENT_EXTRA_FIELDS'); ?>
-		</div>
+		<h4>
+			<?php echo JText::_('COM_SPORTSMANAGEMENT_EXTRA_FIELDS'); ?>
+		</h4>
 	</div>
     
-<div class="row">
+
 
 <?php
 if ( isset($this->extrafields) )
@@ -59,7 +59,7 @@ $field_type = $field->field_type;
 if (!empty($value)) // && !$field->backendonly)
 {
 ?>
-
+<div class="row">
 <div class="col-xs-6">
 <strong><?php echo JText::_( $field->name); ?></strong>
 </div>
@@ -85,7 +85,7 @@ switch ($field_type)
 
 ?>
 </div>
-
+</div>
 <?php
 }
 }
@@ -93,4 +93,3 @@ switch ($field_type)
 ?>
 
 
-</div>

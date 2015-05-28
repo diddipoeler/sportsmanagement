@@ -63,38 +63,10 @@ if ( ( $this->playground->picture ) )
 $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER . sportsmanagementHelper::getDefaultPlaceholder("team");
                 
                 }
-                
+
+echo sportsmanagementHelperHtml::getBootstrapModalImage('playground'.$this->playground->id,$picture,$this->playground->name,$this->config['playground_picture_width'])                
 ?>
-       
 
-<a href="#" title="<?php echo $this->playground->name;?>" data-toggle="modal" data-target=".playground<?php echo $this->playground->id;?>">
-<?PHP
-echo JHtml::image($picture, $this->playground->name, array('title' => $this->playground->name,'class' => "img-rounded",'width' => $this->config['playground_picture_width'] ));      
-?>
-</a>                        
-
-<div id="" style="display: none;" class="modal fade playground<?php echo $this->playground->id;?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-lg">
-<div class="modal-content">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-<h4 class="modal-title" id="myLargeModalLabel"><?php echo $this->playground->name;?></h4>
-</div>
-<div class="modal-body">
-<img src="<?php echo $picture;?>" class="img-responsive img-rounded center-block">
-</div>
-<div class="modal-footer">
-<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_('JLIB_HTML_BEHAVIOR_CLOSE');?> </button>
-</div>
-</div>
-</div>
-</div>
-
-
-
-
-		<?php                
-                ?>
 		</div>
     <?php
 }

@@ -41,12 +41,12 @@ defined('_JEXEC') or die('Restricted access'); ?>
 
 
 
-<fieldset>
-<legend>
-<strong>
+
+<h4>
+
 <?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING'); ?>
-</strong>
-</legend>
+
+</h4>
 
 <?php
 
@@ -59,7 +59,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 		<th class="" nowrap="" style="background:#BDBDBD;"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_START'); ?></th>
 		<th class="" nowrap="" style="background:#BDBDBD;"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_END'); ?></th>
 		<th class="" nowrap="" style="background:#BDBDBD;"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_LOCATION'); ?></th>
-		<th class="" nowrap="" style="background:#BDBDBD;"><?php //echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NOTE'); ?></th>
+		<th class="" nowrap="" style="background:#BDBDBD;"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NOTE'); ?></th>
 	</tr>
 	</thead>
 	<?php

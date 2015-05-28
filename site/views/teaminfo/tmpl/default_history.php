@@ -40,12 +40,12 @@
 defined('_JEXEC') or die('Restricted access'); 
 ?>
 
-<fieldset>
-<legend>
-<strong>
+
+<h4>
+
 <?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_HISTORY'); ?>
-</strong>
-</legend>
+
+</h4>
 
 <table class="<?PHP echo $this->config['table_class']; ?>">
 <thead>

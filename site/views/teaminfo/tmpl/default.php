@@ -46,9 +46,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 ?>
 
-<div class="row">
-<!-- <div class="col-md-12"> -->
-<div class="">
+<div class="row" id="teaminfo">
 	<?php
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
@@ -64,9 +62,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		echo $this->loadTemplate('sectionheader');
 	}
 		
-// ################################################################
-  // diddipoeler
-  // aufbau der templates
+/**
+ * diddipoeler
+ * aufbau der templates
+ */
   $this->output = array();
  if ( $this->config['show_teaminfo'] )
 	{
@@ -80,9 +79,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	
     if ( $this->config['show_extra_fields'] )
 	{
-        $this->output['COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS'] = 'extra_fields';
+        $this->output['COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS'] = 'extrafields';
 	}
-    //fix me css	
+	
 	if ( $this->config['show_extended'] )
 	{
         $this->output['COM_SPORTSMANAGEMENT_TABS_EXTENDED'] = 'extended';
@@ -105,15 +104,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     
 
 echo $this->loadTemplate($this->config['show_teaminfo_tabs']);
-  
-
-		
-	
-    
-    echo "<div>";
+    ?>
+    <div class="row" id="backbuttonfooter">
+    <?PHP
 		echo $this->loadTemplate('backbutton');
 		echo $this->loadTemplate('footer');
-	echo "</div>";
+	
 	?>
 </div>
 </div>
+<!-- </div> -->
