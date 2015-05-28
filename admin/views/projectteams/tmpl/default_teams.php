@@ -60,11 +60,11 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
 			<table class="<?php echo $this->table_data_class; ?>">
 				<thead>
 					<tr>
-						<th width="5"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
-						<th width="20">
+						<th ><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+						<th >
 							<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 						</th>
-						<th width="20">&nbsp;</th>
+						<th >&nbsp;</th>
 						<th>
 							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_TEAMNAME','t.name',$this->sortDirection,$this->sortColumn); ?>
 							<a href="mailto:<?php
@@ -96,13 +96,13 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
 								?>
 							</a>
 						</th>
-                        <th width="10%">
+                        <th >
 						<?php
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_COUNTRY','obj.country',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
 						<th colspan="2"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MANAGE_PERSONNEL'); ?></th>
-						<th>
+						<th >
 							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ADMIN','tl.admin',$this->sortDirection,$this->sortColumn); ?>
 							<a href="mailto:<?php
 											$first_dest=1;
@@ -136,7 +136,7 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
 						if ($this->project->project_type == 'DIVISIONS_LEAGUE')
 						{
 							$cell_count++;
-							?><th>
+							?><th >
 								<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_DIVISION','d.name',$this->sortDirection,$this->sortColumn);
 									echo '<br>'.JHtml::_(	'select.genericlist',
 														$this->lists['divisions'],
@@ -166,13 +166,13 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
                         <th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_IS_IN_SCORE'); ?></th>
                         <th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_USE_FINALLY'); ?></th>
                         
-                        <th width="1%">
+                        <th >
 							<?php echo JHtml::_('grid.sort','STID','st.id',$this->sortDirection,$this->sortColumn); ?>
 						</th>
-						<th width="1%">
+						<th >
 							<?php echo JHtml::_('grid.sort','TID','st.team_id',$this->sortDirection,$this->sortColumn); ?>
 						</th>
-						<th width="1%">
+						<th >
 							<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','tl.id',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 					</tr>
@@ -284,7 +284,9 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
 </a>
 <?PHP
 
-// die möglichkeit bieten, das vereinslogo zu aktualisieren
+/**
+ * die möglichkeit bieten, das vereinslogo zu aktualisieren
+ */
 $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=component&id='.$row->club_id;
 ?>
               
@@ -315,7 +317,9 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 <img src="<?php echo JURI::root().$row->club_logo;?>" alt="<?php echo $imageTitle;?>" width="20" height="20" />
 </a>
 <?PHP 
-// die möglichkeit bieten, das vereinslogo zu aktualisieren
+/**
+ * die möglichkeit bieten, das vereinslogo zu aktualisieren
+ */
 $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=component&id='.$row->club_id;
 ?>
               

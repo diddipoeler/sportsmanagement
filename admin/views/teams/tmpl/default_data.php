@@ -135,7 +135,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					$link = JRoute::_('index.php?option=com_sportsmanagement&task=team.edit&id='.$row->id);
 					$canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                     $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
-                    $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'clubs.', $canCheckin);
+                    $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'teams.', $canCheckin);
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center">
@@ -154,10 +154,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							?>
 							<td class="center">
                             <?php if ($row->checked_out) : ?>
-						<?php echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'clubs.', $canCheckin); ?>
+						<?php echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'teams.', $canCheckin); ?>
 					<?php endif; ?>
 					<?php if ($canEdit) : ?>
-						<a href="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=club.edit&id='.(int) $row->id); ?>">
+						<a href="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=team.edit&id='.(int) $row->id); ?>">
 							<?php echo $this->escape($row->name); ?></a>
 					<?php else : ?>
 							<?php echo $this->escape($row->name); ?>

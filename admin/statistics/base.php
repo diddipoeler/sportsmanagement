@@ -40,9 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-//require_once ( JLG_PATH_ADMIN .DS . 'helpers' . DS . 'jlparameter.php' );
-
-
 /**
  * SMStatistic
  * 
@@ -580,7 +577,9 @@ class SMStatistic extends JObject
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _params<br><pre>'.print_r($this->_params,true).'</pre>'),'');
+    $my_text = ' <br><pre>'.print_r($this->_params,true).'</pre>';    
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _params<br><pre>'.print_r($this->_params,true).'</pre>'),'');
  }
         
 		return $this->_params;
@@ -1160,7 +1159,9 @@ class SMStatistic extends JObject
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sids<br><pre>'.print_r($sids,true).'</pre>'),'');
         }
 
-		$quoted_sids = array();
+		if ( $sids )
+        {
+        $quoted_sids = array();
 		foreach ($sids as $sid) 
         {
 			$quoted_sids[] = $db->Quote($sid);
@@ -1196,10 +1197,13 @@ class SMStatistic extends JObject
 
 		$db->setQuery($query);
 		$res = $db->loadResult();
+        }
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+    $my_text = ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
  }       
         
         
@@ -1300,7 +1304,9 @@ class SMStatistic extends JObject
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+    $my_text = ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        //sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             }
             
 			$res = $db->loadObjectList('person_id');
@@ -1314,7 +1320,9 @@ class SMStatistic extends JObject
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+    $my_text .= ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             }
             
 			$res['totals'] = new stdclass;

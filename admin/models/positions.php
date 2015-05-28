@@ -163,7 +163,7 @@ class sportsmanagementModelPositions extends JModelList
                 
   if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $my_text .= ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        $my_text = ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
   

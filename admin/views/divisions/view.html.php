@@ -62,10 +62,10 @@ class sportsmanagementViewDivisions extends sportsmanagementView
 	public function init ()
 	{
 		$option = JRequest::getCmd('option');
-		$app	= JFactory::getApplication();
-		$db		= JFactory::getDBO();
-		$uri	= JFactory::getURI();
-        $model	= $this->getModel();
+		$app = JFactory::getApplication();
+		$db	= JFactory::getDBO();
+		$uri = JFactory::getURI();
+        $model = $this->getModel();
         
         $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
