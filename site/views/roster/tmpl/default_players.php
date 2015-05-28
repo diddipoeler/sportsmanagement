@@ -639,7 +639,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,
   $meanage = round( $age / $countplayer , 2);
   }
 		?>
-	<tr class='<?php echo ($k==0? 'sectiontableentry1' : 'sectiontableentry2').' totals'; ?>'>
+	<tr class="">
     <td class="td_r" colspan="3"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TOTAL_PLAYERS_MEAN_AGE').' '.$meanage; ?></td>
 		<td class="td_r" colspan="<?php echo $totalcolspan - 3; ?>"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_ROSTER_TOTAL'); ?></b></td>
         <td class="td_r"> : </td>
