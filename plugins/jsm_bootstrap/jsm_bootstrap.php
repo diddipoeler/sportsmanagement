@@ -145,6 +145,7 @@ class PlgSystemjsm_bootstrap extends JPlugin
         // Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();
         $load_bootstrap = $this->params->def('load_bootstrap', 1);
+        $load_bootstrap_css = $this->params->def('load_bootstrap_css', 1);
         $load_bootstrap_version = $this->params->def('load_bootstrap_version', '3.3.4');
         $load_k2css = $this->params->def('load_k2css', 1);
 
@@ -155,12 +156,19 @@ class PlgSystemjsm_bootstrap extends JPlugin
                     //CBootstrap::load();
                     JFactory::getDocument()->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/' .
                         $load_bootstrap_version . '/js/bootstrap.min.js');
+                }
+            }
+            
+            if ($load_bootstrap_css) {
+                if (!$app->isAdmin()) {
+                    //CBootstrap::load();
                     JFactory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/' .
                         $load_bootstrap_version . '/css/bootstrap.min.css');
                     JFactory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/' .
                         $load_bootstrap_version . '/css/bootstrap-theme.min.css');
                 }
             }
+            
             if ($load_k2css) {
                 /**
                  * wenn man die k2 komponente installiert hat, kann es zu problemen im frontend kommen.
@@ -191,12 +199,19 @@ class PlgSystemjsm_bootstrap extends JPlugin
                     //CBootstrap::load();
                     JFactory::getDocument()->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/' .
                         $load_bootstrap_version . '/js/bootstrap.min.js');
+                }
+            }
+            
+            if ($load_bootstrap_css) {
+                if (!$app->isAdmin()) {
+                    //CBootstrap::load();
                     JFactory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/' .
                         $load_bootstrap_version . '/css/bootstrap.min.css');
                     JFactory::getDocument()->addStyleSheet('https://maxcdn.bootstrapcdn.com/bootstrap/' .
                         $load_bootstrap_version . '/css/bootstrap-theme.min.css');
                 }
             }
+            
             if ($load_k2css) {
                 /**
                  * wenn man die k2 komponente installiert hat, kann es zu problemen im frontend kommen.
