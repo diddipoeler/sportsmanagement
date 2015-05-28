@@ -43,7 +43,12 @@ defined('_JEXEC') or die('Restricted access');
 //echo 'rows <pre>',print_r($this->rows,true),'</pre>';
 //echo 'playereventstats <pre>',print_r($this->playereventstats,true),'</pre>';
 
+$picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
+if ( $this->project->fs_sport_type_name )
+{
 $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name;
+}
+
 
 /**
  * das sind alle projektdaten
