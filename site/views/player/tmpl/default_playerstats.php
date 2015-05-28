@@ -60,13 +60,13 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events/'.$
 				<th class="td_l" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_TEAM'); ?></th>
 				<th class="td_c"><?php
 				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PERSON_PLAYED');
-                if ( !JFile::exists(JPATH_SITE.DS.$picture_path_sport_type_name.'/played.png') )
+                $picture = JPATH_SITE.DS.$picture_path_sport_type_name.'/played.png';
+                if ( !JFile::exists($picture) )
 {
 $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 }
 
-				echo JHtml::image(	$picture,
-				$imageTitle,array(' title' => $imageTitle));
+				echo JHtml::image($picture,$imageTitle,array(' title' => $imageTitle));
 				?></th>
 				<?php
 				if ($this->config['show_substitution_stats'])
