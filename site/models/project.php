@@ -913,7 +913,7 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON st.team_id = t.id ');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON t.club_id = c.id  ');
         // Where
-        $query->where('pt.id = '. $db->Quote($projectteamid));
+        $query->where('pt.id = '. $projectteamid );
          
 		$db->setQuery($query);
         
