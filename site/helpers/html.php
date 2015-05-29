@@ -76,7 +76,7 @@ $modaltext = '<a href="#" title="'.$text.'" data-toggle="modal" data-target=".'.
 $modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';
 $modaltext .= '</a>';
 $modaltext .= '<div id="" style="display: none;" class="modal fade '.$target.'" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">';
-$modaltext .= '<div class="modal-dialog modal-lg">';
+$modaltext .= '<div class="modal-dialog modal-sm">';
 $modaltext .= '<div class="modal-content">';
 $modaltext .= '<div class="modal-header">';
 $modaltext .= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>';

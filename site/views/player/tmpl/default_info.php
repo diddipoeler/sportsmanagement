@@ -61,36 +61,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			$picture = $this->person->picture;
 		}
 	
+echo sportsmanagementHelperHtml::getBootstrapModalImage('playerinfo'.$this->person->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$imgTitle,$this->config['picture_width']);
 
-    ?>
-
-<a href="#" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target=".person<?php echo $this->person->id;?>">
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $imgTitle, array('title' => $imgTitle,'class' => "img-rounded",'width' => $this->config['picture_width'] ));      
-?>
-</a>
-
-<div id="" style="display: none;" class="modal fade person<?php echo $this->person->id;?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-lg">
-<div class="modal-content">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-<h4 class="modal-title" id="myLargeModalLabel"><?php echo $imgTitle;?></h4>
-</div>
-<div class="modal-body">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" class="img-responsive img-rounded center-block">
-</div>
-<div class="modal-footer">
-<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_('JLIB_HTML_BEHAVIOR_CLOSE');?> </button>
-</div>
-</div>
-</div>
-</div>    
-
-
-<?PHP                    
-		?>
-		<?php
 	}
 	?>
 

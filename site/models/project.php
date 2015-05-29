@@ -318,11 +318,15 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
         //$result = $db->loadObject();
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' call_function<br><pre>'.print_r($call_function,true).'</pre>'),'Error');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'Error');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project<br><pre>'.print_r(self::$_project,true).'</pre>'),'Error');
 
     
 			self::$_project = $db->loadObject();
             
+            if ( self::$_project)
+            {
             self::$projectslug = self::$_project->slug;
+            }
             
             if ( !self::$seasonid )
             {

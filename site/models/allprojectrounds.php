@@ -93,9 +93,14 @@ class sportsmanagementModelallprojectrounds extends JModelLegacy
 	 */
 	function __construct( )
 	{
-		$app = JFactory::getApplication();
-    $this->projectid = JRequest::getInt( "p", 0 );
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+    //$this->projectid = JRequest::getInt( "p", 0 );
+    $this->projectid = $jinput->request->get('p', 0, 'INT');
     sportsmanagementModelProject::$projectid = $this->projectid;
+    sportsmanagementModelProject::$projectslug = $this->projectid;
 
 //    $menu = JMenu::getInstance('site');
 //        $item = $menu->getActive();
@@ -111,10 +116,30 @@ class sportsmanagementModelallprojectrounds extends JModelLegacy
 //$newparams = $registry->toString('ini');
 //$newparams = $registry->toArray();
 //echo "<b>menue newparams</b><pre>" . print_r($newparams, true) . "</pre>";  
-foreach ($_REQUEST as $key => $value ) {
-            
-            $this->_params[$key] = $value;
-        }
+
+
+//foreach ($_REQUEST as $key => $value ) {
+//            
+//            //$this->_params[$key] = $value;
+//        }
+
+$this->_params['Itemid'] = $jinput->request->get('Itemid', 0, 'INT');
+$this->_params['show_columns'] = $jinput->request->get('show_columns', 0, 'INT');
+$this->_params['show_sectionheader'] = $jinput->request->get('show_sectionheader', 0, 'INT');
+
+$this->_params['show_firstroster'] = $jinput->request->get('show_firstroster', 0, 'INT');
+$this->_params['show_firstsubst'] = $jinput->request->get('show_firstsubst', 0, 'INT');
+$this->_params['show_firstevents'] = $jinput->request->get('show_firstevents', 0, 'INT');
+$this->_params['show_secondroster'] = $jinput->request->get('show_secondroster', 0, 'INT');
+$this->_params['show_secondsubst'] = $jinput->request->get('show_secondsubst', 0, 'INT');
+$this->_params['show_secondevents'] = $jinput->request->get('show_secondevents', 0, 'INT');
+
+$this->_params['s'] = $jinput->request->get('s', 0, 'INT');
+$this->_params['p'] = $jinput->request->get('p', 0, 'INT');
+$this->_params['table_class'] = $jinput->request->get('table_class', 'table', 'STR');
+
+$this->_params['view'] = $jinput->request->get('view', 'allprojectrounds', 'STR');
+$this->_params['option'] = $jinput->request->get('option', 'com_sportsmanagement', 'STR');
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'params<pre>'.print_r($this->_params,true).'</pre>' ),'Error');
 
@@ -130,10 +155,7 @@ foreach ($_REQUEST as $key => $value ) {
 		parent::__construct( );
 	}
 
-//   function getProjectID()
-//   {
-//   echo 'project ->'.$this->projectid.'<br>';
-//   }
+
   
   /**
    * sportsmanagementModelallprojectrounds::getProjectMatches()
@@ -176,37 +198,7 @@ foreach ($_REQUEST as $key => $value ) {
   $query->where('r.project_id ='. (int)$this->projectid);
   $query->group('m.id ');
   $query->order('r.roundcode ASC,m.match_date ASC,m.match_number');
-
-//		$query_SELECT='
-//		SELECT	,
-//			,
-//			,
-//			,
-//			,
-//			,
-//			,
-//			';
-//
-//		$query_FROM='
-//		FROM #__joomleague_match AS m
-//			INNER JOIN #__joomleague_round AS r ON m.round_id=r.id
-//			LEFT JOIN #__joomleague_project_team AS tt1 ON m.projectteam1_id=tt1.id
-//			LEFT JOIN #__joomleague_project_team AS tt2 ON m.projectteam2_id=tt2.id
-
-//			LEFT JOIN #__joomleague_team AS t1 ON t1.id=tt1.team_id
-//			LEFT JOIN #__joomleague_team AS t2 ON t2.id=tt2.team_id
-//			LEFT JOIN #__joomleague_division AS d1 ON tt1.division_id=d1.id
-
-//			LEFT JOIN #__joomleague_division AS d2 ON tt2.division_id=d2.id
-//			LEFT JOIN #__joomleague_playground AS playground ON playground.id=m.playground_id';
-//
-//		$query_WHERE	= ' WHERE m.published=1 
-//							   
-//							  AND r.project_id='.(int)$this->projectid;
-//		$query_END		= ' GROUP BY m.id ORDER BY r.roundcode ASC,m.match_date ASC,m.match_number';
-//				
-//		$query=$query_SELECT.$query_FROM.$query_WHERE.$query_END;
-		
+	
 		
 		$db->setQuery($query);
     if (!$result = $db->loadObjectList()) 
@@ -214,8 +206,6 @@ foreach ($_REQUEST as $key => $value ) {
 			JError::raiseWarning(0, $db->getErrorMsg());
 		}
 
-// 		echo '<br /><pre>~'.print_r(count($result),true).'~</pre><br />';
-// 		echo '<br /><pre>~'.print_r($result,true).'~</pre><br />';
 		$this->result = $result;
 		return $result;
 		
@@ -241,17 +231,11 @@ foreach ($_REQUEST as $key => $value ) {
     $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team ');
     $query->where('project_id ='. $this->projectid);
     $query->where('team_id ='. $value);
-    
-//  $query = '	SELECT id
-//FROM #__joomleague_project_team
-//WHERE project_id = ' . $this->projectid .' and team_id = '.$value;
 
 $db->setQuery( $query );
 $this->ProjectTeams[$value] = $db->loadResult();
   
   }
-
-//   echo '<br />ProjectTeams<pre>~'.print_r($this->ProjectTeams,true).'~</pre><br />';
   
   return $this->ProjectTeams;
   }
@@ -311,9 +295,7 @@ $this->ProjectTeams[$value] = $db->loadResult();
     $query->order('(mp.in_out_time+0)');
 
 		$db->setQuery($query);
-		//echo($this->_db->getQuery());
 		$result = $db->loadObjectList();
-		//return $result;
 		
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
         
@@ -423,35 +405,7 @@ if ( !$res )
     $query->where('p.published = 1');
     
     $query->order('mp.ordering, stp1.jerseynumber, p.lastname');
-    
-//		$query=' SELECT	,'
-//		      .' ,'
-//		      .' ,'
-//		      .' ,'
-//		      .' '
-//		      .' ,'
-//		      .' '
-//		      .' pt.id as ptid,'
-//		      .' mp.teamplayer_id,'
-//		      .' mp.out,'
-//		      .' mp.in_out_time,'
-//		      .' ,'
-//			  .' ,'
-//		      .' CASE WHEN CHAR_LENGTH(t.alias) THEN CONCAT_WS(\':\',t.id,t.alias) ELSE t.id END AS team_slug,'
-//		      .' CASE WHEN CHAR_LENGTH(p.alias) THEN CONCAT_WS(\':\',p.id,p.alias) ELSE p.id END AS person_slug '
-//		      .' FROM #__joomleague_match_player AS mp '
-//		      .' INNER JOIN	#__joomleague_team_player AS tp ON tp.id=mp.teamplayer_id '
-//		      .' INNER JOIN	#__joomleague_project_team AS pt ON pt.id=tp.projectteam_id '
-//		      .' INNER JOIN	#__joomleague_team AS t ON t.id=pt.team_id '
-//		      .' INNER JOIN	#__joomleague_person AS p ON tp.person_id=p.id '
-//		      .' LEFT JOIN #__joomleague_project_position AS ppos ON ppos.id=mp.project_position_id '
-//		      .' LEFT JOIN #__joomleague_position AS pos ON ppos.position_id=pos.id '
-//		      .' WHERE mp.match_id='.(int)$this->matchid
-//		      .' AND mp.came_in=0 '
-//		      .' AND pt.id='.$this->projectteam_id
-//		      .' AND p.published = 1 '
-//		      .' ORDER BY mp.ordering, tp.jerseynumber, p.lastname ';
-              
+            
               
 		$db->setQuery($query);
 		$matchplayers = $db->loadObjectList();
@@ -466,8 +420,7 @@ if ( !$res )
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'Error');
         }
 		
-// 		echo '<br />matchplayers<pre>~'.print_r($matchplayers,true).'~</pre><br />';
-		
+	
 		foreach ( $matchplayers as $row )
 		{
         $query->clear();
@@ -475,16 +428,9 @@ if ( !$res )
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player');
         $query->where('match_id = ' . (int)$this->matchid);
         $query->where('in_for = ' . (int)$row->teamplayer_id);
-        
-//    $query = '	SELECT	in_out_time
-//					FROM #__joomleague_match_player
-//					WHERE match_id = ' . (int)$this->matchid . '
-//					AND in_for = ' . (int)$row->teamplayer_id;
-
 		$db->setQuery( $query );
-		$row->in_out_time = $db->loadResult();
-      
-    
+    	$row->in_out_time = $db->loadResult();
+
     
     if ( $row->in_out_time )
     {
@@ -549,7 +495,7 @@ if ( !$res )
   
   $lfdnumber = 0;
   $htmlcontent = array();
-  $content = '<table width="100%" border="4" rules="none">';
+  $content = '<table class="'.$this->_params['table_class'].'">';
   
   for($a=0; $a < $countrows;$a++)
   {
@@ -560,8 +506,8 @@ if ( !$res )
   $secondcolumn = $a + $countrows;
   
   $htmlcontent[$a]['header'] = '';
-  $htmlcontent[$a]['first'] = '<table width="100%" border="0" rules="rows">';
-  $htmlcontent[$a]['second'] = '<table width="100%" border="0" rules="rows">';
+  $htmlcontent[$a]['first'] = '<table class="'.$this->_params['table_class'].'">';
+  $htmlcontent[$a]['second'] = '<table class="'.$this->_params['table_class'].'">';
   $htmlcontent[$a]['header'] = '<thead><tr><th colspan="" >'.$rounds[$a]->name.'</th><th colspan="" >'.$rounds[$secondcolumn]->name.'</th></tr></thead>';
 
   
@@ -669,7 +615,7 @@ if ( !$res )
   {
   // nur eine spalte
   $htmlcontent[$a]['header'] = '';
-  $htmlcontent[$a]['first'] = '<table width="100%" border="0" rules="rows">';
+  $htmlcontent[$a]['first'] = '<table class="'.$this->_params['table_class'].'">';
   $htmlcontent[$a]['header'] = '<thead><tr><th colspan="" >'.$rounds[$a]->name.'</th></tr></thead>';
   $roundcode = $a + 1;
   

@@ -70,37 +70,40 @@ class sportsmanagementViewallprojectrounds extends JViewLegacy
     // Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
 		$uri = JFactory::getURI();	
-        $this->tableclass = $jinput->getVar('table_class', 'table','request','string');
+        $model = $this->getModel();
+        
+        //$this->tableclass = $jinput->getVar('table_class', 'table','request','string');
+        $this->tableclass = $jinput->request->get('table_class', 'table', 'STR');
         $option = $jinput->getCmd('option');
         $starttime = microtime(); 	
 				
-		$model = $this->getModel();
+		
 		//$config	= sportsmanagementModelProject::getTemplateConfig($this->getName());
 		//$config	= $model->getAllRoundsParams();
     $project = sportsmanagementModelProject::getProject();
 		
-		$this->assignRef('project', $project);
+		$this->assignRef('project',$project);
 		
 //     $mdlProject = JModelLegacy::getInstance("Project", "JoomleagueModel");
 		
-    $this->assignRef('projectid', $this->project->id );
+    $this->assignRef('projectid',$this->project->id );
     
-    $this->assign('projectmatches', $model->getProjectMatches() );
+    $this->assign('projectmatches',$model->getProjectMatches() );
     
-    $this->assign('rounds',			sportsmanagementModelProject::getRounds());
+    $this->assign('rounds',sportsmanagementModelProject::getRounds());
     
-    $this->assign('overallconfig',	sportsmanagementModelProject::getOverallConfig());
- 		$this->assign('config',			array_merge($this->overallconfig, $model->_params));
+    $this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig());
+ 		$this->assign('config',array_merge($this->overallconfig, $model->_params));
 		//$this->assignRef('config', $model->_params);
     	
 //     echo '<br />getRounds<pre>~'.print_r($this->rounds,true).'~</pre><br />';
     
-    $this->assign('favteams',		sportsmanagementModelProject::getFavTeams($this->projectid));
+    $this->assign('favteams',sportsmanagementModelProject::getFavTeams($this->projectid));
 //     echo '<br />getFavTeams<pre>~'.print_r($this->favteams,true).'~</pre><br />';
     
-		$this->assign('projectteamid',		$model->getProjectTeamID($this->favteams));
+		$this->assign('projectteamid',$model->getProjectTeamID($this->favteams));
 		
-    $this->assign('content',			$model->getRoundsColumn($this->rounds,$this->config));
+    $this->assign('content',$model->getRoundsColumn($this->rounds,$this->config));
         
 		//$this->assign('show_debug_info', JComponentHelper::getParams('com_joomleague')->get('show_debug_info', 0));
         
