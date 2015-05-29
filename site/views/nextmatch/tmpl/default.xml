@@ -42,14 +42,6 @@
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_DESCR"
 					required="">
 			</field>
-
-<!--			
-			<field	name="ptid" type="dependsql" depends="p" task="projectteamsptidoptions" 
-					label="COM_SPORTSMANAGEMENT_XML_NEXTMATCH_SELECT_TEAM_LABEL"
-					description="COM_SPORTSMANAGEMENT_XML_NEXTMATCH_SELECT_TEAM_DESCR"
-					required="false">
-			</field>
--->			
 			
 			<field	name="ptid" 
       type="dependsql" 

@@ -37,12 +37,20 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
 
-<?php if ($this->previousx[$this->currentteam]) :	?>
+//echo 'previousx <br><pre>'.print_r($this->previousx,true).'</pre>';
+//echo 'allteams <br><pre>'.print_r($this->allteams,true).'</pre>';
+//echo 'teams <br><pre>'.print_r($this->teams,true).'</pre>';
+
+foreach ( $this->teams as $currentteam )
+{
+?>
+
+<?php if ($this->previousx[$currentteam->id]) :	?>
 <!-- Start of last 5 matches -->
 
-<h2><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIOUS', $this->allteams[$this->currentteam]->name); ?></h2>
+<h2><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIOUS', $this->allteams[$currentteam->id]->name); ?></h2>
 <table class="table">
 	<tr>
 		<td>
@@ -51,9 +59,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 			$pr_id = 0;
 			$k=0;
 			
-			foreach ( $this->previousx[$this->currentteam] as $game )
+			foreach ( $this->previousx[$currentteam->id] as $game )
 			{
-				$class = ($k == 0)? 'sectiontableentry1' : 'sectiontableentry2';
                 $routeparameter = array();
 $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
 $routeparameter['s'] = JRequest::getInt('s',0);
@@ -75,7 +82,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 				$home = $this->allteams[$game->projectteam1_id];
 				$away = $this->allteams[$game->projectteam2_id];
 				?>
-			<tr class="<?php echo $class; ?>">
+			<tr class="">
 				<td><?php
 				echo JHtml::link( $result_link, $game->roundcode );
 				?></td>
@@ -110,7 +117,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 				$k = 1 - $k;
 				?></td>
 				<?php	if (($this->config['show_thumbs_picture'])): ?>
-				<td><?php echo sportsmanagementHelperHtml::getThumbUpDownImg($game, $this->currentteam); ?></td>
+				<td><?php echo sportsmanagementHelperHtml::getThumbUpDownImg($game, $currentteam->id); ?></td>
 				<?php endif; ?>
 			</tr>
 			<?php
@@ -121,4 +128,8 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 	</tr>
 </table>
 <!-- End of  show matches -->
-<?php endif; ?>
+<?php 
+endif; 
+
+}
+?>

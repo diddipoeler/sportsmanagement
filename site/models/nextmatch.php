@@ -186,9 +186,11 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 		$query->select('m.*, DATE_FORMAT(m.time_present, "%H:%i") time_present' );
         $query->select('t1.project_id');
         $query->select('r.roundcode');
+        $query->select('CONCAT_WS( \':\', pl.id, pl.alias ) AS playground_slug');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS t1 ON t1.id = m.projectteam1_id ');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON r.id = m.round_id ');
+        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS pl ON pl.id = m.playground_id ');
         $query->where('m.id = '. self::$matchid );
             
 			$db->setQuery($query, 0, 1);
@@ -815,9 +817,9 @@ class sportsmanagementModelNextMatch extends JModelLegacy
         $query->where('(m.projectteam1_id = '.$ptid.' OR m.projectteam2_id = '.$ptid.')');
         $query->where('m.published = 1');
         $query->order('r.roundcode DESC');
-        $query->setLimit('0,'.$nblast);
+        //$query->setLimit('0,'.$nblast);
               
-		$db->setQuery($query);
+		$db->setQuery($query,0,$nblast);
 		$res = $db->loadObjectList();
         
         if ( !$res )

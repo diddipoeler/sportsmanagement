@@ -37,7 +37,12 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
+
+//echo 'project <br><pre>'.print_r($this->project,true).'</pre>';
+//echo 'match <br><pre>'.print_r($this->match,true).'</pre>';
+
+?>
 
 <!-- START of match details -->
 <h2><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DETAILS'); ?></h2>
@@ -53,7 +58,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 		$routeparameter = array();
 $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
 $routeparameter['s'] = JRequest::getInt('s',0);
-$routeparameter['p'] = $this->project->id;
+$routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $this->match->old_match_id;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
         echo JHTML :: link($link,$this->oldmatchtext); 
@@ -81,7 +86,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 
 	<!-- Date -->
 	<?php
-	if ($this->config['show_match_date'] == 1)
+	if ( $this->config['show_match_date'] )
 	{
 		if ($this->match->match_date > 0): ?>
 			<tr>
@@ -94,7 +99,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 
 	<!-- Time -->
 	<?php
-	if ($this->config['show_match_time'] == 1)
+	if ( $this->config['show_match_time'] )
 	{
 		if ($this->match->match_date > 0): ?>
 			<tr>
@@ -107,7 +112,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 
 	<!-- present -->
 	<?php
-	if ($this->config['show_time_present'] == 1)
+	if ( $this->config['show_time_present'] )
 	{
 		if ($this->match->time_present > 0): ?>
 			<tr>
@@ -119,7 +124,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 
 	<!-- match number -->
 	<?php
-	if ($this->config['show_match_number'] == 1)
+	if ( $this->config['show_match_number'] )
 	{
 		if ($this->match->match_number > 0): ?>
 			<tr>
@@ -144,15 +149,15 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 
 	<!-- playground -->
 	<?php
-	if ($this->config['show_match_playground'] == 1)
+	if ( $this->config['show_match_playground'] )
     {
 		if ($this->match->playground_id > 0): ?>
 			<?php 
             $routeparameter = array();
 $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
 $routeparameter['s'] = JRequest::getInt('s',0);
-$routeparameter['p'] = $this->project->id;
-$routeparameter['pgid'] = $this->match->playground_id;
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['pgid'] = $this->match->playground_slug;
 $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$routeparameter);
             ?>
 			<tr>
