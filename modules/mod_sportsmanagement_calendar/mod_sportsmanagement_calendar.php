@@ -130,11 +130,11 @@ $doc->addScriptDeclaration(';
       ');
 
 if (!defined('JLC_MODULESCRIPTLOADED')) {
-	$doc->addScript( JUri::base().'modules/mod_sportsmanagement_calendar/assets/js/mod_sportsmanagement_calendar.js' );
+	$doc->addScript( JUri::base().'modules'.DS.$module->module.DS.'assets/js'.DS.$module->module.'.js' );
 	$doc->addScriptDeclaration(';
     var calendar_baseurl=\''. JUri::base() . '\';
       ');
-	$doc->addStyleSheet(JUri::base().'modules/mod_sportsmanagement_calendar/assets/css/mod_sportsmanagement_calender.css');
+	$doc->addStyleSheet(JUri::base().'modules'.DS.$module->module.DS.'assets/css'.DS.$module->module.'.css');
 	define('JLC_MODULESCRIPTLOADED', 1);
 }
 $calendar = $helper->showCal($params,$year,$month,$ajax,$module->id);

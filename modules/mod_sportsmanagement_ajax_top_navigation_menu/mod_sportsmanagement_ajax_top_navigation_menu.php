@@ -90,11 +90,17 @@ DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',$paramscomponent->get( 'cfg_wh
 
 if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
 {
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$cfg_which_database_server );    
+if ( !defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER') )
+{    
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$cfg_which_database_server );
+}    
 }
 else
 {
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );    
+if ( !defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER') )
+{        
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );
+}    
 }
 
 
@@ -131,6 +137,9 @@ $ajaxmod = JRequest::getVar('ajaxmodid',0,'default','POST');
 $document = JFactory::getDocument();
 
 $queryvalues = $helper->getQueryValues();
+
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' queryvalues<br><pre>'.print_r($queryvalues,true).'</pre>'),'');
+
 $assoc_id = 0;
 $subassoc_id = 0;  
 $subsubassoc_id = 0;  
@@ -144,8 +153,6 @@ $lightbox = '';
 
 if ( $queryvalues && ( isset($_POST['reload_View']) || !$_POST )  )
 {
-
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' queryvalues<br><pre>'.print_r($queryvalues,true).'</pre>'),'');
     
 $ende_if = false;
 $league_assoc_id = 0;
@@ -173,15 +180,16 @@ $league_assoc_id  = $helper->getLeagueAssocId();
 $sub_assoc_parent_id  = $helper->getAssocParentId($league_assoc_id);
 $sub_sub_assoc_parent_id  = $helper->getAssocParentId($sub_assoc_parent_id);
 
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo 'league_id  => <pre>'.print_r($league_id  , true).'</pre><br>';
-echo 'country_id  => <pre>'.print_r($country_id  , true).'</pre><br>';
-    
-echo 'league_assoc_id => <pre>'.print_r($league_assoc_id, true).'</pre><br>';
-echo 'sub_assoc_parent_id => <pre>'.print_r($sub_assoc_parent_id, true).'</pre><br>';
-echo 'sub_sub_assoc_parent_id => <pre>'.print_r($sub_sub_assoc_parent_id, true).'</pre><br>';
-}
+//if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+//{
+
+//echo 'league_id  => <pre>'.print_r($league_id  , true).'</pre><br>';
+//echo 'country_id  => <pre>'.print_r($country_id  , true).'</pre><br>';
+//echo 'league_assoc_id => <pre>'.print_r($league_assoc_id, true).'</pre><br>';
+//echo 'sub_assoc_parent_id => <pre>'.print_r($sub_assoc_parent_id, true).'</pre><br>';
+//echo 'sub_sub_assoc_parent_id => <pre>'.print_r($sub_sub_assoc_parent_id, true).'</pre><br>';
+
+//}
 
 
 if ( !empty($sub_sub_assoc_parent_id) && !$ende_if )

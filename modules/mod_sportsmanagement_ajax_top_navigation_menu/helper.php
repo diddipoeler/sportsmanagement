@@ -103,7 +103,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 	 */
 	public function __construct($params)
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
         $this->_params = $params;
 		$this->_db = Jfactory::getDBO();
         
@@ -116,7 +116,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
     if ( $this->_project_id )
 		{
 
-$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'Notice');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'Notice');
 
 //JRequest::setVar( 'jlamtopcountry', $this->getProjectCountry($this->_project_id) );
 
@@ -140,7 +140,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project_id<br><pr
    */
   public function getFederations()
 {
-    $mainframe = JFactory::getApplication();
+    $app = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $query = $db->getQuery(true);
         
@@ -149,7 +149,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project_id<br><pr
         $db->setQuery($query);
         
         self::$query_getFederations = $query->dump();
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
         $result = $db->loadObjectList();
     
@@ -166,7 +166,7 @@ $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project_id<br><pr
    */
   public function getCountrySubSubAssocSelect($assoc_id)
 {
-$mainframe = JFactory::getApplication();
+$app = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $query = $db->getQuery(true);
 
@@ -179,7 +179,7 @@ $query->order('s.name');
 		$db->setQuery($query);
         
         $this->getCountrySubSubAssocSelect = $query->dump();
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObjectList();
 		if ($res) 
@@ -200,7 +200,7 @@ $query->order('s.name');
  */
 public function getCountrySubAssocSelect($assoc_id)
 {
-$mainframe = JFactory::getApplication();
+$app = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $query = $db->getQuery(true);
         
@@ -212,7 +212,7 @@ $query->order('s.name');
 		$db->setQuery($query);
         
         $this->getCountrySubAssocSelect = $query->dump();
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObjectList();
 		if ($res) {
@@ -232,7 +232,7 @@ $query->order('s.name');
 	 */
 	public function getCountryAssocSelect($country)
 	{
-$mainframe = JFactory::getApplication();
+$app = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $query = $db->getQuery(true);
         
@@ -245,7 +245,7 @@ $query->order('s.name');
 		$db->setQuery($query);
         
         $this->getCountryAssocSelect = $query->dump();
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObjectList();
 		if ($res) {
@@ -265,7 +265,7 @@ $query->order('s.name');
 	 */
 	public function getFederationSelect($federation='',$federationid=0)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $query = $db->getQuery(true);
 	$options = array();
@@ -281,7 +281,7 @@ $query->order('s.name DESC');
 $db->setQuery($query);
 
 $this->getFederationSelect = $query->dump();
-//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 
 $res = $db->loadObjectList();
 
@@ -320,8 +320,8 @@ if ($res)
 	 */
 	public function getCountryFederation($country_id)
 	{
-	   $mainframe = JFactory::getApplication();
-       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' country_id<br><pre>'.print_r($country_id,true).'</pre>'),'Notice');
+	   $app = JFactory::getApplication();
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' country_id<br><pre>'.print_r($country_id,true).'</pre>'),'Notice');
        if ( $country_id )
        {
        self::$_country_fed[$country_id]; 
@@ -336,32 +336,80 @@ if ($res)
    */
   public function getQueryValues()
 	{
-	   $mainframe = JFactory::getApplication();
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
        
+       //$test = $jinput->get('p', 0, 'INT');
+      // $test = $jinput->request->get('p', 0, 'INT');
+       
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' test<pre>'.print_r($test,true).'</pre><br>'),'');
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' input<pre>'.print_r($jinput,true).'</pre><br>'),'');
+       
+       $uri = JFactory::getURI();
+       
+       $varAdd_array = array();
+       
+       $varAdd_array['option'] = $jinput->request->get('option', 0, 'STR');
+       
+       $varAdd_array['view'] = $jinput->request->get('view', 0, 'STR');
+       $varAdd_array['cfg_which_database'] = $jinput->request->get('cfg_which_database', 0, 'INT');
+       $varAdd_array['s'] = $jinput->request->get('s', 0, 'INT');
+       $varAdd_array['p'] = $jinput->request->get('p', 0, 'INT');
+       $varAdd_array['division'] = $jinput->request->get('division', 0, 'INT');
+       $varAdd_array['type'] = $jinput->request->get('type', 0, 'INT');
+       $varAdd_array['r'] = $jinput->request->get('r', 0, 'INT');
+       $varAdd_array['from'] = $jinput->request->get('from', 0, 'INT');
+       $varAdd_array['to'] = $jinput->request->get('to', 0, 'INT');
+       
+       $varAdd_array['mid'] = $jinput->request->get('mid', 0, 'INT');
+       $varAdd_array['tid'] = $jinput->request->get('tid', 0, 'INT');
+       $varAdd_array['cid'] = $jinput->request->get('cid', 0, 'INT');
+       
+           
+       $varAdd_array['Itemid'] = $jinput->request->get('Itemid', 0, 'INT');
+       
+//       $router = JSite::getRouter();
+//   $var = $router->getVars();
+//   $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' var<pre>'.print_r($var,true).'</pre><br>'),'');
+//   
+//   $query_string_array = JRequest::get( 'get' ); 
+//   $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_string_array<pre>'.print_r($query_string_array,true).'</pre><br>'),'');
+   
+//   $url = $_SERVER["REQUEST_URI"]; 
+//   $u = JURI::getInstance( $url );
+//   $var = $router->_parseRawRoute($u);
+//   $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' var<pre>'.print_r($var,true).'</pre><br>'),'');
+   
 	// diddipoeler
 	/*
 	muss ich erstmal so machen, da die request variablen falsch 
 	uebernommen werden.
 	kommt vor, wenn das modul nach einen anderen modul dargestellt wird
 	*/
-	
+
+/*	
 	$url = $_SERVER["REQUEST_URI"]; 
     $parsearray = parse_url($url);
     $startseo = 0;
     $jltemplate = '';
     $varAdd_array = array();
     
-    //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' parsearray<pre>'.print_r($parsearray,true).'</pre><br>'),'');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' url<pre>'.print_r($url,true).'</pre><br>'),'');
     
-    if ( $parsearray['query'] )
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' uri<pre>'.print_r($uri->getQuery(),true).'</pre><br>'),'');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' parsearray<pre>'.print_r($parsearray,true).'</pre><br>'),'');
+    
+    if ( isset($parsearray['query']) )
     {
     $varAdd = explode('&', $parsearray['query']);
         foreach($varAdd as $varOne)
         {
             $name_value = explode('=', $varOne);
             
-            //$mainframe->enqueueMessage(JText::_('name_value -> <pre>'.print_r($name_value[0],true).'</pre><br>'),'');
-            //$mainframe->enqueueMessage(JText::_('name_value -> <pre>'.print_r($name_value[1],true).'</pre><br>'),'');
+            //$app->enqueueMessage(JText::_('name_value -> <pre>'.print_r($name_value[0],true).'</pre><br>'),'');
+            //$app->enqueueMessage(JText::_('name_value -> <pre>'.print_r($name_value[1],true).'</pre><br>'),'');
             
             switch ($name_value[0])
             {
@@ -387,24 +435,26 @@ if ($res)
             
        }
 
-       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' varAdd_array<pre>'.print_r($varAdd_array,true).'</pre><br>'),'');
-       //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<pre>'.print_r($project,true).'</pre><br>'),'');
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' varAdd_array<pre>'.print_r($varAdd_array,true).'</pre><br>'),'');
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<pre>'.print_r($project,true).'</pre><br>'),'');
 
     }
     else
     {
     $varAdd = explode('/', $parsearray['path']);    
     
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' varAdd<pre>'.print_r($varAdd,true).'</pre><br>'),'');
+    
     foreach( $varAdd as $key => $value )
     {
     
-    if ( $value == 'joomleague' )
+    if ( $value == 'sportsmanagement' )
     {
     $startseo = $key + 1;
     $jltemplate = $varAdd[$startseo];
     
     //echo 'jltemplaterequest queries -> <pre>'.print_r($jltemplate,true).'</pre><br>';
-    //$mainframe->enqueueMessage(JText::_('jltemplaterequest queries -> <pre>'.print_r($jltemplate,true).'</pre><br>'),'');
+    $app->enqueueMessage(JText::_('jltemplaterequest queries -> <pre>'.print_r($jltemplate,true).'</pre><br>'),'');
     
     switch ($jltemplate)
     {
@@ -464,7 +514,7 @@ if ($res)
     }   
      
     }  
-       
+*/       
 //     echo 'request queries -> <pre>'.print_r($varAdd_array,true).'</pre><br>';
 	  
       
@@ -577,7 +627,7 @@ return $user->username ;
 	 */
 	public function getAssocParentId($assoc_id)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $query = $db->getQuery(true);
        if ( $assoc_id )
@@ -589,7 +639,7 @@ return $user->username ;
 		$db->setQuery($query);
         
         $this->getAssocParentId = $query->dump();
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadResult();
 		if ( $res )
@@ -614,7 +664,7 @@ return $user->username ;
 	 */
 	public function getLeagueAssocId()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $query = $db->getQuery(true);
     
@@ -627,7 +677,7 @@ return $user->username ;
 		$db->setQuery($query);
         
         $this->getLeagueAssocId = $query->dump();
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadResult();
 		if ( $res )
@@ -679,7 +729,7 @@ return $user->username ;
    */
   public function getClubId()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $query = $db->getQuery(true);
         
@@ -694,7 +744,7 @@ return $user->username ;
 		$db->setQuery($query);
         
         $this->getClubId = $query->dump();
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObject();
     
@@ -721,7 +771,7 @@ return $user->username ;
 	 */
 	public function getFavTeams($project_id)
 	{
-  $mainframe = JFactory::getApplication();
+  $app = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $query = $db->getQuery(true);
         
@@ -731,7 +781,7 @@ return $user->username ;
 
 		$db->setQuery($query);
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$teams = $db->loadResult();
 		
@@ -746,7 +796,7 @@ return $user->username ;
    	
 				$db->setQuery($query);
                 
-                //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
                 
 				$res = $db->loadObjectList();
 				return $res;
@@ -769,7 +819,7 @@ return $user->username ;
 	 */
 	public function getTeamId($project_id,$club_id)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $query = $db->getQuery(true);
         
@@ -785,7 +835,7 @@ return $user->username ;
 		$db->setQuery($query);
         
         $this->getTeamId = $query->dump();
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadResult();
     
@@ -810,7 +860,7 @@ return $user->username ;
 	 */
 	public function getSeasonSelect()
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $query = $db->getQuery(true);
         
@@ -823,7 +873,7 @@ return $user->username ;
                 
 		$db->setQuery($query);
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObjectList();
 		if ($res) {
@@ -840,9 +890,10 @@ return $user->username ;
 	 */
 	public function getDivisionSelect($project_id)
 	{		
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $query = $db->getQuery(true);
+$options = array();
 
 		$query = ' SELECT d.id AS value, d.name AS text ' 
 		       . ' FROM #__sportsmanagement_division AS d ' 
@@ -867,7 +918,7 @@ return $user->username ;
 	 */
 	public function getAssocLeagueSelect($country_id,$associd)
 	{		
-$mainframe = JFactory::getApplication();
+$app = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $query = $db->getQuery(true);
         
@@ -894,7 +945,7 @@ order by l.name
 		$db->setQuery($query);
         
         $this->getAssocLeagueSelect = $query->dump();
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObjectList();
 		if ($res) 
@@ -914,7 +965,7 @@ order by l.name
      */
     public function getProjectCountry($project_id)
     {
-        $mainframe = JFactory::getApplication();
+        $app = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $query = $db->getQuery(true);
         $query->select('l.country');
@@ -925,7 +976,7 @@ order by l.name
 		$db->setQuery($query);
         
         $this->getProjectCountry = $query->dump();
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadResult();
     
@@ -947,7 +998,7 @@ order by l.name
 	 */
 	public function getLeagueSelect($season)
 	{		
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $query = $db->getQuery(true);
         
@@ -963,7 +1014,7 @@ order by l.name
 		$db->setQuery($query);
         
         $this->getLeagueSelect = $query->dump();
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObjectList();
 		if ($res) 
@@ -982,7 +1033,7 @@ order by l.name
 	 */
 	public function getProjectSelect($league_id)
 	{
-$mainframe = JFactory::getApplication();
+$app = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $query = $db->getQuery(true);
         
@@ -1041,7 +1092,7 @@ $mainframe = JFactory::getApplication();
         
         $this->getProjectSelect = $query->dump();
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
 		$res = $db->loadObjectList();
 		
@@ -1084,7 +1135,7 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
 	 */
 	protected function getTeamsOptions($project_id)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $query = $db->getQuery(true);
         
@@ -1101,7 +1152,7 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
               
 			$db->setQuery($query);
             
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
             
 			$res = $db->loadObjectList();
 			
@@ -1121,12 +1172,12 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
 	 */
 	public function getProject($league_id = 0)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
         $db = JFactory::getDbo(); 
         $query = $db->getQuery(true);
         
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project<br><pre>'.print_r($this->_project,true).'</pre>'),'Notice');
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project<br><pre>'.print_r($this->_project,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'Notice');
         
 		if (!$this->_project)
 		{
@@ -1161,7 +1212,7 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
          }
 			$db->setQuery($query);
             
-            //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
             
 			$this->_project = $db->loadObject();
             $this->_project_id = $this->_project->id;
@@ -1170,6 +1221,7 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
         $this->_league_slug = $this->_project->league_slug;
         $this->_round_slug = $this->_project->round_slug;
 		}
+        
 		return $this->_project;
 	}
 	
