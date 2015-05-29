@@ -147,7 +147,14 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 	if ($this->config['show_match_playground'] == 1)
     {
 		if ($this->match->playground_id > 0): ?>
-			<?php $playground_link = sportsmanagementHelperRoute::getPlaygroundRoute($this->project->id, $this->match->playground_id,JRequest::getInt('cfg_which_database',0));?>
+			<?php 
+            $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->id;
+$routeparameter['pgid'] = $this->match->playground_id;
+$playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$routeparameter);
+            ?>
 			<tr>
 				<td colspan="3"><span class=""><?php echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_PLAYGROUND' ); ?></span>
 					<span>
