@@ -139,6 +139,6 @@ if (!defined('JLC_MODULESCRIPTLOADED')) {
 }
 $calendar = $helper->showCal($params,$year,$month,$ajax,$module->id);
 
-require(JModuleHelper::getLayoutPath('mod_sportsmanagement_calendar'));
+require(JModuleHelper::getLayoutPath($module->module));
 
 ?>

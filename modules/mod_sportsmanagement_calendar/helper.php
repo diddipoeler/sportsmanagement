@@ -589,7 +589,7 @@ class JSMCalendar extends PHPCalendar
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' month<br><pre>'.print_r($month,true).'</pre>'),'Notice');
         
 		$livescore = JSMCalendar::$params->get('livescore', '');
-		$joomleague = JSMCalendar::$params->get('sportsmanagement', '');
+		//$joomleague = JSMCalendar::$params->get('sportsmanagement', '');
 		$caldates = array();
 //		$caldates['start'] = date("$year-$month-01 00:00:00");
 //		$caldates['end'] = date("$year-$month-31 23:59:59");
@@ -604,7 +604,8 @@ class JSMCalendar extends PHPCalendar
 			require_once (dirname(__FILE__).DS.'connectors'.DS.'jevents.php');
 			JEventsConnector::getEntries($caldates, JSMCalendar::$params, $this->matches);
 		}
-		require_once (dirname(__FILE__).DS.'connectors'.DS.$joomleague.'.php');
+		//require_once (dirname(__FILE__).DS.'connectors'.DS.$joomleague.'.php');
+        require_once (dirname(__FILE__).DS.'connectors'.DS.'sportsmanagement.php');
 		JSMCalendar::$params->prefix = JSMCalendar::$prefix;
 		//sportsmanagementConnector::getEntries ( $caldates, JSMCalendar::$params, $this->matches );
         sportsmanagementConnector::getEntries ( $caldates, JSMCalendar::$params, JSMCalendar::$matches );
