@@ -109,7 +109,17 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 						{
 
 							echo '&nbsp;&nbsp;';
-							$link = sportsmanagementHelperRoute::getResultsRoute($predictionProject->project_id,$this->roundID);
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $predictionProject->project_id;
+$routeparameter['r'] = $this->roundID;
+$routeparameter['division'] = 0;
+$routeparameter['mode'] = 0;
+$routeparameter['order'] = '';
+$routeparameter['layout'] = '';
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);                            
+
 							$imgTitle=JText::_('COM_SPORTSMANAGEMENT_PRED_ROUND_RESULTS_TITLE');
 							$desc = JHTML::image('media/com_sportsmanagement/jl_images/icon-16-Matchdays.png',$imgTitle,array('border' => 0,'title' => $imgTitle));
 							echo JHTML::link($link,$desc,array('target' => '_blank'));
@@ -157,13 +167,7 @@ echo $this->pagination->getListFooter();
 				<?php echo JHTML::_( 'form.token' ); ?>
 			</form><br />
 			<?php
-/*			
-<tfoot>
-<tr>
-<td colspan="4"></td>
-</tr>
-</tfoot>			
-*/			
+		
 		}
 		?>
 		<table class="<?PHP echo $this->config['table_class'];?>"  >

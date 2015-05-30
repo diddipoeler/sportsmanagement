@@ -50,7 +50,7 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('globalviews','predictionheading');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-?><div class='container'><?php
+?><div class='row'><?php
 
 	echo $this->loadTemplate('predictionheading');
 	echo $this->loadTemplate('sectionheader');

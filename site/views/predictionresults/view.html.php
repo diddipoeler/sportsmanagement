@@ -67,8 +67,8 @@ class sportsmanagementViewPredictionResults extends JViewLegacy
 	function display($tpl=null)
 	{
 		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-		$model		= $this->getModel();
+		$document = JFactory::getDocument();
+		$model = $this->getModel();
     $option = JRequest::getCmd('option');
     //$optiontext = strtoupper(JRequest::getCmd('option').'_');
     //$this->assignRef( 'optiontext',			$optiontext );
@@ -80,25 +80,25 @@ class sportsmanagementViewPredictionResults extends JViewLegacy
 
 		if (isset($this->predictionGame))
 		{
-			$config			= sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
-			$configavatar			= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
-			$configentry			= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionentry');
+			$config	= sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
+			$configavatar = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
+			$configentry = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionentry');
 			$config = array_merge($configentry,$config);
 			$overallConfig	= sportsmanagementModelPrediction::getPredictionOverallConfig();
 
       //$this->assignRef('debuginfo',	$model->getDebugInfo());
       
-			$this->assignRef('model',				$model);
-			$this->assignRef('roundID',				$this->model->roundID);
-			$this->assign('config',				array_merge($overallConfig,$config) );
+			$this->assignRef('model',$model);
+			$this->assignRef('roundID',$this->model->roundID);
+			$this->assign('config',array_merge($overallConfig,$config) );
             $model->config = $this->config;
-			$this->assignRef('configavatar',				$configavatar );
+			$this->assignRef('configavatar',$configavatar );
             $model->configavatar = $this->configavatar;
 
-			$this->assign('predictionMember',	sportsmanagementModelPrediction::getPredictionMember($configavatar));
+			$this->assign('predictionMember',sportsmanagementModelPrediction::getPredictionMember($configavatar));
 			//$this->assignRef('predictionMember',	$model->getPredictionMemberAvatar($this->predictionMember, $configavatar ));
-			$this->assign('predictionProjectS',	sportsmanagementModelPrediction::getPredictionProjectS());
-			$this->assign('actJoomlaUser',		JFactory::getUser());
+			$this->assign('predictionProjectS',sportsmanagementModelPrediction::getPredictionProjectS());
+			$this->assign('actJoomlaUser',JFactory::getUser());
 			//$this->assignRef('rounds',				$model->getRounds());
 			//echo '<br /><pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';
 
@@ -123,15 +123,10 @@ class sportsmanagementViewPredictionResults extends JViewLegacy
 //$headertitle
 $this->assign('headertitle', $pageTitle);
 
-/*    
-    // limit, limitstart und limitende
-    $limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
-    $limitstart = JRequest::getVar('limitstart', 0, '', 'int');
-    $limitend = $limitstart + $limit;
-    $this->assignRef('limit',$limit);
-    $this->assignRef('limitstart',$limitstart);
-    $this->assignRef('limitend',$limitend);
-*/
+if ( !isset($this->config['table_class']) )
+{
+$this->config['table_class'] = 'table';    
+}
 
 			$document->setTitle($pageTitle);
 
