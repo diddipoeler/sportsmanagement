@@ -143,7 +143,15 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
     if ($this->config['show_match_playground'] == 1)
     {
         if ($this->match->playground_id > 0): ?>
-        <?php $playground_link = sportsmanagementHelperRoute::getPlaygroundRoute( $this->project->slug, $this->match->playground_slug);?>
+        <?php 
+        $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['pgid'] = $this->match->playground_slug;
+$playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$routeparameter);
+
+        ?>
         
         
         <address>
@@ -181,7 +189,13 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('matchpg'.$this->match->
             
             $first = true;
                     foreach ( $this->matchreferees as $referee ) : 
-                        $referee_link = sportsmanagementHelperRoute::getRefereeRoute( $this->project->slug, $referee->person_slug );
+                    $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['pid'] = $referee->person_slug;
+$referee_link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routeparameter);
+
                         if (!$first) {
                             echo ', ';
                         }
