@@ -61,7 +61,7 @@ $mainframe = JFactory::getApplication();
 $config = array();
 
 //add css file
-$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_top_tipper/css/mod_sportsmanagement_top_tipper.css');
+$document->addStyleSheet(JURI::base().'modules'.DS.$module->module.DS.'css'.DS.$module->module.'.css');
 
 $pg_id = $params->get('pg');
 
@@ -90,33 +90,18 @@ $config['show_count_tendtipps'] = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_
 
 $config['show_debug_modus'] = $params->get('show_debug_modus');
 
-//$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
 
-//echo 'prediction game id -> '.$pg_id.'<br>';
 
-/*
-// sprachedatei der extension nachladen, damit wir nicht noch mal alles eintragen müssen
-$lang =& JFactory::getLanguage();
-$extension = 'com_sportsmanagement_predictiongame';
-$base_dir = JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions'.DS.'predictiongame';
-// $language_tag = 'en-GB';
-$language_tag = '';
-$reload = true;
-$lang->load($extension, $base_dir, $language_tag, $reload);
-// sprachdatei der komponente nachladen
-$extension = 'com_sportsmanagement';
-$base_dir = JPATH_SITE;
-$lang->load($extension, $base_dir, $language_tag, $reload);
-*/
-
-//JRequest::setVar('prediction_id', $pg_id);
-
-// das model laden
+/**
+ * das model laden
+ */
 $modelpg = JModel::getInstance('PredictionRanking', 'sportsmanagementModel');
 
 sportsmanagementModelPrediction::$predictionGameID = $pg_id;
-// jetzt nach das overall template nachladen
-// dadurch erhalten wir die sortierung aus dem backend
+/**
+ * jetzt nach das overall template nachladen
+ * dadurch erhalten wir die sortierung aus dem backend
+ */
 $overallConfig	= sportsmanagementModelPrediction::getPredictionOverallConfig();
 $config = array_merge($overallConfig,$config);
 $configavatar = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
@@ -126,20 +111,13 @@ $predictionProjectS[] = sportsmanagementModelPrediction::getPredictionProjectS()
 $actJoomlaUser[] = JFactory::getUser();
 $roundID = $modelpg->roundID;
 
-//$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' predictionGame<br><pre>'.print_r($predictionGame,true).'</pre>'),'');
-//$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' predictionProjectS<br><pre>'.print_r($predictionProjectS,true).'</pre>'),'');
-
 $type_array = array();
 $type_array[]=JHTML ::_('select.option','0',JText::_('JL_PRED_RANK_FULL_RANKING'));
 $type_array[]=JHTML ::_('select.option','1',JText::_('JL_PRED_RANK_FIRST_HALF'));
 $type_array[]=JHTML ::_('select.option','2',JText::_('JL_PRED_RANK_SECOND_HALF'));
 $lists['type']=$type_array;
 unset($type_array);
-			
-//echo 'predictionGame -> <pre>'.print_r($predictionGame,true).'</pre><br>';
-//echo 'predictionMember -> <pre>'.print_r($predictionMember,true).'</pre><br>';
-//echo 'predictionProjectS -> <pre>'.print_r($predictionProjectS,true).'</pre><br>';
-//echo 'actJoomlaUser -> <pre>'.print_r($actJoomlaUser,true).'</pre><br>';
+		
 
-require(JModuleHelper::getLayoutPath('mod_sportsmanagement_top_tipper'));
+require(JModuleHelper::getLayoutPath($module->module));
 ?>

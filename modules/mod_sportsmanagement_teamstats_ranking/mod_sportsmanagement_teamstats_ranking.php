@@ -65,6 +65,6 @@ $list = modSportsmanagementTeamStatHelper::getData($params);
 
 $document = JFactory::getDocument();
 //add css file
-$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_teamstats_ranking/css/mod_sportsmanagement_teamstats_ranking.css');
+$document->addStyleSheet(JURI::base().'modules'.DS.$module->module.DS.'css'.DS.$module->module.'.css');
 
-require(JModuleHelper::getLayoutPath('mod_sportsmanagement_teamstats_ranking'));
+require(JModuleHelper::getLayoutPath($module->module));

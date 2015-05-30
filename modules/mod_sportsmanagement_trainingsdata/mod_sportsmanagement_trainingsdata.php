@@ -62,8 +62,22 @@ JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 // get helper
 require_once (dirname(__FILE__).DS.'helper.php');
 
-
 $trainingsdata = modJSMTrainingsData::getData($params);
+
+/**
+ * wenn die komponente im frontend nicht geladen oder aufgerufen wurde,
+ * dann muss die sprachdatei aus dem backend geladen werden.
+ * ansonsten wird der übersetzte text nicht angezeigt.
+ */
+if ( !defined('COM_SPORTSMANAGEMENT_GLOBAL_MONDAY') )
+{
+$langtag = JFactory::getLanguage();
+$extension = 'com_sportsmanagement';
+$base_dir = JPATH_SITE;
+$language_tag = $langtag->getTag();
+$reload = true;
+$lang->load($extension, $base_dir, $language_tag, $reload);
+}
 
 $daysOfWeek = array(
 				1 => JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MONDAY'),
@@ -76,6 +90,9 @@ $daysOfWeek = array(
 			);
             
 $document = JFactory::getDocument();
+
+
+
 //add css file
 $document->addStyleSheet(JUri::base().'modules'.DS.$module->module.DS.'css'.DS.$module->module.'.css');
 

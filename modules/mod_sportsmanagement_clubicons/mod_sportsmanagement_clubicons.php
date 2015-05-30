@@ -95,7 +95,8 @@ JHTML::_('behavior.mootools');
 
 
 $doc = JFactory::getDocument();
-$doc->addStyleSheet(JURI::base() . 'modules/mod_sportsmanagement_clubicons/css/style.css');
+$doc->addStyleSheet(JURI::base() . 'modules'.DS.$module->module.DS.'css/style.css');
+
 $css = 'img.smstarticon { width:25px;}';
 if ($params->get('max_width', 800) > 0 AND $cnt <= 20) $css .= 'table.modjlclubicons { max-width: '.$params->get('max_width', 800).'px;}
 div.modjlclubicons { max-width: '.$params->get('max_width', 800).'px;}';
@@ -128,22 +129,10 @@ window.addEvent('resize', function(){
 ";
 $mv = JFactory::getApplication()->get('MooToolsVersion');
 $script =  'script';
-$doc->addScript( JURI::base() . 'modules/mod_sportsmanagement_clubicons/js/'.$script.'.js');
+$doc->addScript( JURI::base() . 'modules'.DS.$module->module.DS.'js/'.$script.'.js');
 $doc->addScriptDeclaration($initjs);
-require(JModuleHelper::getLayoutPath('mod_sportsmanagement_clubicons', $tpl));
+require(JModuleHelper::getLayoutPath($module->module, $tpl));
 }
 
-/* NOTE: this is not implemented yet:
-if ($tpl == 'tableless') {
-  ;
-  $initjs = "
-    window.addEvent('domready', function(){
-      var modjlicons".$module->id." = new observeClubIcons($('clubicons".$module->id."'), {'imgclass': 'img.smstarticon', 'itemcnt':".$cnt.", 'wdiff':".$params->get( 'logo_widthdif',12 ).", 'position':'".$params->get( 'iconpos','middle' )."'});
-    });
-";
-  $script .= '.class';
-  if ($my->id == 62) $script.='.uncompressed';
-}
-*/
-//echo '<strong>'.$mv.'</strong><br />';
+
 ?>

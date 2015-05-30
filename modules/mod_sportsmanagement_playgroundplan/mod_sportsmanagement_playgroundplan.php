@@ -63,18 +63,18 @@ $list = modSportsmanagementPlaygroundplanHelper::getData($params);
 $document = JFactory::getDocument();
 
 //add css file
-$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_playgroundplan/css/mod_sportsmanagement_playgroundplan.css');
+$document->addStyleSheet(JURI::base().'modules'.DS.$module->module.DS.'css'.DS.$module->module.'.css');
 
 $mode = $params->def("mode");
 
 switch ($mode)
 	{
 	case 0:
-		$document->addScript(JURI::base().'modules/mod_sportsmanagement_playgroundplan/js/qscroller.js');
+		$document->addScript(JURI::base().'modules'.DS.$module->module.DS.'js/qscroller.js');
 		require_once(dirname(__FILE__).DS.'js'.DS.'ticker.js');
 		break;
 	case 1:
 		break;
 }
 
-require(JModuleHelper::getLayoutPath('mod_sportsmanagement_playgroundplan'));
+require(JModuleHelper::getLayoutPath($module->module));
