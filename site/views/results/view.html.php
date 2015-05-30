@@ -1064,7 +1064,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 		}
 		else
 		{
-			$output = sportsmanagementViewResults::showMatchState($game,$this->config);
+			$output = sportsmanagementViewResults::showMatchState($game,$config);
 		}
 
 //		//added by stony - Ausgabe der Halbzeitresultate, wenn im Template freigeschaltet
