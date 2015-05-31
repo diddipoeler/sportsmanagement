@@ -108,7 +108,8 @@ class sportsmanagementModelLeagues extends JModelList
 		$this->setState('filter.state', $published);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
-        
+        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_agegroup', 'filter_search_agegroup', '');
+		$this->setState('filter.search_agegroup', $temp_user_request);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_association', 'filter_search_association', '');
 		$this->setState('filter.search_association', $temp_user_request);
         
@@ -178,6 +179,10 @@ class sportsmanagementModelLeagues extends JModelList
         $query->where('obj.associations = '.$this->getState('filter.search_association') );
         }
         
+        if ($this->getState('filter.search_agegroup'))
+		{
+        $query->where('obj.agegroup_id = ' . $this->getState('filter.search_agegroup'));
+        }
 
         $query->order($db->escape($this->getState('list.ordering', 'obj.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));

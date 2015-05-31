@@ -214,6 +214,7 @@ class sportsmanagementView extends JViewLegacy
 			JHtml::_('select.options', $this->federation, 'value', 'text', $this->state->get('filter.federation'), true)
 		);
         }
+                
         if ( isset($this->search_nation) )
         {
         JHtmlSidebar::addFilter(

@@ -43,19 +43,16 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
 
-
-//$this->table_data_class = 'table table-striped';
 ?>
 
-<!--	<div id="editcell"> -->
 		<table class="<?php echo $this->table_data_class; ?>">
 			<thead>
 				<tr>
-					<th width="1%"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
-					<th width="5%" class="title">
+					<th width=""><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
+					<th width="" class="title">
 						<input  type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 					</th>
-					<th width="20">&nbsp;</th>
+					<th width="">&nbsp;</th>
 					<th class="title">
 						<?php
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_NAME_OF_PROJECT','p.name',$this->sortDirection,$this->sortColumn);
@@ -66,7 +63,7 @@ JHtml::_('behavior.modal');
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUE','l.name',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
-                    <th width="10%">
+                    <th width="">
 						<?php
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_COUNTRY','l.country',$this->sortDirection,$this->sortColumn);
 						?>
@@ -95,7 +92,7 @@ JHtml::_('behavior.modal');
 					</th>
                     <th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); ?>
 					</th>
-					<th width="5%" class="title">
+					<th width="" class="title">
 						<?php
 						echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_GAMES');
 						?>
@@ -122,18 +119,18 @@ JHtml::_('behavior.modal');
 					</th>
                     
                     
-					<th width="5%" class="title">
+					<th width="" class="title">
 						<?php
 						echo JHtml::_('grid.sort','JSTATUS','p.published',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
-					<th width="10%" class="title">
+					<th width="" class="title">
 						<?php
 						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','p.ordering',$this->sortDirection,$this->sortColumn);
 						echo JHtml::_('grid.order', $this->items, 'filesave.png', 'projects.saveorder');
 						?>
 					</th>
-					<th width="5%" class="title">
+					<th width="" class="title">
 						<?php
 						echo JHtml::_('grid.sort','JGRID_HEADING_ID','p.id',$this->sortDirection,$this->sortColumn);
 						?>
@@ -183,7 +180,7 @@ JHtml::_('behavior.modal');
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
-						<td width="5%" class="center"><?php echo JHtml::_('grid.id', $i, $row->id); ?></td>
+						<td width="" class="center"><?php echo JHtml::_('grid.id', $i, $row->id); ?></td>
 						<?php
                         						
 							$inputappend = '';

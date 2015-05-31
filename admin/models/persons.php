@@ -111,6 +111,8 @@ class sportsmanagementModelPersons extends JModelList
 		$this->setState('filter.state', $published);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
+        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_agegroup', 'filter_search_agegroup', '');
+		$this->setState('filter.search_agegroup', $temp_user_request);
 
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
@@ -200,6 +202,11 @@ class sportsmanagementModelPersons extends JModelList
         if ($this->getState('filter.search_nation'))
 		{
         $query->where('pl.country LIKE '.$db->Quote(''.$this->getState('filter.search_nation').''));
+        }
+        
+        if ($this->getState('filter.search_agegroup'))
+		{
+        $query->where('pl.agegroup_id = ' . $this->getState('filter.search_agegroup'));
         }
         
         if ( JRequest::getVar('layout') == 'assignplayers')

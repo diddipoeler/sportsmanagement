@@ -146,8 +146,15 @@ $starttime = microtime();
         if ( $res = $mdlagegroup->getAgeGroups() )
         {
             $myoptions = array_merge($myoptions,$res);
+            $this->assignRef('search_agegroup',$res);
         }
         $lists['agegroup'] = $myoptions;
+        $lists['agegroup2']= JHtmlSelect::genericlist(	$myoptions,
+																'filter_search_agegroup',
+																'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+																'value',
+																'text',
+																$this->state->get('filter.search_agegroup'));
         unset($myoptions);
         
 
@@ -239,6 +246,23 @@ $starttime = microtime();
 		if ($positions){ $positions=array_merge($positionsList,$positions);}
 		$lists['positions']=$positions;
 		unset($positionsList);
+        
+        $myoptions = array();
+        $myoptions[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
+        $mdlagegroup = JModelLegacy::getInstance("agegroups", "sportsmanagementModel");
+        if ( $res = $mdlagegroup->getAgeGroups() )
+        {
+            $myoptions = array_merge($myoptions,$res);
+            $this->assignRef('search_agegroup',$res);
+        }
+        $lists['agegroup'] = $myoptions;
+        $lists['agegroup2']= JHtmlSelect::genericlist(	$myoptions,
+																'filter_search_agegroup',
+																'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+																'value',
+																'text',
+																$this->state->get('filter.search_agegroup'));
+        unset($myoptions);
 
 		//JToolBarHelper::onlinehelp();		
 		

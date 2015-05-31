@@ -82,12 +82,17 @@ $userId		= $user->get('id');
 					?>
 				</button>
 			</td>
+            
+            <td class="nowrap" align="right"><?php echo $this->lists['agegroup2']; ?></td>
+            
 			<td align="center" colspan="4">
 				<?php
-				for ($i=65; $i < 91; $i++)
-				{
-					printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",chr($i),chr($i));
-				}
+				$startRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_start_hex', '0');
+		$endRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_end_hex', '0');
+		for ($i=$startRange; $i <= $endRange; $i++)
+		{
+            printf("<a href=\"javascript:searchPerson('%s')\">%s</a>&nbsp;&nbsp;&nbsp;&nbsp;",'&#'.$i.';','&#'.$i.';');
+			}
 				?>
 			</td>
 		</tr>

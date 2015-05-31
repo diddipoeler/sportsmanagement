@@ -92,6 +92,7 @@ echo $this->loadTemplate('debug');
             }
             break;
             }
+            
             switch ($view)
             {
             case 'projects':

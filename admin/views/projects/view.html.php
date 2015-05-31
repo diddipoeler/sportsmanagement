@@ -208,8 +208,15 @@ class sportsmanagementViewProjects extends sportsmanagementView
         if ( $res = $mdlagegroup->getAgeGroups() )
         {
             $myoptions = array_merge($myoptions,$res);
+            $this->assignRef('search_agegroup',$res);
         }
         $lists['agegroup'] = $myoptions;
+        $lists['agegroup2']= JHtmlSelect::genericlist(	$myoptions,
+																'filter_search_agegroup',
+																'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+																'value',
+																'text',
+																$this->state->get('filter.search_agegroup'));
         unset($myoptions);
         
         unset($nation);

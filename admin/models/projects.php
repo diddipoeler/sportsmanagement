@@ -124,6 +124,9 @@ class sportsmanagementModelProjects extends JModelList
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.userfields', 'filter_userfields', '');
 		$this->setState('filter.userfields', $temp_user_request);
         
+        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_agegroup', 'filter_search_agegroup', '');
+		$this->setState('filter.search_agegroup', $temp_user_request);
+        
         $value = JRequest::getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
 
@@ -231,6 +234,11 @@ class sportsmanagementModelProjects extends JModelList
 		{
 		$query->where('p.published = '.$this->getState('filter.state'));	
 		}
+        
+        if ($this->getState('filter.search_agegroup'))
+		{
+        $query->where('p.agegroup_id = ' . $this->getState('filter.search_agegroup'));
+        }
         
         if ($this->getState('filter.search_nation'))
 		{
