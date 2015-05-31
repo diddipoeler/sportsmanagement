@@ -40,12 +40,13 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>
-<div style="width: 100%; float: left">
-	<div class="contentpaneopen">
+<!-- <div style="width: 100%; float: left"> -->
+<div class="row">
+	
 		<h4>
 			<?php echo JText::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>
 		</h4>
-	</div>
+	
 <?php
 
 if ( !JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' )  )

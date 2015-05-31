@@ -46,17 +46,19 @@ if ( isset( $this->overallconfig['show_back_button'] ) )
 	<?php
 	if ( $this->overallconfig['show_back_button'] == '1' )
 	{
-		$alignStr = '<div style="text-align:left; ">';
+		$alignStr = 'left';
 	}
 	else
 	{
-		$alignStr = '<div style="text-align:right; ">';
+		$alignStr = 'right';
 	}
 	if ( $this->overallconfig['show_back_button'] != '0' )
 	{
-		
-	echo $alignStr;
+	    	
+	//echo $alignStr;
 	?>
+    <div style="text-align:<?php echo $alignStr; ?>; ">
+    
 		<div class="back_button">
 			<a href='javascript:history.go(-1)'>
 				<?php

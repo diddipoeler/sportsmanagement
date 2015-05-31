@@ -38,11 +38,8 @@
 */
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
-// $this->config['table_class']
-?>
 
-<!-- Main START -->
-<a name="jl_top" id="jl_top"></a>
+?>
 
 <!-- content -->
 <?php

@@ -217,7 +217,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo'.$this->club->
 			<?php
 		}
 
-		if ( $this->club->founded && $this->club->founded != '0000-00-00' )
+		if ( $this->club->founded && $this->club->founded != '0000-00-00' && $this->config['show_founded'] )
 		{
 			?>
             <address>
@@ -226,7 +226,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo'.$this->club->
             </address>
 			<?php
 		}
-    if ( $this->club->founded_year )
+    if ( $this->club->founded_year && $this->config['show_founded_year']  )
 		{    
       ?>
       <address>
@@ -235,7 +235,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo'.$this->club->
             </address>
 			<?php
     }
-    if ( $this->club->dissolved && $this->club->dissolved != '0000-00-00' )
+    if ( $this->club->dissolved && $this->club->dissolved != '0000-00-00' && $this->config['show_dissolved']  )
 		{  
       ?>
 		<address>	
@@ -244,7 +244,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo'.$this->club->
             </address>   
 			<?php
     }
-    if ( $this->club->dissolved_year )
+    if ( $this->club->dissolved_year && $this->config['show_dissolved_year']  )
 		{  
       ?>
       <address>

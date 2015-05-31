@@ -85,7 +85,7 @@ foreach ( $this->secondRank as $division => $cu_rk )
 	else
 	{
 	?>
-	<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
+	<table class="<?PHP echo $this->config['table_class']; ?>">
 		<?php
 			echo $this->loadTemplate('rankingheading');
 			$this->division = $division;

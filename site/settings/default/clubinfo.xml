@@ -26,6 +26,40 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+
+    		<field name="show_founded" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+				<field name="show_founded_year" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_YEAR"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_YEAR">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+				<field name="show_dissolved" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+				<field name="show_dissolved_year" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED_YEAR"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_DISSOLVED_YEAR">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+
+
+
+
     
 		<field name="show_club_info" type="radio" default="1"
 		class="radio btn-group btn-group-yesno"

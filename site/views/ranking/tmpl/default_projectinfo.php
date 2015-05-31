@@ -40,11 +40,11 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 
-<div class="contentpaneopen">
-		<div class="contentheading">
+
+		<h4>
 			<?php echo JText::_('COM_SPORTSMANAGEMENT_RANKING_PROJECTINFO'); ?>
-		</div>
-	</div>
+		</h4>
+	
 
     <table class="<?PHP echo $this->config['table_class']; ?>">
         <tr>
@@ -57,7 +57,13 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 }
                 else
                 {
+                ?>
+                <p class="bg-danger">
+                <?PHP    
                 echo JText::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO');
+                ?>
+                </p>
+                <?PHP
                 }
                 ?>
                 </span>

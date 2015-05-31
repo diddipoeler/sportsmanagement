@@ -176,8 +176,8 @@ echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>
 } else {
 	if ($this->overallconfig['show_print_button'] == 1) {
 	?>
-		<div class="componentheading">
-			<table class="contentpaneopen">
+		<div class="row">
+			<table class="table">
 				<tbody>
 					<tr class="contentheading">
 						<td class="buttonheading" align="right">

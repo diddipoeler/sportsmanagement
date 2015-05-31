@@ -83,6 +83,7 @@ class sportsmanagementViewResults extends JViewLegacy
 
 		$document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
         //add js file
+/*
 		// welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
@@ -92,6 +93,7 @@ else
 {
 JHtml::_( 'behavior.mootools' );    
 }
+*/
 		$model	= $this->getModel();
 				
 		$matches = $model->getMatches($model::$cfg_which_database);

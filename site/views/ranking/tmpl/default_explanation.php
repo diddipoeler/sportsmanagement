@@ -50,16 +50,16 @@ $column_names	= explode( ',', $config['ordered_columns_names'] );
 	<tr class="explanation">
 		<td>
 		<?php
-		$d = 0;
+		//$d = 0;
 		foreach (  $columns as $k => $column)
 		{
 			if (empty($column_names[$k])){$column_names[$k]='???';}	
 			$c=strtoupper(trim($column));
 			$c="COM_SPORTSMANAGEMENT_".$c;
-			echo "<td class=\"col$d\">";
+			echo "<td class=\"\">";
 			echo $column_names[$k] ." = ".JText::_($c) ;
 			echo "</td>";
-			$d=(1-$d);
+			//$d=(1-$d);
 		}
 		?>
 		</td>

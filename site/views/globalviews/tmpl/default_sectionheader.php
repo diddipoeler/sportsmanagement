@@ -39,6 +39,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 
+/*
 // welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
@@ -48,6 +49,7 @@ else
 {
 JHtml::_( 'behavior.mootools' );    
 }
+*/
 
 // Reference global application object
 $app = JFactory::getApplication();
@@ -477,9 +479,11 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
     <table class="table" >
     <tr>
     <td class="contentheading">
+    <h4>
     <?php
     echo $this->headertitle;
     ?>
+    </h4>
     </td>
     </tr>
     </table>

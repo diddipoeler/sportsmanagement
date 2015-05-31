@@ -241,42 +241,42 @@ jQuery(window).load(function() {
     
     }
 
-	if ($this->config['show_colorlegend']==1)
+	if ( $this->config['show_colorlegend'] )
 	{
 		echo $this->loadTemplate('colorlegend');
 	}
 	
-	if ($this->config['show_explanation']==1)
+	if ( $this->config['show_explanation'] )
 	{
 		echo $this->loadTemplate('explanation');
 	}
 	
-	if ($this->config['show_pagnav']==1)
+	if ( $this->config['show_pagnav'] )
 	{
 		echo $this->loadTemplate('pagnav');
 	}
 	
-    if ($this->config['show_projectinfo'] == 1)
+    if ( $this->config['show_projectinfo'] )
 	{
 		echo $this->loadTemplate('projectinfo');
 	}
     
-	if ($this->config['show_notes'] == 1)
+	if ( $this->config['show_notes'] )
 	{
 		echo $this->loadTemplate('notes');
 	}
 	
-	if (($this->config['show_ranking_maps'])==1)
+	if ( $this->config['show_ranking_maps'] )
 	{ 
 		echo $this->loadTemplate('googlemap');
 	}
 	
-	if ($this->config['show_help'] == "1")
+	if ( $this->config['show_help'] )
 	{
 		echo $this->loadTemplate('hint');
 	}
     
-    if (($this->overallconfig['show_project_rss_feed']) == 1   )
+    if ( $this->overallconfig['show_project_rss_feed'] )
 	{
 		//if ( !empty($this->rssfeedoutput) )
 //       {
