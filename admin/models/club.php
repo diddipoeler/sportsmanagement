@@ -520,7 +520,11 @@ return $teamsofclub;
        $data['dissolved'] = sportsmanagementHelper::convertDate($data['dissolved'],0);
        }
         
-       //if ( $data['founded'] != '00-00-0000'  )
+       if ( $data['founded'] == '' )
+        {
+        $data['founded'] = '0000-00-00';   
+        $data['founded_year'] = ''; 
+        }
        if ( $data['founded'] != '0000-00-00'  )
         {
         $data['founded_year'] = date('Y',strtotime($data['founded']));
@@ -531,7 +535,12 @@ return $teamsofclub;
             $data['founded_year'] = $data['founded_year'];
         }
         
-        //if ( $data['dissolved'] != '00-00-0000' )
+        if ( $data['dissolved'] == '' )
+        {
+        $data['dissolved'] = '0000-00-00';   
+        $data['dissolved_year'] = ''; 
+        }
+        
         if ( $data['dissolved'] != '0000-00-00' )  
         {
         $data['dissolved_year'] = date('Y',strtotime($data['dissolved']));
