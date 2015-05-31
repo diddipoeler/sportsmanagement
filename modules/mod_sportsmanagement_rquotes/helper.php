@@ -62,9 +62,9 @@ class modRquotesHelper
  * @param mixed $params
  * @return void
  */
-function renderRquote(&$rquote, &$params)
+static function renderRquote(&$rquote, &$params,$module)
 	{	
-	require(JModuleHelper::getLayoutPath('mod_sportsmanagement_rquotes','_rquote'));
+	require(JModuleHelper::getLayoutPath($module->module,'_rquote'));
 	}
 //---------------------------------------------------------------------------------------------------------------------------------------------------	
 /**
@@ -73,7 +73,7 @@ function renderRquote(&$rquote, &$params)
  * @param mixed $category
  * @return
  */
-function getRandomRquote($category,$num_of_random, &$params)
+static function getRandomRquote($category,$num_of_random, &$params)
 {
     $x = 0;
     $catid = 0;
@@ -147,7 +147,7 @@ function getRandomRquote($category,$num_of_random, &$params)
  * @param mixed $num_of_random
  * @return
  */
-function getMultyRandomRquote($category,$num_of_random, &$params)
+static function getMultyRandomRquote($category,$num_of_random, &$params)
 	{
 	   $x = 0;
        $catid = 0;
@@ -232,7 +232,7 @@ if ( $rows )
  * @param mixed $category
  * @return
  */
-function getSequentialRquote($category, &$params)
+static function getSequentialRquote($category, &$params)
 	{
 	   $x = 0;
        $row = NULL;
@@ -322,19 +322,19 @@ $query = $db->getQuery(true);
  * @param mixed $filename
  * @return
  */
-function getTextFile(&$params,$filename)
+function getTextFile(&$params,$filename,$module)
 {
 jimport('joomla.filesystem.file');
 
-		$path= JPATH_BASE."/modules/mod_sportsmanagement_rquotes/mod_sportsmanagement_rquotes/$filename";
-		$cleanpath=JPATH::clean($path);
-		$contents=JFile::read($cleanpath);
-		$lines=explode("\n", $contents);
-		$count=count($lines);
-		$rows=explode("\n", $contents);
-		$num=rand(0,$count-1);
+		$path= JPATH_BASE."/modules/".$module->module."/".$module->module."/".$filename;
+		$cleanpath = JPATH::clean($path);
+		$contents = JFile::read($cleanpath);
+		$lines = explode("\n", $contents);
+		$count = count($lines);
+		$rows = explode("\n", $contents);
+		$num = rand(0,$count-1);
 		
-	require(JModuleHelper::getLayoutPath('mod_sportsmanagement_rquotes','textfile'));
+	require(JModuleHelper::getLayoutPath($module->module,'textfile'));
 
 	return $rows;
  }
@@ -347,20 +347,20 @@ jimport('joomla.filesystem.file');
  * @param mixed $filename
  * @return void
  */
-function getTextFile2(&$params,$filename)
+function getTextFile2(&$params,$filename,$module)
 {
 	jimport('joomla.filesystem.file');
 
-	$today=date("d");
+	$today = date("d");
 	$num=($today-1);
-	$path= JPATH_BASE."/modules/mod_sportsmanagement_rquotes/mod_sportsmanagement_rquotes/$filename";
-	$cleanpath=JPATH::clean($path);
-	$contents=JFile::read($cleanpath);
-	$lines=explode("\n", $contents);
-	$count=count($lines);
-	$rows=explode("\n", $contents);
+	$path = JPATH_BASE."/modules/".$module->module."/".$module->module."/".$filename;
+	$cleanpath = JPATH::clean($path);
+	$contents = JFile::read($cleanpath);
+	$lines = explode("\n", $contents);
+	$count = count($lines);
+	$rows = explode("\n", $contents);
 
-	require(JModuleHelper::getLayoutPath('mod_sportsmanagement_rquotes','textfile'));
+	require(JModuleHelper::getLayoutPath($module->module,'textfile'));
 	}
 
 //------------------------------------------------------------------------------------------------	

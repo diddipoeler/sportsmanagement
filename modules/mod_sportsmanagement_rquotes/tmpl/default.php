@@ -39,14 +39,13 @@
 
 //no direct access
 defined('_JEXEC') or die('Restricted access');
-$quotemarks= $params->get('quotemarks');
+$quotemarks = $params->get('quotemarks');
 
 if ( $list )
 {
 foreach ($list as $rquote)
 {
-
-	modRquotesHelper::renderRquote($rquote, $params);
+	modRquotesHelper::renderRquote($rquote, $params,$module);
 }
 }
 else

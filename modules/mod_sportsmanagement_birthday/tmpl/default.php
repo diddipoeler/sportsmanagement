@@ -48,17 +48,17 @@ switch ($mode)
 
 ?>    
 <div class="row">
-        <div class="row">
-           
-            <div class="col-md-12">
+
+<!--        <div class="row"> -->
+<!--            <div class="col-md-12"> -->
                 <!-- Controls -->
                 <div class="controls pull-right hidden-xs">
                     <a class="left fa fa-chevron-left btn btn-primary" href="#carousel-<?php echo $module->module; ?>-<?php echo $module->id; ?>"
                         data-slide="prev"></a><a class="right fa fa-chevron-right btn btn-primary" href="#carousel-<?php echo $module->module; ?>-<?php echo $module->id; ?>"
                             data-slide="next"></a>
                 </div>
-            </div>
-        </div>
+<!--            </div> -->
+<!--        </div> -->
         
         <div id="carousel-<?php echo $module->module; ?>-<?php echo $module->id; ?>" class="carousel slide hidden-xs" data-ride="carousel">
             <!-- Wrapper for slides -->

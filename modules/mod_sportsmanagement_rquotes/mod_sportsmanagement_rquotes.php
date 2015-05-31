@@ -66,82 +66,62 @@ $category = $params->get('category','');
 $rotate = $params->get('rotate');
 $num_of_random = $params->get('num_of_random');
 
-//echo get_class($this).' '.__FUNCTION__.' source<pre>'.print_r($source,true).'</pre><br>';
-//echo get_class($this).' '.__FUNCTION__.' style<pre>'.print_r($style,true).'</pre><br>';
-//echo get_class($this).' '.__FUNCTION__.' category<pre>'.print_r($category,true).'</pre><br>';
-//echo get_class($this).' '.__FUNCTION__.' rotate<pre>'.print_r($rotate,true).'</pre><br>';
-//echo get_class($this).' '.__FUNCTION__.' num_of_random<pre>'.print_r($num_of_random,true).'</pre><br>';
 
 switch ($source) 
 {
 case 'db':
 if($rotate=='single_random')
 {
-
- $list = modRquotesHelper::getRandomRquote($category,$num_of_random,$params);
-
+$list = modRquotesHelper::getRandomRquote($category,$num_of_random,$params);
 }
-
-
 elseif($rotate=='multiple_random')
 {
-
- $list = modRquotesHelper::getMultyRandomRquote($category,$num_of_random,$params);
-
+$list = modRquotesHelper::getMultyRandomRquote($category,$num_of_random,$params);
 }
 elseif($rotate=='sequential') 
-
 {
-
-	$list = modRquotesHelper::getSequentialRquote($category,$params);
-
+$list = modRquotesHelper::getSequentialRquote($category,$params);
 }
 elseif($rotate=='daily')
 {
-
 $list = modRquotesHelper::getDailyRquote($category,$params);
-
-	
 }
-
 elseif($rotate=='weekly')
 {
-
-	$list = modRquotesHelper::getWeeklyRquote($category,$params);
-	
+$list = modRquotesHelper::getWeeklyRquote($category,$params);
 }
 elseif($rotate=='monthly')
 {
-	
-	$list = modRquotesHelper::getMonthlyRquote($category,$params);
-	
+$list = modRquotesHelper::getMonthlyRquote($category,$params);
 }
 elseif($rotate=='yearly')
 {
-	
-	$list = modRquotesHelper::getYearlyRquote($category,$params);
-	
+$list = modRquotesHelper::getYearlyRquote($category,$params);
 }
 //start
 elseif($rotate=='today')
 {
-	
-	$list = modRquotesHelper::getTodayRquote($category,$params);
-	
+$list = modRquotesHelper::getTodayRquote($category,$params);
 }
 
 //end
-require(JModuleHelper::getLayoutPath('mod_sportsmanagement_rquotes', $style,'default'));
+?>
+<div class="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+<?PHP
+require(JModuleHelper::getLayoutPath($module->module, $style,'default'));
+?>
+</div>
+<?PHP
 break;
 
 case 'text':
 if (!$randomtext)
 {
-$list = modRquotesHelper::getTextFile($params,$filename);
+$list = modRquotesHelper::getTextFile($params,$filename,$module);
 }
 else
 {
-$list = modRquotesHelper::getTextFile2($params,$filename);
+$list = modRquotesHelper::getTextFile2($params,$filename,$module);
 }
 break;
 default:

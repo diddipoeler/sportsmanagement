@@ -99,7 +99,7 @@ switch ($mode)
 		break;
         default:
 //add css file
-$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_birthday/css/mod_sportsmanagement_birthday.css');
+$document->addStyleSheet(JUri::base().'modules'.DS.$module->module.DS.'css'.DS.$module->module.'.css');
 break;
 }
 
@@ -132,7 +132,7 @@ switch ($mode)
     $id = 0;
         $container = 'slider'.$module->id.'_container';
         $layout = isset($attribs['layout'])?$attribs['layout']:'jssor';
-        $document->addScript(JURI::base().'modules/mod_sportsmanagement_club_birthday/js/jssor.slider.mini.js');
+        $document->addScript(JURI::base().'modules/'.$module->module.'/js/jssor.slider.mini.js');
         
 if(count($persons) > 0) 
 {
