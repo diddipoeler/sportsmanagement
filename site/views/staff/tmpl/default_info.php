@@ -37,73 +37,66 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
-<!-- person data START -->
-<h2><?php	echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PERSONAL_DATA' );	?></h2>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
 
-<table class="plgeneralinfo">
-	<tr>
+//echo ' config<pre>'.print_r($this->config,true).'</pre>';
+//echo ' person<pre>'.print_r($this->person,true).'</pre>';
+//echo ' inprojectinfo<pre>'.print_r($this->inprojectinfo,true).'</pre>';
+
+?>
+<!-- person data START -->
+<h4><?php	echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PERSONAL_DATA' );	?></h4>
+
+<div class="row">
+<div class="col-md-6">
+
+
 		<?php
-		if ( $this->config['show_photo'] == 1 )
+		if ( $this->config['show_photo'] )
 		{
 			?>
-			<td class="picture">
+
 				<?php
-				$picturetext=JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PICTURE' );
+				$picturetext = JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PICTURE' );
 				$imgTitle = JText::sprintf( $picturetext, sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]) );
-				$picture = $this->inprojectinfo->picture;
+				$picture = $this->inprojectinfo->season_picture;
 				if ((empty($picture))|| ($picture == sportsmanagementHelper::getDefaultPlaceholder("player")  ))
 				{
 				$picture = $this->person->picture;
 				}
 				
-                /*
-                if ( !file_exists( $picture ) )
-				{
-					$picture = sportsmanagementHelper::getDefaultPlaceholder("player") ;
-				}
-                */
                 
-				/*
-				echo sportsmanagementHelper::getPictureThumb($picture, $imgTitle,
-														$this->config['picture_width'],
-														$this->config['picture_height']);
-				*/
-        //echo JHtml::image($picture, $imgTitle, array('title' => $imgTitle,'width' => $this->config['picture_width'] ));
+        echo sportsmanagementHelperHtml::getBootstrapModalImage('staffinfo'.$this->person->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$imgTitle,$this->config['picture_width']);        
+				
+        
+        
         ?>
-        <a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $imgTitle;?>" class="modal">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $imgTitle;?>" width="<?php echo $this->config['picture_width'];?>" />
-</a>
-<?PHP
-        ?>
-			</td>
+
 			<?php
 		}
 		?>
-		<td class="info">
-			<table class="plinfo">
-				<?php
-				if(!empty($this->person->country) && $this->config["show_nationality"] == 1)
-				{
-				?>
-				<tr>
-					<td class="label"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_NATIONALITY' ); ?>
-					</td>
-					<td class="data">
-					<?php
-						echo JSMCountries::getCountryFlag( $this->person->country ) . " " .
-						JText::_( JSMCountries::getCountryName($this->person->country));
-						?>
-					</td>
-				</tr>
-				<?php
-				}
-				?>
-				<tr>
-					<td class="label">
-						<?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_NAME' ); ?>
-					</td>
-					<td class="data">
+</div>        
+<div class="col-md-6">  
+
+	<?php
+			if(!empty($this->person->country) && $this->config["show_nationality"] )
+			{
+			?>
+			
+            
+            <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_NATIONALITY' ); ?></strong>
+			<?php
+					echo JSMCountries::getCountryFlag( $this->person->country ) . " " .
+					JText::_( JSMCountries::getCountryName($this->person->country));
+					?>
+            </address>
+			<?php
+			}
+			?>
+                    
+	
+				
 						<?php
 						$outputName = JText::sprintf( '%1$s %2$s', $this->person->firstname, $this->person->lastname);
 						if ( $this->person->user_id )
@@ -125,31 +118,36 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 								default:	break;
 							}
 						}
-						echo $outputName;
+						
 						?>
-					</td>
-				</tr>
+					
+                
+                 <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_NAME' ); ?></strong>
+			<?php echo $outputName; ?>
+            </address>
+                
+                
+                
 				<?php if ( ! empty( $this->person->nickname ) )
 				{
+				    
 					?>
-				<tr>
-					<td class="label"><?php
-					echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_NICKNAME' );
-					?></td>
-					<td class="data"><?php
-					echo $this->person->nickname;
-					?></td>
-				</tr>
+				<address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_NICKNAME' ); ?></strong>
+			<?php echo $this->person->nickname; ?>
+            </address>
 				<?php
 				}
+                
+                
 				if (	( $this->config[ 'show_birthday' ] > 0 ) &&
 						( $this->config[ 'show_birthday' ] < 5 ) &&
 						( $this->person->birthday != '0000-00-00' ) )
 				{
-					#$this->config['show_birthday'] = 4;
+
 					?>
-					<tr>
-						<td class="label">
+					
 
 								<?php
 								switch ( $this->config['show_birthday'] )
@@ -170,11 +168,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 														$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_YEAR_OF_BIRTH';
 														break;
 								}
-								echo JText::_( $outputStr );
+								//echo JText::_( $outputStr );
 								?>
 
-						</td>
-						<td class="data">
+						
 							<?php
 							#$this->assignRef( 'playerage', $model->getAge( $this->player->birthday, $this->project->start_date ) );
 							switch ( $this->config['show_birthday'] )
@@ -202,35 +199,45 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 								default:	$birthdateStr = "";
 											break;
 							}
-							echo $birthdateStr;
+							
 							?>
-						</td>
-					</tr>
+						
+                    
+                    <address>
+			<strong><?php echo JText::_( $outputStr ); ?></strong>
+			<?php echo $birthdateStr; ?>
+            </address>
+                    
+                    
 					<?php if( $this->person->deathday != '0000-00-00' ) {?>
-					<tr>
-					<td class="label">
+					
 					<?php
 						$outputStr = 'COM_SPORTSMANAGEMENT_PERSON_DEATHDAY';
-						echo JText::_( $outputStr );
+						//echo JText::_( $outputStr );
 						?>
-						</td>
-						<td class="data">
+						
 						<?php
 						$deathdateStr =	$this->person->deathday != "0000-00-00" ?
 							JHtml::date( $this->person->deathday, JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE' ) ) : "-";
 							echo '&dagger; '.$deathdateStr;
 						?>
-						</td>
-					</tr>
+						<address>
+			<strong><?php echo JText::_( $outputStr ); ?></strong>
+			<?php echo '&dagger; '.$deathdateStr; ?>
+            </address>
 					<?php
 					}
+                    
+                    
+                    
 				}
+                
 			if (( $this->person->address != "" ) && ( $this->config[ 'show_person_address' ] ==1  ))
 				{
 					?>
-				<tr>
-					<td class="label"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_ADDRESS' ); ?></td>
-					<td class="data"><?php
+				<address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_ADDRESS' ); ?></strong>
+            <?php
 						echo JSMCountries::convertAddressString(	'',
 																$this->person->address,
 																$this->person->state,
@@ -238,176 +245,110 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 																$this->person->location,
 																$this->person->address_country,
 																'COM_SPORTSMANAGEMENT_PERSON_ADDRESS_FORM' );
-					?></td>
-				</tr>
+					?>
+                    </address>
 				<?php
 				}
-			if (( $this->person->phone != "" ) && ( $this->config[ 'show_person_phone' ] ==1  ))
+                
+                
+			if (( $this->person->phone != "" ) && $this->config[ 'show_person_phone' ] )
 				{
 					?>
-					<tr>
-						<td class="label">
-
-								<?php
-								echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PHONE' );
-								?>
-
-						</td>
-						<td class="data">
-							<?php
-							echo $this->person->phone;
-							?>
-						</td>
-					</tr>
+					<address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PHONE' ); ?></strong>
+			<?php echo $this->person->phone; ?>
+            </address>
 					<?php
 				}
 
-			if (( $this->person->mobile != "" ) && ( $this->config[ 'show_person_mobile' ] ==1  ))
+			if (( $this->person->mobile != "" ) && $this->config[ 'show_person_mobile' ] )
 				{
 					?>
-					<tr>
-						<td class="label">
-
-								<?php
-								echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_MOBILE' );
-								?>
-
-						</td>
-						<td class="data">
-							<?php
-							echo $this->person->mobile;
-							?>
-						</td>
-					</tr>
+					<address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_MOBILE' ); ?></strong>
+			<?php echo $this->person->mobile; ?>
+            </address>
 					<?php
 				}
 
-			if (( $this->person->email != "" ) && ($this->config['show_person_email'] == 1))
+			if (( $this->person->email != "" ) && $this->config['show_person_email'] )
 			{
 					?>
-					<tr>
-						<td class="label">
-
-								<?php
-								echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_EMAIL' );
-								?>
-
-						</td>
-						<td class="data">
-							<?php
-							$user = JFactory::getUser();
-							if ( ( $user->id ) || ( ! $this->overallconfig['nospam_email'] ) )
-							{
-								?>
-								<a href="mailto: <?php echo $this->person->email; ?>">
-									<?php
-									echo $this->club->email;
-									?>
-								</a>
-								<?php
-							}
-							else
-							{
-								echo JHtml::_('email.cloak', $this->person->email );
-							}
-							?>
-						</td>
-					</tr>
+					<address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_EMAIL' ); ?></strong>
+			<?php 
+            $user = JFactory::getUser();
+				if ( ( $user->id ) || ( ! $this->overallconfig['nospam_email'] ) )
+				{
+					?> <a href="mailto: <?php echo $this->person->email; ?>"> <?php
+					echo $this->person->email;
+					?> </a> <?php
+				}
+				else
+				{
+					echo JHtml::_('email.cloak', $this->person->email );
+				}
+            ?>
+            </address>
 					<?php
 			}
 
-			if (( $this->person->website != "" ) && ($this->config['show_person_website'] == 1))
+			if (( $this->person->website != "" ) && $this->config['show_person_website'] )
 				{
 					?>
-					<tr>
-						<td class="label">
-
-								<?php
-								echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_WEBSITE' );
-								?>
-
-						</td>
-						<td class="data">
-							<?php
-							echo JHtml::_(	'link',
-											$this->person->website,
-											$this->person->website,
-											array( 'target' => '_blank' ) );
-							?>
-						</td>
-					</tr>
+					<address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_WEBSITE' ); ?></strong>
+			<?php echo JHtml::_(	'link',
+				$this->person->website,
+				$this->person->website,
+				array( 'target' => '_blank' ) );
+                 ?>
+            </address>
 					<?php
 				}
 
-			if (( $this->person->height > 0 ) && ($this->config['show_person_height'] == 1))
+			if (( $this->person->height > 0 ) && $this->config['show_person_height'] )
 				{
 					?>
-					<tr>
-						<td class="label">
-
-								<?php
-								echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_HEIGHT' );
-								?>
-
-						</td>
-						<td class="data">
-							<?php
-							echo str_replace( "%HEIGHT%", $this->person->height, JText::_( 'COM_SPORTSMANAGEMENT_PERSON_HEIGHT_FORM' ) );
-							?>
-						</td>
-					</tr>
+					<address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_HEIGHT' ); ?></strong>
+			<?php echo str_replace( "%HEIGHT%", $this->person->height, JText::_( 'COM_SPORTSMANAGEMENT_PERSON_HEIGHT_FORM' ) ); ?>
+            </address>
 					<?php
 				}
-			if (( $this->person->weight > 0 ) && ($this->config['show_person_weight'] == 1))
+                
+			if (( $this->person->weight > 0 ) && $this->config['show_person_weight'] )
 				{
 					?>
-					<tr>
-						<td class="label">
-
-								<?php
-								echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_WEIGHT' );
-								?>
-
-						</td>
-						<td class="data">
-							<?php
-							echo str_replace( "%WEIGHT%", $this->person->weight, JText::_( 'COM_SPORTSMANAGEMENT_PERSON_WEIGHT_FORM' ) );
-							?>
-						</td>
-					</tr>
+					<address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_WEIGHT' ); ?></strong>
+			<?php echo str_replace( "%WEIGHT%", $this->person->weight, JText::_( 'COM_SPORTSMANAGEMENT_PERSON_WEIGHT_FORM' ) );; ?>
+            </address>
 					<?php
 					}
+                    
 				if ( isset($this->inprojectinfo->position_id) && $this->inprojectinfo->position_id > 0 )
 				{
 					?>
-				<tr>
-					<td class="label"><?php
-					echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_POSITION' );
-					?></td>
-					<td class="data"><?php
-					echo JText::_( $this->inprojectinfo->position_name );
-					?></td>
-				</tr>
+				
+                <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_POSITION' ); ?></strong>
+			<?php echo JText::_( $this->inprojectinfo->position_name ); ?>
+            </address>
+                
+                
+                
 				<?php
 				}
 
-			if (( ! empty( $this->person->knvbnr ) ) && ($this->config['show_person_regnr'] == 1))
+			if (( ! empty( $this->person->knvbnr ) ) && $this->config['show_person_regnr'] )
 				{
 					?>
-					<tr>
-						<td class="label">
-
-								<?php
-								echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_REGNO' );
-								?>
-
-						</td>
-						<td class="data">
-							<?php
-							echo $this->person->knvbnr;
-							?>
-						</td>
-					</tr>
+                    <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_REGISTRATIONNR' ); ?></strong>
+			<?php echo $this->person->knvbnr; ?>
+            </address>
+					
 					<?php
 				}
 				?>
@@ -416,3 +357,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 	</tr>
 </table>
 <br />
+
+</div>  
+</div>  

@@ -40,7 +40,7 @@
 defined('_JEXEC') or die('Restricted access'); ?>
 
 <!-- Player stats History START -->
-<h2><?php	echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PERSONAL_STATISTICS' );	?></h2>
+<h4><?php	echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PERSONAL_STATISTICS' );	?></h4>
 <table class="<?php echo $this->config['table_class'];?>" >
 	<tr>
 		<td>
@@ -49,6 +49,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				<tr class="sectiontableheader">
 					<th class="td_l" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION'); ?></th>
 					<th class="td_l" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_TEAM'); ?></th>
+                     <th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE');?></th> 
 					<th class="td_c"><?php
 						$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_PLAYED');
 						echo JHtml::image(	'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name.'/played.png',
@@ -74,7 +75,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 					foreach ($this->history as $player_hist)
 					{
 						$model = $this->getModel();
-						$present=$model->getPresenceStats($player_hist->project_id,$player_hist->pid);
+						$present = $model->getPresenceStats($player_hist->project_id,$player_hist->pid);
 						?>
 						<tr class="">
 							<td class="td_l" nowrap="nowrap"><?php
@@ -82,6 +83,13 @@ defined('_JEXEC') or die('Restricted access'); ?>
 								# echo " (".$player_hist->project_id.")";
 								?></td>
 							<td class="td_l" class="nowrap"><?php echo $player_hist->team_name; ?></td>
+                            
+                            <td>
+                <?PHP
+                //echo $player_hist->season_picture;
+                echo sportsmanagementHelperHtml::getBootstrapModalImage('careerstats'.$player_hist->project_id.'-'.$player_hist->team_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$player_hist->season_picture,$player_hist->team_name,'50');
+                ?>
+                </td>
 							<!-- Player stats History - played start -->
 							<td class="td_c"><?php
 								echo ($present > 0) ? $present : '-';

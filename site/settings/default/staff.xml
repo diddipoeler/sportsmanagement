@@ -77,12 +77,7 @@
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_PICTURE_WIDTH" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_PICTURE_WIDTH">
 		</field>
-<!--		
-		<field 	name="picture_height" type="text" default="150"
-				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_PICTURE_HEIGHT" 
-				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_PICTURE_HEIGHT">
-		</field>
--->		
+
 		<field 	name="show_nationality" type="radio" default="0"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_LABEL_SHOW_NATIONALITY" 
 				description="COM_SPORTSMANAGEMENT_FES_STAFF_PARAM_DESCR_SHOW_NATIONALITY">

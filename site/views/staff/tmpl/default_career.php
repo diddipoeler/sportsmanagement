@@ -43,7 +43,7 @@ if (count($this->history) > 0)
 {
 	?>
 	<!-- staff history START -->
-	<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_STAFF_CAREER'); ?></h2>	
+	<h4><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_STAFF_CAREER'); ?></h4>	
 	<table class="<?php echo $this->config['table_class'];?>">
 		<tr>
 			<td>
@@ -52,6 +52,7 @@ if (count($this->history) > 0)
 					<tr class="sectiontableheader"><th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION'); ?></th>
 						<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_SEASON'); ?></th>
 						<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_TEAM'); ?></th>
+                        <th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE');?></th> 
 						<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_POSITION'); ?></th>
 					</tr>
 					<?php
@@ -78,6 +79,14 @@ if (count($this->history) > 0)
 							<td class="td_l"><?php echo JHtml::link($link1,$station->project_name); ?></td>
 							<td class="td_l"><?php echo $station->season_name; ?></td>
 							<td class="td_l"><?php echo JHtml::link($link2,$station->team_name); ?></td>
+                            
+                            <td>
+                <?PHP
+                //echo $player_hist->season_picture;
+                echo sportsmanagementHelperHtml::getBootstrapModalImage('career'.$station->project_id.'-'.$station->team_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$station->season_picture,$station->team_name,'50');
+                ?>
+                </td>
+                            
 							<td class="td_l"><?php echo JText::_($station->position_name); ?></td>
 						</tr>
 						<?php

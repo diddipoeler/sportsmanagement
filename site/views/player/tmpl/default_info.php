@@ -49,7 +49,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <div class="col-md-6">
 
 	<?php
-	if ( $this->config['show_player_photo'] == 1 )
+	if ( $this->config['show_player_photo'] )
 	{
 		
 		
@@ -72,7 +72,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playerinfo'.$this->pers
         
 		
 			<?php
-			if(!empty($this->person->country) && ($this->config["show_nationality"] == 1))
+			if(!empty($this->person->country) && $this->config["show_nationality"] )
 			{
 			?>
 			
@@ -208,7 +208,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playerinfo'.$this->pers
 			<?php
 			}
 
-			if (( $this->person->address != "" ) && ( $this->config[ 'show_person_address' ] ==1  ) && ($this->isContactDataVisible) )
+			if (( $this->person->address != "" ) && $this->config[ 'show_person_address' ] && ($this->isContactDataVisible) )
 			{
 				?>
 			
@@ -230,7 +230,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playerinfo'.$this->pers
 			<?php
 			}
 
-			if (( $this->person->phone != "" ) && ( $this->config[ 'show_person_phone' ] ==1  ) && ($this->isContactDataVisible) )
+			if (( $this->person->phone != "" ) && $this->config[ 'show_person_phone' ] && ($this->isContactDataVisible) )
 			{
 				?>
 			
@@ -243,7 +243,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playerinfo'.$this->pers
 			<?php
 			}
 
-			if (( $this->person->mobile != "" ) && ( $this->config[ 'show_person_mobile' ] ==1  ) && ($this->isContactDataVisible) )
+			if (( $this->person->mobile != "" ) && $this->config[ 'show_person_mobile' ] && ($this->isContactDataVisible) )
 			{
 				?>
 			            
@@ -255,7 +255,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playerinfo'.$this->pers
 			<?php
 			}
 
-			if (( $this->person->email != "" ) && ($this->config['show_person_email'] == 1) && ($this->isContactDataVisible) )
+			if (( $this->person->email != "" ) && $this->config['show_person_email'] && ($this->isContactDataVisible) )
 			{
 					?>
 			
@@ -279,7 +279,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playerinfo'.$this->pers
 			<?php
 			}
 
-			if (( $this->person->website != "" ) && ($this->config['show_person_website'] == 1))
+			if (( $this->person->website != "" ) && $this->config['show_person_website'] )
 			{
 				?>
 		
@@ -295,7 +295,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playerinfo'.$this->pers
 			<?php
 			}
 
-			if (( $this->person->height > 0 ) && ($this->config['show_person_height'] == 1))
+			if (( $this->person->height > 0 ) && $this->config['show_person_height'] )
 			{
 				?>
 			
@@ -308,7 +308,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playerinfo'.$this->pers
             
 			<?php
 			}
-			if (( $this->person->weight > 0 ) && ($this->config['show_person_weight'] == 1))
+			if (( $this->person->weight > 0 ) && $this->config['show_person_weight'] )
 			{
 				?>
 			
@@ -359,7 +359,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playerinfo'.$this->pers
             
 			<?php
 			}
-			if (( ! empty( $this->person->knvbnr ) ) && ($this->config['show_person_regnr'] == 1))
+			if (( ! empty( $this->person->knvbnr ) ) && $this->config['show_person_regnr'] )
 			{
 				?>
 			
