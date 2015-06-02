@@ -64,6 +64,7 @@ class sportsmanagementViewProjectteam extends sportsmanagementView
 		$option = JRequest::getCmd('option');
         
         $this->change_training_date	= $app->getUserState( "$option.change_training_date", '0' );
+        $this->season_id = $app->getUserState( "$option.season_id", '0' ); ;
         
 		// get the Data
 		$form = $this->get('Form');
@@ -81,6 +82,8 @@ class sportsmanagementViewProjectteam extends sportsmanagementView
 		$this->form = $form;
 		$this->item = $item;
 		$this->script = $script;
+        
+        $this->item->name = '';
         
         $project_id	= $this->item->project_id;;
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
@@ -113,25 +116,23 @@ class sportsmanagementViewProjectteam extends sportsmanagementView
 			6 => JText::_('SATURDAY'),
 			7 => JText::_('SUNDAY'));
         $dwOptions=array();
-			foreach($daysOfWeek AS $key => $value)
+			foreach( $daysOfWeek AS $key => $value )
             {
-                $dwOptions[]=JHtml::_('select.option',$key,$value);
+                $dwOptions[] = JHtml::_('select.option',$key,$value);
             }
 			
             if ( $trainingdata )
             {
-            foreach ($trainingdata AS $td)
+            foreach ( $trainingdata AS $td )
 			{
-				$lists['dayOfWeek'][$td->id]=JHtml::_('select.genericlist',$dwOptions,'dayofweek['.$td->id.']','class="inputbox"','value','text',$td->dayofweek);
+				$lists['dayOfWeek'][$td->id] = JHtml::_('select.genericlist',$dwOptions,'dayofweek['.$td->id.']','class="inputbox"','value','text',$td->dayofweek);
 			}
             }    
             
         $extended = sportsmanagementHelper::getExtended($item->extended, 'projectteam');
-		$this->assignRef( 'extended', $extended );
-        //$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
-        
+		$this->assignRef('extended',$extended );
         $this->assignRef('project',$project);
-        $this->assignRef('lists',	$lists);
+        $this->assignRef('lists',$lists);
         $this->assignRef('project_team',$project_team);
         $this->assignRef('trainingData',$trainingdata);
 		

@@ -352,7 +352,9 @@ class sportsmanagementModelteamperson extends JModelAdmin
        $post = JRequest::get('post');
        $db = $this->getDbo();
 	   $query = $db->getQuery(true);
-       $query2 = $db->getQuery(true);
+       $date = JFactory::getDate();
+	   $user = JFactory::getUser();
+       //$query2 = $db->getQuery(true);
         
        //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$app->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
@@ -377,13 +379,16 @@ class sportsmanagementModelteamperson extends JModelAdmin
         $db->quoteName('away_end') .'=\''.$data['away_end'].'\'',
         $db->quoteName('away_detail') .'=\''.$data['away_detail'].'\'',
         $db->quoteName('away_date_start') .'=\''.$data['away_date_start'].'\'',
-        $db->quoteName('away_date_end') .'=\''.$data['away_date_end'].'\''
+        $db->quoteName('away_date_end') .'=\''.$data['away_date_end'].'\'',
+        
+        $db->quoteName('modified') .'=\''.$date->toSql().'\'',
+        $db->quoteName('modified_by') .'='.$user->get('id')
         );
      // Conditions for which records should be updated.
     $conditions = array(
     $db->quoteName('id') .'='. $data['person_id']
     );
-     $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person'))->set($fields)->where($conditions);
+     $query->update($db->quoteName('#__sportsmanagement_person'))->set($fields)->where($conditions);
      $db->setQuery($query);   
  
   
@@ -395,17 +400,20 @@ class sportsmanagementModelteamperson extends JModelAdmin
 // update personendaten pro saison
        // Fields to update.
     unset($fields);
-    unset($conditions);   
+    unset($conditions);  
+    $query->clear(); 
     $fields = array(
-    $db->quoteName('picture') .'=\''.$data['picture'].'\''
+    $db->quoteName('picture') .'=\''.$data['picture'].'\'',
+    $db->quoteName('modified') .'=\''.$date->toSql().'\'',
+    $db->quoteName('modified_by') .'='.$user->get('id')
         );
      // Conditions for which records should be updated.
     $conditions = array(
     $db->quoteName('person_id') .'='. $data['person_id'],
     $db->quoteName('season_id') .'='. $season_id
     );
-     $query2->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id'))->set($fields)->where($conditions);
-     $db->setQuery($query2);   
+     $query->update($db->quoteName('#__sportsmanagement_season_person_id'))->set($fields)->where($conditions);
+     $db->setQuery($query);   
  
  if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 		{

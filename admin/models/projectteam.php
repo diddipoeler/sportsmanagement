@@ -450,6 +450,20 @@ class sportsmanagementModelprojectteam extends JModelAdmin
         $mdlTeam->UpdateTrainigData($post);
         }
         
+/**
+ * das mannschaftsfoto wird zusätzlich abgespeichert,
+ * damit man die historischen kader sieht        
+ */
+        // Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->id = (int)$post['jform']['team_id'];
+        $object->picture = $post['jform']['picture'];
+        $object->modified = $date->toSql();
+	    $object->modified_by = $user->get('id');
+        // Update their details in the table using id as the primary key.
+        $result = JFactory::getDbo()->updateObject('#__sportsmanagement_season_team_id', $object, 'id');
+        
         //$app->enqueueMessage(JText::_('sportsmanagementModelprojectteam save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         // Proceed with the save
@@ -523,7 +537,7 @@ class sportsmanagementModelprojectteam extends JModelAdmin
 	{
 	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-		$db		= JFactory::getDbo();
+		$db	= JFactory::getDbo();
 		$query	= $db->getQuery(true);
         // Select some fields
 		$query->select('t.*');

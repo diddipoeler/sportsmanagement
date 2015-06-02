@@ -115,7 +115,8 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         else
         {
             $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GOOGLEMAP_NOT_AVAILABLE'),'Error');
-            $this->googlemap = '1';
+            //$this->googlemap = '1';
+            $this->googlemap = '0';
         }
         
         

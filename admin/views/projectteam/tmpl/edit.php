@@ -145,13 +145,12 @@ $startoffset = 0;
 		<div class="clr"></div>
         
 <div>        
-		<input type="hidden" name="pid" value="<?php echo $this->item->project_id; ?>" />
-        <input type="hidden" name="project_id" value="<?php echo $this->item->project_id; ?>" />
-        
-		<input type="hidden" name="task" value="projectteam.edit" />
-	</div>
-	<?php echo JHtml::_('form.token'); ?>
-
+<input type="hidden" name="pid" value="<?php echo $this->item->project_id; ?>" />
+<input type="hidden" name="project_id" value="<?php echo $this->item->project_id; ?>" />
+<input type="hidden" name="season_id" value="<?php echo $this->season_id; ?>" />
+<input type="hidden" name="task" value="projectteam.edit" />
+</div>
+<?php echo JHtml::_('form.token'); ?>
 </form>
 <?PHP
 echo "<div>";
