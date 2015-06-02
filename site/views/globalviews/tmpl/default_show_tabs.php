@@ -41,6 +41,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 //echo 'output <pre>'.print_r($this->output,true).'</pre>';
 
+?>
+<div class="row" id="show_tabs">
+<?php
+
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 // Joomla! 3.0 code here

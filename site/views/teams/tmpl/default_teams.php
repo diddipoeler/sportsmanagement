@@ -80,6 +80,18 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
 		if ($this->config['show_small_logo']) {
 			$teampic = $this->config['team_picture'];
 			$picture = $team->$teampic;
+            
+            switch($teampic)
+            {
+                case 'logo_small':
+                case 'logo_middle':
+                case 'logo_big':
+                $this->config['team_picture_width'] = 20;
+                break;
+                default:
+                break;
+            }
+            
 			if ( ( is_null( $picture ) ) || ( !file_exists( $picture ) ) )
 			{
 				$picture = sportsmanagementHelper::getDefaultPlaceholder("clublogosmall");

@@ -44,20 +44,10 @@ jimport('joomla.application.component.model');
 jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper');
 
-//require_once( JLG_PATH_SITE . DS . 'extensions' . DS . 'rankingalltime' . DS. 'helpers' . DS . 'rankingalltime.php' );
-
-// require_once (JLG_PATH_SITE . DS . 'models' . DS . 'project.php');
-
-//$classname = 'sportsmanagementModelRanking';
-//if (!class_exists($classname))
-//{
-//$file = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'ranking.php';
-//if (file_exists($file))
-//{
-//require_once($file);
-//}
-//}
-
+if (! defined('JSM_PATH'))
+{
+DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
+}
 
 $maxImportTime = 480;
 error_reporting(0);
@@ -84,7 +74,7 @@ class sportsmanagementModelRankingAllTime extends JModelLegacy
     var $debug_info = false;
     var $projectid = 0;
     var $leagueid = 0;
-    var $classname = 'sportsmanagementModelRanking';
+    static $classname = 'sportsmanagementModelRanking';
     
     /**
      * ranking parameters
@@ -105,25 +95,29 @@ class sportsmanagementModelRankingAllTime extends JModelLegacy
      */
     function __construct()
     {
+        // Reference global application object
         $app = JFactory::getApplication();
-        $this->alltimepoints = JRequest::getVar("points", 0);
+        $jinput = $app->input;
+        $this->alltimepoints = $jinput->request->get('points', '3,1,0', 'STR');
         
-        if (!class_exists($this->classname))
+        if (!class_exists(self::$classname))
         {
-        $file = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'ranking.php';
+        $file = JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'ranking.php';
         if (file_exists($file))
         {
         require_once($file);
         }
         }
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' classname<br><pre>'.print_r($this->classname,true).'</pre>'),'Notice');
+        
         
         $menu = JMenu::getInstance('site');
         $item = $menu->getActive();
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' menu<br><pre>'.print_r($menu,true).'</pre>'),'Notice');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($item,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' classname<br><pre>'.print_r(self::$classname,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' file<br><pre>'.print_r($file,true).'</pre>'),'Notice');
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($item->query['view'],true).'</pre>'),'Notice');
         
@@ -747,6 +741,9 @@ JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEME
     {
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
+        $jinput = $app->input;
+        $league = $jinput->request->get('l', 0, 'INT');
+        
         //$search	= $this->getState('filter.search');
         
         //$this->_project_id	= JRequest::getVar('pid');
@@ -756,11 +753,11 @@ JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEME
 		$db = JFactory::getDBO();
 		$query = JFactory::getDbo()->getQuery(true);
 
-        $league = JRequest::getInt("l", 0);
+        //$league = JRequest::getInt("l", 0);
 
         if (!$league) 
         {
-            $projekt = JRequest::getInt("p", 0);
+            $projekt = $jinput->request->get('p', 0, 'INT');
             $query->clear();
             // Select some fields
 		$query->select('league_id');
@@ -828,47 +825,45 @@ $query->clear();
         $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
     
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
     
         $newranking = array();
 
 
         foreach ($this->teams as $key) 
         {
-            //$new = new JSMRankingalltimeTeam(0);
+//            $new = new stdclass(0);
             $new = new JSMRankingTeam(0);
             $new->cnt_matches = $key->cnt_matches;
             $new->sum_points = $key->sum_points;
             $new->neg_points = $key->neg_points;
-
             $new->cnt_won_home = $key->cnt_won_home;
             $new->cnt_draw_home = $key->cnt_draw_home;
             $new->cnt_lost_home = $key->cnt_lost_home;
-
             $new->cnt_won = $key->cnt_won;
             $new->cnt_draw = $key->cnt_draw;
             $new->cnt_lost = $key->cnt_lost;
-
             $new->sum_team1_result = $key->sum_team1_result;
             $new->sum_team2_result = $key->sum_team2_result;
             $new->sum_away_for = $key->sum_away_for;
             $new->diff_team_results = $key->diff_team_results;
-
-
             $new->_is_in_score = $key->is_in_score;
             $new->_teamid = $key->team_id;
             $new->_name = $key->name;
-
             $new->_ptid = $key->projectteamid;
             $new->_pid = $key->project_id;
 
             $newranking[0][$key->team_id] = $new;
 
+
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($key->team_id,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' new<br><pre>'.print_r($new,true).'</pre>'),'');
+        
         }
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' newranking<br><pre>'.print_r($newranking,true).'</pre>'),'');
-
-        $newranking[0] = $this->_sortRanking($newranking[0]);
+        
+        $newranking[0] = self::_sortRanking($newranking[0]);
 
         $oldpoints = 0;
         $rank = 0;
@@ -881,19 +876,9 @@ $query->clear();
                 $rank++;
                 $row->rank = $rank;
                 $oldpoints = $row->sum_points;
-
             }
-
-
         }
-//
-//        if ($this->debug_info) {
-//            $this->dump_header("models function getCurrentRanking");
-//            $this->dump_variable("newranking", $newranking);
-//        }
 
-
-        // return $this->teams;
         return $newranking;
 
     }
@@ -909,10 +894,24 @@ $query->clear();
      */
     function _sortRanking(&$ranking)
     {
+        // Reference global application object
+        $app = JFactory::getApplication();
+        $jinput = $app->input;
+        $order = $jinput->request->get('order', '', 'STR');
+        $order_dir = $jinput->request->get('dir', 'DESC', 'STR');
+        
+        $arr2 = array();
+        
+        foreach ($ranking as $row) {
+                $arr2[$row->_teamid] = JArrayHelper::fromObject($row);
+            }
 
 
-        $order = JRequest::getVar('order', '');
-        $order_dir = JRequest::getVar('dir', 'DESC');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' order<br><pre>'.print_r($order,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' order_dir<br><pre>'.print_r($order_dir,true).'</pre>'),'Notice');
+        
+        //$order = JRequest::getVar('order', '');
+        //$order_dir = JRequest::getVar('dir', 'DESC');
 
         if (!$order) {
             $order_dir = 'DESC';
@@ -921,49 +920,35 @@ $query->clear();
 
             foreach ($this->_getRankingCriteria() as $c) {
 
-                if ($this->debug_info) {
-                    $this->dump_header("models function _sortRanking");
-                    $this->dump_variable("c", $c);
-                }
-
                 switch ($c) {
                     case '_cmpPoints':
-                        $sortarray[sum_points] = SORT_DESC;
+                        $sortarray['sum_points'] = SORT_DESC;
                         break;
                     case '_cmpPLAYED':
-                        $sortarray[cnt_matches] = SORT_DESC;
+                        $sortarray['cnt_matches'] = SORT_DESC;
                         break;
                     case '_cmpDiff':
-                        $sortarray[diff_team_results] = SORT_DESC;
+                        $sortarray['diff_team_results'] = SORT_DESC;
                         break;
                     case '_cmpFor':
-                        $sortarray[sum_team1_result] = SORT_DESC;
+                        $sortarray['sum_team1_result'] = SORT_DESC;
                         break;
                     case '_cmpPlayedasc':
-                        $sortarray[cnt_matches] = SORT_ASC;
+                        $sortarray['cnt_matches'] = SORT_ASC;
                         break;
                 }
                 //uasort( $ranking, array("JoomleagueModelRankingalltime",$c ));
 
             }
 
-            if ($this->debug_info) {
-                $this->dump_header("models function _sortRanking");
-                $this->dump_variable("sortarray", $sortarray);
-            }
-
-            foreach ($ranking as $row) {
-                $arr2[$row->_teamid] = JArrayHelper::fromObject($row);
-            }
+//            foreach ($ranking as $row) {
+//                $arr2[$row->_teamid] = JArrayHelper::fromObject($row);
+//            }
+            
             //$arr2 = $this->array_msort($arr2, array('sum_points'=>SORT_DESC,  'diff_team_results'=>SORT_DESC ) );
             //$sortarray2 = implode (",", $sortarray);
             //$arr2 = $this->array_msort($arr2, array($sortarray2) );
             $arr2 = $this->array_msort($arr2, $sortarray);
-
-            if ($this->debug_info) {
-                $this->dump_header("models function _sortRanking");
-                $this->dump_variable("sortarray2", $sortarray2);
-            }
 
             unset($ranking);
 
@@ -971,86 +956,93 @@ $query->clear();
             {
                 //$ranking2[$key] = JArrayHelper::toObject($row, 'JSMRankingalltimeTeam');
                 //$ranking[$key] = JArrayHelper::toObject($row, 'JSMRankingalltimeTeam');
-                $ranking2[$key] = JArrayHelper::toObject($row, 'JSMRankingTeam');
+                //$ranking2[$key] = JArrayHelper::toObject($row, 'JSMRankingTeam');
                 $ranking[$key] = JArrayHelper::toObject($row, 'JSMRankingTeam');
             }
-
-            if ($this->debug_info) {
-
-                $this->dump_header("models function _sortRanking");
-                $this->dump_variable("arr2", $arr2);
-
-
-                $this->dump_header("models function _sortRanking");
-                $this->dump_variable("ranking2", $ranking2);
-
-                $this->dump_header("models function _sortRanking");
-                $this->dump_variable("ranking", $ranking);
-
-
-            }
-
 
         } else //     if ( !$order_dir)
         {
             //     $order_dir = 'DESC';
             //     }
+            
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' order<br><pre>'.print_r($order,true).'</pre>'),'Notice');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' classname<br><pre>'.print_r(self::$classname,true).'</pre>'),'Notice');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ranking<br><pre>'.print_r($ranking,true).'</pre>'),'Notice');
+            
             switch ($order) {
                 case 'played':
-                    uasort($ranking, array($this->classname, "playedCmp"));
+                    //uasort($ranking, array(self::$classname, "playedCmp"));
+                    $sortarray['cnt_matches'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
                     break;
                 case 'name':
-                    uasort($ranking, array($this->classname, "teamNameCmp"));
+                    //uasort($ranking, array(self::$classname, "teamNameCmp"));
+                    $sortarray['_name'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
                     break;
                 case 'rank':
                     break;
                 case 'won':
-                    uasort($ranking, array($this->classname, "wonCmp"));
+                    //uasort($ranking, array(self::$classname, "wonCmp"));
+                    $sortarray['cnt_won'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
                     break;
                 case 'draw':
-                    uasort($ranking, array($this->classname, "drawCmp"));
+                    //uasort($ranking, array(self::$classname, "drawCmp"));
+                    $sortarray['cnt_draw'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
                     break;
                 case 'loss':
-                    uasort($ranking, array($this->classname, "lossCmp"));
+                    //uasort($ranking, array(self::$classname, "lossCmp"));
+                    $sortarray['cnt_lost'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
                     break;
                 case 'winpct':
-                    uasort($ranking, array($this->classname, "winpctCmp"));
+                    uasort($ranking, array(self::$classname, "_winpctCmp"));
+                    //$sortarray['_name'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
                     break;
                 case 'quot':
-                    uasort($ranking, array($this->classname, "quotCmp"));
+                    uasort($ranking, array(self::$classname, "_quotCmp"));
+                    //$sortarray['_name'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
                     break;
                 case 'goalsp':
-                    uasort($ranking, array($this->classname, "goalspCmp"));
+                    //uasort($ranking, array(self::$classname, "goalspCmp"));
+                    $sortarray['sum_team1_result'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
                     break;
                 case 'goalsfor':
-                    uasort($ranking, array($this->classname, "goalsforCmp"));
+                    //uasort($ranking, array(self::$classname, "goalsforCmp"));
+                    $sortarray['sum_team1_result'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
                     break;
                 case 'goalsagainst':
-                    uasort($ranking, array($this->classname, "goalsagainstCmp"));
+                    //uasort($ranking, array(self::$classname, "goalsagainstCmp"));
+                    $sortarray['sum_team2_result'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
                     break;
                 case 'legsdiff':
-                    uasort($ranking, array($this->classname, "legsdiffCmp"));
+                    //uasort($ranking, array(self::$classname, "legsdiffCmp"));
+                    $sortarray['diff_team_legs'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
                     break;
                 case 'legsratio':
-                    uasort($ranking, array($this->classname, "legsratioCmp"));
+                    //uasort($ranking, array(self::$classname, "legsratioCmp"));
+                    $sortarray['legsRatio'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
                     break;
                 case 'diff':
-                    uasort($ranking, array($this->classname, "diffCmp"));
+                    //uasort($ranking, array(self::$classname, "diffCmp"));
+                    $sortarray['diff_team_legs'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
                     break;
                 case 'points':
-                    uasort($ranking, array($this->classname, "pointsCmp"));
+                    uasort($ranking, array(self::$classname, "_pointsCmp"));
+                    //$sortarray['_name'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
                     break;
                 case 'start':
-                    uasort($ranking, array($this->classname, "startCmp"));
+                    //uasort($ranking, array(self::$classname, "startCmp"));
+                    $sortarray['start_points'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
                     break;
                 case 'bonus':
-                    uasort($ranking, array($this->classname, "bonusCmp"));
+                    //uasort($ranking, array(self::$classname, "bonusCmp"));
+                    $sortarray['bonus_points'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
                     break;
                 case 'negpoints':
-                    uasort($ranking, array($this->classname, "negpointsCmp"));
+                    //uasort($ranking, array(self::$classname, "negpointsCmp"));
+                    $sortarray['neg_points'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
                     break;
                 case 'pointsratio':
-                    uasort($ranking, array($this->classname, "pointsratioCmp"));
+                    //uasort($ranking, array(self::$classname, "pointsratioCmp"));
+                    $sortarray['pointsRatio'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
                     break;
 
                 default:
@@ -1059,10 +1051,24 @@ $query->clear();
                     }
                     break;
             }
+            
+            $arr2 = $this->array_msort($arr2, $sortarray);
 
-            if ($order_dir == 'DESC') {
-                $ranking = array_reverse($ranking, true);
+            unset($ranking);
+
+            foreach ($arr2 as $key => $row) 
+            {
+                //$ranking2[$key] = JArrayHelper::toObject($row, 'JSMRankingalltimeTeam');
+                //$ranking[$key] = JArrayHelper::toObject($row, 'JSMRankingalltimeTeam');
+                //$ranking2[$key] = JArrayHelper::toObject($row, 'JSMRankingTeam');
+                $ranking[$key] = JArrayHelper::toObject($row, 'JSMRankingTeam');
             }
+            
+//            if ($order_dir == 'DESC') {
+//                $ranking = array_reverse($ranking, true);
+//            }
+            
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ranking<br><pre>'.print_r($ranking,true).'</pre>'),'Notice');
 
         }
 

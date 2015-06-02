@@ -249,7 +249,7 @@ class sportsmanagementModelRanking extends JModelLegacy
        
        if ( !self::$round )
         {
-            self::$round = sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.$this->viewName,$cfg_which_database);
+            self::$round = sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.self::$viewName,$cfg_which_database);
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($this->round,true).'</pre>'),'');
         }
         
@@ -387,7 +387,7 @@ class sportsmanagementModelRanking extends JModelLegacy
         
 		$tableconfig= sportsmanagementModelProject::getTemplateConfig( "ranking" , $cfg_which_database,__METHOD__);
 
-		self::$round = (self::$round == 0 || self::$round == '' ) ? sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.$this->viewName,$cfg_which_database) : self::$round;
+		self::$round = (self::$round == 0 || self::$round == '' ) ? sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.self::$viewName,$cfg_which_database) : self::$round;
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' firstRound<br><pre>'.print_r($firstRound,true).'</pre>'),'');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' lastRound<br><pre>'.print_r($lastRound,true).'</pre>'),'');
@@ -599,83 +599,88 @@ class sportsmanagementModelRanking extends JModelLegacy
 	 */
 	function _sortRanking(&$ranking)
 	{
-		$order     = JRequest::getVar( 'order', '' );
-		$order_dir = JRequest::getVar( 'dir', 'ASC' );
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        $jinput = $app->input;
+        $order = $jinput->request->get('order', '', 'STR');
+        $order_dir = $jinput->request->get('dir', 'DESC', 'STR');
+//		$order     = JRequest::getVar( 'order', '' );
+//		$order_dir = JRequest::getVar( 'dir', 'ASC' );
 
 		switch ($order)
 		{
 			case 'played':
-			uasort( $ranking, array("sportsmanagementModelRanking","playedCmp" ));
+			uasort( $ranking, array(__CLASS__,"playedCmp" ));
 			break;				
 			case 'name':
-			uasort( $ranking, array("sportsmanagementModelRanking","teamNameCmp" ));
+			uasort( $ranking, array(__CLASS__,"teamNameCmp" ));
 			break;
 			case 'rank':
 			break;
 			case 'won':
-			uasort( $ranking, array("sportsmanagementModelRanking","wonCmp" ));
+			uasort( $ranking, array(__CLASS__,"wonCmp" ));
 			break;
 			case 'draw':
-			uasort( $ranking, array("sportsmanagementModelRanking","drawCmp" ));
+			uasort( $ranking, array(__CLASS__,"drawCmp" ));
 			break;
 			case 'loss':
-			uasort( $ranking, array("sportsmanagementModelRanking","lossCmp" ));
+			uasort( $ranking, array(__CLASS__,"lossCmp" ));
 			break;
 			case 'wot':
-			uasort( $ranking, array("sportsmanagementModelRanking","wotCmp" ));
+			uasort( $ranking, array(__CLASS__,"wotCmp" ));
 			break;		
 			case 'wso':
-			uasort( $ranking, array("sportsmanagementModelRanking","wsoCmp" ));
+			uasort( $ranking, array(__CLASS__,"wsoCmp" ));
 			break;	
 			case 'lot':
-			uasort( $ranking, array("sportsmanagementModelRanking","lotCmp" ));
+			uasort( $ranking, array(__CLASS__,"lotCmp" ));
 			break;		
 			case 'lso':
-			uasort( $ranking, array("sportsmanagementModelRanking","lsoCmp" ));
+			uasort( $ranking, array(__CLASS__,"lsoCmp" ));
 			break;			
 			case 'winpct':
-			uasort( $ranking, array("sportsmanagementModelRanking","winpctCmp" ));
+			uasort( $ranking, array(__CLASS__,"winpctCmp" ));
 			break;
 			case 'quot':
-			uasort( $ranking, array("sportsmanagementModelRanking","quotCmp" ));
+			uasort( $ranking, array(__CLASS__,"quotCmp" ));
 			break;
 			case 'goalsp':
-			uasort( $ranking, array("sportsmanagementModelRanking","goalspCmp" ));
+			uasort( $ranking, array(__CLASS__,"goalspCmp" ));
 			break;
 			case 'goalsfor':
-			uasort( $ranking, array("sportsmanagementModelRanking","goalsforCmp" ));
+			uasort( $ranking, array(__CLASS__,"goalsforCmp" ));
 			break;
 			case 'goalsagainst':
-			uasort( $ranking, array("sportsmanagementModelRanking","goalsagainstCmp" ));
+			uasort( $ranking, array(__CLASS__,"goalsagainstCmp" ));
 			break;
 			case 'legsdiff':
-			uasort( $ranking, array("sportsmanagementModelRanking","legsdiffCmp" ));
+			uasort( $ranking, array(__CLASS__,"legsdiffCmp" ));
 			break;
 			case 'legsratio':
-			uasort( $ranking, array("sportsmanagementModelRanking","legsratioCmp" ));
+			uasort( $ranking, array(__CLASS__,"legsratioCmp" ));
 			break;				
 			case 'diff':
-			uasort( $ranking, array("sportsmanagementModelRanking","diffCmp" ));
+			uasort( $ranking, array(__CLASS__,"diffCmp" ));
 			break;
 			case 'points':
-			uasort( $ranking, array("sportsmanagementModelRanking","pointsCmp" ));
+			uasort( $ranking, array(__CLASS__,"pointsCmp" ));
 			break;
             
             case 'penaltypoints':
-			uasort( $ranking, array("sportsmanagementModelRanking","penaltypointsCmp" ));
+			uasort( $ranking, array(__CLASS__,"penaltypointsCmp" ));
 			break;
             
 			case 'start':
-			uasort( $ranking, array("sportsmanagementModelRanking","startCmp" ));
+			uasort( $ranking, array(__CLASS__,"startCmp" ));
 			break;
 			case 'bonus':
-			uasort( $ranking, array("sportsmanagementModelRanking","bonusCmp" ));
+			uasort( $ranking, array(__CLASS__,"bonusCmp" ));
 			break;
 			case 'negpoints':
-			uasort( $ranking, array("sportsmanagementModelRanking","negpointsCmp" ));
+			uasort( $ranking, array(__CLASS__,"negpointsCmp" ));
 			break;
 			case 'pointsratio':
-			uasort( $ranking, array("sportsmanagementModelRanking","pointsratioCmp" ));
+			uasort( $ranking, array(__CLASS__,"pointsratioCmp" ));
 			break;			
 
 			default:

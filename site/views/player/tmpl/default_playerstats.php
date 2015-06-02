@@ -58,6 +58,7 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events/'.$
 			<tr class="sectiontableheader">
 				<th class="td_l" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION'); ?></th>
 				<th class="td_l" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_TEAM'); ?></th>
+                <th class="td_l" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE'); ?></th>
 				<th class="td_c"><?php
 				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PERSON_PLAYED');
                 $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture_path_sport_type_name.'/played.png';
@@ -223,6 +224,13 @@ $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
 					} 
 				?>
 				</td>
+                
+                <td>
+                <?PHP
+                //echo $player_hist->season_picture;
+                echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstats'.$player_hist->project_id.'-'.$player_hist->team_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$player_hist->season_picture,$player_hist->team_name,'50');
+                ?>
+                </td>
 				<!-- Player stats History - played start -->
 				<td class="td_c"><?php
 				//echo ($this->inoutstat->played > 0) ? $this->inoutstat->played : '0';
@@ -314,7 +322,7 @@ $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
 			}
 			?>
 			<tr class="career_stats_total">
-				<td class="td_r" colspan="2"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_CAREER_TOTAL'); ?></b></td>
+				<td class="td_r" colspan="3"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_CAREER_TOTAL'); ?></b></td>
 				<td class="td_c"><?php echo $career['played']; ?></td>
 				<?php //substitution system
 				if	($this->config['show_substitution_stats'] && isset($this->overallconfig['use_jl_substitution']) &&

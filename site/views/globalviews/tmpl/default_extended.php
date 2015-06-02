@@ -78,7 +78,7 @@ if(count($this->extended->getFieldsets()) > 0)
 			{
 				?>
 				
-                <div class="contentpaneopen">
+                <div class="row">
 		<h4>
 			<?php 
             echo JText::_($fieldset->name); 

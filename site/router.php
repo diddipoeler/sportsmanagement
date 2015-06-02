@@ -108,6 +108,7 @@ function sportsmanagementBuildRoute(&$query)
         case 'predictionentry':
         case 'predictionresults':
         case 'predictionusers':
+        case 'rankingalltime';
             break;
         default:
             /**
@@ -132,6 +133,29 @@ function sportsmanagementBuildRoute(&$query)
 
     // now, the specifics
     switch ($view) {
+        case 'rankingalltime':
+            if (isset($query['l'])) {
+                $segments[] = $query['l'];
+                unset($query['l']);
+            }
+            if (isset($query['points'])) {
+                $segments[] = $query['points'];
+                unset($query['points']);
+            }
+            if (isset($query['type'])) {
+                $segments[] = $query['type'];
+                unset($query['type']);
+            }
+            if (isset($query['order'])) {
+                $segments[] = $query['order'];
+                unset($query['order']);
+            }
+            if (isset($query['dir'])) {
+                $segments[] = $query['dir'];
+                unset($query['dir']);
+            }
+        
+        break;
         case 'event':
             if (isset($query['gcid'])) {
                 $segments[] = $query['gcid'];
@@ -343,6 +367,17 @@ function sportsmanagementBuildRoute(&$query)
                 $segments[] = $query['division'];
                 unset($query['division']);
             }
+            
+            if (isset($query['order'])) {
+                $segments[] = $query['order'];
+                unset($query['order']);
+            }
+            
+            if (isset($query['dir'])) {
+                $segments[] = $query['dir'];
+                unset($query['dir']);
+            }
+            
             break;
         case 'roster':
         case 'teaminfo':
@@ -515,6 +550,7 @@ function sportsmanagementParseRoute($segments)
         case 'predictionentry':
         case 'predictionresults':
         case 'predictionusers':
+        case 'rankingalltime';
             break;
         default:
             /**
@@ -536,6 +572,23 @@ function sportsmanagementParseRoute($segments)
 
     switch ($vars['view']) // the view...
         {
+        case 'rankingalltime';
+        if (isset($segments[1])) {
+                $vars['l'] = $segments[1];
+            }    
+        if (isset($segments[2])) {
+                $vars['points'] = $segments[2];
+            }
+            if (isset($segments[3])) {
+                $vars['type'] = $segments[3];
+            }
+            if (isset($segments[4])) {
+                $vars['order'] = $segments[4];
+            }
+            if (isset($segments[5])) {
+                $vars['dir'] = $segments[5];
+            }    
+        break;    
         case 'event':
             $vars['gcid'] = $segments[1];
             if (count($segments) < 3) {
@@ -714,6 +767,13 @@ function sportsmanagementParseRoute($segments)
             }
             if (isset($segments[8])) {
                 $vars['division'] = $segments[8];
+            }
+            
+            if (isset($segments[9])) {
+                $vars['order'] = $segments[9];
+            }
+            if (isset($segments[10])) {
+                $vars['dir'] = $segments[10];
             }
             break;
 

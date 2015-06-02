@@ -740,36 +740,66 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$rout
      */
     public static function printColumnHeadingSortAllTimeRanking( $columnTitle, $paramName, $config = null, $default="DESC" )
 	{
-		$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        $jinput = $app->input;
+        
         $output = "";
-		$img='';
+		$img = '';
 		if ( $config['column_sorting'] || $config == null)
 		{
-			$params = array(
-					"option" => "com_sportsmanagement",
-					"view"   => JRequest::getVar("view", "rankingalltime"),
-					"p" => JRequest::getInt( "p", 0 ),
-                    "l" => JRequest::getInt( "l", 0 ),
-					"r" => JRequest::getInt( "r", 0 ),
-                    "points" => JRequest::getVar( "points", "" ),
-					"type" => JRequest::getVar( "type", "" ) );
-	
-			if ( JRequest::getVar( 'order', '' ) == $paramName )
+		  $params = array("option" => "com_sportsmanagement",
+				"view" => "rankingalltime" );  
+          $params["l"] = $jinput->request->get('l', 0, 'INT');
+          $params["points"] = $jinput->request->get('points', '3,1,0', 'STR');
+          $params["type"] = JRequest::getInt( "type", 0 );
+          //$params["order"] = $jinput->request->get('order', '', 'STR');
+          //$params["dir"] = $jinput->request->get('dir', 'DESC', 'STR');
+			if ( $jinput->request->get('order', '', 'STR') == $paramName )
 			{
 				$params["order"] = $paramName;
 				$params["dir"] = ( JRequest::getVar( 'dir', '') == 'ASC' ) ? 'DESC' : 'ASC';
 				$imgname = 'sort'.(JRequest::getVar( 'dir', '') == 'ASC' ? "02" :"01" ).'.gif';
-				$img = JHtml::image(
-										'media/com_sportsmanagement/jl_images/' . $imgname,
-				$params["dir"] );
+				$img = JHtml::image('media/com_sportsmanagement/jl_images/'.$imgname,$params["dir"] );
 			}
 			else
 			{
 				$params["order"] = $paramName;
 				$params["dir"] = $default;
-			}
+			}          
+                
+//		  $params = array(
+//					"option" => "com_sportsmanagement",
+//					"view"   => JRequest::getVar("view", "rankingalltime"),
+//                    "l" => JRequest::getInt( "l", 0 ),
+//                    "points" => JRequest::getVar( "points", "" ),
+//					"type" => JRequest::getVar( "type", "" ) );
+
+//			$params = array(
+//					"option" => "com_sportsmanagement",
+//					"view"   => JRequest::getVar("view", "rankingalltime"),
+//					"p" => JRequest::getInt( "p", 0 ),
+//                    "l" => JRequest::getInt( "l", 0 ),
+//					"r" => JRequest::getInt( "r", 0 ),
+//                    "points" => JRequest::getVar( "points", "" ),
+//					"type" => JRequest::getVar( "type", "" ) );
+	
+//			if ( JRequest::getVar( 'order', '' ) == $paramName )
+//			{
+//				$params["order"] = $paramName;
+//				$params["dir"] = ( JRequest::getVar( 'dir', '') == 'ASC' ) ? 'DESC' : 'ASC';
+//				$imgname = 'sort'.(JRequest::getVar( 'dir', '') == 'ASC' ? "02" :"01" ).'.gif';
+//				$img = JHtml::image(
+//										'media/com_sportsmanagement/jl_images/' . $imgname,
+//				$params["dir"] );
+//			}
+//			else
+//			{
+//				$params["order"] = $paramName;
+//				$params["dir"] = $default;
+//			}
             
-            $params["cfg_which_database"] = $cfg_which_database;
+            //$params["cfg_which_database"] = $cfg_which_database;
             
 			$query = JURI::buildQuery( $params );
 			echo JHtml::link(
@@ -794,26 +824,40 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$rout
 	 */
 	public static function printColumnHeadingSort( $columnTitle, $paramName, $config = null, $default="DESC" )
 	{
-		$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+		// Reference global application object
+        $app = JFactory::getApplication();
+        $jinput = $app->input;
+        
+        //$cfg_which_database = JRequest::getInt('cfg_which_database',0);
         $output = "";
-		$img='';
+		$img = '';
 		if ( $config['column_sorting'] || $config == null)
 		{
-			$params = array(
-					"option" => "com_sportsmanagement",
-					"view"   => JRequest::getVar("view", "ranking"),
-					"p" => JRequest::getInt( "p", 0 ),
-					"r" => JRequest::getInt( "r", 0 ),
-					"type" => JRequest::getVar( "type", "" ) );
+		  $params = array("option" => "com_sportsmanagement",
+				"view" => "ranking" );  
+          $params["cfg_which_database"] = $jinput->request->get('cfg_which_database', 0, 'INT');
+          
+          $params['s'] = $jinput->request->get('s', 0, 'INT');
+$params['p'] = $jinput->request->get('p', '0', 'STR');
+$params['type'] = $jinput->request->get('type', '0', 'STR');
+$params['r'] = $jinput->request->get('r', '0', 'STR');
+$params['from'] = $jinput->request->get('from', '0', 'STR');
+$params['to'] = $jinput->request->get('to', '0', 'STR');
+$params['division'] = $jinput->request->get('division', '0', 'STR');
+
+//			$params = array(
+//					"option" => "com_sportsmanagement",
+//					"view"   => JRequest::getVar("view", "ranking"),
+//					"p" => JRequest::getInt( "p", 0 ),
+//					"r" => JRequest::getInt( "r", 0 ),
+//					"type" => JRequest::getVar( "type", "" ) );
 	
-			if ( JRequest::getVar( 'order', '' ) == $paramName )
+			if ( $jinput->request->get('order', '', 'STR') == $paramName )
 			{
 				$params["order"] = $paramName;
 				$params["dir"] = ( JRequest::getVar( 'dir', '') == 'ASC' ) ? 'DESC' : 'ASC';
 				$imgname = 'sort'.(JRequest::getVar( 'dir', '') == 'ASC' ? "02" :"01" ).'.gif';
-				$img = JHtml::image(
-										'media/com_sportsmanagement/jl_images/' . $imgname,
-				$params["dir"] );
+				$img = JHtml::image('media/com_sportsmanagement/jl_images/'.$imgname,$params["dir"]);
 			}
 			else
 			{
@@ -821,7 +865,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$rout
 				$params["dir"] = $default;
 			}
             
-            $params["cfg_which_database"] = $cfg_which_database;
+            //$params["cfg_which_database"] = $cfg_which_database;
             
 			$query = JURI::buildQuery( $params );
 			echo JHtml::link(

@@ -295,6 +295,7 @@ $result = $db->execute();
         $query->select('pt.id as ptid, pt.team_id, pt.picture, pt.info, pt.project_id AS projectid');
 		$query->select('p.name as projectname,p.season_id,p.current_round, pt.division_id');
 		$query->select('s.name as season');
+        $query->select('st.picture as season_picture');
 		$query->select('l.name as league, t.extended as teamextended');
 		$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
 		$query->select('CONCAT_WS( \':\', t.id, t.alias ) AS team_slug');
@@ -367,6 +368,8 @@ $query->order('s.ordering '.$season_ordering);
             {
 		    	$seasons[$k]->rank       = $ranking['rank'];
 		    	$seasons[$k]->leaguename = self::getLeague($season->projectid);
+                $seasons[$k]->season_picture       = $season->season_picture;
+                $seasons[$k]->ptid       = $season->ptid;
 		    	$seasons[$k]->games      = $ranking['games'];
 		    	$seasons[$k]->points     = $ranking['points'];
 		    	$seasons[$k]->series     = $ranking['series'];
@@ -379,6 +382,8 @@ $query->order('s.ordering '.$season_ordering);
             {
 	    		$seasons[$k]->rank       = 0;
 	    		$seasons[$k]->leaguename = '';
+                $seasons[$k]->season_picture       = $season->season_picture;
+                $seasons[$k]->ptid       = $season->ptid;
 	    		$seasons[$k]->games      = 0;
 	    		$seasons[$k]->points     = 0;
 	    		$seasons[$k]->series     = 0;

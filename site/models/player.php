@@ -40,7 +40,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
-//require_once('roster.php');
 
 /**
  * sportsmanagementModelPlayer
@@ -304,6 +303,7 @@ class sportsmanagementModelPlayer extends JModelLegacy
     $query->select('pos.name AS position_name,pos.id AS posID');
     $query->select('pt.id AS ptid,pt.project_id');
     $query->select('ppos.position_id');
+    $query->select('tp.picture as season_picture');
 	$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pr'); 
 	$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.person_id = pr.id'); 
     $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id AND st.season_id = tp.season_id');

@@ -60,7 +60,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 ?>
 
-<div class="joomleague">
+<div class="row">
 	<?php
 
 echo $this->loadTemplate('projectheading');

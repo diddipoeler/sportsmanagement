@@ -239,7 +239,9 @@ foreach( $current as $ptid => $team )
 				echo '>';
 				if (( $config['show_wdl_teamplan_link'])==1)
 				{
-					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($team->team->project_id, $team->_teamid, 0, 1);
+				    $routeparameter['mode'] = 1;
+                    $teamplan_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
+					//$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($team->team->project_id, $team->_teamid, 0, 1);
 					echo JHTML::link($teamplan_link, $team->cnt_won);
 				}
 				else
@@ -258,7 +260,9 @@ foreach( $current as $ptid => $team )
 				echo '>';
 				if (( $config['show_wdl_teamplan_link'])==1)
 				{
-					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($team->team->project_id, $team->_teamid, 0, 2);
+				    $routeparameter['mode'] = 2;
+                    $teamplan_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
+					//$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($team->team->project_id, $team->_teamid, 0, 2);
 					echo JHTML::link($teamplan_link, $team->cnt_draw);
 				}
 				else
@@ -277,7 +281,9 @@ foreach( $current as $ptid => $team )
 				echo '>';
 				if (( $config['show_wdl_teamplan_link'])==1)
 				{
-					$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($team->team->project_id, $team->_teamid, 0, 3);
+				    $routeparameter['mode'] = 3;
+                    $teamplan_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
+					//$teamplan_link  = sportsmanagementHelperRoute::getTeamPlanRoute($team->team->project_id, $team->_teamid, 0, 3);
 					echo JHTML::link($teamplan_link, $team->cnt_lost);
 				}
 				else

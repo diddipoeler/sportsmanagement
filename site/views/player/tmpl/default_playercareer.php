@@ -55,6 +55,8 @@ if (count($this->historyPlayer) > 0)
 							?></th>
 						<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_TEAM');
 							?></th>
+                        <th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE');
+							?></th>    
 						<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_POSITION');
 							?></th>
 					</tr>
@@ -94,6 +96,12 @@ if (count($this->historyPlayer) > 0)
 								echo $station->team_name;
 							}
 							?></td>
+                            <td>
+                <?PHP
+                //echo $player_hist->season_picture;
+                echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareer'.$station->project_id.'-'.$station->team_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$station->season_picture,$station->team_name,'50');
+                ?>
+                </td>
 							<td class="td_l"><?php echo JText::_($station->position_name);
 								?></td>
 						</tr>

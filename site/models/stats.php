@@ -86,22 +86,6 @@ class sportsmanagementModelStats extends JModelLegacy
         sportsmanagementModelProject::$projectid = self::$projectid;
 	}
 
-//	/**
-//	 * sportsmanagementModelStats::getDivision()
-//	 * 
-//	 * @return
-//	 */
-//	function getDivision()
-//	{
-//		$division = null;
-//		if ($this->divisionid != 0)
-//		{
-//			$division = parent::getDivision($this->divisionid);
-//		}
-//		return $division;
-//	}
-//
-	
     /**
 	 * sportsmanagementModelStats::getHighest()
 	 * 

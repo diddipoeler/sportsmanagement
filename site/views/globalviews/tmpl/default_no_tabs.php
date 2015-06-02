@@ -39,6 +39,10 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+?>
+<div class="row" id="no_tabs">
+<?php
+    
 $view = Jrequest::getCmd('view');
 
 foreach ($this->output as $key => $templ) {
@@ -56,3 +60,4 @@ foreach ($this->output as $key => $templ) {
     echo $this->loadTemplate($template);
 }
 ?>
+<!-- </div> -->

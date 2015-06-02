@@ -44,17 +44,16 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<!-- <div class="joomleague"> -->
-<div class="">
+<div class="row">
 	<?php 
 	echo $this->loadTemplate('projectheading');
 
-	if ($this->config['show_sectionheader']==1)
+	if ( $this->config['show_sectionheader'] )
 	{ 
 		echo $this->loadTemplate('sectionheader');
 	}
 		
-	if ($this->config['show_teams']==1)
+	if ( $this->config['show_teams'] )
 	{ 
 		echo $this->loadTemplate('teams');
 	}

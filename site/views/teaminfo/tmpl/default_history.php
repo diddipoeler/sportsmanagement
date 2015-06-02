@@ -52,6 +52,7 @@ defined('_JEXEC') or die('Restricted access');
 	<tr class="sectiontableheader">
 		<th class="" nowrap="" style="background:#BDBDBD;"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_SEASON'); ?></th>
 		<th class="" nowrap="" style="background:#BDBDBD;"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_LEAGUE'); ?></th>
+        <th class="" nowrap="" style="background:#BDBDBD;"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE'); ?></th>
 		<?php 
 		if($this->project->project_type=='DIVISIONS_LEAGUE') 
 		{ 
@@ -139,6 +140,10 @@ defined('_JEXEC') or die('Restricted access');
 	<tr class="">
 		<td><?php echo $season->season; ?></td>
 		<td><?php echo $season->league; ?></td>
+        <td><?php 
+        //echo $season->season_picture; 
+        echo sportsmanagementHelperHtml::getBootstrapModalImage('teaminfo'.$season->ptid,$season->season_picture,$this->team->name,'50');
+        ?></td>
 		<?php if($this->project->project_type=='DIVISIONS_LEAGUE') { ?> 
 		<td><?php echo $season->division_name; ?></td>
 		<?php } ?> 

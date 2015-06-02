@@ -49,7 +49,7 @@ foreach ( $this->currentRanking as $division => $cu_rk )
 	if ($division)
 	{
 	?>
-	<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
+	<table class="table">
 		<tr>
 			<td class="contentheading">
 				<?php
@@ -64,7 +64,7 @@ foreach ( $this->currentRanking as $division => $cu_rk )
 		</tr>
 	</table>
 
-	<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
+	<table class="table">
 	<?php
 		foreach( $cu_rk as $ptid => $team )
 		{
@@ -81,7 +81,7 @@ foreach ( $this->currentRanking as $division => $cu_rk )
 	else
 	{
 	?>
-	<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
+	<table class="table">
 		<?php
 			echo $this->loadTemplate('rankingheading');
 			$this->division = $division;

@@ -40,7 +40,6 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
-//require_once('person.php');
 
 /**
  * sportsmanagementModelStaff
