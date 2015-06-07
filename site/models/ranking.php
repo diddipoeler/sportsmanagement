@@ -603,7 +603,7 @@ class sportsmanagementModelRanking extends JModelLegacy
         $app = JFactory::getApplication();
         $jinput = $app->input;
         $order = $jinput->request->get('order', '', 'STR');
-        $order_dir = $jinput->request->get('dir', 'DESC', 'STR');
+        $order_dir = $jinput->request->get('dir', 'ASC', 'STR');
 //		$order     = JRequest::getVar( 'order', '' );
 //		$order_dir = JRequest::getVar( 'dir', 'ASC' );
 
