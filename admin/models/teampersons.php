@@ -386,7 +386,7 @@ class sportsmanagementModelTeamPersons extends JModelList
                 // Set the query using our newly populated query object and execute it.
                 $db->setQuery($insertquery);
                 
-                $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($insertquery->dump(),true).'</pre>'),'Notice');
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($insertquery->dump(),true).'</pre>'),'Notice');
                 
                 if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
                 {

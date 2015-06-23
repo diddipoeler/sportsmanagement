@@ -172,10 +172,23 @@ class sportsmanagementViewProject extends sportsmanagementView
 	$iProjectDivisionsCount = $mdlProjectDivisions->getProjectDivisionsCount($this->item->id);
 	
     if ( $this->item->project_art_id != 3 )
-    {	
+    {
 	$iProjectPositionsCount = 0;
-	$mdlProjectPositions = JModelLegacy::getInstance("Projectpositions", "sportsmanagementModel");
+    $mdlProjectPositions = JModelLegacy::getInstance("Projectpositions", "sportsmanagementModel");
+/**
+ *     sind im projekt keine positionen vorhanden, dann
+ *     bitte einmal die standard positionen, torwart, abwehr,
+ *     mittelfeld und stürmer einfügen
+ */
+    if ( !$iProjectPositionsCount )
+    {
+    $mdlProjectPositions->insertStandardProjectPositions($this->item->id,$this->item->sports_type_id);    
+    }
+	
 	$iProjectPositionsCount = $mdlProjectPositions->getProjectPositionsCount($this->item->id);
+    
+
+    
 	}
     	
 	$iProjectRefereesCount = 0;

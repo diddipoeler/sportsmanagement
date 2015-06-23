@@ -136,7 +136,7 @@ class sportsmanagementModelTemplates extends JModelList
         
         $query->select('tmpl.template,tmpl.title,tmpl.id,tmpl.checked_out,u.name AS editor,(0) AS isMaster,tmpl.checked_out_time,tmpl.modified,tmpl.modified_by');
         $query->select('u1.username');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config AS tmpl');
+        $query->from('#__sportsmanagement_template_config AS tmpl');
         $query->join('LEFT', '#__users AS u ON u.id = tmpl.checked_out');
         $query->join('LEFT', '#__users AS u1 ON u1.id = tmpl.modified_by');
         $query->where('tmpl.project_id = '.(int) $this->_project_id);
@@ -431,7 +431,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
         
         // get current project settings
         $query->select('template');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config');
+        $query->from('#__sportsmanagement_template_config');
         $query->where('project_id = '.(int)$this->_project_id);
 //		$query='SELECT template FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config WHERE project_id='.(int)$this->_project_id;
 		$db->setQuery($query);
@@ -457,12 +457,18 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
 //			$query='SELECT t.id as value, t.title as text, t.template as template ';
             $query->select('t.id as value, t.title as text, t.template as template');
 		}
+        
+        $query->select('u1.username');
+        
 //		$query .= '	FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config as t
 //					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as pm ON pm.id=t.project_id
 //					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p ON p.master_template=pm.id ';
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config as t');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project as pm ON pm.id = t.project_id');            
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p ON p.master_template = pm.id');
+        $query->from('#__sportsmanagement_template_config as t');
+        $query->join('INNER', '#__sportsmanagement_project as pm ON pm.id = t.project_id');            
+        $query->join('INNER', '#__sportsmanagement_project as p ON p.master_template = pm.id');
+        $query->join('LEFT', '#__users AS u ON u.id = t.checked_out');
+        $query->join('LEFT', '#__users AS u1 ON u1.id = t.modified_by');
+        
 //		$where = array();
 //		$where[]=' p.id='.(int)$this->_project_id;
         $query->where('p.id = '.(int)$this->_project_id);

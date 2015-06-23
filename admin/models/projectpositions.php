@@ -173,6 +173,59 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
 
         return $query;
 	}
+    
+    
+    
+   
+    /**
+     * sportsmanagementModelProjectpositions::insertStandardProjectPositions()
+     * 
+     * @param integer $project_id
+     * @param integer $sports_type_id
+     * @return void
+     */
+    function insertStandardProjectPositions($project_id = 0,$sports_type_id = 0)
+    {
+    $app = JFactory::getApplication();    
+    $db = sportsmanagementHelper::getDBConnection();
+    $query = $db->getQuery(true);
+    $query->select('id');
+    $query->from('#__sportsmanagement_position');
+    $query->where('parent_id != 0');
+    $query->where('sports_type_id = '.$sports_type_id);
+    $query->where('persontype IN (1,2)');
+    
+    $db->setQuery($query);
+	$result = $db->loadObjectList();
+    
+    if ( $result )
+    {
+        foreach ($result as $row)
+			{
+			$query->clear();
+            $query->select('id');
+            $query->from('#__sportsmanagement_project_position');
+            $query->where('project_id = '.$project_id);
+            $query->where('position_id = '.$row->id);
+            $db->setQuery($query);
+	        $position = $db->loadObjectList();
+            
+            if ( !$position )
+            {
+            // Create and populate an object.
+            $temp = new stdClass();
+            $temp->project_id = $project_id;
+            $temp->position_id = $row->id;
+            // Insert the object
+            $resultquery = $db->insertObject('#__sportsmanagement_project_position', $temp);    
+            }	
+            
+			}
+    }
+    
+    
+        
+    }
 
 //	function _buildContentOrderBy()
 //	{
