@@ -34,7 +34,7 @@ addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
 	<fieldset 	name="basic"
 						description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
 <field name="cfg_which_database" 
-    type="list" 
+    type="radio" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -42,7 +42,12 @@ addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>      	
-<field name="jsm_stat_spielpaarungen" type="radio" default="1" label="SHOW_MATCHES" description="SHOW_MATCHES_DESC">
+<field name="jsm_stat_spielpaarungen" 
+type="radio" 
+class="radio btn-group btn-group-yesno"
+default="1" 
+label="SHOW_MATCHES" 
+description="SHOW_MATCHES_DESC">
 <option value="0">JNO</option>
 <option value="1">JYES</option>
 </field>
@@ -54,18 +59,28 @@ addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
 
 <fieldset
 name="advanced">
-<field
-name="layout"
-type="modulelayout"
-label="JFIELD_ALT_LAYOUT_LABEL"
-description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+<field 	name="table_class" type="list" default="table" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+			
+		</field>
 
 <field
 name="moduleclass_sfx"
 type="text"
 label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
 description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
-
+<field
+name="layout"
+type="modulelayout"
+label="JFIELD_ALT_LAYOUT_LABEL"
+description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
 <field
 name="cache"
 type="list"

@@ -34,7 +34,7 @@
       description="MOD_SPORTSMANAGEMENT_BASIC_DESC"
       >
     <field name="cfg_which_database" 
-    type="list" 
+    type="radio" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -43,9 +43,12 @@
 			<option value="1">JYES</option>
 		</field>
 		
-    <field name="sportstypes" type="sportstypelist" default=""
+    <field name="sportstypes" 
+    type="sportstypelist" 
+    default=""
 			label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SPORTS_TYPE_LABEL" 
       description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SPORTS_TYPE_DESC" />
+      
     <field name="show_icon" type="radio" default="1"
     class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_ICON_LABEL"
@@ -84,7 +87,10 @@
 					description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_SEASONS_DESC_TEXT">
 				</field>
 		
-    <field name="show_playgrounds" type="radio" default="1"
+    <field name="show_playgrounds" 
+    type="radio" 
+    default="1"
+    class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYGROUNDS"
 					description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYGROUNDS_DESC">
 					<option value="0">JNO</option>
@@ -95,7 +101,10 @@
 					description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYGROUNDS_DESC_TEXT">
 				</field>
         
-				<field name="show_clubs" type="radio" default="1"
+				<field name="show_clubs" 
+        type="radio" 
+        default="1"
+        class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_CLUBS"
 					description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_CLUBS_DESC">
 					<option value="0">JNO</option>
@@ -182,6 +191,26 @@
 	</fieldset>
 
 	<fieldset name="advanced">
+	
+	
+
+      <field 	name="table_class" type="list" default="table" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+			
+		</field>
+		
+				<field name="moduleclass_sfx"
+						type="text"
+						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+			
 		<field 	name="cache" type="list" default="1" 
 				label="CACHING"
 				description="CACHING DESC">
@@ -193,12 +222,7 @@
 				label="CACHE TIME"
 				description="CACHE TIME DESC">
 		</field>		
-<!--				
-		<field 	name="moduleclass_sfx" type="text" default=""
-				label="Module Class Suffix" 
-				description="PARAMMODULECLASSSUFFIX">
-		</field>		
--->
+
 		
 	</fieldset>
 	            </fields>

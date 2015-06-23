@@ -62,19 +62,16 @@ class modSportsmanagementTeamStatHelper
 	public static function getData(&$params)
 	{
 	   $mainframe = JFactory::getApplication();
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         
         //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
 
-//		if (!class_exists('JoomleagueModelProject')) {
-//			require_once(JLG_PATH_SITE. DS . 'models' . DS . 'project.php');
-//		}
-//		$model = &JLGModel::getInstance('project', 'JoomleagueModel');
-
 		sportsmanagementModelProject::setProjectId($params->get('p'));
 		$stat_id = (int)$params->get('sid');
-				
+		
+        if ( $stat_id )
+        {		
 		$project = sportsmanagementModelProject::getProject();
 		$stat = current(current(sportsmanagementModelProject::getProjectStats($stat_id,0,0)));
         //$stat = sportsmanagementModelProject::getProjectStats($stat_id,0,0);
@@ -105,21 +102,19 @@ class modSportsmanagementTeamStatHelper
         $query->from('#__sportsmanagement_team as t ');
         $query->join('LEFT',' #__sportsmanagement_club AS c ON c.id = t.club_id ');
         $query->where('t.id IN ('.implode(',', $ids).')');
-        
-//		$query = ' SELECT t.*, c.logo_small '
-//				   . '  , CASE WHEN CHAR_LENGTH( t.alias ) THEN CONCAT_WS( \':\', t.id, t.alias ) ELSE t.id END AS team_slug '
-//				   . '  , CASE WHEN CHAR_LENGTH( c.alias ) THEN CONCAT_WS( \':\', c.id, c.alias ) ELSE c.id END AS club_slug '
-//		       . ' FROM #__sportsmanagement_team AS t '
-//		       . ' LEFT JOIN #__sportsmanagement_club AS c ON c.id = t.club_id '
-//		       . ' WHERE t.id IN ('.implode(',', $ids).')'
-//		       ;
+
 		$db->setQuery($query);
         
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$teams = $db->loadObjectList('id');
-		
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return array('project' => $project, 'ranking' => $ranking, 'teams' => $teams, 'stat' => $stat);
+        }
+        else
+        {
+            return FALSE;
+        }
 	}
 		
 	/**
@@ -134,7 +129,7 @@ class modSportsmanagementTeamStatHelper
 		{
 			if (!empty($item->logo_small))
 			{
-				return JHTML::image(JURI::root().$item->logo_small, $item->short_name, 'class="teamlogo"');
+				return JHTML::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$item->logo_small, $item->short_name, 'class="teamlogo"');
 			}
 		}		
 		else if ($type == 2 && !empty($item->country))

@@ -41,18 +41,23 @@
 defined('_JEXEC') or die('Restricted access');
 
 
-$teamformat=$params->get('teamformat', 'name');
-$dateformat= $params->get('dateformat');
-$timeformat= $params->get('timeformat');
-$mode=$params->get('mode',0);
-$textdiv ="";
-$n=1;
+$teamformat = $params->get('teamformat', 'name');
+$dateformat = $params->get('dateformat');
+$timeformat = $params->get('timeformat');
+$mode = $params->get('mode',0);
+$textdiv = "";
+
+$n = 1;
 //if ($mode == 0)
-echo '<div id="modjlplaygroundplan'.$mode.'">';
+echo '<div class="row" id="modjlplaygroundplan'.$mode.'">';
 //else if ($mode == 1)
 #modjlplaygroundplan1
 foreach ($list as $match)
  	{
+
+$playgroundname = "";
+$playground_id = 0;
+$picture = ""; 	  
 	if ($mode == 0)
 		{
 		$textdiv .= '<div class="qslidejl">';
@@ -66,36 +71,66 @@ $n++;
 
 if ($params->get ('show_playground_name',0)) 
 {
- $textdiv.= '<div class="jlplplaneplname"> ';
-if ($match->playground_id !="")
- {
- $playgroundname=  $match->playground_name;
-$playground_id=$match->playground_id;
- }
- else if ($match->team_playground_id !="")
+$textdiv.= '<div class="jlplplaneplname"> ';
+if ($match->playground_id != "")
 {
- $playgroundname = $match->team_playground_name;
-$playground_id=$match->team_playground_id;
+$playgroundname = $match->playground_name;
+$playground_id = $match->playground_slug;
 }
-elseif ($match->club_playground_id !="")
+else if ($match->team_playground_id != "")
 {
- $playgroundname =  $match->club_playground_name;
-$playground_id=$match->club_playground_id;
+$playgroundname = $match->team_playground_name;
+$playground_id = $match->playground_team_slug;
+}
+elseif ($match->club_playground_id != "")
+{
+$playgroundname = $match->club_playground_name;
+$playground_id = $match->playground_club_slug;
 } 
 
 if( $params->get('show_playground_link'))
 {
-  $link = sportsmanagementHelperRoute::getPlaygroundRoute( $match->project_id, $playground_id );
-		     $playgroundname= JHTML::link($link, JText::sprintf( '%1$s', $playgroundname ) );
-		}
-		else
-		{
-			$playgroundname= JText::sprintf( '%1$s', $playgroundname);
-		
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $match->project_slug;
+$routeparameter['pgid'] = $playground_id ;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$routeparameter);    
+  
+$playgroundname= JHTML::link($link, JText::sprintf( '%1$s', $playgroundname ) );
+}
+else
+{
+$playgroundname= JText::sprintf( '%1$s', $playgroundname);
 }
 $textdiv.= $playgroundname.'</div>';
 }
- 
+
+if ($params->get ('show_playground_picture',0)) 
+{
+$textdiv.= '<div class="jlplplaneplpicture"> ';    
+
+if ($match->playground_id != "")
+{
+$picture = $match->playground_picture;
+}
+else if ($match->team_playground_id != "")
+{
+$picture = $match->playground_team_picture;
+}
+elseif ($match->club_playground_id != "")
+{
+$picture = $match->playground_club_picture;
+} 
+
+if ( $picture )
+{
+$textdiv .= '<p>'.JHtml::image( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture,"","width=".$params->get('picture_playground_width')).'</p>';
+}
+
+$textdiv.= '</div>';    
+}
+    
 $textdiv .= '<div class="jlplplanedate">';
 $textdiv .= JHtml::date( $match->match_date,$dateformat );
 $textdiv .= " ".JText::_('MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_JL_START_TIME')." ";
@@ -126,11 +161,11 @@ $team1logo= modSportsmanagementPlaygroundplanHelper::getTeamLogo($match->team1,$
 
 if( $params->get('show_picture') == 'logo_big')
 {
-    $textdiv .= '<p>'.JHtml::image( $team1logo,"","width=".$params->get('picture_width')).'</p>';
+    $textdiv .= '<p>'.JHtml::image( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$team1logo,"","width=".$params->get('picture_width')).'</p>';
 }
 else
 {
-$textdiv .= '<p>'.JHtml::image( $team1logo,"").'</p>';    
+$textdiv .= '<p>'.JHtml::image( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$team1logo,"").'</p>';    
 }
 
 }
@@ -146,11 +181,11 @@ $team2logo= modSportsmanagementPlaygroundplanHelper::getTeamLogo($match->team2,$
 
 if( $params->get('show_picture') == 'logo_big')
 {
-    $textdiv .= '<p>'.JHtml::image( $team2logo,"","width=".$params->get('picture_width')).'</p>';
+    $textdiv .= '<p>'.JHtml::image( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$team2logo,"","width=".$params->get('picture_width')).'</p>';
 }
 else
 {
-$textdiv .= '<p>'.JHtml::image( $team2logo,"").'</p>';    
+$textdiv .= '<p>'.JHtml::image( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$team2logo,"").'</p>';    
 }
 
 

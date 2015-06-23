@@ -160,42 +160,149 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 			}
 		}
 	}
-	/**
-	 * MatchesSportsmanagementConnector::buildOrder()
-	 * 
-	 * @return
-	 */
-	public function buildOrder() {
-
-		$limit = ($this->params->get('limit', 0) > 0) ? $this->params->get('limit', 0) : 1;
-		
-		if ($this->params->get('order_by_project') == 0) {
-		  if ($this->params->get('lastsortorder') == 'desc') {
-		    return " ORDER by match_date DESC LIMIT " . $limit;
-		  }
-		  else {
-		    return " ORDER by match_date LIMIT " . $limit;
-		  }
-		}
-		else {
-					return	" ORDER by match_date_notime, p.ordering ASC LIMIT ". $limit;
-			
-			
-		}
-	}
+    
+//	/**
+//	 * MatchesSportsmanagementConnector::buildOrder()
+//	 * 
+//	 * @return
+//	 */
+//	public function buildOrder() {
+//
+//		$limit = ($this->params->get('limit', 0) > 0) ? $this->params->get('limit', 0) : 1;
+//		
+//		if ($this->params->get('order_by_project') == 0) {
+//		  if ($this->params->get('lastsortorder') == 'desc') {
+//		    return " ORDER by match_date DESC LIMIT " . $limit;
+//		  }
+//		  else {
+//		    return " ORDER by match_date LIMIT " . $limit;
+//		  }
+//		}
+//		else {
+//					return	" ORDER by match_date_notime, p.ordering ASC LIMIT ". $limit;
+//			
+//			
+//		}
+//	}
 
 	/**
 	 * MatchesSportsmanagementConnector::getMatches()
 	 * 
 	 * @return
 	 */
-	public function getMatches() {
-		$db = JFactory :: getDBO();
+	public function getMatches() 
+    {
+		 // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        // Get a refrence of the page instance in joomla
+		$document = JFactory::getDocument();
+        // Get a db connection.
+        $db = sportsmanagementHelper::getDBConnection();
+        $query = $db->getQuery(true);
+        
 		$limit = ($this->params->get('limit', 0) > 0) ? $this->params->get('limit', 0) : 1;
+        
+        $p = $this->params->get('project');
+        $projectstring = (is_array($p)) ? implode(",", $p) : $p;
+        
+        $nu = $this->params->get('project_not_used');
+        $notusedstring = (is_array($nu)) ? implode(",", $nu) : $nu;
+        
 // TODO: for now the timezone implementation does not work for quite some users, so it is temporarily disabled.
 // Because the old serveroffset field is not available anymore in the database schema, this means that the times
 // are not correctly translated to some timezone; the times as present in the database are just taken. 
-		$query	= " SELECT m.*,m.id as match_id, t1.id team1_id, t2.id team2_id,"
+		
+        $query->select('m.id,m.id as match_id,m.projectteam1_id,m.projectteam2_id,m.round_id,m.team1_result,m.team2_result');
+        $query->select('m.team1_result_split,m.team2_result_split,m.match_result_detail,m.match_result_type,m.crowd,m.show_report,m.playground_id ');
+        $query->select('r.name');
+        $query->select($this->getDateStringNoTime() . ' AS match_date_notime');
+        $query->select($this->getDateString() . ' AS match_date');
+        $query->select('UTC_TIMESTAMP() AS currenttime');
+        // totaltime
+        $query->select(" IF ("
+				. "		m.match_result_type > 0,"
+				. "     (p.game_regular_time+(p.game_parts * p.halftime)-p.halftime) + p.add_time,"
+				. "     p.game_regular_time+(p.game_parts * p.halftime)-p.halftime"
+				. " ) AS totaltime");
+        // upcoming
+        $query->select(" IF ("
+				. "		(match_date > UTC_TIMESTAMP() AND m.team1_result IS NULL) AND"
+				. "		((m.team1_result_split IS NULL) OR TRIM(REPLACE(m.team1_result_split, ';', '')) = ''),"
+				. 	    $this->getDateString() . ","
+				. "     'z'"
+				. " ) AS upcoming");
+        // all ready played
+        $query->select(" IF ("
+				. "		(m.team1_result IS NOT NULL OR " . $this->getDateString() . " < UTC_TIMESTAMP()),"
+				.		$this->getDateString() . ","
+				. "		0"
+				. " ) AS alreadyplayed");
+        // actplaying
+        $query->select(" IF ("
+				. "		("
+				. "			("
+				. "				DATE_ADD(" . $this->getDateString() . ","
+				. "					INTERVAL IF ("
+				. "						m.match_result_type > 0,"
+				. "						(p.game_regular_time+(p.game_parts * p.halftime)-p.halftime) + p.add_time,"
+				. "						p.game_regular_time+(p.game_parts * p.halftime)-p.halftime"
+				. "					) MINUTE"
+				. "				) > UTC_TIMESTAMP()"
+				. "			) AND ("
+				.			$this->getDateString() . " < UTC_TIMESTAMP()"
+				. "			) AND (m.team1_result IS NULL)"
+				. "		),"
+				. 		$this->getDateString() . ","
+				. "		'z'"
+				. " ) AS actplaying");
+        // live
+        $query->select(" IF ("
+				. "		((m.team1_result IS NULL) AND (m.team1_result_split IS NOT NULL) AND"
+				. "			TRIM(REPLACE(m.team1_result_split, ';', '') != '')),"
+				. 		$this->getDateString() . ","
+				.		"'z'"
+				. " ) AS live");
+        $query->select('IF (((m.team1_result IS NULL) AND (m.team1_result_split IS NOT NULL) AND TRIM(REPLACE(m.team1_result_split, \';\', \'\') != \'\')),'.$this->getDateString().",".'\'z\' ) AS live');
+        $query->select('DATE_SUB(' . $this->getDateString() . ', INTERVAL \'90\' MINUTE) AS meetingtime');
+        $query->select('UTC_TIMESTAMP() AS local_time');
+        $query->select('p.name AS pname,p.current_round,p.id AS project_id,p.timezone,p.game_parts,p.ordering');
+        $query->select('t1.id as team1_id');
+        $query->select('t2.id as team2_id');
+        
+        $query->select('IF (mref.project_referee_id > 0, concat(person.lastname, \', \', person.firstname), \'\') AS refname');
+        
+        $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
+        $query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
+        $query->select('CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) AS match_slug ');
+        
+        // from
+        $query->from('#__sportsmanagement_match AS m ');
+        // join
+        $query->join('INNER','#__sportsmanagement_round AS r ON m.round_id = r.id ');
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.id = r.project_id ');
+        $query->join('LEFT','#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id');
+        $query->join('LEFT','#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id');
+        
+        $query->join('LEFT','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
+        $query->join('LEFT','#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
+        
+        $query->join('LEFT','#__sportsmanagement_team AS t1 ON t1.id = st1.team_id');
+        $query->join('LEFT','#__sportsmanagement_club AS c1 ON c1.id = t1.club_id');
+        
+        $query->join('LEFT','#__sportsmanagement_team AS t2 ON t2.id = st2.team_id');
+        $query->join('LEFT','#__sportsmanagement_club AS c2 ON c2.id = t2.club_id');
+        $query->join('LEFT','#__sportsmanagement_playground AS playground ON playground.id = m.playground_id');
+        
+        $query->join('LEFT','#__sportsmanagement_match_referee AS mref ON mref.match_id = m.id');
+        $query->join('LEFT','#__sportsmanagement_project_referee AS pref ON pref.id = mref.project_referee_id');
+        $query->join('LEFT','#__sportsmanagement_season_person_id AS sp ON pref.person_id = sp.id ');
+        $query->join('LEFT','#__sportsmanagement_person AS person ON person.id = sp.person_id ');
+
+/*        
+LEFT JOIN #__sportsmanagement_project_referee AS pref ON pref.id = mref.project_referee_id
+        $query	= " SELECT m.*,m.id as match_id, t1.id team1_id, t2.id team2_id,"
 				. " " . $this->getDateStringNoTime() . " AS match_date_notime,"
 				. " " . $this->getDateString() . " AS match_date,"
 //				. " CONVERT_TZ(UTC_TIMESTAMP(), ".$db->Quote('UTC').", p.timezone) AS currenttime,"
@@ -252,7 +359,7 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 				. " IF (mref.project_referee_id > 0, concat(person.lastname, ', ', person.firstname), '') AS refname,"
 				. " pg.name AS pg_name,"
 				. " pg.short_name AS pg_shortname"
-				. " FROM     #__sportsmanagement_match m"
+				. " FROM #__sportsmanagement_match m"
 	        	. " INNER JOIN #__sportsmanagement_round r ON m.round_id = r.id"
 
 				. " INNER JOIN #__sportsmanagement_project_team pt1 ON pt1.id = m.projectteam1_id"
@@ -276,7 +383,39 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		$query .= " )"
 				. " GROUP BY m.id ";
 		$query .= $this->buildOrder();
-		$matches = $this->getFromDB($query);
+		//$matches = $this->getFromDB($query);
+*/
+        
+        $query->where('p.published = 1');
+        $query->where('m.published = 1');
+        
+        if ($this->id > 0) 
+        {
+			$query->where('m.id = ' . $this->id );
+		}
+        
+        $query->where('p.id IN ( '.$projectstring.' )');  
+        
+        if ( $this->params->get('order_by_project') == 0 ) 
+        {
+		  if ( $this->params->get('lastsortorder') == 'desc' ) 
+          {
+		    $query->order('match_date DESC');
+		  }
+		  else 
+          {
+            $query->order('match_date');
+		  }
+		}
+		else 
+        {
+            $query->order('match_date_notime, p.ordering ASC');
+		}
+        
+        $db->setQuery($query,0,$limit);
+        $matches = $db->loadObjectList();
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+        
 		return $this->formatMatches($matches);
 	}
 
@@ -298,12 +437,16 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		$linkstructure = array (
 				'project' => array (
 					'view' => $views[$pview],
-					'p' => $match->project_id
+                    'cfg_which_database' => 0,
+                    's' => 0,
+					'p' => $match->project_slug
 			),
 				'matchday' => array (
 					'view' => $views[$rview],
-					'r' => $match->round_id,
-					'p' => $match->project_id
+                    'cfg_which_database' => 0,
+                    's' => 0,
+                    'p' => $match->project_slug,
+					'r' => $match->round_slug
 			)
 		);
 		$heading = '';
@@ -341,13 +484,40 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 	 * @param mixed $matches
 	 * @return
 	 */
-	public function getTeamsFromMatches(& $matches) {
+	public function getTeamsFromMatches(& $matches) 
+    {
+        $db = sportsmanagementHelper::getDBConnection();
+        $query = $db->getQuery(true);
+        
 		if (!count($matches))
 		return Array ();
 		foreach ($matches as $m) {
 			$cond[] = "(pt.id = '" . $m->projectteam1_id . "'
 					    OR  pt.id = '" . $m->projectteam2_id . "')";
 		}
+        
+        $query->select('pt.id as ptid, pt.division_id, pt.standard_playground, pt.admin, pt.start_points');
+        $query->select('pt.info, pt.team_id, pt.checked_out, pt.checked_out_time, pt.picture team_picture, pt.project_id');
+        $query->select('t.id, t.name, t.short_name, t.middle_name, t.notes, t.club_id');
+        $query->select('pg1.id AS tt_pg_id, pg1.name AS tt_pg_name, pg1.short_name AS tt_pg_short_name');
+        $query->select('pg2.id AS club_pg_id, pg2.name AS club_pg_name, pg2.short_name AS club_pg_short_name');
+        $query->select('u.username, u.email, t.id team_id');
+        $query->select('c.logo_small AS club_small, c.logo_middle AS club_middle, c.logo_big AS club_big, c.country');
+        $query->select('d.name AS division_name, d.shortname AS division_shortname');
+        $query->select('p.name AS project_name, c.website');
+        
+        $query->from('#__sportsmanagement_team t  ');
+        // join
+        $query->join('LEFT','#__sportsmanagement_season_team_id as st1 ON st1.team_id = t.id ');
+        $query->join('LEFT','#__sportsmanagement_project_team pt on pt.team_id = st1.id ');
+        $query->join('LEFT','#__users u on pt.admin = u.id ');
+        $query->join('LEFT','#__sportsmanagement_club c on t.club_id = c.id ');
+        $query->join('LEFT','#__sportsmanagement_division d on d.id = pt.division_id ');
+        $query->join('LEFT','#__sportsmanagement_project p on p.id = pt.project_id ');
+        $query->join('LEFT','#__sportsmanagement_playground pg1 ON pg1.id = pt.standard_playground ');
+        $query->join('LEFT','#__sportsmanagement_playground pg2 ON pg2.id = c.standard_playground ');
+
+/*        
 		$query = "SELECT pt.id as ptid, pt.division_id, pt.standard_playground, pt.admin, pt.start_points,
 		                     pt.info, pt.team_id, pt.checked_out, pt.checked_out_time, pt.picture team_picture, pt.project_id,
 		                     t.id, t.name, t.short_name, t.middle_name, t.notes, t.club_id,
@@ -367,7 +537,14 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		           LEFT JOIN #__sportsmanagement_playground pg1 ON pg1.id = pt.standard_playground
 		           LEFT JOIN #__sportsmanagement_playground pg2 ON pg2.id = c.standard_playground
 		               WHERE (" . implode(' OR ', $cond) . ")";
-		$tempteams = $this->getFromDB($query, 'ptid');
+*/
+		
+        $query->where('(' . implode(' OR ', $cond) . ')');  
+        //$tempteams = $this->getFromDB($query, 'ptid');
+        $db->setQuery($query);
+        $tempteams = $db->loadObjectList();
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+        
 		$teams = array ();
 		foreach ((array) $tempteams AS $t) {
 			$teams[$t->ptid] = $t;
@@ -456,17 +633,25 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		$linkstructure = array (
 			'report' => array (
 				'view' => 'matchreport',
-				'mid' => $match->match_id,
-				'p' => $match->project_id
+                'cfg_which_database' => 0,
+                's' => 0,
+				'p' => $match->project_slug,
+                'mid' => $match->match_slug
+				
 			),
 			'nextmatch' => array (
 				'view' => 'nextmatch',
-				'mid' => $match->match_id,
-				'p' => $match->project_id
+                'cfg_which_database' => 0,
+                's' => 0,
+                'p' => $match->project_slug,
+				'mid' => $match->match_slug
+				
 			),
 			'statistic' => array (
 				'view' => 'stats',
-				'p' => $match->project_id
+                'cfg_which_database' => 0,
+                's' => 0,
+				'p' => $match->project_slug
 			),
 		);
 		if ($this->params->get('show_act_report_link', 0) == 1 AND $match->show_report == 1) {
@@ -591,9 +776,27 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 	 * @param mixed $match
 	 * @return void
 	 */
-	public function next_last(& $match) {
+	public function next_last(& $match) 
+    {
 		$match->lasthome = $match->nexthome = $match->lastaway = $match->nextaway = false;
-		$database = JFactory :: getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
+        $query = $db->getQuery(true);
+        
+        // select some fields
+        $query->select('m.id');
+        // from
+        $query->from('#__sportsmanagement_match AS m ');
+        // join
+        $query->join('LEFT','#__sportsmanagement_project_team pt1 ON pt1.id = m.projectteam1_id ');
+        $query->join('LEFT','#__sportsmanagement_project_team pt2 ON pt2.id = m.projectteam2_id ');
+        $query->join('LEFT','#__sportsmanagement_project AS p ON p.id = pt1.project_id');
+        
+        $query->where($this->getDateString() . " < " . $db->Quote(''.$match->match_date.'') );
+        $query->where('(m.projectteam1_id = ' . $match->projectteam1_id . '	OR m.projectteam2_id = ' . $match->projectteam1_id .' )');
+        $query->where('p.id = ' . $match->project_id);
+        $query->order('m.match_date DESC');
+
+/*        
 		$query = "SELECT m.id
 				FROM #__sportsmanagement_match AS m
 				LEFT JOIN #__sportsmanagement_project_team pt1 ON pt1.id = m.projectteam1_id
@@ -604,9 +807,21 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 				OR m.projectteam2_id = '" . $match->projectteam1_id . 
 				"') AND pt1.project_id = '" . $match->project_id . "' 
 				ORDER BY m.match_date DESC LIMIT 1";
-		if ($temp = $this->getFromDB($query)) {
+*/                
+		$db->setQuery($query,0,1);
+        if ( $temp = $db->loadObjectList() ) 
+        {
 			$match->lasthome = $temp[0]->id;
 		}
+        
+        $query->clear('where');
+        $query->clear('order');
+        
+        $query->where($this->getDateString() . " > " . $db->Quote(''.$match->match_date.'') );
+        $query->where('(m.projectteam1_id = ' . $match->projectteam1_id . '	OR m.projectteam2_id = ' . $match->projectteam1_id .' )');
+        $query->where('p.id = ' . $match->project_id);
+        $query->order('m.match_date ASC');
+/*        
 		$query = "SELECT m.id
 				FROM #__sportsmanagement_match AS m 
 				LEFT JOIN #__sportsmanagement_project_team pt1 ON pt1.id = m.projectteam1_id 
@@ -617,9 +832,22 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 				OR m.projectteam2_id = '" . $match->projectteam1_id . "') 
 				AND pt1.project_id = '" . $match->project_id . "' 
 				ORDER BY m.match_date ASC LIMIT 1";
-		if ($temp = $this->getFromDB($query)) {
+*/		
+        $db->setQuery($query,0,1);
+        if ( $temp = $db->loadObjectList() ) 
+        {
 			$match->nexthome = $temp[0]->id;
 		}
+        
+        $query->clear('where');
+        $query->clear('order');
+        
+        $query->where($this->getDateString() . " < " . $db->Quote(''.$match->match_date.'') );
+        $query->where('(m.projectteam1_id = ' . $match->projectteam1_id . '	OR m.projectteam2_id = ' . $match->projectteam1_id .' )');
+        $query->where('p.id = ' . $match->project_id);
+        $query->order('m.match_date DESC');
+
+/*        
 		$query = "SELECT m.id
 				FROM #__sportsmanagement_match AS m 
 				LEFT JOIN #__sportsmanagement_project_team pt1 ON pt1.id = m.projectteam1_id 
@@ -630,9 +858,21 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 				OR m.projectteam2_id= '" . $match->projectteam2_id . "') 
 				AND pt1.project_id = '" . $match->project_id . "' 
 				ORDER BY m.match_date DESC LIMIT 1";
-		if ($temp = $this->getFromDB($query)) {
+*/		
+        $db->setQuery($query,0,1);
+        if ( $temp = $db->loadObjectList() ) 
+        {
 			$match->lastaway = $temp[0]->id;
 		}
+        
+        $query->clear('where');
+        $query->clear('order');
+        
+        $query->where($this->getDateString() . " > " . $db->Quote(''.$match->match_date.'') );
+        $query->where('(m.projectteam1_id = ' . $match->projectteam1_id . '	OR m.projectteam2_id = ' . $match->projectteam1_id .' )');
+        $query->where('p.id = ' . $match->project_id);
+        $query->order('m.match_date ASC');
+/*        
 		$query = "SELECT m.id
 				FROM #__sportsmanagement_match AS m 
 				LEFT JOIN #__sportsmanagement_project_team pt1 ON pt1.id = m.projectteam1_id 
@@ -643,9 +883,14 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 				OR m.projectteam2_id = '" . $match->projectteam2_id . "') 
 				AND pt1.project_id = '" . $match->project_id . "' 
 				ORDER BY m.match_date ASC LIMIT 1";
-		if ($temp = $this->getFromDB($query)) {
+*/		
+        $db->setQuery($query,0,1);
+        if ( $temp = $db->loadObjectList() ) 
+        {
 			$match->nextaway = $temp[0]->id;
 		}
+        
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	}
 
 	/**
@@ -654,14 +899,37 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 	 * @param mixed $match
 	 * @return void
 	 */
-	public function next_last2(& $match) {
+	public function next_last2(& $match) 
+    {
+        $db = sportsmanagementHelper::getDBConnection();
+        $query = $db->getQuery(true);
+        
 		$match->lasthome = $match->nexthome = $match->lastaway = $match->nextaway = false;
 		$p = $this->params->get('project');
 		if (!empty ($p)) {
 			$projectstring = (is_array($p)) ? implode(",", $p) : $p;
-			//$this->conditions[] = "((pt1.project_id IN (" . $projectstring . "))";
 		}
-		$database = JFactory :: getDBO();
+		
+        // select some fields
+        $query->select('m.id');
+        // from
+        $query->from('#__sportsmanagement_match AS m ');
+        // join
+        $query->join('LEFT','#__sportsmanagement_project_team pt1 ON pt1.id = m.projectteam1_id ');
+        $query->join('LEFT','#__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
+        $query->join('INNER','#__sportsmanagement_team t1 ON t1.id = st1.team_id ');
+        
+        $query->join('LEFT','#__sportsmanagement_project_team pt2 ON pt2.id = m.projectteam2_id ');
+        $query->join('LEFT','#__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id ');
+        $query->join('INNER','#__sportsmanagement_team t2 ON t2.id = st2.team_id ');
+        
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt1.project_id');
+        
+        $query->where($this->getDateString() . " < " . $db->Quote(''.$match->match_date.'') );
+        $query->where('(t1.id  = ' . $match->team1_id . '	OR t2.id = ' . $match->team1_id .' )');
+        $query->where('p.id IN (' . $projectstring .')');
+        $query->order('m.match_date DESC');
+/*        
 		$query = "SELECT m.id
 				FROM #__sportsmanagement_match AS m 
 				LEFT JOIN #__sportsmanagement_project_team pt1 ON pt1.id = m.projectteam1_id 
@@ -673,14 +941,26 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
                 LEFT JOIN #__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id 
 				INNER JOIN #__sportsmanagement_team t2 ON t2.id = st2.team_id 
 				LEFT JOIN #__sportsmanagement_project AS p ON p.id = pt1.project_id 
+                
+                
 				WHERE " . $this->getDateString() . " < '" . $match->match_date . 
 				"' AND (t1.id = '" . $match->team1_id . "' 
 				OR t2.id = '" . $match->team1_id . 
 				"') AND pt1.project_id IN (" . $projectstring . ") 
 				ORDER BY m.match_date DESC LIMIT 1";
-		if ($temp = $this->getFromDB($query)) {
+*/        
+        $db->setQuery($query,0,1);        
+		if ($temp = $db->loadObjectList() ) {
 			$match->lasthome = $temp[0]->id;
 		}
+        
+        $query->clear('where');
+        $query->clear('order');
+        $query->where($this->getDateString() . " > " . $db->Quote(''.$match->match_date.'') );
+        $query->where('(t1.id  = ' . $match->team1_id . '	OR t2.id = ' . $match->team1_id .' )');
+        $query->where('p.id IN (' . $projectstring .')');
+        $query->order('m.match_date ASC');
+/*        
 		$query = "SELECT m.id
 				FROM #__sportsmanagement_match AS m 
 				LEFT JOIN #__sportsmanagement_project_team pt1 ON pt1.id = m.projectteam1_id 
@@ -698,9 +978,19 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 				"') AND pt1.project_id IN (" . $projectstring . ") 
 				ORDER BY m.match_date ASC LIMIT 1";
 		;
-		if ($temp = $this->getFromDB($query)) {
+*/        
+        $db->setQuery($query,0,1);
+		if ($temp = $db->loadObjectList() ) {
 			$match->nexthome = $temp[0]->id;
 		}
+        
+        $query->clear('where');
+        $query->clear('order');
+        $query->where($this->getDateString() . " < " . $db->Quote(''.$match->match_date.'') );
+        $query->where('(t1.id  = ' . $match->team1_id . '	OR t2.id = ' . $match->team1_id .' )');
+        $query->where('p.id IN (' . $projectstring .')');
+        $query->order('m.match_date DESC');
+/*        
 		$query = "SELECT m.id
 				FROM #__sportsmanagement_match AS m 
 				LEFT JOIN #__sportsmanagement_project_team pt1 ON pt1.id = m.projectteam1_id 
@@ -718,9 +1008,19 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 				OR t2.id = '" . $match->team2_id . 
 				"') AND pt1.project_id IN (" . $projectstring . ") 
 				ORDER BY m.match_date DESC LIMIT 1";
-		if ($temp = $this->getFromDB($query)) {
+*/		
+        $db->setQuery($query,0,1);
+        if ($temp = $db->loadObjectList() ) {
 			$match->lastaway = $temp[0]->id;
 		}
+        
+        $query->clear('where');
+        $query->clear('order');
+        $query->where($this->getDateString() . " > " . $db->Quote(''.$match->match_date.'') );
+        $query->where('(t1.id  = ' . $match->team1_id . '	OR t2.id = ' . $match->team1_id .' )');
+        $query->where('p.id IN (' . $projectstring .')');
+        $query->order('m.match_date ASC');
+/*        
 		$query = "SELECT m.id
 				FROM #__sportsmanagement_match AS m 
 				LEFT JOIN #__sportsmanagement_project_team pt1 ON pt1.id = m.projectteam1_id 
@@ -738,8 +1038,12 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 				"') AND pt1.project_id IN (" . $projectstring . ") 
 				ORDER BY m.match_date ASC LIMIT 1";
 		;
-		if ($temp = $this->getFromDB($query)) {
+*/        
+        $db->setQuery($query,0,1);
+		if ($temp = $db->loadObjectList() ) {
 			$match->nextaway = $temp[0]->id;
 		}
+        
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	}
 }

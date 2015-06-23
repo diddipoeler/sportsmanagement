@@ -40,7 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>    
-<fieldset>
+<div class="row">
 <legend>
 <strong>
 <?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING'); ?>
@@ -51,7 +51,7 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 
-<table class="table table-striped" >
+<table class="<?php echo $params->get('table_class'); ?>" >
 <thead>
 	<tr class="sectiontableheader">
 		<th class="" nowrap="" style="background:#BDBDBD;"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_DAY'); ?></th>
@@ -138,3 +138,4 @@ echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NODATA');
 <?php
 
 ?>
+</div>

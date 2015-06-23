@@ -138,7 +138,10 @@ if (!defined('JLC_MODULESCRIPTLOADED')) {
 	define('JLC_MODULESCRIPTLOADED', 1);
 }
 $calendar = $helper->showCal($params,$year,$month,$ajax,$module->id);
-
+?>           
+<div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+<?PHP
 require(JModuleHelper::getLayoutPath($module->module));
 
 ?>
+</div>

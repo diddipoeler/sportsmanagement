@@ -64,16 +64,16 @@ $colors = $list['colors'];
 
 ?>
 
-<div class="modjlgranking">
+<div class="row">
 
 <?php if ($params->get('show_project_name', 0)):?>
 <p class="projectname"><?php echo $list['project']->name; ?></p>
 <?php endif; ?>
 
-<table class="ranking">
+<table class="<?php echo $params->get('table_class', 'table'); ?>">
 	<thead>
 		<tr class="sectiontableheader">
-			<?php if($params->get('showRankColumn') == 1) { ?>
+			<?php if( $params->get('showRankColumn') == 1 ) { ?>
 			<th class="rank"><?php echo JText::_('MOD_SPORTSMANAGEMENT_RANKING_COLUMN_RANK')?></th>
 			<?php } ?>
 			<th class="team"><?php echo JText::_('MOD_SPORTSMANAGEMENT_RANKING_COLUMN_TEAM')?></th>
@@ -94,15 +94,15 @@ $colors = $list['colors'];
 	?>
 	<?php foreach (array_slice($list['ranking'], 0, $params->get('limit', 5)) as $item) :  ?>
 		<?php
-			$class = $params->get('style_class2', 0);
-			if ( $k == 0 ) { $class = $params->get('style_class1', 0); }
+			//$class = $params->get('style_class2', 0);
+			//if ( $k == 0 ) { $class = $params->get('style_class1', 0); }
 			
             $i++;
 			$color = "";
             
             //echo $item->rank.'<br>';
             
-			if ($params->get('show_rank_colors', 0))
+			if ( $params->get('show_rank_colors', 0) )
 			{
 			  foreach ($colors as $colorItem) 
               {
@@ -140,13 +140,13 @@ $colors = $list['colors'];
 			$rowStyle .= '"';
 
 		?>
-		<tr class="<?php echo $class; ?>">
-			<?php if($params->get('showRankColumn') == 1) { ?>
+		<tr class="">
+			<?php if( $params->get('showRankColumn') == 1) { ?>
 			<td class="rank"<?php if ($color != '') echo $rowStyle; ?>><?php echo $item->rank; ?></td>
 			<?php } ?>
 			<td class="team"<?php if ($color != '') echo $rowStyle; ?>>
 				<?php if ($params->get('show_logo', 0)): ?>
-				<?php echo modJSMRankingHelper::getLogo($item, $params->get('show_logo', 0)); ?>
+				<?php echo modJSMRankingHelper::getLogo($item, $params->get('show_logo', 0) ); ?>
 				<?php endif; ?>
 				<?php if ($spanStyle != '') echo $spanStyle; ?>
 				<?php if ($params->get('teamlink', 'none') != 'none'): ?>
@@ -167,7 +167,7 @@ $colors = $list['colors'];
 	</tbody>
 </table>
 
-<?php if ($params->get('show_ranking_link', 1)):?>
+<?php if ( $params->get('show_ranking_link', 1) ):?>
 <p class="fulltablelink"><?php 
 	$divisionid = explode(':', $params->get('division_id', 0));
 	$divisionid = $divisionid[0];
@@ -176,7 +176,7 @@ $routeparameter['cfg_which_database'] = $params->get('cfg_which_database');
 $routeparameter['s'] = $params->get('s');
 $routeparameter['p'] = $list['project']->slug;
 $routeparameter['type'] = 0;
-$routeparameter['r'] = 0;
+$routeparameter['r'] = $list['project']->round_slug;
 $routeparameter['from'] = 0;
 $routeparameter['to'] = 0;
 $routeparameter['division'] = $divisionid;

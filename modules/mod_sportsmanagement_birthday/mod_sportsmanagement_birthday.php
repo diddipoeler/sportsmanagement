@@ -76,19 +76,33 @@ if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
 }
 
-if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
+
+if (JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_dbprefix' ))
 {
+$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;    
 if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
 {    
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) );
-}    
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
+} 
 }
 else
 {
+if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
+{
+$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;
 if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
-{        
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );
-}    
+{    
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
+}
+}
+else
+{
+$module->picture_server = JURI::root() ;
+if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+{    
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
+}
+}
 }
 
 $mode = $params->def("mode");
@@ -238,7 +252,7 @@ $html_li .= '</div>';
             
    } 
 ?>           
-<div class="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+<div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
 require(JModuleHelper::getLayoutPath($module->module,$layout));
 ?>

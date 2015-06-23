@@ -37,7 +37,7 @@
 						>
 
        <field name="cfg_which_database" 
-    type="list" 
+    type="radio" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -150,7 +150,9 @@
 						label="MOD_SPORTSMANAGEMENT_RANKING_SHOW_LOGO_LABEL"
 						description="MOD_SPORTSMANAGEMENT_RANKING_SHOW_LOGO_DESCR">
 					<option value="0">MOD_SPORTSMANAGEMENT_RANKING_NO</option>
-					<option value="1">MOD_SPORTSMANAGEMENT_RANKING_CLUB_LOGO</option>
+					<option value="1">MOD_SPORTSMANAGEMENT_RANKING_CLUB_LOGO_SMALL</option>
+					<option value="3">MOD_SPORTSMANAGEMENT_RANKING_CLUB_LOGO_MIDDLE</option>
+					<option value="4">MOD_SPORTSMANAGEMENT_RANKING_CLUB_LOGO_BIG</option>
 					<option value="2">MOD_SPORTSMANAGEMENT_RANKING_COUNTRY_FLAG</option>
 				</field>
 
@@ -162,6 +164,7 @@
 				</field>
 
 				<field 	name="fav_team_highlight_type" type="radio" default="1"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_RANKING_FAV_TEAM_HIGHLIGHT_LABEL"
 						description="MOD_SPORTSMANAGEMENT_RANKING_FAV_TEAM_HIGHLIGHT_DESCR">
 					<option value="1">MOD_SPORTSMANAGEMENT_RANKING_FAV_TEAM_HIGHLIGHT_OPTION1</option>
@@ -177,6 +180,24 @@
 			</fieldset>
 
 			<fieldset name="advanced">
+			
+
+      <field 	name="table_class" type="list" default="table" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+			
+		</field>
+		
+				<field 	name="moduleclass_sfx" type="text" default=""
+						label="MOD_SPORTSMANAGEMENT_RANKING_MODULE_CLASS_SUFFIX_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_RANKING_MODULE_CLASS_SUFFIX_DESCR">
+				</field>
 				<field 	name="cache" type="list" default="1" 
 						label="MOD_SPORTSMANAGEMENT_RANKING_CACHING_LABEL"
 						description="MOD_SPORTSMANAGEMENT_RANKING_CACHING_DESCR">
@@ -189,20 +210,10 @@
 						description="MOD_SPORTSMANAGEMENT_RANKING_CACHE_TIME_DESCR">
 				</field>
 
-				<field 	name="moduleclass_sfx" type="text" default=""
-						label="MOD_SPORTSMANAGEMENT_RANKING_MODULE_CLASS_SUFFIX_LABEL" 
-						description="MOD_SPORTSMANAGEMENT_RANKING_MODULE_CLASS_SUFFIX_DESCR">
-				</field>
+				
 
-				<field 	name="style_class1" type="text" default="sectiontableentry1"
-						label="MOD_SPORTSMANAGEMENT_RANKING_STYLE_ODD_LABEL"
-						description="MOD_SPORTSMANAGEMENT_RANKING_STYLE_ODD_DESCR">
-				</field>
 
-				<field 	name="style_class2" type="text" default="sectiontableentry2"
-						label="MOD_SPORTSMANAGEMENT_RANKING_STYLE_EVEN_LABEL"
-						description="MOD_SPORTSMANAGEMENT_RANKING_STYLE_EVEN_DESCR">
-				</field>
+				
 			</fieldset>
 		</fields>
 	</config>

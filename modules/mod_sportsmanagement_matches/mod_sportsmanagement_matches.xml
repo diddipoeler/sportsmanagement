@@ -39,7 +39,7 @@
 						description="MOD_SPORTSMANAGEMENT_BASIC_DESC"
 						 >
       <field name="cfg_which_database" 
-    type="list" 
+    type="radio" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -81,7 +81,7 @@
 			value_field="s"
 			required=""
 			size="10"
-			multiple="multiple"
+			
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SELECT_PROJECTS_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SELECT_PROJECTS_DESCR" />
 						
@@ -131,11 +131,18 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-
+<!--
 				<field 	name="teams" type="teams" default="" 
 						label="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_DESCR" />
-
+-->
+<field name="teams" type="dependsql" default="0" depends="project"
+					task="projectteamoptions" 
+					key_field="project_id"
+			value_field="project"
+					label="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_TITLE" 
+					description="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_DESCR" />
+					
 				<field 	name="limit" type="text" default="1"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_MAX_MATCHES_TO_SHOW_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_MAX_MATCHES_TO_SHOW_DESCR" />
@@ -354,7 +361,7 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHES_COUNTRY_FLAG_FOLDER_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_COUNTRY_FLAG_FOLDER_DESCR" />
 
-				<field 	name="xsize" type="text" default="" 
+				<field 	name="xsize" type="text" default="100" 
 						label="MOD_SPORTSMANAGEMENT_MATCHES_MAX_IMAGE_WIDTH_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_MAX_IMAGE_WIDTH_DESCR" />
 
@@ -366,7 +373,7 @@
 					<option value="1">JYES</option>
 				</field>
 
-				<field 	name="ysize" type="text" default="" 
+				<field 	name="ysize" type="text" default="auto" 
 						label="MOD_SPORTSMANAGEMENT_MATCHES_MAX_IMAGE_HEIGHT_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_MAX_IMAGE_HEIGHT_DESCR" />
 
@@ -389,7 +396,7 @@
 				<field 	name="link_teams" type="list" default="0"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_TEAM_LINK_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_TEAM_LINK_DESCR">
-					<option value="0">JNO_TEAM_LINK</option>
+					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_NO_TEAM_LINK</option>
 					<option value="1">MOD_SPORTSMANAGEMENT_MATCHES_USED_TEAMS_ONLY</option>
 					<option value="2">MOD_SPORTSMANAGEMENT_MATCHES_ALL_TEAMS</option>
 				</field>
@@ -652,6 +659,18 @@
 
 			<fieldset name="advanced">
 
+      <field 	name="table_class" type="list" default="table" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+			
+		</field>
+		
 				<field 	name="moduleclass_sfx" type="text" default="" 
 						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
 						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />

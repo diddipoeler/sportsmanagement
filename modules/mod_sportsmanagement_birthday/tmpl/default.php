@@ -74,16 +74,19 @@ $text = htmlspecialchars(sportsmanagementHelper::formatName(null, $person['first
 													$params->get("name_format")), ENT_QUOTES, 'UTF-8');
                                                         
 $active = ($a==0) ? 'active' : '';    
-if ($params->get('show_picture')==1) 
+
+if ( $params->get('show_picture') ) 
 {
-if (file_exists(JPATH_BASE.'/'.$person['picture'])&&$person['picture']!='') 
+    
+if (curl_init( $module->picture_server.DS.$person['picture']) && $person['picture'] != '' ) 
 {
-$thispic = $person['picture'];
+$thispic = $module->picture_server.DS.$person['picture'];
 }
-elseif (file_exists(JPATH_BASE.'/'.$person['default_picture'])&&$person['default_picture']!='') 
+elseif ( curl_init( $module->picture_server.DS.$person['default_picture']) && $person['default_picture'] != '' ) 
 {
-$thispic = $person['default_picture'];
+$thispic = $module->picture_server.DS.$person['default_picture'];
 }
+
 }
 
 switch ($person['days_to_birthday']) 
@@ -110,7 +113,7 @@ $birthdaytext = str_replace('%BOLDEND%', '</b>', $birthdaytext);
                         <div class="col-md-12">
                             <div class="col-item">
                                 <div class="photo">
-                                    <img src="<?php echo $thispic; ?>" class="img-responsive" alt="a" />
+                                    <img src="<?php echo $thispic; ?>" class="img-responsive" alt="a" width="<?php echo $params->get('picture_width'); ?>" />
                                 </div>
                             </div>
                         </div>        

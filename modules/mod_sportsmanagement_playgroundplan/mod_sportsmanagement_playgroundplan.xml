@@ -36,7 +36,7 @@
 			description="MOD_SPORTSMANAGEMENT_BASIC_DESC"
 				>
      <field name="cfg_which_database" 
-    type="list" 
+    type="radio" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -65,7 +65,7 @@
 			value_field="s"
 			required=""
 			size="10"
-			multiple="multiple"
+			
 						label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PROJECT_ID_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PROJECT_ID_LABEL_DESC" />
 <!--			
@@ -77,30 +77,35 @@
 				<field name="playground" type="playgrounds" default=""
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PLAYGROUND_ID_LABEL"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PLAYGROUND_ID_LABEL_DESC" />
+					
 				<field name="show_project_name" type="radio" default="0"  class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PROJECT_NAME"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PROJECT_NAME_DESC">
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
+				
 				<field name="show_league_name" type="radio" default="1"  class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_LEAGUE_NAME" 
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_LEAGUE_NAME_DESC">
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
+				
 				<field name="show_playground_name" type="radio" default="1" class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PLAYGROUND_NAME"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PLAYGROUND_NAME_DESC">
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
+				
 				<field name="show_playground_link" type="radio" default="1"  class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PLAYGROUND_LINK"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PLAYGROUND_LINK_DESC">
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
+				
 				<field name="teamformat" type="list" default="middle_name"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_LABEL_TEAM_FORMAT"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_TEAM_NAME_DESC">
@@ -108,56 +113,100 @@
 					<option value="middle_name">MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_MIDDLE_NAME</option>
 					<option value="short_name">MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHORT_NAME</option>
 				</field>
-				<field name="show_club_logo" type="radio" default="1" class="radio btn-group btn-group-yesno"
+				
+				<field name="show_club_logo" 
+        type="radio" 
+        default="1" 
+        class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_CLUB_LOGO" 
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_CLUB_LOGO_DESC">
 					<option value="0">JNo</option>
 					<option value="1">JYes</option>
 				</field>
 				
-				<field 	name="show_picture" type="list" default="logo_big"
-				label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PICTURE"
-				description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PICTURE_DESC">
+				<field 	name="show_picture" 
+        type="list" 
+        default="logo_big"
+				label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_CLUB_PICTURE"
+				description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_CLUB_PICTURE_DESC">
 			<option value="logo_small">MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_CLUB_LOGO_SMALL</option>
 			<option value="logo_middle">MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_CLUB_LOGO_MIDDLE</option>
 			<option value="logo_big">MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_CLUB_LOGO_BIG</option>
 		</field>
 		
-		<field 	name="picture_width" type="text" default="25"
-				label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PICTURE_WIDTH" 
-				description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PICTURE_WIDTH_DESC">
+		<field 	name="picture_width" 
+    type="text" 
+    default="25"
+				label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PICTURE_CLUB_WIDTH" 
+				description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PICTURE_CLUB_WIDTH_DESC">
 		</field>
-				
+		
+    	<field name="show_playground_picture" 
+        type="radio" 
+        default="1" 
+        class="radio btn-group btn-group-yesno"
+					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PLAYGROUND_PICTURE" 
+					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_SHOW_PLAYGROUND_PICTURE_DESC">
+					<option value="0">JNo</option>
+					<option value="1">JYes</option>
+				</field>
+										
+		<field 	name="picture_playground_width" 
+    type="text" 
+    default="100"
+				label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PICTURE_PLAYGROUND_WIDTH" 
+				description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_PICTURE_PLAYGROUND_WIDTH_DESC">
+		</field>		
 				
 				<field name="maxmatches" type="text" default="7"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_MAX_MATCHES_NUMBER"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_MAX_MATCHES_NUMBER_DESC" />
+					
 				<field name="dateformat" type="text" default="l, d. F Y"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_LABEL_DATE_FORMAT"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_LABEL_DATE_FORMAT_DESC" />
+					
 				<field name="timeformat" type="text" default="H:i"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_LABEL_TIME_FORMAT"
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_LABEL_TIME_FORMAT_DESC" />
+					
 				<field name="mode" type="list" default="0"
 					label="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_LABEL_MODE" 
 					description="MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_LABEL_MODE_DESC">
 					<option value="0">MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_TICKER</option>
 					<option value="1">MOD_SPORTSMANAGEMENT_PLAYGROUNDPLAN_LIST</option>
 				</field>
+				
 			</fieldset>
+			
 				<fieldset
 					name="advanced">
-					<field
+					
+          <field 	name="table_class" type="list" default="table" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+			
+		</field>
+          
+     <field
+						name="moduleclass_sfx"
+						type="text"
+						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />     
+						
+          <field
 						name="layout"
 						type="modulelayout"
 						label="JFIELD_ALT_LAYOUT_LABEL"
 						description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
 
-					<field
-						name="moduleclass_sfx"
-						type="text"
-						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
-						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+					
 
 					<field
 						name="cache"
@@ -177,6 +226,7 @@
 						default="900"
 						label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
 						description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
+						
 				</fieldset>
 		</fields>
 	</config>

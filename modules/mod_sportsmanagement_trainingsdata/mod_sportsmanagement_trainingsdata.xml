@@ -11,7 +11,7 @@
 	<description>MOD_SPORTSMANAGEMENT_TRAININGSDATA_DESC</description>
 
 	<files>
-		<filename module="mod_sportsmanagement_playground_ticker">mod_sportsmanagement_trainingsdata.php</filename>
+		<filename module="mod_sportsmanagement_trainingsdata">mod_sportsmanagement_trainingsdata.php</filename>
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
 		<folder>tmpl</folder>
@@ -30,7 +30,7 @@
 						addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
       
       <field name="cfg_which_database" 
-    type="list" 
+    type="radio" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -39,14 +39,71 @@
 			<option value="1">JYES</option>
 		</field>
 		
+		<field	name="s" 
+    task="seasons" 
+      type="dependsql"
+      depends="cfg_which_database"
+      value_field="cfg_which_database"
+      key_field="season_id"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
+					required="">
+			</field>
+			
+		 <field 	name="projects"
+      size="5" 
+			task="projects" 
+      type="dependsql"
+      depends="s"
+      key_field="season_id"
+			value_field="s"
+			required=""
+						label="MOD_SPORTSMANAGEMENT_TRAININGSDATA_SELECT_PROJECTS_LABEL" 
+						description="MOD_SPORTSMANAGEMENT_TRAININGSDATA_SELECT_PROJECTS_DESCR" />
+
+<!--						
 		<field name="team" 
     type="teamlist" 
     default="0" 
     
 					label="MOD_SPORTSMANAGEMENT_TRAININGSDATA_TEAM_ID_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_TRAININGSDATA_TEAM_ID_LABEL_DESC" />
-	
+-->
+
+<field name="teams" 
+type="dependsql" 
+default="0" 
+depends="projects"
+					task="projectteamoptions" 
+					key_field="project_id"
+			value_field="projects"
+					label="MOD_SPORTSMANAGEMENT_TRAININGSDATA_TEAM_ID_LABEL" 
+					description="MOD_SPORTSMANAGEMENT_TRAININGSDATA_TEAM_ID_LABEL_DESC" />
+          	
 			</fieldset>
+			
+			<fieldset name="advanced">
+
+      <field 	name="table_class" 
+      type="list" 
+      default="table" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+			
+		</field>
+		
+				<field name="moduleclass_sfx"
+						type="text"
+						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+			</fieldset>
+			
 		</fields>
 	</config>		
 </extension>

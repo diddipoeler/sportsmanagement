@@ -37,7 +37,7 @@
 			description="MOD_SPORTSMANAGEMENT_BASIC_DESC"
       >
       <field name="cfg_which_database" 
-    type="list" 
+    type="radio" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -68,22 +68,28 @@
 			required=""
 						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_PROJECTS_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_PROJECTS_DESCR" />
-<!--		
-				<field 	name="projects" type="projects" default="" required="true"
-						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_PROJECTS_LABEL"
-						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_PROJECTS_DESCR" />
--->
-				<field 	name="use_fav" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+
+				<field 	name="use_fav" 
+        type="radio" 
+        default="1"  
+        class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_USE_FAVORITE_TEAM_LABEL"
 						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_USE_FAVORITE_TEAM_DESCR">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-
+<!--
 				<field 	name="teams" type="teams" default=""
 						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_TEAM_IDS_LABEL"
 						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_TEAM_IDS_DESCR" />
-
+-->
+        <field name="teams" type="dependsql" default="0" depends="projects"
+					task="projectteamoptions" 
+					key_field="project_id"
+			value_field="projects"
+					label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_TEAM_IDS_LABEL" 
+					description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_TEAM_IDS_DESCR" />
+					
 				<field 	name="limit" type="text" default="1"
 						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_MAX_BIRTHDAYS_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_MAX_BIRTHDAYS_DESCR" />
@@ -149,7 +155,7 @@
 					<option value="1">JYES</option>
 				</field>
 
-				<field 	name="picture_width" type="text" default="120"
+				<field 	name="picture_width" type="text" default="50"
 						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_PICTURE_WIDTH_LABEL"
 						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_PICTURE_WIDTH_DESCR" />
 
@@ -235,6 +241,18 @@
 			
 			<fieldset name="advanced">
 
+      <field 	name="table_class" type="list" default="table" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+			
+		</field>
+		
 					<field
 						name="moduleclass_sfx"
 						type="text"

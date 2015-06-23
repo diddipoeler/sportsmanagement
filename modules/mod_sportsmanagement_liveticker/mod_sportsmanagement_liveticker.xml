@@ -40,7 +40,7 @@
 		<fieldset name="basic"
     description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
 		<field name="cfg_which_database" 
-    type="list" 
+    type="radio" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -80,8 +80,8 @@
 
 		<field name="display_liganame" type="radio" default="0" class="radio btn-group btn-group-yesno" 
     label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_LIGANAME" >
-			<option value="0">JYES</option>
-			<option value="1">JNO</option>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
 
 		<field name="display_commentary" type="radio" default="1" class="radio btn-group btn-group-yesno"
@@ -92,8 +92,8 @@
 
 		<field name="display_ligaflagge" type="radio" default="0" class="radio btn-group btn-group-yesno"
     label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_LIGAFLAGGE" >
-			<option value="0">JYES</option>
-			<option value="1">JNO</option>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
 
 		<field name="display_teamname" type="list" default="0" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEAMNAME" >
@@ -105,18 +105,18 @@
 
 		<field name="display_teamwappen" type="radio" default="0" class="radio btn-group btn-group-yesno"
     label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEAM_ICON" >
-			<option value="0">JYES</option>
-			<option value="1">JNO</option>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
 		<field name="display_anstoss" type="radio" default="0" class="radio btn-group btn-group-yesno"
     label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_ANSTOSS" >
-			<option value="0">JYES</option>
-			<option value="1">JNO</option>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
 		<field name="display_abpfiff" type="radio" default="0" class="radio btn-group btn-group-yesno"
     label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_ABPFIF" >
-			<option value="0">JYES</option>
-			<option value="1">JNO</option>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
 		</field>
 
 		<field name="@spacer" type="spacer" default="" label="" description="" />
@@ -145,10 +145,30 @@
 		<field name="size" type="text" default="25" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_INPUT_SIZE" description="" />
 		<field name="cols" type="text" default="17" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEXTAREA_COLS" description="" />
 		<field name="rows" type="text" default="5"  label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_TEXTAREA_ROWS" description="" />
-		<field name="moduleclass_sfx"  type="text"  default="" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+
 		</fieldset>
 
 		<fieldset name="advanced">
+		
+		
+		<field 	name="table_class" 
+    type="list" 
+    default="table" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+			
+		</field>
+		
+			<field 	name="moduleclass_sfx" type="text" default="" 
+						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+						
 		<field name="use_secret_salt" type="list" default="0" label="MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_USE_SECRET_SALT" description="" >
 			<option value="1">MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_USE_SECRET_SALT_ON</option>
 			<option value="0">MOD_SPORTSMANAGEMENT_LIVETICKER_DISPLAY_USE_SECRET_SALT_OFF</option>

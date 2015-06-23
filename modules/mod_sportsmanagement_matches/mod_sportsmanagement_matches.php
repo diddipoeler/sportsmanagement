@@ -38,6 +38,7 @@
 */
 
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
+
 if (! defined('DS'))
 {
 	define('DS', DIRECTORY_SEPARATOR);
@@ -48,7 +49,42 @@ if ( !defined('JSM_PATH') )
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
-require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');  
+// prüft vor Benutzung ob die gewünschte Klasse definiert ist
+if ( !class_exists('sportsmanagementHelper') ) 
+{
+//add the classes for handling
+$classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
+JLoader::register('sportsmanagementHelper', $classpath);
+JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+}
+
+if (JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_dbprefix' ))
+{
+$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;    
+if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+{    
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
+} 
+}
+else
+{
+if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
+{
+$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;
+if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+{    
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
+}
+}
+else
+{
+$module->picture_server = JURI::root() ;
+if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+{    
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
+}
+}
+}
 
 
 if (!defined('_JSMMATCHLISTMODPATH')) 
@@ -78,8 +114,8 @@ JHTML::_('behavior.mootools');
 }
 
 $doc = JFactory::getDocument();
-$doc->addScript( _JSMMATCHLISTMODURL.'assets/js/mod_sportsmanagement_matches.js' );
-$doc->addStyleSheet(_JSMMATCHLISTMODURL.'tmpl/'.$template.'/mod_sportsmanagement_matches.css');
+$doc->addScript( _JSMMATCHLISTMODURL.'assets/js/'.$module->module.'.js' );
+$doc->addStyleSheet(_JSMMATCHLISTMODURL.'tmpl/'.$template.DS.$module->module.'.css');
 $cssimgurl = ($params->get('use_icons') != '-1') ? _JSMMATCHLISTMODURL.'assets/images/'.$params->get('use_icons').'/'
 : _JSMMATCHLISTMODURL.'assets/images/';
 $doc->addStyleDeclaration('
@@ -110,7 +146,7 @@ if (count($matches) > 0){
 	//$user = JFactory::getUser();
 	foreach ($matches AS $key => $match) {
 		if(!isset($match['project_id'])) continue; 
-		$styleclass=($cnt%2 == 1) ? $params->get('sectiontableentry1') : $params->get('sectiontableentry2');
+		$styleclass =($cnt%2 == 1) ? $params->get('sectiontableentry1') : $params->get('sectiontableentry2');
 		$show_pheading = false;
 		$pheading = '';
 		if (isset($match['type'])) {
@@ -121,14 +157,14 @@ if (count($matches) > 0){
 			if (!empty($match['heading'])) $show_pheading = true;
 			$pheading .= $match['heading'];
 		}
-		include(JModuleHelper::getLayoutPath('mod_sportsmanagement_matches', $template.DS.'match'));
+		include(JModuleHelper::getLayoutPath($module->module, $template.DS.'match'));
 		$lastheading = $heading;
 		$oldprojectid = $match['project_id'];
 		$oldround_id = $match['round_id'];
 		$cnt++;
 	}
 }
-elseif ($params->get('show_no_matches_notice') == 1) {
+elseif ( $params->get('show_no_matches_notice') ) {
 	echo '<br />'.$params->get('no_matches_notice').'<br />';
 }
 if($ajax == 0) { echo '</div>';}

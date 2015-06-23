@@ -102,7 +102,7 @@ class SportsmanagementConnector extends JSMCalendar
         $app = JFactory::getApplication();
         // JInput object
         $jinput = $app->input;
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         
         $query->select('id, fav_team');
@@ -113,7 +113,7 @@ class SportsmanagementConnector extends JSMCalendar
 //		$query = "SELECT id, fav_team FROM #__joomleague_project
 //      where fav_team != '' ";
 
-		$projectid = SportsmanagementConnector::$xparams->get('project_ids') ;
+		$projectid = SportsmanagementConnector::$xparams->get('p') ;
 
 		if ($projectid)
 		{
@@ -153,7 +153,7 @@ class SportsmanagementConnector extends JSMCalendar
         $app = JFactory::getApplication();
         // JInput object
         $jinput = $app->input;
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         
 		$teamCondition = '';
@@ -233,7 +233,7 @@ class SportsmanagementConnector extends JSMCalendar
         $query->where("p.birthday != '0000-00-00'");
         $query->where("DATE_FORMAT(p.birthday, '%m') = DATE_FORMAT('".$caldates['start']."', '%m')");
 
-		$projectid = SportsmanagementConnector::$xparams->get('project_ids') ;
+		$projectid = SportsmanagementConnector::$xparams->get('p') ;
 
 
 		if ($projectid)
@@ -430,7 +430,7 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
         $app = JFactory::getApplication();
         // JInput object
         $jinput = $app->input;
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' caldates<br><pre>'.print_r($caldates,true).'</pre>'),'Notice');
@@ -491,17 +491,95 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
 		}
 
 		$limit = (isset($caldates['limitstart'])&&isset($caldates['limitend'])) ? ' LIMIT '.$caldates['limitstart'].', '.$caldates['limitend'] :'';
+/*
 
+
+SELECT m . * , 
+p . * , 
+match_date AS caldate, 
+r.roundcode, 
+r.name AS roundname, 
+r.round_date_first, 
+r.round_date_last, 
+m.id AS matchcode, 
+p.id AS project_id, 
+CONCAT_WS(  ':', p.id, p.alias ) AS project_slug, 
+CONCAT_WS(  ':', m.id, CONCAT_WS(  "_", t1.alias, t2.alias ) ) AS match_slug
+
+FROM j25_sportsmanagement_match AS m
+INNER JOIN j25_sportsmanagement_round AS r ON r.id = m.round_id
+INNER JOIN j25_sportsmanagement_project AS p ON p.id = r.project_id
+LEFT JOIN j25_sportsmanagement_project_team AS tt1 ON m.projectteam1_id = tt1.id
+LEFT JOIN j25_sportsmanagement_project_team AS tt2 ON m.projectteam2_id = tt2.id
+LEFT JOIN j25_sportsmanagement_season_team_id AS st1 ON st1.id = tt1.team_id
+LEFT JOIN j25_sportsmanagement_season_team_id AS st2 ON st2.id = tt2.team_id
+LEFT JOIN j25_sportsmanagement_team AS t1 ON t1.id = st1.team_id
+LEFT JOIN j25_sportsmanagement_team AS t2 ON t2.id = st2.team_id
+
+WHERE m.published =1
+AND p.published =1
+
+AND r.round_date_first >=  '2015-06-01'
+AND r.round_date_last <=  '2015-06-31'
+GROUP BY m.id
+ORDER BY m.match_date ASC
+
+
+AND m.match_date between '2015-06-01 00:00:00' AND '2015-06-31 23:59:59'
+
+
+AND m.match_date >=  '2015-06-01 00:00:00'
+AND m.match_date <=  '2015-06-31 23:59:59'
+GROUP BY m.id
+ORDER BY m.match_date ASC
+
+
+SELECT m . * , 
+p . * , 
+match_date AS caldate, 
+r.roundcode, 
+r.name AS roundname, 
+r.round_date_first, 
+r.round_date_last, 
+m.id AS matchcode, 
+p.id AS project_id, 
+CONCAT_WS(  ':', p.id, p.alias ) AS project_slug, 
+CONCAT_WS(  ':', m.id, CONCAT_WS(  "_", t1.alias, t2.alias ) ) AS match_slug
+FROM j25_sportsmanagement_match AS m
+INNER JOIN j25_sportsmanagement_round AS r ON r.id = m.round_id
+INNER JOIN j25_sportsmanagement_project AS p ON p.id = r.project_id
+INNER JOIN j25_sportsmanagement_project_team AS pt ON pt.project_id = p.id
+INNER JOIN j25_sportsmanagement_season_team_id AS st ON st.id = pt.team_id
+INNER JOIN j25_sportsmanagement_team AS team ON team.id = st.team_id
+INNER JOIN j25_sportsmanagement_club AS club ON club.id = team.club_id
+LEFT JOIN j25_sportsmanagement_project_team AS tt1 ON m.projectteam1_id = tt1.id
+LEFT JOIN j25_sportsmanagement_project_team AS tt2 ON m.projectteam2_id = tt2.id
+LEFT JOIN j25_sportsmanagement_season_team_id AS st1 ON st1.id = tt1.team_id
+LEFT JOIN j25_sportsmanagement_season_team_id AS st2 ON st2.id = tt2.team_id
+LEFT JOIN j25_sportsmanagement_team AS t1 ON t1.id = st1.team_id
+LEFT JOIN j25_sportsmanagement_team AS t2 ON t2.id = st2.team_id
+WHERE m.published =1
+AND p.published =1
+AND m.match_date >=  '2015-06-01 00:00:00'
+AND m.match_date <=  '2015-06-31 23:59:59'
+GROUP BY m.id
+ORDER BY m.match_date ASC
+
+INNER JOIN j25_sportsmanagement_project_team AS pt ON ( pt.id = m.projectteam1_id
+OR pt.id = m.projectteam2_id ) 
+
+*/
 		$query->select('m.*,p.*,match_date AS caldate,r.roundcode, r.name AS roundname, r.round_date_first, r.round_date_last,m.id as matchcode, p.id as project_id');
         $query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
         $query->select('CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) AS match_slug ');
         $query->from('#__sportsmanagement_match as m');
         $query->join('INNER','#__sportsmanagement_round as r ON r.id = m.round_id');
         $query->join('INNER','#__sportsmanagement_project as p ON p.id = r.project_id');
-        $query->join('INNER','#__sportsmanagement_project_team as pt ON (pt.id = m.projectteam1_id OR pt.id = m.projectteam2_id)');
-        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id ');
-        $query->join('INNER','#__sportsmanagement_team as team ON team.id = st.team_id');
-        $query->join('INNER','#__sportsmanagement_club as club ON club.id = team.club_id');
+        
+//        $query->join('INNER','#__sportsmanagement_project_team as pt ON (pt.id = m.projectteam1_id OR pt.id = m.projectteam2_id)');
+//        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id ');
+//        $query->join('INNER','#__sportsmanagement_team as team ON team.id = st.team_id');
+//        $query->join('INNER','#__sportsmanagement_club as club ON club.id = team.club_id');
         
         $query->join('LEFT','#__sportsmanagement_project_team AS tt1 ON m.projectteam1_id = tt1.id');
         $query->join('LEFT','#__sportsmanagement_project_team AS tt2 ON m.projectteam2_id = tt2.id');
@@ -515,11 +593,13 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
                
 		if (isset($caldates['start']))
         { 
-        $query->where("m.match_date >= ".$db->Quote(''.$caldates['start'].'')."");
+        //$query->where("m.match_date >= ".$db->Quote(''.$caldates['start'].'')."");
+        $query->where("r.round_date_first >= ".$db->Quote(''.$caldates['roundstart'].'')."");
         }
 		if (isset($caldates['end'])) 
         {
-        $query->where("m.match_date <= ".$db->Quote(''.$caldates['end'].'')."");
+        //$query->where("m.match_date <= ".$db->Quote(''.$caldates['end'].'')."");
+        $query->where("r.round_date_last <= ".$db->Quote(''.$caldates['roundend'].'')."");
         }
 		if (isset($caldates['matchcode']))
         {
@@ -551,7 +631,7 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
 
-        $db->setQuery($query.$limit);
+        $db->setQuery($query,0,$limit);
         
 		$result = $db->loadObjectList();
 		if ($result)
@@ -576,7 +656,7 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
         $app = JFactory::getApplication();
         // JInput object
         $jinput = $app->input;
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         
 		if ( !count ($games) ) return Array();
@@ -648,11 +728,11 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
         $app = JFactory::getApplication();
         // JInput object
         $jinput = $app->input;
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         
 		$teamnames = SportsmanagementConnector::$xparams->get('team_names', 'short_name');
-		$database = JFactory::getDbo();
+		//$database = JFactory::getDbo();
 		$query = "SELECT t.".$teamnames." AS name, t.id AS value
     FROM #__joomleague_teams t, #__joomleague p
     WHERE t.id IN(p.fav_team)";

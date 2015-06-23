@@ -68,7 +68,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 ?>
 
 <?php
-$picturetext = JText::_( 'JL_PERSON_PICTURE' );
+$picturetext = JText::_( 'MOD_SPORTSMANAGEMENT_RANDOMPLAYER_PERSON_PICTURE' );
 $text = sportsmanagementHelper::formatName(null, $person->firstname, 
 												$person->nickname, 
 												$person->lastname, 
@@ -83,7 +83,7 @@ else
 {
     $picture = '';
 }
-$pic = sportsmanagementHelper::getPictureThumb($picture, $imgTitle, $params->get('picture_width'), $params->get('picture_heigth'));
+$pic = sportsmanagementHelper::getPictureThumb($picture, $imgTitle, $params->get('picture_width'), 'auto');
 echo '<a href="'.$link.'">'.$pic.'</a>' ;
 ?>
 
@@ -119,7 +119,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 	echo sportsmanagementHelper::getPictureThumb($list['infoteam']->team_picture,
 											$list['infoteam']->name,
 											$params->get('team_picture_width',21),
-											$params->get('team_picture_height',0),
+											'auto',
 											1)." ";
 	$text = $list['infoteam']->name;
 	if ($params->get('show_team_link'))

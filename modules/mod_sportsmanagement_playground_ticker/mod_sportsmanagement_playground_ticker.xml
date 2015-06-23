@@ -29,7 +29,7 @@
 			description="MOD_SPORTSMANAGEMENT_BASIC_DESC"
 						addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
       <field name="cfg_which_database" 
-    type="list" 
+    type="radio" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -45,6 +45,30 @@
 						label="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_PICTURE_WIDTH_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_PLAYGROUND_TICKER_PICTURE_WIDTH_DESCR" />
 			</fieldset>
+			
+			
+			<fieldset
+					name="advanced">
+					
+          <field 	name="table_class" type="list" default="table" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+			
+		</field>
+          
+     <field
+						name="moduleclass_sfx"
+						type="text"
+						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />     
+		</fieldset>
+    				
 		</fields>
 	</config>		
 </extension>

@@ -39,7 +39,7 @@
 				>
 				
 				<field name="cfg_which_database" 
-    type="list" 
+    type="radio" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -60,7 +60,7 @@
 					required="">
 			</field>
 				
-		<field 	name="project_ids" 
+		<field 	name="p" 
 			task="projects" 
       type="dependsql"
       depends="s"
@@ -68,6 +68,7 @@
 			value_field="s"
 			required=""
 			size="10"
+			
 						label="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITPROJECTSLBL" 
 						description="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITPROJECTSDESC" />
 <!--            		
@@ -75,14 +76,32 @@
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITPROJECTSLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITPROJECTSDESC">
 				</field>
 -->
+
+<!--
 				<field name="club_ids" type="clubs" default="" label="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITCLUBSLBL"
 					description="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITCLUBSDESC">
 				</field>
+-->
 
+        <field name="club_ids" type="dependsql" default="0" depends="p"
+					task="projectcluboptions" 
+					key_field="project_id"
+			value_field="p"
+					label="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITCLUBSLBL" 
+					description="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITCLUBSDESC" />
+
+<!--
 				<field name="team_ids" type="teams" default="" label="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITTEAMSLBL"
 					description="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITTEAMSDESC">
 				</field>
-				
+-->				
+				<field name="team_ids" type="dependsql" default="0" depends="p"
+					task="projectteamoptions" 
+					key_field="project_id"
+			value_field="p"
+					label="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITTEAMSLBL" 
+					description="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITTEAMSDESC" />
+					
 				<field name="time_zone" type="timezone" default="UTC" 
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_LABEL_TIMEZONE"
 					description="MOD_SPORTSMANAGEMENT_CALENDAR_DESC_TIMEZONE" />
@@ -259,6 +278,20 @@
 
 			</fieldset>
 			<fieldset name="advanced">
+			<field 	name="table_class" type="list" default="table" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+			
+		</field>
+			 <field name="moduleclass_sfx" type="text" default=""
+					label="MOD_SPORTSMANAGEMENT_CALENDAR_MODULECLASSSUFFIXLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_MODULECLASSSUFFIXDESC">
+				</field>
 				<field name="cache" type="list" default="1" label="MOD_SPORTSMANAGEMENT_CALENDAR_CACHINGLBL"
 					description="MOD_SPORTSMANAGEMENT_CALENDAR_CACHINGDESC">
 					<option value="1">MOD_SPORTSMANAGEMENT_CALENDAR_GLOBALS</option>
@@ -269,9 +302,7 @@
 					description="MOD_SPORTSMANAGEMENT_CALENDAR_CACHETIMEDESC">
 				</field>
 
-				<field name="moduleclass_sfx" type="text" default=""
-					label="MOD_SPORTSMANAGEMENT_CALENDAR_MODULECLASSSUFFIXLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_MODULECLASSSUFFIXDESC">
-				</field>
+				
 			</fieldset>
 		</fields>
 	</config>

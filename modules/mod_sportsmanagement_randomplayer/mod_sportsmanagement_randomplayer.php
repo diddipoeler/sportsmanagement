@@ -64,10 +64,12 @@ if ( !defined('COM_SPORTSMANAGEMENT_TABLE') )
 {
 DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$paramscomponent->get( 'cfg_which_database_table' ) );
 }
+
 if ( !defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO') )
 {
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$paramscomponent->get( 'show_debug_info' ) );
 }
+
 if ( !defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO') )
 {
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$paramscomponent->get( 'show_query_debug_info' ) );
@@ -77,20 +79,35 @@ if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 {
 DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',$paramscomponent->get( 'cfg_which_database' ) );
 }
-if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
+
+if (JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_dbprefix' ))
 {
+$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;   
 if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
 {    
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$paramscomponent->get( 'cfg_which_database_server' ) );
-}    
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
+} 
 }
 else
 {
+if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
+{
+$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;
 if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
-{        
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );
-}    
+{    
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
 }
+}
+else
+{
+$module->picture_server = JURI::root() ;
+if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+{    
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
+}
+}
+}
+
 
 // get helper
 require_once (dirname(__FILE__).DS.'helper.php');
@@ -107,7 +124,7 @@ $document = JFactory::getDocument();
  */
 
 ?>           
-<div class="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+<div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
 require(JModuleHelper::getLayoutPath($module->module));
 ?>

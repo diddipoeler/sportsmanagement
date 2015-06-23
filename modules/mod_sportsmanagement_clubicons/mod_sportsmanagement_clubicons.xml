@@ -30,7 +30,7 @@
       description="MOD_SPORTSMANAGEMENT_BASIC_DESC"
       >
 			<field name="cfg_which_database" 
-    type="list" 
+    type="radio" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -78,7 +78,13 @@
 		<option value="4">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_TEAMLINK_OPTION4</option>
 		<option value="5">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_TEAMLINK_OPTION5</option>
 	</field>
-	<field name="newwindow" type="list" default="0" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LINKTO_NEWWINDOW" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LINKTO_NEWWINDOW_DESC">
+	
+	<field name="newwindow" 
+  type="radio"
+  class="radio btn-group btn-group-yesno"  
+  default="0" 
+  label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LINKTO_NEWWINDOW" 
+  description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LINKTO_NEWWINDOW_DESC">
 		<option value="0">JNO</option>
 		<option value="1">JYES</option>
 	</field>
@@ -98,13 +104,31 @@
   <field name="project_ids" type="projects" default="" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_PROJECT_IDS" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_PROJECT_IDS_DESC" />
 -->  
   
-  <field name="usepfromcomponent" type="list" default="1" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_USE_PROJECT_FROM_COMPONENT" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_USE_PROJECT_FROM_COMPONENT_DESC">
+  <field name="usepfromcomponent" 
+  type="radio" 
+  default="1"
+  class="radio btn-group btn-group-yesno" 
+  label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_USE_PROJECT_FROM_COMPONENT" 
+  description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_USE_PROJECT_FROM_COMPONENT_DESC">
 		<option value="0">JNO</option>
 		<option value="1">JYES</option>
 	</field>
 	</fieldset>
+	
 	<fieldset name="advanced">
-
+	
+             <field 	name="table_class" type="list" default="table" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+			
+		</field>
+		
 				<field 	name="moduleclass_sfx" type="text" default="" 
 						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
 						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />

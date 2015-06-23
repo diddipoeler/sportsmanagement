@@ -32,8 +32,9 @@
     addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
 			<fieldset name="basic"
       description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
+      
 				<field name="cfg_which_database" 
-    type="list" 
+    type="radio" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -63,19 +64,14 @@
 			required=""
 						label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_PROJECT_LABEL" 
 						description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_PROJECT_LABEL_DESC" />
-<!--						
-				<field type="projects" name="p" label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_PROJECT_LABEL"
-					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_PROJECT_LABEL_DESC" />
--->					
-					
-					
-					
+				
 				<field name="team" type="dependsql" default="0" depends="p"
 					task="projectteamoptions" 
 					key_field="project_id"
 			value_field="p"
 					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_TEAM_ID_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_TEAM_ID_LABEL_DESC" />
+					
 				<field name="show_project_name" type="radio" default="0" class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_PROJECT_NAME" 
 					description="MOD_SPORTSMANAGEMENT_TEAMPLAYERS_SHOW_PROJECT_NAME_DESC">
@@ -137,6 +133,27 @@
 						label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
 						description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
 				</fieldset>
+				
+		<fieldset name="advanced">
+
+      <field 	name="table_class" type="list" default="table" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+			
+		</field>
+		
+				<field name="moduleclass_sfx"
+						type="text"
+						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+			</fieldset>		
+				
 		</fields>
 	</config>
 </extension>

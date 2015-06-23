@@ -49,6 +49,43 @@ if ( !defined('JSM_PATH') )
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
+// prüft vor Benutzung ob die gewünschte Klasse definiert ist
+if ( !class_exists('sportsmanagementHelper') ) 
+{
+//add the classes for handling
+$classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
+JLoader::register('sportsmanagementHelper', $classpath);
+JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+}
+
+if (JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_dbprefix' ))
+{
+$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;    
+if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+{    
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
+} 
+}
+else
+{
+if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
+{
+$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;
+if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+{    
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
+}
+}
+else
+{
+$module->picture_server = JURI::root() ;
+if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+{    
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
+}
+}
+}
+
 require_once (dirname(__FILE__).DS.'helper.php');
 
 /*
@@ -63,7 +100,7 @@ $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanag
 //$jquery_ui_sub_version = JComponentHelper::getParams('com_sportsmanagement')->get('jqueryuisubversionfrontend',0);
 
 $document = JFactory::getDocument();
-$document->addScript(JURI::base().'modules/mod_sportsmanagement_liveticker/js/turtushout.js');
+$document->addScript(JURI::base().'modules/'.$module->module.'/js/turtushout.js');
 
 $action = JRequest::getCmd('action');
 
@@ -98,15 +135,17 @@ $display_abpfiff    = $params->get( 'display_abpfiff', 0 );
 $display_liganame    = $params->get( 'display_liganame', 0 );
 $display_ligaflagge    = $params->get( 'display_ligaflagge', 0 );
 
+$table_class    = $params->get( 'table_class', 'table' );
+
 if ($use_local_jquery) 
 {
-$document->addScript(JURI::base().'modules/mod_sportsmanagement_liveticker/js/jquery-1.2.3.pack.js');
+$document->addScript(JURI::base().'modules/'.$module->module.'/js/jquery-1.2.3.pack.js');
 }
 
 if ($use_css) 
 {
 //add css file
-$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_liveticker/css/'.$use_css);
+$document->addStyleSheet(JURI::base().'modules/'.$module->module.'/css/'.$use_css);
 }
     
 $is_ajaxed = isset($_SERVER["HTTP_X_REQUESTED_WITH"])?($_SERVER["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest") : false;
@@ -166,7 +205,7 @@ if (!$is_ajaxed || ($action == "turtushout_shouts"))
 $list_html .= "<div class='turtushout-entry'>";
 
 $list_html .=  "<div class='turtushout-name'>";
-$list_html .=  "<table width=\"100%\">";
+$list_html .=  "<table class=\"".$table_class."\">";
 
 $list_html .=  "<thead>" ;
 $list_html .=  "<tr>" ;
@@ -175,48 +214,45 @@ $list_html .= "<td colspan=\"8\" align=\"left\" >" . date("H:i:s",time()). "</td
 $list_html .= "</tr>" ;
 $list_html .=  "<tr>" ;
 
-if ( $display_liganame == 0 && $display_ligaflagge == 0 )
+if ( $display_liganame && $display_ligaflagge )
 {
 $list_html .= "<td colspan=\"2\">" . "Liga" . "</td>";
 }
 
-if ( $display_liganame == 1 && $display_ligaflagge == 1 )
-{
-}
 
-if ( ( $display_liganame == 0 && $display_ligaflagge == 1 ) || ( $display_liganame == 1 && $display_ligaflagge == 0 ) )
+if ( ( !$display_liganame && $display_ligaflagge ) || ( $display_liganame && !$display_ligaflagge ) )
 {
 $list_html .= "<td colspan=\"1\">" . "Liga" . "</td>";
 }
 
 
-if ( $display_anstoss == 0 )
+if ( $display_anstoss )
 {
 $list_html .= "<td>" . "Anpfiff" . "</td>";
 }
 
-if ( $display_abpfiff == 0 )
+if ( $display_abpfiff )
 {
 $list_html .= "<td>" . "Abpfiff" . "</td>";
 }
 
 // wappen und teamname
-if ( $display_teamwappen == 0 && $display_teamname < 3 )
+if ( $display_teamwappen && $display_teamname < 3 )
 {
 $list_html .= "<td colspan=\"4\" align=\"middle\" >" . "Paarung" . "</td>";
 }
 // kein wappen und teamname
-if ( $display_teamwappen == 1 && $display_teamname < 3 )
+if ( !$display_teamwappen && $display_teamname < 3 )
 {
 $list_html .= "<td colspan=\"2\" align=\"middle\" >" . "Paarung" . "</td>";
 }
 // wappen und kein teamname
-if ( $display_teamwappen == 0 && $display_teamname == 3 )
+if ( $display_teamwappen && $display_teamname == 3 )
 {
 $list_html .= "<td colspan=\"2\" align=\"middle\" >" . "Paarung" . "</td>";
 }
 // kein wappen und kein teamname
-if ( $display_teamwappen == 1 && $display_teamname == 3 )
+if ( !$display_teamwappen && $display_teamname == 3 )
 {
 }
 
@@ -236,36 +272,36 @@ $abpfiff = $anstoss + ( ( $list[$i]->game_regular_time + $list[$i]->halftime ) *
 
 $abpfiff = date('H:i:s', strtotime($anstoss) + ($list[$i]->game_regular_time + $list[$i]->halftime)*60);
 
-$matchpart1_pic = (trim($list[$i]->wappenheim) != "")? sprintf('<img src="%s" alt="%s" width="20"/>', $list[$i]->wappenheim, $list[$i]->heim) : "";
-$matchpart2_pic = (trim($list[$i]->wappengast) != "")? sprintf('<img src="%s" alt="%s" width="20"/>', $list[$i]->wappengast, $list[$i]->gast) : "";
+$matchpart1_pic = (trim($list[$i]->wappenheim) != "")? sprintf('<img src="%s" alt="%s" width="20"/>', COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$list[$i]->wappenheim, $list[$i]->heim) : "";
+$matchpart2_pic = (trim($list[$i]->wappengast) != "")? sprintf('<img src="%s" alt="%s" width="20"/>', COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$list[$i]->wappengast, $list[$i]->gast) : "";
 
-$isoflag =  strtolower($list[$i]->alpha2);
+//$isoflag =  strtolower($list[$i]->alpha2);
 
 $list_html .=  "<tr>" ;
 
 // ligaflagge
-if ( $display_ligaflagge == 0 )
+if ( $display_ligaflagge )
 {
-$list_html .= "<td>" . "<img src=\""."/media/com_sportsmanagement/flags/".$isoflag.".png\" alt=\"".$list[$i]->countries_iso_code_3."\" title=\"".$list[$i]->countries_iso_code_3."\" hspace=\"2\" /> " . "</td>";
+$list_html .= "<td>" . "<img src=\"".COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$list[$i]->country_picture."\" alt=\"".$list[$i]->countries_iso_code_3."\" title=\"".$list[$i]->countries_iso_code_3."\" hspace=\"2\" /> " . "</td>";
 }
 
 // liganame
-if ( $display_liganame == 0 )
+if ( $display_liganame )
 {
 $list_html .= "<td>" . $list[$i]->name . "</td>";
 }
 
-if ( $display_anstoss == 0 )
+if ( $display_anstoss )
 {
 $list_html .= "<td>" . $anstoss . "</td>";
 }
 
-if ( $display_abpfiff == 0 )
+if ( $display_abpfiff )
 {
 $list_html .= "<td>" . $abpfiff . "</td>";
 }
 
-if ( $display_teamwappen == 0 )
+if ( $display_teamwappen )
 {
 $list_html .= "<td>" . $matchpart1_pic . "</td>";
 }
@@ -288,7 +324,7 @@ if ( $display_teamname == 3 )
 
 
 
-if ( $display_teamwappen == 0 )
+if ( $display_teamwappen )
 {
 $list_html .= "<td>" . $matchpart2_pic . "</td>";
 }
@@ -358,7 +394,7 @@ if ($is_ajaxed) {
 
 
 ?>
-<div class="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+<div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
 require(JModuleHelper::getLayoutPath($module->module));
 ?>

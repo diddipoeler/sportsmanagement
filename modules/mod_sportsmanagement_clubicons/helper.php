@@ -54,6 +54,7 @@ class modJSMClubiconsHelper
 	var $ranking;
 	var $teams = array ();
 	var $params;
+    var $module;
 	var $placeholders = array (
 			'logo_small' => 'images/com_sportsmanagement/database/placeholders/placeholder_small.png',
 			'logo_middle' => 'images/com_sportsmanagement/database/placeholders/placeholder_50.png',
@@ -65,10 +66,11 @@ class modJSMClubiconsHelper
 	 * @param mixed $params
 	 * @return
 	 */
-	function __construct( &$params )
+	function __construct( &$params,$module )
 	{
 		$this->params = $params;
-		$this->_getData();
+        $this->module = $module;
+		self::_getData();
 	}
 	
 	/**
@@ -78,7 +80,8 @@ class modJSMClubiconsHelper
 	 */
 	private function _getData()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($this->module,true).'</pre>'),'');
 
 		$project_id = (JRequest::getVar('option','') == 'com_sportsmanagement' AND 
 									JRequest::getInt('p',0) > 0 AND 
@@ -109,14 +112,15 @@ class modJSMClubiconsHelper
 			$teams = sportsmanagementModelProject::getTeams($divisionid);
 		}
 		
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($teams,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r($teams,true).'</pre>'),'');
         
-		$this->buildData($teams);
+		self::buildData($teams);
 		unset($teams);
 		//unset($model);
         }
 
 	}
+    
 	/**
 	 * modJSMClubiconsHelper::buildData()
 	 * 
@@ -125,17 +129,21 @@ class modJSMClubiconsHelper
 	 */
 	function buildData( &$result )
 	{
+	   $app = JFactory::getApplication();
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($this->module,true).'</pre>'),'');
+        
 		if (count($result))
 		{
 			foreach($result as $r)
 			{
 				$this->teams[$r->projectteamid] = array();
-				$this->teams[$r->projectteamid]['link'] = $this->getLink( $r );
+				$this->teams[$r->projectteamid]['link'] = self::getLink( $r );
 				$class = (!empty($this->teams[$r->projectteamid]['link'])) ? 'smstarticon' : 'smstarticon nolink';
-				$this->teams[$r->projectteamid]['logo'] = $this->getLogo( $r, $class );
+				$this->teams[$r->projectteamid]['logo'] = self::getLogo( $r, $class );
 			}
 		}
 	}
+    
 	/**
 	 * modJSMClubiconsHelper::getLogo()
 	 * 
@@ -145,13 +153,31 @@ class modJSMClubiconsHelper
 	 */
 	function getLogo( & $item, $class )
 	{
-		$imgtype = $this->params->get( 'logotype','logo_middle' );
-		$logourl = (!empty($item->$imgtype) AND file_exists(JPATH_ROOT.DS.str_replace('/', DS, $item->$imgtype)))
-			? $item->$imgtype : $this->placeholders[$imgtype];
-		//echo $logourl.'<br />';
+	   $app = JFactory::getApplication();
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($this->module,true).'</pre>'),'');
+        
+        $imgtype = $this->params->get( 'logotype','logo_middle' );
+		$logourl = $this->module->picture_server.DS.$item->$imgtype;
+
+		
+//        if ( JFile::exists($logourl) )
+//        {
+//        $logourl = $logourl;   
+//        }
+//        else
+//        {
+//        $logourl = $this->placeholders[$imgtype];    
+//        }
+        
+//		$logourl = (!empty($item->$imgtype) AND file_exists($this->module->picture_server.DS.$item->$imgtype))
+//			? $item->$imgtype : $this->placeholders[$imgtype];
+
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' logourl<br><pre>'.print_r($logourl,true).'</pre>'),'');
+        
 		$imgtitle = JText::_('View ') . $item->name;
 		return JHTML::image($logourl, $item->name,'border="0" class="'.$class.'" title="'.$imgtitle.'"');
 	}
+    
 	/**
 	 * modJSMClubiconsHelper::getLink()
 	 * 
@@ -160,6 +186,9 @@ class modJSMClubiconsHelper
 	 */
 	function getLink( &$item )
 	{
+	   $app = JFactory::getApplication();
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($this->module,true).'</pre>'),'');
+        
 	    $routeparameter = array();
 $routeparameter['cfg_which_database'] = $this->params->get('cfg_which_database');
 $routeparameter['s'] = $this->params->get('s');

@@ -40,7 +40,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 $mainframe = JFactory::getApplication();
-$database = JFactory::getDBO();
+$database = sportsmanagementHelper::getDBConnection();
 $players = array();
 $crew = array();
 
@@ -154,11 +154,11 @@ if ($params->get('use_which') <= 1)
     $query->where('stp.persontype = 1');
 
     		
-	if ($usedteams!='') 
+	if ( $usedteams != '' ) 
     $query->where('st.team_id IN ('.$usedteams.')');
 
 
-	if ($p!='' && $p>0) 
+	if ( $p != '' && $p>0 ) 
     $query->where('pt.project_id IN ('.$p.')');
 
 
@@ -174,7 +174,7 @@ if ($params->get('use_which') <= 1)
 
 	if ($params->get('limit') > 0)
     {
-    $database->setQuery($query." LIMIT " . $params->get('limit'));    
+    $database->setQuery($query,0,$params->get('limit'));    
     }
     else
     {
@@ -249,7 +249,7 @@ if ($params->get('use_which') == 2 || $params->get('use_which') == 0)
 
 	if ($params->get('limit') > 0)
     {
-    $database->setQuery($query." LIMIT " . $params->get('limit'));    
+    $database->setQuery($query,0,$params->get('limit'));    
     }
     else
     {

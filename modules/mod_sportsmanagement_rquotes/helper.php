@@ -77,13 +77,20 @@ static function getRandomRquote($category,$num_of_random, &$params)
 {
     $x = 0;
     $catid = 0;
+    $row = array();
     $app = JFactory::getApplication();
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' category<br><pre>'.print_r($category,true).'</pre>'),'Notice');
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' num_of_random<br><pre>'.print_r($num_of_random,true).'</pre>'),'Notice');
     
-        
-		$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') ); 
+        if ( $params->get('cfg_which_database') )
+        {
+		$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
+        }
+        else
+        {
+        $db = sportsmanagementHelper::getDBConnection();    
+        } 
 		
         if(is_array($category)) // get $catid when one category is selected 	
 		{
@@ -123,13 +130,17 @@ static function getRandomRquote($category,$num_of_random, &$params)
         $query->where('obj.catid = '.$catid);
         }
         	
-//$query = "SELECT * from	#__sportsmanagement_rquote WHERE published='1' and catid = $catid";
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
+
 		$db->setQuery( $query );
 		$rows = $db->loadObjectList();
 		
 		$i = rand(0, count($rows) - 1 );
 
-		$row = array( $rows[$i] );
+		if ( $rows )
+        {
+        $row = array( $rows[$i] );
+        }
 
 //echo get_class($this).' '.__FUNCTION__.' category<pre>'.print_r($category,true).'</pre><br>';		
 //echo get_class($this).' '.__FUNCTION__.' row<pre>'.print_r($row,true).'</pre><br>';
@@ -149,10 +160,20 @@ static function getRandomRquote($category,$num_of_random, &$params)
  */
 static function getMultyRandomRquote($category,$num_of_random, &$params)
 	{
+	   $app = JFactory::getApplication();
 	   $x = 0;
        $catid = 0;
        $qrows = NULL;
+		
+        if ( $params->get('cfg_which_database') )
+        {
 		$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
+        }
+        else
+        {
+        $db = sportsmanagementHelper::getDBConnection();    
+        } 
+        
 		if(is_array($category)) // get $catid when one category is selected 	
 		{
 			$x = count($category);
@@ -183,7 +204,8 @@ static function getMultyRandomRquote($category,$num_of_random, &$params)
         {
         $query->where('obj.catid = '.$catid);
         }
-			//$query = "SELECT * from	#__sportsmanagement_rquote WHERE published='1' and catid = $catid";
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
 				
 		$db->setQuery( $query );
 		$rows = $db->loadObjectList();
@@ -234,11 +256,11 @@ if ( $rows )
  */
 static function getSequentialRquote($category, &$params)
 	{
+	   $app = JFactory::getApplication();
 	   $x = 0;
        $row = NULL;
        $catid = 0;
        
-       $app = JFactory::getApplication();
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'Notice');
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' category<br><pre>'.print_r($category,true).'</pre>'),'Notice');
 
@@ -251,7 +273,15 @@ static function getSequentialRquote($category, &$params)
 //$query = "SELECT * from	#__rquotes WHERE published='1' and catid = $category";
  
  
-	$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
+	if ( $params->get('cfg_which_database') )
+        {
+		$db = sportsmanagementHelper::getDBConnection(TRUE, $params->get('cfg_which_database') );
+        }
+        else
+        {
+        $db = sportsmanagementHelper::getDBConnection();    
+        } 
+        
 	 	if(is_array($category)) // get $catid when one category is selected 	
 		{
 			$x = count($category);
@@ -280,6 +310,8 @@ $query = $db->getQuery(true);
         $query->where('obj.catid = '.$catid);
         } 
 	$db->setQuery( $query );
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
 
 	$rows = $db->loadObjectList();
 
@@ -313,7 +345,7 @@ $query = $db->getQuery(true);
 
 }
 
-}
+//}
 //-------------------------------------------------------------------------------------------------------------
 /**
  * getTextFile()
@@ -653,4 +685,6 @@ function getTodayRquote($category,$x, &$params)
 		$row = array( $rows[$i] );
 	}
 	return $row;
+}
+
 }

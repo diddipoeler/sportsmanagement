@@ -103,7 +103,7 @@ class modSportsmanagementTeamPlayersHelper
         {
 			require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'roster.php');
 		}
-		$model 	= JModel::getInstance('Roster', 'sportsmanagementModel');
+		$model = JModelLegacy::getInstance('Roster', 'sportsmanagementModel');
 		sportsmanagementModelProject::$projectid = $p;
 		$project = sportsmanagementModelProject::getProject();
 		$project->team_name = $team_name;
@@ -119,7 +119,7 @@ class modSportsmanagementTeamPlayersHelper
 	 * @param mixed $project
 	 * @return void
 	 */
-	public static function getPlayerLink($item, $params, $project)
+	public static function getPlayerLink($item, $params, $project,$module)
 	{
 		$flag = "";
 		if ($params->get('show_player_flag')) {
@@ -139,9 +139,6 @@ $routeparameter['tid'] = $item->team_slug;
 $routeparameter['pid'] = $item->person_slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
 
-//			$link = sportsmanagementHelperRoute::getPlayerRoute($params->get('p'), 
-//															$params->get('team'), 
-//															$item->slug );
 			echo $flag . JHTML::link($link, $text);
 		}
 		else

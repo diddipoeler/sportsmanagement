@@ -67,11 +67,11 @@ class modJSMRandomplayerHelper
 		$projectstring = (is_array($usedp)) ? implode(",", $usedp) : $usedp;
 		$teamstring = (is_array($usedtid)) ? implode(",", $usedtid) : $usedtid;
 
-		$db  = JFactory::getDBO();
+		$db  = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         
         $query->select('tt.id');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team tt ');
+        $query->from('#__sportsmanagement_project_team tt ');
         $query->where('tt.project_id > 0');
                     
 		if($projectstring!="" && $projectstring > 0) 
@@ -80,7 +80,7 @@ class modJSMRandomplayerHelper
 		}
 		if($teamstring!="" && $teamstring > 0) 
         {
-            $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.id = tt.team_id ');
+            $query->join('INNER',' #__sportsmanagement_season_team_id as st1 ON st1.id = tt.team_id ');
             $query->where('st1.team_id IN ('.$teamstring.')' );
 		}
 
@@ -97,15 +97,15 @@ class modJSMRandomplayerHelper
 
 		$query->select('stp1.person_id');
         $query->select('pt.project_id');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id as stp1 ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.team_id = stp1.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st1.id ');
+        $query->from('#__sportsmanagement_season_team_person_id as stp1 ');
+        $query->join('INNER',' #__sportsmanagement_season_team_id as st1 ON st1.team_id = stp1.team_id ');
+        $query->join('INNER',' #__sportsmanagement_project_team AS pt ON pt.team_id = st1.id ');
         $query->where('pt.id = ' . $projectteamid);
         
         $query->order('rand()');
-        $query->setLimit('1');
+        //$query->setLimit('1');
         
-        $db->setQuery( $query );
+        $db->setQuery( $query,0,1 );
 		$res = $db->loadRow();
         
         if ( !$res )

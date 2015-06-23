@@ -62,32 +62,40 @@ class modSportsmanagementPlaygroundplanHelper
 	 */
 	public static function getData(&$params)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
 		$usedp = $params->get('projects','0');
 		$usedpid = $params->get('playground', '0');
 		$projectstring = (is_array($usedp)) ? implode(",", $usedp) : $usedp;
 		$playgroundstring = (is_array($usedpid)) ? implode(",", $usedpid) : $usedpid;
 
-		$numberofmatches=$params->get('maxmatches','5');
+		$numberofmatches = $params->get('maxmatches','5');
 
-		$db  = JFactory::getDBO();
+		$db  = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
 
 		$result = array();
 		
         $query->select('m.match_date, DATE_FORMAT(m.time_present, "%H:%i") time_present');	
-        //$query->select('p.name AS project_name, p.id AS project_id, tj1.team_id as team1, tj2.team_id as team2, lg.name AS league_name');
         $query->select('p.name AS project_name, p.id AS project_id, st1.team_id as team1, st2.team_id as team2, lg.name AS league_name');
         $query->select('plcd.id AS club_playground_id');
         $query->select('plcd.name AS club_playground_name');
         $query->select('pltd.id AS team_playground_id');
         $query->select('pltd.name AS team_playground_name');
         $query->select('pl.id AS playground_id');
+        
+        $query->select('pl.picture AS playground_picture');
+        $query->select('plcd.picture AS playground_club_picture');
+        $query->select('pltd.picture AS playground_team_picture');
+        
         $query->select('pl.name AS playground_name');
         $query->select('t1.name AS team1_name');
         $query->select('t2.name AS team2_name');
-        //$query->select('st1.team_id as season_team1, st2.team_id as season_team2');
         
+        $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
+        $query->select('CONCAT_WS( \':\', pl.id, pl.alias ) AS playground_slug');
+        $query->select('CONCAT_WS( \':\', plcd.id, plcd.alias ) AS playground_club_slug');
+        $query->select('CONCAT_WS( \':\', pltd.id, pltd.alias ) AS playground_team_slug');
+            
         $query->from('#__sportsmanagement_match AS m ');
         $query->join('INNER',' #__sportsmanagement_project_team as tj1 ON tj1.id = m.projectteam1_id  ');
         $query->join('INNER',' #__sportsmanagement_project_team as tj2 ON tj2.id = m.projectteam2_id  ');
@@ -106,33 +114,37 @@ class modSportsmanagementPlaygroundplanHelper
         $query->join('LEFT',' #__sportsmanagement_playground AS pltd ON tj1.standard_playground = pltd.id ');
         $query->join('LEFT',' #__sportsmanagement_playground AS pl ON m.playground_id = pl.id');
         
-
+        if ( $playgroundstring )
+        {
 		$query->where('( m.playground_id IN ('.$playgroundstring.') 
         OR (tj1.standard_playground IN ('. $playgroundstring .') AND m.playground_id IS NULL)
                           OR (c.standard_playground IN ('. $playgroundstring .') AND (m.playground_id IS NULL AND tj1.standard_playground IS NULL )))
         ');
+        }
         $query->where('m.match_date > NOW()');
         $query->where('m.published = 1');
         $query->where('p.published = 1');
         
-        if ($projectstring != 0)
+        if ( $projectstring != 0 )
 		{
             $query->where('p.id IN ('.$projectstring.')');
 		}
         
         $query->order('m.match_date ASC');
-        $query->setLimit($numberofmatches);
+        //$query->setLimit($numberofmatches);
 
 			
-		$db->setQuery($query);
+		$db->setQuery($query,0,$numberofmatches);
         
-        //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
+        //echo ' <br><pre>'.print_r($query->dump(),true).'</pre>';
         
 		$info = $db->loadObjectList();
-        
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         if ( !$info )
         {
-            //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            //$app->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
 
 		return $info;
@@ -147,8 +159,8 @@ class modSportsmanagementPlaygroundplanHelper
 	 */
 	public static function getTeams( $team1_id, $teamformat)
 	{
-	   $mainframe = JFactory::getApplication();
-	   $db  = JFactory::getDBO();
+	   $app = JFactory::getApplication();
+	   $db  = sportsmanagementHelper::getDBConnection(); 
        $query = $db->getQuery(true);
        
        $query->select($teamformat);
@@ -158,9 +170,10 @@ class modSportsmanagementPlaygroundplanHelper
 		
 		$db->setQuery( $query );
         
-        //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$team_name = $db->loadResult();
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $team_name;
 	}
@@ -173,8 +186,8 @@ class modSportsmanagementPlaygroundplanHelper
 	 */
 	public static function getTeamLogo($team_id,$logo = 'logo_big')
 	{
-	   $mainframe = JFactory::getApplication();
-	   $db  = JFactory::getDBO();
+	   $app = JFactory::getApplication();
+	   $db  = sportsmanagementHelper::getDBConnection(); 
        $query = $db->getQuery(true);
        
        $query->select('c.'.$logo);
@@ -185,7 +198,7 @@ class modSportsmanagementPlaygroundplanHelper
 	
 		$db->setQuery( $query );
         
-        //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$club_logo = $db->loadResult();
 
@@ -194,18 +207,19 @@ class modSportsmanagementPlaygroundplanHelper
             switch ($logo)
             {
                 case 'logo_small':
-                $club_logo= sportsmanagementHelper::getDefaultPlaceholder('clublogosmall');
+                $club_logo = sportsmanagementHelper::getDefaultPlaceholder('clublogosmall');
                 break;
                 case 'logo_middle':
-                $club_logo= sportsmanagementHelper::getDefaultPlaceholder('clublogomiddle');
+                $club_logo = sportsmanagementHelper::getDefaultPlaceholder('clublogomiddle');
                 break;
                 case 'logo_big':
-                $club_logo= sportsmanagementHelper::getDefaultPlaceholder('clublogobig');
+                $club_logo = sportsmanagementHelper::getDefaultPlaceholder('clublogobig');
                 break;
                 
             }
 
 		}
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $club_logo;
 	}
 }

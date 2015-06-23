@@ -48,6 +48,34 @@ if ( !defined('JSM_PATH') )
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
+if (JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_dbprefix' ))
+{
+$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;    
+if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+{    
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
+} 
+}
+else
+{
+if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
+{
+$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;
+if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+{    
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
+}
+}
+else
+{
+$module->picture_server = JURI::root() ;
+if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+{    
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
+}
+}
+}
+
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');  
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php' );
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'results.php');
@@ -132,10 +160,30 @@ $routeparameter['layout'] = '';
     $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
     break;
     case 'ranking':
-    $link = sportsmanagementHelperRoute::getRankingRoute( $match->project_slug, $match->round_slug,null,null,0,0 );
+    $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $match->project_slug;
+$routeparameter['type'] = 0;
+$routeparameter['r'] = $match->round_slug;
+$routeparameter['from'] = 0;
+$routeparameter['to'] = 0;
+$routeparameter['division'] = 0;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);
+    //$link = sportsmanagementHelperRoute::getRankingRoute( $match->project_slug, $match->round_slug,null,null,0,0 );
     break;
     case 'resultsrank':
-    $link = sportsmanagementHelperRoute::getResultsRankingRoute( $match->project_slug, $match->round_slug, 0  );
+    $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $match->project_slug;
+$routeparameter['r'] = $match->round_slug;
+$routeparameter['division'] = 0;
+$routeparameter['mode'] = 0;
+$routeparameter['order'] = '';
+$routeparameter['layout'] = '';
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking',$routeparameter);
+    //$link = sportsmanagementHelperRoute::getResultsRankingRoute( $match->project_slug, $match->round_slug, 0  );
     break;
 }
 
@@ -144,7 +192,7 @@ $routeparameter['layout'] = '';
 
 
 ?>
-<div class="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+<div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
 require(JModuleHelper::getLayoutPath($module->module));
 ?>

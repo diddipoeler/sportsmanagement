@@ -99,7 +99,7 @@ class modMatchesSportsmanagementHelper {
 	 */
 	public function getFromDB($query, $key = "", $type = "objlist") 
     {
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection(); 
 		$db->setQuery($query);
 		switch ($type) {
 			case "obj" :
@@ -118,6 +118,7 @@ class modMatchesSportsmanagementHelper {
 		if ($this->params->get('debug', 0) == 1) {
 			echo $query . '<br />';
 		}
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 	}
 
@@ -333,10 +334,16 @@ class modMatchesSportsmanagementHelper {
 			$pic['src'] = JSMCountries::getIso3Flag($countrycode);
 			$pic['alt'] = JSMCountries::getCountryName($countrycode);
 		} else {
+         
 			$defaultlogos = $this->getDefaultLogos();
-			$matchpart_pic = (!empty ($team-> $pt) AND file_exists(JPATH_ROOT . DS . $team-> $pt)) ? $team-> $pt : $defaultlogos[$pt];
-			if (file_exists(JPATH_ROOT . DS . $matchpart_pic)) {
-				$size = getimagesize(JPATH_ROOT . DS . $matchpart_pic);
+			$matchpart_pic = (!empty ($team->$pt) AND curl_init(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$team->$pt)) ? $team->$pt : $defaultlogos[$pt];
+            
+//            echo 'server -> '.COM_SPORTSMANAGEMENT_PICTURE_SERVER.'<br>';
+//            echo 'logo -> '.$team->$pt.'<br>';
+//            echo 'pic -> '.$matchpart_pic.'<br>';
+            
+			if (curl_init(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$matchpart_pic)) {
+				$size = getimagesize(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$matchpart_pic);
 				$pic_width = $size[0];
 				$pic_height = $size[1];
 				$whichparam = ($pic_width > $pic_height) ? ' width' : ' height';
@@ -344,8 +351,8 @@ class modMatchesSportsmanagementHelper {
 				$appendimage .= $whichparam . '="' . $this->params->get('xsize') . '"';
 				elseif ($this->params->get('ysize') > 0) $appendimage .= $whichparam . '="' . $this->params->get('ysize') . '"';
 			}
-			$pic['src'] = (trim($matchpart_pic) != "" && file_exists(JPATH_ROOT . DS . trim($matchpart_pic))) ? JURI :: root(true) .
-			'/' . $matchpart_pic : JURI :: root(true) . '/' . $defaultlogos[$pt];
+			$pic['src'] = (trim($matchpart_pic) != "" && curl_init(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.trim($matchpart_pic))) ? COM_SPORTSMANAGEMENT_PICTURE_SERVER .
+			DS . $matchpart_pic : $defaultlogos[$pt];
 			$pic['alt'] = $this->jl_utf8_convert($team->name, 'iso-8859-1', 'utf-8');
 		}
 		$pic['append'] = $appendimage;
@@ -622,7 +629,7 @@ class modMatchesSportsmanagementHelper {
 				$temp .= '<span style="float:left">';
 				if ($row->lasthome) {
 					$tmp = $options;
-					$tmp['title'] = 'Previous Match';
+					$tmp['title'] = JText::_('MOD_SPORTSMANAGEMENT_MATCHES_PREVIOUS_TEAM_MATCH');
 					$tmp['onclick'] = sprintf($jsfunc, $row->team1_id, $row->lasthome, $origin);
 					$alt = $tmp['title'];
 					if ($this->iconpath AND $this->params->get('icons_for_ajax') == 1)
@@ -632,7 +639,7 @@ class modMatchesSportsmanagementHelper {
 				}
 				if ($row->nexthome) {
 					$tmp = $options;
-					$tmp['title'] = 'next Match';
+					$tmp['title'] = JText::_('MOD_SPORTSMANAGEMENT_MATCHES_NEXT_TEAM_MATCH');
 					$tmp['onclick'] = sprintf($jsfunc, $row->team1_id, $row->nexthome, $origin);
 					$alt = $tmp['title'];
 					if ($this->iconpath AND $this->params->get('icons_for_ajax') == 1)
@@ -646,7 +653,7 @@ class modMatchesSportsmanagementHelper {
 				$temp .= '<span style="float:right">';
 				if ($row->lastaway) {
 					$tmp = $options;
-					$tmp['title'] = 'Previous Match';
+					$tmp['title'] = JText::_('MOD_SPORTSMANAGEMENT_MATCHES_PREVIOUS_TEAM_MATCH');
 					$tmp['onclick'] = sprintf($jsfunc, $row->team2_id, $row->lastaway, $origin);
 					$alt = $tmp['title'];
 					if ($this->iconpath AND $this->params->get('icons_for_ajax') == 1)
@@ -656,7 +663,7 @@ class modMatchesSportsmanagementHelper {
 				}
 				if ($row->nextaway) {
 					$tmp = $options;
-					$tmp['title'] = 'next Match';
+					$tmp['title'] = JText::_('MOD_SPORTSMANAGEMENT_MATCHES_NEXT_TEAM_MATCH');
 					$tmp['onclick'] = sprintf($jsfunc, $row->team2_id, $row->nextaway, $origin);
 					$alt = $tmp['title'];
 					if ($this->iconpath AND $this->params->get('icons_for_ajax') == 1)
@@ -669,7 +676,7 @@ class modMatchesSportsmanagementHelper {
 			if ($this->params->get('reset_start_match') == 1 AND $origin != $row->id) {
 				$temp .= '<span style="float:none;">';
 				$tmp = $options;
-				$tmp['title'] = 'Reset';
+				$tmp['title'] = JText::_('MOD_SPORTSMANAGEMENT_MATCHES_RESET_TEAM_MATCH');
 				$tmp['onclick'] = sprintf($jsfunc, '0', $origin, $origin);
 				$alt = $tmp['title'];
 				if ($this->iconpath AND $this->params->get('icons_for_ajax') == 1)

@@ -66,6 +66,17 @@ $category = $params->get('category','');
 $rotate = $params->get('rotate');
 $num_of_random = $params->get('num_of_random');
 
+if (JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_dbprefix' ))
+{
+//if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+//{    
+//DEFINE( strtoupper($module->module).'_PICTURE_SERVER',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) );
+//}
+//else
+//{
+$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;    
+//}
+}
 
 switch ($source) 
 {
@@ -106,7 +117,7 @@ $list = modRquotesHelper::getTodayRquote($category,$params);
 
 //end
 ?>
-<div class="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+<div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
 require(JModuleHelper::getLayoutPath($module->module, $style,'default'));
 ?>

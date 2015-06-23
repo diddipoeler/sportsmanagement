@@ -43,7 +43,7 @@ defined('_JEXEC') or die('Restricted access');
 // check if any results returned
 $items = count($list['ranking']);
 if (!$items) {
-   echo '<p class="modjlgteamstat">' . JText::_('NO ITEMS') . '</p>';
+   echo '<p class="bg-danger">' . JText::_('MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_NO_ITEMS') . '</p>';
    return;
 }
 
@@ -53,13 +53,13 @@ $teamnametype = $params->get('teamnametype', 'short_name');
 //echo '<pre>';print_r($list['ranking']); echo '</pre>';exit;
 ?>
 
-<div class="modjlgteamstat">
+<div class="row">
 
 <?php if ($params->get('show_project_name', 0)):?>
 <p class="projectname"><?php echo $list['project']->name; ?></p>
 <?php endif; ?>
 
-<table class="statranking">
+<table class="<?php echo $params->get('table_class','table'); ?>">
 	<thead>
 		<tr class="sectiontableheader">
 			<th class="rank"><?php echo JText::_('MOD_SPORTSMANAGEMENT_TEAMSTATS_RANKING_COL_RANK')?></th>

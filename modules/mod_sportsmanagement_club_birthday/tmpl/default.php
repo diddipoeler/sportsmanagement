@@ -108,21 +108,26 @@ switch ($mode)
 $a = 0;
 foreach ($clubs AS $club) 
 {
-                                                       
+//$thispic = sportsmanagementHelper::getDefaultPlaceholder('clublogobig');                                                       
+$thispic = $module->picture_server.DS.$club->picture;
 $active = ($a==0) ? 'active' : '';    
 
 $club->default_picture = sportsmanagementHelper::getDefaultPlaceholder('clublogobig');  
-if ($params->get('show_picture')==1) 
+
+if ( $params->get('show_picture') ) 
 {
-if (file_exists(JPATH_BASE.'/'.$club->picture)&&$club->picture!='') 
+
+if ( curl_init($club->picture) && $club->picture != '' ) 
 {
 $thispic = $club->picture;
 }
-elseif (file_exists(JPATH_BASE.'/'.$club->default_picture)&&$club->default_picture!='') 
+elseif( curl_init($club->default_picture) && $club->default_picture != '' ) 
 {
 $thispic = $club->default_picture;
 }
+
 }
+
 switch ($club->days_to_birthday) 
 {
 case 0: $whenmessage = $params->get('todaymessage');break;
@@ -156,7 +161,7 @@ $birthdaytext2 = str_replace('%BOLDEND%', '</b>', $birthdaytext2);
                         <div class="col-md-12">
                             <div class="col-item">
                                 <div class="photo">
-                                    <img src="<?php echo $thispic; ?>" class="img-responsive" alt="a" />
+                                    <img src="<?php echo $thispic; ?>" class="img-responsive" alt="<?php echo $club->name; ?>" width="60" />
                                 </div>
                             </div>
                         </div>        

@@ -65,7 +65,7 @@ class modJSMStatistikRekordHelper
         $app = JFactory::getApplication();
         // JInput object
         $jinput = $app->input;
-    $db = JFactory::getDBO();
+    $db = sportsmanagementHelper::getDBConnection();
 $query = $db->getQuery(true);
 $result = array();
 

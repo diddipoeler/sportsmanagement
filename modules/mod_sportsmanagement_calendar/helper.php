@@ -233,7 +233,7 @@ class modJSMCalendarHelper
         $app = JFactory::getApplication();
         // JInput object
         $jinput = $app->input;
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         
         if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -265,7 +265,7 @@ class modJSMCalendarHelper
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 
 		$db->setQuery($query);
-		$row= $db->loadObjectList();
+		$row = $db->loadObjectList();
 
 
 		jimport('joomla.utilities.date');
@@ -595,6 +595,10 @@ class JSMCalendar extends PHPCalendar
 //		$caldates['end'] = date("$year-$month-31 23:59:59");
         $caldates['start'] = "$year-$month-01 00:00:00";
 		$caldates['end'] = "$year-$month-31 23:59:59";
+        
+        $caldates['roundstart'] = "$year-$month-01";
+		$caldates['roundend'] = "$year-$month-31";
+        
 		$jlrows = array();
 		$lsrows = array();
 		$usejevents = JSMCalendar::$params->get('jevents', 0);

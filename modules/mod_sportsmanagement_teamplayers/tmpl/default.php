@@ -53,7 +53,7 @@ if (!$items) {
 <?php endif; ?>
 
 
-<ul class="modjlgposition">
+<ul>
 <h1>
 <?php if ($params->get('show_team_name', 0)):?>
 	<?php echo $list['project']->team_name; ?>
@@ -61,10 +61,10 @@ if (!$items) {
 </h1>
 <?php foreach (array_slice($list['roster'], 0, $params->get('limit', 24)) as $items) :  ?>
 	<li>
-		<ul class="modjlgplayer">
+		<ul>
 		<?php foreach (array_slice($items, 0, $params->get('limit', 24)) as $item) : ?>
 			<li><?php 
-			echo modSportsmanagementTeamPlayersHelper::getPlayerLink($item, $params, $list['project']);
+			echo modSportsmanagementTeamPlayersHelper::getPlayerLink($item, $params, $list['project'],$module);
 			?></li>
 			<?php	endforeach; ?>
 		</ul>

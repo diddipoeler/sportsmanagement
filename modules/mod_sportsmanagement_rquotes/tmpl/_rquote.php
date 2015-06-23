@@ -43,16 +43,21 @@ $css = JURI::base().'modules/mod_sportsmanagement_rquotes/assets/rquote.css';
 $document = JFactory::getDocument();
 $document->addStyleSheet($css); 
 
-$quotemarks= $params->get('quotemarks'); 
+$quotemarks = $params->get('quotemarks'); 
 
-if($quotemarks==0)
+if ( !isset($rquote->person_picture) )
+{
+    $rquote->person_picture = $rquote->picture;
+}
+
+if( $quotemarks == 0 )
  	{
 		echo '<strong>';
         echo '<p>';
-        if (JFile::exists(JPATH_SITE.DS.$rquote->person_picture))
+        if (curl_init($module->picture_server.DS.$rquote->person_picture))
         {
             
-            echo '<img style="float: left;" src="'.$rquote->person_picture.'" alt="'.$rquote->author.'" width="50" height="" />';
+            echo '<img style="float: left;" src="'.$module->picture_server.DS.$rquote->person_picture.'" alt="'.$rquote->author.'" width="50" height="" />';
         }    
         else
         {
@@ -64,14 +69,14 @@ if($quotemarks==0)
         echo '</strong>';
 	}
  
-if($quotemarks==1)
+if( $quotemarks == 1 )
 	{
 	   echo '<strong>';
         echo '<p>';
-        if (JFile::exists(JPATH_SITE.DS.$rquote->person_picture))
+        if (curl_init($module->picture_server.DS.$rquote->person_picture))
         {
             
-            echo '<img style="float: left;" src="'.$rquote->person_picture.'" alt="'.$rquote->author.'" width="50" height="" />';
+            echo '<img style="float: left;" src="'.$module->picture_server.DS.$rquote->person_picture.'" alt="'.$rquote->author.'" width="50" height="" />';
         }    
         else
         {
@@ -84,14 +89,14 @@ if($quotemarks==1)
         echo '</strong>';
 	}
 
-if($quotemarks==2)
+if( $quotemarks == 2 )
 	{
 	   echo '<strong>';
         echo '<p>';
-        if (JFile::exists(JPATH_SITE.DS.$rquote->person_picture))
+        if (curl_init($module->picture_server.DS.$rquote->person_picture))
         {
             
-            echo '<img style="float: left;" src="'.$rquote->person_picture.'" alt="'.$rquote->author.'" width="50" height="" />';
+            echo '<img style="float: left;" src="'.$module->picture_server.DS.$rquote->person_picture.'" alt="'.$rquote->author.'" width="50" height="" />';
         }    
         else
         {
@@ -104,14 +109,14 @@ if($quotemarks==2)
         echo '</strong>';
 	}
 
-if($quotemarks==3)
+if( $quotemarks == 3 )
 	{
 	   echo '<strong>';
         echo '<p>';
-        if (JFile::exists(JPATH_SITE.DS.$rquote->person_picture))
+        if (curl_init($module->picture_server.DS.$rquote->person_picture))
         {
             
-            echo '<img style="float: left;" src="'.$rquote->person_picture.'" alt="'.$rquote->author.'" width="50" height="" />';
+            echo '<img style="float: left;" src="'.$module->picture_server.DS.$rquote->person_picture.'" alt="'.$rquote->author.'" width="50" height="" />';
         }    
         else
         {

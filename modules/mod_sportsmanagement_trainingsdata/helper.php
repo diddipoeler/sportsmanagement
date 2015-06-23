@@ -66,9 +66,9 @@ class modJSMTrainingsData
         $app = JFactory::getApplication();
         // JInput object
         $jinput = $app->input;
-        $cfg_which_database = JRequest::getInt('cfg_which_database', 0);
+        //$cfg_which_database = JRequest::getInt('cfg_which_database', 0);
         // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(true, $cfg_which_database);
+        $db = sportsmanagementHelper::getDBConnection();
         // Create a new query object.
         $query = $db->getQuery(true);
         
@@ -76,7 +76,7 @@ class modJSMTrainingsData
         
         $query->select('*');
         $query->from('#__sportsmanagement_team_trainingdata'); 
-        $query->where('team_id = '. $params->get('team') );  
+        $query->where('team_id = '. $params->get('teams') );  
         $query->order('dayofweek ASC');
 		
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params'.'<pre>'.print_r($params,true).'</pre>' ),'');
@@ -85,6 +85,7 @@ class modJSMTrainingsData
         $db->setQuery($query);
 		$result = $db->loadObjectList();
 
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         
         return $result;
 

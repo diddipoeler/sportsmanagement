@@ -74,10 +74,46 @@ if ( !defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO') )
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$show_query_debug_info );
 }
 
+if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
+}
+
+if (JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_dbprefix' ))
+{
+//if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+//{    
+//DEFINE( strtoupper($module->module).'_PICTURE_SERVER',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) );
+//}
+//else
+//{
+$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;    
+//}
+}
+else
+{
+if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
+{
+//if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+//{    
+//DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) );
+$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;
+//DEFINE( strtoupper($module->module).'_PICTURE_SERVER',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) );
+//}    
+}
+else
+{
+//if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+//{        
+$module->picture_server = JURI::root() ;
+//DEFINE( strtoupper($module->module).'_PICTURE_SERVER',JURI::root() );
+//}    
+}
+}
 
 require_once (dirname(__FILE__).DS.'helper.php');
 
-$data = new modJSMClubiconsHelper ($params);
+$data = new modJSMClubiconsHelper ($params,$module);
 
 $cnt = count($data->teams);
 $cnt = ($cnt < $params->get('iconsperrow', 20)) ? $cnt : $params->get('iconsperrow', 20);
@@ -131,7 +167,13 @@ $mv = JFactory::getApplication()->get('MooToolsVersion');
 $script =  'script';
 $doc->addScript( JURI::base() . 'modules'.DS.$module->module.DS.'js/'.$script.'.js');
 $doc->addScriptDeclaration($initjs);
+?>           
+<div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+<?PHP
 require(JModuleHelper::getLayoutPath($module->module, $tpl));
+?>
+</div>
+<?PHP
 }
 
 

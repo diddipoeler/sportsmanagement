@@ -59,7 +59,7 @@ class modTurtushoutHelper
      */
     public static function getListCommentary($list)
     {
-    $db		= JFactory::getDBO();  
+    $db	= sportsmanagementHelper::getDBConnection(); 
     $query = $db->getQuery(true);
     $mainframe = JFactory::getApplication();  
     $matches = array();
@@ -69,6 +69,7 @@ class modTurtushoutHelper
     //$matches[] = $row->match_id;    
         
     //$selmatchcomm = implode(',',$matches);
+    $query->clear();
     $query->select('*');
     $query->from('#__sportsmanagement_match_commentary');
     $query->where('match_id = '.$row->match_id);
@@ -85,6 +86,8 @@ class modTurtushoutHelper
     }
     
     }
+    
+    $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
     return $matches;    
     }
@@ -100,15 +103,45 @@ class modTurtushoutHelper
     {
         // aktuelles datum
         $akt_datum = date("Y-m-d",time());
-        $von = $akt_datum.' 00:00:00';
-        $bis = $akt_datum.' 23:59:59';
+        //$von = $akt_datum.' 00:00:00';
+        //$bis = $akt_datum.' 23:59:59';
+        $rows = array();
         
-		$db		= JFactory::getDBO();
+		$db		= sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         $mainframe = JFactory::getApplication();
+        
+        $query->clear();
+        $query->select('r.id');
+        $query->from('#__sportsmanagement_round as r');
+        $query->join('INNER','#__sportsmanagement_match as m ON m.round_id = r.id ');
+        $query->where('(r.round_date_first >= '.$db->Quote(''.$akt_datum.'').' AND r.round_date_last <= '.$db->Quote(''.$akt_datum.'').')');  
+        $db->setquery($query);
+        
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        // Joomla! 3.0 code here
+        $rounds = $db->loadColumn();
+        }
+        elseif(version_compare(JVERSION,'2.5.0','ge')) 
+        {
+        // Joomla! 2.5 code here
+        $rounds = $db->loadResultArray();
+        } 
+        
+        if ( $rounds )
+        {
+        $round_ids = implode(',',$rounds);
+        } 
+        
+        if ( $round_ids )
+        {
     
+        $query->clear();
         $query->select('jl.id,jl.name,jl.game_regular_time,jl.halftime,jl.fav_team');
         $query->select('jco.alpha2');
+        $query->select('jco.picture as country_picture');
+        $query->select('jco.alpha3 as countries_iso_code_3');
         $query->select('jm.id as match_id,jm.match_date,jm.projectteam1_id,jm.projectteam2_id,jm.team1_result,jm.team2_result');
         $query->select('jt1.name as heim,jt1.short_name as heim_short_name,jt1.middle_name as heim_middle_name');
         $query->select('jt2.name as gast,jt2.short_name as gast_short_name,jt2.middle_name as gast_middle_name');
@@ -132,17 +165,22 @@ class modTurtushoutHelper
         
         $query->join('LEFT', '#__sportsmanagement_countries as jco ON jco.alpha3 = jle.country');
         
-        $query->where("( jm.match_date >= '".$von."' AND jm.match_date <= '".$bis."' )"); 
+        //$query->where("( jm.match_date >= '".$von."' AND jm.match_date <= '".$bis."' )");
+        $query->where('jm.round_id IN ('.$round_ids.')');   
    
         //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$db->setQuery($query, 0, $limit);
 		$rows = $db->loadObjectList();
+        }
 		
 		if ($db->getErrorMsg())
         {
 //			 modTurtushoutHelper::install();
 		}
+        
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+        
 		return $rows;
 	}
 

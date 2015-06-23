@@ -1314,7 +1314,14 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
 				break;
 
 			case "matrix":
-				$link = sportsmanagementHelperRoute::getMatrixRoute( $this->_project_slug, $this->_division_id );
+            $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->_project_slug;
+$routeparameter['division'] = $this->_division_id;
+$routeparameter['r'] = 0;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('matrix',$routeparameter);
+				//$link = sportsmanagementHelperRoute::getMatrixRoute( $this->_project_slug, $this->_division_id );
 				break;
 				
 			case "referees":
@@ -1322,7 +1329,17 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
 				break;
 				
 			case "results":
-				$link = sportsmanagementHelperRoute::getResultsRoute( $this->_project_slug, $this->_round_slug, $this->_division_id );
+            $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->_project_slug;
+$routeparameter['r'] = $this->_round_slug;
+$routeparameter['division'] = $this->_division_id;
+$routeparameter['mode'] = 0;
+$routeparameter['order'] = '';
+$routeparameter['layout'] = '';
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
+				//$link = sportsmanagementHelperRoute::getResultsRoute( $this->_project_slug, $this->_round_slug, $this->_division_id );
 				break;
 				
 			case "resultsmatrix":
@@ -1330,7 +1347,17 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
 				break;
 
 			case "resultsranking":
-				$link = sportsmanagementHelperRoute::getResultsRankingRoute( $this->_project_slug, $this->_round_slug, $this->_division_id  );
+            $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->_project_slug;
+$routeparameter['r'] = $this->_round_slug;
+$routeparameter['division'] = $this->_division_id;
+$routeparameter['mode'] = 0;
+$routeparameter['order'] = '';
+$routeparameter['layout'] = '';
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking',$routeparameter);
+				//$link = sportsmanagementHelperRoute::getResultsRankingRoute( $this->_project_slug, $this->_round_slug, $this->_division_id  );
 				break;
 			
             case "rankingalltime":
@@ -1423,7 +1450,17 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
 								
 			default:
 			case "ranking":
-				$link = sportsmanagementHelperRoute::getRankingRoute( $this->_project_slug, $this->_round_slug,null,null,0,$this->_division_id );
+            $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->_project_slug;
+$routeparameter['type'] = 0;
+$routeparameter['r'] = $this->_round_slug;
+$routeparameter['from'] = 0;
+$routeparameter['to'] = 0;
+$routeparameter['division'] = $this->_division_id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);
+				//$link = sportsmanagementHelperRoute::getRankingRoute( $this->_project_slug, $this->_round_slug,null,null,0,$this->_division_id );
 		}
 		return $link;
 	}

@@ -37,7 +37,7 @@
 				>	
 				
         <field name="cfg_which_database" 
-    type="list" 
+    type="radio" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -58,7 +58,7 @@
 					required="">
 			</field> 
         
-     <field 	name="projects" 
+     <field 	name="p" 
 			task="projects" 
       type="dependsql"
       depends="s"
@@ -75,10 +75,20 @@
 					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_PROJECT_ID_LABEL_DESC" />
 -->					
 					
-					
+<!--					
 				<field name="teams" type="teams" default=""
 					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TEAM_ID_LABEL"
 					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TEAM_ID_LABEL_DESC" />
+-->
+				
+        <field name="teams" type="dependsql" default="0" depends="p"
+					task="projectteamoptions" 
+					key_field="project_id"
+			value_field="p"
+					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TEAM_ID_LABEL" 
+					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TEAM_ID_LABEL_DESC" />
+          	
+					
 				<field name="show_project_name" type="radio" default="1"  class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_SHOW_PROJECT_NAME"
 					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_SHOW_PROJECT_NAME_DESC">
@@ -118,30 +128,49 @@
 				<field name="name_format" type="nameformat"
 					label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_NAME_FORMAT"
 					description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_NAME_FORMAT" />
-				<field name="picture_width" type="text" default="0"
+				<field name="picture_width" type="text" default="50"
 					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_PICTURE_WIDTH" 
 					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_PICTURE_WIDTH_DESC" />
+<!--
 				<field name="picture_height" type="text" default="50"
 					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_PICTURE_HEIGHT" 
 					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_PICTURE_HEIGHT_DESC" />
-				<field name="team_picture_width" type="text" default="21"
+-->					
+				<field name="team_picture_width" type="text" default="50"
 					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TEAM_PICTURE_WIDTH" 
 					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TEAM_PICTURE_WIDTH_DESC" />
-				<field name="team_picture_height" type="text" default="0"
+<!--				
+        <field name="team_picture_height" type="text" default="0"
 					label="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TEAM_PICTURE_HEIGHT"
 					description="MOD_SPORTSMANAGEMENT_RANDOMPLAYER_TEAM_PICTURE_HEIGHT_DESC" />
+-->					
 			</fieldset>
 
 			<fieldset name="advanced">
+			
+			  <field 	name="table_class" type="list" default="table" 
+		class=""
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
+			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+			
+		</field>
+		
+			  	<field name="moduleclass_sfx"
+					type="text"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+					
 				<field name="layout"
 					type="modulelayout"
 					label="JFIELD_ALT_LAYOUT_LABEL"
 					description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
 
-				<field name="moduleclass_sfx"
-					type="text"
-					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
-					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+			
 
 				<field name="cache"
 					type="list"

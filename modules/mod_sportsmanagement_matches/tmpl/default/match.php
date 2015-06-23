@@ -54,7 +54,8 @@ if ($heading != $lastheading) {
     </div>
 <?php
 }
-?><table>
+?>
+<table class="table">
     <tr class="<?php echo $styleclass;?>">   
       <td colspan="3">
       <?php
@@ -70,7 +71,7 @@ if ($heading != $lastheading) {
       <td class="jlmlteamcol">
       <?php
     if (!empty($match['hometeam']['logo'])) {
-      echo '<img src="'.$match['hometeam']['logo']['src'].'" alt="'.$match['hometeam']['logo']['alt'].'" title="'.$match['hometeam']['logo']['alt'].'" '.$match['hometeam']['logo']['append'].' />';
+      echo '<img src="'.COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match['hometeam']['logo']['src'].'" alt="'.$match['hometeam']['logo']['alt'].'" title="'.$match['hometeam']['logo']['alt'].'" '.$match['hometeam']['logo']['append'].' />';
       ?><br />
       <?php
     }
@@ -98,7 +99,7 @@ if ($heading != $lastheading) {
   <td class="jlmlteamcol">
       <?php
     if (!empty($match['awayteam']['logo'])) {
-      echo '<img src="'.$match['awayteam']['logo']['src'].'" alt="'.$match['awayteam']['logo']['alt'].'" title="'.$match['awayteam']['logo']['alt'].'" '.$match['awayteam']['logo']['append'].' />';
+      echo '<img src="'.COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match['awayteam']['logo']['src'].'" alt="'.$match['awayteam']['logo']['alt'].'" title="'.$match['awayteam']['logo']['alt'].'" '.$match['awayteam']['logo']['append'].' />';
       ?><br />
       <?php
     }

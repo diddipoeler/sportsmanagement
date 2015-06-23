@@ -45,7 +45,7 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 
-<div id="scroller">
+<div id="scroller" class="row">
   
   
 <?PHP
@@ -68,13 +68,13 @@ echo JHTML :: _('date', $match->match_date, $params->get('timeformat'), null);
 </h1>
 <p style="text-align: center;">
 <?PHP
-echo '<img style="float: left;" src="'.$match->logohome.'" alt="'.$match->teamhome.'"  width="'.$params->get('xsize').'" title="'.$match->teamhome.'" '.$match->teamhome.' />';
+echo '<img style="float: left;" src="'.COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match->logohome.'" alt="'.$match->teamhome.'"  width="'.$params->get('xsize').'" title="'.$match->teamhome.'" '.$match->teamhome.' />';
 
 echo ''.$match->team1_result;
 echo ' - ';
 echo $match->team2_result.'';
 
-echo '<img style="float: right;" src="'.$match->logoaway.'" alt="'.$match->teamaway.'" width="'.$params->get('xsize').'" title="'.$match->teamaway.'" '.$match->teamaway.' />';
+echo '<img style="float: right;" src="'.COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match->logoaway.'" alt="'.$match->teamaway.'" width="'.$params->get('xsize').'" title="'.$match->teamaway.'" '.$match->teamaway.' />';
 ?>
 </p>
 

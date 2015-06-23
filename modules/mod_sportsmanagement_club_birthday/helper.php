@@ -93,9 +93,9 @@ public static function jl_birthday_sort ($array, $sort)
  */
 public static function getClubs($limit)
 	{
-	   $mainframe = JFactory::getApplication();
+	   $app = JFactory::getApplication();
 $birthdaytext='';
-$database = JFactory::getDBO();
+$database = sportsmanagementHelper::getDBConnection();
 // get club info, we have to make a function for this
 $dateformat = "DATE_FORMAT(c.founded,'%Y-%m-%d') AS date_of_birth";
 
@@ -111,15 +111,17 @@ $dateformat = "DATE_FORMAT(c.founded,'%Y-%m-%d') AS date_of_birth";
     $query->join('INNER',' #__sportsmanagement_season_team_id as st ON st.team_id = t.id ');
     $query->join('INNER',' #__sportsmanagement_project_team as pt ON st.id = pt.team_id ');
     $query->join('INNER',' #__sportsmanagement_project as p ON p.id = pt.project_id ');
-    $query->where('( c.founded != \'0000-00-00\' OR c.founded_year != \'0000\' ) ');
+    $query->where('( c.founded != \'0000-00-00\' AND c.founded_year != \'0000\'  AND c.founded_year != \'\' ) ');
 			
     $query->group('c.id');
 
     $query->order('days_to_birthday ASC');
 
-	$database->setQuery($query." LIMIT " . $limit);
-    
-    //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+	//$database->setQuery($query." LIMIT " . $limit);
+    $database->setQuery($query,0,$limit);
+
+    //echo ' <br><pre>'.print_r($query->dump(),true).'</pre>';
+    //$app->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
     
 	//echo("<hr>".$database->getQuery($query));
 	//$clubs = $database->loadAssocList();
