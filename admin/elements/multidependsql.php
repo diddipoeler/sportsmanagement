@@ -130,7 +130,7 @@ class JFormFieldMultiDependSQL extends JFormField
 
 		if ($query!='')
 		{
-			$db = JFactory::getDBO();
+			$db = sportsmanagementHelper::getDBConnection();
 			$db->setQuery($query);
 			$options = array_merge($options, $db->loadObjectList());
 		}

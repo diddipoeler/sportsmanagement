@@ -187,7 +187,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		$option = JRequest::getCmd('option');
 		$app		= JFactory::getApplication();
 		$document		= JFactory::getDocument();
-		$db				= JFactory::getDBO();
+		$db				= sportsmanagementHelper::getDBConnection();
 		$uri			= JFactory::getURI();
         $config['dbo'] = sportsmanagementHelper::getDBConnection(); 
 		$model			= JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel');
@@ -340,7 +340,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		$option = JRequest::getCmd('option');
 		$app 	= JFactory::getApplication();
 		$document 	= JFactory::getDocument();
-		$db 		= JFactory::getDBO();
+		$db 		= sportsmanagementHelper::getDBConnection();
 		$uri 		= JFactory::getURI();
 		$model 		= JModelLegacy::getInstance('JLXMLImport', 'sportsmanagementmodel');
 		$lists 		= array();

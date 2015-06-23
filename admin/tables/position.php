@@ -66,6 +66,7 @@ class sportsmanagementTablePosition extends JTable
 	 */
 	function __construct( & $db )
 	{
+	   $db = sportsmanagementHelper::getDBConnection();
 		parent::__construct( '#__'.COM_SPORTSMANAGEMENT_TABLE.'_position', 'id', $db );
 	}
 

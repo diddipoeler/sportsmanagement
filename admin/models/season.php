@@ -152,7 +152,9 @@ class sportsmanagementModelseason extends JModelAdmin
 	 */
 	function saveorder($pks = NULL, $order = NULL)
 	{
-		$row =& $this->getTable();
+		$date = JFactory::getDate();
+	   $user = JFactory::getUser();
+        $row =& $this->getTable();
 		
 		// update ordering values
 		for ($i=0; $i < count($pks); $i++)
@@ -160,7 +162,9 @@ class sportsmanagementModelseason extends JModelAdmin
 			$row->load((int) $pks[$i]);
 			if ($row->ordering != $order[$i])
 			{
-				$row->ordering=$order[$i];
+				$row->ordering = $order[$i];
+                $row->modified = $date->toSql();
+                $row->modified_by = $user->get('id');
 				if (!$row->store())
 				{
 					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
@@ -240,7 +244,7 @@ class sportsmanagementModelseason extends JModelAdmin
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
         
         $date = JFactory::getDate();
 	   $user = JFactory::getUser();
@@ -315,7 +319,7 @@ class sportsmanagementModelseason extends JModelAdmin
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $db = JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
         //$post = JRequest::get('post');
         //$post = $jinput->post;
         $pks = $jinput->getVar('cid', null, 'post', 'array');

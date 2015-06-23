@@ -62,7 +62,7 @@ class JFormFieldRounds extends JFormField
     {
 		$required 	= $this->element['required'] == 'true' ? 'true' : 'false';
 		$order 		= $this->element['order'] == 'DESC' ? 'DESC' : 'ASC';
-		$db 		= JFactory::getDBO();
+		$db 		= sportsmanagementHelper::getDBConnection();
 		$lang 		= JFactory::getLanguage();
         // welche tabelle soll genutzt werden
         $params = JComponentHelper::getParams( 'com_sportsmanagement' );

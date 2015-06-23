@@ -11,7 +11,7 @@ $search = $_POST['search'];
 $result = array();
 
 // Datenbankobjekt laden
-$db		=& JFactory::getDBO();
+$db		=& sportsmanagementHelper::getDBConnection();
 
 $document	=& JFactory::getDocument();
 $app	=& JFactory::getApplication();

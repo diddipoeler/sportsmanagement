@@ -69,7 +69,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 		$params = JComponentHelper::getParams( $option );
         $document = JFactory::getDocument();
         $view = JRequest::getVar( "view") ;
-        $_db = JFactory::getDBO(); // the method is contextual so we must have a DBO
+        $_db = sportsmanagementHelper::getDBConnection(); // the method is contextual so we must have a DBO
         $table_info = $_db->getTableFields('#__sportsmanagement_match');
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($table_info,true).'</pre>'),'Notice');

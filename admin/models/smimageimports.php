@@ -136,7 +136,7 @@ class sportsmanagementModelsmimageimports extends JModelList
         //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         //$search_nation		= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 		// Select some fields
 		$query->select('obj.*');
@@ -179,7 +179,7 @@ function getXMLFolder()
     $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
 // Get a db connection.
-        $db = JFactory::getDBO();
+        $db = sportsmanagementHelper::getDBConnection();
         // Create a new query object.
         $query = $db->getQuery(true);
         $query->select(array('folder as id', 'folder as name'))

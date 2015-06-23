@@ -130,15 +130,7 @@
 			description="COM_SPORTSMANAGEMENT_SETTINGS_DATABASE_SERVER_USERID_DESC"
 			filter="string"
 			size="30" />
-<!--			
-			<field
-			name="jsm_server_password"
-			type="password"
-			label="JGLOBAL_PASSWORD"
-			description="JGLOBAL_PASSWORD"
-			filter="string"
-			size="30" />
--->			
+
 			
 		<field
 			name="jsm_dbtype"
@@ -189,7 +181,15 @@
 			filter="string"
 			size="10" />
 		
-		
+	<field name="cfg_dbprefix" 
+    type="radio" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_DATABASE_TABLE_PREFIX_TITLE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_DATABASE_TABLE_PREFIX_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>		
 		
 		
 		<field name="cfg_which_database_table" 

@@ -60,7 +60,7 @@ class JFormFieldPredictiongame extends JFormField
 	 */
 	function getInput() 
     {
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$lang = JFactory::getLanguage();
         // welche tabelle soll genutzt werden
         $params = JComponentHelper::getParams( 'com_sportsmanagement' );

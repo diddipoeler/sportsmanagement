@@ -145,7 +145,7 @@ foreach ( $list as $item )
  */
 function JJ_categoryArray($admin=0,$country) 
   {
-$db = JFactory::getDBO(); 
+$db = sportsmanagementHelper::getDBConnection(); 
     // get a list of the menu items
 	$query = "SELECT * FROM #__sportsmanagement_associations where country = '".$country."'";
 

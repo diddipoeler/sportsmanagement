@@ -192,7 +192,7 @@ class sportsmanagementModeljlextcountries extends JModelList
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 		// Select some fields
 		$query->select('id as value,name as text');

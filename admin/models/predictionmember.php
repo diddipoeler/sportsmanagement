@@ -88,7 +88,7 @@ class sportsmanagementModelpredictionmember extends JModelAdmin
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 	
   $post	= JRequest::get('post');

@@ -106,6 +106,15 @@ $app = JFactory::getApplication();
 
 // welche tabelle soll genutzt werden
 $params = JComponentHelper::getParams( 'com_sportsmanagement' );
+
+
+if ( $params->get( 'cfg_dbprefix' ) )
+{
+$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_SETTINGS_USE_DATABASE_TABLE'),'');   
+             
+}
+
+
 //$database_table	= $params->get( 'cfg_which_database_table' ); 
 //$show_debug_info = $params->get( 'show_debug_info' );  
 //$show_query_debug_info = $params->get( 'show_query_debug_info' );  
@@ -127,6 +136,12 @@ DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$params->get( 'show_debug_info' )
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO_TEXT','' );
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$params->get( 'show_query_debug_info' ) );
 
+if ( $params->get( 'cfg_dbprefix' ) )
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$params->get( 'cfg_which_database_server' ) );
+}
+else
+{    
 if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
 {
 DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$params->get( 'cfg_which_database_server' ) );    
@@ -134,6 +149,7 @@ DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$params->get( 'cfg_which_database_
 else
 {
 DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );    
+}
 }
 
 if ( $params->get( 'cfg_which_database_table' ) )

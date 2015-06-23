@@ -123,7 +123,7 @@ class SMStatistic extends JObject
     {
     $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
     $query_num = JFactory::getDbo()->getQuery(true);
     
     $query_num->select('SUM(ms.value) AS num, pt.id');
@@ -151,7 +151,7 @@ class SMStatistic extends JObject
     {
     $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
     $query_den = JFactory::getDbo()->getQuery(true);
     
     $query_den->select('SUM(ms.value) AS den, pt.id');
@@ -181,7 +181,7 @@ class SMStatistic extends JObject
     {
     $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
     $query_core = JFactory::getDbo()->getQuery(true);
     
     $query_core->select('(n.num / d.den) AS total, pt.team_id');
@@ -210,7 +210,7 @@ class SMStatistic extends JObject
 	{
 		$option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
     $query_core = JFactory::getDbo()->getQuery(true);
     
 	$query_core->select($select);
@@ -251,7 +251,7 @@ class SMStatistic extends JObject
     {
     $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
     $query_num = JFactory::getDbo()->getQuery(true);
     
     $query_num->select($select);
@@ -300,7 +300,7 @@ class SMStatistic extends JObject
     {
     $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
     $query_num = JFactory::getDbo()->getQuery(true);
     
     $query_num->select('SUM(ms.value) AS num, tp.id AS tpid, tp.person_id');
@@ -339,7 +339,7 @@ class SMStatistic extends JObject
     {
     $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
     $query_core = JFactory::getDbo()->getQuery(true);
     
     $query_core->select('COUNT(DISTINCT tp.id) as count');
@@ -393,7 +393,7 @@ class SMStatistic extends JObject
 			return(array(0));
 		}
 				
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$sids = array();
 		foreach ($stat_ids as $s) 
         {
@@ -431,7 +431,7 @@ class SMStatistic extends JObject
 			return(array(0));
 		}
 				
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$ids = array();
 		foreach ($event_ids as $s) 
         {
@@ -852,7 +852,7 @@ class SMStatistic extends JObject
 	protected function getPlayerStatsByGameForIds($teamplayer_ids, $project_id, $sids, $factors = NULL)
 	{
 		$app = JFactory::getApplication();
-        $db = JFactory::getDBO();
+        $db = sportsmanagementHelper::getDBConnection();
         $query = JFactory::getDbo()->getQuery(true);
 
 		$quoted_sids = array();
@@ -950,7 +950,7 @@ class SMStatistic extends JObject
 	protected function getPlayerStatsByProjectForIds($person_id, $projectteam_id, $project_id, $sports_type_id, $sids, $factors = NULL)
 	{
 		$app = JFactory::getApplication();
-        $db = JFactory::getDBO();
+        $db = sportsmanagementHelper::getDBConnection();
         $query = JFactory::getDbo()->getQuery(true);
 
 		$quoted_sids = array();
@@ -1034,7 +1034,7 @@ class SMStatistic extends JObject
 	 */
 	protected function getGamesPlayedByPlayer($person_id, $projectteam_id, $project_id, $sports_type_id)
 	{
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
         $app = JFactory::getApplication();
         $query = JFactory::getDbo()->getQuery(true);
         $query_mp = JFactory::getDbo()->getQuery(true);
@@ -1147,7 +1147,7 @@ class SMStatistic extends JObject
 	{
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $db = JFactory::getDBO();
+        $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -1224,7 +1224,7 @@ class SMStatistic extends JObject
 	 */
 	protected function getRosterStatsForIds($team_id, $project_id, $position_id, $sids, $factors = NULL)
 	{
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$app = JFactory::getApplication();
         $query = JFactory::getDbo()->getQuery(true);
         
@@ -1343,7 +1343,7 @@ class SMStatistic extends JObject
 	 */
 	protected function getGamesPlayedByProjectTeam($team_id, $project_id, $position_id)
 	{
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
         
         $app = JFactory::getApplication();
         $query = JFactory::getDbo()->getQuery(true);
@@ -1468,7 +1468,7 @@ class SMStatistic extends JObject
 	 */
 	protected function getRosterStatsForEvents($team_id, $project_id, $position_id, $sids)
 	{
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
         $query = JFactory::getDbo()->getQuery(true);
         $app = JFactory::getApplication();
 
@@ -1532,7 +1532,7 @@ class SMStatistic extends JObject
 	 */
 	protected function getGamesPlayedQuery($project_id, $division_id, $team_id)
 	{
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
         $app = JFactory::getApplication();
         $query = JFactory::getDbo()->getQuery(true);
         $subquery = JFactory::getDbo()->getQuery(true);

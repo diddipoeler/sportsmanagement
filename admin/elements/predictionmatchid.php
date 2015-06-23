@@ -60,7 +60,7 @@ class JFormFieldpredictionmatchid extends JFormField
 	 */
 	protected function getInput()
   {
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
     $app = JFactory::getApplication();
 		$option	= 'com_sportsmanagement';
 		//$prediction_id = (int) $app->getUserState( $option . 'prediction_id' );

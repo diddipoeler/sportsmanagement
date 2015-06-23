@@ -148,7 +148,7 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $query->clear();
         // Get the input
@@ -570,7 +570,7 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
 	{
 	$app = JFactory::getApplication();
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
     // alte ereignisse löschen
                 $query = $db->getQuery(true);
@@ -590,7 +590,7 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
 	{
 	$app = JFactory::getApplication();
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
     // Create and populate an object.
                 $event = new stdClass();

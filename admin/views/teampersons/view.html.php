@@ -109,6 +109,10 @@ class sportsmanagementViewteampersons extends sportsmanagementView
         $this->restartpage = $model->checkProjectPositions($this->project_id,$this->_persontype,$this->team_id,$this->season_id);    
 //        $this->restartpage = $restartpage;
         }
+        else
+        {
+            $this->restartpage = FALSE;
+        }
         
         
         

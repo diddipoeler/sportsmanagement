@@ -195,7 +195,8 @@ class sportsmanagementModelSeasons extends JModelList
         
         
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		//$db = sportsmanagementHelper::getDBConnection();
+        $db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $Subquery = $db->getQuery(true);
         
@@ -205,10 +206,10 @@ class sportsmanagementModelSeasons extends JModelList
             // Select some fields
 		    $query->select('t.*');
 		    // From the seasons table
-		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t');
-            $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON c.id = t.club_id');
+		    $query->from('#__sportsmanagement_team as t');
+            $query->join('LEFT', '#__sportsmanagement_club AS c ON c.id = t.club_id');
             $Subquery->select('stp.team_id');
-            $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS stp  ');
+            $Subquery->from('#__sportsmanagement_season_team_id AS stp  ');
             $Subquery->where('stp.season_id = '.$season_id);
             $query->where('t.id NOT IN ('.$Subquery.')');
             if ($this->getState('filter.search_nation'))
@@ -226,9 +227,9 @@ class sportsmanagementModelSeasons extends JModelList
             // Select some fields
 		    $query->select('p.*');
 		    // From the seasons table
-		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person as p');
+		    $query->from('#__sportsmanagement_person as p');
             $Subquery->select('stp.person_id');
-            $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS stp  ');
+            $Subquery->from('#__sportsmanagement_season_person_id AS stp  ');
             $Subquery->where('stp.season_id = '.$season_id);
             $query->where('p.id NOT IN ('.$Subquery.')');
             if ($this->getState('filter.search_nation'))
@@ -250,7 +251,7 @@ class sportsmanagementModelSeasons extends JModelList
             // Select some fields
 		    $query->select(implode(",",$this->filter_fields));
 		    // From the seasons table
-		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season as s');
+		    $query->from('#__sportsmanagement_season as s');
             if ($this->getState('filter.search'))
 		    {
             $query->where(' LOWER(s.name) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%'));
@@ -290,7 +291,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	public function getSeasonTeams($season_id=0)
     {
     // Get a db connection.
-        $db = JFactory::getDBO();
+        //$db = sportsmanagementHelper::getDBConnection();
+        $db = sportsmanagementHelper::getDBConnection();
         // Create a new query object.
         $query = $db->getQuery(true);    
         // Select some fields
@@ -315,11 +317,12 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
     function getSeasons()
     {
         // Get a db connection.
-        $db = JFactory::getDBO();
+        //$db = sportsmanagementHelper::getDBConnection();
+        $db = sportsmanagementHelper::getDBConnection();
         // Create a new query object.
         $query = $db->getQuery(true);
         $query->select(array('id', 'name'))
-        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season')
+        ->from('#__sportsmanagement_season')
         ->order('name DESC');
 
         $db->setQuery($query);

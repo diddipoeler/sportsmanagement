@@ -134,7 +134,8 @@
 		<field 
 			name="project_live_update" 
 			type="radio" 
-			default="0"   class="radio btn-group btn-group-yesno"
+			default="0"   
+      class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_LIVE_UPDATE" 
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_LIVE_UPDATE_DESC">
 			<option value="0">JNO</option>
@@ -180,7 +181,8 @@
     <field 
 			name="enable_sb" 
 			type="radio" 
-			default="0"  class="radio btn-group btn-group-yesno"
+			default="0"  
+      class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_KUNENA_FORUM" 
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_KUNENA_FORUM_DESC">
 			<option value="0">JNO</option>
@@ -417,6 +419,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 			name="use_legs" 
 			type="radio" 
 			default="0"
+			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_SETS" 
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_SETS_DESC">
 			<option value="0">JNO</option>
@@ -427,6 +430,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 			name="use_tie_break" 
 			type="radio" 
 			default="0"
+			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_TIE_BREAK" 
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_USE_TIE_BREAK_DESC">
 			<option value="0">JNO</option>
@@ -458,6 +462,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 			name="allow_add_time" 
 			type="radio" 
 			default="0"
+			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_OT_OR_PENALTY" 
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_OT_OR_PENALTY_DESC">
 			<option value="0">JNO</option>
@@ -510,6 +515,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 			name="fav_team_highlight_type" 
 			type="radio" 
 			default="0"
+			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_HIGHLIGHT_TYPE" 
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_HIGHLIGHT_TYPE_DESC">
 			<option value="1">COM_SPORTSMANAGEMENT_ADMIN_PROJECT_HIGHLIGHT_TYPE_ENTIRE_ROW</option>
@@ -534,6 +540,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 			name="fav_team_text_bold" 
 			type="radio" 
 			default="0"
+			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_HIGHLIGHT_TEXT_BOLD" 
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_HIGHLIGHT_TEXT_BOLD_DESC">
 			<option value="0">JNO</option>

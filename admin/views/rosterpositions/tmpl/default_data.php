@@ -112,10 +112,10 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 							?>
 							<td style="text-align:center; ">
                             <?php if ($row->checked_out) : ?>
-						<?php echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'clubs.', $canCheckin); ?>
+						<?php echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'rosterpositions.', $canCheckin); ?>
 					<?php endif; ?>
 					<?php if ($canEdit) : ?>
-						<a href="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=club.edit&id='.(int) $row->id); ?>">
+						<a href="<?php echo JRoute::_('index.php?option=com_sportsmanagement&task=rosterposition.edit&id='.(int) $row->id); ?>">
 							<?php echo $this->escape($row->name); ?></a>
 					<?php else : ?>
 							<?php echo $this->escape($row->name); ?>

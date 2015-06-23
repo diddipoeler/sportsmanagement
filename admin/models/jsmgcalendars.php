@@ -27,7 +27,7 @@ class sportsmanagementModeljsmGCalendars extends JModelList
 
 	protected function getListQuery() 
     {
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 		$user	= JFactory::getUser();
 

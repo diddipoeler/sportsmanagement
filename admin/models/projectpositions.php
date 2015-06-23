@@ -130,7 +130,7 @@ class sportsmanagementModelProjectpositions extends JModelList
 //        $this->_project_id	= $app->getUserState( "$option.pid", '0' );
         
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $subQuery1= $db->getQuery(true);
         $subQuery2= $db->getQuery(true);

@@ -25,7 +25,7 @@ class JFormFieldsportsmanagement extends JFormFieldList
 	 */
 	protected function getOptions() 
 	{
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 		$query->select('#__sportsmanagement.id as id,greeting,#__categories.title as category,catid');
 		$query->from('#__sportsmanagement');

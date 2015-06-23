@@ -60,7 +60,7 @@ class JFormFieldactseason extends JFormField
 	 */
 	protected function getInput() 
     {
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$lang = JFactory::getLanguage();
         $option = JRequest::getCmd('option');
         // welche tabelle soll genutzt werden

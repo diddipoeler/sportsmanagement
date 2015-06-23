@@ -57,7 +57,7 @@ class sportsmanagementHelper
 	 */
 	function getProjects()
 	{
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 
 		$query='	SELECT	id,
 							name
@@ -87,7 +87,7 @@ class sportsmanagementHelper
 	 */
 	function getProjectteams($project_id)
 	{
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query='	SELECT	pt.id AS value,
 							t.name AS text,
 							t.notes
@@ -118,7 +118,7 @@ class sportsmanagementHelper
 	 */
 	function getProjectteamsNew($project_id)
 	{
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 
 		$query='	SELECT	pt.team_id AS value,
 							t.name AS text,
@@ -143,7 +143,7 @@ class sportsmanagementHelper
 
 	function getProjectFavTeams($project_id)
 	{
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 
 		$query='	SELECT fav_team,
 							fav_team_color,
@@ -175,7 +175,7 @@ class sportsmanagementHelper
 	 */
 	function getSportsTypeName($sportsType)
 	{
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query='SELECT name FROM #__sportsmanagement_sports_type WHERE id='.(int) $sportsType;
 		$db->setQuery($query);
 		if (!$result=$db->loadResult())
@@ -195,7 +195,7 @@ class sportsmanagementHelper
 	 */
 	function getSportsTypes()
 	{
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query='SELECT id, name FROM #__sportsmanagement_sports_type ORDER BY name ASC ';
 		$db->setQuery($query);
 		if (!$result=$db->loadObjectList())
@@ -250,7 +250,7 @@ class sportsmanagementHelper
 			return false;
 		}
 
-		$db=&JFactory::getDBO();
+		$db=&sportsmanagementHelper::getDBConnection();
 		$query='SELECT extension FROM #__sportsmanagement_project WHERE id='. $db->Quote((int)$project_id);
 		$db->setQuery($query);
 		$res=$db->loadResult();
@@ -264,7 +264,7 @@ class sportsmanagementHelper
 		$arrExtensions = array();
 		$excludeExtension = array();
 		if ($project_id) {
-			$db= JFactory::getDBO();
+			$db= sportsmanagementHelper::getDBConnection();
 			$query='SELECT extension FROM #__sportsmanagement_project WHERE id='. $db->Quote((int)$project_id);
 
 			$db->setQuery($query);
@@ -293,7 +293,7 @@ class sportsmanagementHelper
 		$arrExtensions = array();
 		$excludeExtension = array();
 		if ($project_id) {
-			$db= JFactory::getDBO();
+			$db= sportsmanagementHelper::getDBConnection();
 			$query='SELECT extension FROM #__sportsmanagement_project WHERE id='. $db->Quote((int)$project_id);
 
 			$db->setQuery($query);
@@ -917,7 +917,7 @@ class sportsmanagementHelper
 
 	public static function getVersion()
 	{
-		$database = JFactory::getDBO();
+		$database = sportsmanagementHelper::getDBConnection();
 
 		$query="SELECT CONCAT(major,'.',minor,'.',build,'.',revision) AS version
 				  FROM #__sportsmanagement_version 
@@ -1166,7 +1166,7 @@ class sportsmanagementHelper
 	*/
 	function getRoundsOptions($project_id, $ordering='ASC', $required = false)
 	{
-		$db = &JFactory::getDBO();
+		$db = &sportsmanagementHelper::getDBConnection();
 		$query = ' SELECT id as value '
 		       . '      , CASE LENGTH(name) when 0 then CONCAT('.$db->Quote(JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MATCHDAY_NAME')). ', " ", id)	else name END as text '
 		       . '      , id, name, round_date_first, round_date_last, roundcode '

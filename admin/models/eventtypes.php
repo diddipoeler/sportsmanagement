@@ -129,24 +129,25 @@ class sportsmanagementModelEventtypes extends JModelList
         
         //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         // Create a new query object.
-		$db		= $this->getDbo();
+		//$db		= $this->getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
 		$query	= $db->getQuery(true);
 		$user	= JFactory::getUser(); 
 		
         // Select some fields
 		$query->select('obj.*');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype as obj');
+		$query->from('#__sportsmanagement_eventtype as obj');
         // Join over the sportstype
 		$query->select('st.name AS sportstype');
-		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = obj.sports_type_id');
+		$query->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = obj.sports_type_id');
         // Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
                 
         if ($this->getState('filter.search'))
 		{
-        $query->where('LOWER(obj.name) LIKE '.$this->_db->Quote('%'.$this->getState('filter.search').'%'));
+        $query->where('LOWER(obj.name) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%'));
         }
 		
         if (is_numeric($this->getState('filter.state')))
@@ -171,16 +172,7 @@ class sportsmanagementModelEventtypes extends JModelList
         
 		return $query;
         
-        
-        
-        
-        
 	}
-
-
-
-
-    
     
 	/**
 	 * sportsmanagementModelEventtypes::getEvents()
@@ -192,13 +184,14 @@ class sportsmanagementModelEventtypes extends JModelList
 	{
 		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
-        $query = JFactory::getDbo()->getQuery(true);
+        $db = sportsmanagementHelper::getDBConnection();
+        $query = $db->getQuery(true);
         // Select some fields
 		$query->select('evt.id AS value, concat(evt.name, " (" , st.name, ")") AS text,evt.name as posname,st.name AS stname');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype as evt');
+		$query->from('#__sportsmanagement_eventtype as evt');
         // Join over the sportstype
-		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = evt.sports_type_id');
+		$query->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = evt.sports_type_id');
         $query->where('evt.published = 1');
         if ( $sports_type_id )
         {
@@ -206,10 +199,10 @@ class sportsmanagementModelEventtypes extends JModelList
         }
         $query->order('evt.name ASC');
                 
-		JFactory::getDbo()->setQuery($query);
-		if ( !$result = JFactory::getDbo()->loadObjectList() )
+		$db->setQuery($query);
+		if ( !$result = $db->loadObjectList() )
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(__METHOD__, __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			return false;
 		}
 		foreach ($result as $position)
@@ -232,14 +225,15 @@ class sportsmanagementModelEventtypes extends JModelList
 		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
         //$db		= $this->getDbo();
-		$query = JFactory::getDbo()->getQuery(true);
+        $db = sportsmanagementHelper::getDBConnection();
+		$query = $db->getQuery(true);
         // Select some fields
 		$query->select('p.id AS value,p.name as posname,st.name AS stname,concat(p.name, \' (\' , st.name, \')\') AS text');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS p');
+		$query->from('#__sportsmanagement_eventtype AS p');
         // Join over the sportstype
-		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pe ON pe.eventtype_id=p.id');
-		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = p.sports_type_id');
+		$query->join('LEFT', '#__sportsmanagement_position_eventtype AS pe ON pe.eventtype_id=p.id');
+		$query->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = p.sports_type_id');
         
         if ( $id )
         {
@@ -247,19 +241,11 @@ class sportsmanagementModelEventtypes extends JModelList
         }
         
         $query->order('pe.ordering ASC');
-        
-//        $query='	SELECT	  
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS p
-//					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pe
-//						ON pe.eventtype_id=p.id
-//					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = p.sports_type_id 
-//					WHERE pe.position_id='. $id.'
-//					ORDER BY pe.ordering ASC ';
 
-		JFactory::getDbo()->setQuery($query);
-		if ( !$result = JFactory::getDbo()->loadObjectList())
+		$db->setQuery($query);
+		if ( !$result = $db->loadObjectList())
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(__METHOD__, __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			return false;
 		}
 		foreach ($result as $event)

@@ -63,7 +63,7 @@ class JFormFieldrankingcolumns extends JFormField
 	function getInput()
 	{
 		$result = array();
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
         $app = JFactory::getApplication();
 		$lang = JFactory::getLanguage();
         $option = JRequest::getCmd('option');

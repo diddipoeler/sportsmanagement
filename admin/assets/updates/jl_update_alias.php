@@ -57,7 +57,7 @@ if (empty($maxImportMemory))
 if ((int)ini_get('memory_limit') < (int)$maxImportMemory){ini_set('memory_limit',$maxImportMemory);}
 
 
-$db =& JFactory::getDBO();
+$db =& sportsmanagementHelper::getDBConnection();
 
 
 if ( $table )

@@ -105,7 +105,7 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-    //$db					= JFactory::getDBO();
+    //$db					= sportsmanagementHelper::getDBConnection();
 		$uri = JFactory::getURI();
 		//$document =& JFactory::getDocument();
 		//$model				=& $this->getModel();

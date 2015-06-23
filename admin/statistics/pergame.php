@@ -87,7 +87,7 @@ class SMStatisticPergame extends SMStatistic
 //			return(array(0));
 //		}
 //				
-//		$db = JFactory::getDBO();
+//		$db = sportsmanagementHelper::getDBConnection();
 //		$ids = array();
 //		foreach ($numerator_ids as $s) {
 //			$ids[] = (int)$s;
@@ -110,7 +110,7 @@ class SMStatisticPergame extends SMStatistic
 //			return(array(0));
 //		}
 //				
-//		$db = JFactory::getDBO();
+//		$db = sportsmanagementHelper::getDBConnection();
 //		$ids = array();
 //		foreach ($numerator_ids as $s) {
 //			$ids[] = $db->Quote((int)$s);
@@ -170,7 +170,7 @@ class SMStatisticPergame extends SMStatistic
 		
 		$option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
         
 //		$query_num = ' SELECT SUM(ms.value) AS num, tp.id AS tpid, tp.person_id '
 //			. ' FROM #__joomleague_team_player AS tp '
@@ -279,7 +279,7 @@ class SMStatisticPergame extends SMStatistic
 	{
 		$sids = SMStatistic::getQuotedSids($this->_ids);
 		
-		$db = &JFactory::getDBO();
+		$db = &sportsmanagementHelper::getDBConnection();
 		$query_num = ' SELECT SUM(ms.value) AS num, pt.id '
 		       . ' FROM #__joomleague_team_player AS tp '
 		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
@@ -340,7 +340,7 @@ class SMStatisticPergame extends SMStatistic
 	{
 		$sids = SMStatistic::getQuotedSids($this->_ids);
 		
-		$db = &JFactory::getDBO();
+		$db = &sportsmanagementHelper::getDBConnection();
 		$query = ' SELECT SUM(ms.value) AS value, tp.person_id '
 		       . ' FROM #__joomleague_team_staff AS tp '
 		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
@@ -378,7 +378,7 @@ class SMStatisticPergame extends SMStatistic
 	{
 		$sids = SMStatistic::getQuotedSids($this->_ids);
 		
-		$db = &JFactory::getDBO();
+		$db = &sportsmanagementHelper::getDBConnection();
 		$query = ' SELECT SUM(ms.value) AS value, tp.person_id '
 		       . ' FROM #__joomleague_team_staff AS tp '
 		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '

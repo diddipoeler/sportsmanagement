@@ -16,7 +16,7 @@ class sportsmanagementModelsportsmanagements extends JModelList
 	protected function getListQuery()
 	{
 		// Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 		// Select some fields
 		$query->select('id,greeting');

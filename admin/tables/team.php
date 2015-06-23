@@ -65,6 +65,7 @@ class sportsmanagementTableTeam extends JTable
 	 * @since 1.0
 	 */
 	function __construct(& $db) {
+	   $db = sportsmanagementHelper::getDBConnection();
 		parent::__construct('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team', 'id', $db);
 	}
 

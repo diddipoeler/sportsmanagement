@@ -177,7 +177,8 @@ class sportsmanagementModelTeamPersons extends JModelList
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		//$db = sportsmanagementHelper::getDBConnection();
+        $db = sportsmanagementHelper::getDBConnection(); 
 		$query = $db->getQuery(true);
         
         //$search	= $this->getState('filter.search');
@@ -212,18 +213,18 @@ class sportsmanagementModelTeamPersons extends JModelList
         $query->select('ppl.id,ppl.firstname,ppl.lastname,ppl.nickname,ppl.picture,ppl.id as person_id,ppl.injury,ppl.suspension,ppl.away,ppl.ordering,ppl.published,ppl.checked_out,ppl.checked_out_time  ');
 		$query->select('ppl.position_id as person_position_id');
         //$query->select('pos.id as position_id');
-        $query->select('tp.id as tpid, tp.market_value, tp.jerseynumber,st.id as projectteam_id');
+        $query->select('tp.id as tpid, tp.market_value, tp.jerseynumber,tp.picture as season_picture');
 		$query->select('u.name AS editor');
-        $query->select('st.season_id AS season_id');
+        $query->select('st.season_id AS season_id,st.id as projectteam_id');
         $query->select('ppos.id as project_position_id');
         //$query->select('tp.project_position_id as project_position_id');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ppl');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp on tp.person_id = ppl.id');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
+        $query->from('#__sportsmanagement_person AS ppl');
+        $query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp on tp.person_id = ppl.id');
+        $query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
         
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position AS ppp on ppp.person_id = ppl.id');
+        $query->join('LEFT', '#__sportsmanagement_person_project_position AS ppp on ppp.person_id = ppl.id');
         
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = ppp.project_position_id ');
+        $query->join('LEFT',' #__sportsmanagement_project_position AS ppos ON ppos.id = ppp.project_position_id ');
         //$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id ');
         //$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppl.position_id ');
         
@@ -300,7 +301,8 @@ class sportsmanagementModelTeamPersons extends JModelList
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		//$db = sportsmanagementHelper::getDBConnection();
+        $db = sportsmanagementHelper::getDBConnection(); 
 		$query = $db->getQuery(true);    
         
         // Select some fields
@@ -323,6 +325,7 @@ class sportsmanagementModelTeamPersons extends JModelList
     }
     
     
+    
     /**
      * sportsmanagementModelTeamPersons::checkProjectPositions()
      * 
@@ -340,7 +343,8 @@ class sportsmanagementModelTeamPersons extends JModelList
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.
-		$db	= JFactory::getDBO();
+		//$db	= sportsmanagementHelper::getDBConnection();
+        $db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $date = JFactory::getDate();
 	    $user = JFactory::getUser();
@@ -348,12 +352,20 @@ class sportsmanagementModelTeamPersons extends JModelList
 	    $modified_by = $user->get('id');
        
        // Select some fields
-		$query->select('person_id,project_position_id');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id');
-        $query->where('team_id = '.$team_id);
-        $query->where('season_id = '.$season_id);
-        $query->where('persontype = '.$persontype);
+		$query->select('stp.person_id,ppos.id as project_position_id');
+        $query->from('#__sportsmanagement_season_team_person_id as stp');
+        $query->join('INNER','#__sportsmanagement_person AS p ON p.id = stp.person_id'); 
+        
+        $query->join('INNER','#__sportsmanagement_project_position AS ppos ON ppos.position_id = p.position_id'); 
+        
+        $query->where('stp.team_id = '.$team_id);
+        $query->where('stp.season_id = '.$season_id);
+        $query->where('stp.persontype = '.$persontype);
+        $query->where('ppos.project_id = '.$project_id);
         $db->setQuery($query);
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        
         $result = $db->loadObjectList();
         if ( $result )
         {
@@ -368,20 +380,34 @@ class sportsmanagementModelTeamPersons extends JModelList
                 $values = array($row->person_id,$project_id,$row->project_position_id,$persontype);
                 // Prepare the insert query.
                 $insertquery
-                ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position'))
+                ->insert($db->quoteName('#__sportsmanagement_person_project_position'))
                 ->columns($db->quoteName($columns))
                 ->values(implode(',', $values));
                 // Set the query using our newly populated query object and execute it.
                 $db->setQuery($insertquery);
+                
+                $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($insertquery->dump(),true).'</pre>'),'Notice');
+                
                 if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
-                {}
+                {
+                    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($insertquery->dump(),true).'</pre>'),'Error');
+                    $app->enqueueMessage(__METHOD__.' '.__LINE__.' message<br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+                    $app->enqueueMessage(__METHOD__.' '.__LINE__.' nummer<br><pre>'.print_r($db->getErrorNum(), true).'</pre><br>','Error');
+                }
                 else
-                {}
+                {
+                    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($insertquery->dump(),true).'</pre>'),'Notice');
+                }
                 
             }
+        return TRUE;
+        }
+        else
+        {
+            return FALSE;
         }
 
-        return TRUE;
+        
     }
 
 
@@ -400,7 +426,8 @@ class sportsmanagementModelTeamPersons extends JModelList
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.
-		$db		= JFactory::getDBO();
+		//$db		= sportsmanagementHelper::getDBConnection();
+        $db = sportsmanagementHelper::getDBConnection(); 
 		$query	= $db->getQuery(true);
 		$user	= JFactory::getUser(); 
 		
@@ -452,7 +479,7 @@ class sportsmanagementModelTeamPersons extends JModelList
 	 */
 	function remove($cids)
 	{
-		$count=0;
+		$count = 0;
 		foreach($cids as $cid)
 		{
 			$object=&$this->getTable('teamplayer');

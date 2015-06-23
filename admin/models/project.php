@@ -106,7 +106,8 @@ class sportsmanagementModelProject extends JModelAdmin
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.
-        $db = JFactory::getDBO();
+        //$db = sportsmanagementHelper::getDBConnection();
+        $db = sportsmanagementHelper::getDBConnection(); 
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
         //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
 
@@ -241,7 +242,8 @@ class sportsmanagementModelProject extends JModelAdmin
        // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-       $query = JFactory::getDbo()->getQuery(true);
+        $db = sportsmanagementHelper::getDBConnection(); 
+       $query = $db->getQuery(true);
        
        $query->select('t.*');
        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
@@ -255,8 +257,8 @@ class sportsmanagementModelProject extends JModelAdmin
 //                  INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt
 //                  on t.id = pt.team_id 
 //				  WHERE pt.id='.$projectteam_id;
-		JFactory::getDbo()->setQuery($query);
-		return JFactory::getDbo()->loadObject();
+		$db->setQuery($query);
+		return $db->loadObject();
 	}
     
     /**
@@ -273,7 +275,9 @@ class sportsmanagementModelProject extends JModelAdmin
         $option = $jinput->getCmd('option');
        //// Create a new query object.
 //		$db = JFactory::getDbo();
-		$query	= JFactory::getDbo()->getQuery(true);
+
+		$db = sportsmanagementHelper::getDBConnection(); 
+        $query	= $db->getQuery(true);
         $query->select('*');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
         $query->where('id = ' . $project_id);
@@ -282,8 +286,8 @@ class sportsmanagementModelProject extends JModelAdmin
 //				  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project
 //				  WHERE id='.$project_id;
 		
-        JFactory::getDbo()->setQuery($query);
-		return JFactory::getDbo()->loadObject();
+        $db->setQuery($query);
+		return $db->loadObject();
 	}
 
     
@@ -337,7 +341,8 @@ class sportsmanagementModelProject extends JModelAdmin
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         //$db	= $this->getDbo();
-		$query = JFactory::getDbo()->getQuery(true);
+        $db = sportsmanagementHelper::getDBConnection(); 
+		$query = $db->getQuery(true);
         $this->project_art_id	= $app->getUserState( "$option.project_art_id", '0' );
         
 		//$project_id = $app->getUserState($option . 'project');
@@ -371,11 +376,11 @@ class sportsmanagementModelProject extends JModelAdmin
 		
         $query->order('text ASC'); 
 
-		JFactory::getDbo()->setQuery($query);
-		$result = JFactory::getDbo()->loadObjectList();
+		$db->setQuery($query);
+		$result = $db->loadObjectList();
 		if ($result === FALSE)
 		{
-			JError::raiseError(0, JFactory::getDbo()->getErrorMsg());
+			JError::raiseError(0, $db->getErrorMsg());
 			return false;
 		}
 		else
@@ -422,7 +427,8 @@ class sportsmanagementModelProject extends JModelAdmin
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
 
-    $query = JFactory::getDbo()->getQuery(true);
+    $db = sportsmanagementHelper::getDBConnection(); 
+    $query = $db->getQuery(true);
     
 	$result = false;
     if (count($pk))
@@ -570,7 +576,7 @@ class sportsmanagementModelProject extends JModelAdmin
             {
             $query->clear();
             $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.$row_to_delete->table)->where($row_to_delete->field.' IN ('.$row_to_delete->id.')' );
-            JFactory::getDbo()->setQuery($query);
+            $db->setQuery($query);
             sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             if ( self::$db_num_rows )
             {

@@ -63,7 +63,7 @@ class sportsmanagementViewDatabaseTool extends sportsmanagementView
 	 */
 	public function init ($tpl = null)
 	{
-		$db		= JFactory::getDBO();
+		$db		= sportsmanagementHelper::getDBConnection();
 		$uri	= JFactory::getURI();
         $model	= $this->getModel();
         $option = JRequest::getCmd('option');

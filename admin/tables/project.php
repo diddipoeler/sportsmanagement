@@ -64,6 +64,7 @@ class sportsmanagementTableProject extends JTable
 	 */
 	function __construct(& $db)
 	{
+	   $db = sportsmanagementHelper::getDBConnection();
 		parent::__construct( '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project', 'id', $db );
 	}
 
@@ -147,7 +148,7 @@ class sportsmanagementTableProject extends JTable
 			return false;
 		}
 
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$db->setQuery('SELECT COUNT(userid)' . ' FROM ' . $db->quoteName('#__session') . ' WHERE ' . $db->quoteName('userid') . ' = ' . (int) $against);
 		$checkedOut = (boolean) $db->loadResult();
 

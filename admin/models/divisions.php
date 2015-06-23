@@ -174,7 +174,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         $option = JRequest::getCmd('option');
         $starttime = microtime(); 
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $query->select('id AS value,name AS text');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division');
@@ -219,7 +219,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         $option = JRequest::getCmd('option');
         $starttime = microtime(); 
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
         $query->select('count(*) AS count');

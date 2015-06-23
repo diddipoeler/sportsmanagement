@@ -121,7 +121,7 @@ class JFormFieldDependSQL extends JFormField
 		$query = $this->element['query'];
 		if ($query!='')
 		{
-			$db = JFactory::getDBO();
+			$db = sportsmanagementHelper::getDBConnection();
 			$db->setQuery($query);
 			$options = array_merge($options, $db->loadObjectList());
 		}

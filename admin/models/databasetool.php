@@ -1108,7 +1108,7 @@ foreach( $xml->events as $event )
     $app = JFactory::getApplication();
     $option = JRequest::getCmd('option');
     require_once( JPATH_ADMINISTRATOR.'/components/'.$option.'/'. 'helpers' . DS . 'jinstallationhelper.php' );    
-    $db = JFactory::getDBO();
+    $db = sportsmanagementHelper::getDBConnection();
     $db_table = JPATH_ADMINISTRATOR.'/components/'.$option.'/sql/countries.sql';
 // echo '<br>'.$db_table.'<br>';
 // $fileContent = JFile::read($db_table);

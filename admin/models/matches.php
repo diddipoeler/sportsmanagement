@@ -145,7 +145,7 @@ class sportsmanagementModelMatches extends JModelList
         }
         
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $subQueryPlayerHome= $db->getQuery(true);
         $subQueryStaffHome= $db->getQuery(true);
@@ -336,7 +336,7 @@ class sportsmanagementModelMatches extends JModelList
 	{$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');    
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
 		$query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match WHERE round_id='.$roundId;

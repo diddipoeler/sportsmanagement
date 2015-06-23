@@ -61,7 +61,7 @@ class sportsmanagementViewDatabaseTools extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$db		= JFactory::getDBO();
+		$db		= sportsmanagementHelper::getDBConnection();
 		$uri	= JFactory::getURI();
 
 		$this->assign( 'request_url',	$uri->toString() );

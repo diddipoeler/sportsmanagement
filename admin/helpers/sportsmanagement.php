@@ -126,7 +126,7 @@ abstract class sportsmanagementHelper
 	{
 	   $app	= JFactory::getApplication();
 		// Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 
 
@@ -451,6 +451,45 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' root<br><pre>'.print_r(JURI::root(),true).'</pre>'),'');
     
+    if ( $params->get( 'cfg_dbprefix' ) )
+{
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' database<br><pre> wir benutzen andere tabellen</pre>'),'');
+
+$host 		= $config->get('host'); //replace your IP or hostname
+$user 		= $config->get('user'); //database user
+$password 	= $config->get('password');//database password
+$database	= $config->get('db'); //database name
+$prefix 	= $params->get('jsm_dbprefix'); //prefix if any else just give any random value
+$driver 	= $config->get('dbtype'); //here u can also have ms sql database driver, postgres, etc
+$debug 		= $config->get('config.debug');
+
+$options	= array ( 'driver' => $driver, 'host' => $host, 'user' => $user, 'password' => $password, 'database' => $database, 'prefix' => $prefix );
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' database<br><pre>'.print_r($options,true).'</pre>'),'');   
+
+$db = JDatabase::getInstance( $options );
+
+if ( JError::isError($db) ) {
+			header('HTTP/1.1 500 Internal Server Error');
+			jexit('Database Error: ' . $db->toString() );
+		}
+        else
+        {
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' database<br><pre> kein verbindungsfehler</pre>'),'');   
+        }
+
+		if ($db->getErrorNum() > 0) {
+			JError::raiseError(500 , 'JDatabase::getInstance: Could not connect to database <br />' . 'joomla.library:'.$db->getErrorNum().' - '.$db->getErrorMsg() );
+		}
+        else
+        {
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' database<br><pre> verbindung hergestellt</pre>'),'');   
+        }
+
+		$db->debug( $debug );
+return $db;
+}
+else
+{
     if ( $request )
     {
         $cfg_which_database = $value;
@@ -534,6 +573,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
   
        }    
        
+       }
        //return self::$_jsm_db; 
         
     }
@@ -1010,7 +1050,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 	 */
 	function getProjects()
 	{
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 
 		$query='	SELECT	id,
 							name
@@ -1040,7 +1080,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 //	 */
 //	function getProjectteams($project_id)
 //	{
-//		$db = JFactory::getDBO();
+//		$db = sportsmanagementHelper::getDBConnection();
 //		$query='	SELECT	pt.id AS value,
 //							t.name AS text,
 //							t.notes
@@ -1071,7 +1111,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 //	 */
 //	function getProjectteamsNew($project_id)
 //	{
-//		$db = JFactory::getDBO();
+//		$db = sportsmanagementHelper::getDBConnection();
 //
 //		$query='	SELECT	pt.team_id AS value,
 //							t.name AS text,
@@ -1113,7 +1153,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
         {
         return false;    
         }
-//        $db = JFactory::getDBO();
+//        $db = sportsmanagementHelper::getDBConnection();
 //
 //		$query='	SELECT fav_team,
 //							fav_team_color,
@@ -1146,7 +1186,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 	 */
 	function getTeamplayerProject($projectteam_id)
 	{
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query='SELECT project_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team WHERE id='.(int) $projectteam_id;
 		$db->setQuery($query);
 		if (!$result=$db->loadResult())
@@ -1166,7 +1206,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 	 */
 	public static function getSportsTypeName($sportsType)
 	{
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query='SELECT name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type WHERE id='.(int) $sportsType;
 		$db->setQuery($query);
 		if (!$result=$db->loadResult())
@@ -1186,7 +1226,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 	 */
 	function getSportsTypes()
 	{
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query='SELECT id, name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type ORDER BY name ASC ';
 		$db->setQuery($query);
 		if (!$result=$db->loadObjectList())
@@ -1241,7 +1281,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 			return false;
 		}
 
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         $query->select('extension');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
@@ -1294,7 +1334,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 //		$arrExtensions = array();
 //		$excludeExtension = array();
 //		if ($project_id) {
-//			$db= JFactory::getDBO();
+//			$db= sportsmanagementHelper::getDBConnection();
 //			$query='SELECT extension FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='. $db->Quote((int)$project_id);
 //
 //			$db->setQuery($query);
@@ -1329,7 +1369,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 		$arrExtensions = array();
 		$excludeExtension = array();
 		if ($project_id) {
-			$db= JFactory::getDBO();
+			$db= sportsmanagementHelper::getDBConnection();
 			$query='SELECT extension FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='. $db->Quote((int)$project_id);
 
 			$db->setQuery($query);
@@ -1622,14 +1662,23 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 		$app = JFactory::getApplication();
 		$res = JFactory::getDate(strtotime($date));
 
-		if ($use_offset)
+		//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' date<br><pre>'.print_r($date,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' use_offset<br><pre>'.print_r($use_offset,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' offset<br><pre>'.print_r($offset,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' res<br><pre>'.print_r($res,true).'</pre>'),'');
+        
+        if ($use_offset)
 		{
 			if ($offset)
 			{
-				$serveroffset=explode(':', $offset);
+				$serveroffset = explode(':', $offset);
+                
+                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' serveroffset<br><pre>'.print_r($serveroffset,true).'</pre>'),'');
+                
                 if(version_compare(JVERSION,'3.0.0','ge')) 
                 {
-                $res->setTimezone($serveroffset[0]);    
+                //$res->setTimezone($serveroffset[0]);   
+                $res->setTimezone(new DateTimeZone($serveroffset[0])); 
                 }
                 else
                 {
@@ -1638,9 +1687,13 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 			}
 			else
 			{
-			if(version_compare(JVERSION,'3.0.0','ge')) 
+			 
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' offset<br><pre>'.print_r($app->getCfg('offset'),true).'</pre>'),'');
+			
+            if(version_compare(JVERSION,'3.0.0','ge')) 
             {
-                $res->setTimezone($app->getCfg('offset'));
+                //$res->setTimezone($app->getCfg('offset'));
+                $res->setTimezone(new DateTimeZone($app->getCfg('offset')));
             }
             else
             {
@@ -1648,6 +1701,9 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
             }
 			}
 		}
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' res<br><pre>'.print_r($res,true).'</pre>'),'');
+        
 		return $res->toUnix('true');
 	}
 
@@ -1982,11 +2038,11 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 	 * @param integer $with_space
 	 * @return void
 	 */
-	function showClubIcon(&$team,$type=1,$with_space=0)
+	public static function showClubIcon(&$team,$type=1,$with_space=0)
 	{
 		if (($type==1) && (isset($team->country)))
 		{
-			if ($team->logo_small!='')
+			if ( $team->logo_small != '' )
 			{
 				echo JHtml::image($team->logo_small,'');
 				if ($with_space==1){
@@ -2074,7 +2130,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
 	{
 	   $app = JFactory::getApplication();
        $option = JRequest::getCmd('option');
-       //$db = JFactory::getDBO();
+       //$db = sportsmanagementHelper::getDBConnection();
        $query = JFactory::getDbo()->getQuery(true);
        // Select some fields
         $query->select('manifest_cache');
@@ -2537,7 +2593,7 @@ $app = JFactory::getApplication();
         $select_values = array();
         $select_options = array();    
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($view,true).'</pre>'),'Notice');    
@@ -2616,13 +2672,13 @@ $app = JFactory::getApplication();
     {
          $app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
-        $db = JFactory::getDBO();
+        $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' template<br><pre>'.print_r($template,true).'</pre>'),'Notice');
         
         $query->select('ef.id');
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields as ef ');
+		$query->from('#__sportsmanagement_user_extra_fields as ef ');
         $query->where('ef.template_'.$template.' LIKE ' . $db->Quote(''.JRequest::getVar('view').'') );
     
 			$db->setQuery($query);
@@ -2648,7 +2704,7 @@ $app = JFactory::getApplication();
     static function getUserExtraFields($jlid,$template='backend',$cfg_which_database=0)
     {
         $app = JFactory::getApplication();
-    	$db = JFactory::getDBO();
+    	$db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' db-id<br><pre>'.print_r($jlid,true).'</pre>'),'Notice');
@@ -2689,7 +2745,7 @@ $app = JFactory::getApplication();
        $address_parts = array();
     //$app->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields<br><pre>'.print_r($post,true).'</pre>'),'Notice');
     
-    $db = JFactory::getDBO();
+    $db = sportsmanagementHelper::getDBConnection();
   //-------extra fields-----------//
 		if(isset($post['extraf']) && count($post['extraf']))
     {
@@ -2967,7 +3023,7 @@ public function getOSMGeoCoords($address)
     {
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $db = JFactory::getDBO();
+        $db = sportsmanagementHelper::getDBConnection();
     // Create a new query object.
         $query = $db->getQuery(true);
         $query->select(array('logo_big'))
@@ -2996,7 +3052,7 @@ public function getOSMGeoCoords($address)
     {
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        $db = JFactory::getDBO();
+        $db = sportsmanagementHelper::getDBConnection();
     // Create a new query object.
         $query = $db->getQuery(true);
         $query->select(array('picture'))
@@ -3026,7 +3082,7 @@ public function getOSMGeoCoords($address)
     {
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-       // $db = JFactory::getDBO();
+       // $db = sportsmanagementHelper::getDBConnection();
        
        // wenn der user die k2 komponente
        // in der konfiguration ausgewählt hat,

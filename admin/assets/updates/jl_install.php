@@ -33,7 +33,7 @@ function PrintStepResult($status)
 
 function getVersion()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
     $db->setQuery('SELECT manifest_cache FROM #__extensions WHERE name = "com_sportsmanagement" and type ="component" ');
     $paramsdata = json_decode( $db->loadResult(), true );
     /*
@@ -138,7 +138,7 @@ function updateVersion($versionData)
   //echo $versionData->major . "." . $versionData->minor . "." . $versionData->build . "." . $versionData->revision . "-" . $versionData->version . "' ";
 	
   
-//   $db =& JFactory::getDBO();
+//   $db =& sportsmanagementHelper::getDBConnection();
 //   $db_table = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_joomleague'.DS.'sql'.DS.'updates'.DS.$this->release.'.sql';
 //   $result = JInstallationHelper::populateDatabase($db, $db_table, $errors);
   
@@ -150,7 +150,7 @@ function addGhostPlayer()
 {
 	echo JText::_('Inserting Ghost-Player data');
 	$status=0;
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 
 	// Add new Parent position to PlayersPositions
 	$queryAdd="INSERT INTO #__joomleague_person (`firstname`,`lastname`,`nickname`,`birthday`,`show_pic`,`published`,`ordering`)
@@ -176,7 +176,7 @@ function addSportsType()
 	echo JText::_('Inserting default Sport-Types');
 
 	$status=0;
-	$db= JFactory::getDBO();
+	$db= sportsmanagementHelper::getDBConnection();
 	$extension 	= "com_joomleague_sport_types";
 	$lang 		= JFactory::getLanguage();
 	$source 	= JPATH_ADMINISTRATOR . '/components/' . $extension;

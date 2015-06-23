@@ -178,7 +178,7 @@ $teamart = substr( $liganummer , 17, 4);
 
 //$app->enqueueMessage(JText::_('teamart<br><pre>'.print_r($teamart,true).'</pre>'   ),'');
 
-$db = JFactory::getDBO();
+$db = sportsmanagementHelper::getDBConnection();
     // Create a new query object.
         $query = $db->getQuery(true);
         $query->select(array('id'))

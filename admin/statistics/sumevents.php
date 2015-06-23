@@ -107,7 +107,7 @@ class SMStatisticSumevents extends SMStatistic
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $sids = SMStatistic::getQuotedSids($this->_ids);
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         
 		$quoted_tpids = array();
@@ -214,7 +214,7 @@ class SMStatisticSumevents extends SMStatistic
 	{		
 		$sids = SMStatistic::getQuotedSids($this->_ids);
 		$app = JFactory::getApplication();
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query_core = JFactory::getDbo()->getQuery(true);
         
 		$query_select_count = 'COUNT(DISTINCT tp.id) as count';
@@ -273,7 +273,7 @@ class SMStatisticSumevents extends SMStatistic
 		$sids = SMStatistic::getQuotedSids($this->_ids);
 		$option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		
 		$query = ' SELECT SUM(ms.event_sum) AS total, '
 		       . ' pt.team_id ' 

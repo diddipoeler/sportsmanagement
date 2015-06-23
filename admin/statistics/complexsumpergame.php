@@ -87,7 +87,7 @@ class SMStatisticComplexsumpergame extends SMStatistic
 //			return(array(0));
 //		}
 //				
-//		$db = JFactory::getDBO();
+//		$db = sportsmanagementHelper::getDBConnection();
 //		$sids = array();
 //		foreach ($stat_ids as $s) {
 //			$sids[] = (int)$s;
@@ -135,7 +135,7 @@ class SMStatisticComplexsumpergame extends SMStatistic
 //			return(array(0));
 //		}
 //				
-//		$db = JFactory::getDBO();
+//		$db = sportsmanagementHelper::getDBConnection();
 //		$sids = array();
 //		foreach ($stat_ids as $s) 
 //        {
@@ -198,7 +198,7 @@ class SMStatisticComplexsumpergame extends SMStatistic
 		$sqids = SMStatistic::getQuotedSids($this->_ids);
 		$factors  = self::getFactors();
 		$app = JFactory::getApplication();
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = JFactory::getDbo()->getQuery(true);
         
 		// get all stats
@@ -362,7 +362,7 @@ class SMStatisticComplexsumpergame extends SMStatistic
 		$sqids = SMStatistic::getQuotedSids($this->_ids);
 		$factors  = self::getFactors();
 		
-		$db = &JFactory::getDBO();
+		$db = &sportsmanagementHelper::getDBConnection();
 	
 		// team games
 		$query = ' SELECT COUNT(m.id) AS value, pt.team_id '
@@ -459,7 +459,7 @@ class SMStatisticComplexsumpergame extends SMStatistic
 		$sqids = SMStatistic::getQuotedSids($this->_ids);
 		$factors  = self::getFactors();
 		
-		$db = &JFactory::getDBO();
+		$db = &sportsmanagementHelper::getDBConnection();
 		
 		$query = ' SELECT ms.value, ms.statistic_id '
 		       . ' FROM #__joomleague_team_staff AS tp '
@@ -508,7 +508,7 @@ class SMStatisticComplexsumpergame extends SMStatistic
 		$sqids = $this->getQuotedSids();
 		$factors  = $this->getFactors();
 		
-		$db = &JFactory::getDBO();
+		$db = &sportsmanagementHelper::getDBConnection();
 		
 		$query = ' SELECT ms.value AS value, ms.statistic_id '
 		       . ' FROM #__joomleague_team_staff AS tp '

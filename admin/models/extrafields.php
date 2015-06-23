@@ -83,6 +83,8 @@ class sportsmanagementModelextrafields extends JModelList
                         
                         );
                 parent::__construct($config);
+                $getDBConnection = sportsmanagementHelper::getDBConnection();
+                parent::setDbo($getDBConnection);
         }
         
     /**
@@ -133,7 +135,7 @@ class sportsmanagementModelextrafields extends JModelList
         $option = JRequest::getCmd('option');
 
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 		// Select some fields
 		$query->select(implode(",",$this->filter_fields));
@@ -173,7 +175,7 @@ $app = JFactory::getApplication();
         $result = '';
 
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
         $query->select('ef.name');
@@ -209,7 +211,7 @@ function getExtraFields($template_backend = '', $template_frontend = '')
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
         // Select some fields

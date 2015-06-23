@@ -98,7 +98,7 @@ function setUpdatePart($val=1)
 
 function ImportTables()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
     $option = JRequest::getCmd('option');
 
 	$imports=file_get_contents(JPATH_ADMINISTRATOR.'/components/'.$option.'/sql/install.mysql.utf8.sql');

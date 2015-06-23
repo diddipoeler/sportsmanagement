@@ -1124,7 +1124,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 	private function _getClubName($club_id)
 	{
 	   // Create a new query object.		
-		//$db = JFactory::getDBO();
+		//$db = sportsmanagementHelper::getDBConnection();
         $query = JFactory::getDbo()->getQuery(true);
        // Select some fields
         $query->select('name');
@@ -1150,7 +1150,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 	private function _getTeamName($team_id)
 	{
 	   // Create a new query object.		
-		//$db = JFactory::getDBO();
+		//$db = sportsmanagementHelper::getDBConnection();
         $query = JFactory::getDbo()->getQuery(true);
         // Select some fields
         $query->select('t.name');
@@ -1179,7 +1179,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 	private function _getTeamName2($team_id)
 	{
 		// Create a new query object.		
-		//$db = JFactory::getDBO();
+		//$db = sportsmanagementHelper::getDBConnection();
         $query = JFactory::getDbo()->getQuery(true);
         // Select some fields
         $query->select('name');
@@ -1254,7 +1254,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 	{
 	   $app = JFactory::getApplication();
        // Create a new query object.		
-		//$db = JFactory::getDBO();
+		//$db = sportsmanagementHelper::getDBConnection();
 		$query = JFactory::getDbo()->getQuery(true);
         $query->select('name');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round ');
@@ -1283,7 +1283,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 	{
 	   $app = JFactory::getApplication();
        // Create a new query object.		
-		//$db = JFactory::getDBO();
+		//$db = sportsmanagementHelper::getDBConnection();
 		$query = JFactory::getDbo()->getQuery(true);
         $query->select('name');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ');

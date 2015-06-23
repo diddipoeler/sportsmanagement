@@ -75,7 +75,7 @@ public function getVersion()
 	   $app = JFactory::getApplication();
        $option = JRequest::getCmd('option');
        // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
 	   $this->_db->setQuery('SELECT manifest_cache FROM #__extensions WHERE name = "com_sportsmanagement"');
@@ -141,7 +141,7 @@ $paramsdata = JComponentHelper::getParams($option);
     {
     $app = JFactory::getApplication();
   $option = JRequest::getCmd('option'); 
-  $db = JFactory::getDBO();    
+  $db = sportsmanagementHelper::getDBConnection();    
         $query = $db->getQuery(true);
     $query->select('a.extension_id');
   $query->from('#__extensions AS a');
@@ -317,7 +317,7 @@ else
         $option = JRequest::getCmd('option');
         $starttime = microtime(); 
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
         //$cols = $this->_db->getTableColumns('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries');
@@ -353,7 +353,7 @@ else
         $option = JRequest::getCmd('option');
         $starttime = microtime(); 
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
         $type = strtoupper($type);

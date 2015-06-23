@@ -122,7 +122,7 @@ class sportsmanagementModelrosterpositions extends JModelList
         $search	= $this->getState('filter.search');
         
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 		// Select some fields
 		$query->select('obj.*');

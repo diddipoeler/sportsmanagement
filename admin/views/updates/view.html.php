@@ -70,7 +70,7 @@ class sportsmanagementViewUpdates extends sportsmanagementView
 		
 		
         
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$uri = JFactory::getURI();
 		$model = $this->getModel();
 		$versions=$model->getVersions();

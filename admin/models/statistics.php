@@ -195,7 +195,7 @@ class sportsmanagementModelStatistics extends JModelList
         $option = JRequest::getCmd('option');
         //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         // Create a new query object.
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query	= $db->getQuery(true);
         
         $query->select('s.id AS value, concat(s.name, " (" , st.name, ")") AS text');
@@ -235,7 +235,7 @@ class sportsmanagementModelStatistics extends JModelList
         $option = JRequest::getCmd('option');
         //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         // Create a new query object.
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query	= $db->getQuery(true);
         
         $query->select('s.id AS value, concat(s.name, " (" , st.name, ")") AS text');
@@ -275,7 +275,7 @@ class sportsmanagementModelStatistics extends JModelList
         $option = JRequest::getCmd('option');
         //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         // Create a new query object.
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query	= $db->getQuery(true);
         
         $query->select('id,name,id AS value,name AS text,short,class,note');

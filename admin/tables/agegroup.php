@@ -63,6 +63,7 @@ class sportsmanagementTableagegroup extends JTable
 	 */
 	function __construct(& $db)
 	{
+	   $db = sportsmanagementHelper::getDBConnection();
 		parent :: __construct( '#__sportsmanagement_agegroup', 'id', $db );
 	}
 

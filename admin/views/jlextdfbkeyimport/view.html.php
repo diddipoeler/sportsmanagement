@@ -117,7 +117,7 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication ();
 
-		$db		= JFactory::getDBO();
+		$db		= sportsmanagementHelper::getDBConnection();
 		$uri 	= JFactory::getURI();
 		$user 	= JFactory::getUser();
 		$model	= $this->getModel();
@@ -221,7 +221,7 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication ();
 		
-		$db		= JFactory::getDBO();
+		$db		= sportsmanagementHelper::getDBConnection();
 		$uri 	= JFactory::getURI();
 		$user 	= JFactory::getUser();
 		$model	= $this->getModel();
@@ -283,7 +283,7 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication ();
 		
-		$db		= JFactory::getDBO();
+		$db		= sportsmanagementHelper::getDBConnection();
 		$uri 	= JFactory::getURI();
 		$user 	= JFactory::getUser();
 		$model	= $this->getModel();
@@ -339,7 +339,7 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication ();
 		
-		$db		= JFactory::getDBO();
+		$db		= sportsmanagementHelper::getDBConnection();
 		$uri 	= JFactory::getURI();
 		$user 	= JFactory::getUser();
 		$model	= $this->getModel();

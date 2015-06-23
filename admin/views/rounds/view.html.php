@@ -95,7 +95,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
 	{
 		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$uri = JFactory::getURI();
         $this->project_id	= $app->getUserState( "$option.pid", '0' );
         
@@ -115,7 +115,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
 	{
 		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$uri = JFactory::getURI();
         
         $this->state = $this->get('State'); 

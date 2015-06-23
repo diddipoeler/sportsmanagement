@@ -37,7 +37,7 @@ if (empty($maxImportMemory))
 if ((int)ini_get('memory_limit') < (int)$maxImportMemory){ini_set('memory_limit',$maxImportMemory);}
 
 
-$db =& JFactory::getDBO();
+$db =& sportsmanagementHelper::getDBConnection();
 $db_table = JPATH_ADMINISTRATOR.'/components/com_joomleague/sql/rosterposition.sql';
 // echo '<br>'.$db_table.'<br>';
 // $fileContent = JFile::read($db_table);

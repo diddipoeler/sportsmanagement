@@ -76,7 +76,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         $this->sortColumn = $this->state->get('list.ordering');
         
         
-        $this->project_id = $jinput->getVar('pid');
+        $this->project_id = $jinput->request->get('pid', 0, 'INT');
         if ( !$this->project_id )
         {
         $this->project_id = $app->getUserState( "$option.pid", '0' );
@@ -84,6 +84,9 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
        
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($this->project_id,true).'</pre>'   ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($project,true).'</pre>'   ),'');
         
         $this->project_art_id = $project->project_art_id;
         $this->season_id = $project->season_id;

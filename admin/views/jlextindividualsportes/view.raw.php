@@ -20,7 +20,7 @@ class JoomleagueViewMatches extends JLGView
 	public function init ()
 	{
 		// Get some data from the model
-		$db =& JFactory::getDBO();
+		$db =& sportsmanagementHelper::getDBConnection();
 		$db->setQuery("	SELECT	m.match_id AS value,
 							CONCAT('(',m.match_date,') - ',t1.middle_name,' - ',t2.middle_name) AS mid
 							FROM #__joomleague_match m

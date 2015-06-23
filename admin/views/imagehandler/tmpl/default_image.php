@@ -56,6 +56,10 @@ defined('_JEXEC') or die('Restricted access');
 				</a>
 			</div>
 			<div class="imageinfo">
-				<?php echo $this->escape( substr( $this->_tmp_img->name, 0, 10 ) . ( strlen( $this->_tmp_img->name ) > 10 ? '...' : '')); ?>
+				<?php 
+                //echo $this->escape( substr( $this->_tmp_img->name, 0, 10 ) . ( strlen( $this->_tmp_img->name ) > 10 ? '...' : ''));
+                echo $this->_tmp_img->name;  
+                
+                ?>
 			</div>
 		</div>

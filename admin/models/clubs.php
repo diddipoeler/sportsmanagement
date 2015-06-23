@@ -139,7 +139,7 @@ class sportsmanagementModelClubs extends JModelList
         
 
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 		// Select some fields
 		$query->select(implode(",",$this->filter_fields));
@@ -157,7 +157,7 @@ class sportsmanagementModelClubs extends JModelList
         }
         if ($this->getState('filter.search_nation'))
 		{
-        $query->where('a.country LIKE '.$db->Quote(''.$this->getState('filter.search_nation').''));
+        $query->where('a.country LIKE '.$db->Quote(''.$this->getState('filter.search_nation').'') );
         }
         
         if ($this->getState('filter.season'))

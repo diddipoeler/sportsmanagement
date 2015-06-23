@@ -66,6 +66,7 @@ class sportsmanagementTableseasonperson extends JTable
 	 */
 	function __construct(& $db)
 	{
+	   $db = sportsmanagementHelper::getDBConnection();
 		parent::__construct( '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id', 'id', $db );
 	}
 

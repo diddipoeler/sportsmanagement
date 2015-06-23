@@ -62,7 +62,7 @@ class sportsmanagementViewrosterpositions extends sportsmanagementView
 	public function init ()
 	{
 		$app = JFactory::getApplication();
-    $db = JFactory::getDBO();
+    $db = sportsmanagementHelper::getDBConnection();
 		$uri = JFactory::getURI();
 		$document	= JFactory::getDocument();
     $option = JRequest::getCmd('option');

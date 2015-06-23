@@ -202,7 +202,7 @@ class sportsmanagementModelPredictionTemplate extends JModelAdmin
 	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $query->select('*');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game');

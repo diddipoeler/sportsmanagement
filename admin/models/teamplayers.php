@@ -65,7 +65,7 @@ class sportsmanagementModelTeamPlayers extends JModelList
 		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 		        
         $this->_project_id	= $app->getUserState( "$option.pid", '0' );
@@ -219,7 +219,7 @@ class sportsmanagementModelTeamPlayers extends JModelList
         $option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
         // Create a new query object.
-		$db		= JFactory::getDBO();
+		$db		= sportsmanagementHelper::getDBConnection();
 		$query	= $db->getQuery(true);
 		$user	= JFactory::getUser(); 
 		

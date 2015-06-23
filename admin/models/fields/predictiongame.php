@@ -39,6 +39,25 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+if (! defined('DS'))
+{
+	define('DS', DIRECTORY_SEPARATOR);
+}
+
+if ( !defined('JSM_PATH') )
+{
+DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
+}
+
+// prüft vor Benutzung ob die gewünschte Klasse definiert ist
+if ( !class_exists('sportsmanagementHelper') ) 
+{
+//add the classes for handling
+$classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
+JLoader::register('sportsmanagementHelper', $classpath);
+JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+}
+
 /**
  * JFormFieldPredictiongame
  * 
@@ -60,11 +79,11 @@ class JFormFieldPredictiongame extends JFormField
 	 */
 	function getInput() 
     {
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$lang = JFactory::getLanguage();
         // welche tabelle soll genutzt werden
         $params = JComponentHelper::getParams( 'com_sportsmanagement' );
-        $database_table	= $params->get( 'cfg_which_database_table' );
+        //$database_table	= $params->get( 'cfg_which_database_table' );
         
 //		$extension = "com_sportsmanagement";
 // 		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
@@ -73,7 +92,7 @@ class JFormFieldPredictiongame extends JFormField
 // 		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
 // 		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		
-		$query = 'SELECT pg.id, pg.name FROM #__'.$database_table.'_prediction_game pg WHERE pg.published=1 ORDER BY pg.name';
+		$query = 'SELECT pg.id, pg.name FROM #__sportsmanagement_prediction_game pg WHERE pg.published=1 ORDER BY pg.name';
 		$query = $db->getQuery(true);
 			
 			$query->select('pg.id, pg.name');

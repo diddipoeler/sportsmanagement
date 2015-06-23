@@ -93,7 +93,7 @@ function PrintStepResult($result)
 
 function doQueries($queries)
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 
 	/* execute modifications */
 	if (count($queries))
@@ -131,7 +131,7 @@ function doQueries($queries)
 
 function Update_Tables($updates,$tablename)
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$queries=array();
 	$tables[0]=$updates[$tablename][0]['tablename'];
 
@@ -173,7 +173,7 @@ function Update_Tables($updates,$tablename)
 
 function Change_Table_Columns($updates,$tablename)
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$queries=array();
 	$tables[0]=$updates[$tablename][0]['tablename'];
 
@@ -199,7 +199,7 @@ function Change_Table_Columns($updates,$tablename)
 
 function Delete_Table_Columns($dUpdates,$tablename)
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$queries=array();
 	$tables[0]=$dUpdates[$tablename][0]['tablename'];
 	//echo '<br /><pre>~'.print_r($dUpdates,true).'~</pre><br />';
@@ -268,7 +268,7 @@ function UpdateTemplateMasters()
 
 	 
 	echo '<b>'.JText::_('Updating new variables and templates for usage in the Master-Templates').'</b><br />';
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 
 	$query='SELECT id,name,master_template FROM #__joomleague_project';
 	$db->setQuery($query);
@@ -502,7 +502,7 @@ function build_InsertQuery_PositionEventType($param1,$param2)
 
 function tableExists($tableName)
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$query='SELECT * FROM #__'.$tableName;
 	$db->setQuery($query);
 	$result=$db->query();
@@ -518,7 +518,7 @@ function tableExists($tableName)
 
 function getVersion()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$query='SELECT * FROM #__joomleague_version ORDER BY date DESC ';
 	$db->setQuery($query);
 	$result=$db->loadObject();
@@ -715,7 +715,7 @@ if (getUpdatePart()==4)
 		$query = "update #__joomleague_statistic set icon = replace(icon, 'media/com_joomleague/statistics', 'images/com_joomleague/database/statistics')";
 		array_push($arrQueries, $query);
 		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query="SHOW TABLES LIKE '%_joomleague%'";
 			
 		$db->setQuery($query);

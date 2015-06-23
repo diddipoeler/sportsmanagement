@@ -129,7 +129,7 @@ class sportsmanagementModelPositions extends JModelList
         
        
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
 

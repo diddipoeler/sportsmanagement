@@ -122,7 +122,7 @@ class sportsmanagementModelAjax extends JModelLegacy
         // Get a db connection.
         if ( !$dabse )
         {
-            $db = JFactory::getDBO();
+            $db = sportsmanagementHelper::getDBConnection();
         }
         else
         {
@@ -166,7 +166,7 @@ class sportsmanagementModelAjax extends JModelLegacy
         // Get a db connection.
         if ( $dabse )
         {
-            $db = JFactory::getDBO();
+            $db = sportsmanagementHelper::getDBConnection();
         }
         else
         {
@@ -228,7 +228,7 @@ class sportsmanagementModelAjax extends JModelLegacy
         // Get a db connection.
         if ( $dabse )
         {
-            $db = JFactory::getDBO();
+            $db = sportsmanagementHelper::getDBConnection();
         }
         else
         {
@@ -272,7 +272,7 @@ class sportsmanagementModelAjax extends JModelLegacy
        // Get a db connection.
         if ( !$dabse )
         {
-            $db = JFactory::getDBO();
+            $db = sportsmanagementHelper::getDBConnection();
         }
         else
         {
@@ -334,7 +334,7 @@ class sportsmanagementModelAjax extends JModelLegacy
         // Get a db connection.
         if ( !$dbase )
         {
-            $db = JFactory::getDBO();
+            $db = sportsmanagementHelper::getDBConnection();
         }
         else
         {
@@ -383,7 +383,7 @@ class sportsmanagementModelAjax extends JModelLegacy
         // Get a db connection.
         if ( $dabse )
         {
-            $db = JFactory::getDBO();
+            $db = sportsmanagementHelper::getDBConnection();
         }
         else
         {
@@ -439,7 +439,7 @@ class sportsmanagementModelAjax extends JModelLegacy
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $db	= JFactory::getDbo(); 
+        $db = sportsmanagementHelper::getDBConnection(); 
 		$query = $db->getQuery(true);
         
         $query->select('a.user_id AS value, concat(u.name, \' ( \',u.username,\' ) \') AS text');
@@ -465,7 +465,7 @@ class sportsmanagementModelAjax extends JModelLegacy
        // Get a db connection.
         if ( !$dbase )
         {
-            $db = JFactory::getDBO();
+            $db = sportsmanagementHelper::getDBConnection();
         }
         else
         {
@@ -498,7 +498,7 @@ class sportsmanagementModelAjax extends JModelLegacy
        // Get a db connection.
         if ( !$dbase )
         {
-            $db = JFactory::getDBO();
+            $db = sportsmanagementHelper::getDBConnection();
         }
         else
         {
@@ -540,7 +540,7 @@ class sportsmanagementModelAjax extends JModelLegacy
        // Get a db connection.
         if ( !$dbase )
         {
-            $db = JFactory::getDBO();
+            $db = sportsmanagementHelper::getDBConnection();
         }
         else
         {
@@ -579,7 +579,7 @@ class sportsmanagementModelAjax extends JModelLegacy
         // Get a db connection.
         if ( !$dabse )
         {
-            $db = JFactory::getDBO();
+            $db = sportsmanagementHelper::getDBConnection();
         }
         else
         {
@@ -627,7 +627,7 @@ class sportsmanagementModelAjax extends JModelLegacy
        // Get a db connection.
         if ( !$dbase )
         {
-            $db = JFactory::getDBO();
+            $db = sportsmanagementHelper::getDBConnection();
         }
         else
         {
@@ -673,7 +673,7 @@ class sportsmanagementModelAjax extends JModelLegacy
       // Get a db connection.
         if ( !$dbase )
         {
-            $db = JFactory::getDBO();
+            $db = sportsmanagementHelper::getDBConnection();
         }
         else
         {
@@ -720,13 +720,13 @@ class sportsmanagementModelAjax extends JModelLegacy
        // Get a db connection.
         if ( !$dabse )
         {
-            $db = JFactory::getDBO();
+            $db = sportsmanagementHelper::getDBConnection();
         }
         else
         {
             $db = sportsmanagementHelper::getDBConnection(TRUE,TRUE);
         }
-        //$db = JFactory::getDbo();
+
         $query = $db->getQuery(true);
         // Select some fields
         if ( $slug )
@@ -769,7 +769,7 @@ class sportsmanagementModelAjax extends JModelLegacy
        // Get a db connection.
         if ( !$dabse )
         {
-            $db = JFactory::getDBO();
+            $db = sportsmanagementHelper::getDBConnection();
         }
         else
         {
@@ -792,10 +792,20 @@ class sportsmanagementModelAjax extends JModelLegacy
         $query->join('INNER',' #__sportsmanagement_team t ON t.id = st.team_id ');
         $query->join('INNER',' #__sportsmanagement_project p ON p.id = pt.project_id ');
                                 
-                // Where
+        // Where
         if ( $project_id )
         {
+        // ist es ein array ?   
+        if ( is_array($project_id) )
+        {
+        $ids = implode(",",$project_id);
+        $query->where('pt.project_id IN (' . $ids .')' );    
+        } 
+        else
+        {
         $query->where('pt.project_id = ' . $project_id );
+        }
+        
         }
         else
         {
@@ -824,7 +834,7 @@ class sportsmanagementModelAjax extends JModelLegacy
       // Get a db connection.
         if ( !$dbase )
         {
-            $db = JFactory::getDBO();
+            $db = sportsmanagementHelper::getDBConnection();
         }
         else
         {
@@ -870,7 +880,7 @@ class sportsmanagementModelAjax extends JModelLegacy
       // Get a db connection.
         if ( !$dbase )
         {
-            $db = JFactory::getDBO();
+            $db = sportsmanagementHelper::getDBConnection();
         }
         else
         {
@@ -912,7 +922,7 @@ class sportsmanagementModelAjax extends JModelLegacy
       // Get a db connection.
         if ( !$dbase )
         {
-            $db = JFactory::getDBO();
+            $db = sportsmanagementHelper::getDBConnection();
         }
         else
         {
@@ -953,7 +963,7 @@ class sportsmanagementModelAjax extends JModelLegacy
       // Get a db connection.
         if ( !$dbase )
         {
-            $db = JFactory::getDBO();
+            $db = sportsmanagementHelper::getDBConnection();
         }
         else
         {
@@ -969,10 +979,20 @@ class sportsmanagementModelAjax extends JModelLegacy
         $query->join('INNER',' #__sportsmanagement_club AS c ON c.id = t.club_id ');
         $query->join('INNER',' #__sportsmanagement_project p ON p.id = pt.project_id ');
                                 
-                // Where
+        // Where
         if ( $project_id )
         {
+        // ist es ein array ?   
+        if ( is_array($project_id) )
+        {
+        $ids = implode(",",$project_id);
+        $query->where('pt.project_id IN (' . $ids .')' );    
+        } 
+        else
+        {
         $query->where('pt.project_id = ' . $project_id );
+        }
+        
         }
         else
         {
@@ -1001,7 +1021,7 @@ $db->setQuery($query);
       // Get a db connection.
         if ( !$dbase )
         {
-            $db = JFactory::getDBO();
+            $db = sportsmanagementHelper::getDBConnection();
         }
         else
         {
@@ -1042,7 +1062,7 @@ $db->setQuery($query);
       // Get a db connection.
         if ( !$dbase )
         {
-            $db = JFactory::getDBO();
+            $db = sportsmanagementHelper::getDBConnection();
         }
         else
         {
@@ -1083,7 +1103,7 @@ $db->setQuery($query);
       // Get a db connection.
         if ( !$dbase )
         {
-            $db = JFactory::getDBO();
+            $db = sportsmanagementHelper::getDBConnection();
         }
         else
         {
@@ -1130,7 +1150,7 @@ $db->setQuery($query);
       // Get a db connection.
         if ( !$dbase )
         {
-            $db = JFactory::getDBO();
+            $db = sportsmanagementHelper::getDBConnection();
         }
         else
         {
@@ -1168,7 +1188,7 @@ $db->setQuery($query);
       // Get a db connection.
         if ( !$dbase )
         {
-            $db = JFactory::getDBO();
+            $db = sportsmanagementHelper::getDBConnection();
         }
         else
         {

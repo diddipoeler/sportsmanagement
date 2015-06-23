@@ -86,7 +86,7 @@ class JFormFieldProjects extends JFormFieldList
     {
         $options = array();
         $app = JFactory::getApplication();
-		//$db = JFactory::getDBO();
+		//$db = sportsmanagementHelper::getDBConnection();
 		$lang = JFactory::getLanguage();
         // welche tabelle soll genutzt werden
         $params = JComponentHelper::getParams( 'com_sportsmanagement' );
@@ -110,7 +110,7 @@ class JFormFieldProjects extends JFormFieldList
         $cfg_which_database = $this->form->getValue('cfg_which_database',$div);
         if ( !$cfg_which_database )
         {
-            $db = JFactory::getDBO();
+            $db = sportsmanagementHelper::getDBConnection();
         }
         else
         {

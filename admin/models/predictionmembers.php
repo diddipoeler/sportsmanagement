@@ -138,7 +138,7 @@ class sportsmanagementModelPredictionMembers extends JModelList
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
         
@@ -198,7 +198,7 @@ class sportsmanagementModelPredictionMembers extends JModelList
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 	
     // Select some fields
@@ -230,7 +230,7 @@ class sportsmanagementModelPredictionMembers extends JModelList
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
         // Select some fields
@@ -259,7 +259,7 @@ class sportsmanagementModelPredictionMembers extends JModelList
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
 	//$not_in = array();

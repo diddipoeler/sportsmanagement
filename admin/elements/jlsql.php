@@ -75,7 +75,7 @@ class JFormFieldJLSQL extends JFormField
 	 * @return
 	 */
 	function getInput() {
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$db->setQuery($this->elements['query']);
 		$key = ($this->elements['key_field'] ? $this->elements['key_field'] : 'value');
 		$val = ($this->elements['value_field'] ? $this->elements['value_field'] : $this->name);

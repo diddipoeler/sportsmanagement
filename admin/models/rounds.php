@@ -143,7 +143,7 @@ class sportsmanagementModelRounds extends JModelList
         $option = JRequest::getCmd('option');
         
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = JFactory::getDbo()->getQuery(true);
         $subQuery1= JFactory::getDbo()->getQuery(true);
         $subQuery2= JFactory::getDbo()->getQuery(true);
@@ -236,9 +236,10 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         
         // Select some fields
         $query->select('CONCAT_WS( \':\', id, alias ) AS id');
+        $query->select('id AS round_id');
         $query->select('roundcode');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+		$query->from('#__sportsmanagement_round');
         $query->where('project_id = '.$projectid);  
         $query->order('roundcode ASC, id ASC');  
 
@@ -271,9 +272,10 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         
         // Select some fields
         $query->select('CONCAT_WS( \':\', id, alias ) AS id');
+        $query->select('id AS round_id');
         $query->select('roundcode');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+		$query->from('#__sportsmanagement_round');
         $query->where('project_id = '.$projectid);  
         $query->order('roundcode DESC, id DESC');  
         		

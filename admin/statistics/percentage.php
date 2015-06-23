@@ -98,7 +98,7 @@ class SMStatisticPercentage extends SMStatistic
 			return(array(0));
 		}
 				
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$ids = array('num' => array(), 'den' => array());
 		foreach ($numerator_ids as $s) 
         {
@@ -141,7 +141,7 @@ class SMStatisticPercentage extends SMStatistic
 			return(array(0));
 		}
 				
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$ids = array('num' => array(), 'den' => array());
 		foreach ($numerator_ids as $s) 
         {
@@ -255,7 +255,7 @@ class SMStatisticPercentage extends SMStatistic
 		
 		$option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
         
         $query_num = JFactory::getDbo()->getQuery(true);
         $query_den = JFactory::getDbo()->getQuery(true);
@@ -432,7 +432,7 @@ class SMStatisticPercentage extends SMStatistic
 	{
 		$sids = self::getQuotedSids();
 		$app = JFactory::getApplication();
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
         
         $query_num = SMStatistic::getTeamsRankingStatisticNumQuery($project_id, $sids['num']);
 //		$query_num = ' SELECT SUM(ms.value) AS num, pt.id '
@@ -531,7 +531,7 @@ class SMStatisticPercentage extends SMStatistic
 	{
 		$sids = $this->getQuotedSids();
 		
-		$db = &JFactory::getDBO();
+		$db = &sportsmanagementHelper::getDBConnection();
 		$query = ' SELECT SUM(ms.value) AS value, tp.person_id '
 		       . ' FROM #__joomleague_team_staff AS tp '
 		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
@@ -571,7 +571,7 @@ class SMStatisticPercentage extends SMStatistic
 	{
 		$sids = $this->getQuotedSids();
 		
-		$db = &JFactory::getDBO();
+		$db = &sportsmanagementHelper::getDBConnection();
 		$query = ' SELECT SUM(ms.value) AS value, tp.person_id '
 		       . ' FROM #__joomleague_team_staff AS tp '
 		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '

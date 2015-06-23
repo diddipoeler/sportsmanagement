@@ -64,6 +64,7 @@ class sportsmanagementTableTreetoNode extends JTable
 	 * @since 1.0
 	 */
 	public function __construct(& $db) {
+	   $db = sportsmanagementHelper::getDBConnection();
 		parent::__construct('#__'.COM_SPORTSMANAGEMENT_TABLE.'_treeto_node', 'id', $db);
 	}
 }

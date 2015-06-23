@@ -59,7 +59,7 @@ function init( $tpl = null )
 	{
 		$app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
-		$db	 		= JFactory::getDBO();
+		$db	 		= sportsmanagementHelper::getDBConnection();
 		$uri		= JFactory::getURI();
 		$user		= JFactory::getUser();
 		$model		= $this->getModel();

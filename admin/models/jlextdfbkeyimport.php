@@ -375,7 +375,7 @@ $this->savedfb = $result ;
   $app = JFactory::getApplication();
     $option = JRequest::getCmd('option');
     require_once( JPATH_ADMINISTRATOR.'/components/'.$option.'/'. 'helpers' . DS . 'jinstallationhelper.php' );    
-    $db = JFactory::getDBO();
+    $db = sportsmanagementHelper::getDBConnection();
     $db_table = JPATH_ADMINISTRATOR.'/components/'.$option.'/sql/dfbkeys.sql';
     
   $query='SELECT count(*) AS count

@@ -707,7 +707,7 @@ function PrintStepResult($result)
 
 function doQueries($queries)
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 
 	/* execute modifications */
 	if (count($queries))
@@ -745,7 +745,7 @@ function doQueries($queries)
 
 function Update_Tables($updates,$tablename)
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$queries=array();
 	$tables[0]=$updates[$tablename][0]['tablename'];
 
@@ -788,7 +788,7 @@ function Update_Tables($updates,$tablename)
 //echo Change_Table_Columns($updates2,'joomleague');
 function Change_Table_Columns($updates,$tablename)
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$queries=array();
 	$tables[0]=$updates[$tablename][0]['tablename'];
 
@@ -814,7 +814,7 @@ function Change_Table_Columns($updates,$tablename)
 
 function Delete_Table_Columns($dUpdates,$tablename)
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$queries=array();
 	$tables[0]=$dUpdates[$tablename][0]['tablename'];
 	//echo '<br /><pre>~'.print_r($dUpdates,true).'~</pre><br />';
@@ -842,7 +842,7 @@ function UpdateTemplateProject_ids()
 							'<b>'.'#__joomleague_template_config'.'</b>').'<br /><br />';
 
 	$result=false;
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$projectID='';
 
 	$query='SELECT * FROM #__joomleague_template_configs ORDER by project_id,template';
@@ -951,7 +951,7 @@ function UpdateTemplateProject_ids()
 
 function UpdateMasterTemplateProject_ids()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$i=0;
@@ -1049,7 +1049,7 @@ $convert = array (
   
   	
 	echo '<b>'.JText::_('Updating new variables and templates for usage in the Master-Templates').'</b><br />';
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 
 	$query='SELECT id,name,master_template FROM #__joomleague_project';
 	$db->setQuery($query);
@@ -1246,7 +1246,7 @@ $convert = array (
 
 function updateVersion($version,$updatefilename)
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 
 	$updateVersionFile=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'updates'.DS.'update_version.sql';
 
@@ -1283,7 +1283,7 @@ function updateVersion($version,$updatefilename)
 function addGhostPlayer()
 {
 	$result=false;
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 
 	echo JText::sprintf('JL_DB_UPDATE_ADDING_GHOSTPERSON','<b>'.'#__joomleague_person'.'</b>');
 
@@ -1352,7 +1352,7 @@ function addStandardsForSoccer()
 	$PositionCounter=1;
 
 	$result=false;
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 
 	{
 		echo JText::sprintf('Adding standard soccer events to table table [%s]','<b>'.'#__joomleague_eventtype'.'</b>');
@@ -1934,7 +1934,7 @@ function addStandardsForSoccer()
 
 function tableExists($tableName)
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$query='SELECT * FROM #__'.$tableName;
 	$db->setQuery($query);
 	$result=$db->query();
@@ -1950,7 +1950,7 @@ function tableExists($tableName)
 
 function getVersion()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$query='SELECT * FROM #__joomleague_version ORDER BY date DESC ';
 	$db->setQuery($query);
 	$result=$db->loadObject();
@@ -1997,7 +1997,7 @@ function setUpdatePart($val=1)
 
 function TruncateTablesForDevelopment()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 
 	echo '<b>'.JText::_('Truncating some tables for a clean update').'</b><br /><br />';
 
@@ -2041,7 +2041,7 @@ function TruncateTablesForDevelopment()
 
 function HandleVersion()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$query='SHOW TABLES LIKE "#__joomleague_versions"';
 	$db->setQuery($query);
 	if (!$db->query())
@@ -2080,7 +2080,7 @@ DEFAULT CHARACTER SET=utf8;
 
 function HandlePositionEventtype()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 
 	$query='select count(*) from `#__joomleague_position_eventtypes` WHERE 1';
 	$db->setQuery($query);
@@ -2118,7 +2118,7 @@ DEFAULT CHARACTER SET=utf8;
 
 function HandleTemplateConfig()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 
 	$query='select count(*) from `#__joomleague_template_configs` WHERE 1';
 	$db->setQuery($query);
@@ -2159,7 +2159,7 @@ DEFAULT CHARACTER SET=utf8;
 function addSportsType()
 {
 	$result=false;
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 
 	echo JText::sprintf	(	'Adding the sports-type [%1$s] to table [%2$s] if it does not exist yet!',
 							'<strong>'.'Soccer'.'</strong>',
@@ -2184,7 +2184,7 @@ function addSportsType()
 
 function LeaguesToLeague()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$i=0;
@@ -2264,7 +2264,7 @@ function LeaguesToLeague()
 
 function SeasonsToSeason()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$i=0;
@@ -2335,7 +2335,7 @@ function SeasonsToSeason()
 
 function EventtypesToEventtype()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$i=0;
@@ -2431,7 +2431,7 @@ function EventtypesToEventtype()
 
 function PositionsToPosition()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$i=0;
@@ -2544,7 +2544,7 @@ function PositionsToPosition()
 
 function PositionEventtypesToPositionEventtype()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$i=0;
@@ -2636,7 +2636,7 @@ function PositionEventtypesToPositionEventtype()
 
 function PlaygroundsToPlayground()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$i=0;
@@ -2747,7 +2747,7 @@ function PlaygroundsToPlayground()
 
 function ConvertPlaygroundClubID()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$i=0;
@@ -2799,7 +2799,7 @@ function ConvertPlaygroundClubID()
 
 function ClubsToClub()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$i=0;
@@ -2917,7 +2917,7 @@ function ClubsToClub()
 
 function TeamsToTeam()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$i=0;
@@ -3010,7 +3010,7 @@ function TeamsToTeam()
 
 function PlayersToPerson()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$i=0;
@@ -3157,7 +3157,7 @@ function PlayersToPerson()
 
 function RefereesToPerson()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$i=0;
@@ -3261,7 +3261,7 @@ function RefereesToPerson()
 
 function JoomleagueToProject()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$i=0;
@@ -3438,7 +3438,7 @@ function JoomleagueToProject()
 
 function DivisionsToDivision()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$i=0;
@@ -3549,7 +3549,7 @@ function DivisionsToDivision()
 */
 function PosjoomleagueToProjectposition()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$i=0;
@@ -3661,7 +3661,7 @@ function PosjoomleagueToProjectposition()
 */
 function RoundsToRound()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$i=0;
@@ -3784,7 +3784,7 @@ function RoundsToRound()
 */
 function TeamjoomleagueToProjectteam()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$i=0;
@@ -3976,7 +3976,7 @@ function TeamjoomleagueToProjectteam()
 */
 function PlayertoolToTeamplayer()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$i=0;
@@ -4192,7 +4192,7 @@ function PlayertoolToTeamplayer()
 
 function TeamstaffprojectToTeamstaff()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$i=0;
@@ -4443,7 +4443,7 @@ where tsp.position_id = 0
 
 function MatchesToMatch()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$i=0;
 	$ii=0;
 	$result=true;
@@ -4778,7 +4778,7 @@ function MatchesToMatch()
 
 function MatcheventsToMatchevent()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$oldProjectID=(-1);
@@ -4925,7 +4925,7 @@ function MatcheventsToMatchevent()
 
 function MatchplayersToMatchplayer()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$oldMatchID=(-1);
@@ -5081,7 +5081,7 @@ function MatchplayersToMatchplayer()
 
 function MatchrefereesToMatchrefereeAndProjectReferee()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$oldProjectID=(-1);
@@ -5246,7 +5246,7 @@ function MatchrefereesToMatchrefereeAndProjectReferee()
 
 function PredictionGameToPredictionGame()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$i=0;
@@ -5311,7 +5311,7 @@ function PredictionGameToPredictionGame()
 
 function PredictionGameAdminsToPredictionAdmin()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$i=0;
@@ -5384,7 +5384,7 @@ function PredictionGameAdminsToPredictionAdmin()
 
 function PredictionGameProjectToPredictionProject()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$i=0;
@@ -5503,7 +5503,7 @@ function PredictionGameProjectToPredictionProject()
 
 function TipMembersToPredictionMember()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$i=0;
@@ -5657,7 +5657,7 @@ function TipMembersToPredictionMember()
 
 function TipResultsToPredictionResults()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$i=0;
@@ -5786,7 +5786,7 @@ function TipResultsToPredictionResults()
 
 function checklistPredictionTemplates()
 {
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 	$result=true;
 	$copied=false;
 	$i=0;

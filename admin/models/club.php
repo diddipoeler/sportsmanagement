@@ -100,7 +100,7 @@ class sportsmanagementModelclub extends JModelAdmin
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $db		= $this->getDbo();
+        $db		= sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
         $show_team_community = JComponentHelper::getParams($option)->get('show_team_community',0);
@@ -398,7 +398,7 @@ class sportsmanagementModelclub extends JModelAdmin
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $db	= $this->getDbo();
+        $db	= sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         
         $query->clear();
@@ -427,7 +427,7 @@ return $teamsofclub;
         $option = $jinput->getCmd('option');
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
-       $db = JFactory::getDBO();
+       $db = sportsmanagementHelper::getDBConnection();
        
        $query = $db->getQuery(true);
        $address_parts = array();

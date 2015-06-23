@@ -81,7 +81,7 @@ class SMStatisticComplexsum extends SMStatistic
 //			return(array(0));
 //		}
 //		
-//		$db = &JFactory::getDBO();
+//		$db = &sportsmanagementHelper::getDBConnection();
 //		$sids = array();
 //		foreach ($stat_ids as $s) {
 //			$sids[] = (int)$s;
@@ -124,7 +124,7 @@ class SMStatisticComplexsum extends SMStatistic
 //			return(array(0));
 //		}
 //		
-//		$db = &JFactory::getDBO();
+//		$db = &sportsmanagementHelper::getDBConnection();
 //		$sids = array();
 //		foreach ($stat_ids as $s) {
 //			$sids[] = $db->Quote($s);
@@ -213,7 +213,7 @@ class SMStatisticComplexsum extends SMStatistic
 		$factors  = self::getFactors();
 		
 		$app = JFactory::getApplication();
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = JFactory::getDbo()->getQuery(true);
 		
 		// get all stats
@@ -362,7 +362,7 @@ class SMStatisticComplexsum extends SMStatistic
 		$sqids = SMStatistic::getQuotedSids($this->_ids);
 		$factors  = SMStatistic::getFactors();
 		
-		$db = &JFactory::getDBO();
+		$db = &sportsmanagementHelper::getDBConnection();
 		
 		// get all stats
 		$query = ' SELECT ms.value, ms.statistic_id, pt.team_id '
@@ -463,7 +463,7 @@ class SMStatisticComplexsum extends SMStatistic
 		$factors  = self::getFactors();
 		$option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		
         $select = 'ms.value, ms.statistic_id ';
         $query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $sqids,$select,FALSE);
@@ -510,7 +510,7 @@ class SMStatisticComplexsum extends SMStatistic
 		$factors  = self::getFactors();
 		$option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		
         $query = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $sqids,$select,TRUE);
         

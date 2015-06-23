@@ -51,6 +51,7 @@ JHtml::_( 'behavior.mootools' );
 }
 
 ?>
+<div class="row">
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 <div class="imghead">
 
@@ -82,3 +83,4 @@ JHtml::_( 'behavior.mootools' );
 	<input type="hidden" name="folder" value="<?php echo $this->folder; ?>" />
 	<?php echo JHtml::_( 'form.token' ); ?>
 </form>
+</div>

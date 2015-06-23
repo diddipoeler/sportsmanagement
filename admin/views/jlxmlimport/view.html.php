@@ -72,7 +72,7 @@ class sportsmanagementViewJLXMLImport extends sportsmanagementView
 //		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 //        JToolBarHelper::preferences(JRequest::getCmd('option'));
 
-		$db		= JFactory::getDBO();
+		$db		= sportsmanagementHelper::getDBConnection();
 		$uri	= JFactory::getURI();
 
 		#$user = JFactory::getUser();

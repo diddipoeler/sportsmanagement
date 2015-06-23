@@ -134,7 +134,8 @@ class sportsmanagementModelSportsTypes extends JModelList
         $option = JRequest::getCmd('option');
         //$search	= $this->getState('filter.search');
         // Create a new query object.
-		$db		= $this->getDbo();
+		//$db		= $this->getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
 		$query	= $db->getQuery(true);
 		$user	= JFactory::getUser(); 
   
@@ -174,7 +175,8 @@ class sportsmanagementModelSportsTypes extends JModelList
 	public static function getSportsTypes()
 	{
 		$app = JFactory::getApplication();
-        $db = JFactory::getDBO();
+        //$db = sportsmanagementHelper::getDBConnection();
+        $db = sportsmanagementHelper::getDBConnection();
         $query	= $db->getQuery(true);
         $query->select('id, name, name AS text,icon');
         $query->from('#__sportsmanagement_sports_type');
@@ -206,7 +208,8 @@ class sportsmanagementModelSportsTypes extends JModelList
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.
-		$db	= $this->getDbo();
+		//$db	= $this->getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $query->select('count(*) AS count');
         $query->from('#__sportsmanagement_sports_type AS st');
@@ -235,7 +238,8 @@ class sportsmanagementModelSportsTypes extends JModelList
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.
-		$db	= $this->getDbo();
+		//$db	= $this->getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $query->select('count(*) AS count');
         $query->from('#__sportsmanagement_playground AS p ');
@@ -261,7 +265,8 @@ class sportsmanagementModelSportsTypes extends JModelList
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.
-		$db	= $this->getDbo();
+		//$db	= $this->getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $query->select('count(*) AS count');
         $query->from('#__sportsmanagement_league AS l');
@@ -287,7 +292,8 @@ class sportsmanagementModelSportsTypes extends JModelList
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.
-		$db	= $this->getDbo();
+		//$db	= $this->getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $query->select('count(*) AS count');
         $query->from('#__sportsmanagement_person AS c');
@@ -298,7 +304,10 @@ class sportsmanagementModelSportsTypes extends JModelList
 			$this->setError($db->getErrorMsg());
 			return false;
 		}
-		return $db->loadObject()->count;
+        
+        $result = $db->loadObject()->count;
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		return $result;
 	}
   
   
@@ -313,7 +322,8 @@ class sportsmanagementModelSportsTypes extends JModelList
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.
-		$db	= $this->getDbo();
+		//$db = sportsmanagementHelper::getDBConnection();$db	= $this->getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $query->select('count(*) AS count');
         $query->from('#__sportsmanagement_club AS c');
@@ -324,7 +334,9 @@ class sportsmanagementModelSportsTypes extends JModelList
 			$this->setError($db->getErrorMsg());
 			return false;
 		}
-		return $db->loadObject()->count;
+		$result = $db->loadObject()->count;
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		return $result;
 	}
 	
 	
@@ -339,7 +351,8 @@ class sportsmanagementModelSportsTypes extends JModelList
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.
-		$db	= $this->getDbo();
+		//$db	= $this->getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $query->select('count(*) AS count');
         $query->from('#__sportsmanagement_sports_type AS st');
@@ -353,7 +366,9 @@ class sportsmanagementModelSportsTypes extends JModelList
 			$this->setError($db->getErrorMsg());
 			return false;
 		}
-		return $db->loadObject()->count;
+		$result = $db->loadObject()->count;
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		return $result;
 	}
 	
   
@@ -368,7 +383,8 @@ class sportsmanagementModelSportsTypes extends JModelList
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.
-		$db	= $this->getDbo();
+		//$db	= $this->getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $query->select('count(*) AS count');
         $query->from('#__sportsmanagement_season AS s ');
@@ -379,7 +395,9 @@ class sportsmanagementModelSportsTypes extends JModelList
 			$this->setError($db->getErrorMsg());
 			return false;
 		}
-		return $db->loadObject()->count;
+		$result = $db->loadObject()->count;
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		return $result;
 	}
   
 
@@ -394,7 +412,8 @@ class sportsmanagementModelSportsTypes extends JModelList
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.
-		$db	= $this->getDbo();
+		//$db	= $this->getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $query->select('count(*) AS count');
         $query->from('#__sportsmanagement_sports_type AS st');
@@ -408,7 +427,9 @@ class sportsmanagementModelSportsTypes extends JModelList
 			$this->setError($db->getErrorMsg());
 			return false;
 		}
-		return $db->loadObject()->count;
+		$result = $db->loadObject()->count;
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		return $result;
 	}
 	
 	
@@ -423,7 +444,8 @@ class sportsmanagementModelSportsTypes extends JModelList
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.
-		$db	= $this->getDbo();
+		//$db	= $this->getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $query->select('count(*) AS count');
         $query->from('#__sportsmanagement_sports_type AS st');
@@ -437,7 +459,9 @@ class sportsmanagementModelSportsTypes extends JModelList
 			$this->setError($db->getErrorMsg());
 			return false;
 		}
-		return $db->loadObject()->count;
+		$result = $db->loadObject()->count;
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		return $result;
 	}
 
 	
@@ -452,7 +476,8 @@ class sportsmanagementModelSportsTypes extends JModelList
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.
-		$db	= $this->getDbo();
+		//$db	= $this->getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $query->select('count(*) AS count');
         $query->from('#__sportsmanagement_sports_type AS st');
@@ -469,7 +494,9 @@ class sportsmanagementModelSportsTypes extends JModelList
 			$this->setError($db->getErrorMsg());
 			return false;
 		}
-		return $db->loadObject()->count;
+		$result = $db->loadObject()->count;
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		return $result;
 	}
 	
 	
@@ -484,7 +511,8 @@ class sportsmanagementModelSportsTypes extends JModelList
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.
-		$db	= $this->getDbo();
+		//$db	= $this->getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $query->select('count(*) AS count');
         $query->from('#__sportsmanagement_sports_type AS st');
@@ -498,7 +526,9 @@ class sportsmanagementModelSportsTypes extends JModelList
 	$this->setError($db->getErrorMsg());
 	return false;
 	}
-	return $db->loadObject()->count;
+	$result = $db->loadObject()->count;
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		return $result;
 	}
 
 
@@ -513,7 +543,8 @@ class sportsmanagementModelSportsTypes extends JModelList
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.
-		$db	= $this->getDbo();
+		//$db	= $this->getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $query->select('count(*) AS count');
         $query->from('#__sportsmanagement_sports_type AS st');
@@ -527,7 +558,9 @@ class sportsmanagementModelSportsTypes extends JModelList
 			$this->setError($db->getErrorMsg());
 			return false;
 		}
-		return $db->loadObject()->count;
+		$result = $db->loadObject()->count;
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		return $result;
 	}
 
 	
@@ -542,7 +575,8 @@ class sportsmanagementModelSportsTypes extends JModelList
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.
-		$db	= $this->getDbo();
+		//$db	= $this->getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $query->select('count(*) AS count');
         $query->from('#__sportsmanagement_sports_type AS st');
@@ -557,7 +591,9 @@ class sportsmanagementModelSportsTypes extends JModelList
 			$this->setError($db->getErrorMsg());
 			return false;
 		}
-		return $db->loadObject()->count;
+		$result = $db->loadObject()->count;
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		return $result;
 	}
 
 	
@@ -573,7 +609,8 @@ class sportsmanagementModelSportsTypes extends JModelList
     $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.
-		$db	= $this->getDbo();
+		//$db	= $this->getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $query->select('count( me.id ) as total');
         $query->select('me.event_type_id,p.sports_type_id,et.name,et.icon');
@@ -607,7 +644,8 @@ class sportsmanagementModelSportsTypes extends JModelList
 	  $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.
-		$db	= $this->getDbo();
+		//$db	= $this->getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $query->select('count(*) AS count');
         $query->from('#__sportsmanagement_sports_type AS st');
@@ -623,7 +661,9 @@ class sportsmanagementModelSportsTypes extends JModelList
 			$this->setError($db->getErrorMsg());
 			return false;
 		}
-		return $db->loadObject()->count;
+		$result = $db->loadObject()->count;
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		return $result;
 	}
 
 
@@ -638,7 +678,8 @@ class sportsmanagementModelSportsTypes extends JModelList
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.
-		$db	= $this->getDbo();
+		//$db	= $this->getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $query->select('count(*) AS count');
         $query->from('#__sportsmanagement_sports_type AS st');
@@ -654,7 +695,9 @@ class sportsmanagementModelSportsTypes extends JModelList
 			$this->setError($db->getErrorMsg());
 			return false;
 		}
-		return $db->loadObject()->count;
+		$result = $db->loadObject()->count;
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		return $result;
 	}
 
  

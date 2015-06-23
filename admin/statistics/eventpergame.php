@@ -145,7 +145,7 @@ class SMStatisticEventPergame extends SMStatistic
 		$sids = SMStatistic::getQuotedSids($this->_ids);
 		$option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
         
         $query_core = JFactory::getDbo()->getQuery(true);
         
@@ -256,7 +256,7 @@ class SMStatisticEventPergame extends SMStatistic
 	{
 		$app = JFactory::getApplication();
         $sids = SMStatistic::getQuotedSids($this->_ids);
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         $query_num = $db->getQuery(true);
         $query_den = $db->getQuery(true);
@@ -333,7 +333,7 @@ class SMStatisticEventPergame extends SMStatistic
 	{
 		$sids = SMStatistic::getQuotedSids($this->_ids);
 		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
         $query = JFactory::getDbo()->getQuery(true);
         $app = JFactory::getApplication();
         
@@ -382,7 +382,7 @@ class SMStatisticEventPergame extends SMStatistic
 	{
 		$sids = $this->getQuotedSids();
 		
-		$db = &JFactory::getDBO();
+		$db = &sportsmanagementHelper::getDBConnection();
 		$query = ' SELECT SUM(ms.value) AS value, tp.person_id '
 		       . ' FROM #__joomleague_team_staff AS tp '
 		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '

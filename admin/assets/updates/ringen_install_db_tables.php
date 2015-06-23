@@ -64,7 +64,7 @@ function setUpdatePart($val=1)
 
 function ImportTables()
 {
-	$db =& JFactory::getDBO();
+	$db =& sportsmanagementHelper::getDBConnection();
 
 	$imports=file_get_contents(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_joomleague'.DS.'sql'.DS.'ringerposition_table.sql');
 	$imports=preg_replace("%/\*(.*)\*/%Us",'',$imports);

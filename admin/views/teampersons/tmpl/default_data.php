@@ -62,15 +62,15 @@ JHtml::_('behavior.modal');
 			<table class="<?php echo $this->table_data_class; ?>">
 				<thead>
 					<tr>
-						<th width="5">
+						<th width="">
 							<?php
 							echo JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_NUM' );
 							?>
 						</th>
-						<th width="20">
+						<th width="">
 							<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 						</th>
-						<th width="20">
+						<th width="">
 							&nbsp;
 						</th>
 						<th>
@@ -88,17 +88,17 @@ JHtml::_('behavior.modal');
                             echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_IMAGE', 'ppl.picture', $this->sortDirection, $this->sortColumn );
 							?>
 						</th>
-                        <th width="20">
+                        <th width="">
 							<?php
                             echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_MARKET_VALUE', 'tp.market_value', $this->sortDirection, $this->sortColumn );
 							?>
 						</th>
-						<th width="20">
+						<th width="">
 							<?php
                             echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_SHIRTNR', 'tp.jerseynumber', $this->sortDirection, $this->sortColumn );
 							?>
 						</th>
-						<th width="20">
+						<th width="">
 							<?php
 							echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_POS', 'ppl.project_position_id', $this->sortDirection, $this->sortColumn );
 							?>
@@ -112,14 +112,14 @@ JHtml::_('behavior.modal');
 						<?php
 						echo JHtml::_('grid.sort','JSTATUS','ppl.published',$this->sortDirection,$this->sortColumn);
 						?></th>
-						<th width="10%">
+						<th width="">
 							<?php
 							//echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER', 'ppl.ordering', $this->sortDirection, $this->sortColumn );
                             echo JHtml::_( 'grid.sort', 'JGRID_HEADING_ORDERING', 'ppl.ordering', $this->sortDirection, $this->sortColumn );
 							echo JHtml::_( 'grid.order', $this->items, 'filesave.png', 'teamplayers.saveorder' );
 							?>
 						</th>
-						<th width="5%">
+						<th width="">
 							<?php
 							echo JHtml::_( 'grid.sort', 'JGRID_HEADING_ID', 'ppl.id', $this->sortDirection, $this->sortColumn );
 							?>
@@ -207,7 +207,7 @@ JHtml::_('behavior.modal');
 							</td>
 							<td class="center">
 								<?php
-								if ( $row->picture == '' )
+								if ( $row->season_picture == '' )
 								{
 									$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_NO_IMAGE' );
 									echo JHtml::_(	'image',
@@ -216,7 +216,7 @@ JHtml::_('behavior.modal');
 													'title= "' . $imageTitle . '"' );
 
 								}
-								elseif ( $row->picture == sportsmanagementHelper::getDefaultPlaceholder("player") )
+								elseif ( $row->season_picture == sportsmanagementHelper::getDefaultPlaceholder("player") )
 								{
 										$imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_DEFAULT_IMAGE' );
 										echo JHtml::_(	'image',
@@ -224,18 +224,17 @@ JHtml::_('behavior.modal');
 														$imageTitle,
 														'title= "' . $imageTitle . '"' );
 ?>
-<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="20" height="30"  />
+<a href="<?php echo JURI::root().$row->season_picture;?>" title="<?php echo $imageTitle;?>" class="modal">
+<img src="<?php echo JURI::root().$row->season_picture;?>" alt="<?php echo $imageTitle;?>" width="20" height="30"  />
 </a>
 <?PHP   								
                                 }
-								elseif ( $row->picture == !'')
+								elseif ( $row->season_picture == !'')
 								{
 									$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
-									//echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
 ?>
-<a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $playerName;?>" class="modal">
-<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $playerName;?>" width="20" height="30"  />
+<a href="<?php echo JURI::root().$row->season_picture;?>" title="<?php echo $playerName;?>" class="modal">
+<img src="<?php echo JURI::root().$row->season_picture;?>" alt="<?php echo $playerName;?>" width="20" height="30"  />
 </a>
 <?PHP 								
                                 

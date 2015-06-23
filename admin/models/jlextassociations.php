@@ -138,7 +138,7 @@ class sportsmanagementModeljlextassociations extends JModelList
         $option = JRequest::getCmd('option');
 
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 		// Select some fields
 		$query->select(implode(",",$this->filter_fields));

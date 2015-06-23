@@ -163,7 +163,8 @@ class sportsmanagementModelProjectteams extends JModelList
         $this->project_art_id = $app->getUserState( "$option.project_art_id", '0' );
         $this->sports_type_id = $app->getUserState( "$option.sports_type_id", '0' );
         
-        $db	= $this->getDbo();
+        //$db	= $this->getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $subQuery= $db->getQuery(true);
         $subQuery2= $db->getQuery(true);
@@ -278,6 +279,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	{
 	   // Reference global application object
         $app = JFactory::getApplication();
+        $db = sportsmanagementHelper::getDBConnection();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -289,10 +291,10 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 			$query = "	DELETE
 						FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_team
 						WHERE project_id = '" . $data['id'] . "'";
-			$this->_db->setQuery( $query );
-			if ( !$this->_db->query() )
+			$db->setQuery( $query );
+			if ( !$db->query() )
 			{
-				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 				$result = false;
 			}
 		}
@@ -303,10 +305,10 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 			$query = "	DELETE
 						FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_team
 						WHERE project_id = '" . $data['id'] . "' AND team_id NOT IN  (" . $peids . ")";
-			$this->_db->setQuery( $query );
-			if ( !$this->_db->query() )
+			$db->setQuery( $query );
+			if ( !$db->query() )
 			{
-				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 				$result = false;
 			}
 
@@ -315,10 +317,10 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 						WHERE projectteam1_id in (select id from #__".COM_SPORTSMANAGEMENT_TABLE."_project_team 
 												where project_id = '" . $data['id'] . "' 
 												AND team_id NOT IN  (" . $peids . "))";
-			$this->_db->setQuery( $query );
-			if ( !$this->_db->query() )
+			$db->setQuery( $query );
+			if ( !$db->query() )
 			{
-				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 				$result = false;
 			}
 			$query = "	UPDATE  #__".COM_SPORTSMANAGEMENT_TABLE."_match
@@ -326,10 +328,10 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 						WHERE projectteam2_id in (select id from #__".COM_SPORTSMANAGEMENT_TABLE."_project_team 
 												where project_id = '" . $data['id'] . "' 
 												AND team_id NOT IN  (" . $peids . "))";
-			$this->_db->setQuery( $query );
-			if ( !$this->_db->query() )
+			$db->setQuery( $query );
+			if ( !$db->query() )
 			{
-				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 				$result = false;
 			}
 				
@@ -342,10 +344,10 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 						(project_id, team_id)
 						VALUES ( '" . $data['id'] . "', '".$data['project_teamslist'][$x] . "')";
 
-			$this->_db->setQuery( $query );
-			if ( !$this->_db->query() )
+			$db->setQuery( $query );
+			if ( !$db->query() )
 			{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 				$result = false;
 			}
 		}
@@ -368,7 +370,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $db	= JFactory::getDbo(); 
+        //$db	= JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(); 
 		$query = $db->getQuery(true);
         self::$_project_id = $app->getUserState( "$option.pid", '0' );
         $this->_season_id = $app->getUserState( "$option.season_id", '0' );
@@ -463,7 +466,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $db = JFactory::getDBO();
+        //$db = sportsmanagementHelper::getDBConnection();
+        $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
 
 		$post = JRequest::get('post');
@@ -534,7 +538,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         
 	   $this->_season_id = $app->getUserState( "$option.season_id", '0' );
        
-		$db = JFactory::getDBO();
+		//$db = sportsmanagementHelper::getDBConnection();
+        $db = sportsmanagementHelper::getDBConnection();
 
         $query = $db->getQuery(true);
         
@@ -637,7 +642,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         self::$_pro_teams_in_used = array();
         }
         
-        $db	= $this->getDbo();
+        //$db	= $this->getDbo();
+        $db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -769,6 +775,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	{
 	   // Reference global application object
         $app = JFactory::getApplication();
+        $db = sportsmanagementHelper::getDBConnection();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -790,12 +797,12 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 		       . ' SELECT team_id, '.$dest.', info, picture, standard_playground, extended '
 		       . ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team '
 		       . ' WHERE id IN (' . implode(',', $ptids).')';
-		$this->_db->setQuery($query);
-		$res = $this->_db->query();
+		$db->setQuery($query);
+		$res = $db->query();
 		
 		if (!$res) 
 		{
-			$this->setError($this->_db->getErrorMsg());
+			$this->setError($db->getErrorMsg());
 			return false;
 		}
 		
@@ -806,8 +813,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.id = tp.projectteam_id '
 		       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS dest ON pt.team_id = dest.team_id AND dest.project_id = '.$dest 
 		       . ' WHERE pt.id IN (' . implode(',', $ptids).')';
-		$this->_db->setQuery($query);
-		$res = $this->_db->query();
+		$db->setQuery($query);
+		$res = $db->query();
 				
 		// and finally the staff
 		$query = ' INSERT INTO #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff (projectteam_id, person_id, picture, extended, published) '
@@ -816,12 +823,12 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 				       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.id = tp.projectteam_id '
 				       . ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS dest ON pt.team_id = dest.team_id AND dest.project_id = '.$dest 
 		. ' WHERE pt.id IN (' . implode(',', $ptids).')';
-		$this->_db->setQuery($query);
-		$res = $this->_db->query();
+		$db->setQuery($query);
+		$res = $db->query();
 		
 		if (!$res) 
 		{
-			$this->setError($this->_db->getErrorMsg());
+			$this->setError($db->getErrorMsg());
 			return false;
 		}
 		
@@ -842,7 +849,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $db	= JFactory::getDbo(); 
+        //$db	= JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(); 
 		$query = $db->getQuery(true);
         $starttime = microtime(); 
         

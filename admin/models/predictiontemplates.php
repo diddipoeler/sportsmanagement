@@ -145,7 +145,7 @@ class sportsmanagementModelPredictionTemplates extends JModelList
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $search	= $this->getState('filter.search');
         $prediction_id	= $this->getState('filter.prediction_id_select');

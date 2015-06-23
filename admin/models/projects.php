@@ -164,7 +164,7 @@ class sportsmanagementModelProjects extends JModelList
         //$search_userfields = $this->getState('filter.userfields');
         
         // Create a new query object.
-        $db = JFactory::getDBO();
+        $db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $subQuery = $db->getQuery(true);
         $subQuery2 = $db->getQuery(true);

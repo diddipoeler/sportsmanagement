@@ -105,7 +105,7 @@ class SMStatisticDifference extends SMStatistic
 	 */
 	function getQuotedSids($id_field = '')
 	{
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$ids = self::getSids('');
 		
 		foreach ($ids['add'] as $k => $s) 
@@ -208,7 +208,7 @@ class SMStatisticDifference extends SMStatistic
 	function getPlayersRanking($project_id, $division_id, $team_id, $limit = 20, $limitstart = 0, $order = null)
 	{
 		$sids = self::getQuotedSids('');
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
         $app = JFactory::getApplication();
 
 //		$query_add = ' SELECT SUM(ms.value) AS num, tp.id AS tpid, tp.person_id '
@@ -337,7 +337,7 @@ class SMStatisticDifference extends SMStatistic
 	{
 		$sids = $this->getQuotedSids();
 		
-		$db = &JFactory::getDBO();
+		$db = &sportsmanagementHelper::getDBConnection();
 		$query_add = ' SELECT SUM(ms.value) AS num, tp.person_id '
 		       . ' FROM #__joomleague_team_player AS tp '
 		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
@@ -437,7 +437,7 @@ class SMStatisticDifference extends SMStatistic
 	$app = JFactory::getApplication();
         $sids = self::getQuotedSids();
 		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
         
         $select = 'SUM(ms.value) AS value, tp.person_id ';
         $query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, implode(',', $sids['add']),$select,FALSE);
@@ -499,7 +499,7 @@ class SMStatisticDifference extends SMStatistic
 	$app = JFactory::getApplication();
         $sids = self::getQuotedSids();
 		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
         $select = 'SUM(ms.value) AS value, tp.person_id ';
         $query = SMStatistic::getStaffStatsQuery($person_id, 0, 0, implode(',', $sids['add']),$select,TRUE);
         

@@ -237,7 +237,7 @@ class sportsmanagementModeljlextcountry extends JModelAdmin
     $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);    
         // Get the input
         $pks = JRequest::getVar('cid', null, 'post', 'array');

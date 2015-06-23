@@ -76,7 +76,7 @@ class SMStatisticBasic extends SMStatistic
 
 	function getMatchPlayersStats($match_id)
 	{
-		$db = &JFactory::getDBO();
+		$db = &sportsmanagementHelper::getDBConnection();
 		
 		$query = ' SELECT SUM(ms.value) AS value, tp.id '
 		       . ' FROM #__joomleague_team_player AS tp '
@@ -170,7 +170,7 @@ class SMStatisticBasic extends SMStatistic
 	function getPlayersRanking($project_id, $division_id, $team_id, $limit = 20, $limitstart = 0, $order = null)
 	{		
 		$app = JFactory::getApplication();
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query_core = JFactory::getDbo()->getQuery(true);
 		
 		$query_select_count = ' SELECT COUNT(DISTINCT tp.id) as count';
@@ -274,7 +274,7 @@ class SMStatisticBasic extends SMStatistic
 	function getTeamsRanking($project_id, $limit = 20, $limitstart = 0, $order=null)
 	{		
 		$app = JFactory::getApplication();
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query_core = JFactory::getDbo()->getQuery(true);
 		
         $query_core->select('SUM(ms.value) AS total, st.team_id');
@@ -363,7 +363,7 @@ class SMStatisticBasic extends SMStatistic
 	{
 		$option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
-	$db = JFactory::getDBO();
+	$db = sportsmanagementHelper::getDBConnection();
 		$select = 'SUM(ms.value) AS value ';
         $query = SMStatistic::getStaffStatsQuery($person_id, $team_id, $project_id, $this->id,$select,FALSE);
         
@@ -398,7 +398,7 @@ class SMStatisticBasic extends SMStatistic
 	{
 		$option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
-        $db = JFactory::getDBO();
+        $db = sportsmanagementHelper::getDBConnection();
 		
         $select = 'SUM(ms.value) AS value ';
         $query = SMStatistic::getStaffStatsQuery($person_id, 0, 0, $this->id,$select,TRUE);

@@ -76,7 +76,7 @@ class sportsmanagementControllerclub extends JControllerForm
 
 		// Initialise variables.
 		$app = JFactory::getApplication();
-        $db = JFactory::getDBO();
+        $db = sportsmanagementHelper::getDBConnection();
         $id	= JRequest::getInt('id');
         $tmpl = JRequest::getVar('tmpl');
 		$model = $this->getModel('club');

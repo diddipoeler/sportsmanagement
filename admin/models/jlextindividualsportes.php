@@ -82,7 +82,7 @@ class sportsmanagementModeljlextindividualsportes extends JModelList
         //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         //$search_nation		= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
         // Select some fields
@@ -108,7 +108,7 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
         $option = JRequest::getCmd('option');
 		$app	= JFactory::getApplication();
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
         //$app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' project<br><pre>'.print_r($project, true).'</pre><br>','');
@@ -202,7 +202,7 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
 		$app	= JFactory::getApplication();
 		//$project_id = $app->getUserState($option . 'project');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 //$projectteam1_id		= JRequest::getvar('team1', 0);
 
@@ -296,7 +296,7 @@ $query->order($db->escape($this->getState('list.ordering', 'mc.id')).' '.
   $option = JRequest::getCmd('option');
 	$app	= JFactory::getApplication();
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $season_id	= $app->getUserState( "$option.season_id", '0' );
 

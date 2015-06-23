@@ -213,7 +213,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
         // Select some fields
@@ -245,7 +245,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         // Select some fields
         $query->select('project_id');
@@ -325,7 +325,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
  		$option = JRequest::getCmd('option');
 	$app	= JFactory::getApplication();
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
          $result	= true;
@@ -376,7 +376,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
  		$option = JRequest::getCmd('option');
 	$app	= JFactory::getApplication();
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
          $result	= true;

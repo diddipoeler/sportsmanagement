@@ -295,7 +295,14 @@ JHtml::_('behavior.modal');
                         <a href="<?php echo $link2divisions; ?>"><?php echo $this->modeldivision->getProjectDivisionsCount($row->id); ?></a>
                         </td>
                         
-                        <td class="center"><?php echo $row->user_field; ?></td>
+                        <td class="center">
+                        <?php 
+                        echo $row->user_field; 
+                        echo JHtml::link('index.php?option=com_sportsmanagement&view='. $row->user_field.'&pid='.$row->id,
+								                       JHtml::image(JUri::root().'administrator/components/com_sportsmanagement/assets/images/information.png', JText::_($row->user_field)));
+                        
+                        ?>
+                        </td>
                         
                         <td class="center"><?php echo $published; ?></td>
 						<td class="order">

@@ -60,7 +60,7 @@ class JFormFieldpredictionroundid extends JFormField
 	 */
 	protected function getInput()
   {
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
     $app			= JFactory::getApplication();
 		$option				= 'com_sportsmanagement';
         

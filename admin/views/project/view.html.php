@@ -107,10 +107,10 @@ class sportsmanagementViewProject extends sportsmanagementView
         $this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);
         
         $extended = sportsmanagementHelper::getExtended($this->item->extended, 'project');		
-		$this->assignRef( 'extended', $extended );
+		$this->assignRef('extended', $extended );
         
         $extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'project');		
-		$this->assignRef( 'extendeduser', $extendeduser );
+		$this->assignRef('extendeduser', $extendeduser );
         
                
         //$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
@@ -125,10 +125,13 @@ class sportsmanagementViewProject extends sportsmanagementView
             $user->id ;
         }
         
-        $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
+        $this->assign('checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
         if ( $this->checkextrafields )
         {
+            if ( !$isNew )
+            {
             $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id);
+            }
             //$app->enqueueMessage(JText::_('view -> '.'<pre>'.print_r($lists['ext_fields'],true).'</pre>' ),'');
         }
         

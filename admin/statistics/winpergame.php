@@ -77,7 +77,7 @@ class SMStatisticWinpergame extends SMStatistic
 	 */
 	function getPlayerStatsByProject($person_id, $projectteam_id = 0, $project_id = 0, $sports_type_id = 0)
 	{		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
         $app = JFactory::getApplication();
         $query = JFactory::getDbo()->getQuery(true);
         
@@ -148,7 +148,7 @@ class SMStatisticWinpergame extends SMStatistic
 	 */
 	function getRosterStats($team_id, $project_id, $position_id)
 	{		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
         $app = JFactory::getApplication();
         $query = JFactory::getDbo()->getQuery(true);
 
@@ -227,7 +227,7 @@ class SMStatisticWinpergame extends SMStatistic
 	 */
 	function getRosterTotalStats($team_id, $project_id, $position_id = 0)
 	{		
-		$db = &JFactory::getDBO();
+		$db = &sportsmanagementHelper::getDBConnection();
 		$query = ' SELECT COUNT(m.id) AS value '
 		       . ' FROM #__joomleague_project_team AS pt '
 		       . ' INNER JOIN #__joomleague_match AS m ON m.projectteam1_id = pt.id OR m.projectteam2_id = pt.id'
@@ -259,7 +259,7 @@ class SMStatisticWinpergame extends SMStatistic
 
 	function getPlayersRanking($project_id, $division_id, $team_id, $limit = 20, $limitstart = 0, $order=null)
 	{		
-		$db = &JFactory::getDBO();
+		$db = &sportsmanagementHelper::getDBConnection();
 		$query_num = ' SELECT COUNT(m.id) AS num, tp.id AS tpid, tp.person_id '
 			. ' FROM #__joomleague_team_player AS tp '
 			. ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
@@ -340,7 +340,7 @@ class SMStatisticWinpergame extends SMStatistic
 		
 	function getTeamsRanking($project_id, $limit = 20, $limitstart = 0, $order=null)
 	{		
-		$db = &JFactory::getDBO();
+		$db = &sportsmanagementHelper::getDBConnection();
 		$query_num = ' SELECT COUNT(m.id) AS num, pt.id '
 		       . ' FROM #__joomleague_project_team AS pt '
 		       . ' INNER JOIN #__joomleague_match AS m ON m.projectteam1_id = pt.id OR m.projectteam2_id = pt.id '
@@ -396,7 +396,7 @@ class SMStatisticWinpergame extends SMStatistic
 	
 	function getStaffStats($person_id, $team_id, $project_id)
 	{		
-		$db = &JFactory::getDBO();
+		$db = &sportsmanagementHelper::getDBConnection();
 		$query = ' SELECT COUNT(m.id) AS value, tp.person_id '
 		       . ' FROM #__joomleague_team_staff AS tp '
 		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
@@ -432,7 +432,7 @@ class SMStatisticWinpergame extends SMStatistic
 
 	function getHistoryStaffStats($person_id)
 	{		
-		$db = &JFactory::getDBO();
+		$db = &sportsmanagementHelper::getDBConnection();
 		$query = ' SELECT COUNT(m.id) AS value, tp.person_id '
 		       . ' FROM #__joomleague_team_staff AS tp '
 		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '

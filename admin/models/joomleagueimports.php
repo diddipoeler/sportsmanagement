@@ -47,6 +47,166 @@ jimport('joomla.application.component.modellist');
 $maxImportTime = 1920;
 if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImportTime);}
 
+/*
+umsetzung der spieler in den paarungen
+
+########################################################################################
+1.) einfügen der startaufstellung 
+----------------------------------------------------------------------------------------
+INSERT INTO j25_sportsmanagement_match_player (id,match_id,teamplayer_id,came_in,in_for,in_out_time) 
+
+select
+mp.id,  
+mp.match_id, 
+stp.id as teamplayer_id,
+mp.came_in,
+mp.in_for,
+mp.in_out_time
+
+from j25_joomleague_match_player as mp
+inner join j25_joomleague_team_player as tp on tp.id = mp.teamplayer_id
+inner join j25_joomleague_project_team as pt on pt.id = tp.projectteam_id
+inner join j25_joomleague_project as p on p.id = pt.project_id
+
+left join j25_sportsmanagement_season_team_person_id as stp on 
+stp.person_id = tp.person_id
+and stp.team_id = pt.team_id
+and stp.season_id = p.season_id
+where mp.came_in = 0
+----------------------------------------------------------------------------------------
+
+########################################################################################
+2.) danach kommt der update 
+UPDATE `j25_sportsmanagement_match_player` SET  `out` =  '1'
+WHERE `j25_sportsmanagement_match_player`.`in_out_time` IS NOT NULL
+AND `j25_sportsmanagement_match_player`.`came_in` = '0'
+----------------------------------------------------------------------------------------
+
+########################################################################################
+3.) dann die einwechselungen 
+
+INSERT INTO j25_sportsmanagement_match_player (id,match_id,teamplayer_id,came_in,in_for,in_out_time)
+select
+mp.id,  
+mp.match_id, 
+stp.id as teamplayer_id,
+mp.came_in,
+(
+select stp.id
+from j25_joomleague_team_player as tp
+inner join j25_joomleague_project_team as pt on pt.id = tp.projectteam_id
+inner join j25_joomleague_project as p on p.id = pt.project_id
+
+left join j25_sportsmanagement_season_team_person_id as stp on 
+stp.person_id = tp.person_id
+and stp.team_id = pt.team_id
+and stp.season_id = p.season_id
+where tp.id = mp.in_for
+)
+as in_for,
+mp.in_out_time
+
+from j25_joomleague_match_player as mp
+inner join j25_joomleague_team_player as tp on tp.id = mp.teamplayer_id
+inner join j25_joomleague_project_team as pt on pt.id = tp.projectteam_id
+inner join j25_joomleague_project as p on p.id = pt.project_id
+
+left join j25_sportsmanagement_season_team_person_id as stp on 
+stp.person_id = tp.person_id
+and stp.team_id = pt.team_id
+and stp.season_id = p.season_id
+where mp.came_in = 1
+
+limit 0,5
+
+----------------------------------------------------------------------------------------
+
+########################################################################################
+4.) jetzt kommen die schiedsrichter in die season_person tabelle 
+
+INSERT INTO j25_sportsmanagement_season_person_id (person_id,season_id,persontype)
+
+select
+mp.person_id as person_id,
+p.season_id,
+3 as persontype
+
+
+from j25_joomleague_project_referee as mp
+inner join j25_joomleague_project as p on p.id = mp.project_id
+
+left join j25_sportsmanagement_season_person_id as stp on 
+stp.person_id = mp.person_id
+and stp.season_id = p.season_id
+
+where stp.id IS NULL
+group by mp.person_id,p.season_id
+
+limit 0,5
+----------------------------------------------------------------------------------------
+########################################################################################
+5.) jetzt kommen die schiedsrichter in die schiedsrichter projekt tabelle 
+
+INSERT INTO j25_sportsmanagement_project_referee (id,project_id,person_id,published)
+
+select
+mp.id,  
+mp.project_id, 
+stp.id as person_id,
+1 as published
+
+
+from j25_joomleague_project_referee as mp
+inner join j25_joomleague_project as p on p.id = mp.project_id
+
+left join j25_sportsmanagement_season_person_id as stp on 
+stp.person_id = mp.person_id
+and stp.season_id = p.season_id
+
+where stp.persontype = 3
+
+limit 0,5
+
+########################################################################################
+6.) jetzt kommen die schiedsrichter in die schiedsrichter spiel tabelle 
+
+INSERT INTO j25_sportsmanagement_match_referee (id,match_id,project_referee_id,published)
+
+select
+mp.id,  
+mp.match_id, 
+mp.project_referee_id,
+1 as published
+
+
+from j25_joomleague_match_referee as mp
+
+
+
+
+
+
+
+
+
+
+mp.teamplayer_id, 
+mp.project_position_id,
+tp.projectteam_id,
+tp.person_id,
+m.round_id,
+r.project_id,
+p.season_id,
+pt.team_id,
+
+
+INSERT INTO j25_sportsmanagement_rosterposition (name,alias,country,extended,short_name,picture)
+select name,alias,country,extended,short_name,picture
+from j25_joomleague_rosterposition
+
+
+*/
+
 /**
  * sportsmanagementModeljoomleagueimports
  * 

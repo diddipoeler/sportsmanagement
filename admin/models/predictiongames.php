@@ -133,7 +133,7 @@ class sportsmanagementModelPredictionGames extends JModelList
         
         
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $query->select(array('pre.*', 'u.name AS editor,u1.username'))
         ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game AS pre')
@@ -182,7 +182,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $starttime = microtime(); 
         
@@ -230,7 +230,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
 		$as_what = '';
@@ -270,7 +270,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
         // Select some fields

@@ -58,7 +58,7 @@ class JFormFieldAvatarFromComponent extends JFormField
 	 * @return
 	 */
 	function getInput() {
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
         $sel_component = array();
         $sel_component['com_kunena'] = 'COM_SPORTSMANAGEMENT_GLOBAL_AVATAR_FROM_KUNENA';
         $sel_component['com_cbe'] = 'COM_SPORTSMANAGEMENT_GLOBAL_AVATAR_FROM_JOOMLA_CBE';

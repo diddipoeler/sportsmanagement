@@ -129,7 +129,7 @@ class sportsmanagementModelTemplates extends JModelList
 		$option = JRequest::getCmd('option');
         //$search	= $this->getState('filter.search');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
         $this->_project_id	= $app->getUserState( "$option.pid", '0' );
@@ -177,7 +177,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
 	   $app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $starttime = microtime(); 
         
@@ -425,7 +425,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
 		$app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $starttime = microtime(); 
         
@@ -504,7 +504,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
 	   $app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
         // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $starttime = microtime(); 
         
