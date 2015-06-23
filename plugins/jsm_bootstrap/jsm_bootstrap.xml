@@ -13,15 +13,15 @@
 	<files>
         <filename plugin="jsm_bootstrap">jsm_bootstrap.php</filename>
         <filename>index.html</filename>
-        <folder>language</folder>
+       <!--> <folder>language</folder> -->
         <folder>css</folder>
     </files>
     
-   <languages folder="language">
-		<language tag="en-GB">en-GB/en-GB.plg_jsm_bootstrap.ini</language>
-		<language tag="en-GB">en-GB/en-GB.plg_jsm_bootstrap.sys.ini</language>
-		<language tag="de-DE">de-DE/de-DE.plg_jsm_bootstrap.ini</language>
-		<language tag="de-DE">de-DE/de-DE.plg_jsm_bootstrap.sys.ini</language>
+   <languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_jsm_bootstrap.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_jsm_bootstrap.sys.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.plg_jsm_bootstrap.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.plg_jsm_bootstrap.sys.ini</language>
 	</languages> 
 
 	<config>
@@ -37,6 +37,27 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
+				
+				<field name="load_bootstrap_carousel" 
+        type="radio" 
+        default="0" 
+        class="radio btn-group btn-group-yesno"
+        label="PLUGIN_JSM_BOOTSTRAP_XML_LOAD_BOOTSTRAP_CAROUSEL"
+					description="PLUGIN_JSM_BOOTSTRAP_XML_LOAD_BOOTSTRAP_CAROUSEL_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				
+				<field name="load_bootstrap_modal" 
+        type="radio" 
+        default="0" 
+        class="radio btn-group btn-group-yesno"
+        label="PLUGIN_JSM_BOOTSTRAP_XML_LOAD_BOOTSTRAP_MODAL"
+					description="PLUGIN_JSM_BOOTSTRAP_XML_LOAD_BOOTSTRAP_MODAL_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				
 				
 				<field name="load_bootstrap_css" 
         type="radio" 

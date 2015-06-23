@@ -37,6 +37,22 @@
  * Note : All ini files need to be saved as UTF-8 without BOM
  */
 
+/*
+https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/jquery.js
+https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-transition.js
+https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-alert.js
+https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-modal.js
+https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-dropdown.js
+https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-scrollspy.js
+https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-tab.js
+https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-tooltip.js
+https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-popover.js
+https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-button.js
+https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-collapse.js
+https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-carousel.js
+https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-typeahead.js
+*/
+
 /**
  * System plugin
  * 1) onBeforeRender()
@@ -156,6 +172,20 @@ class PlgSystemjsm_bootstrap extends JPlugin
                     //CBootstrap::load();
                     JFactory::getDocument()->addScript('https://maxcdn.bootstrapcdn.com/bootstrap/' .
                         $load_bootstrap_version . '/js/bootstrap.min.js');
+                }
+            }
+            
+            if ($this->params->def('load_bootstrap_carousel', 1)) {
+                if (!$app->isAdmin()) {
+                    //CBootstrap::load();
+                    JFactory::getDocument()->addScript('https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-carousel.js');
+                }
+            }
+            
+            if ($this->params->def('load_bootstrap_modal', 1)) {
+                if (!$app->isAdmin()) {
+                    //CBootstrap::load();
+                    JFactory::getDocument()->addScript('https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-modal.js');
                 }
             }
             
