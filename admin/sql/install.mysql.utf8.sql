@@ -314,8 +314,8 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_match` (
   `team1_single_games` DOUBLE NULL DEFAULT NULL ,
   `team2_single_games` DOUBLE NULL DEFAULT NULL ,
   `approved` TINYINT(1)  NOT NULL DEFAULT '0' ,
-  `approved_date` TIME NOT NULL DEFAULT  '0000-00-00',
-  `approved_time` DATE NOT NULL DEFAULT  '00:00',
+  `approved_date` DATE NOT NULL DEFAULT  '0000-00-00',
+  `approved_time` TIME NOT NULL DEFAULT  '00:00',
   `approved_user` INT( 11 ) NOT NULL DEFAULT  '0',
   
   `gcal_event_id` VARCHAR(150) NULL DEFAULT NULL ,
