@@ -399,7 +399,17 @@ $result = $db->execute();
             $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         }
 
-		return $db->loadResultArray();
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        // Joomla! 3.0 code here
+        $res = $db->loadColumn();
+        }
+        elseif(version_compare(JVERSION,'2.5.0','ge')) 
+        {
+        // Joomla! 2.5 code here
+        $res = $db->loadResultArray();
+        } 
+		return $res;
 	}
 
 	/**
@@ -554,7 +564,18 @@ $result = $db->execute();
         }
         
 		$projectTeamIds = array();
-		$projectTeamIds = $db->loadResultArray();
+		
+    if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        // Joomla! 3.0 code here
+        $projectTeamIds = $db->loadColumn();
+        }
+        elseif(version_compare(JVERSION,'2.5.0','ge')) 
+        {
+        // Joomla! 2.5 code here
+        $projectTeamIds = $db->loadResultArray();
+        } 
+		
         
         
 		// team_staff
@@ -571,8 +592,19 @@ $result = $db->execute();
         {
             $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         }
-        
-		$projectTeamIds = array_merge($projectTeamIds,$db->loadResultArray());
+    
+    if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        // Joomla! 3.0 code here
+        $res = $db->loadColumn();
+        }
+        elseif(version_compare(JVERSION,'2.5.0','ge')) 
+        {
+        // Joomla! 2.5 code here
+        $res = $db->loadResultArray();
+        } 
+            
+		$projectTeamIds = array_merge($projectTeamIds,$res);
 		return $projectTeamIds;
 	}
 

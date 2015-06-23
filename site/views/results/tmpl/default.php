@@ -72,7 +72,7 @@ echo $this->loadTemplate('debug');
 		echo $this->loadTemplate('pagnav');
 	}
     
-    if (($this->overallconfig['show_project_rss_feed']) == 1   )
+    if ( $this->overallconfig['show_project_rss_feed'] )
 	{
 		//if ( !empty($this->rssfeedoutput) )
 //       {
@@ -94,9 +94,12 @@ echo $this->loadTemplate('debug');
 	}
 	*/
 
-	echo "<div>";
+?>
+<div>
+<?PHP
+	
 	echo $this->loadTemplate('backbutton');
 	echo $this->loadTemplate('footer');
-	echo "</div>";
 	?>
+</div>
 </div>

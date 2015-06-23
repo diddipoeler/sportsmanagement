@@ -63,6 +63,7 @@ class sportsmanagementModelRanking extends JModelLegacy
     
 	static $divLevel = 0;
 	var $currentRanking = array();
+    static $paramconfig = array();
 	var $previousRanking = array();
 	var $homeRank = array();
 	var $awayRank = array();
@@ -89,6 +90,7 @@ class sportsmanagementModelRanking extends JModelLegacy
        $from = 0;
        $to = 0;
 		self::$projectid = (int) $jinput->get('p', 0, '');
+        self::$paramconfig['p'] = self::$projectid;
 		//$this->round = JRequest::getInt("r", $this->current_round);
         self::$round = $jinput->get('r', self::$current_round, '');
 		self::$part  = JRequest::getInt("part", 0);
@@ -111,12 +113,14 @@ class sportsmanagementModelRanking extends JModelLegacy
         {
         $from	= sportsmanagementModelRounds::getFirstRound(self::$projectid,self::$cfg_which_database);
         self::$from	= $from['id'];
+        self::$paramconfig['from'] = self::$from;
         }
         
         if ( empty(self::$to)  )
         {
 		$to	= sportsmanagementModelRounds::getLastRound(self::$projectid,self::$cfg_which_database);
         self::$to = $to['id'];
+        self::$paramconfig['to'] = self::$to;
         }
         else
         {
@@ -128,10 +132,21 @@ class sportsmanagementModelRanking extends JModelLegacy
         {
             self::$round = sportsmanagementModelProject::getCurrentRound(NULL,self::$cfg_which_database);
             self::$current_round = self::$round;
+            sportsmanagementModelProject::$_round_to = sportsmanagementModelProject::$roundslug;
+            self::$paramconfig['r'] = sportsmanagementModelProject::$roundslug;
+        }
+        else
+        {
+        sportsmanagementModelProject::$_round_to = self::$round;    
         }
         
         sportsmanagementModelProject::$_round_from = self::$from; 
-        sportsmanagementModelProject::$_round_to = self::$round;
+        
+        
+//        echo 'from <pre>'.print_r($from,true).'</pre>';    
+//        echo 'to <pre>'.print_r($to,true).'</pre>';
+//		echo 'projekt <pre>'.print_r(sportsmanagementModelProject::$_round_to,true).'</pre>';
+//		echo 'self round <pre>'.print_r(self::$round,true).'</pre>';
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
@@ -231,9 +246,11 @@ class sportsmanagementModelRanking extends JModelLegacy
     
     
 	
+
 	/**
 	 * sportsmanagementModelRanking::getPreviousGames()
 	 * 
+	 * @param integer $cfg_which_database
 	 * @return
 	 */
 	function getPreviousGames($cfg_which_database = 0)
@@ -246,11 +263,33 @@ class sportsmanagementModelRanking extends JModelLegacy
        $starttime = microtime(); 
        
        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($this->round,true).'</pre>'),'');
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' vorher round<pre>'.print_r(self::$round,true).'</pre>'),'Error');
        
        if ( !self::$round )
         {
+            sportsmanagementModelProject::$_current_round = 0;
             self::$round = sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.self::$viewName,$cfg_which_database);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($this->round,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r(self::$round,true).'</pre>'),'');
+        }
+        else
+        {
+        $query->clear();
+            $query->select('r.id, r.roundcode,CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
+            $query->from('#__sportsmanagement_round AS r ');
+            $query->where('r.id = '.(int)self::$round);
+            $query->where('r.project_id = ' . (int)self::$projectid );
+	$db->setQuery($query);
+	$result = $db->loadObject();
+    
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+    
+    if ( !$result )
+    {
+        sportsmanagementModelProject::$_current_round = 0;
+        self::$round = sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.self::$viewName,$cfg_which_database);
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projekt current round<pre>'.print_r(self::$round,true).'</pre>'),'Error');
+    }    
+
         }
         
        
@@ -263,34 +302,40 @@ class sportsmanagementModelRanking extends JModelLegacy
 		// current round roundcode
 		$rounds = sportsmanagementModelProject::getRounds('ASC',$cfg_which_database);
 		$current = null;
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' rounds<pre>'.print_r($rounds,true).'</pre>'),'Error');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nachher round<pre>'.print_r(self::$round,true).'</pre>'),'Error');
+        
 		foreach ($rounds as $r)
 		{
-			if ($r->id == self::$round) 
+			if ( (int)$r->id == (int)self::$round ) 
             {
 			$current = $r;
 				break;
 			}
 		}
-			if (!$current) 
-            {
-			return false;
-		}
+		
+ 	if (!$current) 
+  {
+		return false;
+	}
         
+        $query->clear();
         $query->select('m.*, r.roundcode');
 		$query->select('CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) ELSE m.id END AS slug');
 		$query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
         
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON r.id = m.round_id ');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = r.project_id ');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
+        $query->from('#__sportsmanagement_match AS m ');
+        $query->join('INNER','#__sportsmanagement_round AS r ON r.id = m.round_id ');
+		$query->join('INNER','#__sportsmanagement_project AS p ON p.id = r.project_id ');
+		$query->join('INNER','#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
+		$query->join('INNER','#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
         
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt1.team_id');        
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 ON st2.id = pt2.team_id'); 
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id');        
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id'); 
                
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON st1.team_id = t1.id ');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON st2.team_id = t2.id ');
+		$query->join('INNER','#__sportsmanagement_team AS t1 ON st1.team_id = t1.id ');
+		$query->join('INNER','#__sportsmanagement_team AS t2 ON st2.team_id = t2.id ');
 
         
         $query->where('r.project_id = ' . self::$projectid );
@@ -299,6 +344,10 @@ class sportsmanagementModelRanking extends JModelLegacy
         $query->order('r.roundcode ASC ');
                
 		$db->setQuery($query);
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($current->roundcode,true).'</pre>'),'Error');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(self::$projectid,true).'</pre>'),'Error');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
@@ -572,8 +621,17 @@ class sportsmanagementModelRanking extends JModelLegacy
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
-        
-		$res = $db->loadResultArray();
+    
+    if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        // Joomla! 3.0 code here
+        $res = $db->loadColumn();
+        }
+        elseif(version_compare(JVERSION,'2.5.0','ge')) 
+        {
+        // Joomla! 2.5 code here
+        $res = $db->loadResultArray();
+        }     
 		
 		if (!$res) {
 			return $round_id;

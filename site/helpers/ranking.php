@@ -737,16 +737,16 @@ class JSMRanking
         $query->select('pt.use_finally, pt.points_finally,pt.matches_finally,pt.won_finally,pt.draws_finally,pt.lost_finally');
         $query->select('pt.homegoals_finally, pt.guestgoals_finally,pt.diffgoals_finally,pt.penalty_points');
         $query->select('CONCAT_WS(\':\',pt.id,t.alias) AS ptid_slug');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt.team_id'); 
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON st1.team_id = t.id ');
+        $query->from('#__sportsmanagement_project_team AS pt ');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt.team_id'); 
+        $query->join('INNER','#__sportsmanagement_team AS t ON st1.team_id = t.id ');
         $query->where('pt.project_id = ' . $db->Quote($pid));
         $query->where('pt.is_in_score = 1');
         
     if ( $division )
     {
                 
-                $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON ( m.projectteam1_id = pt.id OR m.projectteam2_id = pt.id ) ');
+                $query->join('INNER','#__sportsmanagement_match AS m ON ( m.projectteam1_id = pt.id OR m.projectteam2_id = pt.id ) ');
                 $query->where('m.division_id = ' . $division);
     }
     else
@@ -893,9 +893,9 @@ class JSMRanking
 		$query->select('m.team2_result_so AS away_score_so');
 		$query->select('r.id as roundid, m.team_won, r.roundcode ');
         
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON m.round_id = r.id');
+        $query->from('#__sportsmanagement_match as m');
+		$query->join('INNER','#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
+        $query->join('INNER','#__sportsmanagement_round AS r ON m.round_id = r.id');
         
         $query->where('( (m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL) OR (m.alt_decision=1) ) ');
         $query->where('m.published = 1');
@@ -951,7 +951,7 @@ class JSMRanking
 		else if (empty($this->_divisions))
 		{
 			$query->select('id');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division ');
+            $query->from('#__sportsmanagement_division ');
             $query->where('project_id = ' . $db->Quote($this->_projectid) );
             $query->where('parent_id = ' . $db->Quote($this->_division) );
             
@@ -966,7 +966,16 @@ class JSMRanking
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
             
-			$res = $db->loadResultArray();
+			if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        // Joomla! 3.0 code here
+        $res = $db->loadColumn();
+        }
+        elseif(version_compare(JVERSION,'2.5.0','ge')) 
+        {
+        // Joomla! 2.5 code here
+        $res = $db->loadResultArray();
+        } 
 			$res[] = $this->_division;
 			$this->_divisions = $res;
 		}
@@ -1066,7 +1075,7 @@ class JSMRanking
 		{
 			
 			$query->select('r.roundcode, r.id ');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ');
+            $query->from('#__sportsmanagement_round AS r ');
             $query->where('r.project_id = ' . $this->_projectid);
             $query->order('r.roundcode');
             
@@ -1099,6 +1108,7 @@ class JSMRanking
 		if (!isset($this->_roundcodes[(int)$round_id])) 
         {
 			JError::raiseWarning(0, JText::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_UNKOWN_ROUND_ID').': '.$round_id);
+            JError::raiseWarning(0, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_MASTER_TEMPLATE_MISSING_PID').': '.$this->_projectid);
 			return false;
 		}
 		return $this->_roundcodes[(int)$round_id];

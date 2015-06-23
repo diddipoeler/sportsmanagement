@@ -105,10 +105,23 @@ class sportsmanagementViewReferee extends JViewLegacy
 			$this->assignRef( 'extended', $extended );
 		}
 
-		$document->setTitle($titleStr);
-        $view = JRequest::getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+
+/**
+ * 		das benötigen wir nicht, da wir bootstrap verwenden
+ *         $document->setTitle($titleStr);
+ *         $view = JRequest::getVar( "view") ;
+ *         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+ *         $document->addCustomTag($stylelink);
+ */
+        
+        if ( !isset($this->config['history_table_class']) )
+        {
+            $this->config['history_table_class'] = 'table';
+        }
+        if ( !isset($this->config['career_table_class']) )
+        {
+            $this->config['career_table_class'] = 'table';
+        }
         
         $this->headertitle = $this->title;
         

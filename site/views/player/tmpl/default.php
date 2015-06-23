@@ -158,6 +158,8 @@ echo $this->loadTemplate('debug');
 	echo "</script>";
 	?>
 </div>
+<!-- player -->
+</div>
 <?php
 }
 else

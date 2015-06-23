@@ -122,7 +122,7 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
     $option = JRequest::getCmd('option');    
     $app = JFactory::getApplication();
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
         $result	= true;
@@ -167,7 +167,7 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 		$object->picture = $picture;
 
         // Update their details in the table using id as the primary key.
-        $resultquery = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member', $object, 'id');
+        $resultquery = sportsmanagementHelper::getDBConnection()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member', $object, 'id');
         
 		if (!$resultquery)
 		{
@@ -190,8 +190,8 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 	static function showMemberPicture($outputUserName, $user_id = 0)
 	{
 
-	$app	= JFactory::getApplication();
-	$db = JFactory::getDBO();
+	$app = JFactory::getApplication();
+	$db = sportsmanagementHelper::getDBConnection();
     $query = $db->getQuery(true);
 	$playerName = $outputUserName;
 	$picture = '';
@@ -254,11 +254,18 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 	{
 	   case 'com_community':
        case 'com_cbe':
-       $db->setQuery($query);
+       if ( $db->setQuery($query) )
+       {
 	   $results = $db->loadResult();
        if ( $results )
        {
        $picture = $results;
+       }
+       }
+       else
+       {
+       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorNum(),true).'</pre>'),'Error');
+       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
        }
        break;
        case 'com_kunena':
@@ -386,7 +393,7 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 	   $document	= JFactory::getDocument();
     
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         // Select some fields
         $query->select('pt.id AS value,t.name AS text');
@@ -418,7 +425,7 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 		  $document	= JFactory::getDocument();
     
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
 			$pgid	= $db->Quote(sportsmanagementModelPrediction::$predictionGameID);

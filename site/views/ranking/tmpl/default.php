@@ -110,12 +110,12 @@ jQuery(window).load(function() {
 		echo $this->loadTemplate('sectionheader');
 	}
 
-	if ($this->config['show_rankingnav']==1)
+	if ( $this->config['show_rankingnav'] )
 	{
 		echo $this->loadTemplate('rankingnav');
 	}
 
-	if ($this->config['show_ranking']==1)
+	if ( $this->config['show_ranking'] )
 	{
 
    
@@ -128,7 +128,7 @@ jQuery(window).load(function() {
     	<!-- Tabs-Navs -->
   <ul class="nav nav-tabs" role="tablist">
     <?PHP
-    if ($this->config['show_table_1']==1)
+    if ( $this->config['show_table_1'] )
 	{
 	?>
     <li role="presentation" class="active"><a href="#<?PHP echo JText::_($this->config['table_text_1']); ?>" role="tab" data-toggle="tab"><?PHP echo JText::_($this->config['table_text_1']); ?></a>
@@ -136,7 +136,7 @@ jQuery(window).load(function() {
     <?PHP
     }
     
-    if ($this->config['show_table_2']==1)
+    if ( $this->config['show_table_2'] )
 	{
 	?>
     <li role="presentation" class=""><a href="#<?PHP echo JText::_($this->config['table_text_2']); ?>" role="tab" data-toggle="tab"><?PHP echo JText::_($this->config['table_text_2']); ?></a>
@@ -144,7 +144,7 @@ jQuery(window).load(function() {
     <?PHP
     }
     
-    if ($this->config['show_table_3']==1)
+    if ( $this->config['show_table_3'] )
 	{
 	?>
     <li role="presentation" class=""><a href="#<?PHP echo JText::_($this->config['table_text_3']); ?>" role="tab" data-toggle="tab"><?PHP echo JText::_($this->config['table_text_3']); ?></a>
@@ -152,7 +152,7 @@ jQuery(window).load(function() {
     <?PHP
     }
     
-    if ($this->config['show_table_4']==1)
+    if ( $this->config['show_table_4'] )
 	{
 	?>
     <li role="presentation" class=""><a href="#<?PHP echo JText::_($this->config['table_text_4']); ?>" role="tab" data-toggle="tab"><?PHP echo JText::_($this->config['table_text_4']); ?></a>
@@ -160,7 +160,7 @@ jQuery(window).load(function() {
     <?PHP
     }
     
-    if ($this->config['show_table_5']==1)
+    if ( $this->config['show_table_5'] )
 	{
 	?>
     <li role="presentation" class=""><a href="#<?PHP echo JText::_($this->config['table_text_5']); ?>" role="tab" data-toggle="tab"><?PHP echo JText::_($this->config['table_text_5']); ?></a>
@@ -175,7 +175,7 @@ jQuery(window).load(function() {
   <div class="tab-content">
     
     <?PHP
-    if ($this->config['show_table_1']==1)
+    if ( $this->config['show_table_1'] )
 	{
 	?>
     <div role="tabpanel" class="tab-pane fade in active" id="<?PHP echo JText::_($this->config['table_text_1']); ?>">
@@ -186,7 +186,7 @@ jQuery(window).load(function() {
     <?PHP
     }
     
-    if ($this->config['show_table_2']==1)
+    if ( $this->config['show_table_2'] )
 	{
 	?>
     <div role="tabpanel" class="tab-pane fade" id="<?PHP echo JText::_($this->config['table_text_2']); ?>">
@@ -197,7 +197,7 @@ jQuery(window).load(function() {
     <?PHP
     }
     
-    if ($this->config['show_table_3']==1)
+    if ( $this->config['show_table_3'] )
 	{
 	?>
     <div role="tabpanel" class="tab-pane fade" id="<?PHP echo JText::_($this->config['table_text_3']); ?>">
@@ -208,7 +208,7 @@ jQuery(window).load(function() {
     <?PHP
     }
     
-    if ($this->config['show_table_4']==1)
+    if ( $this->config['show_table_4'] )
 	{
 	?>
     <div role="tabpanel" class="tab-pane fade" id="<?PHP echo JText::_($this->config['table_text_4']); ?>">
@@ -219,7 +219,7 @@ jQuery(window).load(function() {
     <?PHP
     }
     
-    if ($this->config['show_table_5']==1)
+    if ( $this->config['show_table_5'] )
 	{
 	?>
     <div role="tabpanel" class="tab-pane fade" id="<?PHP echo JText::_($this->config['table_text_5']); ?>">

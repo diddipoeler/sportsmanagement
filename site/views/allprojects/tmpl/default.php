@@ -77,9 +77,9 @@ function tableOrdering( order, dir, task )
 					echo JText::_('JSEARCH_FILTER_CLEAR');
 					?>
 				</button-->
-        <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?></td>
-        <td nowrap='nowrap' align='right'><?php echo $this->lists['leagues'].'&nbsp;&nbsp;'; ?></td>
-        <td nowrap='nowrap' align='right'><?php echo $this->lists['seasons'].'&nbsp;&nbsp;'; ?></td>
+        <?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?>
+        <?php echo $this->lists['leagues'].'&nbsp;&nbsp;'; ?>
+        <?php echo $this->lists['seasons'].'&nbsp;&nbsp;'; ?>
         
 	</div>
 

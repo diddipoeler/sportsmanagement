@@ -42,8 +42,6 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 jimport('joomla.html.pane');
 
-//require_once(JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'match.php');
-//require_once(JPATH_COMPONENT.DS.'models'.DS.'results.php');
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'player.php');
 
 /**
@@ -85,6 +83,7 @@ class sportsmanagementViewMatchReport extends JViewLegacy
         $document->addScript( JURI::base(true).'/components/com_sportsmanagement/assets/js/tooltipscript.js');
 
 		$model = $this->getModel();
+        $model->checkMatchPlayerProjectPositionID();
         $model->matchid = $jinput->getInt('mid',0);
         $model::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
         
@@ -177,11 +176,23 @@ $extended2 = sportsmanagementHelper::getExtended($match->extended, 'match');
 		//$rssfeedlink = $this->extended2->getValue('formation1');
     $this->assign( 'formation1', $this->extended2->getValue('formation1'));
     $this->assign( 'formation2', $this->extended2->getValue('formation2'));
+    
+    if ( !$this->formation1 )
+    {
+        $this->formation1 = '4231';
+    }
+    if ( !$this->formation2 )
+    {
+        $this->formation2 = '4231';
+    }
+    
 //    $schemahome = $this->assign('schemahome',$model->getSchemaHome($this->formation1));
 //    $schemaaway = $this->assign('schemaaway',$model->getSchemaAway($this->formation2));
     
     $schemahome = $this->assign('schemahome',$model->getPlaygroundSchema($this->formation1,'heim'));
     $schemaaway = $this->assign('schemaaway',$model->getPlaygroundSchema($this->formation2,'gast'));
+    
+
 
 //    $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
 //    $this->assign('use_joomlaworks', JComponentHelper::getParams($option)->get('use_joomlaworks',0) );
@@ -377,8 +388,17 @@ if ( $this->config['show_pictures'] == 1 )
 
 			if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
 			{
-			    $result .= JHtml::link(sportsmanagementHelperRoute::getPlayerRoute($this->project->id,$sub->team_id,$sub->out_person_id),$outName);
-			} else {
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->id;
+$routeparameter['tid'] = $sub->team_id;
+$routeparameter['pid'] = $sub->out_person_id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);			
+                $result .= JHtml::link($link,$outName);
+			} 
+            else 
+            {
 			    $result .= $outName;
 			}
 
@@ -397,8 +417,17 @@ if ( $this->config['show_pictures'] == 1 )
 
 			if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
 			{
-			    $result .= JHtml::link(sportsmanagementHelperRoute::getPlayerRoute($this->project->id,$sub->team_id,$sub->person_id),$inName);
-			} else {
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->id;
+$routeparameter['tid'] = $sub->team_id;
+$routeparameter['pid'] = $sub->person_id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);			    
+                $result .= JHtml::link($link,$inName);
+			} 
+            else 
+            {
 			    $result .= $inName;
 			}
 

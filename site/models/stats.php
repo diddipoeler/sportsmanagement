@@ -41,9 +41,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.model');
 
-//require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
-
-
 /**
  * sportsmanagementModelStats
  * 
@@ -98,7 +95,7 @@ class sportsmanagementModelStats extends JModelLegacy
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.
-		$db		= $this->getDbo();
+		$db		= sportsmanagementHelper::getDBConnection();
 		$query	= $db->getQuery(true);
         $starttime = microtime(); 
         
@@ -212,7 +209,7 @@ class sportsmanagementModelStats extends JModelLegacy
 //	   $app = JFactory::getApplication();
 //        $option = JRequest::getCmd('option');
 //        // Create a new query object.
-//		$db		= $this->getDbo();
+//		$db		= sportsmanagementHelper::getDBConnection();
 //		$query	= $db->getQuery(true);
 //        $starttime = microtime(); 
 //        
@@ -261,7 +258,7 @@ class sportsmanagementModelStats extends JModelLegacy
 //	   $app = JFactory::getApplication();
 //        $option = JRequest::getCmd('option');
 //        // Create a new query object.
-//		$db		= $this->getDbo();
+//		$db		= sportsmanagementHelper::getDBConnection();
 //		$query	= $db->getQuery(true);
 //        $starttime = microtime(); 
 //        
@@ -311,7 +308,7 @@ class sportsmanagementModelStats extends JModelLegacy
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.
-		$db		= $this->getDbo();
+		$db		= sportsmanagementHelper::getDBConnection();
 		$query	= $db->getQuery(true);
         $Subquery	= $db->getQuery(true);
         
@@ -398,7 +395,7 @@ class sportsmanagementModelStats extends JModelLegacy
 	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.
-		$db		= $this->getDbo();
+		$db		= sportsmanagementHelper::getDBConnection();
 		$query	= $db->getQuery(true);
         $starttime = microtime(); 
         
@@ -468,7 +465,7 @@ class sportsmanagementModelStats extends JModelLegacy
 	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.
-		$db		= $this->getDbo();
+		$db		= sportsmanagementHelper::getDBConnection();
 		$query	= $db->getQuery(true);
         $starttime = microtime(); 
         
@@ -504,7 +501,7 @@ class sportsmanagementModelStats extends JModelLegacy
 	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.
-		$db		= $this->getDbo();
+		$db		= sportsmanagementHelper::getDBConnection();
 		$query	= $db->getQuery(true);
         $starttime = microtime(); 
         

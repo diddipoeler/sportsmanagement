@@ -93,13 +93,7 @@ if ( $this->config['show_previousx'] )
         $this->output['COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_COMMENTARY'] = 'commentary';
 	}
 
-
-
 echo $this->loadTemplate($this->config['show_nextmatch_tabs']);
-            
-
-
-
 
 		echo "<div>";
 			echo $this->loadTemplate('backbutton');

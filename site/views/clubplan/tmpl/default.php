@@ -60,52 +60,52 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		if (!empty($this->allmatches))
 		{
 			$tm = count ($this->allmatches);
-			echo "<h3>".$tm." ".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES')."</h3>";
+			echo "<h4>".$tm." ".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES')."</h4>";
 			$this->matches = $this->allmatches;
 			echo $this->loadTemplate('matches');//or use matches_sbd (sort by date)
 		}
 		else
 		{
-			echo "<h3>".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES')."</h3><br/>";
+			echo "<h4>".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES')."</h4><br/>";
 		}
 		break;
 	case 1 : // Home matches
 		if (!empty($this->homematches))
 		{
 			$tm = count ($this->homematches);
-			echo "<h3>".$tm." ".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES')."</h3>";
+			echo "<h4>".$tm." ".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES')."</h4>";
 			$this->matches = $this->homematches;
 			echo $this->loadTemplate('matches');//or use matches_sbd (sort by date)
 		}
 		else
 		{
-			echo "<h3>".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_HOME_MATCHES')."</h3><br/>";
+			echo "<h4>".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_HOME_MATCHES')."</h4><br/>";
 		}
 		break;
 	case 2 : // Away matches
 		if (!empty($this->awaymatches))
 		{
 			$tm = count ($this->awaymatches);
-			echo "<h3>".$tm." ".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES')."</h3>";
+			echo "<h4>".$tm." ".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES')."</h4>";
 			$this->matches = $this->awaymatches;
 			echo $this->loadTemplate('matches');//or use matches_sbd (sort by date)
 		}
 		else
 		{
-			echo "<h3>".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_AWAY_MATCHES')."</h3><br/>";
+			echo "<h4>".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_AWAY_MATCHES')."</h4><br/>";
 		}
 		break;
 	case 4 : // matches sorted by date
 		if (!empty($this->allmatches))
 		{
 			$tm = count ($this->allmatches);
-			echo "<h3>".$tm." ".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES')."</h3>";
+			echo "<h4>".$tm." ".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES')."</h4>";
 			$this->matches=$this->allmatches;
 			echo $this->loadTemplate('matches_sorted_by_date');//or use matches_sbd (sort by date)
 		}
 		else
 		{
-			echo "<h3>".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES')."</h3><br/>";
+			echo "<h4>".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES')."</h4><br/>";
 		}
 		break;
 	default : // Home+Away matches
@@ -113,31 +113,31 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		{
 			$tm = count ($this->homematches);
 			if(count($this->awaymatches)==0) {
-				echo "<h3>".$tm." ".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES')."</h3>";
+				echo "<h4>".$tm." ".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES')."</h4>";
 			} else {
-				echo "<h3>".$tm." ".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_HOME_MATCHES')."</h3>";
+				echo "<h4>".$tm." ".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_HOME_MATCHES')."</h4>";
 			}
 			$this->matches = $this->homematches;
 			echo $this->loadTemplate('matches');//or use matches_sbd (sort by date)
 		}
 		else
 		{
-			echo "<h3>".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_HOME_MATCHES')."</h3><br/>";
+			echo "<h4>".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_HOME_MATCHES')."</h4><br/>";
 		}
 		if (!empty($this->awaymatches))
 		{
 			$tm = count ($this->awaymatches);
 			if(count($this->homematches)==0) {
-				echo "<h3>".$tm." ".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES')."</h3>";
+				echo "<h4>".$tm." ".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES')."</h4>";
 			} else {
-				echo "<h3>".$tm." ".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_AWAY_MATCHES')."</h3>";
+				echo "<h4>".$tm." ".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_AWAY_MATCHES')."</h4>";
 			}
 			$this->matches = $this->awaymatches;
 			echo $this->loadTemplate('matches');//or use matches_sbd (sort by date)
 		}
 		else
 		{
-			echo "<h3>".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_AWAY_MATCHES')."</h3><br/>";
+			echo "<h4>".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_AWAY_MATCHES')."</h4><br/>";
 		}
 		break;
 	}

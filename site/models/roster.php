@@ -247,6 +247,7 @@ class sportsmanagementModelRoster extends JModelLegacy
         $query->select('tp.id AS playerid,tp.id AS season_team_person_id,tp.jerseynumber AS position_number,tp.notes AS description,tp.market_value AS market_value,tp.picture');    
         $query->select('st.id AS season_team_id');
         $query->select('pt.project_id AS project_id');
+        $query->select('pt.id AS projectteam_id');
         $query->select('pos.name AS position');
         $query->select('ppos.position_id,ppos.id as pposid');
         $query->select('CONCAT_WS(\':\',pro.id,pro.alias) AS project_slug');
@@ -257,7 +258,8 @@ class sportsmanagementModelRoster extends JModelLegacy
         $query->join('INNER','#__sportsmanagement_person AS pr ON tp.person_id = pr.id');
         $query->join('INNER','#__sportsmanagement_project AS pro ON pro.id = pt.project_id'); 
         $query->join('INNER','#__sportsmanagement_team AS t ON t.id = st.team_id');
-        $query->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id = tp.project_position_id');
+        $query->join('LEFT','#__sportsmanagement_person_project_position AS perpos ON perpos.project_id = pro.id AND perpos.person_id = pr.id');
+        $query->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id = perpos.project_position_id');
         switch ( $persontype )
         {
             case 1:

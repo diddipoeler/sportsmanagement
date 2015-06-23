@@ -190,13 +190,14 @@ $teaminfo_away_link = sportsmanagementHelperRoute::getSportsmanagementRoute('tea
 				
 				// gespielte zeit
                 $model = $this->getModel();
-                $timePlayed = 0;
-                $this->assign('timePlayed',$model->getTimePlayed($this->teamPlayer->id,$this->project->game_regular_time,$game->id,$this->overallconfig['person_events']));
-                $timePlayed  = $this->timePlayed;
+                $timePlayed = $model->getTimePlayed($this->teamPlayer->id,$this->project->game_regular_time,$game->id,$this->overallconfig['person_events']);
+                //$timePlayed = 0;
+                //$this->assign('timePlayed',$model->getTimePlayed($this->teamPlayer->id,$this->project->game_regular_time,$game->id,$this->overallconfig['person_events']));
+                //$timePlayed  = $this->timePlayed;
                 
-//                echo ' teamPlayer->id<br><pre>'.print_r($this->teamPlayer->id,true).'</pre><br>';
-//                echo ' game->id<br><pre>'.print_r($game->id,true).'</pre><br>';
-//                echo ' timePlayed<br><pre>'.print_r($timePlayed,true).'</pre><br>';
+//echo __FILE__.' '.__LINE__.' teamPlayer->id<br><pre>'.print_r($this->teamPlayer->id,true).'</pre><br>';
+//echo __FILE__.' '.__LINE__.' game->id<br><pre>'.print_r($game->id,true).'</pre><br>';
+//echo __FILE__.' '.__LINE__.' timePlayed<br><pre>'.print_r($timePlayed,true).'</pre><br>';
                 
                 ?>
 				<tr class="">
@@ -205,10 +206,15 @@ $teaminfo_away_link = sportsmanagementHelperRoute::getSportsmanagementRoute('tea
 					?></td>
 					<td class="td_r<?php if ($game->projectteam_id == $game->projectteam1_id) echo " playerteam"; ?>">
 						<?php 
-						if ($this->config['show_gameshistory_teamlink'] == 1) {
-							echo JHtml::link($teaminfo_home_link, $this->teams[$game->projectteam1_id]->name); 
-						} else {
-							echo $this->teams[$game->projectteam1_id]->name;
+						if ( $this->config['show_gameshistory_teamlink'] ) 
+                        {
+echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id.'-'.$game->projectteam1_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$game->home_logo,$game->home_name,'20');							
+                            echo JHtml::link($teaminfo_home_link, $this->teams[$game->projectteam1_id]->name); 
+						} 
+                        else 
+                        {
+echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id.'-'.$game->projectteam1_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$game->home_logo,$game->home_name,'20');							
+                            echo $this->teams[$game->projectteam1_id]->name;
 						}
 						?>
 					</td>
@@ -217,9 +223,14 @@ $teaminfo_away_link = sportsmanagementHelperRoute::getSportsmanagementRoute('tea
 					<td class="td_l"><?php echo $game->team2_result; ?></td>
 					<td class="td_l<?php if ($game->projectteam_id == $game->projectteam2_id) echo " playerteam"; ?>">
 						<?php 
-						if ($this->config['show_gameshistory_teamlink'] == 1) {
+						if ( $this->config['show_gameshistory_teamlink'] ) 
+                        {
+echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id.'-'.$game->projectteam2_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$game->away_logo,$game->away_name,'20');                            
 							echo JHtml::link($teaminfo_away_link, $this->teams[$game->projectteam2_id]->name); 
-						} else {
+						} 
+                        else 
+                        {
+echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id.'-'.$game->projectteam2_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$game->away_logo,$game->away_name,'20');                            
 							echo $this->teams[$game->projectteam2_id]->name;
 						}
 						?>

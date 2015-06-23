@@ -11,10 +11,10 @@
 					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
 					>
 		
-    	<field	type="sql" name="prediction_id"
+    	<field	type="predictiongame" name="prediction_id"
 					label="COM_SPORTSMANAGEMENT_XML_RESULTS_SELECT_PREDICTIONGAME_LABEL" 
           description="COM_SPORTSMANAGEMENT_XML_RESULTS_SELECT_PREDICTIONGAME_DESCR"
-					query="SELECT id AS value, name AS prediction_id FROM #__sportsmanagement_prediction_game WHERE published='1' ORDER BY name" />
+					 />
 					
     <field name="cfg_which_database" 
     type="radio" 

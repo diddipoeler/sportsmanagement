@@ -83,9 +83,9 @@ function searchPerson(val)
 					echo JText::_('JSEARCH_FILTER_CLEAR');
 					?>
 				</button-->
-        <td nowrap='nowrap' align='right'><?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?></td>
+        <?php echo $this->lists['nation2'].'&nbsp;&nbsp;'; ?>
         
-        <td align="center" colspan="4">
+        
 				<?php
                 $startRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_start_hex', '0');
 		$endRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_end_hex', '0');
@@ -97,7 +97,7 @@ function searchPerson(val)
 			}
 				
 				?>
-			</td>
+		
             
 	</div>
 
@@ -113,12 +113,16 @@ function searchPerson(val)
         
 	</fieldset>
 
-	<?php echo $this->loadTemplate('items');
-    echo "<div>";
+	<?php 
+    echo $this->loadTemplate('items');
+    ?>
+    <div class="row">
+    <?PHP
 		echo $this->loadTemplate('backbutton');
 		echo $this->loadTemplate('footer');
-	echo "</div>";
-     ?>
+        ?>
+</div>
+
 </form>
 </div>
 

@@ -555,7 +555,9 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 		}
         
         // Select some fields
-		$query->select('m.*, DATE_FORMAT(m.time_present, "%H:%i") time_present' );
+		//$query->select('m.*, DATE_FORMAT(m.time_present, "%H:%i") time_present' );
+        $query->select('m.id,m.match_date,m.team1_result,m.team2_result,m.show_report,m.projectteam1_id,m.projectteam2_id' );
+        $query->select('DATE_FORMAT(m.time_present, "%H:%i") time_present' );
         $query->select('pt1.project_id');
         $query->select('s.name as seasonname');
         $query->select('p.name AS project_name,p.id AS prid');
@@ -565,18 +567,23 @@ class sportsmanagementModelNextMatch extends JModelLegacy
         $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
         $query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
         
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id = m.projectteam1_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt1.team_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id = st1.team_id ');
+        //$query->select('c1.logo_big AS home_logo_big');
+        //$query->select('c2.logo_big AS away_logo_big');
         
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON pt2.id = m.projectteam2_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 ON st2.id = pt2.team_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id = st2.team_id ');
+        $query->from('#__sportsmanagement_match AS m ');
+        $query->join('INNER','#__sportsmanagement_project_team AS pt1 ON pt1.id = m.projectteam1_id ');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
+        $query->join('INNER','#__sportsmanagement_team AS t1 ON t1.id = st1.team_id ');
+        //$query->join('INNER','#__sportsmanagement_club as c1 ON c1.id = t1.club_id ');
         
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt1.project_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id = p.season_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round r ON m.round_id = r.id  ');
+        $query->join('INNER','#__sportsmanagement_project_team AS pt2 ON pt2.id = m.projectteam2_id ');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
+        $query->join('INNER','#__sportsmanagement_team AS t2 ON t2.id = st2.team_id ');
+        //$query->join('INNER','#__sportsmanagement_club as c2 ON c2.id = t2.club_id ');
+        
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt1.project_id ');
+        $query->join('INNER','#__sportsmanagement_season AS s ON s.id = p.season_id ');
+        $query->join('INNER','#__sportsmanagement_round r ON m.round_id = r.id  ');
         //$query->where('(pt1.team_id = '. $teams[0]->team_id .' AND pt2.team_id = '.$teams[1]->team_id .') OR (pt1.team_id = '.$teams[1]->team_id .' AND pt2.team_id = '.$teams[0]->team_id .')');
         $query->where('(st1.team_id = '. $teams[0]->team_id .' AND st2.team_id = '.$teams[1]->team_id .') OR (st1.team_id = '.$teams[1]->team_id .' AND st2.team_id = '.$teams[0]->team_id .')');
         $query->where('p.published = 1');
@@ -591,13 +598,15 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 		return $result;
 	}
 
+	
 	/**
 	 * sportsmanagementModelNextMatch::getTeamsFromMatches()
 	 * 
 	 * @param mixed $games
+	 * @param mixed $config
 	 * @return
 	 */
-	function getTeamsFromMatches( & $games )
+	function getTeamsFromMatches( & $games, $config=array() )
 	{
 	   $app = JFactory::getApplication();
        $option = JRequest::getCmd('option');
@@ -622,9 +631,30 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 		// Select some fields
 		$query->select('t.id, t.name');
         $query->select('pt.id as ptid');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.id = pt.team_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st.team_id ');
+        $query->from('#__sportsmanagement_project_team AS pt ');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id ');
+        $query->join('INNER','#__sportsmanagement_team AS t ON t.id = st.team_id ');
+        $query->join('INNER','#__sportsmanagement_club as c ON c.id = t.club_id ');
+        
+        switch ( $config['show_picture'] )
+        {
+            case 'team_picture':
+            $query->select('t.picture AS picture');
+            break;
+            case 'projectteam_picture':
+            $query->select('st.picture AS picture');
+            break;
+            case 'logo_small':
+            $query->select('c.logo_small AS picture');
+            break;
+            case 'logo_middle':
+            $query->select('c.logo_middle AS picture');
+            break;
+            case 'logo_big':
+            $query->select('c.logo_big AS picture');
+            break;
+        }
+        
         $query->where('pt.id IN ('.$listTeamId.')' );
                  
 		$db->setQuery( $query );
@@ -632,7 +662,8 @@ class sportsmanagementModelNextMatch extends JModelLegacy
         
         if ( !$result )
 	    {
-		$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorNum(),true).'</pre>' ),'Error');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 	    }
 
 		foreach ( $result as $r )
@@ -643,73 +674,6 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 		return $teams;
 	}
 
-//	/**
-//	 * sportsmanagementModelNextMatch::getPlayground()
-//	 * 
-//	 * @param mixed $pgid
-//	 * @return
-//	 */
-//	function getPlayground( $pgid )
-//	{
-//	   $app = JFactory::getApplication();
-//       $option = JRequest::getCmd('option');
-//       // Create a new query object.		
-//	   $db = JFactory::getDBO();
-//	   $query = $db->getQuery(true);
-//       
-//       // Select some fields
-//		$query->select('*');
-//        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground ');
-//        $query->where('id = '. $db->Quote($pgid));
-//    
-//		$db->setQuery($query, 0, 1);
-//        
-//        if ( !$db->loadObject() )
-//	    {
-//		$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-//	    }
-//        
-//		return $db->loadObject();
-//	}
-
-//	/**
-//	 * sportsmanagementModelNextMatch::getMatchText()
-//	 * 
-//	 * @param mixed $match_id
-//	 * @return
-//	 */
-//	function getMatchText($match_id)
-//	{
-//	   $app = JFactory::getApplication();
-//       $option = JRequest::getCmd('option');
-//       // Create a new query object.		
-//	   $db = JFactory::getDBO();
-//	   $query = $db->getQuery(true);
-//       
-//       // Select some fields
-//		$query->select('m.*');
-//        $query->select('t1.name as t1name,t2.name as t2name');
-//        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
-//        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
-//        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt1.team_id ');
-//        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id = st1.team_id ');
-//        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
-//        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 ON st2.id = pt2.team_id ');
-//        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id = st2.team_id ');
-//        $query->where('m.id = ' . $match_id );
-//        $query->where('m.published = 1');
-//        $query->order('m.match_date, t1.short_name');
-//                    
-//		$db->setQuery($query);
-//        
-//        if ( !$db->loadObject() )
-//	    {
-//		$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-//	    }
-//        
-//		return $db->loadObject();
-//	}
-	
 	/**
 	 * Calculates chances between 2 team
 	 * Code is from LMO, all credits go to the LMO developers
@@ -761,14 +725,14 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	*
 	* @return array
 	*/
-	function getPreviousX()
+	function getPreviousX( $config=array() )
 	{
 		if (!$this->_match) {
 			return false;
 		}
 		$games = array();
-		$games[$this->_match->projectteam1_id] = self::_getTeamPreviousX($this->_match->roundcode, $this->_match->projectteam1_id);
-		$games[$this->_match->projectteam2_id] = self::_getTeamPreviousX($this->_match->roundcode, $this->_match->projectteam2_id);
+		$games[$this->_match->projectteam1_id] = self::_getTeamPreviousX($this->_match->roundcode, $this->_match->projectteam1_id, $config );
+		$games[$this->_match->projectteam2_id] = self::_getTeamPreviousX($this->_match->roundcode, $this->_match->projectteam2_id, $config );
 		
 		return $games;
 	}
@@ -780,7 +744,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 	* @param int $ptid project team id
 	* @return array
 	*/
-	function _getTeamPreviousX($current_roundcode, $ptid)
+	function _getTeamPreviousX($current_roundcode, $ptid, $config=array())
 	{
 	   $app = JFactory::getApplication();
        $option = JRequest::getCmd('option');
@@ -792,26 +756,50 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 		$nblast = $config['nb_previous'];
         
         // Select some fields
-		$query->select('m.*');
+		//$query->select('m.*');
+        $query->select('m.id,m.match_date,m.team1_result,m.team2_result,m.show_report,m.projectteam1_id,m.projectteam2_id' );
         $query->select('r.project_id, r.id AS roundid, r.roundcode ');
         
         $query->select('CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) AS match_slug ');
         $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
         $query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
         
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON r.id = m.round_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = r.project_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt1 ON pt1.id = m.projectteam1_id  ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt1.team_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id = st1.team_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt2 ON pt2.id = m.projectteam2_id  ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 ON st2.id = pt2.team_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id = st2.team_id ');
+        $query->from('#__sportsmanagement_match AS m ');
+        $query->join('INNER','#__sportsmanagement_round AS r ON r.id = m.round_id ');
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.id = r.project_id ');
+        $query->join('INNER','#__sportsmanagement_project_team pt1 ON pt1.id = m.projectteam1_id  ');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
+        $query->join('INNER','#__sportsmanagement_team AS t1 ON t1.id = st1.team_id ');
+        $query->join('INNER','#__sportsmanagement_club as c1 ON c1.id = t1.club_id ');
         
+        $query->join('INNER','#__sportsmanagement_project_team pt2 ON pt2.id = m.projectteam2_id  ');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
+        $query->join('INNER','#__sportsmanagement_team AS t2 ON t2.id = st2.team_id ');
+        $query->join('INNER','#__sportsmanagement_club as c2 ON c2.id = t2.club_id ');
         
-        
-        
+         switch ( $config['show_picture'] )
+        {
+            case 'team_picture':
+            $query->select('t1.picture AS home_picture');
+            $query->select('t2.picture AS away_picture');
+            break;
+            case 'projectteam_picture':
+            $query->select('st1.picture AS home_picture');
+            $query->select('st2.picture AS away_picture');
+            break;
+            case 'logo_small':
+            $query->select('c1.logo_small AS home_picture');
+            $query->select('c2.logo_small AS away_picture');
+            break;
+            case 'logo_middle':
+            $query->select('c1.logo_middle AS home_picture');
+            $query->select('c2.logo_middle AS away_picture');
+            break;
+            case 'logo_big':
+            $query->select('c1.logo_big AS home_picture');
+            $query->select('c2.logo_big AS away_picture');
+            break;
+        }
         
         $query->where('r.roundcode < '.$current_roundcode);
         $query->where('(m.projectteam1_id = '.$ptid.' OR m.projectteam2_id = '.$ptid.')');
@@ -822,9 +810,11 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 		$db->setQuery($query,0,$nblast);
 		$res = $db->loadObjectList();
         
-        if ( !$res )
+        if ( !$res && $db->getErrorNum() )
 	    {
-		$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+	    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <pre>'.print_r($query->dump(),true).'</pre>'),'Error');   
+	    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorNum(),true).'</pre>' ),'Error');   
+		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
 	    }
         
 		if ($res) {

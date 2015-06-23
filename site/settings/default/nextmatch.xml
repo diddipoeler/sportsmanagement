@@ -242,8 +242,11 @@
 			<option value="1">JYES</option>
 		</field>
 		
-		<field name="show_picture" type="list" default="logo_big"
-			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_SHOW_PICTURE_LABEL" description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_SHOW_PICTURE_DESC">
+		<field name="show_picture" 
+    type="list" 
+    default="logo_big"
+			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_SHOW_PICTURE_LABEL" 
+      description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_SHOW_PICTURE_DESC">
 			<option value="team_picture">COM_SPORTSMANAGEMENT_FES_NEXTMATCH_TEAM_PICTURE</option>
 			<option value="projectteam_picture">COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PROJECTTEAM_PICTURE</option>
 			<option value="logo_small">COM_SPORTSMANAGEMENT_FES_NEXTMATCH_CLUB_LOGO_SMALL</option>

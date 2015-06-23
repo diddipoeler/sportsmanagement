@@ -80,7 +80,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
         self::$projectteamid = (int) $jinput->get('ptid',0, '');
         self::$pro_teamid = (int) $jinput->get('ptid',0, '');
 		self::$divisionid = (int) $jinput->get('division',0, '');
-		self::$mode = (int) $jinput->get("mode",0, '');
+		self::$mode = (int) $jinput->get('mode',0, '');
         self::$cfg_which_database = (int) $jinput->get('cfg_which_database',0, '');
         parent::__construct();
 	}
@@ -126,7 +126,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
         // Select some fields
         $query->select('d.*,CONCAT_WS(\':\',id,alias) AS slug');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d');
+		$query->from('#__sportsmanagement_division AS d');
         // Where
         $query->where('d.id = '.self::$divisionid);
 			
@@ -296,42 +296,57 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
         $starttime = microtime(); 
 
         $matches = array();
-		$joomleague = sportsmanagementModelProject::getProject();
+		$project = sportsmanagementModelProject::getProject();
 
 		if (self::$divisionid > 0)
 		{
-		// Select some fields
+		$query->clear();
+        // Select some fields
         $query->select('id');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division');
+		$query->from('#__sportsmanagement_division');
         // Where
         $query->where('parent_id = '.self::$divisionid);
 
 			$db->setquery($query);
-			$div_for_teams = $db->loadResultArray();
+            
+			if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        // Joomla! 3.0 code here
+        $div_for_teams = $db->loadColumn();
+        }
+        elseif(version_compare(JVERSION,'2.5.0','ge')) 
+        {
+        // Joomla! 2.5 code here
+        $div_for_teams = $db->loadResultArray();
+        } 
+
 			$div_for_teams[] = self::getDivision()->id;
 		}
 
-		// Select some fields
+		$query->clear();
+        // Select some fields
         $query->select('m.*,DATE_FORMAT(m.time_present,"%H:%i") time_present,r.roundcode,r.id roundid,r.project_id,r.name');
         $query->select('t1.id AS team1');
         $query->select('t2.id AS team2');
         $query->select('CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) AS match_slug ');
         $query->select('CONCAT_WS(\':\',r.id,r.alias) AS round_slug');
         $query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
+        $query->select('CONCAT_WS(\':\',d.id,d.alias) AS division_slug');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
+		$query->from('#__sportsmanagement_match AS m');
         // Join 
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON m.round_id = r.id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = r.project_id ');
+        $query->join('INNER',' #__sportsmanagement_round AS r ON m.round_id = r.id ');
+        $query->join('INNER',' #__sportsmanagement_project AS p ON p.id = r.project_id ');
+        $query->join('LEFT',' #__sportsmanagement_division AS d ON d.id = m.division_id ');
         
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt1 ON pt1.id = m.projectteam1_id ');
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.id = pt1.team_id ');
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t1 ON st1.team_id = t1.id ');
+        $query->join('LEFT',' #__sportsmanagement_project_team as pt1 ON pt1.id = m.projectteam1_id ');
+        $query->join('LEFT',' #__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
+        $query->join('LEFT',' #__sportsmanagement_team as t1 ON st1.team_id = t1.id ');
         
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt2 ON pt2.id = m.projectteam2_id ');
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = pt2.team_id ');
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t2 ON st2.team_id = t2.id ');
+        $query->join('LEFT',' #__sportsmanagement_project_team as pt2 ON pt2.id = m.projectteam2_id ');
+        $query->join('LEFT',' #__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id ');
+        $query->join('LEFT',' #__sportsmanagement_team as t2 ON st2.team_id = t2.id ');
         
         // Where
         $query->where('m.published=1');
@@ -356,15 +371,15 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 	
 		if (self::$divisionid > 0)
 		{
-		  $query->where('(pt1.division_id IN ('.(implode(',',$div_for_teams)).') OR pt2.division_id IN ('.(implode(',',$div_for_teams)).'))');
+		  $query->where('(pt1.division_id IN ('.(implode(',',$div_for_teams)).') OR pt2.division_id IN ('.(implode(',',$div_for_teams)).')  OR m.division_id IN ('.(implode(',',$div_for_teams)).')   )');
 		}
 
 		if ($referee != 0)
 		{
 			$query->select('p.name AS project_name');
-            $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mref ON mref.match_id = m.id ');
+            $query->join('INNER',' #__sportsmanagement_match_referee AS mref ON mref.match_id = m.id ');
             $query->where('mref.project_referee_id = '.$referee);
-            $query->where('p.season_id = '.$joomleague->season_id);
+            $query->where('p.season_id = '.$project->season_id);
 		}
 		else
 		{
@@ -385,7 +400,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 		if ($getplayground)
 		{
             $query->select('playground.name AS playground_name,playground.short_name AS playground_short_name');
-            $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS playground ON playground.id = m.playground_id ');
+            $query->join('LEFT',' #__sportsmanagement_playground AS playground ON playground.id = m.playground_id ');
 		}
 
 		
@@ -402,7 +417,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 
 		if ($getreferee)
 		{
-			self::_getRefereesByMatch($matches,$joomleague);
+			self::_getRefereesByMatch($matches,$project);
 		}
 
 if (!$matches && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -447,14 +462,14 @@ if (!$matches && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 		//$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
         $matches = array();
 
-		$joomleague = sportsmanagementModelProject::getProject();
+		$project = sportsmanagementModelProject::getProject();
         
         // Select some fields
         $query->select('matches.*');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS matches');
+		$query->from('#__sportsmanagement_match AS matches');
         // Join 
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON matches.round_id = r.id ');
+        $query->join('INNER',' #__sportsmanagement_round AS r ON matches.round_id = r.id ');
         // Where
         $query->where('r.project_id = '.self::$projectid);
         $query->where('r.roundcode = '.$roundcode);
@@ -471,9 +486,12 @@ if (!$matches && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 
 		if (self::$divisionid > 0)
 		{
-		  $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d1 ON pt1.division_id = d1.id ');
-          $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d2 ON pt2.division_id = d2.id ');
-          $query->where("(d1.id = ".self::$divisionid." OR d1.parent_id = ".self::$divisionid." OR d2.id = ".self::$divisionid." OR d2.parent_id = ".self::$divisionid.")");
+		  $query->join('LEFT',' #__sportsmanagement_project_team as pt1 ON pt1.id = matches.projectteam1_id ');
+          $query->join('LEFT',' #__sportsmanagement_project_team as pt2 ON pt2.id = matches.projectteam2_id ');
+          
+          $query->join('LEFT',' #__sportsmanagement_division AS d1 ON pt1.division_id = d1.id ');
+          $query->join('LEFT',' #__sportsmanagement_division AS d2 ON pt2.division_id = d2.id ');
+          $query->where("(d1.id = ".self::$divisionid." OR d1.parent_id = ".self::$divisionid." OR d2.id = ".self::$divisionid." OR d2.parent_id = ".self::$divisionid." OR matches.division_id = ".self::$divisionid." )");
 		}
 
 		if ($unpublished != 1)
@@ -484,7 +502,7 @@ if (!$matches && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 		if ($getplayground)
 		{
 			$query->select('playground.name AS playground_name,playground.short_name AS playground_short_name');
-			$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS playground ON playground.id = matches.playground_id');
+			$query->join('LEFT',' #__sportsmanagement_playground AS playground ON playground.id = matches.playground_id');
 		}
 
 		$db->setQuery($query);
@@ -500,7 +518,7 @@ if (!$matches && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 
 		if ($getreferee)
 		{
-			$this->_getRefereesByMatch($matches,$joomleague);
+			self::_getRefereesByMatch($matches,$project);
 		}
 
 if (!$matches && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -519,10 +537,10 @@ if (!$matches && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	 * sportsmanagementModelTeamPlan::_getRefereesByMatch()
 	 * 
 	 * @param mixed $matches
-	 * @param mixed $joomleague
+	 * @param mixed $projekt
 	 * @return
 	 */
-	function _getRefereesByMatch($matches,$joomleague)
+	function _getRefereesByMatch($matches,$projekt)
 	{
 	   	$option = JRequest::getCmd('option');
 	   $app = JFactory::getApplication();
@@ -533,14 +551,15 @@ if (!$matches && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         
 		for ($index=0; $index < count($matches); $index++) 
         {
-			$referees=array();
-			if ($joomleague->teams_as_referees)
+			$referees = array();
+			if ($projekt->teams_as_referees)
 			{
+			 $query->clear();
 			 // Select some fields
              $query->select('ref.name AS referee_name');
              // From 
-             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS ref');
-             $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS link ON link.project_referee_id=ref.id ');
+             $query->from('#__sportsmanagement_team AS ref');
+             $query->join('LEFT',' #__sportsmanagement_match_referee AS link ON link.project_referee_id=ref.id ');
              // Where
              $query->where('link.match_id = '.$matches[$index]->id);
              // Order
@@ -549,18 +568,19 @@ if (!$matches && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 			}
 			else
 			{
+			 $query->clear();
 			 // Select some fields
              $query->select('ref.firstname AS referee_firstname,ref.lastname AS referee_lastname,ref.id as referee_id');
              $query->select('ppos.position_id');
              $query->select('pos.name AS referee_position_name');
              // From 
-             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ref');
-             $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS sp ON sp.person_id = ref.id ');
-             $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pref ON pref.person_id = sp.id ');
-             $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS link ON link.project_referee_id = pref.id ');
+             $query->from('#__sportsmanagement_person AS ref');
+             $query->join('LEFT',' #__sportsmanagement_season_person_id AS sp ON sp.person_id = ref.id ');
+             $query->join('LEFT',' #__sportsmanagement_project_referee AS pref ON pref.person_id = sp.id ');
+             $query->join('LEFT',' #__sportsmanagement_match_referee AS link ON link.project_referee_id = pref.id ');
              
-             $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = link.project_position_id');
-             $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');
+             $query->join('INNER',' #__sportsmanagement_project_position AS ppos ON ppos.id = link.project_position_id');
+             $query->join('INNER',' #__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
 
              // Where
              $query->where('link.match_id = '.$matches[$index]->id);
@@ -579,7 +599,10 @@ if (!$matches && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         
 			if (! $referees = $db->loadObjectList())
 			{
+			 if ( $db->getErrorNum() )
+             {
 				$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+                }
 			}
 			$matches[$index]->referees=$referees;
 		}

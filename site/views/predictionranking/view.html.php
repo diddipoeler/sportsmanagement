@@ -55,10 +55,10 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewPredictionRanking extends JViewLegacy
+class sportsmanagementViewpredictionranking extends JViewLegacy
 {
 	/**
-	 * sportsmanagementViewPredictionRanking::display()
+	 * sportsmanagementViewpredictionranking::display()
 	 * 
 	 * @param mixed $tpl
 	 * @return
@@ -89,6 +89,8 @@ class sportsmanagementViewPredictionRanking extends JViewLegacy
     
     $this->assign('headertitle', JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_TITLE'));
 		
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' items<br><pre>'.print_r($this->items,true).'</pre>'),'');
+        
 		if (isset($this->predictionGame))
 		{
 			$config	= sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
@@ -136,10 +138,10 @@ class sportsmanagementViewPredictionRanking extends JViewLegacy
       $mdlProject->setProjectId($project->project_id);
       }
       
-      $map_config		= $mdlProject->getMapConfig($mdlProject::$cfg_which_database);
+      $map_config = $mdlProject->getMapConfig($mdlProject::$cfg_which_database);
 		  $this->assignRef('mapconfig',$map_config ); // Loads the project-template -settings for the GoogleMap
 			
-      $this->assign('PredictionMembersList',	sportsmanagementModelPrediction::getPredictionMembersList($this->config,$this->configavatar) );
+      $this->assign('PredictionMembersList',sportsmanagementModelPrediction::getPredictionMembersList($this->config,$this->configavatar) );
       
       $this->geo = new JSMsimpleGMapGeocoder();
 	    $this->geo->genkml3prediction($this->predictionGame->id,$this->PredictionMembersList);

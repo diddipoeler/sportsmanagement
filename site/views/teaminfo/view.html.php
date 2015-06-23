@@ -120,7 +120,7 @@ class sportsmanagementViewTeamInfo extends JViewLegacy
       }
       
             
-            if ( $this->config['show_history_leagues'] == 1 )
+            if ( $this->config['show_history_leagues'] )
 	{
 	   $seasons = $model->getSeasons( $config,1 );
 			$this->assignRef('seasons', $seasons );
@@ -160,6 +160,10 @@ class sportsmanagementViewTeamInfo extends JViewLegacy
  * $document->addCustomTag($stylelink);
  */
         
+        if ( !isset($this->config['table_class']) )
+        {
+            $this->config['table_class'] = 'table';
+        }
 
 		parent::display( $tpl );
 	}

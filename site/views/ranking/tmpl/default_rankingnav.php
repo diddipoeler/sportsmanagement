@@ -56,7 +56,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	echo "<td>".JHtml::_('select.genericlist', $this->lists['tomatchday'], 'to' , 'class="inputbox" size="1"', 'value', 'text', $this->to )."</td>";
 
 	?>
-		<td><input type="submit" class="button" name="reload View"
+		<td><input type="submit" class="<?PHP echo $this->config['button_style']; ?>" name="reload View"
 			value="<?php echo JText::_('COM_SPORTSMANAGEMENT_RANKING_FILTER'); ?>"></td>
 	</tr>
 </table>

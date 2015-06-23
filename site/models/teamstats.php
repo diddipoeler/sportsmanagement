@@ -582,8 +582,17 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
-        
-    		$this->attendanceranking = $db->loadResultArray();
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        // Joomla! 3.0 code here
+        $this->attendanceranking = $db->loadColumn();
+        }
+        elseif(version_compare(JVERSION,'2.5.0','ge')) 
+        {
+        // Joomla! 2.5 code here
+        $this->attendanceranking = $db->loadResultArray();
+        } 
+
     	}
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )

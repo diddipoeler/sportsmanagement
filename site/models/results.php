@@ -80,13 +80,13 @@ class sportsmanagementModelResults extends JModelLegacy
         
         parent::__construct();
 
-		self::$divisionid = $jinput->getInt('division',0);
-		self::$mode = $jinput->getInt('mode',0);
-		self::$order = $jinput->getInt('order',0);
-        self::$projectid = $jinput->getInt('p',0);
-		$round = $jinput->getString('r', '');
+		self::$divisionid = $jinput->request->get('division',0, 'INT');
+		self::$mode = $jinput->request->get('mode',0, 'INT');
+		self::$order = $jinput->request->get('order',0, 'INT');
+        self::$projectid = $jinput->request->get('p',0, 'INT');
+		$round = $jinput->request->get('r',0, 'INT');
 		$roundid = $round;
-        self::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
+        self::$cfg_which_database = $jinput->request->get('cfg_which_database',0, 'INT');
         
         sportsmanagementModelProject::$projectid = self::$projectid;
         sportsmanagementModelProject::$cfg_which_database = self::$cfg_which_database;
@@ -139,7 +139,7 @@ class sportsmanagementModelResults extends JModelLegacy
 		if (self::$divisionid > 0)
 		{
 			$division = $this->getTable('Division','sportsmanagementTable');
-			$division->load($this->divisionid);
+			$division->load(self::$divisionid);
 		}
 
 		return $division;

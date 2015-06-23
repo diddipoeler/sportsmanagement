@@ -182,7 +182,16 @@ $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
 				{
 					$model = $this->getModel();
 					$this->assign('inoutstat',$model->getInOutStats($player_hist->project_id, $player_hist->ptid, $player_hist->tpid));
+
+//echo __FILE__.' '.__LINE__.' project->id <br><pre>'.print_r($player_hist->project_id,true).'</pre><br>';
+//echo __FILE__.' '.__LINE__.' projectteam->id <br><pre>'.print_r($player_hist->ptid,true).'</pre><br>';
+//echo __FILE__.' '.__LINE__.' teamplayer->id <br><pre>'.print_r($player_hist->tpid,true).'</pre><br>';
                     
+//                    if ( $player_hist->tpid == 846 )
+//            {
+//echo __FILE__.' '.__LINE__.' player_hist<br><pre>'.print_r($player_hist,true).'</pre><br>';
+//            }
+            
                     //$this->assign('inoutstat',sportsmanagementModelRoster::_getTeamInOutStats($player_hist->project_id, $player_hist->ptid, $player_hist->tpid));
 					
                     //$this->assign('inoutstat',$player->getInOutStats($player_hist->project_id, $player_hist->ptid, $player_hist->tpid));
@@ -192,10 +201,16 @@ $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
                     {
                         $this->overallconfig['person_events'] = NULL;
                     }
-                    $timePlayed = 0;
-                    $this->assign('timePlayed',$model->getTimePlayed($player_hist->tpid,$this->project->game_regular_time,NULL,$this->overallconfig['person_events']));
-                    $timePlayed  = $this->timePlayed;
                     
+                    $timePlayed = $model->getTimePlayed($player_hist->tpid,$this->project->game_regular_time,NULL,$this->overallconfig['person_events'],$player_hist->project_id);
+                    //$timePlayed = 0;
+                    //$this->assign('timePlayed',$model->getTimePlayed($player_hist->tpid,$this->project->game_regular_time,NULL,$this->overallconfig['person_events']));
+                    //$timePlayed  = $this->timePlayed;
+
+//echo __FILE__.' '.__LINE__.' Player->id<br><pre>'.print_r($player_hist->tpid,true).'</pre><br>';
+//echo __FILE__.' '.__LINE__.' game->id<br><pre>'.print_r($game->id,true).'</pre><br>';
+//echo __FILE__.' '.__LINE__.' timePlayed<br><pre>'.print_r($timePlayed,true).'</pre><br>';
+                                    
                     $routeparameter = array();
        $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
        $routeparameter['s'] = JRequest::getInt('s',0);
@@ -213,13 +228,36 @@ $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
 					$link2 = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
 					?>
 			<tr class="">
-				<td class="td_l" nowrap="nowrap"><?php echo JHtml::link($link1,$player_hist->project_name); ?>
+				<td class="td_l" nowrap="nowrap">
+                <?php
+                if ( $this->config['show_project_logo'] ) 
+                            { 
+if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$player_hist->project_picture ) )
+				{
+					$player_hist->project_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
+				}
+                                                
+                echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsproject'.$player_hist->project_id.'-'.$player_hist->team_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$player_hist->project_picture,$player_hist->project_name,'20'); 
+                }
+                echo JHtml::link($link1,$player_hist->project_name); 
+                ?>
 				</td>
 				<td class="td_l" class="nowrap">
 				<?php
-					if ($this->config['show_playerstats_teamlink'] == 1) {
+                if ( $this->config['show_team_logo'] ) 
+                            { 
+if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$player_hist->club_picture ) )
+				{
+					$player_hist->club_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
+				}                                
+echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsteam'.$player_hist->project_id.'-'.$player_hist->team_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$player_hist->club_picture,$player_hist->team_name,'20');                                
+                            }    
+					if ( $this->config['show_playerstats_teamlink'] ) 
+                    {
 						echo JHtml::link($link2,$player_hist->team_name);
-					} else {
+					} 
+                    else 
+                    {
 						echo $player_hist->team_name;
 					} 
 				?>

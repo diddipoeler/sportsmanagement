@@ -96,7 +96,7 @@ $nbcols = 0;
 		?>
 
 		<?php
-		if (($this->project->project_type=='DIVISIONS_LEAGUE') && ($this->config['show_division']))
+		if (($this->project->project_type=='DIVISIONS_LEAGUE') && ($this->config['show_division']) )
 		{
 			?>
 		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_DIVISION'); ?></th>
@@ -162,7 +162,7 @@ $nbcols = 0;
 				echo '</th>';
 
 				// Create space for logo home team
-				if ($this->config['show_logo_small'])
+				if ( $this->config['show_logo_small'] )
 				{
 					echo '<th class="right">&nbsp;</th>';
 					$nbcols++;
@@ -173,7 +173,7 @@ $nbcols = 0;
 				$nbcols++;
 
 				// Create space for logo guest team
-				if ($this->config['show_logo_small'])
+				if ( $this->config['show_logo_small'] )
 				{
 					echo '<th class="left">&nbsp;</th>';
 					$nbcols++;
@@ -245,7 +245,7 @@ $nbcols = 0;
 		?>
 
 		<?php
-		if ($this->config['show_referee'])
+		if ( $this->config['show_referee'] )
 		{
 			?>
 		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_REFEREE'); ?></th>
@@ -255,7 +255,7 @@ $nbcols = 0;
 		?>
 
 		<?php
-		if (($this->config['show_thumbs_picture']) & ($teamid>0))
+		if ( ($this->config['show_thumbs_picture']) & ($teamid>0))
 		{
 			?>
 		<th>&nbsp;</th>
@@ -265,7 +265,7 @@ $nbcols = 0;
 		?>
 
 		<?php
-		if ($this->config['show_matchreport_column'])
+		if ( $this->config['show_matchreport_column'])
 		{
 			?>
 		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_PAGE_TITLE'); ?></th>
@@ -275,7 +275,7 @@ $nbcols = 0;
 		?>
 
 		<?php
-		if ($this->config['show_attendance_column'])
+		if ( $this->config['show_attendance_column'])
 		{
 			?>
 		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_ATTENDANCE'); ?></th>
@@ -323,7 +323,7 @@ $nbcols = 0;
 			$home = $hometeam->name;
 			if ($match->team1==$this->ptid)
 			{
-				$home=sprintf('%s',$hometeam->name);
+				$home = sprintf('%s',$hometeam->name);
 			}
 		}
 		else
@@ -331,32 +331,32 @@ $nbcols = 0;
 			$home = $hometeam->name;
 			if ($match->team2)
 			{
-				$home=sprintf('%s',$hometeam->name);
+				$home = sprintf('%s',$hometeam->name);
 			}
 		}
 
 		if (!empty($this->ptid))
 		{
-			$away=$guestteam->name;
+			$away = $guestteam->name;
 			if ($match->team2==$this->ptid)
 			{
-				$away=sprintf('%s',$guestteam->name);
+				$away = sprintf('%s',$guestteam->name);
 			}
 		}
 		else
 		{
-			$away=$guestteam->name;
+			$away = $guestteam->name;
 			if ($match->team2)
 			{
-				$away=sprintf('%s',$guestteam->name);
+				$away = sprintf('%s',$guestteam->name);
 			}
 		}
 
-		$homeclub=$hometeam->club_id;
-		$awayclub=$guestteam->club_id;
+		$homeclub = $hometeam->club_id;
+		$awayclub = $guestteam->club_id;
 
 		$favStyle = '';
-		if ($this->config['highlight_fav'] == 1 && !$teamid) {
+		if ( $this->config['highlight_fav'] && !$teamid ) {
 			$isFavTeam = in_array($hometeam->id,$this->favteams) ? 1 : in_array($guestteam->id, $this->favteams);
 			if ( $isFavTeam && $this->project->fav_team_highlight_type == 1 )
 			{
@@ -429,7 +429,7 @@ $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0)
 $routeparameter['s'] = JRequest::getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['r'] = $match->round_slug;
-$routeparameter['division'] = 0;
+$routeparameter['division'] = $match->division_slug;
 $routeparameter['mode'] = 0;
 $routeparameter['order'] = '';
 $routeparameter['layout'] = '';
@@ -455,7 +455,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 		{
 		?>
 		    <td>
-			<?php echo sportsmanagementHelperHtml::showDivisonRemark($hometeam,$guestteam,$this->config); ?>
+			<?php echo sportsmanagementHelperHtml::showDivisonRemark($hometeam,$guestteam,$this->config,$match->division_slug); ?>
 		    </td>
 		<?php
 		}
@@ -463,7 +463,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 		{
 		?>
 		    <td>
-			<?php sportsmanagementHelperHtml::showMatchPlayground($match); ?>
+			<?php sportsmanagementHelperHtml::showMatchPlayground($match,$this->config); ?>
 		    </td>
 		<?php
 		}
@@ -531,12 +531,12 @@ $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0)
 $routeparameter['s'] = JRequest::getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['tid'] = $hometeam->team_slug;
-$routeparameter['division'] = 0;
+$routeparameter['division'] = $match->division_slug;
 $routeparameter['mode'] = 0;
 $routeparameter['ptid'] = 0;
 $homelink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
 $routeparameter['tid'] = $guestteam->team_slug;
-$routeparameter['division'] = 0;
+$routeparameter['division'] = $match->division_slug;
 $routeparameter['mode'] = 0;
 $routeparameter['ptid'] = 0;
 $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);

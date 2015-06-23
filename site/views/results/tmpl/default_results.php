@@ -45,25 +45,8 @@ if ( !isset ( $this->project ) )
 }
 else
 {
-	/*
-	// only for testing purposes. Should be marked out in public revision
-	$this->config['show_match_number']=1;
-	$this->config['show_events']=1;
-	$this->config['show_division']=1;
-	$this->config['switch_home_guest']=1;
-	$this->config['show_time']=1;
-	$this->project->fav_team_color='blue';
-	$this->project->fav_team_text_color='#FFFFFF';
-	$this->config['show_playground']=1;
-	$this->config['show_playground_alert']=1;
-	$this->config['show_referee']=1;
-	$this->config['show_dnp_teams']=1;
-	$this->config['show_referee']=1;
-
-	$this->config['result_style'] = 1;
-	*/
 	?>
-	<div id="jlg_ranking_table" align="center">
+	<div class="row">
 		<br />
 		<?php
 		if ( count( $this->matches ) > 0 )

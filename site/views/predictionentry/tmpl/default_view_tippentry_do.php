@@ -284,8 +284,8 @@ echo '<br />memberID<pre>~' . print_r($this->predictionMember->pmID,true) . '~</
 						if (isset($result->team2_result_decision)){$resultAway=$result->team2_result_decision;}
 						
 						$closingtime = $this->config['closing_time'] ;//3600=1 hour
-						$matchTimeDate = sportsmanagementHelper::getTimestamp($result->match_date,1,$predictionProjectSettings->serveroffset);
-						$thisTimeDate = sportsmanagementHelper::getTimestamp('',1,$predictionProjectSettings->serveroffset);
+						$matchTimeDate = sportsmanagementHelper::getTimestamp($result->match_date,1,$predictionProjectSettings->timezone);
+						$thisTimeDate = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"),1,$predictionProjectSettings->timezone);
 						
 
             // änderungen erlaubt ?   $this->config['show_help']
@@ -316,7 +316,7 @@ echo '<br />this->use_tipp_admin<pre>~' . print_r($this->config['use_tipp_admin'
 						echo '<br />resultAway<pre>~'.print_r($resultAway,true).'~</pre><br />';
 						echo '<br />tippAllowed<pre>~'.print_r($tippAllowed,true).'~</pre><br />';
 						echo '<br />date<pre>~' . print_r( JHTML::_('date',date('Y-m-d H:i:s', $thisTimeDate), "%Y-%m-%d %H:%M:%S"), true ) . '~</pre><br />';
-						echo '<br />predictionProjectSettings<pre>~' . print_r($predictionProjectSettings->serveroffset, true ) . '~</pre><br />';
+						echo '<br />predictionProjectSettings<pre>~' . print_r($predictionProjectSettings->timezone, true ) . '~</pre><br />';
 						}
 						
             ?>

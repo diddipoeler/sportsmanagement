@@ -50,12 +50,12 @@ if (!empty($this->model->_projectRoundsCount))
   <table class="table">
   <tr>
   <td>
-  <div class='pagenav'>
+  <div class="">
   <?php
 								
-				$pageNavigation  = "<div class='pagenav'>";
+				$pageNavigation  = '<div class="">';
 				$pageNavigation .= JoomleaguePagination::pagenav($this->model->getPredictionProject($this->model->predictionProject->project_id));
-				$pageNavigation .= "</div>";
+				$pageNavigation .= '</div>';
 				echo $pageNavigation;
 			  
 		

@@ -45,7 +45,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 
 <!-- START of match details -->
-<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DETAILS'); ?></h2>
+<h4><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_DETAILS'); ?></h4>
 <table class="table">
 	<!-- Prev Match-->
 	<?php
@@ -181,7 +181,7 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 
 	<!-- referee -->
 	<?php
-	if ($this->config['show_match_referees'] == 1)
+	if ( $this->config['show_match_referees'] )
     {
 		if (!empty($this->referees)): ?>
 			<?php $html = array(); ?>

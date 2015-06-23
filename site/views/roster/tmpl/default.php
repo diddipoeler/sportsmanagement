@@ -149,29 +149,29 @@ if (!empty($css))
 {
     echo $this->loadTemplate('debug');
 }
-	if ($this->config['show_projectheader'] == 1)
+	if ( $this->config['show_projectheader'] )
 	{
 		echo $this->loadTemplate('projectheading');
 	}
 
 	if ($this->projectteam)
 	{
-		if (($this->config['show_sectionheader'])==1)
+		if ( $this->config['show_sectionheader'] )
 		{
 			echo $this->loadTemplate('sectionheader');
 		}
 
-		if (($this->config['show_team_logo'])==1)
+		if ( $this->config['show_team_logo'] )
 		{
 			echo $this->loadTemplate('picture');
 		}
 
-		if (($this->config['show_description'])==1)
+		if ( $this->config['show_description'] )
 		{
 			echo $this->loadTemplate('description');
 		}
 
-		if (($this->config['show_players'])==1)
+		if ( $this->config['show_players'] )
 		{
 			if (($this->config['show_players_layout'])=='player_standard')
 			{
@@ -193,7 +193,7 @@ if (!empty($css))
 			}
 		}
 
-		if (($this->config['show_staff'])==1)
+		if ( $this->config['show_staff'] )
 		{
 			if (($this->config['show_staff_layout'])=='staff_standard')
 			{

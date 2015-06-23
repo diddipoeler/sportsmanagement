@@ -122,7 +122,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 
 							$imgTitle=JText::_('COM_SPORTSMANAGEMENT_PRED_ROUND_RESULTS_TITLE');
 							$desc = JHTML::image('media/com_sportsmanagement/jl_images/icon-16-Matchdays.png',$imgTitle,array('border' => 0,'title' => $imgTitle));
-							echo JHTML::link($link,$desc,array('target' => '_blank'));
+							echo JHTML::link($link,$desc,array('target' => ''));
 						}
 						?>
             </td>
@@ -409,6 +409,30 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
                     
                     if ( $this->model->pggrouprank )
                     {
+                        if ( !isset($groupmembersResultsArray[$member->pg_group_id]['predictionsCount']) )
+                        {
+                            $groupmembersResultsArray[$member->pg_group_id]['predictionsCount'] = 0;
+                        }
+                        if ( !isset($groupmembersResultsArray[$member->pg_group_id]['totalPoints']) )
+                        {
+                            $groupmembersResultsArray[$member->pg_group_id]['totalPoints'] = 0;
+                        }
+                        if ( !isset($groupmembersResultsArray[$member->pg_group_id]['totalTop']) )
+                        {
+                            $groupmembersResultsArray[$member->pg_group_id]['totalTop'] = 0;
+                        }
+                        if ( !isset($groupmembersResultsArray[$member->pg_group_id]['totalDiff']) )
+                        {
+                            $groupmembersResultsArray[$member->pg_group_id]['totalDiff'] = 0;
+                        }
+                        if ( !isset($groupmembersResultsArray[$member->pg_group_id]['totalTend']) )
+                        {
+                            $groupmembersResultsArray[$member->pg_group_id]['totalTend'] = 0;
+                        }
+                        if ( !isset($groupmembersResultsArray[$member->pg_group_id]['totalJoker']) )
+                        {
+                            $groupmembersResultsArray[$member->pg_group_id]['totalJoker'] = 0;
+                        }
                     // für die gruppentabelle
                     $groupmembersResultsArray[$member->pg_group_id]['pg_group_id'] = $member->pg_group_id;
                     $groupmembersResultsArray[$member->pg_group_id]['pg_group_name'] = $member->pg_group_name;
@@ -438,13 +462,13 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
 					
 					$output = sportsmanagementHelper::getPictureThumb($picture, $playerName,0,25);
 					$membersDataArray[$member->pmID]['show_user_icon'] = $output;
-                    $membersDataArray[$member->pmID]['pg_group_name']				= $member->pg_group_name;
-                    $membersDataArray[$member->pmID]['pg_group_id']				= $member->pg_group_id;
+                    $membersDataArray[$member->pmID]['pg_group_name'] = $member->pg_group_name;
+                    $membersDataArray[$member->pmID]['pg_group_id']	= $member->pg_group_id;
                     
                     if ( $this->model->pggrouprank )
                     {
-                    $groupmembersDataArray[$member->pg_group_id]['pg_group_name']				= $member->pg_group_name;
-                    $groupmembersDataArray[$member->pg_group_id]['pg_group_id']				= $member->pg_group_id;
+                    $groupmembersDataArray[$member->pg_group_id]['pg_group_name'] = $member->pg_group_name;
+                    $groupmembersDataArray[$member->pg_group_id]['pg_group_id']	= $member->pg_group_id;
                     }
 
           if ( $member->aliasName )
@@ -510,7 +534,7 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
                         }
                         else
                         {
-                            $computedMembersRanking = sportsmanagementModelPrediction::computeMembersRanking($membersResultsArray,$this->config);
+                        $computedMembersRanking = sportsmanagementModelPrediction::computeMembersRanking($membersResultsArray,$this->config);
                         }
 
 				
@@ -585,9 +609,9 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
 				    }
                     }
 							// soll der meistertipp angezeigt werden ? anfang
-							if ($this->config['show_champion_tip'])
+							if ( $this->config['show_champion_tip'] )
 							{
-							if ( $membersDataArray[$key]['champ_tipp'] )
+							if ( isset($membersDataArray[$key]['champ_tipp']) )
               {
                 if ($this->config['show_champion_tip_club_logo'])
 							{
@@ -595,10 +619,11 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
                             {
                             $champLogo = $this->model->getChampLogo($showProjectID,$membersDataArray[$key]['champ_tipp']);    
                             
-                            if ( $champLogo->name )
+                            if ( isset($champLogo->name) )
                             {
                             $imgTitle = $champLogo->name;
-				$imgFile = JHTML::image( $champLogo->logo_big, $imgTitle , array('title' => $imgTitle, 'width' => '20' ));
+				//$imgFile = JHTML::image( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$champLogo->logo_big, $imgTitle , array('title' => $imgTitle, 'width' => '20' ));
+                $imgFile = sportsmanagementHelperHtml::getBootstrapModalImage('predranking'.$key,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$champLogo->logo_big,$imgTitle,'20'); 
                             }
                             else
                             {

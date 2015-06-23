@@ -55,16 +55,17 @@ jimport('joomla.application.component.controller');
 class sportsmanagementControllerPredictionResults extends JControllerLegacy
 {
 
-	/**
-	 * sportsmanagementControllerPredictionResults::display()
-	 * 
-	 * @return void
-	 */
-	function display()
+		/**
+		 * sportsmanagementControllerPredictionResults::display()
+		 * 
+		 * @param bool $cachable
+		 * @param bool $urlparams
+		 * @return void
+		 */
+		function display($cachable = false, $urlparams = false)
 	{
-		$this->showprojectheading();
-		$this->showbackbutton();
-		$this->showfooter();
+
+		parent::display($cachable, $urlparams = false);
 	}
 
 	/**

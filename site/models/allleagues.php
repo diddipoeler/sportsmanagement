@@ -77,6 +77,8 @@ var $_identifier = "allleagues";
                         'v.country'
                         );
                 parent::__construct($config);
+                $getDBConnection = sportsmanagementHelper::getDBConnection();
+                parent::setDbo($getDBConnection);
         }
 
 /**
@@ -206,7 +208,7 @@ public function getStart()
         $option = $jinput->getCmd('option');
         
         // Create a new query object.
-		$db		= $this->getDbo();
+		$db		= sportsmanagementHelper::getDBConnection();
 		$query	= $db->getQuery(true);
 		$user	= JFactory::getUser(); 
 		
@@ -232,6 +234,9 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {        
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' ordering<br><pre>'.print_r($this->getState('filter_order'),true).'</pre>'),'');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' direction<br><pre>'.print_r($this->getState('filter_order_Dir'),true).'</pre>'),'');
         

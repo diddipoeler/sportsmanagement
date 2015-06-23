@@ -139,7 +139,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
   $ChampPoints = 0;
@@ -174,9 +174,9 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	foreach ($sChampTeamsList AS $key => $value){$dChampTeamsList[] = explode(',',$value);}
 	foreach ($dChampTeamsList AS $key => $value){$champTeamsList[$value[0]] = $value[1];}
 	
-	if ( isset($champTeamsList[$this->pjID]) )
+	if ( isset($champTeamsList[self::$pjID]) )
 	{
-  if ( $champTeamsList[$this->pjID] == $resultchamp )
+  if ( $champTeamsList[self::$pjID] == $resultchamp )
 	{
   $ChampPoints = $resultchamppoints;
   }
@@ -188,7 +188,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
   if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
   {
     $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->predictionGameID<br><pre>'.print_r($this->predictionGameID,true).'</pre>'),'');
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->pjID<br><pre>'.print_r($this->pjID,true).'</pre>'),'');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->pjID<br><pre>'.print_r(self::$pjID,true).'</pre>'),'');
     $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' resultchamp<br><pre>'.print_r($resultchamp,true).'</pre>'),'');
     $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' resultchamppoints<br><pre>'.print_r($resultchamppoints,true).'</pre>'),'');
     $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' champ_tipp<br><pre>'.print_r($champ_tipp,true).'</pre>'),'');
@@ -216,7 +216,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
     
 		if (!self::$_predictionGame)
@@ -261,7 +261,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
   $picture = '';
@@ -325,20 +325,34 @@ class sportsmanagementModelPrediction extends JModelLegacy
         case 'com_cbe':
         case 'com_cbe25':
         case 'prediction':
-        $db->setQuery($query);
+        if ( $db->setQuery($query) )
+        {
 		$results = $db->loadResult();
         if ( $results )
         {
         $picture = $results;
         }
+        }
+        else
+       {
+       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorNum(),true).'</pre>'),'Error');
+       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+       }
         break;  
         case 'com_kunena':
-        $db->setQuery($query);
+        if ( $db->setQuery($query) )
+        {
 		$results = $db->loadResult();
         if ( $results )
         {
         $picture = 'media/kunena/avatars/'.$results;
         }
+        }
+        else
+       {
+       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorNum(),true).'</pre>'),'Error');
+       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+       }
         break;
         }  
  
@@ -362,7 +376,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
 		if (!self::$_predictionMember)
@@ -449,7 +463,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
         if (!self::$_predictionProjectS)
@@ -459,8 +473,9 @@ class sportsmanagementModelPrediction extends JModelLegacy
 			 // Select some fields
           $query->select('pp.*');
           $query->select('p.name AS projectName, p.start_date');
-          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_project AS pp');
-          $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pp.project_id');
+          $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
+          $query->from('#__sportsmanagement_prediction_project AS pp');
+          $query->join('LEFT', '#__sportsmanagement_project AS p ON p.id = pp.project_id');
           $query->where('pp.prediction_id = '.$db->Quote(self::$predictionGameID));
           $query->where('pp.published = 1');
 
@@ -475,7 +490,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
           {
             $query->clear();
             $query->select('min(round_date_first)');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+            $query->from('#__sportsmanagement_round');
             $query->where('project_id = '.$row->project_id);
             
           $db->setQuery($query);
@@ -512,7 +527,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 		$document = JFactory::getDocument();
 
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
     
     // Select some fields
@@ -584,6 +599,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 		return $configvalues;
 	}
 
+
 	/**
 	 * sportsmanagementModelPrediction::getTimestamp()
 	 * 
@@ -591,6 +607,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 	 * @param integer $offset
 	 * @return
 	 */
+/*
 	function getTimestamp($date,$offset=0)
 	{
 		if ($date <> '')
@@ -613,6 +630,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 		$result = mktime($datum[3],$datum[4],$datum[5],$datum[1],$datum[2],$datum[0]) + $timestampoffset;
 		return $result;
 	}
+*/
 
 	/**
 	 * sportsmanagementModelPrediction::getPredictionProject()
@@ -628,7 +646,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__. ' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
@@ -637,7 +655,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 		{
 		   // Select some fields
         $query->select('*');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
+        $query->from('#__sportsmanagement_project');
         $query->where('id = '.$project_id);
 
 			$db->setQuery($query);
@@ -650,19 +668,21 @@ class sportsmanagementModelPrediction extends JModelLegacy
             {
                 $query->clear();
                 $query->select('min(round_date_first)');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+        $query->from('#__sportsmanagement_round');
         $query->where('project_id = '.$project_id);
 
           $db->setQuery($query);
           $result->start_date = $db->loadResult();    
             }
-            
+
+/*            
             // timezone in serveroffset umwandeln
             $date = JFactory::getDate();
             $date->setTimezone(new DateTimeZone($result->timezone));
             //$app->enqueueMessage(JText::_(__METHOD__.'date<br><pre>'.print_r($date,true).'</pre>'),'');
             $result->serveroffset = $date->getOffsetFromGMT(true);
             //$app->enqueueMessage(JText::_(__METHOD__.'serveroffset<br><pre>'.print_r($result->serveroffset,true).'</pre>'),'');
+*/
    
             return $result;
 		}
@@ -684,7 +704,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
 	//$teamName='name';
@@ -724,7 +744,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
 		if ( $teamID == 0 ) 
@@ -763,7 +783,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
 		if ($teamID == 0) 
@@ -804,7 +824,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
 		if ($pid > 0)
@@ -835,7 +855,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
 		if ($pid > 0)
@@ -865,7 +885,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         // Select some fields
         $query->select('id');
@@ -895,7 +915,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         // Select some fields
         $query->select('user_id,approved');
@@ -929,7 +949,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
 		$allowed = false;
@@ -1009,7 +1029,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         // Select some fields
         $query->select('u.email');
@@ -1020,7 +1040,19 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $query->order('u.email');
 
 		$db->setQuery($query);
-		return $db->loadResultArray();
+		
+		 if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        // Joomla! 3.0 code here
+        $res = $db->loadColumn();
+        }
+        elseif(version_compare(JVERSION,'2.5.0','ge')) 
+        {
+        // Joomla! 2.5 code here
+        $res = $db->loadResultArray();
+        } 
+        
+		return $res;
 	}
 
 	/**
@@ -1036,7 +1068,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
         // Select some fields
@@ -1049,7 +1081,19 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $query->order('u.email');
 
 		$db->setQuery($query);
-		return $db->loadResultArray();
+		
+		 if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        // Joomla! 3.0 code here
+        $res = $db->loadColumn();
+        }
+        elseif(version_compare(JVERSION,'2.5.0','ge')) 
+        {
+        // Joomla! 2.5 code here
+        $res = $db->loadResultArray();
+        } 
+        
+		return $res;
 	}
 
 	/**
@@ -1066,7 +1110,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         // Select some fields
         $query->select('user_id');
@@ -1074,7 +1118,19 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $query->where('prediction_id = '.$predictionID);
 
 		$db->setQuery($query);
-		return $db->loadResultArray();
+		
+		 if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        // Joomla! 3.0 code here
+        $res = $db->loadColumn();
+        }
+        elseif(version_compare(JVERSION,'2.5.0','ge')) 
+        {
+        // Joomla! 2.5 code here
+        $res = $db->loadResultArray();
+        } 
+        
+		return $res;
 	}
 
 	/**
@@ -1091,7 +1147,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         // Select some fields
         $query->select('user_id');
@@ -1113,7 +1169,18 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $query->order('u.email');
 
 		$db->setQuery($query);
-		return $db->loadResultArray();
+		
+		 if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        // Joomla! 3.0 code here
+        $res = $db->loadColumn();
+        }
+        elseif(version_compare(JVERSION,'2.5.0','ge')) 
+        {
+        // Joomla! 2.5 code here
+        $res = $db->loadResultArray();
+        } 
+		return $res;
 	}
 
 
@@ -1218,8 +1285,8 @@ $body .= "</table>";
         $resultAway = $result->team2_result_decision;
         }
   $closingtime = $configprediction['closing_time'] ;//3600=1 hour
-	$matchTimeDate = sportsmanagementHelper::getTimestamp($result->match_date,1,$predictionProjectSettings->serveroffset);
-	$thisTimeDate = sportsmanagementHelper::getTimestamp('',1,$predictionProjectSettings->serveroffset);
+	$matchTimeDate = sportsmanagementHelper::getTimestamp($result->match_date,1,$predictionProjectSettings->timezone);
+	$thisTimeDate = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"),1,$predictionProjectSettings->timezone);
 	$matchTimeDate = $matchTimeDate - $closingtime;
 						
   $body .= "<tr class='" . $class ."'>";
@@ -1529,7 +1596,7 @@ $body .= $this->createHelptText($predictionProject->mode);
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         // Select some fields
         $query->select('id AS value, name AS text');
@@ -1556,7 +1623,7 @@ $body .= $this->createHelptText($predictionProject->mode);
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
 		if ($config['show_full_name']==0)
@@ -1602,7 +1669,7 @@ $body .= $this->createHelptText($predictionProject->mode);
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
         // Select some fields
@@ -1631,12 +1698,12 @@ $body .= $this->createHelptText($predictionProject->mode);
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
         // Select some fields
         $query->select('count(id)');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_result');
+        $query->from('#__sportsmanagement_prediction_result');
         $query->where('prediction_id = '.$db->Quote(self::$predictionGameID));
         $query->where('user_id = '.$user_id);
         $query->where('joker = 1');
@@ -1839,12 +1906,12 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
-		if ($round1ID==0)
+		if ( (int)$round1ID == 0 )
         {
-            $round1ID=1;
+            $round1ID = 1;
         }
         
         // Select some fields
@@ -1857,29 +1924,29 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
     $query->select('m.team1_result_so AS homeResultSO,m.team2_result_so AS awayResultSO');
     $query->select('pr.id AS prID,pr.user_id AS prUserID,pr.tipp AS prTipp,pr.tipp_home AS prHomeTipp,pr.tipp_away AS prAwayTipp,pr.joker AS prJoker,pr.points AS prPoints,pr.top AS prTop,pr.diff AS prDiff,pr.tend AS prTend');
     $query->select('pm.id AS pmID');
-    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
-    $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON r.id = m.round_id');
+    $query->from('#__sportsmanagement_match AS m');
+    $query->join('INNER', '#__sportsmanagement_round AS r ON r.id = m.round_id');
 
-		if ((isset($project_id)) && ($project_id > 0))
+		if ((isset($project_id)) && ( (int)$project_id > 0) )
 		{
-		$query->where('r.project_id = '.$project_id);
+		$query->where('r.project_id = '.(int)$project_id);
         }
 
-		$query->where('r.id >= '.$round1ID);
+		$query->where('r.id >= '.(int)$round1ID);
         
-        if ((isset($round2ID)) && ($round2ID > 0))
+        if ((isset($round2ID)) && ( (int)$round2ID > 0) )
 		{
-                        $query->where('r.id <= '.$round2ID);
+                        $query->where('r.id <= '.(int)$round2ID);
 		}
 
-		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_result AS pr ON pr.match_id = m.id');
+		$query->join('LEFT', '#__sportsmanagement_prediction_result AS pr ON pr.match_id = m.id');
         
         if ((isset($user_id)) && ($user_id > 0))
 		{
                         $query->where('pr.user_id = '.$user_id);
 		}
 
-		$query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member AS pm ON	pm.user_id = pr.user_id');
+		$query->join('INNER', '#__sportsmanagement_prediction_member AS pm ON pm.user_id = pr.user_id');
 
 		$query->where('pm.prediction_id = '.self::$predictionGameID);
         $query->where('pr.prediction_id = '.self::$predictionGameID);
@@ -1891,6 +1958,7 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
         
         $db->setQuery($query);
 		$results = $db->loadObjectList();
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $results;
 	}
 
@@ -1947,7 +2015,7 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 	function getPredictionProjectNames($predictionID,$ordering='ASC')
 	{
 	   // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
         // Select some fields
@@ -1968,7 +2036,7 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 	 * @param bool $returnArray
 	 * @return
 	 */
-	function savePredictionPoints(&$memberResult,&$predictionProject,$returnArray=false)
+	public static function savePredictionPoints(&$memberResult,&$predictionProject,$returnArray=false)
 	{
 	// Reference global application object
         $app = JFactory::getApplication();
@@ -1976,7 +2044,7 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
 	// Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
     //$show_debug = $this->getDebugInfo();
@@ -2164,7 +2232,7 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 		$object->tend = $tend;
 
         // Update their details in the table using id as the primary key.
-        $result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_result', $object, 'id'); 
+        $result = sportsmanagementHelper::getDBConnection()->updateObject('#__sportsmanagement_prediction_result', $object, 'id'); 
         
         //$app->enqueueMessage(JText::_(__METHOD__.' result<br><pre>'.print_r($result,true).'</pre>' ),'');
         //$app->enqueueMessage(JText::_(__METHOD__.' getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'');
@@ -2185,6 +2253,8 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 
 			return $memberResult;
 		}
+        
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 
 		return $result;
 	}
@@ -2205,7 +2275,7 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
         $option = $jinput->getCmd('option');
   $document	= JFactory::getDocument();
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
   
   //$app->enqueueMessage(JText::_('project_id -> <pre> '.print_r($project_id,true).'</pre><br>' ),'Notice');
@@ -2352,6 +2422,9 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 			$lfdnumber++;
 			$array_pos = $key;
 		}
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dummy<br><pre>'.print_r($dummy,true).'</pre>'),'');
+        
 		return $dummy;
 	}
 
@@ -2372,7 +2445,7 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 
         if ( $config['show_full_name'] == 0 )
@@ -2419,11 +2492,18 @@ $query->where('pm.group_id = '.self::$pggroup);
 }
 
         $query->order('pm.id ASC');
-        $db->setQuery($query);
         
+        if ( $db->setQuery($query) )
+        {
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		$results = $db->loadObjectList();
+        }
+        else
+       {
+       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorNum(),true).'</pre>'),'Error');
+       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error'); 
+       }
 		
         if ( $total )
         {

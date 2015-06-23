@@ -189,7 +189,7 @@ return $modaltext;
 	 * @param integer $division_id
 	 * @return
 	 */
-	public static function showDivisonRemark(&$hometeam,&$guestteam,&$config,$division_id = 0)
+	public static function showDivisonRemark(&$hometeam,&$guestteam,&$config,$division_id = '')
 	{
 	   $app = JFactory::getApplication();
        
@@ -199,7 +199,7 @@ return $modaltext;
        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' hometeam'.'<pre>'.print_r($hometeam,true).'</pre>' ),'');
        
 		$output = '';
-		if ($config['switch_home_guest']) {
+		if ( $config['switch_home_guest'] ) {
 			$tmpteam =& $hometeam; $hometeam =& $guestteam; $guestteam =& $tmpteam;
 		}
         
@@ -210,7 +210,8 @@ return $modaltext;
         {
             $hometeam->division_id = $division_id;
             $division = JTable::getInstance( 'division', 'sportsmanagementTable' );
-		    $division->load( $division_id );
+		    $division->load( (int)$division_id );
+            $hometeam->division_slug = $division->id.':'.$division->alias;
             $hometeam->division_name = $division->name;
             $hometeam->division_shortname = $division->shortname;
         }
@@ -218,7 +219,8 @@ return $modaltext;
         {
             $guestteam->division_id = $division_id;
             $division = JTable::getInstance( 'division', 'sportsmanagementTable' );
-		    $division->load( $division_id );
+		    $division->load( (int)$division_id );
+            $guestteam->division_slug = $division->id.':'.$division->alias;
             $guestteam->division_name = $division->name;
             $guestteam->division_shortname = $division->shortname;
         }
@@ -230,7 +232,7 @@ return $modaltext;
 		{
 			//TO BE FIXED: Where is spacer defined???
 			if (! isset($config['spacer'])) {
-				$config['spacer']='/';
+				$config['spacer'] = '/';
 			}
 
 			$nametype = 'division_'.$config['show_division_name'];
@@ -240,12 +242,12 @@ return $modaltext;
 			$routeparameter = array();
 $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
 $routeparameter['s'] = JRequest::getInt('s',0);
-$routeparameter['p'] = self::$project->id;
+$routeparameter['p'] = self::$project->slug;
 $routeparameter['type'] = 0;
-$routeparameter['r'] = 0;
+$routeparameter['r'] = self::$project->round_slug;
 $routeparameter['from'] = 0;
 $routeparameter['to'] = 0;
-$routeparameter['division'] = $hometeam->division_id;
+$routeparameter['division'] = $hometeam->division_slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);
 
 				$output .= JHtml::link($link,$hometeam->$nametype);
@@ -265,17 +267,17 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
 			{
 				$output .= $config['spacer'];
 
-				if ($config['show_division_link'] == 1)
+				if ( $config['show_division_link'] )
 				{
 				$routeparameter = array();
 $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
 $routeparameter['s'] = JRequest::getInt('s',0);
-$routeparameter['p'] = self::$project->id;
+$routeparameter['p'] = self::$project->slug;
 $routeparameter['type'] = 0;
-$routeparameter['r'] = 0;
+$routeparameter['r'] = self::$project->round_slug;
 $routeparameter['from'] = 0;
 $routeparameter['to'] = 0;
-$routeparameter['division'] = $guestteam->division_id;
+$routeparameter['division'] = $guestteam->division_slug;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);
 
 					
@@ -822,13 +824,15 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$rout
 	 * @param string $default
 	 * @return void
 	 */
-	public static function printColumnHeadingSort( $columnTitle, $paramName, $config = null, $default="DESC" )
+	public static function printColumnHeadingSort( $columnTitle, $paramName, $config = null, $default="DESC" , $paramconfig = null)
 	{
 		// Reference global application object
         $app = JFactory::getApplication();
         $jinput = $app->input;
         
-        //$cfg_which_database = JRequest::getInt('cfg_which_database',0);
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' request<br><pre>'.print_r($jinput->request,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' paramconfig<br><pre>'.print_r($paramconfig,true).'</pre>'),'');
+        
         $output = "";
 		$img = '';
 		if ( $config['column_sorting'] || $config == null)
@@ -838,19 +842,47 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$rout
           $params["cfg_which_database"] = $jinput->request->get('cfg_which_database', 0, 'INT');
           
           $params['s'] = $jinput->request->get('s', 0, 'INT');
-$params['p'] = $jinput->request->get('p', '0', 'STR');
-$params['type'] = $jinput->request->get('type', '0', 'STR');
-$params['r'] = $jinput->request->get('r', '0', 'STR');
-$params['from'] = $jinput->request->get('from', '0', 'STR');
-$params['to'] = $jinput->request->get('to', '0', 'STR');
-$params['division'] = $jinput->request->get('division', '0', 'STR');
 
-//			$params = array(
-//					"option" => "com_sportsmanagement",
-//					"view"   => JRequest::getVar("view", "ranking"),
-//					"p" => JRequest::getInt( "p", 0 ),
-//					"r" => JRequest::getInt( "r", 0 ),
-//					"type" => JRequest::getVar( "type", "" ) );
+if ( isset($paramconfig['p']) )
+{
+$params['p'] = $paramconfig['p'];    
+}
+else
+{
+$params['p'] = $jinput->request->get('p', '0', 'STR');
+}
+
+$params['type'] = $jinput->request->get('type', '0', 'STR');
+
+
+if ( isset($paramconfig['r']) )
+{
+$params['r'] = $paramconfig['r'];    
+}
+else
+{
+$params['r'] = $jinput->request->get('r', '0', 'STR');
+}
+
+if ( isset($paramconfig['from']) )
+{
+$params['from'] = $paramconfig['from'];    
+}
+else
+{
+$params['from'] = $jinput->request->get('from', '0', 'STR');
+}
+
+if ( isset($paramconfig['to']) )
+{
+$params['to'] = $paramconfig['to'];    
+}
+else
+{
+$params['to'] = $jinput->request->get('to', '0', 'STR');
+}
+
+$params['division'] = $jinput->request->get('division', '0', 'STR');
 	
 			if ( $jinput->request->get('order', '', 'STR') == $paramName )
 			{
@@ -864,9 +896,7 @@ $params['division'] = $jinput->request->get('division', '0', 'STR');
 				$params["order"] = $paramName;
 				$params["dir"] = $default;
 			}
-            
-            //$params["cfg_which_database"] = $cfg_which_database;
-            
+           
 			$query = JURI::buildQuery( $params );
 			echo JHtml::link(
 			JRoute::_( "index.php?".$query ),

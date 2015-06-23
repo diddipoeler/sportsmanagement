@@ -202,7 +202,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 			?>
 
 	<!--<tr class="result<?php // echo ($k == 0) ? '' : ' alt'; ?><?php //echo ($hasEvents ? ' hasevents':''); ?>">-->
-	<tr	class="<?php echo ($k == 0)? 'sectiontableentry1' : 'sectiontableentry2'; ?>"<?php echo $favStyle; ?>>
+	<tr	<?php echo $favStyle; ?>>
 		<?php
 		if ($this->config['show_match_number'])
 		{

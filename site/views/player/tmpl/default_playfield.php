@@ -37,15 +37,25 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
+defined( '_JEXEC' ) or die( 'Restricted access' ); 
 
-<table>
+//echo __FILE__.' '.__LINE__.' person_position<br><pre>'.print_r($this->person_position,true).'</pre><br>';
+//echo __FILE__.' '.__LINE__.' teamPlayer<br><pre>'.print_r($this->teamPlayer,true).'</pre><br>';
+
+?>
+
+<table class="table">
 <tr>
 <td width="50%">
 <h2><?php echo '&nbsp;' . JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PLAYFIELD' ); ?></h2>
 
 <?php
-					
+
+if ( !isset($this->teamPlayer->position_name)  )
+{
+    $this->teamPlayer->position_name = 'hauptposition.png';
+}	
+				
 $backimage = 'images/com_sportsmanagement/database/person_playground/' . $this->teamPlayer->position_name . '.png'; 					
 $hauptimage = 'images/com_sportsmanagement/database/person_playground/hauptposition.png';
 $nebenimage = 'images/com_sportsmanagement/database/person_playground/nebenposition.png';

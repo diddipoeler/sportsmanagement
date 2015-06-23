@@ -44,14 +44,6 @@ jimport('joomla.html.pane');
 jimport('joomla.functions');
 JHtml::_('behavior.tooltip');
 
-//require_once( JPATH_COMPONENT_SITE . DS . 'helpers' . DS . 'route.php' );
-//require_once( JPATH_COMPONENT_SITE . DS . 'models' . DS . 'project.php' );
-//require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'divisions.php');
-//require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'rounds.php');
-//require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'teams.php');
-//require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'models'.DS.'projectteams.php');
-//require_once (JPATH_COMPONENT_ADMINISTRATOR .DS.'helpers'.DS.'sportsmanagement.php');
-
 /**
  * sportsmanagementViewTeamPlan
  * 
@@ -88,7 +80,8 @@ class sportsmanagementViewTeamPlan extends JViewLegacy
         //$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
         sportsmanagementModelProject::setProjectID($jinput->getInt('p',0),$model::$cfg_which_database);
 		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
+		sportsmanagementHelperHtml::$project = $project;
+        $config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 		
 		if (isset($project))
 		{
@@ -126,9 +119,17 @@ class sportsmanagementViewTeamPlan extends JViewLegacy
 		}
 		$document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_TEAMPLAN_PAGE_TITLE',$pageTitle));
         
-        $view = $jinput->getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+/**
+ *         da wir komplett mit bootstrap arbeiten benötigen wir das nicht mehr 
+ *         $view = $jinput->getVar( "view") ;
+ *         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+ *         $document->addCustomTag($stylelink);
+ */
+        
+        if ( !isset($this->config['table_class']) )
+        {
+            $this->config['table_class'] = 'table';
+        }
 
 		parent::display($tpl);
 	}

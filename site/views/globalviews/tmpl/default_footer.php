@@ -67,8 +67,7 @@ SqueezeBox.open(url, {
 
 </script>	
 
-<div class="row">
-<!-- <div style="text-align:center; clear:both"> -->      
+<div class="row" style="text-align:center; clear:both">
       
       <br />      
       

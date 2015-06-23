@@ -48,24 +48,26 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	<?php
 	echo $this->loadTemplate('projectheading');
 
-	if (($this->config['show_sectionheader'])==1)
+	if ( $this->config['show_sectionheader'] )
 	{
 		echo $this->loadTemplate('sectionheader');
 	}
 
-	if (($this->config['show_curve'])==1)
+	if ( $this->config['show_curve'] )
 	{
 		echo $this->loadTemplate('curve');
 	}
 
-	if (($this->config['show_colorlegend'])==1)
+	if ( $this->config['show_colorlegend'] )
 	{
 		echo $this->loadTemplate('colorlegend');
 	}
-
-	echo "<div>";
+?>
+<div>
+<?PHP    
 		echo $this->loadTemplate('backbutton');
 		echo $this->loadTemplate('footer');
-	echo "</div>";
+	
 	?>
+</div>
 </div>

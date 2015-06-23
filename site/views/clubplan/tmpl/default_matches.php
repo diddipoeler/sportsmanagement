@@ -48,41 +48,41 @@ defined('_JEXEC') or die('Restricted access');
 if ($this->config['type_matches'] != 0) {
 ?>
 	<tr class="sectiontableheader">
-		<?php if ($this->config['show_matchday']==1) { ?>
+		<?php if ( $this->config['show_matchday'] ) { ?>
 		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDAY'); ?></th>
 		<?php } ;?>
-		<?php if ($this->config['show_match_nr']==1) { ?>
+		<?php if ( $this->config['show_match_nr'] ) { ?>
 		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCH_NR'); ?></th>
 		<?php } ;?>		
-		<?php if ($this->config['show_match_date']==1) { ?>
+		<?php if ( $this->config['show_match_date'] ) { ?>
 		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_DATE');?></th>
 		<?php } ;?>
-		<?php if ($this->config['show_match_time']==1) { ?>
+		<?php if ( $this->config['show_match_time'] ) { ?>
 		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_TIME'); ?></th>
 		<?php } ;?>
-		<?php if ($this->config['show_time_present']==1) { ?>
+		<?php if ( $this->config['show_time_present'] ) { ?>
 		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_TIME_PRESENT'); ?></th>
 		<?php } ;?>
-		<?php if ($this->config['show_league']==1) { ?>		
+		<?php if ( $this->config['show_league'] ) { ?>		
 		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_LEAGUE'); ?></th>
 		<?php } ;?>		
-		<?php if ($this->config['show_club_logo']==1) { ?>
+		<?php if ( $this->config['show_club_logo'] ) { ?>
 		<th></th>
 		<?php } ?>
 		<th>&nbsp;</th>
 		<th>&nbsp;</th>
-		<?php if ($this->config['show_club_logo']==1) { ?>
+		<?php if ( $this->config['show_club_logo'] ) { ?>
 		<th>&nbsp;</th>
 		<?php } ?>
 		<th>&nbsp;</th>
-		<?php if ($this->config['show_referee']==1) { ?>
+		<?php if ( $this->config['show_referee'] ) { ?>
 		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_REFEREE'); ?></th>
 		<?php } ;?>
-		<?php if ($this->config['show_playground']==1) { ?>
+		<?php if ( $this->config['show_playground'] ) { ?>
 		<th><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_PLAYGROUND'); ?></th>
 		<?php } ;?>
 		<th colspan=3 align="center"><?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_RESULT'); ?></th>
-		<?php if ($this->config['show_thumbs_picture']==1) { ?>
+		<?php if ( $this->config['show_thumbs_picture'] ) { ?>
 		<th align="center">&nbsp;</th>
 		<?php } ;?>
 	</tr>
@@ -129,9 +129,10 @@ $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0)
 $routeparameter['s'] = JRequest::getInt('s',0);
 $routeparameter['p'] = $game->project_slug;
 $routeparameter['tid'] = $game->team1_slug;
-$routeparameter['ptid'] = 0;
+$routeparameter['ptid'] = $game->projectteam1_slug;
 $teaminfo1_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);            
-$routeparameter['tid'] = $game->team2_slug;            
+$routeparameter['tid'] = $game->team2_slug;    
+$routeparameter['ptid'] = $game->projectteam2_slug;        
 $teaminfo2_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);            
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
@@ -166,6 +167,7 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 			
 			$isFavTeam              = false;
 			$isFavTeam              = in_array($game->team1_id,$favteams);
+            $hometeam->rojectteam_slug = $game->projectteam1_slug;
 			$hometeam->name         = $game->tname1;
 			$hometeam->team_id      = $game->team1_id;
 			$hometeam->id           = $game->team1_id;
@@ -180,6 +182,7 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 			
 			$isFavTeam              = false;
 			$isFavTeam              = in_array($game->team2_id,$favteams);
+            $awayteam->rojectteam_slug = $game->projectteam2_slug;
 			$awayteam->name         = $game->tname2;
 			$awayteam->team_id      = $game->team2_id;
 			$awayteam->id           = $game->team2_id;
@@ -218,7 +221,7 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 
 			?>
 			<tr class=""<?php echo $favStyle; ?>>
-					<?php if ($this->config['show_matchday']==1) { ?>
+					<?php if ( $this->config['show_matchday'] ) { ?>
 				<td>
 					<?php if ($this->config['which_link']==0) { ?>
 					<?php
@@ -238,13 +241,13 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 				</td>
 					<?php } ;?>
 					
-					<?php if ($this->config['show_match_nr']==1) { ?>
+					<?php if ( $this->config['show_match_nr'] ) { ?>
 				<td>
 					<?php echo $game->match_number ; ?>
 				</td>
 					<?php } ;?>
 				
-				<?php if ($this->config['show_match_date']==1) { ?>
+				<?php if ( $this->config['show_match_date'] ) { ?>
 				<td>
 					<?php
 					echo JHtml::date($game->match_date, JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));
@@ -252,7 +255,7 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 				</td>
 					<?php } ;?>
 					
-				<?php if ($this->config['show_match_time']==1) { ?>
+				<?php if ( $this->config['show_match_time'] ) { ?>
 				<td nowrap="nowrap">
 					<?php
 					echo sportsmanagementHelperHtml::showMatchTime($game, $this->config, $this->overallconfig, $this->project);
@@ -260,7 +263,7 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 				</td>
 					<?php } ;?>
 					
-				<?php if ($this->config['show_time_present']==1) { ?>
+				<?php if ( $this->config['show_time_present'] ) { ?>
 				<td nowrap="nowrap">
 					<?php
 					echo $game->time_present;
@@ -268,7 +271,7 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 				</td>
 					<?php } ?>
 					
-				<?php if ($this->config['show_league']==1) { ?>							
+				<?php if ( $this->config['show_league'] ) { ?>							
 				<td>
 					<?php echo $game->l_name; ?>
 				</td>
@@ -278,7 +281,7 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 						echo $tname1;
 					?>
 				</td>
-					<?php if ($this->config['show_club_logo']==1) 
+					<?php if ( $this->config['show_club_logo'] ) 
                     { 
 					   $picture = 'home_'.$this->config['team_picture'];
                        ?>
@@ -293,7 +296,7 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 					-
 				</td>
 					<?php 
-                    if ($this->config['show_club_logo']==1) 
+                    if ( $this->config['show_club_logo'] ) 
                     { 
 					   $picture = 'away_'.$this->config['team_picture'];
                        ?>
@@ -310,20 +313,20 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 						echo $tname2;
 					?>
 				</td>
-					<?php if ($this->config['show_referee']==1) { ?>
+					<?php if ( $this->config['show_referee'] ) { ?>
 				<td>
 					<?php
 					$matchReferees = $this->model->getMatchReferees($game->match_id);
 					foreach ($matchReferees AS $matchReferee)
 					{
-						$referee_link=sportsmanagementHelperRoute::getRefereeRoute($game->project_id,$matchReferee->id);
+						$referee_link = sportsmanagementHelperRoute::getRefereeRoute($game->project_id,$matchReferee->id);
 						echo JHtml::link($referee_link,$matchReferee->firstname." ".$matchReferee->lastname);
 						echo '<br />';
 					}
 					?>
 				</td>
 					<?php } ;?>
-					<?php if ($this->config['show_playground']==1) { ?>
+					<?php if ( $this->config['show_playground'] ) { ?>
 				<td>
 					<?php
 					echo JHtml::link($playground_link,$game->pl_name);
@@ -352,7 +355,7 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 						$score .= '<td align="center" valign="top" colspan="3">'.$game->cancel_reason.'</td>';
 					}
 					echo $score;
-					if ($this->config['show_thumbs_picture']==1) {
+					if ( $this->config['show_thumbs_picture'] ) {
 					   switch ($this->config['type_matches']) {
 					   case 1 : // home matches
 							$team1=$e1;

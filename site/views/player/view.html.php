@@ -227,12 +227,29 @@ $jinput = $app->input;
         
         if ( $form_value )
         {
-        $this->assignRef ('person_position', $form_value );
+        //$this->assignRef ('person_position', $form_value );
         }
         else
         {
-        $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_PERSON_NO_POSITION'),'Error');
+        // wenn beim spieler noch nichts gesetzt wurde dann nehmen wir die standards
+        switch ( $this->teamPlayer->position_name )
+        {
+            case 'COM_SPORTSMANAGEMENT_SOCCER_P_DEFENDER':
+            $form_value = 'hp2';
+            break;
+            case 'COM_SPORTSMANAGEMENT_SOCCER_P_FORWARD':
+            $form_value = 'hp14';
+            break;
+            case 'COM_SPORTSMANAGEMENT_SOCCER_P_GOALKEEPER':
+            $form_value = 'hp1';
+            break;
+            case 'COM_SPORTSMANAGEMENT_SOCCER_P_MIDFIELDER':
+            $form_value = 'hp7';
+            break;
+        }    
+        //$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_PERSON_NO_POSITION'),'Error');
         }
+        $this->assignRef ('person_position', $form_value );
         
         $this->assignRef( 'hasDescription',$this->teamPlayer->notes);
         
@@ -272,9 +289,19 @@ $jinput = $app->input;
 		}
 		$this->assignRef('playername', $name);
 		$document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_PLAYER_INFORMATION', $name));
-        $view = $jinput->getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+        
+          $view = $jinput->getVar( "view") ;
+          $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+          $document->addCustomTag($stylelink);
+          
+        if ( !isset($this->config['table_class']) )
+        {
+            $this->config['table_class'] = 'table';
+        }
+        if ( !isset($this->config['show_players_layout']) )
+        {
+            $this->config['show_players_layout'] = 'no_tabs';
+        }
 
 		parent::display($tpl);
 	}

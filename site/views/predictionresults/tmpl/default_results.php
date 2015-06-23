@@ -73,9 +73,18 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 		$this->model->pjID = $predictionProject->project_id;
 		$this->model->predictionProject = $predictionProject;
 		$actualProjectCurrentRound = sportsmanagementModelPrediction::getProjectSettings($predictionProject->project_id);
-		if (!isset($this->roundID) || ($this->roundID < 1)){$this->roundID=$actualProjectCurrentRound;}
-		if ($this->roundID < 1){$this->roundID=1;}
-		if ($this->roundID > sportsmanagementModelPrediction::getProjectRounds($predictionProject->project_id)){$this->roundID=$this->model->_projectRoundsCount;}
+		if (!isset($this->roundID) || ( (int)$this->roundID < 1))
+        {
+            $this->roundID = $actualProjectCurrentRound;
+        }
+		if ( (int)$this->roundID < 1)
+        {
+            $this->roundID = 1;
+        }
+		if ( (int)$this->roundID > sportsmanagementModelPrediction::getProjectRounds($predictionProject->project_id))
+        {
+            $this->roundID = $this->model->_projectRoundsCount;
+        }
 		?>
 		<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement'); ?>" method='post' name="adminForm">
 			<input type='hidden' name='option' value='com_sportsmanagement' />
@@ -95,12 +104,12 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 
 			<table class="table" >
 				<tr>
-					<td class='sectiontableheader'>
+					<td class="">
 						<?php
 						echo '<b>'.JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_SUBTITLE_01').'</b>';
 						?>
 					</td>
-					<td class='sectiontableheader' style='text-align:right; ' width='20%' nowrap='nowrap' >
+					<td class="">
                     <?php
                     $round_ids = '';
                     if ( $this->config['use_pred_select_rounds'] )
@@ -126,18 +135,19 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
 $routeparameter['s'] = JRequest::getInt('s',0);
-$routeparameter['p'] = $predictionProject->project_id;
+$routeparameter['p'] = $predictionProject->project_slug;
 $routeparameter['r'] = $this->roundID;
 $routeparameter['division'] = 0;
 $routeparameter['mode'] = 0;
 $routeparameter['order'] = '';
 $routeparameter['layout'] = '';
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);            
-						//$link = sportsmanagementHelperRoute::getResultsRoute($predictionProject->project_id,$this->roundID);
+
 						$imgTitle=JText::_('COM_SPORTSMANAGEMENT_PRED_ROUND_RESULTS_TITLE');
 						$desc = JHTML::image('media/com_sportsmanagement/jl_images/icon-16-Matchdays.png',$imgTitle,array('border' => 0,'title' => $imgTitle));
 						echo JHTML::link($link,$desc,array('target' => ''));
-						?></td>
+						?>
+                        </td>
 				</tr>
 
 <tfoot>
@@ -148,7 +158,8 @@ echo $this->pagination->getListFooter();
 </div>
 </tfoot>  
                 
-			</table><br />
+			</table>
+            <br />
 		</form>
 		<table class="<?PHP echo $this->config['table_class']; ?>">
 			<tr>
@@ -209,20 +220,10 @@ echo $this->pagination->getListFooter();
                             case 'logo_small':
                             case 'logo_middle':
                             case 'logo_big':
-                            ?>                                    
-                                                        
-<a href="<?php echo JURI::root().$match->homeLogo;?>" title="<?php echo $match->homeName;?>" data-toggle="modal" data-target="#modal<?php echo $match->homeid;?>">
-<img src="<?php echo JURI::root().$match->homeLogo;?>" alt="<?php echo $match->homeName;?>" width="20" />
-</a>        
-<div class="modal fade" id="modal<?php echo $match->homeid;?>" tabindex="-1" role="dialog" aria-labelledby="beispielModalLabel" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-</div>
-<?PHP
-echo JHtml::image(JURI::root().$match->homeLogo, $match->homeName, array('title' => $match->homeName,'class' => "img-rounded" ));      
-?>
-</div>
                             
+echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->homeid,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match->homeLogo,$match->homeName,'20');                               
+                            ?>                                    
+
                             <?PHP
                             //echo sportsmanagementModelPredictionResults::showClubLogo($match->homeLogobig,$match->homeName).'<br />';
                         if ( $this->config['show_team_names'] == 1 )
@@ -241,11 +242,14 @@ echo JHtml::image(JURI::root().$match->homeLogo, $match->homeName, array('title'
                         }
                         break;
                         }
+                        
                         $outputStr = (isset($match->homeResult)) ? $match->homeResult : '-';
 						$outputStr .= '&nbsp;'.$this->config['seperator'].'&nbsp;';
 						$outputStr .= (isset($match->awayResult)) ? $match->awayResult : '-'.'<br />';
+                        
 						?>
                         <span class='hasTip' title="<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_RESULT_HINT',$match->homeName,$match->awayName,$outputStr); ?>"><?php echo $outputStr; ?></span>
+                        <br />
                         <?php
 						
                         
@@ -255,20 +259,8 @@ echo JHtml::image(JURI::root().$match->homeLogo, $match->homeName, array('title'
                             case 'logo_small':
                             case 'logo_middle':
                             case 'logo_big':
-                        
+echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->awayid,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match->awayLogo,$match->awayName,'20');                        
                             ?>                                    
-                            
-<a href="<?php echo JURI::root().$match->awayLogo;?>" title="<?php echo $match->awayName;?>" data-toggle="modal" data-target="#modal<?php echo $match->awayid;?>">
-<img src="<?php echo JURI::root().$match->awayLogo;?>" alt="<?php echo $match->awayName;?>" width="20" />
-</a>        
-<div class="modal fade" id="modal<?php echo $match->awayid;?>" tabindex="-1" role="dialog" aria-labelledby="beispielModalLabel" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-</div>
-<?PHP
-echo JHtml::image(JURI::root().$match->awayLogo, $match->awayName, array('title' => $match->awayName,'class' => "img-rounded" ));      
-?>
-</div>
                             
                             <?PHP
                             //echo '<br />'.sportsmanagementModelPredictionResults::showClubLogo($match->awayLogobig,$match->awayName).'<br />';
@@ -409,8 +401,9 @@ echo '<br />memberPredictionPoint<pre>~' . print_r($memberPredictionPoint,true) 
 }
 						
 						$memberPredictionOutput = JText::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_NOT_AVAILABLE');
-						$matchTimeDate = sportsmanagementHelper::getTimestamp($memberPredictionPoint->match_date,1,$predictionProjectSettings->serveroffset);
-						$thisTimeDate = sportsmanagementHelper::getTimestamp('',1,$predictionProjectSettings->serveroffset);
+
+                        $matchTimeDate = sportsmanagementHelper::getTimestamp($memberPredictionPoint->match_date,1,$predictionProjectSettings->timezone);
+                        $thisTimeDate = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"),1,$predictionProjectSettings->timezone);
 						$showAllowed = (($thisTimeDate >= $matchTimeDate) ||
 										(!is_null($memberPredictionPoint->homeResult)) ||
 										(!is_null($memberPredictionPoint->awayResult)) ||

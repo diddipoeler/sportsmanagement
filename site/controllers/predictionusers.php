@@ -56,16 +56,18 @@ jimport('joomla.application.component.controllerform');
 class sportsmanagementControllerPredictionUsers extends JControllerLegacy
 {
 
+
 	/**
 	 * sportsmanagementControllerPredictionUsers::display()
 	 * 
-	 * @return
+	 * @param bool $cachable
+	 * @param bool $urlparams
+	 * @return void
 	 */
-	function display()
+	function display($cachable = false, $urlparams = false)
 	{
-		$this->showprojectheading();
-		$this->showbackbutton();
-		$this->showfooter();
+
+		parent::display($cachable, $urlparams = false);
 	}
 
 	/**
@@ -177,7 +179,7 @@ class sportsmanagementControllerPredictionUsers extends JControllerLegacy
 		if (empty($uID)){$uID=null;}
 		//$link = JoomleagueHelperRoute::getPredictionResultsRoute($pID,$rID,$pjID,'#jl_top');
 		$link = JSMPredictionHelperRoute::getPredictionMemberRoute($pID,$uID,null,$pjID);
-		echo '<br />' . $link . '<br />';
+		//echo '<br />' . $link . '<br />';
 		$this->setRedirect($link);
 	}
 

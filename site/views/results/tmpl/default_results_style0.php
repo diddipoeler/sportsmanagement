@@ -223,13 +223,13 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch'
 			?>
 
 	<!--<tr class="result<?php // echo ($k == 0) ? '' : ' alt'; ?><?php //echo ($hasEvents ? ' hasevents':''); ?>">-->
-	<tr	class="<?php echo ($k == 0)? 'sectiontableentry1' : 'sectiontableentry2'; ?>"<?php echo $favStyle; ?>>
+	<tr	class=""<?php echo $favStyle; ?>>
 		<?php
 		if ($this->config['show_match_number'])
 		{
 			?>
 		<!-- show matchnumber -->
-		<td width="5" class="ko"><?php
+		<td width="" class=""><?php
 		if ( $game->match_number>0 )
 		{
 			echo $game->match_number;
@@ -248,7 +248,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch'
 		{
 			?>
 		<!-- show matcheventsimage -->
-		<td width="5" class="ko"><?php
+		<td width="" class=""><?php
 		if ($hasEvents)
 		{
 			$link = "javascript:void(0);";
@@ -278,53 +278,13 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch'
         //echo 'content '.$game->content_id;
         
 		  ?>
-		<td width="10" class="ko">
+		<td width="" class="">
+        <?PHP
+
+echo sportsmanagementHelperHtml::getBootstrapModalImage('match_summary'.$game->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$imgsummary,$imgTitle,'20');        
+echo sportsmanagementHelperHtml::getBootstrapModalImage('match_content'.$game->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$imgsummary,$imgTitle,'20');
         
-<a href="#" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target=".match_summary<?php echo $game->id;?>">
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$imgsummary, $imgTitle);      
-?>
-</a>
-
-<div id="" style="display: none;" class="modal fade match_summary<?php echo $game->id;?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-lg">
-<div class="modal-content">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-<h4 class="modal-title" id="myLargeModalLabel"><?php echo $imgTitle;?></h4>
-</div>
-<div class="modal-body">
-<?php echo $game->summary;?>
-</div>
-<div class="modal-footer">
-<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_('JLIB_HTML_BEHAVIOR_CLOSE');?> </button>
-</div>
-</div>
-</div>
-</div>   
-
-<a href="#" title="<?php echo $imgTitle;?>" data-toggle="modal" data-target=".match_content<?php echo $game->id;?>">
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$imgcontent, $imgTitle);      
-?>
-</a>
-
-<div id="" style="display: none;" class="modal fade match_content<?php echo $game->id;?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-lg">
-<div class="modal-content">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-<h4 class="modal-title" id="myLargeModalLabel"><?php echo $imgTitle;?></h4>
-</div>
-<div class="modal-body">
-<?php echo sportsmanagementHelper::getMatchContent($game->content_id);?>
-</div>
-<div class="modal-footer">
-<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_('JLIB_HTML_BEHAVIOR_CLOSE');?> </button>
-</div>
-</div>
-</div>
-</div> 
+        ?>
 
             </td>
 		<?php 	  
@@ -333,7 +293,7 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$imgcontent, $imgTitle);
 		<!-- show divisions -->
 		<?php
 		if($this->config['show_division']) {
-			echo '<td width="5" class="ko" nowrap="nowrap">';
+			echo '<td width="" class="" nowrap="nowrap">';
 			echo sportsmanagementHelperHtml::showDivisonRemark(	$this->teams[$game->projectteam1_id],
 			$this->teams[$game->projectteam2_id],
 			$this->config,$game->division_id );
@@ -343,7 +303,7 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$imgcontent, $imgTitle);
 		{
 			?>
 		<!-- show matchtime -->
-		<td width='5' class='ko'><abbr title='' class='dtstart'> <?php echo sportsmanagementHelperHtml::showMatchTime($game, $this->config, $this->overallconfig, $this->project); ?>
+		<td width='' class=''><abbr title='' class='dtstart'> <?php echo sportsmanagementHelperHtml::showMatchTime($game, $this->config, $this->overallconfig, $this->project); ?>
 		</abbr></td>
 		<?php
 		}
@@ -406,7 +366,7 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$imgcontent, $imgTitle);
 				?>
 			</td>
 			<!-- show match score -->
-			<td width='10' class='score'>
+			<td width='' class='score'>
 				<?php 
         echo sportsmanagementViewResults::formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link,$this->config); 
         ?>
@@ -421,27 +381,27 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$imgcontent, $imgTitle);
 		{
 			?>
 			<!-- show team-icons and/or -names -->
-			<td class='t-right'>
+			<td class=''>
 				<?php
 					$isFavTeam = in_array($team1->id, $this->favteams);
 					echo sportsmanagementHelper::formatTeamName($team1,'g'.$game->id,$this->config,$isFavTeam);
 				?>
 			</td>
-			<td width='20'>
+			<td width=''>
 				<?php echo sportsmanagementViewResults::getTeamClubIcon($team1, $this->config['show_logo_small'], array('class' => 'teamlogo')); ?>
 			</td>
 			<!-- show match score -->
-			<td width='5' class='score' nowrap='nowrap'>
+			<td width='' class='' nowrap='nowrap'>
 				<?php
 					echo '&nbsp;';
 					echo sportsmanagementViewResults::formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link,$this->config);
 					echo '&nbsp;';
 				?>
 			</td>
-			<td width='20'>
+			<td width=''>
 				<?php echo sportsmanagementViewResults::getTeamClubIcon($team2, $this->config['show_logo_small'], array('class' => 'teamlogo')); ?>
 			</td>
-			<td class='t-left'>
+			<td class=''>
 				<?php
 					$isFavTeam = in_array($team2->id, $this->favteams);
 					echo sportsmanagementHelper::formatTeamName($team2,'g'.$game->id,$this->config,$isFavTeam);
@@ -457,29 +417,29 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$imgcontent, $imgTitle);
 		{
 			?>
 			<!-- show team-icons and/or -names -->
-			<td class='t-right'>
+			<td class=''>
 				<?php
 					$isFavTeam = in_array($team1->id, $this->favteams);
 					echo sportsmanagementHelper::formatTeamName($team1,'g'.$game->id,$this->config,$isFavTeam);
 				?>
 			</td>
-			<td width='20'>
+			<td width=''>
 				<?php echo sportsmanagementViewResults::getTeamClubIcon($team1, $this->config['show_logo_small'], array('class' => 'teamlogo')); ?>
 			</td>
-			<td width='5'>
+			<td width=''>
 			-
 			</td>
-			<td width='20'>
+			<td width=''>
 				<?php echo sportsmanagementViewResults::getTeamClubIcon($team2, $this->config['show_logo_small'], array('class' => 'teamlogo')); ?>
 			</td>
-			<td class='t-left'>
+			<td class=''>
 				<?php
 					$isFavTeam = in_array($team2->id, $this->favteams);
 					echo sportsmanagementHelper::formatTeamName($team2,'g'.$game->id,$this->config,$isFavTeam);
 				?>
 			</td>
 			<!-- show match score -->
-			<td width='5' class='score' nowrap='nowrap'>
+			<td width='' class='' nowrap='nowrap'>
 				<?php
 					echo '&nbsp;';
 					echo sportsmanagementViewResults::formatResult($this->teams[$game->projectteam1_id],$this->teams[$game->projectteam2_id],$game,$report_link,$this->config);
@@ -492,7 +452,7 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$imgcontent, $imgTitle);
 	?>
 
 		<!-- show hammer if there is a alternative decision of the score -->
-		<td width="5" class="ko">
+		<td width="" class="">
 		<?php sportsmanagementViewResults::showReportDecisionIcons($game); ?>
 		</td>
 
@@ -501,7 +461,7 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$imgcontent, $imgTitle);
 		{
 			?>
 		<!-- show matchreferees icon with tooltip -->
-			<td width="5" class="referees">
+			<td width="" class="">
 			<?php sportsmanagementViewResults::showMatchRefereesAsTooltip($game,$this->project,$this->config); ?>
 			</td>
 		<?php
@@ -525,7 +485,7 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$imgcontent, $imgTitle);
 		{
 			?>
 		<!-- show attendance -->
-			<td class="right"><?php
+			<td class=""><?php
 			if ( $game->crowd > 0 )
 			{
 				echo $game->crowd;
@@ -545,7 +505,7 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$imgcontent, $imgTitle);
 		{
 			?>
 		<!-- show comments -->
-		<td class="center"><?php
+		<td class=""><?php
 
 			if ($separate_comments) {
 				// Comments integration trigger when separate_comments in plugin is set to yes/1
@@ -668,7 +628,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 	<tr class="events <?php echo ($k == 0) ? '' : 'alt'; ?>">
 		<td colspan="<?php echo $nbcols; ?>">
 		<div id="info<?php echo $game->id; ?>" style="display: none;" class="resultsevents" >
-		<table class='matchreport' border='0'>
+		<table class='table' >
 			<tr>
 				<td><?php
 				echo sportsmanagementViewResults::showEventsContainerInResults($game,$this->projectevents,$events,$subs,$this->config,$this->project);

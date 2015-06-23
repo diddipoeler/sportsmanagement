@@ -113,4 +113,5 @@ echo $this->loadTemplate($this->config['show_teaminfo_tabs']);
 	?>
 </div>
 </div>
+</div>
 <!-- </div> -->

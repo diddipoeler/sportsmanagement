@@ -46,7 +46,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <!-- Main START -->
 <table class="table">
 	<?php
-	if( $this->config['show_logo'] == 1 )
+	if( $this->config['show_logo'] )
 	{
 		?>
 	<tr class="nextmatch">
@@ -54,54 +54,28 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			$pic = $this->config['show_picture'];
         
         $picture = $this->teams[0]->$pic;
-        if ( !JFile::exists(JPATH_SITE.DS.$picture) )
+        if ( !JFile::exists(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture) )
         {
         $picture = sportsmanagementHelper::getDefaultPlaceholder("team");
-        }                        
+        }   
+        
+echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch'.$this->teams[0]->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture,$this->teams[0]->name,$this->config['team_picture_width'])
+                             
 		?>
-
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $this->teams[0]->name;?>" data-toggle="modal" data-target="#t<?php echo $this->teams[0]->id;?>">
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->teams[0]->name, array('title' => $this->teams[0]->name,'class' => "img-rounded",'width' => $this->config['team_picture_width'] ));      
-?>
-</a>                        
-
-<div class="modal fade" id="t<?php echo $this->teams[0]->id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-</div>
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->teams[0]->name, array('title' => $this->teams[0]->name,'class' => "img-rounded" ));
-?>
-</div>
-
-
-
 
         </td>
 		<td class="vs">&nbsp;</td>
 		<td class="teamlogo"><?php
 
         $picture = $this->teams[1]->$pic;
-        if ( !JFile::exists(JPATH_SITE.DS.$picture) )
+        if ( !JFile::exists(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture) )
         {
         $picture = sportsmanagementHelper::getDefaultPlaceholder("team");
         }                         
-		?>
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $this->teams[1]->name;?>" data-toggle="modal" data-target="#t<?php echo $this->teams[1]->id;?>">
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->teams[1]->name, array('title' => $this->teams[1]->name,'class' => "img-rounded",'width' => $this->config['team_picture_width'] ));      
-?>
-</a>                        
 
-<div class="modal fade" id="t<?php echo $this->teams[1]->id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-</div>
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $this->teams[1]->name, array('title' => $this->teams[1]->name,'class' => "img-rounded" ));
-?>
-</div>        
+echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch'.$this->teams[1]->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture,$this->teams[1]->name,$this->config['team_picture_width'])
+        
+		?>
         
         </td>
 	</tr>

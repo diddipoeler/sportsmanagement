@@ -118,3 +118,4 @@ echo $this->loadTemplate('footer');
 	?>
 <!-- ende clubinfo -->    
 </div>
+</div>

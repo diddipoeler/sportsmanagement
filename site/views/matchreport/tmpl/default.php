@@ -91,7 +91,7 @@ if (!empty($this->matchplayerpositions ))
 
 ?>
 
-<div class="">
+<div class="row">
 
 <?php
 
@@ -101,19 +101,19 @@ echo $this->loadTemplate('debug');
 }
 	echo $this->loadTemplate('projectheading');
 
-	if (($this->config['show_sectionheader'])==1)
+	if ( $this->config['show_sectionheader'] )
 	{
 		echo $this->loadTemplate('sectionheader');
 	}
 
-	if (($this->config['show_result'])==1)
+	if ( $this->config['show_result'] )
 	{
 		echo $this->loadTemplate('result');
 	}
     
     if ( !empty( $this->matchevents ) )
 	{
-    if (($this->config['show_timeline_under_results'])==1)
+    if ( $this->config['show_timeline_under_results'] )
 	{
 		echo $this->loadTemplate('timeline');
 	}
@@ -123,7 +123,7 @@ echo $this->loadTemplate('debug');
   // diddipoeler
   // aufbau der templates
   $output = array();
-  if (($this->config['show_details'])==1)
+  if ( $this->config['show_details'] )
 	{
 		$output['COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS'] = 'details';
 	}
@@ -131,13 +131,13 @@ echo $this->loadTemplate('debug');
 	{
         $output['COM_SPORTSMANAGEMENT_TABS_EXTENDED'] = 'extended';
 	}
-	if (($this->config['show_roster'])==1)
+	if ( $this->config['show_roster'] )
 	{
         $output['COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE_UP_PLAYER'] = 'roster';
         $output['COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_LINE_UP_STAFF'] = 'staff';
         $output['COM_SPORTSMANAGEMENT_MATCHREPORT_SUBSTITUTES'] = 'subst';
 	}
-    if (($this->config['show_roster_playground'])==1)
+    if ( $this->config['show_roster_playground'] )
 	{
         $output['COM_SPORTSMANAGEMENT_MATCHREPORT_STARTING_PLAYGROUND'] = 'rosterplayground';
 	}

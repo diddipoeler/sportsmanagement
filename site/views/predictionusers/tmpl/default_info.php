@@ -91,7 +91,7 @@ if (!empty($memberPredictionPoints))
 						$outputName = JText::sprintf('%1$s %2$s', $outputUserName, '');
 						if ($this->predictionMember->user_id)
 						{
-							switch ($this->config['show_user_profile'])
+							switch ( $this->config['show_user_profile'] )
 							{
 								case 1:	 // Link to Joomla Contact Page
 											$link = JoomleagueHelperRoute::getContactRoute($this->predictionMember->user_id);
@@ -113,7 +113,7 @@ if (!empty($memberPredictionPoints))
 					</td>
 				</tr>
 				<?php
-					if ($this->config['show_register_date'])
+					if ( $this->config['show_register_date'] )
 					{
 						//echo '<br /><pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';
 						?>
@@ -131,7 +131,7 @@ if (!empty($memberPredictionPoints))
 					}
 				?>
 				<?php
-					if ($this->config['show_slogan'])
+					if ( $this->config['show_slogan'] )
 					{
 						?>
 						<tr>
@@ -145,7 +145,7 @@ if (!empty($memberPredictionPoints))
 					}
 				?>
 				<?php
-					if ($this->config['show_lasttip'])
+					if ( $this->config['show_lasttip'] )
 					{
 						?>
 						<tr>
@@ -161,9 +161,9 @@ if (!empty($memberPredictionPoints))
 					}
 				?>
 				<?php
-				if ($this->config['show_fav_team'])
+				if ( $this->config['show_fav_team'] )
 				{
-					$found=false;
+					$found = false;
 					?>
 					<tr>
 						<td class='label'><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_FAVTEAMS'); ?></td>
@@ -213,28 +213,27 @@ if (!empty($memberPredictionPoints))
 
 						if (!isset($this->predictionMember->champ_tipp))
 						{
-							$this->predictionMember->champ_tipp=JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_NO_CHAMP');
+							$this->predictionMember->champ_tipp = JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_NO_CHAMP');
 						}
 
 						$champShown=false;
 						$dummyOutputShown=false;
 						foreach ($this->predictionProjectS AS $predictionProject)
 						{
-							if (($this->model->pjID==0) || ($this->model->pjID==$predictionProject->project_id))
+							if (($this->model->pjID==0) || ($this->model->pjID == $predictionProject->project_id))
 							{
 								if ($predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id))
 								{
 									//$predictionProjectSettings->start_date='2010-08-08';
 									//$time=time();
-									$time=strtotime($predictionProjectSettings->start_date);
+									$time = strtotime($predictionProjectSettings->start_date);
 									//$date=date("Y-m-d",$time);
 									//echo $date.'/';
 									$time += 86400; // Ein Tag in Sekunden
-									$showDate=date("Y-m-d",$time);
+									$showDate = date("Y-m-d",$time);
 									//echo $showDate;
-									$thisTimeDate = sportsmanagementHelper::getTimestamp('',1,$predictionProjectSettings->serveroffset);
-									//$competitionStartTimeDate = JoomleagueHelper::getTimestamp($predictionProjectSettings->start_date,1,$predictionProjectSettings->serveroffset);
-									$competitionStartTimeDate = sportsmanagementHelper::getTimestamp($showDate,1,$predictionProjectSettings->serveroffset);
+									$thisTimeDate = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"),1,$predictionProjectSettings->timezone);
+									$competitionStartTimeDate = sportsmanagementHelper::getTimestamp($showDate,1,$predictionProjectSettings->timezone);
 									$showChamp = ($thisTimeDate > $competitionStartTimeDate);
 									//if (($showChamp) || ($this->showediticon))
 									

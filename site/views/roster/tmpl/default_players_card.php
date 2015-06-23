@@ -53,7 +53,7 @@ foreach ( $this->rows as $position_id => $players ): ?>
 //echo 'getTeamPlayers players<br><pre>'.print_r($players,true).'</pre><br>';
 
 foreach ($players as $row): ?>
-<tr	class="<?php echo ($k == 0)?'sectiontableentry1' : 'sectiontableentry2'; ?>">
+<tr	class="">
 <div class="mini-player_links">
 			<table class="table">
 			  <tbody><tr>
@@ -76,12 +76,12 @@ foreach ($players as $row): ?>
 				{
 					$picture = $row->ppic;
 				}
-				if ( !file_exists( $picture ) )
+				if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture ) )
 				{
 					$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 				}
 				
-echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplayer'.$row->person_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$playerName,$this->config['player_picture_width']);				
+echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplayer'.$row->person_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture,$playerName,$this->config['player_picture_width']);				
 
 				?>			  
 				</td>
@@ -115,5 +115,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 			
 			<?php	$k = 1 - $k; ?>
 	<?php endforeach; ?>
-	<div class="clear"></div></div>
+	<div class="clear">
+    </div>
+    </div>
 	<?php endforeach;	?>

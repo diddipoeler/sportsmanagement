@@ -51,15 +51,20 @@ jimport('joomla.application.component.model');
  */
 class sportsmanagementModelClubPlan extends JModelLegacy
 {
-	var $clubid = 0;
-	var $project_id = 0;
+	static $clubid = 0;
+	static $project_id = 0;
 	var $club = null;
-	var $startdate = null;
-	var $enddate = null;
+	static $startdate = null;
+	static $enddate = null;
 	var $awaymatches = null;
 	var $homematches = null;
+    var $allmatches = NULL;
 	
-    var $teamart = 0;
+    static $teamartsel = 0;
+    static $type = 0;
+    static $teamprojectssel = 0;
+    static $teamseasonssel = 0;
+    
     var $teamprojects = 0;
     var $teamseasons = 0;
     
@@ -77,11 +82,22 @@ class sportsmanagementModelClubPlan extends JModelLegacy
         // JInput object
         $jinput = $app->input;
 		parent::__construct();
-		$this->clubid = $jinput->getInt("cid",0);
-//		$this->project_id = JRequest::getInt("p",0);
-		$this->setStartDate($jinput->getVar("startdate", $this->startdate,'request','string'));
-		$this->setEndDate($jinput->getVar("enddate",$this->enddate,'request','string'));
-        self::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
+		self::$clubid = $jinput->request->get('cid', 0, 'INT');
+        self::$project_id = $jinput->request->get('p', 0, 'INT');
+        
+        self::$teamartsel = $jinput->request->get('teamartsel', 0, 'INT');
+        self::$type = $jinput->request->get('type', 0, 'INT');
+        self::$teamprojectssel = $jinput->request->get('teamprojectssel', 0, 'INT');
+        self::$teamseasonssel = $jinput->request->get('teamseasonssel', 0, 'INT');
+        
+//		$this->project_id = $jinput->request->get('p', 0, 'INT');
+
+		self::setStartDate($jinput->request->get('startdate', self::$startdate, 'STR'));
+        self::setEndDate($jinput->request->get('enddate', self::$enddate, 'STR'));
+        //$params["points"] = $jinput->request->get('points', '3,1,0', 'STR');
+        //$this->setStartDate($jinput->getVar("startdate", $this->startdate,'request','string'));
+		//$this->setEndDate($jinput->getVar("enddate",$this->enddate,'request','string'));
+        self::$cfg_which_database = $jinput->request->get('cfg_which_database',0, 'INT');
 	}
     
     
@@ -102,18 +118,19 @@ class sportsmanagementModelClubPlan extends JModelLegacy
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
         
-        if ($this->clubid > 0)
+        if (self::$clubid > 0)
 		{
 		// Select some fields
-        $query->select('info as value,info as text');
+        $query->select('ag.id as value,ag.name as text');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team');
+		$query->from('#__sportsmanagement_team as t');
+        $query->join('INNER', '#__sportsmanagement_agegroup as ag ON ag.id = t.agegroup_id');
         // Where
-        $query->where('club_id = '.(int) $this->clubid);
+        $query->where('t.club_id = '.(int) self::$clubid);
         // Group
-        $query->group('info');
+        $query->group('ag.id');
         // Order
-        $query->order('info ASC');
+        $query->order('ag.name ASC');
 
 		$db->setQuery($query);
 		$teamsart = $db->loadObjectList();
@@ -121,7 +138,7 @@ class sportsmanagementModelClubPlan extends JModelLegacy
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' teamsart'.'<pre>'.print_r($teamsart,true).'</pre>' ),'');
+       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamsart'.'<pre>'.print_r($teamsart,true).'</pre>' ),'');
        }
         
         return $teamsart;
@@ -141,18 +158,18 @@ class sportsmanagementModelClubPlan extends JModelLegacy
         $query = $db->getQuery(true);
         $starttime = microtime(); 
         
-        if ($this->clubid > 0)
+        if (self::$clubid > 0)
 		{
 		// Select some fields
         $query->select('p.id as value,p.name as text');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.team_id = t.id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season as s ON s.id = st.season_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt ON pt.team_id = st.id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project as p ON p.id = pt.project_id ');
+		$query->from('#__sportsmanagement_team as t');
+        $query->join('INNER',' #__sportsmanagement_season_team_id as st ON st.team_id = t.id ');
+        $query->join('INNER',' #__sportsmanagement_season as s ON s.id = st.season_id ');
+        $query->join('INNER',' #__sportsmanagement_project_team as pt ON pt.team_id = st.id ');
+        $query->join('INNER',' #__sportsmanagement_project as p ON p.id = pt.project_id ');
         // Where
-        $query->where('t.club_id = '.(int) $this->clubid);
+        $query->where('t.club_id = '.(int) self::$clubid);
         // Group
         $query->group('p.id,p.name');
         // Order
@@ -193,17 +210,17 @@ class sportsmanagementModelClubPlan extends JModelLegacy
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
         
-        if ($this->clubid > 0)
+        if (self::$clubid > 0)
 		{
 		// Select some fields
         $query->select('s.id as value,s.name as text');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.team_id = t.id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season as s ON s.id = st.season_id ');
+		$query->from('#__sportsmanagement_team as t');
+        $query->join('INNER',' #__sportsmanagement_season_team_id as st ON st.team_id = t.id ');
+        $query->join('INNER',' #__sportsmanagement_season as s ON s.id = st.season_id ');
         
         // Where
-        $query->where('t.club_id = '.(int) $this->clubid);
+        $query->where('t.club_id = '.(int) self::$clubid);
         // Group
         $query->group('s.id,s.name');
         // Order
@@ -239,14 +256,14 @@ class sportsmanagementModelClubPlan extends JModelLegacy
         $query = $db->getQuery(true);
         
         $teams = array(0);
-		if ($this->clubid > 0)
+		if (self::$clubid > 0)
 		{
 		// Select some fields
         $query->select('id,name as team_name,short_name as team_shortcut,info as team_description');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team');
+		$query->from('#__sportsmanagement_team');
         // Where
-        $query->where('club_id = '.(int) $this->clubid);
+        $query->where('club_id = '.(int) self::$clubid);
 
 			$db->setQuery($query);
 			$teams = $db->loadObjectList();
@@ -277,28 +294,28 @@ class sportsmanagementModelClubPlan extends JModelLegacy
        
        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' startdate vorher'.'<pre>'.print_r($this->startdate,true).'</pre>' ),'');
+       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' startdate vorher'.'<pre>'.print_r(self::$startdate,true).'</pre>' ),'');
        }
 	
     	$config = sportsmanagementModelProject::getTemplateConfig("clubplan");
-		if (empty($this->startdate))
+		if (empty(self::$startdate))
 		{
 			$dayz = $config['days_before'];
 			//$dayz=6;
 			$prevweek = mktime(0,0,0,date("m"),date("d")- $dayz,date("y"));
-			$this->startdate = date("Y-m-d",$prevweek);
+			self::$startdate = date("Y-m-d",$prevweek);
 		}
-		if( $config['use_project_start_date'] == "1" && empty($this->startdate) ) 
+		if( $config['use_project_start_date'] && empty(self::$startdate) ) 
         {
 			$project = sportsmanagementModelProject::getProject();
-			$this->startdate = $project->start_date;
+			self::$startdate = $project->start_date;
 		}
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' startdate nachher'.'<pre>'.print_r($this->startdate,true).'</pre>' ),'');
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' startdate nachher'.'<pre>'.print_r(self::$startdate,true).'</pre>' ),'');
         }
-		return $this->startdate;
+		return self::$startdate;
 	}
 
 	/**
@@ -312,24 +329,24 @@ class sportsmanagementModelClubPlan extends JModelLegacy
        
        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' enddate vorher'.'<pre>'.print_r($this->enddate,true).'</pre>' ),'');
+       $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' enddate vorher'.'<pre>'.print_r(self::$enddate,true).'</pre>' ),'');
        }
        
-		if ( empty($this->enddate) )
+		if ( empty(self::$enddate) )
 		{
 			$config = sportsmanagementModelProject::getTemplateConfig("clubplan");
 			$dayz = $config['days_after'];
 			//$dayz=6;
 			$nextweek = mktime(0,0,0,date("m"),date("d")+ $dayz,date("y"));
-			$this->enddate = date("Y-m-d",$nextweek);
+			self::$enddate = date("Y-m-d",$nextweek);
 		}
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' enddate nachher'.'<pre>'.print_r($this->enddate,true).'</pre>' ),'');
+        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' enddate nachher'.'<pre>'.print_r(self::$enddate,true).'</pre>' ),'');
         }
         
-		return $this->enddate;
+		return self::$enddate;
 	}
 
 	/**
@@ -338,15 +355,15 @@ class sportsmanagementModelClubPlan extends JModelLegacy
 	 * @param mixed $date
 	 * @return void
 	 */
-	function setStartDate($date)
+	public static function setStartDate($date)
 	{
 	   $app = JFactory::getApplication();
 		// should be in proper sql format
 		if (strtotime($date)) {
-			$this->startdate = strftime("%Y-%m-%d",strtotime($date));
+			self::$startdate = strftime("%Y-%m-%d",strtotime($date));
 		}
 		else {
-			$this->startdate = null;
+			self::$startdate = null;
 		}
 	}
 
@@ -356,15 +373,15 @@ class sportsmanagementModelClubPlan extends JModelLegacy
 	 * @param mixed $date
 	 * @return void
 	 */
-	function setEndDate($date)
+	public static function setEndDate($date)
 	{
 	   $app = JFactory::getApplication();
 		// should be in proper sql format
 		if (strtotime($date)) {
-			$this->enddate = strftime("%Y-%m-%d",strtotime($date));
+			self::$enddate = strftime("%Y-%m-%d",strtotime($date));
 		}
 		else {
-			$this->enddate = null;
+			self::$enddate = null;
 		}
 	}
 
@@ -383,14 +400,14 @@ class sportsmanagementModelClubPlan extends JModelLegacy
        $project = sportsmanagementModelProject::getProject(self::$cfg_which_database);
        $this->teamseasons = $project->season_id;
        
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id'.'<pre>'.print_r($this->project_id,true).'</pre>' ),'');
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id'.'<pre>'.print_r(self::$project_id,true).'</pre>' ),'');
        
        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' orderBy'.'<pre>'.print_r($orderBy,true).'</pre>' ),'');
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' type'.'<pre>'.print_r($type,true).'</pre>' ),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id'.'<pre>'.print_r($this->project_id,true).'</pre>' ),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubid'.'<pre>'.print_r($this->clubid,true).'</pre>' ),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id'.'<pre>'.print_r(self::$project_id,true).'</pre>' ),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubid'.'<pre>'.print_r(self::$clubid,true).'</pre>' ),'');
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamart'.'<pre>'.print_r($this->teamart,true).'</pre>' ),'');
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamseasons'.'<pre>'.print_r($this->teamseasons,true).'</pre>' ),'');
          }
@@ -401,17 +418,55 @@ class sportsmanagementModelClubPlan extends JModelLegacy
         
         
         $result = array();
+        $round_ids = NULL;
 		$teams = self::getTeams();
 		$startdate = self::getStartDate();
 		$enddate = self::getEndDate();
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' startdate'.'<pre>'.print_r($startdate,true).'</pre>' ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' enddate'.'<pre>'.print_r($enddate,true).'</pre>' ),'');
 
 		if (is_null($teams)) 
         {
 			return null;
 		}
         
+        if ( $startdate && $enddate )
+        {
+        $query->clear();
+        $query->select('r.id');
+        $query->from('#__sportsmanagement_round as r');
+        $query->join('INNER','#__sportsmanagement_match as m ON m.round_id = r.id ');
+        $query->where('(r.round_date_first >= '.$db->Quote(''.$startdate.'').' AND r.round_date_last <= '.$db->Quote(''.$enddate.'').')');  
+        $db->setquery($query);
+        
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        // Joomla! 3.0 code here
+        $rounds = $db->loadColumn();
+        }
+        elseif(version_compare(JVERSION,'2.5.0','ge')) 
+        {
+        // Joomla! 2.5 code here
+        $rounds = $db->loadResultArray();
+        } 
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        
+        if ( $rounds )
+        {
+        $round_ids = implode(',',$rounds);
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($round_ids,true).'</pre>'),'Notice');
+        }  
+        }
+        
+        if ( $round_ids )
+        {
+        $query->clear();
         // Select some fields
-		$query->select('m.*,m.id as match_id ,DATE_FORMAT(m.time_present,"%H:%i") time_present');
+		//$query->select('m.*,m.id as match_id ,DATE_FORMAT(m.time_present,"%H:%i") time_present');
+        $query->select('m.match_date,m.projectteam1_id,m.projectteam2_id,m.id as match_id ,DATE_FORMAT(m.time_present,"%H:%i") time_present');
+        $query->select('m.playground_id,m.alt_decision ,m.team1_result ,m.team2_result ,m.cancel ');
         $query->select('p.name AS project_name,p.id AS project_id,p.id AS prid,CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
         $query->select('r.id AS roundid,r.roundcode AS roundcode,r.name AS roundname');
         $query->select('l.name AS l_name');
@@ -426,57 +481,68 @@ class sportsmanagementModelClubPlan extends JModelLegacy
         $query->select('c1.logo_middle AS home_logo_middle');
         $query->select('c2.logo_middle AS away_logo_middle');
         $query->select('tj1.division_id');
+        
+        $query->select('CONCAT_WS(\':\',m.projectteam1_id,t1.alias) AS projectteam1_slug');
+        $query->select('CONCAT_WS(\':\',m.projectteam2_id,t2.alias) AS projectteam2_slug');
+        
         $query->select('d.name AS division_name, d.shortname AS division_shortname, d.parent_id AS parent_division_id,CONCAT_WS(\':\',d.id,d.alias) AS division_slug');
         
         $query->select('CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) AS match_slug ');
         $query->select('CONCAT_WS(\':\',r.id,r.alias) AS round_slug');
         
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
+		$query->from('#__sportsmanagement_match AS m');
         // Join 
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as tj1 ON tj1.id = m.projectteam1_id ');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as tj2 ON tj2.id = m.projectteam2_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.id = tj1.team_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = tj2.team_id ');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t1 ON t1.id = st1.team_id ');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t2 ON t2.id = st2.team_id ');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = tj1.project_id ');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_league as l ON p.league_id = l.id ');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club as c1 ON c1.id = t1.club_id ');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round as r ON m.round_id = r.id ');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club as c2 ON c2.id = t2.club_id ');
-		$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS playground ON playground.id = m.playground_id ');
-		$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division as d ON d.id = tj1.division_id');
+        $query->join('INNER','#__sportsmanagement_project_team as tj1 ON tj1.id = m.projectteam1_id ');
+		$query->join('INNER','#__sportsmanagement_project_team as tj2 ON tj2.id = m.projectteam2_id ');
+        $query->join('INNER','#__sportsmanagement_season_team_id as st1 ON st1.id = tj1.team_id ');
+        $query->join('INNER','#__sportsmanagement_season_team_id as st2 ON st2.id = tj2.team_id ');
+		$query->join('INNER','#__sportsmanagement_team as t1 ON t1.id = st1.team_id ');
+		$query->join('INNER','#__sportsmanagement_team as t2 ON t2.id = st2.team_id ');
+		$query->join('INNER','#__sportsmanagement_project AS p ON p.id = tj1.project_id ');
+		$query->join('INNER','#__sportsmanagement_league as l ON p.league_id = l.id ');
+		$query->join('INNER','#__sportsmanagement_club as c1 ON c1.id = t1.club_id ');
+		$query->join('INNER','#__sportsmanagement_round as r ON m.round_id = r.id ');
+		$query->join('INNER','#__sportsmanagement_club as c2 ON c2.id = t2.club_id ');
+		$query->join('LEFT','#__sportsmanagement_playground AS playground ON playground.id = m.playground_id ');
+		$query->join('LEFT','#__sportsmanagement_division as d ON d.id = tj1.division_id');
         // Where
         $query->where('p.published = 1');
         
-        if ( $this->project_id == 0 && $this->teamart == '' && $this->teamseasons == 0)
+        if ( self::$project_id == 0 && self::$teamartsel == 0 && self::$teamseasonssel == 0)
         {
-        $query->where('(m.match_date BETWEEN '.$db->Quote($startdate).' AND '.$db->Quote($enddate).')');
+        //$query->where('(m.match_date BETWEEN '.$db->Quote($startdate).' AND '.$db->Quote($enddate).')');
+        $query->where('(r.round_date_first >= '.$db->Quote(''.$startdate.'').' AND r.round_date_last <= '.$db->Quote(''.$enddate.'').')');
+        }
+        
+        if ( $startdate && $enddate )
+        {
+        //$query->where('(r.round_date_first >= '.$db->Quote(''.$startdate.'').' AND r.round_date_last <= '.$db->Quote(''.$enddate.'').')');
+        $query->where('m.round_id IN ('.$round_ids.')');    
         }
 
         /*
         // beim vereinsspielplan gehört die projekt_id nicht zur selektion
-        if( $this->project_id > 0 ) 
+        if( self::$project_id > 0 ) 
         {
 			// Where
-            $query->where('p.id = '. $this->project_id );
+            $query->where('p.id = '. self::$project_id );
 		}
         */
         
-        if( $this->teamart != '' ) 
+        if( self::$teamartsel > 0 ) 
         {
 			// Where
-            $query->where("(t1.info LIKE ".$db->Quote($this->teamart)." OR t2.info LIKE ".$db->Quote($this->teamart) . ")");
+            $query->where("( t1.agegroup_id = ".self::$teamartsel." OR t2.agegroup_id = ".self::$teamartsel." )");
 		}
         
-        if( $this->teamseasons > 0 ) 
+        if( self::$teamseasonssel > 0 ) 
         {
 			// Where
-            $query->where('p.season_id = '. $this->teamseasons );
+            $query->where('p.season_id = '. self::$teamseasonssel );
 		}
 		
-        if( $this->clubid > 0 ) 
+        if( self::$clubid > 0 ) 
         {
             switch ($type) 
         {
@@ -484,15 +550,15 @@ class sportsmanagementModelClubPlan extends JModelLegacy
             case 3:  
             case 4: 
             // Where
-            $query->where('(t1.club_id = '.$this->clubid.' OR t2.club_id = '.$this->clubid . ')' );
+            $query->where('(t1.club_id = '.self::$clubid.' OR t2.club_id = '.self::$clubid . ')' );
             break;
             case 1:
             // Where
-            $query->where('t1.club_id = '.$this->clubid );
+            $query->where('t1.club_id = '.self::$clubid );
             break;
             case 2:
             // Where
-            $query->where('t2.club_id = '.$this->clubid );
+            $query->where('t2.club_id = '.self::$clubid );
             break;
         }
             
@@ -505,12 +571,19 @@ class sportsmanagementModelClubPlan extends JModelLegacy
 
         $db->setQuery($query);
 		$this->allmatches = $db->loadObjectList();
+        }
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
         if ( !$this->allmatches )
        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+        if ( $db->getErrorNum() )
+        {
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorNum(),true).'</pre>' ),'Error');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+        }
+
+        $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES'),'Error');
         }
         
 		return $this->allmatches;
@@ -536,11 +609,11 @@ class sportsmanagementModelClubPlan extends JModelLegacy
 		$query->select('p.id,p.firstname,p.lastname,CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
         $query->select('mp.project_position_id');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mp');
+		$query->from('#__sportsmanagement_match_referee AS mp');
         // Join 
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pref ON mp.project_referee_id = pref.id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS sp ON pref.person_id = sp.id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON sp.person_id = p.id ');
+        $query->join('LEFT',' #__sportsmanagement_project_referee AS pref ON mp.project_referee_id = pref.id ');
+        $query->join('INNER',' #__sportsmanagement_season_person_id AS sp ON pref.person_id = sp.id ');
+        $query->join('INNER',' #__sportsmanagement_person AS p ON sp.person_id = p.id ');
 
 		// Where
         $query->where('mp.match_id = '.(int)$matchID);

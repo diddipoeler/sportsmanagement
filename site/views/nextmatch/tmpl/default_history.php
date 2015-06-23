@@ -45,11 +45,11 @@ if ( $this->games )
 {
 	?>
 
-<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY'); ?></h2>
+<h4><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_HISTORY'); ?></h4>
 <table class="<?php echo $this->config['hystory_table_class']; ?>">
 	<tr>
 		<td>
-		<table width="96%" align="center" border="0" cellpadding="0" cellspacing="0">
+		<table class="<?php echo $this->config['hystory_table_class']; ?>">
 			<?php
 			//sort games by dates
 			$gamesByDate = Array();
@@ -79,7 +79,7 @@ if ( $this->games )
 					}
 					?>
 					<?php
-					$class = ($k == 0)? 'sectiontableentry1' : 'sectiontableentry2';
+
                     $routeparameter = array();
 $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
 $routeparameter['s'] = JRequest::getInt('s',0);
@@ -101,7 +101,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 					$home = $this->gamesteams[$game->projectteam1_id];
 					$away = $this->gamesteams[$game->projectteam2_id];
 					?>
-			<tr class="<?php echo $class; ?>">
+			<tr class="">
 				<td><?php
 				echo JHtml::link( $result_link, $game->roundcode );
 				?></td>
@@ -114,7 +114,17 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 				<td class="nowrap"><?php
 				echo $home->name;
 				?></td>
+                
+                <td class="nowrap"><?php
+				echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch'.$game->id.'-'.$game->projectteam1_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$home->picture,$home->name,'20')
+				?></td>
+                                
 				<td class="nowrap">-</td>
+                
+                <td class="nowrap"><?php
+				echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch'.$game->id.'-'.$game->projectteam2_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$away->picture,$away->name,'20')
+				?></td>
+                
 				<td class="nowrap"><?php
 				echo $away->name;
 				?></td>

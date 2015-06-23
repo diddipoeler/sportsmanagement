@@ -54,46 +54,18 @@ jimport('joomla.application.component.controller');
  */
 class sportsmanagementControllerPredictionRanking extends JControllerLegacy
 {
-	/**
-	 * sportsmanagementControllerPredictionRanking::display()
-	 * 
-	 * @return void
-	 */
-	function display()
+	
+    	/**
+    	 * sportsmanagementControllerPredictionRanking::display()
+    	 * 
+    	 * @param bool $cachable
+    	 * @param bool $urlparams
+    	 * @return void
+    	 */
+    	function display($cachable = false, $urlparams = false)
 	{
-	  // Get the view name from the query string
-        $viewName = JRequest::getVar( "view", "predictionranking" );
 
-        // Get the view
-        $view = & $this->getView( $viewName );
-
-        // Get the joomleague model
-        $jl = $this->getModel( "joomleague", "JoomleagueModel" );
-        $jl->set( "_name", "joomleague" );
-        if (!JError::isError( $jl ) )
-        {
-            $view->setModel ( $jl );
-        }
-    // Get the joomleague model
-		$sr = $this->getModel( 'prediction', 'JoomleagueModel' );
-		$sr->set( '_name', 'prediction' );
-		if ( !JError::isError( $sr ) )
-		{
-			$view->setModel ( $sr );
-		}
-		
-		// Get the joomleague model
-		$jl = $this->getModel( 'project', 'JoomleagueModel' );
-		$jl->set( '_name', 'project' );
-		if ( !JError::isError( $jl ) )
-		{
-			$view->setModel ( $jl );
-		}
-		
-		$this->showprojectheading();
-		$view->display();
-		$this->showbackbutton();
-		$this->showfooter();
+		parent::display($cachable, $urlparams = false);
 	}
 
 	/**

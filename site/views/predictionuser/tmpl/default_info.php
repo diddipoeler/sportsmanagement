@@ -241,9 +241,8 @@ if (!empty($memberPredictionPoints))
 									$time += 86400; // Ein Tag in Sekunden
 									$showDate=date("Y-m-d",$time);
 									//echo $showDate;
-									$thisTimeDate = sportsmanagementHelper::getTimestamp('',1,$predictionProjectSettings->serveroffset);
-									//$competitionStartTimeDate = sportsmanagementHelper::getTimestamp($predictionProjectSettings->start_date,1,$predictionProjectSettings->serveroffset);
-									$competitionStartTimeDate = sportsmanagementHelper::getTimestamp($showDate,1,$predictionProjectSettings->serveroffset);
+									$thisTimeDate = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"),1,$predictionProjectSettings->timezone);
+									$competitionStartTimeDate = sportsmanagementHelper::getTimestamp($showDate,1,$predictionProjectSettings->timezone);
 									$showChamp = ($thisTimeDate > $competitionStartTimeDate);
 									//if (($showChamp) || ($this->showediticon))
 									

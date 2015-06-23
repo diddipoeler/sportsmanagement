@@ -84,22 +84,46 @@ if (count($this->historyPlayer) > 0)
 						?>
 						<tr class="">
 							<td class="td_l">
-							<?php 
-								echo JHtml::link($link1,$station->project_name);
+							<?php
+                            if ( $this->config['show_project_logo'] ) 
+                            { 
+if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$station->project_picture ) )
+				{
+					$station->project_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
+				}                                
+                            echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareerproject'.$station->project_id.'-'.$station->team_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$station->project_picture,$station->project_name,'20'); 
+							}	
+                                echo JHtml::link($link1,$station->project_name);
 							?></td>
-							<td class="td_l"><?php echo $station->season_name;
-								?></td>
-							<td class="td_l"><?php 
-							if ($this->config['show_playercareer_teamlink'] == 1) {
+							<td class="td_l">
+                            <?php 
+                            echo $station->season_name;
+								?>
+                                </td>
+							<td class="td_l">
+                            <?php 
+                            if ( $this->config['show_team_logo'] ) 
+                            { 
+if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$station->club_picture ) )
+				{
+					$station->club_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
+				}                                  
+                            echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareerteam'.$station->project_id.'-'.$station->team_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$station->club_picture,$station->team_name,'20');
+                            }
+							if ( $this->config['show_playercareer_teamlink'] ) 
+                            {
 								echo JHtml::link($link2,$station->team_name);
-							} else {
+							} 
+                            else 
+                            {
 								echo $station->team_name;
 							}
-							?></td>
+							?>
+                            </td>
                             <td>
                 <?PHP
                 //echo $player_hist->season_picture;
-                echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareer'.$station->project_id.'-'.$station->team_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$station->season_picture,$station->team_name,'50');
+                echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareerperson'.$station->project_id.'-'.$station->team_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$station->season_picture,$station->team_name,'50');
                 ?>
                 </td>
 							<td class="td_l"><?php echo JText::_($station->position_name);

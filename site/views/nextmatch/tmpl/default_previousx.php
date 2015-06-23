@@ -47,10 +47,10 @@ foreach ( $this->teams as $currentteam )
 {
 ?>
 
-<?php if ($this->previousx[$currentteam->id]) :	?>
+<?php if ( isset($this->previousx[$currentteam->id])) :	?>
 <!-- Start of last 5 matches -->
 
-<h2><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIOUS', $this->allteams[$currentteam->id]->name); ?></h2>
+<h4><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_NEXTMATCH_PREVIOUS', $this->allteams[$currentteam->id]->name); ?></h4>
 <table class="table">
 	<tr>
 		<td>
@@ -95,7 +95,17 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 				<td nowrap="nowrap"><?php
 				echo $home->name;
 				?></td>
+                
+                <td class="nowrap"><?php
+				echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatchprev'.$game->id.'-'.$game->projectteam1_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$game->home_picture,$home->name,'20')
+				?></td>
+                
 				<td nowrap="nowrap">-</td>
+                
+                <td class="nowrap"><?php
+				echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatchprev'.$game->id.'-'.$game->projectteam2_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$game->away_picture,$away->name,'20')
+				?></td>
+                
 				<td nowrap="nowrap"><?php
 				echo $away->name;
 				?></td>

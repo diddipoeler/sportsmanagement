@@ -120,7 +120,7 @@ class sportsmanagementViewClubInfo extends JViewLegacy
 
 		//$this->assignRef( 'gmap',			$google_map );
 
-    if ( ($this->config['show_club_rssfeed']) == 1 )
+    if ( $this->config['show_club_rssfeed'] )
 	  {
     $mod_name               = "mod_jw_srfr";
     $rssfeeditems = '';
@@ -141,7 +141,7 @@ class sportsmanagementViewClubInfo extends JViewLegacy
     
 
 	
-        if (($this->config['show_maps'])==1)
+        if ( $this->config['show_maps'] )
 	  {
             // diddipoeler
         $this->geo = new JSMsimpleGMapGeocoder();
@@ -186,9 +186,18 @@ class sportsmanagementViewClubInfo extends JViewLegacy
         $document->addStyleSheet(JURI::base().'components/'.$option.'/assets/css/dtree.css');  
     
         $document->setTitle( $pageTitle );
-        $view = $jinput->getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+        
+/**
+ *         da wir komplett mit bootstrap arbeiten benötigen wir das nicht mehr 
+ *         $view = $jinput->getVar( "view") ;
+ *         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+ *         $document->addCustomTag($stylelink);
+ */
+        
+        if ( !isset($this->config['table_class']) )
+        {
+            $this->config['table_class'] = 'table';
+        }
         
 		parent::display( $tpl );
 	}

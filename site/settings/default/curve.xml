@@ -4,7 +4,9 @@
 	label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 
-		<field 	name="show_sectionheader" type="radio" default="1" 
+		<field 	name="show_sectionheader" 
+    type="radio" 
+    default="1" 
 		class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_SECTIONHEADER">
@@ -12,7 +14,9 @@
 			<option value="1">JYES</option>
 		</field>
 
-		<field 	name="show_curve" type="radio" default="1" 
+		<field 	name="show_curve" 
+    type="radio" 
+    default="1" 
 		class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_LABEL_SHOW_CURVE" 
 				description="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_DESCR_SHOW_CURVE">
@@ -20,7 +24,9 @@
 			<option value="1">JYES</option>
 		</field>
 		
-		<field 	name="show_colorlegend" type="radio" default="1" 
+		<field 	name="show_colorlegend" 
+    type="radio" 
+    default="1" 
 		class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_LABEL_SHOW_COLOR" 
 				description="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_DESCR_SHOW_COLOR">
@@ -28,13 +34,28 @@
 			<option value="1">JYES</option>
 		</field>
 
+    <field name="button_style" 
+    type="list" 
+    default="btn btn-default" 
+					label="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_LABEL_BUTTON_STYLE"
+					description="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_LABEL_BUTTON_STYLE_DESC">
+					<option value="btn btn-default">Default</option> 
+					<option value="btn btn-primary">Primary</option>
+					<option value="btn btn-success">Success</option> -->
+					<option value="btn btn-info">Info</option>
+					<option value="btn btn-warning">Warning</option>
+					<option value="btn btn-danger">Danger</option>
+				</field>
+				
 	</fieldset>
 
 	<fieldset name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS"
   label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ADVANCED_OPTIONS"  
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_ADVANCED_OPTIONS">
 
-		<field name="expiry_time" type="text" default="0"
+		<field name="expiry_time" 
+    type="text" 
+    default="0"
 			label="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_LABEL_EXPIRY_TIME"
 			description="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_DESCR_EXPIRY_TIME">
 		</field>

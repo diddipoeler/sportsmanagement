@@ -103,7 +103,7 @@ $file_content = curl_exec($initial);
 curl_close($initial);
 $result = json_decode($file_content, true);    
     
-echo 'getGeoCoordsMapQuest result<br><pre>'.print_r($result,true).'</pre><br>';
+//echo 'getGeoCoordsMapQuest result<br><pre>'.print_r($result,true).'</pre><br>';
         
 }
 
@@ -480,7 +480,15 @@ function reverseGeoCode($lat,$lng)
     // call geoencoding api with param json for output
     $geoCodeURL = "http://maps.google.com/maps/api/geocode/json?address=$lat,$lng&sensor=false";
     
-    $result = json_decode(file_get_contents($geoCodeURL), true);
+    $initial = curl_init();
+curl_setopt($initial, CURLOPT_URL, $geoCodeURL);
+curl_setopt($initial, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($initial, CURLOPT_CONNECTTIMEOUT, 5);
+$file_content = curl_exec($initial);
+curl_close($initial);
+$result = json_decode($file_content, true);
+
+//    $result = json_decode(file_get_contents($geoCodeURL), true);
                 
     $address['status'] = $result["status"];
     
@@ -508,7 +516,15 @@ function getOSMGeoCoords($address)
     $geoCodeURL = "http://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=0&q=".
                   urlencode($address);
     
-    $result = json_decode(file_get_contents($geoCodeURL), true);
+    $initial = curl_init();
+curl_setopt($initial, CURLOPT_URL, $geoCodeURL);
+curl_setopt($initial, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($initial, CURLOPT_CONNECTTIMEOUT, 5);
+$file_content = curl_exec($initial);
+curl_close($initial);
+$result = json_decode($file_content, true);
+
+//    $result = json_decode(file_get_contents($geoCodeURL), true);
 //    echo 'getOSMGeoCoords result<br><pre>'.print_r($result,true).'</pre><br>';
     
     if ( isset($result[0]) )

@@ -60,7 +60,7 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
         <table class="table">
 			<tbody>
 				<?php
-				if ( $this->overallconfig['show_project_country'] == 1 )
+				if ( $this->overallconfig['show_project_country'] )
 				{
 					?>
 				<tr class="contentheading">
@@ -76,20 +76,20 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
 				?>
 				<tr class="contentheading">
 					<?php
-          if ( $this->overallconfig['show_project_sporttype_picture'] == 1 )
+          if ( $this->overallconfig['show_project_sporttype_picture'] )
 					{
 						?>
 						<td>
 
 <?PHP
-echo sportsmanagementHelperHtml::getBootstrapModalImage('sporttype_picture',$this->project->sport_type_picture,$this->project->sport_type_name,$this->overallconfig['picture_width']);
+echo sportsmanagementHelperHtml::getBootstrapModalImage('sporttype_picture',COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$this->project->sport_type_picture,$this->project->sport_type_name,$this->overallconfig['picture_width']);
 ?>
           
 
 						</td>
 					<?php	
 			    	}	
-			    	if ( $this->overallconfig['show_project_picture'] == 1 )
+			    	if ( $this->overallconfig['show_project_picture'] )
 					{
 						$picture = $this->project->picture;
                         $copyright = $this->project->cr_picture;
@@ -104,7 +104,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('sporttype_picture',$thi
 
 
 <?php 
-echo sportsmanagementHelperHtml::getBootstrapModalImage('project_picture',COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$this->project->name,$this->overallconfig['picture_width']);
+echo sportsmanagementHelperHtml::getBootstrapModalImage('project_picture',COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture,$this->project->name,$this->overallconfig['picture_width']);
 if ( $copyright )
 {
 echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>');
@@ -116,7 +116,7 @@ echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>
 			    	}
 			    	?>
 					<?php	
-			    	if ( $this->overallconfig['show_project_text'] == 1 )
+			    	if ( $this->overallconfig['show_project_text'] )
 					{
 						?>
 				    	<td>
@@ -131,7 +131,7 @@ echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>
 					<?php	
 			    	}
 			    	
-			    	if ( $this->overallconfig['show_project_staffel_id'] == 1 )
+			    	if ( $this->overallconfig['show_project_staffel_id'] )
 					{
 						?>
 				    	<td>
@@ -174,7 +174,8 @@ echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>
 <!--	</div> -->
 <?php 
 } else {
-	if ($this->overallconfig['show_print_button'] == 1) {
+	if ( $this->overallconfig['show_print_button'] ) 
+    {
 	?>
 		<div class="row">
 			<table class="table">

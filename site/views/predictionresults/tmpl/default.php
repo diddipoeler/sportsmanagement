@@ -50,16 +50,24 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('globalviews','predictionheading');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-?><div class='row'><?php
+?>
+<div class="row">
+<?php
 
 	echo $this->loadTemplate('predictionheading');
 	echo $this->loadTemplate('sectionheader');
 
 	echo $this->loadTemplate('results');
 
-	if ($this->config['show_matchday_pagenav']){echo $this->loadTemplate('matchday_nav');}
+	if ( $this->config['show_matchday_pagenav'] )
+    {
+        echo $this->loadTemplate('matchday_nav');
+    }
 
-	if ($this->config['show_help']){echo $this->loadTemplate('show_help');}
+	if ( $this->config['show_help'] )
+    {
+        echo $this->loadTemplate('show_help');
+    }
 
 	echo '<div>';
 		//backbutton
@@ -67,4 +75,5 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		// footer
 		echo $this->loadTemplate('footer');
 	echo '</div>';
-	?></div>
+	?>
+ </div>

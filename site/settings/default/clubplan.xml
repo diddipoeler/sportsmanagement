@@ -5,6 +5,20 @@
 		group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS" 
     description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS">
 
+    <field name="button_style" 
+    type="list" 
+    default="btn btn-default" 
+					label="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_LABEL_BUTTON_STYLE"
+					description="COM_SPORTSMANAGEMENT_FES_CURVE_PARAM_LABEL_BUTTON_STYLE_DESC">
+					<option value="btn btn-default">Default</option> 
+					<option value="btn btn-primary">Primary</option>
+					<option value="btn btn-success">Success</option> -->
+					<option value="btn btn-info">Info</option>
+					<option value="btn btn-warning">Warning</option>
+					<option value="btn btn-danger">Danger</option>
+				</field>
+				
+				
 		<field name="show_sectionheader" type="radio" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_SECTIONHEADER" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_SECTIONHEADER">

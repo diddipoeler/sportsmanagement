@@ -789,7 +789,18 @@ $query->clear();
         $db->setQuery($query);
         //$result = $this->_db->loadObjectList();
         //$result = $db->loadResultArray();
+        
+         if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        // Joomla! 3.0 code here
         $result = $db->loadColumn(0);
+        }
+        elseif(version_compare(JVERSION,'2.5.0','ge')) 
+        {
+        // Joomla! 2.5 code here
+        $result = $db->loadResultArray(0);
+        } 
+        
         $this->project_ids = implode(",", $result);
         $this->project_ids_array = $result;
         

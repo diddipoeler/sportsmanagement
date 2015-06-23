@@ -87,6 +87,9 @@ class sportsmanagementViewRanking extends JViewLegacy
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database,__METHOD__);
 		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database,__METHOD__,1);
 		
+        $this->assignRef('paramconfig', $model::$paramconfig);
+        $this->paramconfig['p'] = $project->slug;
+        
 		$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true,NULL,$model::$cfg_which_database);
 		
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($model::$cfg_which_database,true).'</pre>'),'');
@@ -126,9 +129,9 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
         
        }
        
-       if ($this->config['show_half_of_season']==1)
+       if ( $this->config['show_half_of_season'] )
 	{
-	   if ($this->config['show_table_4']==1)
+	   if ( $this->config['show_table_4'] )
 	{
        $model->part = 1;
        $model->from = 0;
@@ -142,7 +145,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
        
      }
      
-     if ($this->config['show_table_5']==1)
+     if ( $this->config['show_table_5'] )
 	{  
        $model->part = 2;
        $model->from = 0;
@@ -184,19 +187,19 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' from<br><pre>'.print_r($this->from,true).'</pre>'),'');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' to<br><pre>'.print_r($this->to,true).'</pre>'),'');
         
-        if ($this->config['show_table_1']==1)
+        if ( $this->config['show_table_1'] )
 	{
 		$this->assignRef('currentRanking',$model->currentRanking);
         }
         
 		$this->assignRef('previousRanking',$model->previousRanking);
         
-        if ($this->config['show_table_2']==1)
+        if ( $this->config['show_table_2'] )
 	{
 		$this->assignRef('homeRank',$model->homeRank);
         }
         
-        if ($this->config['show_table_3']==1)
+        if ( $this->config['show_table_3'] )
 	{
 		$this->assignRef('awayRank',$model->awayRank);
         }
@@ -225,7 +228,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams'.'<pre>'.print_r($this->teams,true).'</pre>' ),'');
 		
 		$no_ranking_reason = '';
-		if ($this->config['show_notes'] == 1 )
+		if ( $this->config['show_notes'] )
 	{
 	$ranking_reason = array();
 		foreach ( $this->teams as $teams ) 
@@ -251,17 +254,17 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		
 		if ( sizeof($ranking_reason) > 0 )
 		{
-		$this->assign('ranking_notes', implode(", ",$ranking_reason) );
+		$this->assign('ranking_notes',implode(", ",$ranking_reason) );
 		}
 		else
 		{
-    $this->assign('ranking_notes', $no_ranking_reason );
+    $this->assign('ranking_notes',$no_ranking_reason );
     }
 		
 		
 		
 		
-		$this->assign('previousgames', $model->getPreviousGames($model::$cfg_which_database));
+		$this->assign('previousgames',$model->getPreviousGames($model::$cfg_which_database));
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($model::$cfg_which_database,true).'</pre>'),'');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' previousgames'.'<pre>'.print_r($this->previousgames,true).'</pre>' ),'');
@@ -314,7 +317,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
         
         }
         
-		if (($this->config['show_ranking_maps'])==1)
+		if ( $this->config['show_ranking_maps'] )
 	  {
 	  $this->geo = new JSMsimpleGMapGeocoder();
 	  $this->geo->genkml3($project->id,$this->allteams);
@@ -366,6 +369,14 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
         $document->addCustomTag('<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">');
         */
         $this->headertitle = JText::_('COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE' );
+        
+        if ( !isset($this->config['table_class']) )
+        {
+            $this->config['table_class'] = 'table';
+        }
+        
+        //$this->assignRef('paramconfig', $model::$paramconfig);
+
         
 		parent :: display($tpl);
 	}

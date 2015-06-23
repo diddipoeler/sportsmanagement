@@ -88,7 +88,9 @@ class sportsmanagementModelPagination extends JModelLegacy
 	{
 	   $option = JRequest::getCmd('option');
        $app = JFactory::getApplication();
-       
+       // JInput object
+        $jinput = $app->input;
+        
 		$pageNav = '';
 		$spacer2 = '&nbsp;&nbsp;';
 		$spacer4 = '&nbsp;&nbsp;&nbsp;&nbsp;';
@@ -98,7 +100,7 @@ class sportsmanagementModelPagination extends JModelLegacy
 		$layout = JRequest::getVar('layout','','request','word');
 		$controller = JRequest::getVar('controller');
 		$divLevel = JRequest::getInt('divLevel',0);
-		$division = JRequest::getInt('division',0);
+		$division = $jinput->request->get('division','0', 'STR');
 		$firstlink = '';
 		$lastlink = '';
         
@@ -126,8 +128,9 @@ class sportsmanagementModelPagination extends JModelLegacy
 		$params['option'] = $option;
 		if ($view){$params['view'] = $view;}
         
-        $params['s']= $s;
         $params['cfg_which_database']= $cfg_which_database;
+        $params['s']= $s;
+        
 		$params['p'] = $project->slug;
         
 		if ($controller){$params['controller'] = $controller;}

@@ -149,7 +149,7 @@ if (!empty($this->rows))
 			<?php echo '&nbsp;'.JText::_($row->position); ?>
 		</th>
 		<?php
-		if ($this->config['show_birthday'] > 0)
+		if ( $this->config['show_birthday'] )
 		{ ?>
 		<th class="td_c">
 		  <?php
@@ -176,7 +176,7 @@ if (!empty($this->rows))
 		</th>
 		<?php
 		}
-		elseif ($this->config['show_birthday_staff'] > 0)
+		elseif ( $this->config['show_birthday_staff'] )
 		{
 			// Put empty column to keep vertical alignment with the staff table
 			?>
@@ -352,12 +352,6 @@ $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
 echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$playerName,$this->config['player_picture_width']);
 ?>
 
-
-
-<?PHP
-        
-        
-        	?>
 		</td>
         <?php
 		}
@@ -467,7 +461,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,
 		?>
 		</td><?php
 		}
-		elseif ($this->config['show_birthday_staff'] > 0)
+		elseif ( $this->config['show_birthday_staff'] )
 		{
 			?>
 		<td width="10%" nowrap="nowrap" style="text-align: left;">&nbsp;</td><?php
@@ -478,7 +472,19 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,
 			$model = $this->getModel();
 			
             //$this->assign('InOutStat',$model->getInOutStats($row->pid));
-            $this->assign('InOutStat',sportsmanagementModelPlayer::getInOutStats($row->project_id,$row->season_team_id,$row->season_team_person_id,$this->project->game_regular_time,0,JRequest::getInt('cfg_which_database',0)));
+            //$this->assign('InOutStat',sportsmanagementModelPlayer::getInOutStats($row->project_id,$row->season_team_id,$row->season_team_person_id,$this->project->game_regular_time,0,JRequest::getInt('cfg_which_database',0)));
+            $this->assign('InOutStat',sportsmanagementModelPlayer::getInOutStats($row->project_id,$row->projectteam_id,$row->season_team_person_id,$this->project->game_regular_time,0,JRequest::getInt('cfg_which_database',0)));
+            
+//echo __FILE__.' '.__LINE__.' project_id->id<br><pre>'.print_r($row->project_id,true).'</pre><br>';
+//echo __FILE__.' '.__LINE__.' season_team_id->id<br><pre>'.print_r($row->season_team_id,true).'</pre><br>';
+//echo __FILE__.' '.__LINE__.' projectteam_id->id<br><pre>'.print_r($row->projectteam_id,true).'</pre><br>';
+//echo __FILE__.' '.__LINE__.' teamplayer_id<br><pre>'.print_r($row->season_team_person_id,true).'</pre><br>';
+//echo __FILE__.' '.__LINE__.' person_id<br><pre>'.print_r($row->pid,true).'</pre><br>';
+            
+//            if ( $row->pid == 846 )
+//            {
+//echo __FILE__.' '.__LINE__.' row<br><pre>'.print_r($row,true).'</pre><br>';                
+//            }
             
 			if (isset($this->InOutStat) && ($this->InOutStat->played > 0))
 			{

@@ -80,8 +80,10 @@ static $_foldertype = '';
 	public static function getSelector( $fieldname, $fieldpreview_name, $type, $value, $default = '', $control_name='', $fieldid)
 	{
 		$document = JFactory::getDocument();
-    
+    $app = JFactory::getApplication();
     self::$_foldertype = $type;
+    
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' type<pre>'.print_r($type,true).'</pre>'),'Error');
     
 		JHtml::_( 'behavior.modal' );
 
@@ -275,6 +277,12 @@ static $_foldertype = '';
 		return $filename;
 	}
 
+	/**
+	 * ImageSelectSM::getfolder()
+	 * 
+	 * @param mixed $type
+	 * @return
+	 */
 	static function getfolder( $type )
 	{
 		switch( $type )

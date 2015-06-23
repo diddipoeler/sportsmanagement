@@ -67,7 +67,7 @@ else
 		if (( $this->config['show_club_logo']) && ( $this->club->logo_big != '' ))
 		{
 			$club_emblem_title = str_replace( "%CLUBNAME%", $this->club->name, JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_EMBLEM_TITLE' ) );
-			$picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.$this->club->logo_big;
+			$picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$this->club->logo_big;
            			
 		}
 		
@@ -82,7 +82,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo'.$this->club->
 		if (( $this->config['show_club_shirt']) && ( $this->club->logo_small != '' ))
 		{
 			$club_trikot_title = str_replace( "%CLUBNAME%", $this->club->name, JText::_( "COM_SPORTSMANAGEMENT_CLUBINFO_TRIKOT_TITLE" ) );
-			$picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.$this->club->logo_small;
+			$picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$this->club->logo_small;
 			echo sportsmanagementHelper::getPictureThumb($picture,$club_emblem_title,20,20,3);				
 		}
     if ( $this->club->website )
@@ -129,7 +129,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo'.$this->club->
 			<?php 
             if ( isset($this->clubassoc->name) )
             {
-            echo JHtml::image(JURI::root().$this->clubassoc->assocflag, $this->clubassoc->name, array('title' => $this->clubassoc->name ) ).substr($this->clubassoc->name,0,30); 
+            echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$this->clubassoc->assocflag, $this->clubassoc->name, array('title' => $this->clubassoc->name ) ).substr($this->clubassoc->name,0,30); 
             }
             ?>
       <br />
@@ -283,7 +283,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$rout
 					<strong><?php echo str_replace( "%NUMBER%", $playground_number, $pl_dummy ); ?></strong>
 					<?php echo JHtml::link( $link, $playground->name ); 
                     
-echo sportsmanagementHelperHtml::getBootstrapModalImage('playground'.$playground->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$playground->picture,$playground->name,$this->config['playground_picture_width']);                    
+echo sportsmanagementHelperHtml::getBootstrapModalImage('playground'.$playground->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$playground->picture,$playground->name,$this->config['playground_picture_width']);                    
                     
                     ?>
                     </address>

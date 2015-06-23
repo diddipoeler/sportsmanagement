@@ -187,37 +187,9 @@ foreach( $current as $ptid => $team )
         else 
         {
 			$pic = $config['show_logo_small_table'];
-		
+
+echo sportsmanagementHelperHtml::getBootstrapModalImage('teamranking'.$team->team->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$team->team->$pic,$team->team->name,'20')		
 ?>    
-                                
-
-
-
-<a href="#" title="<?php echo $team->team->name;?>" data-toggle="modal" data-target=".teamranking<?php echo $team->team->id;?>">
-<?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->team->$pic, $team->team->name, array('title' => $team->team->name,'class' => "img-rounded",'width' => 20 ));      
-?>
-</a>                        
-
-<div id="" style="display: none;" class="modal fade teamranking<?php echo $team->team->id;?>" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-<div class="modal-dialog modal-lg">
-<div class="modal-content">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-<h4 class="modal-title" id="myLargeModalLabel"><?php echo $team->team->name;?></h4>
-</div>
-<div class="modal-body">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->team->$pic;?>" class="img-responsive img-rounded center-block">
-</div>
-<div class="modal-footer">
-<button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_('JLIB_HTML_BEHAVIOR_CLOSE');?> </button>
-</div>
-</div>
-</div>
-</div>   
-
-
-
 
 <?PHP        
         }
@@ -745,8 +717,14 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->team->$pic, $team->
 							$attr = array('class' => 'thumbwon');
 							break;
 					}
+                    $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $g->project_slug;
+$routeparameter['mid'] = $g->slug;
+$url = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);  
 
-					$url = JRoute::_(sportsmanagementHelperRoute::getMatchReportRoute($g->project_slug, $g->slug,JRequest::getInt('cfg_which_database',0)));
+					//$url = JRoute::_(sportsmanagementHelperRoute::getMatchReportRoute($g->project_slug, $g->slug,JRequest::getInt('cfg_which_database',0)));
 					echo JHtml::link($url, $img, $attr);
 				}
 				echo '</td>';

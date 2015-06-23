@@ -45,7 +45,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
 {
 	?>
 <h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_GAMES_HISTORY'); ?></h2>
-<table class="table">
+<table class="<?php echo $this->config['history_table_class']; ?>">
 	<tr>
 		<td><br />
 			<table class="<?php echo $this->config['history_table_class']; ?>">
@@ -59,7 +59,15 @@ defined('_JEXEC') or die('Restricted access'); ?>
 				$k=0;
 				foreach ($this->games as $game)
 				{
-					$report_link=sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug,$game->id);
+
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['mid'] = $game->id;
+$report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
+				    
+					//$report_link=sportsmanagementHelperRoute::getMatchReportRoute($this->project->slug,$game->id);
 					?>
 
 					<tr class="">
@@ -67,13 +75,21 @@ defined('_JEXEC') or die('Restricted access'); ?>
 						echo JHtml::link($report_link,strftime($this->config['games_date_format'],strtotime($game->match_date)));
 						?>
 						</td>
-						<td class="td_r"><?php echo $this->teams[$game->projectteam1_id]->name; ?>
+						<td class="td_r">
+                        <?php 
+echo sportsmanagementHelperHtml::getBootstrapModalImage('gamehistory'.$game->id.'-'.$game->projectteam1_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$game->home_logo,$game->home_name,'20');                        
+                        echo $this->teams[$game->projectteam1_id]->name; 
+                        ?>
 						</td>
 						<td class="td_r"><?php echo $game->team1_result; ?></td>
 						<td class="td_c"><?php echo $this->overallconfig['seperator']; ?>
 						</td>
 						<td class="td_l"><?php echo $game->team2_result; ?></td>
-						<td class="td_l"><?php echo $this->teams[$game->projectteam2_id]->name; ?>
+						<td class="td_l">
+                        <?php 
+echo sportsmanagementHelperHtml::getBootstrapModalImage('gamehistory'.$game->id.'-'.$game->projectteam2_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$game->away_logo,$game->away_name,'20');                        
+                        echo $this->teams[$game->projectteam2_id]->name; 
+                        ?>
 						</td>
 					</tr>
 							<?php

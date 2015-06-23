@@ -64,18 +64,22 @@ foreach ($this->divisions as $division)
 	<tr>
 	<td style="text-align: right">
 		<?php echo JText::_('COM_SPORTSMANAGEMENT_CURVE_TEAMS').' '.$division->name; ?>
-		<?php echo $this->team1select[$division->id]; ?>
-		<?php echo $this->team2select[$division->id]; ?>
-		
-		<form name="curveform<?php echo $division->id; ?>" method="get"
-			id="curveform<?php echo $division->id; ?>">
+	</td>	
+    <td style="text-align: right">    
+        <?php echo $this->team1select[$division->id]; ?>
+	</td>
+    <td style="text-align: right">	
+        <?php echo $this->team2select[$division->id]; ?>
+	</td>
+    <td style="text-align: right">	
+		<form name="curveform<?php echo $division->id; ?>" method="get"	id="curveform<?php echo $division->id; ?>">
 			<input type="hidden" name="option" value="com_sportsmanagement" />
 			<input type="hidden" name="view" value="curve" />
 			<input type="hidden" name="p" value="<?php echo $this->project->id; ?>" />  
 			<input type="hidden" name="tid1" value="" /> 
 			<input type="hidden" name="tid2" value="" />  
 			<input type="hidden" name="division" value="<?php echo $division->id; ?>" /> 
-			<input type="submit" style="font-size: 9px;" class="inputbox"
+			<input type="submit" style="" class="<?PHP echo $this->config['button_style']; ?>"
 				value="<?php echo JText::_('COM_SPORTSMANAGEMENT_CURVE_GO'); ?>" />
 			<?php echo JHtml::_( 'form.token' ); ?>
 		</form>

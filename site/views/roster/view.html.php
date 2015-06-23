@@ -39,8 +39,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-//require_once(JPATH_COMPONENT.DS.'helpers'.DS.'pagination.php');
-
 jimport('joomla.application.component.view');
 
 /**
@@ -152,6 +150,11 @@ class sportsmanagementViewRoster extends JViewLegacy
 
 	$lists['typestaff'] = $opp_arr;
 	$this->assignRef('lists', $lists);
+    
+    if ( !isset($this->config['table_class']) )
+        {
+            $this->config['table_class'] = 'table';
+        }
 
 //$this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
 

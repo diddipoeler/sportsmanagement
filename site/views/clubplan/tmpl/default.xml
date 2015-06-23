@@ -12,7 +12,7 @@
 					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
 					>
     <field name="cfg_which_database" 
-    type="list" 
+    type="radio" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -54,12 +54,14 @@
 			<field	type="spacer">
 			</field>
 			
-			<field	name="startdate" type="calendar"
+			<field	name="startdate" 
+      type="calendar"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_STARTDATE_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_STARTDATE_DESCR">
 			</field>
 			
-			<field	name="enddate" type="calendar"
+			<field	name="enddate" 
+      type="calendar"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_ENDDATE_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_ENDDATE_DESCR">
 			</field>

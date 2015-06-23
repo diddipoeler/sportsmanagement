@@ -87,25 +87,28 @@ class sportsmanagementViewClubPlan extends JViewLegacy
 		$this->assign('favteams',sportsmanagementModelProject::getFavTeams($model::$cfg_which_database));
 		$this->assign('club',sportsmanagementModelClubInfo::getClub());
         
-        $this->assign('type',$jinput->getVar("type", 0));
-        $this->assign('teamartsel',$jinput->getVar("teamartsel", 0));
-        $model->teamart = $this->teamartsel;
-        $this->assign('teamprojectssel',$jinput->getVar("teamprojectssel", 0));
-        $model->teamprojects = $this->teamprojectssel;
-        $model->project_id = $jinput->getInt("p",0);
+        $this->assign('type',$model::$type);
+        $this->assign('teamartsel',$model::$teamartsel);
+        //$model->teamart = $this->teamartsel;
+        $this->assign('teamprojectssel',$model::$teamprojectssel);
+        //$model->teamprojects = $this->teamprojectssel;
+        //$model::$project_id = $jinput->getInt("p",0);
+        
         if ( $this->teamprojectssel > 0 )
         {
-            $model->project_id = $this->teamprojectssel;
+            $model::$project_id = $this->teamprojectssel;
         }
-        $this->assign('teamseasonssel',$jinput->getVar("teamseasonssel", 0));
-        $model->teamseasons = $this->teamseasonssel;
+        $this->assign('teamseasonssel',$model::$teamseasonssel);
+        //$model->teamseasons = $this->teamseasonssel;
+        
+        
         if ( $this->teamseasonssel > 0 )
         {
-            $model->project_id = 0;
+            $model::$project_id = 0;
         }
         if ( $this->teamartsel != '' )
         {
-            $model->project_id = 0;
+            $model::$project_id = 0;
         }
         
         
@@ -197,9 +200,13 @@ class sportsmanagementViewClubPlan extends JViewLegacy
 
 		// add the links
 		$document->addHeadLink(JRoute::_($feed.'&type=rss'),'alternate','rel',$rss);
-        $view = $jinput->getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+        
+/**
+ *         das brauchen wir nicht mehr, da wir bootsrap benutzen
+ *         $view = $jinput->getVar( "view") ;
+ *         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+ *         $document->addCustomTag($stylelink);
+ */
         
         $this->headertitle = JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_PAGE_TITLE').' '.$this->club->name;
         

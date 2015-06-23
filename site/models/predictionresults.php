@@ -90,7 +90,7 @@ class sportsmanagementModelPredictionResults extends JModelLegacy
     $this->predictionGameID		= JRequest::getInt('prediction_id',		0);
 		$this->predictionMemberID	= JRequest::getInt('uid',	0);
 		$this->joomlaUserID			= JRequest::getInt('juid',	0);
-		$this->roundID				= JRequest::getInt('r',		0);
+		$this->roundID				= $jinput->request->get('r', '0', 'STR');
         $this->pggroup				= JRequest::getInt('pggroup',		0);
         $this->pggrouprank			= JRequest::getInt('pggrouprank',		0);
 		$this->pjID					= JRequest::getInt('p',		0);
@@ -141,6 +141,8 @@ if ( JRequest::getVar( "view") == 'predictionresults' )
 	$this->setState('limitstart', $limitstart);
 }
 
+    $getDBConnection = sportsmanagementHelper::getDBConnection();
+    parent::setDbo($getDBConnection);
     
 	}
 
@@ -161,7 +163,7 @@ function checkRoundID($project_id,$roundID)
     $document	= JFactory::getDocument();
 
 // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);    
 
 //    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($roundID,true).'</pre>'),'');
@@ -170,7 +172,7 @@ function checkRoundID($project_id,$roundID)
 $query->select('roundcode');
 $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
 $query->where('project_id = '.$project_id);
-$query->where('id = '.$roundID);
+$query->where('id = '.(int)$roundID);
 $db->setQuery( $query );
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
@@ -293,10 +295,10 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
 //    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' proteams_ids<br><pre>'.print_r($proteams_ids,true).'</pre>'),'');
     
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
     
-		if ($roundID==0)
+		if ( (int)$roundID == 0 )
         {
 			$roundID=1;
 		}
@@ -326,22 +328,22 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
 //        $query->select('c1.logo_big AS homeLogobig');
 //        $query->select('c2.logo_big AS awayLogobig');
         
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON r.id = m.round_id');
+        $query->from('#__sportsmanagement_match AS m');
+        $query->join('INNER', '#__sportsmanagement_round AS r ON r.id = m.round_id');
         
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id = m.projectteam1_id');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON pt2.id = m.projectteam2_id');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 on st1.id = pt1.team_id');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 on st2.id = pt2.team_id');
+        $query->join('LEFT', '#__sportsmanagement_project_team AS pt1 ON pt1.id = m.projectteam1_id');
+        $query->join('LEFT', '#__sportsmanagement_project_team AS pt2 ON pt2.id = m.projectteam2_id');
+        $query->join('LEFT', '#__sportsmanagement_season_team_id AS st1 on st1.id = pt1.team_id');
+        $query->join('LEFT', '#__sportsmanagement_season_team_id AS st2 on st2.id = pt2.team_id');
         
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id = st1.team_id');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id = st2.team_id');
+        $query->join('LEFT', '#__sportsmanagement_team AS t1 ON t1.id = st1.team_id');
+        $query->join('LEFT', '#__sportsmanagement_team AS t2 ON t2.id = st2.team_id');
         
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c1 ON c1.id = t1.club_id');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c2 ON c2.id = t2.club_id');
+        $query->join('LEFT', '#__sportsmanagement_club AS c1 ON c1.id = t1.club_id');
+        $query->join('LEFT', '#__sportsmanagement_club AS c2 ON c2.id = t2.club_id');
         
         
-        $query->where('r.project_id = '.$project_id);
+        $query->where('r.project_id = '.(int)$project_id);
         //$query->where('r.id = '.$roundID);
         
         $query->where('(m.cancel IS NULL OR m.cancel = 0)');
@@ -360,7 +362,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
     }
     else
     {
-    $query->where('r.id = '.$roundID);
+    $query->where('r.id = '.(int)$roundID);
     }
         
     // bestimmte spiele selektieren
@@ -373,6 +375,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
 						
 		$db->setQuery( $query );
 		$results = $db->loadObjectList();
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $results;
 	}
 

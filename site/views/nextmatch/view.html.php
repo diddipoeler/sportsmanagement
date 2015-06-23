@@ -121,12 +121,12 @@ class sportsmanagementViewNextMatch extends JViewLegacy
 			$this->assign('away_highest_away_def',$model->getAwayHighestAwayDef() );
 
 			$games = $model->getGames();
-			$gamesteams = $model->getTeamsFromMatches( $games );
+			$gamesteams = $model->getTeamsFromMatches( $games,$config );
 			$this->assignRef('games',$games );
 			$this->assignRef('gamesteams',$gamesteams );
 			
 			
-			$previousx = $this->get('previousx');
+			$previousx = $model->getpreviousx($config);
 			$teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$model::$cfg_which_database);
 			
 			$this->assignRef('previousx',$previousx);

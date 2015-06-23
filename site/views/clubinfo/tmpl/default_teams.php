@@ -40,11 +40,11 @@
 defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
 <div class="row">
-	<div class="contentpaneopen">
+	
 		<h4>
 			<?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_TEAMS'); ?>
 		</h4>
-	</div>
+	
 	<table class="table">
 	
 	<?php
@@ -124,7 +124,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 			
             if ( $this->config['show_teams_picture'] )
             {
-            echo sportsmanagementHelperHtml::getBootstrapModalImage('clubteam'.$team->id,$team->project_team_picture,$team->team_name,$this->config['team_picture_width']);       
+            echo sportsmanagementHelperHtml::getBootstrapModalImage('clubteam'.$team->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$team->project_team_picture,$team->team_name,$this->config['team_picture_width']);       
             }
             	
 			}

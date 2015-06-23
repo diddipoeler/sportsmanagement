@@ -54,7 +54,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 	
 		<?php
-		if ( $this->config['show_photo'] == 1 )
+		if ( $this->config['show_photo'] )
 		{
 			?>
 			
@@ -66,12 +66,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				{
 					$picture = $this->person->picture;
 				}
-				if ( !file_exists( $picture ) )
+				if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture ) )
 				{
 					$picture = sportsmanagementHelper::getDefaultPlaceholder("player") ;
 				}
 			
-echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$imgTitle,$this->config['picture_width']);                                                       
+echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture,$imgTitle,$this->config['picture_width']);                                                       
 				
 		}
 		?>

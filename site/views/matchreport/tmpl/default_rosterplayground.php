@@ -206,17 +206,13 @@ if ( $schemahome )
 ?>
 <div style="position:absolute; width:103px; left:0px; top:0px; text-align:center;">
 
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$this->team1_club->logo_big;?>" title="<?php echo $this->team1_club->name;?>" data-toggle="modal" data-target="#logo1">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$this->team1_club->logo_big;?>" alt="<?php echo $this->team1_club->name;?>" width="<?php echo $this->config['roster_playground_team_picture_width'];?>" />
-</a>
-<div class="modal fade" id="logo1" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-</div>
+
+
 <?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$this->team1_club->logo_big, $this->team1_club->name, array('title' => $this->team1_club->name,'class' => "img-rounded" ));      
+//echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$this->team1_club->logo_big, $this->team1_club->name, array('title' => $this->team1_club->name,'class' => "img-rounded" )); 
+echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundteamhome',COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$this->team1_club->logo_big,$this->team1_club->name,'50');     
 ?>
-</div>
+
 
 </div>
 <?PHP
@@ -224,20 +220,16 @@ echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$this->team1_club->logo_bi
 
 if ( $schemaguest )
 {
+    
 ?>
 <div style="position:absolute; width:103px; left:0px; top:950px; text-align:center;">
 
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$this->team2_club->logo_big;?>" title="<?php echo $this->team2_club->name;?>" data-toggle="modal" data-target="#logo2">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$this->team2_club->logo_big;?>" alt="<?php echo $this->team2_club->name;?>" width="<?php echo $this->config['roster_playground_team_picture_width'];?>" />
-</a>
-<div class="modal fade" id="logo2" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-</div>
+
 <?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$this->team2_club->logo_big, $this->team2_club->name, array('title' => $this->team2_club->name,'class' => "img-rounded" ));      
+//echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$this->team2_club->logo_big, $this->team2_club->name, array('title' => $this->team2_club->name,'class' => "img-rounded" ));    
+echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundteamaway',COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$this->team2_club->logo_big,$this->team2_club->name,'50');  
 ?>
-</div>
+
 
 
 </div>
@@ -275,10 +267,10 @@ if ( $player->pposid == $pos->pposid && $player->ptid == $this->match->projectte
 // player->ppic = person picture
 // player->picture = teamplay picture
 $picture = $player->picture;
-if ( !file_exists( $picture ) )
+if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture ) )
 {
 $picture = $player->ppic;    
-if ( !file_exists( $picture ) )
+if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture ) )
 {
 $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 }
@@ -292,28 +284,19 @@ echo 'this->heim firstname<br /> ~' . $player->firstname . ' ~<br />';
 echo 'this->heim picture<br /> ~' . $picture . ' ~<br />';
 }
 
-/*
-<a href="<?php echo $picture;?>" alt="<?php echo $player->lastname;?>" title="<?php echo $player->lastname;?>" class="modal" onclick="">
-<img id="<?php echo $player->person_id;?>" class="bild_s" style="width:<?PHP echo $this->config['roster_playground_player_picture_width']; ?>px; " src="<?PHP echo $picture; ?>" alt="" /><br />
-</a>
-*/
+
 ?>
 
 <div id="<?php echo $player->person_id;?>" style="display:<?php echo $div_display;?>;position:absolute; width:103px; left:<?PHP echo $this->schemahome[$schemahome][$testlauf]['heim']['links']; ?>px; top:<?PHP echo $this->schemahome[$schemahome][$testlauf]['heim']['oben']; ?>px; text-align:center;">
 
 
 
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $player->lastname;?>" data-toggle="modal" data-target="#pl<?php echo $player->person_id;?>">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $player->lastname;?>" width="<?php echo $this->config['roster_playground_player_picture_width'];?>" />
-</a>
-<div class="modal fade" id="pl<?php echo $player->person_id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-</div>
+
+
 <?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $player->lastname, array('title' => $player->lastname,'class' => "img-rounded" ));      
+echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundperson'.$player->person_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture,$player->lastname,$this->config['roster_playground_player_picture_width']);     
 ?>
-</div> 
+ 
 
 
 <a class="link" href=""><font color="white"><?PHP echo $player->lastname." "; ?></font></a>
@@ -361,36 +344,23 @@ if ( $player->pposid == $pos->pposid && $player->ptid == $this->match->projectte
 // player->ppic = person picture
 // player->picture = teamplay picture
 $picture = $player->picture;
-if ( !file_exists( $picture ) )
+if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture ) )
 {
 $picture = $player->ppic;    
-if ( !file_exists( $picture ) )
+if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture ) )
 {    
 $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 }
 }
-/*
-<a href="<?php echo $picture;?>" alt="<?php echo $player->lastname;?>" title="<?php echo $player->lastname;?>" class="modal" onclick="">
-<img id="<?php echo $player->person_id;?>" class="bild_s" style="width:<?PHP echo $this->config['roster_playground_player_picture_width']; ?>px;" src="<?PHP echo $picture; ?>" alt="" /><br />
-</a>
-*/
+
 ?>
 
 <div id="<?php echo $player->person_id;?>" style="display:<?php echo $div_display;?>;position:absolute; width:103px; left:<?PHP echo $this->schemaaway[$schemaguest][$testlauf]['gast']['links']; ?>px; top:<?PHP echo $this->schemaaway[$schemaguest][$testlauf]['gast']['oben']; ?>px; text-align:center;">
 
-
-
-<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" title="<?php echo $player->lastname;?>" data-toggle="modal" data-target="#pl<?php echo $player->person_id;?>">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $player->lastname;?>" width="<?php echo $this->config['roster_playground_player_picture_width'];?>" />
-</a>
-<div class="modal fade" id="pl<?php echo $player->person_id;?>" tabindex="-1" role="dialog" aria-labelledby="modal" aria-hidden="true">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span></button>
-</div>
 <?PHP
-echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture, $player->lastname, array('title' => $player->lastname,'class' => "img-rounded" ));      
+//echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture, $player->lastname, array('title' => $player->lastname,'class' => "img-rounded" ));  
+echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundperson'.$player->person_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture,$player->lastname,$this->config['roster_playground_player_picture_width']);    
 ?>
-</div> 
 
 <a class="link" href=""><font color="white"><?PHP echo $player->lastname." "; ?></font></a>
 </div>
@@ -417,11 +387,7 @@ $testlauf++;
                             
 echo "</div>";
 
-/*
-echo 'this->matchplayerpositions<br /><pre>~' . print_r($this->matchplayerpositions,true) . '~</pre><br />';
-echo 'this->personCount<br /><pre>~' . print_r($personCount,true) . '~</pre><br />';
-echo 'this->matchplayers<br /><pre>~' . print_r($this->matchplayers,true) . '~</pre><br />';
-*/
+
 
 ?>
 </td>

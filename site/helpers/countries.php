@@ -48,6 +48,11 @@ if (! defined('JSM_PATH'))
 
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php'); 
 
+$maxImportTime = 480;
+if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImportTime);}
+
+
+
 /**
  * JSMCountries
  * 
@@ -112,7 +117,8 @@ class JSMCountries
 //$database_table	= $params->get( 'cfg_which_database_table' );
 
         // Get a db connection.
-$db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+//$db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+$db = sportsmanagementHelper::getDBConnection();
  
 // Create a new query object.
 $query = $db->getQuery(true);
@@ -130,7 +136,7 @@ $query = $db->getQuery(true);
 		$options=array();
 		foreach ($countries AS $k )
 		{
-			$options[]=JHtml::_('select.option',$k['alpha3'],JText::_($k['name']),$value_tag,$text_tag);
+			$options[] = JHtml::_('select.option',$k['alpha3'],JText::_($k['name']),$value_tag,$text_tag);
 		}
 		
 		//Now Sort the countries
@@ -155,7 +161,9 @@ $query = $db->getQuery(true);
 //$database_table	= $params->get( 'cfg_which_database_table' );
 
 	// Get a db connection.
-$db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+//$db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+$db = sportsmanagementHelper::getDBConnection();
+
 // Create a new query object.
 $query = $db->getQuery(true);
 	  // Select some fields
@@ -190,7 +198,9 @@ $query = $db->getQuery(true);
 //$params = JComponentHelper::getParams( 'com_sportsmanagement' );
 //$database_table	= $params->get( 'cfg_which_database_table' );
 	// Get a db connection.
-$db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+//$db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+$db = sportsmanagementHelper::getDBConnection();
+
 // Create a new query object.
 $query = $db->getQuery(true);
 // Select some fields
@@ -224,8 +234,8 @@ $query = $db->getQuery(true);
 		$iso2 = self::convertIso3to2($iso_code_3);
 		if ($iso2)
 		{
-			$path = COM_SPORTSMANAGEMENT_PICTURE_SERVER.'images/com_sportsmanagement/database/flags/'.strtolower($iso2).'.png';
-            $path = '/images/com_sportsmanagement/database/flags/'.strtolower($iso2).'.png';
+			//$path = COM_SPORTSMANAGEMENT_PICTURE_SERVER.'images/com_sportsmanagement/database/flags/'.strtolower($iso2).'.png';
+            $path = 'images/com_sportsmanagement/database/flags/'.strtolower($iso2).'.png';
 //            if ( !JFile::exists(COM_SPORTSMANAGEMENT_PICTURE_SERVER.'images/com_sportsmanagement/database/flags/'.strtolower($iso2).'.png') )
 //			{
 //                $path = COM_SPORTSMANAGEMENT_PICTURE_SERVER.'administrator/components/com_sportsmanagement/assets/images/delete.png';
@@ -249,7 +259,8 @@ $query = $db->getQuery(true);
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        //$db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+        $db = sportsmanagementHelper::getDBConnection();
 
         $src = self::getIso3Flag($countrycode);
 		if (!$src)
@@ -269,13 +280,13 @@ $query = $db->getQuery(true);
 		$src = $db->loadResult();
         }
         
-        if ( !JFile::exists(JPATH_ROOT.DS.$src) )
+        if ( !curl_init(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$src) )
         {
-        $src = COM_SPORTSMANAGEMENT_PICTURE_SERVER.JComponentHelper::getParams($option)->get('ph_flags','');
+        $src = COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.JComponentHelper::getParams($option)->get('ph_flags','');
         } 
         else
         {
-        $src = COM_SPORTSMANAGEMENT_PICTURE_SERVER.$src;    
+        $src = COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$src;    
         }
         
 		$html='<img src="'.$src.'" alt="'.self::getCountryName($countrycode).'" ';
@@ -297,7 +308,9 @@ $query = $db->getQuery(true);
 //$params = JComponentHelper::getParams( 'com_sportsmanagement' );
 //$database_table	= $params->get( 'cfg_which_database_table' );
 	// Get a db connection.
-$db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+//$db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+$db = sportsmanagementHelper::getDBConnection();
+
 // Create a new query object.
 $query = $db->getQuery(true);
 // Select some fields

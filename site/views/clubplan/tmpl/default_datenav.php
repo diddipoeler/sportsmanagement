@@ -46,32 +46,40 @@ defined('_JEXEC') or die('Restricted access');
 	<?php $dateformat="%d-%m-%Y"; ?>
 	<table class="table" >
 		<tr>
-        <td><?php
+        <td>
+        <?php
                 echo "".JHtml::_('select.genericlist', $this->lists['fromteamart'], 'teamartsel' , 'class="inputbox" size="1" onchange="hideclubplandate();" ', 'value', 'text', $this->teamartsel )."";
                 //echo "".JHtml::_('select.genericlist', $this->lists['fromteamprojects'], 'teamprojectssel' , 'class="inputbox" size="1" onchange="hideclubplandate();" ', 'value', 'text', $this->teamprojectssel )."";
+                ?>
+                </td>
+                <td>
+                <?PHP
                 echo "".JHtml::_('select.genericlist', $this->lists['fromteamseasons'], 'teamseasonssel' , 'class="inputbox" size="1" onchange="hideclubplandate();" ', 'value', 'text', $this->teamseasonssel )."";                
 				?>
-            <td>
+            </td>
         </tr>
         <tr>
-			<td><div class="clubplandate"><?php
+			<td>
+            <?php
 				echo JHtml::calendar(sportsmanagementHelper::convertDate($this->startdate,1),'startdate','startdate',$dateformat);
+                ?>
+                </td>
+                <td>
+                <?PHP
 				echo ' - '.JHtml::calendar(sportsmanagementHelper::convertDate($this->enddate,1),'enddate','enddate',$dateformat);
                 ?>
-                </div>
+                </td>
+                <td>
                 <?PHP
                 echo "".JHtml::_('select.genericlist', $this->lists['type'], 'type' , 'class="inputbox" size="1" onchange="" ', 'value', 'text', $this->type )."";
 				?>
-                <input type="submit" class="button" name="reload View" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_FILTER'); ?>" />
                 </td>
-			
-            
+                <td>
+                <input type="submit" class="<?PHP echo $this->config['button_style']; ?>" name="reload View" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_FILTER'); ?>" />
+                </td>
+			            
             <td>
-                       
-            
             <?php
-            
-            
             
 			if ( $this->club )
 			{

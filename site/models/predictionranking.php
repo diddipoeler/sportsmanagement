@@ -144,6 +144,8 @@ if ( JRequest::getVar( "view") == 'predictionranking' )
 }
 
   
+    $getDBConnection = sportsmanagementHelper::getDBConnection();
+    parent::setDbo($getDBConnection);
     
 	}
 
@@ -157,16 +159,16 @@ function _buildQuery()
     $option = JRequest::getCmd('option');    
     $app = JFactory::getApplication();
     // Create a new query object.		
-		$db = JFactory::getDBO();
+		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
     
     // Select some fields
     $query->select('pm.id AS pmID,pm.user_id AS user_id,pm.picture AS avatar,pm.group_id,pm.show_profile AS show_profile,pm.champ_tipp AS champ_tipp,pm.aliasName as aliasName');
     $query->select('u.name AS name');
     $query->select('pg.id as pg_group_id,pg.name as pg_group_name');
-    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member AS pm');
+    $query->from('#__sportsmanagement_prediction_member AS pm');
     $query->join('INNER', '#__users AS u ON u.id = pm.user_id');
-    $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_groups as pg on pg.id = pm.group_id');
+    $query->join('LEFT', '#__sportsmanagement_prediction_groups as pg on pg.id = pm.group_id');
     $query->where('pm.prediction_id = '.$this->predictionGameID);
             
 
@@ -245,16 +247,35 @@ function getPagination()
     function getChampLogo($ProjectID,$champ_tipp)
     {
     $option = JRequest::getCmd('option');
-	$app	= JFactory::getApplication();
+	$app = JFactory::getApplication();
+    $projectteamid = 0;
     
-    $sChampTeamsList=explode(';',$champ_tipp);
-	foreach ($sChampTeamsList AS $key => $value){$dChampTeamsList[]=explode(',',$value);}
-	foreach ($dChampTeamsList AS $key => $value){$champTeamsList[$value[0]]=$value[1];}    
+    if ( $champ_tipp )
+    {
+    $sChampTeamsList = explode(';',$champ_tipp);
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sChampTeamsList'.'<pre>'.print_r($sChampTeamsList,true).'</pre>' ),'');
+	foreach ($sChampTeamsList AS $key => $value)
+    {
+    $dChampTeamsList[] = explode(',',$value);
+    }
+	foreach ($dChampTeamsList AS $key => $value)
+    {
+    $champTeamsList[$value[0]] = $value[1];
+    }    
     
     $projectteamid = $champTeamsList[$ProjectID];  
-    $teaminfo = sportsmanagementModelProject::getTeaminfo($projectteamid);
-
+    if ( $projectteamid )
+    {
+    $teaminfo = sportsmanagementModelProject::getTeaminfo($projectteamid,0);
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectteamid'.'<pre>'.print_r($projectteamid,true).'</pre>' ),'');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teaminfo'.'<pre>'.print_r($teaminfo,true).'</pre>' ),'');
     return $teaminfo;
+    }
+    }
+    else
+    {
+        return false;
+    }
       
     }
    
