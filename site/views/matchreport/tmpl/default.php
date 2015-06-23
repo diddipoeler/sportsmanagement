@@ -189,17 +189,17 @@ echo $this->loadTemplate('debug');
         $output['COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_SUMMARY'] = 'summary';
 	}
     
-    if (($this->config['show_article'])==1 )
+    if ( $this->config['show_article'] )
 	{
         $output['COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_ARTICLE'] = 'article';
 	}
     
-    if (($this->config['show_commentary'])==1 && $this->matchcommentary )
+    if ( $this->config['show_commentary'] && $this->matchcommentary )
 	{
         $output['COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_COMMENTARY'] = 'commentary';
 	}
 	
-	if (($this->config['show_pictures'])==1 && isset($this->matchimages) )
+	if ( $this->config['show_pictures'] && isset($this->matchimages) )
 	{
         $output['COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_PICTURES'] = 'pictures';
 	} 

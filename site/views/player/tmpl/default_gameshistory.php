@@ -41,10 +41,10 @@ defined('_JEXEC') or die('Restricted access');
 
 
 $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
-if ( $this->project->fs_sport_type_name )
-{
-$picture_path_sport_type_name = 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name;
-}
+//if ( $this->project->fs_sport_type_name )
+//{
+//$picture_path_sport_type_name = 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name;
+//}
 
 ?>
 <!-- Player stats History START -->
@@ -68,7 +68,7 @@ if (count($this->games))
 					$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PERSON_STARTROSTER');
                     $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture_path_sport_type_name.'/startroster.png';
                     //echo $picture;
-                    if ( !JFile::exists($picture) )
+                    if ( !curl_init($picture) )
 {
 $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 }
@@ -77,7 +77,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 					<th class="td_c"><?php
 					$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PERSON_IN');
                     $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture_path_sport_type_name.'/in.png';
-                    if ( !JFile::exists($picture) )
+                    if ( !curl_init($picture) )
 {
 $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 }
@@ -86,7 +86,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 					<th class="td_c"><?php
 					$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PERSON_OUT');
                     $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture_path_sport_type_name.'/out.png';
-                    if ( !JFile::exists($picture) )
+                    if ( !curl_init($picture) )
 {
 $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 }
@@ -96,7 +96,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
                     <th class="td_c"><?php
 				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
                 $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture_path_sport_type_name.'/uhr.png';
-                if ( !JFile::exists($picture) )
+                if ( !curl_init($picture) )
 {
 $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 }
@@ -119,7 +119,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 						$iconPath = "images/com_sportsmanagement/database/events/".$iconPath;
 					}
                     
-                    if ( !JFile::exists(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$iconPath) )
+                    if ( !curl_init(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$iconPath) )
 {
 $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
 }
