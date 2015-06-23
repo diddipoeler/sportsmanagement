@@ -209,86 +209,14 @@ echo $this->loadTemplate('debug');
 
 if($this->config['show_result_tabs'] == "show_slider") 
 {
-?>    
-<div class="panel-group" id="accordion-matchreport">
-<?PHP    
-foreach ( $output as $key => $templ ) 
-    {
-?>    
-<div class="panel panel-default">
-<div class="panel-heading">
-<h4 class="panel-title">
-<a data-toggle="collapse" data-parent="#accordion-matchreport" href="#<?php echo $key; ?>"><?php echo JText::_($key); ?></a>
-</h4>
-</div>
-
-<div id="<?php echo $key; ?>" class="panel-collapse collapse">
-<div class="panel-body">
-<?PHP    
-echo $this->loadTemplate($templ); 
-?>
-</div>
-</div>
-</div>
-
-<?PHP	    
-    }         
-        
-    ?>
-    </div>
-    <?PHP       
+$this->output = $output;
+echo $this->loadTemplate($this->config['show_result_tabs']);
 }
     
 if( $this->config['show_result_tabs'] == "show_tabs" ) 
 {
-?>    
-    
-<div role="tabpanel">
-
-<!-- Tabs-Navs -->
-<ul class="nav nav-tabs" role="tablist">
-<?PHP
-$count = 0;
-$active = 'active';
-foreach ($output as $key => $templ)
-{
-if ( $count )
-{
-$active = '';
-}
-?>  
-<li role="presentation" class="<?PHP echo $active; ?>"><a href="#<?PHP echo $templ; ?>" role="tab" data-toggle="tab"><?PHP echo JText::_($key); ?></a></li>
-<?PHP
-$count++;
-}
-?>
-</ul>
-<!-- Tab-Inhalte -->
-<div class="tab-content">
-<?PHP
-$count = 0;
-$active = 'in active';
-foreach ($output as $key => $templ)
-{
-if ( $count )
-{
-$active = '';
-}
-?>
-<div role="tabpanel" class="tab-pane fade <?PHP echo $active; ?>" id="<?PHP echo $templ; ?>">
-<?PHP   
-echo $this->loadTemplate($templ);
-?>
-</div>
-<?PHP
-}
-?>
-</div>
-
-</div>
-    
-<?PHP            
-    
+$this->output = $output;
+echo $this->loadTemplate($this->config['show_result_tabs']);    
     }
         
 
