@@ -444,24 +444,6 @@ $escape = 'getEscaped';
           $query->join('LEFT','#__sportsmanagement_season_person_id AS o ON o.person_id = pe.id');
           $query->join('LEFT','#__sportsmanagement_project_referee AS pr ON pr.person_id = o.id');
           $query->join('LEFT','#__sportsmanagement_project AS pro ON pr.project_id = pro.id');
-
-/*
-			$query = "SELECT 'Referee' as section, REPLACE(CONCAT(pe.firstname, ' \'', pe.nickname, '\' ' , pe.lastname ),'\'\'','') AS title,"
-			." pe.birthday AS created,"
-			." pe.country,"
-			." pe.picture AS picture, "
-			." CONCAT( 'Birthday:', pe.birthday, ' Notes:', pe.notes ) AS text,"
-			." pr.project_id AS project,"
-			." CONCAT( 'index.php?option=com_sportsmanagement"
-			."&view=referee&pid=', CONCAT_WS(':',pe.id,pe.alias) ,'&p=', CONCAT_WS(':',pro.id,pro.alias) ) AS href,"
-			." '2' AS browsernav"
-			." FROM #__sportsmanagement_person AS pe"
-			." LEFT JOIN #__sportsmanagement_project_referee AS pr ON pr.person_id = pe.id"
-            ." LEFT JOIN #__sportsmanagement_project AS pro ON pr.project_id = pro.id"
-			." WHERE ( ".$wheresperson." ) "
-			." AND pe.published = '1' "
-			." GROUP BY pe.lastname, pe.firstname, pe.nickname ORDER BY pe.lastname,pe.firstname,pe.nickname";
-*/
 			
 			$query->where(" ( ".$wheresperson." ) ");
             $query->where(" pe.published = 1 ");
@@ -492,24 +474,6 @@ $escape = 'getEscaped';
             $query->join('LEFT', '#__sportsmanagement_round AS r ON m.round_id = r.id');
             $query->join('LEFT', '#__sportsmanagement_project AS pro ON r.project_id = pro.id');
 
-/*
-			$query = "SELECT 'Playground' as section, pl.name AS title,"
-			." pl.checked_out_time AS created,"
-			." pl.country,"
-			." pl.picture AS picture, "
-			." pl.notes AS text,"
-			." r.project_id AS project,"
-			." CONCAT( 'index.php?option=com_sportsmanagement"
-			."&view=playground&pgid=', CONCAT_WS(':',pl.id,pl.alias) ,'&p=', CONCAT_WS(':',pro.id,pro.alias) ) AS href,"
-			." '2' AS browsernav"
-			." FROM #__sportsmanagement_playground AS pl"
-			." LEFT JOIN #__sportsmanagement_club AS c ON c.id = pl.club_id"
-			." LEFT JOIN #__sportsmanagement_match AS m ON m.playground_id = pl.id"
-			." LEFT JOIN #__sportsmanagement_round AS r ON m.round_id = r.id"
-            ." LEFT JOIN #__sportsmanagement_project AS pro ON r.project_id = pro.id"
-			." WHERE ( ".$wheresplayground." ) "
-			." GROUP BY pl.name ORDER BY pl.name ";
-*/
 
 			$query->where(" ( ".$wheresplayground." ) ");
             $query->group('pl.name');
@@ -538,21 +502,7 @@ $escape = 'getEscaped';
             $query->from('#__sportsmanagement_project AS pro');
             $query->join('INNER', '#__sportsmanagement_league AS l ON l.id = pro.league_id');
 
-/*            
-        $query = "SELECT 'Project' as section, pro.name AS title,"
-			." pro.checked_out_time AS created,"
-			." l.country,"
-			." pro.picture AS picture, "
-			." CONCAT( pro.name, ' Staffel-ID (', pro.staffel_id, ')' ) AS text,"
-			." pro.id AS project,"
-			." CONCAT( 'index.php?option=com_sportsmanagement"
-			."&view=ranking&type=', '0','&p=', CONCAT_WS(':',pro.id,pro.alias) ) AS href,"
-			." '2' AS browsernav"
-			." FROM #__sportsmanagement_project AS pro"
-			." LEFT JOIN #__sportsmanagement_league AS l ON l.id = pro.league_id"
-			." WHERE ( ".$wheresproject." ) "
-			." GROUP BY pro.name ORDER BY pro.name ";
-*/
+
 			$query->where(" ( ".$wheresproject." ) ");
             $query->group('pro.name');
             $query->order('pro.name');
