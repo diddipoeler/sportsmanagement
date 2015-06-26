@@ -233,7 +233,7 @@ $query->order('s.name');
 	public function getCountryAssocSelect($country)
 	{
 $app = JFactory::getApplication();
-        $db = JFactory::getDbo(); 
+        $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         
         $query->select('s.id AS value, s.name AS text');
