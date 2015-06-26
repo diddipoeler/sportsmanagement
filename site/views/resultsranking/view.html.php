@@ -119,6 +119,8 @@ JHtml::_( 'behavior.mootools' );
 
 		$mdlRound = JModelLegacy::getInstance("Round", "sportsmanagementModel");
 		$roundcode = $mdlRound->getRoundcode($rankingmodel::$round,$cfg_which_database);
+        $this->assignRef('paramconfig', $rankingmodel::$paramconfig);
+        $this->paramconfig['p'] = $project->slug;
 		//$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true,NULL,$cfg_which_database);
 		
 		$resultsconfig = sportsmanagementModelProject::getTemplateConfig('results',$cfg_which_database);
