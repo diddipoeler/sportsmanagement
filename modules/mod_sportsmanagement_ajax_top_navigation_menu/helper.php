@@ -266,7 +266,7 @@ $query->order('s.name');
 	public function getFederationSelect($federation='',$federationid=0)
 	{
 	   $app = JFactory::getApplication();
-        $db = JFactory::getDbo(); 
+        $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
 	$options = array();
     
