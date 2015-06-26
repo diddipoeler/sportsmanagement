@@ -181,14 +181,42 @@ mp.project_referee_id,
 
 from j25_joomleague_match_referee as mp
 
+########################################################################################
+7.) jetzt kommen die ereignisse pro spiel 
 
+INSERT INTO j25_sportsmanagement_match_event (id,match_id,projectteam_id,teamplayer_id,teamplayer_id2,event_time,event_type_id,event_sum,notice,notes)
+select
+me.id,
+me.match_id,
+me.projectteam_id,
+stp.id as teamplayer_id,
+me.teamplayer_id2,
+me.event_time,
+me.event_type_id,
+me.event_sum,
+me.notice,
+me.notes
+from j25_joomleague_match_event as me
+inner join j25_joomleague_team_player as tp on tp.id = me.teamplayer_id
+inner join j25_joomleague_project_team as pt on pt.id = tp.projectteam_id
+inner join j25_joomleague_project as p on p.id = pt.project_id
 
+left join j25_sportsmanagement_season_team_person_id as stp on 
+stp.person_id = tp.person_id
+and stp.team_id = pt.team_id
+and stp.season_id = p.season_id
 
+UPDATE  `j25_sportsmanagement_match_event` SET  `event_type_id` =  '8' WHERE  `j25_sportsmanagement_match_event`.`event_type_id` =1;
+UPDATE  `j25_sportsmanagement_match_event` SET  `event_type_id` =  '1' WHERE  `j25_sportsmanagement_match_event`.`event_type_id` =2;
+UPDATE  `j25_sportsmanagement_match_event` SET  `event_type_id` =  '2' WHERE  `j25_sportsmanagement_match_event`.`event_type_id` =3;
+UPDATE  `j25_sportsmanagement_match_event` SET  `event_type_id` =  '3' WHERE  `j25_sportsmanagement_match_event`.`event_type_id` =4;
 
-
-
-
-
+1=tor
+2=gelbe karte
+3= gelb/rote karte
+4=rote karte
+5=minuten
+6=eigentor
 
 mp.teamplayer_id, 
 mp.project_position_id,
