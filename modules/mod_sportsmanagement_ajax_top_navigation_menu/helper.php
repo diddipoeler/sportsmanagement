@@ -105,7 +105,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 	{
 		$app = JFactory::getApplication();
         $this->_params = $params;
-		$this->_db = Jfactory::getDBO();
+		$this->_db = sportsmanagementHelper::getDBConnection();
         
 //        $projectid = JRequest::getInt('p',0);
 //        if ( $projectid )
