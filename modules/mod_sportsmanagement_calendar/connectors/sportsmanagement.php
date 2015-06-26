@@ -491,6 +491,7 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
 		}
 
 		$limit = (isset($caldates['limitstart'])&&isset($caldates['limitend'])) ? ' LIMIT '.$caldates['limitstart'].', '.$caldates['limitend'] :'';
+
 /*
 
 
