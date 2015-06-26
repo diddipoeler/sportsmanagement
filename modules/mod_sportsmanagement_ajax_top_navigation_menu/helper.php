@@ -628,7 +628,7 @@ return $user->username ;
 	public function getAssocParentId($assoc_id)
 	{
 	   $app = JFactory::getApplication();
-        $db = JFactory::getDbo(); 
+        $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
        if ( $assoc_id )
        { 
