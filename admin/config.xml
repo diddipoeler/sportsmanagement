@@ -748,6 +748,7 @@ size="200"
 default="" 
 label="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_MAIL_ACCOUNT" 
 description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_MAIL_ACCOUNT_DESC" />	
+
 <field name="google_mail_password" 
 type="text" 
 size="200" 
@@ -761,6 +762,7 @@ size="200"
 default="" 
 label="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_CLIENTID" 
 description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_CLIENTID_DESC" />	
+
 <field name="google_api_clientsecret" 
 type="text" 
 size="200" 

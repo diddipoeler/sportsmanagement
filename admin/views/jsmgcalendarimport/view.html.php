@@ -23,17 +23,32 @@ defined('_JEXEC') or die();
 jimport('joomla.application.component.view');
 //JLoader::import('components.com_gcalendar.libraries.GCalendar.view', JPATH_ADMINISTRATOR);
 
+/**
+ * sportsmanagementViewjsmgcalendarImport
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2015
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView 
 {
     
+    /**
+     * sportsmanagementViewjsmgcalendarImport::init()
+     * 
+     * @param mixed $tpl
+     * @return void
+     */
     function init( $tpl = null )
 	{
-		$app	= JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
-		$db	 		= sportsmanagementHelper::getDBConnection();
-		$uri		= JFactory::getURI();
-		$user		= JFactory::getUser();
-		$model		= $this->getModel();
+		$db	= sportsmanagementHelper::getDBConnection();
+		$uri = JFactory::getURI();
+		$user = JFactory::getUser();
+		$model = $this->getModel();
         $starttime = microtime(); 
         
         if (strpos($this->getLayout(), 'login') === false) 
@@ -45,7 +60,12 @@ class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' onlineItems<br><pre>'.print_r($this->onlineItems,true).'</pre>'),'Notice');
         }
         
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'Notice');
         
+        $this->setLayout('login');
+        
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');
         
         //$this->addToolbar();
 //        
@@ -55,6 +75,11 @@ class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView
 //	protected $onlineItems = null;
 //	protected $dbItems = null;
 
+	/**
+	 * sportsmanagementViewjsmgcalendarImport::addToolbar()
+	 * 
+	 * @return void
+	 */
 	protected function addToolbar() 
     {
         $option = JRequest::getCmd('option');

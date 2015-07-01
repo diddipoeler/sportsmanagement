@@ -159,9 +159,9 @@ $output .= "</entry>". "\n";
     $xml = str_replace('[SUMMARY]', $summary, $xml);
     $response = $gdataCal->post($xml, $uri);
     
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' response<br><pre>'.print_r($response,true).'</pre>'),'Notice');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getMessage<br><pre>'.print_r($response->getMessage(),true).'</pre>'),'Notice');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getHeader<br><pre>'.print_r($response->getHeader('Content-location'),true).'</pre>'),'Notice');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' response<br><pre>'.print_r($response,true).'</pre>'),'Notice');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getMessage<br><pre>'.print_r($response->getMessage(),true).'</pre>'),'Notice');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getHeader<br><pre>'.print_r($response->getHeader('Content-location'),true).'</pre>'),'Notice');
     
     // die erstellte kalender id übergeben
     $data['calendar_id'] = substr($response->getHeader('Content-location'), strrpos($response->getHeader('Content-location'), '/')+1);

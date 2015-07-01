@@ -27,9 +27,7 @@ JHtml::_('behavior.tooltip');
 	<legend>
 		<?php echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_LOGIN_AUTH_DEFAULT_LABEL');?>
 	</legend>
-	<form
-		action="<?php echo JRoute::_( 'index.php?option=com_sportsmanagement&view=jsmgcalendarimport');?>"
-		method="post">
+	<form action="<?php echo JRoute::_( 'index.php?option=com_sportsmanagement&view=jsmgcalendarimport');?>" method="post" name="adminForm" id="adminForm">
 		<div class="row-fluid">
 			<div class="span6">
 				<div class="control-group">
@@ -56,9 +54,41 @@ JHtml::_('behavior.tooltip');
 							required="required" aria-invalid="true">
 					</div>
 				</div>
+                
+                <div class="control-group">
+					<div class="control-label">
+						<label id="jform_name-lbl" for="google_api_clienid"
+							class="hasTip required invalid" title="" aria-invalid="true"><?php echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_LOGIN_AUTH_DEFAULT_FIELD_CLIENTID');?><span
+							class="star">&nbsp;*</span> </label>
+					</div>
+					<div class="controls">
+						<input type="text" name="google_api_clienid" id="google_api_clienid" value="<?PHP  echo JComponentHelper::getParams('com_sportsmanagement')->get('google_api_clienid',''); ?>"
+							class="inputbox required invalid" size="200" aria-required="true"
+							required="required" aria-invalid="true">
+					</div>
+				</div>
+                
+                <div class="control-group">
+					<div class="control-label">
+						<label id="jform_name-lbl" for="google_api_clientsecret"
+							class="hasTip required invalid" title="" aria-invalid="true"><?php echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_LOGIN_AUTH_DEFAULT_FIELD_CLIENTSECRET');?><span
+							class="star">&nbsp;*</span> </label>
+					</div>
+					<div class="controls">
+						<input type="text" name="google_api_clientsecret" id="google_api_clientsecret" value="<?PHP  echo JComponentHelper::getParams('com_sportsmanagement')->get('google_api_clientsecret',''); ?>"
+							class="inputbox required invalid" size="200" aria-required="true"
+							required="required" aria-invalid="true">
+					</div>
+				</div>
+                
+                
+                
+                
 			</div>
 		</div>
 		<input type="submit" value="Login" class="btn"/>
+        <input type="" name="task" value="jsmgcalendarimport.login" />
+        <?php echo JHtml::_('form.token'); ?>
 	</form>
 </fieldset>
 

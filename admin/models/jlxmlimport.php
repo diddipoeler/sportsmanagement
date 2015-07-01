@@ -1155,9 +1155,9 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
         // Select some fields
         $query->select('t.name');
 		// From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt on pt.team_id = st.id');  
+		$query->from('#__sportsmanagement_team as t');
+        $query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
+        $query->join('INNER', '#__sportsmanagement_project_team AS pt on pt.team_id = st.id');  
         $query->where('pt.id = '.(int)$team_id);    
 		
         JFactory::getDbo()->setQuery($query);
@@ -1167,7 +1167,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 		{
 			return $object->name;
 		}
-		return '#Error in _getTeamName#';
+		return __FUNCTION__.' '.__LINE__.'#Error in _getTeamName# team_id -> '.$team_id.'<br>';
 	}
 
 	/**
@@ -1184,16 +1184,19 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
         // Select some fields
         $query->select('name');
 		// From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team');
+		$query->from('#__sportsmanagement_team');
         $query->where('id = '.(int)$team_id);
 		JFactory::getDbo()->setQuery($query);
 		sportsmanagementModeldatabasetool::runJoomlaQuery();
-		if (JFactory::getDbo()->getAffectedRows())
+        $result = JFactory::getDbo()->loadResult();
+		if ($result)
 		{
-			$result = JFactory::getDbo()->loadResult();
 			return $result;
 		}
-		return '#Error in _getTeamName2#';
+        else
+        {
+		return __FUNCTION__.' '.__LINE__.'#Error in _getTeamName2# team_id -> '.$team_id.'<br>';
+        }
 	}
 
 	/**
@@ -3747,19 +3750,34 @@ $t_params = json_encode( $ini );
         $db = JFactory::getDbo();
         
 //$this->dump_header("function _importProjectTeam");
-		$my_text='';
+		$my_text = '';
 		if (!isset($this->_datas['projectteam']) || count($this->_datas['projectteam'])==0){return true;}
 
-		if (!isset($this->_datas['team']) || count($this->_datas['team'])==0){return true;}
-		if ((!isset($this->_newteams) || count($this->_newteams)==0) &&
-			(!isset($this->_dbteamsid) || count($this->_dbteamsid)==0)){return true;}
+		if (!isset($this->_datas['team']) || count($this->_datas['team'])==0)
+        {
+            return true;
+        }
+		
+        if ((!isset($this->_newteams) || count($this->_newteams)==0) &&
+			(!isset($this->_dbteamsid) || count($this->_dbteamsid)==0))
+            {
+                return true;
+            }
 
 //$this->dump_variable(__FUNCTION__." projectteam", $this->_datas['projectteam']);
 //$this->dump_variable(__FUNCTION__." _convertTeamID", $this->_convertTeamID);
 
-		foreach ($this->_datas['projectteam'] as $key => $projectteam)
+		$my_text .= __FUNCTION__.' '.__LINE__.' _convertTeamID -> ';
+		$my_text .= '<~<pre>'.print_r($this->_convertTeamID,true).'</pre>~>';
+        $my_text .= '<br />';
+            
+        foreach ($this->_datas['projectteam'] as $key => $projectteam)
 		{
 			
+  	        $my_text .= __FUNCTION__.' '.__LINE__.' projectteam -> ';
+            $my_text .= '<~<pre>'.print_r($projectteam,true).'</pre>~>';
+            $my_text .= '<br />';
+            
             $mdl = JModelLegacy::getInstance("projectteam", "sportsmanagementModel");
             $p_projectteam = $mdl->getTable();
                 
@@ -3775,17 +3793,26 @@ $t_params = json_encode( $ini );
 */            
 			$new_team_id = 0;
             $team_id = $this->_convertTeamID[$this->_getDataFromObject($projectteam,'team_id')];
+            
+            $my_text .= __FUNCTION__.' '.__LINE__.' team_id -> ';
+			$my_text .= $team_id;
+            $my_text .= '<br />';
+            
             if ( $team_id )
             {
             // ist das team schon durch ein anderes projekt angelegt ?
             $query = $db->getQuery(true);
 		    $query->select('id');		
-		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS t');
+		    $query->from('#__sportsmanagement_season_team_id AS t');
 		    $query->where('t.team_id = '.$team_id);
             $query->where('t.season_id = '.$this->_season_id);
 		    $db->setQuery($query);
 		    $new_team_id = $db->loadResult();
             
+            $my_text .= __FUNCTION__.' '.__LINE__.' season_team_id -> ';
+			$my_text .= $new_team_id;
+            $my_text .= '<br />';
+                
             if ( $new_team_id )
             {
                 $p_projectteam->set('team_id',$new_team_id);
@@ -3800,7 +3827,7 @@ $t_params = json_encode( $ini );
             $values = array($team_id,$this->_season_id,'\''.$p_projectteam->picture.'\'');
             // Prepare the insert query.
             $insertquery
-            ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id'))
+            ->insert($db->quoteName('#__sportsmanagement_season_team_id'))
             ->columns($db->quoteName($columns))
             ->values(implode(',', $values));
             // Set the query using our newly populated query object and execute it.
@@ -3814,6 +3841,11 @@ $t_params = json_encode( $ini );
 			{
                 // die neue id übergeben
                 $new_team_id = $db->insertid();
+                
+                $my_text .= __FUNCTION__.' '.__LINE__.' season_team_id -> ';
+			    $my_text .= $new_team_id;
+                $my_text .= '<br />';
+                
                 $p_projectteam->set('team_id',$new_team_id);
 			}
             }
@@ -3869,12 +3901,15 @@ $t_params = json_encode( $ini );
 				}
 			}
 
-			if ($p_projectteam->store()===false)
+			if ( $p_projectteam->store() === false )
 			{
 				$my_text .= 'error on projectteam import: ';
 				$my_text .= $oldID;
+                $my_text .= '<br />';
+                $my_text .= '<~<pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>~>';
+                $my_text .= '<br />';
 				//$my_text .= '<br />Error: _importProjectTeam<br />~'.$my_text.'~<br />~<pre>'.print_r($p_projectteam,true).'</pre>~';
-				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 				//return false;
                 sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			}
@@ -3903,7 +3938,7 @@ $t_params = json_encode( $ini );
 
 //$this->dump_variable(__FUNCTION__." this->_convertProjectTeamID", $this->_convertProjectTeamID);
 
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 

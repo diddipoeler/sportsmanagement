@@ -27,7 +27,7 @@ if(!is_array($this->onlineItems)){
 }
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_gcalendar&view=gcalendars'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view=jsmgcalendars'); ?>" method="post" name="adminForm" id="adminForm">
 <table class="table table-striped" id="eventList">
 	<thead>
 		<tr>

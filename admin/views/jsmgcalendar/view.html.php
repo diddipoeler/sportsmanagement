@@ -55,14 +55,20 @@ class sportsmanagementViewjsmgcalendar extends sportsmanagementView
 {
 
 
+/**
+ * sportsmanagementViewjsmgcalendar::init()
+ * 
+ * @param mixed $tpl
+ * @return void
+ */
 function init( $tpl = null )
 	{
-		$app	= JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$option = JRequest::getCmd('option');
-		$db	 		= sportsmanagementHelper::getDBConnection();
-		$uri		= JFactory::getURI();
-		$user		= JFactory::getUser();
-		$model		= $this->getModel();
+		$db	= sportsmanagementHelper::getDBConnection();
+		$uri = JFactory::getURI();
+		$user = JFactory::getUser();
+		$model = $this->getModel();
         $starttime = microtime(); 
         
         // get the Data

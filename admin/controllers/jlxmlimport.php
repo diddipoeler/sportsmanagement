@@ -261,11 +261,11 @@ $app->enqueueMessage(JText::_('daten -> '.$europalink.' sind kopiert worden!'),'
         
         if ( $post['importupdate'] )
         {
-            $link='index.php?option=com_sportsmanagement&task=jlxmlimport.update';
+            $link='index.php?option=com_sportsmanagement&task=jlxmlimport.update&project_id='.$projectid;
         }
         else
         {
-            $link='index.php?option=com_sportsmanagement&task=jlxmlimport.edit';
+            $link='index.php?option=com_sportsmanagement&task=jlxmlimport.edit&project_id='.$projectid;
         }    
 		//$link='index.php?option=com_joomleague&task=jlxmlimport.edit';
 		$this->setRedirect($link,$msg);

@@ -81,11 +81,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <img src="components/com_sportsmanagement/assets/images/48-calendar.png" width="50px"height="50px" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_GCALENDARS') ?>" /><br />
 <span><?php echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_GCALENDARS') ?></span>
 </a>
-<a class="btn" href="index.php?option=com_sportsmanagement&view=view=jsmgcalendarimport&layout=login">
+<a class="btn" href="index.php?option=com_sportsmanagement&view=jsmgcalendarimport&layout=login">
 <img src="components/com_sportsmanagement/assets/images/admin/import.png" width="50px"height="50px" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_IMPORT') ?>" /><br />
 <span><?php echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_IMPORT') ?></span>
 </a>
-<a class="btn" href="index.php?option=com_sportsmanagement&view=view=jsmgcalendar&layout=edit">
+<a class="btn" href="index.php?option=com_sportsmanagement&view=jsmgcalendar&layout=edit">
 <img src="components/com_sportsmanagement/assets/images/admin/add.png" width="50px"height="50px" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_ADD') ?>" /><br />
 <span><?php echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_CPANEL_ADD') ?></span>
 </a>

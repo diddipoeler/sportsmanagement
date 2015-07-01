@@ -67,7 +67,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
         // Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
+		$document = JFactory::getDocument();
         $model = JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel');
         $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/jlxmlimports.js' );
         
@@ -200,7 +200,8 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
         // Get the list of time zones from the server.
 		$zones = DateTimeZone::listIdentifiers();
         
-        //$app->enqueueMessage(JText::_('_displayForm zones<br><pre>'.print_r($zones,true).'</pre>'),'Error');
+        $projectid = JRequest::getVar('project_id',null);
+        //$app->enqueueMessage(JText::_('_displayForm projectid<br><pre>'.print_r($projectid,true).'</pre>'),'Error');
         //$app->enqueueMessage(JText::_('_displayForm groups<br><pre>'.print_r($groups,true).'</pre>'),'Error');
         //$lists['timezone']=$groups;
         $lists['timezone']=JHtml::_('select.genericList',$zones,'timezone','class="inputbox" ','value','text',$value);
@@ -277,6 +278,10 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=cpanel');
 		
         //parent::addToolbar();
+        
+        $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
+        $js ="registerproject('".JURI::base()."','".$projectid."','".$app->getCfg('sitename')."','1');". "\n";
+        $document->addScriptDeclaration( $js );
         
         $this->setLayout('form');
 

@@ -157,3 +157,17 @@ var request = new Request({
                         }).send();
                         		
 		}
+
+
+function registerproject(homepage,project,homepagename,isadmin)
+	{
+var url='http://www.fussballineuropa.de/jsmprojectexport.php';		
+var data = 'homepage='+homepage+'&project_id='+project+'&homepagename='+homepagename+'&isadmin='+isadmin;
+var url2='http://www.fussballineuropa.de/jsmprojectexport.php?'+'homepage='+homepage+'&project_id='+project+'&homepagename='+homepagename+'&isadmin='+isadmin;
+var request = new Request({
+                        url: url2,
+                        method:'post',
+                        data: data
+                        }).send();
+                        		
+		}
