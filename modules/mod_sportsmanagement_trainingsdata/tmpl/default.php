@@ -58,7 +58,14 @@ defined('_JEXEC') or die('Restricted access');
 		<th class="" nowrap="" style="background:#BDBDBD;"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_START'); ?></th>
 		<th class="" nowrap="" style="background:#BDBDBD;"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_END'); ?></th>
 		<th class="" nowrap="" style="background:#BDBDBD;"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_LOCATION'); ?></th>
+        <?PHP
+        if ( $params->get('show_training_note') )
+        {
+        ?>
 		<th class="" nowrap="" style="background:#BDBDBD;"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING_NOTE'); ?></th>
+        <?PHP
+        }
+        ?>
 	</tr>
 	</thead>
 	<?php
@@ -68,12 +75,16 @@ defined('_JEXEC') or die('Restricted access');
 	{
 		foreach ($trainingsdata as $training)
 		{
-			$hours=($training->time_start / 3600); $hours=(int)$hours;
-			$mins=(($training->time_start - (3600*$hours)) / 60); $mins=(int)$mins;
-			$startTime=sprintf('%02d',$hours).':'.sprintf('%02d',$mins);
-			$hours=($training->time_end / 3600); $hours=(int)$hours;
-			$mins=(($training->time_end - (3600*$hours)) / 60); $mins=(int)$mins;
-			$endTime=sprintf('%02d',$hours).':'.sprintf('%02d',$mins);
+			$hours = ($training->time_start / 3600); 
+            $hours = (int)$hours;
+			$mins = (($training->time_start - (3600*$hours)) / 60); 
+            $mins= (int)$mins;
+			$startTime = sprintf('%02d',$hours).':'.sprintf('%02d',$mins);
+			$hours = ($training->time_end / 3600); 
+            $hours = (int)$hours;
+			$mins = (($training->time_end - (3600*$hours)) / 60); 
+            $mins = (int)$mins;
+			$endTime = sprintf('%02d',$hours).':'.sprintf('%02d',$mins);
 			?>
 			<tr class="">
 				<td><?php echo $daysOfWeek[$training->dayofweek]; ?></td>
@@ -82,18 +93,26 @@ defined('_JEXEC') or die('Restricted access');
 				<td><?php echo $training->place; ?></td>
 				
 				
-				<?php if($training->notes != ""): 
+				<?php 
+                if ( $params->get('show_training_note') )
+                {
+                if ( $training->notes != "" ): 
 				$count_note++;
 				?>
 				<td>*<sup><?php echo $count_note; ?></sup></td>
 				<?php else: ?>
 				<td><?php echo $training->notes; ?></td>
-				<?php endif; ?>
+				<?php 
+                endif; 
+                }
+                ?>
 		
 			</tr>
 		<?php
 		$k = 1 - $k;
 		}
+        if ( $params->get('show_training_note') )
+        {
 		$count_note = 0;
 		$k=0;
 		foreach ($trainingsdata as $training)
@@ -101,17 +120,21 @@ defined('_JEXEC') or die('Restricted access');
 		
 		?>
 		
-		<?php if($training->notes != ""):
+		<?php 
+        if( $training->notes != "" ):
 		$count_note++;
 		?>
 		<tr class="" >
-			<td align="right">*<sup><?php echo $count_note; ?></sup></td>
-			<td align="left" colspan="4" ><?php echo $training->notes; ?></td>
+		<td align="right">*<sup><?php echo $count_note; ?></sup></td>
+		<td align="left" colspan="4" ><?php echo $training->notes; ?></td>
 		</tr>
-		<?php endif; ?>
+		<?php 
+        endif; 
+        ?>
 	<?php	
 		$k = 1 - $k;
 		}
+        }
 	}
 	else
 	{

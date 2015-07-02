@@ -79,6 +79,17 @@ depends="projects"
 			value_field="projects"
 					label="MOD_SPORTSMANAGEMENT_TRAININGSDATA_TEAM_ID_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_TRAININGSDATA_TEAM_ID_LABEL_DESC" />
+
+<field name="show_training_note" 
+    type="radio" 
+    default="1"
+    class="radio btn-group btn-group-yesno"
+			label="MOD_SPORTSMANAGEMENT_TRAININGSDATA_SHOW_NOTE_LABEL" 
+      description="MOD_SPORTSMANAGEMENT_TRAININGSDATA_SHOW_NOTE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
           	
 			</fieldset>
 			
