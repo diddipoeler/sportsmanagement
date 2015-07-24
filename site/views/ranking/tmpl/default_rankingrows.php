@@ -188,7 +188,7 @@ foreach( $current as $ptid => $team )
         {
 			$pic = $config['show_logo_small_table'];
 
-echo sportsmanagementHelperHtml::getBootstrapModalImage('teamranking'.$team->team->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$team->team->$pic,$team->team->name,'20')		
+echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamranking'.$team->team->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$team->team->$pic,$team->team->name,'20')		
 ?>    
 
 <?PHP        
