@@ -68,8 +68,8 @@ class sportsmanagementControllerPredictionEntry extends JControllerLegacy
         // JInput object
 $jinput = $app->input;
 $option = $jinput->getCmd('option');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($jinput->post,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($jinput->post,true).'</pre>'),'');
         //$post	= JRequest::get('post');
 		// Register Extra tasks
 		//$this->registerTask( 'add',			'display' );
@@ -128,8 +128,8 @@ $option = $jinput->getCmd('option');
 		$link = '';
 		$post = JRequest::get('post');
 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
 
 		$predictionGameID = JRequest::getVar('prediction_id','','post','int');
 		$joomlaUserID = JRequest::getVar('user_id','','post','int');
