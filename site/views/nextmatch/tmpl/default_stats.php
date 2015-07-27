@@ -43,7 +43,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 ?>
 
-<h2><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_H2H'); ?></h2>
+<h4><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_H2H'); ?></h4>
 <table class="table">
 	<thead>
         <tr class="sectiontableheader" align="center">

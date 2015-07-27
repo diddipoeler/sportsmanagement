@@ -147,10 +147,20 @@ class sportsmanagementViewNextMatch extends JViewLegacy
 		{
 			$pageTitle .= ": ".$this->teams[0]->name." ".JText::_( "COM_SPORTSMANAGEMENT_NEXTMATCH_VS" )." ".$this->teams[1]->name;
 		}
+        
 		$document->setTitle( $pageTitle );
-        $view = JRequest::getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+        
+/**
+ *         wir benutzen bootstrap
+ *         $view = JRequest::getVar( "view") ;
+ *         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+ *         $document->addCustomTag($stylelink);
+ */
+        
+        if ( !isset($this->config['table_class']) )
+        {
+            $this->config['table_class'] = 'table';
+        }
 
 		parent::display( $tpl );
 	}

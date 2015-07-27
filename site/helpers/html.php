@@ -72,10 +72,15 @@ class sportsmanagementHelperHtml
     // JInput object
     $jinput = $app->input;    
     
-$modaltext = '<a href="#" title="'.$text.'" data-toggle="modal" data-target=".'.$target.'">';
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' target'.'<pre>'.print_r($target,true).'</pre>' ),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture'.'<pre>'.print_r($picture,true).'</pre>' ),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' text'.'<pre>'.print_r($text,true).'</pre>' ),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picturewidth'.'<pre>'.print_r($picturewidth,true).'</pre>' ),'');
+    
+$modaltext = '<a href="#'.$target.'" title="'.$text.'" data-toggle="modal" data-target=".'.$target.'">';
 $modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';
 $modaltext .= '</a>';
-$modaltext .= '<div id="" style="display: none;" class="modal fade '.$target.'" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">';
+$modaltext .= '<div id="'.$target.'" style="display: none;" class="modal fade '.$target.'" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">';
 $modaltext .= '<div class="modal-dialog modal-sm">';
 $modaltext .= '<div class="modal-content">';
 $modaltext .= '<div class="modal-header">';
@@ -91,6 +96,27 @@ $modaltext .= '</div>';
 $modaltext .= '</div>';
 $modaltext .= '</div>';
 $modaltext .= '</div>';   
+
+/*
+$modaltext = '<!-- Button to trigger modal -->';
+$modaltext .= '<a href="#myModal" role="button" class="btn" data-toggle="modal">Launch demo modal</a>';
+$modaltext .= '<!-- Modal -->';
+$modaltext .= '<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">';
+$modaltext .= '<div class="modal-header">';
+$modaltext .= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>';
+$modaltext .= '<h3 id="myModalLabel">Modal header</h3>';
+$modaltext .= '</div>';
+$modaltext .= '<div class="modal-body">';
+$modaltext .= '<p>One fine body…</p>';
+$modaltext .= '</div>';
+$modaltext .= '<div class="modal-footer">';
+$modaltext .= '<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>';
+$modaltext .= '<button class="btn btn-primary">Save changes</button>';
+$modaltext .= '</div>';
+$modaltext .= '</div>';
+*/
+
+
     
 return $modaltext;    
     

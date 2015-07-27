@@ -62,7 +62,15 @@ class sportsmanagementControllerPredictionEntry extends JControllerLegacy
 	 */
 	function __construct()
 	{
-		//$post	= JRequest::get('post');
+		$option = JRequest::getCmd('option');
+		$app = JFactory::getApplication();
+		$document = JFactory::getDocument();
+        // JInput object
+$jinput = $app->input;
+$option = $jinput->getCmd('option');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($jinput->post,true).'</pre>'),'');
+        //$post	= JRequest::get('post');
 		// Register Extra tasks
 		//$this->registerTask( 'add',			'display' );
 		//$this->registerTask( 'edit',		'display' );
@@ -73,12 +81,15 @@ class sportsmanagementControllerPredictionEntry extends JControllerLegacy
 	}
 	
 
+	
+
 	/**
 	 * sportsmanagementControllerPredictionEntry::display()
 	 * 
+	 * @param bool $cachable
+	 * @param bool $urlparams
 	 * @return void
 	 */
-
 	function display($cachable = false, $urlparams = false)
 	{
 		// Get the view name from the query string
@@ -104,24 +115,25 @@ parent::display($cachable, $urlparams = false);
 	function register()
 	{
 		$option = JRequest::getCmd('option');
-    
 		$app = JFactory::getApplication();
 		$document = JFactory::getDocument();
-    
+    // JInput object
+$jinput = $app->input;
+$option = $jinput->getCmd('option');
     
     
     JRequest::checkToken() or jexit(JText::_('COM_SPORTSMANAGEMENT_PRED_INVALID_TOKEN_REFUSED'));
 		
-    $msg	= '';
-		$link	= '';
-		$post	= JRequest::get('post');
+    $msg = '';
+		$link = '';
+		$post = JRequest::get('post');
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
 
-		$predictionGameID	= JRequest::getVar('prediction_id',	'',	'post',	'int');
-		$joomlaUserID		= JRequest::getVar('user_id',		'',	'post',	'int');
-		$approved			= JRequest::getVar('approved',		0,	'',		'int');
+		$predictionGameID = JRequest::getVar('prediction_id','','post','int');
+		$joomlaUserID = JRequest::getVar('user_id','','post','int');
+		$approved = JRequest::getVar('approved',0,'','int');
 		
 		
 		$model		= $this->getModel('Prediction');

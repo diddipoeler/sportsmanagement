@@ -851,9 +851,31 @@ $xmlfile = $xmlfile.$output;
         $db	= $this->getDbo();
         $query = $db->getQuery(true);
         
-        $query->select('*');
-        $query->from('#__sportsmanagement_project_team');
-        $query->where('project_id = ' . $this->_project_id );
+        $query->select('pt.id,
+        pt.project_id,
+        st.team_id,
+        st.id as season_team_id,
+        pt.start_points,
+        pt.points_finally,
+        pt.neg_points_finally,
+        pt.matches_finally,
+        pt.won_finally,
+  pt.draws_finally,
+  pt.lost_finally,
+  pt.homegoals_finally,
+  pt.guestgoals_finally,
+  pt.diffgoals_finally,
+  pt.is_in_score,
+  pt.use_finally,
+  pt.admin,
+  pt.info,
+  pt.notes,
+  pt.reason,
+  pt.checked_out,
+  pt.checked_out_time');
+        $query->from('#__sportsmanagement_project_team as pt');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st on st.id = pt.team_id');
+        $query->where('pt.project_id = ' . $this->_project_id );
         
 		//$query = "SELECT * FROM #__sportsmanagement_project_team WHERE project_id=$this->_project_id";
 		$db->setQuery($query);
@@ -861,6 +883,25 @@ $xmlfile = $xmlfile.$output;
 		if ($db->getNumRows() > 0)
 		{
 			$result = $db->loadAssocList();
+/*
+            foreach( $result as $row ) 
+            { 
+
+      
+      $query->clear();
+      $query->select('team_id'); 
+      $query->from('#__sportsmanagement_season_team_id');
+      $query->where('id = ' . (int)$row['team_id'] );
+      $db->setQuery($query);
+	  $db->query();
+      $teamresult = $db->loadResult();
+      if( $teamresult )
+      {
+      $row['team_id'] = $teamresult;  
+      }
+       
+ }
+*/  
 			$result[0]['object'] = 'ProjectTeam';
 			$this->_projectteam =& $result;
 			return $result;
@@ -962,7 +1003,7 @@ $xmlfile = $xmlfile.$output;
         $db	= $this->getDbo();
         $query = $db->getQuery(true);
         
-		$team_ids = $this->_getIdFromData('team_id', $this->_projectteam);
+		$team_ids = $this->_getIdFromData('season_team_id', $this->_projectteam);
 
 		if (is_array($team_ids) && count($team_ids) > 0)
 		{

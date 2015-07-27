@@ -228,7 +228,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $query->select('*');
         $query->select("CONCAT_WS(':',id,alias) AS slug");
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game');
-        $query->where('id = '.$db->Quote(self::$predictionGameID));
+        $query->where('id = '.self::$predictionGameID);
         $query->where('published = 1');
         
 				$db->setQuery($query,0,1);
@@ -383,15 +383,15 @@ class sportsmanagementModelPrediction extends JModelLegacy
 		{
 		  // Select some fields
           $query->select('pm.id AS pmID, pm.registerDate AS pmRegisterDate, pm.*');
-          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member AS pm');
+          $query->from('#__sportsmanagement_prediction_member AS pm');
           $query->join('LEFT', '#__users AS u ON u.id = pm.user_id');
-          $query->where('pm.prediction_id = '.$db->Quote(self::$predictionGameID));
+          $query->where('pm.prediction_id = '.self::$predictionGameID);
           
 			if (self::$predictionMemberID > 0)
 			{
 			 $query->select('u.name, u.username');
              $query->select('pg.id as pg_group_id,pg.name as pg_group_name');
-             $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_groups as pg ON pg.id = pm.group_id');
+             $query->join('LEFT', '#__sportsmanagement_prediction_groups as pg ON pg.id = pm.group_id');
              $query->where('pm.id = '.self::$predictionMemberID);
         
 
@@ -414,7 +414,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 				if ($user->id > 0)
 				{
 				    $query->select('u.*');
-                    $query->where('pm.user_id = '.$db->Quote($user->id));
+                    $query->where('pm.user_id = '.$user->id);
 
 					$db->setQuery($query,0,1);
 					self::$_predictionMember = $db->loadObject();
@@ -427,7 +427,8 @@ class sportsmanagementModelPrediction extends JModelLegacy
 					   //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
                        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
                        
-						self::$_predictionMember->id = 0;
+						self::$_predictionMember = new stdclass();
+                        self::$_predictionMember->id = 0;
 						self::$_predictionMember->pmID = 0;
 						self::$predictionMemberID = 0;
 					}
@@ -476,7 +477,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
           $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
           $query->from('#__sportsmanagement_prediction_project AS pp');
           $query->join('LEFT', '#__sportsmanagement_project AS p ON p.id = pp.project_id');
-          $query->where('pp.prediction_id = '.$db->Quote(self::$predictionGameID));
+          $query->where('pp.prediction_id = '.self::$predictionGameID);
           $query->where('pp.published = 1');
 
 				$db->setQuery($query);
@@ -1036,7 +1037,21 @@ class sportsmanagementModelPrediction extends JModelLegacy
         $query->from('#__users AS u');
         $query->where('u.sendEmail = 1');
         $query->where('u.block = 0');
-        $query->where('u.usertype = "Super Administrator"');
+        
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        // Joomla! 3.0 code here
+        $query->join('INNER', '#__user_usergroup_map AS um ON um.user_id = u.id');
+        $query->join('INNER', '#__usergroups AS ug ON ug.id = um.group_id');
+        $query->where('ug.title LIKE '.$db->Quote(''.'Super Benutzer'.'') );
+        }
+        elseif(version_compare(JVERSION,'2.5.0','ge')) 
+        {
+        // Joomla! 2.5 code here
+        $query->where('u.usertype LIKE '.$db->Quote(''.'Super Administrator'.'') );
+        }
+        
+        
         $query->order('u.email');
 
 		$db->setQuery($query);
@@ -1074,7 +1089,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         // Select some fields
         $query->select('u.email');
         $query->from('#__users AS u');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_admin AS pa ON pa.user_id = u.id ');
+        $query->join('INNER', '#__sportsmanagement_prediction_admin AS pa ON pa.user_id = u.id ');
         $query->where('u.block = 0');
         $query->where('u.sendEmail = 1');
         $query->where('pa.prediction_id = '.(int) self::$predictionGameID);

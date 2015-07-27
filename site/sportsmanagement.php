@@ -326,54 +326,12 @@ if(is_null($controller) && !($controller instanceof JControllerLegacy)) {
 	//fallback if no extensions controller has been initialized
 	$controller	= JControllerLegacy::getInstance('sportsmanagement');
 }
-$controller->execute(JRequest::getCmd('task'));
+
+$task = JFactory::getApplication()->input->getCmd('task');
+// Den 'task' der im Request übergeben wurde ausführen
+$controller->execute($task);
+//$controller->execute(JRequest::getCmd('task'));
 $controller->redirect();
-
-/*
-// Require the base controller
-require_once (JPATH_SITE.DS.JSM_PATH.DS.'controller.php');
-
-// Execute the task.
-$controller = JControllerLegacy::getInstance('sportsmanagement');
-$controller->execute( JRequest::getCmd('task'));
-$controller->redirect();
-*/
-
-/*
-// Execute the task.
-$controller = JControllerLegacy::getInstance('sportsmanagement');
-$controller->execute( JRequest::getCmd('task'));
-$controller->redirect();
-*/
-
-/*
-// Require the base controller
-require_once( JPATH_SITE.DS.JSM_PATH.DS.'controller.php' );
-
-// Require specific controller if requested
-if( $controller = JRequest::getWord('controller'))
-{
-   $path = JPATH_SITE.DS.JSM_PATH.DS.'controllers'.DS.$controller.'.php';
-   if( file_exists($path))
-	{
-       require_once $path;
-   } else
-   {
-       $controller = '';
-   }
-}
-
-// Create the controller
-$classname    = 'sportsmanagementController'.$controller;
-$controller   = new $classname( );
-
-// Perform the Request task
-$controller->execute( JRequest::getVar( 'task' ) );
-
-// Redirect if set by the controller
-$controller->redirect();
-*/
-
 
 
 
