@@ -48,6 +48,10 @@ $maxImportTime = 1920;
 if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImportTime);}
 
 /*
+update #__sportsmanagement_project set name = replace(name, 'Kreisligen', 'Kreisliga')";
+*/
+
+/*
 umsetzung der spieler in den paarungen
 
 ########################################################################################

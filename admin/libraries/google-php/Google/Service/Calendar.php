@@ -1115,8 +1115,8 @@ class Google_Service_Calendar_CalendarList_Resource extends Google_Service_Resou
    */
   public function listCalendarList($optParams = array())
   {
-//    $app = JFactory::getApplication();
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' optParams<br><pre>'.print_r($optParams,true).'</pre>'),'Notice');
+    $app = JFactory::getApplication();
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' optParams<br><pre>'.print_r($optParams,true).'</pre>'),'Notice');
     $params = array();
     $params = array_merge($params, $optParams);
     return $this->call('list', array($params), "Google_Service_Calendar_CalendarList");
@@ -2084,6 +2084,8 @@ class Google_Service_Calendar_CalendarList extends Google_Collection
   }
   public function getItems()
   {
+    $app = JFactory::getApplication();
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' items<br><pre>'.print_r($this->items,true).'</pre>'),'Notice');
     return $this->items;
   }
   public function setKind($kind)

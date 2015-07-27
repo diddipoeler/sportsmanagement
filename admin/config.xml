@@ -756,7 +756,7 @@ default=""
 label="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_MAIL_PASSWORD" 
 description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_MAIL_PASSWORD_DESC" />
 
-<field name="google_api_clienid" 
+<field name="google_api_clientid" 
 type="text" 
 size="200" 
 default="" 

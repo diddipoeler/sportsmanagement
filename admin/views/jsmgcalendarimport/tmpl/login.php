@@ -57,12 +57,12 @@ JHtml::_('behavior.tooltip');
                 
                 <div class="control-group">
 					<div class="control-label">
-						<label id="jform_name-lbl" for="google_api_clienid"
+						<label id="jform_name-lbl" for="google_api_clientid"
 							class="hasTip required invalid" title="" aria-invalid="true"><?php echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_LOGIN_AUTH_DEFAULT_FIELD_CLIENTID');?><span
 							class="star">&nbsp;*</span> </label>
 					</div>
 					<div class="controls">
-						<input type="text" name="google_api_clienid" id="google_api_clienid" value="<?PHP  echo JComponentHelper::getParams('com_sportsmanagement')->get('google_api_clienid',''); ?>"
+						<input type="text" name="google_api_clientid" id="google_api_clientid" value="<?PHP  echo JComponentHelper::getParams('com_sportsmanagement')->get('google_api_clientid',''); ?>"
 							class="inputbox required invalid" size="200" aria-required="true"
 							required="required" aria-invalid="true">
 					</div>

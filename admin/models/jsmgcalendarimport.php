@@ -24,7 +24,7 @@ defined('_JEXEC') or die();
 JLoader::import('joomla.application.component.model');
 
 JLoader::import('components.com_sportsmanagement.libraries.google-php.Google.autoload', JPATH_ADMINISTRATOR);
-JLoader::import('components.com_sportsmanagement.libraries.GCalendar.google_calendar', JPATH_ADMINISTRATOR);
+//JLoader::import('components.com_sportsmanagement.libraries.GCalendar.google_calendar', JPATH_ADMINISTRATOR);
 
 JLoader::import('components.com_sportsmanagement.libraries.google-php.Google.Client', JPATH_ADMINISTRATOR);
 JLoader::import('components.com_sportsmanagement.libraries.google-php.Google.Service.Calendar', JPATH_ADMINISTRATOR);
@@ -33,6 +33,7 @@ class sportsmanagementModeljsmgcalendarImport extends JModelLegacy
 {
     
     var $_name = 'sportsmanagement';
+    //var $_name = '';
 
 	public function __construct() 
     {
@@ -43,8 +44,49 @@ class sportsmanagementModeljsmgcalendarImport extends JModelLegacy
 	}
 
     
+     public function importtest()
+	{
+	$app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        
+    $google_api_clientid = $jinput->post->get('google_api_clientid', 0, 'STR');
+        $google_api_clientsecret = $jinput->post->get('google_api_clientsecret', 0, 'STR');    
     
-    
+    $client = self::getClient($google_api_clientid, $google_api_clientsecret);
+			$client->setApprovalPrompt('force');
+            
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' client<br><pre>'.print_r($client,true).'</pre>'),'Notice');
+          
+          $cal = new Google_Service_Calendar($client);
+            
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getAccessToken<br><pre>'.print_r($client->getAccessToken(),true).'</pre>'),'Notice');
+            
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' code<br><pre>'.print_r($_GET['code'],true).'</pre>'),'Notice');
+            
+    if (isset($_GET['code'])) {
+  $client->authenticate($_GET['code']);
+  $_SESSION['token'] = $client->getAccessToken();
+  header('Location: http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF']);
+}
+
+$token = JSession::getFormToken();
+$_SESSION['token'] = $token;
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' token<br><pre>'.print_r($_SESSION['token'],true).'</pre>'),'Notice');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getFormToken<br><pre>'.print_r($token,true).'</pre>'),'Notice');
+
+//if ($_SESSION['token']) {
+//  $client->setAccessToken($_SESSION['token']);
+//}
+
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getAccessToken<br><pre>'.print_r($client->getAccessToken(),true).'</pre>'),'Notice');
+
+//if ($client->getAccessToken()) {
+  $calList = $cal->calendarList->listCalendarList();
+  print "<h1>Calendar List</h1><pre>" . print_r($calList, true) . "</pre>";        
+  //      }
+        
+    }
     
     public function importold()
 	{
@@ -92,7 +134,7 @@ $service = new Google_Service_Calendar($client);
        
     }   
     
-    public function import ()
+    public function import2 ()
 	{
 		$app = JFactory::getApplication();
         // JInput object
@@ -139,7 +181,7 @@ $service = new Google_Service_Calendar($client);
 
 		try
 		{
-			$client = jsmGoogleCalendarHelper::getClient($clientId, $clientSecret);
+			$client = self::getClient($clientId, $clientSecret);
 			$client->setApprovalPrompt('force');
             
             $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' client<br><pre>'.print_r($client,true).'</pre>'),'Notice');
@@ -225,6 +267,167 @@ $service = new Google_Service_Calendar($client);
 						'index.php?option=com_sportsmanagement&view=jsmgcalendarimport&layout=login', 'sportsmanagement'));
 
 		$app->close();
+	}
+    
+    public function import ()
+	{
+		$app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        
+        $google_api_clienid = $jinput->post->get('google_api_clientid', 0, 'STR');
+        $google_api_clientsecret = $jinput->post->get('google_api_clientsecret', 0, 'STR');
+
+		$session = JFactory::getSession(array(
+				'expire' => 30
+		));
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' session<br><pre>'.print_r($session,true).'</pre>'),'Notice');
+
+		// If we are on the callback from google don't save
+		if (! $app->input->get('code'))
+		{
+//			$params = $app->input->get('params', array(
+//					'google_api_clientid' => null,
+//					'google_api_clientsecret' => null
+//			), 'array');
+            
+            $params['google_api_clientid'] = $google_api_clienid;
+            $params['google_api_clientsecret'] = $google_api_clientsecret;
+            
+			$session->set('google_api_clientid', $params['google_api_clientid'], $this->_name);
+			$session->set('google_api_clientsecret', $params['google_api_clientsecret'], $this->_name);
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params <br><pre>'.print_r($params,true).'</pre>'),'Notice');
+		}
+		
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' session google_api_clientid<br><pre>'.print_r($session->get('google_api_clientid', null, $this->_name),true).'</pre>'),'Notice');
+        
+        $clientId = $session->get('google_api_clientid', null, $this->_name);
+		$clientSecret = $session->get('google_api_clientsecret', null, $this->_name);
+
+		if ($app->input->get('code'))
+		{
+			$session->set('google_api_clientid', null, $this->_name);
+			$session->set('google_api_clientsecret', null, $this->_name);
+		}
+        
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _name<br><pre>'.print_r($this->_name,true).'</pre>'),'Notice');
+		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clientId<br><pre>'.print_r($clientId,true).'</pre>'),'Notice');
+		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clientSecret<br><pre>'.print_r($clientSecret,true).'</pre>'),'Notice');
+		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' code<br><pre>'.print_r($app->input->get('code'),true).'</pre>'),'Notice');
+
+		try
+		{
+			$client = self::getClient($clientId, $clientSecret);
+			$client->setApprovalPrompt('force');
+            
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' client<br><pre>'.print_r($client,true).'</pre>'),'Notice');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' code<br><pre>'.print_r($app->input->get('code'),true).'</pre>'),'Notice');
+            
+			if (empty($client))
+			{
+				return;
+			}
+
+			if (! $app->input->get('code'))
+			{
+				$app->redirect($client->createAuthUrl());
+				$app->close();
+			}
+
+			$cal = new Google_Service_Calendar($client);
+            
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cal<br><pre>'.print_r($cal,true).'</pre>'),'Notice');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' code<br><pre>'.print_r($app->input->get('code'),true).'</pre>'),'Notice');
+            
+			$token = $client->authenticate($app->input->get('code', null, null));
+            
+            
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' token<br><pre>'.print_r($token,true).'</pre>'),'Notice');
+            
+			if ($token === true)
+			{
+				die();
+			}
+
+			if ($token)
+			{
+				$client->setAccessToken($token);
+
+				$calendars = $cal->calendarList->listCalendarList();
+                
+                $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' calendars<br><pre>'.print_r($calendars,true).'</pre>'),'Notice');
+
+				$tok = json_decode($token, true);
+				foreach ($calendars['items'] as $cal)
+				{
+					//$model = JModelLegacy::getInstance('Extcalendar', 'DPCalendarModel');
+					$params = new JRegistry();
+					$params->set('refreshToken', $tok['refresh_token']);
+					$params->set('client-id', $clientId);
+					$params->set('client-secret', $clientSecret);
+					$params->set('calendarId', $cal['id']);
+					$params->set('action-create', true);
+					$params->set('action-edit', true);
+					$params->set('action-delete', true);
+
+					$data = array();
+					$data['title'] = $cal['summary'];
+					$data['color'] = $cal['backgroundColor'];
+					$data['params'] = $params->toString();
+					$data['plugin'] = 'google';
+
+//					if (! $model->save($data))
+//					{
+//						$app->enqueueMessage($model->getError(), 'warning');
+//					}
+				}
+			}
+		}
+		catch (Exception $e)
+		{
+			$this->log($e->getMessage());
+		}
+        
+        $app->redirect(
+				JFactory::getSession()->get('extcalendarOrigin',
+						'index.php?option=com_sportsmanagement&view=jsmgcalendarimport&layout=login', 'sportsmanagement'));
+                        
+		$app->close();
+	}
+    
+    
+    function getClient ($clientId, $clientSecret)
+	{
+		//JLoader::import('dpcalendar.dpcalendar_google.libraries.google-php.Google.autoload', JPATH_PLUGINS);
+        //JLoader::import('components.com_sportsmanagement.libraries.google-php.Google.autoload', JPATH_ADMINISTRATOR);
+
+		$client = new Google_Client(
+				array(
+						'ioFileCache_directory' => JFactory::getConfig()->get('tmp_path') . '/plg_dpcalendar_google/Google_Client'
+				));
+		$client->setApplicationName("sportsmanagement");
+		$client->setClientId($clientId);
+		$client->setClientSecret($clientSecret);
+		$client->setScopes(array(
+				'https://www.googleapis.com/auth/calendar'
+		));
+		$client->setAccessType('offline');
+
+		$uri = JFactory::getURI();
+		if (filter_var($uri->getHost(), FILTER_VALIDATE_IP))
+		{
+			$uri->setHost('localhost');
+		}
+		$client->setRedirectUri(
+				$uri->toString(array(
+						'scheme',
+						'host',
+						'port',
+						'path'
+				)) . '?option=com_sportsmanagement&task=jsmgcalendarimport.import');
+
+		return $client;
 	}
     
     public function login() 
