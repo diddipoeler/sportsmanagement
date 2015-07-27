@@ -1507,7 +1507,17 @@ $body .= $this->createHelptText($predictionProject->mode);
 
 					//Set a sender
 					$config = JFactory::getConfig();
-					$sender = array($config->getValue('config.mailfrom'),$config->getValue('config.fromname'));
+                     if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        // Joomla! 3.0 code here
+        $sender = array($config->get('mailfrom'),$config->get('fromname'));
+        }
+        elseif(version_compare(JVERSION,'2.5.0','ge')) 
+        {
+        // Joomla! 2.5 code here
+        $sender = array($config->getValue('config.mailfrom'),$config->getValue('config.fromname'));
+        }
+					
 					$mailer->setSender($sender);
 
 					//set Member as recipient
