@@ -251,7 +251,16 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 		}
 		else
 		{
-			return $db->loadResultArray();
+			if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Joomla! 3.0 code here
+		return $db->loadColumn();
+}
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
+		return $db->loadResultArray();
+}
 		}
 	}
 

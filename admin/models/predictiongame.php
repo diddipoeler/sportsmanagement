@@ -253,66 +253,20 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
         $query->where('prediction_id = ' . $prediction_id);
 
 		$db->setQuery($query);
+        
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Joomla! 3.0 code here
+		return $db->loadColumn();
+}
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
 		return $db->loadResultArray();
+}
+
 	}
 
-//	/**
-//	 * sportsmanagementModelPredictionGame::getPredictionProject()
-//	 * 
-//	 * @return
-//	 */
-//	function getPredictionProject()
-//	{
-//		$pred_project_id = JRequest::getVar('prediction_project');
-//		$query = '	SELECT	pro.*,
-//							joo.name AS project_name
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_project AS pro
-//					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS joo ON joo.id = pro.project_id
-//					WHERE pro.id=' . (int) $pred_project_id;
-//		$this->_db->setQuery($query);
-//		if (!$result = $this->_db->loadObject())
-//		{
-//			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-//			return false;
-//		}
-//		else
-//		{
-//			return $result;
-//		}
-//	}
-
-
-
-
-
-
-//  function getProjectTeams($project_id)
-//  {
-//  $query = "	SELECT	pt.id ,
-//							t.name
-//
-//					FROM #__joomleague_project_team as pt
-//					inner join #__joomleague_team as t
-//          on pt.team_id = t.id
-//          where pt.project_id = $project_id
-//          ORDER by t.name
-//          ";
-//
-//		$this->_db->setQuery($query);
-//
-//		if (!$result = $this->_db->loadObjectList())
-//		{
-//			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-//			return false;
-//		}
-//		else
-//		{
-//			return $result;
-//		}
-//  
-//  }
-  
-	
 
 	/**
 	 * sportsmanagementModelPredictionGame::storePredictionAdmins()
