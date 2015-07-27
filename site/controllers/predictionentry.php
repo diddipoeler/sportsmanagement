@@ -78,6 +78,7 @@ class sportsmanagementControllerPredictionEntry extends JControllerLegacy
 	 * 
 	 * @return void
 	 */
+/*
 	function display( )
 	{
 		// Get the view name from the query string
@@ -92,6 +93,7 @@ class sportsmanagementControllerPredictionEntry extends JControllerLegacy
 		$this->showbackbutton();
 		$this->showfooter();
 	}
+*/
 
 	/**
 	 * sportsmanagementControllerPredictionEntry::register()
