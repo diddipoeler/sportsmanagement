@@ -78,8 +78,8 @@ class sportsmanagementControllerPredictionEntry extends JControllerLegacy
 	 * 
 	 * @return void
 	 */
-/*
-	function display( )
+
+	function display($cachable = false, $urlparams = false)
 	{
 		// Get the view name from the query string
 		//$viewName = JRequest::getVar( 'view', 'editmatch' );
@@ -89,11 +89,12 @@ class sportsmanagementControllerPredictionEntry extends JControllerLegacy
 		// Get the view
 		//$view =& $this->getView( $viewName );
 
-		$this->showprojectheading();
-		$this->showbackbutton();
-		$this->showfooter();
+//		$this->showprojectheading();
+//		$this->showbackbutton();
+//		$this->showfooter();
+parent::display($cachable, $urlparams = false);
 	}
-*/
+
 
 	/**
 	 * sportsmanagementControllerPredictionEntry::register()
