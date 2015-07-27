@@ -111,7 +111,7 @@ if($close == 1) {
 					<tr>
 						<th width="5" ><?php echo count($this->items).'/'.$this->pagination->total; ?></th>
 						<th width="20" >
-							<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->items); ?>);" />
+							<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 						</th>
                         <th class="title" nowrap="nowrap" ><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_GLOBAL_NAME'); ?></th>
 						
