@@ -39,6 +39,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+//echo 'config <pre>'.print_r($this->config ,true).'</pre>';
+//echo 'params <pre>'.print_r($this->params ,true).'</pre>';
+
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews', 'results', 'ranking');
@@ -67,8 +70,18 @@ $this->kmlfile = $this->project->id.'-ranking.kml';
   // aufbau der templates
   $this->output = array();
   
-  $this->output['COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE'] = 'ranking';
+  if ( $this->params->get('what_to_show_first', 0) == 0 )
+  {
   $this->output['COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS'] = 'results';
+  $this->output['COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE'] = 'ranking';
+  }
+  else
+  {
+  $this->output['COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE'] = 'ranking';
+  $this->output['COM_SPORTSMANAGEMENT_RESULTS_ROUND_RESULTS'] = 'results';  
+  }
+  
+  
   
 echo $this->loadTemplate('show_tabs');
    
@@ -78,16 +91,16 @@ echo $this->loadTemplate('show_tabs');
 			echo $this->loadTemplate('colorlegend');
 		}
 		
-		if ($this->config['show_explanation']==1)
+		if ( $this->config['show_explanation'] )
 		{
 			echo $this->loadTemplate('explanation');
 		}
-        if (($this->config['show_ranking_maps'])==1)
+        if ( $this->config['show_ranking_maps'] )
 	{ 
 		echo $this->loadTemplate('googlemap');
 	}   
     	
-	if ($this->config['show_pagnav']==1)
+	if ( $this->config['show_pagnav'] )
 	{
 		echo $this->loadTemplate('pagnav');
 	}

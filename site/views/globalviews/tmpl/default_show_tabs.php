@@ -48,33 +48,90 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 // Joomla! 3.0 code here
-$idxTab = 1;
+$idxTab = 0;
 $view = Jrequest::getCmd('view');
-			
+
+
+?>
+
+<!-- This is a list with tabs names. -->
+<div class="panel with-nav-tabs panel-default">
+<div class="panel-heading">
+<!-- Tabs-Navs -->
+<?PHP			
 foreach ($this->output as $key => $templ) 
 {
-
+$active = ($idxTab==0) ? 'active' : '';   
 switch ($view)
 {
-    case 'player':
- $template = $templ['template'];
+case 'player':
+$template = $templ['template'];
 $text = $templ['text'];   
-    break;
+break;
 default:
 $template = $templ;
 $text = $key;
 break;
 }    
-    
-if ( $idxTab == 1 )
+
+?>
+<ul class="nav nav-tabs" role="tablist">
+<li role="presentation" class="<?PHP echo $active; ?>"><a href="#<?PHP echo $text; ?>" role="tab" data-toggle="tab"><?PHP echo JText::_($text); ?></a>
+</li>
+<?PHP
+$idxTab++;
+}
+?>
+</ul>
+</div>
+
+<!-- Tab-Inhalte -->
+<div class="panel-body">
+<div class="tab-content">
+
+<?PHP	
+$idxTab = 0;		
+foreach ($this->output as $key => $templ) 
 {
-echo JHtml::_('bootstrap.startTabSet', $view, array('active'=>'panel'.$idxTab));
-}
-echo JHtml::_('bootstrap.addTab', $view, 'panel'.$idxTab++, JText::_($text));
+$active = ($idxTab==0) ? 'in active' : '';   
+switch ($view)
+{
+case 'player':
+$template = $templ['template'];
+$text = $templ['text'];   
+break;
+default:
+$template = $templ;
+$text = $key;
+break;
+}    
+
+?>
+<div role="tabpanel" class="tab-pane fade <?PHP echo $active; ?>" id="<?PHP echo $text; ?>">
+<?PHP   
 echo $this->loadTemplate($template);
-echo JHtml::_('bootstrap.endTab');
+?>
+</div>
+<?PHP
+$idxTab++;
 }
-echo JHtml::_('bootstrap.endTabSet');
+?>
+</div>
+</div>
+</div>
+
+<?PHP   
+
+
+//if ( $idxTab == 1 )
+//{
+//echo JHtml::_('bootstrap.startTabSet', $view, array('active'=>'panel'.$idxTab));
+//}
+//echo JHtml::_('bootstrap.addTab', $view, 'panel'.$idxTab++, JText::_($text));
+//echo $this->loadTemplate($template);
+//echo JHtml::_('bootstrap.endTab');
+//}
+//echo JHtml::_('bootstrap.endTabSet');
         
 }
 elseif(version_compare(JVERSION,'2.5.0','ge')) 
@@ -173,3 +230,4 @@ else
 // Joomla! 1.5 code here
 }
 ?>
+</div>
