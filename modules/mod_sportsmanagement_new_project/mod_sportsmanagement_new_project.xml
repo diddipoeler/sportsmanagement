@@ -22,6 +22,8 @@
 		
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_new_project.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_new_project.sys.ini</language>
+    <language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_new_project.ini</language>
+		<language tag="en-GB">language/de-GB/en-GB.mod_sportsmanagement_new_project.sys.ini</language>
 		
 	</languages>
 <config>
