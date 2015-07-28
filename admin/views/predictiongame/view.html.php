@@ -61,9 +61,9 @@ class sportsmanagementViewPredictionGame extends sportsmanagementView
 	{
 		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
-		$uri 	= JFactory::getURI();
-		$user 	= JFactory::getUser();
-		$model	= $this->getModel();
+		$uri = JFactory::getURI();
+		$user = JFactory::getUser();
+		$model = $this->getModel();
       
         
         // get the Data
@@ -74,7 +74,10 @@ class sportsmanagementViewPredictionGame extends sportsmanagementView
         $pred_admins = sportsmanagementModelPredictionGames::getAdmins($item->id);
 		$pred_projects = $model->getPredictionProjectIDs($item->id);
  
-		// Check for errors.
+		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pred_admins<br><pre>'.print_r($pred_admins,true).'</pre>'),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pred_projects<br><pre>'.print_r($pred_projects,true).'</pre>'),'');
+        
+        // Check for errors.
 		if (count($errors = $this->get('Errors'))) 
 		{
 			JError::raiseError(500, implode('<br />', $errors));

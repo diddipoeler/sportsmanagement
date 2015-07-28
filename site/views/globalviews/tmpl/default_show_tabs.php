@@ -121,17 +121,6 @@ $idxTab++;
 </div>
 
 <?PHP   
-
-
-//if ( $idxTab == 1 )
-//{
-//echo JHtml::_('bootstrap.startTabSet', $view, array('active'=>'panel'.$idxTab));
-//}
-//echo JHtml::_('bootstrap.addTab', $view, 'panel'.$idxTab++, JText::_($text));
-//echo $this->loadTemplate($template);
-//echo JHtml::_('bootstrap.endTab');
-//}
-//echo JHtml::_('bootstrap.endTabSet');
         
 }
 elseif(version_compare(JVERSION,'2.5.0','ge')) 

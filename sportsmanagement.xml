@@ -99,13 +99,18 @@
 			-->
 			<menu view="clubs" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
 				alt="COM_SPORTSMANAGEMENT_D_MENU_CLUBS">COM_SPORTSMANAGEMENT_D_MENU_CLUBS</menu>
-				<menu view="teams" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
-				alt="COM_SPORTSMANAGEMENT_D_MENU_CLUBS">COM_SPORTSMANAGEMENT_D_MENU_TEAMS</menu>
-				<menu view="persons" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
-				alt="COM_SPORTSMANAGEMENT_D_MENU_CLUBS">COM_SPORTSMANAGEMENT_D_MENU_PERSONS</menu>
-				<menu view="playgrounds" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
-				alt="COM_SPORTSMANAGEMENT_D_MENU_CLUBS">COM_SPORTSMANAGEMENT_D_MENU_VENUES</menu>
 				
+        <menu view="teams" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
+				alt="COM_SPORTSMANAGEMENT_D_MENU_CLUBS">COM_SPORTSMANAGEMENT_D_MENU_TEAMS</menu>
+				
+        <menu view="persons" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
+				alt="COM_SPORTSMANAGEMENT_D_MENU_CLUBS">COM_SPORTSMANAGEMENT_D_MENU_PERSONS</menu>
+				
+        <menu view="playgrounds" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
+				alt="COM_SPORTSMANAGEMENT_D_MENU_CLUBS">COM_SPORTSMANAGEMENT_D_MENU_VENUES</menu>
+		
+    <menu view="jsmgooglecalendar" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
+				alt="COM_SPORTSMANAGEMENT_D_MENU_CLUBS">COM_SPORTSMANAGEMENT_D_GOOGLE_CALENDAR</menu>		
 		
 		</submenu>
 		
@@ -172,6 +177,9 @@
 <module module="mod_sportsmanagement_clubicons" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_matches" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_matchesslider" client="site"  position="" published=""/>
+
+<module module="mod_sportsmanagement_new_project" client="site"  position="" published=""/>
+
 <module module="mod_sportsmanagement_playgroundplan" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_playground_ticker" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_randomplayer" client="site"  position="" published=""/>
