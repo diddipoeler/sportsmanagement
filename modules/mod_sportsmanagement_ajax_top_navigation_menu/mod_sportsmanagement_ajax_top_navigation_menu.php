@@ -50,7 +50,21 @@ if ( !defined('JSM_PATH') )
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
+// prüft vor Benutzung ob die gewünschte Klasse definiert ist
+if ( !class_exists('sportsmanagementHelper') ) 
+{
+//add the classes for handling
+$classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
+JLoader::register('sportsmanagementHelper', $classpath);
+JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+}
+
 require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'route.php');
+
+// Reference global application object
+$app = JFactory::getApplication();
+// JInput object
+$jinput = $app->input;
 
 $mainframe = JFactory::getApplication();
 // sprachdatei aus dem backend laden
@@ -70,10 +84,10 @@ $database_table	= $paramscomponent->get( 'cfg_which_database_table' );
 $show_debug_info = $paramscomponent->get( 'show_debug_info' );  
 $show_query_debug_info = $paramscomponent->get( 'show_query_debug_info' ); 
 
-if ( !defined('COM_SPORTSMANAGEMENT_TABLE') )
-{
-DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
-}
+//if ( !defined('COM_SPORTSMANAGEMENT_TABLE') )
+//{
+//DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$database_table );
+//}
 if ( !defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO') )
 {
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
@@ -131,8 +145,10 @@ $tab_points[] = $row->name;
 $tab_points[] = 'NON';
 
 
-$ajax = JRequest::getVar('ajaxCalMod',0,'default','POST');
-$ajaxmod = JRequest::getVar('ajaxmodid',0,'default','POST');
+$ajax = $jinput->post->get('ajaxCalMod', 0, 'INT');
+$ajaxmod = $jinput->post->get('ajaxmodid', 0, 'INT');
+//$ajax = JRequest::getVar('ajaxCalMod',0,'default','POST');
+//$ajaxmod = JRequest::getVar('ajaxmodid',0,'default','POST');
 
 $document = JFactory::getDocument();
 
@@ -151,7 +167,8 @@ $team_id = 0;
 $country_id  = ''; 
 $lightbox = '';
 
-if ( $queryvalues && ( isset($_POST['reload_View']) || !$_POST )  )
+//if ( $queryvalues && ( isset($_POST['reload_View']) || !$_POST )  )
+if ( $queryvalues && ( !$_POST )  )
 {
     
 $ende_if = false;
@@ -215,7 +232,8 @@ $ende_if = true;
  
 }
 
-if ( $_POST && !isset($_POST['reload_View']) )
+//if ( $_POST && !isset($_POST['reload_View']) )
+if ( $_POST  )
 {
 
 //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' queryvalues<br><pre>'.print_r($queryvalues,true).'</pre>'),'');
@@ -227,25 +245,34 @@ $division_id = 0;
     
 //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _POST<br><pre>'.print_r($_POST,true).'</pre>'),'');
 
-$project_id  = JRequest::getVar('jlamtopproject',0,'default','POST');
+$project_id = $jinput->post->get('jlamtopproject', 0, 'INT');
+//$project_id  = JRequest::getVar('jlamtopproject',0,'default','POST');
 
 if ( empty($project_id) )
 {
-$project_id = JRequest::getInt( "p", 0 );    
+//$project_id = JRequest::getInt( "p", 0 );
+$project_id = $jinput->request->get('p', 0, 'INT');    
 }    
 
 //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
   
 
+$assoc_id = $jinput->post->get('jlamtopassocid', 0, 'INT');
+$subassoc_id = $jinput->post->get('jlamtopsubassocid', 0, 'INT');
+$subsubassoc_id = $jinput->post->get('jlamtopsubsubassocid', 0, 'INT');
+$country_id = $jinput->post->get('jlamtopcountry', '', 'STR');
+$season_id = $jinput->post->get('jlamtopseason', 0, 'INT');
+$league_id = $jinput->post->get('jlamtopleague', 0, 'INT');
+$team_id = $jinput->post->get('jlamtopteam', 0, 'INT');
 
-$assoc_id  = JRequest::getVar('jlamtopassocid',0,'default','POST');
-$subassoc_id  = JRequest::getVar('jlamtopsubassocid',0,'default','POST');
-$subsubassoc_id  = JRequest::getVar('jlamtopsubsubassocid',0,'default','POST');
-$country_id  = JRequest::getVar('jlamtopcountry',0,'default','POST');
-$season_id  = JRequest::getVar('jlamtopseason',0,'default','POST');
-$league_id  = JRequest::getVar('jlamtopleague',0,'default','POST');
-//$project_id  = JRequest::getVar('jlamtopproject',0,'default','POST');
-$team_id  = JRequest::getVar('jlamtopteam',0,'default','POST');
+//$assoc_id  = JRequest::getVar('jlamtopassocid',0,'default','POST');
+//$subassoc_id  = JRequest::getVar('jlamtopsubassocid',0,'default','POST');
+//$subsubassoc_id  = JRequest::getVar('jlamtopsubsubassocid',0,'default','POST');
+//$country_id  = JRequest::getVar('jlamtopcountry',0,'default','POST');
+//$season_id  = JRequest::getVar('jlamtopseason',0,'default','POST');
+//$league_id  = JRequest::getVar('jlamtopleague',0,'default','POST');
+//$team_id  = JRequest::getVar('jlamtopteam',0,'default','POST');
+
 $helper->setProject( $project_id, $team_id, $division_id  );
 }
 
@@ -264,7 +291,6 @@ JHTML::_('behavior.modal');
 if ( $params->get('show_favteams_nav_links') )
 {
 $favteams  = $helper->getFavTeams($project_id);
-
 }
 
 foreach( $points as $row )
@@ -335,13 +361,18 @@ $document->addScriptDeclaration(';
       ');
       
 if (!defined('JLTOPAM_MODULESCRIPTLOADED')) {
-	$document->addScript( JURI::base().'modules/mod_sportsmanagement_ajax_top_navigation_menu/js/mod_sportsmanagement_ajax_top_navigation_menu.js' );
+	$document->addScript( JURI::base().'modules/'.$module->module.'/js/'.$module->module.'.js' );
 	$document->addScriptDeclaration(';
     var ajaxmenu_baseurl=\''. JURI::base() . '\';
       ');
-	$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_ajax_top_navigation_menu/css/mod_sportsmanagement_ajax_top_navigation_menu.css');
-	$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_ajax_top_navigation_menu/css/mod_sportsmanagement_ajax_top_navigation_tabs_sliders.css');
+	$document->addStyleSheet(JURI::base().'modules/'.$module->module.'/css/'.$module->module.'.css');
+	$document->addStyleSheet(JURI::base().'modules/'.$module->module.'/css/mod_sportsmanagement_ajax_top_navigation_tabs_sliders.css');
 	define('JLTOPAM_MODULESCRIPTLOADED', 1);
 }
 
-require(JModuleHelper::getLayoutPath('mod_sportsmanagement_ajax_top_navigation_menu'));
+?>           
+<div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
+<?PHP
+require(JModuleHelper::getLayoutPath($module->module));
+?>
+</div>

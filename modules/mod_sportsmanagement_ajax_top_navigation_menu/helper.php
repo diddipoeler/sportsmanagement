@@ -69,7 +69,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
     var $_club_slug = '';
 	var $_division_slug = '';
 	
-	var $_project_id;
+	static $_project_id;
   var $_league_id;
 	var $_team_id;
 	static $_country_fed = array();
@@ -110,19 +110,19 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 //        $projectid = JRequest::getInt('p',0);
 //        if ( $projectid )
 //        {
-//        $this->_project_id = $projectid ;
+//        self::$_project_id = $projectid ;
 //        }
         
-    if ( $this->_project_id )
+    if ( self::$_project_id )
 		{
 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'Notice');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project_id<br><pre>'.print_r(self::$_project_id,true).'</pre>'),'Notice');
 
-//JRequest::setVar( 'jlamtopcountry', $this->getProjectCountry($this->_project_id) );
+//JRequest::setVar( 'jlamtopcountry', $this->getProjectCountry(self::$_project_id) );
 
     JRequest::setVar( 'jlamtopseason', $this->getSeasonId() );
     JRequest::setVar( 'jlamtopleague', $this->getLeagueId() );
-    JRequest::setVar( 'jlamtopproject', $this->_project_id );
+    JRequest::setVar( 'jlamtopproject', self::$_project_id );
     JRequest::setVar( 'jlamtopteam', $this->_team_id );
     JRequest::setVar( 'jlamtopdivisionid', $this->_division_id );
     }
@@ -141,11 +141,11 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project_id<br><pre>'.pr
   public function getFederations()
 {
     $app = JFactory::getApplication();
-        $db = JFactory::getDbo(); 
+        $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         
         $query->select('name,id');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_federations');
+        $query->from('#__sportsmanagement_federations');
         $db->setQuery($query);
         
         self::$query_getFederations = $query->dump();
@@ -167,11 +167,11 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project_id<br><pre>'.pr
   public function getCountrySubSubAssocSelect($assoc_id)
 {
 $app = JFactory::getApplication();
-        $db = JFactory::getDbo(); 
+        $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
 
         $query->select('s.id AS value, s.name AS text');
-$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations AS s');
+$query->from('#__sportsmanagement_associations AS s');
 $query->where('s.parent_id = '.$assoc_id);
 $query->order('s.name');
 
@@ -201,11 +201,11 @@ $query->order('s.name');
 public function getCountrySubAssocSelect($assoc_id)
 {
 $app = JFactory::getApplication();
-        $db = JFactory::getDbo(); 
+        $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         
         $query->select('s.id AS value, s.name AS text');
-$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations AS s');
+$query->from('#__sportsmanagement_associations AS s');
 $query->where('s.parent_id = '.$assoc_id);
 $query->order('s.name');
 
@@ -237,7 +237,7 @@ $app = JFactory::getApplication();
         $query = $db->getQuery(true);
         
         $query->select('s.id AS value, s.name AS text');
-$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations AS s');
+$query->from('#__sportsmanagement_associations AS s');
 $query->where('s.country = \''.$country.'\'');
 $query->where('s.parent_id = 0');
 $query->order('s.name');
@@ -273,14 +273,14 @@ $query->order('s.name');
     $fedtext = $federation;
 
 $query->select('s.alpha3 AS value, s.name AS text');
-$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries AS s');
-$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON l.country = s.alpha3 ');
+$query->from('#__sportsmanagement_countries AS s');
+$query->join('INNER','#__sportsmanagement_league AS l ON l.country = s.alpha3 ');
 $query->where('s.federation = '.$federationid);
 $query->group('s.name');
 $query->order('s.name DESC');
 $db->setQuery($query);
 
-$this->getFederationSelect = $query->dump();
+self::$query_getFederationSelect = $query->dump();
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 
 $res = $db->loadObjectList();
@@ -321,12 +321,13 @@ if ($res)
 	public function getCountryFederation($country_id)
 	{
 	   $app = JFactory::getApplication();
+       $result = FALSE;
        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' country_id<br><pre>'.print_r($country_id,true).'</pre>'),'Notice');
        if ( $country_id )
        {
-       self::$_country_fed[$country_id]; 
+       $result = self::$_country_fed[$country_id]; 
        }
-  return true;
+  return $result;
   }
 	
   /**
@@ -426,7 +427,7 @@ if ($res)
             case 'l':
             $project = $this->getProject($name_value[1]);
             //$project = $this->getProjectSelect($name_value[1]);
-            $varAdd_array['p'] = $this->_project_id;
+            $varAdd_array['p'] = self::$_project_id;
             break;
             default:
             $varAdd_array[$name_value[0]] = $name_value[1];
@@ -532,14 +533,14 @@ if ($res)
 	 */
 	public function setProject($project_id,$team_id,$division_id)
 	{
-	$this->_project_id 		= $project_id;
+	self::$_project_id 		= $project_id;
 	//$this->_division_id = $division_id;
 	$this->_team_id 		= $team_id;
 	$this->_project 		= $this->getProject();
 	$this->_round_id   		= $this->getCurrentRoundId();
   JRequest::setVar( 'jlamtopseason', $this->getSeasonId() );
   JRequest::setVar( 'jlamtopleague', $this->getLeagueId() );
-  JRequest::setVar( 'jlamtopproject', $this->_project_id );
+  JRequest::setVar( 'jlamtopproject', self::$_project_id );
   JRequest::setVar( 'jlamtopteam', $this->_team_id );
   //JRequest::setVar( 'jlamdivisionid', $this->_division_id );
 	}
@@ -633,7 +634,7 @@ return $user->username ;
        if ( $assoc_id )
        { 
         $query->select('parent_id');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations ');
+            $query->from('#__sportsmanagement_associations ');
             $query->where('id = '. $assoc_id );
 
 		$db->setQuery($query);
@@ -665,13 +666,13 @@ return $user->username ;
 	public function getLeagueAssocId()
 	{
 	   $app = JFactory::getApplication();
-        $db = JFactory::getDbo(); 
+        $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
     
     if ( $this->_league_id )
     {    
         $query->select('associations');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league ');
+            $query->from('#__sportsmanagement_league ');
             $query->where('id = '. $this->_league_id );
                 
 		$db->setQuery($query);
@@ -730,14 +731,14 @@ return $user->username ;
   public function getClubId()
 	{
 	   $app = JFactory::getApplication();
-        $db = JFactory::getDbo(); 
+        $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         
         $query->select('t.club_id');
         $query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
         $query->select('CONCAT_WS(\':\',c.id,c.alias) AS club_slug');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club c ON t.club_id = c.id ');
+            $query->from('#__sportsmanagement_team as t');
+            $query->join('INNER','#__sportsmanagement_club c ON t.club_id = c.id ');
             $query->where('t.id = '. $this->_team_id );
             
                 
@@ -772,11 +773,11 @@ return $user->username ;
 	public function getFavTeams($project_id)
 	{
   $app = JFactory::getApplication();
-        $db = JFactory::getDbo(); 
+        $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         
         $query->select('fav_team');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
+            $query->from('#__sportsmanagement_project');
             $query->where('id = '. $project_id );
 
 		$db->setQuery($query);
@@ -791,7 +792,7 @@ return $user->username ;
 		{
 		  $query->clear();
           $query->select('t.id as team_id, t.name, t.club_id');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t');
+            $query->from('#__sportsmanagement_team as t');
             $query->where('t.id in ('. $teams . ')' );
    	
 				$db->setQuery($query);
@@ -820,13 +821,13 @@ return $user->username ;
 	public function getTeamId($project_id,$club_id)
 	{
 	   $app = JFactory::getApplication();
-        $db = JFactory::getDbo(); 
+        $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         
         $query->select('pt.team_id');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt.team_id ');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st.team_id');
+            $query->from('#__sportsmanagement_project_team AS pt');
+            $query->join('INNER','#__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
+            $query->join('INNER','#__sportsmanagement_team AS t ON t.id = st.team_id');
             
             $query->where('pt.project_id = '.intval($project_id));
             $query->where('t.club_id = '.$club_id);
@@ -861,13 +862,13 @@ return $user->username ;
 	public function getSeasonSelect()
 	{
 	   $app = JFactory::getApplication();
-        $db = JFactory::getDbo(); 
+        $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         
 		$options = array(JHTML::_('select.option', 0, JText::_($this->getParam('seasons_text'))));
         
         $query->select('s.id AS value, s.name AS text');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s');
+            $query->from('#__sportsmanagement_season AS s');
             $query->order('s.name DESC');
 
                 
@@ -891,7 +892,7 @@ return $user->username ;
 	public function getDivisionSelect($project_id)
 	{		
 	   $app = JFactory::getApplication();
-        $db = JFactory::getDbo(); 
+        $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
 $options = array();
 
@@ -919,13 +920,13 @@ $options = array();
 	public function getAssocLeagueSelect($country_id,$associd)
 	{		
 $app = JFactory::getApplication();
-        $db = JFactory::getDbo(); 
+        $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         
         $query->select('l.id AS value, l.name AS text');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p on l.id = p.league_id');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s on s.id = p.season_id ');
+            $query->from('#__sportsmanagement_league AS l');
+            $query->join('INNER','#__sportsmanagement_project AS p on l.id = p.league_id');
+            $query->join('INNER','#__sportsmanagement_season AS s on s.id = p.season_id ');
             $query->where('l.associations = ' . $associd );
             $query->where('l.country = \'' . $country_id. '\'' );
             $query->group('l.name');
@@ -966,11 +967,11 @@ order by l.name
     public function getProjectCountry($project_id)
     {
         $app = JFactory::getApplication();
-        $db = JFactory::getDbo(); 
+        $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         $query->select('l.country');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p on l.id = p.league_id');
+            $query->from('#__sportsmanagement_league AS l');
+            $query->join('INNER','#__sportsmanagement_project AS p on l.id = p.league_id');
             $query->where('p.id = ' . $project_id );
 
 		$db->setQuery($query);
@@ -999,13 +1000,13 @@ order by l.name
 	public function getLeagueSelect($season)
 	{		
 	   $app = JFactory::getApplication();
-        $db = JFactory::getDbo(); 
+        $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         
         $query->select('l.id AS value, l.name AS text');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p on l.id = p.league_id');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s on s.id = p.season_id ');
+            $query->from('#__sportsmanagement_league AS l');
+            $query->join('INNER','#__sportsmanagement_project AS p on l.id = p.league_id');
+            $query->join('INNER','#__sportsmanagement_season AS s on s.id = p.season_id ');
             $query->where('s.id = ' . $season );
             $query->group('l.name');
             $query->order('l.name');
@@ -1034,13 +1035,13 @@ order by l.name
 	public function getProjectSelect($league_id)
 	{
 $app = JFactory::getApplication();
-        $db = JFactory::getDbo(); 
+        $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         
         $query->select('p.id AS value, p.name AS text');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s on s.id = p.season_id ');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l on l.id = p.league_id');
+            $query->from('#__sportsmanagement_project AS p');
+            $query->join('INNER','#__sportsmanagement_season AS s on s.id = p.season_id ');
+            $query->join('INNER','#__sportsmanagement_league AS l on l.id = p.league_id');
             $query->where('p.published = 1');
             $query->where('p.league_id = '. $league_id);
             $query->order('s.name DESC');
@@ -1114,7 +1115,7 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
 	 */
 	public function getTeamSelect($project_id)
 	{
-//		if (!$this->_project_id) {
+//		if (!self::$_project_id) {
 //			return false;
 //		}
 //		$options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_teams_dropdown'))));
@@ -1136,16 +1137,16 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
 	protected function getTeamsOptions($project_id)
 	{
 	   $app = JFactory::getApplication();
-        $db = JFactory::getDbo(); 
+        $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         
 		if (empty($this->_teamoptions))
 		{
 
 			$query->select('t.id AS value, t.name AS text');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt.team_id ');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st.team_id');
+            $query->from('#__sportsmanagement_project_team AS pt');
+            $query->join('INNER','#__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
+            $query->join('INNER','#__sportsmanagement_team AS t ON t.id = st.team_id');
             
             $query->where('pt.project_id = '.intval($project_id));
             $query->order('t.name ASC');
@@ -1173,15 +1174,15 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
 	public function getProject($league_id = 0)
 	{
 	   $app = JFactory::getApplication();
-        $db = JFactory::getDbo(); 
+        $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project<br><pre>'.print_r($this->_project,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project_id<br><pre>'.print_r(self::$_project_id,true).'</pre>'),'Notice');
         
 		if (!$this->_project)
 		{
-			if (!$this->_project_id && !$league_id ) 
+			if (!self::$_project_id && !$league_id ) 
             {
 				return false;
 			}
@@ -1193,14 +1194,14 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
             $query->select('CONCAT_WS(\':\',r.id,r.alias) AS round_slug');
             $query->select('p.season_id, p.league_id, p.current_round');
             
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p');
-          $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s on s.id = p.season_id');
+            $query->from('#__sportsmanagement_project AS p');
+          $query->join('INNER','#__sportsmanagement_season AS s on s.id = p.season_id');
             
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l on l.id = p.league_id');
-            //$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r on p.id = r.project_id ');
-            $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r on p.current_round = r.id ');
+            $query->join('INNER','#__sportsmanagement_league AS l on l.id = p.league_id');
+            //$query->join('INNER','#__sportsmanagement_round AS r on p.id = r.project_id ');
+            $query->join('LEFT','#__sportsmanagement_round AS r on p.current_round = r.id ');
             
-//          $query->where('p.id = ' . $this->_project_id);
+//          $query->where('p.id = ' . self::$_project_id);
          
          if ( $league_id )
          {
@@ -1208,14 +1209,14 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
          }
          else
          {
-            $query->where('p.id = ' . $this->_project_id);
+            $query->where('p.id = ' . self::$_project_id);
          }
 			$db->setQuery($query);
             
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
             
 			$this->_project = $db->loadObject();
-            $this->_project_id = $this->_project->id;
+            self::$_project_id = $this->_project->id;
 			$this->_project_slug = $this->_project->project_slug;
         $this->_saeson_slug = $this->_project->saeson_slug;
         $this->_league_slug = $this->_project->league_slug;
@@ -1242,35 +1243,35 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
 				
 			case "roster":
 				
-				$link = sportsmanagementHelperRoute::getPlayersRoute( $this->_project_id, $team_id );
+				$link = sportsmanagementHelperRoute::getPlayersRoute( self::$_project_id, $team_id );
 				break;
 				
 				
 			case "teaminfo":
 				
-				$link = sportsmanagementHelperRoute::getTeamInfoRoute( $this->_project_id, $team_id );
+				$link = sportsmanagementHelperRoute::getTeamInfoRoute( self::$_project_id, $team_id );
 				break;				
 				
 			case "teamplan":
 				
-				$link = sportsmanagementHelperRoute::getTeamPlanRoute( $this->_project_id, $team_id, $this->_division_id );
+				$link = sportsmanagementHelperRoute::getTeamPlanRoute( self::$_project_id, $team_id, $this->_division_id );
 				break;		
 				
 			case "clubinfo":
 				
 				$this->getClubId();
-				$link = sportsmanagementHelperRoute::getClubInfoRoute( $this->_project_id, $club_id );
+				$link = sportsmanagementHelperRoute::getClubInfoRoute( self::$_project_id, $club_id );
 				break;
       case "clubplan":
 				
 				$this->getClubId();
-				$link = sportsmanagementHelperRoute::getClubPlanRoute( $this->_project_id, $club_id );
+				$link = sportsmanagementHelperRoute::getClubPlanRoute( self::$_project_id, $club_id );
 				break;	
       
         	
 			case "teamstats":
 				
-				$link = sportsmanagementHelperRoute::getTeamStatsRoute( $this->_project_id, $team_id );
+				$link = sportsmanagementHelperRoute::getTeamStatsRoute( self::$_project_id, $team_id );
 				break;
 				
 			
@@ -1289,13 +1290,13 @@ $options = array(JHTML::_('select.option', 0, JText::_($this->getParam('text_pro
 	 */
 	public function getLink($view)
 	{
-		if (!$this->_project_id) {
+		if (!self::$_project_id) {
 			return false;
 		}
 		
 // echo 'getLink <br>';
 // echo 'round_id ->'.$this->_round_id.'<br>';
-// echo 'project_id ->'.$this->_project_id.'<br>';
+// echo 'project_id ->'.self::$_project_id.'<br>';
 // echo 'division_id ->'.$this->_division_id.'<br>';
 // echo 'team_id ->'.$this->_team_id.'<br>';		
 		

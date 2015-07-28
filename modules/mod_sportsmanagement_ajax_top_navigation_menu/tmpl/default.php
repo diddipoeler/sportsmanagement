@@ -152,6 +152,36 @@ echo 'getLeagueSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenu
 <img style="float: left;" src="images/com_sportsmanagement/database/laender_karten/dfs_kl_<?php echo strtolower($value)?>.gif" alt="<?php echo $value?>" width="144" height="" />
 
 <?PHP
+
+/*
+echo 'value => '.$value.'<br>';
+echo 'fed_array => '.$fed_array.'<br>';
+
+
+echo 'jlamtopcountry / country_id => '.$country_id.'<br>';
+echo 'country_federation => '.$country_federation.'<br>';
+
+echo '_country_fed => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$_country_fed, true).'</pre><br>';
+
+echo 'query_getFederations => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getFederations, true).'</pre><br>';
+echo 'query_getFederationSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getFederationSelect, true).'</pre><br>';
+
+
+echo 'jlamtopassocid => '.$assoc_id.'<br>';
+echo 'jlamtopsubassocid => '.$subassoc_id.'<br>';
+echo 'jlamtopsubsubassocid => '.$subsubassoc_id.'<br>';
+
+
+echo 'jlamtopseason => '.$season_id.'<br>';
+echo 'jlamtopleague => '.$league_id.'<br>';
+echo 'jlamtopproject => '.$project_id.'<br>';
+echo 'jlamtopteam => '.$team_id.'<br>';
+
+echo __METHOD__.' '.__LINE__.' leagueselect<br><pre>'.print_r($leagueselect,true).'</pre>';
+echo __METHOD__.' '.__LINE__.' POST<br><pre>'.print_r($_POST,true).'</pre>';
+echo __METHOD__.' '.__LINE__.' queryvalues<br><pre>'.print_r($queryvalues,true).'</pre>';
+*/
+
 if ( $country_id )
 {
 ?>

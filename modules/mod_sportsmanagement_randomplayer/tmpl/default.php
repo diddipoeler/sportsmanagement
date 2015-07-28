@@ -50,7 +50,7 @@ if (!$items) {
 <div class="col-md-10 blogShort">
 <?php if ($params->get('show_project_name')):?>
 
-<h1><?php echo $list['project']->name; ?></h1>
+<h4><?php echo $list['project']->name; ?></h4>
 
 <?php endif; ?> <?php
 $person = $list['player'];
