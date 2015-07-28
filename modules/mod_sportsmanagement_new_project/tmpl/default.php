@@ -5,7 +5,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 $list = modJSMNewProjectHelper::getData();
-JHTML::_( 'behavior.mootools' ); 
+//JHTML::_( 'behavior.mootools' ); 
 jimport('joomla.html.pane');
 
 

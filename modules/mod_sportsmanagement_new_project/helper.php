@@ -14,7 +14,7 @@ class modJSMNewProjectHelper
 	function getData()
 	{
 		//global $mainframe;
-    $db = &JFactory::getDBO();
+    $db = JFactory::getDBO();
     
     
 $heutestart = date("Y-m-d");		
