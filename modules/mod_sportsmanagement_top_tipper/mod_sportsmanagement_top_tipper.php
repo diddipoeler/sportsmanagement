@@ -58,7 +58,8 @@ JLoader::register('sportsmanagementHelper', $classpath);
 JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
-require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php');  
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php');
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'predictionroute.php');    
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'predictionranking.php');
 
 // get helper
