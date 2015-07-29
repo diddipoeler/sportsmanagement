@@ -49,7 +49,15 @@ if ( !defined('JSM_PATH') )
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
-require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');  
+// prüft vor Benutzung ob die gewünschte Klasse definiert ist
+if ( !class_exists('sportsmanagementHelper') ) 
+{
+//add the classes for handling
+$classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
+JLoader::register('sportsmanagementHelper', $classpath);
+JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+}
+
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php');  
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'predictionranking.php');
 
@@ -95,7 +103,7 @@ $config['show_debug_modus'] = $params->get('show_debug_modus');
 /**
  * das model laden
  */
-$modelpg = JModel::getInstance('PredictionRanking', 'sportsmanagementModel');
+$modelpg = JModelLegacy::getInstance('PredictionRanking', 'sportsmanagementModel');
 
 sportsmanagementModelPrediction::$predictionGameID = $pg_id;
 /**
@@ -112,10 +120,10 @@ $actJoomlaUser[] = JFactory::getUser();
 $roundID = $modelpg->roundID;
 
 $type_array = array();
-$type_array[]=JHTML ::_('select.option','0',JText::_('JL_PRED_RANK_FULL_RANKING'));
-$type_array[]=JHTML ::_('select.option','1',JText::_('JL_PRED_RANK_FIRST_HALF'));
-$type_array[]=JHTML ::_('select.option','2',JText::_('JL_PRED_RANK_SECOND_HALF'));
-$lists['type']=$type_array;
+$type_array[] = JHTML ::_('select.option','0',JText::_('JL_PRED_RANK_FULL_RANKING'));
+$type_array[] = JHTML ::_('select.option','1',JText::_('JL_PRED_RANK_FIRST_HALF'));
+$type_array[] = JHTML ::_('select.option','2',JText::_('JL_PRED_RANK_SECOND_HALF'));
+$lists['type'] = $type_array;
 unset($type_array);
 		
 

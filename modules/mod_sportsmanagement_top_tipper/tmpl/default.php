@@ -113,7 +113,17 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 if ( $config['show_tip_link_ranking_round'] )
 		        {
 							echo '&nbsp;&nbsp;';
-							$link = sportsmanagementHelperRoute::getResultsRoute($predictionProject->project_id,$roundID);
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $predictionProject->project_id;
+$routeparameter['r'] = $roundID;
+$routeparameter['division'] = 0;
+$routeparameter['mode'] = 0;
+$routeparameter['order'] = '';
+$routeparameter['layout'] = '';
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);                            
+							//$link = sportsmanagementHelperRoute::getResultsRoute($predictionProject->project_id,$roundID);
 							$imgTitle=JText::_('JL_PRED_ROUND_RESULTS_TITLE');
 							$desc = JHTML::image('media/com_sportsmanagement/jl_images/icon-16-Matchdays.png',$imgTitle,array('border' => 0,'title' => $imgTitle));
 							//echo JHTML::link($link,$desc,array('target' => '_blank'));
