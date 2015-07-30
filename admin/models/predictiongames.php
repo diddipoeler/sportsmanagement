@@ -1,4 +1,4 @@
-<?php
+f<?php
 /** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
@@ -136,7 +136,7 @@ class sportsmanagementModelPredictionGames extends JModelList
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $query->select(array('pre.*', 'u.name AS editor,u1.username'))
-        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game AS pre')
+        ->from('#__sportsmanagement_prediction_game AS pre')
         ->join('LEFT', '#__users AS u ON u.id = pre.checked_out')
         ->join('LEFT', '#__users AS u1 ON u1.id = pre.modified_by');
 
@@ -192,11 +192,13 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 			$what = 'pro.project_id';
 		}
         
+        if ( !is_array($pred_id) )
+        {
         // Select some fields
         $query->select($what);
         $query->select('joo.name as project_name');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_project AS pro ');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS joo ON joo.id = pro.project_id');
+        $query->from('#__sportsmanagement_prediction_project AS pro ');
+        $query->join('LEFT', '#__sportsmanagement_project AS joo ON joo.id = pro.project_id');
         $query->where('pro.prediction_id = ' . $pred_id);
         $query->where('pro.project_id != 0');
         
@@ -210,9 +212,24 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         
 		if ( $all )
 		{
-			return $db->loadResultArray();
+     if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Joomla! 3.0 code here
+		$records = $db->loadColumn();
+}
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
+		$records = $db->loadResultArray();
+}
+			return $records;
 		}
 		return $db->loadAssocList( 'id' );
+        }
+        else
+        {
+            return false;
+        }
 	}
 
 	/**
@@ -222,7 +239,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	 * @param bool $list
 	 * @return
 	 */
-	static function getAdmins( $pred_id, $list = false )
+	static function getAdmins( $pred_id = 0, $list = false )
 	{
 	   // Reference global application object
         $app = JFactory::getApplication();
@@ -239,9 +256,11 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 			$as_what = ' AS value';
 		}
         
+        if ( $pred_id )
+        {
         // Select some fields
         $query->select('user_id' . $as_what);
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_admin ');
+        $query->from('#__sportsmanagement_prediction_admin ');
         $query->where('prediction_id = ' . $pred_id);
 
 		$db->setQuery( $query );
@@ -262,6 +281,13 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 		return $db->loadResultArray();
 }
 		}
+        
+        }
+        else
+		{
+			return false;
+		}
+        
 	}
 
 	/**
@@ -284,7 +310,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         
         // Select some fields
         $query->select('id AS value, name AS text');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game ');
+        $query->from('#__sportsmanagement_prediction_game ');
         $query->order('name');
 
 		$db->setQuery( $query );

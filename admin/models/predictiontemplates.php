@@ -251,7 +251,16 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 //					WHERE prediction_id = ' . (int) $prediction_id;
 
 		$db->setQuery($query);
+		if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Joomla! 3.0 code here
+		$records = $db->loadColumn();
+}
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
 		$records = $db->loadResultArray();
+}
 		if (empty($records))
         {
             $records = array();

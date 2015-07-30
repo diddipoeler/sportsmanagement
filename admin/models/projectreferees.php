@@ -302,6 +302,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
 	{
 	   // Reference global application object
         $app = JFactory::getApplication();
+        $db = sportsmanagementHelper::getDBConnection();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -325,8 +326,20 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
 //				WHERE r.project_id='.JFactory::getDbo()->Quote($this->_project_id).'
 //						AND pt.published = 1';
                         
-		JFactory::getDbo()->setQuery($query);
-		$current = JFactory::getDbo()->loadResultArray();
+		$db->setQuery($query);
+    
+    if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Joomla! 3.0 code here
+		$current = $db->loadColumn();
+}
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
+		$current = $db->loadResultArray();
+}
+
+//		$current = JFactory::getDbo()->loadResultArray();
 		$added=0;
 		foreach ($cid AS $pid)
 		{

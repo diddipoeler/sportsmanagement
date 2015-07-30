@@ -270,7 +270,18 @@ $prefix.'joomleague_' => ''
             $jsmtable = str_replace(array_keys($convert), array_values($convert), $value->name  );
             $query = "SHOW TABLES LIKE '%".$jsmtable."%'";
 		    $db->setQuery($query);
-            $result = $db->loadResultArray();
+        
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Joomla! 3.0 code here
+		$result = $db->loadColumn();
+}
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
+		$result = $db->loadResultArray();
+}
+//            $result = $db->loadResultArray();
             
             if ( $result )
             {
@@ -362,12 +373,24 @@ $prefix.'joomleague_' => ''
     function getJoomleagueTables()
     {
         $app = JFactory::getApplication();
-        $query = JFactory::getDbo()->getQuery(true);
+        $db = sportsmanagementHelper::getDBConnection();
+        $query = $db->getQuery(true);
         //$db = JFactory::getDbo();  
         $option = JRequest::getCmd('option');
         $query = "SHOW TABLES LIKE '%_joomleague%'";
 		JFactory::getDbo()->setQuery($query);
-        $result = JFactory::getDbo()->loadResultArray();
+    
+    if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Joomla! 3.0 code here
+		$result = $db->loadColumn();
+}
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
+		$result = $db->loadResultArray();
+}
+//        $result = JFactory::getDbo()->loadResultArray();
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($result,true).'</pre>'),'');
         
@@ -381,7 +404,7 @@ $prefix.'joomleague_' => ''
                 $temp->import = 0;
                 $temp->import_data = 0;
                 // Insert the object into the table.
-                $result = JFactory::getDbo()->insertObject('#__sportsmanagement_jl_tables', $temp);
+                $result = $db->insertObject('#__sportsmanagement_jl_tables', $temp);
                 if ( $result )
                 {
 

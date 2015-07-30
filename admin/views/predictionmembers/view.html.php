@@ -216,13 +216,13 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
 										);
 		unset( $res );
        
-       $this->prediction_id = $this->state->get('filter.prediction_id');
+       //$this->prediction_id = $this->state->get('filter.prediction_id');
 
         
         $this->assign('user',JFactory::getUser());
 		$this->assignRef('lists',$lists);
-        $this->assignRef( 'pagination',		$pagination );
-        $this->assignRef( 'items',			$items );
+        $this->assignRef('pagination',$pagination );
+        $this->assignRef('items',$items );
         $this->assign('request_url',$uri->toString());
         
         

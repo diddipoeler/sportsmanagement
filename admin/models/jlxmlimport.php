@@ -3374,7 +3374,18 @@ $this->dump_variable("import_team", $import_team);
 		$query='SELECT template FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config WHERE project_id='.(int)$project_id;
 
 		JFactory::getDbo()->setQuery($query);
-		$records = JFactory::getDbo()->loadResultArray();
+    
+     if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Joomla! 3.0 code here
+		$records = $db->loadColumn();
+}
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
+		$records = $db->loadResultArray();
+}
+		//$records = JFactory::getDbo()->loadResultArray();
 		if (empty($records))
         {
             $records = array();

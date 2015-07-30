@@ -239,7 +239,18 @@ class sportsmanagementModeltemplate extends JModelAdmin
 		$query1->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config');
         $query1->where('project_id = '.$project_id);
         $db->setQuery($query1);
+
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Joomla! 3.0 code here
+		$current = $db->loadColumn();
+}
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
 		$current = $db->loadResultArray();
+}
+
         if ( $current )
         {
         $current = implode("','",$current);

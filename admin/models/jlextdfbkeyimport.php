@@ -247,12 +247,26 @@ $country = $this->_db->loadResult();
 	{
 	   $option = JRequest::getCmd('option');
 		$app = JFactory::getApplication ();
+    $db = sportsmanagementHelper::getDBConnection();
+    
   $query = 'select *
   from #__'.COM_SPORTSMANAGEMENT_TABLE.'_round
   where project_id = ' . (int) $projectid . '';
 	
 	$this->_db->setQuery( $query );
-	$result = $this->_db->loadResultArray();
+  
+   if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Joomla! 3.0 code here
+		$result = $db->loadColumn();
+}
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
+		$result = $db->loadResultArray();
+}
+
+	//$result = $this->_db->loadResultArray();
 	
 	$rounds = implode(",",$result);
 	$query = 'select count(*)

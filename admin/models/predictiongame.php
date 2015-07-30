@@ -240,16 +240,19 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 	* @return  array
 	* @since 0.1
 	*/
-	function getPredictionProjectIDs($prediction_id)
+	function getPredictionProjectIDs($prediction_id=0)
 	{
 	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
+        
+        if ( $prediction_id )
+        {
         // Select some fields
         $query->select('project_id');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_project');
+        $query->from('#__sportsmanagement_prediction_project');
         $query->where('prediction_id = ' . $prediction_id);
 
 		$db->setQuery($query);
@@ -263,6 +266,12 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 {
 // Joomla! 2.5 code here
 		return $db->loadResultArray();
+}
+
+}
+else
+{
+    return false;
 }
 
 	}
@@ -618,7 +627,18 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         $query->where('pp.prediction_id = ' . (int) $predictonID);
 
 			$db->setQuery($query);
-			if ($predictionProjectIDList = $db->loadResultArray())
+      if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Joomla! 3.0 code here
+		$result = $db->loadColumn();
+}
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
+		$result = $db->loadResultArray();
+}
+
+			if ($predictionProjectIDList = $result )
 			{
 				foreach ($predictionProjectIDList AS $predictionProjectID)
 				{

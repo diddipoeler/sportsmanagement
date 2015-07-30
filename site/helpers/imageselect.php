@@ -185,7 +185,7 @@ static $_foldertype = '';
 		//check if the imagefiletype is valid
 		$fileext	= JFile::getExt($file['name']);
 
-		$allowable	= array ( 'gif', 'jpg','jpeg', 'png','GIF', 'JPG','JPEG', 'PNG' );
+		$allowable	= array ( 'gif', 'jpg','jpeg', 'png','bmp','GIF', 'JPG','JPEG', 'PNG', 'BMP' );
 		if ( !in_array( $fileext, $allowable ) )
 		{
 			JError::raiseWarning( 100, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_ERROR1' ) . ': ' . htmlspecialchars( $file['name'], ENT_COMPAT, 'UTF-8' ) );

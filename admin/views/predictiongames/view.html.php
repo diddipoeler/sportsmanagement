@@ -119,13 +119,12 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		if ( $res = $model->getPredictionGames() )
         { 
             $predictions = array_merge( $predictions, $res );
+            $this->assignRef('prediction_id',$res);
             }
 		$lists['predictions'] = JHtml::_(	'select.genericlist',
 											$predictions,
 											'prediction_id',
-											//'class="inputbox validate-select-required" ',
 											'class="inputbox" onChange="this.form.submit();" ',
-											//'class="inputbox" onChange="this.form.submit();" style="width:200px"',
 											'value',
 											'text',
 											$this->prediction_id
@@ -133,16 +132,16 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		unset( $res );
 
 
-		$this->assign( 'user',			JFactory::getUser() );
-		$this->assignRef( 'lists',			$lists );
-        $this->assignRef( 'option',			$option );
-		$this->assignRef( 'items',			$items );
-		$this->assignRef( 'dPredictionID',	$this->prediction_id );
-		$this->assignRef( 'pagination',		$pagination );
+		$this->assign('user',JFactory::getUser() );
+		$this->assignRef('lists',$lists );
+        $this->assignRef('option',$option );
+		$this->assignRef('items',$items );
+		$this->assignRef('dPredictionID',$this->prediction_id );
+		$this->assignRef('pagination',$pagination );
 		
 		if ( $this->prediction_id > 0 )
 		{
-			$this->assign( 'predictionProjects',	$this->getModel()->getChilds( $this->prediction_id ) );
+			$this->assign('predictionProjects',$this->getModel()->getChilds( $this->prediction_id ) );
 		}
 
     

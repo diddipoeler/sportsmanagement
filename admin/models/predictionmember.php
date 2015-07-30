@@ -276,7 +276,7 @@ if ( $send !== true ) {
 	{
 	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-        
+        $db = sportsmanagementHelper::getDBConnection();
 		$query =	'	SELECT u.email
 						FROM #__users AS u
 						WHERE	u.sendEmail = 1 AND
@@ -285,7 +285,17 @@ if ( $send !== true ) {
 						ORDER BY u.email';
 //echo $query . '<br />';
 		$this->_db->setQuery( $query );
-		return $this->_db->loadResultArray();
+    if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Joomla! 3.0 code here
+		$records = $db->loadColumn();
+}
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
+		$records = $db->loadResultArray();
+}
+		return $records;
 	}
 
 	/**
@@ -298,6 +308,7 @@ if ( $send !== true ) {
 	{
 	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
+        $db = sportsmanagementHelper::getDBConnection();
         
 		$query =	'	SELECT u.email
 						FROM #__users AS u
@@ -308,7 +319,19 @@ if ( $send !== true ) {
 						ORDER BY u.email';
 //echo $query . '<br />';
 		$this->_db->setQuery( $query );
-		return $this->_db->loadResultArray();
+    
+     if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Joomla! 3.0 code here
+		$records = $db->loadColumn();
+}
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
+		$records = $db->loadResultArray();
+}
+
+		return $records;
 	}
 
 	/**
@@ -321,13 +344,14 @@ if ( $send !== true ) {
 	{
 	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
+        $db = sportsmanagementHelper::getDBConnection();
         
 		//echo '<br /><pre>~' . print_r( $cids, true ) . '~</pre><br />';
 		$query =	'	SELECT user_id
 						FROM #__sportsmanagement_prediction_member
 						WHERE	id IN (' . $cids . ')';
 		//echo $query . '<br />';
-		$this->_db->setQuery( $query );
+		$db->setQuery( $query );
 		if ( !$cids = $this->_db->loadResultArray() ) { return false; }
 		//echo '<br /><pre>~' . print_r( $cids, true ) . '~</pre><br />';
 
@@ -340,8 +364,20 @@ if ( $send !== true ) {
 								u.id IN (' . $cids . ')
 						ORDER BY u.email';
 		//echo $query . '<br />';
-		$this->_db->setQuery( $query );
-		return $this->_db->loadResultArray();
+		$db->setQuery( $query );
+    
+     if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Joomla! 3.0 code here
+		$records = $db->loadColumn();
+}
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
+		$records = $db->loadResultArray();
+}
+
+		return $records;
 	}
 
 	/**
@@ -594,6 +630,7 @@ if ( $send !== true ) {
 	{
 	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
+    $db = sportsmanagementHelper::getDBConnection();
         
 		if (count($cid))
 		{
@@ -601,10 +638,21 @@ if ( $send !== true ) {
 			$cids = implode(',',$cid);
 			$query = 'SELECT user_id FROM #__sportsmanagement_prediction_member WHERE id IN (' . $cids . ') AND prediction_id = ' . $prediction_id;
 			//echo $query . '<br />';
-			$this->_db->setQuery($query);
-			$this->_db->query();
+			$db->setQuery($query);
+			$db->query();
 
-			if (!$result = $this->_db->loadResultArray())
+       if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Joomla! 3.0 code here
+		$records = $db->loadColumn();
+}
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
+		$records = $db->loadResultArray();
+}
+
+			if (!$result = $records)
 			{
 				return true;
 			}

@@ -271,13 +271,24 @@ class sportsmanagementModelPredictionMembers extends JModelList
         
 	$db->setQuery($query);
     
-    if ( $predresult = $db->loadResultArray() )
+    if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Joomla! 3.0 code here
+		$records = $db->loadColumn();
+}
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
+		$records = $db->loadResultArray();
+}
+
+    if ( $predresult = $records )
     {
         // Select some fields
         $query->clear();
         $query->select('id AS value, name AS text');
         $query->from('#__users ');
-        $query->where('id not in (' . implode(",", $this->_db->loadResultArray() ) .')');
+        $query->where('id not in (' . implode(",", $records ) .')');
         $query->order('name');
         
 
