@@ -92,6 +92,9 @@ static function getRandomRquote($category,$num_of_random, &$params)
         $db = sportsmanagementHelper::getDBConnection();    
         } 
 		
+        if ( isset($category) )
+        {
+            
         if(is_array($category)) // get $catid when one category is selected 	
 		{
 			$x = count($category);
@@ -145,6 +148,7 @@ static function getRandomRquote($category,$num_of_random, &$params)
 //echo get_class($this).' '.__FUNCTION__.' category<pre>'.print_r($category,true).'</pre><br>';		
 //echo get_class($this).' '.__FUNCTION__.' row<pre>'.print_r($row,true).'</pre><br>';
 		
+}
 
 		return $row;
 		
