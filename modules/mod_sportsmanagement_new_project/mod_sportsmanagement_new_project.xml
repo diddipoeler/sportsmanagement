@@ -31,6 +31,17 @@
 			<fieldset 	name="basic"
 						addfieldpath="/administrator/components/com_sportsmanagement/elements">  
 
+     <field name="new_project_article" 
+    type="radio" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="MOD_SPORTSMANAGEMENT_NEW_PROJECT_ARTICLE" 
+      description="MOD_SPORTSMANAGEMENT_NEW_PROJECT_ARTICLE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+    <field name="mycategory" type="category" extension="com_content" label="MOD_SPORTSMANAGEMENT_NEW_PROJECT_CATEGORY" description="MOD_SPORTSMANAGEMENT_NEW_PROJECT_CATEGORY_DESC" />
 		<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />	
 
     </fieldset>

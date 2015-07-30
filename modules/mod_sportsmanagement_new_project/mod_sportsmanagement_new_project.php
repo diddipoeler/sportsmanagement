@@ -93,6 +93,10 @@ require_once (dirname(__FILE__).DS.'helper.php');
 
 $document = JFactory::getDocument();
 
+$new_project_article   = $params->get( 'new_project_article', 0 );
+$mycategory      = $params->get( 'mycategory', 0 );
+
+$list = modJSMNewProjectHelper::getData($new_project_article,$mycategory);
 
 //add css file
 //$document->addStyleSheet(JURI::base().'modules/mod_sportsmanagement_new_project/css/mod_sportsmanagement_new_project.css');
