@@ -122,6 +122,7 @@ $counter=0;
 //echo 'refresh -> '.$refresh.'<br>';
 //echo 'minute -> '.$minute.'<br>';
 
+$layout = isset($attribs['layout'])?$attribs['layout']:'default';
 
 if(count($clubs) > 0) 
 {
@@ -154,7 +155,7 @@ $document->addScriptDeclaration( $javascript );
 */    
 
 //$attribs = array('layout'=>'default');;
-$layout = isset($attribs['layout'])?$attribs['layout']:'default';
+//$layout = isset($attribs['layout'])?$attribs['layout']:'default';
     
 	switch ($mode)
 	{
