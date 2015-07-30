@@ -204,7 +204,7 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
 		if ( $res = $mdlPredGames->getPredictionGames() ) 
         { 
             $predictions = array_merge( $predictions, $res ); 
-            $this->assignRef('prediction_id',$res);
+            $this->assignRef('prediction_ids',$res);
             }
 		$lists['predictions'] = JHtml::_(	'select.genericlist',
 											$predictions,

@@ -90,7 +90,8 @@ class sportsmanagementViewPredictionGames extends sportsmanagementView
     
 		$lists = array();
 
-        $this->prediction_id = $jinput->getVar('prediction_id', 0);
+        //$this->prediction_id = $jinput->getVar('prediction_id', 0);
+        $this->prediction_id = $jinput->post->get('filter_prediction_id', 0);
         //$this->prediction_id	= $app->getUserStateFromRequest( $option .'.'.$model->_identifier, 'prediction_id', '0' );
         //$app->enqueueMessage(JText::_('sportsmanagementViewPredictionGames prediction_id<br><pre>'.print_r($this->prediction_id,true).'</pre>'),'Notice');
 
@@ -119,15 +120,15 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		if ( $res = $model->getPredictionGames() )
         { 
             $predictions = array_merge( $predictions, $res );
-            $this->assignRef('prediction_id',$res);
+            $this->assignRef('prediction_ids',$res);
             }
 		$lists['predictions'] = JHtml::_(	'select.genericlist',
 											$predictions,
-											'prediction_id',
+											'filter_prediction_id',
 											'class="inputbox" onChange="this.form.submit();" ',
 											'value',
 											'text',
-											$this->prediction_id
+											$this->state->get('filter.prediction_id')
 										);
 		unset( $res );
 

@@ -105,17 +105,19 @@ class sportsmanagementModelPredictionTemplates extends JModelList
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.state', $published);
         
-        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.prediction_id_select', 'filter_prediction_id_select', '');
-		
+        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.prediction_id', 'filter_prediction_id', '');
+		$this->setState('filter.prediction_id', $temp_user_request);
         
-        if (is_numeric($temp_user_request) )
-		{
-		  $this->setState('filter.prediction_id_select', $temp_user_request);
-		}
-        else
-        {
-            $this->setState('filter.prediction_id_select', $app->getUserState( "$option.predid", '0' ));
-        }  
+//        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.prediction_id_select', 'filter_prediction_id_select', '');
+//        
+//        if (is_numeric($temp_user_request) )
+//		{
+//		  $this->setState('filter.prediction_id_select', $temp_user_request);
+//		}
+//        else
+//        {
+//            $this->setState('filter.prediction_id_select', $app->getUserState( "$option.predid", '0' ));
+//        }  
 
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
@@ -147,23 +149,23 @@ class sportsmanagementModelPredictionTemplates extends JModelList
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
-        $search	= $this->getState('filter.search');
-        $prediction_id	= $this->getState('filter.prediction_id_select');
+        //$search	= $this->getState('filter.search');
+        //$prediction_id	= $this->getState('filter.prediction_id');
 
         $query->select(array('tmpl.*', 'u.name AS editor','u1.username'))
         ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_template AS tmpl')
         ->join('LEFT', '#__users AS u ON u.id = tmpl.checked_out')
         ->join('LEFT', '#__users AS u1 ON u1.id = tmpl.modified_by');
         
-        if (is_numeric($prediction_id) )
+        if (is_numeric($this->getState('filter.prediction_id')) )
 		{
 		$app->setUserState( "$option.predid", $prediction_id );  
-		$query->where('tmpl.prediction_id = ' . $prediction_id);	
+		$query->where('tmpl.prediction_id = ' . $this->getState('filter.prediction_id'));	
 		}
         else
         {
-            $prediction_id	= $app->getUserState( "$option.predid", '0' );
-            $query->where('tmpl.prediction_id = ' . $prediction_id);
+            //$prediction_id	= $app->getUserState( "$option.predid", '0' );
+            $query->where('tmpl.prediction_id = ' . $this->getState('filter.prediction_id'));
         }
 
 

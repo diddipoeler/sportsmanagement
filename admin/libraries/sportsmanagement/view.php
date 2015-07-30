@@ -257,12 +257,12 @@ class sportsmanagementView extends JViewLegacy
 		);
         }
         
-        if ( isset($this->prediction_id) )
+        if ( isset($this->prediction_ids) )
         {
         JHtmlSidebar::addFilter(
 			JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME'),
 			'filter_prediction_id',
-			JHtml::_('select.options', $this->prediction_id, 'value', 'text', $this->state->get('filter.prediction_id'), true)
+			JHtml::_('select.options', $this->prediction_ids, 'value', 'text', $this->state->get('filter.prediction_id'), true)
 		);
         }
         

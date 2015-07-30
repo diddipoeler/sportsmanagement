@@ -79,13 +79,14 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
         
 		//$this->prediction_id	= $app->getUserState( "$option.prediction_id", '0' );
         
-        $this->prediction_id = $this->state->get('filter.prediction_id_select');
+        $this->prediction_id = $this->state->get('filter.prediction_id');
         if ( isset($this->prediction_id) )
         {
         }
         else
         {
-            $this->prediction_id = $app->getUserState( "$option.predid", '0' );
+            //$this->prediction_id = $app->getUserState( "$option.predid", '0' );
+            $this->prediction_id = $jinput->post->get('filter_prediction_id', 0);
         }   
          
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prediction_id -> '.$this->prediction_id.''),'Notice');
@@ -112,7 +113,8 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
         }
         else
         {
-            $this->prediction_id = $app->getUserState( "$option.predid", '0' );
+            //$this->prediction_id = $app->getUserState( "$option.predid", '0' );
+            $this->prediction_id = $jinput->post->get('filter_prediction_id', 0);
         }
         
         $items = $this->get('Items');
@@ -138,30 +140,30 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 		if ( $res = $mdlPredictionGames->getPredictionGames() ) 
         { 
             $predictions = array_merge( $predictions, $res ); 
-            $this->assignRef('prediction_id_select',$res);
+            $this->assignRef('prediction_ids',$res);
             }
             //$this->prediction_id = 0;
 
           
 		$lists['predictions'] = JHtml::_(	'select.genericlist',
 											$predictions,
-											'filter_prediction_id_select',
+											'filter_prediction_id',
 											'class="inputbox" onChange="this.form.submit();" ',
 											'value',
 											'text',
-											$this->state->get('filter.prediction_id_select')
+											$this->state->get('filter.prediction_id')
 										);
 
                                         
 		unset( $res );
 
         
-        $this->assign( 'user',			JFactory::getUser() );
-		$this->assignRef( 'pred_id',		$this->prediction_id );
-		$this->assignRef( 'lists',			$lists );
-		$this->assignRef( 'items',			$items );
-		$this->assignRef( 'pagination',		$pagination );
-		$this->assignRef( 'predictiongame',	$predictiongame );
+        $this->assign('user',JFactory::getUser() );
+		$this->assignRef('pred_id',$this->prediction_id );
+		$this->assignRef('lists',$lists );
+		$this->assignRef('items',$items );
+		$this->assignRef('pagination',$pagination );
+		$this->assignRef('predictiongame',$predictiongame );
 		$this->assign('request_url',$uri->toString());
         
         
