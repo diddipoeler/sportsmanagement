@@ -110,7 +110,7 @@ static function getRandomRquote($category,$num_of_random, &$params)
 		}
 	else // get quote when more than one category is selected 	
 		{
-		  if(is_array($category)) // get $catid when one category is selected 	
+		  if( is_array($category) && count($category) != 0 ) // get $catid when one category is selected 	
 		{
 			$value = array($category);			
 			$rand_keys = array_rand($category,1);
