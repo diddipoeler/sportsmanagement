@@ -145,8 +145,8 @@ class sportsmanagementModelPredictionMembers extends JModelList
         // Create a new query object.
         $query = $this->_db->getQuery(true);
         $query->select(array('tmb.*','u.name AS realname', 'u.username AS username', 'p.name AS predictionname','u1.username' ))
-        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member AS tmb')
-        ->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game AS p ON p.id = tmb.prediction_id')
+        ->from('#__sportsmanagement_prediction_member AS tmb')
+        ->join('LEFT', '#__sportsmanagement_prediction_game AS p ON p.id = tmb.prediction_id')
         ->join('LEFT', '#__users AS u ON u.id = tmb.user_id')
         ->join('LEFT', '#__users AS u1 ON u1.id = tmb.modified_by');
 
@@ -203,7 +203,7 @@ class sportsmanagementModelPredictionMembers extends JModelList
 	
     // Select some fields
         $query->select('ppj.name AS pjName');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game AS ppj ');
+        $query->from('#__sportsmanagement_prediction_game AS ppj ');
         $query->where('ppj.id = ' . $predictionID);
         
 
@@ -235,7 +235,7 @@ class sportsmanagementModelPredictionMembers extends JModelList
         
         // Select some fields
         $query->select('pm.user_id AS value, u.name AS text');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member AS pm ');
+        $query->from('#__sportsmanagement_prediction_member AS pm ');
         $query->join('LEFT', '#__users AS u ON u.id = pm.user_id');
         $query->where('prediction_id = ' . (int) $prediction_id);
        
@@ -265,7 +265,7 @@ class sportsmanagementModelPredictionMembers extends JModelList
 	//$not_in = array();
      // Select some fields
         $query->select('pm.user_id AS value');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member AS pm ');
+        $query->from('#__sportsmanagement_prediction_member AS pm ');
         $query->join('LEFT', '#__users AS u ON u.id = pm.user_id');
         $query->where('prediction_id = ' . (int) $prediction_id);
         
@@ -304,11 +304,11 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
     }   
 		
 
-		$this->_db->setQuery( $query );
+		$db->setQuery( $query );
 
-		if ( !$result = $this->_db->loadObjectList() )
+		if ( !$result = $db->loadObjectList() )
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		else

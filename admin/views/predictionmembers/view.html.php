@@ -70,14 +70,14 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
         $this->state = $this->get('State');
        $tpl = '';
        
-       
+       $this->prediction_id = $this->state->get('filter.prediction_id');
        
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
 
     if ( $this->getLayout() == 'default' || $this->getLayout() == 'default_3' )
 		{
-			$app->setUserState( "$option.prediction_id", $this->state->get('filter.prediction_id') );
+			//$app->setUserState( "$option.prediction_id", $this->state->get('filter.prediction_id') );
             $this->_display( $tpl );
 			return;
 		}

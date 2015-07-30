@@ -208,7 +208,7 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 	* @access  public
 	* @return  object
 	*/
-	function getPredictionGame($id)
+	function getPredictionGame($id=0)
 	{
 	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
@@ -216,9 +216,11 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
+        if ( $id )
+        {
         // Select some fields
         $query->select('*');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game');
+        $query->from('#__sportsmanagement_prediction_game');
         $query->where('id = ' . $id);
 
 		$db->setQuery( $query );
@@ -231,6 +233,11 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 		{
 			return $result;
 		}
+        }
+        else
+        {
+            return false;
+        }
 	}
 
 	/**

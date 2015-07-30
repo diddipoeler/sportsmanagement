@@ -266,14 +266,14 @@ class sportsmanagementView extends JViewLegacy
 		);
         }
         
-        if ( isset($this->prediction_id_select) )
-        {
-        JHtmlSidebar::addFilter(
-			JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME'),
-			'filter_prediction_id_select',
-			JHtml::_('select.options', $this->prediction_id_select, 'value', 'text', $this->state->get('filter.prediction_id_select'), true)
-		);
-        }
+//        if ( isset($this->prediction_id_select) )
+//        {
+//        JHtmlSidebar::addFilter(
+//			JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME'),
+//			'filter_prediction_id_select',
+//			JHtml::_('select.options', $this->prediction_id_select, 'value', 'text', $this->state->get('filter.prediction_id_select'), true)
+//		);
+//        }
         
         if ( isset($this->project_position_id) )
         {

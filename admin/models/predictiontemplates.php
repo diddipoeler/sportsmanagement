@@ -153,13 +153,14 @@ class sportsmanagementModelPredictionTemplates extends JModelList
         //$prediction_id	= $this->getState('filter.prediction_id');
 
         $query->select(array('tmpl.*', 'u.name AS editor','u1.username'))
-        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_template AS tmpl')
+        ->from('#__sportsmanagement_prediction_template AS tmpl')
         ->join('LEFT', '#__users AS u ON u.id = tmpl.checked_out')
         ->join('LEFT', '#__users AS u1 ON u1.id = tmpl.modified_by');
         
         if (is_numeric($this->getState('filter.prediction_id')) )
 		{
-		$app->setUserState( "$option.predid", $prediction_id );  
+		//$app->setUserState( "$option.predid", $prediction_id );  
+        $this->setState('filter.prediction_id', $this->getState('filter.prediction_id'));  
 		$query->where('tmpl.prediction_id = ' . $this->getState('filter.prediction_id'));	
 		}
         else
@@ -220,7 +221,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         // Select some fields
         $query->select('master_template');
 		// From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game ');
+		$query->from('#__sportsmanagement_prediction_game ');
         $query->where('id = ' . $prediction_id );
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
@@ -243,7 +244,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         // Select some fields
         $query->select('template');
 		// From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_template ');
+		$query->from('#__sportsmanagement_prediction_template ');
         $query->where('prediction_id = ' . $prediction_id );
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
@@ -361,7 +362,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         // Select some fields
         $query->select('id');
 		// From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_template ');
+		$query->from('#__sportsmanagement_prediction_template ');
         $query->where('prediction_id = ' . $prediction_id );
         $query->where('template LIKE '.$db->Quote(''.$template.''));
         
