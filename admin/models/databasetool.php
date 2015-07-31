@@ -355,7 +355,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         $query = $db->getQuery(true);
         
         $query->select('*');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_jl_tables');
+        $query->from('#__sportsmanagement_jl_tables');
         $db->setQuery($query);
         $result = $db->loadObjectList();
         
@@ -378,7 +378,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         //$db = JFactory::getDbo();  
         $option = JRequest::getCmd('option');
         $query = "SHOW TABLES LIKE '%_joomleague%'";
-		JFactory::getDbo()->setQuery($query);
+		$db->setQuery($query);
     
     if(version_compare(JVERSION,'3.0.0','ge')) 
 {
@@ -398,20 +398,33 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         {
         foreach ( $result as $key => $value )
         {
+        $query->clear();    
+        $query->select('id');
+		// From table
+		$query->from('#__sportsmanagement_jl_tables');
+        $query->where('name LIKE '.$db->Quote(''.$value.'') );
+        $db->setQuery( $query );
+        $record_jl = $db->loadResult();
+        
+        if ( $record_jl )
+        {
+            
+        }
+        else
+        {    
         // Create and populate an object.
                 $temp = new stdClass();
                 $temp->name = $value;
                 $temp->import = 0;
                 $temp->import_data = 0;
                 // Insert the object into the table.
-                $result = $db->insertObject('#__sportsmanagement_jl_tables', $temp);
-                if ( $result )
+                $resultinsert = $db->insertObject('#__sportsmanagement_jl_tables', $temp);
+                if ( $resultinsert )
                 {
-
                 }
                 else
                 {
-                    
+                }
                 }    
         }
         }    
@@ -462,7 +475,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
             // Select some fields
         $query->select('count(*) AS count');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_rquote');
+		$query->from('#__sportsmanagement_rquote');
         $query->where('daily_number = '.$temp[1]);
             
 		    JFactory::getDbo()->setQuery($query);
@@ -471,7 +484,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
             {
             /* Ein JDatabaseQuery Objekt beziehen */
             $query = JFactory::getDbo()->getQuery(true);
-            $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_rquote')->where('daily_number = '.$temp[1].''  );
+            $query->delete()->from('#__sportsmanagement_rquote')->where('daily_number = '.$temp[1].''  );
             JFactory::getDbo()->setQuery($query);
             $result = self::runJoomlaQuery();
             
@@ -544,7 +557,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
             $values = array('\''.$temp[1].'\'','\''.$author.'\'','\''.$zitat.'\'','\''.$notes.'\'');
             // Prepare the insert query.
             $insertquery
-            ->insert(JFactory::getDbo()->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_rquote'))
+            ->insert(JFactory::getDbo()->quoteName('#__sportsmanagement_rquote'))
             ->columns(JFactory::getDbo()->quoteName($columns))
             ->values(implode(',', $values));
             // Set the query using our newly populated query object and execute it.

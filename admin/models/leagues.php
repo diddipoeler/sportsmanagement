@@ -152,17 +152,17 @@ class sportsmanagementModelLeagues extends JModelList
         $query->select('obj.modified,obj.modified_by');
         $query->select('st.name AS sportstype');
 		// From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league as obj');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = obj.sports_type_id');
+		$query->from('#__sportsmanagement_league as obj');
+        $query->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = obj.sports_type_id');
         // Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
         
         $query->select('ag.name AS agegroup');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup AS ag ON ag.id = obj.agegroup_id');
+        $query->join('LEFT', '#__sportsmanagement_agegroup AS ag ON ag.id = obj.agegroup_id');
         
         $query->select('fed.name AS fedname');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations AS fed ON fed.id = obj.associations');
+        $query->join('LEFT', '#__sportsmanagement_associations AS fed ON fed.id = obj.associations');
         
         if ($this->getState('filter.search'))
 		{
