@@ -134,6 +134,7 @@ echo '<br />roundResults<pre>~' . print_r($roundResults,true) . '~</pre><br />';
 				<input type='hidden' name='task' value='predictionentry.selectprojectround' />
 				<input type='hidden' name='prediction_id' value='<?php echo (int)$this->predictionGame->id; ?>' />
 				<input type='hidden' name='p' value='<?php echo (int)$predictionProject->project_id; ?>' />
+                <input type='hidden' name='pj' value='<?php echo (int)$predictionProject->project_id; ?>' />
 				<input type='hidden' name='r' value='<?php echo (int)$this->model->roundID; ?>' />
                 <input type='hidden' name='pggroup' value='<?php echo (int)$this->model->pggroup; ?>' />
 				<input type='hidden' name='memberID' value='<?php echo $this->predictionMember->pmID; ?>' />
@@ -168,18 +169,18 @@ echo '<br />roundResults<pre>~' . print_r($roundResults,true) . '~</pre><br />';
 					id='<?php echo $formName; ?>'
 					method='post' onsubmit='return chkFormular()' >
 
-				<input type='hidden' name='task'			value='predictionentry.addtipp' />
-				<input type='hidden' name='option'			value='com_sportsmanagement' />
+				<input type='hidden' name='task' value='predictionentry.addtipp' />
+				<input type='hidden' name='option' value='com_sportsmanagement' />
 				
-				<input type='hidden' name='prediction_id'	value='<?php echo (int)$this->model->predictionGameID; ?>' />
-				<input type='hidden' name='user_id'			value='<?php echo $this->predictionMember->user_id; ?>' />
-				<input type='hidden' name='memberID'		value='<?php echo $this->predictionMember->pmID; ?>' />
-				<input type='hidden' name='r'		value='<?php echo $this->model->roundID; ?>' />
-				<input type='hidden' name='pjID'			value='<?php echo (int)$this->model->pjID; ?>' />
-				<input type='hidden' name='pids[]'			value='<?php echo $predictionProject->project_id; ?>' />
+				<input type='hidden' name='prediction_id' value='<?php echo (int)$this->model->predictionGameID; ?>' />
+				<input type='hidden' name='user_id' value='<?php echo $this->predictionMember->user_id; ?>' />
+				<input type='hidden' name='memberID' value='<?php echo $this->predictionMember->pmID; ?>' />
+				<input type='hidden' name='r' value='<?php echo $this->model->roundID; ?>' />
+				<input type='hidden' name='pjID' value='<?php echo (int)$this->model->pjID; ?>' />
+				<input type='hidden' name='pids[]' value='<?php echo $predictionProject->project_id; ?>' />
 				<input type='hidden' name='ptippmode[<?php echo $predictionProject->project_id; ?>]' value='<?php echo $predictionProject->mode; ?>' />
-				<input type='hidden' name='jokerCount'		value='<?php echo $memberProjectJokersCount; ?>' />
-				<input type='hidden' name='maxJokerCount'	value='<?php echo $predictionProject->joker_limit; ?>' />
+				<input type='hidden' name='jokerCount' value='<?php echo $memberProjectJokersCount; ?>' />
+				<input type='hidden' name='maxJokerCount' value='<?php echo $predictionProject->joker_limit; ?>' />
 				<?php echo JHTML::_('form.token'); ?>
                 
 <?php

@@ -194,6 +194,7 @@ public static function getPredictionTippEntryRoute($predictionID,$userID=null,$r
 		return $link;
 	}
 
+
 /**
  * JSMPredictionHelperRoute::getPredictionMemberRoute()
  * 
@@ -201,9 +202,11 @@ public static function getPredictionTippEntryRoute($predictionID,$userID=null,$r
  * @param mixed $userID
  * @param mixed $task
  * @param mixed $projectID
+ * @param integer $groupID
+ * @param integer $roundID
  * @return
  */
-public static function getPredictionMemberRoute($predictionID,$userID=null,$task=null,$projectID=null,$groupID=0)
+public static function getPredictionMemberRoute($predictionID,$userID=null,$task=null,$projectID=null,$groupID=0,$roundID=0)
 	{
 	
 	switch ($task)
