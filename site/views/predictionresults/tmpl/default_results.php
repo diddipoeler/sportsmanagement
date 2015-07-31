@@ -86,7 +86,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
             $this->roundID = $this->model->_projectRoundsCount;
         }
 		?>
-		<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement'); ?>" method='post' name="adminForm">
+		<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement'); ?>" method='post' name="adminForm" id="adminForm">
 			<input type='hidden' name='option' value='com_sportsmanagement' />
 			<input type='hidden' name='view' value='predictionresults' />
 			<input type='hidden' name='prediction_id' value='<?php echo (int)$this->predictionGame->id; ?>' />
@@ -220,7 +220,11 @@ echo $this->pagination->getListFooter();
                             case 'logo_small':
                             case 'logo_middle':
                             case 'logo_big':
-                            
+                            // bild ist nicht vorhanden, dann das standardbild
+                            if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match->homeLogo ) )
+                            {
+                            $match->homeLogo = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");    
+                            }
 echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->homeid,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match->homeLogo,$match->homeName,'20');                               
                             ?>                                    
 
@@ -259,6 +263,11 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->hom
                             case 'logo_small':
                             case 'logo_middle':
                             case 'logo_big':
+                            // bild ist nicht vorhanden, dann das standardbild
+                            if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match->awayLogo ) )
+                            {
+                            $match->awayLogo = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");    
+                            }
 echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->awayid,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match->awayLogo,$match->awayName,'20');                        
                             ?>                                    
                             
