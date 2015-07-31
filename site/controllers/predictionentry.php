@@ -204,6 +204,10 @@ $option = $jinput->getCmd('option');
 	 */
 	function select()
 	{
+	   $app = JFactory::getApplication();
+       // JInput object
+       $jinput = $app->input;
+       
 		JRequest::checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
 		$pID	= JRequest::getVar('prediction_id',	'',		'post',	'int');
 		$uID	= JRequest::getVar('uid',			null,	'post',	'int');
@@ -220,17 +224,27 @@ $option = $jinput->getCmd('option');
 	 */
 	function selectprojectround()
 	{
+	   $app = JFactory::getApplication();
+       // JInput object
+       $jinput = $app->input;
+       
 		JRequest::checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
-		$post	= JRequest::get('post');
-		$pID	= JRequest::getVar('prediction_id',	null,	'post',	'int');
+		//$post	= JRequest::get('post');
+        $pID = $jinput->get('prediction_id', 0, '');
+        $groupID = $jinput->get('pggroup', 0, '');
+        $pjID = $jinput->get('p', 0, '');
+        $rID = $jinput->get('r', 0, '');
+        $uID = $jinput->get('uid', 0, '');
         
-        // diddipoeler
-		//$pjID	= JRequest::getVar('project_id',	null,	'post',	'int');
-        $pjID	= JRequest::getVar('p',	null,	'post',	'int');
-        
-		$rID	= JRequest::getVar('r',				null,	'post',	'int');
-		$uID	= JRequest::getVar('uid',			null,	'post',	'int');
-		$link = JSMPredictionHelperRoute::getPredictionTippEntryRoute($pID,$uID,$rID,$pjID);
+//		$pID	= JRequest::getVar('prediction_id',	null,	'post',	'int');
+//        
+//        // diddipoeler
+//		//$pjID	= JRequest::getVar('project_id',	null,	'post',	'int');
+//        $pjID	= JRequest::getVar('p',	null,	'post',	'int');
+//        
+//		$rID	= JRequest::getVar('r',				null,	'post',	'int');
+//		$uID	= JRequest::getVar('uid',			null,	'post',	'int');
+		$link = JSMPredictionHelperRoute::getPredictionTippEntryRoute($pID,$uID,$rID,$pjID,$groupID);
 		$this->setRedirect($link);
 	}
 

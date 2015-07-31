@@ -170,18 +170,25 @@ public static function getPredictionRulesRoute($predictionID)
  * @param string $anchor
  * @return
  */
-public static function getPredictionTippEntryRoute($predictionID,$userID=null,$roundID=null,$projectID=null,$anchor='')
+public static function getPredictionTippEntryRoute($predictionID,$userID=null,$roundID=null,$projectID=null,$anchor='',$groupID=0)
 	{
 		$params = array('option' => 'com_sportsmanagement', 
 						'view' => 'predictionentry', 
 						'prediction_id' => $predictionID);
     
-        // diddipoeler
-		if (!is_null($projectID)){$params['p']=$projectID;}
+//        // diddipoeler
+//		if (!is_null($projectID)){$params['p']=$projectID;}
+//        
+//		if (!is_null($projectID)){$params['pj']=$projectID;}
+//		if (!is_null($roundID)){$params['r']=$roundID;}
+//		if (!is_null($userID)){$params['uid']=$userID;}
         
-		if (!is_null($projectID)){$params['pj']=$projectID;}
-		if (!is_null($roundID)){$params['r']=$roundID;}
-		if (!is_null($userID)){$params['uid']=$userID;}
+        $params['p'] = $projectID;
+        $params['pggroup'] = $groupID;
+        $params['pj'] = $projectID;
+        $params['r'] = $roundID;
+        $params['uid'] = $userID;
+        
 		$query = JSMPredictionHelperRoute::buildQuery($params);
 		$link = JRoute::_('index.php?' . $query, false);
 		return $link;
