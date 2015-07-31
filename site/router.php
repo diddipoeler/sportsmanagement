@@ -178,10 +178,10 @@ function sportsmanagementBuildRoute(&$query)
                 $segments[] = $query['prediction_id'];
                 unset($query['prediction_id']);
             }
-            if (isset($query['p'])) {
-                $segments[] = $query['p'];
-                unset($query['p']);
-            }
+//            if (isset($query['p'])) {
+//                $segments[] = $query['p'];
+//                unset($query['p']);
+//            }
             if (isset($query['pggroup'])) {
                 $segments[] = $query['pggroup'];
                 unset($query['pggroup']);
@@ -207,10 +207,14 @@ function sportsmanagementBuildRoute(&$query)
                 $segments[] = $query['prediction_id'];
                 unset($query['prediction_id']);
             }
-            if (isset($query['s'])) {
-                $segments[] = $query['s'];
-                unset($query['s']);
+            if (isset($query['pggroup'])) {
+                $segments[] = $query['pggroup'];
+                unset($query['pggroup']);
             }
+//            if (isset($query['s'])) {
+//                $segments[] = $query['s'];
+//                unset($query['s']);
+//            }
             if (isset($query['pj'])) {
                 $segments[] = $query['pj'];
                 unset($query['pj']);
@@ -225,10 +229,10 @@ function sportsmanagementBuildRoute(&$query)
                 $segments[] = $query['prediction_id'];
                 unset($query['prediction_id']);
             }
-            if (isset($query['p'])) {
-                $segments[] = $query['p'];
-                unset($query['p']);
-            }
+//            if (isset($query['p'])) {
+//                $segments[] = $query['p'];
+//                unset($query['p']);
+//            }
             if (isset($query['pggroup'])) {
                 $segments[] = $query['pggroup'];
                 unset($query['pggroup']);
@@ -608,20 +612,20 @@ function sportsmanagementParseRoute($segments)
             if (isset($segments[1])) {
                 $vars['prediction_id'] = $segments[1];
             }
+//            if (isset($segments[2])) {
+//                $vars['p'] = $segments[2];
+//            }
             if (isset($segments[2])) {
-                $vars['p'] = $segments[2];
+                $vars['pggroup'] = $segments[2];
             }
             if (isset($segments[3])) {
-                $vars['pggroup'] = $segments[3];
+                $vars['pj'] = $segments[3];
             }
             if (isset($segments[4])) {
-                $vars['pj'] = $segments[4];
+                $vars['r'] = $segments[4];
             }
             if (isset($segments[5])) {
-                $vars['r'] = $segments[5];
-            }
-            if (isset($segments[6])) {
-                $vars['pggrouprank'] = $segments[6];
+                $vars['pggrouprank'] = $segments[5];
             }
 
 
@@ -631,9 +635,12 @@ function sportsmanagementParseRoute($segments)
             if (isset($segments[1])) {
                 $vars['prediction_id'] = $segments[1];
             }
-            if (isset($segments[2])) {
-                $vars['s'] = $segments[2];
+             if (isset($segments[2])) {
+                $vars['pggroup'] = $segments[2];
             }
+//            if (isset($segments[2])) {
+//                $vars['s'] = $segments[2];
+//            }
             if (isset($segments[3])) {
                 $vars['pj'] = $segments[3];
             }
@@ -647,20 +654,20 @@ function sportsmanagementParseRoute($segments)
             if (isset($segments[1])) {
                 $vars['prediction_id'] = $segments[1];
             }
+//            if (isset($segments[2])) {
+//                $vars['p'] = $segments[2];
+//            }
             if (isset($segments[2])) {
-                $vars['p'] = $segments[2];
+                $vars['pggroup'] = $segments[2];
             }
             if (isset($segments[3])) {
-                $vars['pggroup'] = $segments[3];
+                $vars['pj'] = $segments[3];
             }
             if (isset($segments[4])) {
-                $vars['pj'] = $segments[4];
+                $vars['r'] = $segments[4];
             }
             if (isset($segments[5])) {
-                $vars['r'] = $segments[5];
-            }
-            if (isset($segments[6])) {
-                $vars['uid'] = $segments[6];
+                $vars['uid'] = $segments[5];
             }
             break;
 
