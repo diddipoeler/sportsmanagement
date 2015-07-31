@@ -83,7 +83,7 @@ public static function getPredictionResultsRoute($predictionID,$roundID=0,$proje
 //		if (!is_null($roundID)){$params['r']=$roundID;}
 //		if (!is_null($userID)){$params['uid']=$userID;}
         
-        $params['p'] = $projectID;
+       //$params['p'] = $projectID;
         $params['pggroup'] = $groupID;
         $params['pj'] = $projectID;
         $params['r'] = $roundID;
@@ -126,7 +126,7 @@ public static function getPredictionRankingRoute($predictionID,$projectID=0,$rou
 //		if (!is_null($roundID)){$params['r']=$roundID;}
         
         //if (!is_null($groupRank)){$params['pggrouprank']=$groupRank;}
-        $params['p'] = $projectID;
+        //$params['p'] = $projectID;
         $params['pggroup'] = $groupID;
         $params['pj'] = $projectID;
         $params['r'] = $roundID;
@@ -183,7 +183,7 @@ public static function getPredictionTippEntryRoute($predictionID,$userID=null,$r
 //		if (!is_null($roundID)){$params['r']=$roundID;}
 //		if (!is_null($userID)){$params['uid']=$userID;}
         
-        $params['p'] = $projectID;
+        //$params['p'] = $projectID;
         $params['pggroup'] = $groupID;
         $params['pj'] = $projectID;
         $params['r'] = $roundID;
@@ -203,7 +203,7 @@ public static function getPredictionTippEntryRoute($predictionID,$userID=null,$r
  * @param mixed $projectID
  * @return
  */
-public static function getPredictionMemberRoute($predictionID,$userID=null,$task=null,$projectID=null)
+public static function getPredictionMemberRoute($predictionID,$userID=null,$task=null,$projectID=null,$groupID=0)
 	{
 	
 	switch ($task)
@@ -220,12 +220,18 @@ public static function getPredictionMemberRoute($predictionID,$userID=null,$task
   break;
   }
 		
-        // diddipoeler
-        if (!is_null($projectID)){$params['p']=$projectID;}
+//        // diddipoeler
+//        if (!is_null($projectID)){$params['p']=$projectID;}
+//        
+//		if (!is_null($userID)){$params['uid']=$userID;}
+//		if (!is_null($projectID)){$params['pj']=$projectID;}
+//		if (!is_null($task)){$params['layout']=$task;}
         
-		if (!is_null($userID)){$params['uid']=$userID;}
-		if (!is_null($projectID)){$params['pj']=$projectID;}
-		if (!is_null($task)){$params['layout']=$task;}
+        //$params['p'] = $projectID;
+        $params['pggroup'] = $groupID;
+        $params['pj'] = $projectID;
+        $params['r'] = $roundID;
+        $params['uid'] = $userID;
 
 		$query = JSMPredictionHelperRoute::buildQuery($params);
 		$link = JRoute::_('index.php?' . $query, false);

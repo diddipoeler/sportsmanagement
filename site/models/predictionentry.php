@@ -111,7 +111,7 @@ public $_predictionGame	= null;
 
 		$this->page	= JRequest::getInt('page',1);
 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($this->roundID,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($this->roundID,true).'</pre>'),'');
 
         $prediction = new sportsmanagementModelPrediction();  
 

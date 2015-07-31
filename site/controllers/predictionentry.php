@@ -136,10 +136,10 @@ $option = $jinput->getCmd('option');
 		$approved = JRequest::getVar('approved',0,'','int');
 		
 		
-		$model		= $this->getModel('Prediction');
+		$model = $this->getModel('Prediction');
         $mdlPredictionEntry = JModelLegacy::getInstance("PredictionEntry", "sportsmanagementModel");
-		$user		= JFactory::getUser();
-		$isMember	= $model->checkPredictionMembership();
+		$user = JFactory::getUser();
+		$isMember = $model->checkPredictionMembership();
 
 		if ( ( $user->id != $joomlaUserID )  )
 		{
@@ -209,8 +209,8 @@ $option = $jinput->getCmd('option');
        $jinput = $app->input;
        
 		JRequest::checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
-		$pID	= JRequest::getVar('prediction_id',	'',		'post',	'int');
-		$uID	= JRequest::getVar('uid',			null,	'post',	'int');
+		$pID = JRequest::getVar('prediction_id','','post','int');
+		$uID = JRequest::getVar('uid',null,'post','int');
 		if (empty($uID)){$uID=null;}
 		$link = JSMPredictionHelperRoute::getPredictionTippEntryRoute($pID,$uID);
 		//echo '<br />' . $link . '<br />';
@@ -232,7 +232,7 @@ $option = $jinput->getCmd('option');
 		//$post	= JRequest::get('post');
         $pID = $jinput->get('prediction_id', 0, '');
         $groupID = $jinput->get('pggroup', 0, '');
-        $pjID = $jinput->get('p', 0, '');
+        $pjID = $jinput->get('pj', 0, '');
         $rID = $jinput->get('r', 0, '');
         $uID = $jinput->get('uid', 0, '');
         
@@ -272,7 +272,10 @@ $option = $jinput->getCmd('option');
 	{
 		JRequest::checkToken() or jexit(JText::_('JL_PRED_ENTRY_INVALID_TOKEN_PREDICTIONS_NOT_SAVED'));
     $option = JRequest::getCmd('option');
-    $optiontext = strtoupper(JRequest::getCmd('option').'_');
+    // JInput object
+       $jinput = $app->input;
+       
+    //$optiontext = strtoupper(JRequest::getCmd('option').'_');
 		$app = JFactory::getApplication();
 		$document = JFactory::getDocument();
 		
@@ -306,7 +309,7 @@ $option = $jinput->getCmd('option');
 			}
 			else
 			{
-				if ($pjID!=$set_pj)
+				if ( $pjID != $set_pj )
 				{
 					$params = array	(	'option' => 'com_sportsmanagement',
 										'view' => 'predictionentry',
