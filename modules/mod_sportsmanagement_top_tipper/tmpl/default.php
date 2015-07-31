@@ -103,9 +103,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 					<td class='sectiontableheader' style='text-align:right; ' width='20%' nowrap='nowrap' ><?php
 						if ( $config['show_project_name_selector'] )
 		        {
-            echo $modelpg->createProjectSelector(	$modelpg->_predictionProjectS,
-																	$predictionProject->project_id,
-																	$showProjectID);
+            echo sportsmanagementModelPrediction::createProjectSelector($modelpg->_predictionProjectS,$predictionProject->project_id,$showProjectID);
 		        }
             				
             if ($showProjectID > 0)
