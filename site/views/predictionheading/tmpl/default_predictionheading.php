@@ -38,7 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-//$component_text = 'COM_SPORTSMANAGEMENT_';
+
 ?>
 <?php
 //echo '<br /><pre>~' . print_r($this,true) . '~</pre><br />';

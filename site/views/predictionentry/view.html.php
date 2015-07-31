@@ -42,8 +42,6 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-//require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php');
-
 
 /**
  * sportsmanagementViewPredictionEntry
@@ -79,14 +77,14 @@ class sportsmanagementViewPredictionEntry extends JViewLegacy
 		if (isset($this->predictionGame))
 		{
 			//echo '<br /><pre>~' . print_r($this->getName(),true) . '~</pre><br />';
-			$config			= sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
-			$overallConfig	= sportsmanagementModelPrediction::getPredictionOverallConfig();
+			$config	= sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
+			$overallConfig = sportsmanagementModelPrediction::getPredictionOverallConfig();
 
       
       
 			$this->assignRef('model',$model);
 			$this->assign('config',array_merge($overallConfig,$config));
-      $configavatar			= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
+      $configavatar	= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
       $this->assignRef('configavatar',$configavatar );
 			$this->assign('predictionMember',sportsmanagementModelPrediction::getPredictionMember($configavatar));
 			$this->assign('predictionProjectS',sportsmanagementModelPrediction::getPredictionProjectS());

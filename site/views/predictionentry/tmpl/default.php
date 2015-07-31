@@ -41,10 +41,6 @@ defined('_JEXEC') or die('Restricted access');
 
 //echo 'project_id<pre>'.print_r($this->model->predictionProject->project_id, true).'</pre><br>';
 
-//$this->_addPath( 'template', JPATH_COMPONENT . DS . 'views' . DS . 'predictionheading' . DS . 'tmpl' );
-//$this->_addPath( 'template', JPATH_COMPONENT . DS . 'views' . DS . 'backbutton' . DS . 'tmpl' );
-//$this->_addPath( 'template', JPATH_COMPONENT . DS . 'views' . DS . 'footer' . DS . 'tmpl' );
-
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews','predictionheading');
@@ -55,13 +51,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	echo $this->loadTemplate('predictionheading');
 	echo $this->loadTemplate('sectionheader');
 
-	if ((!isset($this->actJoomlaUser)) || ($this->actJoomlaUser->id==0))
+	if ( ( !isset($this->actJoomlaUser) ) || ( $this->actJoomlaUser->id == 0 ) )
 	{
 		echo $this->loadTemplate('view_deny');
 	}
 	else
 	{
-		if ((!$this->isPredictionMember) && (!$this->allowedAdmin))
+		if ( ( !$this->isPredictionMember ) && ( !$this->allowedAdmin ) )
 		{
 			echo $this->loadTemplate('view_not_member');
 		}

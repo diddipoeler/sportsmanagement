@@ -127,7 +127,7 @@ echo '<br />roundResults<pre>~' . print_r($roundResults,true) . '~</pre><br />';
 			
 //			if (($this->config['show_help']==0)||($this->config['show_help']==2)){echo $this->model->createHelptText($predictionProject->mode);}
 			?>
-			<a name='jl_top' id='jl_top'></a>
+<!--			<a name='jl_top' id='jl_top'></a> -->
 			<form name='resultsRoundSelector' method='post' onsubmit="alert(1)">
 				<input type='hidden' name='option' value='com_sportsmanagement' />
 				
@@ -135,6 +135,7 @@ echo '<br />roundResults<pre>~' . print_r($roundResults,true) . '~</pre><br />';
 				<input type='hidden' name='prediction_id' value='<?php echo (int)$this->predictionGame->id; ?>' />
 				<input type='hidden' name='p' value='<?php echo (int)$predictionProject->project_id; ?>' />
 				<input type='hidden' name='r' value='<?php echo (int)$this->model->roundID; ?>' />
+                <input type='hidden' name='pggroup' value='<?php echo (int)$this->model->pggroup; ?>' />
 				<input type='hidden' name='memberID' value='<?php echo $this->predictionMember->pmID; ?>' />
 				<input type='hidden' name='pjID' value='<?php echo (int)$this->model->pjID; ?>' />
 				<?php echo JHTML::_('form.token'); ?>
@@ -152,7 +153,7 @@ echo '<br />roundResults<pre>~' . print_r($roundResults,true) . '~</pre><br />';
                             
 							$rounds = sportsmanagementHelper::getRoundsOptions($predictionProject->project_id,'ASC',FALSE,$round_ids);
 //							$htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="document.forms[\'resultsRoundSelector\'].r.value=this.value;submit()"','value','text',$this->model->roundID);
-							$htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'r','class="inputbox" size="1" onchange="this.form.submit();"','value','text',$this->model->roundID);
+							$htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'r','class="inputbox" size="1" onchange="this.form.submit();"','value','text',$this->model->roundIDslug);
 							echo JText::sprintf(	'COM_SPORTSMANAGEMENT_PRED_ENTRY_SUBTITLE_02',
 													$htmlRoundsOptions,
 													sportsmanagementModelPrediction::createProjectSelector(sportsmanagementModelPrediction::$_predictionProjectS,$predictionProject->project_id));
