@@ -398,7 +398,8 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         {
         foreach ( $result as $key => $value )
         {
-        $query->clear();    
+        $query = $db->getQuery(true);    
+        $query->clear('');    
         $query->select('id');
 		// From table
 		$query->from('#__sportsmanagement_jl_tables');
