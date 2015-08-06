@@ -329,19 +329,23 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
 		$teams[0] = new stdclass;
 		$teams[0]->name = $teams[0]->$teamnames = $teams[0]->logo_small = $teams[0]->logo_middle = $teams[0]->logo_big =  '';
 
-		foreach ($rows AS $key => $row) {
+		foreach ($rows AS $key => $row) 
+        {
 			$newrows[$key]['type'] = 'jlm';
 			$newrows[$key]['homepic'] = SportsmanagementConnector::buildImage($teams[$row->projectteam1_id]);
 			$newrows[$key]['awaypic'] = SportsmanagementConnector::buildImage($teams[$row->projectteam2_id]);
 
 			$newrows[$key]['date'] = sportsmanagementHelper::getMatchStartTimestamp($row);
-			//$newrows[$key]['result'] = (!is_null($row->matchpart1_result)) ? $row->matchpart1_result . ':' . $row->matchpart2_result : '-:-';
+            //$newrows[$key]['date'] = sportsmanagementHelper::getMatchStartTimestamp($row->match_date);
+			
+            //$newrows[$key]['result'] = (!is_null($row->matchpart1_result)) ? $row->matchpart1_result . ':' . $row->matchpart2_result : '-:-';
 			$newrows[$key]['result'] = (!is_null($row->team1_result)) ? $row->team1_result . ':' . $row->team2_result : '-:-';
 			$newrows[$key]['headingtitle'] = parent::jl_utf8_convert ($row->name.'-'.$row->roundname, 'iso-8859-1', 'utf-8');
 			$newrows[$key]['homename'] = SportsmanagementConnector::formatTeamName($teams[$row->projectteam1_id]);
 			$newrows[$key]['awayname'] = SportsmanagementConnector::formatTeamName($teams[$row->projectteam2_id]);
 			$newrows[$key]['matchcode'] = $row->matchcode;
 			$newrows[$key]['project_id'] = $row->project_id;
+            $newrows[$key]['timestamp'] = $row->timestamp;
 
 			// insert matchdetaillinks
 			$routeparameter = array();
@@ -401,18 +405,25 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
 		$image = self::$xparams->get('team_logos', 'logo_small');
 		if ($image == '-') { return ''; }
 		$logo = '';
+        
+        if ( !sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$team->$image) )
+    {
+    $team->$image = sportsmanagementHelper::getDefaultPlaceholder('logo_big');    
+    }
 
-		if ($team->$image != '' && file_exists(JPATH_BASE.'/'.$team->$image))
-		{
+		//if ($team->$image != '' && file_exists(JPATH_BASE.'/'.$team->$image))
+        //if ( $team->$image != '' )
+		//{
 			$h = self::$xparams->get('logo_height', 20);
-			$logo = '<img src="'.JUri::root(true).'/'.$team->$image.'" alt="'
+			$logo = '<img src="'.COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$team->$image.'" alt="'
 			.parent::jl_utf8_convert ($team->short_name, 'iso-8859-1', 'utf-8').'" title="'
 			.parent::jl_utf8_convert ($team->name, 'iso-8859-1', 'utf-8').'"';
-			if ($h > 0) {
+			if ($h > 0) 
+            {
 				$logo .= ' style="height:'.$h.'px;"';
 			}
 			$logo .= ' />';
-		}
+		//}
 		return $logo;
 	}
 
@@ -492,96 +503,15 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
 
 		$limit = (isset($caldates['limitstart'])&&isset($caldates['limitend'])) ? ' LIMIT '.$caldates['limitstart'].', '.$caldates['limitend'] :'';
 
-/*
-
-
-SELECT m . * , 
-p . * , 
-match_date AS caldate, 
-r.roundcode, 
-r.name AS roundname, 
-r.round_date_first, 
-r.round_date_last, 
-m.id AS matchcode, 
-p.id AS project_id, 
-CONCAT_WS(  ':', p.id, p.alias ) AS project_slug, 
-CONCAT_WS(  ':', m.id, CONCAT_WS(  "_", t1.alias, t2.alias ) ) AS match_slug
-
-FROM j25_sportsmanagement_match AS m
-INNER JOIN j25_sportsmanagement_round AS r ON r.id = m.round_id
-INNER JOIN j25_sportsmanagement_project AS p ON p.id = r.project_id
-LEFT JOIN j25_sportsmanagement_project_team AS tt1 ON m.projectteam1_id = tt1.id
-LEFT JOIN j25_sportsmanagement_project_team AS tt2 ON m.projectteam2_id = tt2.id
-LEFT JOIN j25_sportsmanagement_season_team_id AS st1 ON st1.id = tt1.team_id
-LEFT JOIN j25_sportsmanagement_season_team_id AS st2 ON st2.id = tt2.team_id
-LEFT JOIN j25_sportsmanagement_team AS t1 ON t1.id = st1.team_id
-LEFT JOIN j25_sportsmanagement_team AS t2 ON t2.id = st2.team_id
-
-WHERE m.published =1
-AND p.published =1
-
-AND r.round_date_first >=  '2015-06-01'
-AND r.round_date_last <=  '2015-06-31'
-GROUP BY m.id
-ORDER BY m.match_date ASC
-
-
-AND m.match_date between '2015-06-01 00:00:00' AND '2015-06-31 23:59:59'
-
-
-AND m.match_date >=  '2015-06-01 00:00:00'
-AND m.match_date <=  '2015-06-31 23:59:59'
-GROUP BY m.id
-ORDER BY m.match_date ASC
-
-
-SELECT m . * , 
-p . * , 
-match_date AS caldate, 
-r.roundcode, 
-r.name AS roundname, 
-r.round_date_first, 
-r.round_date_last, 
-m.id AS matchcode, 
-p.id AS project_id, 
-CONCAT_WS(  ':', p.id, p.alias ) AS project_slug, 
-CONCAT_WS(  ':', m.id, CONCAT_WS(  "_", t1.alias, t2.alias ) ) AS match_slug
-FROM j25_sportsmanagement_match AS m
-INNER JOIN j25_sportsmanagement_round AS r ON r.id = m.round_id
-INNER JOIN j25_sportsmanagement_project AS p ON p.id = r.project_id
-INNER JOIN j25_sportsmanagement_project_team AS pt ON pt.project_id = p.id
-INNER JOIN j25_sportsmanagement_season_team_id AS st ON st.id = pt.team_id
-INNER JOIN j25_sportsmanagement_team AS team ON team.id = st.team_id
-INNER JOIN j25_sportsmanagement_club AS club ON club.id = team.club_id
-LEFT JOIN j25_sportsmanagement_project_team AS tt1 ON m.projectteam1_id = tt1.id
-LEFT JOIN j25_sportsmanagement_project_team AS tt2 ON m.projectteam2_id = tt2.id
-LEFT JOIN j25_sportsmanagement_season_team_id AS st1 ON st1.id = tt1.team_id
-LEFT JOIN j25_sportsmanagement_season_team_id AS st2 ON st2.id = tt2.team_id
-LEFT JOIN j25_sportsmanagement_team AS t1 ON t1.id = st1.team_id
-LEFT JOIN j25_sportsmanagement_team AS t2 ON t2.id = st2.team_id
-WHERE m.published =1
-AND p.published =1
-AND m.match_date >=  '2015-06-01 00:00:00'
-AND m.match_date <=  '2015-06-31 23:59:59'
-GROUP BY m.id
-ORDER BY m.match_date ASC
-
-INNER JOIN j25_sportsmanagement_project_team AS pt ON ( pt.id = m.projectteam1_id
-OR pt.id = m.projectteam2_id ) 
-
-*/
-		$query->select('m.*,p.*,match_date AS caldate,r.roundcode, r.name AS roundname, r.round_date_first, r.round_date_last,m.id as matchcode, p.id as project_id');
+		//$query->select('m.*,p.*');
+        $query->select('m.id,m.round_id,m.projectteam1_id,m.projectteam2_id,m.match_date,m.team1_result,m.team2_result,m.match_date as gamematchdate ');
+        $query->select('p.timezone,p.name,p.alias');
+        $query->select('match_date AS caldate,r.roundcode, r.name AS roundname, r.round_date_first, r.round_date_last,m.id as matchcode, p.id as project_id');
         $query->select('CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
         $query->select('CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) AS match_slug ');
         $query->from('#__sportsmanagement_match as m');
         $query->join('INNER','#__sportsmanagement_round as r ON r.id = m.round_id');
         $query->join('INNER','#__sportsmanagement_project as p ON p.id = r.project_id');
-        
-//        $query->join('INNER','#__sportsmanagement_project_team as pt ON (pt.id = m.projectteam1_id OR pt.id = m.projectteam2_id)');
-//        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id ');
-//        $query->join('INNER','#__sportsmanagement_team as team ON team.id = st.team_id');
-//        $query->join('INNER','#__sportsmanagement_club as club ON club.id = team.club_id');
-        
         $query->join('LEFT','#__sportsmanagement_project_team AS tt1 ON m.projectteam1_id = tt1.id');
         $query->join('LEFT','#__sportsmanagement_project_team AS tt2 ON m.projectteam2_id = tt2.id');
         $query->join('LEFT','#__sportsmanagement_season_team_id AS st1 ON st1.id = tt1.team_id ');
@@ -594,12 +524,10 @@ OR pt.id = m.projectteam2_id )
                
 		if (isset($caldates['start']))
         { 
-        //$query->where("m.match_date >= ".$db->Quote(''.$caldates['start'].'')."");
         $query->where("r.round_date_first >= ".$db->Quote(''.$caldates['roundstart'].'')."");
         }
 		if (isset($caldates['end'])) 
         {
-        //$query->where("m.match_date <= ".$db->Quote(''.$caldates['end'].'')."");
         $query->where("r.round_date_last <= ".$db->Quote(''.$caldates['roundend'].'')."");
         }
 		if (isset($caldates['matchcode']))
@@ -639,9 +567,13 @@ OR pt.id = m.projectteam2_id )
 		{
 			foreach ($result as $match)
 			{
-				sportsmanagementHelper::convertMatchDateToTimezone($match);
+				$match->timestamp = sportsmanagementHelper::getTimestamp($match->match_date,1,$match->timezone);
+                sportsmanagementHelper::convertMatchDateToTimezone($match);
 			}
 		}
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
+        
 		return $result;
 	}
 
@@ -739,7 +671,7 @@ OR pt.id = m.projectteam2_id )
     WHERE t.id IN(p.fav_team)";
 		$db->setQuery($query);
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query,true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query,true).'</pre>'),'Notice');
         
 		$result = $db->loadObjectList();
 	}

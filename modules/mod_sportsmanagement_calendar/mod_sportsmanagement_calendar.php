@@ -73,6 +73,9 @@ require_once (dirname(__FILE__).DS.'helper.php');
 //require_once(JPATH_SITE.DS.'components'.DS.'com_joomleague'.DS.'joomleague.core.php');
 
 JHtml::_('behavior.tooltip');
+JHtml::_('behavior.framework');
+JHtml::_('behavior.modal');
+
 $ajax= $jinput->getVar('ajaxCalMod',0,'default','POST');
 $ajaxmod= $jinput->getVar('ajaxmodid',0,'default','POST');
 if(!$params->get('cal_start_date'))
@@ -109,9 +112,9 @@ $helper = new modJSMCalendarHelper;
 $doc = JFactory::getDocument();
 $lightbox = $params->get('lightbox', 1);
 
-JHtml::_('behavior.framework');
-JHtml::_('behavior.modal');
-if ($lightbox ==1 && (!isset($_GET['format']) OR ($_GET['format'] != 'pdf'))) {
+
+if ($lightbox ==1 && (!isset($_GET['format']) OR ($_GET['format'] != 'pdf'))) 
+{
 	$doc->addScriptDeclaration(";
       window.addEvent('domready', function() {
           $$('a.jlcmodal".$module->id."').each(function(el) {
@@ -124,16 +127,25 @@ if ($lightbox ==1 && (!isset($_GET['format']) OR ($_GET['format'] != 'pdf'))) {
       ");
 }
 $inject_container = ($params->get('inject', 0)==1)?$params->get('inject_container', 'joomleague'):'';
-$doc->addScriptDeclaration(';
-    jlcinjectcontainer['.$module->id.'] = \''.$inject_container.'\';
-    jlcmodal['.$module->id.'] = \''.$lightbox.'\';
-      ');
+//$doc->addScriptDeclaration(';
+//    jlcinjectcontainer['.$module->id.'] = \''.$inject_container.'\';
+//    jlcmodal['.$module->id.'] = \''.$lightbox.'\';
+//      ');
 
-if (!defined('JLC_MODULESCRIPTLOADED')) {
+if (!defined('JLC_MODULESCRIPTLOADED')) 
+{
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{    
 	$doc->addScript( JUri::base().'modules'.DS.$module->module.DS.'assets/js'.DS.$module->module.'.js' );
-	$doc->addScriptDeclaration(';
-    var calendar_baseurl=\''. JUri::base() . '\';
-      ');
+}
+else
+{
+    $doc->addScript( JUri::base().'modules'.DS.$module->module.DS.'assets/js'.DS.$module->module.'_2.js' );
+}    
+
+//	$doc->addScriptDeclaration(';
+//    var calendar_baseurl=\''. JUri::base() . '\';
+//      ');
 	$doc->addStyleSheet(JUri::base().'modules'.DS.$module->module.DS.'assets/css'.DS.$module->module.'.css');
 	define('JLC_MODULESCRIPTLOADED', 1);
 }

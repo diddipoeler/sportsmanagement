@@ -1,62 +1,53 @@
 var jlcinjectcontainer = new Array();
 var jlcmodal = new Array();
 
-//window.addEvent('domready', function() {
-//	SqueezeBox.initialize({});
-//});
+window.addEvent('domready', function() {
+	SqueezeBox.initialize({});
+});
 
 function jlCalmod_setTitle(targetid, sourceids, thistitle, modid) {
 	var titleid = sourceids.replace('jlcal_', 'jlcaltitte_');
-	if (jQuery(titleid)) {
-		document.getElementById('jlCalListDayTitle-' + modid).innerHTML = document.getElementById(titleid).innerHTML;
+	if ($(titleid)) {
+		$('jlCalListDayTitle-' + modid).innerHTML = $(titleid).innerHTML;
 	}
 }
 
-function jlCalmod_setContent(targetid, tempcontentid, sourcecontent, thistitle, modid) 
-{
-	document.getElementById(targetid).innerHTML = sourcecontent;
-	document.getElementById(tempcontentid).innerHTML = '<div class="componentheading">'
+function jlCalmod_setContent(targetid, tempcontentid, sourcecontent, thistitle, modid) {
+	$(targetid).innerHTML = sourcecontent;
+	$(tempcontentid).innerHTML = '<div class="componentheading">'
 			+ thistitle.replace('<br />', ' - ') + '</div>' + sourcecontent;
-	jQuery('#' + tempcontentid + ' acronym').each(function(handle) {
+	$$('#' + tempcontentid + ' acronym').each(function(handle) {
 		var header = new Element('span').injectAfter(handle);
 		header.innerHTML = handle.title;
 		handle.dispose();
 	});
 }
 
-function jlCalmod_injectContent(sourceid, destinationid, modid) 
-{
-	var tmp = document.getElementById(destinationid).innerHTML;
-	if (!jQuery('temp_jlcal-' + modid)) 
-  {
-		document.getElementById(destinationid).innerHTML = '<div id="temp_jlcal-' + modid	+
+function jlCalmod_injectContent(sourceid, destinationid, modid) {
+	var tmp = $(destinationid).innerHTML;
+	if (!$('temp_jlcal-' + modid)) {
+		$(destinationid).innerHTML = '<div id="temp_jlcal-' + modid	+
 									'" class="jcal_inject"></div>' + tmp;
 	}
 	var closer = '<span class="jcal_inject_close" onclick="$(\'temp_jlcal-'
 			+ modid + '\').style.display=\'none\';">x</span>';
-	document.getElementById('temp_jlcal-' + modid).innerHTML = closer + document.getElementById(sourceid).innerHTML;
-	//jQuery('temp_jlcal-' + modid).style.display = 'block';
-  	jQuery('temp_jlcal-' + modid).css("display", "block");
+	$('temp_jlcal-' + modid).innerHTML = closer + $(sourceid).innerHTML;
+	$('temp_jlcal-' + modid).style.display = 'block';
 }
+function jlCalmod_showhide(targetid, sourceids, thistitle, inject, modid) {
 
-function jlCalmod_showhide(targetid, sourceids, thistitle, inject, modid) 
-{
-
-	if (jQuery(targetid)) 
-  {
-		var targetcontent = document.getElementById(targetid).innerHTML;
-		var sourcecontent = (jQuery(sourceids)) ? document.getElementById(sourceids).innerHTML	: 'Something went wrong this day';
+	if ($(targetid)) {
+		var targetcontent = $(targetid).innerHTML;
+		var sourcecontent = ($(sourceids)) ? $(sourceids).innerHTML	: 'Something went wrong this day';
 		var tempcontentid = 'jlCalList-' + modid + '_temp';
 		jlCalmod_setTitle(targetid, sourceids, thistitle, modid);
 		jlCalmod_setContent(targetid, 'jlCalList-' + modid + '_temp', sourcecontent, thistitle, modid);
 		var incont = jlcinjectcontainer[modid];
-		if (jQuery(incont) && inject > 0) 
-    {
+		if ($(incont) && inject > 0) {
 			jlCalmod_injectContent(tempcontentid, incont, modid);
 		}
-		if(jlcmodal[modid] == 1) 
-    {
-			//SqueezeBox.setContent('string', sourcecontent);
+		if(jlcmodal[modid] == 1) {
+			SqueezeBox.setContent('string', sourcecontent);
 		}
 	}
 }
@@ -81,41 +72,39 @@ function jlcnewAjax() {
 	return xmlhttp;
 }
 
-function jlcHide(modid) 
-{
-	if (jQuery('jlCalListDayTitle-' + modid))
-		document.getElementById('jlCalListDayTitle-' + modid).innerHTML = '';
-	if (jQuery('jlCalListTitle-' + modid))
-		document.getElementById('jlCalListTitle-' + modid).innerHTML = '';
-	if (jQuery('jlcteam' + modid))
-		jQuery('jlcteam' + modid).toggleClass('jcalbox_hidden');
-	if (jQuery('jlCalList-' + modid))
-		document.getElementById('jlCalList-' + modid).innerHTML = '';
+function jlcHide(modid) {
+	if ($('jlCalListDayTitle-' + modid))
+		$('jlCalListDayTitle-' + modid).innerHTML = '';
+	if ($('jlCalListTitle-' + modid))
+		$('jlCalListTitle-' + modid).innerHTML = '';
+	if ($('jlcteam' + modid))
+		$('jlcteam' + modid).toggleClass('jcalbox_hidden');
+	if ($('jlCalList-' + modid))
+		$('jlCalList-' + modid).innerHTML = '';
 }
 
-function jlcnewDate(month, year, modid, day) 
-{
+function jlcnewDate(month, year, modid, day) {
 	if (!day)
 		day = 0;
 	var teamid = 0;
-	if (jQuery('jlcteam' + modid))
-		teamid = jQuery('#jlcteam' + modid).val();
-	//var myFx = new Fx.Morph('jlctableCalendar-' + modid);
-	//myFx.start({
-//		'opacity' : 0
-	//});
+	if ($('jlcteam' + modid))
+		teamid = $('jlcteam' + modid).options[$('jlcteam' + modid).selectedIndex].value;
+	var myFx = new Fx.Morph('jlctableCalendar-' + modid);
+	myFx.start({
+		'opacity' : 0
+	});
 	loadHtml = "<p id='loadingDiv-"
 			+ modid
 			+ "' style='margin-left: 10px; margin-top: -10px; margin-bottom: 10px;'>";
 	loadHtml += "<img src='" + calendar_baseurl +
 				"modules/mod_sportsmanagement_calendar/assets/images/loading.gif'>";
 	loadHtml += "</p>";
-	document.getElementById('jlccalendar-' + modid).innerHTML += loadHtml;
+	$('jlccalendar-' + modid).innerHTML += loadHtml;
 	jlcHide(modid);
-	//var myFx = new Fx.Morph('jlctableCalendar-' + modid);
-	//myFx.start({
-//		'opacity' : 1
-//	});
+	var myFx = new Fx.Morph('jlctableCalendar-' + modid);
+	myFx.start({
+		'opacity' : 1
+	});
 
 	if (month <= 0) {
 		month += 12;
@@ -144,11 +133,11 @@ function jlcnewDate(month, year, modid, day)
 
 			justTheCalendar = response.substring(start, finish);
 
-			//var myFx = new Fx.Morph('jlctableCalendar-' + modid);
-			//myFx.start({
-//				'opacity' : 1
-//			});
-			document.getElementById('jlccalendar-' + modid).innerHTML = justTheCalendar;
+			var myFx = new Fx.Morph('jlctableCalendar-' + modid);
+			myFx.start({
+				'opacity' : 1
+			});
+			$('jlccalendar-' + modid).innerHTML = justTheCalendar;
 
 			var today = new Date();
 			var dd = today.getDate();
@@ -159,20 +148,19 @@ function jlcnewDate(month, year, modid, day)
 				dd = '0' + dd;
 			var sc = 'jlCalList-' + modid;
 			var tc = 'jlcal_' + yy + '-' + mm + '-' + dd + '-' + modid;
-			if (jQuery(tc))
+			if ($(tc))
 				jlCalmod_showhide(sc, tc, dd + '.' + mm + '.' + yy, 1, modid);
-			if ( jlcmodal[modid] == 1) 
-      {
-				//SqueezeBox.initialize({});
+			if (SqueezeBox && jlcmodal[modid] == 1) {
+				SqueezeBox.initialize({});
 
-				jQuery('a.jlcmodal' + modid).each(function(el) {
+				$$('a.jlcmodal' + modid).each(function(el) {
 					el.addEvent('click', function(e) {
 						new Event(e).stop();
 						SqueezeBox.fromElement(el);
 					});
 				});
 			}
-			var JTooltips = new Tips(jQuery('#jlccalendar-' + modid + ' .hasTip'),
+			var JTooltips = new Tips($$('#jlccalendar-' + modid + ' .hasTip'),
 					{
 						maxTitleChars : 50,
 						fixed : false
