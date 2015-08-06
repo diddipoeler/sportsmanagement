@@ -45,7 +45,7 @@ $mainframe = JFactory::getApplication();
 //echo '<br /><pre>~' . print_r($config,true) . '~</pre><br />';
 //echo '<br /><pre>~' . print_r($config['limit'],true) . '~</pre><br />';
 ?>
-<a name='jl_top' id='jl_top'></a>
+<!-- <a name='jl_top' id='jl_top'></a> -->
 <?php
 foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionProject)
 //foreach ($predictionProjectS AS $predictionProject)
@@ -143,7 +143,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 		        
 		        
             
-            $imgTitle=JText::_('JL_PRED_HEAD_RANKING_IMAGE_TITLE');
+            $imgTitle = JText::_('JL_PRED_HEAD_RANKING_IMAGE_TITLE');
 						$desc = JHTML::image('media/com_sportsmanagement/jl_images/prediction_ranking.png',$imgTitle,array('border' => 0,'title' => $imgTitle));
 						echo JHTML::link($link,$desc,array('target' => ''));
 		        }
@@ -162,12 +162,18 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 			$to_matchday = $modelpg->createToMatchdayList($predictionProject->project_id);
 			?>
 			<form name='adminForm' id='adminForm' method='post'>
-				<table>
+				<table class="table">
 					<tr>
 						<td><?php echo JHTML::_('select.genericlist',$lists['type'],'type','class="inputbox" size="1"','value','text',$modelpg->type); ?></td>
-						<td><?php echo JHTML::_('select.genericlist',$from_matchday,'from','class="inputbox" size="1"','value','text',$modelpg->from); ?></td>
-						<td><?php echo JHTML::_('select.genericlist',$to_matchday,'to','class="inputbox" size="1"','value','text',$modelpg->to); ?></td>
-						<td><input type='submit' class='button' name='reload View' value='<?php echo JText::_('JL_PRED_RANK_FILTER'); ?>' /></td>
+					</tr>
+                    <tr>	
+                        <td><?php echo JHTML::_('select.genericlist',$from_matchday,'from','class="inputbox" size="1"','value','text',$modelpg->from); ?></td>
+					</tr>
+                    <tr>	
+                        <td><?php echo JHTML::_('select.genericlist',$to_matchday,'to','class="inputbox" size="1"','value','text',$modelpg->to); ?></td>
+					</tr>
+                    <tr>	
+                        <td><input type='submit' class='button' name='reload View' value='<?php echo JText::_('JL_PRED_RANK_FILTER'); ?>' /></td>
 					</tr>
 				</table>
 				<?php echo JHTML::_( 'form.token' ); ?>
@@ -176,7 +182,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 		}
 		?>
 		
-		<table width='100%' cellpadding='0' cellspacing='0'>
+		<table class="table" >
 			<tr>
 				<td class='sectiontableheader' style='text-align:center; vertical-align:top; '><?php echo JText::_('JL_PRED_RANK'); ?></td>
 				<?php
