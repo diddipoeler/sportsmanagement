@@ -191,13 +191,26 @@ $routeparameter['pid'] = $person['person_slug'];
 		?>
 	
 		<?php
-		if ($params->get('show_picture')==1) {
-			if (file_exists(JPATH_BASE.'/'.$person['picture'])&&$person['picture']!='') {
-				$thispic = $person['picture'];
-			}
-			elseif (file_exists(JPATH_BASE.'/'.$person['default_picture'])&&$person['default_picture']!='') {
-				$thispic = $person['default_picture'];
-			}
+		if ( $params->get('show_picture') ) 
+        {
+//			if (file_exists(JPATH_BASE.'/'.$person['picture'])&&$person['picture']!='') 
+//            {
+//				$thispic = $person['picture'];
+//			}
+//			elseif (file_exists(JPATH_BASE.'/'.$person['default_picture'])&&$person['default_picture']!='') 
+//            {
+//				$thispic = $person['default_picture'];
+//			}
+            
+            if ( sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$person['picture']) )
+    {
+    $thispic = $person['picture'];    
+    }
+    elseif ( sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$person['default_picture']) )
+    {
+    $thispic = $person['default_picture'];    
+    }
+    
 			//echo '<img src="'.JURI::base().'/'.$thispic.'" alt="'.$text.'" title="'.$text.'"';
 			//if ($params->get('picture_width') != '') echo ' width="'.$params->get('picture_width').'"';
 			//echo ' /><br />';
