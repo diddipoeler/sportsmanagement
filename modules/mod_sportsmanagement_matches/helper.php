@@ -324,25 +324,31 @@ class modMatchesSportsmanagementHelper {
 	 * @param mixed $team
 	 * @return
 	 */
-	public function getpix($team) {
+	public function getpix($team) 
+    {
 		$pt = $this->params->get('picture_type');
 		if ($this->params->get('show_picture') == 0)
 		return false;
 		$appendimage = ' align="middle" ';
 		$countrycode = $team->country;
-		if($pt=="country" && strlen($countrycode)==3) {
+		if($pt=="country" && strlen($countrycode)==3) 
+        {
 			$pic['src'] = JSMCountries::getIso3Flag($countrycode);
 			$pic['alt'] = JSMCountries::getCountryName($countrycode);
-		} else {
+		} 
+        else 
+        {
          
 			$defaultlogos = $this->getDefaultLogos();
-			$matchpart_pic = (!empty ($team->$pt) AND curl_init(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$team->$pt)) ? $team->$pt : $defaultlogos[$pt];
+			//$matchpart_pic = (!empty ($team->$pt) AND curl_init(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$team->$pt)) ? $team->$pt : $defaultlogos[$pt];
+            $matchpart_pic = (!empty ($team->$pt) AND sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$team->$pt)) ? $team->$pt : $defaultlogos[$pt];
             
 //            echo 'server -> '.COM_SPORTSMANAGEMENT_PICTURE_SERVER.'<br>';
 //            echo 'logo -> '.$team->$pt.'<br>';
 //            echo 'pic -> '.$matchpart_pic.'<br>';
             
-			if (curl_init(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$matchpart_pic)) {
+			if (curl_init(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$matchpart_pic)) 
+            {
 				$size = getimagesize(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$matchpart_pic);
 				$pic_width = $size[0];
 				$pic_height = $size[1];

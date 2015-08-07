@@ -159,7 +159,11 @@ class modJSMClubiconsHelper
         $imgtype = $this->params->get( 'logotype','logo_middle' );
 		$logourl = $this->module->picture_server.DS.$item->$imgtype;
 
-		
+		if ( !sportsmanagementHelper::existPicture($logourl) )
+{
+$logourl = $this->module->picture_server.DS.sportsmanagementHelper::getDefaultPlaceholder('logo_big');    
+}
+
 //        if ( JFile::exists($logourl) )
 //        {
 //        $logourl = $logourl;   

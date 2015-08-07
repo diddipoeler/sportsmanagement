@@ -48,6 +48,11 @@ if ( !defined('JSM_PATH') )
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
+if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
+}
+
 if (JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_dbprefix' ))
 {
 $module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;    
@@ -82,7 +87,7 @@ require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'results.php');
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php' );
 
 if (!defined('_JLMATCHLISTSLIDERMODPATH')) { define('_JLMATCHLISTSLIDERMODPATH', dirname( __FILE__ ));}
-if (!defined('_JLMATCHLISTSLIDERMODURL')) { define('_JLMATCHLISTSLIDERMODURL', JURI::base().'modules/mod_sportsmanagement_matchesslider/');}
+if (!defined('_JLMATCHLISTSLIDERMODURL')) { define('_JLMATCHLISTSLIDERMODURL', JURI::base().'modules/'.$module->module.'/');}
 require_once (_JLMATCHLISTSLIDERMODPATH.DS.'helper.php');
 require_once (_JLMATCHLISTSLIDERMODPATH.DS.'connectors'.DS.'sportsmanagement.php');
 
@@ -99,23 +104,23 @@ JHTML::_('behavior.mootools');
 $doc = JFactory::getDocument();
 $doc->addScript( _JLMATCHLISTSLIDERMODURL.'assets/js/jquery.simplyscroll.js' );
 //$doc->addStyleSheet(_JLMATCHLISTMODURL.'tmpl/'.$template.'/mod_sportsmanagement_matchesslider.css');
-$doc->addStyleSheet(_JLMATCHLISTSLIDERMODURL.'assets/css/mod_sportsmanagement_matchesslider.css');
+$doc->addStyleSheet(_JLMATCHLISTSLIDERMODURL.'assets/css/'.$module->module.'.css');
 
 
 JHTML::_('behavior.tooltip');
-$doc->addScriptDeclaration('
-(function($) {
-	$(function() { //on DOM ready
-		$("#scroller").simplyScroll({
-			customClass: \'custom\',
-			direction: \'backwards\',
-			pauseOnHover: false,
-			frameRate: 20,
-			speed: 2
-		});
-	});
-})(jQuery);
-  ');
+//$doc->addScriptDeclaration('
+//(function($) {
+//	$(function() { //on DOM ready
+//		$("#scroller").simplyScroll({
+//			customClass: \'custom\',
+//			direction: \'backwards\',
+//			pauseOnHover: false,
+//			frameRate: 20,
+//			speed: 2
+//		});
+//	});
+//})(jQuery);
+//  ');
 
 //$mod = new MatchesSliderSportsmanagementConnector($params, $module->id, $match_id);
 //$matches = $mod->getMatches();

@@ -45,6 +45,20 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 
+<script type="text/javascript">
+(function($) {
+	$(function() { //on DOM ready
+		$("#scroller").simplyScroll({
+			customClass: 'custom',
+			direction: 'backwards',
+			pauseOnHover: false,
+			frameRate: 20,
+			speed: 2
+		});
+	});
+})(jQuery);
+</script>
+
 <div id="scroller" class="row">
   
   
@@ -68,12 +82,20 @@ echo JHTML :: _('date', $match->match_date, $params->get('timeformat'), null);
 </h1>
 <p style="text-align: center;">
 <?PHP
-echo '<img style="float: left;" src="'.COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match->logohome.'" alt="'.$match->teamhome.'"  width="'.$params->get('xsize').'" title="'.$match->teamhome.'" '.$match->teamhome.' />';
 
+if ( !sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match->logohome) )
+{
+$match->logohome = sportsmanagementHelper::getDefaultPlaceholder('logo_big');    
+}
+if ( !sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match->logoaway) )
+{
+$match->logoaway = sportsmanagementHelper::getDefaultPlaceholder('logo_big');    
+}
+    
+echo '<img style="float: left;" src="'.COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match->logohome.'" alt="'.$match->teamhome.'"  width="'.$params->get('xsize').'" title="'.$match->teamhome.'" '.$match->teamhome.' />';
 echo ''.$match->team1_result;
 echo ' - ';
 echo $match->team2_result.'';
-
 echo '<img style="float: right;" src="'.COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match->logoaway.'" alt="'.$match->teamaway.'" width="'.$params->get('xsize').'" title="'.$match->teamaway.'" '.$match->teamaway.' />';
 ?>
 </p>

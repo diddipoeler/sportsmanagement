@@ -360,11 +360,19 @@ $document->addScriptDeclaration(';
     jlcmodal['.$module->id.'] = \''.$lightbox.'\';
       ');
       
-if (!defined('JLTOPAM_MODULESCRIPTLOADED')) {
+if (!defined('JLTOPAM_MODULESCRIPTLOADED')) 
+{
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{    
 	$document->addScript( JURI::base().'modules/'.$module->module.'/js/'.$module->module.'.js' );
-	$document->addScriptDeclaration(';
-    var ajaxmenu_baseurl=\''. JURI::base() . '\';
-      ');
+}    
+else
+{
+    $document->addScript( JURI::base().'modules/'.$module->module.'/js/'.$module->module.'_2.js' );
+}	
+    //	$document->addScriptDeclaration(';
+//    var ajaxmenu_baseurl=\''. JURI::base() . '\';
+//      ');
 	$document->addStyleSheet(JURI::base().'modules/'.$module->module.'/css/'.$module->module.'.css');
 	$document->addStyleSheet(JURI::base().'modules/'.$module->module.'/css/mod_sportsmanagement_ajax_top_navigation_tabs_sliders.css');
 	define('JLTOPAM_MODULESCRIPTLOADED', 1);

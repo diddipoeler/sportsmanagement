@@ -41,7 +41,9 @@
 defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.tooltip');
 ?>
-
+<script type="text/javascript">
+var ajaxmenu_baseurl = '<?php echo JUri::base() ?>';
+</script>
 
 <?PHP
 

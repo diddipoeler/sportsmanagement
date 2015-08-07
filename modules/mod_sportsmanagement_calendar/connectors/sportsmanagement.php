@@ -616,18 +616,6 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
         $query->where("tl.id IN (".$listTeamId.")");
         $query->where("tl.project_id = p.id");
 
-//		$query = "SELECT tl.id AS teamtoolid, tl.division_id, tl.standard_playground, tl.start_points,
-//                     tl.info, tl.team_id, tl.checked_out, tl.checked_out_time, tl.picture, tl.project_id,
-//                     t.id, t.name, t.short_name, t.middle_name, t.info, t.club_id,
-//                     c.logo_small, c.logo_middle, c.logo_big, c.country,
-//                     p.name AS project_name
-//                FROM #__joomleague_team t
-//                INNER JOIN #__joomleague_project_team tl on tl.team_id = t.id
-//                INNER JOIN #__joomleague_project p on p.id = tl.project_id
-//                LEFT JOIN #__joomleague_club c on t.club_id = c.id
-//                WHERE tl.id IN (".$listTeamId.") AND tl.project_id = p.id";
-
-		//$query = (self::$prefix != '') ? str_replace('#__', self::$prefix, $query) : $query;
 		$db->setQuery($query);
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )

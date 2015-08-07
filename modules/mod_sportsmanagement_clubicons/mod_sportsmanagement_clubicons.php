@@ -149,11 +149,11 @@ $rowsep = 'tr';
 $initjs = "
     var jcclubiconsglobalmaxwidth = ".$params->get('jcclubiconsglobalmaxwidth', 0).";
     window.addEvent('domready', function(){
-      $('clubicons".$module->id."').setStyle('opacity', 0);
-      new Asset.images($('clubicons".$module->id."').getElements('img.smstarticon'), {
+      jQuery('clubicons".$module->id."').setStyle('opacity', 0);
+      new Asset.images(jQuery('clubicons".$module->id."').getElements('img.smstarticon'), {
       onComplete: function(){
           observeClubIcons(".$module->id.", 'img.smstarticon', ".$cnt.", ".$params->get( 'logo_widthdif',12 ).", '".$rowsep."');
-          $('clubicons".$module->id."').fade('in');
+          jQuery('clubicons".$module->id."').fade('in');
       }
     });
 });
@@ -166,7 +166,7 @@ window.addEvent('resize', function(){
 $mv = JFactory::getApplication()->get('MooToolsVersion');
 $script =  'script';
 $doc->addScript( JURI::base() . 'modules'.DS.$module->module.DS.'js/'.$script.'.js');
-$doc->addScriptDeclaration($initjs);
+//$doc->addScriptDeclaration($initjs);
 ?>           
 <div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP

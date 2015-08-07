@@ -41,8 +41,13 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 
-<table id="clubicons<?php echo $module->id;?>" cellpadding="0" cellspacing="0"
-	class="modjsmclubicons">
+<script type="text/javascript">
+<?PHP
+echo $initjs;
+?>
+</script>
+
+<table id="clubicons<?php echo $module->id;?>" class="table">
 	<tr>
 <?php
 		$cnt = 0;
