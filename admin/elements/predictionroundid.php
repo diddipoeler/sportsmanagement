@@ -64,7 +64,7 @@ class JFormFieldpredictionroundid extends JFormField
     $app			= JFactory::getApplication();
 		$option				= 'com_sportsmanagement';
         
-        $prediction_id = $app->getUserState( "$option.predid", '0' );
+        $prediction_id = $app->getUserState( "$option.prediction_id", '0' );
         
         // welche tabelle soll genutzt werden
         $params = JComponentHelper::getParams( 'com_sportsmanagement' );
@@ -72,15 +72,15 @@ class JFormFieldpredictionroundid extends JFormField
         
         $query	= $db->getQuery(true);
     $query->select('r.id AS id,r.name as roundname');
-    $query->from('#__'.$database_table.'_match AS m');
-    $query->join('INNER', '#__'.$database_table.'_round AS r ON r.id = m.round_id');
-    $query->join('INNER', '#__'.$database_table.'_prediction_project as prepro on prepro.project_id = r.project_id');
+    $query->from('#__sportsmanagement_match AS m');
+    $query->join('INNER', '#__sportsmanagement_round AS r ON r.id = m.round_id');
+    $query->join('INNER', '#__sportsmanagement_prediction_project as prepro on prepro.project_id = r.project_id');
 
     
     $query->where('prepro.prediction_id = '. $prediction_id);
     $query->group('r.id');
 
-//$app->enqueueMessage(JText::_('prediction_id -> <pre> '.print_r($prediction_id,true).'</pre><br>' ),'Notice');		
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <pre> '.print_r($prediction_id,true).'</pre><br>' ),'Notice');				
 
 
 		$db->setQuery( $query );

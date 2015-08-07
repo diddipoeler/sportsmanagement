@@ -107,6 +107,7 @@ class sportsmanagementModelPredictionTemplates extends JModelList
         
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.prediction_id', 'filter_prediction_id', '');
 		$this->setState('filter.prediction_id', $temp_user_request);
+        $app->setUserState( "com_sportsmanagement.prediction_id", $temp_user_request );
         
 //        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.prediction_id_select', 'filter_prediction_id_select', '');
 //        

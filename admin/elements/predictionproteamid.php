@@ -63,10 +63,10 @@ class JFormFieldpredictionproteamid extends JFormField
 	protected function getInput()
   {
 		$db = sportsmanagementHelper::getDBConnection();
-    $app			= JFactory::getApplication();
-		$option				= 'com_sportsmanagement';
+    $app = JFactory::getApplication();
+		$option = 'com_sportsmanagement';
         
-        $prediction_id = $app->getUserState( "$option.predid", '0' );
+        $prediction_id = $app->getUserState( "$option.prediction_id", '0' );
         
         // welche tabelle soll genutzt werden
         $params = JComponentHelper::getParams( 'com_sportsmanagement' );
@@ -74,16 +74,16 @@ class JFormFieldpredictionproteamid extends JFormField
         
         $query	= $db->getQuery(true);
     $query->select('tl.id AS id,t.name as teamname');
-    $query->from('#__'.$database_table.'_project_team AS tl');
-    $query->join('LEFT', '#__'.$database_table.'_season_team_id AS st on tl.team_id = st.id');   
-    $query->join('LEFT', '#__'.$database_table.'_team AS t on st.team_id = t.id');
-    $query->join('INNER', '#__'.$database_table.'_prediction_project as prepro on prepro.project_id = tl.project_id');
+    $query->from('#__sportsmanagement_project_team AS tl');
+    $query->join('LEFT', '#__sportsmanagement_season_team_id AS st on tl.team_id = st.id');   
+    $query->join('LEFT', '#__sportsmanagement_team AS t on st.team_id = t.id');
+    $query->join('INNER', '#__sportsmanagement_prediction_project as prepro on prepro.project_id = tl.project_id');
 
     
     $query->where('prepro.prediction_id = '. $prediction_id);
     $query->group('tl.id');
 
-//$app->enqueueMessage(JText::_('prediction_id -> <pre> '.print_r($prediction_id,true).'</pre><br>' ),'Notice');		
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <pre> '.print_r($prediction_id,true).'</pre><br>' ),'Notice');			
 
 
 		$db->setQuery( $query );

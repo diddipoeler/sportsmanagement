@@ -62,6 +62,28 @@ abstract class sportsmanagementHelper
     
     
     /**
+     * sportsmanagementHelper::existPicture()
+     * 
+     * @param string $picture
+     * @param string $standard
+     * @return void
+     */
+    public static function existPicture($picture='',$standard='')
+    {
+    $app = JFactory::getApplication();
+    $file_headers = @get_headers($picture);
+    if($file_headers[0] == 'HTTP/1.1 404 Not Found') 
+    {
+    return false;
+    }
+    else 
+    {
+    return true;
+    }
+        
+    }
+    
+    /**
      * sportsmanagementHelper::setDebugInfoText()
      * 
      * @param mixed $methode
@@ -223,7 +245,23 @@ abstract class sportsmanagementHelper
        // Get some system objects.
 		$config = JFactory::getConfig();
 		$user = JFactory::getUser();
+        $res = JFactory::getDate(strtotime($match->match_date));
         
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' res<br><pre>'.print_r($res,true).'</pre>'),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match timezone<br><pre>'.print_r($match->timezone,true).'</pre>'),'Notice');
+//        
+//         if(version_compare(JVERSION,'3.0.0','ge')) 
+//            {
+//                $res->setTimezone(new DateTimeZone($app->getCfg('offset')));
+//            }
+//            else
+//            {
+//				$res->setOffset($app->getCfg('offset'));
+//            }
+//        
+//        $test = $res->toUnix('true');    
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' test<br><pre>'.print_r($test,true).'</pre>'),'Notice');
+            
 		if ($match->match_date > 0)
 		{
 			$app = JFactory::getApplication();
@@ -238,7 +276,19 @@ abstract class sportsmanagementHelper
 	 			$timezone = $user->getParam('timezone', $match->timezone);
 			}
 
-	 		$matchDate = new JDate($match->match_date, 'UTC');
+	 		//$matchDate = new JDate($match->match_date, 'UTC');
+            $matchDate = new JDate($match->match_date);
+/*            
+            if(version_compare(JVERSION,'3.0.0','ge')) 
+            {
+                //$res->setTimezone($app->getCfg('offset'));
+                $res->setTimezone(new DateTimeZone($app->getCfg('offset')));
+            }
+            else
+            {
+				$res->setOffset($app->getCfg('offset'));
+            }
+*/            
             if ( $timezone )
             {
 	 		$matchDate->setTimezone(new DateTimeZone($timezone));
@@ -258,6 +308,7 @@ abstract class sportsmanagementHelper
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' offset<br><pre>'.print_r($config->get('offset'),true).'</pre>'),'Notice');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' user<br><pre>'.print_r($user,true).'</pre>'),'Notice');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' timezone<br><pre>'.print_r($timezone,true).'</pre>'),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match  timezone<br><pre>'.print_r($match->timezone,true).'</pre>'),'Notice');
         
 	}
     
@@ -1466,18 +1517,23 @@ else
 					return $ph_player;
 					break;
 				case "clublogobig": //club logo big
+                case "logo_big":
 					return $ph_logo_big;
 					break;
 				case "clublogomedium": //club logo medium
+                case "logo_middle":
 					return $ph_logo_medium;
 					break;
 				case "clublogosmall": //club logo small
+                case "logo_small":
 					return $ph_logo_small;
 					break;
 				case "icon": //icon
 					return $ph_icon;
 					break;
 				case "team": //team picture
+                case "team_picture":
+                case "projectteam_picture":
 					return $ph_team;;
 					break;					
 				default:
@@ -1699,7 +1755,8 @@ else
             {
 				$res->setOffset($app->getCfg('offset'));
             }
-			}
+			
+            }
 		}
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' res<br><pre>'.print_r($res,true).'</pre>'),'');

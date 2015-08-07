@@ -64,30 +64,30 @@ class JFormFieldpredictionmatchid extends JFormField
     $app = JFactory::getApplication();
 		$option	= 'com_sportsmanagement';
 		//$prediction_id = (int) $app->getUserState( $option . 'prediction_id' );
-        $prediction_id = $app->getUserState( "$option.predid", '0' );
+        $prediction_id = $app->getUserState( "$option.prediction_id", '0' );
         
         // welche tabelle soll genutzt werden
         $params = JComponentHelper::getParams( 'com_sportsmanagement' );
-        $database_table	= $params->get( 'cfg_which_database_table' );
+        //$database_table	= $params->get( 'cfg_which_database_table' );
 
-//$app->enqueueMessage(JText::_('prediction_id -> <pre> '.print_r($prediction_id,true).'</pre><br>' ),'Notice');		
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <pre> '.print_r($prediction_id,true).'</pre><br>' ),'Notice');		
 
     $query	= $db->getQuery(true);
     $query->select('m.id AS id,m.match_date');
     $query->select('r.roundcode,r.name as roundname');
     $query->select('t1.name as home');
     $query->select('t2.name as away');
-    $query->from('#__'.$database_table.'_match AS m');
-    $query->join('INNER', '#__'.$database_table.'_round AS r ON r.id = m.round_id');
-    $query->join('INNER', '#__'.$database_table.'_prediction_project as prepro on prepro.project_id = r.project_id');
-    $query->join('LEFT', '#__'.$database_table.'_project_team AS tt1 ON m.projectteam1_id = tt1.id');
-    $query->join('LEFT', '#__'.$database_table.'_project_team AS tt2 ON m.projectteam2_id = tt2.id');
+    $query->from('#__sportsmanagement_match AS m');
+    $query->join('INNER', '#__sportsmanagement_round AS r ON r.id = m.round_id');
+    $query->join('INNER', '#__sportsmanagement_prediction_project as prepro on prepro.project_id = r.project_id');
+    $query->join('LEFT', '#__sportsmanagement_project_team AS tt1 ON m.projectteam1_id = tt1.id');
+    $query->join('LEFT', '#__sportsmanagement_project_team AS tt2 ON m.projectteam2_id = tt2.id');
     
-    $query->join('LEFT','#__'.$database_table.'_season_team_id AS st1 ON st1.id = tt1.team_id ');
-    $query->join('LEFT','#__'.$database_table.'_season_team_id AS st2 ON st2.id = tt2.team_id ');
+    $query->join('LEFT','#__sportsmanagement_season_team_id AS st1 ON st1.id = tt1.team_id ');
+    $query->join('LEFT','#__sportsmanagement_season_team_id AS st2 ON st2.id = tt2.team_id ');
         
-    $query->join('LEFT', '#__'.$database_table.'_team AS t1 ON t1.id = st1.team_id');
-    $query->join('LEFT', '#__'.$database_table.'_team AS t2 ON t2.id = st2.team_id');
+    $query->join('LEFT', '#__sportsmanagement_team AS t1 ON t1.id = st1.team_id');
+    $query->join('LEFT', '#__sportsmanagement_team AS t2 ON t2.id = st2.team_id');
     
     $query->where('prepro.prediction_id = '. $prediction_id);
 

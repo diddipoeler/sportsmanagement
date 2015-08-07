@@ -56,6 +56,38 @@ jimport('joomla.application.component.modeladmin');
 class sportsmanagementModelPredictionTemplate extends JModelAdmin
 {
 
+
+
+    /**
+	 * Method to get a single record.
+	 *
+	 * @param   integer  $pk  The id of the primary key.
+	 *
+	 * @return  mixed  Object on success, false on failure.
+	 *
+	 * @since   1.6
+	 */
+	public function getItem($pk = null)
+	{
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+       
+       $prediction_id = $app->getUserState( "$option.prediction_id", '0' );
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prediction_id<br><pre>'.print_r($prediction_id,true).'</pre>'),'Notice');
+        
+		if ($item = parent::getItem($pk))
+		{
+
+		}
+
+
+
+		return $item;
+	}
+    
     /**
 	 * Method override to check if you can edit an existing record.
 	 *
@@ -205,7 +237,7 @@ class sportsmanagementModelPredictionTemplate extends JModelAdmin
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $query->select('*');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game');
+        $query->from('#__sportsmanagement_prediction_game');
         $query->where('id = ' . (int) $id);
 
 		$db->setQuery( $query );

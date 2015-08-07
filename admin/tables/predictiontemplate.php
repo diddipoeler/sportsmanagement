@@ -70,7 +70,7 @@ class sportsmanagementTablePredictionTemplate extends JTable
 	function __construct(& $db)
 	{
 	   $db = sportsmanagementHelper::getDBConnection();
-		parent::__construct('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_template', 'id', $db);
+		parent::__construct('#__sportsmanagement_prediction_template', 'id', $db);
 	}
 
 	/**
@@ -82,16 +82,16 @@ class sportsmanagementTablePredictionTemplate extends JTable
 	* @see JTable:bind
 	* @since 1.5
 	*/
-	function bind( $array, $ignore = '' )
-	{
-		if (key_exists( 'params', $array ) && is_array( $array['params'] )) {
-			$registry = new JRegistry();
-			$registry->loadArray($array['params']);
-			$array['params'] = $registry->toString('ini');
-			$array['params'] = ereg_replace('"', '', $array['params']);
-		}
-		return parent::bind($array, $ignore);
-	}
+//	function bind( $array, $ignore = '' )
+//	{
+//		if (key_exists( 'params', $array ) && is_array( $array['params'] )) {
+//			$registry = new JRegistry();
+//			$registry->loadArray($array['params']);
+//			$array['params'] = $registry->toString('ini');
+//			$array['params'] = ereg_replace('"', '', $array['params']);
+//		}
+//		return parent::bind($array, $ignore);
+//	}
 
 	/**
 	 * Overloaded check method to ensure data integrity
@@ -100,10 +100,10 @@ class sportsmanagementTablePredictionTemplate extends JTable
 	 * @return boolean True on success
 	 * @since 1.0
 	 */
-	function check()
-	{
-		return true;
-	}
+//	function check()
+//	{
+//		return true;
+//	}
 
 }
 ?>

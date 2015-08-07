@@ -54,10 +54,10 @@ jimport('joomla.form.form');
  */
 class sportsmanagementViewTemplate extends sportsmanagementView
 {
+
 	/**
-	 * sportsmanagementViewTemplate::display()
+	 * sportsmanagementViewTemplate::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return
 	 */
 	public function init ()
