@@ -44,7 +44,7 @@ function jlCalmod_injectContent(sourceid, destinationid, modid)
 		document.getElementById(destinationid).innerHTML = '<div id="temp_jlcal-' + modid	+
 									'" class="jcal_inject"></div>' + tmp;
 	}
-	var closer = '<span class="jcal_inject_close" onclick="$(\'temp_jlcal-'
+	var closer = '<span class="jcal_inject_close" onclick="document.getElementById(\'temp_jlcal-'
 			+ modid + '\').style.display=\'none\';">x</span>';
 	document.getElementById('temp_jlcal-' + modid).innerHTML = closer + document.getElementById(sourceid).innerHTML;
 	//jQuery('temp_jlcal-' + modid).style.display = 'block';
