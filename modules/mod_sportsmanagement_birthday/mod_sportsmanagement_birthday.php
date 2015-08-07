@@ -202,11 +202,11 @@ $routeparameter['pid'] = $person['person_slug'];
 //				$thispic = $person['default_picture'];
 //			}
             
-            if ( sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$person['picture']) )
+            if ( sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$person['picture']) && $person['picture'] != '' )
     {
     $thispic = $person['picture'];    
     }
-    elseif ( sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$person['default_picture']) )
+    elseif ( sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$person['default_picture']) && $person['default_picture'] != '' )
     {
     $thispic = $person['default_picture'];    
     }

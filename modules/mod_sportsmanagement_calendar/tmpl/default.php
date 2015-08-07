@@ -47,8 +47,27 @@ $display = ($params->get('update_module') == 1) ? 'block' : 'none';
 jlcinjectcontainer['<?php echo $module->id ?>'] = '<?php echo $inject_container ?>';
 jlcmodal['<?php echo $module->id ?>'] = '<?php echo $lightbox ?>';
 var calendar_baseurl = '<?php echo JUri::base() ?>';
+<?PHP
+if ($lightbox ==1 && (!isset($_GET['format']) OR ($_GET['format'] != 'pdf'))) 
+{
+?>
+      window.addEvent('domready', function() {
+          $$('a.jlcmodal<?php echo $module->id ?>').each(function(el) {
+            el.addEvent('click', function(e) {
+              new Event(e).stop();
+              SqueezeBox.fromElement(el);
+            });
+          });
+      });
+<?PHP
+}
+?>
+
 </script>
 
+<div id="<?php echo $inject_container ?>">
+
+</div>
 <?php if(isset($calendar['calendar'])) { ?>
 <div id="jlccalendar-<?php echo $module->id ?>">
 <!--jlccalendar-<?php echo $module->id?> start-->

@@ -5,9 +5,16 @@ var jlcmodal = new Array();
 //	SqueezeBox.initialize({});
 //});
 
+jQuery(function($) {
+			SqueezeBox.initialize({});
+			SqueezeBox.assign($('a.modal').get(), {
+				parse: 'rel'
+			});
+		});
+    
 function jlCalmod_setTitle(targetid, sourceids, thistitle, modid) {
 	var titleid = sourceids.replace('jlcal_', 'jlcaltitte_');
-	if (jQuery(titleid)) {
+	if (document.getElementById(titleid)) {
 		document.getElementById('jlCalListDayTitle-' + modid).innerHTML = document.getElementById(titleid).innerHTML;
 	}
 }
@@ -26,8 +33,13 @@ function jlCalmod_setContent(targetid, tempcontentid, sourcecontent, thistitle, 
 
 function jlCalmod_injectContent(sourceid, destinationid, modid) 
 {
+
+//alert ('destinationid -> ' + destinationid);
+//alert ('sourceid -> ' + sourceid);
+
 	var tmp = document.getElementById(destinationid).innerHTML;
-	if (!jQuery('temp_jlcal-' + modid)) 
+  //var tmp = '';
+	if (!document.getElementById('temp_jlcal-' + modid)) 
   {
 		document.getElementById(destinationid).innerHTML = '<div id="temp_jlcal-' + modid	+
 									'" class="jcal_inject"></div>' + tmp;
@@ -42,10 +54,12 @@ function jlCalmod_injectContent(sourceid, destinationid, modid)
 function jlCalmod_showhide(targetid, sourceids, thistitle, inject, modid) 
 {
 
+//alert ('sourceids -> ' + sourceids);
+
 	if (jQuery(targetid)) 
   {
 		var targetcontent = document.getElementById(targetid).innerHTML;
-		var sourcecontent = (jQuery(sourceids)) ? document.getElementById(sourceids).innerHTML	: 'Something went wrong this day';
+		var sourcecontent = (document.getElementById(sourceids)) ? document.getElementById(sourceids).innerHTML	: 'Something went wrong this day';
 		var tempcontentid = 'jlCalList-' + modid + '_temp';
 		jlCalmod_setTitle(targetid, sourceids, thistitle, modid);
 		jlCalmod_setContent(targetid, 'jlCalList-' + modid + '_temp', sourcecontent, thistitle, modid);
@@ -56,7 +70,7 @@ function jlCalmod_showhide(targetid, sourceids, thistitle, inject, modid)
 		}
 		if(jlcmodal[modid] == 1) 
     {
-			//SqueezeBox.setContent('string', sourcecontent);
+			SqueezeBox.setContent('string', sourcecontent);
 		}
 	}
 }
@@ -163,7 +177,7 @@ function jlcnewDate(month, year, modid, day)
 				jlCalmod_showhide(sc, tc, dd + '.' + mm + '.' + yy, 1, modid);
 			if ( jlcmodal[modid] == 1) 
       {
-				//SqueezeBox.initialize({});
+				SqueezeBox.initialize({});
 
 				jQuery('a.jlcmodal' + modid).each(function(el) {
 					el.addEvent('click', function(e) {

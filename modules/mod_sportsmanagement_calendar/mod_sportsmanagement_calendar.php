@@ -147,20 +147,21 @@ $doc = JFactory::getDocument();
 $lightbox = $params->get('lightbox', 1);
 
 
-if ($lightbox ==1 && (!isset($_GET['format']) OR ($_GET['format'] != 'pdf'))) 
-{
-	$doc->addScriptDeclaration(";
-      window.addEvent('domready', function() {
-          $$('a.jlcmodal".$module->id."').each(function(el) {
-            el.addEvent('click', function(e) {
-              new Event(e).stop();
-              SqueezeBox.fromElement(el);
-            });
-          });
-      });
-      ");
-}
-$inject_container = ($params->get('inject', 0)==1)?$params->get('inject_container', 'joomleague'):'';
+//if ($lightbox ==1 && (!isset($_GET['format']) OR ($_GET['format'] != 'pdf'))) 
+//{
+//	$doc->addScriptDeclaration(";
+//      window.addEvent('domready', function() {
+//          $$('a.jlcmodal".$module->id."').each(function(el) {
+//            el.addEvent('click', function(e) {
+//              new Event(e).stop();
+//              SqueezeBox.fromElement(el);
+//            });
+//          });
+//      });
+//      ");
+//}
+
+$inject_container = ($params->get('inject', 0)==1)?$params->get('inject_container', 'sportsmanagement'):'';
 //$doc->addScriptDeclaration(';
 //    jlcinjectcontainer['.$module->id.'] = \''.$inject_container.'\';
 //    jlcmodal['.$module->id.'] = \''.$lightbox.'\';
