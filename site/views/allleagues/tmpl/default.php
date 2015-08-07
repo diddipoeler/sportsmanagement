@@ -65,7 +65,7 @@ function searchPerson(val)
         Joomla.submitform('', this.form)
 	}
 </script>
-<div class="row">
+<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
 <form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars(JFactory::getURI()->toString());?>" method="post">
 	<fieldset class="filters">
 	<legend class="hidelabeltxt"><?php echo JText::_('JGLOBAL_FILTER_LABEL'); ?></legend>
@@ -116,7 +116,7 @@ function searchPerson(val)
 	<?php 
     echo $this->loadTemplate('items');
     ?>
-    <div class="row">
+    <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
     <?PHP
 		echo $this->loadTemplate('backbutton');
 		echo $this->loadTemplate('footer');

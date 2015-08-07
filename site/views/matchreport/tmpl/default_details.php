@@ -41,7 +41,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
 <!-- Details-->
 <h2><?php echo JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS'); ?></h2>
-<div class="row">
+<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
 <div class="col-md-12">
 
 

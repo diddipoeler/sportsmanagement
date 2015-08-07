@@ -51,7 +51,7 @@ $this->kmlpath = JURI::root().'tmp'.DS.$this->project->id.'-ranking.kml';
 $this->kmlfile = $this->project->id.'-ranking.kml';
 
 ?>
-<div class="row">
+<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
 <!--	<a name="jl_top" id="jl_top"></a> -->
 	<?php 
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )

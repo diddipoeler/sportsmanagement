@@ -45,7 +45,7 @@ $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <!-- <div class="joomleague"> -->
-<div class="row">
+<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
 	<?php
 	if ($this->config['show_sectionheader']==1)
 	{

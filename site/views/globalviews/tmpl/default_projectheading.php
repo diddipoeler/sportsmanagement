@@ -177,7 +177,7 @@ echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>
 	if ( $this->overallconfig['show_print_button'] ) 
     {
 	?>
-		<div class="row">
+		<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
 			<table class="table">
 				<tbody>
 					<tr class="contentheading">

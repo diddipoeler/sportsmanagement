@@ -44,7 +44,7 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<div class="row">
+<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
 	<?php
 	echo $this->loadTemplate('projectheading');
 
@@ -100,7 +100,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		{
 			$tm = count ($this->allmatches);
 			echo "<h4>".$tm." ".JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHES')."</h4>";
-			$this->matches=$this->allmatches;
+			$this->matches = $this->allmatches;
 			echo $this->loadTemplate('matches_sorted_by_date');//or use matches_sbd (sort by date)
 		}
 		else
@@ -141,10 +141,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		}
 		break;
 	}
-
-	echo '<div>';
-		echo $this->loadTemplate('backbutton');
-		echo $this->loadTemplate('footer');
-	echo '</div>';
+?>
+<div>
+<?PHP    
+echo $this->loadTemplate('backbutton');
+echo $this->loadTemplate('footer');
+?>
+</div>
+<?PHP
 	?>
 </div>

@@ -53,14 +53,14 @@ else
 //	if($this->config['show_club_info'] || $this->config['show_team_info'])
 //	{
 	?>
-        <div class="row" id="default_teaminfo">
+        <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>" id="default_teaminfo">
         <div class="col-md-6" id="default_teaminfo-left">
         <?PHP
 //	}
 //	else
 //	{
 		 ?>
-<!--        <div class="row"> -->
+<!--        <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>"> -->
 <!--        <div style="text-align:center; width:100%;"> -->
         <?PHP
 //	}

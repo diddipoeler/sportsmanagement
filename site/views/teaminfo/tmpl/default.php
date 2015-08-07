@@ -46,7 +46,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 ?>
 
-<div class="row" id="teaminfo">
+<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>" id="teaminfo">
 	<?php
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
@@ -105,7 +105,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 echo $this->loadTemplate($this->config['show_teaminfo_tabs']);
     ?>
-    <div class="row" id="backbuttonfooter">
+    <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>" id="backbuttonfooter">
     <?PHP
 		echo $this->loadTemplate('backbutton');
 		echo $this->loadTemplate('footer');

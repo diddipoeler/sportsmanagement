@@ -91,7 +91,7 @@ if (!empty($this->matchplayerpositions ))
 
 ?>
 
-<div class="row">
+<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
 
 <?php
 

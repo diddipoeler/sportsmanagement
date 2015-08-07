@@ -223,6 +223,10 @@ function sportsmanagementBuildRoute(&$query)
                 $segments[] = $query['r'];
                 unset($query['r']);
             }
+            if (isset($query['uid'])) {
+                $segments[] = $query['uid'];
+                unset($query['uid']);
+            }
             break;
         case 'predictionresults':
             if (isset($query['prediction_id'])) {
@@ -646,6 +650,9 @@ function sportsmanagementParseRoute($segments)
             }
             if (isset($segments[4])) {
                 $vars['r'] = $segments[4];
+            }
+            if (isset($segments[5])) {
+                $vars['uid'] = $segments[5];
             }
 
             break;

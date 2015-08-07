@@ -47,7 +47,7 @@ $this->kmlpath = JURI::root().'tmp'.DS.$this->club->id.'-club.kml';
 $this->kmlfile = $this->club->id.'-club.kml';
 
 ?>
-<div class="row" id="clubinfo">
+<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>" id="clubinfo">
 
 	<?php 
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )

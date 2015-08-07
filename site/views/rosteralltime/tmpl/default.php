@@ -50,7 +50,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 //echo 'all time player playerposition<pre>'.print_r($this->playerposition,true).'</pre><br>';
 //echo 'all time player positioneventtypes<pre>'.print_r($this->positioneventtypes,true).'</pre><br>';
 ?>
-<div class="row">
+<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
 <?PHP
 //echo $this->loadTemplate('players_new');
 echo $this->loadTemplate('players');

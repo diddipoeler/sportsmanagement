@@ -45,7 +45,7 @@ $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 
-<div class="row">
+<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
 	<?php
 	echo $this->loadTemplate('projectheading');
 
@@ -94,11 +94,14 @@ if ( $this->config['show_previousx'] )
 	}
 
 echo $this->loadTemplate($this->config['show_nextmatch_tabs']);
-
-		echo "<div>";
+?>
+<div>
+<?PHP        
 			echo $this->loadTemplate('backbutton');
 			echo $this->loadTemplate('footer');
-		echo "</div>";
+?>
+</div>
+<?PHP
 	}
 	else
 	{

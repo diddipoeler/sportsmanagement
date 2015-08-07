@@ -45,7 +45,7 @@ $templatesToLoad = array('globalviews', 'results', 'matrix');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 
-<div class="row">
+<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
 <!-- <a name="jl_top" id="jl_top"></a> -->
 	<?php 
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )

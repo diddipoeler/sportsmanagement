@@ -279,11 +279,11 @@ $teamid=JRequest::getInt('tid');
 			case 1 :
 				{
 					$teamA .= '<td class="'.$class1.'">';
-					$teamA .= ' '.JoomleagueModelProject::getClubIconHtml($hometeam,1);
+					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1);
 					$teamA .= '</td>';
 
 					$teamB .= '<td class="'.$class2.'">';
-					$teamB .= JoomleagueModelProject::getClubIconHtml($guestteam,1).' ';
+					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1).' ';
 					$teamB .= '</td>';
 				}
 				break;

@@ -156,6 +156,12 @@ foreach( $current as $ptid => $team )
 	echo "\n";
 
 	//**************logo - jersey
+    if ( !sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$team->team->logo_small) )
+    {
+    $team->team->logo_small = sportsmanagementHelper::getDefaultPlaceholder('clublogosmall');    
+    }
+    
+    
 	if ( $config['show_logo_small_table'] != "no_logo" )
 	{
 		echo '<td class="rankingrow_logo"';
@@ -187,6 +193,11 @@ foreach( $current as $ptid => $team )
         else 
         {
 			$pic = $config['show_logo_small_table'];
+            
+   if ( !sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$team->team->$pic) )
+    {
+    $team->team->$pic = sportsmanagementHelper::getDefaultPlaceholder($pic);    
+    }
 
 echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamranking'.$team->team->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$team->team->$pic,$team->team->name,'20')		
 ?>    

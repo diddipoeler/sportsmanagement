@@ -78,7 +78,7 @@ if(count($this->extended->getFieldsets()) > 0)
 			{
 				?>
 				
-                <div class="row">
+                <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
 		<h4>
 			<?php 
             echo JText::_($fieldset->name); 
@@ -95,7 +95,7 @@ if(count($this->extended->getFieldsets()) > 0)
 					if (!empty($value)) // && !$field->backendonly)
 					{
 						?>
-                        <div class="row">
+                        <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
                         <div class="col-xs-6">
                         
                         <strong><?php echo JText::_( $field->label); ?></strong>

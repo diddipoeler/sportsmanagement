@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 <!-- <div style="width: 100%; float: left"> -->
-<div class="row">
+<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
 	
 		<h4>
 			<?php echo JText::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>

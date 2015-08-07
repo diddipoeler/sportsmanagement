@@ -62,7 +62,7 @@ echo 'this->limitend<br /><pre>~' . print_r($this->limitend,true) . '~</pre><br 
 } 
 </style>
 
-<a name='jl_top' id='jl_top'></a>
+<!-- <a name='jl_top' id='jl_top'></a> -->
 <?php
 foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionProject)
 {
@@ -170,7 +170,8 @@ echo $this->pagination->getListFooter();
 		
 		}
 		?>
-		<table class="<?PHP echo $this->config['table_class'];?>"  >
+        <div style="overflow-y:auto;">
+		<table class="<?PHP echo $this->config['table_class'];?>" style="table-layout:fixed" >
 			<tr>
 				<td class='sectiontableheader' style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK'); ?></td>
 				<?php
@@ -731,6 +732,7 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
     
     
 		</table>
+        </div>
 		<?php
 	}
 }

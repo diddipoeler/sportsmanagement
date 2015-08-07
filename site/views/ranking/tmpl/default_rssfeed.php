@@ -41,7 +41,7 @@
 defined('_JEXEC') or die('Restricted access'); ?>
 
 <!-- <div style="direction: <?php echo $rssrtl ? 'rtl' :'ltr'; ?>; text-align: <?php echo $rssrtl ? 'right' :'left'; ?>"> -->
-<div class="row">
+<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
 <?php
 $rssitems_colums = $this->overallconfig['rssitems_colums'] ;
 

@@ -221,7 +221,7 @@ echo $this->pagination->getListFooter();
                             case 'logo_middle':
                             case 'logo_big':
                             // bild ist nicht vorhanden, dann das standardbild
-                            if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match->homeLogo ) )
+                            if ( !sportsmanagementHelper::existPicture( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match->homeLogo ) )
                             {
                             $match->homeLogo = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");    
                             }
@@ -264,7 +264,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->hom
                             case 'logo_middle':
                             case 'logo_big':
                             // bild ist nicht vorhanden, dann das standardbild
-                            if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match->awayLogo ) )
+                            if ( !sportsmanagementHelper::existPicture( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match->awayLogo ) )
                             {
                             $match->awayLogo = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");    
                             }

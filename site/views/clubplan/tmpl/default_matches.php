@@ -287,11 +287,18 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
                        ?>
 				<td>
                 <?PHP
+                if ( !sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture) )
+    {
+    $game->$picture = sportsmanagementHelper::getDefaultPlaceholder($this->config['team_picture']);    
+    }
+                
                 echo sportsmanagementHelperHtml::getBootstrapModalImage('clubplan'.$game->match_id.'-'.$game->team1_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$game->$picture,$game->tname1,'20')
                 ?>
                 
                 </td>
-					<?php } ?>				
+					<?php 
+                    } 
+                    ?>				
 				<td>
 					-
 				</td>
@@ -302,6 +309,10 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
                        ?>
 				<td>
                 <?PHP
+                if ( !sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture) )
+    {
+    $game->$picture = sportsmanagementHelper::getDefaultPlaceholder($this->config['team_picture']);    
+    }
                 echo sportsmanagementHelperHtml::getBootstrapModalImage('clubplan'.$game->match_id.'-'.$game->team2_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$game->$picture,$game->tname2,'20')
                 ?>
                 </td>

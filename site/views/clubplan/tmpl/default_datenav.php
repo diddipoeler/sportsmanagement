@@ -84,6 +84,10 @@ defined('_JEXEC') or die('Restricted access');
 			if ( $this->club )
 			{
 				$picture = $this->club->logo_big;
+                if ( !sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture) )
+    {
+    $picture = sportsmanagementHelper::getDefaultPlaceholder('logo_big');    
+    }
 echo sportsmanagementHelperHtml::getBootstrapModalImage('clplan'.$this->club->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$this->club->name,'50');
 
            

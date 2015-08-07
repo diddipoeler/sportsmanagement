@@ -46,7 +46,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <h4><?php echo JText::_('COM_SPORTSMANAGEMENT_NEXTMATCH_H2H'); ?></h4>
 <table class="table">
 	<thead>
-        <tr class="sectiontableheader" align="center">
+        <tr class="" align="center">
         <th class="h2h" width="33%">
             <?php
             if ( !is_null ( $this->teams ) )

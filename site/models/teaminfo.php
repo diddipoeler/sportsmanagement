@@ -303,15 +303,14 @@ $result = $db->execute();
         $query->select('CONCAT_WS( \':\', r.id, r.alias ) AS round_slug');
 		$query->select('d.name AS division_name');
 		$query->select('d.shortname AS division_short_name');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.id = pt.team_id'); 
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st.team_id ');
-		$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d ON d.id = pt.division_id ');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id ');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id = p.season_id ');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON l.id = p.league_id ');
-        
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON r.id = p.current_round ');                
+        $query->from('#__sportsmanagement_project_team AS pt ');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id'); 
+		$query->join('INNER','#__sportsmanagement_team AS t ON t.id = st.team_id ');
+		$query->join('LEFT','#__sportsmanagement_division AS d ON d.id = pt.division_id ');
+		$query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id ');
+		$query->join('INNER','#__sportsmanagement_season AS s ON s.id = p.season_id ');
+		$query->join('INNER','#__sportsmanagement_league AS l ON l.id = p.league_id ');
+        $query->join('LEFT','#__sportsmanagement_round AS r ON r.id = p.current_round ');                
         
         if ( $history )
         {

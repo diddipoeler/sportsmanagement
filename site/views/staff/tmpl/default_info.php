@@ -47,7 +47,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <!-- person data START -->
 <h4><?php	echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PERSONAL_DATA' );	?></h4>
 
-<div class="row">
+<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
 <div class="col-md-6">
 
 

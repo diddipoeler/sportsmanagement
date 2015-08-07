@@ -267,6 +267,20 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team<br><pre>'.print_r($team,true).'</pre>'),'');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' type<br><pre>'.print_r($type,true).'</pre>'),'');
         
+    if ( !sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$team->logo_small) )
+    {
+    $team->logo_small = sportsmanagementHelper::getDefaultPlaceholder('logo_small');    
+    }
+    if ( !sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$team->logo_middle) )
+    {
+    $team->logo_middle = sportsmanagementHelper::getDefaultPlaceholder('logo_middle');    
+    }
+    if ( !sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$team->logo_big) )
+    {
+    $team->logo_big = sportsmanagementHelper::getDefaultPlaceholder('logo_big');    
+    }
+        
+        
 		if(!isset($team->name)) return "";
 		$title = $team->name;
        

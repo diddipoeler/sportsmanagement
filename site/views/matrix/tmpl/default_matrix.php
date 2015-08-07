@@ -152,7 +152,7 @@ defined('_JEXEC') or die('Restricted access');
 	$division_id = $this->divisionid;
 	//$matrix = '<table class="matrix">';
     
-    $matrix = '<div class="row">';
+    $matrix = '<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">';
     $matrix .= '<table class="'.$this->config['table_class'].' table-header-rotated">';
 	$k = 1;
 	$crosstable_icons_horizontal = (isset ($this->config['crosstable_icons_horizontal'])) ? $this->config['crosstable_icons_horizontal'] : 0;

@@ -50,14 +50,14 @@ else
     if( $this->config['show_club_info'] )
     {
         ?>
-        <div class="row">
+        <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
         <div class="col-md-6">
         <?PHP
     }
     else
     {
         ?>
-        <div class="row">
+        <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
         <div style="text-align:center; width:100%;">
         <?PHP
     }
@@ -71,7 +71,12 @@ else
            			
 		}
 		
-echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo'.$this->club->id,$picture,$club_emblem_title,$this->config['club_logo_width']);        
+        if ( !sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture) )
+    {
+    $picture = sportsmanagementHelper::getDefaultPlaceholder('logo_big');    
+    }
+    
+echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo'.$this->club->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture,$club_emblem_title,$this->config['club_logo_width']);        
         
         ?>
 
@@ -280,9 +285,17 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$rout
 					$pl_dummy = JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_PLAYGROUND' );
 					?>
                     <address>
-					<strong><?php echo str_replace( "%NUMBER%", $playground_number, $pl_dummy ); ?></strong>
-					<?php echo JHtml::link( $link, $playground->name ); 
-                    
+					<strong>
+                    <?php 
+                    echo str_replace( "%NUMBER%", $playground_number, $pl_dummy ); 
+                    ?>
+                    </strong>
+					<?php 
+                    echo JHtml::link( $link, $playground->name ); 
+                    if ( !sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$playground->picture) )
+    {
+    $playground->picture = sportsmanagementHelper::getDefaultPlaceholder('team');    
+    }
 echo sportsmanagementHelperHtml::getBootstrapModalImage('playground'.$playground->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$playground->picture,$playground->name,$this->config['playground_picture_width']);                    
                     
                     ?>

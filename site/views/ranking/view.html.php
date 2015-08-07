@@ -133,9 +133,9 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 	{
 	   if ( $this->config['show_table_4'] )
 	{
-       $model->part = 1;
-       $model->from = 0;
-       $model->to = 0;
+       $model::$part = 1;
+       $model::$from = 0;
+       $model::$to = 0;
        unset ($model->currentRanking);
 	   unset ($model->previousRanking);
        $model->computeRanking($model::$cfg_which_database);
@@ -147,9 +147,9 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
      
      if ( $this->config['show_table_5'] )
 	{  
-       $model->part = 2;
-       $model->from = 0;
-       $model->to = 0;
+       $model::$part = 2;
+       $model::$from = 0;
+       $model::$to = 0;
        unset ($model->currentRanking);
 	   unset ($model->previousRanking);
        $model->computeRanking($model::$cfg_which_database);

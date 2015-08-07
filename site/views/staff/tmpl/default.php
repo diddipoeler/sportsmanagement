@@ -44,7 +44,7 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<div class="row" id="staff">
+<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>" id="staff">
 	<?php
 	echo $this->loadTemplate('projectheading');
 
@@ -91,7 +91,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	}
 
 	?>
-    <div class="row" id="backbuttonfooter">
+    <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>" id="backbuttonfooter">
     <?PHP
 		echo $this->loadTemplate('backbutton');
 		echo $this->loadTemplate('footer');

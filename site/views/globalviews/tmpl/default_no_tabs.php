@@ -40,7 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>
-<div class="row" id="no_tabs">
+<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>" id="no_tabs">
 <?php
     
 $view = Jrequest::getCmd('view');

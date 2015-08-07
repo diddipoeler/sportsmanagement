@@ -54,7 +54,7 @@ if ($this->config['show_comments_count'] == 1 || $this->config['show_comments_co
 	$separate_comments 	= $pluginParams->get( 'separate_comments', 0 );
 }
 ?>
-<a name="jl_top" id="jl_top"></a>
+<!-- <a name="jl_top" id="jl_top"></a> -->
 <?php
 if (!empty($this->matches))
 {

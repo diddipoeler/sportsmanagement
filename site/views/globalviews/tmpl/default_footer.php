@@ -67,7 +67,7 @@ SqueezeBox.open(url, {
 
 </script>	
 
-<div class="row" style="text-align:center; clear:both">
+<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>" style="text-align:center; clear:both">
       
       <br />      
       

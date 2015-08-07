@@ -156,6 +156,12 @@ $langtag = JFactory::getLanguage();
 //echo 'Current language is: ' . $langtag->getTag();
 
 $paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
+
+if (! defined('COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS'))
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS',$paramscomponent->get( 'boostrap_div_class' ) );
+}
+
 if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 {
 DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',$paramscomponent->get( 'cfg_which_database' ) );

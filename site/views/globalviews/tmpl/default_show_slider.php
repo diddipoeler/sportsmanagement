@@ -40,7 +40,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 ?>
-<div class="row" id="show_slider">
+<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>" id="show_slider">
 <?php
 
 if(version_compare(JVERSION,'3.0.0','ge')) 

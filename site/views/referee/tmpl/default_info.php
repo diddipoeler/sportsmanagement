@@ -47,7 +47,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 <?php if ($this->referee) { ?>
 <h2><?php	echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_PERSONAL_DATA' );	?></h2>
 
-<div class="row">
+<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
 
 <div class="col-md-6">
 

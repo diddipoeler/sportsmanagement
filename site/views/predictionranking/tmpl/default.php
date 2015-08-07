@@ -51,7 +51,7 @@ $templatesToLoad = array('globalviews','predictionheading');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 ?>
-<div class='row'>
+<div class="">
 <?php
 
 echo $this->loadTemplate('predictionheading');
@@ -71,12 +71,16 @@ if ($this->config['show_help']){echo $this->loadTemplate('show_help');}
 // echo '<div>';
 // echo $this->pagination->getListFooter();
 // echo '</div>';
-
-echo '<div>';
+?>
+<div>
+<?PHP
 //backbutton
 echo $this->loadTemplate('backbutton');
 // footer
 echo $this->loadTemplate('footer');
-echo '</div>';
-	?>
+?>
+</div>
+<?PHP
+
+?>
 </div>

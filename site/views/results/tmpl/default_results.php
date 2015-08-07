@@ -46,7 +46,7 @@ if ( !isset ( $this->project ) )
 else
 {
 	?>
-	<div class="row">
+	<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
 		<br />
 		<?php
 		if ( count( $this->matches ) > 0 )

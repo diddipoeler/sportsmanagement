@@ -59,7 +59,7 @@ $field_type = $field->field_type;
 if (!empty($value)) // && !$field->backendonly)
 {
 ?>
-<div class="row">
+<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
 <div class="col-xs-6">
 <strong><?php echo JText::_( $field->name); ?></strong>
 </div>
