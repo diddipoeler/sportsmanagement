@@ -14,7 +14,8 @@ jQuery(function($) {
     
 function jlCalmod_setTitle(targetid, sourceids, thistitle, modid) {
 	var titleid = sourceids.replace('jlcal_', 'jlcaltitte_');
-	if (document.getElementById(titleid)) {
+	if (document.getElementById(titleid)) 
+  {
 		document.getElementById('jlCalListDayTitle-' + modid).innerHTML = document.getElementById(titleid).innerHTML;
 	}
 }
@@ -37,18 +38,23 @@ function jlCalmod_injectContent(sourceid, destinationid, modid)
 //alert ('destinationid -> ' + destinationid);
 //alert ('sourceid -> ' + sourceid);
 
-	var tmp = document.getElementById(destinationid).innerHTML;
-  //var tmp = '';
-	if (!document.getElementById('temp_jlcal-' + modid)) 
-  {
-		document.getElementById(destinationid).innerHTML = '<div id="temp_jlcal-' + modid	+
-									'" class="jcal_inject"></div>' + tmp;
-	}
-	var closer = '<span class="jcal_inject_close" onclick="document.getElementById(\'temp_jlcal-'
-			+ modid + '\').style.display=\'none\';">x</span>';
-	document.getElementById('temp_jlcal-' + modid).innerHTML = closer + document.getElementById(sourceid).innerHTML;
-	//jQuery('temp_jlcal-' + modid).style.display = 'block';
-  	jQuery('temp_jlcal-' + modid).css("display", "block");
+//	var tmp = document.getElementById(destinationid).innerHTML;
+
+//	if (!document.getElementById('temp_jlcal-' + modid)) 
+//  {
+//		document.getElementById(destinationid).innerHTML = '<div id="temp_jlcal-' + modid	+	'" class="jcal_inject"></div>' + tmp;
+//	}
+//	var closer = '<span class="jcal_inject_close" onclick="document.getElementById(\'temp_jlcal-'	+ modid + '\').style.display=\'none\';">x</span>';
+//	document.getElementById('temp_jlcal-' + modid).innerHTML = closer + document.getElementById(sourceid).innerHTML;
+  
+// der text in der modalbox für bootstrap
+  document.getElementById('myModalbody' + modid).innerHTML = document.getElementById(sourceid).innerHTML;
+
+// öffnet die moadalbox für bootstrap  
+  jQuery("#myModal" + modid).modal();
+  
+	
+  	//jQuery('temp_jlcal-' + modid).css("display", "block");
 }
 
 function jlCalmod_showhide(targetid, sourceids, thistitle, inject, modid) 
@@ -61,10 +67,17 @@ function jlCalmod_showhide(targetid, sourceids, thistitle, inject, modid)
 		var targetcontent = document.getElementById(targetid).innerHTML;
 		var sourcecontent = (document.getElementById(sourceids)) ? document.getElementById(sourceids).innerHTML	: 'Something went wrong this day';
 		var tempcontentid = 'jlCalList-' + modid + '_temp';
+    
+// die überschrift in der modalbox für bootstrap
+  document.getElementById('myModalheader' + modid).innerHTML = thistitle;
+  
 		jlCalmod_setTitle(targetid, sourceids, thistitle, modid);
-		jlCalmod_setContent(targetid, 'jlCalList-' + modid + '_temp', sourcecontent, thistitle, modid);
-		var incont = jlcinjectcontainer[modid];
-		if (jQuery(incont) && inject > 0) 
+		
+    jlCalmod_setContent(targetid, 'jlCalList-' + modid + '_temp', sourcecontent, thistitle, modid);
+		
+    var incont = jlcinjectcontainer[modid];
+		
+    if (jQuery(incont) && inject > 0) 
     {
 			jlCalmod_injectContent(tempcontentid, incont, modid);
 		}
@@ -174,7 +187,7 @@ function jlcnewDate(month, year, modid, day)
 			var sc = 'jlCalList-' + modid;
 			var tc = 'jlcal_' + yy + '-' + mm + '-' + dd + '-' + modid;
 			if (jQuery(tc))
-				jlCalmod_showhide(sc, tc, dd + '.' + mm + '.' + yy, 1, modid);
+				//jlCalmod_showhide(sc, tc, dd + '.' + mm + '.' + yy, 1, modid);
 			if ( jlcmodal[modid] == 1) 
       {
 				SqueezeBox.initialize({});

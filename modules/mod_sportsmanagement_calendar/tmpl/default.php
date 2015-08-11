@@ -65,6 +65,34 @@ if ($lightbox ==1 && (!isset($_GET['format']) OR ($_GET['format'] != 'pdf')))
 
 </script>
 
+<!-- Trigger the modal with a button -->
+<!--
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal<?php echo $module->id;?>">Open Modal</button>
+-->
+
+<!-- Modal -->
+<div id="myModal<?php echo $module->id;?>" class="modal fade" role="dialog">
+  <div id="myModaldialog<?php echo $module->id;?>" class="modal-dialog">
+
+    <!-- Modal content-->
+    <div id="myModalcontent<?php echo $module->id;?>" class="modal-content">
+      <div id="myModalheader<?php echo $module->id;?>" class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Modal Header</h4>
+      </div>
+      <div id="myModalbody<?php echo $module->id;?>" class="modal-body">
+        <p>Some text in the modal.</p>
+      </div>
+      <div id="myModalfooter<?php echo $module->id;?>" class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
 <div id="<?php echo $inject_container ?>">
 
 </div>
@@ -75,7 +103,8 @@ if ($lightbox ==1 && (!isset($_GET['format']) OR ($_GET['format'] != 'pdf')))
 <?php echo $calendar['calendar'] ?> <?php } ?> <?php if (count($calendar['teamslist']) > 0) { ?>
 <div style="margin: 0 auto;"><?php
 echo JHtml::_('select.genericlist', $calendar['teamslist'], 'jlcteam'.$module->id, 'class="inputbox" style="width:100%;visibility:show;" size="1" onchange="jlcnewDate('.$month.','.$year.','.$module->id.');"',  'value', 'text', JRequest::getVar('jlcteam',0,'default','POST'));
-?></div>
+?>
+</div>
 <?php
 }
 ?> <?php if(isset($calendar['list'])) { ?>
@@ -202,14 +231,18 @@ default:
 		}
 	}
 }
-?></div>
+?>
+</div>
 <div style="display:<?php echo $display;?>;">
 <div id="jlCalList-<?php echo $module->id;?>" style="overflow: auto;"></div>
 </div>
 <?php
 }
-?> <!--jlccalendar-<?php echo $module->id?> end--></div>
-<div id="jlcTestlist-<?php echo $module->id;?>"></div>
+?>
+<!--jlccalendar-<?php echo $module->id?> end-->
+</div>
+<div id="jlcTestlist-<?php echo $module->id;?>">
+</div>
 
 
 <?php
