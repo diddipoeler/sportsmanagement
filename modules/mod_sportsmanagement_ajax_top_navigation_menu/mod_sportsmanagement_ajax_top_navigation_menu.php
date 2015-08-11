@@ -378,9 +378,18 @@ else
 	define('JLTOPAM_MODULESCRIPTLOADED', 1);
 }
 
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{    
+$layout = 'default';
+}    
+else
+{
+$layout = 'default_2';
+}	
+
 ?>           
 <div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
-require(JModuleHelper::getLayoutPath($module->module));
+require(JModuleHelper::getLayoutPath($module->module,$layout));
 ?>
 </div>
