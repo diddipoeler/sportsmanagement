@@ -132,7 +132,7 @@ switch ($club->days_to_birthday)
 {
 case 0: $whenmessage = $params->get('todaymessage');break;
 case 1: $whenmessage = $params->get('tomorrowmessage');break;
-default: $whenmessage = str_replace('%DAYS_TO%', $club->days_to_birthday, trim($params->get('futuremessage')));break;
+default: $whenmessage = str_replace('%DAYS_TO%', $club->days_to_birthday, trim($futuremessage));break;
 }
         
 if ( $club->founded != '0000-00-00' )
@@ -232,7 +232,7 @@ switch ($club->days_to_birthday)
 {
 case 0: $whenmessage = $params->get('todaymessage');break;
 case 1: $whenmessage = $params->get('tomorrowmessage');break;
-default: $whenmessage = str_replace('%DAYS_TO%', $club->days_to_birthday, trim($params->get('futuremessage')));break;
+default: $whenmessage = str_replace('%DAYS_TO%', $club->days_to_birthday, trim($futuremessage));break;
 }
         
 if ( $club->founded != '0000-00-00' )
@@ -333,7 +333,7 @@ $a++;
         {
 			case 0: $whenmessage = $params->get('todaymessage');break;
 			case 1: $whenmessage = $params->get('tomorrowmessage');break;
-			default: $whenmessage = str_replace('%DAYS_TO%', $club->days_to_birthday, trim($params->get('futuremessage')));break;
+			default: $whenmessage = str_replace('%DAYS_TO%', $club->days_to_birthday, trim($futuremessage));break;
 		}
         
         if ( $club->founded != '0000-00-00' )
