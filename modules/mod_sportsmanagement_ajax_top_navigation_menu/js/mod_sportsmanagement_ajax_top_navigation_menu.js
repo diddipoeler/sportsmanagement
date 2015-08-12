@@ -1,9 +1,9 @@
 var jlcinjectcontainer = new Array();
 var jlcmodal = new Array();
 
-window.addEvent('domready', function() {
-	SqueezeBox.initialize({});
-});
+//window.addEvent('domready', function() {
+//	SqueezeBox.initialize({});
+//});
 
 function jlcnewtopAjax() {
 	/* THIS CREATES THE AJAX OBJECT */
@@ -46,7 +46,7 @@ loadHtml = "<p id='loadingDiv-"
 	loadHtml += "<img src='" + ajaxmenu_baseurl + 
 				"modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif'>";
 	loadHtml += "</p>";
-	$('jlajaxtopmenu-' + federation + modid).innerHTML += loadHtml;
+	document.getElementById('jlajaxtopmenu-' + federation + modid).innerHTML += loadHtml;
 	
 var ajax = jlcnewtopAjax();
 ajax.open("POST", location.href, true);
@@ -63,7 +63,7 @@ var response = ajax.responseText;
 					+ ' end-->');
 
 			justTheCalendar = response.substring(start, finish);
-      $('jlajaxtopmenu-' + federation + modid).innerHTML = justTheCalendar;
+      document.getElementById('jlajaxtopmenu-' + federation + modid).innerHTML = justTheCalendar;
 
 }
 
@@ -89,7 +89,7 @@ loadHtml = "<p id='loadingDiv-"
 	loadHtml += "<img src='" + ajaxmenu_baseurl + 
 				"modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif'>";
 	loadHtml += "</p>";
-	$('jlajaxtopmenu-' + federation + modid).innerHTML += loadHtml;
+	document.getElementById('jlajaxtopmenu-' + federation + modid).innerHTML += loadHtml;
 	
 var ajax = jlcnewtopAjax();
 ajax.open("POST", location.href, true);
@@ -106,7 +106,7 @@ var response = ajax.responseText;
 					+ ' end-->');
 
 			justTheCalendar = response.substring(start, finish);
-      $('jlajaxtopmenu-' + federation + modid).innerHTML = justTheCalendar;
+      document.getElementById('jlajaxtopmenu-' + federation + modid).innerHTML = justTheCalendar;
 
 }
 
@@ -130,7 +130,7 @@ loadHtml = "<p id='loadingDiv-"
 	loadHtml += "<img src='" + ajaxmenu_baseurl + 
 				"modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif'>";
 	loadHtml += "</p>";
-	$('jlajaxtopmenu-' + federation + modid).innerHTML += loadHtml;
+	document.getElementById('jlajaxtopmenu-' + federation + modid).innerHTML += loadHtml;
 	
 var ajax = jlcnewtopAjax();
 ajax.open("POST", location.href, true);
@@ -147,7 +147,7 @@ var response = ajax.responseText;
 					+ ' end-->');
 
 			justTheCalendar = response.substring(start, finish);
-      $('jlajaxtopmenu-' + federation + modid).innerHTML = justTheCalendar;
+      document.getElementById('jlajaxtopmenu-' + federation + modid).innerHTML = justTheCalendar;
 
 }
 
@@ -171,7 +171,7 @@ loadHtml = "<p id='loadingDiv-"
 	loadHtml += "<img src='" + ajaxmenu_baseurl + 
 				"modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif'>";
 	loadHtml += "</p>";
-	$('jlajaxtopmenu-' + federation + modid).innerHTML += loadHtml;
+	document.getElementById('jlajaxtopmenu-' + federation + modid).innerHTML += loadHtml;
     
 var ajax = jlcnewtopAjax();
 ajax.open("POST", location.href, true);
@@ -188,7 +188,7 @@ var response = ajax.responseText;
 					+ ' end-->');
 
 			justTheCalendar = response.substring(start, finish);
-      $('jlajaxtopmenu-' + federation + modid).innerHTML = justTheCalendar;
+      document.getElementById('jlajaxtopmenu-' + federation + modid).innerHTML = justTheCalendar;
 
 }
 
@@ -247,7 +247,7 @@ loadHtml = "<p id='loadingDiv-"
 	loadHtml += "<img src='" + ajaxmenu_baseurl + 
 				"modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif'>";
 	loadHtml += "</p>";
-	$('jlajaxtopmenu-' + federation + modid).innerHTML += loadHtml;
+	document.getElementById('jlajaxtopmenu-' + federation + modid).innerHTML += loadHtml;
     
 var ajax = jlcnewtopAjax();
 ajax.open("POST", location.href, true);
@@ -264,7 +264,7 @@ var response = ajax.responseText;
 					+ ' end-->');
 
 			justTheCalendar = response.substring(start, finish);
-      $('jlajaxtopmenu-' + federation + modid).innerHTML = justTheCalendar;
+      document.getElementById('jlajaxtopmenu-' + federation + modid).innerHTML = justTheCalendar;
 
 }
 
@@ -305,7 +305,7 @@ loadHtml = "<p id='loadingDiv-"
 	loadHtml += "<img src='" + ajaxmenu_baseurl + 
 				"modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif'>";
 	loadHtml += "</p>";
-	$('jlajaxmenu-' + modid).innerHTML += loadHtml;
+	document.getElementById('jlajaxmenu-' + modid).innerHTML += loadHtml;
     
 var ajax = top();
 ajax.open("POST", location.href, true);
@@ -322,7 +322,7 @@ var response = ajax.responseText;
 					+ ' end-->');
 
 			justTheCalendar = response.substring(start, finish);
-      $('jlajaxmenu-' + modid).innerHTML = justTheCalendar;
+      document.getElementById('jlajaxmenu-' + modid).innerHTML = justTheCalendar;
 
 }
 
@@ -373,7 +373,7 @@ loadHtml = "<p id='loadingDiv-"
 	loadHtml += "<img src='" + ajaxmenu_baseurl + 
 				"modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif'>";
 	loadHtml += "</p>";
-	$('jlajaxtopmenu-' + federation + modid).innerHTML += loadHtml;
+	document.getElementById('jlajaxtopmenu-' + federation + modid).innerHTML += loadHtml;
     
 var ajax = jlcnewtopAjax();
 ajax.open("POST", location.href, true);
@@ -390,7 +390,7 @@ var response = ajax.responseText;
 					+ ' end-->');
 
 			justTheCalendar = response.substring(start, finish);
-      $('jlajaxtopmenu-' + federation + modid).innerHTML = justTheCalendar;
+      document.getElementById('jlajaxtopmenu-' + federation + modid).innerHTML = justTheCalendar;
 
 }
 
@@ -439,7 +439,7 @@ loadHtml = "<p id='loadingDiv-"
 	loadHtml += "<img src='" + ajaxmenu_baseurl + 
 				"modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif'>";
 	loadHtml += "</p>";
-	$('jlajaxtopmenu-' + federation + modid).innerHTML += loadHtml;
+	document.getElementById('jlajaxtopmenu-' + federation + modid).innerHTML += loadHtml;
     
 var ajax = jlcnewtopAjax();
 ajax.open("POST", location.href, true);
@@ -456,7 +456,7 @@ var response = ajax.responseText;
 					+ ' end-->');
 
 			justTheCalendar = response.substring(start, finish);
-      $('jlajaxtopmenu-' + federation + modid).innerHTML = justTheCalendar;
+      document.getElementById('jlajaxtopmenu-' + federation + modid).innerHTML = justTheCalendar;
 
 }
 
@@ -480,7 +480,7 @@ loadHtml = "<p id='loadingDiv-"
 	loadHtml += "<img src='" + ajaxmenu_baseurl + 
 				"modules/mod_sportsmanagement_ajax_top_navigation_menu/img/ajax-loader.gif'>";
 	loadHtml += "</p>";
-	$('jlajaxmenu-' + modid).innerHTML += loadHtml;
+	document.getElementById('jlajaxmenu-' + modid).innerHTML += loadHtml;
     
 var ajax = jlcnewtopAjax();
 ajax.open("POST", location.href, true);
@@ -497,7 +497,7 @@ var response = ajax.responseText;
 					+ ' end-->');
 
 			justTheCalendar = response.substring(start, finish);
-      $('jlajaxmenu-' + modid).innerHTML = justTheCalendar;
+      document.getElementById('jlajaxmenu-' + modid).innerHTML = justTheCalendar;
 
 }
 

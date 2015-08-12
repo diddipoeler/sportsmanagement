@@ -306,15 +306,20 @@ $leagueselect['NON'] = '';
 
 $country_federation	= $helper->getCountryFederation($country_id);
 
+if ( !$country_federation )
+{
+    $country_federation = 'NON';
+}
+
 $startoffset = 0;
 foreach ( $tab_points as $key => $value )
 {
 
-if ( strtolower($country_federation) == $value )
-{
-$startoffset = $key;
-break;
-}
+//if ( strtolower($country_federation) == $value )
+//{
+//$startoffset = $key;
+//break;
+//}
 
 }
 

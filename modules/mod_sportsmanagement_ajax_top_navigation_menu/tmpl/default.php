@@ -39,151 +39,85 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+
+
+//echo 'startoffset=> <pre>'.print_r($startoffset, true).'</pre><br>';
+//echo 'country_federation=> <pre>'.print_r($country_federation, true).'</pre><br>';
+//echo 'queryvalues => <pre>'.print_r($queryvalues, true).'</pre><br>';
+
+//echo 'jlamtopcountry => '.$country_id.'<br>';
+//echo 'jlamtopassocid => '.$assoc_id.'<br>';
+//echo 'jlamtopsubassocid => '.$subassoc_id.'<br>';
+//echo 'jlamtopsubsubassocid => '.$subsubassoc_id.'<br>';
+
+
+//echo 'jlamtopseason => '.$season_id.'<br>';
+//echo 'jlamtopleague => '.$league_id.'<br>';
+//echo 'jlamtopproject => '.$project_id.'<br>';
+//echo 'jlamtopteam => '.$team_id.'<br>';
+//echo 'post => <pre>'.print_r($_POST, true).'</pre><br>';
+
+//echo 'federationselect => <pre>'.print_r($federationselect[$value], true).'</pre><br>';
+//echo 'countryassocselect => <pre>'.print_r($countryassocselect[$fed_array]['assocs'], true).'</pre><br>';
+//echo 'countrysubassocselect => <pre>'.print_r($countrysubassocselect[$fed_array]['assocs'], true).'</pre><br>';
+//echo 'countrysubsubassocselect => <pre>'.print_r($countrysubsubassocselect[$fed_array]['subassocs'], true).'</pre><br>';
+//echo 'countrysubsubsubassocselect => <pre>'.print_r($countrysubsubsubassocselect[$fed_array]['subsubassocs'], true).'</pre><br>';
+//echo 'leagueselect => <pre>'.print_r($leagueselect[$fed_array]['leagues'], true).'</pre><br>';
+//echo 'projectselect => <pre>'.print_r($projectselect[$fed_array]['projects'], true).'</pre><br>';
+
+//echo 'getFederations => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getFederations, true).'</pre><br>';
+//echo 'getFederationSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getFederationSelect, true).'</pre><br>';
+//echo 'getCountryAssocSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getCountryAssocSelect, true).'</pre><br>';
+//echo 'getCountryFederation => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getCountryFederation, true).'</pre><br>';
+//echo 'getCountrySubAssocSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getCountrySubAssocSelect, true).'</pre><br>';
+//echo 'getCountrySubSubAssocSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getCountrySubSubAssocSelect, true).'</pre><br>';
+//echo 'getLeagueAssocId => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getLeagueAssocId, true).'</pre><br>';
+//echo 'getLeagueSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getLeagueSelect, true).'</pre><br>';
+
+
 JHtml::_('behavior.tooltip');
+
+
 ?>
 <script type="text/javascript">
 var ajaxmenu_baseurl = '<?php echo JUri::base() ?>';
 </script>
 
+<div>
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+  
 <?PHP
-
-//echo 'tab_points=> <pre>'.print_r($tab_points, true).'</pre><br>';
-
-
-/*
-$options_slider = array(
-    'onActive' => 'function(title, description){
-        description.setStyle("display", "block");
-        title.addClass("open").removeClass("closed");
-    }',
-    'onBackground' => 'function(title, description){
-        description.setStyle("display", "none");
-        title.addClass("closed").removeClass("open");
-    }',
-    'startOffset' => 0,  // 0 starts on the first tab, 1 starts the second, etc...
-    'useCookie' => true, // this must not be a string. Don't use quotes.
-);
-
-array('useCookie'=>0, 'show'=>0, 'display'=>0, 'startOffset'=>-1)
-*/
-
-
-
-if ( $project_id )
-{
-$options_slider = array(
-    'startOffset' => 0,  // 0 starts on the first tab, 1 starts the second, etc...
-    'display'=> 1,
-    'show'=> 1,
-    'useCookie' => true, // this must not be a string. Don't use quotes.
-);
-}
-else
-{
-$options_slider = array(
-    'startOffset' => 0,  // 0 starts on the first tab, 1 starts the second, etc...
-    'display'=> 0,
-    'show'=> 0,
-    'useCookie' => true, // this must not be a string. Don't use quotes.
-);
-
-}
-
-
-echo JHtml::_('sliders.start','menueslidername', $options_slider );
-//echo JHtml::_('sliders.start','menueslidername'), array('show'=>0,'display'=>0, 'startOffset'=>-1);
-echo JHtml::_('sliders.panel', JText::_('MOD_SPORTSMANAGEMENT_AJAX_TOP_NAVIGATION_MENU'), 'menue-params');
-
-// tabs anzeigen
-$idxTab = 100;
-echo JHtml::_('tabs.start','tabs_ajaxtopmenu', array('useCookie'=>1, 'startOffset' => $startoffset ));
-
 foreach ( $tab_points as $key => $value  )
 {
-$fed_array = strtoupper($value);
-
-echo JHtml::_('tabs.panel', JText::_( strtoupper($value) ), 'panelmenue'.($idxTab++));
+$fed_array = strtoupper($value);    
+$active = ($value==$country_federation) ? 'active' : '';  
 ?>
 
-<div id="jlajaxtopmenu-<?php echo $value?><?php echo $module->id ?>">
+  
 
-<!--jlajaxtopmenu<?php echo $value?>-<?php echo $module->id?> start-->
+<li role="presentation" class="<?php echo $active ?>"><a href="#jlajaxtopmenu-<?php echo $value?><?php echo $module->id ?>" aria-controls="jlajaxtopmenu-<?php echo $value?><?php echo $module->id ?>" role="tab" data-toggle="tab"><?php echo JText::_( strtoupper($value) ) ?></a></li>
 
 <?PHP
-if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-{
-echo 'startoffset=> <pre>'.print_r($startoffset, true).'</pre><br>';
-echo 'country_federation=> <pre>'.print_r($country_federation, true).'</pre><br>';
-echo 'queryvalues => <pre>'.print_r($queryvalues, true).'</pre><br>';
-
-echo 'jlamtopcountry => '.$country_id.'<br>';
-echo 'jlamtopassocid => '.$assoc_id.'<br>';
-echo 'jlamtopsubassocid => '.$subassoc_id.'<br>';
-echo 'jlamtopsubsubassocid => '.$subsubassoc_id.'<br>';
-
-
-echo 'jlamtopseason => '.$season_id.'<br>';
-echo 'jlamtopleague => '.$league_id.'<br>';
-echo 'jlamtopproject => '.$project_id.'<br>';
-echo 'jlamtopteam => '.$team_id.'<br>';
-echo 'post => <pre>'.print_r($_POST, true).'</pre><br>';
-
-echo 'federationselect => <pre>'.print_r($federationselect[$value], true).'</pre><br>';
-echo 'countryassocselect => <pre>'.print_r($countryassocselect[$fed_array]['assocs'], true).'</pre><br>';
-echo 'countrysubassocselect => <pre>'.print_r($countrysubassocselect[$fed_array]['assocs'], true).'</pre><br>';
-echo 'countrysubsubassocselect => <pre>'.print_r($countrysubsubassocselect[$fed_array]['subassocs'], true).'</pre><br>';
-echo 'countrysubsubsubassocselect => <pre>'.print_r($countrysubsubsubassocselect[$fed_array]['subsubassocs'], true).'</pre><br>';
-echo 'leagueselect => <pre>'.print_r($leagueselect[$fed_array]['leagues'], true).'</pre><br>';
-echo 'projectselect => <pre>'.print_r($projectselect[$fed_array]['projects'], true).'</pre><br>';
-
-echo 'getFederations => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getFederations, true).'</pre><br>';
-echo 'getFederationSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getFederationSelect, true).'</pre><br>';
-
-echo 'getCountryAssocSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getCountryAssocSelect, true).'</pre><br>';
-echo 'getCountryFederation => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getCountryFederation, true).'</pre><br>';
-echo 'getCountrySubAssocSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getCountrySubAssocSelect, true).'</pre><br>';
-echo 'getCountrySubSubAssocSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getCountrySubSubAssocSelect, true).'</pre><br>';
-
-echo 'getLeagueAssocId => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getLeagueAssocId, true).'</pre><br>';
-echo 'getLeagueSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getLeagueSelect, true).'</pre><br>';
-
 }
 ?>
+ 
+ </ul>
 
-<p>
-<img style="float: left;" src="images/com_sportsmanagement/database/laender_karten/dfs_kl_<?php echo strtolower($value)?>.gif" alt="<?php echo $value?>" width="144" height="" />
-
+<!-- Tab panes -->
+<div class="tab-content">
+  
 <?PHP
+foreach ( $tab_points as $key => $value  )
+{
+$fed_array = strtoupper($value); 
+$active = ($value==$country_federation) ? 'active' : '';   
+?>
+<!--jlajaxtopmenu<?php echo $value?>-<?php echo $module->id?> start-->
 
-/*
-echo 'value => '.$value.'<br>';
-echo 'fed_array => '.$fed_array.'<br>';
-
-
-echo 'jlamtopcountry / country_id => '.$country_id.'<br>';
-echo 'country_federation => '.$country_federation.'<br>';
-
-echo '_country_fed => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$_country_fed, true).'</pre><br>';
-
-echo 'query_getFederations => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getFederations, true).'</pre><br>';
-echo 'query_getFederationSelect => <pre>'.print_r(modSportsmanagementAjaxTopNavigationMenuHelper::$query_getFederationSelect, true).'</pre><br>';
-
-
-echo 'jlamtopassocid => '.$assoc_id.'<br>';
-echo 'jlamtopsubassocid => '.$subassoc_id.'<br>';
-echo 'jlamtopsubsubassocid => '.$subsubassoc_id.'<br>';
-
-
-echo 'jlamtopseason => '.$season_id.'<br>';
-echo 'jlamtopleague => '.$league_id.'<br>';
-echo 'jlamtopproject => '.$project_id.'<br>';
-echo 'jlamtopteam => '.$team_id.'<br>';
-
-echo __METHOD__.' '.__LINE__.' leagueselect<br><pre>'.print_r($leagueselect,true).'</pre>';
-echo __METHOD__.' '.__LINE__.' POST<br><pre>'.print_r($_POST,true).'</pre>';
-echo __METHOD__.' '.__LINE__.' queryvalues<br><pre>'.print_r($queryvalues,true).'</pre>';
-*/
-
+<div role="tabpanel" class="tab-pane <?php echo $active ?>" id="jlajaxtopmenu-<?php echo $value?><?php echo $module->id ?>">
+<?PHP
 if ( $country_id )
 {
 ?>
@@ -322,9 +256,8 @@ echo JHTML::_('select.genericlist', $projectselect[$fed_array]['teams'], 'jlamto
 }
 ?>
 
-
-
 </table>
+
 </td>
 
 <td>
@@ -444,18 +377,26 @@ echo JHTML::_('select.genericlist', $projectselect[$fed_array]['teams'], 'jlamto
 </td>
 </tr>
 </table>
-</p>
+
+
+</div>
 
 <!--jlajaxtopmenu<?php echo $value?>-<?php echo $module->id?> end-->
-</div>
 
 <?PHP
 }
+?>  
+  
+</div>
 
-echo JHtml::_('tabs.end');
+</div>
 
-echo JHtml::_('sliders.end');
+
+
+<?PHP
+
 ?>
 
 <?php
-if($ajax && $ajaxmod==$module->id){ exit(); } ?>
+if($ajax && $ajaxmod==$module->id){ exit(); } 
+?>

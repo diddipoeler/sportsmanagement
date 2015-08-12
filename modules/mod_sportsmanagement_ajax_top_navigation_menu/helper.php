@@ -203,6 +203,7 @@ public function getCountrySubAssocSelect($assoc_id)
 $app = JFactory::getApplication();
         $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
+        $options = '';
         
         $query->select('s.id AS value, s.name AS text');
 $query->from('#__sportsmanagement_associations AS s');
@@ -219,6 +220,10 @@ $query->order('s.name');
 		$options = array(JHTML::_('select.option', 0, JText::_('-- Landesverbände -- ')));
 			$options = array_merge($options, $res);
 		}
+        else
+        {
+            $options = array(JHTML::_('select.option', 0, JText::_('-- Landesverbände -- ')));
+        }
 
 		return $options;
 
@@ -235,6 +240,7 @@ $query->order('s.name');
 $app = JFactory::getApplication();
         $db = sportsmanagementHelper::getDBConnection(); 
         $query = $db->getQuery(true);
+        $options = '';
         
         $query->select('s.id AS value, s.name AS text');
 $query->from('#__sportsmanagement_associations AS s');
@@ -252,6 +258,10 @@ $query->order('s.name');
 		  $options = array(JHTML::_('select.option', 0, JText::_('-- Regionalverbände -- ')));
 			$options = array_merge($options, $res);
 		}
+        else
+        {
+            $options = array(JHTML::_('select.option', 0, JText::_('-- Regionalverbände -- ')));
+        }
 
 		return $options;
 	}
