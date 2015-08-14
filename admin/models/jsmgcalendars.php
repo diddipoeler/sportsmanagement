@@ -3,10 +3,19 @@
 
 defined('_JEXEC') or die();
 
+if (! defined('JSM_PATH'))
+{
+DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
+}
+
+if (!class_exists('sportsmanagementHelper')) 
+{
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');  
+}
+
 JLoader::import('joomla.application.component.modellist');
 
-JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'tables');
-
+JTable::addIncludePath(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'tables');
 class sportsmanagementModeljsmGCalendars extends JModelList 
 {
 
