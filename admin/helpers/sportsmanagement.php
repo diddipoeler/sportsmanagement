@@ -3258,7 +3258,8 @@ function sec_to_time($seconds)
 			}
 			else
 			{
-				$elements[] = $key . ': ' . static::getJSObject(is_object($v) ? get_object_vars($v) : $v);
+				//$elements[] = $key . ': ' . static::getJSObject(is_object($v) ? get_object_vars($v) : $v);
+                $elements[] = $key . ': ' . self::getJSObject(is_object($v) ? get_object_vars($v) : $v);
 			}
 		}
 
