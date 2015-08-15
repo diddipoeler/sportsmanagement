@@ -55,8 +55,8 @@
       depends="cfg_which_database"
       value_field="cfg_which_database"
       key_field="season_id"
-					label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
-					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
+					label="COM_SPORTSMANAGEMENT_GLOBAL_SEASON"
+					description="COM_SPORTSMANAGEMENT_GLOBAL_SEASON_DESC"
 					required="">
 			</field>
 		
