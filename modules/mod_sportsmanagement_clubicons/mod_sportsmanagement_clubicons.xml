@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="2.5" type="module"  method="upgrade" client="site">
-	<name>MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_NAME</name>
+	<name>MOD_SPORTSMANAGEMENT_CLUBICONS</name>
 	<author>Carsten Kühn</author>
 	<authorUrl>http://www.yourlife.de</authorUrl> 
 	<version>1.5b.2</version>
