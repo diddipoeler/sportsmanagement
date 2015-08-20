@@ -165,9 +165,9 @@
 		</field>
 
      
-      <field	name="show_debug_modus" type="radio" default="0" class="radio btn-group btn-group-yesno"
-				label="JL_FES_PREDICTIONRANKING_PARAM_LABEL_SHOW_DEBUG_RANKINGNAV"
-				description="JL_FES_PREDICTIONRANKING_PARAM_DESCR_SHOW_DEBUG_RANKINGNAV">
+		<field	name="show_debug_modus" type="radio" default="0" class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_PREDICTIONRANKING_PARAM_LABEL_SHOW_DEBUG_RANKINGNAV"
+				description="COM_SPORTSMANAGEMENT_FES_PREDICTIONRANKING_PARAM_DESCR_SHOW_DEBUG_RANKINGNAV">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
@@ -189,8 +189,11 @@
 			
 		</field>
 		
-      <field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (normally just \'table.moduletable\'), this allows individual module styling" />        
-      
+					<field
+					name="moduleclass_sfx"
+					type="text"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
       
       
       </fieldset>
