@@ -22,9 +22,10 @@
 		
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_new_project.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_new_project.sys.ini</language>
-    <language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_new_project.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_new_project.ini</language>
 		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_new_project.sys.ini</language>
-		
+		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_new_project.ini</language>
+		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_new_project.sys.ini</language>
 	</languages>
 <config>
 		<fields name="params">
@@ -41,8 +42,12 @@
 			<option value="1">JYES</option>
 		</field>
 
-    <field name="mycategory" type="category" extension="com_content" label="MOD_SPORTSMANAGEMENT_NEW_PROJECT_CATEGORY" description="MOD_SPORTSMANAGEMENT_NEW_PROJECT_CATEGORY_DESC" />
-		<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="A suffix to be applied to the css class of the module (table.moduletable), this allows individual module styling" />	
+    <field name="mycategory"
+		type="category"
+		extension="com_content"
+		label="MOD_SPORTSMANAGEMENT_NEW_PROJECT_CATEGORY"
+		description="MOD_SPORTSMANAGEMENT_NEW_PROJECT_CATEGORY_DESC" />
+		
 
     </fieldset>
 
