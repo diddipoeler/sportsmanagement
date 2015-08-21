@@ -90,7 +90,7 @@ DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
 // get helper
 require_once (dirname(__FILE__).DS.'helper.php');
 
-$sportstypes = $params->get('sportstypes');
+$sportstypes = JText::_($params->get('sportstypes'));
 $data = modJSMSportsHelper::getData($params);
 
 $document = JFactory::getDocument();

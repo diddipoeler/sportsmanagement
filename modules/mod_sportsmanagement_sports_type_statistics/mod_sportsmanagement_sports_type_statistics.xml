@@ -30,201 +30,260 @@
   <config>
 	<fields name="params" 
   addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+
 		<fieldset name="basic"
-      description="MOD_SPORTSMANAGEMENT_BASIC_DESC"
-      >
-    <field name="cfg_which_database" 
-    type="radio" 
-    default="0"
-    class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
+				description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
+
+			<field name="cfg_which_database"
+				type="radio"
+				default="0"
+				class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE"
+				description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
 		
-    <field name="sportstypes" 
-    type="sportstypelist" 
-    default=""
-			label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SPORTS_TYPE_LABEL" 
-      description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SPORTS_TYPE_DESC" />
-      
-    <field name="show_icon" type="radio" default="1"
-    class="radio btn-group btn-group-yesno"
-					label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_ICON_LABEL"
-					description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_ICON_LABEL_DESC">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
+			<field name="sportstypes"
+				type="sportstypelist"
+				default=""
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SPORTS_TYPE_LABEL"
+				description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SPORTS_TYPE_DESC" />
+
+			<field name="show_icon"
+				type="radio"
+				default="1"
+				class="radio btn-group btn-group-yesno"
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_ICON_LABEL"
+				description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_ICON_LABEL_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+			<field name="show_project"
+				type="radio"
+				default="1"
+				class="radio btn-group btn-group-yesno"
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PROJECTS" description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PROJECTS_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+			<field name="text_project"
+				type="text"
+				default="Projekte"
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PROJECTS_TEXT"
+				description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PROJECTS_DESC_TEXT">
+			</field>
+
+			<field name="show_leagues"
+				type="radio"
+				default="1"
+				class="radio btn-group btn-group-yesno"
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_LEAGUES" description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_LEAGUES_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+			<field name="text_leagues"
+				type="text"
+				default="Ligen"
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_LEAGUES_TEXT"
+				description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_LEAGUES_DESC_TEXT">
 				</field>
-		<field name="show_project" type="radio" default="1"
-		class="radio btn-group btn-group-yesno"
-			label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PROJECTS" description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PROJECTS_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field name="text_project" type="text" default="Projekte"
-					label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PROJECTS_TEXT"
-					description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PROJECTS_DESC_TEXT">
-				</field>
-		<field name="show_leagues" type="radio" default="1"
-		class="radio btn-group btn-group-yesno"
-			label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_LEAGUES" description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_LEAGUES_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field name="text_leagues" type="text" default="Ligen"
-					label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_LEAGUES_TEXT"
-					description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_LEAGUES_DESC_TEXT">
-				</field>
-		<field name="show_seasons" type="radio" default="1"
-		class="radio btn-group btn-group-yesno"
-			label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_SEASONS" description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_SEASONS_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field name="text_seasons" type="text" default="Saisons"
-					label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_SEASONS_TEXT"
-					description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_SEASONS_DESC_TEXT">
-				</field>
+
+			<field name="show_seasons"
+				type="radio" default="1"
+				class="radio btn-group btn-group-yesno"
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_SEASONS" description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_SEASONS_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+			<field name="text_seasons"
+				type="text" default="Saisons"
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_SEASONS_TEXT"
+				description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_SEASONS_DESC_TEXT">
+			</field>
 		
-    <field name="show_playgrounds" 
-    type="radio" 
-    default="1"
-    class="radio btn-group btn-group-yesno"
-					label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYGROUNDS"
-					description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYGROUNDS_DESC">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
+    			<field name="show_playgrounds" 
+    				type="radio" 
+    				default="1"
+    				class="radio btn-group btn-group-yesno"
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYGROUNDS"
+				description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYGROUNDS_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
 				</field>
-				<field name="text_playgrounds" type="text" default="Spielorte"
-					label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYGROUNDS_TEXT"
-					description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYGROUNDS_DESC_TEXT">
-				</field>
+
+			<field name="text_playgrounds" type="text" default="Spielorte"
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYGROUNDS_TEXT"
+				description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYGROUNDS_DESC_TEXT">
+			</field>
         
-				<field name="show_clubs" 
-        type="radio" 
-        default="1"
-        class="radio btn-group btn-group-yesno"
-					label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_CLUBS"
-					description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_CLUBS_DESC">
-					<option value="0">JNO</option>
-					<option value="1">JYES</option>
-				</field>
-				<field name="text_clubs" type="text" default="Vereine"
-					label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_CLUBS_TEXT"
-					description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_CLUBS_DESC_TEXT">
-				</field>
-    
-    
-    <field name="show_teams" type="radio" default="1"
-		class="radio btn-group btn-group-yesno"
-			label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_TEAMS" description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_TEAMS_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		 <field name="text_teams" type="text" default="Mannschaften"
-					label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_TEAMS_TEXT"
-					description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_TEAMS_DESC_TEXT">
-				</field>
-		
-		
-		<field name="show_players" type="radio" default="1"
-		class="radio btn-group btn-group-yesno"
-			label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYERS" description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYERS_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field name="text_players" type="text" default="Spieler"
-					label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYERS_TEXT"
-					description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYERS_DESC_TEXT">
-				</field>
-		<field name="show_divisions" type="radio" default="1"
-		class="radio btn-group btn-group-yesno"
-			label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_DIVISIONS" description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_DIVISIONS_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field name="text_divisions" type="text" default="Gruppen"
-					label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_DIVISIONS_TEXT"
-					description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_DIVISIONS_DESC_TEXT">
-				</field>
-		<field name="show_rounds" type="radio" default="1"
-		class="radio btn-group btn-group-yesno"
-			label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_ROUNDS" description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_ROUNDS_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field name="text_rounds" type="text" default="Spieltage"
-					label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_ROUNDS_TEXT"
-					description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_ROUNDS_DESC_TEXT">
-				</field>
-		<field name="show_matches" type="radio" default="1"
-		class="radio btn-group btn-group-yesno"
-			label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_MATCHES" description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_MATCHES_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field name="text_matches" type="text" default="Spiele"
-					label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_MATCHES_TEXT"
-					description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_MATCHES_DESC_TEXT">
-				</field>
-		<field name="show_player_events" type="radio" default="1"
-		class="radio btn-group btn-group-yesno"
-			label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYER_EVENTS" description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYER_EVENTS_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field name="text_player_events" type="text" default="Ereignisse"
-					label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYER_EVENTS_TEXT"
-					description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYER_EVENTS_DESC_TEXT">
-				</field>
-		<field name="show_player_stats" type="radio" default="1"
-		class="radio btn-group btn-group-yesno"
-			label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYER_STATS" description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYER_STATS_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
-		<field name="text_player_stats" type="text" default="Statistiken"
-					label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYER_STATS_TEXT"
-					description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYER_STATS_DESC_TEXT">
-				</field>
+			<field name="show_clubs"
+				type="radio"
+				default="1"
+				class="radio btn-group btn-group-yesno"
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_CLUBS"
+				description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_CLUBS_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+			<field name="text_clubs"
+				type="text"
+				default="Vereine"
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_CLUBS_TEXT"
+				description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_CLUBS_DESC_TEXT">
+			</field>
+
+			<field name="show_teams" type="radio" default="1"
+				class="radio btn-group btn-group-yesno"
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_TEAMS" description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_TEAMS_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+		 	<field name="text_teams" type="text" default="Mannschaften"
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_TEAMS_TEXT"
+				description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_TEAMS_DESC_TEXT">
+			</field>
+
+			<field name="show_players" type="radio" default="1"
+				class="radio btn-group btn-group-yesno"
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYERS" description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYERS_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+			<field name="text_players"
+				type="text"
+				default="Spieler"
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYERS_TEXT"
+				description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYERS_DESC_TEXT">
+			</field>
+
+			<field name="show_divisions"
+				type="radio" default="1"
+				class="radio btn-group btn-group-yesno"
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_DIVISIONS" description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_DIVISIONS_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+			<field name="text_divisions"
+				type="text"
+				default="Gruppen"
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_DIVISIONS_TEXT"
+				description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_DIVISIONS_DESC_TEXT">
+			</field>
+
+			<field name="show_rounds"
+				type="radio"
+				default="1"
+				class="radio btn-group btn-group-yesno"
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_ROUNDS" description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_ROUNDS_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+			<field name="text_rounds"
+				type="text"
+				default="Spieltage"
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_ROUNDS_TEXT"
+				description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_ROUNDS_DESC_TEXT">
+			</field>
+
+			<field name="show_matches"
+				type="radio"
+				default="1"
+				class="radio btn-group btn-group-yesno"
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_MATCHES" description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_MATCHES_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			
+			<field name="text_matches"
+				type="text"
+				default="Spiele"
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_MATCHES_TEXT"
+				description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_MATCHES_DESC_TEXT">
+			</field>
+
+			<field name="show_player_events"
+				type="radio"
+				default="1"
+				class="radio btn-group btn-group-yesno"
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYER_EVENTS"
+				description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYER_EVENTS_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+			<field name="text_player_events"
+				type="text"
+				default="Ereignisse"
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYER_EVENTS_TEXT"
+				description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYER_EVENTS_DESC_TEXT">
+			</field>
+
+			<field name="show_player_stats"
+				type="radio"
+				default="1"
+				class="radio btn-group btn-group-yesno"
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYER_STATS"
+				description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYER_STATS_DESC">
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+			<field name="text_player_stats"
+				type="text"
+				default="Statistiken"
+				label="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYER_STATS_TEXT"
+				description="MOD_SPORTSMANAGEMENT_SPORTS_TYPE_STATISTICS_SHOW_PLAYER_STATS_DESC_TEXT">
+			</field>
 	</fieldset>
 
 	<fieldset name="advanced">
 	
 	
 
-      <field 	name="table_class" type="list" default="table" 
-		class=""
+			<field name="table_class"
+				type="list"
+				default="table"
+				class=""
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">
-			<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
-			<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
-			<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
-			<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
-			<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
-			
-		</field>
+				<option value="table">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_TABLE</option>
+				<option value="table table-striped">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_STRIPED</option>
+				<option value="table table-bordered">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_BORDERED</option>
+				<option value="table table-hover">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_HOVER</option>
+				<option value="table table-condensed">COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE_CONDENSED</option>
+			</field>
 		
-				<field name="moduleclass_sfx"
-						type="text"
-						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
-						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+			<field name="moduleclass_sfx"
+				type="text"
+				label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+				description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
 			
-		<field 	name="cache" type="list" default="1" 
-				label="CACHING"
-				description="CACHING DESC">
-			<option value="1">USE GLOBAL</option>
-			<option value="0">NO CACHING</option>
-		</field>
-		
-		<field 	name="cache_time" type="text" default="900" 
-				label="CACHE TIME"
-				description="CACHE TIME DESC">
-		</field>		
+			<field name="cache"
+				type="list"
+				default="1"
+				label="COM_MODULES_FIELD_CACHING_LABEL"
+				description="COM_MODULES_FIELD_CACHING_DESC">
+				<option value="1">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+			</field>
 
+			<field name="cache_time"
+				type="text"
+				default="900"
+				label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+				description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
 		
 	</fieldset>
-	            </fields>
+	</fields>
 </config>
 </extension>
