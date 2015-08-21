@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie kÃ¶nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spÃ¤teren
+* verÃ¶ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nÃ¼tzlich sein wird, aber
+* OHNE JEDE GEWÃ„HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* GewÃ¤hrleistung der MARKTFÃ„HIGKEIT oder EIGNUNG FÃœR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fÃ¼r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -249,11 +249,10 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->hom
                         
                         $outputStr = (isset($match->homeResult)) ? $match->homeResult : '-';
 						$outputStr .= '&nbsp;'.$this->config['seperator'].'&nbsp;';
-						$outputStr .= (isset($match->awayResult)) ? $match->awayResult : '-'.'<br />';
+						$outputStr .= (isset($match->awayResult)) ? $match->awayResult : '-';
                         
 						?>
                         <span class='hasTip' title="<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_RESULT_HINT',$match->homeName,$match->awayName,$outputStr); ?>"><?php echo $outputStr; ?></span>
-                        <br />
                         <?php
 						
                         
@@ -427,7 +426,7 @@ echo '<br />memberPredictionPoint<pre>~' . print_r($memberPredictionPoint,true) 
 						if ($showAllowed)
 						{
 							
-              // anzeige ändern bei normaler tipeingabe und toto-tip
+              // anzeige Ã¤ndern bei normaler tipeingabe und toto-tip
               if ( $predictionProject->mode == 0 )
               {
               $memberPredictionOutput = $memberPredictionPoint->prHomeTipp.$this->config['seperator'].$memberPredictionPoint->prAwayTipp;
@@ -549,7 +548,7 @@ echo '<br />membersMatchesArray<pre>~' . print_r($membersMatchesArray,true) . '~
 				if ($i <= $skipMemberCount) { $i++; continue; }
 
 				$class = ($k==0) ? 'sectiontableentry1' : 'sectiontableentry2';
-                // änderung bluesunny62
+                // Ã¤nderung bluesunny62
 				//$styleStr = ($this->predictionMember->pmID==$key) ? ' style="background-color:yellow; color:black; " ' : '';
                 $styleStr = ($this->predictionMember->pmID==$key) ? ' style="background-color:'.$this->config['background_color_ranking'].'; color:black; " ' : '';
 				$class = ($this->predictionMember->pmID==$key) ? 'sectiontableentry1' : $class;
