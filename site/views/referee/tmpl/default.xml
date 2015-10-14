@@ -2,7 +2,7 @@
 <metadata>
 	<layout title="COM_SPORTSMANAGEMENT_XML_REFEREE_LAYOUT_TITLE">
 		<message>
-			<![CDATA[COM_SPORTSMANAGEMENTXML_REFEREE_LAYOUT_DESCR]]>
+			<![CDATA[COM_SPORTSMANAGEMENT_XML_REFEREE_LAYOUT_DESCR]]>
 		</message>
 	</layout>
 	<fields name="request"

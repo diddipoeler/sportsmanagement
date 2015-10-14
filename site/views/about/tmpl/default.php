@@ -100,7 +100,7 @@ echo "<img class=\"\" style=\"\" src=\"".$backgroundimage."\" alt=\"\" width=\"2
 		<td><b><?php echo JText::_('COM_SPORTSMANAGEMENT_ABOUT_SUPPORT_FORUM_DIDDIPOELER'); ?></b></td>
 		<td>
 			<a href="<?php echo $this->about->diddipoelerforum; ?>" target="_blank">
-				<?php echo "Fussballineuropa Joomleague 2.0 Forum"; ?></a>
+				<?php echo "Fussballineuropa Forum"; ?></a>
 		</td>
 	</tr> 
   
@@ -108,7 +108,7 @@ echo "<img class=\"\" style=\"\" src=\"".$backgroundimage."\" alt=\"\" width=\"2
 		<td><b><?php echo JText::_('COM_SPORTSMANAGEMENT_ABOUT_GITHUB_DIDDIPOELER'); ?></b></td>
 		<td>
 			<a href="<?php echo $this->about->github; ?>" target="_blank">
-				<?php echo 'Github joomleague diddipoeler'; ?>
+				<?php echo 'Github sportsmanagement diddipoeler'; ?>
 			</a>
 		</td>
 	</tr>
