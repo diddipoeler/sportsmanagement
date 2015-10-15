@@ -67,7 +67,7 @@ class sportsmanagementModelAbout extends JModelLegacy
 		//Translations Hosted by
 		$about->translations = '<a href="https://opentranslators.transifex.com/projects/p/joomleague/">https://opentranslators.transifex.com/projects/p/joomleague/</a>';
 		//Repository Hosted by
-		$about->repository = '<a href="http://gitorious.org/joomleague">http://gitorious.org/joomleague</a>';
+		$about->repository = '<a href="https://github.com/diddipoeler/sportsmanagement">https://github.com/diddipoeler/sportsmanagement</a>';
 		//version
 		$version = sportsmanagementHelper::getVersion();
 		$revision = explode('.', $version);
@@ -77,26 +77,26 @@ class sportsmanagementModelAbout extends JModelLegacy
 		$about->author = '<a href="http://stats.joomleague.net/authors.html">Joomleague-Team</a>';
 
 		//page
-		$about->page = 'http://www.joomleague.net';
+		$about->page = 'http://sportsmanagement.fussballineuropa.de/';
 
 		//e-mail
 		$about->email = 'http://www.JoomLeague.net/forum/index.php?action=contact';
 
 		//forum
-		$about->forum = 'http://forum.joomleague.net';
+		$about->forum = 'http://fussballineuropa.de/index.php?option=com_kunena&view=home&defaultmenu=1169&Itemid=1167&lang=de';
 		
 		//bugtracker
-		$about->bugs = 'http://bugtracker.joomleague.net';
+		$about->bugs = 'http://mantisbugtracker.fussballineuropa.de/my_view_page.php';
 		
 		//wiki
-		$about->wiki = 'http://wiki.joomleague.net';
+		$about->wiki = 'http://smwiki.diddipoeler.de/';
 		
 		//date
 		$about->date = '2014-01-01';
 
 		//developer
 		//$about->developer = '<a href="http://stats.joomleague.net/authors.html" target="_blank">JoomLeague-Team</a>';
-        $about->developer = 'DonClumsy (Tim Keller), SvDoldie (Hauke Prochnow), Stony (Siegfried Gallun) ';
+        $about->developer = 'DonClumsy (Tim Keller), SvDoldie (Hauke Prochnow), Stony (Siegfried Galun) ';
 /*
 		//designer
 		$about->designer = 'Kasi';
