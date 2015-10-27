@@ -99,7 +99,16 @@ switch ( $view )
 	if ( $this->showediticon )
 	{
 		
-    $link = sportsmanagementHelperRoute::getPlayerRoute( $this->project->id, $this->teamPlayer->team_id, $this->person->id, 'person.edit' );
+    // $link = sportsmanagementHelperRoute::getPlayerRoute( $this->project->id, $this->teamPlayer->team_id, $this->person->id, 'person.edit' );
+    
+    $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->id;
+$routeparameter['tid'] = $this->teamPlayer->team_id;
+$routeparameter['pid'] = $this->person->id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter,'person.edit');
+
     /*
 		$desc = JHtml::image(
 			"media/com_sportsmanagement/jl_images/edit.png",

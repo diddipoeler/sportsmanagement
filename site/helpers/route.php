@@ -235,7 +235,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
    * @param mixed $parameter
    * @return
    */
-  public static function getSportsmanagementRoute($view='',$parameter = array())
+  public static function getSportsmanagementRoute($view='',$parameter = array(), $task='')
   {
   $app = JFactory::getApplication();
   $params = array("option" => self::$option,
@@ -244,10 +244,22 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
   //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view<br><pre>'.print_r($view,true).'</pre>'),'');  
   //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' parameter<br><pre>'.print_r($parameter,true).'</pre>'),'');  
   
+  
   foreach( $parameter as $key => $value )
   {
   $params[$key] = $value;  
   }
+  
+  switch ( $task )
+  {
+    case 'person.edit':
+    $params["layout"] = 'edit'; 
+    $params["view"] = 'person';
+	$params["id"] = $params['pid'];
+    break;
+    
+  }
+  
   $query = self::buildQuery( $params );
 		$link = JRoute::_( 'index.php?' . $query, false );
 	
