@@ -90,40 +90,27 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $result = false;
+        
+        //$app->enqueueMessage(JText::_('Ihre Joomla Version = '.JVERSION.''),'Notice');
+        //$app->enqueueMessage(JText::_('Ihre PHP Version = '.PHP_VERSION .''),'Notice');
+        
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
             $result = JFactory::getDbo()->execute();
-            if ( $setModelVar )
-            {
-            $setModelVar::$db_num_rows = JFactory::getDbo()->getAffectedRows();
-            }
-            //if ( JFactory::getDbo()->getAffectedRows() )
+//            if ( !empty($setModelVar) )
 //            {
-//                $result = JFactory::getDbo()->getAffectedRows();
+//            $setModelVar::$db_num_rows = JFactory::getDbo()->getAffectedRows();
 //            }
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getAffectedRows<br><pre>'.print_r(JFactory::getDbo()->getAffectedRows(),true).'</pre>'),'');
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
-            //try {
-//                }
-//            catch (Exception $e) {
-//    // catch any database errors.
-//    //$db->transactionRollback();
-//    JErrorPage::render($e);
-//}
+
         }
         else
         {
             $result = JFactory::getDbo()->query();
-            if ( $setModelVar )
-            {
-            $setModelVar::$db_num_rows = JFactory::getDbo()->getAffectedRows();
-            }
-            //if ( $this->db_num_rows )
+//            if ( !empty($setModelVar) )
 //            {
-//                $result = $this->db_num_rows;
+//            $setModelVar::$db_num_rows = JFactory::getDbo()->getAffectedRows();
 //            }
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' db_num_rows<br><pre>'.print_r($this->db_num_rows,true).'</pre>'),'');
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
+
         } 
         return $result;   
     }

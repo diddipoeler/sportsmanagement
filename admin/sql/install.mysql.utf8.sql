@@ -111,6 +111,25 @@ ENGINE = MyISAM
 DEFAULT CHARSET = utf8;
 
 --
+-- Tabellenstruktur für Tabelle `#__sportsmanagement_club_names`
+--
+CREATE TABLE IF NOT EXISTS `#__sportsmanagement_club_names` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL DEFAULT '',
+  `country` varchar(3) DEFAULT NULL,
+  `name_long` varchar(255) DEFAULT NULL,
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  `checked_out` int(11) NOT NULL DEFAULT '0',
+  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified` datetime DEFAULT NULL,
+  `modified_by` int(11) DEFAULT NULL,
+  `published` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `namecountry` (`name`,`country`),
+  KEY `country` (`country`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+--
 -- Tabellenstruktur für Tabelle `#__sportsmanagement_countries`
 --
 
@@ -297,12 +316,12 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_match` (
   `new_match_id` INT(11) NOT NULL DEFAULT '0' ,
   `old_match_id` INT(11) NOT NULL DEFAULT '0' ,
   `extended` TEXT NULL ,
-  `published` TINYINT(4) NOT NULL DEFAULT '0' ,
+  `published` TINYINT(4) NOT NULL DEFAULT '1' ,
   `checked_out` INT(11) NOT NULL DEFAULT '0' ,
   `checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00' ,
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
-  `division_id` INT(11) NULL DEFAULT '0' ,
+  `division_id` INT(11) NOT NULL DEFAULT '0' ,
   `extendeduser` TEXT NULL ,
   `pressebericht` TEXT NULL ,
   `team_lost` INT(11) NOT NULL DEFAULT '0' ,
