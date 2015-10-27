@@ -1,5 +1,5 @@
-ALTER TABLE  `#__sportsmanagement_match` CHANGE  `published`  `published` TINYINT( 4 ) NOT NULL DEFAULT  '1'
-ALTER TABLE  `#__sportsmanagement_match` CHANGE  `division_id`  `division_id` INT(11) NOT NULL DEFAULT  '0'
+ALTER TABLE  `#__sportsmanagement_match` CHANGE  `published`  `published` TINYINT( 4 ) NOT NULL DEFAULT  '1'    ;
+ALTER TABLE  `#__sportsmanagement_match` CHANGE  `division_id`  `division_id` INT(11) NOT NULL DEFAULT  '0'      ;
 
 --
 -- Tabellenstruktur für Tabelle `#__sportsmanagement_club_names`
