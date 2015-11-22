@@ -91,9 +91,10 @@ class sportsmanagementModelPredictionGames extends JModelList
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
+        $prediction_id = $jinput->getInt('prediction_id',0);
         // Initialise variables.
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context ->'.$this->context.''),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -103,6 +104,14 @@ class sportsmanagementModelPredictionGames extends JModelList
 		$this->setState('filter.state', $published);
         
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.prediction_id', 'filter_prediction_id', '');
+        
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' filter_prediction_id -> '.$temp_user_request.''),'');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prediction_id -> '.$prediction_id.''),'');
+        
+        if ( $temp_user_request == '' )
+        {
+            $temp_user_request = $prediction_id;
+        }
 		$this->setState('filter.prediction_id', $temp_user_request);
 
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');

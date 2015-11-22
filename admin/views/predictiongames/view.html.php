@@ -92,15 +92,16 @@ class sportsmanagementViewPredictionGames extends sportsmanagementView
 
         //$this->prediction_id = $jinput->getVar('prediction_id', 0);
         $this->prediction_id = $this->state->get('filter.prediction_id');
-        if ( isset($this->prediction_id) )
+        if ( $this->prediction_id != 0 )
         {
         }
         else
         {
             //$this->prediction_id = $app->getUserState( "$option.predid", '0' );
-            $this->prediction_id = $jinput->post->get('filter_prediction_id', 0);
+            $this->prediction_id = $jinput->request->get('prediction_id', 0);
         } 
-        
+
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prediction_id<br><pre>'.print_r($this->prediction_id,true).'</pre>'),'');        
         
         //$this->prediction_id	= $app->getUserStateFromRequest( $option .'.'.$model->_identifier, 'prediction_id', '0' );
         //$app->enqueueMessage(JText::_('sportsmanagementViewPredictionGames prediction_id<br><pre>'.print_r($this->prediction_id,true).'</pre>'),'Notice');

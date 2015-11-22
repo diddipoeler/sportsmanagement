@@ -101,7 +101,7 @@ JHtml::_('behavior.modal');
 				</tr>
 			</thead>
 			<?php
-			if ($this->dPredictionID==0)
+			if ( $this->dPredictionID == 0 )
 			{
 				?>
                 <tfoot>
