@@ -76,18 +76,39 @@ class sportsmanagementControllerPredictionRanking extends JControllerLegacy
 	function selectprojectround()
 	{
 		JRequest::checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
-		$post	= JRequest::get('post');
-		//echo '<br /><pre>~' . print_r($post,true) . '~</pre><br />';
-		$pID	= JRequest::getVar('prediction_id',	'',	'post',	'int');
-		$pggroup	= JRequest::getVar('pggroup',	null,	'post',	'int');
-        $pggrouprank= JRequest::getVar('pggrouprank',null,	'post',	'int');
-        $pjID	= JRequest::getVar('p',	'',	'post',	'int');
+        // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $pID = $jinput->getVar('prediction_id','0');
+        $pggroup = $jinput->getVar('pggroup','0');
+        $pggrouprank = $jinput->getVar('pggrouprank','0');
+        $pjID = $jinput->getVar('pj','0');
+        $rID = $jinput->getVar('r','0');
+        $set_pj = $jinput->getVar('set_pj','0');
+        $set_r = $jinput->getVar('set_r','0');
         
-		$rID	= JRequest::getVar('round_id',		'',	'post',	'int');
-		$set_pj	= JRequest::getVar('set_pj',		'',	'post',	'int');
-		$set_r	= JRequest::getVar('set_r',			'',	'post',	'int');
+        $type = $jinput->getVar('type','0');
+        $from = $jinput->getVar('from','0');
+        $to = $jinput->getVar('to','0');
+        
+        if ( !$rID )
+        {
+        $rID = sportsmanagementModelPrediction::getProjectSettings($pjID);    
+        }
+        
+//		//$post	= JRequest::get('post');
+//		//echo '<br /><pre>~' . print_r($post,true) . '~</pre><br />';
+//		$pID	= JRequest::getVar('prediction_id',	'',	'post',	'int');
+//		$pggroup	= JRequest::getVar('pggroup',	null,	'post',	'int');
+//        $pggrouprank= JRequest::getVar('pggrouprank',null,	'post',	'int');
+//        $pjID	= JRequest::getVar('pj',	'',	'post',	'int');
+//        
+//		$rID	= JRequest::getVar('r',		'',	'post',	'int');
+//		$set_pj	= JRequest::getVar('set_pj',		'',	'post',	'int');
+//		$set_r	= JRequest::getVar('set_r',			'',	'post',	'int');
 
-		$link = JSMPredictionHelperRoute::getPredictionRankingRoute($pID,$pjID,$rID,'',$pggroup,$pggrouprank);
+		$link = JSMPredictionHelperRoute::getPredictionRankingRoute($pID,$pjID,$rID,'',$pggroup,$pggrouprank,$type,$from,$to);
         
 		//echo '<br />' . $link . '<br />';
 		$this->setRedirect($link);

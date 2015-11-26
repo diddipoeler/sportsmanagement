@@ -43,8 +43,22 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <h2><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_PERS_DATA'); ?></h2>
 <?php
-if ($this->config['show_full_name']){$outputUserName=$this->predictionMember->name;}else{$outputUserName=$this->predictionMember->username;}
-if ($this->model->pjID > 0){$showProjectID=$this->model->pjID;}else{$showProjectID=null;}
+if ($this->config['show_full_name'])
+{
+    $outputUserName = $this->predictionMember->name;
+    }
+    else
+    {
+        $outputUserName=$this->predictionMember->username;
+        }
+if (sportsmanagementModelPrediction::$pjID > 0)
+{
+    $showProjectID = sportsmanagementModelPrediction::$pjID;
+    }
+    else
+    {
+        $showProjectID=null;
+        }
 
 $memberPredictionPoints = sportsmanagementModelPrediction::getPredictionMembersResultsList($showProjectID,1,null,$this->predictionMember->user_id);
 
@@ -170,7 +184,7 @@ if (!empty($memberPredictionPoints))
 						<td class='data'><?php
 							foreach ($this->predictionProjectS AS $predictionProject)
 							{
-								if (($this->model->pjID==0) || ($this->model->pjID==$predictionProject->project_id))
+								if ((sportsmanagementModelPrediction::$pjID==0) || (sportsmanagementModelPrediction::$pjID==$predictionProject->project_id))
 								{
 									if ($predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id))
 									{
@@ -220,7 +234,7 @@ if (!empty($memberPredictionPoints))
 						$dummyOutputShown=false;
 						foreach ($this->predictionProjectS AS $predictionProject)
 						{
-							if (($this->model->pjID==0) || ($this->model->pjID == $predictionProject->project_id))
+							if ((sportsmanagementModelPrediction::$pjID==0) || (sportsmanagementModelPrediction::$pjID == $predictionProject->project_id))
 							{
 								if ($predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id))
 								{
@@ -306,7 +320,7 @@ echo '<br />predictionuser info -> showChamp <pre>~' . print_r($showChamp,true) 
 								<?php echo JHTML::_('form.token'); ?>
 
 								<?php echo sportsmanagementModelPrediction::createProjectSelector(	sportsmanagementModelPrediction::$_predictionProjectS,
-																				$this->model->pjID,
+																				sportsmanagementModelPrediction::$pjID,
 																				1); ?>
 							</form>
 						</td>

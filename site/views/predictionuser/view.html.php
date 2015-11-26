@@ -262,6 +262,7 @@ echo '<br />predictionuser view.html edit -> this->predictionProjectS <pre>~' . 
       
 			// Set page title
 			$pageTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_TITLE');
+            $this->headertitle = JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_TITLE' );
 
 			$document->setTitle($pageTitle);
 

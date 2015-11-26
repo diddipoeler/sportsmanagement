@@ -121,6 +121,9 @@ require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php' );
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'results.php');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'person.php');
+
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'prediction.php');
+
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'divisions.php');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
@@ -151,12 +154,25 @@ require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'eventtypes.php');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');    
 
+
 // sprachdatei aus dem backend laden
 $langtag = JFactory::getLanguage();
 //echo 'Current language is: ' . $langtag->getTag();
 
 $paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
 
+// update plugins
+// Check if plugin has been enabled
+$plugin_enabled = JPluginHelper::isEnabled('system', 'jsm_kickerde');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' plugin isEnabled jsm_kickerde <br><pre>'.print_r($plugin_enabled,true).'</pre>'),'');
+
+$plugin_enabled = JPluginHelper::importPlugin('system', 'jsm_kickerde');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' plugin importPlugin jsm_kickerde <br><pre>'.print_r($plugin_enabled,true).'</pre>'),'');
+
+$plugin_enabled = JPluginHelper::getPlugin('system', 'jsm_kickerde');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' plugin getPlugin jsm_kickerde <br><pre>'.print_r($plugin_enabled,true).'</pre>'),'');
+
+    
 if (! defined('COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS'))
 {
 DEFINE( 'COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS',$paramscomponent->get( 'boostrap_div_class' ) );

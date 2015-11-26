@@ -101,7 +101,7 @@ class sportsmanagementViewpredictionranking extends JViewLegacy
       //$this->assignRef('debuginfo',	$model->getDebugInfo());
       
 			$this->assignRef('model', $model);
-			$this->assignRef('roundID', $this->model->roundID);
+			$this->assignRef('roundID', sportsmanagementModelPrediction::$roundID);
 			//$this->assignRef('config',				array_merge($overallConfig,$config));
       $this->assignRef('configavatar', $configavatar );
       $this->assignRef('configentries', $configentries );

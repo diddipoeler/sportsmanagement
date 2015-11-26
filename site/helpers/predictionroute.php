@@ -111,7 +111,7 @@ public static function getPredictionResultsRoute($predictionID,$roundID=0,$proje
  * @param integer $groupRank
  * @return
  */
-public static function getPredictionRankingRoute($predictionID,$projectID=0,$roundID=0,$anchor='',$groupID=0,$groupRank=0)
+public static function getPredictionRankingRoute($predictionID,$projectID=0,$roundID=0,$anchor='',$groupID=0,$groupRank=0,$type=0,$from=0,$to=0)
 	{
 	   $app = JFactory::getApplication();
        
@@ -131,6 +131,10 @@ public static function getPredictionRankingRoute($predictionID,$projectID=0,$rou
         $params['pj'] = $projectID;
         $params['r'] = $roundID;
         $params['pggrouprank'] = $groupRank;
+        
+        $params['type'] = $type;
+        $params['from'] = $from;
+        $params['to'] = $to;
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'   ),'');
 

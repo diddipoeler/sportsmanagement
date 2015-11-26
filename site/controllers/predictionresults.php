@@ -76,15 +76,27 @@ class sportsmanagementControllerPredictionResults extends JControllerLegacy
 	function selectprojectround()
 	{
 		JRequest::checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
-		$post	= JRequest::get('post');
-		//echo '<br /><pre>~' . print_r($post,true) . '~</pre><br />'; die();
-		$pID	= JRequest::getVar('prediction_id',	null,	'post',	'int');
-		
-		// diddipoeler
-        $pggroup	= JRequest::getVar('pggroup',	null,	'post',	'int');
-		$pjID	= JRequest::getVar('p',	null,	'post',	'int');
-		
-        $rID	= JRequest::getVar('r',				null,	'post',	'int');
+        // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $pID = $jinput->getVar('prediction_id','0');
+        $pggroup = $jinput->getVar('pggroup','0');
+        $pggrouprank = $jinput->getVar('pggrouprank','0');
+        $pjID = $jinput->getVar('pj','0');
+        $rID = $jinput->getVar('r','0');
+        $set_pj = $jinput->getVar('set_pj','0');
+        $set_r = $jinput->getVar('set_r','0');
+        
+//		//echo '<br /><pre>~' . print_r($post,true) . '~</pre><br />'; die();
+//		$pID	= JRequest::getVar('prediction_id',	null,	'post',	'int');
+//		// diddipoeler
+//        $pggroup	= JRequest::getVar('pggroup',	null,	'post',	'int');
+//		$pjID	= JRequest::getVar('pj',	null,	'post',	'int');
+//        $rID	= JRequest::getVar('r',				null,	'post',	'int');
+        
+        
+        
 		$link = JSMPredictionHelperRoute::getPredictionResultsRoute($pID,$rID,$pjID,NULL,'',$pggroup);
 		$this->setRedirect($link);
 	}

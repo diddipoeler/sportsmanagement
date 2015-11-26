@@ -54,7 +54,7 @@ $templatesToLoad = array('globalviews','predictionheading');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 ?>
-<div class='row'>
+<!-- <div class='row'> -->
 <?php
 	echo $this->loadTemplate('predictionheading');
 	if ($this->predictionMember->pmID > 0)
@@ -86,4 +86,5 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		// footer
 		echo $this->loadTemplate('footer');
 	echo '</div>';
-?></div>
+?>
+<!-- </div> -->

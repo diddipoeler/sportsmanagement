@@ -217,7 +217,28 @@ class sportsmanagementModelRanking extends JModelLegacy
 		{
 		$options['rssUrl'] 		= $rssId; 
         
-        $rssDoc = JFactory::getXMLparser('RSS', $options);
+         if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Joomla! 3.0 code here
+$rssDoc = JFactory::getFeedParser($options);
+}
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
+$rssDoc = JFactory::getXMLparser('RSS', $options);
+} 
+elseif(version_compare(JVERSION,'1.7.0','ge')) 
+{
+// Joomla! 1.7 code here
+} 
+elseif(version_compare(JVERSION,'1.6.0','ge')) 
+{
+// Joomla! 1.6 code here
+} 
+else 
+{
+// Joomla! 1.5 code here
+}      
 		$feed = new stdclass();
         if ($rssDoc != false)
 			{

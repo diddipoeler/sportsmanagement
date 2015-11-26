@@ -198,6 +198,19 @@ function sportsmanagementBuildRoute(&$query)
                 $segments[] = $query['pggrouprank'];
                 unset($query['pggrouprank']);
             }
+            
+            if (isset($query['type'])) {
+                $segments[] = $query['type'];
+                unset($query['type']);
+            }
+            if (isset($query['from'])) {
+                $segments[] = $query['from'];
+                unset($query['from']);
+            }
+            if (isset($query['to'])) {
+                $segments[] = $query['to'];
+                unset($query['to']);
+            }
 
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'   ),'');
 
@@ -258,6 +271,18 @@ function sportsmanagementBuildRoute(&$query)
             if (isset($query['prediction_id'])) {
                 $segments[] = $query['prediction_id'];
                 unset($query['prediction_id']);
+            }
+            if (isset($query['pggroup'])) {
+                $segments[] = $query['pggroup'];
+                unset($query['pggroup']);
+            }
+            if (isset($query['pj'])) {
+                $segments[] = $query['pj'];
+                unset($query['pj']);
+            }
+            if (isset($query['r'])) {
+                $segments[] = $query['r'];
+                unset($query['r']);
             }
             if (isset($query['uid'])) {
                 $segments[] = $query['uid'];
@@ -631,6 +656,16 @@ function sportsmanagementParseRoute($segments)
             if (isset($segments[5])) {
                 $vars['pggrouprank'] = $segments[5];
             }
+            
+            if (isset($segments[6])) {
+                $vars['type'] = $segments[6];
+            }
+            if (isset($segments[7])) {
+                $vars['from'] = $segments[7];
+            }
+            if (isset($segments[8])) {
+                $vars['to'] = $segments[8];
+            }
 
 
             break;
@@ -682,10 +717,19 @@ function sportsmanagementParseRoute($segments)
             if (isset($segments[1])) {
                 $vars['prediction_id'] = $segments[1];
             }
+            
             if (isset($segments[2])) {
                 $vars['uid'] = $segments[2];
             }
-
+ if (isset($segments[3])) {
+                $vars['pggroup'] = $segments[3];
+            }
+            if (isset($segments[4])) {
+                $vars['pj'] = $segments[4];
+            }
+            if (isset($segments[5])) {
+                $vars['r'] = $segments[5];
+            }
 
             break;
 

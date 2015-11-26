@@ -87,27 +87,30 @@ class sportsmanagementModelPredictionRanking extends JModelLegacy
 	 */
 	function __construct()
 	{
-	   $option = JRequest::getCmd('option');    
-    $app = JFactory::getApplication();
-    
+	   // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        
 		parent::__construct();
         
-        $this->predictionGameID		= JRequest::getInt('prediction_id',		0);
-		$this->predictionMemberID	= JRequest::getInt('uid',	0);
-		$this->joomlaUserID			= JRequest::getInt('juid',	0);
-		$this->roundID				= JRequest::getInt('r',		0);
-        $this->pggroup				= JRequest::getInt('pggroup',		0);
-        $this->pggrouprank			= JRequest::getInt('pggrouprank',		0);
-		$this->pjID					= JRequest::getInt('p',		0);
-		$this->isNewMember			= JRequest::getInt('s',		0);
-		$this->tippEntryDone		= JRequest::getInt('eok',	0);
+        //$this->predictionGameID		= $jinput->getInt('prediction_id',0);
+		//$this->predictionMemberID	= $jinput->getInt('uid',0);
+		//$this->joomlaUserID			= $jinput->getInt('juid',0);
+		//$this->roundID				= $jinput->getInt('r',0);
+        //$this->pggroup				= $jinput->getInt('pggroup',0);
+        //$this->pggrouprank			= $jinput->getInt('pggrouprank',0);
+		//$this->pjID					= $jinput->getInt('pj',0);
+		//$this->isNewMember			= $jinput->getInt('s',0);
+		//$this->tippEntryDone		= $jinput->getInt('eok',0);
 
-		$this->from  				= JRequest::getInt('from',	$this->roundID);
-		$this->to	 				= JRequest::getInt('to',	$this->roundID);
-		$this->type  				= JRequest::getInt('type',	0);
+		//$this->from  				= $jinput->getInt('from',$this->roundID);
+		//$this->to	 				= $jinput->getInt('to',	$this->roundID);
+		//$this->type  				= $jinput->getInt('type',0);
 
-		$this->page  				= JRequest::getInt('page',	1);
-        $this->ranking_array = JRequest::getVar('ranking_array','');
+		//$this->page  				= $jinput->getInt('page',1);
+        $this->ranking_array = $jinput->getVar('ranking_array','');
         
 //        $app->enqueueMessage(JText::_(__METHOD__.' ranking_array<br><pre>'.print_r($this->ranking_array,true).'</pre>'),'');
 //        $app->enqueueMessage(JText::_(__METHOD__.' pggroup<br><pre>'.print_r($this->pggroup,true).'</pre>'),'');
@@ -115,20 +118,25 @@ class sportsmanagementModelPredictionRanking extends JModelLegacy
         
         $prediction = new sportsmanagementModelPrediction();  
 
-        sportsmanagementModelPrediction::$predictionGameID = $this->predictionGameID;
+
+        sportsmanagementModelPrediction::$roundID = $jinput->getVar('r','0');
+       sportsmanagementModelPrediction::$pjID = $jinput->getVar('pj','0');
+       sportsmanagementModelPrediction::$from = $jinput->getVar('from',$jinput->getVar('r','0'));
+       sportsmanagementModelPrediction::$to = $jinput->getVar('to',$jinput->getVar('r','0'));
+       
+        sportsmanagementModelPrediction::$predictionGameID = $jinput->getVar('prediction_id','0');
         
-        sportsmanagementModelPrediction::$predictionMemberID = $this->predictionMemberID;
-        sportsmanagementModelPrediction::$joomlaUserID = $this->joomlaUserID;
-        sportsmanagementModelPrediction::$roundID = $this->roundID;
-        sportsmanagementModelPrediction::$pggroup = $this->pggroup;
-        sportsmanagementModelPrediction::$pggrouprank = $this->pggrouprank;
-        sportsmanagementModelPrediction::$pjID = $this->pjID;
-        sportsmanagementModelPrediction::$isNewMember = $this->isNewMember;
-        sportsmanagementModelPrediction::$tippEntryDone = $this->tippEntryDone;
-        sportsmanagementModelPrediction::$from = $this->from;
-        sportsmanagementModelPrediction::$to = $this->to;
-        sportsmanagementModelPrediction::$type = $this->type;
-        sportsmanagementModelPrediction::$page = $this->page;
+        sportsmanagementModelPrediction::$predictionMemberID = $jinput->getInt('uid',0);
+        sportsmanagementModelPrediction::$joomlaUserID = $jinput->getInt('juid',0);
+        
+        sportsmanagementModelPrediction::$pggroup = $jinput->getInt('pggroup',0);
+        sportsmanagementModelPrediction::$pggrouprank = $jinput->getInt('pggrouprank',0);
+        
+        sportsmanagementModelPrediction::$isNewMember = $jinput->getInt('s',0);
+        sportsmanagementModelPrediction::$tippEntryDone = $jinput->getInt('eok',0);
+        
+        sportsmanagementModelPrediction::$type = $jinput->getInt('type',0);
+        sportsmanagementModelPrediction::$page = $jinput->getInt('page',1);
 
 if ( JRequest::getVar( "view") == 'predictionranking' )
 {
@@ -169,10 +177,10 @@ function _buildQuery()
     $query->from('#__sportsmanagement_prediction_member AS pm');
     $query->join('INNER', '#__users AS u ON u.id = pm.user_id');
     $query->join('LEFT', '#__sportsmanagement_prediction_groups as pg on pg.id = pm.group_id');
-    $query->where('pm.prediction_id = '.$this->predictionGameID);
+    $query->where('pm.prediction_id = '.(int)sportsmanagementModelPrediction::$predictionGameID);
             
 
-    if ( $this->pggrouprank )
+    if ( (int)sportsmanagementModelPrediction::$pggrouprank )
     {
     $query->group('pm.group_id');
     $query->order('pm.group_id ASC');  

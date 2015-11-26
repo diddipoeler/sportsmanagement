@@ -53,7 +53,14 @@ if ($this->config['show_full_name'])
         $outputUserName = $this->predictionMember->username;
         }
         
-if ($this->model->pjID > 0){$showProjectID=$this->model->pjID;}else{$showProjectID=null;}
+if ( sportsmanagementModelPrediction::$pjID > 0)
+{
+    $showProjectID = sportsmanagementModelPrediction::$pjID;
+    }
+    else
+    {
+        $showProjectID = null;
+    }
 
 $memberPredictionPoints = sportsmanagementModelPrediction::getPredictionMembersResultsList($showProjectID,1,null,$this->predictionMember->user_id);
 
@@ -177,9 +184,9 @@ if (!empty($memberPredictionPoints))
 					<tr>
 						<td class='label'><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_FAVTEAMS'); ?></td>
 						<td class='data'><?php
-							foreach ($this->predictionProjectS AS $predictionProject)
+							foreach ( $this->predictionProjectS AS $predictionProject )
 							{
-								if (($this->model->pjID==0) || ($this->model->pjID==$predictionProject->project_id))
+								if ( ( sportsmanagementModelPrediction::$pjID == 0 ) || ( sportsmanagementModelPrediction::$pjID == $predictionProject->project_id ) )
 								{
 									if ($predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id))
 									{
@@ -220,16 +227,16 @@ if (!empty($memberPredictionPoints))
 						//echo '<br /><pre>~' . print_r($this->model->pjID,true) . '~</pre><br />';
 						$found=false;
 
-						if (!isset($this->predictionMember->champ_tipp))
+						if ( !isset($this->predictionMember->champ_tipp) )
 						{
-							$this->predictionMember->champ_tipp=JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_NO_CHAMP');
+							$this->predictionMember->champ_tipp = JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_INFO_NO_CHAMP');
 						}
 
 						$champShown=false;
 						$dummyOutputShown=false;
 						foreach ($this->predictionProjectS AS $predictionProject)
 						{
-							if (($this->model->pjID==0) || ($this->model->pjID==$predictionProject->project_id))
+							if ( ( sportsmanagementModelPrediction::$pjID == 0 ) || ( sportsmanagementModelPrediction::$pjID == $predictionProject->project_id ) )
 							{
 								if ($predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id))
 								{
@@ -299,23 +306,23 @@ echo '<br />predictionuser info -> showChamp <pre>~' . print_r($showChamp,true) 
 		<td class='info'>
 			<table class='plinfo'>
 				<?php
-				if (count($this->model->_predictionProjectS) > 1)
+				if (count(sportsmanagementModelPrediction::$_predictionProjectS) > 1)
 				{
 					?>
 					<tr>
 						<td class='data' style='text-align:center; ' colspan='2' >
 							<form name='resultsRoundSelector' method='post' >
 								<input type='hidden' name='prediction_id' value='<?php echo (int)$this->predictionGame->id; ?>' />
-								<input type='hidden' name='project_id' value='<?php echo (int)$this->model->pjID; ?>' />
+								<input type='hidden' name='project_id' value='<?php echo (int)sportsmanagementModelPrediction::$pjID; ?>' />
 								<input type='hidden' name='uid' value='<?php echo (int)$this->predictionMember->pmID; ?>' />
-								<input type='hidden' name='pjID' value='<?php echo (int)$this->model->pjID; ?>' />
+								<input type='hidden' name='pjID' value='<?php echo (int)sportsmanagementModelPrediction::$pjID; ?>' />
 								<input type='hidden' name='task' value='predictionusers.selectprojectround' />
 								<input type='hidden' name='option' value='com_sportsmanagement' />
 								
 								<?php echo JHTML::_('form.token'); ?>
 
 								<?php echo sportsmanagementModelPrediction::createProjectSelector(	sportsmanagementModelPrediction::$_predictionProjectS,
-																				$this->model->pjID,
+																				sportsmanagementModelPrediction::$pjID,
 																				1); ?>
 							</form>
 						</td>

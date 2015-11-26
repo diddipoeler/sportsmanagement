@@ -67,23 +67,23 @@ echo 'this->limitend<br /><pre>~' . print_r($this->limitend,true) . '~</pre><br 
 foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionProject)
 {
 	$gotSettings = $predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id);
-	if ((($this->model->pjID==$predictionProject->project_id) && ($gotSettings)) || ($this->model->pjID==0))
+	if ( ( ( (int)sportsmanagementModelPrediction::$pjID == $predictionProject->project_id ) && ($gotSettings)) || ( (int)sportsmanagementModelPrediction::$pjID == 0 ) )
 	{
-		$showProjectID = (count(sportsmanagementModelPrediction::$_predictionProjectS) > 1) ? $this->model->pjID : $predictionProject->project_id;
-		$this->model->pjID = $predictionProject->project_id;
+		$showProjectID = (count(sportsmanagementModelPrediction::$_predictionProjectS) > 1) ? sportsmanagementModelPrediction::$pjID : $predictionProject->project_slug;
+		sportsmanagementModelPrediction::$pjID = $predictionProject->project_slug;
 		$this->model->predictionProject = $predictionProject;
 		$actualProjectCurrentRound = sportsmanagementModelPrediction::getProjectSettings($predictionProject->project_id);
 		
 		?>
 		<form name='resultsRoundSelector' method='post' >
-			<input type='hidden' name='prediction_id' value='<?php echo (int)$this->predictionGame->id; ?>' />
-			<input type='hidden' name='p' value='<?php echo (int)$predictionProject->project_id; ?>' />
-			<input type='hidden' name='r' value='<?php echo (int)$this->roundID; ?>' />
-			<input type='hidden' name='pjID' value='<?php echo (int)$showProjectID; ?>' />
+			<input type='hidden' name='prediction_id' value='<?php echo sportsmanagementModelPrediction::$predictionGameID; ?>' />
+			<input type='hidden' name='pj' value='<?php echo $predictionProject->project_slug; ?>' />
+			<input type='hidden' name='r' value='<?php echo sportsmanagementModelPrediction::$roundID; ?>' />
+			<input type='hidden' name='pjID' value='<?php echo $showProjectID; ?>' />
 			<input type='hidden' name='task' value='predictionranking.selectprojectround' />
 			<input type='hidden' name='option' value='com_sportsmanagement' />
-			<input type='hidden' name='pggroup' value='<?php echo (int)$this->model->pggroup; ?>' />
-            <input type='hidden' name='pggrouprank' value='<?php echo (int)$this->model->pggrouprank; ?>' />
+			<input type='hidden' name='pggroup' value='<?php echo sportsmanagementModelPrediction::$pggroup; ?>' />
+            <input type='hidden' name='pggrouprank' value='<?php echo sportsmanagementModelPrediction::$pggrouprank; ?>' />
 
 			<table class="table" >
 				<tr>
@@ -94,15 +94,18 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 					</td>
 					<td class='sectiontableheader' style='text-align:right; ' width='20%' nowrap='nowrap' >
           <?php
+
+//echo __FILE__.' '.__LINE__.' project_id<br><pre>'.print_r($predictionProject->project_id,true).'</pre>';
           
-          echo JHTML::_('select.genericlist',$this->lists['ranking_array'],'pggrouprank','class="inputbox" size="1" onchange="this.form.submit(); "','value','text',$this->model->pggrouprank);
+          echo JHTML::_('select.genericlist',$this->lists['ranking_array'],'pggrouprank','class="inputbox" size="1" onchange="this.form.submit(); "','value','text',sportsmanagementModelPrediction::$pggrouprank);
           
           $groups = sportsmanagementModelPrediction::getPredictionGroupList();
           $predictionGroups[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_SELECT_GROUPS'),'value','text');
                         $predictionGroups = array_merge($predictionGroups,$groups);
-                        $htmlGroupOptions = JHTML::_('select.genericList',$predictionGroups,'pggroup','class="inputbox" onchange="this.form.submit(); "','value','text',$this->model->pggroup);
+                        $htmlGroupOptions = JHTML::_('select.genericList',$predictionGroups,'pggroup','class="inputbox" onchange="this.form.submit(); "','value','text',sportsmanagementModelPrediction::$pggroup);
           echo $htmlGroupOptions;
-						echo sportsmanagementModelPrediction::createProjectSelector(	sportsmanagementModelPrediction::$_predictionProjectS,
+          
+						echo sportsmanagementModelPrediction::createProjectSelector(sportsmanagementModelPrediction::$_predictionProjectS,
 																	$predictionProject->project_id,
 																	$showProjectID);
 						if ($showProjectID > 0)
@@ -112,8 +115,8 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
 $routeparameter['s'] = JRequest::getInt('s',0);
-$routeparameter['p'] = $predictionProject->project_id;
-$routeparameter['r'] = $this->roundID;
+$routeparameter['p'] = $predictionProject->project_slug;
+$routeparameter['r'] = sportsmanagementModelPrediction::$roundID;
 $routeparameter['division'] = 0;
 $routeparameter['mode'] = 0;
 $routeparameter['order'] = '';
@@ -147,11 +150,20 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 			?>
 			<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement'); ?>" name='adminForm' id='adminForm' method='post'>
             <input type="hidden" name="view" value="predictionranking" />
+            <input type='hidden' name='prediction_id' value='<?php echo sportsmanagementModelPrediction::$predictionGameID; ?>' />
+			<input type='hidden' name='pj' value='<?php echo $predictionProject->project_slug; ?>' />
+			<input type='hidden' name='r' value='<?php echo sportsmanagementModelPrediction::$roundID; ?>' />
+			<input type='hidden' name='pjID' value='<?php echo $showProjectID; ?>' />
+			<input type='hidden' name='task' value='predictionranking.selectprojectround' />
+			<input type='hidden' name='option' value='com_sportsmanagement' />
+			<input type='hidden' name='pggroup' value='<?php echo sportsmanagementModelPrediction::$pggroup; ?>' />
+            <input type='hidden' name='pggrouprank' value='<?php echo sportsmanagementModelPrediction::$pggrouprank; ?>' />
+            
 				<table class="table">
 					<tr>
-						<td><?php echo JHTML::_('select.genericlist',$this->lists['type'],'type','class="inputbox" size="1"','value','text',$this->model->type); ?></td>
-						<td><?php echo JHTML::_('select.genericlist',$from_matchday,'from','class="inputbox" size="1"','value','text',$this->model->from); ?></td>
-						<td><?php echo JHTML::_('select.genericlist',$to_matchday,'to','class="inputbox" size="1"','value','text',$this->model->to); ?></td>
+						<td><?php echo JHTML::_('select.genericlist',$this->lists['type'],'type','class="inputbox" size="1"','value','text',sportsmanagementModelPrediction::$type); ?></td>
+						<td><?php echo JHTML::_('select.genericlist',$from_matchday,'from','class="inputbox" size="1"','value','text',sportsmanagementModelPrediction::$from); ?></td>
+						<td><?php echo JHTML::_('select.genericlist',$to_matchday,'to','class="inputbox" size="1"','value','text',sportsmanagementModelPrediction::$to); ?></td>
 						<td><input type='submit' class='button' name='reload View' value='<?php echo JText::_('COM_SPORTSMANAGEMENT_RANKING_FILTER'); ?>' /></td>
 					</tr>
 
@@ -176,7 +188,7 @@ echo $this->pagination->getListFooter();
 				<td class='sectiontableheader' style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK'); ?></td>
 				<?php
                 
-                if ( $this->model->pggrouprank )
+                if ( sportsmanagementModelPrediction::$pggrouprank )
                 {
                     ?>
                 <td class='sectiontableheader' style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_MEMBER_GROUP'); ?></td>    
@@ -269,7 +281,7 @@ echo $this->pagination->getListFooter();
 				$membersResultsArray = array();
 				$membersDataArray = array();
                 
-                if ( $this->model->pggrouprank )
+                if ( sportsmanagementModelPrediction::$pggrouprank )
                 {
                 $groupmembersResultsArray = array();
 				$groupmembersDataArray = array();
@@ -408,7 +420,7 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
 					$membersResultsArray[$member->pmID]['totalTend'] = $totalTend;
 					$membersResultsArray[$member->pmID]['totalJoker'] = $totalJoker;
                     
-                    if ( $this->model->pggrouprank )
+                    if ( sportsmanagementModelPrediction::$pggrouprank )
                     {
                         if ( !isset($groupmembersResultsArray[$member->pg_group_id]['predictionsCount']) )
                         {
@@ -466,7 +478,7 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
                     $membersDataArray[$member->pmID]['pg_group_name'] = $member->pg_group_name;
                     $membersDataArray[$member->pmID]['pg_group_id']	= $member->pg_group_id;
                     
-                    if ( $this->model->pggrouprank )
+                    if ( sportsmanagementModelPrediction::$pggrouprank )
                     {
                     $groupmembersDataArray[$member->pg_group_id]['pg_group_name'] = $member->pg_group_name;
                     $groupmembersDataArray[$member->pg_group_id]['pg_group_id']	= $member->pg_group_id;
@@ -479,20 +491,21 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
           
 					if (($this->config['link_name_to'])&&(($member->show_profile)||($this->predictionMember->pmID==$member->pmID)))
 					{
-						$link = JSMPredictionHelperRoute::getPredictionMemberRoute($this->predictionGame->id,$member->pmID);
+						$link = JSMPredictionHelperRoute::getPredictionMemberRoute(sportsmanagementModelPrediction::$predictionGameID,$member->pmID);
 						$output = JHTML::link($link,$member->name);
 					}
 					else
 					{
 						$output = $member->name;
 					}
+                    
 					$membersDataArray[$member->pmID]['name'] = $output;
 					
 					$imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RANK_SHOW_DETAILS_OF',$member->name);
 					$imgFile = JHTML::image( "media/com_sportsmanagement/jl_images/zoom.png", $imgTitle , array(' title' => $imgTitle));
 					// bugtracker id 0000088
                     //$link = JSMPredictionHelperRoute::getPredictionResultsRoute($this->predictionGame->id ,$actualProjectCurrentRound ,$this->model->pjID,$member->pmID);
-                    $link = JSMPredictionHelperRoute::getPredictionResultsRoute($this->predictionGame->id ,$actualProjectCurrentRound);
+                    $link = JSMPredictionHelperRoute::getPredictionResultsRoute(sportsmanagementModelPrediction::$predictionGameID ,$actualProjectCurrentRound,sportsmanagementModelPrediction::$pjID);
 					if (($member->show_profile)||($this->predictionMember->pmID == $member->pmID))
 					{
 						$output = JHTML::link( $link, $imgFile);
@@ -505,11 +518,11 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
 					$membersDataArray[$member->pmID]['show_tip_details']	= $output;
 					$membersDataArray[$member->pmID]['champ_tipp']		= $member->champ_tipp;
                     
-                    if ( $this->model->pggrouprank )
+                    if ( (int)sportsmanagementModelPrediction::$pggrouprank )
                     {
                     $imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RANK_SHOW_DETAILS_OF',$member->pg_group_name);
 					$imgFile = JHTML::image( "media/com_sportsmanagement/jl_images/zoom.png", $imgTitle , array(' title' => $imgTitle));
-					$link = JSMPredictionHelperRoute::getPredictionResultsRoute($this->predictionGame->id ,$actualProjectCurrentRound ,$this->model->pjID,$member->pmID,'',$member->pg_group_id);
+					$link = JSMPredictionHelperRoute::getPredictionResultsRoute(sportsmanagementModelPrediction::$predictionGameID ,$actualProjectCurrentRound ,sportsmanagementModelPrediction::$pjID,$member->pmID,'',$member->pg_group_id);
                     $output = JHTML::link( $link, $imgFile);
                     $groupmembersDataArray[$member->pg_group_id]['show_tip_details']	= $output;    
                     }    
@@ -529,7 +542,7 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
                 }
 				}
                 
-                if ( $this->model->pggrouprank )
+                if ( sportsmanagementModelPrediction::$pggrouprank )
                     {
                         $computedMembersRanking = sportsmanagementModelPrediction::computeMembersRanking($groupmembersResultsArray,$this->config);
                         }
@@ -550,7 +563,7 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
 
 				$i=1;
                 
-                if ( $this->model->pggrouprank )
+                if ( sportsmanagementModelPrediction::$pggrouprank )
                     {
                     $schluessel = 'pg_group_id';
                     $membersDataArray = $groupmembersDataArray;
@@ -573,10 +586,11 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
                 if ( $key == $items->$schluessel )
 				{
 
-					$class = ($k==0) ? 'sectiontableentry1' : 'sectiontableentry2';
+					//$class = ($k==0) ? 'sectiontableentry1' : 'sectiontableentry2';
 					$styleStr = ($this->predictionMember->pmID==$key) ? ' style="background-color:'.$this->config['background_color_ranking'].'; color:black; " ' : '';
-					$class = ($this->predictionMember->pmID==$key) ? 'sectiontableentry1' : $class;
+					//$class = ($this->predictionMember->pmID==$key) ? 'sectiontableentry1' : $class;
 					$tdStyleStr = " style='text-align:center; vertical-align:middle; ' ";
+                    $class = '';
 
 					
                         ?>
@@ -584,7 +598,7 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
 						<tr class='<?php echo $class; ?>' <?php echo $styleStr; ?> >
 							<td<?php echo $tdStyleStr; ?>><?php echo $value['rank']; ?></td>
 							<?php
-						if ( $this->model->pggrouprank )
+						if ( sportsmanagementModelPrediction::$pggrouprank )
                     {
                         ?>
 							<td<?php echo $tdStyleStr; ?>><?php echo $membersDataArray[$key]['pg_group_name']; ?></td>
@@ -663,7 +677,7 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
               
 							}
                             // soll der meistertipp angezeigt werden ? ende
-							if ( !$this->model->pggrouprank )
+							if ( !sportsmanagementModelPrediction::$pggrouprank )
                             {
 							if ($this->config['show_tip_details'])
 							{

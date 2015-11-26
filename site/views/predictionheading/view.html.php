@@ -60,8 +60,18 @@ class sportsmanagementViewPredictionHeading extends JViewLegacy
 	 */
 	function display($tpl=null)
 	{
-		$document =  JFactory::getDocument();
-        $app = JFactory::getApplication();		
+		$document = JFactory::getDocument();
+        	// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        
+//        $this->assignRef('prediction_id', $jinput->request->get('prediction_id', 0) );
+//        $this->assignRef('pggroup', $jinput->request->get('pggroup', 0) );
+//        $this->assignRef('pj', $jinput->request->get('pj', 0) );
+//        $this->assignRef('r', $jinput->request->get('r', 0) );
+        		
 //	$js ="registerhome('".JURI::base()."','Prediction Game Extension','".$app->getCfg('sitename')."','0');". "\n";
 //    $document->addScriptDeclaration( $js );	
     
