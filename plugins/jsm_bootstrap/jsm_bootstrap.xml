@@ -13,7 +13,7 @@
 	<files>
         <filename plugin="jsm_bootstrap">jsm_bootstrap.php</filename>
         <filename>index.html</filename>
-       <!--> <folder>language</folder> -->
+        <folder>language</folder>
         <folder>css</folder>
     </files>
     

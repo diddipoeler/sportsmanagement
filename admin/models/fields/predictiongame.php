@@ -92,10 +92,12 @@ class JFormFieldPredictiongame extends JFormField
 // 		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
 // 		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
 		
-		$query = 'SELECT pg.id, pg.name FROM #__sportsmanagement_prediction_game pg WHERE pg.published=1 ORDER BY pg.name';
+//		$query = 'SELECT pg.id, pg.name FROM #__sportsmanagement_prediction_game pg WHERE pg.published=1 ORDER BY pg.name';
 		$query = $db->getQuery(true);
 			
-			$query->select('pg.id, pg.name');
+            $query->select('CONCAT_WS( \':\', pg.id, pg.name ) AS id');
+			//$query->select('pg.id');
+            $query->select('pg.name');
 
             $query->from('#__sportsmanagement_prediction_game pg');    
             

@@ -16,11 +16,11 @@
 		<folder>language</folder>
 	</files>
 
-	<languages folder="language">
-		<language tag="en-GB">en-GB/en-GB.plg_search_search_sportsmanagement.ini</language>
-		<language tag="en-GB">en-GB/en-GB.plg_search_search_sportsmanagement.sys.ini</language>
-		<language tag="de-DE">de-DE/de-DE.plg_search_search_sportsmanagement.ini</language>
-		<language tag="de-DE">de-DE/de-DE.plg_search_search_sportsmanagement.sys.ini</language>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_search_search_sportsmanagement.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_search_search_sportsmanagement.sys.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.plg_search_search_sportsmanagement.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.plg_search_search_sportsmanagement.sys.ini</language>
 	</languages>
 
 	<config>
