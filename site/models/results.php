@@ -581,6 +581,11 @@ else
 	 */
 	function isAllowed($cfg_which_database = 0)
 	{
+	   $option = JRequest::getCmd('option');
+	$app = JFactory::getApplication();
+    // JInput object
+        $jinput = $app->input;
+        
 		$allowed = false;
 		$user = JFactory::getUser();
 		if ($user->id != 0)
@@ -590,6 +595,11 @@ else
 			$isProjectAdmin = $user->id == $project->admin;
 			$isProjectEditor = $user->id == $project->editor;
 			
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' user<br><pre>'.print_r($user,true).'</pre>'),'Notice');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' hasACLPermssion<br><pre>'.print_r($hasACLPermssion,true).'</pre>'),'Notice');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isProjectAdmin<br><pre>'.print_r($isProjectAdmin,true).'</pre>'),'Notice');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isProjectEditor<br><pre>'.print_r($isProjectEditor,true).'</pre>'),'Notice');
+            
 			if( $hasACLPermssion && ($isProjectAdmin || $isProjectEditor) )
 			{
 				$allowed = true;

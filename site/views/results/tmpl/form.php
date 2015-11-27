@@ -65,15 +65,15 @@ require ( JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'ed
 $document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eventsediting.js?v=');
 ?>
 <div style="overflow:auto;">
-	<a name="jl_top" id="jl_top"></a>
+<!--	<a name="jl_top" id="jl_top"></a> -->
 	<!-- section header e.g. ranking, results etc. -->
 	<table class="table">
 		<tr>
 			<td class="contentheading">
 				<?php
-				if ($this->roundid>0)
+				if ( $this->roundid > 0 )
 				{
-					sportsmanagementHelperHtml::showMatchdaysTitle(JText::_('Round results'), $this->roundid, $this->config );
+					sportsmanagementHelperHtml::showMatchdaysTitle(JText::_('COM_SPORTSMANAGEMENT_RESULTS_ENTER_EDIT_RESULTS'), $this->roundid, $this->config );
 					if ($this->showediticon) //Needed to check if the user is still allowed to get into the match edit
 					{
 					   $routeparameter = array();
@@ -95,7 +95,11 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 				}
 				?>
 			</td>
-			<td><?php echo sportsmanagementHelperHtml::getRoundSelectNavigation(TRUE,JRequest::getInt('cfg_which_database',0)); ?></td>
+			<td>
+            <?php 
+            echo sportsmanagementHelperHtml::getRoundSelectNavigation(TRUE,JRequest::getInt('cfg_which_database',0)); 
+            ?>
+            </td>
 		</tr>
 	</table>
 	<form name="adminForm" id="adminForm" method="post" action="<?php echo JFactory::getURI()->toString(); ?>">

@@ -164,26 +164,26 @@ return $modaltext;
 
 			if ($config['mark_now_playing'])
 			{
-				$thistime=mktime();
-				$time_to_ellapse=($project->halftime * ($project->game_parts - 1)) + $project->game_regular_time;
-				if ($project->allow_add_time == 1 && ($game->team1_result == $game->team2_result))
+				$thistime = time();
+				$time_to_ellapse = ( $project->halftime * ($project->game_parts - 1) ) + $project->game_regular_time;
+				if ( $project->allow_add_time == 1 && ($game->team1_result == $game->team2_result) )
 				{
 					$time_to_ellapse += $project->add_time;
 				}
-				$time_to_ellapse=$time_to_ellapse * 60;
-				$mydate=preg_split("/-| |:/",$game->match_date);
+				$time_to_ellapse = $time_to_ellapse * 60;
+				$mydate = preg_split("/-| |:/",$game->match_date);
 				$match_stamp=mktime($mydate[3],$mydate[4],$mydate[5],$mydate[1],$mydate[2],$mydate[0]);
 				if ($thistime >= $match_stamp && $match_stamp + $time_to_ellapse >= $thistime)
 				{
 					$match_begin=$output.' ';
-					$title=str_replace('%STARTTIME%',$match_begin,trim(htmlspecialchars($config['mark_now_playing_alt_text'])));
-					$title=str_replace('%ACTUALTIME%',self::mark_now_playing($thistime,$match_stamp,$config,$project),$title);
-					$styletext='';
+					$title = str_replace('%STARTTIME%',$match_begin,trim(htmlspecialchars($config['mark_now_playing_alt_text'])));
+					$title = str_replace('%ACTUALTIME%',self::mark_now_playing($thistime,$match_stamp,$config,$project),$title);
+					$styletext = '';
 					if (isset($config['mark_now_playing_blink']) && $config['mark_now_playing_blink'])
 					{
 						$styletext=' style="text-decoration:blink"';
 					}
-					$output='<b><i><acronym title="'.$title.'"'.$styletext.'>';
+					$output = '<b><i><acronym title="'.$title.'"'.$styletext.'>';
 					$output .= $config['mark_now_playing_text'];
 					$output .= '</acronym></i></b>';
 				}

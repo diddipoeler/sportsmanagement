@@ -78,6 +78,10 @@ else
 	</div>
 	<!-- Main END -->
 	<?php
-	if ($this->config['show_dnp_teams']) { echo $this->loadTemplate('freeteams'); }
+	if ( $this->config['show_dnp_teams'] ) 
+    { 
+        echo $this->loadTemplate('freeteams'); 
+        }
+        
 }
 ?>

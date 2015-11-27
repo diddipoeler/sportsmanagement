@@ -157,7 +157,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
   
        }
       
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' extended'.'<pre>'.print_r($this->extended,true).'</pre>' ),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' showediticon'.'<pre>'.print_r($this->showediticon,true).'</pre>' ),'');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' matches'.'<pre>'.print_r($this->matches,true).'</pre>' ),'');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundid'.'<pre>'.print_r($this->roundid,true).'</pre>' ),'');       
             
