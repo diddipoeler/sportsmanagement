@@ -400,7 +400,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
           
 			if ((int)self::$predictionMemberID > 0)
 			{
-				$query->clear();
+				//$query->clear();
 			 $query->select('u.name, u.username');
              $query->select('pg.id as pg_group_id,pg.name as pg_group_name');
              $query->join('LEFT', '#__sportsmanagement_prediction_groups as pg ON pg.id = pm.group_id');
@@ -425,7 +425,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 				$user= JFactory::getUser();
 				if ($user->id > 0)
 				{
-					$query->clear();
+				//	$query->clear();
 				    $query->select('u.*');
                     $query->where('pm.user_id = '.$user->id);
 
