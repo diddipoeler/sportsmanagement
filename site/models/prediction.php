@@ -234,6 +234,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 			{
 				
                 // Select some fields
+                $query->clear();
         $query->select('*');
         $query->select("CONCAT_WS(':',id,alias) AS slug");
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game');
@@ -390,6 +391,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         
 		if (!(int)self::$_predictionMember)
 		{
+			$query->clear();
 		  // Select some fields
           $query->select('pm.id AS pmID, pm.registerDate AS pmRegisterDate, pm.*');
           $query->from('#__sportsmanagement_prediction_member AS pm');
@@ -398,6 +400,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
           
 			if ((int)self::$predictionMemberID > 0)
 			{
+				//$query->clear();
 			 $query->select('u.name, u.username');
              $query->select('pg.id as pg_group_id,pg.name as pg_group_name');
              $query->join('LEFT', '#__sportsmanagement_prediction_groups as pg ON pg.id = pm.group_id');
@@ -422,6 +425,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 				$user= JFactory::getUser();
 				if ($user->id > 0)
 				{
+				//	$query->clear();
 				    $query->select('u.*');
                     $query->where('pm.user_id = '.$user->id);
 
@@ -481,6 +485,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 			if ( (int)self::$predictionGameID > 0)
 			{
 			 // Select some fields
+			 $query->clear();
           $query->select('pp.*');
           $query->select('p.name AS projectName, p.start_date');
           $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
@@ -541,6 +546,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 		$query = $db->getQuery(true);
     
     // Select some fields
+    $query->clear();
           $query->select('t.params');
           $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_template AS t');
           $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game AS p ON p.id = t.prediction_id');
@@ -664,6 +670,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 		if ($project_id > 0)
 		{
 		   // Select some fields
+		   $query->clear();
         $query->select('*');
         $query->from('#__sportsmanagement_project');
         $query->where('id = '.(int)$project_id);
@@ -724,6 +731,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         }
     
     // Select some fields
+    $query->clear();
         $query->select('t.'.$teamName.' as name');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
         $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
@@ -980,6 +988,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         foreach ($user->groups as $groupId => $value)
         {
         // Select some fields
+        $query->clear();
         $query->select('title');
         $query->from('#__usergroups');
         $query->where('id = '.(int) $groupId);
