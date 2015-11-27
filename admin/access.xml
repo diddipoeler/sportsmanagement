@@ -22,6 +22,9 @@
     <action name="predictiongame.unpublish" title="COM_SPORTSMANAGEMENT_SETTINGS_PRED_ACCESS_UNPUBLISH" description="COM_SPORTSMANAGEMENT_SETTINGS_PRED_ACCESS_UNPUBLISH_DESC" />
     <action name="predictiongame.publish" title="COM_SPORTSMANAGEMENT_SETTINGS_PRED_ACCESS_PUBLISH" description="COM_SPORTSMANAGEMENT_SETTINGS_PRED_ACCESS_PUBLISH_DESC" />
     <action name="predictiongame.register" title="COM_SPORTSMANAGEMENT_SETTINGS_PRED_ACCESS_REGISTER" description="COM_SPORTSMANAGEMENT_SETTINGS_PRED_ACCESS_REGISTER_DESC" />
+
+    <!-- project -->
+<action name="results.saveshort" title="COM_SPORTSMANAGEMENT_SETTINGS_RESULTS_ACCESS_SAVE" description="COM_SPORTSMANAGEMENT_SETTINGS_RESULTS_ACCESS_SAVE_DESC" />
     
 	</section>
 	<section name="message">
