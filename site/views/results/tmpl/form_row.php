@@ -40,12 +40,76 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access'); 
 
-
-
-
 //FIXME not functional ? 
 // this code was copied from results model, editablerow function
+
+//JHTML::_('behavior.modal', 'a.user-modal');
+
 ?>
+<style>
+/*  #myModal1 .modal-dialog {
+    width: 80%;
+  }
+*/  
+
+.modaljsm {
+    width: 80%;
+    height: 60%;
+  }  
+  
+.modal-dialog {
+    width: 80%;
+  }  
+.modal-dialog,
+.modal-content {
+    /* 95% of window height */
+    height: 95%;
+}  
+</style>
+
+
+<script type="text/javascript" language="javascript" >
+
+
+
+      
+function fillContainer(site)
+      { 
+        var string = "echo $this->loadTemplate('edit');";
+        // Speichert den Inhalt des Attributes in der Variablen site.
+        //var site = $(this).data('site'); 
+        alert(site);
+        document.getElementById('bigcontent').innerHTML = string;
+        // Seite laden und in .content einsetzen.
+        //jQuery("#bigcontent").load('edit');
+        //jQuery('#bigcontent').load("http://www.google.de");
+        jQuery('#content').load(site); 
+      }      
+      
+      function fillContainer2()
+      { var string = '<div class="container"><div class="header"><img src="images/logo.png" width="100" height="200" alt="Logo" title="Logo" /></div><div class="content"><h1>Titel</h1><div class="text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse aliquet, justo eget adipiscing suscipit, mauris nisl dapibus magna, eget gravida enim est faucibus dolor. Donec at leo vitae metus tempus consequat. Aliquam erat volutpat. Vestibulum eu leo tortor, eget mattis lorem. Sed pharetra turpis sit amet massa mattis dignissim.</div></div><div class="footer">&copy; Copyright 2001</div></div>';
+        document.getElementById('bigcontent').innerHTML = string;
+      }
+ 
+      function fillContainer3()
+      { var string = '<div class="container">'+
+                     '  <div class="header">'+
+                     '    <img src="images/logo.png" width="100" height="200" alt="Logo" title="Logo" />'+
+                     '  </div>'+
+                     '  <div class="content">'+
+                     '    <h1>Titel</h1>'+
+                     '    <div class="text">'+
+                     '      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse aliquet, justo eget adipiscing suscipit, mauris nisl dapibus magna, eget gravida enim est faucibus dolor. Donec at leo vitae metus tempus consequat. Aliquam erat volutpat. Vestibulum eu leo tortor, eget mattis lorem. Sed pharetra turpis sit amet massa mattis dignissim.'+
+                     '    </div>'+
+                     '  </div>'+
+                     '  <div class="footer">'+
+                     '    &copy; Copyright 2001'+
+                     '  </div>'+
+                     '</div>';
+        document.getElementById('bigcontent').innerHTML = string;
+      }
+    </script>
+
 
 <?php 
 		$match = $this->game;
@@ -108,20 +172,24 @@ defined('_JEXEC') or die('Restricted access');
 		<input type='checkbox' id='cb<?php echo $i; ?>' name='cid[]' value='<?php echo $thismatch->id; ?>' />
 	</td>
 	<!-- Edit match details -->
-	<td valign="top">
+	<td valign="">
 		<?php
         
         // über das backend/administrator bearbeiten
-		JHtml::_('behavior.modal','a.mymodal');
-		$url = sportsmanagementHelperRoute::getEditMatchRoute($this->project->id,$thismatch->id);
-		$imgTitle = JText::_('Edit match details');
-		$desc = JHtml::image(JURI::root().'media/com_sportsmanagement/jl_images/edit.png',$imgTitle, array('id' => 'edit'.$thismatch->id,'border' => 0,'title' => $imgTitle));
-		?>
-		<a class="mymodal" title="example" href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
-	</td>
+		//JHtml::_('behavior.modal','a.mymodal');
+		$url = sportsmanagementHelperRoute::getEditMatchRoute(sportsmanagementModelResults::$projectid,$thismatch->id,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,sportsmanagementModelResults::$divisionid,'form');
+		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_MATCH_DETAILS_BACKEND');
+		$desc = JHtml::image(JURI::root().'media/com_sportsmanagement/jl_images/edit.png',$imgTitle, array('id' => 'edit'.$thismatch->id,'border' => 0,'width' => 20,'title' => $imgTitle));
+        
+        ?>
+<!-- Button HTML (to Trigger Modal) -->
+<a href="<?php echo $url; ?>" rel="modaljsm:open"><img src="<?php echo JURI::root().'media/com_sportsmanagement/jl_images/edit.png'; ?>" > </a>
+
+   
+    </td>
     
     <?PHP
-    $append=' class="inputbox" size="1" onchange="$(\'cb'.$i.'\').checked=true; " style="font-size:9px;" ';
+    $append=' class="inputbox" size="1" onchange="document.getElementById(\'cb<?php echo $i; ?>\').checked=true; " style="font-size:9px;" ';
     ?>
     <td style="text-align:center; " >
     <?PHP
@@ -130,7 +198,7 @@ defined('_JEXEC') or die('Restricted access');
     ?>
     </td>
 		<?php 
-		if($this->project->project_type=='DIVISIONS_LEAGUE') 
+		if( $this->project->project_type == 'DIVISIONS_LEAGUE' ) 
         {
 		?>
 	<td style="text-align:center; " >
@@ -141,25 +209,57 @@ defined('_JEXEC') or die('Restricted access');
 		?>
 	<td align='center' valign='top'>
     <input type='text' style='font-size: 9px;' class='inputbox' size='3' name='match_number<?php echo $thismatch->id; ?>'
-		value="<?php echo $thismatch->match_number;?>" onchange="$('cb<?php echo $i; ?>').checked=true; " />
+		value="<?php echo $thismatch->match_number;?>" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; " />
 	</td>
 	<!-- Edit date -->
 	<td nowrap='nowrap' align='center' valign='top'>
-	<?php echo JHtml::calendar(	sportsmanagementHelper::convertDate($datum,1),
+	<?php
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+?> 
+<!--   
+<div class="well form-inline">
+			  <div class="input-append date" id="<?php echo 'match_date'.$thismatch->id;?>" data-date="12-02-2012" data-date-format="dd-mm-yyyy">
+				<input class="span2" size="16" type="text" value="<?php echo sportsmanagementHelper::convertDate($datum,1);?>" readonly >
+				<span class="add-on"><i class="icon-th"></i></span>
+			  </div>
+          </div>
+-->
+<div class="well">
+<input type="text" class="span2" value="<?php echo sportsmanagementHelper::convertDate($datum,1);?>" data-date-format="dd-mm-yyyy" id="<?php echo 'match_date'.$thismatch->id;?>" >
+</div>
+                    
+<script>
+jQuery('#<?php echo 'match_date'.$thismatch->id;?>').datepicker();
+</script>        
+<?PHP            
+/*
+echo JHtml::calendar(sportsmanagementHelper::convertDate($datum,1),
 					'match_date'.$thismatch->id,
 					'match_date'.$thismatch->id,
 					'%d-%m-%Y',
-					'size="9"  style="font-size:9px;" onchange="$(\'cb'.$i.'\').checked=true; "'); ?>
+					'size="9"  style="font-size:9px;" onchange="document.getElementById(\'cb'.$i.'\').checked=true; "');
+*/
+}
+else
+{     
+    echo JHtml::calendar(sportsmanagementHelper::convertDate($datum,1),
+					'match_date'.$thismatch->id,
+					'match_date'.$thismatch->id,
+					'%d-%m-%Y',
+					'size="9"  style="font-size:9px;" onchange="document.getElementById(\'cb'.$i.'\').checked=true; "'); 
+}                    
+                    ?>
 	</td>
 	<!-- Edit start time -->
 	<td align='center' nowrap='nowrap' valign='top'>
 		<input type='text' style='font-size: 9px;' size='3' name='match_time<?php echo $thismatch->id; ?>' value='<?php echo substr($uhrzeit,0,5); ?>'
-			class='inputbox' onchange="$('cb<?php echo $i; ?>').checked=true; " />
+			class='inputbox' onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; " />
 	</td>
 	<!-- Edit time present -->
 	<td align='center' nowrap='nowrap' valign='top'>
 		<input type='text' style='font-size: 9px;' size='3' name='time_present<?php echo $thismatch->id; ?>' value='<?php echo substr($thismatch->time_present,0,5); ?>'
-			class='inputbox' onchange="$('cb<?php echo $i; ?>').checked=true; " />
+			class='inputbox' onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; " />
 	</td>
 	<!-- Edit home team -->
 	<td align="center" nowrap="nowrap" valign="top">
@@ -167,14 +267,20 @@ defined('_JEXEC') or die('Restricted access');
 		<?php
         
         // über das backend/administrator bearbeiten
-		$url = sportsmanagementHelperRoute::getEditLineupRoute($this->project->id,$thismatch->id,null,$team1->projectteamid);
+//$url = sportsmanagementHelperRoute::getEditMatchRoute(sportsmanagementModelResults::$projectid,$thismatch->id,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,sportsmanagementModelResults::$divisionid,'form');        
+		$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,null,$team1->projectteamid,null,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,sportsmanagementModelResults::$divisionid,'form');
 		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_HOME');
 		$desc = JHtml::image(	JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
 		?>
-		<a class='mymodal' title='example' href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
+
+<!-- Button HTML (to Trigger Modal) -->
+<a href="<?php echo $url; ?>" rel="modaljsm:open"><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png'; ?>" > </a>
+
+
+
 		<!-- Edit home team -->
 			<?php
-		$append=' class="inputbox" size="1" onchange="$(\'cb'.$i.'\').checked=true; " style="font-size:9px;" ';
+		$append=' class="inputbox" size="1" onchange="document.getElementById(\'cb'.$i.'\').checked=true; " style="font-size:9px;" ';
 		if ((!$userIsTeamAdmin) and (!$match->allowed)){$append .= ' disabled="disabled"';}
 		if (!isset($team1->projectteamid)){$team1->projectteamid=0;}
 		echo JHtml::_('select.genericlist', $teamsoptions, 'projectteam1_id'.$thismatch->id, $append, 'value', 'text', $team1->projectteamid);
@@ -199,12 +305,16 @@ defined('_JEXEC') or die('Restricted access');
 		<?php
         
         // über das backend/administrator bearbeiten
-		$url = sportsmanagementHelperRoute::getEditLineupRoute($this->project->id,$thismatch->id,null,$team2->projectteamid);
+		$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,null,$team2->projectteamid,null,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,sportsmanagementModelResults::$divisionid,'form');
 		$imgTitle=JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_AWAY');
 		$desc=JHtml::image(	JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
 		?>
-		<a class='mymodal' title='example' href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
-	</td>
+
+<!-- Button HTML (to Trigger Modal) -->
+<a href="<?php echo $url; ?>" rel="modaljsm:open"><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png'; ?>" > </a>
+
+	
+    </td>
 	<!-- Edit match results -->
 	<?php
 		if ($this->config['results_below'])
@@ -217,9 +327,9 @@ defined('_JEXEC') or die('Restricted access');
 			?>
 	<td align='center' valign='top'>
 		<input type='text' style='font-size: 9px;' name='team1_result_split<?php echo $thismatch->id; ?>[]' size='2' tabindex='1' class='inputbox'
-			value='<?php echo (isset($partresults1[$x])) ? $partresults1[$x] : ''; ?>' onchange="$('cb<?php echo $i; ?>').checked=true; " /> <br />
+			value='<?php echo (isset($partresults1[$x])) ? $partresults1[$x] : ''; ?>' onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; " /> <br />
 		<input type='text' style='font-size: 9px;' name='team2_result_split<?php echo $thismatch->id; ?>[]' size='2' tabindex='1' class='inputbox'
-			value='<?php echo (isset($partresults2[$x])) ? $partresults2[$x] : ''; ?>' onchange="$('cb<?php echo $i; ?>').checked=true; " />
+			value='<?php echo (isset($partresults2[$x])) ? $partresults2[$x] : ''; ?>' onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; " />
 	</td>
 			<?php
 			}
@@ -231,11 +341,11 @@ defined('_JEXEC') or die('Restricted access');
 		<span	id="ot<?php echo $thismatch->id; ?>" style="visibility:<?php echo ($thismatch->match_result_type > 0) ? 'visible' : 'hidden'; ?>">
 			<input type="text" style="font-size: 9px;" name="team1_result_ot<?php echo $thismatch->id; ?>"
 				value="<?php echo (isset($thismatch->team1_result_ot)) ? $thismatch->team1_result_ot : ''; ?>"
-				size="2" tabindex="1" class="inputbox" onchange="$('cb<?php echo $i; ?>').checked=true; " />
+				size="2" tabindex="1" class="inputbox" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; " />
 			<br />
 			<input type="text" style="font-size: 9px;" name="team1_result_ot<?php echo $thismatch->id; ?>"
 				value="<?php echo (isset($thismatch->team2_result_ot)) ? $thismatch->team2_result_ot : ''; ?>"
-				size="2" tabindex="1" class="inputbox" onchange="$('cb<?php echo $i; ?>').checked=true; " />
+				size="2" tabindex="1" class="inputbox" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; " />
 		</span>
 	</td>
 			<?php
@@ -243,10 +353,10 @@ defined('_JEXEC') or die('Restricted access');
 			?>
 	<td class="nowrap" valign="top" align="center">
 		<input type="text" style="font-size: 9px;" name="team1_result<?php echo $thismatch->id; ?>"
-			value="<?php echo $thismatch->team1_result; ?>" size="2" tabindex="1" class="inputbox" onchange="$('cb<?php echo $i; ?>').checked=true; " />
+			value="<?php echo $thismatch->team1_result; ?>" size="2" tabindex="1" class="inputbox" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; " />
 		<br />
 		<input type="text" style="font-size: 9px;" name="team2_result<?php echo $thismatch->id; ?>"
-			value="<?php echo $thismatch->team2_result; ?>" size="2" tabindex="1" class="inputbox" onchange="$('cb<?php echo $i; ?>').checked=true; " />
+			value="<?php echo $thismatch->team2_result; ?>" size="2" tabindex="1" class="inputbox" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; " />
 	</td>
 
 			<?php
@@ -255,7 +365,7 @@ defined('_JEXEC') or die('Restricted access');
 			?>
 	<td valign="top" align="center">
 		<input type="text" style="font-size: 9px;" name="team1_legs<?php echo $thismatch->id; ?>"
-			value="<?php echo $thismatch->team1_legs; ?>" size="2" tabindex="1" class="inputbox" onchange="$('cb<?php echo $i; ?>').checked=true; " />
+			value="<?php echo $thismatch->team1_legs; ?>" size="2" tabindex="1" class="inputbox" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; " />
 		<br />
 		<input type="text" style="font-size: 9px;" name="team2_legs<?php echo $thismatch->id; ?>"
 			value="<?php echo $thismatch->team2_legs; ?>" size="2" tabindex="1" class="inputbox" />
@@ -268,10 +378,10 @@ defined('_JEXEC') or die('Restricted access');
 		?>
 	<td class="nowrap" align="right" valign="top">
 		<input type="text" style="font-size: 9px;" name="team1_result<?php echo $thismatch->id; ?>"
-			value="<?php echo $thismatch->team1_result; ?>" size="1" tabindex="1" class="inputbox" onchange="$('cb<?php echo $i; ?>').checked=true; " />
+			value="<?php echo $thismatch->team1_result; ?>" size="1" tabindex="1" class="inputbox" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; " />
 		<b>:</b>
 		<input type="text" style="font-size: 9px;" name="team2_result<?php echo $thismatch->id; ?>"
-			value="<?php echo $thismatch->team2_result; ?>" size="1" tabindex="1" class="inputbox" onchange="$('cb<?php echo $i; ?>').checked=true; " />
+			value="<?php echo $thismatch->team2_result; ?>" size="1" tabindex="1" class="inputbox" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; " />
 		&nbsp; <?php echo $this->editPartResults($i,$thismatch); ?>
 	</td>
 			<?php
@@ -280,7 +390,7 @@ defined('_JEXEC') or die('Restricted access');
 			?>
 	<td valign="top" align="center">
 		<input type="text" style="font-size: 9px;" name="team1_legs<?php echo $thismatch->id; ?>"
-			value="<?php echo $thismatch->team1_legs; ?>" size="2" tabindex="1" class="inputbox" onchange="$('cb<?php echo $i; ?>').checked=true; " />
+			value="<?php echo $thismatch->team1_legs; ?>" size="2" tabindex="1" class="inputbox" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; " />
 		<b>:</b>
 		<input type="text" style="font-size: 9px;" name="team2_legs<?php echo $thismatch->id; ?>"
 			value="<?php echo $thismatch->team2_legs; ?>" size="2" tabindex="1" class="inputbox" />
@@ -297,7 +407,7 @@ defined('_JEXEC') or die('Restricted access');
 		$xrounds[]=JHtml::_('select.option','2',JText::_('COM_SPORTSMANAGEMENT_RESULTS_SHOOTOUT2'));
 
 		echo JHtml::_(	'select.genericlist', $xrounds, 'match_result_type'.$thismatch->id, 'class="inputbox" size="1" style="font-size:9px;"
-				onchange="$(\'cb'.$i.'\').checked=true;if (this.selectedIndex==0) $(\'ot'.$thismatch->id .
+				onchange="document.getElementById(\'cb'.$i.'\').checked=true;if (this.selectedIndex==0) $(\'ot'.$thismatch->id .
 				'\').style.visibility=\'hidden\';else $(\'ot'.$thismatch->id.'\').style.visibility=\'visible\';"',
 				'value', 'text', $thismatch->match_result_type);
 		?>
@@ -310,22 +420,30 @@ defined('_JEXEC') or die('Restricted access');
 		<?php
         
         // über das backend/administrator bearbeiten
-		$url = sportsmanagementHelperRoute::getEditEventsRoute($this->project->id,$thismatch->id);
+		$url = sportsmanagementHelperRoute::getEditEventsRoute(sportsmanagementModelResults::$projectid,$thismatch->id,null,null,null,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,sportsmanagementModelResults::$divisionid,'form');
 		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS_BACKEND');
-		$desc = JHtml::image(	JURI::root().'media/com_sportsmanagement/jl_images/events.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
+		$desc = JHtml::image(JURI::root().'media/com_sportsmanagement/jl_images/events.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
 		?>
-		<a class='mymodal' title='example' href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
+        
+<!-- Button HTML (to Trigger Modal) -->
+<a href="<?php echo $url; ?>" rel="modaljsm:open"><img src="<?php echo JURI::root().'media/com_sportsmanagement/jl_images/events.png'; ?>" > </a>
+
+
 	</td>
 	<!-- Edit match statistics -->
 	<td valign="top">
 		<?php
         
         // über das backend/administrator bearbeiten
-		$url = sportsmanagementHelperRoute::getEditStatisticsRoute($this->project->id,$thismatch->id);
+		$url = sportsmanagementHelperRoute::getEditStatisticsRoute(sportsmanagementModelResults::$projectid,$thismatch->id,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,sportsmanagementModelResults::$divisionid,'form');
 		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS_BACKEND');
-		$desc = JHtml::image(	JURI::root().'administrator/components/com_sportsmanagement/assets/images/calc16.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
+		$desc = JHtml::image(JURI::root().'administrator/components/com_sportsmanagement/assets/images/calc16.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
 		?>
-		<a class='mymodal' title='example' href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
+        
+<!-- Button HTML (to Trigger Modal) -->
+<a href="<?php echo $url; ?>" rel="modaljsm:open"><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/calc16.png'; ?>" > </a>
+
+
 	</td>
 	<!-- Edit referee -->
 	<td valign="top">
@@ -336,14 +454,17 @@ defined('_JEXEC') or die('Restricted access');
 		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_REFEREE_BACKEND');
 		$desc = JHtml::image(	JURI::root().'/administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
 		?>
-		<a class='mymodal' title='example' href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
+        
+<!-- Button HTML (to Trigger Modal) --> 
+<a href="<?php echo $url; ?>" rel="modaljsm:open"><img src="<?php echo JURI::root().'media/com_sportsmanagement/jl_images/players_add.png'; ?>" ></a>
+
 	</td>
 	<!-- Published -->
 	<td valign='top' style='text-align: center;'>
 		<input type='checkbox' name='published<?php echo $thismatch->id; ?>' id='cbp<?php echo $thismatch->id; ?>'
 			value='<?php echo ((isset($thismatch->published)&&(!$thismatch->published)) ? 0 : 1); ?>'
 			<?php if ($thismatch->published){echo ' checked="checked" '; } ?>
-			onchange="$('cb<?php echo $i; ?>').checked=true; if(document.adminForm.cbp<?php echo $thismatch->id; ?>.value==0){document.adminForm.cbp<?php echo $thismatch->id; ?>.value=1;}else{document.adminForm.cbp<?php echo $thismatch->id; ?>.value=0;}" />
+			onchange="document.getElementById('cb<?php echo $i; ?>').checked=true; if(document.adminForm.cbp<?php echo $thismatch->id; ?>.value==0){document.adminForm.cbp<?php echo $thismatch->id; ?>.value=1;}else{document.adminForm.cbp<?php echo $thismatch->id; ?>.value=0;}" />
 	</td>
 	<?php
 	}
@@ -352,3 +473,4 @@ defined('_JEXEC') or die('Restricted access');
 }
 ?>
 </tr>
+

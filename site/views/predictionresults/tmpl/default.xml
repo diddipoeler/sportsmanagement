@@ -13,15 +13,16 @@
 	 <field	type="sql" name="prediction_id"
 					label="COM_SPORTSMANAGEMENT_XML_PREDICTIONRESULTS_STATE_PARAM_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_PREDICTIONRESULTS_STATE_PARAM_DESCRIPTION"
-					query="SELECT id AS value, name AS prediction_id FROM #__sportsmanagement_prediction_game WHERE published='1' ORDER BY name" />
+					query="SELECT CONCAT_WS(':',id,alias) AS value, name AS prediction_id FROM #__sportsmanagement_prediction_game WHERE published='1' ORDER BY name" />
+  
   <field name="cfg_which_database" 
     type="radio" 
-    default="0"
+    default="0:intern"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
+			<option value="0:intern">JNO</option>
+			<option value="1:extern">JYES</option>
 		</field>				
 			
 		</fieldset>

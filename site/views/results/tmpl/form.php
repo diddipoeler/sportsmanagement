@@ -40,6 +40,25 @@
 // No direct access to this file
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+?>
+<script>
+function openLink(url)
+{
+var width = get_windowPopUpWidth();
+var heigth = get_windowPopUpHeight(); 
+
+SqueezeBox.open(url, {
+       handler: 'iframe', 
+       size: { x: width, y: heigth }
+   });
+       
+} 
+
+</script>		
+<?PHP
+
+//echo ' matches'.'<pre>'.print_r($this->matches,true).'</pre>';
+
 if ( !$this->showediticon )
 {
 	JFactory::getApplication()->redirect( str_ireplace('layout=form','',JFactory::getURI()->toString()), JText::_('ALERTNOTAUTH') );
@@ -77,17 +96,17 @@ $document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eve
 					if ($this->showediticon) //Needed to check if the user is still allowed to get into the match edit
 					{
 					   $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = sportsmanagementModelProject::$cfg_which_database;
+$routeparameter['s'] = sportsmanagementModelProject::$seasonid;
 $routeparameter['p'] = sportsmanagementModelProject::$projectslug;
 $routeparameter['r'] = sportsmanagementModelProject::$roundslug;
-$routeparameter['division'] = 0;
-$routeparameter['mode'] = 0;
-$routeparameter['order'] = '';
+$routeparameter['division'] = sportsmanagementModelResults::$divisionid;
+$routeparameter['mode'] = sportsmanagementModelResults::$mode;
+$routeparameter['order'] = sportsmanagementModelResults::$order;
 $routeparameter['layout'] = '';
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
 
-						$imgTitle = JText::_('Exit Edit Mode');
+						$imgTitle = JText::_('COM_SPORTSMANAGEMENT_RESULTS_CLOSE_EDIT_RESULTS');
 						$desc = JHtml::image('media/com_sportsmanagement/jl_images/edit_exit.png', $imgTitle, array(' title' => $imgTitle));
 						echo '&nbsp;';
 						echo JHtml::link($link, $desc);
@@ -97,7 +116,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 			</td>
 			<td>
             <?php 
-            echo sportsmanagementHelperHtml::getRoundSelectNavigation(TRUE,JRequest::getInt('cfg_which_database',0)); 
+            echo sportsmanagementHelperHtml::getRoundSelectNavigation(TRUE,sportsmanagementModelProject::$cfg_which_database); 
             ?>
             </td>
 		</tr>
@@ -115,7 +134,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 					<th width="20" style="vertical-align: top; ">
 						<input type="checkbox" name="toggle" value="" onclick="checkAll(<?php echo count($this->matches); ?>);" />
 					</th>
-					<th width="20" style="vertical-align: top; ">&nbsp;</th>
+					<th width="" style="vertical-align: top; "></th>
                     <th style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_ROUND'); ?></th>
 					<?php 
 						if($this->project->project_type=='DIVISIONS_LEAGUE') 
@@ -165,18 +184,28 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 					$i++;
 				}
 			}
+            
+// view=results&cfg_which_database=0&s=0&p=1:1-bundesliga-2015-16&r=14:14-spieltag&division=0&mode=0&order=&layout=form            
 			?>
 			</tbody>
 		</table>
 		<br/>
 		<input type='hidden' name='option' value='com_sportsmanagement' />
+        <input type='hidden' name='view' value='results' />
+        <input type='hidden' name='cfg_which_database' value='<?php echo sportsmanagementModelProject::$cfg_which_database; ?>' />
+        <input type='hidden' name='s' value='<?php echo sportsmanagementModelProject::$seasonid; ?>' />
+        <input type='hidden' name='p' value='<?php echo sportsmanagementModelResults::$projectid; ?>' />
+        <input type='hidden' name='r' value='<?php echo sportsmanagementModelProject::$roundslug; ?>' />
+        <input type='hidden' name='divisionid' value='<?php echo sportsmanagementModelResults::$divisionid; ?>' />
+        <input type='hidden' name='mode' value='<?php echo sportsmanagementModelResults::$mode; ?>' />
+        <input type='hidden' name='order' value='<?php echo sportsmanagementModelResults::$order; ?>' />
         <input type='hidden' name='layout' value='form' />
         <input type='hidden' name='task' value='results.saveshort' />
-		<input type='hidden' name='p' value='<?php echo $this->project->id; ?>' />
-		<input type='hidden' name='r' value='<?php echo $this->roundid; ?>' />
-		<input type='hidden' name='sel_r' value='<?php echo $this->roundid; ?>' />
+        
+		
+		
+		<input type='hidden' name='sel_r' value='<?php echo sportsmanagementModelProject::$roundslug; ?>' />
 		<input type='hidden' name='Itemid' value='<?php echo JRequest::getInt('Itemid', 1, 'get'); ?>' />
-
 		<input type='hidden' name='boxchecked' value='0' id='boxchecked' />
 		<input type='hidden' name='checkmycontainers' value='0' id='checkmycontainers' />
 		<input type='hidden' name='save_data' value='1' class='button' />

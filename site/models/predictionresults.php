@@ -127,10 +127,10 @@ static $roundID		= 0;
        
         sportsmanagementModelPrediction::$predictionGameID = $jinput->getVar('prediction_id','0');
         
-        sportsmanagementModelPrediction::$predictionMemberID = $jinput->getInt('uid',0);
-        sportsmanagementModelPrediction::$joomlaUserID = $jinput->getInt('juid',0);
+        sportsmanagementModelPrediction::$predictionMemberID = $jinput->getVar('uid','0');
+        sportsmanagementModelPrediction::$joomlaUserID = $jinput->getVar('juid','0');
         
-        sportsmanagementModelPrediction::$pggroup = $jinput->getInt('pggroup',0);
+        sportsmanagementModelPrediction::$pggroup = $jinput->getVar('pggroup','0');
         sportsmanagementModelPrediction::$pggrouprank = $jinput->getInt('pggrouprank',0);
         
         sportsmanagementModelPrediction::$isNewMember = $jinput->getInt('s',0);
@@ -141,7 +141,19 @@ static $roundID		= 0;
         
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r(self::$roundID,true).'</pre>'),'');
        
-       self::checkRoundID(sportsmanagementModelPrediction::$pjID,sportsmanagementModelPrediction::$roundID);
+       if ( (int)sportsmanagementModelPrediction::$pjID == 0 )
+       {
+        $pred_proj = sportsmanagementModelPrediction::getPredictionProjectNames(sportsmanagementModelPrediction::$predictionGameID,'ASC',1);
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pred_proj<br><pre>'.print_r($pred_proj,true).'</pre>'),'');
+        
+        if ( isset($pred_proj[0]) )
+        {
+        sportsmanagementModelPrediction::$pjID = $pred_proj[0]->slug;    
+        }
+        
+       }
+       
+       sportsmanagementModelPrediction::checkRoundID(sportsmanagementModelPrediction::$pjID,sportsmanagementModelPrediction::$roundID);
        
 		parent::__construct();
 		
@@ -167,73 +179,8 @@ if ( JRequest::getVar( "view") == 'predictionresults' )
     
 	}
 
-/**
- * sportsmanagementModelPredictionResults::checkRoundID()
- * 
- * @param mixed $project_id
- * @param mixed $roundID
- * @return void
- */
-function checkRoundID($project_id,$roundID)
-{
- // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option'); 
-    $document	= JFactory::getDocument();
-
-// Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);    
-
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($roundID,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
-
-$query->select('roundcode');
-$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
-$query->where('project_id = '.(int)$project_id);
-$query->where('id = '.(int)$roundID);
-$db->setQuery( $query );
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-
-$results = $db->loadResult();
-		
-if ( !$results )
-{
-$tblproject = JTable::getInstance("project", "sportsmanagementTable");
-$tblproject->load((int)$project_id);
-$roundIDnew = $tblproject->current_round;
-//self::$roundID = $roundIDnew;
-sportsmanagementModelPrediction::$roundID = $roundIDnew;
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundIDnew<br><pre>'.print_r($roundIDnew,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($this->roundID,true).'</pre>'),'');
-
-}
-
-if ( $roundID == 0 )
-{
-$tblproject = JTable::getInstance("project", "sportsmanagementTable");
-$tblproject->load((int)$project_id);
-$roundIDnew = $tblproject->current_round;
-//self::$roundID = $roundIDnew;
-sportsmanagementModelPrediction::$roundID = $roundIDnew;
 
 
-
-}
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($results,true).'</pre>'),'');
-		
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundIDnew<br><pre>'.print_r($roundIDnew,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($this->roundID,true).'</pre>'),'');
-    
-}
 
 
 
@@ -300,7 +247,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
 	 * @param mixed $proteams_ids
 	 * @return
 	 */
-	function getMatches($roundID,$project_id,$match_ids,$round_ids,$proteams_ids,$show_logo_small_overview='')
+	static function getMatches($roundID,$project_id,$match_ids,$round_ids,$proteams_ids,$show_logo_small_overview='')
 	{
 	  // Reference global application object
         $app = JFactory::getApplication();

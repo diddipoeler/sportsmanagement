@@ -59,10 +59,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 	echo $this->loadTemplate('results');
 
-	if ( $this->config['show_matchday_pagenav'] )
-    {
-        echo $this->loadTemplate('matchday_nav');
-    }
+//	if ( $this->config['show_matchday_pagenav'] )
+//    {
+//        //echo $this->loadTemplate('matchday_nav');
+//    }
 
 	if ( $this->config['show_help'] )
     {

@@ -88,6 +88,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
     static $to		= 0;
     static $type		= 0;
     static $page		= 0;
+    static $cfg_which_database = 0;
     
     static $table_config = '';
     
@@ -111,10 +112,12 @@ class sportsmanagementModelPrediction extends JModelLegacy
 		self::$to = $jinput->getVar('to',self::$roundID);
 		self::$predictionGameID	= $jinput->getVar('prediction_id','0');
         
-		self::$predictionMemberID = $jinput->getInt('uid',0);
-		self::$joomlaUserID	= $jinput->getInt('juid',0);
+        self::$cfg_which_database = $jinput->getVar('cfg_which_database','0');
+        
+		self::$predictionMemberID = $jinput->getVar('uid','0');
+		self::$joomlaUserID	= $jinput->getVar('juid','0');
 		
-        self::$pggroup = $jinput->getInt('pggroup',0);
+        self::$pggroup = $jinput->getVar('pggroup','0');
         self::$pggrouprank = $jinput->getInt('pggrouprank',0);
 		
 		self::$isNewMember = $jinput->getInt('s',0);
@@ -123,14 +126,127 @@ class sportsmanagementModelPrediction extends JModelLegacy
 		self::$type	= $jinput->getInt('type',0);
 		self::$page	= $jinput->getInt('page',1);
 
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r(self::$predictionGameID,true).'</pre>'),'');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r(self::$roundID,true).'</pre>'),'');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pjID<br><pre>'.print_r(self::$pjID,true).'</pre>'),'');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' from<br><pre>'.print_r(self::$from,true).'</pre>'),'');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' to<br><pre>'.print_r(self::$to,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r(self::$cfg_which_database,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionMemberID<br><pre>'.print_r(self::$predictionMemberID,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' joomlaUserID<br><pre>'.print_r(self::$joomlaUserID,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pggroup<br><pre>'.print_r(self::$pggroup,true).'</pre>'),'');
 
 		parent::__construct();
 	}
   
+  
+  
+  
+  /**
+   * sportsmanagementModelPrediction::checkRoundID()
+   * 
+   * @param mixed $project_id
+   * @param mixed $roundID
+   * @return void
+   */
+  static function checkRoundID($project_id,$roundID)
+{
+ // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option'); 
+    $document	= JFactory::getDocument();
+
+// Create a new query object.		
+		$db = sportsmanagementHelper::getDBConnection();
+		$query = $db->getQuery(true);    
+
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($roundID,true).'</pre>'),'');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
+
+$query->select('roundcode');
+$query->from('#__sportsmanagement_round');
+$query->where('project_id = '.(int)$project_id);
+$query->where('id = '.(int)$roundID);
+$db->setQuery( $query );
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+
+$results = $db->loadResult();
+		
+if ( !$results )
+{
+$query->clear();    
+$query->select('current_round');
+$query->from('#__sportsmanagement_project');
+$query->where('id = '.(int)$project_id);
+$db->setQuery( $query );
+$roundIDnew = $db->loadResult();
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundIDnew<br><pre>'.print_r($roundIDnew,true).'</pre>'),'');
+
+$query->clear();
+$query->select("CONCAT_WS(':',id,alias) AS slug");
+$query->from('#__sportsmanagement_round');
+$query->where('id = '.(int)$roundIDnew);
+$db->setQuery( $query );
+$roundIDnew = $db->loadResult();
+
+//$tblround = JTable::getInstance("round", "sportsmanagementTable");
+//$tblround->load((int)$roundIDnew);
+//$roundIDnew = $tblround->id.':'.$tblround->alias;
+
+//self::$roundID = $roundIDnew;
+sportsmanagementModelPrediction::$roundID = $roundIDnew;
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundIDnew<br><pre>'.print_r($roundIDnew,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($this->roundID,true).'</pre>'),'');
+
+}
+
+if ( (int)$roundID == 0 )
+{
+$query->clear();    
+$query->select('current_round');
+$query->from('#__sportsmanagement_project');
+$query->where('id = '.(int)$project_id);
+$db->setQuery( $query );
+$roundIDnew = $db->loadResult();
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundIDnew<br><pre>'.print_r($roundIDnew,true).'</pre>'),'');
+
+$query->clear();
+$query->select("CONCAT_WS(':',id,alias) AS slug");
+$query->from('#__sportsmanagement_round');
+$query->where('id = '.(int)$roundIDnew);
+$db->setQuery( $query );
+$roundIDnew = $db->loadResult();
+
+//$tblround = JTable::getInstance("round", "sportsmanagementTable");
+//$tblround->load((int)$roundIDnew);
+//$roundIDnew = $tblround->id.':'.$tblround->alias;
+//self::$roundID = $roundIDnew;
+sportsmanagementModelPrediction::$roundID = $roundIDnew;
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundIDnew<br><pre>'.print_r($roundIDnew,true).'</pre>'),'');
+
+}
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($results,true).'</pre>'),'');
+		
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundIDnew<br><pre>'.print_r($roundIDnew,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($this->roundID,true).'</pre>'),'');
+    
+}
+
   /**
    * sportsmanagementModelPrediction::getChampionPoints()
    * 
@@ -393,7 +509,8 @@ class sportsmanagementModelPrediction extends JModelLegacy
 		{
 			$query->clear();
 		  // Select some fields
-          $query->select('pm.id AS pmID, pm.registerDate AS pmRegisterDate, pm.*');
+          //$query->select('pm.id AS pmID, pm.registerDate AS pmRegisterDate, pm.*');
+          $query->select('CONCAT_WS(\':\',pm.id,u.username) AS pmID,CONCAT_WS(\':\',u.id,u.username) AS joomuserID, pm.registerDate AS pmRegisterDate, pm.*');
           $query->from('#__sportsmanagement_prediction_member AS pm');
           $query->join('LEFT', '#__users AS u ON u.id = pm.user_id');
           $query->where('pm.prediction_id = '.(int)self::$predictionGameID);
@@ -404,7 +521,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 			 $query->select('u.name, u.username');
              $query->select('pg.id as pg_group_id,pg.name as pg_group_name');
              $query->join('LEFT', '#__sportsmanagement_prediction_groups as pg ON pg.id = pm.group_id');
-             $query->where('pm.id = '.self::$predictionMemberID);
+             $query->where('pm.id = '.(int)self::$predictionMemberID);
         
 
 				$db->setQuery($query,0,1);
@@ -422,7 +539,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 			}
 			else
 			{
-				$user= JFactory::getUser();
+				$user = JFactory::getUser();
 				if ($user->id > 0)
 				{
 				//	$query->clear();
@@ -434,6 +551,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 					if (isset(self::$_predictionMember->pmID))
 					{
 						self::$predictionMemberID = self::$_predictionMember->pmID;
+                        self::$joomlaUserID = self::$_predictionMember->joomuserID; 
 					}
 					else
 					{
@@ -455,6 +573,8 @@ class sportsmanagementModelPrediction extends JModelLegacy
 				}
 			}
 		}
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
     if ( isset(self::$_predictionMember->user_id) )
     {
@@ -939,7 +1059,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
 		$query = $db->getQuery(true);
         // Select some fields
         $query->select('user_id,approved');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member');
+        $query->from('#__sportsmanagement_prediction_member');
         $query->where('prediction_id = '.(int)self::$predictionGameID );
         $query->where('user_id = '.JFactory::getUser()->id );
 
@@ -1974,7 +2094,7 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
     $query->from('#__sportsmanagement_match AS m');
     $query->join('INNER', '#__sportsmanagement_round AS r ON r.id = m.round_id');
 
-		if ((isset($project_id)) && ( (int)$project_id > 0) )
+		if ( isset($project_id) &&  (int)$project_id > 0 )
 		{
 		$query->where('r.project_id = '.(int)$project_id);
         }
@@ -1988,9 +2108,9 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 
 		$query->join('LEFT', '#__sportsmanagement_prediction_result AS pr ON pr.match_id = m.id');
         
-        if ((isset($user_id)) && ($user_id > 0))
+        if ( isset( $user_id ) &&  (int)$user_id > 0 )
 		{
-                        $query->where('pr.user_id = '.$user_id);
+                        $query->where('pr.user_id = '.(int)$user_id);
 		}
 
 		$query->join('INNER', '#__sportsmanagement_prediction_member AS pm ON pm.user_id = pr.user_id');
@@ -2068,16 +2188,17 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 	 * 
 	 * @param mixed $predictionID
 	 * @param string $ordering
+	 * @param integer $limit
 	 * @return
 	 */
-	function getPredictionProjectNames($predictionID,$ordering='ASC')
+	static function getPredictionProjectNames($predictionID,$ordering='ASC',$limit=0)
 	{
 	   // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
         // Select some fields
-        $query->select('ppj.id,pj.id AS prediction_id,pj.name AS pjName');
+        $query->select('ppj.id,pj.id AS prediction_id,pj.name AS pjName,CONCAT_WS(\':\',pj.id,pj.alias) AS slug');
         $query->from('#__sportsmanagement_project AS pj');
         $query->join('LEFT', '#__sportsmanagement_prediction_project AS ppj ON ppj.project_id = pj.id');
         $query->where('ppj.prediction_id = '.(int)$predictionID);

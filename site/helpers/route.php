@@ -1357,23 +1357,44 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
      * @param mixed $match_date
      * @return
      */
-    public static function getEditLineupRoute($projectid, $matchid, $task = null, $team = null, $projectTeam = null, $match_date = null,$cfg_which_database = 0,$s=0)
+    public static function getEditLineupRoute($projectid, $matchid, $task = null, $team = null, $projectTeam = null, $match_date = null,$cfg_which_database = 0,$s=0,$r=0,$division=0,$oldlayout='')
 	{
-	   $params = array(	"option" => "com_sportsmanagement",
-					"view" => "match",
+//	   $params = array(	"option" => "com_sportsmanagement",
+//					"view" => "results",
+//                    "layout" => "editlineup",
+//					
+//                    "match_date" => $match_date,
+//                    "team" => $team,
+//					"p" => $projectid,
+//					"id" => $matchid );
+//
+//		if ( ! is_null( $task ) ) { $params['layout'] = $task; }
+//		if ( ! is_null( $team ) ) { $params['team'] = $team; }
+//		if ( ! is_null( $projectTeam ) ) { $params['pteam'] = $projectTeam; }
+//if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
+
+$params = array(	"option" => "com_sportsmanagement",
+					"view" => "editmatch",
+                    "cfg_which_database" => $cfg_which_database,
+                    "s" => $s,
+                    "p" => $projectid,
+                    "r" => $r,
+                    "division" => $division,
+                    "mode" => '',
+                    "order" => '',
                     "layout" => "editlineup",
-					
+					"matchid" => $matchid,
+                    "tmpl" => "component",
+                    "oldlayout" => $oldlayout,
                     "match_date" => $match_date,
                     "team" => $team,
-					"pid" => $projectid,
-					"id" => $matchid );
+                    "pteam" => $projectTeam
+                    );                    
 
-		if ( ! is_null( $task ) ) { $params['layout'] = $task; }
-		if ( ! is_null( $team ) ) { $params['team'] = $team; }
-		if ( ! is_null( $projectTeam ) ) { $params['pteam'] = $projectTeam; }
-if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
+
+
 		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'administrator/index.php?' . $query . '&tmpl=component', false );
+		$link = JRoute::_( 'index.php?' . $query , false );
 
 		return $link;
     }   
@@ -1388,23 +1409,42 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 	 * @param mixed $projectTeam
 	 * @return
 	 */
-	public static function getEditEventsRoute( $projectid, $matchid, $task = null, $team = null, $projectTeam = null, $match_date = null,$cfg_which_database = 0,$s=0 )
+	public static function getEditEventsRoute( $projectid, $matchid, $task = null, $team = null, $projectTeam = null, $match_date = null,$cfg_which_database = 0,$s=0,$r=0,$division=0,$oldlayout='' )
 	{
-		$params = array(	"option" => "com_sportsmanagement",
-					"view" => "match",
+//		$params = array(	"option" => "com_sportsmanagement",
+//					"view" => "results",
+//                    "layout" => "editevents",
+//					
+//                    "match_date" => $match_date,
+//                    "team" => $team,
+//					"p" => $projectid,
+//					"id" => $matchid );
+
+//		if ( ! is_null( $task ) ) { $params['layout'] = $task; }
+//		if ( ! is_null( $team ) ) { $params['team'] = $team; }
+//		if ( ! is_null( $projectTeam ) ) { $params['pteam'] = $projectTeam; }
+//if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
+		
+        $params = array(	"option" => "com_sportsmanagement",
+					"view" => "editmatch",
+                    "cfg_which_database" => $cfg_which_database,
+                    "s" => $s,
+                    "p" => $projectid,
+                    "r" => $r,
+                    "division" => $division,
+                    "mode" => '',
+                    "order" => '',
                     "layout" => "editevents",
-					
+					"matchid" => $matchid,
+                    "tmpl" => "component",
+                    "oldlayout" => $oldlayout,
                     "match_date" => $match_date,
                     "team" => $team,
-					"pid" => $projectid,
-					"id" => $matchid );
-
-		if ( ! is_null( $task ) ) { $params['layout'] = $task; }
-		if ( ! is_null( $team ) ) { $params['team'] = $team; }
-		if ( ! is_null( $projectTeam ) ) { $params['pteam'] = $projectTeam; }
-if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
-		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'administrator/index.php?' . $query . '&tmpl=component', false );
+                    "pteam" => $projectTeam
+                    );                    
+                    
+        $query = self::buildQuery( $params );
+		$link = JRoute::_( 'index.php?' . $query , false );
 
 		return $link;
 	}
@@ -1445,16 +1485,42 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 	 * @param mixed $matchid
 	 * @return
 	 */
-	public static function getEditMatchRoute($projectid, $matchid,$cfg_which_database = 0,$s=0)
+	public static function getEditMatchRoute($projectid, $matchid,$cfg_which_database = 0,$s=0,$r=0,$division=0,$oldlayout='')
 	{
-		$params = array(	"option" => "com_sportsmanagement",
-					"view" => "match",
+// option=com_sportsmanagement&view=results&cfg_which_database=0&s=1&p=1:1-bundesliga-2015-16&r=15:15-spieltag&division=0&mode=0&order=0&layout=form&Itemid=150		
+/*
+        $params = array(	"option" => "com_sportsmanagement",
+					"view" => "editmatch",
+                    "cfg_which_database" => $cfg_which_database,
+                    "s" => $s,
+                    "p" => $projectid,
+                    "r" => '',
+                    "division" => '',
+                    "mode" => '',
+                    "order" => '',
                     "layout" => "edit",
-					"pid" => $projectid,
-					"id" => $matchid );
-if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
+					"matchid" => $matchid,
+                    "tmpl" => "component",
+                    "format" => "raw" );
+*/
+        $params = array(	"option" => "com_sportsmanagement",
+					"view" => "editmatch",
+                    "cfg_which_database" => $cfg_which_database,
+                    "s" => $s,
+                    "p" => $projectid,
+                    "r" => $r,
+                    "division" => $division,
+                    "mode" => '',
+                    "order" => '',
+                    "layout" => "edit",
+					"matchid" => $matchid,
+                    "tmpl" => "component",
+                    "oldlayout" => $oldlayout
+                    );                    
+//if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'administrator/index.php?' . $query . '&tmpl=component', false );
+		//$link = JRoute::_( 'administrator/index.php?' . $query . '&tmpl=component', false );
+        $link = JRoute::_( 'index.php?' . $query );
 
 		return $link;
 	}
@@ -1468,17 +1534,50 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
      * @param integer $cfg_which_database
      * @return
      */
-    public static function getEditStatisticsRoute($projectid, $matchid,$cfg_which_database = 0,$s=0)
+    public static function getEditStatisticsRoute($projectid, $matchid,$cfg_which_database = 0,$s=0,$r=0,$division=0,$oldlayout='')
 	{
-		$params = array(	"option" => "com_sportsmanagement",
-					"view" => "match",
-                    "layout" => "editstats",
-					"pid" => $projectid,
-					"id" => $matchid );
-if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
-		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'administrator/index.php?' . $query . '&tmpl=component', false );
+//		$params = array(	"option" => "com_sportsmanagement",
+//					"view" => "match",
+//                    "layout" => "editstats",
+//					"pid" => $projectid,
+//					"id" => $matchid );
+//if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
+//		$query = self::buildQuery( $params );
+//		$link = JRoute::_( 'administrator/index.php?' . $query . '&tmpl=component', false );
 
+//$params = array(	"option" => "com_sportsmanagement",
+//					"view" => "results",
+//                    "cfg_which_database" => $cfg_which_database,
+//                    "s" => $s,
+//                    "p" => $projectid,
+//                    "r" => '',
+//                    "division" => '',
+//                    "mode" => '',
+//                    "order" => '',
+//                    "layout" => "editstats",
+//					"matchid" => $matchid,
+//                    "tmpl" => "component" );
+                    
+$params = array(	"option" => "com_sportsmanagement",
+					"view" => "editmatch",
+                    "cfg_which_database" => $cfg_which_database,
+                    "s" => $s,
+                    "p" => $projectid,
+                    "r" => $r,
+                    "division" => $division,
+                    "mode" => '',
+                    "order" => '',
+                    "layout" => "editstats",
+					"matchid" => $matchid,
+                    "tmpl" => "component",
+                    "oldlayout" => $oldlayout
+                    );                    
+                                        
+//if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
+		$query = self::buildQuery( $params );
+		//$link = JRoute::_( 'administrator/index.php?' . $query . '&tmpl=component', false );
+        $link = JRoute::_( 'index.php?' . $query );
+        
 		return $link;
 	}
     
@@ -1490,16 +1589,49 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
      * @param integer $cfg_which_database
      * @return
      */
-    public static function getEditRefereesRoute($projectid, $matchid,$cfg_which_database = 0,$s=0)
+    public static function getEditRefereesRoute($projectid, $matchid,$cfg_which_database = 0,$s=0,$r=0,$division=0,$oldlayout='')
 	{
-		$params = array(	"option" => "com_sportsmanagement",
-					"view" => "match",
+//		$params = array(	"option" => "com_sportsmanagement",
+//					"view" => "match",
+//                    "layout" => "editreferees",
+//					"pid" => $projectid,
+//					"id" => $matchid );
+//if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
+//		$query = self::buildQuery( $params );
+//		$link = JRoute::_( 'administrator/index.php?' . $query . '&tmpl=component', false );
+
+//$params = array(	"option" => "com_sportsmanagement",
+//					"view" => "results",
+//                    "cfg_which_database" => $cfg_which_database,
+//                    "s" => $s,
+//                    "p" => $projectid,
+//                    "r" => '',
+//                    "division" => '',
+//                    "mode" => '',
+//                    "order" => '',
+//                    "layout" => "editreferees",
+//					"matchid" => $matchid,
+//                    "tmpl" => "component" );
+                    
+$params = array(	"option" => "com_sportsmanagement",
+					"view" => "editmatch",
+                    "cfg_which_database" => $cfg_which_database,
+                    "s" => $s,
+                    "p" => $projectid,
+                    "r" => $r,
+                    "division" => $division,
+                    "mode" => '',
+                    "order" => '',
                     "layout" => "editreferees",
-					"pid" => $projectid,
-					"id" => $matchid );
-if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
+					"matchid" => $matchid,
+                    "tmpl" => "component",
+                    "oldlayout" => $oldlayout
+                    );                  
+                                        
+//if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'administrator/index.php?' . $query . '&tmpl=component', false );
+		//$link = JRoute::_( 'administrator/index.php?' . $query . '&tmpl=component', false );
+        $link = JRoute::_( 'index.php?' . $query );
 
 		return $link;
 	}

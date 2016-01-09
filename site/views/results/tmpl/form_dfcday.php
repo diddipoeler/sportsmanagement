@@ -36,16 +36,14 @@
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
-
-
-
 defined( '_JEXEC' ) or die( 'Restricted access' );
+
 if ( !$this->showediticon )
 {
 	JFactory::getApplication()->redirect( str_ireplace('layout=form','',JFactory::getURI()->toString()), JText::_('ALERTNOTAUTH') );
 }
-//load data for editor
-require ( JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'editor.php' );
+
+//echo ' matches'.'<pre>'.print_r($this->matches,true).'</pre>';
 
 // load javascripts
 $document = JFactory::getDocument();
@@ -56,13 +54,15 @@ JHtml::_('behavior.framework', true);
 }
 else
 {
-JHtml::_( 'behavior.mootools' );    
+JHtml::_( 'behavior.mootools' );   
+require ( JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'editor.php' );  
 }
+
 //$version = urlencode(JoomleagueHelper::getVersion());
 $document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eventsediting.js?v=');
 ?>
 <div style="overflow:auto;">
-	<a name="jl_top" id="jl_top"></a>
+<!--	<a name="jl_top" id="jl_top"></a> -->
 	<!-- section header e.g. ranking, results etc. -->
 	<table class="table">
 		<tr>
@@ -70,21 +70,21 @@ $document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/eve
 				<?php
 				if ($this->roundid>0)
 				{
-					sportsmanagementHelperHtml::showMatchdaysTitle(JText::_('Round results'), $this->roundid, $this->config );
+					sportsmanagementHelperHtml::showMatchdaysTitle(JText::_('COM_SPORTSMANAGEMENT_RESULTS_ENTER_EDIT_RESULTS'), $this->roundid, $this->config );
 					if ($this->showediticon) //Needed to check if the user is still allowed to get into the match edit
 					{
 					   $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = sportsmanagementModelProject::$cfg_which_database;
+$routeparameter['s'] = sportsmanagementModelProject::$seasonid;
 $routeparameter['p'] = sportsmanagementModelProject::$projectslug;
 $routeparameter['r'] = sportsmanagementModelProject::$roundslug;
-$routeparameter['division'] = 0;
-$routeparameter['mode'] = 0;
-$routeparameter['order'] = '';
+$routeparameter['division'] = sportsmanagementModelResults::$divisionid;
+$routeparameter['mode'] = sportsmanagementModelResults::$mode;
+$routeparameter['order'] = sportsmanagementModelResults::$order;
 $routeparameter['layout'] = '';
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
 
-						$imgTitle = JText::_('Exit Edit Mode');
+						$imgTitle = JText::_('COM_SPORTSMANAGEMENT_RESULTS_CLOSE_EDIT_RESULTS');
 						$desc = JHtml::image('media/com_sportsmanagement/jl_images/edit_exit.png', $imgTitle, array(' title' => $imgTitle));
 						echo '&nbsp;';
 						echo JHtml::link($link, $desc);
@@ -92,7 +92,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 				}
 				?>
 			</td>
-			<td><?php echo sportsmanagementHelperHtml::getRoundSelectNavigation(TRUE); ?></td>
+			<td><?php echo sportsmanagementHelperHtml::getRoundSelectNavigation(TRUE,sportsmanagementModelProject::$cfg_which_database); ?></td>
 		</tr>
 	</table>
 	<form name="adminForm" id="adminForm" method="post" action="<?php echo JFactory::getURI()->toString(); ?>">
@@ -160,11 +160,19 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 			</tbody>
 		</table>
 		<br/>
-		<input type='hidden' name='option' value='com_sportsmanagement' />
+       	<input type='hidden' name='option' value='com_sportsmanagement' />
+        <input type='hidden' name='view' value='results' />
+        <input type='hidden' name='cfg_which_database' value='<?php echo sportsmanagementModelProject::$cfg_which_database; ?>' />
+        <input type='hidden' name='s' value='<?php echo sportsmanagementModelProject::$seasonid; ?>' />
+        <input type='hidden' name='p' value='<?php echo sportsmanagementModelResults::$projectid; ?>' />
+        <input type='hidden' name='r' value='<?php echo sportsmanagementModelProject::$roundslug; ?>' />
+        <input type='hidden' name='divisionid' value='<?php echo sportsmanagementModelResults::$divisionid; ?>' />
+        <input type='hidden' name='mode' value='<?php echo sportsmanagementModelResults::$mode; ?>' />
+        <input type='hidden' name='order' value='<?php echo sportsmanagementModelResults::$order; ?>' />
         <input type='hidden' name='layout' value='form_dfcday' />
-		<input type='hidden' name='task' value='results.saveshort' />
-		<input type='hidden' name='p' value='<?php echo $this->project->id; ?>' />
-		<input type='hidden' name='r' value='<?php echo $this->roundid; ?>' />
+        <input type='hidden' name='task' value='results.saveshort' />
+        
+        
 		<input type='hidden' name='sel_r' value='<?php echo $this->roundid; ?>' />
 		<input type='hidden' name='Itemid' value='<?php echo JRequest::getInt('Itemid', 1, 'get'); ?>' />
 

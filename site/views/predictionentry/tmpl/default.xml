@@ -14,7 +14,8 @@
 					label="COM_SPORTSMANAGEMENT_XML_PREDICTIONENTRY_STATE_PARAM_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_PREDICTIONENTRY_STATE_PARAM_DESCRIPTION"
 					query="SELECT id AS value, name AS prediction_id FROM #__sportsmanagement_prediction_game WHERE published='1' ORDER BY name" />			
-	  <field name="cfg_which_database" 
+	  
+    <field name="cfg_which_database" 
     type="radio" 
     default="0"
     class="radio btn-group btn-group-yesno"

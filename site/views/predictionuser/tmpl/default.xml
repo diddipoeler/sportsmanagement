@@ -26,6 +26,7 @@ addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
       label="COM_SPORTSMANAGEMENT_EXT_PREDICTION_MEMBERS"
 					description="COM_SPORTSMANAGEMENT_EXT_PREDICTION_MEMBERS"
 					query="" />
+          
     <field name="cfg_which_database" 
     type="radio" 
     default="0"

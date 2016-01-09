@@ -195,6 +195,8 @@ class sportsmanagementModelProject extends JModelLegacy
     static $projectslug	= '';
 	static $divisionslug = '';
 	static $roundslug = '';
+    
+    static $layout = '';
 
 
 	/**
@@ -209,9 +211,10 @@ class sportsmanagementModelProject extends JModelLegacy
         // JInput object
         $jinput = $app->input;
         //sportsmanagementHelper::$_success_text[__CLASS__] = array();
-        self::$projectid = $jinput->getInt('p',0);
-        self::$cfg_which_database = $jinput->request->get('cfg_which_database',0, 'INT');
-        self::$matchid = $jinput->getInt('mid',0);
+        self::$projectid = $jinput->getVar('p','0');
+        self::$cfg_which_database = $jinput->getVar('cfg_which_database','0');
+        self::$matchid = $jinput->getVar('mid','0');
+        self::$layout = $jinput->getVar('layout','');
         //$app->setUserState( "com_sportsmanagement.cfg_which_database", JRequest::getInt('cfg_which_database',0) );
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
         //self::updateHits(self::$projectid);
@@ -248,7 +251,7 @@ class sportsmanagementModelProject extends JModelLegacy
  
  if ( $inserthits )
  {
- $query->update($db->quoteName('#__sportsmanagement_project'))->set('hits = hits + 1')->where('id = '.$projectid);
+ $query->update($db->quoteName('#__sportsmanagement_project'))->set('hits = hits + 1')->where('id = '.(int)$projectid);
  
 $db->setQuery($query);
  
@@ -321,7 +324,7 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
         $query->join('LEFT','#__sportsmanagement_league AS l ON p.league_id = l.id ');
         $query->join('LEFT','#__sportsmanagement_season AS s ON p.season_id = s.id ');
         $query->join('LEFT','#__sportsmanagement_round AS r ON p.current_round = r.id ');
-            $query->where('p.id = '. self::$projectid);
+            $query->where('p.id = '. (int)self::$projectid);
             
 
 			$db->setQuery($query,0,1);
@@ -378,7 +381,7 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
 	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         
-		self::$projectid = $id;
+		self::$projectid = (int)$id;
 		self::$_project = null;
         self::$_current_round = 0;
         
@@ -718,7 +721,7 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
         // From 
 		$query->from('#__sportsmanagement_division');
         // Where
-        $query->where('project_id = '.self::$projectid);
+        $query->where('project_id = '.(int)self::$projectid);
         
         if ( $divLevel == 1 )
 		{
@@ -811,7 +814,7 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
                 // From 
 		          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division');
                 // Where
-                $query->where('project_id = '.self::$projectid);
+                $query->where('project_id = '.(int)self::$projectid);
 
 				$db->setQuery($query);
 				self::$_divisions = $db->loadObjectList('id');
@@ -868,7 +871,7 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
                 // From 
 		          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
                 // Where
-                $query->where('project_id = '.self::$projectid);
+                $query->where('project_id = '.(int)self::$projectid);
                 // order
                 $query->order('roundcode ASC');
 
@@ -982,7 +985,7 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
         $query->join('INNER','#__sportsmanagement_team AS t ON st.team_id = t.id ');
         $query->join('INNER','#__sportsmanagement_club AS c ON t.club_id = c.id  ');
         // Where
-        $query->where('pt.id = '. $projectteamid );
+        $query->where('pt.id = '. (int)$projectteamid );
          
 		$db->setQuery($query);
         
@@ -1321,7 +1324,7 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
         $gameprojecttime = 0;
         $query->select('game_regular_time');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
-        $query->where('id = '.$project_id);
+        $query->where('id = '.(int)$project_id);
 
 		$db->setQuery($query);
 		$result = $db->loadObject();
@@ -1429,7 +1432,7 @@ $query->select('t.params');
 $query->from('#__sportsmanagement_template_config AS t');
 $query->join('INNER','#__sportsmanagement_project AS p ON p.id = t.project_id');
 $query->where('t.template LIKE '.$db->Quote($template));
-$query->where('p.id = '.self::$projectid);
+$query->where('p.id = '.(int)self::$projectid);
 
 $starttime = microtime(); 
 		$db->setQuery($query);
@@ -1603,7 +1606,7 @@ $starttime = microtime();
         $query->select('l.country');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league as l');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project as pro ON pro.league_id = l.id ');
-        $query->where('pro.id = '. $db->Quote(self::$projectid));
+        $query->where('pro.id = '. (int)self::$projectid );
 
 		  $db->setQuery( $query );
 		  $this->country = $db->loadResult();
@@ -1627,11 +1630,11 @@ $starttime = microtime();
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet ON pet.eventtype_id = et.id ');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = pet.position_id ');
-        $query->where('ppos.project_id = '. $db->Quote(self::$projectid));
+        $query->where('ppos.project_id = '. (int)self::$projectid );
 
 		if ($position_id)
 		{
-		  $query->where('ppos.position_id = '. $db->Quote($position_id));
+		  $query->where('ppos.position_id = '. (int)$position_id );
 		}
         $query->group('et.id');
 		$db->setQuery($query);
@@ -1670,7 +1673,7 @@ $starttime = microtime();
             
             if ( $statid )
             {
-                $query->where('stat.id = '.$statid);
+                $query->where('stat.id = '.(int)$statid);
             }
             $query->where('stat.published = 1');
             $query->where('pos.published = 1');
@@ -1749,7 +1752,7 @@ $starttime = microtime();
           $query->select('ppos.id AS pposid');
           $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos');
           $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id = pos.id');
-          $query->where('ppos.project_id = '.$db->Quote(self::$projectid));
+          $query->where('ppos.project_id = '.(int)self::$projectid );
 
 			$db->setQuery($query);
 			self::$_positions = $db->loadObjectList('id');
@@ -1962,10 +1965,10 @@ $image = sportsmanagementHelperHtml::getBootstrapModalImage($roundcode.'team'.$t
         $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos2 ON ppos2.position_id = pos2.id');
    
         // Where
-        $query->where('ppp1.project_id = '.self::$projectid);
-        $query->where('ppp2.project_id = '.self::$projectid);
+        $query->where('ppp1.project_id = '.(int)self::$projectid);
+        $query->where('ppp2.project_id = '.(int)self::$projectid);
         
-        $query->where('mp.match_id = '.$match_id);
+        $query->where('mp.match_id = '.(int)$match_id);
         $query->where('mp.came_in > 0');
         $query->where('p.published = 1');
         $query->where('p2.published = 1');
@@ -2019,7 +2022,7 @@ $image = sportsmanagementHelperHtml::getBootstrapModalImage($roundcode.'team'.$t
           $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r on r.id = m.round_id ');
         $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p on r.project_id = p.id ');
-        $query->where('m.id = '.self::$matchid );
+        $query->where('m.id = '.(int)self::$matchid );
         
 //			$query='SELECT m.*,DATE_FORMAT(m.time_present,"%H:%i") time_present, r.project_id, p.timezone 
 //					FROM #__joomleague_match AS m 
@@ -2097,7 +2100,7 @@ $image = sportsmanagementHelperHtml::getBootstrapModalImage($roundcode.'team'.$t
         $query->join($join,'#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON tp.person_id = p.id');
 
 		// Where
-        $query->where('me.match_id = '.$match_id );
+        $query->where('me.match_id = '.(int)$match_id );
         $query->where('p.published = 1');
         // order
         $query->order('(me.event_time + 0)'. $esort .', me.event_type_id, me.id');
@@ -2165,6 +2168,11 @@ $image = sportsmanagementHelperHtml::getBootstrapModalImage($roundcode.'team'.$t
         $app = JFactory::getApplication();
         $allowed = false;
 		$user = JFactory::getUser();
+        
+        // ist der user der einer gruppe zugeordnet ?
+        $groups = JUserHelper::getUserGroups($user->get('id')); 
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' groups'.'<pre>'.print_r($groups,true).'</pre>' ),'');
+        
 		if($user->id > 0) 
         {
 			if(!is_null($task)) 

@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'prediction.php' );
+//require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'prediction.php' );
 
 /**
  * sportsmanagementModelPredictionEntry
@@ -150,75 +150,13 @@ public $_predictionGame	= null;
         sportsmanagementModelPrediction::$type = $jinput->getInt('type',0);
         sportsmanagementModelPrediction::$page = $jinput->getInt('page',1);
                
-       self::checkRoundID(sportsmanagementModelPrediction::$pjID,sportsmanagementModelPrediction::$roundID);
+       sportsmanagementModelPrediction::checkRoundID(sportsmanagementModelPrediction::$pjID,sportsmanagementModelPrediction::$roundID);
        
 		parent::__construct();
 	}
 
   
-/**
- * sportsmanagementModelPredictionEntry::checkRoundID()
- * 
- * @param mixed $project_id
- * @param mixed $roundID
- * @return void
- */
-function checkRoundID($project_id,$roundID)
-{
- $option = JRequest::getCmd('option'); 
-    $document	= JFactory::getDocument();
-    $app	= JFactory::getApplication();
-// Create a new query object.		
-		$db = JFactory::getDBO();
-		$query = $db->getQuery(true);    
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($roundID,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
-
-$query->select('roundcode');
-$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
-$query->where('project_id = '.(int)$project_id);
-$query->where('id = '.(int)$roundID);
-$db->setQuery( $query );
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-
-$results = $db->loadResult();
-		
-if ( !$results )
-{
-$tblproject = JTable::getInstance("project", "sportsmanagementTable");
-$tblproject->load((int)$project_id);
-$roundIDnew = $tblproject->current_round;
-self::$roundID = $roundIDnew;
-sportsmanagementModelPrediction::$roundID = $roundIDnew;
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundIDnew<br><pre>'.print_r($roundIDnew,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r(self::$roundID,true).'</pre>'),'');
-
-}
-
-if ( $roundID == 0 )
-{
-$tblproject = JTable::getInstance("project", "sportsmanagementTable");
-$tblproject->load((int)$project_id);
-$roundIDnew = $tblproject->current_round;
-self::$roundID = $roundIDnew;
-sportsmanagementModelPrediction::$roundID = $roundIDnew;
-
-
-
-}
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($results,true).'</pre>'),'');
-		
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundIDnew<br><pre>'.print_r($roundIDnew,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r(self::$roundID,true).'</pre>'),'');
-    
-}
   
 	/**
 	 * sportsmanagementModelPredictionEntry::newMemberCheck()
@@ -571,7 +509,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
 					{
                         $query	= $db->getQuery(true);
                         $query->clear();
-		                $query->update('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_result');
+		                $query->update('#__sportsmanagement_prediction_result');
 		                $query->set(' tipp_home = '.$dHome );
                         $query->set(' tipp_away = '.$dAway );
                         $query->set(' tipp = '.$dTipp );
@@ -605,7 +543,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
                         $temp->tipp_away = $dAway;
                         $temp->joker = $dJoker;
                         // Insert the object
-                        $resultquery = JFactory::getDbo()->insertObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_result', $temp);
+                        $resultquery = JFactory::getDbo()->insertObject('#__sportsmanagement_prediction_result', $temp);
                         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' insert<br><pre>'.print_r($temp,true).'</pre>'),'');
 
 					if ( !$resultquery )
@@ -625,7 +563,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
                     
                     /* Der Query wird erstellt */
                     $query->clear();
-                    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_result');
+                    $query->from('#__sportsmanagement_prediction_result');
                     $query->delete();
                     $query->where('prediction_id = ' . $predictionGameID);
                     $query->where('user_id = ' . $joomlaUserID);
@@ -657,7 +595,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
         $object->id = $mID;
         $object->last_tipp = date('Y-m-d H:i:s');
         // Update their details in the table using id as the primary key.
-        $resultquery = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member', $object, 'id');
+        $resultquery = JFactory::getDbo()->updateObject('#__sportsmanagement_prediction_member', $object, 'id');
 
 		if (!$resultquery)
 		{

@@ -64,9 +64,10 @@ class sportsmanagementHelperHtml
 	 * @param string $picture
 	 * @param string $text
 	 * @param string $picturewidth
+	 * @param string $url
 	 * @return
 	 */
-	public static function getBootstrapModalImage($target='',$picture='',$text='',$picturewidth='150')
+	public static function getBootstrapModalImage($target='',$picture='',$text='',$picturewidth='150',$url='')
     {
     $app = JFactory::getApplication();
     // JInput object
@@ -76,8 +77,10 @@ class sportsmanagementHelperHtml
 //    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture'.'<pre>'.print_r($picture,true).'</pre>' ),'');
 //    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' text'.'<pre>'.print_r($text,true).'</pre>' ),'');
 //    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picturewidth'.'<pre>'.print_r($picturewidth,true).'</pre>' ),'');
-    
-$modaltext = '<a href="#'.$target.'" title="'.$text.'" data-toggle="modal" data-target=".'.$target.'">';
+
+if ( $url )
+{    
+$modaltext = '<a href="'.$url.'" title="'.$text.'" data-toggle="modal" data-target=".'.$target.'">';
 $modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';
 $modaltext .= '</a>';
 $modaltext .= '<div id="'.$target.'" style="display: none;" class="modal fade '.$target.'" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">';
@@ -96,6 +99,30 @@ $modaltext .= '</div>';
 $modaltext .= '</div>';
 $modaltext .= '</div>';
 $modaltext .= '</div>';   
+}
+else
+{
+$modaltext = '<a href="#'.$target.'" title="'.$text.'" data-toggle="modal" data-target=".'.$target.'">';
+$modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';
+$modaltext .= '</a>';
+$modaltext .= '<div id="'.$target.'" style="display: none;" class="modal fade '.$target.'" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">';
+$modaltext .= '<div class="modal-dialog modal-sm">';
+$modaltext .= '<div class="modal-content">';
+$modaltext .= '<div class="modal-header">';
+$modaltext .= '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>';
+$modaltext .= '<h4 class="modal-title" id="myLargeModalLabel">'.JText::_($text).'</h4>';
+$modaltext .= '</div>';
+$modaltext .= '<div class="modal-body">';
+$modaltext .= '<img src="'.$picture.'" class="img-responsive img-rounded center-block">';
+$modaltext .= '</div>';
+$modaltext .= '<div class="modal-footer">';
+$modaltext .= '<button class="btn" data-dismiss="modal" aria-hidden="true">'.JText::_('JLIB_HTML_BEHAVIOR_CLOSE').'</button>';
+$modaltext .= '</div>';
+$modaltext .= '</div>';
+$modaltext .= '</div>';
+$modaltext .= '</div>';
+    
+}
 
 /*
 $modaltext = '<!-- Button to trigger modal -->';
@@ -453,14 +480,23 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
         $roundid = $jinput->get('r', 0, '');
 
 		$routeparameter = array();
-                $routeparameter['cfg_which_database'] = $cfg_which_database;
-                $routeparameter['s'] = JRequest::getInt('s',0); 
-        $routeparameter["p"] = sportsmanagementModelProject::$_project->slug;
-        $routeparameter['r'] = 0;
-        $routeparameter['division'] = $division;
-        $routeparameter['mode'] = '';
-        $routeparameter['order'] = '';
-        $routeparameter['layout'] = '';
+        $routeparameter['cfg_which_database'] = sportsmanagementModelProject::$cfg_which_database;
+$routeparameter['s'] = sportsmanagementModelProject::$seasonid;
+$routeparameter['p'] = sportsmanagementModelProject::$projectslug;
+$routeparameter['r'] = sportsmanagementModelProject::$roundslug;
+$routeparameter['division'] = sportsmanagementModelResults::$divisionid;
+$routeparameter['mode'] = sportsmanagementModelResults::$mode;
+$routeparameter['order'] = sportsmanagementModelResults::$order;
+$routeparameter['layout'] = sportsmanagementModelProject::$layout;
+
+//                $routeparameter['cfg_which_database'] = $cfg_which_database;
+//                $routeparameter['s'] = JRequest::getInt('s',0); 
+//        $routeparameter["p"] = sportsmanagementModelProject::$_project->slug;
+//        $routeparameter['r'] = 0;
+//        $routeparameter['division'] = $division;
+//        $routeparameter['mode'] = '';
+//        $routeparameter['order'] = '';
+//        $routeparameter['layout'] = '';
         
         if($form)
         {

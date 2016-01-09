@@ -67,12 +67,13 @@ class JSMPredictionHelperRoute extends sportsmanagementHelperRoute
  * @param mixed $groupID
  * @return
  */
-public static function getPredictionResultsRoute($predictionID,$roundID=0,$projectID=0,$userID=0,$anchor='',$groupID=0)
+public static function getPredictionResultsRoute($predictionID,$roundID=0,$projectID=0,$userID=0,$anchor='',$groupID=0,$cfg_which_database = 0)
 	{
 	   $app = JFactory::getApplication();
        
 		$params = array('option' => 'com_sportsmanagement', 
 						'view' => 'predictionresults', 
+                        'cfg_which_database' => $cfg_which_database,
 						'prediction_id' => $predictionID);
 
 
@@ -111,12 +112,13 @@ public static function getPredictionResultsRoute($predictionID,$roundID=0,$proje
  * @param integer $groupRank
  * @return
  */
-public static function getPredictionRankingRoute($predictionID,$projectID=0,$roundID=0,$anchor='',$groupID=0,$groupRank=0,$type=0,$from=0,$to=0)
+public static function getPredictionRankingRoute($predictionID,$projectID=0,$roundID=0,$anchor='',$groupID=0,$groupRank=0,$type=0,$from=0,$to=0,$cfg_which_database = 0)
 	{
 	   $app = JFactory::getApplication();
        
 		$params = array('option' => 'com_sportsmanagement', 
 						'view' => 'predictionranking', 
+                        'cfg_which_database' => $cfg_which_database,
 						'prediction_id' => $predictionID);
 
         // diddipoeler
@@ -152,10 +154,11 @@ public static function getPredictionRankingRoute($predictionID,$projectID=0,$rou
  * @param mixed $predictionID
  * @return
  */
-public static function getPredictionRulesRoute($predictionID)
+public static function getPredictionRulesRoute($predictionID,$cfg_which_database = 0)
 	{
 		$params = array('option' => 'com_sportsmanagement', 
 						'view' => 'predictionrules', 
+                        'cfg_which_database' => $cfg_which_database,
 						'prediction_id' => $predictionID);
 
 		$query = JSMPredictionHelperRoute::buildQuery($params);
@@ -174,10 +177,11 @@ public static function getPredictionRulesRoute($predictionID)
  * @param string $anchor
  * @return
  */
-public static function getPredictionTippEntryRoute($predictionID,$userID=null,$roundID=null,$projectID=null,$anchor='',$groupID=0)
+public static function getPredictionTippEntryRoute($predictionID,$userID=null,$roundID=null,$projectID=null,$anchor='',$groupID=0,$cfg_which_database = 0)
 	{
 		$params = array('option' => 'com_sportsmanagement', 
 						'view' => 'predictionentry', 
+                        'cfg_which_database' => $cfg_which_database,
 						'prediction_id' => $predictionID);
     
 //        // diddipoeler
@@ -210,7 +214,7 @@ public static function getPredictionTippEntryRoute($predictionID,$userID=null,$r
  * @param integer $roundID
  * @return
  */
-public static function getPredictionMemberRoute($predictionID,$userID=null,$task=null,$projectID=null,$groupID=0,$roundID=0)
+public static function getPredictionMemberRoute($predictionID,$userID=null,$task=null,$projectID=null,$groupID=0,$roundID=0,$cfg_which_database = 0)
 	{
 	
 	switch ($task)
@@ -218,11 +222,13 @@ public static function getPredictionMemberRoute($predictionID,$userID=null,$task
   case 'edit';
   $params = array('option' => 'com_sportsmanagement', 
 						'view' => 'predictionuser', 
+                        'cfg_which_database' => $cfg_which_database,
 						'prediction_id' => $predictionID);
 	break;					
   default:
   $params = array('option' => 'com_sportsmanagement', 
 						'view' => 'predictionusers', 
+                        'cfg_which_database' => $cfg_which_database,
 						'prediction_id' => $predictionID);
   break;
   }

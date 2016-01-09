@@ -7,11 +7,12 @@
 
 
 //add 1.5 compatibility layer
-window.addEvent('domready', function() {
-	if($('adminForm')) {
-		$('adminForm').setProperty('name', 'adminForm');
-	}
-});
+
+//window.addEvent('domready', function() {
+//	if($('adminForm')) {
+//		$('adminForm').setProperty('name', 'adminForm');
+//	}
+//});
 
 
 function get_windowPopUpWidth()

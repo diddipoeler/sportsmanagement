@@ -82,21 +82,21 @@ else
 			$actualProjectCurrentRound = sportsmanagementModelPrediction::getProjectSettings($predictionProject->project_id);
 
 //echo __FILE__.' '.__LINE__.' project_id<br><pre>'.print_r($predictionProject->project_id,true).'</pre>';			
-//echo __FILE__.' '.__LINE__.' roundID<br><pre>'.print_r(sportsmanagementModelPredictionEntry::$roundID,true).'</pre>';            
+//echo __FILE__.' '.__LINE__.' roundID<br><pre>'.print_r(sportsmanagementModelPrediction::$roundID,true).'</pre>';            
             
-            if (!isset( sportsmanagementModelPredictionEntry::$roundID ) || ( sportsmanagementModelPredictionEntry::$roundID < 1 ) )
+            if (!isset( sportsmanagementModelPrediction::$roundID ) || ( (int)sportsmanagementModelPrediction::$roundID < 1 ) )
             {
-                sportsmanagementModelPredictionEntry::$roundID = $actualProjectCurrentRound;
+                sportsmanagementModelPrediction::$roundID = $actualProjectCurrentRound;
                 }
 //echo __FILE__.' '.__LINE__.' roundID<br><pre>'.print_r(sportsmanagementModelPredictionEntry::$roundID,true).'</pre>';                
-			if (sportsmanagementModelPredictionEntry::$roundID < 1)
+			if ( (int)sportsmanagementModelPrediction::$roundID < 1)
             {
-                sportsmanagementModelPredictionEntry::$roundID = 1;
+                sportsmanagementModelPrediction::$roundID = 1;
                 }
 //echo __FILE__.' '.__LINE__.' roundID<br><pre>'.print_r(sportsmanagementModelPredictionEntry::$roundID,true).'</pre>';
-			if (sportsmanagementModelPredictionEntry::$roundID > sportsmanagementModelPrediction::getProjectRounds($predictionProject->project_id)) 
+			if ( (int)sportsmanagementModelPrediction::$roundID > sportsmanagementModelPrediction::getProjectRounds($predictionProject->project_id)) 
             {
-                sportsmanagementModelPredictionEntry::$roundID = $this->model->_projectRoundsCount;
+                sportsmanagementModelPrediction::$roundID = $this->model->_projectRoundsCount;
                 }
 //echo __FILE__.' '.__LINE__.' roundID<br><pre>'.print_r(sportsmanagementModelPredictionEntry::$roundID,true).'</pre>';
 			$memberProjectJokersCount = sportsmanagementModelPrediction::getMemberPredictionJokerCount($this->predictionMember->user_id,
@@ -121,9 +121,9 @@ else
         $proteams_ids = $this->config['predictionproteamid'];
         }
         
-			$roundResults = $this->model->getMatchesDataForPredictionEntry(	$this->model->predictionGameID,
+			$roundResults = $this->model->getMatchesDataForPredictionEntry(	sportsmanagementModelPrediction::$predictionGameID,
 																			$predictionProject->project_id,
-																			sportsmanagementModelPredictionEntry::$roundID,
+																			sportsmanagementModelPrediction::$roundID,
 																			$this->predictionMember->user_id,
                                                                             $match_ids,
                                                                             $round_ids,
@@ -147,15 +147,15 @@ echo '<br />roundResults<pre>~' . print_r($roundResults,true) . '~</pre><br />';
 <!--			<a name='jl_top' id='jl_top'></a> -->
 			<form name='resultsRoundSelector' method='post' onsubmit="alert(1)">
 				<input type='hidden' name='option' value='com_sportsmanagement' />
-				
 				<input type='hidden' name='task' value='predictionentry.selectprojectround' />
-				<input type='hidden' name='prediction_id' value='<?php echo (int)$this->predictionGame->id; ?>' />
+                <input type='hidden' name='cfg_which_database' value='<?php echo sportsmanagementModelPrediction::$cfg_which_database; ?>' />
+				<input type='hidden' name='prediction_id' value='<?php echo sportsmanagementModelPrediction::$predictionGameID; ?>' />
 				<input type='hidden' name='p' value='<?php echo (int)$predictionProject->project_id; ?>' />
-                <input type='hidden' name='pj' value='<?php echo (int)$predictionProject->project_id; ?>' />
-				<input type='hidden' name='r' value='<?php echo (int)sportsmanagementModelPredictionEntry::$roundID; ?>' />
-                <input type='hidden' name='pggroup' value='<?php echo (int)$this->model->pggroup; ?>' />
+                <input type='hidden' name='pj' value='<?php echo sportsmanagementModelPrediction::$pjID; ?>' />
+				<input type='hidden' name='r' value='<?php echo sportsmanagementModelPrediction::$roundID; ?>' />
+                <input type='hidden' name='pggroup' value='<?php echo sportsmanagementModelPrediction::$pggroup; ?>' />
 				<input type='hidden' name='memberID' value='<?php echo $this->predictionMember->pmID; ?>' />
-				<input type='hidden' name='pjID' value='<?php echo (int)$this->model->pjID; ?>' />
+				<input type='hidden' name='pjID' value='<?php echo sportsmanagementModelPrediction::$pjID; ?>' />
 				<?php echo JHTML::_('form.token'); ?>
 
 
@@ -171,7 +171,7 @@ echo '<br />roundResults<pre>~' . print_r($roundResults,true) . '~</pre><br />';
                             
 							$rounds = sportsmanagementHelper::getRoundsOptions($predictionProject->project_id,'ASC',FALSE,$round_ids);
 //							$htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="document.forms[\'resultsRoundSelector\'].r.value=this.value;submit()"','value','text',$this->model->roundID);
-							$htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'r','class="inputbox" size="1" onchange="this.form.submit();"','value','text',$this->model->roundIDslug);
+							$htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'r','class="inputbox" size="1" onchange="this.form.submit();"','value','text',sportsmanagementModelPrediction::$roundID );
 							echo JText::sprintf(	'COM_SPORTSMANAGEMENT_PRED_ENTRY_SUBTITLE_02',
 													$htmlRoundsOptions,
 													sportsmanagementModelPrediction::createProjectSelector(sportsmanagementModelPrediction::$_predictionProjectS,$predictionProject->project_id));
@@ -188,11 +188,12 @@ echo '<br />roundResults<pre>~' . print_r($roundResults,true) . '~</pre><br />';
 
 				<input type='hidden' name='task' value='predictionentry.addtipp' />
 				<input type='hidden' name='option' value='com_sportsmanagement' />
-				<input type='hidden' name='pj' value='<?php echo (int)$predictionProject->project_id; ?>' />
-				<input type='hidden' name='prediction_id' value='<?php echo (int)$this->model->predictionGameID; ?>' />
+                <input type='hidden' name='cfg_which_database' value='<?php echo sportsmanagementModelPrediction::$cfg_which_database; ?>' />
+				<input type='hidden' name='pj' value='<?php echo sportsmanagementModelPrediction::$pjID; ?>' />
+				<input type='hidden' name='prediction_id' value='<?php echo sportsmanagementModelPrediction::$predictionGameID; ?>' />
 				<input type='hidden' name='user_id' value='<?php echo $this->predictionMember->user_id; ?>' />
 				<input type='hidden' name='memberID' value='<?php echo $this->predictionMember->pmID; ?>' />
-				<input type='hidden' name='r' value='<?php echo sportsmanagementModelPredictionEntry::$roundID; ?>' />
+				<input type='hidden' name='r' value='<?php echo sportsmanagementModelPrediction::$roundID; ?>' />
 				<input type='hidden' name='pjID' value='<?php echo (int)$this->model->pjID; ?>' />
 				<input type='hidden' name='pids[]' value='<?php echo $predictionProject->project_id; ?>' />
 				<input type='hidden' name='ptippmode[<?php echo $predictionProject->project_id; ?>]' value='<?php echo $predictionProject->mode; ?>' />

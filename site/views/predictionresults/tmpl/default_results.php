@@ -63,12 +63,12 @@ echo 'this->limitend<br /><pre>~' . print_r($this->limitend,true) . '~</pre><br 
 } 
 </style>
 
-<a name='jl_top' id='jl_top'></a>
+<!-- <a name='jl_top' id='jl_top'></a> -->
 <?php
 foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionProject)
 {
 	$gotSettings = $predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id);
-	if ( ( ( sportsmanagementModelPrediction::$pjID == $predictionProject->project_id ) && ($gotSettings)) || ( sportsmanagementModelPrediction::$pjID == 0 ) )
+	if ( ( ( (int)sportsmanagementModelPrediction::$pjID == $predictionProject->project_id ) && ($gotSettings)) || ( (int)sportsmanagementModelPrediction::$pjID == 0 ) )
 	{
 		sportsmanagementModelPrediction::$pjID = $predictionProject->project_id;
 		$this->model->predictionProject = $predictionProject;
@@ -89,14 +89,15 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 		<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement'); ?>" method='post' name="adminForm" id="adminForm">
 			<input type='hidden' name='option' value='com_sportsmanagement' />
 			<input type='hidden' name='view' value='predictionresults' />
-			<input type='hidden' name='prediction_id' value='<?php echo (int)$this->predictionGame->id; ?>' />
+			<input type='hidden' name='prediction_id' value='<?php echo sportsmanagementModelPrediction::$predictionGameID; ?>' />
 			<input type='hidden' name='project_id' value='<?php echo (int)$predictionProject->project_id; ?>' />
-			
+			<input type='hidden' name='cfg_which_database' value='<?php echo sportsmanagementModelPrediction::$cfg_which_database; ?>' />
       <input type='hidden' name='pj' value='<?php echo (int)$predictionProject->project_id; ?>' />
       <input type='hidden' name='p' value='<?php echo (int)$predictionProject->project_id; ?>' />
 			<input type='hidden' name='r' value='<?php echo sportsmanagementModelPrediction::$roundID; ?>' />
 			<input type='hidden' name='pjID' value='<?php echo sportsmanagementModelPrediction::$pjID; ?>' />
             <input type='hidden' name='pggroup' value='<?php echo sportsmanagementModelPrediction::$pggroup; ?>' />
+            <input type='hidden' name='pggrouprank' value='<?php echo sportsmanagementModelPrediction::$pggrouprank; ?>' />
 			<input type='hidden' name='task' value='predictionresults.selectprojectround' />
 			
 			<?php echo JHTML::_('form.token'); ?>
@@ -136,10 +137,10 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 						
             echo '&nbsp;&nbsp;';
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['cfg_which_database'] = sportsmanagementModelPrediction::$cfg_which_database;
 $routeparameter['s'] = JRequest::getInt('s',0);
-$routeparameter['p'] = $predictionProject->project_slug;
-$routeparameter['r'] = $this->roundID;
+$routeparameter['p'] = sportsmanagementModelPrediction::$pjID;
+$routeparameter['r'] = sportsmanagementModelPrediction::$roundID;
 $routeparameter['division'] = 0;
 $routeparameter['mode'] = 0;
 $routeparameter['order'] = '';
@@ -164,6 +165,8 @@ echo $this->pagination->getListFooter();
 			</table>
             <br />
 		</form>
+        
+        
 		<table class="<?PHP echo $this->config['table_class']; ?>">
 			<tr>
 				<?php $tdClassStr="class='sectiontableheader' style='text-align:center; vertical-align:middle; '"; ?>
@@ -205,7 +208,7 @@ echo $this->pagination->getListFooter();
         
       
         // hier holen wir uns die spiele zu dem projekt und der runde
-				$roundMatchesList = $this->model->getMatches($this->roundID,$predictionProject->project_id,$match_ids,$round_ids,$proteams_ids,$this->config['show_logo_small_overview']);
+				$roundMatchesList = sportsmanagementModelPredictionResults::getMatches($this->roundID,$predictionProject->project_id,$match_ids,$round_ids,$proteams_ids,$this->config['show_logo_small_overview']);
 				
 				//echo '<br />roundMatchesList<pre>~' . print_r($roundMatchesList,true) . '~</pre><br />';
 				
@@ -224,11 +227,11 @@ echo $this->pagination->getListFooter();
                             case 'logo_middle':
                             case 'logo_big':
                             // bild ist nicht vorhanden, dann das standardbild
-                            if ( !sportsmanagementHelper::existPicture( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match->homeLogo ) )
+                            if ( !sportsmanagementHelper::existPicture( COM_SPORTSMANAGEMENT_PICTURE_SERVER.$match->homeLogo ) )
                             {
                             $match->homeLogo = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");    
                             }
-echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->homeid,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match->homeLogo,$match->homeName,'20');                               
+echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->homeid,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$match->homeLogo,$match->homeName,'20');                               
                             ?>                                    
 
                             <?PHP
@@ -267,11 +270,11 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->hom
                             case 'logo_middle':
                             case 'logo_big':
                             // bild ist nicht vorhanden, dann das standardbild
-                            if ( !sportsmanagementHelper::existPicture( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match->awayLogo ) )
+                            if ( !sportsmanagementHelper::existPicture( COM_SPORTSMANAGEMENT_PICTURE_SERVER.$match->awayLogo ) )
                             {
                             $match->awayLogo = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");    
                             }
-echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->awayid,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match->awayLogo,$match->awayName,'20');                        
+echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->awayid,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$match->awayLogo,$match->awayName,'20');                        
                             ?>                                    
                             
                             <?PHP

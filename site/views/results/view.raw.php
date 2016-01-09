@@ -1,4 +1,6 @@
-<?php defined( '_JEXEC' ) or die( 'Restricted access' );
+<?php 
+
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport('joomla.application.component.view');
 jimport( 'joomla.filesystem.file' );
@@ -15,12 +17,12 @@ class sportsmanagementViewResults extends JViewLegacy
         $option = JRequest::getCmd('option');
         $app = JFactory::getApplication();
         $roundcode = 0;
-		$css		= 'components/com_sportsmanagement/assets/css/tabs.css';
-		$document->addStyleSheet($css);
-		$css		= 'components/com_sportsmanagement/assets/css/joomleague.css';
-		$document->addStyleSheet($css);
-		$css		= 'components/com_sportsmanagement/assets/css/results.css';
-		$document->addStyleSheet($css);
+//		$css		= 'components/com_sportsmanagement/assets/css/tabs.css';
+//		$document->addStyleSheet($css);
+//		$css		= 'components/com_sportsmanagement/assets/css/joomleague.css';
+//		$document->addStyleSheet($css);
+//		$css		= 'components/com_sportsmanagement/assets/css/results.css';
+//		$document->addStyleSheet($css);
 		
 		//add js file
 		// welche joomla version
@@ -36,13 +38,13 @@ JHtml::_( 'behavior.mootools' );
 				
 		$matches = $model->getMatches();
 		
-		$config	= $model->getTemplateConfig($this->getName());
-		$project = $model->getProject();
+		$config	= sportsmanagementModelProject::getTemplateConfig($this->getName());
+		$project = sportsmanagementModelProject::getProject();
 		//$mdlRound = JModelLegacy::getInstance("Round", "JoomleagueModel");
 		//$roundcode = $mdlRound->getRoundcode($model->roundid);
 		//$mdlRounds = JModelLegacy::getInstance("Rounds", "JoomleagueModel");
 		//$rounds = $mdlRounds->getRoundsOptions($project->id);
-		$roundcode = sportsmanagementModelRound::getRoundcode($model->roundid);
+		$roundcode = sportsmanagementModelRound::getRoundcode((int)$model::$roundid);
 		$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true);
 			
 		$this->assignRef('project', $project);
@@ -50,19 +52,19 @@ JHtml::_( 'behavior.mootools' );
 		
 		if (isset($this->project))
 		{
-			$this->assignRef('overallconfig',	$model->getOverallConfig());
-			$this->assignRef('config',			array_merge($this->overallconfig, $config));
-			$this->assignRef('teams',			$model->getTeamsIndexedByPtid());
-			$this->assignRef('showediticon',	$model->getShowEditIcon());
-			$this->assignRef('division',		$model->getDivision());
+			$this->assign('overallconfig',	sportsmanagementModelProject::getOverallConfig());
+			$this->assign('config',			array_merge($this->overallconfig, $config));
+			$this->assign('teams',			sportsmanagementModelProject::getTeamsIndexedByPtid());
+			$this->assign('showediticon',	$model->getShowEditIcon());
+			$this->assign('division',		$model->getDivision());
 			$this->assignRef('matches',			$matches);
-			$this->assignRef('roundid',			$model->roundid);
+			$this->assignRef('roundid',			$model::$roundid);
 			$this->assignRef('roundcode',		$roundcode);
-			$this->assignRef('rounds',			sportsmanagementModelProject::getRounds());
-			$this->assignRef('favteams',		$model->getFavTeams($project));
-			$this->assignRef('projectevents',	sportsmanagementModelProject::getProjectEvents());
+			$this->assign('rounds',			sportsmanagementModelProject::getRounds());
+			$this->assign('favteams',		sportsmanagementModelProject::getFavTeams($project));
+			$this->assign('projectevents',	sportsmanagementModelProject::getProjectEvents());
 			$this->assignRef('model',			$model);
-			$this->assignRef('isAllowed',		$model->isAllowed());
+			$this->assign('isAllowed',		$model->isAllowed());
 
 			$lists['rounds'] = JHtml::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="joomleague_changedoc(this);','value','text',$project->current_round);
 			$this->assignRef('lists',$lists);
@@ -84,7 +86,9 @@ JHtml::_( 'behavior.mootools' );
 		$feed = 'index.php?option=com_sportsmanagement&view=results&p='.$this->project->id.'&format=feed';
 		$rss = array('type' => 'application/rss+xml', 'title' => JText::_('COM_SPORTSMANAGEMENT_RESULTS_RSSFEED'));
 
-		// add the links
+		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' layout'.'<pre>'.print_r($this->getLayout(),true).'</pre>' ),'');
+        
+        // add the links
 		//$document->addHeadLink(JRoute::_($feed.'&type=rss'), 'alternate', 'rel', $rss);
 
 		parent::display($tpl);
@@ -497,7 +501,7 @@ JHtml::_( 'behavior.mootools' );
 		//echo '<br /><pre>~'.print_r($game,true).'~</pre><br />';
 
 		$output = '';
-		$report_link = sportsmanagementHelper::getDefaultPlaceholder("clublogosmall"),$title,$attribs);
+		//$report_link = sportsmanagementHelper::getDefaultPlaceholder("clublogosmall"),$title,$attribs);
 
 		if ((($game->show_report) && (trim($game->summary) != '')) || ($game->alt_decision) || ($game->match_result_type > 0))
 		{

@@ -87,6 +87,7 @@ class sportsmanagementControllerPredictionResults extends JControllerLegacy
         $rID = $jinput->getVar('r','0');
         $set_pj = $jinput->getVar('set_pj','0');
         $set_r = $jinput->getVar('set_r','0');
+        $cfg_which_database = $jinput->getVar('cfg_which_database','0');
         
 //		//echo '<br /><pre>~' . print_r($post,true) . '~</pre><br />'; die();
 //		$pID	= JRequest::getVar('prediction_id',	null,	'post',	'int');
@@ -97,7 +98,7 @@ class sportsmanagementControllerPredictionResults extends JControllerLegacy
         
         
         
-		$link = JSMPredictionHelperRoute::getPredictionResultsRoute($pID,$rID,$pjID,NULL,'',$pggroup);
+		$link = JSMPredictionHelperRoute::getPredictionResultsRoute($pID,$rID,$pjID,NULL,'',$pggroup,$cfg_which_database);
 		$this->setRedirect($link);
 	}
 

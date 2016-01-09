@@ -84,7 +84,8 @@ class sportsmanagementControllerResults extends JControllerLegacy
 //    $app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
 //    $app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
     $model->saveshort();
-    $this->setRedirect('index.php?option=com_sportsmanagement&view=results&p='.$post['p'].'&division='.$post['division'].'&r='.$post['r'].'&layout='.$layout );
+// view=results&cfg_which_database=0&s=0&p=1:1-bundesliga-2015-16&r=14:14-spieltag&division=0&mode=0&order=&layout=form    
+    $this->setRedirect('index.php?option=com_sportsmanagement&view=results&cfg_which_database='.$post['cfg_which_database'].'&s='.$post['s'].'&p='.$post['p'].'&r='.$post['r'].'&division='.$post['division'].'&mode='.$post['mode'].'&order='.$post['order']   .'&layout='.$layout );
                
     }   
 

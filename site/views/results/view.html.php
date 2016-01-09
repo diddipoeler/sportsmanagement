@@ -48,6 +48,8 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 jimport('joomla.html.html.bootstrap');
 }
 
+//JHTML::_('behavior.modal');
+
 /**
  * sportsmanagementViewResults
  * 
@@ -82,6 +84,15 @@ class sportsmanagementViewResults extends JViewLegacy
 //		$document->addStyleSheet($css);
 
 		$document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
+        
+        $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/jquery.modal.js' );
+        $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/bootstrap-switch.js' );
+        
+        $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/bootstrap-datepicker.js' );
+        
+        //$document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/bootstrap-dialog.min.js' );
+        //$document->addScript ( 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js' );
+        
         //add js file
 /*
 		// welche joomla version
@@ -96,10 +107,12 @@ JHtml::_( 'behavior.mootools' );
 */
 		$model	= $this->getModel();
 				
-		$matches = $model->getMatches($model::$cfg_which_database);
+		
 		sportsmanagementModelProject::setProjectID($jinput->getInt('p',0));
 		$config	= sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
+        
+        $matches = $model->getMatches($model::$cfg_which_database,$project->editorgroup);
         
         sportsmanagementModelPagination::pagenav($project,$model::$cfg_which_database);
 		$mdlPagination = JModelLegacy::getInstance("Pagination","sportsmanagementModel");
@@ -126,7 +139,7 @@ JHtml::_( 'behavior.mootools' );
 			$this->assign('config',array_merge($this->overallconfig, $config));
 			$this->assign('teams',sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$model::$cfg_which_database));
             sportsmanagementHelperHtml::$teams = $this->teams;
-			$this->assign('showediticon',$model->getShowEditIcon());
+			$this->assign('showediticon',$model->getShowEditIcon($this->project->editorgroup));
 			$this->assign('division',$model->getDivision($model::$cfg_which_database));
 			$this->assignRef('matches',$matches);
             $this->assignRef('roundid',$model::$roundid);
@@ -186,8 +199,25 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		// add the links
 		$document->addHeadLink(JRoute::_($feed.'&type=rss'), 'alternate', 'rel', $rss);
         $view = $jinput->getVar( "view") ;
+        //$stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/bootstrap-dialog.min.css'.'" type="text/css" />' ."\n";
+        
+//        $stylelink = '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css" type="text/css" />' ."\n";
+//        $document->addCustomTag($stylelink);
+        
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/'.$option.'/assets/css/jquery.modal.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
+        
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/'.$option.'/assets/css/bootstrap-switch.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
+        
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/'.$option.'/assets/css/datepicker.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
+
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
+        
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpl'.'<pre>'.print_r($tpl,true).'</pre>' ),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout -> '.$this->getLayout().''),'');
 
 		parent::display($tpl);
 	}

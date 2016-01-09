@@ -109,6 +109,10 @@ function sportsmanagementBuildRoute(&$query)
         case 'predictionresults':
         case 'predictionusers':
         case 'rankingalltime';
+        if (isset($query['cfg_which_database'])) {
+                $segments[] = $query['cfg_which_database'];
+                unset($query['cfg_which_database']);
+            }
             break;
         default:
             /**
@@ -577,13 +581,18 @@ function sportsmanagementParseRoute($segments)
     $vars['view'] = $segments[0];
 
     // now, the specifics
-    switch ($vars['view']) {
+    switch ($vars['view']) 
+    {
         case 'predictionrules':
         case 'predictionranking':
         case 'predictionentry':
         case 'predictionresults':
         case 'predictionusers':
         case 'rankingalltime';
+        if (isset($segments[1])) 
+        {
+                $vars['cfg_which_database'] = $segments[1];
+            }        
             break;
         default:
             /**
@@ -606,20 +615,20 @@ function sportsmanagementParseRoute($segments)
     switch ($vars['view']) // the view...
         {
         case 'rankingalltime';
-        if (isset($segments[1])) {
-                $vars['l'] = $segments[1];
-            }    
         if (isset($segments[2])) {
-                $vars['points'] = $segments[2];
-            }
-            if (isset($segments[3])) {
-                $vars['type'] = $segments[3];
+                $vars['l'] = $segments[2];
+            }    
+        if (isset($segments[3])) {
+                $vars['points'] = $segments[3];
             }
             if (isset($segments[4])) {
-                $vars['order'] = $segments[4];
+                $vars['type'] = $segments[4];
             }
             if (isset($segments[5])) {
-                $vars['dir'] = $segments[5];
+                $vars['order'] = $segments[5];
+            }
+            if (isset($segments[6])) {
+                $vars['dir'] = $segments[6];
             }    
         break;    
         case 'event':
@@ -638,90 +647,10 @@ function sportsmanagementParseRoute($segments)
 
 
         case 'predictionranking':
-            if (isset($segments[1])) {
-                $vars['prediction_id'] = $segments[1];
-            }
-//            if (isset($segments[2])) {
-//                $vars['p'] = $segments[2];
-//            }
             if (isset($segments[2])) {
-                $vars['pggroup'] = $segments[2];
+                $vars['prediction_id'] = $segments[2];
             }
             if (isset($segments[3])) {
-                $vars['pj'] = $segments[3];
-            }
-            if (isset($segments[4])) {
-                $vars['r'] = $segments[4];
-            }
-            if (isset($segments[5])) {
-                $vars['pggrouprank'] = $segments[5];
-            }
-            
-            if (isset($segments[6])) {
-                $vars['type'] = $segments[6];
-            }
-            if (isset($segments[7])) {
-                $vars['from'] = $segments[7];
-            }
-            if (isset($segments[8])) {
-                $vars['to'] = $segments[8];
-            }
-
-
-            break;
-
-        case 'predictionentry':
-            if (isset($segments[1])) {
-                $vars['prediction_id'] = $segments[1];
-            }
-             if (isset($segments[2])) {
-                $vars['pggroup'] = $segments[2];
-            }
-//            if (isset($segments[2])) {
-//                $vars['s'] = $segments[2];
-//            }
-            if (isset($segments[3])) {
-                $vars['pj'] = $segments[3];
-            }
-            if (isset($segments[4])) {
-                $vars['r'] = $segments[4];
-            }
-            if (isset($segments[5])) {
-                $vars['uid'] = $segments[5];
-            }
-
-            break;
-
-        case 'predictionresults':
-            if (isset($segments[1])) {
-                $vars['prediction_id'] = $segments[1];
-            }
-//            if (isset($segments[2])) {
-//                $vars['p'] = $segments[2];
-//            }
-            if (isset($segments[2])) {
-                $vars['pggroup'] = $segments[2];
-            }
-            if (isset($segments[3])) {
-                $vars['pj'] = $segments[3];
-            }
-            if (isset($segments[4])) {
-                $vars['r'] = $segments[4];
-            }
-            if (isset($segments[5])) {
-                $vars['uid'] = $segments[5];
-            }
-            break;
-
-        case 'predictionusers':
-            if (isset($segments[1])) {
-                $vars['prediction_id'] = $segments[1];
-            }
-            
-            if (isset($segments[2])) {
-                $vars['uid'] = $segments[2];
-            }
- if (isset($segments[3])) {
                 $vars['pggroup'] = $segments[3];
             }
             if (isset($segments[4])) {
@@ -730,12 +659,81 @@ function sportsmanagementParseRoute($segments)
             if (isset($segments[5])) {
                 $vars['r'] = $segments[5];
             }
+            if (isset($segments[6])) {
+                $vars['pggrouprank'] = $segments[6];
+            }
+            if (isset($segments[7])) {
+                $vars['type'] = $segments[7];
+            }
+            if (isset($segments[8])) {
+                $vars['from'] = $segments[8];
+            }
+            if (isset($segments[9])) {
+                $vars['to'] = $segments[9];
+            }
+
+
+            break;
+
+        case 'predictionentry':
+            if (isset($segments[2])) {
+                $vars['prediction_id'] = $segments[2];
+            }
+             if (isset($segments[3])) {
+                $vars['pggroup'] = $segments[3];
+            }
+            if (isset($segments[4])) {
+                $vars['pj'] = $segments[4];
+            }
+            if (isset($segments[5])) {
+                $vars['r'] = $segments[5];
+            }
+            if (isset($segments[6])) {
+                $vars['uid'] = $segments[6];
+            }
+
+            break;
+
+        case 'predictionresults':
+            if (isset($segments[2])) {
+                $vars['prediction_id'] = $segments[2];
+            }
+            if (isset($segments[3])) {
+                $vars['pggroup'] = $segments[3];
+            }
+            if (isset($segments[4])) {
+                $vars['pj'] = $segments[4];
+            }
+            if (isset($segments[5])) {
+                $vars['r'] = $segments[5];
+            }
+            if (isset($segments[6])) {
+                $vars['uid'] = $segments[6];
+            }
+            break;
+
+        case 'predictionusers':
+            if (isset($segments[2])) {
+                $vars['prediction_id'] = $segments[2];
+            }
+            if (isset($segments[3])) {
+                $vars['uid'] = $segments[3];
+            }
+            if (isset($segments[4])) {
+                $vars['pggroup'] = $segments[4];
+            }
+            if (isset($segments[5])) {
+                $vars['pj'] = $segments[5];
+            }
+            if (isset($segments[6])) {
+                $vars['r'] = $segments[5];
+            }
 
             break;
 
         case 'predictionrules':
-            if (isset($segments[1])) {
-                $vars['prediction_id'] = $segments[1];
+            if (isset($segments[2])) {
+                $vars['prediction_id'] = $segments[2];
             }
 
             break;
