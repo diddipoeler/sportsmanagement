@@ -742,7 +742,7 @@ class sportsmanagementModelAjax extends JModelLegacy
         // Where
         if ( $season_id )
         {
-        $query->where('p.season_id = ' . $season_id );
+        $query->where('p.season_id = ' . (int)$season_id );
         } 
         else
         {

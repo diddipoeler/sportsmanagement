@@ -267,7 +267,7 @@ class sportsmanagementModelProject extends JModelAdmin
 	 * @param int project_id
 	 * @return int
 	 */
-	function getProject($project_id)
+	public static function getProject($project_id)
 	{
 	   $app = JFactory::getApplication();
        // JInput object

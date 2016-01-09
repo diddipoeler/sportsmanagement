@@ -49,10 +49,10 @@ JHtml::_('behavior.modal');
 			<thead>
 				<tr>
 					<th width=""><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
-					<th width="" class="title">
+					<th width="40" class="">
 						<input  type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 					</th>
-					<th width="">&nbsp;</th>
+					
 					<th class="title">
 						<?php
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_NAME_OF_PROJECT','p.name',$this->sortDirection,$this->sortColumn);
@@ -180,12 +180,12 @@ JHtml::_('behavior.modal');
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
-						<td width="" class="center"><?php echo JHtml::_('grid.id', $i, $row->id); ?></td>
+						<td width="40" class=""><?php echo JHtml::_('grid.id', $i, $row->id); ?>
 						<?php
                         						
 							$inputappend = '';
 							?>
-							<td class="center">
+							
                             <?php
                             if ( ( $row->checked_out != $this->user->get ('id') ) && $row->checked_out ) : ?>
 										<?php echo JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'projects.', $canCheckin); ?>

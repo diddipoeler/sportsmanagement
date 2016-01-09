@@ -65,7 +65,8 @@ class sportsmanagementModelMatch extends JModelAdmin
 	const MATCH_ROSTER_RESERVE			= 3;
     
     var $teams = NULL;
-
+static $_season_id = 0;
+static $_project_id = 0;
 	
     /**
      * sportsmanagementModelMatch::getMatchEvents()
@@ -73,7 +74,7 @@ class sportsmanagementModelMatch extends JModelAdmin
      * @param integer $match_id
      * @return
      */
-    function getMatchEvents($match_id=0)
+    public static function getMatchEvents($match_id=0)
 	{
 	   // Reference global application object
         $app = JFactory::getApplication();
@@ -87,16 +88,16 @@ class sportsmanagementModelMatch extends JModelAdmin
         $query = $db->getQuery(true);
         $query->select('me.*,t.name AS team,et.name AS event,CONCAT(t1.firstname," \'",t1.nickname,"\' ",t1.lastname) AS player1');
         //$query->select('CONCAT(t2.firstname," \'",t2.nickname,"\' ",t2.lastname) AS player2');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp1 ON tp1.id = me.teamplayer_id');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.team_id = tp1.team_id and st1.season_id = tp1.season_id'); 
+        $query->from('#__sportsmanagement_match_event AS me');
+        $query->join('LEFT','#__sportsmanagement_season_team_person_id AS tp1 ON tp1.id = me.teamplayer_id');
+        $query->join('LEFT','#__sportsmanagement_season_team_id AS st1 ON st1.team_id = tp1.team_id and st1.season_id = tp1.season_id'); 
 
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON st1.id = pt1.team_id');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS t1 ON t1.id = tp1.person_id AND t1.published = 1');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st1.team_id');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et ON et.id = me.event_type_id ');
+        $query->join('LEFT','#__sportsmanagement_project_team AS pt1 ON st1.id = pt1.team_id');
+        $query->join('LEFT','#__sportsmanagement_person AS t1 ON t1.id = tp1.person_id AND t1.published = 1');
+        $query->join('LEFT','#__sportsmanagement_team AS t ON t.id = st1.team_id');
+        $query->join('LEFT','#__sportsmanagement_eventtype AS et ON et.id = me.event_type_id ');
         
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position AS ppp on ppp.person_id = tp1.id and ppp.project_id = pt1.project_id');
+        $query->join('LEFT', '#__sportsmanagement_person_project_position AS ppp on ppp.person_id = tp1.id and ppp.project_id = pt1.project_id');
        
         $query->where('pt1.project_id = '.$project_id);
         
@@ -889,7 +890,7 @@ class sportsmanagementModelMatch extends JModelAdmin
      * @param integer $excludeMatchId
      * @return
      */
-    function getMatchRelationsOptions($project_id,$excludeMatchId=0)
+    public static function getMatchRelationsOptions($project_id,$excludeMatchId=0)
 	{
 	   $option = JRequest::getCmd('option');
 	   $app = JFactory::getApplication();
@@ -899,18 +900,18 @@ class sportsmanagementModelMatch extends JModelAdmin
         // Select some fields
         $query->select('m.id AS value,m.match_date, p.timezone, t1.name AS t1_name, t2.name AS t2_name');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
+		$query->from('#__sportsmanagement_match AS m');
         
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id');
+        $query->join('LEFT','#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id');
+        $query->join('LEFT','#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id');
         
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt1.team_id ');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 ON st2.id = pt2.team_id ');
+        $query->join('LEFT','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
+        $query->join('LEFT','#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
         
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id = st1.team_id');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id = st2.team_id');
+        $query->join('LEFT','#__sportsmanagement_team AS t1 ON t1.id = st1.team_id');
+        $query->join('LEFT','#__sportsmanagement_team AS t2 ON t2.id = st2.team_id');
         
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt1.project_id');
+        $query->join('LEFT','#__sportsmanagement_project AS p ON p.id = pt1.project_id');
         
         // Where
         $query->where('pt1.project_id = '.(int) $project_id );
@@ -918,23 +919,12 @@ class sportsmanagementModelMatch extends JModelAdmin
         $query->where('m.published = 1' );
         
         $query->order('m.match_date DESC,t1.short_name' );
-
-/*        
-		$query  = ' SELECT	m.id AS value,'
-				. ' m.match_date, p.timezone, t1.name AS t1_name, t2.name AS t2_name'
-				. '	FROM #__joomleague_match AS m'
-				. ' INNER JOIN #__joomleague_project_team AS pt1 ON m.projectteam1_id=pt1.id'
-				. '	INNER JOIN #__joomleague_project_team AS pt2 ON m.projectteam2_id=pt2.id'
-				. ' INNER JOIN #__joomleague_team AS t1 ON pt1.team_id=t1.id'
-				. ' INNER JOIN #__joomleague_team AS t2 ON pt2.team_id=t2.id'
-				. ' INNER JOIN #__joomleague_project AS p ON p.id=pt1.project_id'
-				. ' WHERE pt1.project_id='.$project_id
-				. '   AND m.id NOT in ('.$excludeMatchId.')'
-				. '   AND m.published=1'
-				. ' ORDER BY m.match_date DESC,t1.short_name';
-*/                
+               
 		$db->setQuery($query);
 		$matches = $db->loadObjectList();
+        
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
 		if ($matches)
 		{
 			foreach ($matches as $match)
@@ -1013,12 +1003,12 @@ class sportsmanagementModelMatch extends JModelAdmin
      * @param mixed $persontype
      * @return
      */
-    function getTeamPersons($projectteam_id,$filter=false,$persontype)
+    public static function getTeamPersons($projectteam_id,$filter=false,$persontype)
 	{
 	   $option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
-        $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
-        $this->_project_id	= $app->getUserState( "$option.pid", '0' );
+        self::$_season_id	= $app->getUserState( "$option.season_id", '0' );
+        self::$_project_id	= $app->getUserState( "$option.pid", '0' );
 
         $query = JFactory::getDbo()->getQuery(true);
         
@@ -1046,9 +1036,9 @@ class sportsmanagementModelMatch extends JModelAdmin
         $query->where('pl.published = 1');
         $query->where('sp.persontype = '.$persontype);
         $query->where('ppp.persontype = '.$persontype);
-        $query->where('sp.season_id = '.$this->_season_id);
+        $query->where('sp.season_id = '.self::$_season_id);
         
-        $query->where('ppp.project_id = '.$this->_project_id);
+        $query->where('ppp.project_id = '.self::$_project_id);
 
 		if (is_array($filter) && count($filter) > 0)
 		{
@@ -1092,11 +1082,11 @@ class sportsmanagementModelMatch extends JModelAdmin
 	 * @return	array of substitutions
 	 *
 	 */
-	function getSubstitutions($tid=0,$match_id)
+	public static function getSubstitutions($tid=0,$match_id)
 	{
 		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
-        $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
+        self::$_season_id	= $app->getUserState( "$option.season_id", '0' );
         $project_id	= $app->getUserState( "$option.pid", '0' );
         $starttime = microtime(); 
         // Get a db connection.
@@ -1110,18 +1100,18 @@ class sportsmanagementModelMatch extends JModelAdmin
         $query->select('p2.firstname AS out_firstname,p2.nickname AS out_nickname, p2.lastname AS out_lastname');
         $query->select('pos.name AS in_position');
         
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp');
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS sp1 ON sp1.id = mp.teamplayer_id ');
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p1 ON sp1.person_id = p1.id ');
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = p1.position_id ');
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = mp.project_position_id ');
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS sp2 ON sp2.id = mp.in_for ');
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p2 ON sp2.person_id = p2.id ');
+        $query->from('#__sportsmanagement_match_player AS mp');
+        $query->join('LEFT',' #__sportsmanagement_season_team_person_id AS sp1 ON sp1.id = mp.teamplayer_id ');
+        $query->join('LEFT',' #__sportsmanagement_person AS p1 ON sp1.person_id = p1.id ');
+        $query->join('LEFT',' #__sportsmanagement_position AS pos ON pos.id = p1.position_id ');
+        $query->join('LEFT',' #__sportsmanagement_project_position AS ppos ON ppos.position_id = mp.project_position_id ');
+        $query->join('LEFT',' #__sportsmanagement_season_team_person_id AS sp2 ON sp2.id = mp.in_for ');
+        $query->join('LEFT',' #__sportsmanagement_person AS p2 ON sp2.person_id = p2.id ');
         
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position AS ppp on ppp.person_id = sp1.id and ppp.project_id = ppos.project_id');
+        $query->join('LEFT', '#__sportsmanagement_person_project_position AS ppp on ppp.person_id = sp1.id and ppp.project_id = ppos.project_id');
         
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.team_id = sp1.team_id and st1.season_id = sp1.season_id'); 
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON st1.id = pt1.team_id');
+        $query->join('LEFT','#__sportsmanagement_season_team_id AS st1 ON st1.team_id = sp1.team_id and st1.season_id = sp1.season_id'); 
+        $query->join('LEFT','#__sportsmanagement_project_team AS pt1 ON st1.id = pt1.team_id');
 
 /*        
 		$query='SELECT mp.*,'
@@ -1181,12 +1171,12 @@ class sportsmanagementModelMatch extends JModelAdmin
 	 * @param int $project_position_id
 	 * @return array of player ids
 	 */
-	function getRoster($team_id, $project_position_id=0, $match_id,$position_value)
+	public static function getRoster($team_id, $project_position_id=0, $match_id,$position_value)
 	{
 		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
-        $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
-        $this->_project_id	= $app->getUserState( "$option.pid", '0' );
+        self::$_season_id	= $app->getUserState( "$option.season_id", '0' );
+        self::$_project_id	= $app->getUserState( "$option.pid", '0' );
 
         $query = JFactory::getDbo()->getQuery(true);
         
@@ -1202,24 +1192,24 @@ class sportsmanagementModelMatch extends JModelAdmin
         //$query->select('ppos.position_id,ppos.id AS pposid');
 
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp');
+		$query->from('#__sportsmanagement_match_player AS mp');
         
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS sp ON sp.id = mp.teamplayer_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl ON pl.id = sp.person_id ');
+        $query->join('INNER',' #__sportsmanagement_season_team_person_id AS sp ON sp.id = mp.teamplayer_id ');
+        $query->join('INNER',' #__sportsmanagement_person AS pl ON pl.id = sp.person_id ');
         
         //$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position AS ppp on ppp.person_id = pl.id');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position AS ppp on ppp.person_id = pl.id and ppp.persontype = sp.persontype');
+        $query->join('LEFT', '#__sportsmanagement_person_project_position AS ppp on ppp.person_id = pl.id and ppp.persontype = sp.persontype');
         
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = ppp.project_position_id ');
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id ');
+        $query->join('LEFT',' #__sportsmanagement_project_position AS ppos ON ppos.id = ppp.project_position_id ');
+        $query->join('LEFT',' #__sportsmanagement_position AS pos ON pos.id = ppos.position_id ');
         //$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = pos.id ');
         
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.team_id = sp.team_id ');
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st1.id ');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.team_id = sp.team_id ');
+        $query->join('LEFT',' #__sportsmanagement_project_team AS pt ON pt.team_id = st1.id ');
         
         $query->where('mp.match_id = '.$match_id);
         
-        $query->where('ppp.project_id = '.$this->_project_id);
+        $query->where('ppp.project_id = '.self::$_project_id);
         
         //$query->where('tpl.projectteam_id = '.$team_id);
         $query->where('mp.came_in = '.self::MATCH_ROSTER_STARTER);
@@ -1243,7 +1233,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 		JFactory::getDbo()->setQuery($query);
 		$result = JFactory::getDbo()->loadObjectList('value');
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <pre>'.print_r($query->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <pre>'.print_r($query->dump(),true).'</pre>'),'');
         
         if ( !$result )
 		    {
@@ -1306,7 +1296,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 		* @return	array
 		* @since 0.1
 		*/
-	function getMatchTeams($match_id)
+	public static function getMatchTeams($match_id)
 	{
 	   $app = JFactory::getApplication();
        $option = JRequest::getCmd('option');
@@ -1337,7 +1327,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 	 * @param int $project_position_id
 	 * @return array of referee ids
 	 */
-	function getRefereeRoster($project_position_id=0,$match_id=0)
+	public static function getRefereeRoster($project_position_id=0,$match_id=0)
 	{
 		$query='	SELECT	pref.id AS value,
 							pr.firstname,
@@ -1365,7 +1355,7 @@ class sportsmanagementModelMatch extends JModelAdmin
 	 * @return	array
 	 * @since 0.1
 	 */
-	function getProjectReferees($already_sel=false, $project_id)
+	public static function getProjectReferees($already_sel=false, $project_id)
 	{
 		$query=' SELECT	pref.id AS value,'
 		.' pl.firstname,'
@@ -1398,15 +1388,15 @@ class sportsmanagementModelMatch extends JModelAdmin
 	 * @param int $project_position_id
 	 * @return array of players
 	 */
-	function getMatchPersons($projectteam_id,$project_position_id=0,$match_id, $table)
+	public static function getMatchPersons($projectteam_id,$project_position_id=0,$match_id, $table)
 	{
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         
         $query = JFactory::getDbo()->getQuery(true);
         
-        $this->_season_id = $app->getUserState( "$option.season_id", '0' );
-        $this->_project_id	= $app->getUserState( "$option.pid", '0' );
+        self::$_season_id = $app->getUserState( "$option.season_id", '0' );
+        self::$_project_id	= $app->getUserState( "$option.pid", '0' );
         
 //        if ( COM_SPORTSMANAGEMENT_USE_NEW_TABLE )
 //        {
@@ -1462,7 +1452,7 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
         $query->where('mp.match_id = '.$match_id);
         $query->where('pl.published = 1');
         
-        $query->where('ppp.project_id = '.$this->_project_id);
+        $query->where('ppp.project_id = '.self::$_project_id);
         
 //        $query->where('tpl.published = 1');
 //        $query->where('tpl.projectteam_id = '.$projectteam_id);
@@ -1487,7 +1477,7 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
         
         $result = JFactory::getDbo()->loadObjectList($id);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
         
         if ( !$result )
@@ -1512,7 +1502,7 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
      * @param mixed $project_id
      * @return
      */
-    function getInputStats($project_id)
+    public static function getInputStats($project_id)
 	{
 		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
@@ -1564,7 +1554,7 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
      * @param mixed $projectteam2_id
      * @return
      */
-    function getMatchStatsInput($match_id,$projectteam1_id,$projectteam2_id)
+    public static function getMatchStatsInput($match_id,$projectteam1_id,$projectteam2_id)
 	{
 		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
@@ -1607,7 +1597,7 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
 	 * @param mixed $projectteam2_id
 	 * @return
 	 */
-	function getMatchStaffStatsInput($match_id,$projectteam1_id,$projectteam2_id)
+	public static function getMatchStaffStatsInput($match_id,$projectteam1_id,$projectteam2_id)
 	{
 		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
@@ -1651,7 +1641,7 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
 	 * @return	array
 	 * @since 1.5
 	 */
-	function getProjectPositionsOptions($id=0, $person_type=1,$project_id)
+	public static function getProjectPositionsOptions($id=0, $person_type=1,$project_id)
 	{
 		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
@@ -1694,7 +1684,7 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
         
 		if (!$result = JFactory::getDbo()->loadObjectList('value'))
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog( __METHOD__, __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			return false;
 		}
 		return $result;
@@ -1707,7 +1697,7 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
      * @param mixed $match_id
      * @return
      */
-    function getEventsOptions($project_id,$match_id)
+    public static function getEventsOptions($project_id,$match_id)
 	{
 		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();

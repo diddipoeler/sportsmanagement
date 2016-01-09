@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie k�nnen es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp�teren
-* ver�ffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es n�tzlich sein wird, aber
-* OHNE JEDE GEW�HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew�hrleistung der MARKTF�HIGKEIT oder EIGNUNG F�R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f�r weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -37,313 +37,111 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-// No direct access to this file
+// No direct access
 defined('_JEXEC') or die('Restricted access');
-
-if (! defined('DS'))
-{
-	define('DS', DIRECTORY_SEPARATOR);
-}
  
-// Access check.
-if (!JFactory::getUser()->authorise('core.manage', 'com_sportsmanagement')) 
-{
-	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
-}
+// import Joomla table library
+jimport('joomla.database.table');
  
-// require helper file
-if ( !class_exists('sportsmanagementHelper') ) 
+
+/**
+ * sportsmanagementTablesportsmanagement
+ * 
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
+ * @access public
+ */
+class sportsmanagementTablesportsmanagement extends JTable
 {
-JLoader::register('SportsManagementHelper', dirname(__FILE__) . DS . 'helpers' . DS . 'sportsmanagement.php');
-}
-
-JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
-
-// zur unterscheidung von joomla 2.5 und 3
-JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.view', JPATH_ADMINISTRATOR);
- 
-require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'countries.php');
-require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'imageselect.php');
-require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'helpers' . DS . 'JSON.php');
-require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'models'.DS.'databasetool.php');
-require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'csvhelper.php');
-
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-// Joomla! 3.0 code here
-}
-elseif(version_compare(JVERSION,'2.5.0','ge')) 
-{
-// Joomla! 2.5 code here
-//JFactory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/css/bootstrap.min.css');
-//JFactory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/css/bootstrap-responsive.min.css');
-//JFactory::getDocument()->addStyleSheet(JURI::root().'administrator/components/com_sportsmanagement/libraries/bootstrap/js/bootstrap.min.js');
-} 
-elseif(version_compare(JVERSION,'1.7.0','ge')) 
-{
-// Joomla! 1.7 code here
-} 
-elseif(version_compare(JVERSION,'1.6.0','ge')) 
-{
-// Joomla! 1.6 code here
-} 
-else 
-{
-// Joomla! 1.5 code here
-}
-
-
-// welche joomla version ?
-sportsmanagementHelper::isJoomlaVersion('2.5');
-
-//$command = JRequest::getVar('task');
-$command = JRequest::getVar('task', 'display');
-
-$view = JRequest::getVar('view');
-$lang = JFactory::getLanguage();
-$app = JFactory::getApplication();
-
-
-// welche tabelle soll genutzt werden
-$params = JComponentHelper::getParams( 'com_sportsmanagement' );
-
-
-if ( $params->get( 'cfg_dbprefix' ) )
-{
-$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_SETTINGS_USE_DATABASE_TABLE'),'');   
-             
-}
-
-
-//$database_table	= $params->get( 'cfg_which_database_table' ); 
-//$show_debug_info = $params->get( 'show_debug_info' );  
-//$show_query_debug_info = $params->get( 'show_query_debug_info' );  
-
-//$cfg_help_server = $params->get( 'cfg_help_server' );
-//$modal_popup_width = $params->get( 'modal_popup_width' );
-//$modal_popup_height = $params->get( 'modal_popup_height' );
-
-//$app->setUserState( "com_sportsmanagement.cfg_which_database", $params->get( 'cfg_which_database' ) );
-
-//$cfg_which_database_server = $params->get( 'cfg_which_database_server' );
-
-DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',$params->get( 'cfg_which_database' ) );
-DEFINE( 'COM_SPORTSMANAGEMENT_HELP_SERVER',$params->get( 'cfg_help_server' ) );
-DEFINE( 'COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH',$params->get( 'modal_popup_width' ) );
-DEFINE( 'COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT',$params->get( 'modal_popup_height' ) );
-
-DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$params->get( 'show_debug_info' ) );
-DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO_TEXT','' );
-DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$params->get( 'show_query_debug_info' ) );
-
-if ( $params->get( 'cfg_dbprefix' ) )
-{
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$params->get( 'cfg_which_database_server' ) );
-}
-else
-{    
-if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
-{
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$params->get( 'cfg_which_database_server' ) );    
-}
-else
-{
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );    
-}
-}
-
-if ( $params->get( 'cfg_which_database_table' ) )
-{
-DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$params->get( 'cfg_which_database_table' ) );
-}
-else
-{
-DEFINE( 'COM_SPORTSMANAGEMENT_TABLE','sportsmanagement' );    
-}
-
-DEFINE( 'COM_SPORTSMANAGEMENT_FIELDSETS_TEMPLATE',dirname(__FILE__).DS.'helpers'.DS.'tmpl'.DS.'edit_fieldsets.php' );
-
-if ( $params->get( 'cfg_which_database_table' ) == 'sportsmanagement' )		
-{
-DEFINE( 'COM_SPORTSMANAGEMENT_USE_NEW_TABLE',true);    
-}
-else
-{
-DEFINE( 'COM_SPORTSMANAGEMENT_USE_NEW_TABLE',false);      
-}
-
-
-
-
-$controller = '';
-$type = '';
-$task = '';
-$arrExtensions = sportsmanagementHelper::getExtensions();
-$model_pathes[]	= array();
-$view_pathes[]	= array();
-$template_pathes[]	= array();
-
-//JFactory::$database = sportsmanagementHelper::getDBConnection();
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' database<br><pre>'.print_r(JFactory::$database,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getDBConnection<br><pre>'.print_r(sportsmanagementHelper::getDBConnection(),true).'</pre>'),'');
-
-
-// Check for array format.
-$filter = JFilterInput::getInstance();
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' filter<br><pre>'.print_r($filter,true).'</pre>'),'');
-
-if (is_array($command))
-{
-	$command = $filter->clean(array_pop(array_keys($command)), 'cmd');
-}
-else
-{
-	$command = $filter->clean($command, 'cmd');
-}
-
-// Check for a controller.task command.
-if (strpos($command, '.') !== false)
-{
-	// Explode the controller.task command.
-	list ($type, $task) = explode('.', $command);
-}
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' command<br><pre>'.print_r($command,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view<br><pre>'.print_r($view,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' type<br><pre>'.print_r($type,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' task<br><pre>'.print_r($task,true).'</pre>'),'');
-
-for ($e = 0; $e < count($arrExtensions); $e++)
-{
-$extension = $arrExtensions[$e];
-$extensionname = $arrExtensions[$e];
-$extensionpath = JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions'.DS.$extension;    
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' extensionpath<br><pre>'.print_r($extensionpath,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' extension<br><pre>'.print_r($extension,true).'</pre>'),'');
-
-if($app->isAdmin()) 
-{
-		$base_path = $extensionpath.DS.'admin';
-		// language file
-		$lang->load('com_sportsmanagement_'.$extension, $base_path);
-	}
-
-//set the base_path to the extension controllers directory
-	if(is_dir($base_path))
+	/**
+	 * Constructor
+	 *
+	 * @param object Database connector object
+	 */
+	function __construct(&$db) 
 	{
-		$params = array('base_path'=>$base_path);
+		parent::__construct('#__sportsmanagement', 'id', $db);
 	}
-	else
+	/**
+	 * Overloaded bind function
+	 *
+	 * @param       array           named array
+	 * @return      null|string     null is operation was satisfactory, otherwise returns an error
+	 * @see JTable:bind
+	 * @since 1.5
+	 */
+	public function bind($array, $ignore = '') 
 	{
-		$params = array();
-	}
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'),'');
- 
- 
-// own controllers 
-	if (!file_exists($base_path.DS.'controller.php') )
-	{
-		if($type!=$extension) {
-			$params = array();
+		if (isset($array['params']) && is_array($array['params'])) 
+		{
+			// Convert the params field to a string.
+			$parameter = new JRegistry;
+			$parameter->loadArray($array['params']);
+			$array['params'] = (string)$parameter;
 		}
-		$extension = "sportsmanagement";
+		return parent::bind($array, $ignore);
 	}
-	elseif (!file_exists($base_path.DS.$extension.'.php'))
+ 
+	/**
+	 * Overloaded load function
+	 *
+	 * @param       int $pk primary key
+	 * @param       boolean $reset reset data
+	 * @return      boolean
+	 * @see JTable:load
+	 */
+	public function load($pk = null, $reset = true) 
 	{
-		if($type!=$extension) {
-			$params = array();
+		if (parent::load($pk, $reset)) 
+		{
+			// Convert the params field to a registry.
+			$params = new JRegistry;
+			$params->loadJSON($this->params);
+			$this->params = $params;
+			return true;
 		}
-		$extension = "sportsmanagement";
+		else
+		{
+			return false;
+		}
 	}
-
-// import joomla controller library
-jimport('joomla.application.component.controller');
-	try
+	/**
+	 * Method to compute the default name of the asset.
+	 * The default name is in the form `table_name.id`
+	 * where id is the value of the primary key of the table.
+	 *
+	 * @return	string
+	 * @since	1.6
+	 */
+	protected function _getAssetName()
 	{
-	   //$controller = JController::getInstance(ucfirst($extension), $params);
-	   $controller = JControllerLegacy::getInstance(ucfirst($extension), $params);
+		$k = $this->_tbl_key;
+		return 'com_sportsmanagement.message.'.(int) $this->$k;
 	}
-	catch (Exception $exc)
-	{
-		//fallback if no extensions controller has been initialized
-		//$controller	= JController::getInstance('sportsmanagement');
-        $controller	= JControllerLegacy::getInstance('sportsmanagement');
-	}
-     
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' controller<br><pre>'.print_r($controller,true).'</pre>'),'');
-    
-	if (is_dir($base_path.DS.'models')) {
-		$model_pathes[] = $base_path.DS.'models';
-	}
-
-	if (is_dir($base_path.DS.'views')) {
-		$view_pathes[] = $base_path.DS.'views';
-        $template_pathes[] = $base_path.DS.'views'.DS.$extensionname.DS.'tmpl';
-	}
-
-
-}
-
-// import joomla controller library
-jimport('joomla.application.component.controller');
-$controller	= JControllerLegacy::getInstance('sportsmanagement');
-
-//if(is_null($controller) && !($controller instanceof JController)) {
-//	//fallback if no extensions controller has been initialized
-//	$controller	= JController::getInstance('sportsmanagement');
-//}
-if(is_null($controller) && !($controller instanceof JControllerLegacy)) {
-	//fallback if no extensions controller has been initialized
-	$controller	= JControllerLegacy::getInstance('sportsmanagement');
-}
-
-foreach ($model_pathes as $path)
-{
-	if(!empty($path))
-	{
-		$controller->addModelPath($path, 'sportsmanagementModel');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' addModelPath<br><pre>'.print_r($path,true).'</pre>'),'');
-	}
-}
-
-foreach ($view_pathes as $path)
-{
-	if(!empty($path))
-	{
-		$controller->addViewPath($path, 'sportsmanagementView');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' addViewPath<br><pre>'.print_r($path,true).'</pre>'),'');
-	}
-}
-
-for ($e = 0; $e < count($arrExtensions); $e++)
-{
-$extension = $arrExtensions[$e];
-$extensionname = $arrExtensions[$e];
-foreach ($template_pathes as $path)
-{
-	if(!empty($path))
-	{
-	   // get view and set template context 
-        $view = $controller->getView( $extensionname, "html", "sportsmanagementView"); 
-        $view->addTemplatePath($path); 
-        
-//	   $view = new JView;
-//		$view->addTemplatePath($path);
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' addTemplatePath<br><pre>'.print_r($path,true).'</pre>'),'');
-	}
-}
-}
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' controller<br><pre>'.print_r($controller,true).'</pre>'),'');
-
  
-// Perform the Request task
-//$controller->execute(JRequest::getCmd('task'));
-$controller->execute($task);
+	/**
+	 * Method to return the title to use for the asset table.
+	 *
+	 * @return	string
+	 * @since	1.6
+	 */
+	protected function _getAssetTitle()
+	{
+		return $this->greeting;
+	}
  
-// Redirect if set by the controller
-$controller->redirect();
+	/**
+	 * Get the parent asset id for the record
+	 *
+	 * @return	int
+	 * @since	1.6
+	 */
+	protected function _getAssetParentId()
+	{
+		$asset = JTable::getInstance('Asset');
+		$asset->loadByName('com_sportsmanagement');
+		return $asset->id;
+	}
+}

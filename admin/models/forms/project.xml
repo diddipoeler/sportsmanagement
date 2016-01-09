@@ -163,7 +163,15 @@
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDITOR_DESC"
 			validate="superiorzero">
 		</field>
-				
+		
+    <field
+	name="editorgroup"
+	type="usergroup"
+	default=""
+	label="COM_SPORTSMANAGEMENT_EDITOR_GROUP_PROJECT_EDITOR"
+	description="COM_SPORTSMANAGEMENT_EDITOR_GROUP_PROJECT_EDITOR_DESC" >
+		 </field>
+     
 		<field
 			name="master_template"
 			type="templatelist"
