@@ -1,215 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="2.5" method="upgrade">
- 
-	<name>COM_SPORTSMANAGEMENT</name>
-	<!-- The following elements are optional and free of formatting conttraints -->
-	<creationDate>April 2013</creationDate>
-	<author>diddipoeler, stony, svdoldie, donclumsy</author>
-	<authorEmail>diddipoeler@gmx.de</authorEmail>
-	<authorUrl>http://www.fussballineuropa.de</authorUrl>
-	<copyright>Copyright Info</copyright>
-	<license>License Info</license>
-	<!--  The version string is recorded in the components table -->
-	<version>1.0.51</version>
-	<!-- The description is optional and defaults to the name -->
-	<description>COM_SPORTSMANAGEMENT_DESCRIPTION</description>
- 
-	<!-- Runs on install/uninstall/update; New in 1.6 -->
-	<scriptfile>script.php</scriptfile>
- 
-	<install> <!-- Runs on install -->
-		<sql>
-			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
-		</sql>
-	</install>
-	
-	<uninstall> <!-- Runs on uninstall -->
-		<sql>
-			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
-		</sql>
-	</uninstall>
-	
-	<update> <!-- Runs on update; New in 1.6 -->
-		<schemas>
-			<schemapath type="mysql">sql/updates/mysql</schemapath>
-		</schemas>
-	</update>
- 
-	<!-- Site Main File Copy Section -->
-	<!-- Note the folder attribute: This attribute describes the folder
-		to copy FROM in the package to install therefore files copied
-		in this section are copied from /site/ in the package -->
-	<files folder="site">
-		<filename>index.html</filename>
-		<filename>sportsmanagement.php</filename>
-		<filename>controller.php</filename>
-		<filename>router.php</filename>
-		<folder>views</folder>
-		<folder>helpers</folder>
-		<folder>assets</folder>
-		<folder>models</folder>
-		<folder>settings</folder>
-		<folder>extensions</folder>
-		<folder>cronjobs</folder>
-		<folder>controllers</folder>
-		<folder>language</folder>
-		<folder>libraries</folder>
-		<folder>sisdata</folder>
-		<folder>data</folder>
-		<folder>lib</folder>
-		
-	</files>
-	<languages folder="site">
-		<language tag="de-DE">language/de-DE/de-DE.com_sportsmanagement.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.com_sportsmanagement.ini</language>
-		<language tag="ru-RU">language/ru-RU/ru-RU.com_sportsmanagement.ini</language>
-	</languages>
-
-	<media destination="com_sportsmanagement" folder="media/com_sportsmanagement">
-		<filename>index.html</filename>
-		<folder>agegroups</folder>
-		<folder>associations</folder>
-		<folder>clubs</folder>
-		<folder>events</folder>
-		<folder>event_icons</folder>
-		<folder>flags</folder>
-		<folder>flags_associations</folder>
-		<folder>jl_images</folder>
-		<folder>leagues</folder>
-		<folder>person_playground</folder>
-		<folder>persons</folder>
-		<folder>placeholders</folder>
-		<folder>playgrounds</folder>
-		<folder>predictionusers</folder>
-		<folder>rosterground</folder>
-		<folder>sport_types</folder>
-		<folder>teamplayers</folder>
-		<folder>treebracket</folder>
-		<folder>laender_karten</folder>
-		<folder>matchreport</folder>
-	</media>
-	
-	<administration>
-		<!-- Administration Menu Section -->
-		<menu img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png">COM_SPORTSMANAGEMENT_MENU</menu>
-		<submenu>
-			<!--
-				Note that all & must be escaped to &amp; for the file to be valid
-				XML and be parsed by the installer
-			-->
-			<menu view="clubs" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
-				alt="COM_SPORTSMANAGEMENT_D_MENU_CLUBS">COM_SPORTSMANAGEMENT_D_MENU_CLUBS</menu>
-				
-        <menu view="teams" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
-				alt="COM_SPORTSMANAGEMENT_D_MENU_CLUBS">COM_SPORTSMANAGEMENT_D_MENU_TEAMS</menu>
-				
-        <menu view="persons" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
-				alt="COM_SPORTSMANAGEMENT_D_MENU_CLUBS">COM_SPORTSMANAGEMENT_D_MENU_PERSONS</menu>
-				
-        <menu view="playgrounds" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
-				alt="COM_SPORTSMANAGEMENT_D_MENU_CLUBS">COM_SPORTSMANAGEMENT_D_MENU_VENUES</menu>
-		
-    <menu view="jsmgooglecalendar" img="../administrator/components/com_sportsmanagement/assets/icons/transparent_schrift_16.png"
-				alt="COM_SPORTSMANAGEMENT_D_MENU_CLUBS">COM_SPORTSMANAGEMENT_D_GOOGLE_CALENDAR</menu>		
-		
-		</submenu>
-		
-		<!-- Administration Main File Copy Section -->
-		<!-- Note the folder attribute: This attribute describes the folder
-			to copy FROM in the package to install therefore files copied
-			in this section are copied from /admin/ in the package -->
-		<files folder="admin">
-			<!-- Admin Main File Copy Section -->
-			<filename>index.html</filename>
-			<filename>config.xml</filename>
-			<filename>access.xml</filename>
-			<filename>sportsmanagement.php</filename>
-			<filename>controller.php</filename>
-			<!-- assets files section -->
-			<folder>assets</folder>
-			<!-- statistics files section -->
-			<folder>statistics</folder>
-			<!-- elements files section -->
-			<folder>elements</folder>
-			<!-- SQL files section -->
-			<folder>sql</folder>
-			<!-- tables files section -->
-			<folder>tables</folder>
-			<!-- models files section -->
-			<folder>models</folder>
-			<!-- views files section -->
-			<folder>views</folder>
-			<!-- controllers files section -->
-			<folder>controllers</folder>
-			<!-- helpers files section -->
-			<folder>helpers</folder>
-			<folder>sisdata</folder>
-			<folder>modules</folder>
-			<folder>libraries</folder>
-		</files>
- 
-		<languages folder="admin">
-			<language tag="de-DE">language/de-DE/de-DE.com_sportsmanagement.ini</language>
-			<language tag="de-DE">language/de-DE/de-DE.com_sportsmanagement.sys.ini</language>
-			<language tag="en-GB">language/en-GB/en-GB.com_sportsmanagement.ini</language>
-			<language tag="en-GB">language/en-GB/en-GB.com_sportsmanagement.sys.ini</language>
-			<language tag="ru-RU">language/ru-RU/ru-RU.com_sportsmanagement.ini</language>
-			<language tag="ru-RU">language/ru-RU/ru-RU.com_sportsmanagement.sys.ini</language>
-			</languages>
-		
-	</administration>
- 
-	<!-- UPDATESERVER DEFINITION -->
-	<updateservers>
-		<!-- Note: No spaces or linebreaks allowed between the server tags -->
-		<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.github.com/diddipoeler/sportsmanagement/master/sportsmanagement-update.xml</server>
-	</updateservers>
-
-
-<modules>
-<module module="mod_sportsmanagement_quickicon" client="administrator" position="icon" published="1"/>
-<module module="mod_sportsmanagement_rquotes" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_liveticker" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_count_rekord" client="site"  position="" published=""/>	
-<module module="mod_sportsmanagement_ranking" client="site"  position="" published=""/>	
-<module module="mod_sportsmanagement_birthday" client="site"  position="" published=""/>	
-<module module="mod_sportsmanagement_club_birthday" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_clubicons" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_matches" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_matchesslider" client="site"  position="" published=""/>
-
-<module module="mod_sportsmanagement_new_project" client="site"  position="" published=""/>
-
-<module module="mod_sportsmanagement_playgroundplan" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_playground_ticker" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_randomplayer" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_teamplayers" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_teamstats_ranking" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_top_tipper" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_ajax_top_navigation_menu" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_navigation_menu" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_gcalendar" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_calendar" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_trainingsdata" client="site"  position="" published=""/>
-<module module="mod_sportsmanagement_sports_type_statistics" client="site"  position="" published=""/>
-</modules>
-
-<plugins>
-<plugin plugin="jqueryeasy" group="system" />	
-<plugin plugin="jw_ts" group="content" />
-<plugin plugin="plugin_googlemap3" group="system" />
-<plugin plugin="jsm_siscron" group="system" />	
-<plugin plugin="jsm_bootstrap" group="system" />
-<plugin plugin="jsm_search" group="search" />
-<plugin plugin="jsm_userprofile" group="user" />		
-</plugins>
-
-<plugins3>
-<plugin plugin="jqueryeasy" group="system" />	
-<plugin plugin="jsm_search" group="search" />
-<plugin plugin="jsm_userprofile" group="user" />
-<plugin plugin="jsm_bootstrap" group="system" />
-<plugin plugin="plugin_googlemap3" group="system" />
-</plugins3>
-     
-</extension>
+<form
+	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+>
+	<fieldset name="details">
+		<field
+			name="id"
+			type="hidden"
+		/>
+		<field
+			name="greeting"
+			type="text"
+			label="COM_HELLOWORLD_HELLOWORLD_FIELD_GREETING_LABEL"
+			description="COM_HELLOWORLD_HELLOWORLD_FIELD_GREETING_DESC"
+			size="40"
+			class="inputbox validate-greeting"
+			validate="greeting"
+			required="true"
+			default=""
+		/>
+		<field
+			name="catid"
+			type="category"
+			extension="com_sportmanagement"
+			class="inputbox"
+			default=""
+			label="COM_HELLOWORLD_HELLOWORLD_FIELD_CATID_LABEL"
+			description="COM_HELLOWORLD_HELLOWORLD_FIELD_CATID_DESC"
+			required="true"
+		>
+			<option value="0">JOPTION_SELECT_CATEGORY</option>
+		</field>
+	</fieldset>
+	<fields name="params">
+		<fieldset
+			name="params"
+			label="JGLOBAL_FIELDSET_DISPLAY_OPTIONS"
+		>
+			<field
+				name="show_category"
+				type="list"
+				label="COM_HELLOWORLD_HELLOWORLD_FIELD_SHOW_CATEGORY_LABEL"
+				description="COM_HELLOWORLD_HELLOWORLD_FIELD_SHOW_CATEGORY_DESC"
+				default=""
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+		</fieldset>
+	</fields>
+</form>
