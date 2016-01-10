@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fï¿½r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: ï¿½ 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie kï¿½nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spï¿½teren
+* verï¿½ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nï¿½tzlich sein wird, aber
+* OHNE JEDE GEWï¿½HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewï¿½hrleistung der MARKTFï¿½HIGKEIT oder EIGNUNG Fï¿½R EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fï¿½r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -39,105 +39,322 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla modelitem library
-jimport('joomla.application.component.modelitem');
- 
 
-/**
- * sportsmanagementModelsportsmanagement
- * 
- * @package 
- * @author diddi
- * @copyright 2014
- * @version $Id$
- * @access public
- */
-class sportsmanagementModelsportsmanagement extends JModelItem
+if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-	/**
-	 * @var object item
-	 */
-	protected $item;
- 
-	/**
-	 * Method to auto-populate the model state.
-	 *
-	 * This method should only be called once per instantiation and is designed
-	 * to be called on the first call to the getState() method unless the model
-	 * configuration flag to ignore the request is set.
-	 *
-	 * Note. Calling getState in this method will result in recursion.
-	 *
-	 * @return	void
-	 * @since	1.6
-	 */
-	protected function populateState() 
-	{
-		$app = JFactory::getApplication();
-		// Get the message id
-		$id = JRequest::getInt('id');
-		$this->setState('message.id', $id);
- 
-		// Load the parameters.
-		$params = $app->getParams();
-		$this->setState('params', $params);
-		parent::populateState();
-	}
- 
-	/**
-	 * Returns a reference to the a Table object, always creating it.
-	 *
-	 * @param	type	The table type to instantiate
-	 * @param	string	A prefix for the table class name. Optional.
-	 * @param	array	Configuration array for model. Optional.
-	 * @return	JTable	A database object
-	 * @since	1.6
-	 */
-	public function getTable($type = 'sportsmanagement', $prefix = 'sportsmanagementTable', $config = array()) 
-	{
-		return JTable::getInstance($type, $prefix, $config);
-	}
- 
-	/**
-	 * Get the message
-	 * @return object The message to be displayed to the user
-	 */
-	public function getItem() 
-	{
-		if (!isset($this->item)) 
-		{
-			$id = $this->getState('message.id');
-			$this->_db->setQuery($this->_db->getQuery(true)
-				->from('#__sportsmanagement as h')
-				->leftJoin('#__categories as c ON h.catid=c.id')
-				->select('h.greeting, h.params, c.title as category')
-				->where('h.id=' . (int)$id));
-			if (!$this->item = $this->_db->loadObject()) 
-			{
-				$this->setError($this->_db->getError());
-			}
-			else
-			{
-				// Load the JSON string
-				$params = new JRegistry;
-				if(version_compare(JVERSION,'3.0.0','ge')) 
-        {
-        $params->loadString($this->item->params);
-        }
-        else
-        {
-				$params->loadJSON($this->item->params);
-				}
-				
-				$this->item->params = $params;
- 
-				// Merge global params with item params
-				$params = clone $this->getState('params');
-				$params->merge($this->item->params);
-				$this->item->params = $params;
-			}
-		}
-		return $this->item;
-	}
+// Joomla! 3.0 code here
 }
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
+} 
+elseif(version_compare(JVERSION,'1.7.0','ge')) 
+{
+// Joomla! 1.7 code here
+} 
+elseif(version_compare(JVERSION,'1.6.0','ge')) 
+{
+// Joomla! 1.6 code here
+} 
+else 
+{
+// Joomla! 1.5 code here
+}
+
+if (! defined('DS'))
+{
+	define('DS', DIRECTORY_SEPARATOR);
+}
+
+if (! defined('JSM_PATH'))
+{
+DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
+}
+
+$document = JFactory::getDocument();
+$app = JFactory::getApplication();
+$config = JFactory::getConfig();
+
+/*
+// zur unterscheidung von joomla 2.5 und 3
+JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.view', JPATH_ADMINISTRATOR);
+*/
+
+/*
+//require_once(JPATH_SITE.DS.JSM_PATH.DS.'controller.php' );
+if ( !class_exists('sportsmanagementHelper') ) 
+{
+    require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');
+}
+*/
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+
+// prÃ¼ft vor Benutzung ob die gewÃ¼nschte Klasse definiert ist
+if ( !class_exists('sportsmanagementHelper') ) 
+{
+//add the classes for handling
+$classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
+JLoader::register('sportsmanagementHelper', $classpath);
+JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+}
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'html.php' );
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'countries.php');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'ranking.php' );
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'route.php' );
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'imageselect.php' );
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'predictionroute.php' );
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'pagination.php' );
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'simpleGMapGeocoder.php' );
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php' );
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'results.php');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'person.php');
+
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'prediction.php');
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'divisions.php');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'rounds.php');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'leagues.php');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'seasons.php');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'round.php');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'teams.php');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'team.php');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'club.php');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'playground.php');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'projectteams.php');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'projectteam.php');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'match.php');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'eventtypes.php');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');    
+
+
+// sprachdatei aus dem backend laden
+$langtag = JFactory::getLanguage();
+//echo 'Current language is: ' . $langtag->getTag();
+
+$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
+
+// update plugins
+// Check if plugin has been enabled
+$plugin_enabled = JPluginHelper::isEnabled('system', 'jsm_kickerde');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' plugin isEnabled jsm_kickerde <br><pre>'.print_r($plugin_enabled,true).'</pre>'),'');
+
+$plugin_enabled = JPluginHelper::importPlugin('system', 'jsm_kickerde');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' plugin importPlugin jsm_kickerde <br><pre>'.print_r($plugin_enabled,true).'</pre>'),'');
+
+$plugin_enabled = JPluginHelper::getPlugin('system', 'jsm_kickerde');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' plugin getPlugin jsm_kickerde <br><pre>'.print_r($plugin_enabled,true).'</pre>'),'');
+
+    
+if (! defined('COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS'))
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS',$paramscomponent->get( 'boostrap_div_class' ) );
+}
+
+if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',$paramscomponent->get( 'cfg_which_database' ) );
+}
+
+if (! defined('COM_SPORTSMANAGEMENT_LOAD_BOOTSTRAP'))
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_LOAD_BOOTSTRAP',$paramscomponent->get( 'cfg_load_bootstrap' ) );
+}
+
+
+if (! defined('COM_SPORTSMANAGEMENT_TABLE'))
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$paramscomponent->get( 'cfg_which_database_table' ) );
+}
+if (! defined('COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO'))
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$paramscomponent->get( 'show_debug_info' ) );
+}
+if (! defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO'))
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$paramscomponent->get( 'show_query_debug_info' ) );
+}
+
+if ( $paramscomponent->get('cfg_dbprefix') && !defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER') )
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$paramscomponent->get( 'cfg_which_database_server' ) );    
+}
+else
+{
+if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
+{
+if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+{    
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$paramscomponent->get( 'cfg_which_database_server' ) );
+}    
+}
+else
+{
+if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+{        
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );
+}    
+}
+
+}
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+
+//$document = JFactory::getDocument();
+//$app = JFactory::getApplication();
+//$config = JFactory::getConfig();
+
+$lang = JFactory::getLanguage();
+
+
+
+//$document->setMetaData( 'viewport', "width=device-width, initial-scale=1.0" );
+
+$extension = 'com_sportsmanagement';
+$base_dir = JPATH_ADMINISTRATOR;
+$language_tag = $langtag->getTag();
+$reload = true;
+$lang->load($extension, $base_dir, $language_tag, $reload);
+    
+// welche tabelle soll genutzt werden
+//$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
+//$database_table	= $paramscomponent->get( 'cfg_which_database_table' );
+//$show_debug_info = $paramscomponent->get( 'show_debug_info' );  
+//$show_query_debug_info = $paramscomponent->get( 'show_query_debug_info' ); 
+//$cfg_which_database_server = $paramscomponent->get( 'cfg_which_database_server' );
+
+
+
+
+
+//JFactory::$database = sportsmanagementHelper::getDBConnection();
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config <br><pre>'.print_r($config,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sitename <br><pre>'.print_r($config->getValue( 'config.sitename' ),true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' MetaKeys <br><pre>'.print_r($config->getValue( 'config.MetaKeys' ),true).'</pre>'),'');
+
+$document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
+
+//$document->addScriptDeclaration('jQuery.noConflict();');
+        
+// meta daten der komponente setzen
+$meta_keys = array();
+
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+$meta_keys[] = $config->get( 'config.MetaKeys' );
+}
+else
+{
+$meta_keys[] = $config->getValue( 'config.MetaKeys' );    
+}
+
+$project_id = JRequest::getInt( "p") ;
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id <br><pre>'.print_r($project_id,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' MetaKeys <br><pre>'.print_r($meta_keys,true).'</pre>'),'');
+
+if ( $project_id )
+{
+    sportsmanagementModelProject::$projectid = $project_id; 
+    $teams = sportsmanagementModelProject::getTeams();
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams <br><pre>'.print_r($teams,true).'</pre>'),'');
+    
+    if ( $teams )
+    {
+        foreach( $teams as $team )
+        {
+            $meta_keys[] = $team->name;
+        }
+    }
+}
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' MetaKeys <br><pre>'.print_r($meta_keys,true).'</pre>'),'');
+
+$document->setMetaData( 'author', 'Dieter Ploeger' );
+$document->setMetaData( 'revisit-after', '2 days' );
+$document->setMetaData( 'robots', 'index,follow' );
+
+/** meta name
+ * keywords
+ * description
+ * generator
+ * 
+ */
+$document->setMetaData( 'keywords', implode(",",$meta_keys) );
+$document->setMetaData( 'generator', "JSM - Joomla Sports Management" );
+ 
+$task = JRequest::getCmd('task');
+$option = JRequest::getCmd('option');
+
+$view = JRequest::getVar( "view") ;
+$view = ucfirst(strtolower($view));
+//$cfg_help_server = JComponentHelper::getParams($option)->get('cfg_help_server','') ;
+$modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width',0) ;
+$modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height',0) ;
+//$cfg_bugtracker_server = JComponentHelper::getParams($option)->get('cfg_bugtracker_server','') ;
+
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_HELP_SERVER',JComponentHelper::getParams($option)->get('cfg_help_server','') );
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_BUGTRACKER_SERVER',JComponentHelper::getParams($option)->get('cfg_bugtracker_server','') );
+DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_VIEW',$view );
+
+if ( $app->isAdmin() )
+{
+if($task == '' && $option == 'com_sportsmanagement') 
+{
+$js ="registerhome('".JURI::base()."','JSM Sports Management','".$app->getCfg('sitename')."','1');". "\n";
+$document->addScriptDeclaration( $js );
+}
+}
+else
+{
+$js ="registerhome('".JURI::base()."','JSM Sports Management','".$app->getCfg('sitename')."','0');". "\n";
+$document->addScriptDeclaration( $js );    
+}
+
+
+require_once( JPATH_SITE.DS.JSM_PATH.DS. 'controller.php' );
+// Component Helper
+jimport( 'joomla.application.component.helper' );
+$controller = null;
+if(is_null($controller) && !($controller instanceof JControllerLegacy)) {
+	//fallback if no extensions controller has been initialized
+	$controller	= JControllerLegacy::getInstance('sportsmanagement');
+}
+
+$task = JFactory::getApplication()->input->getCmd('task');
+// Den 'task' der im Request Ã¼bergeben wurde ausfÃ¼hren
+$controller->execute($task);
+//$controller->execute(JRequest::getCmd('task'));
+$controller->redirect();
+
+
+
+?>
