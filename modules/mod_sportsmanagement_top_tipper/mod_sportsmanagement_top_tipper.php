@@ -118,7 +118,7 @@ $predictionGame[] = sportsmanagementModelPrediction::getPredictionGame();
 $predictionMember[] = sportsmanagementModelPrediction::getPredictionMember($configavatar);
 $predictionProjectS[] = sportsmanagementModelPrediction::getPredictionProjectS();
 $actJoomlaUser[] = JFactory::getUser();
-$roundID = $modelpg->roundID;
+$roundID = sportsmanagementModelPrediction::$roundID ;
 
 $type_array = array();
 $type_array[] = JHTML ::_('select.option','0',JText::_('JL_PRED_RANK_FULL_RANKING'));

@@ -54,11 +54,11 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
     
     //$mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' gotSettings<br><pre>'.print_r($gotSettings,true).'</pre>'),'');
     
-	if ((($modelpg->pjID == $predictionProject->project_id) && ($gotSettings)) || ($modelpg->pjID==0))
+	if (((sportsmanagementModelPrediction::$pjID == $predictionProject->project_id) && ($gotSettings)) || (sportsmanagementModelPrediction::$pjID==0))
 	{
 		//$showProjectID = (count($modelpg->_predictionProjectS) > 1) ? $modelpg->pjID : $predictionProject->project_id;
-        $showProjectID = (count($predictionProjectS) > 1) ? $modelpg->pjID : $predictionProject->project_id;
-		$modelpg->pjID = $predictionProject->project_id;
+        $showProjectID = (count($predictionProjectS) > 1) ? sportsmanagementModelPrediction::$pjID : $predictionProject->project_id;
+		sportsmanagementModelPrediction::$pjID = $predictionProject->project_id;
 		$modelpg->predictionProject = $predictionProject;
 		$actualProjectCurrentRound = sportsmanagementModelPrediction::getProjectSettings($predictionProject->project_id);
 		/*
@@ -259,10 +259,10 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 
 					//echo '<br /><pre>~' . print_r($modelpg->page,true) . '~</pre><br />';
 					$memberPredictionPoints = sportsmanagementModelPrediction::getPredictionMembersResultsList(	$showProjectID,
-																								$modelpg->from,
-																								$modelpg->to,
+																								sportsmanagementModelPrediction::$from,
+																								sportsmanagementModelPrediction::$to,
 																								$member->user_id,
-																								$modelpg->type);
+																								sportsmanagementModelPrediction::$type);
 					//echo '<br /><pre>~' . print_r($memberPredictionPoints,true) . '~</pre><br />';
 					$predictionsCount=0;
 					$totalPoints=0;
@@ -349,7 +349,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 					
 					$imgTitle = JText::sprintf('JL_PRED_RANK_SHOW_DETAILS_OF',$member->name);
 					$imgFile = JHTML::image( "media/com_sportsmanagement/jl_images/zoom.png", $imgTitle , array(' title' => $imgTitle));
-					$link = JSMPredictionHelperRoute::getPredictionResultsRoute($predictionGame[0]->id ,$actualProjectCurrentRound ,$modelpg->pjID);
+					$link = JSMPredictionHelperRoute::getPredictionResultsRoute($predictionGame[0]->id ,$actualProjectCurrentRound ,sportsmanagementModelPrediction::$pjID);
 					if (($member->show_profile)||($predictionMember[0]->pmID == $member->pmID))
 					{
 						$output = JHTML::link( $link, $imgFile);
@@ -390,8 +390,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 				$i=1;
 				if ((int)$config['limit'] < 1){$config['limit']=1;}
 				$rlimit=ceil($recordCount / $config['limit']);
-				$modelpg->page=($modelpg->page > $rlimit) ? $rlimit : $modelpg->page;
-				$skipMemberCount=($modelpg->page > 0) ? (($modelpg->page-1)*$config['limit']) : 0;
+				sportsmanagementModelPrediction::$page = (sportsmanagementModelPrediction::$page > $rlimit) ? $rlimit : sportsmanagementModelPrediction::$page;
+				$skipMemberCount=(sportsmanagementModelPrediction::$page > 0) ? ((sportsmanagementModelPrediction::$page-1)*$config['limit']) : 0;
 
 				foreach ($computedMembersRanking AS $key => $value)
 				{
