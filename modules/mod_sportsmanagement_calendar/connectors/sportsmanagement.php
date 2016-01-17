@@ -117,7 +117,7 @@ class SportsmanagementConnector extends JSMCalendar
 
 		if ($projectid)
 		{
-			$projectids = (is_array($projectid)) ? implode(",", $projectid) : $projectid;
+			$projectids = (is_array($projectid)) ? implode(",", array_map('intval', $projectid) ) : (int)$projectid;
 			//$query .= " AND id IN(".$projectids.")";
             $query->where("id IN(".$projectids.")");
 		}
@@ -172,7 +172,7 @@ class SportsmanagementConnector extends JSMCalendar
 
 		if ($teamid && $customteam == 0)
 		{
-			$teamids = (is_array($teamid)) ? implode(",", $teamid) : $teamid;
+			$teamids = (is_array($teamid)) ? implode(",", array_map('intval', $teamid)) : (int)$teamid;
 			if($teamids > 0) 	
             {
 				$limitingconditions[] = "pt.team_id IN (".$teamids.")";
@@ -194,7 +194,7 @@ class SportsmanagementConnector extends JSMCalendar
 
 		if ($clubid && $customteam == 0)
 		{
-			$clubids = (is_array($clubid)) ? implode(",", $clubid) : $clubid;
+			$clubids = (is_array($clubid)) ? implode(",", array_map('intval', $clubid)) : (int)$clubid;
 			if($clubids > 0) 	$limitingconditions[] = "team.club_id IN (".$clubids.")";
 		}
 
@@ -238,7 +238,7 @@ class SportsmanagementConnector extends JSMCalendar
 
 		if ($projectid)
 		{
-			$projectids = (is_array($projectid)) ? implode(",", $projectid) : $projectid;
+			$projectids = (is_array($projectid)) ? implode(",", array_map('intval', $projectid) ) : (int)$projectid;
 			if($projectids > 0)
             {
             $query->where("(pt.project_id IN (".$projectids.") )"); 
@@ -466,10 +466,10 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
 
 		if ($teamid && $customteam == 0)
 		{
-			$teamids = (is_array($teamid)) ? implode(",", $teamid) : $teamid;
+			$teamids = (is_array($teamid)) ? implode(",", array_map('intval', $teamid) ) : (int) $teamid;
 			if($teamids > 0)
 			{
-				$limitingconditions[] = "st.team_id IN (".$teamids.")";
+				$limitingconditions[] = "( st1.team_id IN (".$teamids.") OR st2.team_id IN (".$teamids.") )"    ;
 			}
 		}
 
@@ -477,10 +477,10 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
 
 		if ($clubid && $customteam == 0)
 		{
-			$clubids = (is_array($clubid)) ? implode(",", $clubid) : $clubid;
+			$clubids = (is_array($clubid)) ? implode(",", array_map('intval', $clubid) ) : (int) $clubid;
 			if($clubids > 0)
 			{
-				$limitingconditions[] = "team.club_id IN (".$clubids.")";
+				$limitingconditions[] = "( t1.club_id IN (".$clubids.") OR t2.club_id IN (".$clubids.") )";
 			}
 		}
 
@@ -488,7 +488,7 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
 		{
 			foreach (SportsmanagementConnector::$favteams as $projectfavs)
 			{
-				$favConds[] = "(st.team_id IN (". $projectfavs->fav_team.") AND p.id =".$projectfavs->id.")";
+				$favConds[] = "( ( st1.team_id IN (". $projectfavs->fav_team.") OR st2.team_id IN (". $projectfavs->fav_team.") )  AND p.id =".$projectfavs->id.") "    ;
 			}
 			if(!empty($favConds))
 			{
@@ -551,7 +551,7 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
 
 		if ($projectid)
 		{
-			$projectids = (is_array($projectid)) ? implode(",", array_map('intval', $projectid ) ) : $projectid;
+			$projectids = (is_array($projectid)) ? implode(",", array_map('intval', $projectid ) ) : (int) $projectid;
 			if($projectids > 0)
             {
             $query->where("p.id IN (".$projectids.")");
@@ -567,6 +567,8 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
         
         $query->group('m.id');
         $query->order('m.match_date '.$ordering);
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
