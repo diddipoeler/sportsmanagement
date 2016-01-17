@@ -57,7 +57,8 @@
       key_field="season_id"
 					label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
-					required="">
+					required=""
+          slug="true">
 			</field>
 				
 		<field 	name="p" 
@@ -68,7 +69,8 @@
 			value_field="s"
 			required=""
 			size="10"
-			
+      multiple="multiple"
+			slug="true"
 						label="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITPROJECTSLBL" 
 						description="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITPROJECTSDESC" />
 <!--            		
@@ -83,10 +85,14 @@
 				</field>
 -->
 
-        <field name="club_ids" type="dependsql" default="0" depends="p"
+        <field name="club_ids" 
+        type="dependsql" 
+        default="0" 
+        depends="p"
 					task="projectcluboptions" 
 					key_field="project_id"
 			value_field="p"
+      slug="true"
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITCLUBSLBL" 
 					description="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITCLUBSDESC" />
 
@@ -95,10 +101,14 @@
 					description="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITTEAMSDESC">
 				</field>
 -->				
-				<field name="team_ids" type="dependsql" default="0" depends="p"
+				<field name="team_ids" 
+        type="dependsql" 
+        default="0" 
+        depends="p"
 					task="projectteamoptions" 
 					key_field="project_id"
 			value_field="p"
+      slug="true"
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITTEAMSLBL" 
 					description="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITTEAMSDESC" />
 					

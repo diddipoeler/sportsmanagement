@@ -534,11 +534,24 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
         {
         $query->where("r.matchcode LIKE ".$db->Quote(''.$caldates['matchcode'].'')."");
         }
-		$projectid = SportsmanagementConnector::$xparams->get('project_ids') ;
+		$projectid = SportsmanagementConnector::$xparams->get('p') ;
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' projectid<br><pre>'.print_r($projectid,true).'</pre>'),'Notice');
+        
+        //$integerIDs = array_map('intval', $projectid );
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' integerIDs<br><pre>'.print_r($integerIDs,true).'</pre>'),'Notice');
+        
+        if ( is_array($projectid) )
+        {
+        foreach( $projectid as $key => $value )
+        {
+        $projectid[$key] = (int)$value;    
+        }   
+        }
 
 		if ($projectid)
 		{
-			$projectids = (is_array($projectid)) ? implode(",", $projectid) : $projectid;
+			$projectids = (is_array($projectid)) ? implode(",", array_map('intval', $projectid ) ) : $projectid;
 			if($projectids > 0)
             {
             $query->where("p.id IN (".$projectids.")");
@@ -573,7 +586,7 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
 		}
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
-        
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 	}
 
@@ -624,6 +637,7 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
         }
         
 		if ( !$result = $db->loadObjectList('teamtoolid') ) $result = Array();
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 	}
 
