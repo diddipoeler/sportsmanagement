@@ -136,6 +136,7 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 	 * 
 	 * @return void
 	 */
+/*
 	public function buildWhere() {
 		$this->getUsedTeams();
 		if ($this->id > 0) {
@@ -146,20 +147,22 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 			$this->conditions[] = $this->getTimeLimit();
 			$p = $this->params->get('project');
 			if (!empty ($p)) {
-				$projectstring = (is_array($p)) ? implode(",", $p) : $p;
+				$projectstring = (is_array($p)) ? implode(",", array_map('intval', $p) ) : $p;
 				if($projectstring != '-1' AND $projectstring != '') {
 					$this->conditions[] = "(pt1.project_id IN (" . $projectstring . ") OR pt2.project_id IN (" . $projectstring . "))";
 				}
 			} 
-//			$nu = $this->params->get('project_not_used');
-//			if (!empty ($nu)) {
-//				$notusedstring = (is_array($nu)) ? implode(",", $nu) : $nu;
-//				if($notusedstring != '-1' AND $notusedstring != '') {
-//					$this->conditions[] = "(pt1.project_id NOT IN (" . $notusedstring . ") OR pt2.project_id NOT IN (" . $notusedstring . "))";
-//				} 
-//			}
+
+			$nu = $this->params->get('project_not_used');
+			if (!empty ($nu)) {
+				$notusedstring = (is_array($nu)) ? implode(",", array_map('intval', $nu) ) : $nu;
+				if($notusedstring != '-1' AND $notusedstring != '') {
+					$this->conditions[] = "(pt1.project_id NOT IN (" . $notusedstring . ") OR pt2.project_id NOT IN (" . $notusedstring . "))";
+				} 
+			}
 		}
 	}
+*/
     
 	/**
 	 * MatchesSportsmanagementConnector::getMatches()
@@ -184,15 +187,48 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($p,true).'</pre>'),'Notice');
         
-        $projectstring = (is_array($p)) ? implode(",", array_map('intval', $p) ) : $p;
+        $projectstring = (is_array($p)) ? implode(",", array_map('intval', $p) ) : (int)$p;
         
         $nu = $this->params->get('project_not_used');
-        $notusedstring = (is_array($nu)) ? implode(",", array_map('intval', $nu) ) : $nu;
+        $notusedstring = (is_array($nu)) ? implode(",", array_map('intval', $nu) ) : (int)$nu;
         
+        $teams = $this->params->get('teams');
+                
+        if ( $this->params->get('use_fav', 0) ) 
+        {
+		$query->clear();
+        $query->select('id, fav_team');
+        $query->from('#__sportsmanagement_project AS p ');
+        $query->where("p.fav_team != '' ");
+        $query->where('p.id IN ( '.$projectstring.' )');  
+        if ( $notusedstring )
+        {
+        $query->where('p.id NOT IN ( '.$notusedstring.' )');    
+        }
+        
+        $db->setQuery($query);
+        $fav = $db->loadObjectList();
+
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'fav <br><pre>'.print_r($fav,true).'</pre>'),'');
+        
+		}
+        
+        $usedteams = (is_array($teams)) ? implode(",", array_map('intval', $teams) ) : (int)$teams;
+        
+        if ( $fav )
+        {
+        $favteams = array();    
+        foreach ($fav AS $key => $team)
+        {
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'team <br><pre>'.print_r($team,true).'</pre>'),'');   
+        $favteams[] = $team->fav_team;  
+        }    
+        }
 // TODO: for now the timezone implementation does not work for quite some users, so it is temporarily disabled.
 // Because the old serveroffset field is not available anymore in the database schema, this means that the times
 // are not correctly translated to some timezone; the times as present in the database are just taken. 
-		
+		$query->clear();
         $query->select('m.id,m.id as match_id,m.projectteam1_id,m.projectteam2_id,m.round_id,m.team1_result,m.team2_result');
         $query->select('m.team1_result_split,m.team2_result_split,m.match_result_detail,m.match_result_type,m.crowd,m.show_report,m.playground_id ');
         $query->select('r.name');
@@ -284,10 +320,25 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
         
         if ($this->id > 0) 
         {
-			$query->where('m.id = ' . $this->id );
+		$query->where('m.id = ' . $this->id );
 		}
         
         $query->where('p.id IN ( '.$projectstring.' )');  
+        
+        if ( $notusedstring )
+        {
+        $query->where('p.id NOT IN ( '.$notusedstring.' )');    
+        }
+        
+        if ( $usedteams )
+        {
+        $query->where(' ( st1.team_id IN (' . $usedteams .' ) OR st2.team_id IN (' . $usedteams .' ) )'  );    
+        }
+        
+        if ( $favteams )
+        {
+        $query->where(' ( st1.team_id IN (' . implode(",", $favteams ) .' ) OR st2.team_id IN (' . implode(",", $favteams ) .' ) )'  );    
+        }
         
         if ( $this->params->get('order_by_project') == 0 ) 
         {
@@ -431,6 +482,7 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 	 * 
 	 * @return void
 	 */
+/*     
 	public function getUsedTeams() {
 		$customteams = array();
 		$ajaxteam = JRequest :: getVar('usedteam', 0, 'default', 'POST');
@@ -490,6 +542,7 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 			$this->conditions[] = "(" . implode(' OR ', $conditions) . ")";
 		}
 	}
+*/
 
 	/**
 	 * MatchesSportsmanagementConnector::createMatchLinks()

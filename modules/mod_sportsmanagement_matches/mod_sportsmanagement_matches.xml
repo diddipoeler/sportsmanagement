@@ -124,7 +124,9 @@
 					<option value="1">JYES</option>
 				</field>
 
-				<field 	name="use_fav" type="radio" default="0" 
+				<field 	name="use_fav" 
+        type="radio" 
+        default="0" 
 				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_USE_FAVORITE_TEAM_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_USE_FAVORITE_TEAM_DESCR">
@@ -136,10 +138,15 @@
 						label="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_DESCR" />
 -->
-<field name="teams" type="dependsql" default="0" depends="project"
+<field name="teams" 
+type="dependsql" 
+default="0" 
+depends="project"
 					task="projectteamoptions" 
 					key_field="project_id"
 			value_field="project"
+      slug="true"
+      required="false"
 					label="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_TITLE" 
 					description="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_DESCR" />
 					
