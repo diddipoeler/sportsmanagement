@@ -56,5 +56,153 @@
 -->
 					
 	</fieldset>	
+
+  <fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
+  label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
+		group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS" 
+		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_OPTIONS">
+
+		<field	name="page_title_format" type="pagetitleformat" default="0"
+				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_PAGE_TITLE_FORMAT"
+				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_PAGE_TITLE_FORMAT">
+		</field>
 	
+	</fieldset>
+  
+<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
+label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS"
+		group="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_TEAMOPTIONS" description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_TEAMOPTIONS"
+		>
+
+		<field	name="highlight_fav" type="radio" default="1"
+				label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_HIGHLIGHT_FAV"
+				description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_DESCR_HIGHLIGHT_FAV"
+				class="btn-group btn-group-yesno">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		
+		<field name="fav_highlight_type" type="radio" default="1"
+			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_FAV_HIGHLIGHT"
+			description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_FAV_HIGHLIGHT">
+			<option value="1">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION1_FAV_HIGHLIGHT
+			</option>
+			<option value="0">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION0_FAV_HIGHLIGHT
+			</option>
+		</field>
+
+		<field name="show_picture" type="list" default="logo_small"
+			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_SHOW_CLUB_LOGO"
+			description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_SHOW_CLUB_LOGO">
+            <option value="logo_small">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_SMALL</option>
+            <option value="logo_middle">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_MIDDLE</option>
+            <option value="logo_big">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_BIG</option>
+            <option value="projectteam_picture">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_PROJECTTEAM_PICTURE</option>
+            <option value="team_picture">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_TEAM_PICTURE</option>
+			<option value="country_flag">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_COUNTRY_FLAG</option>
+            <option value="logo_small_country_flag">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_LOGO_SMALL_COUNTRY_FLAG</option>
+            <option value="country_flag_logo_small">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_CLUB_COUNTRY_FLAG_LOGO_SMALL</option>
+            
+            <option value="logo_middle_country_flag">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION_CLUB_LOGO_MIDDLE_COUNTRY_FLAG</option>
+            <option value="country_flag_logo_middle">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION_COUNTRY_FLAG_CLUB_LOGO_MIDDLE</option>
+            
+            <option value="logo_big_country_flag">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION_CLUB_LOGO_BIG_COUNTRY_FLAG</option>
+            <option value="country_flag_logo_big">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION_COUNTRY_FLAG_CLUB_LOGO_BIG</option>
+            
+            <option value="no_logo">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION_NO_LOGO</option>
+		</field>
+
+        <field name="picture_width" type="text" default="50"
+               label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_WIDTH"
+               description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_WIDTH">
+        </field>
+
+        <!-->
+        <field name="picture_height" type="text" default="21"
+               label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_HEIGHT"
+               description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAM_PICTURE_HEIGHT">
+        </field>
+            -->
+            
+        <field	name="team_name_format" type="teamnameformat" default="2"
+				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_TYPE_NAME"
+				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_TYPE_NAME">
+		</field>
+
+		<field type="spacer">
+		</field>
+
+		<field name="show_info_link" type="list" default="1"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_SHOW_INFO_LINK" description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_SHOW_INFO_LINK">
+			<option value="0">COM_SPORTSMANAGEMENT_FES_PARAM_OPTION0_SHOW_INFO_LINK</option>
+			<option value="1">COM_SPORTSMANAGEMENT_FES_PARAM_OPTION1_SHOW_INFO_LINK</option>
+			<option value="2">COM_SPORTSMANAGEMENT_FES_PARAM_OPTION2_SHOW_INFO_LINK</option>
+		</field>
+
+		<field name="show_club_link" type="radio" default="1"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_CLUBINFO_LINK"
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_CLUBINFO_LINK"
+			class="btn-group btn-group-yesno">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_team_link" type="radio" default="1"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_ROSTER_LINK"
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_ROSTER_LINK"
+			class="btn-group btn-group-yesno">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_teaminfo_link" type="radio" default="1"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAMINFO_LINK"
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAMINFO_LINK"
+			class="btn-group btn-group-yesno">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_teamstats_link" type="radio" default="1"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAMSTATS_LINK"
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAMSTATS_LINK"
+			class="btn-group btn-group-yesno">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_plan_link" type="radio" default="1"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAMPLAN_LINK"
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TEAMPLAN_LINK"
+			class="btn-group btn-group-yesno">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_clubplan_link" type="radio" default="1"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_CLUBPLAN_LINK"
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_CLUBPLAN_LINK"
+			class="btn-group btn-group-yesno">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_rivals_link" type="radio" default="1"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_RIVALS_LINK"
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_RIVALS_LINK"
+			class="btn-group btn-group-yesno">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="show_curve_link" type="radio" default="1"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_CURVE_LINK"
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_CURVE_LINK"
+			class="btn-group btn-group-yesno">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+	</fieldset>
+  	
 </form>

@@ -111,11 +111,16 @@ class sportsmanagementViewTeamPlan extends JViewLegacy
 		// Set page title
 		if (empty($this->ptid))
 		{
-			$pageTitle=(!empty($this->project->id)) ? $this->project->name : '';
+			$pageTitle = (!empty($this->project->id)) ? $this->project->name : '';
 		}
 		else
 		{
-			if ((isset($this->project)) && $this->ptid){$pageTitle=$this->teams[$this->ptid]->name;}else{$pageTitle='';}
+			if ( isset($this->project) && $this->ptid)
+            {
+                $pageTitle = $this->teams[$this->ptid]->name;
+                }
+                else{$pageTitle='';
+                }
 		}
 		$document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_TEAMPLAN_PAGE_TITLE',$pageTitle));
         

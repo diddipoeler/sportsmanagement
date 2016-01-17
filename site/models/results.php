@@ -357,28 +357,28 @@ else
         }
         
         // from 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
+		$query->from('#__sportsmanagement_match AS m');
         // join
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON m.round_id = r.id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = r.project_id ');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id');
+        $query->join('INNER','#__sportsmanagement_round AS r ON m.round_id = r.id ');
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.id = r.project_id ');
+        $query->join('LEFT','#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id');
+        $query->join('LEFT','#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id');
         
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt1.team_id ');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 ON st2.id = pt2.team_id ');
+        $query->join('LEFT','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
+        $query->join('LEFT','#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
         
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id = st1.team_id');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c1 ON c1.id = t1.club_id');
+        $query->join('LEFT','#__sportsmanagement_team AS t1 ON t1.id = st1.team_id');
+        $query->join('LEFT','#__sportsmanagement_club AS c1 ON c1.id = t1.club_id');
         
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id = st2.team_id');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c2 ON c2.id = t2.club_id');
+        $query->join('LEFT','#__sportsmanagement_team AS t2 ON t2.id = st2.team_id');
+        $query->join('LEFT','#__sportsmanagement_club AS c2 ON c2.id = t2.club_id');
         
         //$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d1 ON pt1.division_id = d1.id');
         //$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d2 ON pt2.division_id = d2.id');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d1 ON m.division_id = d1.id');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d2 ON m.division_id = d2.id');
+        $query->join('LEFT','#__sportsmanagement_division AS d1 ON m.division_id = d1.id');
+        $query->join('LEFT','#__sportsmanagement_division AS d2 ON m.division_id = d2.id');
         
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS playground ON playground.id = m.playground_id');
+        $query->join('LEFT','#__sportsmanagement_playground AS playground ON playground.id = m.playground_id');
 		
         // where
         $query->where('m.published = 1');

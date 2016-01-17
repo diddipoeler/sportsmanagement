@@ -410,7 +410,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
 	 * @param mixed $teamid
 	 * @return
 	 */
-	public static function getRivalsRoute( $projectid, $teamid,$cfg_which_database = 0,$s=0 )
+	public static function getRivalsRoute( $projectid, $teamid,$cfg_which_database = 0,$s=0,$divisionid=0 )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
 					"view" => "rivals" );

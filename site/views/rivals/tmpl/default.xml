@@ -1,12 +1,73 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <metadata>
-    <layout title="COM_SPORTSMANAGEMENT_XML_RIVALS_LAYOUT_TITLE">
-        <message>
-            <![CDATA[COM_SPORTSMANAGEMENT_XML_RIVALS_LAYOUT_DESCR]]>
-        </message>
-    </layout>
-    
-    
-    
-    
+	<layout title="COM_SPORTSMANAGEMENT_XML_RIVALS_LAYOUT_TITLE">
+		<message>
+			<![CDATA[COM_SPORTSMANAGEMENT_XML_RIVALS_LAYOUT_DESCR]]>
+		</message>
+	</layout>
+	<fields name="request">
+		<fieldset name="request" label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
+			addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+
+			<field name="cfg_which_database" 
+    type="radio" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+	
+    <field	name="s" 
+    task="seasons" 
+      type="dependsql"
+      depends="cfg_which_database"
+      value_field="cfg_which_database"
+      key_field="season_id"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_SEASON_DESCR"
+					required=""
+          slug="true">
+			</field>
+
+			
+			<field	name="p" 
+			task="projects" 
+      type="dependsql"
+      depends="s"
+      key_field="season_id"
+			value_field="s"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_PROJECT_DESCR"
+					required=""
+          slug="true">
+			</field>
+      
+			<field	name="division" 
+      type="dependsql" 
+      depends="p" 
+      task="projectdivisionsoptions" 
+			key_field="project_id"
+			value_field="p"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_DIVISION_DESCR"
+					required="false"
+          slug="true">
+			</field>
+      
+		<field	name="tid" 
+      type="dependsql" 
+      depends="p" 
+      task="projectteamsbydivisionoptions"
+			key_field="project_id"
+			value_field="p"
+					label="COM_SPORTSMANAGEMENT_XML_SELECT_TEAM_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_SELECT_TEAM_DESCR"
+					required="true"
+          slug="true">
+			</field>
+		</fieldset>
+	</fields>
 </metadata>

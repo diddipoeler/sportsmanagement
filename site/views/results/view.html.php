@@ -127,30 +127,30 @@ JHtml::_( 'behavior.mootools' );
         //$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', $model::$cfg_which_database);
 		$rounds = sportsmanagementModelProject::getRoundOptions('ASC', $model::$cfg_which_database);
         
-		$this->assign('roundsoption', $rounds);
-		$this->assignRef('project', $project);
+		$this->roundsoption = $rounds;
+		$this->project = $project;
         sportsmanagementHelperHtml::$project = $project;
         
 		$lists = array();
 		
 		if (isset($this->project))
 		{
-			$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database));
-			$this->assign('config',array_merge($this->overallconfig, $config));
-			$this->assign('teams',sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$model::$cfg_which_database));
+			$this->overallconfig = sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
+			$this->config = array_merge($this->overallconfig, $config);
+			$this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$model::$cfg_which_database);
             sportsmanagementHelperHtml::$teams = $this->teams;
-			$this->assign('showediticon',$model->getShowEditIcon($this->project->editorgroup));
-			$this->assign('division',$model->getDivision($model::$cfg_which_database));
-			$this->assignRef('matches',$matches);
-            $this->assignRef('roundid',$model::$roundid);
-			$this->assignRef('roundcode',$roundcode);
-			$this->assign('rounds',sportsmanagementModelProject::getRounds('ASC',$model::$cfg_which_database));
-			$this->assign('favteams',sportsmanagementModelProject::getFavTeams($model::$cfg_which_database));
-			$this->assign('projectevents',sportsmanagementModelProject::getProjectEvents(0,$model::$cfg_which_database));
-			$this->assignRef('model',$model);
-			$this->assign('isAllowed',$model->isAllowed());
+			$this->showediticon = $model->getShowEditIcon($this->project->editorgroup);
+			$this->division = $model->getDivision($model::$cfg_which_database);
+			$this->matches = $matches;
+            $this->roundid = $model::$roundid;
+			$this->roundcode = $roundcode;
+			$this->rounds = sportsmanagementModelProject::getRounds('ASC',$model::$cfg_which_database);
+			$this->favteams = sportsmanagementModelProject::getFavTeams($model::$cfg_which_database);
+			$this->projectevents = sportsmanagementModelProject::getProjectEvents(0,$model::$cfg_which_database);
+			$this->model = $model;
+			$this->isAllowed = $model->isAllowed();
             $extended = sportsmanagementHelper::getExtended($this->project->extended, 'project');
-            $this->assignRef('extended',$extended );
+            $this->extended = $extended;
 
 if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 	  {
