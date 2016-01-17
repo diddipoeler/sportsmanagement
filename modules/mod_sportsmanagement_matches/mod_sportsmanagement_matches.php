@@ -98,7 +98,7 @@ if (!defined('_JSMMATCHLISTMODPATH'))
 }
 if (!defined('_JSMMATCHLISTMODURL')) 
 { 
-    define('_JSMMATCHLISTMODURL', JURI::base().'modules/mod_sportsmanagement_matches/');
+    define('_JSMMATCHLISTMODURL', JURI::base().'modules/'.$module->module.'/');
 }
 
 require_once (_JSMMATCHLISTMODPATH.DS.'helper.php');

@@ -151,40 +151,16 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 					$this->conditions[] = "(pt1.project_id IN (" . $projectstring . ") OR pt2.project_id IN (" . $projectstring . "))";
 				}
 			} 
-			$nu = $this->params->get('project_not_used');
-			if (!empty ($nu)) {
-				$notusedstring = (is_array($nu)) ? implode(",", $nu) : $nu;
-				if($notusedstring != '-1' AND $notusedstring != '') {
-					$this->conditions[] = "(pt1.project_id NOT IN (" . $notusedstring . ") OR pt2.project_id NOT IN (" . $notusedstring . "))";
-				} 
-			}
+//			$nu = $this->params->get('project_not_used');
+//			if (!empty ($nu)) {
+//				$notusedstring = (is_array($nu)) ? implode(",", $nu) : $nu;
+//				if($notusedstring != '-1' AND $notusedstring != '') {
+//					$this->conditions[] = "(pt1.project_id NOT IN (" . $notusedstring . ") OR pt2.project_id NOT IN (" . $notusedstring . "))";
+//				} 
+//			}
 		}
 	}
     
-//	/**
-//	 * MatchesSportsmanagementConnector::buildOrder()
-//	 * 
-//	 * @return
-//	 */
-//	public function buildOrder() {
-//
-//		$limit = ($this->params->get('limit', 0) > 0) ? $this->params->get('limit', 0) : 1;
-//		
-//		if ($this->params->get('order_by_project') == 0) {
-//		  if ($this->params->get('lastsortorder') == 'desc') {
-//		    return " ORDER by match_date DESC LIMIT " . $limit;
-//		  }
-//		  else {
-//		    return " ORDER by match_date LIMIT " . $limit;
-//		  }
-//		}
-//		else {
-//					return	" ORDER by match_date_notime, p.ordering ASC LIMIT ". $limit;
-//			
-//			
-//		}
-//	}
-
 	/**
 	 * MatchesSportsmanagementConnector::getMatches()
 	 * 
@@ -205,10 +181,13 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		$limit = ($this->params->get('limit', 0) > 0) ? $this->params->get('limit', 0) : 1;
         
         $p = $this->params->get('project');
-        $projectstring = (is_array($p)) ? implode(",", $p) : $p;
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($p,true).'</pre>'),'Notice');
+        
+        $projectstring = (is_array($p)) ? implode(",", array_map('intval', $p) ) : $p;
         
         $nu = $this->params->get('project_not_used');
-        $notusedstring = (is_array($nu)) ? implode(",", $nu) : $nu;
+        $notusedstring = (is_array($nu)) ? implode(",", array_map('intval', $nu) ) : $nu;
         
 // TODO: for now the timezone implementation does not work for quite some users, so it is temporarily disabled.
 // Because the old serveroffset field is not available anymore in the database schema, this means that the times
@@ -299,92 +278,6 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
         $query->join('LEFT','#__sportsmanagement_project_referee AS pref ON pref.id = mref.project_referee_id');
         $query->join('LEFT','#__sportsmanagement_season_person_id AS sp ON pref.person_id = sp.id ');
         $query->join('LEFT','#__sportsmanagement_person AS person ON person.id = sp.person_id ');
-
-/*        
-LEFT JOIN #__sportsmanagement_project_referee AS pref ON pref.id = mref.project_referee_id
-        $query	= " SELECT m.*,m.id as match_id, t1.id team1_id, t2.id team2_id,"
-				. " " . $this->getDateStringNoTime() . " AS match_date_notime,"
-				. " " . $this->getDateString() . " AS match_date,"
-//				. " CONVERT_TZ(UTC_TIMESTAMP(), ".$db->Quote('UTC').", p.timezone) AS currenttime,"
-				. " UTC_TIMESTAMP() AS currenttime,"
-				. " IF ("
-				. "		m.match_result_type > 0,"
-				. "     (p.game_regular_time+(p.game_parts * p.halftime)-p.halftime) + p.add_time,"
-				. "     p.game_regular_time+(p.game_parts * p.halftime)-p.halftime"
-				. " ) AS totaltime,"
-				. " IF ("
-				. "		(match_date > UTC_TIMESTAMP() AND m.team1_result IS NULL) AND"
-				. "		((m.team1_result_split IS NULL) OR TRIM(REPLACE(m.team1_result_split, ';', '')) = ''),"
-				. 	    $this->getDateString() . ","
-				. "     'z'"
-				. " ) AS upcoming,"
-				. " IF ("
-				. "		(m.team1_result IS NOT NULL OR " . $this->getDateString() . " < UTC_TIMESTAMP()),"
-				.		$this->getDateString() . ","
-				. "		0"
-				. " ) AS alreadyplayed,"
-				. " IF ("
-				. "		("
-				. "			("
-				. "				DATE_ADD(" . $this->getDateString() . ","
-				. "					INTERVAL IF ("
-				. "						m.match_result_type > 0,"
-				. "						(p.game_regular_time+(p.game_parts * p.halftime)-p.halftime) + p.add_time,"
-				. "						p.game_regular_time+(p.game_parts * p.halftime)-p.halftime"
-				. "					) MINUTE"
-				. "				) > UTC_TIMESTAMP()"
-				. "			) AND ("
-				.			$this->getDateString() . " < UTC_TIMESTAMP()"
-				. "			) AND (m.team1_result IS NULL)"
-				. "		),"
-				. 		$this->getDateString() . ","
-				. "		'z'"
-				. " ) AS actplaying,"
-				. " IF ("
-				. "		((m.team1_result IS NULL) AND (m.team1_result_split IS NOT NULL) AND"
-				. "			TRIM(REPLACE(m.team1_result_split, ';', '') != '')),"
-				. 		$this->getDateString() . ","
-				.		"'z'"
-				. " ) AS live,"
-				. " DATE_SUB(" . $this->getDateString() . ", INTERVAL '90' MINUTE) AS meetingtime,"
-//				. " CONVERT_TZ(UTC_TIMESTAMP(), ".$db->Quote('UTC').", p.timezone) AS local_time,"
-				. " UTC_TIMESTAMP() AS local_time,"
-				. " r.*,"
-				. " p.name AS pname,"
-				. " p.current_round,"
-				. " p.id AS project_id,"
-				. " p.timezone,"
-				. " p.game_parts,"
-				. " p.ordering,"
-				. " IF (mref.project_referee_id > 0, concat(person.lastname, ', ', person.firstname), '') AS refname,"
-				. " pg.name AS pg_name,"
-				. " pg.short_name AS pg_shortname"
-				. " FROM #__sportsmanagement_match m"
-	        	. " INNER JOIN #__sportsmanagement_round r ON m.round_id = r.id"
-
-				. " INNER JOIN #__sportsmanagement_project_team pt1 ON pt1.id = m.projectteam1_id"
-                . " INNER JOIN #__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id"
-	         	. " INNER JOIN #__sportsmanagement_team t1 ON t1.id = st1.team_id"
-                
-	         	. " INNER JOIN #__sportsmanagement_project_team pt2 ON pt2.id = m.projectteam2_id"
-                . " INNER JOIN #__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id"
-	         	. " INNER JOIN #__sportsmanagement_team t2 ON t2.id = st2.team_id"
-                
-	         	. " INNER JOIN #__sportsmanagement_project p ON pt1.project_id = p.id"
-         		. " LEFT JOIN #__sportsmanagement_match_referee AS mref ON m.id = mref.match_id"
-         		. " LEFT JOIN #__sportsmanagement_project_referee AS pref ON pref.id = mref.project_referee_id"
-         		. " LEFT JOIN #__sportsmanagement_person AS person ON person.id = pref.person_id"
-         		. "       AND person.published = 1"
-         		. "       AND pref.published = 1"
-         		. " LEFT JOIN #__sportsmanagement_playground AS pg ON pg.id = m.playground_id"
-	  			. "  WHERE ( ";
-		$this->buildWhere();
-		$query .= implode(' AND ', $this->conditions);
-		$query .= " )"
-				. " GROUP BY m.id ";
-		$query .= $this->buildOrder();
-		//$matches = $this->getFromDB($query);
-*/
         
         $query->where('p.published = 1');
         $query->where('m.published = 1');
@@ -413,6 +306,9 @@ LEFT JOIN #__sportsmanagement_project_referee AS pref ON pref.id = mref.project_
 		}
         
         $db->setQuery($query,0,$limit);
+        
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        
         $matches = $db->loadObjectList();
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         
@@ -516,28 +412,6 @@ LEFT JOIN #__sportsmanagement_project_referee AS pref ON pref.id = mref.project_
         $query->join('LEFT','#__sportsmanagement_project p on p.id = pt.project_id ');
         $query->join('LEFT','#__sportsmanagement_playground pg1 ON pg1.id = pt.standard_playground ');
         $query->join('LEFT','#__sportsmanagement_playground pg2 ON pg2.id = c.standard_playground ');
-
-/*        
-		$query = "SELECT pt.id as ptid, pt.division_id, pt.standard_playground, pt.admin, pt.start_points,
-		                     pt.info, pt.team_id, pt.checked_out, pt.checked_out_time, pt.picture team_picture, pt.project_id,
-		                     t.id, t.name, t.short_name, t.middle_name, t.notes, t.club_id,
-		                     pg1.id AS tt_pg_id, pg1.name AS tt_pg_name, pg1.short_name AS tt_pg_short_name,
-		                     pg2.id AS club_pg_id, pg2.name AS club_pg_name, pg2.short_name AS club_pg_short_name,
-		                     u.username, u.email, t.id team_id,
-		                     c.logo_small club_small, c.logo_middle club_middle, c.logo_big club_big, c.country,
-		                     d.name AS division_name, d.shortname AS division_shortname,
-		                     p.name AS project_name, c.website
-		                FROM #__sportsmanagement_team t 
-                        LEFT JOIN #__sportsmanagement_season_team_id as st1 ON st1.team_id = t.id
-		                LEFT JOIN #__sportsmanagement_project_team pt on pt.team_id = st1.id ";
-		$query .= "LEFT JOIN #__users u on pt.admin = u.id
-		           LEFT JOIN #__sportsmanagement_club c on t.club_id = c.id
-		           LEFT JOIN #__sportsmanagement_division d on d.id = pt.division_id
-		           LEFT JOIN #__sportsmanagement_project p on p.id = pt.project_id
-		           LEFT JOIN #__sportsmanagement_playground pg1 ON pg1.id = pt.standard_playground
-		           LEFT JOIN #__sportsmanagement_playground pg2 ON pg2.id = c.standard_playground
-		               WHERE (" . implode(' OR ', $cond) . ")";
-*/
 		
         $query->where('(' . implode(' OR ', $cond) . ')');  
         //$tempteams = $this->getFromDB($query, 'ptid');
@@ -574,13 +448,13 @@ LEFT JOIN #__sportsmanagement_project_referee AS pref ON pref.id = mref.project_
 			$notused = $this->params->get('project_not_used');
 
 			if (!empty ($projectid)) {
-				$projectstring = (is_array($projectid)) ? implode(',', $projectid) : $projectid;
+				$projectstring = (is_array($projectid)) ? implode(',', array_map('intval', $projectid) ) : $projectid;
 				if($projectstring != '-1' AND $projectstring != '') {
 					$query .= " AND id IN (" . $projectstring . ")";
 				}
 			}
 			if (!empty ($notused)) {
-				$notusedstring = (is_array($notused)) ? implode(',', $notused) : $notused;
+				$notusedstring = (is_array($notused)) ? implode(',', array_map('intval', $notused) ) : $notused;
 				if($notusedstring != '-1' AND $notusedstring != '') {
 					$query .= " AND id NOT IN (" . $notusedstring . ")";
 				}
@@ -795,19 +669,7 @@ LEFT JOIN #__sportsmanagement_project_referee AS pref ON pref.id = mref.project_
         $query->where('(m.projectteam1_id = ' . $match->projectteam1_id . '	OR m.projectteam2_id = ' . $match->projectteam1_id .' )');
         $query->where('p.id = ' . $match->project_id);
         $query->order('m.match_date DESC');
-
-/*        
-		$query = "SELECT m.id
-				FROM #__sportsmanagement_match AS m
-				LEFT JOIN #__sportsmanagement_project_team pt1 ON pt1.id = m.projectteam1_id
-				LEFT JOIN #__sportsmanagement_project_team pt2 ON pt2.id = m.projectteam2_id
-				LEFT JOIN #__sportsmanagement_project AS p ON p.id = pt1.project_id
-				WHERE " . $this->getDateString() . " < '" . $match->match_date .
-				"' AND (m.projectteam1_id = '" . $match->projectteam1_id . "'
-				OR m.projectteam2_id = '" . $match->projectteam1_id . 
-				"') AND pt1.project_id = '" . $match->project_id . "' 
-				ORDER BY m.match_date DESC LIMIT 1";
-*/                
+         
 		$db->setQuery($query,0,1);
         if ( $temp = $db->loadObjectList() ) 
         {
@@ -821,18 +683,7 @@ LEFT JOIN #__sportsmanagement_project_referee AS pref ON pref.id = mref.project_
         $query->where('(m.projectteam1_id = ' . $match->projectteam1_id . '	OR m.projectteam2_id = ' . $match->projectteam1_id .' )');
         $query->where('p.id = ' . $match->project_id);
         $query->order('m.match_date ASC');
-/*        
-		$query = "SELECT m.id
-				FROM #__sportsmanagement_match AS m 
-				LEFT JOIN #__sportsmanagement_project_team pt1 ON pt1.id = m.projectteam1_id 
-				LEFT JOIN #__sportsmanagement_project_team pt2 ON pt2.id = m.projectteam2_id 
-				LEFT JOIN #__sportsmanagement_project AS p ON p.id = pt1.project_id 
-				WHERE " . $this->getDateString() . " > '" . $match->match_date . 
-				"' AND (m.projectteam1_id= '" . $match->projectteam1_id . "' 
-				OR m.projectteam2_id = '" . $match->projectteam1_id . "') 
-				AND pt1.project_id = '" . $match->project_id . "' 
-				ORDER BY m.match_date ASC LIMIT 1";
-*/		
+		
         $db->setQuery($query,0,1);
         if ( $temp = $db->loadObjectList() ) 
         {
@@ -846,19 +697,7 @@ LEFT JOIN #__sportsmanagement_project_referee AS pref ON pref.id = mref.project_
         $query->where('(m.projectteam1_id = ' . $match->projectteam1_id . '	OR m.projectteam2_id = ' . $match->projectteam1_id .' )');
         $query->where('p.id = ' . $match->project_id);
         $query->order('m.match_date DESC');
-
-/*        
-		$query = "SELECT m.id
-				FROM #__sportsmanagement_match AS m 
-				LEFT JOIN #__sportsmanagement_project_team pt1 ON pt1.id = m.projectteam1_id 
-				LEFT JOIN #__sportsmanagement_project_team pt2 ON pt2.id = m.projectteam2_id 
-				LEFT JOIN #__sportsmanagement_project AS p ON p.id = pt1.project_id 
-				WHERE " . $this->getDateString() . " < '" . $match->match_date . "' 
-				AND (m.projectteam1_id= '" . $match->projectteam2_id . "' 
-				OR m.projectteam2_id= '" . $match->projectteam2_id . "') 
-				AND pt1.project_id = '" . $match->project_id . "' 
-				ORDER BY m.match_date DESC LIMIT 1";
-*/		
+		
         $db->setQuery($query,0,1);
         if ( $temp = $db->loadObjectList() ) 
         {
@@ -872,18 +711,7 @@ LEFT JOIN #__sportsmanagement_project_referee AS pref ON pref.id = mref.project_
         $query->where('(m.projectteam1_id = ' . $match->projectteam1_id . '	OR m.projectteam2_id = ' . $match->projectteam1_id .' )');
         $query->where('p.id = ' . $match->project_id);
         $query->order('m.match_date ASC');
-/*        
-		$query = "SELECT m.id
-				FROM #__sportsmanagement_match AS m 
-				LEFT JOIN #__sportsmanagement_project_team pt1 ON pt1.id = m.projectteam1_id 
-				LEFT JOIN #__sportsmanagement_project_team pt2 ON pt2.id = m.projectteam2_id 
-				LEFT JOIN #__sportsmanagement_project AS p ON p.id = pt1.project_id 
-				WHERE " . $this->getDateString() . " > '" . $match->match_date . "' 
-				AND (m.projectteam1_id= '" . $match->projectteam2_id . "' 
-				OR m.projectteam2_id = '" . $match->projectteam2_id . "') 
-				AND pt1.project_id = '" . $match->project_id . "' 
-				ORDER BY m.match_date ASC LIMIT 1";
-*/		
+		
         $db->setQuery($query,0,1);
         if ( $temp = $db->loadObjectList() ) 
         {
@@ -929,26 +757,7 @@ LEFT JOIN #__sportsmanagement_project_referee AS pref ON pref.id = mref.project_
         $query->where('(t1.id  = ' . $match->team1_id . '	OR t2.id = ' . $match->team1_id .' )');
         $query->where('p.id IN (' . $projectstring .')');
         $query->order('m.match_date DESC');
-/*        
-		$query = "SELECT m.id
-				FROM #__sportsmanagement_match AS m 
-				LEFT JOIN #__sportsmanagement_project_team pt1 ON pt1.id = m.projectteam1_id 
-                
-                LEFT JOIN #__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id 
-				INNER JOIN #__sportsmanagement_team t1 ON t1.id = st1.team_id 
-				LEFT JOIN #__sportsmanagement_project_team pt2 ON pt2.id = m.projectteam2_id 
-                
-                LEFT JOIN #__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id 
-				INNER JOIN #__sportsmanagement_team t2 ON t2.id = st2.team_id 
-				LEFT JOIN #__sportsmanagement_project AS p ON p.id = pt1.project_id 
-                
-                
-				WHERE " . $this->getDateString() . " < '" . $match->match_date . 
-				"' AND (t1.id = '" . $match->team1_id . "' 
-				OR t2.id = '" . $match->team1_id . 
-				"') AND pt1.project_id IN (" . $projectstring . ") 
-				ORDER BY m.match_date DESC LIMIT 1";
-*/        
+        
         $db->setQuery($query,0,1);        
 		if ($temp = $db->loadObjectList() ) {
 			$match->lasthome = $temp[0]->id;
@@ -960,25 +769,7 @@ LEFT JOIN #__sportsmanagement_project_referee AS pref ON pref.id = mref.project_
         $query->where('(t1.id  = ' . $match->team1_id . '	OR t2.id = ' . $match->team1_id .' )');
         $query->where('p.id IN (' . $projectstring .')');
         $query->order('m.match_date ASC');
-/*        
-		$query = "SELECT m.id
-				FROM #__sportsmanagement_match AS m 
-				LEFT JOIN #__sportsmanagement_project_team pt1 ON pt1.id = m.projectteam1_id 
-                
-                LEFT JOIN #__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id 
-				INNER JOIN #__sportsmanagement_team t1 ON t1.id = st1.team_id 
-				LEFT JOIN #__sportsmanagement_project_team pt2 ON pt2.id = m.projectteam2_id 
-                
-                LEFT JOIN #__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id 
-				INNER JOIN #__sportsmanagement_team t2 ON t2.id = st2.team_id 
-				LEFT JOIN #__sportsmanagement_project AS p ON p.id = pt1.project_id 
-				WHERE " . $this->getDateString() . " > '" . $match->match_date . 
-				"' AND (t1.id = '" . $match->team1_id . "'
-				OR t2.id = '" . $match->team1_id . 
-				"') AND pt1.project_id IN (" . $projectstring . ") 
-				ORDER BY m.match_date ASC LIMIT 1";
-		;
-*/        
+        
         $db->setQuery($query,0,1);
 		if ($temp = $db->loadObjectList() ) {
 			$match->nexthome = $temp[0]->id;
@@ -990,25 +781,7 @@ LEFT JOIN #__sportsmanagement_project_referee AS pref ON pref.id = mref.project_
         $query->where('(t1.id  = ' . $match->team1_id . '	OR t2.id = ' . $match->team1_id .' )');
         $query->where('p.id IN (' . $projectstring .')');
         $query->order('m.match_date DESC');
-/*        
-		$query = "SELECT m.id
-				FROM #__sportsmanagement_match AS m 
-				LEFT JOIN #__sportsmanagement_project_team pt1 ON pt1.id = m.projectteam1_id 
-                
-                LEFT JOIN #__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id 
-                
-				INNER JOIN #__sportsmanagement_team t1 ON t1.id = st1.team_id 
-				LEFT JOIN #__sportsmanagement_project_team pt2 ON pt2.id = m.projectteam2_id
-                
-                LEFT JOIN #__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id 
-				INNER JOIN #__sportsmanagement_team t2 ON t2.id = pt2.id 
-				LEFT JOIN #__sportsmanagement_project AS p ON p.id = pt1.project_id 
-				WHERE " . $this->getDateString() . " < '" . $match->match_date . 
-				"' AND (t1.id = '" . $match->team2_id . "' 
-				OR t2.id = '" . $match->team2_id . 
-				"') AND pt1.project_id IN (" . $projectstring . ") 
-				ORDER BY m.match_date DESC LIMIT 1";
-*/		
+		
         $db->setQuery($query,0,1);
         if ($temp = $db->loadObjectList() ) {
 			$match->lastaway = $temp[0]->id;
@@ -1020,25 +793,7 @@ LEFT JOIN #__sportsmanagement_project_referee AS pref ON pref.id = mref.project_
         $query->where('(t1.id  = ' . $match->team1_id . '	OR t2.id = ' . $match->team1_id .' )');
         $query->where('p.id IN (' . $projectstring .')');
         $query->order('m.match_date ASC');
-/*        
-		$query = "SELECT m.id
-				FROM #__sportsmanagement_match AS m 
-				LEFT JOIN #__sportsmanagement_project_team pt1 ON pt1.id = m.projectteam1_id 
-                
-                LEFT JOIN #__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id 
-				INNER JOIN #__sportsmanagement_team t1 ON t1.id = st1.id 
-				LEFT JOIN #__sportsmanagement_project_team pt2 ON pt2.id = m.projectteam2_id
-                
-                LEFT JOIN #__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id 
-				INNER JOIN #__sportsmanagement_team t2 ON t2.id = st2.team_id 
-				LEFT JOIN #__sportsmanagement_project AS p ON p.id = pt1.project_id 
-				WHERE " . $this->getDateString() . " > '" . $match->match_date . "' 
-				AND (t1.id = '" . $match->team2_id . "' 
-				OR t2.id = '" . $match->team2_id . 
-				"') AND pt1.project_id IN (" . $projectstring . ") 
-				ORDER BY m.match_date ASC LIMIT 1";
-		;
-*/        
+        
         $db->setQuery($query,0,1);
 		if ($temp = $db->loadObjectList() ) {
 			$match->nextaway = $temp[0]->id;
