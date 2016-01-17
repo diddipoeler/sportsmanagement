@@ -53,7 +53,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					<tr>
 						<th width="1%"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
 						<th width="1%"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
-						<th width="20">&nbsp;</th>
+					<!--	<th width="20">&nbsp;</th> -->
  						<th width="20"><?php echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ROUND_NR', 'r.roundcode', $this->sortDirection, $this->sortColumn ); ?></th>
                         <th width="20"><?php echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ROUND_TITLE', 'r.name', $this->sortDirection, $this->sortColumn ); ?></th>
                         
@@ -98,9 +98,14 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'rounds.', $canCheckin);
 						?>
 						<tr class="<?php echo "row$k"; ?>">
-							<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
-							<td class="center"><?php echo JHtml::_('grid.id', $i, $row->id); ?></td>
 							<td class="center">
+                            <?php 
+                            echo $this->pagination->getRowOffset($i); ?>
+                            </td>
+							<td class="center">
+                            <?php echo JHtml::_('grid.id', $i, $row->id); ?>
+                          <!--  </td> -->
+						<!--	<td class="center"> -->
                             
                             <?php
                             if ($row->checked_out) : ?>
@@ -113,7 +118,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 								$imageParams = "title='$imageTitle'";
 								echo JHtml::link($link1,JHtml::image($imageFile,$imageTitle,$imageParams));
                             endif;    
-							?></td>
+							?>
+                            </td>
 							<td class="center">
 								<input tabindex="1" type="text" style="text-align: center" size="5" class="inputbox" name="roundcode<?php echo $row->id; ?>" value="<?php echo $row->roundcode; ?>" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 							</td>

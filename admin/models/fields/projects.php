@@ -116,6 +116,7 @@ class JFormFieldProjects extends JFormFieldList
         {
             $db = sportsmanagementHelper::getDBConnection(TRUE,$cfg_which_database);
         }
+        
 		$extension = "com_sportsmanagement";
 		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
 		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
@@ -137,7 +138,8 @@ class JFormFieldProjects extends JFormFieldList
 
 		$options[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT') );
         
-        foreach ( $projects as $project ) {
+        foreach ( $projects as $project ) 
+        {
 			$options[] = JHtml::_('select.option',  $project->id, '&nbsp;&nbsp;&nbsp;'.$project->name );
 		}
 //		

@@ -73,10 +73,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function locationzipcodeoptions()
         {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
         $model = $this->getModel('ajax');
-                $req = JRequest::getVar('required', false);
-                $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) $model->getlocationzipcodeoptions(JRequest::getVar( 'zipcode' ), $required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' ),JRequest::getVar( 'country' ) ));
+                echo json_encode((array) $model->getlocationzipcodeoptions(JRequest::getVar( 'zipcode' ), $jinput->getVar('required','false'),JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' ),JRequest::getVar( 'country' ) ));
                 JFactory::getApplication()->close();    
         } 
         
@@ -88,10 +89,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function countryzipcodeoptions()
         {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
         $model = $this->getModel('ajax');
-                $req = JRequest::getVar('required', false);
-                $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) $model->getcountryzipcodeoptions(JRequest::getVar( 'country' ), $required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' ) ));
+                echo json_encode((array) $model->getcountryzipcodeoptions(JRequest::getVar( 'country' ), $jinput->getVar('required','false'),JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' ) ));
                 JFactory::getApplication()->close();    
         } 
         
@@ -104,10 +106,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function projects()
         {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
         $model = $this->getModel('ajax');
-        $req = JRequest::getVar('required', false);
-        $required = ($req == 'true' || $req == '1') ? true : false;
-        echo json_encode((array) $model->getProjects( JRequest::getInt( 's' ), $required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' ) ));
+        echo json_encode((array) $model->getProjects( $jinput->getVar('s','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' ) ));
         JFactory::getApplication()->close();    
         } 
         
@@ -119,10 +122,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function seasons()
         {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
         $model = $this->getModel('ajax');
-                $req = JRequest::getVar('required', false);
-                $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) $model->getseasons(JRequest::getInt( 'cfg_which_database' ), $required ));
+                echo json_encode((array) $model->getseasons($jinput->getVar('cfg_which_database','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false') ));
                 JFactory::getApplication()->close();    
         }    
         
@@ -133,10 +137,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function personlistoptions()
         {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                $req = JRequest::getVar('required', false);
-                $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) $model->getpersonlistoptions(JRequest::getInt( 'person_art' ), $required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' )));
+                echo json_encode((array) $model->getpersonlistoptions(JRequest::getInt( 'person_art' ), $jinput->getVar('required','false'),JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' )));
                 JFactory::getApplication()->close();
         }
         
@@ -147,10 +152,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function personpositionoptions()
         {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                $req = JRequest::getVar('required', false);
-                $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) $model->getpersonpositionoptions(JRequest::getInt( 'sports_type_id' ), $required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' )));
+                echo json_encode((array) $model->getpersonpositionoptions(JRequest::getInt( 'sports_type_id' ), $jinput->getVar('required','false'),JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' )));
                 JFactory::getApplication()->close();
         }
         
@@ -161,10 +167,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function personagegroupoptions()
         {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                $req = JRequest::getVar('required', false);
-                $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) $model->getpersonagegroupoptions(JRequest::getInt( 'sports_type_id' ), $required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' ),JRequest::getInt( 'project' ) ) );
+                echo json_encode((array) $model->getpersonagegroupoptions(JRequest::getInt( 'sports_type_id' ), $jinput->getVar('required','false'),JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' ),JRequest::getInt( 'project' ) ) );
                 JFactory::getApplication()->close();
         }
 
@@ -177,10 +184,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function predictionmembersoptions()
         {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                $req = JRequest::getVar('required', false);
-                $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) $model->getpredictionmembersoptions(JRequest::getInt( 'prediction_id' ), $required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' )));
+                echo json_encode((array) $model->getpredictionmembersoptions(JRequest::getInt( 'prediction_id' ), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
                 JFactory::getApplication()->close();
         }
         
@@ -191,10 +199,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function projectdivisionsoptions()
         {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                $req = JRequest::getVar('required', false);
-                $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) $model->getProjectDivisionsOptions(JRequest::getInt( 'p' ), $required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' )));
+                echo json_encode((array) $model->getProjectDivisionsOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
                 JFactory::getApplication()->close();
         }
 
@@ -205,10 +214,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function projecteventsoptions()
         {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                $req = JRequest::getVar('required', false);
-                $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) $model->getProjectEventsOptions(JRequest::getInt( 'p' ), $required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' )));
+                echo json_encode((array) $model->getProjectEventsOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
                 JFactory::getApplication()->close();
         }
 
@@ -219,10 +229,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function projectteamsbydivisionoptions()
         {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                $req = JRequest::getVar('required', false);
-                $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) $model->getProjectTeamsByDivisionOptions(JRequest::getInt( 'p' ), JRequest::getInt( 'division' ), $required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' )));
+                echo json_encode((array) $model->getProjectTeamsByDivisionOptions($jinput->getVar('p','0'), JRequest::getInt( 'division' ), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
                 JFactory::getApplication()->close();
         }
 
@@ -233,10 +244,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function projectsbysportstypesoptions()
         {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                $req = JRequest::getVar('required', false);
-                $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) $model->getProjectsBySportsTypesOptions(JRequest::getInt('sportstype'), $required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' )));
+                echo json_encode((array) $model->getProjectsBySportsTypesOptions(JRequest::getInt('sportstype'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
                 JFactory::getApplication()->close();
         }
         
@@ -247,10 +259,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function agegroupsbysportstypesoptions()
         {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                $req = JRequest::getVar('required', false);
-                $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) $model->getAgeGroupsBySportsTypesOptions(JRequest::getInt('sportstype'), $required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' )));
+                echo json_encode((array) $model->getAgeGroupsBySportsTypesOptions(JRequest::getInt('sportstype'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
                 JFactory::getApplication()->close();
         }
 
@@ -261,10 +274,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function projectsbycluboptions()
         {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                $req = JRequest::getVar('required', false);
-                $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) $model->getProjectsByClubOptions(JRequest::getInt( 'cid' ), $required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' )));
+                echo json_encode((array) $model->getProjectsByClubOptions(JRequest::getInt( 'cid' ), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
                 JFactory::getApplication()->close();
         }
 
@@ -275,10 +289,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function projectteamoptions()
         {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                $req = JRequest::getVar('required', false);
-                $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) $model->getProjectTeamOptions(JRequest::getInt( 'p' ),$required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' ) ));
+                echo json_encode((array) $model->getProjectTeamOptions($jinput->getVar('p','0'),$jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' ) ));
                 JFactory::getApplication()->close();
         }
         
@@ -289,10 +304,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function projectteamsptidoptions()
         {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                $req = JRequest::getVar('required', false);
-                $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) $model->getProjectTeamPtidOptions(JRequest::getInt( 'p' ),$required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' ) ));
+                echo json_encode((array) $model->getProjectTeamPtidOptions($jinput->getVar('p','0'),$jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' ) ));
                 JFactory::getApplication()->close();
         }
         
@@ -303,10 +319,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function projectplayeroptions()
         {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                $req = JRequest::getVar('required', false);
-                $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) $model->getProjectPlayerOptions(JRequest::getInt( 'p' ),$required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' )));
+                echo json_encode((array) $model->getProjectPlayerOptions($jinput->getVar('p','0'),$jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
                 JFactory::getApplication()->close();
         }
 
@@ -317,10 +334,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function projectstaffoptions()
         {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                $req = JRequest::getVar('required', false);
-                $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) $model->getProjectStaffOptions(JRequest::getInt( 'p' ),$required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' )));
+                echo json_encode((array) $model->getProjectStaffOptions($jinput->getVar('p','0'),$jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
                 JFactory::getApplication()->close();
         }
 
@@ -331,10 +349,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function projectcluboptions()
         {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                $req = JRequest::getVar('required', false);
-                $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) $model->getProjectClubOptions(JRequest::getInt( 'p' ), $required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' )));
+                echo json_encode((array) $model->getProjectClubOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
                 JFactory::getApplication()->close();
         }
 
@@ -345,10 +364,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function projectstatsoptions()
         {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                $req = JRequest::getVar('required', false);
-                $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) $model->getProjectStatOptions(JRequest::getInt( 'p' ), $required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' )));
+                echo json_encode((array) $model->getProjectStatOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
                 JFactory::getApplication()->close();
         }
 
@@ -359,10 +379,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function matchesoptions()
         {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                $req = JRequest::getVar('required', false);
-                $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) $model->getMatchesOptions(JRequest::getInt( 'p' ), $required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' )));
+                echo json_encode((array) $model->getMatchesOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
                 JFactory::getApplication()->close();
         }
 
@@ -373,10 +394,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function refereesoptions()
         {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                $req = JRequest::getVar('required', false);
-                $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) $model->getRefereesOptions(JRequest::getInt( 'p' ), $required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' )));
+                echo json_encode((array) $model->getRefereesOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
                 JFactory::getApplication()->close();
         }
 
@@ -387,10 +409,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function projectroundoptions()
         {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
             $model = $this->getModel('ajax');
-                $req = JRequest::getVar('required', false);
-                $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) $model->getProjectRoundOptions(JRequest::getInt( 'p' ), 'ASC', $required,NULL,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' )));
+                echo json_encode((array) $model->getProjectRoundOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),'ASC',NULL,JRequest::getInt( 'dbase' )));
                 JFactory::getApplication()->close();
         }
 
@@ -401,10 +424,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function projecttreenodeoptions()
         {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
                 $model = $this->getModel('ajax');
-                $req = JRequest::getVar('required', false);
-                $required = ($req == 'true' || $req == '1') ? true : false;
-                echo json_encode((array) $model->getProjectTreenodeOptions(JRequest::getInt( 'p' ), $required,JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' )));
+                echo json_encode((array) $model->getProjectTreenodeOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
                 JFactory::getApplication()->close();
         }
         

@@ -1882,7 +1882,7 @@ else
             }
             
         if(!isset($team->projectteamid)) return "";
-		$projectteamid = $team->rojectteam_slug;
+		$projectteamid = $team->projectteam_slug;
 		$teamname      = $team->name;
 		$teamid        = $team->team_id;
 		$teamSlug      = (isset($team->team_slug) ? $team->team_slug : $teamid);
@@ -2003,6 +2003,20 @@ else
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
 			$output .= JHtml::link($link,$desc);
 		}
+        
+        if ($config['show_rivals_link'])
+		{
+		  $routeparameter = array();
+       $routeparameter['s'] = $s;
+       $routeparameter['cfg_which_database'] = $cfg_which_database;
+       $routeparameter['p'] = $projectSlug;
+       $routeparameter['tid'] = $teamSlug;
+			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('rivals',$routeparameter);
+			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_RIVALS_LINK').'&nbsp;'.$teamname;
+			$picture = 'media/com_sportsmanagement/jl_images/rivals.png';
+			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
+			$output .= JHtml::link($link,$desc);
+		}
 
 		return $output;
 	}
@@ -2049,7 +2063,8 @@ else
 							$config['show_plan_link'] ||
 							$config['show_teaminfo_link'] ||
 							$config['show_teamstats_link'] ||
-							$config['show_clubplan_link']
+							$config['show_clubplan_link'] ||
+                            $config['show_rivals_link']
 						)
 					);
 		$containerId = $containerprefix.'t'.$team->id.'p'.$team->project_id;

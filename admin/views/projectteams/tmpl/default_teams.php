@@ -64,7 +64,7 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
 						<th >
 							<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 						</th>
-						<th >&nbsp;</th>
+					<!--	<th >&nbsp;</th> -->
 						<th>
 							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_TEAMNAME','t.name',$this->sortDirection,$this->sortColumn); ?>
 							<a href="mailto:<?php
@@ -203,7 +203,7 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
 						$checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'projectteams.', $canCheckin);
 						?>
 						<tr class="">
-							<td class="center">
+						<td class="center">
                         <?php
                         echo $this->pagination->getRowOffset($i);
                         ?>
@@ -212,12 +212,12 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
                         <?php 
                         echo JHtml::_('grid.id', $i, $row->id);  
                         ?>
-                        </td>
+                      <!--  </td> -->
 							<?php
 							
 								$inputappend='';
 								?>
-								<td style="text-align:center; ">
+					<!--			<td style="text-align:center; "> -->
                                 
                                 <?php if ($row->checked_out) : ?>
 						<?php echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'projectteams.', $canCheckin); ?>

@@ -70,13 +70,32 @@ class JFormFieldFavteam extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+	    $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
+		$option = $jinput->getCmd('option');
+        $view = $jinput->getCmd('view');
+        $layout = $jinput->getCmd('layout');
+        $id = $jinput->getVar('id','0');
+        
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  'view <br><pre>'.print_r($view,true).'</pre>'),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  'layout <br><pre>'.print_r($layout,true).'</pre>'),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  'id <br><pre>'.print_r($id,true).'</pre>'),'Notice');
+
         // Initialize variables.
 		$options = array();
 
 		$varname = (string) $this->element['varname'];
-        $project_id = $app->getUserState( "$option.pid", '0' );;
+        
+        if ( $layout == 'edit' )
+        {
+        $project_id = $id;    
+        }
+        else
+        {
+        $project_id = $app->getUserState( "$option.pid", '0' );    
+        }
+        
 
 		if ($project_id)
 		{		
@@ -84,9 +103,9 @@ class JFormFieldFavteam extends JFormFieldList
 			$query = $db->getQuery(true);
 			
 			$query->select('t.id AS value, t.name AS text');
-			$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
-            $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
-			$query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+			$query->from('#__sportsmanagement_team AS t');
+            $query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
+			$query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
 			$query->where('pt.project_id = '.$project_id);
 			$query->order('t.name');
 			$db->setQuery($query);

@@ -78,7 +78,7 @@ fieldset button {
 						<th width="20" >
 							<input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" />
 						</th>
-						<th width="20" >&nbsp;</th>
+					<!--	<th width="20" > </th> -->
             <?php
             if ( JComponentHelper::getParams($this->option)->get('cfg_be_extension_single_match',0) )
             {
@@ -179,12 +179,12 @@ fieldset button {
 								echo $this->pagination->getRowOffset($i);
 								?>
 							</td>
-							<td class="center">
+							<td class="">
 								<?php
 								echo JHtml::_('grid.id', $i, $row->id);
 								?>
-							</td>
-							<td class="center">
+						<!--	</td>  -->
+<!--							<td class=""> -->
                             
                             <?php
                             if ($row->checked_out) : ?>

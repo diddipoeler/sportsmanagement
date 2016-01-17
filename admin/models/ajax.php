@@ -110,14 +110,14 @@ class sportsmanagementModelAjax extends JModelLegacy
          * @param bool $required
          * @return
          */
-        static function getseasons($dabse = false, $required = false)
+        static function getseasons($dabse = false, $required = false, $slug = false)
         {
         // Reference global application object
         $app = JFactory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $required = 0;
+        //$required = 0;
         
         // Get a db connection.
         if ( !$dabse )
@@ -130,8 +130,14 @@ class sportsmanagementModelAjax extends JModelLegacy
         }
         $query = $db->getQuery(true);
         // Select some fields
-        //$query->select('CONCAT_WS(\':\', id, alias) AS value,name AS text');
+        if ( $slug )
+        {
+        $query->select('CONCAT_WS(\':\', id, alias) AS value,name AS text');
+        }
+        else
+        {
         $query->select('id AS value,name AS text');
+        }
         // From 
 		$query->from('#__sportsmanagement_season');
         $query->order('name DESC'); 
@@ -261,7 +267,7 @@ class sportsmanagementModelAjax extends JModelLegacy
          * @param bool $required
          * @return
          */
-        public static function getProjectRoundOptions($project_id, $required = false, $ordering = 'ASC' , $round_ids = NULL, $slug = false, $dabse = false)
+        public static function getProjectRoundOptions($project_id, $required = false, $slug = false, $ordering = 'ASC' , $round_ids = NULL,  $dabse = false)
         {
             // Reference global application object
         $app = JFactory::getApplication();
@@ -293,7 +299,7 @@ class sportsmanagementModelAjax extends JModelLegacy
         $query->from('#__sportsmanagement_round');
         if ( $project_id )
         {
-        $query->where('project_id = '.$project_id);
+        $query->where('project_id = '.(int) $project_id);
         }
         else
         {
@@ -798,12 +804,13 @@ class sportsmanagementModelAjax extends JModelLegacy
         // ist es ein array ?   
         if ( is_array($project_id) )
         {
-        $ids = implode(",",$project_id);
+             
+        $ids = implode(",",array_map('intval', $project_id));
         $query->where('pt.project_id IN (' . $ids .')' );    
         } 
         else
         {
-        $query->where('pt.project_id = ' . $project_id );
+        $query->where('pt.project_id = ' . (int)$project_id );
         }
         
         }
@@ -813,8 +820,7 @@ class sportsmanagementModelAjax extends JModelLegacy
         }
         // order
         $query->order('t.name');
-        
-                
+                       
                 
                 $db->setQuery($query);
                 return self::addGlobalSelectElement($db->loadObjectList(), $required);
@@ -971,7 +977,15 @@ class sportsmanagementModelAjax extends JModelLegacy
         }
         $query = $db->getQuery(true);
         // Select some fields
-        $query->select('CONCAT_WS(\':\', c.id, c.alias) AS value,c.name AS text');
+        if ( $slug )
+        {
+        $query->select('CONCAT_WS(\':\', c.id, c.alias) AS value,c.name AS text');    
+        }
+        else
+        {
+        $query->select('c.id AS value,c.name AS text');    
+        }
+                
         // From 
 		$query->from('#__sportsmanagement_project_team as pt');
         $query->join('INNER',' #__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
@@ -982,15 +996,17 @@ class sportsmanagementModelAjax extends JModelLegacy
         // Where
         if ( $project_id )
         {
-        // ist es ein array ?   
+        // ist es ein array ? 
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'Notice');  
         if ( is_array($project_id) )
         {
-        $ids = implode(",",$project_id);
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'Notice');    
+        $ids = implode(",",array_map('intval', $project_id) ) ;
         $query->where('pt.project_id IN (' . $ids .')' );    
         } 
         else
         {
-        $query->where('pt.project_id = ' . $project_id );
+        $query->where('pt.project_id = ' . (int)$project_id );
         }
         
         }

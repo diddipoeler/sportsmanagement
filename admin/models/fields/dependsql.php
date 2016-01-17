@@ -103,6 +103,7 @@ class JFormFieldDependSQL extends JFormField
 		$val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
 		$ajaxtask = $this->element['task'];
 		$depends = $this->element['depends'];
+        $slug = $this->element['slug'];
         $query = (string)$this->element['query'];
         
 
@@ -223,13 +224,13 @@ $script[] = "					$.ajax({";
 switch ($view)
 {
     case 'project':
-    $script[] = "						url: 'index.php?option=com_sportsmanagement&format=json&dbase=".$cfg_which_database."&slug=false&task=ajax.".$ajaxtask."&project=".$project_id."&".$depends."=' + value,";
+    $script[] = "						url: 'index.php?option=com_sportsmanagement&format=json&dbase=".$cfg_which_database."&slug=".$slug."&task=ajax.".$ajaxtask."&project=".$project_id."&".$depends."=' + value,";
     break;
     case 'club':
-    $script[] = "						url: 'index.php?option=com_sportsmanagement&format=json&dbase=".$cfg_which_database."&slug=false&task=ajax.".$ajaxtask."&country=".$key_value."&".$depends."=' + value,";
+    $script[] = "						url: 'index.php?option=com_sportsmanagement&format=json&dbase=".$cfg_which_database."&slug=".$slug."&task=ajax.".$ajaxtask."&country=".$key_value."&".$depends."=' + value,";
     break;
     default:
-    $script[] = "						url: 'index.php?option=com_sportsmanagement&format=json&dbase=".$cfg_which_database."&slug=false&task=ajax.".$ajaxtask."&".$depends."=' + value,";
+    $script[] = "						url: 'index.php?option=com_sportsmanagement&format=json&dbase=".$cfg_which_database."&slug=".$slug."&task=ajax.".$ajaxtask."&".$depends."=' + value,";
     break;
 }
 
@@ -261,9 +262,10 @@ $script[] = "});";
         //if ( $ajaxtask && $value )
         //{
         $ajaxtask = 'get'.$ajaxtask;    
-        $result = sportsmanagementModelAjax::$ajaxtask($value,$required);
+        $result = sportsmanagementModelAjax::$ajaxtask($value,$required,$slug);
         //}
 
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' script<br><pre>'.print_r($script,true).'</pre>'),'Notice');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ajaxtask<br><pre>'.print_r($ajaxtask,true).'</pre>'),'Notice');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($value,true).'</pre>'),'Notice');        
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
