@@ -83,7 +83,7 @@ class JFormFieldpredictionproteamid extends JFormField
     $query->where('prepro.prediction_id = '. $prediction_id);
     $query->group('tl.id');
 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <pre> '.print_r($prediction_id,true).'</pre><br>' ),'Notice');			
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <pre> '.print_r($prediction_id,true).'</pre><br>' ),'Notice');			
 
 
 		$db->setQuery( $query );

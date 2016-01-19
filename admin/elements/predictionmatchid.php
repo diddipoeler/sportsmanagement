@@ -70,7 +70,7 @@ class JFormFieldpredictionmatchid extends JFormField
         $params = JComponentHelper::getParams( 'com_sportsmanagement' );
         //$database_table	= $params->get( 'cfg_which_database_table' );
 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <pre> '.print_r($prediction_id,true).'</pre><br>' ),'Notice');		
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <pre> '.print_r($prediction_id,true).'</pre><br>' ),'Notice');		
 
     $query	= $db->getQuery(true);
     $query->select('m.id AS id,m.match_date');
