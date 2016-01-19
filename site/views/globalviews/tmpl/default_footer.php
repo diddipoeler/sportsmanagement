@@ -52,10 +52,16 @@ $cfg_bugtracker_server = JComponentHelper::getParams($option)->get('cfg_bugtrack
 ?>
 
 <style>
-/*  #myModal1 .modal-dialog {
+.modaljsm {
     width: 80%;
-  }
-*/  
+    height: 60%;
+  }  
+  
+
+</style>
+
+
+<style>
 .modal-dialog {
     width: 80%;
   }  
@@ -100,82 +106,20 @@ SqueezeBox.open(url, {
       echo JHtml::link('index.php?option='.$option.'&amp;view=about',sprintf('Version %1$s (diddipoeler)',sportsmanagementHelper::getVersion()));
       ?>
       <br />    
+      
+      
 <!-- Button HTML (to Trigger Modal) -->
-    <a href="<?php echo $cfg_bugtracker_server; ?>" class="" data-toggle="modal" data-target="#myModalBugTracker">Bug-Tracker</a>
-<!-- Modal -->
-<div class="modal fade" id="myModalBugTracker" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-remote="<?php echo $cfg_bugtracker_server; ?>">
-  <div class="modal-dialog" >
-    <div class="modal-content">
-     <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">myModalBugTracker</h4>
-      </div>
-      <div class="modal-body">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-    
-          
-  </div>
-</div>        
-<!--      Bug-Tracker <a href="javascript:openLink('<?php echo $cfg_bugtracker_server; ?>')">Bug-Tracker</a> -->
+<a href="<?php echo $cfg_bugtracker_server; ?>" rel="modaljsm:open">Bug-Tracker</a>
       <br />
-<!-- Button HTML (to Trigger Modal) -->
-    <a href="<?php echo $cfg_help_server; ?>" class="" data-toggle="modal" data-target="#myModalOnlineHelp">Online-Help</a>      
-<!-- Modal -->
-<div class="modal fade" id="myModalOnlineHelp" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" data-remote="<?php echo $cfg_help_server; ?>">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">myModalOnlineHelp</h4>
-      </div>
-      <div class="modal-body">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-    
-     
-    
-  </div>
-</div>  
+<a href="<?php echo $cfg_help_server; ?>" rel="modaljsm:open">Online-Help</a>      
+      <br />      
 
 
 
-<a href="http://www.wikipedia.de" data-target="#myModal" role="button" class="btn" data-toggle="modal">Launch demo modal</a>
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" >
-  
-   <div class="modal-dialog" role="document">
-    <div class="modal-content">
-  <div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
-    <h3 id="myModalLabel">Modal header</h3>
-  </div>
-  
-  <div class="modal-body">
-
-  </div>
-  
-  <div class="modal-footer">
-    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-    <button class="btn btn-primary">Save changes</button>
-  </div>
-  
-  </div>
-  </div>
-  
-</div>
 
     
-<!--      Online-Help <a href="javascript:openLink('<?php echo $cfg_help_server; ?>')">Online-Help</a> -->
-      <br />   
+
      
               
     </div>   

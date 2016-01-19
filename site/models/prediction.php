@@ -1534,7 +1534,7 @@ $body .= "</td>";
 $body .= "</tr>";
 
 // tendencen im tippspiel  
-if ($configprediction['show_tipp_tendence'])
+if ( $configprediction['show_tipp_tendence'] )
 {
 
 $body .= "<tr class='tipp_tendence'>";

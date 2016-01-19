@@ -162,16 +162,16 @@ class sportsmanagementViewallprojects extends JViewLegacy
         $this->filter = $state->get('filter.search');
                
       
-		$this->assignRef('form', $form);
-		$this->assignRef('items', $items);
-		$this->assignRef('state', $state);
-		$this->assignRef('user', $user);
-		$this->assignRef('pagination', $pagination);
+		$this->form = $form;
+		$this->items = $items;
+		$this->state = $state;
+		$this->user = $user;
+		$this->pagination = $pagination;
         
         $this->sortDirection    = $this->state->get('filter_order_Dir');
         $this->sortColumn       = $this->state->get('filter_order');
         
-        $this->assignRef('lists', $lists);
+        $this->lists = $lists;
 
 		parent::display($tpl);
 	}

@@ -315,10 +315,10 @@ public $_predictionGame	= null;
 		$query = $db->getQuery(true);
         // Select some fields
         $query->select('count(tipp)');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_result');
-		$query->where('prediction_id = ' . intval( $this->predictionGameID ));
-        $query->where('project_id = ' . intval( $predictionProjectID ));
-        $query->where('match_id = ' . intval( $matchID ));
+        $query->from('#__sportsmanagement_prediction_result');
+		$query->where('prediction_id = ' . (int) sportsmanagementModelPrediction::$predictionGameID );
+        $query->where('project_id = ' . (int) $predictionProjectID  );
+        $query->where('match_id = ' . (int) $matchID  );
         
         switch ($total)
         {

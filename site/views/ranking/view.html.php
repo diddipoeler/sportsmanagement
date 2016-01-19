@@ -87,7 +87,7 @@ class sportsmanagementViewRanking extends JViewLegacy
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database,__METHOD__);
 		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database,__METHOD__,1);
 		
-        $this->assignRef('paramconfig', $model::$paramconfig);
+        $this->paramconfig = $model::$paramconfig;
         $this->paramconfig['p'] = $project->slug;
         
 		$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true,NULL,$model::$cfg_which_database);
@@ -99,15 +99,15 @@ class sportsmanagementViewRanking extends JViewLegacy
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($model::$cfg_which_database,true).'</pre>'),'');
         
 
-		$this->assignRef('model',$model);
-		$this->assignRef('project', $project);
-        $this->assignRef('projectinfo', $project->projectinfo);
+		$this->model = $model;
+		$this->project = $project;
+        $this->projectinfo = $project->projectinfo;
         $extended = sportsmanagementHelper::getExtended($this->project->extended, 'project');
-        $this->assignRef( 'extended', $extended );
+        $this->extended = $extended;
         
-		$this->assign('overallconfig', sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database));
-		$this->assignRef('tableconfig', $config);
-		$this->assignRef('config', $config);
+		$this->overallconfig = sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
+		$this->tableconfig = $config;
+		$this->config = $config;
         
         
 
@@ -119,11 +119,11 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
     $rssfeedlink = $this->extended->getValue('COM_SPORTSMANAGEMENT_PROJECT_RSS_FEED');
     if ( $rssfeedlink )
     {
-    $this->assignRef( 'rssfeeditems', $model->getRssFeeds($rssfeedlink,$this->overallconfig['rssitems']) );
+    $this->rssfeeditems = $model->getRssFeeds($rssfeedlink,$this->overallconfig['rssitems']);
     }
     else
     {
-    $this->assignRef( 'rssfeeditems', $rssfeeditems );
+    $this->rssfeeditems = $rssfeeditems;
     }
     
         
@@ -139,7 +139,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
        unset ($model->currentRanking);
 	   unset ($model->previousRanking);
        $model->computeRanking($model::$cfg_which_database);
-       $this->assignRef('firstRank',$model->currentRanking  );
+       $this->firstRank = $model->currentRanking;
        
        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($model::$cfg_which_database,true).'</pre>'),'');
        
@@ -153,7 +153,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
        unset ($model->currentRanking);
 	   unset ($model->previousRanking);
        $model->computeRanking($model::$cfg_which_database);
-       $this->assignRef('secondRank',$model->currentRanking );
+       $this->secondRank = $model->currentRanking;
        
        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($model::$cfg_which_database,true).'</pre>'),'');
        
@@ -168,19 +168,19 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($model::$cfg_which_database,true).'</pre>'),'');
 
-		$this->assignRef('round',$model::$round);
-		$this->assignRef('part',$model::$part);
-		$this->assignRef('rounds',$rounds);
+		$this->round = $model::$round;
+		$this->part = $model::$part;
+		$this->rounds = $rounds;
 		//$this->assign('divisions',$mdlDivisions->getDivisions($project->id));
-        $this->assign('divisions',sportsmanagementModelProject::getDivisions(0,$model::$cfg_which_database));
-		$this->assignRef('type',$model::$type);
+        $this->divisions = sportsmanagementModelProject::getDivisions(0,$model::$cfg_which_database);
+		$this->type = $model::$type;
 		//$this->assignRef('from',$model->from);
 		//$this->assignRef('to',$model->to);
         
-        $this->assignRef('from',sportsmanagementModelProject::$_round_from);
-		$this->assignRef('to',sportsmanagementModelProject::$_round_to);
+        $this->from = sportsmanagementModelProject::$_round_from;
+		$this->to = sportsmanagementModelProject::$_round_to;
         
-		$this->assignRef('divLevel',$model::$divLevel);
+		$this->divLevel = $model::$divLevel;
         
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($this->round,true).'</pre>'),'');
@@ -189,28 +189,28 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
         
         if ( $this->config['show_table_1'] )
 	{
-		$this->assignRef('currentRanking',$model->currentRanking);
+		$this->currentRanking = $model->currentRanking;
         }
         
-		$this->assignRef('previousRanking',$model->previousRanking);
+		$this->previousRanking = $model->previousRanking;
         
         if ( $this->config['show_table_2'] )
 	{
-		$this->assignRef('homeRank',$model->homeRank);
+		$this->homeRank = $model->homeRank;
         }
         
         if ( $this->config['show_table_3'] )
 	{
-		$this->assignRef('awayRank',$model->awayRank);
+		$this->awayRank = $model->awayRank;
         }
         
         
        
 		//$this->assignRef('current_round', $model->current_round);
-        $this->assign('current_round', sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.$jinput->getVar("view"),$model::$cfg_which_database));
+        $this->current_round = sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.$jinput->getVar("view"),$model::$cfg_which_database);
         
         // mannschaften holen
-		$this->assign('teams',sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$model::$cfg_which_database,__METHOD__));
+		$this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$model::$cfg_which_database,__METHOD__);
 		
 //        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 //       {
@@ -254,22 +254,22 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		
 		if ( sizeof($ranking_reason) > 0 )
 		{
-		$this->assign('ranking_notes',implode(", ",$ranking_reason) );
+		$this->ranking_notes = implode(", ",$ranking_reason);
 		}
 		else
 		{
-    $this->assign('ranking_notes',$no_ranking_reason );
+    $this->ranking_notes = $no_ranking_reason;
     }
 		
 		
 		
 		
-		$this->assign('previousgames',$model->getPreviousGames($model::$cfg_which_database));
+		$this->previousgames = $model->getPreviousGames($model::$cfg_which_database);
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($model::$cfg_which_database,true).'</pre>'),'');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' previousgames'.'<pre>'.print_r($this->previousgames,true).'</pre>' ),'');
         
-		$this->assign('action', $uri->toString());
+		$this->action = $uri->toString();
 
 		$frommatchday[] = JHTML :: _('select.option', '0', JText :: _('COM_SPORTSMANAGEMENT_RANKING_FROM_MATCHDAY'));
 		$frommatchday = array_merge($frommatchday, $rounds);
@@ -284,19 +284,19 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		$opp_arr[] = JHTML :: _('select.option', "2", JText :: _('COM_SPORTSMANAGEMENT_RANKING_AWAY_RANKING'));
 
 		$lists['type'] = $opp_arr;
-		$this->assignRef('lists', $lists);
+		$this->lists = $lists;
 
 		if (!isset ($config['colors'])) {
 			$config['colors'] = "";
 		}
 
-		$this->assign('colors', sportsmanagementModelProject::getColors($config['colors'],$model::$cfg_which_database));
+		$this->colors = sportsmanagementModelProject::getColors($config['colors'],$model::$cfg_which_database);
 		//$this->assignRef('result', $model->getTeamInfo());
 		//		$this->assignRef( 'pageNav', $model->pagenav( "ranking", count( $rounds ), $sr->to ) );
 		//		$this->assignRef( 'pageNav2', $model->pagenav2( "ranking", count( $rounds ), $sr->to ) );
 
     // diddipoeler
-		$this->assign( 'allteams', $mdlProjectteams->getAllProjectTeams($project->id,0,NULL,$model::$cfg_which_database) );
+		$this->allteams = $mdlProjectteams->getAllProjectTeams($project->id,0,NULL,$model::$cfg_which_database);
 		
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {

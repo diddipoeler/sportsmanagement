@@ -72,11 +72,11 @@ class sportsmanagementViewClubs extends JViewLegacy
 		$overallconfig = sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
 		$clubs = $model->getClubs();
 
-		$this->assignRef('project',$project);
-		$this->assignRef('division',$division);
-		$this->assignRef('overallconfig',$overallconfig );
-		$this->assignRef('config',$config );
-		$this->assignRef('clubs',$clubs );
+		$this->project = $project;
+		$this->division = $division;
+		$this->overallconfig = $overallconfig ;
+		$this->config = $config ;
+		$this->clubs = $clubs ;
 
 		// Set page title
 		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_CLUBS_PAGE_TITLE' );

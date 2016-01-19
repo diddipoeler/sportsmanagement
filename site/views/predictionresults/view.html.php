@@ -75,8 +75,8 @@ class sportsmanagementViewPredictionResults extends JViewLegacy
     
 		$app = JFactory::getApplication();
 
-		$this->assign('predictionGame',sportsmanagementModelPrediction::getPredictionGame());
-        $this->assign('allowedAdmin',sportsmanagementModelPrediction::getAllowed());
+		$this->predictionGame = sportsmanagementModelPrediction::getPredictionGame();
+        $this->allowedAdmin = sportsmanagementModelPrediction::getAllowed();
 
 		if (isset($this->predictionGame))
 		{
@@ -88,17 +88,17 @@ class sportsmanagementViewPredictionResults extends JViewLegacy
 
       //$this->assignRef('debuginfo',	$model->getDebugInfo());
       
-			$this->assignRef('model',$model);
-			$this->assignRef('roundID',sportsmanagementModelPredictionResults::$roundID);
-			$this->assign('config',array_merge($overallConfig,$config) );
+			$this->model = $model;
+			$this->roundID = sportsmanagementModelPredictionResults::$roundID;
+			$this->config = array_merge($overallConfig,$config);
             $model->config = $this->config;
-			$this->assignRef('configavatar',$configavatar );
+			$this->configavatar = $configavatar;
             $model->configavatar = $this->configavatar;
 
-			$this->assign('predictionMember',sportsmanagementModelPrediction::getPredictionMember($configavatar));
+			$this->predictionMember = sportsmanagementModelPrediction::getPredictionMember($configavatar);
 			//$this->assignRef('predictionMember',	$model->getPredictionMemberAvatar($this->predictionMember, $configavatar ));
-			$this->assign('predictionProjectS',sportsmanagementModelPrediction::getPredictionProjectS());
-			$this->assign('actJoomlaUser',JFactory::getUser());
+			$this->predictionProjectS = sportsmanagementModelPrediction::getPredictionProjectS();
+			$this->actJoomlaUser = JFactory::getUser();
 			//$this->assignRef('rounds',				$model->getRounds());
 			//echo '<br /><pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';
 
@@ -111,20 +111,20 @@ class sportsmanagementViewPredictionResults extends JViewLegacy
 			unset($res);
 			unset($predictionRounds);
 			
-			$this->assignRef('lists',$lists);
-			$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
+			$this->lists = $lists;
+			$this->show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0);
 			// Set page title
 			$pageTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_TITLE');
         
         // Get data from the model
  	//$items = $model->getPredictionMembersList($this->config,$this->configavatar,false);
-     $items = $this->get('Data');	
- 	$pagination = $this->get('Pagination');
-            $this->assignRef('memberList', $items );
-            $this->assignRef('pagination', $pagination);
+     //$items = $this->get('Data');	
+ 	//$pagination = $this->get('Pagination');
+            $this->memberList = $this->get('Data');
+            $this->pagination = $this->get('Pagination');
 
 //$headertitle
-$this->assign('headertitle', $pageTitle);
+$this->headertitle = $pageTitle;
 
 if ( !isset($this->config['table_class']) )
 {

@@ -62,10 +62,14 @@ class sportsmanagementViewAbout extends JViewLegacy
 	{
 		// Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
 
 		$model = $this->getModel();
 		$about = $model->getAbout();
-		$this->assignRef('about',	$about);
+		$this->about = $about;
 
 		// Set page title
 		$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ABOUT_PAGE_TITLE'));

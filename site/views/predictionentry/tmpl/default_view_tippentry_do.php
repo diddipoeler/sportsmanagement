@@ -565,7 +565,7 @@ echo JHtml::image(JURI::root().$logo_away, $imgTitle, array('title' => $imgTitle
 							</td>
 						</tr>
 						<?php
-						if ($this->config['show_tipp_tendence'])
+						if ( $this->config['show_tipp_tendence'] )
 						{
 							?>
 							<tr class="tipp_tendence">

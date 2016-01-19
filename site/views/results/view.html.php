@@ -42,11 +42,11 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport('joomla.application.component.view');
 jimport( 'joomla.filesystem.file' );
 
-// welche joomla version ?
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-jimport('joomla.html.html.bootstrap');
-}
+//// welche joomla version ?
+//if(version_compare(JVERSION,'3.0.0','ge')) 
+//{
+//jimport('joomla.html.html.bootstrap');
+//}
 
 //JHTML::_('behavior.modal');
 
@@ -72,7 +72,6 @@ class sportsmanagementViewResults extends JViewLegacy
 	{
 		// Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
-        
         // Reference global application object
         $app = JFactory::getApplication();
         // JInput object
@@ -159,11 +158,11 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
     $rssfeedlink = $this->extended->getValue('COM_SPORTSMANAGEMENT_PROJECT_RSS_FEED_LIVE_RESULTS');
     if ( $rssfeedlink )
     {
-    $this->assignRef( 'rssfeeditems', $model->getRssFeeds($rssfeedlink,$this->overallconfig['rssitems']) );
+    $this->rssfeeditems = $model->getRssFeeds($rssfeedlink,$this->overallconfig['rssitems']);
     }
     else
     {
-    $this->assignRef( 'rssfeeditems', $rssfeeditems );
+    $this->rssfeeditems = $rssfeeditems;
     }
     //echo 'rssfeed<br><pre>'.print_r($rssfeedlink,true).'</pre><br>';
     
@@ -175,7 +174,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundid'.'<pre>'.print_r($this->roundid,true).'</pre>' ),'');       
             
             $lists['rounds'] = JHtml::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="joomleague_changedoc(this);','value','text',$project->current_round);
-			$this->assignRef('lists',$lists);
+			$this->lists = $lists;
 		
 			if (!isset($this->config['switch_home_guest'])){$this->config['switch_home_guest']=0;}
 			if (!isset($this->config['show_dnp_teams_icons'])){$this->config['show_dnp_teams_icons']=0;}
