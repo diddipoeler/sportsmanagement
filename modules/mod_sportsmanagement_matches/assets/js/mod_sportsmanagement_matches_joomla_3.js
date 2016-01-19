@@ -25,7 +25,7 @@ function jlml_loadMatch(usedteam, matchid, moduleid, nr, origin) {
   var classadd = 'modJLML'+moduleid+'_row'+nr;
   var myFx = new Fx.Morph(classadd);
   myFx.start({'opacity':0});
-  $(classadd).addClass('ajaxloading');
+  jQuery(classadd).addClass('ajaxloading');
   var myFx = new Fx.Morph(classadd);
   myFx.start({'opacity':1});
   var ajax=jlmlnewAjax();
@@ -34,6 +34,9 @@ function jlml_loadMatch(usedteam, matchid, moduleid, nr, origin) {
     ajax.send('ajaxMListMod=1&ajaxmodid='+moduleid+'&match_id='+matchid+'&nr='+nr+'&usedteam='+usedteam+'&origin='+origin);
     ajax.onreadystatechange=function()
     {
+    
+    //alert(ajax.readyState);
+    
       if (ajax.readyState==4)
       {
       
@@ -43,9 +46,12 @@ function jlml_loadMatch(usedteam, matchid, moduleid, nr, origin) {
         
         justMatch= response.substring(start,finish);
         
+        //alert(justMatch);
+        
         var myFx = new Fx.Morph(classadd);
         myFx.start({'opacity':1});
-        $(classadd).innerHTML=justMatch;
+        //jQuery(classadd).innerHTML=justMatch;
+        document.getElementById(classadd).innerHTML = justMatch;
         
       }
       addJLMLtips('.jlmlTeamname', 'over');

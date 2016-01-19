@@ -216,9 +216,10 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
         
         $usedteams = (is_array($teams)) ? implode(",", array_map('intval', $teams) ) : (int)$teams;
         
+        $favteams = array(); 
         if ( $fav )
         {
-        $favteams = array();    
+           
         foreach ($fav AS $key => $team)
         {
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'team <br><pre>'.print_r($team,true).'</pre>'),'');   
@@ -787,9 +788,10 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
         
 		$match->lasthome = $match->nexthome = $match->lastaway = $match->nextaway = false;
 		$p = $this->params->get('project');
-		if (!empty ($p)) {
-			$projectstring = (is_array($p)) ? implode(",", $p) : $p;
-		}
+//		if (!empty ($p)) {
+//			$projectstring = (is_array($p)) ? implode(",", $p) : $p;
+//		}
+        $projectstring = (is_array($p)) ? implode(",", array_map('intval', $p) ) : (int)$p;
 		
         // select some fields
         $query->select('m.id');
