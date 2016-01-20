@@ -199,7 +199,7 @@ return $modaltext;
 				}
 				$time_to_ellapse = $time_to_ellapse * 60;
 				$mydate = preg_split("/-| |:/",$game->match_date);
-				$match_stamp=mktime($mydate[3],$mydate[4],$mydate[5],$mydate[1],$mydate[2],$mydate[0]);
+				$match_stamp = mktime($mydate[3],$mydate[4],$mydate[5],$mydate[1],$mydate[2],$mydate[0]);
 				if ($thistime >= $match_stamp && $match_stamp + $time_to_ellapse >= $thistime)
 				{
 					$match_begin = $output.' ';
