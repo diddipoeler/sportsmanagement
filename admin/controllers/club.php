@@ -69,19 +69,20 @@ class sportsmanagementControllerclub extends JControllerForm
      * 
      * @return
      */
-    function save()
+    public function save($key = null, $urlVar = null)
 	{
 		// Check for request forgeries.
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
         $db = sportsmanagementHelper::getDBConnection();
-        $id	= JRequest::getInt('id');
-        $tmpl = JRequest::getVar('tmpl');
+        $id	= $jinput->getInt('id', 0);
+        $tmpl = $jinput->get('tmpl');
 		$model = $this->getModel('club');
-        $data = JRequest::getVar('jform', array(), 'post', 'array');
-        $createTeam = JRequest::getVar('createTeam');
+        $data = $jinput->get('jform', array(), 'post', 'array');
+        $createTeam = $jinput->get('createTeam');
         $return = $model->save($data);
         
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' insertid<br><pre>'.print_r($db->insertid(),true).'</pre>'),'');
