@@ -196,7 +196,7 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
 	 */
 	protected function addToolbar() 
     {
-         // Get a refrence of the page instance in joomla
+        // Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
         $option = JRequest::getCmd('option');
 		
@@ -206,6 +206,8 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
         
         // Set toolbar items for the page
 		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT' ),'dbb-cpanel' );
+        
+        parent::addToolbar();
 
 	}
 }
