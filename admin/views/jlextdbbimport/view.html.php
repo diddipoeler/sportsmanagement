@@ -196,18 +196,16 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
 	 */
 	protected function addToolbar() 
     {
-        // Get a refrence of the page instance in joomla
-		//$document	= JFactory::getDocument();
-        //$option = JRequest::getCmd('option');
+         // Get a refrence of the page instance in joomla
+		$document	= JFactory::getDocument();
+        $option = JRequest::getCmd('option');
 		
         // Set toolbar items for the page
-        //$stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        //$document->addCustomTag($stylelink);
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+        $document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
-		$this->title = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT' ), 'dbb-cpanel' );
-        
-        parent::addToolbar();
+		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT' ),'dbb-cpanel' );
 
 	}
 }
