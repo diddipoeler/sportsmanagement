@@ -109,7 +109,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		$pagination = $this->get('Pagination');
         
         $table = JTable::getInstance('projectteam', 'sportsmanagementTable');
-		$this->assignRef('table', $table);
+		$this->table = $table;
         
         if ( $this->project_art_id == 3 )
         {
