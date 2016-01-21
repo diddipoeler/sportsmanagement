@@ -64,8 +64,9 @@ class sportsmanagementViewextrafield extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$uri = JFactory::getURI();
         $starttime = microtime(); 
         
@@ -93,7 +94,7 @@ class sportsmanagementViewextrafield extends sportsmanagementView
 		
 //		$extended = sportsmanagementHelper::getExtended($item->extended, 'jlextcountry');
 //		$this->assignRef( 'extended', $extended );
-		$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
+		$this->cfg_which_media_tool	= JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool', 0);
  
 
 	}
@@ -103,8 +104,9 @@ class sportsmanagementViewextrafield extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{
-        
-		JRequest::setVar('hidemainmenu', true);
+        $app	= JFactory::getApplication();
+		$jinput	= $app->input;
+		$jinput->set('hidemainmenu', true);
         
         $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_EXTRAFIELD_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_EXTRAFIELD_NEW');
         $this->icon = 'extrafield';

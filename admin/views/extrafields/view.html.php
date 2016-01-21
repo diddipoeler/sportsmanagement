@@ -62,8 +62,9 @@ class sportsmanagementViewextrafields extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
         $starttime = microtime(); 
@@ -85,13 +86,13 @@ class sportsmanagementViewextrafields extends sportsmanagementView
 		$pagination = $this->get('Pagination');
         
         $table = JTable::getInstance('club', 'sportsmanagementTable');
-		$this->assignRef('table', $table);
+		$this->table	= $table;
 
-		$this->assign('user',JFactory::getUser());
-		$this->assignRef('lists',$lists);
-		$this->assignRef('items',$items);
-		$this->assignRef('pagination',$pagination);
-		$this->assign('request_url',$uri->toString());
+		$this->user	= JFactory::getUser();
+		$this->lists	= $lists;
+		$this->items	= $items;
+		$this->pagination	= $pagination;
+		$this->request_url	= $uri->toString());
         
 
 		

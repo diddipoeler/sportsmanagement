@@ -62,8 +62,9 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app	= JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$uri	= JFactory::getURI();
         $model	= $this->getModel();
         
@@ -71,7 +72,7 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
         
-        $starttime = microtime(); 
+        $starttime	= microtime(); 
         $items		= $this->get('Items');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
@@ -83,19 +84,19 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 		$pagination = $this->get('Pagination');
         
         $table = JTable::getInstance('eventtype', 'sportsmanagementTable');
-		$this->assignRef('table', $table);
+		$this->table	= $table;
 
 
 
 		//build the html select list for sportstypes
-		$sportstypes[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'),'id','name');
+		$sportstypes[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'), 'id', 'name');
 		//$allSportstypes =& JoomleagueModelSportsTypes::getSportsTypes();
 		$allSportstypes = JModelLegacy::getInstance('SportsTypes','sportsmanagementmodel')->getSportsTypes();
     		
-		$sportstypes = array_merge($sportstypes,$allSportstypes);
-		$this->assignRef('sports_type',$allSportstypes);
+		$sportstypes = array_merge($sportstypes, $allSportstypes);
+		$this->sports_type	= $allSportstypes;
         
-		$lists['sportstypes']=JHtml::_( 'select.genericList',
+		$lists['sportstypes'] = JHtml::_( 'select.genericList',
 										$sportstypes,
 										'filter_sports_type',
 										'class="inputbox" onChange="this.form.submit();" style="width:120px"',
@@ -104,12 +105,12 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 										$this->state->get('filter.sports_type')	);
 		unset($sportstypes);
 
-		$this->assign('user',JFactory::getUser());
-		$this->assign('config',JFactory::getConfig());
-		$this->assignRef('lists',$lists);
-		$this->assignRef('items',$items);
-		$this->assignRef('pagination',$pagination);
-		$this->assign('request_url',$uri->toString());
+		$this->user	= JFactory::getUser();
+		$this->config	= JFactory::getConfig();
+		$this->lists	= $lists;
+		$this->items	= $items;
+		$this->pagination	= $pagination;
+		$this->request_url	= $uri->toString();
         
         
 		

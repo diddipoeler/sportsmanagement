@@ -62,12 +62,13 @@ class sportsmanagementViewCurrentseasons extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option 	= JRequest::getCmd('option');
 		$app	= JFactory::getApplication();
-		$uri		= JFactory::getUri();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+		$uri	= JFactory::getUri();
         
         $items = $this->get('Items');
-        $this->assignRef('items', $items);
+        $this->items	= $items;
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->items,true).'</pre>'),'Notice');
         
