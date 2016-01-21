@@ -60,8 +60,9 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
         $starttime = microtime(); 
@@ -86,15 +87,16 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 		$pagination = $this->get('Pagination');
         
         $table = JTable::getInstance('agegroup', 'sportsmanagementTable');
-		$this->assignRef('table', $table);
-        
+        $this->table = $table;
+		
         //build the html select list for sportstypes
-		$sportstypes[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),'id','name');
+		$sportstypes[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),'id','name');
 		$mdlSportsTypes = JModelLegacy::getInstance('SportsTypes', 'sportsmanagementModel');
 		$allSportstypes = $mdlSportsTypes->getSportsTypes();
-		$sportstypes = array_merge($sportstypes,$allSportstypes);
-        $this->assignRef('sports_type',$allSportstypes);
-		$lists['sportstypes']=JHtml::_( 'select.genericList',
+		$sportstypes = array_merge($sportstypes, $allSportstypes);
+        $this->sports_type = $allSportstypes;
+		
+		$lists['sportstypes'] = JHtml::_( 'select.genericList',
 										$sportstypes,
 										'filter_sports_type',
 										'class="inputbox" onChange="this.form.submit();" style="width:120px"',
@@ -104,15 +106,15 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 		unset($sportstypes);
         
         //build the html options for nation
-		$nation[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions())
-        {
-            $nation = array_merge($nation,$res);
-            $this->assignRef('search_nation',$res);
-            }
+		{
+			$nation = array_merge($nation,$res);
+			$this->search_nation = $res;
+		}
 		
-        $lists['nation']=$nation;
-        $lists['nation2']= JHtmlSelect::genericlist(	$nation,
+        $lists['nation']	= $nation;
+        $lists['nation2']	= JHtmlSelect::genericlist(	$nation,
 																'filter_search_nation',
 																'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
 																'value',
@@ -143,11 +145,11 @@ class sportsmanagementViewagegroups extends sportsmanagementView
         
 
 
-		$this->assign('user',JFactory::getUser());
-		$this->assignRef('lists',$lists);
-		$this->assignRef('items',$items);
-		$this->assignRef('pagination',$pagination);
-		$this->assign('request_url',$uri->toString());
+		$this->user = JFactory::getUser();
+		$this->lists = $lists;
+		$this->items = $items;
+		$this->pagination = $pagination;
+		$this->request_url = $uri->toString();
         
        
 		

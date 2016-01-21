@@ -102,8 +102,8 @@ $modaltext .= '</div>';
 }
 else
 {
-$modaltext = '<a href="#'.$target.'" title="'.$text.'" data-toggle="modal" data-target=".'.$target.'">';
-$modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';
+$modaltext = '<a href="#'.$target.'" title="'.JText::_($text).'" data-toggle="modal" data-target=".'.$target.'">';
+$modaltext .= '<img src="'.$picture.'" alt="'.JText::_($text).'" width="'.$picturewidth.'" />';
 $modaltext .= '</a>';
 $modaltext .= '<div id="'.$target.'" style="display: none;" class="modal fade '.$target.'" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">';
 $modaltext .= '<div class="modal-dialog modal-sm">';
@@ -170,8 +170,8 @@ return $modaltext;
 			$overallconfig['time_format']='H:i';
 		}
 		$timeSuffix=JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CLOCK');
-		if ($timeSuffix=='COM_SPORTSMANAGEMENT_GLOBAL_CLOCK') {
-			$timeSuffix='%1$s&nbsp;h';
+		if ($timeSuffix == 'COM_SPORTSMANAGEMENT_GLOBAL_CLOCK') {
+			$timeSuffix = '%1$s&nbsp;h';
 		}
 
 		if (strtotime($game->match_date))
@@ -187,9 +187,9 @@ return $modaltext;
 				$output .= $matchTime;
 			}
 				
-			$config['mark_now_playing']=(isset($config['mark_now_playing'])) ? $config['mark_now_playing'] : 0;
+			$config['mark_now_playing'] = (isset($config['mark_now_playing'])) ? $config['mark_now_playing'] : 0;
 
-			if ($config['mark_now_playing'])
+			if ( $config['mark_now_playing'] )
 			{
 				$thistime = time();
 				$time_to_ellapse = ( $project->halftime * ($project->game_parts - 1) ) + $project->game_regular_time;
@@ -199,10 +199,10 @@ return $modaltext;
 				}
 				$time_to_ellapse = $time_to_ellapse * 60;
 				$mydate = preg_split("/-| |:/",$game->match_date);
-				$match_stamp=mktime($mydate[3],$mydate[4],$mydate[5],$mydate[1],$mydate[2],$mydate[0]);
+				$match_stamp = mktime($mydate[3],$mydate[4],$mydate[5],$mydate[1],$mydate[2],$mydate[0]);
 				if ($thistime >= $match_stamp && $match_stamp + $time_to_ellapse >= $thistime)
 				{
-					$match_begin=$output.' ';
+					$match_begin = $output.' ';
 					$title = str_replace('%STARTTIME%',$match_begin,trim(htmlspecialchars($config['mark_now_playing_alt_text'])));
 					$title = str_replace('%ACTUALTIME%',self::mark_now_playing($thistime,$match_stamp,$config,$project),$title);
 					$styletext = '';
