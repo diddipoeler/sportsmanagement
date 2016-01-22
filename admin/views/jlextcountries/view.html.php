@@ -59,8 +59,9 @@ class sportsmanagementViewjlextcountries extends sportsmanagementView
      */
     public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
         $inputappend = '';
@@ -83,19 +84,19 @@ class sportsmanagementViewjlextcountries extends sportsmanagementView
 		$pagination = $this->get('Pagination');
         
         $table = JTable::getInstance('jlextcountry', 'sportsmanagementTable');
-		$this->assignRef('table', $table);
+		$this->table	= $table;
         
          //build the html options for nation
 		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FEDERATION'));
 		if ($res = $this->get('Federation') )
         {
             $nation = array_merge($nation,$res);
-            $this->assignRef('federation',$res);
+            $this->federation	= $res;
         
 
         }
 		
-        $lists['federation']= JHtmlSelect::genericlist(	$nation,
+        $lists['federation'] = JHtmlSelect::genericlist(	$nation,
 																'filter_federation',
 																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
 																'value',
@@ -103,11 +104,11 @@ class sportsmanagementViewjlextcountries extends sportsmanagementView
 																$this->state->get('filter.federation'));
                                                                 
 
-		$this->assign('user',JFactory::getUser());
-		$this->assignRef('lists',$lists);
-		$this->assignRef('items',$items);
-		$this->assignRef('pagination',$pagination);
-		$this->assign('request_url',$uri->toString());
+		$this->user	= JFactory::getUser();
+		$this->lists	= $lists;
+		$this->items	= $items;
+		$this->pagination	= $pagination;
+		$this->request_url	= $uri->toString();
 
 
 

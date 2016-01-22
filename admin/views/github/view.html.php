@@ -47,12 +47,12 @@ class sportsmanagementViewgithub extends sportsmanagementView
 	
 	function display( $tpl = null )
 	{
-	   $document=JFactory::getDocument();
-        $option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+		$document = JFactory::getDocument();
+ 		$app	= JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
         $model	= $this->getModel();
-        
-        $list = $model->getGithubList();
+        $list	= $model->getGithubList();
 
 	
 		parent::display( $tpl );

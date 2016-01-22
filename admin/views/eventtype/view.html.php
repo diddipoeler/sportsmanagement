@@ -78,7 +78,7 @@ class sportsmanagementVieweventtype extends sportsmanagementView
 		
 // 		$extended = sportsmanagementHelper::getExtended($item->extended, 'eventtype');
 // 		$this->assignRef( 'extended', $extended );
-		$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
+		$this->cfg_which_media_tool	= JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool', 0);
  
  
 
@@ -92,8 +92,9 @@ class sportsmanagementVieweventtype extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{
-	
-		JRequest::setVar('hidemainmenu', true);
+	$app	= JFactory::getApplication();
+	$jinput	= $app->input;
+	$jinput->set('hidemainmenu', true);
 	$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_EVENTTYPE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_EVENTTYPE_NEW');
         $this->icon = 'quote';
         parent::addToolbar();

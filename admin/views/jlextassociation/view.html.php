@@ -99,7 +99,9 @@ class sportsmanagementViewJlextassociation extends sportsmanagementView
 	protected function addToolBar() 
 	{
         
-		JRequest::setVar('hidemainmenu', true);
+		$app	= JFactory::getApplication();
+		$jinput	= $app->input;
+		$jinput->set('hidemainmenu', true);
 		parent::addToolbar();
 	}
     

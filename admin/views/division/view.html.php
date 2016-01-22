@@ -63,7 +63,8 @@ class sportsmanagementViewDivision extends sportsmanagementView
 	public function init ()
 	{
 		$app	= JFactory::getApplication();
-		$option = JRequest::getCmd('option');
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$db	 		= sportsmanagementHelper::getDBConnection();
 		$uri		= JFactory::getURI();
 		$user		= JFactory::getUser();
@@ -100,7 +101,7 @@ class sportsmanagementViewDivision extends sportsmanagementView
         $this->project_id	= $app->getUserState( "$option.pid", '0' );
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
-        $this->assignRef('project',$project);
+        $this->project	= $project;
        
 
 		
@@ -114,8 +115,10 @@ class sportsmanagementViewDivision extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{	
-		JRequest::setVar('hidemainmenu', true);
-        JRequest::setVar('pid', $this->project_id);
+	$app	= JFactory::getApplication();
+	$jinput	= $app->input;
+	$jinput->set('hidemainmenu', true);
+	$jinput->set('pid', $this->project_id);
 
         $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_DIVISIONS_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_DIVISIONS_NEW');
         $this->icon = 'division';

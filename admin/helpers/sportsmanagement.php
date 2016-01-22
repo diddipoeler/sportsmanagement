@@ -855,7 +855,8 @@ else
 	public static function addSubmenu($submenu) 
 	{
 	   $app = JFactory::getApplication();
-		$option = JRequest::getCmd('option');
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
         $document = JFactory::getDocument();
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // retrieve the value of the state variable. If no value is specified,
@@ -1359,8 +1360,8 @@ else
 		$option='com_sportsmanagement';
 		if (!$project_id)
 		{
-			$app=&JFactory::getApplication();
-			$project_id=$app->getUserState($option.'project',0);
+			$app = JFactory::getApplication();
+			$project_id = $app->getUserState($option.'project', 0);
 		}
 		if (!$project_id){
 			return false;
@@ -1450,12 +1451,12 @@ else
 		 */
 		public static function getExtensionsOverlay($project_id)
 	{
-		$option='com_sportsmanagement';
+		$option = 'com_sportsmanagement';
 		$arrExtensions = array();
 		$excludeExtension = array();
 		if ($project_id) {
-			$db= sportsmanagementHelper::getDBConnection();
-			$query='SELECT extension FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='. $db->Quote((int)$project_id);
+			$db = sportsmanagementHelper::getDBConnection();
+			$query = 'SELECT extension FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='. $db->Quote((int)$project_id);
 
 			$db->setQuery($query);
 			$res=$db->loadObject();
@@ -1491,7 +1492,7 @@ else
 		(preg_match('/([0-9]{4})-([0-9]{2})-([0-9]{2})/',$date,$regs) ) &&
 		($seconddate == "0000-00-00") )
 		{
-			$intAge=date('Y') - $regs[1];
+			$intAge = date('Y') - $regs[1];
 			if($regs[2] > date('m'))
 			{
 				$intAge--;
@@ -1603,25 +1604,25 @@ else
 			//setup the different placeholders
 			switch ($type) {
 				case 0: //player
-					$picture=JPATH_SITE.DS.$ph_player;
+					$picture = JPATH_SITE.DS.$ph_player;
 					break;
 				case 1: //club logo big
-					$picture=JPATH_SITE.DS.$ph_logo_big;
+					$picture = JPATH_SITE.DS.$ph_logo_big;
 					break;
 				case 2: //club logo medium
-					$picture=JPATH_SITE.DS.$ph_logo_medium;
+					$picture = JPATH_SITE.DS.$ph_logo_medium;
 					break;
 				case 3: //club logo small
-					$picture=JPATH_SITE.DS.$ph_logo_small;
+					$picture = JPATH_SITE.DS.$ph_logo_small;
 					break;
 				case 4: //icon
-					$picture=JPATH_SITE.DS.$ph_icon;
+					$picture = JPATH_SITE.DS.$ph_icon;
 					break;
 				case 5: //team picture
-					$picture=JPATH_SITE.DS.$ph_team;
+					$picture = JPATH_SITE.DS.$ph_team;
 					break;					
 				default:
-					$picture=null;
+					$picture = null;
 				break;
 			}
 		}
@@ -2845,7 +2846,7 @@ $app = JFactory::getApplication();
      * @param mixed $pid
      * @return void
      */
-    function saveExtraFields($post,$pid)
+    public static function saveExtraFields($post,$pid)
   {
     $app = JFactory::getApplication();
        $address_parts = array();
@@ -2857,7 +2858,7 @@ $app = JFactory::getApplication();
     {
         //$app->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields<br><pre>'.print_r($post,true).'</pre>'),'Notice');
         //$app->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields pid<br><pre>'.print_r($pid,true).'</pre>'),'Notice');
-			for($p=0;$p<count($post['extraf']);$p++)
+			for($p = 0;$p<count($post['extraf']);$p++)
             {
                 // Create a new query object.
                 $query = $db->getQuery(true);
@@ -2945,8 +2946,7 @@ public function getOSMGeoCoords($address)
     // call OSM geoencoding api
     // limit to one result (limit=1) without address details (addressdetails=0)
     // output in JSON
-    $geoCodeURL = "http://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=1&q=".
-                  urlencode($address);
+    $geoCodeURL = "http://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=1&q=".urlencode($address);
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($geoCodeURL,true).'</pre>'),'');   
     
@@ -3157,7 +3157,8 @@ public function getOSMGeoCoords($address)
     static function getPicturePlayground($id)
     {
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $jinput = $app->input;
+		$option = $jinput->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
     // Create a new query object.
         $query = $db->getQuery(true);
@@ -3187,7 +3188,8 @@ public function getOSMGeoCoords($address)
     public static function getArticleList($project_category_id)
     {
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $jinput = $app->input;
+		$option = $jinput->getCmd('option');
        // $db = sportsmanagementHelper::getDBConnection();
        
        // wenn der user die k2 komponente

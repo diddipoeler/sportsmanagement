@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
-* @file                jlextdfbnetplayerimport.php
+* @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie k�nnen es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp�teren
-* ver�ffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es n�tzlich sein wird, aber
-* OHNE JEDE GEW�HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew�hrleistung der MARKTF�HIGKEIT oder EIGNUNG F�R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f�r weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -95,17 +95,18 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
 		// Set toolbar items for the page
 		//JToolBarHelper::title ( JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_TITLE_1_3' ), 'generic.png' );
 		//JToolBarHelper::help ( 'screen.joomleague', true );
-		
+		$input = JFactory::getApplication()->input;
+		$post = $input->post;
 		$uri = JFactory::getURI ();
 		$config = JComponentHelper::getParams ( 'com_media' );
-		$post = JRequest::get ( 'post' );
-		$files = JRequest::get ( 'files' );
+		$input->post->get('post');
+		$files = $input->get('files');
 		
-		$this->assignRef ( 'request_url', $uri->toString () );
-		$this->assignRef ( 'config', $config );
+		$this->request_url	= $uri->toString ();
+		$this->config	= $config;
 		
 		$revisionDate = '2011-04-28 - 12:00';
-		$this->assignRef ( 'revisionDate', $revisionDate );
+		$this->revisionDate	= $revisionDate;
 		
 		
 	}
@@ -121,8 +122,9 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
 	function _displayDefault($tpl) 
     {
 		//global $option;
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication ();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$db = JFactory::getDBO ();
 		$uri = JFactory::getURI ();
 		$user = JFactory::getUser ();
@@ -133,15 +135,15 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
 		
 		$model = $this->getModel ();
 		$project = $app->getUserState ( $option . 'project' );
-		$this->assignRef ( 'project', $project );
+		$this->project	= $project;
 		$config = JComponentHelper::getParams ( 'com_media' );
 		
-		$this->assign ( 'request_url', $uri->toString () );
-		$this->assignRef ( 'config', $config );
+		$this->request_url	= $uri->toString ();
+		$this->config	= $config;
 		$revisionDate = '2011-04-28 - 12:00';
-		$this->assignRef ( 'revisionDate', $revisionDate );
+		$this->revisionDate	= $revisionDate;
 		$import_version = 'NEW';
-		$this->assignRef ( 'import_version', $import_version );
+		$this->import_version	= $import_version;
 		
 		
 	}
@@ -156,8 +158,9 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
 	function _displayDefaultUpdate($tpl) 
     {
 		// global $app, $option;
-		$app = & JFactory::getApplication ();
-		$option = JRequest::getCmd ( 'option' );
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		
 		$db = JFactory::getDBO ();
 		$uri = JFactory::getURI ();
@@ -165,7 +168,7 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
 		$model = $this->getModel ();
 		//$option = 'com_joomleague';
 		$project = $app->getUserState ( $option . 'project' );
-		$this->assignRef ( 'project', $project );
+		$this->project	= $project;
 		$config = JComponentHelper::getParams ( 'com_media' );
 		
 		$uploadArray = $app->getUserState ( $option . 'uploadArray', array () );
@@ -173,9 +176,9 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
 		$whichfile = $app->getUserState ( $option . 'whichfile' );
 		//$delimiter = $app->getUserState ( $option . 'delimiter' );
 		
-		$this->assignRef ( 'uploadArray', $uploadArray );
+		$this->uploadArray	= $uploadArray;
 		
-		$this->assignRef ( 'importData', $model->getUpdateData () );
+		$this->importData	= $model->getUpdateData ();
 		
 		// $this->assignRef('xml',$model->getData());
 		

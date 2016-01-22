@@ -61,9 +61,10 @@ class sportsmanagementViewClub extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
-        $document = JFactory::getDocument();
+		$document	= JFactory::getDocument();
+		$app	= JFactory::getApplication();
+		$jinput	= $app->input;
+		$option	= $jinput->getCmd('option');
 		$uri = JFactory::getURI();
         $model = $this->getModel();
         $starttime = microtime(); 
@@ -71,7 +72,7 @@ class sportsmanagementViewClub extends sportsmanagementView
         $this->option = $option;
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JRequest::getVar('tmpl'),true).'</pre>'),'Notice');
-        $this->assign( 'tmpl', JRequest::getVar('tmpl') );
+        $this->tmpl	= $jinput->get('tmpl');
         
         // get the Data
 		$form = $this->get('Form');
@@ -134,12 +135,12 @@ class sportsmanagementViewClub extends sportsmanagementView
         }
 		
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'club');
-		$this->assignRef( 'extended', $extended );
+		$this->extended	= $extended;
         $extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'club');		
-		$this->assignRef( 'extendeduser', $extendeduser );
+		$this->extendeduser	= $extendeduser;
 		//$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
         
-        $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
+        $this->checkextrafields	= sportsmanagementHelper::checkUserExtraFields();
         if ( $this->checkextrafields )
         {
             $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($item->id);
@@ -150,10 +151,10 @@ class sportsmanagementViewClub extends sportsmanagementView
         if ( $this->item->id )
         {
             $teamsofclub = $model->teamsofclub($this->item->id);
-            $this->assignRef( 'teamsofclub', $teamsofclub );
+            $this->teamsofclub	= $teamsofclub;
         }
         
-        $this->assignRef( 'lists', $lists );
+        $this->lists	= $lists;
         
         $document->addScript('http://maps.google.com/maps/api/js?&sensor=false&language=de');
         $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
@@ -169,8 +170,9 @@ class sportsmanagementViewClub extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{
-  		        
-		JRequest::setVar('hidemainmenu', true);
+		$app	= JFactory::getApplication();
+		$jinput	= $app->input;
+		$jinput->set('hidemainmenu', true);
 		$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADD_NEW');
         $this->icon = 'club';
        

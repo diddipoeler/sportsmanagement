@@ -61,8 +61,9 @@ class sportsmanagementViewDivisions extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$db	= sportsmanagementHelper::getDBConnection();
 		$uri = JFactory::getURI();
         $model = $this->getModel();
@@ -87,16 +88,16 @@ class sportsmanagementViewDivisions extends sportsmanagementView
 		$pagination = $this->get('Pagination');
         
         $table = JTable::getInstance('division', 'sportsmanagementTable');
-		$this->assignRef('table', $table);
+		$this->table	= $table;
 
 
 
-		$this->assign('user',JFactory::getUser());
-        $this->assignRef('projectws',$project);
-		$this->assignRef('lists',$lists);
-		$this->assignRef('items',$items);
-		$this->assignRef('pagination',$pagination);
-		$this->assign('request_url',$uri->toString());
+		$this->user	= JFactory::getUser();
+        $this->projectws	= $project);
+		$this->lists	= $lists;
+		$this->items	= $items;
+		$this->pagination	= $pagination;
+		$this->request_url	= $uri->toString();
         
         
 		
@@ -109,8 +110,9 @@ class sportsmanagementViewDivisions extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
        
 		//$option = JRequest::getCmd('option');
 //        // Get a refrence of the page instance in joomla
