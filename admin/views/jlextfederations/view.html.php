@@ -62,10 +62,11 @@ class sportsmanagementViewjlextfederations extends sportsmanagementView
 	{
 		
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
     //$db = sportsmanagementHelper::getDBConnection();
 		$uri = JFactory::getURI();
 		$document	= JFactory::getDocument();
-    $option = JRequest::getCmd('option');
    
     $model	= $this->getModel();
     
@@ -84,18 +85,18 @@ $starttime = microtime();
 		$pagination = $this->get('Pagination');
         
         $table = JTable::getInstance('jlextfederation', 'sportsmanagementTable');
-		$this->assignRef('table', $table);
+		$this->table	= $table;
         
         //build the html options for nation
-		$nation[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions())
         {
-            $nation=array_merge($nation,$res);
-            $this->assignRef('search_nation',$res);
+            $nation = array_merge($nation,$res);
+            $this->search_nation	= $res;
             }
 		
-        $lists['nation']=$nation;
-        $lists['nation2']= JHtmlSelect::genericlist(	$nation,
+        $lists['nation'] = $nation;
+        $lists['nation2'] = JHtmlSelect::genericlist(	$nation,
 																'filter_search_nation',
 																'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
 																'value',
@@ -104,11 +105,11 @@ $starttime = microtime();
 
 
 
-		$this->assign('user',JFactory::getUser());
-		$this->assignRef('lists',$lists);
-		$this->assignRef('items',$items);
-		$this->assignRef('pagination',$pagination);
-		$this->assign('request_url',$uri->toString());
+		$this->user	= JFactory::getUser();
+		$this->lists	= $lists;
+		$this->items	= $items;
+		$this->pagination	= $pagination;
+		$this->request_url	= $uri->toString();
         
         
         

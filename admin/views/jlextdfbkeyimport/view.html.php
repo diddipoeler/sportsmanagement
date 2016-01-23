@@ -114,8 +114,9 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 	 */
 	function _displayDefault( $tpl )
 	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication ();
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 
 		$db		= sportsmanagementHelper::getDBConnection();
 		$uri 	= JFactory::getURI();
@@ -218,8 +219,9 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
    */
   function _displayDefaultCreatedays( $tpl )
 	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication ();
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		
 		$db		= sportsmanagementHelper::getDBConnection();
 		$uri 	= JFactory::getURI();
@@ -230,7 +232,7 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
     //echo '_displayDefaultCreatedays project -> '.$projectid.'<br>';
     
 		$projectid = $app->getUserState( "$option.pid", '0' );;
-		$this->assignRef( 'projectid',		$projectid );
+		$this->projectid	= $projectid;
 		
 		if ( $res =  $model->getProjectteams($projectid) )
 		{
@@ -247,12 +249,12 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 		   print_r($resdfbkey);
 		   echo '</pre>';
 		   */
-		   $this->assignRef( 'newmatchdays',		$resdfbkey );
+		   $this->newmatchdays	= $resdfbkey;
 		   }
 		   unset( $projectteams ); 
 		}
 		
-		$this->assign ( 'request_url', $uri->toString () );
+		$this->request_url	= $uri->toString ();
         
         // Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
@@ -280,8 +282,9 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
    */
   function _displayDefaultFirstMatchday( $tpl )
 	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication ();
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		
 		$db		= sportsmanagementHelper::getDBConnection();
 		$uri 	= JFactory::getURI();
@@ -308,9 +311,9 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 		
 		}
 		
-		$this->assignRef( 'lists',			$lists );
-    $this->assignRef( 'dfbteams',			$dfbteams );
-    $this->assign ( 'request_url', $uri->toString () );
+		$this->lists	= $lists;
+		$this->dfbteams	= $dfbteams;
+		$this->request_url	= $uri->toString ();
 		
         // Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
@@ -336,20 +339,21 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
    */
   function _displayDefaultSaveMatchdays( $tpl )
 	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication ();
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		
 		$db		= sportsmanagementHelper::getDBConnection();
 		$uri 	= JFactory::getURI();
 		$user 	= JFactory::getUser();
 		$model	= $this->getModel();
 		
-		$projectid = $app->getUserState( "$option.pid", '0' );;
-		$this->assignRef( 'projectid',		$projectid );
-		
-		$post = JRequest::get( 'post' );
-    $this->assignRef( 'import', $model->getSchedule( $post, $projectid ) );
-	$this->assign ( 'request_url', $uri->toString () );
+		$projectid = $app->getUserState( "$option.pid", '0' );
+		$this->projectid	= $projectid;
+		$post = $input->post;
+		$input->post->get('post');
+    $this->import	= $model->getSchedule( $post, $projectid );
+	$this->request_url	= $uri->toString ();
     	
 	// Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
