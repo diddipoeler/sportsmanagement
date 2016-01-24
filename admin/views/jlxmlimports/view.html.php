@@ -214,7 +214,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		$this->option	= $option;
         $this->whichfile	= $whichfile;
         $projectidimport = $app->getUserState($option.'projectidimport');
-        $this->projectidimport	$projectidimport;
+        $this->projectidimport	= $projectidimport;
 		//$countries=new Countries();
 		$this->uploadArray	= $uploadArray;
 		$this->starttime	= $starttime;
