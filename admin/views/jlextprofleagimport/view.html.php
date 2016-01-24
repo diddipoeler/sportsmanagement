@@ -62,27 +62,25 @@ class sportsmanagementViewjlextprofleagimport extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
-    $lang = JFactory::getLanguage();
-    $document	= JFactory::getDocument();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+		$lang = JFactory::getLanguage();
+		$document	= JFactory::getDocument();
     
-	
-    
-
 		$uri = JFactory::getURI();
 		$config = JComponentHelper::getParams('com_media');
-		$post=JRequest::get('post');
-		$files=JRequest::get('files');
+		$post = $input->get('post');
+		$files = $input->get('files');
 
-		$this->assign('request_url',$uri->toString());
-		$this->assignRef('config',$config);
+		$this->request_url	= $uri->toString();
+		$this->config	= $config;
 		$teile = explode("-",$lang->getTag());
-    $country = JSMCountries::convertIso2to3($teile[1]);
-    $this->assignRef('country',$country);
+		$country = JSMCountries::convertIso2to3($teile[1]);
+		$this->country	= $country;
 		$countries = JSMCountries::getCountryOptions();
-		$lists['countries']=JHtml::_('select.genericlist',$countries,'country','class="inputbox" size="1"','value','text',$country);
-		$this->assignRef('countries',$lists['countries']);
+		$lists['countries'] = JHtml::_('select.genericlist', $countries, 'country', 'class="inputbox" size="1"', 'value', 'text', $country);
+		$this->countries	= $lists['countries'];
     
 
     //$this->assignRef('form',  $this->get('form'));
@@ -98,8 +96,9 @@ class sportsmanagementViewjlextprofleagimport extends sportsmanagementView
     protected function addToolbar() 
     {
         // Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        $option = JRequest::getCmd('option');
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		
         
         // Get a refrence of the page instance in joomla
