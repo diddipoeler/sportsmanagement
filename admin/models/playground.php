@@ -370,7 +370,7 @@ class sportsmanagementModelPlayground extends JModelAdmin
      * @param integer $project
      * @return
      */
-    function getNextGames( $project = 0 )
+    function getNextGames( $project = 0, $pgid = 0 )
     {
         $option = JRequest::getCmd('option');
 	    $app = JFactory::getApplication();
@@ -381,19 +381,19 @@ class sportsmanagementModelPlayground extends JModelAdmin
         $result = array();
         $starttime = microtime(); 
 
-        $playground = self::getPlayground();
+        $playground = self::getPlayground($pgid);
         if ( $playground->id > 0 )
         {
             $query->select('m.*, DATE_FORMAT(m.time_present, \'%H:%i\') time_present');
             $query->select('p.name AS project_name');
             $query->select('st1.team_id AS team1');
             $query->select('st2.team_id AS team2');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
-            $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team tj ON tj.id = m.projectteam1_id  ');
-            $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team tj2 ON tj2.id = m.projectteam2_id  ');
-            $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = tj.project_id ');
-            $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.id = tj.team_id ');
-            $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = tj2.team_id ');
+            $query->from('#__sportsmanagement_match AS m ');
+            $query->join('INNER',' #__sportsmanagement_project_team tj ON tj.id = m.projectteam1_id  ');
+            $query->join('INNER',' #__sportsmanagement_project_team tj2 ON tj2.id = m.projectteam2_id  ');
+            $query->join('INNER',' #__sportsmanagement_project AS p ON p.id = tj.project_id ');
+            $query->join('INNER',' #__sportsmanagement_season_team_id as st1 ON st1.id = tj.team_id ');
+            $query->join('INNER',' #__sportsmanagement_season_team_id as st2 ON st2.id = tj2.team_id ');
             //$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st.team_id ');
             //$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON c.id = t.club_id ');
             
@@ -486,7 +486,7 @@ $result = $db->execute();
             if ( $pgid > 0 )
             {
                 $query->select('*');
-                $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground');
+                $query->from('#__sportsmanagement_playground');
                 $query->where('id = '. $pgid);
                 $db->setQuery( $query );
                 
