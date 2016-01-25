@@ -40,6 +40,9 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+// zur unterscheidung von joomla 2.5 und 3
+JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.view', JPATH_SITE);
+
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 // Joomla! 3.0 code here
