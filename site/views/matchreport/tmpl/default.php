@@ -127,7 +127,7 @@ echo $this->loadTemplate('debug');
 	{
 		$output['COM_SPORTSMANAGEMENT_MATCHREPORT_DETAILS'] = 'details';
 	}
-  if (($this->config['show_extended'])==1 && $this->extended )
+  if ( $this->config['show_extended'] && $this->extended )
 	{
         $output['COM_SPORTSMANAGEMENT_TABS_EXTENDED'] = 'extended';
 	}
@@ -143,11 +143,11 @@ echo $this->loadTemplate('debug');
 	}
     if ( !empty( $this->matchevents ) )
 	{
-		if (($this->config['show_timeline'])==1 && $this->config['show_timeline_under_results']==0 )
+		if ( $this->config['show_timeline'] && $this->config['show_timeline_under_results']==0 )
 		{
             $output['COM_SPORTSMANAGEMENT_MATCHREPORT_TIMELINE'] = 'timeline';
 		}
-        if (($this->config['show_events'])==1)
+        if ( $this->config['show_events'] )
 		{
 			switch ($this->config['use_tabs_events'])
 			{
@@ -179,12 +179,12 @@ echo $this->loadTemplate('debug');
         }
         
     }    
-    if (($this->config['show_stats'])==1 && ( $hasMatchPlayerStats || $hasMatchStaffStats ) )
+    if ( $this->config['show_stats'] && ( $hasMatchPlayerStats || $hasMatchStaffStats ) )
 	{
         $output['COM_SPORTSMANAGEMENT_MATCHREPORT_STATISTICS'] = 'stats';
 	}
 
-	if (($this->config['show_summary'])==1 && $this->match->summary )
+	if ( $this->config['show_summary'] && $this->match->summary )
 	{
         $output['COM_SPORTSMANAGEMENT_MATCHREPORT_MATCH_SUMMARY'] = 'summary';
 	}

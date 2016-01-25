@@ -239,8 +239,8 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		{
 			self::addPlayingTeams($playing_teams,$game->projectteam1_id,$game->projectteam2_id,$game->published);
 		}
-		$x=0;
-		$not_playing=count($teams) - count($playing_teams);
+		$x = 0;
+		$not_playing = count($teams) - count($playing_teams);
 		if ($not_playing > 0)
 		{
 			$output .= '<b>'.JText::sprintf('COM_SPORTSMANAGEMENT_RESULTS_TEAMS_NOT_PLAYING',$not_playing).'</b> ';

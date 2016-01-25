@@ -58,7 +58,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	var $match = null;
     var $projectid = 0;
     
-    static $cfg_which_database = 0;
+    //static $cfg_which_database = 0;
 
 	/**
 	 * caching for players events. Used in stats calculations
@@ -93,7 +93,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
         
 		$this->matchid = $jinput->getInt('mid',0);
         $this->projectid = $jinput->getInt( 'p', 0 );
-        self::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
+        sportsmanagementModelProject::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
 		sportsmanagementModelProject::$projectid = $this->projectid;
         sportsmanagementModelProject::$matchid = $this->matchid;
 		parent::__construct();
@@ -111,7 +111,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	$app = JFactory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
+        $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
         $query = $db->getQuery(true);
         // Select some fields
 		$query->select('id,match_id,teamplayer_id,project_position_id');
@@ -189,7 +189,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	function getRound()
 	{
 		//$match=$this->getMatch();
-        $match = sportsmanagementModelMatch::getMatchData($this->matchid,self::$cfg_which_database);
+        $match = sportsmanagementModelMatch::getMatchData($this->matchid,sportsmanagementModelProject::$cfg_which_database);
 
 		//$round =& $this->getTable('Round','sportsmanagementTable');
 		//$round->load($match->round_id);
@@ -197,7 +197,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
         //$round = $mdl->getTable();
         //$round->load($match->round_id);
         
-        $round = sportsmanagementModelround::getRound($match->round_id,self::$cfg_which_database);
+        $round = sportsmanagementModelround::getRound($match->round_id,sportsmanagementModelProject::$cfg_which_database);
 
 		//if no match title set then set the default one
 		if(is_null($round->name) || empty($round->name))
@@ -283,7 +283,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	$app = JFactory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
+        $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
         $query = $db->getQuery(true);
         // Select some fields
 		$query->select('pos.id, pos.name');
@@ -336,7 +336,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
         $option = JRequest::getCmd('option');
         $starttime = microtime(); 
         // Create a new query object.		
-	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
+	   $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
 	   $query = $db->getQuery(true);
        
        // Select some fields
@@ -433,7 +433,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 		$option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
         // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
+        $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
         $query = $db->getQuery(true);
         
         $query->select('p.id,p.firstname,p.nickname,p.lastname,CONCAT_WS(\':\',p.id,p.alias) AS person_slug,p.picture');
@@ -469,7 +469,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 		$option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
         // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
+        $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
         $query = $db->getQuery(true);
         
         $query->select('et.id,et.name,et.icon');
@@ -498,7 +498,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	$app = JFactory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
+        $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
         $query = $db->getQuery(true);
         $query->select('c.id,c.title');
        $query->select('c.introtext');
@@ -531,10 +531,10 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	$app = JFactory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
+        $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
         $query = $db->getQuery(true);
         
-		$match = sportsmanagementModelMatch::getMatchData($this->matchid,self::$cfg_which_database);
+		$match = sportsmanagementModelMatch::getMatchData($this->matchid,sportsmanagementModelProject::$cfg_which_database);
         
          $query->select('*');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic');
@@ -577,7 +577,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	$app = JFactory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
+        $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
         $query = $db->getQuery(true);
         
 		if (!($this->_playersbasicstats))
@@ -628,12 +628,12 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	$app = JFactory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
+        $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
         $query = $db->getQuery(true);
         
 		if (!($this->_playersevents))
 		{
-			$match = sportsmanagementModelMatch::getMatchData($this->matchid,self::$cfg_which_database);
+			$match = sportsmanagementModelMatch::getMatchData($this->matchid,sportsmanagementModelProject::$cfg_which_database);
             // Select some fields
         $query->select('*');
         // From 
@@ -677,12 +677,12 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	$app = JFactory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
+        $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
         $query = $db->getQuery(true);
         
 		if (!($this->_staffsbasicstats))
 		{
-			$match = sportsmanagementModelMatch::getMatchData($this->matchid,self::$cfg_which_database);
+			$match = sportsmanagementModelMatch::getMatchData($this->matchid,sportsmanagementModelProject::$cfg_which_database);
             
             // Select some fields
         $query->select('*');
@@ -730,7 +730,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
   $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
         // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
+        $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
         $query = $db->getQuery(true);
         
   $bildpositionen = array();

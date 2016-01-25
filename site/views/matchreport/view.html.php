@@ -53,7 +53,8 @@ require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'player.php');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewMatchReport extends JViewLegacy
+//class sportsmanagementViewMatchReport extends JViewLegacy
+class sportsmanagementViewMatchReport extends sportsmanagementView
 {
 
 	/**
@@ -62,35 +63,36 @@ class sportsmanagementViewMatchReport extends JViewLegacy
 	 * @param mixed $tpl
 	 * @return
 	 */
-	function display($tpl=null)
+	//function display($tpl=null)
+    public function init ()
 	{
-		// Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        // Get a refrence of the page instance in joomla
-		$document = JFactory::getDocument();
-        $option = $jinput->getCmd('option');
+		//// Reference global application object
+//        $app = JFactory::getApplication();
+//        // JInput object
+//        $jinput = $app->input;
+//        // Get a refrence of the page instance in joomla
+//		$document = JFactory::getDocument();
+//        $option = $jinput->getCmd('option');
 //		$version = urlencode(sportsmanagementHelper::getVersion());
 //		$css='components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
 //		$document->addStyleSheet($css);
         
         // diddipoeler
         $css = 'components/com_sportsmanagement/assets/css/tooltipstyle.css';
-        $document->addStyleSheet($css);
+        $this->document->addStyleSheet($css);
         $css = 'components/com_sportsmanagement/assets/css/jquery-easy-tooltip.css';
-        $document->addStyleSheet($css);
-        $document->addScript( JURI::base(true).'/components/com_sportsmanagement/assets/js/tooltipscript.js');
+        $this->document->addStyleSheet($css);
+        $this->document->addScript( JURI::base(true).'/components/com_sportsmanagement/assets/js/tooltipscript.js');
 
-		$model = $this->getModel();
-        $model->checkMatchPlayerProjectPositionID();
-        $model->matchid = $jinput->getInt('mid',0);
-        $model::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
+		//$model = $this->getModel();
+        $this->model->checkMatchPlayerProjectPositionID();
+        $this->model->matchid = $this->jinput->getInt('mid',0);
+        //$model::$cfg_which_database = $this->jinput->getInt('cfg_which_database',0);
         
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
-		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
-		$match = sportsmanagementModelMatch::getMatchData($jinput->getInt( "mid", 0 ),$model::$cfg_which_database);
-        $matchsingle = sportsmanagementModelMatch::getMatchSingleData($jinput->getInt( "mid", 0 ));
+//		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),sportsmanagementModelProject::$cfg_which_database);
+//		$project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
+		$match = sportsmanagementModelMatch::getMatchData($this->jinput->getInt( "mid", 0 ),sportsmanagementModelProject::$cfg_which_database);
+        $matchsingle = sportsmanagementModelMatch::getMatchSingleData($this->jinput->getInt( "mid", 0 ));
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
@@ -98,49 +100,53 @@ class sportsmanagementViewMatchReport extends JViewLegacy
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($project,true).'</pre>'),'Notice');
         }
 
-		$this->assignRef('project',$project);
-		$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database));
-		$this->assignRef('config',$config);
-		$this->assignRef('match',$match);
+		//$this->project = $project;
+//		$this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
+//		$this->config = $config;
+		$this->match = $match;
         
-        $this->assignRef('matchsingle',$matchsingle);
+        $this->matchsingle = $matchsingle;
         
-		$ret = sportsmanagementModelMatch::getMatchText($match->new_match_id);
-		$this->assignRef('newmatchtext',$ret->text);
-		$ret = sportsmanagementModelMatch::getMatchText($match->old_match_id);
-		$this->assignRef('oldmatchtext',$ret->text);
+		if ( $ret = sportsmanagementModelMatch::getMatchText($match->new_match_id) )
+        {
+		$this->newmatchtext = $ret->text;
+        }
+		if ( $ret = sportsmanagementModelMatch::getMatchText($match->old_match_id) )
+        {
+		$this->oldmatchtext = $ret->text;
+        }
         
-        $this->assign('match_article',$model->getMatchArticle($this->match->content_id));
+        $this->match_article = $this->model->getMatchArticle($this->match->content_id);
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match_article<br><pre>'.print_r($this->match_article,true).'</pre>'),'Notice');
 
-		$this->assign('round',$model->getRound());
-		$this->assign('team1',sportsmanagementModelProject::getTeaminfo($this->match->projectteam1_id,$model::$cfg_which_database));
-		$this->assign('team2',sportsmanagementModelProject::getTeaminfo($this->match->projectteam2_id,$model::$cfg_which_database));
-		$this->assign('team1_club',$model->getClubinfo($this->team1->club_id));
-		$this->assign('team2_club',$model->getClubinfo($this->team2->club_id));
+		$this->round = $this->model->getRound();
+		$this->team1 = sportsmanagementModelProject::getTeaminfo($this->match->projectteam1_id,sportsmanagementModelProject::$cfg_which_database);
+		$this->team2 = sportsmanagementModelProject::getTeaminfo($this->match->projectteam2_id,sportsmanagementModelProject::$cfg_which_database);
+		$this->team1_club = $this->model->getClubinfo($this->team1->club_id);
+		$this->team2_club = $this->model->getClubinfo($this->team2->club_id);
         //$this->assign('matchplayerpositions',$model->getMatchPlayerPositions());
-        $this->assign('matchplayerpositions',$model->getMatchPositions('player'));
+        $this->matchplayerpositions = $this->model->getMatchPositions('player');
 		//$this->assign('matchplayers',$model->getMatchPlayers());
-        $this->assign('matchplayers',$model->getMatchPersons('player'));
+        $this->matchplayers = $this->model->getMatchPersons('player');
 		//$this->assign('matchstaffpositions',$model->getMatchStaffPositions());
-        $this->assign('matchstaffpositions',$model->getMatchPositions('staff'));
+        $this->matchstaffpositions = $this->model->getMatchPositions('staff');
 		//$this->assign('matchstaffs',$model->getMatchStaff());
-        $this->assign('matchstaffs',$model->getMatchPersons('staff'));
+        $this->matchstaffs = $this->model->getMatchPersons('staff');
 		//$this->assign('matchrefereepositions',$model->getMatchRefereePositions());
-        $this->assign('matchrefereepositions',$model->getMatchPositions('referee'));
-		$this->assign('matchreferees',$model->getMatchReferees());
-        $this->assign('matchcommentary',sportsmanagementModelMatch::getMatchCommentary($this->match->id));
+        $this->matchrefereepositions = $this->model->getMatchPositions('referee');
+		$this->matchreferees = $this->model->getMatchReferees();
+        $this->matchcommentary = sportsmanagementModelMatch::getMatchCommentary($this->match->id);
 		//$this->assign('substitutes',$model->getMatchSubstitutions());
-        $this->assign('substitutes',sportsmanagementModelProject::getMatchSubstitutions($model->matchid,$model::$cfg_which_database));
-		$this->assign('eventtypes',$model->getEventTypes());
+        $this->substitutes = sportsmanagementModelProject::getMatchSubstitutions($this->model->matchid,sportsmanagementModelProject::$cfg_which_database);
+		$this->eventtypes = $this->model->getEventTypes();
 		$sortEventsDesc = isset($this->config['sort_events_desc']) ? $this->config['sort_events_desc'] : '1';
-		$this->assign('matchevents',sportsmanagementModelProject::getMatchEvents($this->match->id,1,$sortEventsDesc,$model::$cfg_which_database));
-		$this->assign('playground',sportsmanagementModelPlayground::getPlayground($this->match->playground_id));
-        $this->assign('stats',sportsmanagementModelProject::getProjectStats(0,0,$model::$cfg_which_database));
-		$this->assign('playerstats',$model->getMatchStats());
-		$this->assign('staffstats',$model->getMatchStaffStats());
-		$this->assignRef('model',$model);
+		$this->matchevents = sportsmanagementModelProject::getMatchEvents($this->match->id,1,$sortEventsDesc,sportsmanagementModelProject::$cfg_which_database);
+		$this->playground = sportsmanagementModelPlayground::getPlayground($this->match->playground_id);
+        $this->stats = sportsmanagementModelProject::getProjectStats(0,0,sportsmanagementModelProject::$cfg_which_database);
+		$this->playerstats = $this->model->getMatchStats();
+		$this->staffstats = $this->model->getMatchStaffStats();
+		//$this->model = $model;
         
         //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchevents<br><pre>'.print_r($this->matchevents,true).'</pre>'),'Notice');
         //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' substitutes<br><pre>'.print_r($this->substitutes,true).'</pre>'),'Notice');
@@ -168,14 +174,14 @@ $xmlfile=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'match.xml';
 		$extended = JForm::getInstance('extended', $xmlfile, array('control'=> 'extended'), false, '/config');
 		$extended->bind($jRegistry);
 		
-		$this->assignRef( 'extended', $extended);
+		$this->extended = $extended;
 
 
-$extended2 = sportsmanagementHelper::getExtended($match->extended, 'match');
-    $this->assignRef( 'extended2', $extended2);
+//$extended2 = sportsmanagementHelper::getExtended($match->extended, 'match');
+    $this->extended2 = sportsmanagementHelper::getExtended($match->extended, 'match');
 		//$rssfeedlink = $this->extended2->getValue('formation1');
-    $this->assign( 'formation1', $this->extended2->getValue('formation1'));
-    $this->assign( 'formation2', $this->extended2->getValue('formation2'));
+    $this->formation1 = $this->extended2->getValue('formation1');
+    $this->formation2 = $this->extended2->getValue('formation2');
     
     if ( !$this->formation1 )
     {
@@ -189,23 +195,23 @@ $extended2 = sportsmanagementHelper::getExtended($match->extended, 'match');
 //    $schemahome = $this->assign('schemahome',$model->getSchemaHome($this->formation1));
 //    $schemaaway = $this->assign('schemaaway',$model->getSchemaAway($this->formation2));
     
-    $schemahome = $this->assign('schemahome',$model->getPlaygroundSchema($this->formation1,'heim'));
-    $schemaaway = $this->assign('schemaaway',$model->getPlaygroundSchema($this->formation2,'gast'));
+    $schemahome = $this->assign('schemahome',$this->model->getPlaygroundSchema($this->formation1,'heim'));
+    $schemaaway = $this->assign('schemaaway',$this->model->getPlaygroundSchema($this->formation2,'gast'));
     
 
 
 //    $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
 //    $this->assign('use_joomlaworks', JComponentHelper::getParams($option)->get('use_joomlaworks',0) );
     
-if ( $this->config['show_pictures'] == 1 )
+if ( $this->config['show_pictures'] )
 	  {
 		// die bilder zum spiel
 		$dest = JPATH_ROOT.'/images/com_sportsmanagement/database/matchreport/'.$this->match->id;
 		$folder = 'matchreport/'.$this->match->id;
-		$images = $model->getMatchPictures($folder);
+		$images = $this->model->getMatchPictures($folder);
 		if ( $images )
 		{
-    $this->assignRef( 'matchimages', $images);
+    $this->matchimages = $images;
 		}
 		
 	  }    
@@ -216,10 +222,10 @@ if ( $this->config['show_pictures'] == 1 )
 		{
 			$pageTitle .= ": ".$this->team1->name." ".JText::_( "COM_SPORTSMANAGEMENT_NEXTMATCH_VS" )." ".$this->team2->name;
 		}
-		$document->setTitle( $pageTitle );
-        $view = $jinput->getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+		$this->document->setTitle( $pageTitle );
+        $view = $this->jinput->getVar( "view") ;
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$this->option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
+        $this->document->addCustomTag($stylelink);
 
 //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'Notice');
 //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' matchplayerpositions<br><pre>'.print_r($this->matchplayerpositions,true).'</pre>'),'Notice');
@@ -240,7 +246,9 @@ if ( $this->config['show_pictures'] == 1 )
     $js .= "});\n";
     $document->addScriptDeclaration( $js );    
 */
-		parent::display($tpl);
+		
+        
+        //parent::display($tpl);
 
 	}
 

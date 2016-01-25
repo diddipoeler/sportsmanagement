@@ -54,7 +54,7 @@ class sportsmanagementModelRanking extends JModelLegacy
 {
 	static $projectid = 0;
 	static $round = 0;
-	var $rounds = array(0);
+	static $rounds = array(0);
 	static $part = 0;
 	static $type = 0;
 	static $last = 0;
@@ -62,11 +62,11 @@ class sportsmanagementModelRanking extends JModelLegacy
 	static $to = 0;
     
 	static $divLevel = 0;
-	var $currentRanking = array();
+	static $currentRanking = array();
     static $paramconfig = array();
-	var $previousRanking = array();
-	var $homeRank = array();
-	var $awayRank = array();
+	static $previousRanking = array();
+	static $homeRank = array();
+	static $awayRank = array();
 	var $colors = array();
 	var $result = array();
 	var $pageNav = array();
@@ -74,7 +74,7 @@ class sportsmanagementModelRanking extends JModelLegacy
 	static $current_round = 0;
 	static $viewName = '';
     static $selDivision = 0;
-    static $cfg_which_database = 0;
+    //static $cfg_which_database = 0;
     static $season = 0;
 
 	/**
@@ -104,21 +104,21 @@ class sportsmanagementModelRanking extends JModelLegacy
         self::$viewName = $jinput->get('view','','STR');
     	self::$selDivision = JRequest::getInt('division', 0 );
         
-        self::$cfg_which_database = $jinput->get('cfg_which_database', 0 ,'');
+        sportsmanagementModelProject::$cfg_which_database = $jinput->get('cfg_which_database', 0 ,'');
         self::$season = $jinput->get('s', 0 ,'');
         
         sportsmanagementModelProject::$projectid = self::$projectid; 
         
         if ( empty(self::$from)  )
         {
-        $from	= sportsmanagementModelRounds::getFirstRound(self::$projectid,self::$cfg_which_database);
+        $from	= sportsmanagementModelRounds::getFirstRound(self::$projectid,sportsmanagementModelProject::$cfg_which_database);
         self::$from	= $from['id'];
         self::$paramconfig['from'] = self::$from;
         }
         
         if ( empty(self::$to)  )
         {
-		$to	= sportsmanagementModelRounds::getLastRound(self::$projectid,self::$cfg_which_database);
+		$to	= sportsmanagementModelRounds::getLastRound(self::$projectid,sportsmanagementModelProject::$cfg_which_database);
         self::$to = $to['id'];
         self::$paramconfig['to'] = self::$to;
         }
@@ -130,7 +130,7 @@ class sportsmanagementModelRanking extends JModelLegacy
         
         if ( empty(self::$round) )
         {
-            self::$round = sportsmanagementModelProject::getCurrentRound(NULL,self::$cfg_which_database);
+            self::$round = sportsmanagementModelProject::getCurrentRound(NULL,sportsmanagementModelProject::$cfg_which_database);
             self::$current_round = self::$round;
             sportsmanagementModelProject::$_round_to = sportsmanagementModelProject::$roundslug;
             self::$paramconfig['r'] = sportsmanagementModelProject::$roundslug;
@@ -274,7 +274,7 @@ else
 	 * @param integer $cfg_which_database
 	 * @return
 	 */
-	function getPreviousGames($cfg_which_database = 0)
+	public static function getPreviousGames($cfg_which_database = 0)
 	{
 	   $app = JFactory::getApplication();
     $option = JRequest::getCmd('option');
@@ -431,7 +431,7 @@ else
 	 * 
 	 * @return
 	 */
-	function computeRanking($cfg_which_database = 0,$s=0)
+	public static function computeRanking($cfg_which_database = 0,$s=0)
 	{
 		$app	= JFactory::getApplication();
         
@@ -464,20 +464,20 @@ else
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($this->round,true).'</pre>'),'');
 
 
-		$this->rounds = sportsmanagementModelProject::getRounds($cfg_which_database);
+		self::$rounds = sportsmanagementModelProject::getRounds($cfg_which_database);
         
 		if ( self::$part == 1 )
 		{
 			self::$from = $firstRound['id'];
             // diddipoeler: das ist ein bug
 			//$this->to = $this->rounds[intval(count($this->rounds)/2)]->id;
-            self::$to = $this->rounds[intval(count($this->rounds)/2)-1]->id;
+            self::$to = self::$rounds[intval(count(self::$rounds)/2)-1]->id;
 		}
 		elseif ( self::$part == 2 )
 		{
 		  // diddipoeler: das ist ein bug
 			//$this->from = $this->rounds[intval(count($this->rounds)/2)+1]->id;
-            self::$from = $this->rounds[intval(count($this->rounds)/2)]->id;
+            self::$from = self::$rounds[intval(count(self::$rounds)/2)]->id;
 			self::$to = $lastRound['id'];
 		}
 		else
@@ -570,19 +570,19 @@ else
 
 			//away rank
 			if (self::$type == 2) {
-				$this->currentRanking[$division] = $ranking->getRankingAway(self::$from,self::$to,$division,$cfg_which_database);
+				self::$currentRanking[$division] = $ranking->getRankingAway(self::$from,self::$to,$division,$cfg_which_database);
 			}
 			//home rank
 			else if (self::$type == 1) {
-				$this->currentRanking[$division] = $ranking->getRankingHome(self::$from,self::$to,$division,$cfg_which_database);
+				self::$currentRanking[$division] = $ranking->getRankingHome(self::$from,self::$to,$division,$cfg_which_database);
 			}
 			//total rank
 			else {
-				$this->currentRanking[$division] = $ranking->getRanking(self::$from,self::$to,$division,$cfg_which_database);
-				$this->homeRank[$division] = $ranking->getRankingHome(self::$from,self::$to,$division,$cfg_which_database);
-				$this->awayRank[$division] = $ranking->getRankingAway(self::$from,self::$to,$division,$cfg_which_database);
+				self::$currentRanking[$division] = $ranking->getRanking(self::$from,self::$to,$division,$cfg_which_database);
+				self::$homeRank[$division] = $ranking->getRankingHome(self::$from,self::$to,$division,$cfg_which_database);
+				self::$awayRank[$division] = $ranking->getRankingAway(self::$from,self::$to,$division,$cfg_which_database);
 			}
-			$this->_sortRanking($this->currentRanking[$division]);
+			self::_sortRanking(self::$currentRanking[$division]);
 
 			
 			//previous rank
@@ -590,23 +590,23 @@ else
 			{
 				if ( self::$to == 1 || ( self::$to == self::$from ) )
 				{
-					$this->previousRanking[$division] = &$this->currentRanking[$division];
+					self::$previousRanking[$division] = &self::$currentRanking[$division];
 				}
 				else
 				{	
 					//away rank
 					if (self::$type == 2) {
-						$this->previousRanking[$division] = $ranking->getRankingAway(self::$from,$this->_getPreviousRoundId(self::$to,$cfg_which_database),$division,$cfg_which_database);
+						self::$previousRanking[$division] = $ranking->getRankingAway(self::$from,self::_getPreviousRoundId(self::$to,$cfg_which_database),$division,$cfg_which_database);
 					}
 					//home rank
 					else if (self::$type == 1) {
-						$this->previousRanking[$division] = $ranking->getRankingHome(self::$from,$this->_getPreviousRoundId(self::$to,$cfg_which_database),$division,$cfg_which_database);
+						self::$previousRanking[$division] = $ranking->getRankingHome(self::$from,self::_getPreviousRoundId(self::$to,$cfg_which_database),$division,$cfg_which_database);
 					}
 					//total rank
 					else {
-						$this->previousRanking[$division] = $ranking->getRanking(self::$from,$this->_getPreviousRoundId(self::$to,$cfg_which_database),$division,$cfg_which_database);
+						self::$previousRanking[$division] = $ranking->getRanking(self::$from,self::_getPreviousRoundId(self::$to,$cfg_which_database),$division,$cfg_which_database);
 					}
-					$this->_sortRanking($this->previousRanking[$division]);
+					self::_sortRanking(self::$previousRanking[$division]);
 				}
 			}
 		}
@@ -621,7 +621,7 @@ else
 	 * @param mixed $round_id
 	 * @return
 	 */
-	function _getPreviousRoundId($round_id,$cfg_which_database = 0)
+	public static function _getPreviousRoundId($round_id,$cfg_which_database = 0)
 	{
 	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
@@ -676,7 +676,7 @@ else
 	 * @param mixed $ranking
 	 * @return
 	 */
-	function _sortRanking(&$ranking)
+	public static function _sortRanking(&$ranking)
 	{
 	   // Reference global application object
         $app = JFactory::getApplication();
@@ -763,8 +763,8 @@ else
 			break;			
 
 			default:
-				if (method_exists($this, $order.'Cmp')) {
-					uasort( $ranking, array($this, $order.'Cmp'));
+				if (method_exists(__CLASS__, $order.'Cmp')) {
+					uasort( $ranking, array(__CLASS__, $order.'Cmp'));
 				}
 				break;
 		}
