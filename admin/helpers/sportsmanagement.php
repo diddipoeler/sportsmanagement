@@ -2182,8 +2182,8 @@ else
 	 */
 	public static function showColorsLegend($colors)
 	{
-		$jinput = JFactory::getApplication()->input
-		$favshow = $jinput->get('func', 0, INT);
+		$jinput = JFactory::getApplication()->input;
+		$favshow = $jinput->getString('func', '');
 		//$favshow = JRequest::getVar('func', '');
 		if (($favshow != 'showCurve') && (sportsmanagementModelProject::$_project->fav_team))
 		{
