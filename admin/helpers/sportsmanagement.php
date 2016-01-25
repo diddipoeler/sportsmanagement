@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f�r alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: � 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,22 +21,23 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie k�nnen es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp�teren
-* ver�ffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es n�tzlich sein wird, aber
-* OHNE JEDE GEW�HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew�hrleistung der MARKTF�HIGKEIT oder EIGNUNG F�R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f�r weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
-// No direct access to this file
+
+// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die;
  
 if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -389,8 +390,9 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
      */
     public static function isJoomlaVersion ($version = '2.5')
 	{
-	   $app	= JFactory::getApplication();
-		$option = JRequest::getCmd('option');
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
         
 		$j = new JVersion();
         
@@ -854,8 +856,9 @@ else
 	 */
 	public static function addSubmenu($submenu) 
 	{
-	   $app = JFactory::getApplication();
-		$option = JRequest::getCmd('option');
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
         $document = JFactory::getDocument();
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // retrieve the value of the state variable. If no value is specified,
@@ -1133,7 +1136,7 @@ else
 	 * @return	array project
 	 * @since	1.5
 	 */
-	function getProjects()
+	public static function getProjects()
 	{
 		$db = sportsmanagementHelper::getDBConnection();
 
@@ -1274,7 +1277,7 @@ else
 		$db = sportsmanagementHelper::getDBConnection();
 		$query='SELECT project_id FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team WHERE id='.(int) $projectteam_id;
 		$db->setQuery($query);
-		if (!$result=$db->loadResult())
+		if ( !$result = $db->loadResult() )
 		{
 			//$this->setError($db->getErrorMsg());
 			return false;
@@ -1292,7 +1295,7 @@ else
 	public static function getSportsTypeName($sportsType)
 	{
 		$db = sportsmanagementHelper::getDBConnection();
-		$query='SELECT name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type WHERE id='.(int) $sportsType;
+		$query = 'SELECT name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type WHERE id='.(int) $sportsType;
 		$db->setQuery($query);
 		if (!$result=$db->loadResult())
 		{
@@ -1314,13 +1317,13 @@ else
 		$db = sportsmanagementHelper::getDBConnection();
 		$query='SELECT id, name FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type ORDER BY name ASC ';
 		$db->setQuery($query);
-		if (!$result=$db->loadObjectList())
+		if ( !$result = $db->loadObjectList() )
 		{
 			$this->setError($db->getErrorMsg());
 			return false;
 		}
 		foreach ($result as $sportstype){
-			$sportstype->name=JText::_($sportstype->name);
+			$sportstype->name = JText::_($sportstype->name);
 		}
 		return $result;
 	}
@@ -1356,13 +1359,14 @@ else
 	 */
 	function getExtension($project_id=0)
 	{
-		$option='com_sportsmanagement';
+		$option = 'com_sportsmanagement';
 		if (!$project_id)
 		{
-			$app=&JFactory::getApplication();
-			$project_id=$app->getUserState($option.'project',0);
+			$app = JFactory::getApplication();
+			$project_id = $app->getUserState($option.'project', 0);
 		}
-		if (!$project_id){
+		if (!$project_id)
+		{
 			return false;
 		}
 
@@ -1387,8 +1391,9 @@ else
 	public static function getExtensions()
 	{
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
         $option = 'com_sportsmanagement';
-        $view = JRequest::getVar('view');
+        $view = $jinput->get('view');
 		$arrExtensions = array();
 		$excludeExtension = array();
 		
@@ -1450,12 +1455,12 @@ else
 		 */
 		public static function getExtensionsOverlay($project_id)
 	{
-		$option='com_sportsmanagement';
+		$option = 'com_sportsmanagement';
 		$arrExtensions = array();
 		$excludeExtension = array();
 		if ($project_id) {
-			$db= sportsmanagementHelper::getDBConnection();
-			$query='SELECT extension FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='. $db->Quote((int)$project_id);
+			$db = sportsmanagementHelper::getDBConnection();
+			$query = 'SELECT extension FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='. $db->Quote((int)$project_id);
 
 			$db->setQuery($query);
 			$res=$db->loadObject();
@@ -1463,7 +1468,7 @@ else
 				$excludeExtension = explode(",", $res->extension);
 			}
 		}
-		if(JFolder::exists(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions-overlay')) {
+		if ( JFolder::exists(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions-overlay') ) {
 			$folderExtensions  = JFolder::folders(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'extensions-overlay',
 													'.', false, false, $excludeExtension);
 			if($folderExtensions !== false) {
@@ -1491,7 +1496,7 @@ else
 		(preg_match('/([0-9]{4})-([0-9]{2})-([0-9]{2})/',$date,$regs) ) &&
 		($seconddate == "0000-00-00") )
 		{
-			$intAge=date('Y') - $regs[1];
+			$intAge = date('Y') - $regs[1];
 			if($regs[2] > date('m'))
 			{
 				$intAge--;
@@ -1603,25 +1608,25 @@ else
 			//setup the different placeholders
 			switch ($type) {
 				case 0: //player
-					$picture=JPATH_SITE.DS.$ph_player;
+					$picture = JPATH_SITE.DS.$ph_player;
 					break;
 				case 1: //club logo big
-					$picture=JPATH_SITE.DS.$ph_logo_big;
+					$picture = JPATH_SITE.DS.$ph_logo_big;
 					break;
 				case 2: //club logo medium
-					$picture=JPATH_SITE.DS.$ph_logo_medium;
+					$picture = JPATH_SITE.DS.$ph_logo_medium;
 					break;
 				case 3: //club logo small
-					$picture=JPATH_SITE.DS.$ph_logo_small;
+					$picture = JPATH_SITE.DS.$ph_logo_small;
 					break;
 				case 4: //icon
-					$picture=JPATH_SITE.DS.$ph_icon;
+					$picture = JPATH_SITE.DS.$ph_icon;
 					break;
 				case 5: //team picture
-					$picture=JPATH_SITE.DS.$ph_team;
+					$picture = JPATH_SITE.DS.$ph_team;
 					break;					
 				default:
-					$picture=null;
+					$picture = null;
 				break;
 			}
 		}
@@ -1635,37 +1640,37 @@ else
 				if (file_exists($picturepath)) {
 					$picture = $picturepath;
 				}
-				$thumb=PhpThumbFactory::create($picture);
+				$thumb = PhpThumbFactory::create($picture);
 				$thumb->setFormat($format);
 
 				//height and width set, resize it with the thumblib
 				if($height>0 && $width>0) {
 					$thumb->setMaxHeight($height);
 					$thumb->adaptiveResizeQuadrant ($width, $height, $quadrant = 'C');
-					$pic=$thumb->getImageAsString();
+					$pic = $thumb->getImageAsString();
 					$ret .= '<img src="data:image/'.$format.';base64,'. base64_encode($pic);
 					$ret .='" alt="'.$alttext.'" title="'.$alttext.'"/>';
 				}
 				//height==0 and width set, let the browser resize it
-				if($height==0 && $width>0) {
+				if($height == 0 && $width >0) {
 					$thumb->setMaxWidth($width);
-					$pic=$thumb->getImageAsString();
+					$pic = $thumb->getImageAsString();
 					$ret .= '<img src="data:image/'.$format.';base64,'. base64_encode($pic);
-					$ret .='" width="'.$width.'" alt="'.$alttext.'" title="'.$alttext.'"/>';
+					$ret .= '" width="'.$width.'" alt="'.$alttext.'" title="'.$alttext.'"/>';
 				}
 				//width==0 and height set, let the browser resize it
 				if($height>0 && $width==0) {
 					$thumb->setMaxHeight($height);
-					$pic=$thumb->getImageAsString();
+					$pic = $thumb->getImageAsString();
 					$ret .= '<img src="data:image/'.$format.';base64,'. base64_encode($pic);
-					$ret .='" height="'.$height.'" alt="'.$alttext.'" title="'.$alttext.'"/>';
+					$ret .= '" height="'.$height.'" alt="'.$alttext.'" title="'.$alttext.'"/>';
 				}
 				//width==0 and height==0, use original picture size
 				if($height==0 && $width==0) {
 					$thumb->setMaxHeight($height);
-					$pic=$thumb->getImageAsString();
+					$pic = $thumb->getImageAsString();
 					$ret .= '<img src="data:image/'.$format.';base64,'. base64_encode($pic);
-					$ret .='" alt="'.$alttext.'" title="'.$alttext.'"/>';
+					$ret .= '" alt="'.$alttext.'" title="'.$alttext.'"/>';
 				}
 			} else {
 				$picture = JURI::root(true).'/'.str_replace(JPATH_SITE.DS, "", $picture);
@@ -1678,25 +1683,25 @@ else
 				}
 				$ret .= '<img ';
 				$ret .= ' ';
-				if($height>0 && $width>0) {
+				if($height > 0 && $width > 0) {
 					$ret .= ' src="'.$picture;
-					$ret .='" width="'.$width.'" height="'.$height.'"
+					$ret .= '" width="'.$width.'" height="'.$height.'"
 							alt="'.$alttext.'" title="'.$title.'"';
 				}
 				//height==0 and width set, let the browser resize it
-				if($height==0 && $width>0) {
+				if($height == 0 && $width > 0) {
 					$ret .= ' src="'.$picture;
-					$ret .='" width="'.$width.'" alt="'.$alttext.'" title="'.$title.'"';
+					$ret .= '" width="'.$width.'" alt="'.$alttext.'" title="'.$title.'"';
 				}
 				//width==0 and height set, let the browser resize it
-				if($height>0 && $width==0) {
+				if($height > 0 && $width == 0) {
 					$ret .= ' src="'.$picture;
-					$ret .='" height="'.$height.'" alt="'.$alttext.'" title="'.$title.'"';
+					$ret .= '" height="'.$height.'" alt="'.$alttext.'" title="'.$title.'"';
 				}
 				//width==0 and height==0, use original picture size
-				if($height==0 && $width==0) {
+				if($height == 0 && $width == 0) {
 					$ret .= ' src="'.$picture;
-					$ret .='" alt="'.$alttext.'" title="'.$title.'"';
+					$ret .= '" alt="'.$alttext.'" title="'.$title.'"';
 				}
 				$ret .= '/>';
 				if($bUseHighslide) {
@@ -1814,7 +1819,7 @@ else
 	 */
 	static function convertDate($DummyDate,$direction=1)
 	{
-		if(!strpos($DummyDate,"-")!==false)
+		if(!strpos($DummyDate, "-") !==false)
 		{
 			// for example 31122011 is used for 31 december 2011
 			if (strlen($DummyDate) == 8 )
@@ -1870,7 +1875,8 @@ else
 	public static function showTeamIcons(&$team,&$config,$cfg_which_database = 0,$s=0)
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($team,true).'</pre>'),'');
         
@@ -1909,14 +1915,14 @@ else
 
 		if (((!isset($team_plan)) || ($teamid!=$team_plan->id)) && ($config['show_plan_link']))
 		{
-		  $routeparameter = array();
-       $routeparameter['s'] = $s;
-       $routeparameter['cfg_which_database'] = $cfg_which_database;
-       $routeparameter['p'] = $projectSlug;
-       $routeparameter['tid'] = $teamSlug;
-       $routeparameter['division'] = $division_slug;
-       $routeparameter['mode'] = 0;
-       $routeparameter['ptid'] = $projectteamid;
+		$routeparameter = array();
+		$routeparameter['s'] = $s;
+		$routeparameter['cfg_which_database'] = $cfg_which_database;
+		$routeparameter['p'] = $projectSlug;
+		$routeparameter['tid'] = $teamSlug;
+		$routeparameter['division'] = $division_slug;
+		$routeparameter['mode'] = 0;
+		$routeparameter['ptid'] = $projectteamid;
 			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
 			$title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMPLAN_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/calendar_icon.gif';
@@ -1926,13 +1932,13 @@ else
 
 		if ($config['show_curve_link'])
 		{
-		  $routeparameter = array();
-       $routeparameter['s'] = $s;
-       $routeparameter['cfg_which_database'] = $cfg_which_database;
-       $routeparameter['p'] = $projectSlug;
-       $routeparameter['tid1'] = $teamSlug;
-       $routeparameter['tid2'] = 0;
-       $routeparameter['division'] = $division_slug;
+		$routeparameter = array();
+		$routeparameter['s'] = $s;
+		$routeparameter['cfg_which_database'] = $cfg_which_database;
+		$routeparameter['p'] = $projectSlug;
+		$routeparameter['tid1'] = $teamSlug;
+		$routeparameter['tid2'] = 0;
+		$routeparameter['division'] = $division_slug;
 
 			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('curve',$routeparameter);
 			$title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_CURVE_LINK').'&nbsp;'.$teamname;
@@ -1943,13 +1949,12 @@ else
 
 		if ($config['show_teaminfo_link'])
 		{
-		  $routeparameter = array();
-       $routeparameter['s'] = $s;
-       $routeparameter['cfg_which_database'] = $cfg_which_database;
-       $routeparameter['p'] = $projectSlug;
-       $routeparameter['tid'] = $teamSlug;
-       $routeparameter['ptid'] = $projectteamid;
-
+		$routeparameter = array();
+		$routeparameter['s'] = $s;
+		$routeparameter['cfg_which_database'] = $cfg_which_database;
+		$routeparameter['p'] = $projectSlug;
+		$routeparameter['tid'] = $teamSlug;
+		$routeparameter['ptid'] = $projectteamid;
 
 			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
             $title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMINFO_LINK').'&nbsp;'.$teamname;
@@ -1960,12 +1965,12 @@ else
 
 		if ($config['show_club_link'])
 		{
-		  $routeparameter = array();
-       $routeparameter['s'] = $s;
-       $routeparameter['cfg_which_database'] = $cfg_which_database;
-       $routeparameter['p'] = $projectSlug;
-       $routeparameter['cid'] = $clubSlug;
-       $routeparameter['task'] = NULL;
+		$routeparameter = array();
+		$routeparameter['s'] = $s;
+		$routeparameter['cfg_which_database'] = $cfg_which_database;
+		$routeparameter['p'] = $projectSlug;
+		$routeparameter['cid'] = $clubSlug;
+		$routeparameter['task'] = NULL;
 
        
 			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('clubinfo',$routeparameter);
@@ -1977,45 +1982,48 @@ else
 
 		if ($config['show_teamstats_link'])
 		{
-		  $routeparameter = array();
-       $routeparameter['s'] = $s;
-       $routeparameter['cfg_which_database'] = $cfg_which_database;
-       $routeparameter['p'] = $projectSlug;
-       $routeparameter['tid'] = $teamSlug;
+		$routeparameter = array();
+		$routeparameter['s'] = $s;
+		$routeparameter['cfg_which_database'] = $cfg_which_database;
+		$routeparameter['p'] = $projectSlug;
+		$routeparameter['tid'] = $teamSlug;
+		
 			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats',$routeparameter);
-			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMSTATS_LINK').'&nbsp;'.$teamname;
+			$title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_TEAMSTATS_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/teamstats_icon.png';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
-			$output .= JHtml::link($link,$desc);
+			$output .= JHtml::link($link, $desc);
 		}
 
 		if ($config['show_clubplan_link'])
 		{
-		  $routeparameter = array();
-       $routeparameter['s'] = $s;
-       $routeparameter['cfg_which_database'] = $cfg_which_database;
-       $routeparameter['p'] = $projectSlug;
-       $routeparameter['cid'] = $clubSlug;
-       $routeparameter['task'] = NULL;
+		$routeparameter = array();
+		$routeparameter['s'] = $s;
+		$routeparameter['cfg_which_database'] = $cfg_which_database;
+		$routeparameter['p'] = $projectSlug;
+		$routeparameter['cid'] = $clubSlug;
+		$routeparameter['task'] = NULL;
+		
 			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('clubplan',$routeparameter);
-			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_CLUBPLAN_LINK').'&nbsp;'.$teamname;
+			$title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_CLUBPLAN_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/clubplan_icon.png';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
-			$output .= JHtml::link($link,$desc);
+			$output .= JHtml::link($link, $desc);
 		}
         
         if ($config['show_rivals_link'])
 		{
-		  $routeparameter = array();
-       $routeparameter['s'] = $s;
-       $routeparameter['cfg_which_database'] = $cfg_which_database;
-       $routeparameter['p'] = $projectSlug;
-       $routeparameter['tid'] = $teamSlug;
+		$routeparameter = array();
+		$routeparameter['s'] = $s;
+		$routeparameter['cfg_which_database'] = $cfg_which_database;
+		$routeparameter['p'] = $projectSlug;
+		$routeparameter['tid'] = $teamSlug;
+		
 			$link = sportsmanagementHelperRoute::getSportsmanagementRoute('rivals',$routeparameter);
-			$title=JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_RIVALS_LINK').'&nbsp;'.$teamname;
+			$title = JText::_('COM_SPORTSMANAGEMENT_TEAMICONS_RIVALS_LINK').'&nbsp;'.$teamname;
 			$picture = 'media/com_sportsmanagement/jl_images/rivals.png';
 			$desc = self::getPictureThumb($picture, $title, 0, 0, 4);
-			$output .= JHtml::link($link,$desc);
+			$output .= JHtml::link($link, $desc);
 		}
 
 		return $output;
@@ -2051,11 +2059,11 @@ else
 			$container		= 'div';
 		}
 		
-		$showIcons=	(
-						($config['show_info_link']==2) && ($isfav)
+		$showIcons =	(
+						($config['show_info_link'] == 2) && ($isfav)
 					) ||
 					(
-						($config['show_info_link']==1) &&
+						($config['show_info_link'] == 1) &&
 						(
 							$config['show_club_link'] ||
 							$config['show_team_link'] ||
@@ -2146,12 +2154,12 @@ else
 	 */
 	public static function showClubIcon(&$team,$type=1,$with_space=0)
 	{
-		if (($type==1) && (isset($team->country)))
+		if (($type == 1) && (isset($team->country)))
 		{
 			if ( $team->logo_small != '' )
 			{
-				echo JHtml::image($team->logo_small,'');
-				if ($with_space==1){
+				echo JHtml::image($team->logo_small, '');
+				if ($with_space == 1){
 					echo ' style="padding:1px;"';
 				}
 			}
@@ -2160,7 +2168,7 @@ else
 				echo '&nbsp;';
 			}
 		}
-		elseif (($type==2) && (isset($team->country)))
+		elseif (($type == 2) && (isset($team->country)))
 		{
 			echo JSMCountries::getCountryFlag($team->country);
 		}
@@ -2174,15 +2182,15 @@ else
 	 */
 	public static function showColorsLegend($colors)
 	{
-		$favshow=JRequest::getVar('func','');
-		if (($favshow!='showCurve') && (sportsmanagementModelProject::$_project->fav_team))
+		$favshow = JRequest::getVar('func', '');
+		if (($favshow != 'showCurve') && (sportsmanagementModelProject::$_project->fav_team))
 		{
 			$fav=array('color'=>sportsmanagementModelProject::$_project->fav_team_color,'description'=> JText::_('COM_SPORTSMANAGEMENT_RANKING_FAVTEAM'));
 			array_push($colors,$fav);
 		}
 		foreach($colors as $color)
 		{
-			if (trim($color['description'])!='')
+			if (trim($color['description']) != '')
 			{
 				echo '<td align="center" style="background-color:'.$color['color'].';"><b>'.$color['description'].'</b>&nbsp;</td>';
 			}
@@ -2200,16 +2208,16 @@ else
 	 */
 	public function stripInvalidXml($value)
 	{
-		$ret='';
-		$current='';
+		$ret = '';
+		$current = '';
 		if (is_null($value)){
 			return $ret;
 		}
 
-		$length=strlen($value);
-		for ($i=0; $i < $length; $i++)
+		$length = strlen($value);
+		for ($i =0 ; $i < $length; $i++)
 		{
-			$current=ord($value{$i});
+			$current = ord($value{$i});
 			if (($current == 0x9) ||
 			($current == 0xA) ||
 			($current == 0xD) ||
@@ -2234,8 +2242,9 @@ else
 	 */
 	public static function getVersion() 
 	{
-	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
        //$db = sportsmanagementHelper::getDBConnection();
        $query = JFactory::getDbo()->getQuery(true);
        // Select some fields
@@ -2507,8 +2516,9 @@ else
      */
     static function ToolbarButton($layout = Null,$icon_image = 'upload',$alt_text = 'My Label',$view = '',$type=0)
 	{
-	$option = JRequest::getCmd('option');
-	$app = JFactory::getApplication();
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
     
     //$app->enqueueMessage(JText::_('ToolbarButton layout<br><pre>'.print_r(JRequest::getVar('layout'),true).'</pre>'),'Notice');
     //$app->enqueueMessage(JText::_('ToolbarButton get<br><pre>'.print_r($_GET,true).'</pre>'),'Notice');
@@ -2540,11 +2550,12 @@ else
      */
     static function ToolbarButtonOnlineHelp()
 	{
-	$option = JRequest::getCmd('option');
-	$app = JFactory::getApplication();
-	$document = JFactory::getDocument();
-    $view = JRequest::getVar( "view") ;
-    $layout= JRequest::getVar( "layout") ;
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+		$document = JFactory::getDocument();
+		$view = $jinput->get( 'view' ) ;
+    $layout= $jinput->get( 'layout' ) ;
     $view = ucfirst(strtolower($view));
     $layout = ucfirst(strtolower($layout));
     $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
@@ -2596,7 +2607,7 @@ else
 	* @param string $ordering
 	* @return array
 	*/
-	public static function getRoundsOptions($project_id, $ordering='ASC', $required = false, $round_ids = NULL,$cfg_which_database = 0)
+	public static function getRoundsOptions($project_id, $ordering = 'ASC', $required = false, $round_ids = NULL, $cfg_which_database = 0)
 	{
 		$app = JFactory::getApplication();
         $db = self::getDBConnection(TRUE, $cfg_which_database );
@@ -2633,10 +2644,13 @@ else
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' '.'<pre>'.print_r($query->dump(),true).'</pre>' ),'');
 
 		$db->setQuery($query);
-		if(!$required) {
+		if (!$required)
+		{
 			$mitems = array(JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT')));
 			return array_merge($mitems, $db->loadObjectList());
-		} else {
+		}
+		else
+		{
 			return $db->loadObjectList();
 		}
 	}
@@ -2691,10 +2705,11 @@ else
  * @param integer $fieldtyp
  * @return
  */
-public static function getExtraSelectOptions($view='', $field='', $template = FALSE, $fieldtyp = 0  )	
+public static function getExtraSelectOptions($view = '', $field = '', $template = FALSE, $fieldtyp = 0  )	
 {
-$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option'); 
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
         $select_columns = array();
         $select_values = array();
         $select_options = array();    
@@ -2756,7 +2771,6 @@ $app = JFactory::getApplication();
           
           return $select_options;
           
-			
 		}
 		else
         {
@@ -2774,10 +2788,11 @@ $app = JFactory::getApplication();
      * @param string $template
      * @return
      */
-    static function checkUserExtraFields($template='backend',$cfg_which_database=0)
+    static function checkUserExtraFields($template = 'backend', $cfg_which_database = 0)
     {
-         $app	= JFactory::getApplication();
-		$option = JRequest::getCmd('option');
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         
@@ -2807,7 +2822,7 @@ $app = JFactory::getApplication();
      * @param string $template
      * @return
      */
-    static function getUserExtraFields($jlid,$template='backend',$cfg_which_database=0)
+    static function getUserExtraFields($jlid, $template = 'backend', $cfg_which_database = 0)
     {
         $app = JFactory::getApplication();
     	$db = sportsmanagementHelper::getDBConnection();
@@ -2845,7 +2860,7 @@ $app = JFactory::getApplication();
      * @param mixed $pid
      * @return void
      */
-    function saveExtraFields($post,$pid)
+    public static function saveExtraFields($post, $pid)
   {
     $app = JFactory::getApplication();
        $address_parts = array();
@@ -2857,14 +2872,14 @@ $app = JFactory::getApplication();
     {
         //$app->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields<br><pre>'.print_r($post,true).'</pre>'),'Notice');
         //$app->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields pid<br><pre>'.print_r($pid,true).'</pre>'),'Notice');
-			for($p=0;$p<count($post['extraf']);$p++)
+			for($p = 0;$p<count($post['extraf']);$p++)
             {
                 // Create a new query object.
                 $query = $db->getQuery(true);
 // delete all
 $conditions = array(
-    $db->quoteName('field_id') . '='.$post['extra_id'][$p],
-    $db->quoteName('jl_id') . '='.$pid
+	$db->quoteName('field_id') . '='.$post['extra_id'][$p], 
+	$db->quoteName('jl_id') . '='.$pid
 );
  
 $query->delete($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields_values'));
@@ -2945,8 +2960,7 @@ public function getOSMGeoCoords($address)
     // call OSM geoencoding api
     // limit to one result (limit=1) without address details (addressdetails=0)
     // output in JSON
-    $geoCodeURL = "http://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=1&q=".
-                  urlencode($address);
+    $geoCodeURL = "http://nominatim.openstreetmap.org/search?format=json&limit=1&addressdetails=1&q=".urlencode($address);
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($geoCodeURL,true).'</pre>'),'');   
     
@@ -2987,16 +3001,16 @@ public function getOSMGeoCoords($address)
     public static function resolveLocation($address)
 	{
 		$app = JFactory::getApplication();
-    $coords = array();
+		$coords = array();
 		$data = self::getAddressData($address);
         
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($address,true).'</pre>'),'');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($data->status,true).'</pre>'),'');
 //$osm = self::getOSMGeoCoords($address);  
         
-		if($data)
+		if ($data)
         {
-			if($data->status == 'OK')
+			if ($data->status == 'OK')
 			{
 				self::$latitude  = $data->results[0]->geometry->location->lat;
 				$coords['latitude'] = $data->results[0]->geometry->location->lat; 
@@ -3104,7 +3118,7 @@ public function getOSMGeoCoords($address)
 			}
 			
 			
-			if(!$raw){
+			if (!$raw){
 				list( $headers , $body )	= explode( "\r\n\r\n" , $response , 2 );
 			}
 			
@@ -3128,7 +3142,8 @@ public function getOSMGeoCoords($address)
     static function getPictureClub($id)
     {
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
     // Create a new query object.
         $query = $db->getQuery(true);
@@ -3143,7 +3158,7 @@ public function getOSMGeoCoords($address)
         }
         else
         {
-            $picture = JComponentHelper::getParams($option)->get('ph_logo_big','');
+            $picture = JComponentHelper::getParams($option)->get('ph_logo_big', '');
         }
 		return $picture;
     }
@@ -3157,7 +3172,8 @@ public function getOSMGeoCoords($address)
     static function getPicturePlayground($id)
     {
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $jinput = $app->input;
+		$option = $jinput->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
     // Create a new query object.
         $query = $db->getQuery(true);
@@ -3187,7 +3203,8 @@ public function getOSMGeoCoords($address)
     public static function getArticleList($project_category_id)
     {
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $jinput = $app->input;
+		$option = $jinput->getCmd('option');
        // $db = sportsmanagementHelper::getDBConnection();
        
        // wenn der user die k2 komponente

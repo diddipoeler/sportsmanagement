@@ -63,8 +63,9 @@ class sportsmanagementViewClubs extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$uri = JFactory::getURI();
         $model = $this->getModel();
         $my_text = '';
@@ -94,14 +95,14 @@ class sportsmanagementViewClubs extends sportsmanagementView
 		$pagination = $this->get('Pagination');
         
         $table = JTable::getInstance('club', 'sportsmanagementTable');
-		$this->assignRef('table', $table);
+		$this->table = $table;
         
         //build the html select list for seasons
-		$seasons[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'),'id','name');
-        $mdlSeasons = JModelLegacy::getInstance('Seasons','sportsmanagementModel');
+		$seasons[]	= JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'id', 'name');
+        $mdlSeasons = JModelLegacy::getInstance('Seasons', 'sportsmanagementModel');
 		$allSeasons = $mdlSeasons->getSeasons();
-		$seasons = array_merge($seasons,$allSeasons);
-        $this->assignRef('season',$allSeasons);
+		$seasons = array_merge($seasons, $allSeasons);
+        $this->season = $allSeasons;
 		$lists['seasons'] = JHtml::_( 'select.genericList',
 									$seasons,
 									'filter_season',
@@ -119,12 +120,12 @@ class sportsmanagementViewClubs extends sportsmanagementView
 		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions())
         {
-            $nation = array_merge($nation,$res);
-            $this->assignRef('search_nation',$res);
+            $nation = array_merge($nation, $res);
+            $this->search_nation = $res;
             }
 		
-        $lists['nation'] = $nation;
-        $lists['nation2']= JHtmlSelect::genericlist(	$nation,
+		$lists['nation']	= $nation;
+		$lists['nation2']	= JHtmlSelect::genericlist(	$nation,
 																'filter_search_nation',
 																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
 																'value',
@@ -133,12 +134,12 @@ class sportsmanagementViewClubs extends sportsmanagementView
 
 
 
-		$this->assign('user',JFactory::getUser());
-		$this->assign('config',JFactory::getConfig());
-		$this->assignRef('lists',$lists);
-		$this->assignRef('items',$items);
-		$this->assignRef('pagination',$pagination);
-		$this->assign('request_url',$uri->toString());
+		$this->user			= JFactory::getUser();
+		$this->config		= JFactory::getConfig();
+		$this->lists		= $lists;
+		$this->items		= $items;
+		$this->pagination	= $pagination;
+		$this->request_url	= $uri->toString();
 		
         
 	}
@@ -150,8 +151,10 @@ class sportsmanagementViewClubs extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-	    $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+		
 		//// Get a refrence of the page instance in joomla
 //		$document	= JFactory::getDocument();
 //        // Set toolbar items for the page
@@ -159,21 +162,23 @@ class sportsmanagementViewClubs extends sportsmanagementView
 //        $document->addCustomTag($stylelink);
 //        
 //        // Set toolbar items for the page
-$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_TITLE');
+
+		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_TITLE');
         JToolBarHelper::apply('clubs.saveshort');
         
         JToolBarHelper::divider();
 		JToolBarHelper::addNew('club.add');
 		JToolBarHelper::editList('club.edit');
-		JToolBarHelper::custom('club.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
+		JToolBarHelper::custom('club.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
 		JToolBarHelper::archiveList('club.export',JText::_('JTOOLBAR_EXPORT'));
 		if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
             {
-		    JToolbarHelper::trash('clubs.trash');
+				JToolbarHelper::trash('clubs.trash');
             }
-            else
-            {
-            JToolBarHelper::deleteList('', 'clubs.delete', 'JTOOLBAR_DELETE');    
+			
+			else
+			{
+				JToolBarHelper::deleteList('', 'clubs.delete', 'JTOOLBAR_DELETE');    
             }
 		JToolbarHelper::checkin('clubs.checkin');
         parent::addToolbar();

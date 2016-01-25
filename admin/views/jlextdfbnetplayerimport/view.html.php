@@ -88,17 +88,19 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		// Set toolbar items for the page
 		//JToolBarHelper::title ( JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_TITLE_1_3' ), 'generic.png' );
 		//JToolBarHelper::help ( 'screen.joomleague', true );
-		
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$uri = JFactory::getURI ();
 		$config = JComponentHelper::getParams ( 'com_media' );
-		$post = JRequest::get ( 'post' );
-		$files = JRequest::get ( 'files' );
+		$post = $input->post;
+		$files = $input->get('files');
 		
-		$this->assignRef ( 'request_url', $uri->toString () );
-		$this->assignRef ( 'config', $config );
+		$this->request_url	= $uri->toString ();
+		$this->config	= $config;
 		
 		$revisionDate = '2011-04-28 - 12:00';
-		$this->assignRef ( 'revisionDate', $revisionDate );
+		$this->revisionDate	= $revisionDate );
 		
 		parent::display ( $tpl );
 	}
@@ -134,9 +136,11 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 	function _displayDefault($tpl) 
     {
 		//global $option;
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication ();
-		$db = JFactory::getDBO ();
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+		
+		$db		= sportsmanagementHelper::getDBConnection();
 		$uri = JFactory::getURI ();
 		$user = JFactory::getUser ();
 		
@@ -146,15 +150,15 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		
 		$model = $this->getModel ();
 		$project = $app->getUserState ( $option . 'project' );
-		$this->assignRef ( 'project', $project );
+		$this->project	= $project;
 		$config = JComponentHelper::getParams ( 'com_media' );
 		
-		$this->assign ( 'request_url', $uri->toString () );
-		$this->assignRef ( 'config', $config );
+		$this->request_url	= $uri->toString ();
+		$this->config	= $config;
 		$revisionDate = '2011-04-28 - 12:00';
-		$this->assignRef ( 'revisionDate', $revisionDate );
+		$this->revisionDate	= $revisionDate;
 		$import_version = 'NEW';
-		$this->assignRef ( 'import_version', $import_version );
+		$this->import_version	= $import_version;
 		
 		$this->addToolbar ();
 		parent::display ( $tpl );
@@ -164,16 +168,17 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 	function _displayDefaultUpdate($tpl) 
     {
 		// global $app, $option;
-		$app = & JFactory::getApplication ();
-		$option = JRequest::getCmd ( 'option' );
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		
-		$db = JFactory::getDBO ();
+		$db		= sportsmanagementHelper::getDBConnection();
 		$uri = JFactory::getURI ();
 		$user = JFactory::getUser ();
 		$model = $this->getModel ();
 		//$option = 'com_joomleague';
 		$project = $app->getUserState ( $option . 'project' );
-		$this->assignRef ( 'project', $project );
+		$this->project	= $project;
 		$config = JComponentHelper::getParams ( 'com_media' );
 		
 		$uploadArray = $app->getUserState ( $option . 'uploadArray', array () );
@@ -181,9 +186,8 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		$whichfile = $app->getUserState ( $option . 'whichfile' );
 		//$delimiter = $app->getUserState ( $option . 'delimiter' );
 		
-		$this->assignRef ( 'uploadArray', $uploadArray );
-		
-		$this->assignRef ( 'importData', $model->getUpdateData () );
+		$this->uploadArray	= $uploadArray;
+		$this->importData	= $model->getUpdateData ();
 		
 		// $this->assignRef('xml',$model->getData());
 		
@@ -196,22 +200,22 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
     
 	protected function addToolbar() 
     {
-        // Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        $option = JRequest::getCmd('option');
+        // global $app, $option;
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		
-        
-        // Get a refrence of the page instance in joomla
+		// Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
         // Set toolbar items for the page
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+		$stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
+		$document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
 		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT' ),'dfbnet' );
         JToolBarHelper::divider();
-            sportsmanagementHelper::ToolbarButtonOnlineHelp();
-			JToolBarHelper::preferences($option);
+		sportsmanagementHelper::ToolbarButtonOnlineHelp();
+		JToolBarHelper::preferences($option);
 
 	}
 }

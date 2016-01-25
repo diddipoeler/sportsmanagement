@@ -65,8 +65,9 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 	public function init ()
 	{
 		$document=JFactory::getDocument();
-        $option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+        $app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
         
         $project_id = $app->getUserState( "$option.pid", '0' );
         $model	= $this->getModel();
@@ -243,16 +244,16 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         {
 		jimport('joomla.html.pane');
 		$pane = JPane::getInstance('sliders');
-		$this->assignRef( 'pane' , $pane );
+		$this->pane	= $pane;
         }
         
-        $this->assignRef( 'sporttypes' , $sporttypes );
-        $this->assign( 'version', $model->getVersion() );
+        $this->sporttypes	= $sporttypes;
+        $this->version	= $model->getVersion();
         
         // diddipoeler erst mal abgeschaltet
         //$this->assign( 'githubrequest', $model->getGithubRequests() );
-        $this->assignRef('importData', $model->_success_text );
-        $this->assignRef('importData2', $databasetool->_success_text );
+        $this->importData	= $model->_success_text;
+        $this->importData2	= $databasetool->_success_text;
         
         if ( !$project_id )
         {
@@ -286,7 +287,8 @@ class sportsmanagementViewcpanel extends sportsmanagementView
   		$app = JFactory::getApplication(); 
           // Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
-        $option = JRequest::getCmd('option');
+        $jinput = $app->input;
+		$option = $jinput->getCmd('option');
         $task = JRequest::getCmd('task');
 
 //        // Set toolbar items for the page
@@ -305,7 +307,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         }
         else
         {
-        $js ="registerhome('".JURI::base()."','JSM Sports Management','".$app->getCfg('sitename')."','0');". "\n";
+        $js = "registerhome('".JURI::base()."','JSM Sports Management','".$app->getCfg('sitename')."','0');". "\n";
         $document->addScriptDeclaration( $js );    
         }
         

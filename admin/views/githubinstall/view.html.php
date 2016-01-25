@@ -64,18 +64,19 @@ class sportsmanagementViewgithubinstall extends sportsmanagementView
 	public function init ()
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
         $model = $this->getModel();
         $uri = JFactory::getURI();
         
         $github_link = JComponentHelper::getParams($option)->get('cfg_update_server_file','');
-        $this->assignRef('github_link',$github_link );
+        $this->github_link	= $github_link;
         
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' github_link<br><pre>'.print_r($github_link,true).'</pre>'),'');
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
         
         //$copy_github_link = $model->CopyGithubLink($github_link);
-        $this->assign('request_url',$uri->toString());
+        $this->request_url	= $uri->toString();
         
  
 //		// Display the template

@@ -60,8 +60,9 @@ class sportsmanagementViewJlextfederation extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
-		$app	= JFactory::getApplication();
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
         $starttime = microtime(); 
         // get the Data
 		$form = $this->get('Form');
@@ -96,7 +97,9 @@ class sportsmanagementViewJlextfederation extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{
-		JRequest::setVar('hidemainmenu', true);
+		$app	= JFactory::getApplication();
+		$jinput	= $app->input;
+		$jinput->set('hidemainmenu', true);
         parent::addToolbar();
 	}
 	
