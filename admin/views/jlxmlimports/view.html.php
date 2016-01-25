@@ -79,8 +79,8 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		$uri = JFactory::getURI();
 		$config = JComponentHelper::getParams('com_media');
         $upload_maxsize = JComponentHelper::getParams('com_media')->get('upload_maxsize','200');
-		$post = $input->get('post');
-		$files = $input->get('files');
+		$post = $jinput->get('post');
+		$files = $jinput->get('files');
 		$this->request_url	= $uri->toString();
 		$this->upload_maxsize	= $upload_maxsize;
         $this->config	= $config;
@@ -155,7 +155,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
        $this->xml	= $data;
        $this->importData	= $update_matches;
        $this->projektfussballineuropa	= $model->getDataUpdateImportID();
-       $this->assignRef('option',$option);
+       $this->option	= $option;
        
        // Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
@@ -186,6 +186,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		$mtime 			= explode(" ",$mtime);
 		$mtime			= $mtime[1] + $mtime[0];
 		$starttime		= $mtime;
+		
 		$app = JFactory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
@@ -228,7 +229,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		$this->leagues	= $mdl->getLeagues();
         // diddi
         $mdl = JModelLegacy::getInstance('seasons', 'sportsmanagementModel');
-		$this->seasons	$mdl->getSeasons();
+		$this->seasons	= $mdl->getSeasons();
         // diddi
         $mdl = JModelLegacy::getInstance('sportstypes', 'sportsmanagementModel');
 		$this->sportstypes	= $mdl->getSportsTypes();
