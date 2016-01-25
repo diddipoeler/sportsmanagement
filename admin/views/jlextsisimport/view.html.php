@@ -94,17 +94,19 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 		// Set toolbar items for the page
 		//JToolBarHelper::title ( JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_TITLE_1_3' ), 'generic.png' );
 		//JToolBarHelper::help ( 'screen.joomleague', true );
-		
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$uri = JFactory::getURI ();
 		$config = JComponentHelper::getParams ( 'com_media' );
-		$post = JRequest::get ( 'post' );
-		$files = JRequest::get ( 'files' );
+		$post = $jinput->get('post');
+		$files = $jinput->get('files');
 		
-		$this->assignRef ( 'request_url', $uri->toString () );
-		$this->assignRef ( 'config', $config );
+		$this->request_url	= $uri->toString ();
+		$this->config	= $config;
 		
 		$revisionDate = '2011-04-28 - 12:00';
-		$this->assignRef ( 'revisionDate', $revisionDate );
+		$this->revisionDate	= $revisionDate;
 		
 		
 	}
@@ -120,8 +122,9 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 	function _displayDefault($tpl) 
     {
 		//global $option;
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication ();
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$db = JFactory::getDBO ();
 		$uri = JFactory::getURI ();
 		$user = JFactory::getUser ();
@@ -132,7 +135,7 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 		
 		$model = $this->getModel ();
 		$project = $app->getUserState ( $option . 'project' );
-		$this->assignRef ( 'project', $project );
+		$this->project	= $project;
 		$config = JComponentHelper::getParams ( 'com_media' );
         $params = JComponentHelper::getParams( $option );
         $sis_xmllink	= $params->get( 'sis_xmllink' );
@@ -143,12 +146,12 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 //        $app->enqueueMessage(JText::_('sis_meinevereinsnummer<br><pre>'.print_r($sis_nummer,true).'</pre>'   ),'');
 //        $app->enqueueMessage(JText::_('sis_meinvereinspasswort<br><pre>'.print_r($sis_passwort,true).'</pre>'   ),'');
         
-		$this->assign ( 'request_url', $uri->toString () );
-		$this->assignRef ( 'config', $config );
+		$this->request_url	= $uri->toString ();
+		$this->config	= $config;
 		$revisionDate = '2011-04-28 - 12:00';
-		$this->assignRef ( 'revisionDate', $revisionDate );
+		$this->revisionDate	= $revisionDate;
 		$import_version = 'NEW';
-		$this->assignRef ( 'import_version', $import_version );
+		$this->import_version	= $import_version;
 		
 	
 	}
@@ -163,8 +166,9 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 	function _displayDefaultUpdate($tpl) 
     {
 		// global $app, $option;
-		$app = JFactory::getApplication ();
-		$option = JRequest::getCmd ( 'option' );
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		
 		$db = JFactory::getDBO ();
 		$uri = JFactory::getURI ();
@@ -172,7 +176,7 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 		$model = $this->getModel ();
 		//$option = 'com_joomleague';
 		$project = $app->getUserState ( $option . 'project' );
-		$this->assignRef ( 'project', $project );
+		$this->project	= $project;
 		$config = JComponentHelper::getParams ( 'com_media' );
 		
 		$uploadArray = $app->getUserState ( $option . 'uploadArray', array () );
@@ -180,9 +184,9 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 		$whichfile = $app->getUserState ( $option . 'whichfile' );
 		//$delimiter = $app->getUserState ( $option . 'delimiter' );
 		
-		$this->assignRef ( 'uploadArray', $uploadArray );
+		$this->uploadArray	= $uploadArray;
 		
-		$this->assignRef ( 'importData', $model->getUpdateData () );
+		$this->importData	= $model->getUpdateData();
 		
 
 	}
@@ -197,8 +201,9 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 	protected function addToolbar() 
     {
          // Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        $option = JRequest::getCmd('option');
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 
         
 //        // Set toolbar items for the page

@@ -27,7 +27,7 @@
 * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
 * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
 * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
 * Siehe die GNU General Public License für weitere Details.
 *
@@ -53,13 +53,13 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewjlextindividualsportes extends JView
+class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
 {
 	public function init ()
 	{
 		$app = JFactory::getApplication();
 
-		if ($this->getLayout()=='default')
+		if ($this->getLayout() == 'default')
 		{
 			$this->_displayDefault($tpl);
 			return;
@@ -70,24 +70,25 @@ class sportsmanagementViewjlextindividualsportes extends JView
 
 	function _displayDefault($tpl)
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
         $model = $this->getModel();
 		$uri = JFactory::getURI();
 
-$this->state = $this->get('State'); 
+		$this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
         
-    $cid = JRequest::getVar('cid', null, 'request', 'array');
-    
+		//$cid = JRequest::getVar('cid', 'request', 'array');
+		$cid = $jinput->request->get('cid', null, ARRAY)
 
 		
-        $project_id			= $app->getUserState( "$option.pid", '0' );
-		$match_id		= JRequest::getvar('id', 0);
-        $rid		= JRequest::getvar('rid', 0);
-		$projectteam1_id		= JRequest::getvar('team1', 0);
-		$projectteam2_id		= JRequest::getvar('team2', 0);
+        $project_id	= $app->getUserState( "$option.pid", '0' );
+		$match_id	= $input->getInt('id', 0);
+        $rid		= $input->getInt('rid', 0);
+		$projectteam1_id		= $input->getInt('team1', 0);
+		$projectteam2_id		= J$input->getInt('team2', 0);
         
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $projectws = $mdlProject->getProject($project_id);
@@ -96,7 +97,7 @@ $this->state = $this->get('State');
         
         //$app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' projectws<br><pre>'.print_r($projectws, true).'</pre><br>','');
         
-        $model->checkGames($projectws,$match_id,$rid,$projectteam1_id,$projectteam2_id);
+        $model->checkGames($projectws, $match_id, $rid, $projectteam1_id, $projectteam2_id);
         
         //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' ' .  ' match_id<br><pre>'.print_r($match_id,true).'</pre>'),'');
         
@@ -106,21 +107,21 @@ $this->state = $this->get('State');
         
         
         
-        $teams[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM_PLAYER'));
-        if ($projectteams = $model->getPlayer($projectteam1_id,$project_id))
-      {
-				$teams=array_merge($teams,$projectteams);
-			}
+        $teams[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM_PLAYER'));
+        if ($projectteams = $model->getPlayer($projectteam1_id, $project_id))
+		{
+			$teams = array_merge($teams, $projectteams);
+		}
 			$lists['homeplayer'] = $teams;
 			unset($teams);
             
             
             
-         $teams[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM_PLAYER'));
-         if ($projectteams = $model->getPlayer($projectteam2_id,$project_id))
-      {
-				$teams=array_merge($teams,$projectteams);
-			}
+         $teams[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM_PLAYER'));
+         if ($projectteams = $model->getPlayer($projectteam2_id, $project_id))
+		{
+			$teams = array_merge($teams, $projectteams);
+		}
 
 			$lists['awayplayer'] = $teams;
 			unset($teams);    
@@ -130,24 +131,24 @@ $this->state = $this->get('State');
         $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' ' .  ' lists<br><pre>'.print_r($lists,true).'</pre>'),'');
         }
         
-        $this->assignRef('matches',$matches);
-        $this->assignRef('pagination',$pagination);
-        $this->assign('request_url',$uri->toString());
+        $this->matches	= $matches;
+        $this->pagination	= $pagination;
+        $this->request_url	= $uri->toString();
         
-        $this->assign('ProjectTeams',$model->getProjectTeams($project_id));
+        $this->ProjectTeams	= $model->getProjectTeams($project_id);
         
-        $this->assign('match_id',$match_id);
-        $this->assign('rid',$rid);
+        $this->match_id	= $match_id;
+        $this->rid	= $rid;
         
-        $this->assign('projectteam1_id',$projectteam1_id);
-        $this->assign('projectteam2_id',$projectteam2_id);
+        $this->projectteam1_id	= $projectteam1_id;
+        $this->projectteam2_id	= $projectteam2_id;
         
-        $this->assignRef('projectws',$projectws);
-        $this->assignRef('roundws',$roundws);
+        $this->projectws	= $projectws;
+        $this->roundws	= $roundws;
         
-        if ( $result = $model->getPlayer($projectteam1_id,$project_id) )
+        if ( $result = $model->getPlayer($projectteam1_id, $project_id) )
         {
-        $this->assign('getHomePlayer',$model->getPlayer($projectteam1_id,$project_id));    
+        $this->getHomePlayer	= $model->getPlayer($projectteam1_id, $project_id));    
         }
         else
         {
@@ -155,12 +156,12 @@ $this->state = $this->get('State');
             $tempplayer->value = 0;
             $tempplayer->text = 'TempPlayer';
             $exportplayer[] = $tempplayer;
-            $this->assign('getHomePlayer',$exportplayer);
+            $this->getHomePlayer	= $exportplayer;
         }
         
-        if ( $result = $model->getPlayer($projectteam2_id,$project_id) )
+        if ( $result = $model->getPlayer($projectteam2_id, $project_id) )
         {
-        $this->assign('getAwayPlayer',$model->getPlayer($projectteam2_id,$project_id));    
+        $this->getAwayPlayer	= $model->getPlayer($projectteam2_id, $project_id);    
         }
         else
         {
@@ -168,11 +169,11 @@ $this->state = $this->get('State');
             $tempplayer->value = 0;
             $tempplayer->text = 'TempPlayer';
             $exportplayer[] = $tempplayer;
-            $this->assign('getAwayPlayer',$exportplayer);
+            $this->getAwayPlayer	= $exportplayer;
         }
         
 
-        $this->assignRef('lists',$lists);
+        $this->lists	= $lists;
 
 
 

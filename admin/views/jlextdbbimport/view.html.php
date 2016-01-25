@@ -95,13 +95,13 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
 		// Set toolbar items for the page
 		//JToolBarHelper::title ( JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_TITLE_1_3' ), 'generic.png' );
 		//JToolBarHelper::help ( 'screen.joomleague', true );
+		
 		$input = JFactory::getApplication()->input;
-		$post = $input->post;
+		
 		$uri = JFactory::getURI ();
 		$config = JComponentHelper::getParams ( 'com_media' );
-		$input->post->get('post');
 		$files = $input->get('files');
-		
+		$post = $input->post;
 		$this->request_url	= $uri->toString ();
 		$this->config	= $config;
 		
@@ -198,7 +198,10 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
     {
         // Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
-        $option = JRequest::getCmd('option');
+        $app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+		
 		
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";

@@ -94,7 +94,6 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		$uri = JFactory::getURI ();
 		$config = JComponentHelper::getParams ( 'com_media' );
 		$post = $input->post;
-		$input->post->get('post');
 		$files = $input->get('files');
 		
 		$this->request_url	= $uri->toString ();

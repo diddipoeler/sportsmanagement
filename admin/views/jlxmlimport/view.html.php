@@ -75,14 +75,14 @@ class sportsmanagementViewJLXMLImport extends sportsmanagementView
 		$db		= sportsmanagementHelper::getDBConnection();
 		$uri	= JFactory::getURI();
 
-		#$user = JFactory::getUser();
-		#$config = JFactory::getConfig();
+		// $user = JFactory::getUser();
+
 		$config = JComponentHelper::getParams('com_media');
 
-		#$this->assignRef( 'user',			JFactory::getUser() );
-		$this->assignRef( 'request_url',	$uri->toString() );
-		#$this->assignRef( 'user',		$user);
-		$this->assignRef( 'config',		$config);
+		// $this->assignRef( 'user',			JFactory::getUser() );
+		$this->request_url	= $uri->toString();
+		// $this->assignRef( 'user',		$user);
+		$this->config	= $config;
 
 		//parent::display( $tpl );
 	}

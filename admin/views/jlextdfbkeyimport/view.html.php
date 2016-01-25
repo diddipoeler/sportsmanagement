@@ -351,7 +351,6 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 		$projectid = $app->getUserState( "$option.pid", '0' );
 		$this->projectid	= $projectid;
 		$post = $input->post;
-		$input->post->get('post');
     $this->import	= $model->getSchedule( $post, $projectid );
 	$this->request_url	= $uri->toString ();
     	
