@@ -63,28 +63,28 @@ JLoader::register('sportsmanagementHelperHtml', $classpath);
  * @version 2014
  * @access public
  */
-class sportsmanagementViewallprojects extends JViewLegacy
+class sportsmanagementViewallprojects extends sportsmanagementView
 {
     protected $state = null;
 	protected $item = null;
 	protected $items = null;
 	protected $pagination = null;
     
+	
 	/**
-	 * sportsmanagementViewallprojects::display()
+	 * sportsmanagementViewallprojects::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
-	function display($tpl=null)
+	function init()
 	{
-		// Get a refrence of the page instance in joomla
-		$document = JFactory::getDocument();
-        $option = JRequest::getCmd('option');
-		// Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
+	//	// Get a refrence of the page instance in joomla
+//		$document = JFactory::getDocument();
+//        $option = JRequest::getCmd('option');
+//		// Reference global application object
+//        $app = JFactory::getApplication();
+//        // JInput object
+//        $jinput = $app->input;
         
         
 		$user		= JFactory::getUser();
@@ -173,7 +173,7 @@ class sportsmanagementViewallprojects extends JViewLegacy
         
         $this->lists = $lists;
 
-		parent::display($tpl);
+	//	parent::display($tpl);
 	}
 
 }

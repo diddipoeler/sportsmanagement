@@ -50,55 +50,31 @@ jimport( 'joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewTeamInfo extends JViewLegacy
+class sportsmanagementViewTeamInfo extends sportsmanagementView
 {
+	
 	/**
-	 * sportsmanagementViewTeamInfo::display()
+	 * sportsmanagementViewTeamInfo::init()
 	 * 
-	 * @param mixed $tpl
-	 * @return
+	 * @return void
 	 */
-	function display( $tpl = null )
+	function init()
 	{
-		// Get a reference of the page instance in joomla
-		$document	= JFactory::getDocument();
-        // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        
-		$model		= $this->getModel();
-		$config		= sportsmanagementModelProject::getTemplateConfig( $this->getName(),$model::$cfg_which_database );
-		$project	= sportsmanagementModelProject::getProject($model::$cfg_which_database);
-        $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields('frontend',$model::$cfg_which_database) );
-//        $app->enqueueMessage(JText::_('teaminfo checkextrafields -> '.'<pre>'.print_r($this->checkextrafields,true).'</pre>' ),'');
-		$this->assignRef( 'project', $project );
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($this->project,true).'</pre>'),'');
-        
-		$isEditor = sportsmanagementModelProject::hasEditPermission('projectteam.edit');
+
+        $this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend',sportsmanagementModelTeamInfo::$cfg_which_database);
 
 		if ( isset($this->project->id) )
 		{
-			$overallconfig = sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
-			$this->assignRef('overallconfig',  $overallconfig);
-			$this->assignRef('config', $config );
-			$team = $model->getTeamByProject(1);
-			$this->assignRef('team',  $team );
-			$club = $model->getClub() ;
-			$this->assignRef('club', $club);
-			$seasons = $model->getSeasons( $config,0 );
-			$this->assignRef('seasons', $seasons );
-			$this->assignRef('showediticon', $isEditor);
-			$this->assignRef('projectteamid', $model::$projectteamid);
-            $this->assignRef('teamid', $model::$teamid);
-            
-            $trainingData = $model->getTrainigData($this->project->id);
-			$this->assignRef('trainingData', $trainingData );
+			$this->team = sportsmanagementModelTeamInfo::getTeamByProject(1);
+			$this->club = sportsmanagementModelTeamInfo::getClub();
+			$this->seasons = sportsmanagementModelTeamInfo::getSeasons( $this->config,0 );
+			$this->showediticon =sportsmanagementModelProject::hasEditPermission('projectteam.edit');
+			$this->projectteamid = sportsmanagementModelTeamInfo::$projectteamid;
+            $this->teamid = sportsmanagementModelTeamInfo::$teamid;
+			$this->trainingData = sportsmanagementModelTeamInfo::getTrainigData($this->project->id);
             if ( $this->checkextrafields )
             {
-            $this->assignRef('extrafields', sportsmanagementHelper::getUserExtraFields($model::$teamid,'frontend',$model::$cfg_which_database) );
+            $this->extrafields = sportsmanagementHelper::getUserExtraFields(sportsmanagementModelTeamInfo::$teamid,'frontend',sportsmanagementModelTeamInfo::$cfg_which_database);
             }
 
 			$daysOfWeek=array(
@@ -116,16 +92,15 @@ class sportsmanagementViewTeamInfo extends JViewLegacy
       if ( $this->team->merge_clubs )
       {
       $merge_clubs = $model->getMergeClubs( $this->team->merge_clubs );
-			$this->assignRef( 'merge_clubs', $merge_clubs );
+			$this->merge_clubs = $merge_clubs;
       }
       
             
             if ( $this->config['show_history_leagues'] )
 	{
-	   $seasons = $model->getSeasons( $config,1 );
-			$this->assignRef('seasons', $seasons );
-            $this->assign( 'leaguerankoverview', $model->getLeagueRankOverview( $this->seasons ) );
-			$this->assign( 'leaguerankoverviewdetail', $model->getLeagueRankOverviewDetail( $this->seasons ) );
+			$this->seasons = sportsmanagementModelTeamInfo::getSeasons( $this->config,1 );
+            $this->leaguerankoverview = sportsmanagementModelTeamInfo::getLeagueRankOverview( $this->seasons );
+			$this->leaguerankoverviewdetail = sportsmanagementModelTeamInfo::getLeagueRankOverviewDetail( $this->seasons );
 }
 
 		}
@@ -140,10 +115,7 @@ class sportsmanagementViewTeamInfo extends JViewLegacy
 }
 
     	
-		$extended = sportsmanagementHelper::getExtended($team->teamextended, 'team');
-		$this->assignRef( 'extended', $extended );
-    //$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
-    //$this->assign('use_joomlaworks', JComponentHelper::getParams('com_sportsmanagement')->get('use_joomlaworks',0) );
+		$this->extended = sportsmanagementHelper::getExtended($this->team->teamextended, 'team');
     
 		// Set page title
 		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_PAGE_TITLE' );
@@ -151,7 +123,7 @@ class sportsmanagementViewTeamInfo extends JViewLegacy
 		{
 			$pageTitle .= ': ' . $this->team->tname;
 		}
-		$document->setTitle( $pageTitle );
+		$this->document->setTitle( $pageTitle );
 
 /**
  * da wir komplett mit bootstrap arbeiten benötigen wir das nicht mehr        
@@ -165,7 +137,7 @@ class sportsmanagementViewTeamInfo extends JViewLegacy
             $this->config['table_class'] = 'table';
         }
 
-		parent::display( $tpl );
+		//parent::display( $tpl );
 	}
 }
 ?>

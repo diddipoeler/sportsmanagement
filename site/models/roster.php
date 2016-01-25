@@ -57,8 +57,9 @@ class sportsmanagementModelRoster extends JModelLegacy
 	static $projectid = 0;
 	static $projectteamid = 0;
     static $teamid = 0;
-	var $projectteam = null;
-	var $team = null;
+    static $seasonid = 0;
+	static $projectteam = null;
+	static $team = null;
     //var $seasonid = 0;
 
 	/**
@@ -71,7 +72,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	 * caching players
 	 * @var array
 	 */
-	var $_players = null;
+	static $_players = null;
     
     static $cfg_which_database = 0;
 
@@ -94,6 +95,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 		self::$projectteamid = JFactory::getApplication()->input->get('ptid', 0, 'INT');
 		sportsmanagementModelProject::$projectid = self::$projectid;
         self::$cfg_which_database = JFactory::getApplication()->input->get('cfg_which_database', 0, 'INT');
+        sportsmanagementModelProject::setProjectID(self::$projectid,self::$cfg_which_database);
 		self::getProjectTeam();
 	}
 
@@ -103,7 +105,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getProjectTeam()
+	public static function getProjectTeam()
 	{
 	   $app = JFactory::getApplication();
        // JInput object
@@ -114,16 +116,18 @@ class sportsmanagementModelRoster extends JModelLegacy
 		$query = $db->getQuery(true);
         $starttime = microtime(); 
         
-		if (is_null($this->projectteam))
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectteamid<br><pre>'.print_r(self::$projectteamid,true).'</pre>'),'Notice');
+        
+		if (is_null(self::$projectteam))
 		{
-			if (self::$projectteamid)
+			if ((int)self::$projectteamid)
 			{
 			 $query = $db->getQuery(true);
              $query->clear();
 				$query->select('pt.*,st.team_id as season_team_id');
 	           $query->from('#__sportsmanagement_project_team AS pt'); 
                $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
-                $query->where('pt.id = '.self::$projectteamid );
+                $query->where('pt.id = '.(int)self::$projectteamid );
  
 			}
 			else
@@ -145,8 +149,8 @@ class sportsmanagementModelRoster extends JModelLegacy
 	           $query->from('#__sportsmanagement_project_team AS pt'); 
                $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');   
                
-                $query->where('st.team_id = '.self::$teamid);
-                $query->where('pt.project_id = '.self::$projectid);
+                $query->where('st.team_id = '.(int)self::$teamid);
+                $query->where('pt.project_id = '.(int)self::$projectid);
                 
                 
                
@@ -159,19 +163,19 @@ class sportsmanagementModelRoster extends JModelLegacy
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
             
-			$this->projectteam = $db->loadObject();
+			self::$projectteam = $db->loadObject();
 			
 //            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 //            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($this->projectteam,true).'</pre>'),'');
             
-            if ($this->projectteam)
+            if (self::$projectteamid)
 			{
-				self::$projectid = $this->projectteam->project_id; // if only ttid was set
+				self::$projectid = self::$projectteam->project_id; // if only ttid was set
 				//$this->teamid = $this->projectteam->team_id; // if only ttid was set
-                self::$teamid = $this->projectteam->season_team_id;
+                self::$teamid = self::$projectteam->season_team_id;
 			}
 		}
-		return $this->projectteam;
+		return self::$projectteam;
 	}
 
 	/**
@@ -179,7 +183,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getTeam()
+	public static function getTeam()
 	{
 	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
@@ -188,7 +192,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 		$query = $db->getQuery(true);
         $starttime = microtime(); 
         
-		if (is_null($this->team))
+		if (is_null(self::$team))
 		{
 			if (!self::$teamid)
 			{
@@ -204,7 +208,7 @@ class sportsmanagementModelRoster extends JModelLegacy
             $query->select('t.*');
             $query->select('CONCAT_WS(\':\',t.id,t.alias) AS slug');
 	           $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t'); 
-                $query->where('t.id = '.self::$teamid);
+                $query->where('t.id = '.(int)self::$teamid);
                 
             
     
@@ -216,9 +220,9 @@ class sportsmanagementModelRoster extends JModelLegacy
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-			$this->team = $db->loadObject();
+			self::$team = $db->loadObject();
 		}
-		return $this->team;
+		return self::$team;
 	}
 
 	
@@ -228,7 +232,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	 * @param integer $persontype
 	 * @return
 	 */
-	function getTeamPlayers($persontype = 1)
+	public static function getTeamPlayers($persontype = 1)
 	{
 	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
@@ -276,7 +280,7 @@ class sportsmanagementModelRoster extends JModelLegacy
         $query->where('pr.published = 1');
         $query->where('tp.published = 1');
         $query->where('tp.persontype = '.$persontype);
-        $query->where('tp.season_id = '.sportsmanagementModelProject::$seasonid);  
+        $query->where('tp.season_id = '.self::$seasonid);  
         $query->order('pos.ordering, ppos.position_id, tp.ordering, tp.jerseynumber, pr.lastname, pr.firstname');
            
             $db->setQuery($query);
@@ -287,9 +291,9 @@ class sportsmanagementModelRoster extends JModelLegacy
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-            $this->_players = $db->loadObjectList();
+            self::$_players = $db->loadObjectList();
             
-            if ( !$this->_players && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+            if ( !self::$_players && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
             $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');   
             $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error'); 
@@ -303,7 +307,7 @@ class sportsmanagementModelRoster extends JModelLegacy
         {
             case 1:
             $bypos = array();
-		      foreach ($this->_players as $player)
+		      foreach (self::$_players as $player)
 		      {
 			if (isset($bypos[$player->position_id]))
 			{
@@ -317,7 +321,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 		      return $bypos;
             break;
             case 2:
-            return $this->_players;
+            return self::$_players;
             break;
         }
         
@@ -331,7 +335,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	 * @param integer $positionId
 	 * @return
 	 */
-	function getPositionEventTypes($positionId=0)
+	public static function getPositionEventTypes($positionId=0)
 	{
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
@@ -390,7 +394,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getPlayerEventStats()
+	public static function getPlayerEventStats()
 	{
 		$playerstats=array();
 		$rows = self::getTeamPlayers();
@@ -526,7 +530,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getRosterStats()
+	public static function getRosterStats()
 	{
 		$app = JFactory::getApplication();
         $stats = sportsmanagementModelProject::getProjectStats();
@@ -551,7 +555,7 @@ class sportsmanagementModelRoster extends JModelLegacy
      * 
      * @return
      */
-    function getLastSeasonDate()
+    public static function getLastSeasonDate()
     {
         $app = JFactory::getApplication();
     $option = JRequest::getCmd('option');
@@ -562,7 +566,7 @@ class sportsmanagementModelRoster extends JModelLegacy
        
        $query->select('max(round_date_last)');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round '); 
-        $query->where('project_id ='.self::$projectid);
+        $query->where('project_id ='.(int)self::$projectid);
                     
         $db->setQuery($query);
         

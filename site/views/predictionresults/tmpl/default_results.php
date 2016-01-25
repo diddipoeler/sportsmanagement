@@ -105,12 +105,12 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 
 			<table class="table" >
 				<tr>
-					<td class="">
+					<td >
 						<?php
 						echo '<b>'.JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_SUBTITLE_01').'</b>';
 						?>
 					</td>
-					<td class="">
+					
                     <?php
                     $round_ids = '';
                     if ( $this->config['use_pred_select_rounds'] )
@@ -131,10 +131,13 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 //echo __FILE__.' '.__LINE__.' project_id<br><pre>'.print_r($predictionProject->project_id,true).'</pre>';
             
             echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_SUBTITLE_02',
-						$htmlRoundsOptions,
-						sportsmanagementModelPrediction::createProjectSelector(sportsmanagementModelPrediction::$_predictionProjectS,$predictionProject->project_id),
-                        $htmlGroupOptions);
-						
+						'<td>'.$htmlRoundsOptions.'</td>',
+						'<td>'.sportsmanagementModelPrediction::createProjectSelector(sportsmanagementModelPrediction::$_predictionProjectS,$predictionProject->project_id).'</td>',
+                        '<td>'.$htmlGroupOptions.'</td>');
+						?>
+                    
+					<td >
+                        <?PHP
             echo '&nbsp;&nbsp;';
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = sportsmanagementModelPrediction::$cfg_which_database;
@@ -169,7 +172,9 @@ echo $this->pagination->getListFooter();
         
 		<table class="<?PHP echo $this->config['table_class']; ?>">
 			<tr>
-				<?php $tdClassStr="class='sectiontableheader' style='text-align:center; vertical-align:middle; '"; ?>
+				<?php 
+                $tdClassStr = "class='sectiontableheader' style='text-align:center; vertical-align:middle; '"; 
+                ?>
 				<td <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK'); ?></td>
 				<?php
 				

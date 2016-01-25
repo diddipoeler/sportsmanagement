@@ -50,22 +50,17 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewPredictionHeading extends JViewLegacy
+class sportsmanagementViewPredictionHeading extends sportsmanagementView
 {
-	/**
-	 * sportsmanagementViewPredictionHeading::display()
-	 * 
-	 * @param mixed $tpl
-	 * @return
-	 */
-	function display($tpl=null)
+	
+	public function init ()
 	{
-		$document = JFactory::getDocument();
-        	// Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+//		$document = JFactory::getDocument();
+//        	// Reference global application object
+//        $app = JFactory::getApplication();
+//        // JInput object
+//        $jinput = $app->input;
+//        $option = $jinput->getCmd('option');
         
 //        $this->assignRef('prediction_id', $jinput->request->get('prediction_id', 0) );
 //        $this->assignRef('pggroup', $jinput->request->get('pggroup', 0) );
@@ -75,7 +70,7 @@ class sportsmanagementViewPredictionHeading extends JViewLegacy
 //	$js ="registerhome('".JURI::base()."','Prediction Game Extension','".$app->getCfg('sitename')."','0');". "\n";
 //    $document->addScriptDeclaration( $js );	
     
-        parent::display($tpl);
+//        parent::display($tpl);
 	}
 
 }

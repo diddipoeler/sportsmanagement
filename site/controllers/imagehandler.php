@@ -86,7 +86,6 @@ class sportsmanagementControllerImagehandler extends JControllerLegacy
 		//$ftp = JClientHelper::getCredentials( 'ftp' );
 
 		//set the target directory
-		//$base_Dir = JPATH_SITE . DS . 'media' . DS . 'com_joomleague' . DS . $folder . DS;
 		$base_Dir = JPATH_SITE . DS . 'images' . DS . $option . DS .'database'.DS. $folder . DS;
         
         $app->enqueueMessage(JText::_($type),'');

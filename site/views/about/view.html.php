@@ -50,31 +50,24 @@ jimport('joomla.application.component.view');
  * @version $Id$
  * @access public
  */
-class sportsmanagementViewAbout extends JViewLegacy
+class sportsmanagementViewAbout extends sportsmanagementView
 {
+	
 	/**
-	 * sportsmanagementViewAbout::display()
+	 * sportsmanagementViewAbout::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
-	function display($tpl=null)
+	function init()
 	{
-		// Get a refrence of the page instance in joomla
-		$document = JFactory::getDocument();
-		// Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-
-		$model = $this->getModel();
-		$about = $model->getAbout();
+		
+		$about = $this->model->getAbout();
 		$this->about = $about;
 
 		// Set page title
-		$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ABOUT_PAGE_TITLE'));
+		$this->document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ABOUT_PAGE_TITLE'));
 
-		parent::display($tpl);
+	//	parent::display($tpl);
 	}
 
 }

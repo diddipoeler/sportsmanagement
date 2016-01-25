@@ -58,7 +58,7 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
 <!--	<div class="componentheading"> -->
 <!--		<div class="container"> -->
         <table class="table">
-			<tbody>
+<!--				<tbody> -->
 				<?php
 				if ( $this->overallconfig['show_project_country'] )
 				{
@@ -169,7 +169,7 @@ echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>
 					</td>
                     
 				</tr>
-			</tbody>
+<!--				</tbody> -->
 		</table>
 <!--	</div> -->
 <?php 
@@ -179,7 +179,7 @@ echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>
 	?>
 		<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
 			<table class="table">
-				<tbody>
+	<!--				<tbody> -->
 					<tr class="contentheading">
 						<td class="buttonheading" align="right">
 						<?php 
@@ -190,7 +190,7 @@ echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>
 						&nbsp;
 						</td>
 					</tr>
-				</tbody>
+		<!--			</tbody> -->
 			</table>
 		</div>
 	<?php 

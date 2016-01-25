@@ -76,7 +76,9 @@ class sportsmanagementView extends JViewLegacy
         $this->app = JFactory::getApplication();
         // JInput object
         $this->jinput = $this->app->input;
-        //$this_>uri = JFactory :: getURI();
+        $this->uri = JFactory :: getURI();
+        $this->action = $this->uri->toString();
+        $this->params = $this->app->getParams();
         // Get a refrence of the page instance in joomla
 		$this->document = JFactory::getDocument();
         $this->option = $this->jinput->getCmd('option');
@@ -84,9 +86,22 @@ class sportsmanagementView extends JViewLegacy
         $this->view = $this->jinput->getVar("view");
         
         $this->model = $this->getModel();
-        $this->project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);;
-		$this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
-		$this->config = sportsmanagementModelProject::getTemplateConfig($this->getName(),sportsmanagementModelProject::$cfg_which_database);;
+        
+//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($this->params,true).'</pre>'),'');
+        
+        switch ($this->view)
+        {
+            
+            default:
+            $this->project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
+		    $this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
+		    $this->config = sportsmanagementModelProject::getTemplateConfig($this->getName(),sportsmanagementModelProject::$cfg_which_database);
+            $this->config = array_merge($this->overallconfig,$this->config);
+            break;
+        }
+//        $this->project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);;
+//		$this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
+//		$this->config = sportsmanagementModelProject::getTemplateConfig($this->getName(),sportsmanagementModelProject::$cfg_which_database);;
 
 
 		$this->init();
@@ -103,8 +118,7 @@ class sportsmanagementView extends JViewLegacy
 	 */
 	protected function addToolbar ()
 	{
-	   $option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+	   
         
         
 	}

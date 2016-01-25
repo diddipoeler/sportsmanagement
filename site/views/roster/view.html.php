@@ -50,41 +50,26 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewRoster extends JViewLegacy
+class sportsmanagementViewRoster extends sportsmanagementView
 {
 
+	
 	/**
-	 * sportsmanagementViewRoster::display()
+	 * sportsmanagementViewRoster::init()
 	 * 
-	 * @param mixed $tpl
-	 * @return
+	 * @return void
 	 */
-	function display($tpl=null)
+	function init()
 	{
-		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        
-        // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-		$model = $this->getModel();
-        
-        sportsmanagementModelProject::setProjectID($jinput->getInt('p',0),$model::$cfg_which_database);
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
+		
+        sportsmanagementModelRoster::$seasonid = $this->project->season_id;
 
-		$this->assign('project',sportsmanagementModelProject::getProject($model::$cfg_which_database));
-        $model->seasonid = $this->project->season_id;
-		$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database));
-		//$this->assignRef('staffconfig',$model->getTemplateConfig('teamstaff'));
-		$this->assignRef('config',$config);
-		$this->assign('projectteam',$model->getProjectTeam());
+		$this->projectteam = $this->model->getProjectTeam();
         
-        $this->assign('lastseasondate',$model->getLastSeasonDate());
+        $this->lastseasondate = $this->model->getLastSeasonDate();
         
-        $type = $jinput->getVar("type", 0);
-        $typestaff = $jinput->getVar("typestaff", 0);
+        $type = $this->jinput->getVar("type", 0);
+        $typestaff = $this->jinput->getVar("typestaff", 0);
         if ( !$type )
         {
             $type = $this->config['show_players_layout'];
@@ -93,46 +78,46 @@ class sportsmanagementViewRoster extends JViewLegacy
         {
             $typestaff = $this->config['show_staff_layout'];
         }
-        $this->assignRef('type',$type);
-        $this->assignRef('typestaff',$typestaff);
+        $this->type = $type;
+        $this->typestaff = $typestaff;
         
         $this->config['show_players_layout'] = $type;
         $this->config['show_staff_layout'] = $typestaff;
         
 		if ($this->projectteam)
 		{
-			$this->assign('team',$model->getTeam());
-			$this->assign('rows',$model->getTeamPlayers(1));
+			$this->team = $this->model->getTeam();
+			$this->rows = $this->model->getTeamPlayers(1);
 			// events
 			if ($this->config['show_events_stats'])
 			{
-				$this->assign('positioneventtypes',$model->getPositionEventTypes());
-				$this->assign('playereventstats',$model->getPlayerEventStats());
+				$this->positioneventtypes = $this->model->getPositionEventTypes();
+				$this->playereventstats = $this->model->getPlayerEventStats();
 			}
 			//stats
 			if ($this->config['show_stats'])
 			{
-				$this->assign('stats',sportsmanagementModelProject::getProjectStats(0,0,$model::$cfg_which_database));
-				$this->assign('playerstats',$model->getRosterStats());
+				$this->stats = sportsmanagementModelProject::getProjectStats(0,0,sportsmanagementModelRoster::$cfg_which_database);
+				$this->playerstats = $this->model->getRosterStats();
 			}
 
 			//$this->assign('stafflist',$model->getStaffList());
-            $this->assign('stafflist',$model->getTeamPlayers(2));
+            $this->stafflist = $this->model->getTeamPlayers(2);
             
             //$app->enqueueMessage(JText::_('getTeamPlayers stafflist<br><pre>'.print_r($this->stafflist,true).'</pre>'),'');
 
 			// Set page title
-			$document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE',$this->team->name));
+			$this->document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE',$this->team->name));
 		}
 		else
 		{
 			// Set page title
-			$document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE', "Project team does not exist"));
+			$this->document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE', "Project team does not exist"));
 		}
         
-        $view = $jinput->getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+        //$view = $jinput->getVar( "view") ;
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
+        $this->document->addCustomTag($stylelink);
         
 
     // select roster view
@@ -149,7 +134,7 @@ class sportsmanagementViewRoster extends JViewLegacy
 	$opp_arr[] = JHTML :: _('select.option', "staff_johncage", JText :: _('COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION3_STAFF_CARD'));
 
 	$lists['typestaff'] = $opp_arr;
-	$this->assignRef('lists', $lists);
+	$this->lists = $lists;
     
     if ( !isset($this->config['table_class']) )
         {
@@ -158,7 +143,7 @@ class sportsmanagementViewRoster extends JViewLegacy
 
 //$this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
 
-		parent::display($tpl);
+		//parent::display($tpl);
 	}
 
 }

@@ -331,7 +331,7 @@ $option = $jinput->getCmd('option');
 										'pj' => $pjID
 									);
 
-					$query = JoomleagueHelperRoute::buildQuery($params);
+					$query = sportsmanagementHelperRoute::buildQuery($params);
 					$link = JRoute::_('index.php?' . $query,false);
 					$this->setRedirect($link);
 				}

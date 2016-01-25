@@ -56,19 +56,19 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	static $projectid = 0;
 	static $teamid = 0;
     static $projectteamid = 0;
-	var $highest_home = null;
-	var $highest_away = null;
-	var $highestdef_home = null;
-	var $highestdef_away = null;
-	var $highestdraw_home = null;
-	var $highestdraw_away = null;
-	var $totalshome = null;
-	var $totalsaway = null;
-	var $matchdaytotals = null;
-	var $totalrounds = null;
-	var $attendanceranking = null;
-    var $team = null;
-    
+	static $highest_home = null;
+	static $highest_away = null;
+	static $highestdef_home = null;
+	static $highestdef_away = null;
+	static $highestdraw_home = null;
+	static $highestdraw_away = null;
+	static $totalshome = null;
+	static $totalsaway = null;
+	static $matchdaytotals = null;
+	static $totalrounds = null;
+	static $attendanceranking = null;
+    static $team = null;
+    static $nogoals_against = 0;
     static $cfg_which_database = 0;
 
 	/**
@@ -94,7 +94,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getTeam( )
+	public static function getTeam( )
 	{
 	   $option = JRequest::getCmd('option');
 	    $app = JFactory::getApplication();
@@ -107,7 +107,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         
 		# it should be checked if any tid is given in the params of the url
 		# if ( is_null( $this->team ) )
-		if ( !isset( $this->team ) )
+		if ( !isset( self::$team ) )
 		{
 			if ( self::$teamid > 0 )
 			{
@@ -115,7 +115,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
              $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team');
              $query->where('id = '. self::$teamid );
              $db->setQuery($query);
-             $this->team = $db->loadObject();
+             self::$team = $db->loadObject();
 //				$this->team = $this->getTable( 'Team', 'sportsmanagementTable' );
 //				$this->team->load( $this->teamid );
 			}
@@ -124,7 +124,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team<br><pre>'.print_r($this->team,true).'</pre>'),'');
         
-		return $this->team;
+		return self::$team;
 	}
 
 	/**
@@ -132,7 +132,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getHighest($homeaway, $which)
+	public static function getHighest($homeaway, $which)
 	{
 	   $option = JRequest::getCmd('option');
 	    $app = JFactory::getApplication();
@@ -176,7 +176,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         switch ($homeaway)
         {
             case 'HOME':
-            $query->where('t1.id = '. $this->team->id);
+            $query->where('t1.id = '. self::$team->id);
             
             switch ($which)
             {
@@ -197,7 +197,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
             break;
             
             case 'AWAY':
-            $query->where('t2.id = '. $this->team->id);
+            $query->where('t2.id = '. self::$team->id);
             
             switch ($which)
             {
@@ -251,7 +251,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
      * 
      * @return
      */
-    function getNoGoalsAgainst( )
+    public static function getNoGoalsAgainst( )
     {
         $option = JRequest::getCmd('option');
 	    $app = JFactory::getApplication();
@@ -260,11 +260,11 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $query = $db->getQuery(true);
         $starttime = microtime(); 
         
-    	if ( (!isset( $this->nogoals_against )) || is_null( $this->nogoals_against ) )
+    	if ( (!isset( self::$nogoals_against )) || is_null( self::$nogoals_against ) )
     	{
            $query->select('COUNT( round_id ) AS totalzero ');
-	       $query->select('SUM( t1.id = '.$this->team->id.' AND team2_result=0 ) AS homezero ');
-           $query->select('SUM( t2.id = '.$this->team->id.' AND team1_result=0 ) AS awayzero ');
+	       $query->select('SUM( t1.id = '.self::$team->id.' AND team2_result=0 ) AS homezero ');
+           $query->select('SUM( t2.id = '.self::$team->id.' AND team1_result=0 ) AS awayzero ');
            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS matches');
            $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt1 ON pt1.id = matches.projectteam1_id ');
            $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.id = pt1.team_id ');
@@ -277,7 +277,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
            $query->where('pt1.project_id = '.self::$projectid);
            $query->where('matches.published = 1 ');
            $query->where('alt_decision = 0');
-           $query->where('( (t1.id = '.$this->team->id.' AND team2_result=0 ) OR (t2.id = '.$this->team->id.' AND team1_result=0 ) ) ');
+           $query->where('( (t1.id = '.self::$team->id.' AND team2_result=0 ) OR (t2.id = '.self::$team->id.' AND team1_result=0 ) ) ');
            $query->where('( matches.cancel IS NULL OR matches.cancel = 0 )');
                    
     		$db->setQuery($query);
@@ -287,9 +287,9 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-    		$this->nogoals_against = $db->loadObject( );
+    		self::$nogoals_against = $db->loadObject( );
     	}
-    	return $this->nogoals_against;
+    	return self::$nogoals_against;
     }
     
     
@@ -299,7 +299,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
      * @param mixed $which
      * @return
      */
-    function getSeasonTotals($which)
+    public static function getSeasonTotals($which)
     {
         $option = JRequest::getCmd('option');
 	    $app = JFactory::getApplication();
@@ -332,7 +332,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         
         $query->where('pt1.project_id = '.self::$projectid);
         $query->where('matches.published = 1');
-        $query->where('t.id = '.$this->team->id);
+        $query->where('t.id = '.self::$team->id);
         $query->where('(matches.cancel IS NULL OR matches.cancel = 0)');
         
         $db->setQuery($query, 0, 1);
@@ -359,17 +359,17 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         switch ($which)
         {
             case 'HOME':
-            if ( is_null( $this->totalshome ) )
+            if ( is_null( self::$totalshome ) )
     	    {
-    	       $this->totalshome = $db->loadObject();
-               return $this->totalshome;
+    	       self::$totalshome = $db->loadObject();
+               return self::$totalshome;
     	    }   
             break;
             case 'AWAY':
-            if ( is_null( $this->totalsaway ) )
+            if ( is_null( self::$totalsaway ) )
     	    {
-    	       $this->totalsaway = $db->loadObject();
-               return $this->totalsaway;
+    	       self::$totalsaway = $db->loadObject();
+               return self::$totalsaway;
     	    }
             break;
         }
@@ -417,7 +417,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 
                    
     		$db->setQuery( $query );
-    		$this->matchdaytotals = $db->loadObjectList();
+    		self::$matchdaytotals = $db->loadObjectList();
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
@@ -426,14 +426,14 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
             }
             
-            if ( !$this->matchdaytotals )
+            if ( !self::$matchdaytotals )
         {
             //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
             
             
             
-    		return $this->matchdaytotals;
+    		return self::$matchdaytotals;
     }
     
     /**
@@ -441,7 +441,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
      * 
      * @return
      */
-    function getMatchDayTotals( )
+    public static function getMatchDayTotals( )
     {
         $option = JRequest::getCmd('option');
 	    $app = JFactory::getApplication();
@@ -449,7 +449,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
         
-    	if ( is_null( $this->matchdaytotals ) )
+    	if ( is_null( self::$matchdaytotals ) )
     	{
     	   $query->select('rounds.id');
            $query->select('COUNT(matches.round_id) AS totalmatchespd');
@@ -484,9 +484,9 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
          }
             
-    		$this->matchdaytotals = $db->loadObjectList();
+    		self::$matchdaytotals = $db->loadObjectList();
             
-            if ( !$this->matchdaytotals )
+            if ( !self::$matchdaytotals )
         {
             //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
@@ -494,7 +494,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
             
             
     	}
-    	return $this->matchdaytotals;
+    	return self::$matchdaytotals;
     }
 
     /**
@@ -502,7 +502,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
      * 
      * @return
      */
-    function getTotalRounds( )
+    public static function getTotalRounds( )
     {
         $option = JRequest::getCmd('option');
 	    $app = JFactory::getApplication();
@@ -511,16 +511,12 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $query = $db->getQuery(true);
         $starttime = microtime(); 
         
-        if ( is_null( $this->totalrounds ) )
+        if ( is_null( self::$totalrounds ) )
         {
             $query->select('COUNT(id)');
            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round ');
            $query->where('project_id = '.self::$projectid);
-
-//            $query= "SELECT COUNT(id)
-//                     FROM #__joomleague_round
-//                     WHERE project_id= ".$this->projectid;
-                     
+                    
             $db->setQuery($query);
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
@@ -528,7 +524,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-            $this->totalrounds = $db->loadResult();
+            self::$totalrounds = $db->loadResult();
         }
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -538,12 +534,12 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
         }
         
-        if ( !$this->totalrounds )
+        if ( !self::$totalrounds )
         {
             $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
         }
         
-        return $this->totalrounds;
+        return self::$totalrounds;
     }
 
    
@@ -552,7 +548,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
      * 
      * @return
      */
-    function _getAttendance( )
+    public static function _getAttendance( )
     {
         $option = JRequest::getCmd('option');
 	    $app = JFactory::getApplication();
@@ -561,7 +557,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $query = $db->getQuery(true);
         $starttime = microtime(); 
         
-    	if ( is_null( $this->attendanceranking ) )
+    	if ( is_null( self::$attendanceranking ) )
     	{
     	   $query->select('matches.crowd');
 
@@ -585,12 +581,12 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
         // Joomla! 3.0 code here
-        $this->attendanceranking = $db->loadColumn();
+        self::$attendanceranking = $db->loadColumn();
         }
         elseif(version_compare(JVERSION,'2.5.0','ge')) 
         {
         // Joomla! 2.5 code here
-        $this->attendanceranking = $db->loadResultArray();
+        self::$attendanceranking = $db->loadResultArray();
         } 
 
     	}
@@ -603,13 +599,13 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         }
             
     	         
-        if ( !$this->attendanceranking )
+        if ( !self::$attendanceranking )
         {
 //            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 //            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         }
         
-    	return $this->attendanceranking;
+    	return self::$attendanceranking;
     }
 
 	/**
@@ -617,7 +613,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getBestAttendance( )
+	public static function getBestAttendance( )
 	{
 		$attendance = self::_getAttendance();
 		return (count($attendance)>0) ? max($attendance) : 0;
@@ -628,7 +624,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getWorstAttendance( )
+	public static function getWorstAttendance( )
 	{
 		$attendance = self::_getAttendance();
 		return (count($attendance)>0) ? min($attendance) : 0;
@@ -639,7 +635,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getTotalAttendance( )
+	public static function getTotalAttendance( )
 	{
 		$attendance = self::_getAttendance();
 		return (count($attendance)>0) ? array_sum($attendance) : 0;
@@ -650,7 +646,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getAverageAttendance( )
+	public static function getAverageAttendance( )
 	{
 		$attendance = self::_getAttendance();
 		return (count($attendance)>0) ? round(array_sum($attendance)/count($attendance), 0) : 0;
@@ -661,7 +657,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getChartURL( )
+	public static function getChartURL( )
 	{
 		$url = sportsmanagementHelperRoute::getTeamStatsChartDataRoute( self::$projectid, self::$teamid,self::$cfg_which_database );
 		$url = str_replace( '&', '%26', $url );
@@ -673,7 +669,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getLogo( )
+	public static function getLogo( )
 	{
 	   $option = JRequest::getCmd('option');
 	    $app = JFactory::getApplication();
@@ -696,7 +692,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getResults()
+	public static function getResults()
 	{
 	   $option = JRequest::getCmd('option');
 	    $app = JFactory::getApplication();

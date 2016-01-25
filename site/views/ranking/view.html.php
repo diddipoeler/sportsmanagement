@@ -54,38 +54,16 @@ jimport('joomla.filesystem.file');
 class sportsmanagementViewRanking extends sportsmanagementView 
 {
 	
-	/**
-	 * sportsmanagementViewRanking::display()
-	 * 
-	 * @param mixed $tpl
-	 * @return void
-	 */
+
 	function init() 
 	{
-		//// Get a refrence of the page instance in joomla
-//		$document = JFactory :: getDocument();
-		$uri = JFactory :: getURI();
-//        // Reference global application object
-//        $app = JFactory::getApplication();
-//        // JInput object
-//        $jinput = $app->input;
-//        $option = $jinput->getCmd('option');
-        
-        //$version = urlencode(JoomleagueHelper::getVersion());
-		//$css='components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
-		//$document->addStyleSheet($css);
+
         $this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
 
-		//$model = $this->getModel();
-        //sportsmanagementModelProject::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
         sportsmanagementModelProject::setProjectID($this->jinput->getInt('p',0),sportsmanagementModelProject::$cfg_which_database);
-        //$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
         $mdlDivisions = JModelLegacy::getInstance("Divisions", "sportsmanagementModel");
         $mdlProjectteams = JModelLegacy::getInstance("Projectteams", "sportsmanagementModel");
         $mdlTeams = JModelLegacy::getInstance("Teams", "sportsmanagementModel");
-        
-		//$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),sportsmanagementModelProject::$cfg_which_database,__METHOD__);
-//		$project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database,__METHOD__,1);
 		
         $this->paramconfig = sportsmanagementModelRanking::$paramconfig;
         $this->paramconfig['p'] = $this->project->slug;
@@ -97,18 +75,14 @@ class sportsmanagementViewRanking extends sportsmanagementView
 		sportsmanagementModelProject::setProjectId($this->project->id,sportsmanagementModelProject::$cfg_which_database);
 		
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r(sportsmanagementModelProject::$cfg_which_database,true).'</pre>'),'');
-        
 
-		//$this->model = $model;
-		//$this->project = $project;
         $this->projectinfo = $this->project->projectinfo;
         $extended = sportsmanagementHelper::getExtended($this->project->extended, 'project');
         $this->extended = $extended;
         
 		$this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
 		$this->tableconfig = $this->config;
-		$this->config = $this->config;
-        
+      
         
 
 
@@ -269,8 +243,6 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r(sportsmanagementModelProject::$cfg_which_database,true).'</pre>'),'');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' previousgames'.'<pre>'.print_r($this->previousgames,true).'</pre>' ),'');
         
-		$this->action = $uri->toString();
-
 		$frommatchday[] = JHTML :: _('select.option', '0', JText :: _('COM_SPORTSMANAGEMENT_RANKING_FROM_MATCHDAY'));
 		$frommatchday = array_merge($frommatchday, $rounds);
 		$lists['frommatchday'] = $frommatchday;

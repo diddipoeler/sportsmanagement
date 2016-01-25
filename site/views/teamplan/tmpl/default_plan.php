@@ -64,7 +64,7 @@ $nbcols = 0;
 
 <table class="<?php echo $this->config['table_class']; ?>">
 	<thead>
-	<tr class="sectiontableheader">
+	<tr >
 		<?php
 		if ($this->config['show_events'])
 		{
@@ -255,7 +255,7 @@ $nbcols = 0;
 		?>
 
 		<?php
-		if ( ($this->config['show_thumbs_picture']) & ($teamid>0))
+		if ( $this->config['show_thumbs_picture'] & ($teamid>0))
 		{
 			?>
 		<th>&nbsp;</th>

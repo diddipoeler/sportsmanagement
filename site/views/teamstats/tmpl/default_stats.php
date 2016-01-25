@@ -409,7 +409,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				</tr>
 				<tr class="sectiontableentry1">
 					<td class="statlabel"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMSTATS_NO_GOALS_AGAINST'); ?></td>
-					<td class="statvalue"><?php echo $this->nogoals_against->totalzero; ?></td>
+					<td class="statvalue"><?php echo empty($this->nogoals_against->totalzero) ? 0 : $this->nogoals_against->totalzero; ?></td>
 					<?php if ( $this->config['home_away_stats'] ): ?>
 					<td class="statvalue"><?php echo empty($this->nogoals_against->homezero) ? 0 : $this->nogoals_against->homezero; ?></td>
 					<td class="statvalue"><?php echo empty($this->nogoals_against->awayzero) ? 0 : $this->nogoals_against->awayzero; ?></td>

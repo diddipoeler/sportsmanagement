@@ -87,30 +87,39 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 
 			<table class="table" >
 				<tr>
-					<td class='sectiontableheader'>
+					<td>
 						<?php
 						echo '<b>'.JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RANK_SUBTITLE_01').'</b>';
 						?>
 					</td>
-					<td class='sectiontableheader' style='text-align:right; ' width='20%' nowrap='nowrap' >
+					<td>
           <?php
 
 //echo __FILE__.' '.__LINE__.' project_id<br><pre>'.print_r($predictionProject->project_id,true).'</pre>';
           
           echo JHTML::_('select.genericlist',$this->lists['ranking_array'],'pggrouprank','class="inputbox" size="1" onchange="this.form.submit(); "','value','text',sportsmanagementModelPrediction::$pggrouprank);
-          
+          	?>
+					</td>
+					<td>
+          <?php
           $groups = sportsmanagementModelPrediction::getPredictionGroupList();
           $predictionGroups[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_SELECT_GROUPS'),'value','text');
                         $predictionGroups = array_merge($predictionGroups,$groups);
                         $htmlGroupOptions = JHTML::_('select.genericList',$predictionGroups,'pggroup','class="inputbox" onchange="this.form.submit(); "','value','text',sportsmanagementModelPrediction::$pggroup);
           echo $htmlGroupOptions;
-          
+          	?>
+					</td>
+					<td>
+          <?php
 						echo sportsmanagementModelPrediction::createProjectSelector(sportsmanagementModelPrediction::$_predictionProjectS,
 																	$predictionProject->project_id,
 																	$showProjectID);
 						if ($showProjectID > 0)
 						{
-
+	?>
+					
+					<td>
+          <?php
 							echo '&nbsp;&nbsp;';
 $routeparameter = array();
 $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
@@ -126,7 +135,11 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 							$imgTitle=JText::_('COM_SPORTSMANAGEMENT_PRED_ROUND_RESULTS_TITLE');
 							$desc = JHTML::image('media/com_sportsmanagement/jl_images/icon-16-Matchdays.png',$imgTitle,array('border' => 0,'title' => $imgTitle));
 							echo JHTML::link($link,$desc,array('target' => ''));
-						}
+							?>
+					</td>
+			
+          <?php
+                        }
 						?>
             </td>
 			</tr>

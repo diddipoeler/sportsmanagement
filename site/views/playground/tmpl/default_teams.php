@@ -46,7 +46,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 	  <?php $projectname = $value->project; ?> 
 	  <?php foreach ($value->project_team AS $team): 
 			$teaminfo = $value->teaminfo[0][0];
-			$link = sportsmanagementHelperRoute :: getTeamInfoRoute($team->project_id, $team->team_id);	
+            $routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $team->project_id;
+$routeparameter['tid'] = $team->team_id;
+$routeparameter['ptid'] = 0;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
+			//$link = sportsmanagementHelperRoute :: getTeamInfoRoute($team->project_id, $team->team_id);	
 			?>
 			<h4><?php echo $projectname . " - " . JHtml :: link($link, $teaminfo->name) . ($teaminfo->short_name ? " (" . $teaminfo->short_name . ")" : ''); ?></h4>
 			<div class="clubteaminfo">

@@ -50,46 +50,31 @@ jimport( 'joomla.application.component.view' );
  * @version $Id$
  * @access public
  */
-class sportsmanagementViewReferees extends JViewLegacy
+class sportsmanagementViewReferees extends sportsmanagementView
 {
 
+	
 	/**
-	 * sportsmanagementViewReferees::display()
+	 * sportsmanagementViewReferees::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
-	function display( $tpl = null )
+	function init()
 	{
-		// Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        // Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-
-		$model	= $this->getModel();
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 		
-		if ( !$config )
+		if ( !$this->config  )
 		{
-			$config	= sportsmanagementModelProject::getTemplateConfig( 'players',$model::$cfg_which_database );
+			$this->config = sportsmanagementModelProject::getTemplateConfig( 'players',$this->jinput->getInt('cfg_which_database',0));
 		}
 
-		$this->assign( 'project', sportsmanagementModelProject::getProject($model::$cfg_which_database) );
-		$this->assign( 'overallconfig', sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database) );
-		$this->assignRef( 'config', $config );
-
-		$this->assign( 'rows', $model->getReferees() );
-//		$this->assignRef( 'positioneventtypes', $model->getPositionEventTypes( ) );
+		$this->rows = $this->model->getReferees();
 
 		// Set page title
 		$pagetitle=JText::_( 'COM_SPORTSMANAGEMENT_REFEREES_PAGE_TITLE' );
-		$document->setTitle( JText::sprintf( $pagetitle, $this->project->name ) );
+		$this->document->setTitle( JText::sprintf( $pagetitle, $this->project->name ) );
         
         $this->headertitle = JText::_( 'COM_SPORTSMANAGEMENT_REFEREES_TITLE' );
 
-		parent::display( $tpl );
 	}
 
 }

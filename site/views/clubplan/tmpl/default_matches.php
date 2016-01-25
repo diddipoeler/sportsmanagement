@@ -167,7 +167,7 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 			
 			$isFavTeam              = false;
 			$isFavTeam              = in_array($game->team1_id,$favteams);
-            $hometeam->rojectteam_slug = $game->projectteam1_slug;
+            $hometeam->projectteam_slug = $game->projectteam1_slug;
 			$hometeam->name         = $game->tname1;
 			$hometeam->team_id      = $game->team1_id;
 			$hometeam->id           = $game->team1_id;
@@ -182,7 +182,7 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 			
 			$isFavTeam              = false;
 			$isFavTeam              = in_array($game->team2_id,$favteams);
-            $awayteam->rojectteam_slug = $game->projectteam2_slug;
+            $awayteam->projectteam_slug = $game->projectteam2_slug;
 			$awayteam->name         = $game->tname2;
 			$awayteam->team_id      = $game->team2_id;
 			$awayteam->id           = $game->team2_id;

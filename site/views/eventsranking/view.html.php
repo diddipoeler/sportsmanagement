@@ -50,45 +50,37 @@ jimport('joomla.application.component.view');
  * @version $Id$
  * @access public
  */
-class sportsmanagementViewEventsRanking extends JViewLegacy
+class sportsmanagementViewEventsRanking extends sportsmanagementView
 {
-	/**
-	 * sportsmanagementViewEventsRanking::display()
-	 * 
-	 * @param mixed $tpl
-	 * @return void
-	 */
-	function display($tpl=null)
+	
+	function init()
 	{
-		// Get a refrence of the page instance in joomla
-		$document = JFactory :: getDocument();
-		$uri = JFactory :: getURI();
-        // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+		//// Get a refrence of the page instance in joomla
+//		$document = JFactory :: getDocument();
+//		$uri = JFactory :: getURI();
+//        // Reference global application object
+//        $app = JFactory::getApplication();
+//        // JInput object
+//        $jinput = $app->input;
+//        $option = $jinput->getCmd('option');
 
-$document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
+$this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
 		// read the config-data from template file
-		$model = $this->getModel();
-        sportsmanagementModelProject::setProjectID(JRequest::getInt('p',0),$model::$cfg_which_database);
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database,__METHOD__);
+		//$model = $this->getModel();
+        sportsmanagementModelProject::setProjectID($this->jinput->getInt('p',0),$this->jinput->getInt('cfg_which_database',0));
+		//$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$this->jinput->getInt('cfg_which_database',0),__METHOD__);
 
-		$this->assign('project', sportsmanagementModelProject::getProject($model::$cfg_which_database,__METHOD__));
-		$this->assign('division', sportsmanagementModelProject::getDivision(0,$model::$cfg_which_database));
-		$this->assignRef('matchid', $model::$matchid);
-		$this->assign('overallconfig', sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database));
-		$this->assignRef('config', $config);
-		$this->assign('teamid', $model->getTeamId());
-		$this->assign('teams', sportsmanagementModelProject::getTeamsIndexedById(0,'name',$model::$cfg_which_database));
-		$this->assign('favteams', sportsmanagementModelProject::getFavTeams($model::$cfg_which_database));
-		$this->assign('eventtypes', sportsmanagementModelProject::getEventTypes(0,$model::$cfg_which_database));
-		$this->assign('limit', $model->getLimit());
-		$this->assign('limitstart', $model->getLimitStart());
-		$this->assign('pagination', $this->get('Pagination'));
-		$this->assign('eventranking', $model->getEventRankings($this->limit));
-		$this->assign('multiple_events', count($this->eventtypes) > 1 );
+		$this->division = sportsmanagementModelProject::getDivision(0,$this->jinput->getInt('cfg_which_database',0));
+		$this->matchid = sportsmanagementModelEventsRanking::$matchid;
+		$this->teamid = $this->model->getTeamId();
+		$this->teams = sportsmanagementModelProject::getTeamsIndexedById(0,'name',$this->jinput->getInt('cfg_which_database',0));
+		$this->favteams = sportsmanagementModelProject::getFavTeams($this->jinput->getInt('cfg_which_database',0));
+		$this->eventtypes = sportsmanagementModelProject::getEventTypes(0,$this->jinput->getInt('cfg_which_database',0));
+		$this->limit = $this->model->getLimit();
+		$this->limitstart = $this->model->getLimitStart();
+		$this->pagination = $this->get('Pagination');
+		$this->eventranking = $this->model->getEventRankings($this->limit);
+		$this->multiple_events = count($this->eventtypes) > 1 ;
 
 		//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
         
@@ -123,11 +115,11 @@ $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smspo
 			$titleInfo->divisionName = $this->division->name;
 		}
 		$this->assign('pagetitle', sportsmanagementHelper::formatTitle($titleInfo, $this->config["page_title_format"]));
-		$document->setTitle($this->pagetitle);
+		$this->document->setTitle($this->pagetitle);
         
         $this->headertitle = $this->pagetitle;
 
-		parent::display($tpl);
+		//parent::display($tpl);
 	}
 
 }

@@ -50,70 +50,49 @@ jimport( 'joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewTeamStats extends JViewLegacy
+class sportsmanagementViewTeamStats extends sportsmanagementView
 {
+	
 	/**
-	 * sportsmanagementViewTeamStats::display()
+	 * sportsmanagementViewTeamStats::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
-	function display($tpl = null)
+	function init()
 	{
-		// Get a refrence of the page instance in joomla
-		$document= JFactory::getDocument();
-		// Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
 
-		$model = $this->getModel();
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
-
-		$tableconfig = sportsmanagementModelProject::getTemplateConfig( "ranking",$model::$cfg_which_database );
-		$eventsconfig = sportsmanagementModelProject::getTemplateConfig( "eventsranking",$model::$cfg_which_database );
-		$flashconfig = sportsmanagementModelProject::getTemplateConfig( "flash",$model::$cfg_which_database );
-
-		$this->assign( 'project', sportsmanagementModelProject::getProject($model::$cfg_which_database) );
 		if ( isset( $this->project ) )
 		{
-			$this->assign( 'overallconfig', sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database) );
+
 			if ( !isset( $this->overallconfig['seperator'] ) )
 			{
 				$this->overallconfig['seperator'] = ":";
 			}
-			$this->assignRef('config', $config );
 
-			$this->assignRef('tableconfig', $tableconfig );
-			$this->assignRef('eventsconfig', $eventsconfig );
-			$this->assign('actualround', sportsmanagementModelProject::getCurrentRound(NULL,$model::$cfg_which_database) );
-			$this->assign('team', $model->getTeam() );
-			
-            $this->assign('highest_home', $model->getHighest('HOME','WIN') );
-			$this->assign('highest_away', $model->getHighest('AWAY','WIN') );
+			$this->tableconfig = sportsmanagementModelProject::getTemplateConfig("ranking",sportsmanagementModelTeamStats::$cfg_which_database );
+			$this->eventsconfig = sportsmanagementModelProject::getTemplateConfig("eventsranking",sportsmanagementModelTeamStats::$cfg_which_database );
+			$this->actualround = sportsmanagementModelProject::getCurrentRound(NULL,sportsmanagementModelTeamStats::$cfg_which_database);
+			$this->team = $this->model->getTeam();
+            $this->highest_home = $this->model->getHighest('HOME','WIN');
+			$this->highest_away = $this->model->getHighest('AWAY','WIN');
+            $this->highestdef_home = $this->model->getHighest('HOME','DEF');
+			$this->highestdef_away = $this->model->getHighest('AWAY','DEF');
+            $this->highestdraw_home = $this->model->getHighest('HOME','DRAW');
+			$this->highestdraw_away = $this->model->getHighest('AWAY','DRAW');
+			$this->totalshome = $this->model->getSeasonTotals('HOME');
+            $this->totalsaway = $this->model->getSeasonTotals('AWAY');
+            $this->matchdaytotals = $this->model->getMatchDayTotals();
+			$this->totalrounds = $this->model->getTotalRounds();
+			$this->totalattendance = $this->model->getTotalAttendance();
+			$this->bestattendance = $this->model->getBestAttendance();
+			$this->worstattendance = $this->model->getWorstAttendance();
+			$this->averageattendance = $this->model->getAverageAttendance();
+			$this->chart_url = $this->model->getChartURL();
+			$this->nogoals_against = $this->model->getNoGoalsAgainst();
+			$this->logo = $this->model->getLogo();
+			$this->results = $this->model->getResults();
 
-            $this->assign('highestdef_home', $model->getHighest('HOME','DEF') );
-			$this->assign('highestdef_away', $model->getHighest('AWAY','DEF') );
-            
-            $this->assign('highestdraw_home', $model->getHighest('HOME','DRAW') );
-			$this->assign('highestdraw_away', $model->getHighest('AWAY','DRAW') );
-
-			$this->assign('totalshome', $model->getSeasonTotals('HOME') );
-            $this->assign('totalsaway', $model->getSeasonTotals('AWAY') );
-
-            $this->assign('matchdaytotals', $model->getMatchDayTotals( ) );
-			$this->assign('totalrounds', $model->getTotalRounds( ) );
-			$this->assign('totalattendance', $model->getTotalAttendance() );
-			$this->assign('bestattendance', $model->getBestAttendance() );
-			$this->assign('worstattendance', $model->getWorstAttendance() );
-			$this->assign('averageattendance', $model->getAverageAttendance() );
-			$this->assign('chart_url', $model->getChartURL( ) );
-			$this->assign('nogoals_against', $model->getNoGoalsAgainst( ) );
-			$this->assign('logo', $model->getLogo( ) );
-			$this->assign('results',  $model->getResults());
-
-			$this->_setChartdata(array_merge($flashconfig, $config));
+			$this->_setChartdata(array_merge(sportsmanagementModelProject::getTemplateConfig("flash",sportsmanagementModelTeamStats::$cfg_which_database ), $this->config));
             
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($this->results,true).'</pre>'),'');
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' totalshome<br><pre>'.print_r($this->totalshome,true).'</pre>'),'');
@@ -126,24 +105,21 @@ class sportsmanagementViewTeamStats extends JViewLegacy
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' highestdraw_away<br><pre>'.print_r($this->highestdraw_away,true).'</pre>'),'');
             
 		}
-		
-		//$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
-		
+	
 		// Set page title
 		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_TEAMSTATS_PAGE_TITLE' );
 		if ( isset( $this->team ) )
 		{
 			$pageTitle .= ': ' . $this->team->name;
 		}
-		$document->setTitle( $pageTitle );
+		$this->document->setTitle( $pageTitle );
 
-	$view = $jinput->getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
+//        $this->document->addCustomTag($stylelink);
         
         $this->headertitle = JText::_( 'COM_SPORTSMANAGEMENT_TEAMSTATS_TITLE' ) . " - " . $this->team->name;
         
-		parent::display( $tpl );
+		//parent::display( $tpl );
 	}
 
 	/**

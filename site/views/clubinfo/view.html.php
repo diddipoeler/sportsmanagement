@@ -50,75 +50,37 @@ jimport( 'joomla.application.component.view' );
  * @version 2014
  * @access public
  */
-class sportsmanagementViewClubInfo extends JViewLegacy
+class sportsmanagementViewClubInfo extends sportsmanagementView
 {
 
+	
 	/**
-	 * sportsmanagementViewClubInfo::display()
+	 * sportsmanagementViewClubInfo::init()
 	 * 
-	 * @param mixed $tpl
-	 * @return
+	 * @return void
 	 */
-	function display( $tpl = null )
+	function init()
 	{
-		// Get a refrence of the page instance in joomla
-		$document = JFactory::getDocument();
-        // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        
-		$model			= $this->getModel();
-		$club			= $model->getClub(1) ;
-		
-		$config			= sportsmanagementModelProject::getTemplateConfig( $this->getName(),$model::$cfg_which_database );	
-		$project 		= sportsmanagementModelProject::getProject($model::$cfg_which_database);
-		$overallconfig	= sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
-		$teams			= $model->getTeamsByClubId();
-		$stadiums	 	= $model->getStadiums();
-		$playgrounds	= $model->getPlaygrounds();
-		$isEditor		= sportsmanagementModelProject::hasEditPermission('club.edit');
-		$address_string = $model->getAddressString();
-
-        $this->assign('checkextrafields', sportsmanagementHelper::checkUserExtraFields('frontend',$model::$cfg_which_database) );
+        $this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend',sportsmanagementModelClubInfo::$cfg_which_database);
                         
         //$app->enqueueMessage(JText::_('clubinfo checkextrafields -> '.'<pre>'.print_r($this->checkextrafields,true).'</pre>' ),'');
 		
         if ( $this->checkextrafields )
         {
-            $this->assign('extrafields', sportsmanagementHelper::getUserExtraFields($club->id,'frontend',$model::$cfg_which_database) );
+            $this->extrafields = sportsmanagementHelper::getUserExtraFields($club->id,'frontend',sportsmanagementModelClubInfo::$cfg_which_database);
         }
         
 		$lat ='';
     $lng ='';
 		
-		$this->assignRef('project',		$project );
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($this->project,true).'</pre>'),'');
-        
-		$this->assignRef('overallconfig',	$overallconfig );
-		$this->assignRef('config',			$config );
-
-		$this->assignRef('showclubconfig',	$showclubconfig );
-		$this->assignRef('club',			$club);
-		$clubassoc			= $model->getClubAssociation($this->club->associations) ;
-		$this->assignRef('clubassoc',			$clubassoc);
-
-		$extended = sportsmanagementHelper::getExtended($club->extended, 'club');
-		$this->assignRef('extended', $extended );
-        $this->assignRef('model',				$model);
-
-		$this->assignRef('teams',			$teams );
-		$this->assignRef('stadiums',		$stadiums );
-		$this->assignRef('playgrounds',	$playgrounds );
-		$this->assignRef('showediticon',	$isEditor );
-
-		$this->assignRef('address_string', $address_string);
-		$this->assignRef('mapconfig',		$map_config ); // Loads the project-template -settings for the GoogleMap
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
-
-		//$this->assignRef( 'gmap',			$google_map );
+		$this->club = sportsmanagementModelClubInfo::getClub(1);
+		$this->clubassoc = sportsmanagementModelClubInfo::getClubAssociation($this->club->associations);
+		$this->extended = sportsmanagementHelper::getExtended($this->club->extended, 'club');
+		$this->teams = sportsmanagementModelClubInfo::getTeamsByClubId();
+		$this->stadiums = sportsmanagementModelClubInfo::getStadiums();
+		$this->playgrounds = sportsmanagementModelClubInfo::getPlaygrounds();
+		$this->showediticon = sportsmanagementModelProject::hasEditPermission('club.edit');
+		$this->address_string = sportsmanagementModelClubInfo::getAddressString();
 
     if ( $this->config['show_club_rssfeed'] )
 	  {
@@ -129,11 +91,11 @@ class sportsmanagementViewClubInfo extends JViewLegacy
     //echo 'rssfeed<br><pre>'.print_r($rssfeedlink,true).'</pre><br>';
     if ( $rssfeedlink )
     {
-    $this->assignRef( 'rssfeeditems', $model->getRssFeeds($rssfeedlink,$this->overallconfig['rssitems']) );
+    $this->rssfeeditems = sportsmanagementModelClubInfo::getRssFeeds($rssfeedlink,$this->overallconfig['rssitems']);
     }
     else
     {
-    $this->assignRef( 'rssfeeditems', $rssfeeditems );
+    $this->rssfeeditems = $rssfeeditems;
     }
     
     
@@ -148,7 +110,7 @@ class sportsmanagementViewClubInfo extends JViewLegacy
         $this->geo->genkml3file($this->club->id,$this->address_string,'club',$this->club->logo_big,$this->club->name,$this->club->latitude,$this->club->longitude);  
 }
 
-    $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
+    $this->show_debug_info = JComponentHelper::getParams($this->option)->get('show_debug_info',0);
     //$this->assign('use_joomlaworks', JComponentHelper::getParams($option)->get('use_joomlaworks',0) );
     
 		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_PAGE_TITLE' );
@@ -160,15 +122,15 @@ class sportsmanagementViewClubInfo extends JViewLegacy
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' overallconfig<br><pre>'.print_r($this->overallconfig,true).'</pre>'),'');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
         
-        $this->assignRef( 'modid',$this->club->id );
+        $this->modid = $this->club->id;
 		// clubhistory
-        $this->assign('clubhistory',$model->getClubHistory($this->club->id) );
-		$this->assign('clubhistoryhtml',$model->getClubHistoryHTML($this->club->id) );
+        $this->clubhistory = sportsmanagementModelClubInfo::getClubHistory($this->club->id);
+		$this->clubhistoryhtml = sportsmanagementModelClubInfo::getClubHistoryHTML($this->club->id);
     // clubhistorytree
-		$this->assign('clubhistorytree',$model->getClubHistoryTree($this->club->id,$this->club->new_club_id) );
-		$this->assign('clubhistorysorttree',$model->getSortClubHistoryTree($this->clubhistorytree,$this->club->id,$this->club->name) );
+		$this->clubhistorytree = sportsmanagementModelClubInfo::getClubHistoryTree($this->club->id,$this->club->new_club_id);
+		$this->clubhistorysorttree = sportsmanagementModelClubInfo::getSortClubHistoryTree($this->clubhistorytree,$this->club->id,$this->club->name);
         
-        $historyobj = $model::$historyobj;
+        $historyobj = sportsmanagementModelClubInfo::$historyobj;
         
         if ( !$historyobj )
         {
@@ -182,10 +144,10 @@ class sportsmanagementViewClubInfo extends JViewLegacy
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubhistorytree<br><pre>'.print_r($this->clubhistorytree,true).'</pre>'),'');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubhistorysorttree<br><pre>'.print_r($this->clubhistorysorttree,true).'</pre>'),'');
         
-        $document->addScript( JURI::base().'components/'.$option.'/assets/js/dtree.js' );        
-        $document->addStyleSheet(JURI::base().'components/'.$option.'/assets/css/dtree.css');  
+        $this->document->addScript( JURI::base().'components/'.$this->option.'/assets/js/dtree.js' );        
+        $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/dtree.css');  
     
-        $document->setTitle( $pageTitle );
+        $this->document->setTitle( $pageTitle );
         
 /**
  *         da wir komplett mit bootstrap arbeiten benötigen wir das nicht mehr 
@@ -199,7 +161,7 @@ class sportsmanagementViewClubInfo extends JViewLegacy
             $this->config['table_class'] = 'table';
         }
         
-		parent::display( $tpl );
+		//parent::display( $tpl );
 	}
 }
 ?>

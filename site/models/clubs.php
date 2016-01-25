@@ -80,16 +80,6 @@ class sportsmanagementModelClubs extends JModelLegacy
         
 	}
 
-//	function getDivision($id=0)
-//	{
-//		$division = null;
-//		if ($this->divisionid != 0)
-//		{
-//			$division = parent::getDivision($this->divisionid);
-//		}
-//		return $division;
-//	}
-
 	/**
 	 * sportsmanagementModelClubs::getClubs()
 	 * 
@@ -146,12 +136,6 @@ class sportsmanagementModelClubs extends JModelLegacy
         $query->from('#__sportsmanagement_team AS t ');
         $query->join('INNER','#__sportsmanagement_season_team_id as st ON st.team_id = t.id ');
         $query->join('INNER','#__sportsmanagement_project_team AS pt ON st.id = pt.team_id ');
-        
-//			$query  = " SELECT t.*, t.picture AS team_picture, pt.picture AS projectteam_picture, "
-//				. " CASE WHEN CHAR_LENGTH( t.alias ) THEN CONCAT_WS( ':', t.id, t.alias ) ELSE t.id END AS team_slug "
-//				. " FROM #__joomleague_team t "
-//				. " LEFT JOIN #__joomleague_project_team pt ON pt.team_id = t.id "
-//				. " WHERE pt.project_id = " . $this->projectid;
 			
             $query->where('pt.project_id = '.(int)self::$projectid);
             
@@ -160,7 +144,7 @@ class sportsmanagementModelClubs extends JModelLegacy
 				$query->where('pt.division_id = '.(int)self::$divisionid);
 			}
 			$query->where('t.club_id = '.$clubs[$index]->id );
-            //$query .= " AND t.club_id = " . $clubs[$index]->id;
+
 			$db->setQuery($query);
 			if ( ! $teams = $db->loadObjectList() )
 			{

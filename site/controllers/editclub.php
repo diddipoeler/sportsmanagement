@@ -245,20 +245,14 @@ public function getModel($name = '', $prefix = '', $config = array('ignore_reque
 		
         if ($this->getTask()=='save')
 		{
-			//$link='index.php?option=com_joomleague&view=editclub';
             $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
 		}
 		else
 		{
-			//$link='index.php?option=com_joomleague&view=editclub&cid='.$post['id'];
             $this->setRedirect('index.php?option=com_sportsmanagement&close='.JRequest::getString('close', 0).'&tmpl=component&view=editclub&cid='.$post['id'],$msg,$type);
 		}
+     
         
-        
-        //$link = JoomleagueHelperRoute::getClubInfoRoute( $project_id, $post['id'] );
-		//$this->setRedirect($link,$msg);
-        
-        //$this->setRedirect('index.php?option=com_sportsmanagement&close='.JRequest::getString('close', 0).'&tmpl=component&view=editclub&cid='.$post['id'],$msg,$type);
         
 	}
 

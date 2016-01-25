@@ -47,10 +47,25 @@ jimport('joomla.application.component.controllerform');
 
 
 
+/**
+ * sportsmanagementControllerEditMatch
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2016
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementControllerEditMatch extends JControllerForm
 {
 
 
+	/**
+	 * sportsmanagementControllerEditMatch::__construct()
+	 * 
+	 * @param mixed $config
+	 * @return void
+	 */
 	function __construct($config = array())
 	{
 		parent::__construct($config);
@@ -60,30 +75,26 @@ class sportsmanagementControllerEditMatch extends JControllerForm
 	}
 
 
+/**
+ * sportsmanagementControllerEditMatch::getModel()
+ * 
+ * @param string $name
+ * @param string $prefix
+ * @param mixed $config
+ * @return
+ */
 public function getModel($name = '', $prefix = '', $config = array('ignore_request' => true))
         {
                 return parent::getModel($name, $prefix, array('ignore_request' => false));
         }
         
-	///**
-//	 * sportsmanagementControllerEditClub::load()
-//	 * 
-//	 * @return void
-//	 */
-//	function load()
-//	{
-//		$cid = JRequest::getInt( 'cid', 0 );
-//
-//		$club = & JTable::getInstance( 'Club', 'sportsmanagementTable' );
-//		$club->load( $cid );
-//		$club->checkout( $user->id );
-//
-//		$this->display();
-//	}
-//
-
-   
+  
 	
+	/**
+	 * sportsmanagementControllerEditMatch::saveshort()
+	 * 
+	 * @return void
+	 */
 	function saveshort()
 	{
 	   $app = JFactory::getApplication();
@@ -159,123 +170,7 @@ $msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED');
 
        //$url = sportsmanagementHelperRoute::getEditMatchRoute($post['p'],$post['matchid']);
        $this->setRedirect($link,$msg);
-            
-//       $row = JTable::getInstance('match','sportsmanagementTable');
-//       $row->load((int) $data['matchid']);    
        
-//		$app = JFactory::getApplication();
-//    // Check for request forgeries
-//		JRequest::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
-//		$msg='';
-//		$address_parts = array();
-//		$post=JRequest::get('post');
-//		
-//		//$app->enqueueMessage(JText::_('post -> '.'<pre>'.print_r($post,true).'</pre>' ),'');
-//		
-//		$cid=JRequest::getVar('cid',array(0),'post','array');
-//		$post['id']=(int) $cid[0];
-//		$model=$this->getModel('club');
-//		
-//		if (!empty($post['address']))
-//		{
-//			$address_parts[] = $post['address'];
-//		}
-//		if (!empty($post['state']))
-//		{
-//			$address_parts[] = $post['state'];
-//		}
-//		if (!empty($post['location']))
-//		{
-//			if (!empty($post['zipcode']))
-//			{
-//				$address_parts[] = $post['zipcode']. ' ' .$post['location'];
-//			}
-//			else
-//			{
-//				$address_parts[] = $post['location'];
-//			}
-//		}
-//		if (!empty($post['country']))
-//		{
-//			$address_parts[] = JSMCountries::getShortCountryName($post['country']);
-//		}
-//		$address = implode(', ', $address_parts);
-//		//$coords = $model->resolveLocation($address);
-//        $coords = sportsmanagementHelper::resolveLocation($address);
-//		
-//		//$app->enqueueMessage(JText::_('coords -> '.'<pre>'.print_r($coords,true).'</pre>' ),'');
-//		
-//		foreach( $coords as $key => $value )
-//		{
-//    $post['extended'][$key] = $value;
-//    }
-//		
-//		$post['latitude'] = $coords['latitude'];
-//		$post['longitude'] = $coords['longitude'];
-//
-//    if (isset($post['merge_teams']))
-//		{
-//			if (count($post['merge_teams']) > 0)
-//			{
-//				$temp=implode(",",$post['merge_teams']);
-//			}
-//			else
-//			{
-//				$temp='';
-//			}
-//			$post['merge_teams']=$temp;
-//		}
-//		else
-//		{
-//			$post['merge_teams']='';
-//		}
-//		
-//    //$app->enqueueMessage(JText::_('post -> '.'<pre>'.print_r($post,true).'</pre>' ),'');
-//		
-//		if ($model->save($post))
-//		{
-//			$msg=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_SAVED');
-//			$createTeam=JRequest::getVar('createTeam');
-//			if ($createTeam)
-//			{
-//				$team_name=JRequest::getVar('name');
-//				$team_short_name=strtoupper(substr(ereg_replace("[^a-zA-Z]","",$team_name),0,3));
-//				$teammodel=$this->getModel('team');
-//				$tpost['id']= "0";
-//				$tpost['name']= $team_name;
-//				$tpost['short_name']= $team_short_name ;
-//				$tpost['club_id']= $teammodel->getDbo()->insertid();
-//				$teammodel->save($tpost);
-//			}
-//            $type='message';
-//		}
-//		else
-//		{
-//			$msg=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_ERROR_SAVE').$model->getError();
-//            $type='error';
-//		}
-//		
-//        // Check the table in so it can be edited.... we are done with it anyway
-//		$model->checkin();
-//        
-//		
-//        if ($this->getTask()=='save')
-//		{
-//			//$link='index.php?option=com_joomleague&view=editclub';
-//            $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
-//		}
-//		else
-//		{
-//			//$link='index.php?option=com_joomleague&view=editclub&cid='.$post['id'];
-//            $this->setRedirect('index.php?option=com_sportsmanagement&close='.JRequest::getString('close', 0).'&tmpl=component&view=editclub&cid='.$post['id'],$msg,$type);
-//		}
-//        
-//        
-//        //$link = JoomleagueHelperRoute::getClubInfoRoute( $project_id, $post['id'] );
-//		//$this->setRedirect($link,$msg);
-//        
-//        //$this->setRedirect('index.php?option=com_sportsmanagement&close='.JRequest::getString('close', 0).'&tmpl=component&view=editclub&cid='.$post['id'],$msg,$type);
-//        
 	}
 
 	

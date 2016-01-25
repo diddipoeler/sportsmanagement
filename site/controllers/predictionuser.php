@@ -174,20 +174,7 @@ class sportsmanagementControllerPredictionUsers extends JControllerForm
         $set_pj = $jinput->getVar('set_pj','0');
         $set_r = $jinput->getVar('set_r','0');
         
-        
-//		//echo '<br /><pre>~' . print_r($post,true) . '~</pre><br />';
-//		$pID	= JRequest::getVar('prediction_id',	'',	'post',	'int');
-//		$pjID	= JRequest::getVar('pj',	'',	'post',	'int');
-//		$rID	= JRequest::getVar('r',		'',	'post',	'int');
-//		$uID	= JRequest::getVar('uid',			0,	'post',	'int');
-//		$set_pj	= JRequest::getVar('set_pj',		'',	'post',	'int');
-//        $pggroup	= JRequest::getVar('pggroup',	null,	'post',	'int');
-		//$set_r	= JRequest::getVar('set_r',			'',	'post',	'int');
-		//if ($set_r!=$rID){$rID=$set_r;}
-		//if ($set_pj!=$pjID){$pjID=$set_pj;}
-//		if (empty($pjID)){$pjID=null;}
-//		if (empty($uID)){$uID=null;}
-		//$link = JoomleagueHelperRoute::getPredictionResultsRoute($pID,$rID,$pjID,'#jl_top');
+
 		$link = JSMPredictionHelperRoute::getPredictionMemberRoute($pID,$uID,null,$pjID,$pggroup ,$rID);
 		//echo '<br />' . $link . '<br />';
 		$this->setRedirect($link);

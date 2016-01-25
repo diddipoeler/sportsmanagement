@@ -50,33 +50,19 @@ jimport( 'joomla.application.component.view' );
  * @version $Id$
  * @access public
  */
-class sportsmanagementViewTeams extends JViewLegacy
+class sportsmanagementViewTeams extends sportsmanagementView
 {
+	
 	/**
-	 * sportsmanagementViewTeams::display()
+	 * sportsmanagementViewTeams::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
-	function display( $tpl = null )
+	function init()
 	{
-		// Get a reference of the page instance in joomla
-		$document= JFactory::getDocument();
-        // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-
-		$model = $this->getModel();
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$jinput->getInt('cfg_which_database',0));
-
-		$this->assign( 'project', sportsmanagementModelProject::getProject($jinput->getInt('cfg_which_database',0)) );
-		$this->assign( 'division', sportsmanagementModelProject::getDivision($jinput->getInt( "division", 0 ),$jinput->getInt('cfg_which_database',0)) );
-		$this->assign( 'overallconfig', sportsmanagementModelProject::getOverallConfig($jinput->getInt('cfg_which_database',0)) );
-		$this->assignRef( 'config', $config );
-
-		//$this->assignRef( 'teams', $model->getTeams() );
-        $this->assign( 'teams', sportsmanagementModelProject::getTeams($jinput->getInt( "division", 0 ),'name',$jinput->getInt('cfg_which_database',0)) );
+	
+		$this->division = sportsmanagementModelProject::getDivision($this->jinput->getInt( "division", 0 ),$this->jinput->getInt('cfg_which_database',0));
+        $this->teams = sportsmanagementModelProject::getTeams($this->jinput->getInt( "division", 0 ),'name',$this->jinput->getInt('cfg_which_database',0));
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
 
@@ -90,11 +76,10 @@ class sportsmanagementViewTeams extends JViewLegacy
 				$pageTitle .= " : ". $this->division->name;
 			}
 		}
-		$document->setTitle( $pageTitle );
+		$this->document->setTitle( $pageTitle );
         
         $this->headertitle = JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_TITLE' );
 
-		parent::display( $tpl );
 	}
 }
 ?>

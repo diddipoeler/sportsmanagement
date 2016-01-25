@@ -112,10 +112,6 @@ class sportsmanagementModelPagination extends JModelLegacy
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project->current_round'.'<pre>'.print_r($project->current_round,true).'</pre>' ),'');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current_round'.'<pre>'.print_r($roundid,true).'</pre>' ),'');
         
-		//$mdlRound = JModelLegacy::getInstance("Round", "JoomleagueModel");
-		//$mdlRounds = JModelLegacy::getInstance("Rounds", "JoomleagueModel");
-		//sportsmanagementModelRounds::setProjectId($project->id);
-
 		$firstRound	= sportsmanagementModelRounds::getFirstRound($project->id,$cfg_which_database);
 		$lastRound = sportsmanagementModelRounds::getLastRound($project->id,$cfg_which_database);
 		$previousRound = sportsmanagementModelRounds::getPreviousRound($roundid, $project->id,$cfg_which_database);

@@ -1673,8 +1673,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 	 */
 	public static function getUserProfileRouteCBE( $u_id, $p_id, $pl_id ,$cfg_which_database = 0,$s=0)
 	{
-		// Old Route to Community Builder User Page with support for CBE-JoomLeague Tab
-		// index.php?option=com_cbe&view=userProfile&user=JOOMLA_USER_ID&jlp=PROJECT_ID&jlpid=JOOMLEAGUE_PLAYER_ID
+
 		$params = array(	"option" => "com_cbe",
 					"view" => "userProfile",
 					"user" => $u_id,

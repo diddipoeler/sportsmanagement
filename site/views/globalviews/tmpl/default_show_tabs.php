@@ -58,6 +58,7 @@ $view = Jrequest::getCmd('view');
 <div class="panel with-nav-tabs panel-default">
 <div class="panel-heading">
 <!-- Tabs-Navs -->
+<ul class="nav nav-tabs" role="tablist">
 <?PHP			
 foreach ($this->output as $key => $templ) 
 {
@@ -75,7 +76,7 @@ break;
 }    
 
 ?>
-<ul class="nav nav-tabs" role="tablist">
+
 <li role="presentation" class="<?PHP echo $active; ?>"><a href="#<?PHP echo $text; ?>" role="tab" data-toggle="tab"><?PHP echo JText::_($text); ?></a>
 </li>
 <?PHP

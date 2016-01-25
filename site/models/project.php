@@ -2126,7 +2126,7 @@ $image = sportsmanagementHelperHtml::getBootstrapModalImage($roundcode.'team'.$t
         
         // ist der user der einer gruppe zugeordnet ?
         $groups = JUserHelper::getUserGroups($user->get('id')); 
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' groups'.'<pre>'.print_r($groups,true).'</pre>' ),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' groups'.'<pre>'.print_r($groups,true).'</pre>' ),'');
         
 		if($user->id > 0) 
         {
@@ -2150,7 +2150,7 @@ $image = sportsmanagementHelperHtml::getBootstrapModalImage($roundcode.'team'.$t
             {
 				// If not, then check if user is project admin or editor
 				$project = self::getProject($cfg_which_database,__METHOD__);
-				if(self::$isUserProjectAdminOrEditor($user->id, $project))
+				if(self::isUserProjectAdminOrEditor($user->id, $project))
 				{
 					$allowed = true;
 				} 

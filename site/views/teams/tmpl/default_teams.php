@@ -41,23 +41,23 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <table class="<?php echo $this->config['table_class']; ?>">
 	<thead>
-	<tr class="sectiontableheader">
+	<tr >
 		<?php if ($this->config['show_small_logo']) { ?>
-		<th class="team_logo"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_LOGO_TEAM' ); ?></th>
+		<th ><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_LOGO_TEAM' ); ?></th>
 		<?php } ?>
-		<th class="team_name"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_NAME_TEAM' ); ?></th>
-		<th class="club_name"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_NAME_CLUB' ); ?></th>
+		<th ><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_NAME_TEAM' ); ?></th>
+		<th ><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_NAME_CLUB' ); ?></th>
 		<?php if ($this->config['show_medium_logo']) { ?>
-		<th class="club_logo"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_LOGO_CLUB' ); ?></th>
+		<th ><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_LOGO_CLUB' ); ?></th>
 		<?php } ?>
     
     <?php if ($this->config['show_club_internetadress_picture']) { ?>
-		<th class="club_logo"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_HOMEPAGE_PICTURE' ); ?></th>
+		<th ><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_HOMEPAGE_PICTURE' ); ?></th>
 		<?php } ?>
     <?php if ($this->config['show_club_number']) { ?>
-		<th class="club_logo"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_CLUB_NUMBER' ); ?></th>
+		<th ><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_CLUB_NUMBER' ); ?></th>
 		<?php } ?>
-		<th class="club_address"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_NAME_CLUBADDRESS' ); ?></th>
+		<th ><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_NAME_CLUBADDRESS' ); ?></th>
 	</tr>
 	</thead>
 	<?php
@@ -116,11 +116,11 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
 			$mediumClubLogoLink = JHTML::link( $clubinfo_link, $image );
 		}
 		?>
-		<tr class="">
+		<tr >
 			<?php if ($this->config['show_small_logo']) { ?>
-			<td class="team_logo"><?php echo $smallTeamLogoLink; ?></td>
+			<td ><?php echo $smallTeamLogoLink; ?></td>
 			<?php } ?>
-			<td class="team_name">
+			<td >
 				<?php
 				if ($this->config['which_link1']==0)
 				{
@@ -139,7 +139,7 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
 				}
 				?>
 			</td>
-			<td class="club_name">
+			<td >
 				<?php
 				if ($this->config['which_link2']==0)
 				{
@@ -159,40 +159,40 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
 				?>
 			</td>
 			<?php if ($this->config['show_medium_logo']) { ?>
-			<td class="club_logo"><?php echo $mediumClubLogoLink; ?></td>
+			<td ><?php echo $mediumClubLogoLink; ?></td>
 			<?php } ?>
       
       <?php 
       if ($this->config['show_club_internetadress_picture'] && !empty($team->club_www) ) 
       { 
       ?>
-			<td class="club_logo"><?php echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$team->club_www.'">'; ?></td>
+			<td ><?php echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$team->club_www.'">'; ?></td>
 			<?php 
       }
       else
       {
       ?>
-      <td class="club_logo"></td>
+      <td ></td>
       <?php 
       }
       
       if ($this->config['show_club_number'] ) 
       { 
       ?>
-        <td class="club_logo"><?php echo $team->unique_id; ?></td>
+        <td ><?php echo $team->unique_id; ?></td>
 		<?php 
       }
       else
       {
       ?>
-      <td class="club_logo"></td>
+      <td ></td>
       <?php 
       }
       
        
       ?>
       
-			<td class="club_address">
+			<td >
 				<?php
 				echo JSMCountries::convertAddressString(	$team->club_name,
 														$team->club_address,

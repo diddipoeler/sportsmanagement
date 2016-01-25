@@ -82,6 +82,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 		self::$divisionid = (int) $jinput->get('division',0, '');
 		self::$mode = (int) $jinput->get('mode',0, '');
         self::$cfg_which_database = (int) $jinput->get('cfg_which_database',0, '');
+        sportsmanagementModelProject::setProjectID($jinput->getInt('p',0),self::$cfg_which_database);
         parent::__construct();
 	}
 
@@ -110,7 +111,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getDivision()
+	public static function getDivision()
 	{
 		$option = JRequest::getCmd('option');
 	   $app = JFactory::getApplication();
@@ -155,7 +156,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 	 * 
 	 * @return
 	 */
-	function getProjectTeamId()
+	public static function getProjectTeamId()
 	{
 		$option = JRequest::getCmd('option');
 	   $app = JFactory::getApplication();
@@ -167,9 +168,9 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
         // Select some fields
         $query->select('pt.id');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t ON t.id = st.team_id ');
+		$query->from('#__sportsmanagement_project_team as pt');
+        $query->join('INNER',' #__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
+        $query->join('INNER',' #__sportsmanagement_team as t ON t.id = st.team_id ');
         // Where
         $query->where('pt.project_id = '.self::$projectid);
         $query->where('t.id='.self::$teamid);
@@ -210,7 +211,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 	 * @param mixed $rounds
 	 * @return
 	 */
-	function getMatchesPerRound($config,$rounds)
+	public static function getMatchesPerRound($config,$rounds)
 	{
 	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
@@ -235,7 +236,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 	 * @param mixed $config
 	 * @return
 	 */
-	function getMatches($config)
+	public static function getMatches($config)
 	{
 	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
@@ -263,7 +264,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 	 * @param mixed $config
 	 * @return
 	 */
-	function getMatchesRefering($config)
+	public static function getMatchesRefering($config)
 	{
 	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
@@ -285,7 +286,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 	 * @param integer $getreferee
 	 * @return
 	 */
-	function _getResultsPlan($team=0,$ordering='ASC',$referee=0,$getplayground=0,$getreferee=0)
+	public static function _getResultsPlan($team=0,$ordering='ASC',$referee=0,$getplayground=0,$getreferee=0)
 	{
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
@@ -450,7 +451,7 @@ if (!$matches && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	 * @param integer $getreferee
 	 * @return
 	 */
-	function _getResultsRows($roundcode=0,$teamId=0,$ordering='ASC',$unpublished=0,$getplayground=0,$getreferee=0)
+	public static function _getResultsRows($roundcode=0,$teamId=0,$ordering='ASC',$unpublished=0,$getplayground=0,$getreferee=0)
 	{
 		$app = JFactory::getApplication();
         $option = JRequest::getCmd('option');

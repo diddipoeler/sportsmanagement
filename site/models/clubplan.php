@@ -511,24 +511,13 @@ class sportsmanagementModelClubPlan extends JModelLegacy
         
         if ( self::$project_id == 0 && self::$teamartsel == 0 && self::$teamseasonssel == 0)
         {
-        //$query->where('(m.match_date BETWEEN '.$db->Quote($startdate).' AND '.$db->Quote($enddate).')');
         $query->where('(r.round_date_first >= '.$db->Quote(''.$startdate.'').' AND r.round_date_last <= '.$db->Quote(''.$enddate.'').')');
         }
         
         if ( $startdate && $enddate )
         {
-        //$query->where('(r.round_date_first >= '.$db->Quote(''.$startdate.'').' AND r.round_date_last <= '.$db->Quote(''.$enddate.'').')');
         $query->where('m.round_id IN ('.$round_ids.')');    
         }
-
-        /*
-        // beim vereinsspielplan gehört die projekt_id nicht zur selektion
-        if( self::$project_id > 0 ) 
-        {
-			// Where
-            $query->where('p.id = '. self::$project_id );
-		}
-        */
         
         if( self::$teamartsel > 0 ) 
         {

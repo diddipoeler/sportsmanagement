@@ -104,10 +104,13 @@ echo $this->loadTemplate('show_tabs');
 	{
 		echo $this->loadTemplate('pagnav');
 	}
-
-	echo "<div>";
+?>
+	<div>
+    <?PHP
 		echo $this->loadTemplate('backbutton');
 		echo $this->loadTemplate('footer');
-	echo "</div>";
+	?>
+	</div>
+    <?PHP
 	?>
 </div>

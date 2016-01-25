@@ -40,9 +40,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.model' );
 
-//require_once( JLG_PATH_SITE . DS . 'models' . DS . 'project.php' );
-//include_once JPATH_COMPONENT . DS . 'helpers' . DS . 'easygooglemap.php';
-
 /**
  * sportsmanagementModelClubInfo
  * 
@@ -58,17 +55,17 @@ class sportsmanagementModelClubInfo extends JModelLegacy
 	static $clubid = 0;
 	static $club = null;
     
-    var $new_club_id = 0;
-    var $historyhtml = '';
+    static $new_club_id = 0;
+    static $historyhtml = '';
 	static $historyobj = array();
 
   var $catssorted = array();
   	
-  var $jgcat_rows = array();
-  var $jgcat_rows_sorted = Array();
+  static $jgcat_rows = array();
+  static $jgcat_rows_sorted = Array();
      
-	var $treedepth = 0;
-	var $treedepthold = 0;
+	static $treedepth = 0;
+	static $treedepthold = 0;
     
     static $cfg_which_database = 0;	
 
@@ -195,7 +192,7 @@ else
      * @param mixed $associations
      * @return
      */
-    function getClubAssociation($associations)
+    public static function getClubAssociation($associations)
 	{
 	   // Reference global application object
         $app = JFactory::getApplication();
@@ -288,7 +285,7 @@ $result = $db->execute();
 	 * 
 	 * @return
 	 */
-	function getTeamsByClubId()
+	public static function getTeamsByClubId()
 	{
 	// Reference global application object
         $app = JFactory::getApplication();
@@ -367,7 +364,7 @@ $result = $db->execute();
 	 * 
 	 * @return
 	 */
-	function getStadiums()
+	public static function getStadiums()
 	{
 		// Reference global application object
         $app = JFactory::getApplication();
@@ -425,7 +422,7 @@ $result = $db->execute();
 	 * 
 	 * @return
 	 */
-	function getPlaygrounds( )
+	public static function getPlaygrounds( )
 	{
 		// Reference global application object
         $app = JFactory::getApplication();
@@ -467,7 +464,7 @@ $result = $db->execute();
      * @param mixed $clubid
      * @return
      */
-    function getClubHistory( $clubid )
+    public static function getClubHistory( $clubid )
 	{
 	// Reference global application object
         $app = JFactory::getApplication();
@@ -481,12 +478,6 @@ $result = $db->execute();
         $query->select('CONCAT_WS( \':\', id, alias ) AS slug');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ');
         $query->where('c.new_club_id = '. $clubid );
-        
-//				$query = ' SELECT c.id, c.name, c.new_club_id, '
-//				. ' CASE WHEN CHAR_LENGTH( alias ) THEN CONCAT_WS( \':\', id, alias ) ELSE id END AS slug '
-//				       . ' FROM #__joomleague_club AS c '
-//				       . ' WHERE c.new_club_id = '. $clubid
-//				            ;
                             
 				$db->setQuery($query);
 				$result = $db->loadObjectList();
@@ -521,7 +512,7 @@ $result = $db->execute();
          * @param mixed $clubid
          * @return
          */
-        function getClubHistoryHTML( $clubid )
+        public static function getClubHistoryHTML( $clubid )
 	{
 	  // Reference global application object
         $app = JFactory::getApplication();
@@ -548,22 +539,7 @@ $result = $db->execute();
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c');
         
         $query->where('c.new_club_id = '. $clubid );
-
-
-//$query = ' SELECT c.id, c.name, c.new_club_id, '
-//				. ' CASE WHEN CHAR_LENGTH( alias ) THEN CONCAT_WS( \':\', id, alias ) ELSE id END AS slug '
-//				. ',(select max(pt.project_id) 
-//             from #__joomleague_project_team pt
-//             inner join #__joomleague_team t
-//             on pt.team_id = t.id   
-//             right join #__joomleague_project p 
-//             on pt.project_id = p.id 
-//             where t.club_id = c.id 
-//             and p.published = 1) as pid'
-//				       . ' FROM #__joomleague_club AS c '
-//				       . ' WHERE c.new_club_id = '. $clubid
-//				            ;
-				            
+			            
 				$db->setQuery($query);
 				$result = $db->loadObjectList();
 			
@@ -572,7 +548,7 @@ $result = $db->execute();
   //$temp = '<ul><li>'.$row->name.'</li>';
   //$this->treedepthold = $this->treedepth;
   
-  if ( $this->treedepthold === $this->treedepth )
+  if ( self::$treedepthold === self::$treedepth )
   {
   $temp = '<li>';  
   }
@@ -592,28 +568,28 @@ $result = $db->execute();
 	$temp .= "&nbsp;";								
 	$temp .= JHTML::link( $link, $row->name );
   $temp .= '</li>';													
-  $this->historyhtml .= $temp;
+  self::$historyhtml .= $temp;
   
   if ( $row->new_club_id )
   {
-  $this->treedepth++;
-  $this->getClubHistoryHTML( $row->id );
+  self::$treedepth++;
+  self::getClubHistoryHTML( $row->id );
   }
   else
   {
   
-  for ($a=0; $a < $this->treedepth;$a++)
+  for ($a=0; $a < self::$treedepth;$a++)
   {
-  $this->historyhtml .= '</ul>';
+  self::$historyhtml .= '</ul>';
   }
-  return $this->historyhtml;
+  return self::$historyhtml;
   }
   
-  $this->treedepthold = $this->treedepth;
+  self::$treedepthold = self::$treedepth;
   
   }
 
-  return $this->historyhtml;
+  return self::$historyhtml;
   
 	}
     
@@ -625,7 +601,7 @@ $result = $db->execute();
          * @param mixed $new_club_id
          * @return
          */
-        function getClubHistoryTree( $clubid, $new_club_id )
+        public static function getClubHistoryTree( $clubid, $new_club_id )
 	{
 	// Reference global application object
         $app = JFactory::getApplication();
@@ -637,11 +613,11 @@ $result = $db->execute();
         $query = $db->getQuery(true);
         $subquery = $db->getQuery(true);
     
-	if ( $this->new_club_id != 0 )
+	if ( self::$new_club_id != 0 )
 	{
   $icon = 'to_club.png';
 //  $querywhere = ' WHERE c.id = '. $this->new_club_id	;
-  $query->where('c.id = '. $this->new_club_id );
+  $query->where('c.id = '. self::$new_club_id );
   }
   else
   {
@@ -663,22 +639,6 @@ $result = $db->execute();
         
         $query->select('('.$subquery.') as pid ');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c');
-        
-//	$queryselect = ' SELECT c.id, c.name, c.new_club_id, '
-//				. ' CASE WHEN CHAR_LENGTH( alias ) THEN CONCAT_WS( \':\', id, alias ) ELSE id END AS slug '
-//				. ',(select max(pt.project_id) 
-//             from #__joomleague_project_team pt
-//             inner join #__joomleague_team t
-//             on pt.team_id = t.id   
-//             right join #__joomleague_project p 
-//             on pt.project_id = p.id 
-//             where t.club_id = c.id 
-//             and p.published = 1) as pid'
-//				       . ' FROM #__joomleague_club AS c ';
-				       
-	
-	
-  //$query = $queryselect.$querywhere;
   			            
 				$db->setQuery($query);
                 
@@ -691,7 +651,7 @@ $result = $db->execute();
    $row->icon = $icon;
    }
 		
-  $this->jgcat_rows = array_merge($this->jgcat_rows, $result);
+  self::$jgcat_rows = array_merge(self::$jgcat_rows, $result);
   
   //$app->enqueueMessage(JText::_('jgcat_rows -> '.'<pre>'.print_r($this->jgcat_rows,true).'</pre>' ),'');
   
@@ -699,18 +659,18 @@ $result = $db->execute();
 	{
 	if ( $row->new_club_id )
   {
-  $this->treedepth++;
-  $this->getClubHistoryTree( $row->id, $row->new_club_id );
+  self::$treedepth++;
+  self::getClubHistoryTree( $row->id, $row->new_club_id );
   }
   else
   {
     
-  return $this->jgcat_rows;
+  return self::$jgcat_rows;
   }
 	
 	}
   	
-	return $this->jgcat_rows;
+	return self::$jgcat_rows;
 	
 	}
     
@@ -724,7 +684,7 @@ $result = $db->execute();
          * @param mixed $cat_name
          * @return
          */
-        function getSortClubHistoryTree( $clubtree, $root_catid, $cat_name )
+        public static function getSortClubHistoryTree( $clubtree, $root_catid, $cat_name )
 	{
 	// Reference global application object
         $app = JFactory::getApplication();
@@ -734,7 +694,7 @@ $result = $db->execute();
 	$script = '';
 	
   $jgcat_rows_sorted = Array();
-  $jgcat_rows_sorted = $this->sortCategoryList($clubtree, $jgcat_rows_sorted);
+  $jgcat_rows_sorted = self::sortCategoryList($clubtree, $jgcat_rows_sorted);
   
 //  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubtree<br><pre>'.print_r($clubtree,true).'</pre>'),'');
 //  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' root_catid<br><pre>'.print_r($root_catid,true).'</pre>'),'');
@@ -794,7 +754,7 @@ $result = $db->execute();
      * @param mixed $catssorted
      * @return void
      */
-    function sortCategoryListRecurse($catid, &$children, &$catssorted)
+    public static function sortCategoryListRecurse($catid, &$children, &$catssorted)
   {
     if(isset($children[$catid]))
     {
@@ -813,7 +773,7 @@ $result = $db->execute();
      * @param mixed $catssorted
      * @return
      */
-    function sortCategoryList(&$cats, &$catssorted)
+    public static function sortCategoryList(&$cats, &$catssorted)
   {
   
 
@@ -832,7 +792,7 @@ $result = $db->execute();
 
 
     // Now resort the given $cats array with the help of the $children array
-    $sortresult = $this->sortCategoryListRecurse(0, $children, $catssorted);
+    $sortresult = self::sortCategoryListRecurse(0, $children, $catssorted);
     
 
     
@@ -844,7 +804,7 @@ $result = $db->execute();
 	 * 
 	 * @return
 	 */
-	function getAddressString( )
+	public static function getAddressString( )
 	{
 		$club = self::getClub();
 		if ( !isset ( $club ) ) { return null; }

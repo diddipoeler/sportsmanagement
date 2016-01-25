@@ -66,7 +66,10 @@ echo $this->loadTemplate('maps');
 
 //if ($this->config['show_matchday_pagenav']){echo $this->loadTemplate('matchday_nav');}
 
-if ($this->config['show_help']){echo $this->loadTemplate('show_help');}
+if ($this->config['show_help'])
+{
+    echo $this->loadTemplate('show_help');
+}
 
 // echo '<div>';
 // echo $this->pagination->getListFooter();

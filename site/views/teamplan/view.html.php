@@ -53,55 +53,27 @@ JHtml::_('behavior.tooltip');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewTeamPlan extends JViewLegacy
+class sportsmanagementViewTeamPlan extends sportsmanagementView
 {
-	/**
-	 * sportsmanagementViewTeamPlan::display()
-	 * 
-	 * @param mixed $tpl
-	 * @return void
-	 */
-	function display($tpl=null)
+
+	function init()
 	{
-		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
+	        
+        $this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
         
-        // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        
-		$model = $this->getModel();
-        $model::$cfg_which_database = $jinput->getInt('cfg_which_database',0);
-        
-        $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
-        
-        //$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
-        sportsmanagementModelProject::setProjectID($jinput->getInt('p',0),$model::$cfg_which_database);
-		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
-		sportsmanagementHelperHtml::$project = $project;
-        $config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
+		sportsmanagementHelperHtml::$project = $this->project;
 		
-		if (isset($project))
+		if (isset($this->project))
 		{
-			$this->assignRef('project',$project);
-			$rounds = sportsmanagementModelProject::getRounds($config['plan_order'],$model::$cfg_which_database);
-
-			$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database));
-			$this->assign('config',array_merge($this->overallconfig,$config));
-			$this->assignRef('rounds',$rounds);
-			$this->assign('teams',sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$model::$cfg_which_database));
-			$this->assignRef('match',$match);
-			$this->assign('favteams',sportsmanagementModelProject::getFavTeams($model::$cfg_which_database));
-			$this->assign('division',$model->getDivision());
-			$this->assign('ptid',$model->getProjectTeamId());
-			$this->assign('projectevents',sportsmanagementModelProject::getProjectEvents(0,$model::$cfg_which_database));
-			$this->assign('matches',$model->getMatches($config));
-			$this->assign('matches_refering',$model->getMatchesRefering($config));
-			$this->assign('matchesperround',$model->getMatchesPerRound($config,$rounds));
-			$this->assignRef('model',$model);
-
+			$this->rounds = sportsmanagementModelProject::getRounds($this->config['plan_order'],sportsmanagementModelTeamPlan::$cfg_which_database);
+			$this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',sportsmanagementModelTeamPlan::$cfg_which_database);
+			$this->favteams = sportsmanagementModelProject::getFavTeams(sportsmanagementModelTeamPlan::$cfg_which_database);
+			$this->division = sportsmanagementModelTeamPlan::getDivision();
+			$this->ptid = sportsmanagementModelTeamPlan::getProjectTeamId();
+			$this->projectevents = sportsmanagementModelProject::getProjectEvents(0,sportsmanagementModelTeamPlan::$cfg_which_database);
+			$this->matches = sportsmanagementModelTeamPlan::getMatches($this->config);
+			$this->matches_refering = sportsmanagementModelTeamPlan::getMatchesRefering($this->config);
+			$this->matchesperround = sportsmanagementModelTeamPlan::getMatchesPerRound($this->config,$this->rounds);
 		}
         
         //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' project<br><pre>'.print_r($project,true).'</pre>'),'');
@@ -122,7 +94,7 @@ class sportsmanagementViewTeamPlan extends JViewLegacy
                 else{$pageTitle='';
                 }
 		}
-		$document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_TEAMPLAN_PAGE_TITLE',$pageTitle));
+		$this->document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_TEAMPLAN_PAGE_TITLE',$pageTitle));
         
 /**
  *         da wir komplett mit bootstrap arbeiten benötigen wir das nicht mehr 
@@ -136,7 +108,7 @@ class sportsmanagementViewTeamPlan extends JViewLegacy
             $this->config['table_class'] = 'table';
         }
 
-		parent::display($tpl);
+		//parent::display($tpl);
 	}
 
 	/**

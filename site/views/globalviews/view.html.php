@@ -51,27 +51,19 @@ jimport( 'joomla.application.component.view' );
  * @version 2014
  * @access public
  */
-class sportsmanagementViewglobalviews extends JViewLegacy
+class sportsmanagementViewglobalviews extends sportsmanagementView
 {
+	
 	/**
-	 * sportsmanagementViewglobalviews::display()
+	 * sportsmanagementViewglobalviews::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
-	function display( $tpl = null )
+	function init()
 	{
-	   // Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        
-        $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/jquery.modal.js' );
+       
+        $this->document->addScript ( JUri::root(true).'/administrator/components/'.$this->option.'/assets/js/jquery.modal.js' );
 	
-		parent::display( $tpl );
 	}
 
 }

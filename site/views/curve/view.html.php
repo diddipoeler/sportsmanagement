@@ -52,50 +52,50 @@ require_once(JPATH_SITE.DS.JSM_PATH.DS.'assets'.DS.'classes'.DS.'open-flash-char
  * @version 2014
  * @access public
  */
-class sportsmanagementViewCurve extends JViewLegacy
+class sportsmanagementViewCurve extends sportsmanagementView
 {
+	
 	/**
-	 * sportsmanagementViewCurve::display()
+	 * sportsmanagementViewCurve::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
-	function display($tpl = null)
+	function init()
 	{
-	// Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		// Get a reference of the page instance in joomla
-		$document = JFactory::getDocument();
-		$uri      = JFactory::getURI();
-		$js = $this->baseurl . '/components/'.$option.'/assets/js/json2.js';
-		$document->addScript($js);
-		$js = $this->baseurl . '/components/'.$option.'/assets/js/swfobject.js';
-		$document->addScript($js);
+	//// Reference global application object
+//        $app = JFactory::getApplication();
+//        // JInput object
+//        $jinput = $app->input;
+//		$option = $jinput->getCmd('option');
+//		// Get a reference of the page instance in joomla
+//		$document = JFactory::getDocument();
+//		$uri      = JFactory::getURI();
+		$js = $this->baseurl . '/components/'.$this->option.'/assets/js/json2.js';
+		$this->document->addScript($js);
+		$js = $this->baseurl . '/components/'.$this->option.'/assets/js/swfobject.js';
+		$this->document->addScript($js);
 
-		$division = $jinput->getInt('division', 0);
+		//$division = $jinput->getInt('division', 0);
 
-		$model = $this->getModel();
-		$rankingconfig = sportsmanagementModelProject::getTemplateConfig( "ranking",$model::$cfg_which_database );
-		$flashconfig = sportsmanagementModelProject::getTemplateConfig( "flash",$model::$cfg_which_database );
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
+		//$model = $this->getModel();
+		$rankingconfig = sportsmanagementModelProject::getTemplateConfig( "ranking",sportsmanagementModelCurve::$cfg_which_database );
+		$flashconfig = sportsmanagementModelProject::getTemplateConfig( "flash",sportsmanagementModelCurve::$cfg_which_database );
+		//$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 
-		$this->assign( 'project', sportsmanagementModelProject::getProject($model::$cfg_which_database) );
+		//$this->assign( 'project', sportsmanagementModelProject::getProject($model::$cfg_which_database) );
 
 		if ( isset( $this->project ) )
 		{
-			$teamid1 = $model::$teamid1;
-			$teamid2 = $model::$teamid2;
+			$teamid1 = sportsmanagementModelCurve::$teamid1;
+			$teamid2 = sportsmanagementModelCurve::$teamid2;
 			$options = array(	JHtml::_( 'select.option', '0', JText::_('COM_SPORTSMANAGEMENT_CURVE_CHOOSE_TEAM') ) );
-			$divisions = sportsmanagementModelProject::getDivisions(0,$model::$cfg_which_database);
+			$divisions = sportsmanagementModelProject::getDivisions(0,sportsmanagementModelCurve::$cfg_which_database);
 			if (count($divisions)>0 && $division == 0)
 			{
 				foreach ($divisions as $d)
 				{
 					$options = array();
-					$teams = sportsmanagementModelProject::getTeams($d->id,'name',$model::$cfg_which_database);
+					$teams = sportsmanagementModelProject::getTeams($d->id,'name',sportsmanagementModelCurve::$cfg_which_database);
 					$i=0;
 					foreach ((array) $teams as $t) {
 						$options[] = JHtml::_( 'select.option', $t->id, $t->name );
@@ -116,14 +116,14 @@ class sportsmanagementViewCurve extends JViewLegacy
 				$divisions = array();
 				$team1select = array();
 				$team2select = array();
-				$div = $model->getDivision($division);
+				$div = $this->model->getDivision(sportsmanagementModelCurve::$division);
 				if(empty($div)) {
 					$div = new stdClass();
 					$div->id = 0;
 					$div->name = '';
 				}
 				$divisions[0] = $div;
-				$teams = sportsmanagementModelProject::getTeams($division,'name',$model::$cfg_which_database);
+				$teams = sportsmanagementModelProject::getTeams(sportsmanagementModelCurve::$division,'name',sportsmanagementModelCurve::$cfg_which_database);
                 
                 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');
                 
@@ -145,22 +145,22 @@ class sportsmanagementViewCurve extends JViewLegacy
 				$team2select[$div->id] = JHtml::_('select.genericlist', $options, 'tid2_'.$div->id, 'onchange="reload_curve_chart_'.$div->id.'()" class="inputbox" style="font-size:9px;"','value', 'text', $teamid2);		
 			}
 
-			$this->assign( 'overallconfig', sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database) );
+			//$this->assign( 'overallconfig', sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database) );
 			if ( !isset( $this->overallconfig['seperator'] ) )
 			{
 				$this->overallconfig['seperator'] = ":";
 			}
-			$this->assignRef('config',$config );
-			$this->assignRef('model',$model);
-			$this->assign('colors',sportsmanagementModelProject::getColors($rankingconfig['colors'],$model::$cfg_which_database) );
-			$this->assignRef('divisions',$divisions );
-			$this->assign('division',$model->getDivision($division) );
-			$this->assign('favteams',sportsmanagementModelProject::getFavTeams($model::$cfg_which_database) );
-			$this->assign('team1',$model->getTeam1($division) );
-			$this->assign('team2',$model->getTeam2($division) );
-			$this->assign('allteams',sportsmanagementModelProject::getTeams($division,'name',$model::$cfg_which_database) );
-			$this->assignRef('team1select',$team1select );
-			$this->assignRef('team2select',$team2select );
+			//$this->assignRef('config',$config );
+			//$this->assignRef('model',$model);
+			$this->colors = sportsmanagementModelProject::getColors($rankingconfig['colors'],sportsmanagementModelCurve::$cfg_which_database);
+			$this->divisions = $divisions;
+			$this->division = $this->model->getDivision(sportsmanagementModelCurve::$division);
+			$this->favteams = sportsmanagementModelProject::getFavTeams(sportsmanagementModelCurve::$cfg_which_database);
+			$this->team1 = $this->model->getTeam1(sportsmanagementModelCurve::$division);
+			$this->team2 = $this->model->getTeam2(sportsmanagementModelCurve::$division);
+			$this->allteams = sportsmanagementModelProject::getTeams(sportsmanagementModelCurve::$division,'name',sportsmanagementModelCurve::$cfg_which_database);
+			$this->team1select = $team1select;
+			$this->team2select = $team2select;
 			$this->_setChartdata(array_merge($flashconfig, $rankingconfig));
 			// Set page title
 			$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_CURVE_PAGE_TITLE' );
@@ -168,9 +168,9 @@ class sportsmanagementViewCurve extends JViewLegacy
 			{
 				//$pageTitle .= ": ".$this->team1->name." - ".$this->team2->name;
 			}
-			$document->setTitle( $pageTitle );
+			$this->document->setTitle( $pageTitle );
 		}
-		parent::display( $tpl );
+		//parent::display( $tpl );
 	}
 
 	/**

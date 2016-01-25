@@ -50,53 +50,31 @@ jimport( 'joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewPlayground extends JViewLegacy
+class sportsmanagementViewPlayground extends sportsmanagementView
 {
+	
+    
 	/**
-	 * sportsmanagementViewPlayground::display()
+	 * sportsmanagementViewPlayground::init()
 	 * 
-	 * @param mixed $tpl
-	 * @return
+	 * @return void
 	 */
-	function display( $tpl = null )
+	function init()
 	{
-		// Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        // Get a refrence of the page instance in joomla
-		$document= JFactory::getDocument();
+	
+        sportsmanagementModelProject::setProjectID($this->jinput->getInt( "p", 0 ),$this->jinput->getInt('cfg_which_database',0));
         
-        //$document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
-
-		$model = $this->getModel();
-        sportsmanagementModelProject::setProjectID($jinput->getInt( "p", 0 ),$jinput->getInt('cfg_which_database',0));
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
-        
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$jinput->getInt('cfg_which_database',0));
-
-		$this->assign('project', sportsmanagementModelProject::getProject($jinput->getInt('cfg_which_database',0)) );
-		$this->assign('overallconfig', sportsmanagementModelProject::getOverallConfig($jinput->getInt('cfg_which_database',0)) );
-		$this->assignRef('config', $config );
-
-		//$model = $this->getModel();
-		$games = $model->getNextGames($jinput->getInt( "p", 0 ));
-		$gamesteams = sportsmanagementModelTeams::getTeamsFromMatches( $games );
-		$this->assign('playground',  $model->getPlayground($jinput->getInt( "pgid", 0 )),1 );
-        $this->assign('address_string', $model->getAddressString() );
-		$this->assign('teams', sportsmanagementModelTeams::getTeams($this->playground->id) );
-		$this->assignRef('games', $games );
-		$this->assignRef('gamesteams', $gamesteams );
-       
+    	$this->playground = $this->model->getPlayground($this->jinput->getInt( "pgid", 0 ));
+        $this->address_string = $this->model->getAddressString();
+		$this->teams = sportsmanagementModelTeams::getTeams($this->playground->id);
+		$this->games = $this->model->getNextGames($this->jinput->getInt( "p", 0 ),$this->jinput->getInt( "pgid", 0 ));
+		$this->gamesteams = sportsmanagementModelTeams::getTeamsFromMatches( $this->games );
         
         // diddipoeler
         $this->geo = new JSMsimpleGMapGeocoder();
         $this->geo->genkml3file($this->playground->id,$this->address_string,'playground',$this->playground->picture,$this->playground->name,$this->playground->latitude,$this->playground->longitude);
 
-		$extended = sportsmanagementHelper::getExtended($this->playground->extended, 'playground');
-		$this->assignRef( 'extended', $extended );
+		$this->extended = sportsmanagementHelper::getExtended($this->playground->extended, 'playground');
 		// Set page title
 		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_PLAYGROUND_PAGE_TITLE' );
 		if ( isset( $this->playground->name ) )
@@ -104,17 +82,15 @@ class sportsmanagementViewPlayground extends JViewLegacy
 			$pageTitle .= ' - ' . $this->playground->name;
 		}
         // Set page title
-		$document->setTitle( $pageTitle );
-		$document->addCustomTag( '<meta property="og:title" content="' . $this->playground->name .'"/>' );
-		$document->addCustomTag( '<meta property="og:street-address" content="' . $this->address_string .'"/>' );
+		$this->document->setTitle( $pageTitle );
+		$this->document->addCustomTag( '<meta property="og:title" content="' . $this->playground->name .'"/>' );
+		$this->document->addCustomTag( '<meta property="og:street-address" content="' . $this->address_string .'"/>' );
         
-        $view = $jinput->getVar( "view") ;
-        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
-        $document->addCustomTag($stylelink);
+        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
+        $this->document->addCustomTag($stylelink);
         
         $this->headertitle = $this->playground->name;
         
-		parent::display( $tpl );
 	}
 }
 ?>

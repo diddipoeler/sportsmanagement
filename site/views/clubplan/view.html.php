@@ -50,95 +50,91 @@ require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'clubinfo.php' );
  * @version 2014
  * @access public
  */
-class sportsmanagementViewClubPlan extends JViewLegacy
+class sportsmanagementViewClubPlan extends sportsmanagementView
 {
+
 	/**
-	 * sportsmanagementViewClubPlan::display()
+	 * sportsmanagementViewClubPlan::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
-	function display($tpl=null)
+	function init()
 	{
-		// Get a refrence of the page instance in joomla
-		$document = JFactory::getDocument();
-		$uri = JFactory::getURI();
-		$model = $this->getModel();
-        
-        // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
+	//	// Get a refrence of the page instance in joomla
+//		$document = JFactory::getDocument();
+//		$uri = JFactory::getURI();
+//		$model = $this->getModel();
+//        
+//        // Reference global application object
+//        $app = JFactory::getApplication();
+//        // JInput object
+//        $jinput = $app->input;
+//        $option = $jinput->getCmd('option');
+        $this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
         
         $js = "window.addEvent('domready', function() {"."\n";
         $js .= "hideclubplandate()".";\n";
         $js .= "})"."\n";
-        $document->addScriptDeclaration( $js );
+        $this->document->addScriptDeclaration( $js );
         
         
-		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
-		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
-		$this->assignRef('project',$project);
-		$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database));
-		$this->assignRef('config',$config);
-		$this->assignRef('showclubconfig',$showclubconfig);
-		$this->assign('favteams',sportsmanagementModelProject::getFavTeams($model::$cfg_which_database));
-		$this->assign('club',sportsmanagementModelClubInfo::getClub());
+		//$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
+//		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
+//		$this->assignRef('project',$project);
+//		$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database));
+//		$this->assignRef('config',$config);
         
-        $this->assign('type',$model::$type);
-        $this->assign('teamartsel',$model::$teamartsel);
-        //$model->teamart = $this->teamartsel;
-        $this->assign('teamprojectssel',$model::$teamprojectssel);
-        //$model->teamprojects = $this->teamprojectssel;
-        //$model::$project_id = $jinput->getInt("p",0);
+		//$this->showclubconfig = $showclubconfig;
+		$this->favteams = sportsmanagementModelProject::getFavTeams(sportsmanagementModelClubPlan::$cfg_which_database);
+		$this->club = sportsmanagementModelClubInfo::getClub();
+        
+        $this->type = sportsmanagementModelClubPlan::$type;
+        $this->teamartsel = sportsmanagementModelClubPlan::$teamartsel;
+        $this->teamprojectssel = sportsmanagementModelClubPlan::$teamprojectssel;
         
         if ( $this->teamprojectssel > 0 )
         {
-            $model::$project_id = $this->teamprojectssel;
+            sportsmanagementModelClubPlan::$project_id = $this->teamprojectssel;
         }
-        $this->assign('teamseasonssel',$model::$teamseasonssel);
-        //$model->teamseasons = $this->teamseasonssel;
-        
+        $this->teamseasonssel = sportsmanagementModelClubPlan::$teamseasonssel;
         
         if ( $this->teamseasonssel > 0 )
         {
-            $model::$project_id = 0;
+            sportsmanagementModelClubPlan::$project_id = 0;
         }
         if ( $this->teamartsel != '' )
         {
-            $model::$project_id = 0;
+            sportsmanagementModelClubPlan::$project_id = 0;
         }
         
         
         if ( $this->type == '' )
         {
-            $this->type = $config['type_matches'];
+            $this->type = $this->config['type_matches'];
         }
         else
         {
-            $config['type_matches'] = $this->type;
+            $this->config['type_matches'] = $this->type;
         }
         
-		switch ($config['type_matches']) 
+		switch ($this->config['type_matches']) 
         {
 			case 0 :
             case 3 : 
             case 4 : // all matches
-				$this->assign('allmatches',$model->getAllMatches($config['MatchesOrderBy'],$config['type_matches']));
+				$this->allmatches = $this->model->getAllMatches($this->config['MatchesOrderBy'],$this->config['type_matches']);
 				break;
 			case 1 : // home matches
-				$this->assign('homematches',$model->getAllMatches($config['MatchesOrderBy'],$config['type_matches']));
+				$this->homematches = $this->model->getAllMatches($this->config['MatchesOrderBy'],$this->config['type_matches']);
 
 				break;
 			case 2 : // away matches
-				$this->assign('awaymatches',$model->getAllMatches($config['MatchesOrderBy'],$config['type_matches']));
+				$this->awaymatches = $this->model->getAllMatches($this->config['MatchesOrderBy'],$this->config['type_matches']);
 
 				break;
 			default: // home+away matches
-				$this->assign('homematches',$model->getAllMatches($config['MatchesOrderBy'],$config['type_matches']));
-				$this->assign('awaymatches',$model->getAllMatches($config['MatchesOrderBy'],$config['type_matches']));
+				$this->homematches = $this->model->getAllMatches($this->confignfig['MatchesOrderBy'],$this->config['type_matches']);
+				$this->awaymatches = $this->model->getAllMatches($this->config['MatchesOrderBy'],$this->config['type_matches']);
 
 				break;
 		}
@@ -148,13 +144,13 @@ class sportsmanagementViewClubPlan extends JViewLegacy
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' awaymatches <br><pre>'.print_r($this->awaymatches,true).'</pre>'),'');
         
         
-		$this->assign('startdate',$model->getStartDate());
-		$this->assign('enddate',$model->getEndDate());
-		$this->assign('teams',$model->getTeams());
+		$this->startdate = $this->model->getStartDate();
+		$this->enddate = $this->model->getEndDate();
+		$this->teams = $this->model->getTeams();
         
-        $this->assign('teamart',$model->getTeamsArt());
-        $this->assign('teamprojects',$model->getTeamsProjects());
-        $this->assign('teamseasons',$model->getTeamsSeasons());
+        $this->teamart = $this->model->getTeamsArt();
+        $this->teamprojects = $this->model->getTeamsProjects();
+        $this->teamseasons = $this->model->getTeamsSeasons();
         
         $fromteamart[] = JHTML :: _('select.option', '', JText :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAMART'));
 		$fromteamart = array_merge($fromteamart, $this->teamart);
@@ -168,8 +164,8 @@ class sportsmanagementViewClubPlan extends JViewLegacy
 		$fromteamseasons = array_merge($fromteamseasons, $this->teamseasons);
 		$lists['fromteamseasons'] = $fromteamseasons;
         
-		$this->assignRef('model',$model);
-		$this->assign('action',$uri->toString());
+		//$this->assignRef('model',$model);
+		//$this->assign('action',$uri->toString());
         
         // auswahl welche spiele
     $opp_arr = array ();
@@ -178,14 +174,14 @@ class sportsmanagementViewClubPlan extends JViewLegacy
 	$opp_arr[] = JHTML :: _('select.option', "2", JText :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_AWAY'));
 
 	$lists['type'] = $opp_arr;
-    $this->assignRef('lists', $lists);
+    $this->lists = $lists;
 
 		// Set page title
 		$pageTitle=JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_TITLE');
 		if (isset($this->club)){
 			$pageTitle .= ': '.$this->club->name;
 		}
-		$document->setTitle($pageTitle);
+		$this->document->setTitle($pageTitle);
 		
 		//$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
 
@@ -199,7 +195,7 @@ class sportsmanagementViewClubPlan extends JViewLegacy
 		$rss=array('type' => 'application/rss+xml','title' => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_RSSFEED'));
 
 		// add the links
-		$document->addHeadLink(JRoute::_($feed.'&type=rss'),'alternate','rel',$rss);
+		$this->document->addHeadLink(JRoute::_($feed.'&type=rss'),'alternate','rel',$rss);
         
 /**
  *         das brauchen wir nicht mehr, da wir bootsrap benutzen
@@ -210,7 +206,7 @@ class sportsmanagementViewClubPlan extends JViewLegacy
         
         $this->headertitle = JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_PAGE_TITLE').' '.$this->club->name;
         
-		parent::display($tpl);
+		//parent::display($tpl);
 	}
 
 }

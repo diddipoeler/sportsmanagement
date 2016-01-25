@@ -61,7 +61,6 @@ class sportsmanagementControllerPredictiongame extends JControllerLegacy
 	 */
 	function __construct()
 	{
-		//echo " - JoomleagueControllerPredictiongame construct";
 		parent::__construct();
 	}
 }

@@ -56,8 +56,8 @@ class sportsmanagementModelTeamInfo extends JModelLegacy
 	static $projectid = 0;
 	static $projectteamid = 0;
 	static $teamid = 0;
-	var $team = null;
-	var $club = null;
+	static $team = null;
+	static $club = null;
     
     static $cfg_which_database = 0;
 
@@ -109,7 +109,7 @@ $result = $db->execute();
 	* @param int projectid
 	* @return	array
 	*/
-	function getTrainigData( $projectid )
+	public static function getTrainigData( $projectid )
 	{
 	   // Reference global application object
         $app = JFactory::getApplication();
@@ -154,7 +154,7 @@ $result = $db->execute();
 	 * @param integer $inserthits
 	 * @return
 	 */
-	function getTeamByProject($inserthits=0)
+	public static function getTeamByProject($inserthits=0)
 	{
 	   // Reference global application object
         $app = JFactory::getApplication();
@@ -168,7 +168,7 @@ $result = $db->execute();
        
        self::updateHits(self::$teamid,$inserthits); 
        
-		if (is_null($this->team))
+		if (is_null(self::$team))
 		{
 		  $query->select('t.*,t.name AS tname, t.website AS team_website, pt.*, pt.notes AS notes, pt.info AS info');
           $query->select('t.extended AS teamextended, t.picture AS team_picture, pt.picture AS projectteam_picture,pt.cr_picture AS cr_projectteam_picture, c.*');
@@ -197,9 +197,9 @@ $result = $db->execute();
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-			$this->team  = $db->loadObject();
+			self::$team  = $db->loadObject();
             
-            if ( !$this->team && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+            if ( !self::$team && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $my_text = 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>';
           $my_text .= 'dump -><pre>'.print_r($query->dump(),true).'</pre>';  
@@ -218,14 +218,14 @@ $result = $db->execute();
 //            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             
 		}
-		return $this->team;
+		return self::$team;
 	}
 
 	/**
 	 * get club info
 	 * @return object
 	 */
-	function getClub()
+	public static function getClub()
 	{
 	    // Reference global application object
         $app = JFactory::getApplication();
@@ -237,7 +237,7 @@ $result = $db->execute();
 	   $query = $db->getQuery(true);
        $starttime = microtime(); 
        
-		if ( is_null( $this->club ) )
+		if ( is_null( self::$club ) )
 		{
 			$team = self::getTeamByProject();
 			if ( $team->club_id > 0 )
@@ -254,10 +254,10 @@ $result = $db->execute();
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-				$this->club  = $db->loadObject();
+				self::$club  = $db->loadObject();
 			}
 		}
-		return $this->club;
+		return self::$club;
 	}
 
 	
@@ -268,7 +268,7 @@ $result = $db->execute();
 	 * @param integer $history
 	 * @return
 	 */
-	function getSeasons( $config, $history = 0 )
+	public static function getSeasons( $config, $history = 0 )
 	{
 	   // Reference global application object
         $app = JFactory::getApplication();
@@ -405,7 +405,7 @@ $query->order('s.ordering '.$season_ordering);
      * @param mixed $season_id
      * @return
      */
-    function getPlayerMarketValue($projectid, $projectteamid, $season_id)
+    public static function getPlayerMarketValue($projectid, $projectteamid, $season_id)
     {
         // Reference global application object
         $app = JFactory::getApplication();
@@ -446,7 +446,7 @@ $query->order('s.ordering '.$season_ordering);
 	 * @param int division_id
 	 * @return array
 	 */
-	function getTeamRanking($projectid, $division_id)
+	public static function getTeamRanking($projectid, $division_id)
 	{
 	   // Reference global application object
         $app = JFactory::getApplication();
@@ -477,8 +477,8 @@ $query->order('s.ordering '.$season_ordering);
 		$tableconfig = sportsmanagementModelProject::getTemplateConfig( "ranking", self::$cfg_which_database );
 		$ranking = JSMRanking::getInstance($project,self::$cfg_which_database);
 		$ranking->setProjectId( $project->id, self::$cfg_which_database );
-		$this->ranking = $ranking->getRanking(0,sportsmanagementModelProject::getCurrentRound(null,self::$cfg_which_database),$division_id,self::$cfg_which_database);
-		foreach ($this->ranking as $ptid => $value)
+		$temp_ranking = $ranking->getRanking(0,sportsmanagementModelProject::getCurrentRound(null,self::$cfg_which_database),$division_id,self::$cfg_which_database);
+		foreach ($temp_ranking as $ptid => $value)
 		{
 			if ($value->getPtid() == self::$projectteamid)
 			{
@@ -563,7 +563,7 @@ $query->order('s.ordering '.$season_ordering);
 	 * @param int $projectid
 	 * @return string
 	 */
-	function getLeague($projectid)
+	public static function getLeague($projectid)
 	{
 	   // Reference global application object
         $app = JFactory::getApplication();
@@ -610,7 +610,7 @@ $query->order('s.ordering '.$season_ordering);
      * @param mixed $seasonsranking
      * @return
      */
-    function getLeagueRankOverviewDetail( $seasonsranking )
+    public static function getLeagueRankOverviewDetail( $seasonsranking )
 	{
 	   // Reference global application object
         $app = JFactory::getApplication();
@@ -671,7 +671,7 @@ $query->order('s.ordering '.$season_ordering);
    * @param mixed $seasonsranking
    * @return
    */
-  function getLeagueRankOverview( $seasonsranking )
+  public static function getLeagueRankOverview( $seasonsranking )
 	{
 	    // Reference global application object
         $app = JFactory::getApplication();
@@ -722,7 +722,7 @@ $query->order('s.ordering '.$season_ordering);
 	 * @param int projectteamid
 	 * @return int
 	 */
-	function getPlayerMeanAge($projectid, $projectteamid, $season_id)
+	public static function getPlayerMeanAge($projectid, $projectteamid, $season_id)
 	{
 	   // Reference global application object
         $app = JFactory::getApplication();
@@ -795,7 +795,7 @@ $query->order('s.ordering '.$season_ordering);
 	 * @param int projectteamid
 	 * @return int
 	 */
-	function getPlayerCount($projectid, $projectteamid, $season_id)
+	public static function getPlayerCount($projectid, $projectteamid, $season_id)
 	{
 	   // Reference global application object
         $app = JFactory::getApplication();

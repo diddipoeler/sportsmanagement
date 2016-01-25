@@ -53,7 +53,7 @@ if ( ( isset($this->config['show_prediction_heading']) ) && ( $this->config['sho
 	?>
 	<table class="table" >
 		<tr>
-			<td class='sectiontableheader'>
+			<td class=''>
 				<?php
 				echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_HEAD_ACTUAL_PRED_GAME','<b><i>'.$this->predictionGame->name.'</i></b>');
 				if ((isset($this->showediticon)) && ($this->showediticon) && ($this->predictionMember->pmID > 0))
@@ -88,7 +88,7 @@ if ( ( isset($this->config['show_prediction_heading']) ) && ( $this->config['sho
         )
 			{
 				?>
-				<td class='sectiontableheader' style='text-align:right; ' width='15%'  nowrap='nowrap'>
+				<td class='' style='text-align:right;' >
 					<form name='predictionMemberSelect' method='post' >
 					<input type='hidden' name='prediction_id' value='<?php echo sportsmanagementModelPrediction::$predictionGameID; ?>' />
 					<input type='hidden' name='task' value='predictionusers.select' />
@@ -114,7 +114,7 @@ if ( ( isset($this->config['show_prediction_heading']) ) && ( $this->config['sho
 				<?php
 			}
 			?>
-			<td class='sectiontableheader' style='text-align:right; ' width='15%' nowrap='nowrap'>
+			<td class='' style='text-align:right;'  >
 				<?php
 				$output = '';
 				
@@ -172,6 +172,7 @@ if ( ( isset($this->config['show_prediction_heading']) ) && ( $this->config['sho
 			
 			?>
 		</tr>
-	</table><?php
+	</table>
+    <?php
 }
 ?>

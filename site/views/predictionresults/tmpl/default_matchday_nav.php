@@ -46,24 +46,19 @@ defined('_JEXEC') or die('Restricted access');
 <?php
 if (!empty($this->model->_projectRoundsCount))
 {
-	?><br />
-  <table class="table">
-  <tr>
-  <td>
-  <div class="">
-  <?php
-								
-				$pageNavigation  = '<div class="">';
-				$pageNavigation .= JoomleaguePagination::pagenav($this->model->getPredictionProject($this->model->predictionProject->project_id));
-				$pageNavigation .= '</div>';
-				echo $pageNavigation;
-			  
-		
-	?>
-  </div>
-  </td>
-  </tr>
-  </table>
-  <?php
+?>
+<br />
+<table class="table">
+<tr>
+<td>
+<div class="">
+<?php
+echo JoomleaguePagination::pagenav($this->model->getPredictionProject($this->model->predictionProject->project_id));
+?>
+</div>
+</td>
+</tr>
+</table>
+<?php
 }
 ?>
