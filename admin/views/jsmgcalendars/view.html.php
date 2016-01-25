@@ -63,8 +63,9 @@ class sportsmanagementViewjsmgcalendars extends sportsmanagementView
  */
 public function init ()
 	{
-		$option	= JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$uri = JFactory::getUri();
         
         $this->items = $this->get('Items');
@@ -87,7 +88,8 @@ public function init ()
 	 */
 	protected function addToolbar() 
     {
-		$option = JRequest::getCmd('option');
+		$jinput = JFactory::getApplication()->input;
+        $option = $jinput->getCmd('option');
         $canDo = jsmGCalendarUtil::getActions();
 		if ($canDo->get('core.create')) {
 			JToolBarHelper::addNew('jsmgcalendar.add', 'JTOOLBAR_NEW');

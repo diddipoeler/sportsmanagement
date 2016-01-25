@@ -64,7 +64,8 @@ class sportsmanagementViewjsmgcalendar extends sportsmanagementView
 function init( $tpl = null )
 	{
 		$app = JFactory::getApplication();
-		$option = JRequest::getCmd('option');
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$db	= sportsmanagementHelper::getDBConnection();
 		$uri = JFactory::getURI();
 		$user = JFactory::getUser();
@@ -102,8 +103,9 @@ function init( $tpl = null )
     protected function addToolbar() 
     {
 		//JRequest::setVar('hidemainmenu', true);
-        $app	= JFactory::getApplication();
-$option = JRequest::getCmd('option');
+        $app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$canDo = jsmGCalendarUtil::getActions($this->gcalendar->id);
 		if ($this->gcalendar->id < 1) 
         {

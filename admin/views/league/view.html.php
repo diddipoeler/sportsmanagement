@@ -81,9 +81,9 @@ class sportsmanagementViewLeague extends sportsmanagementView
         $this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);
         
 		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'league');
-		$this->assignRef( 'extended', $extended );
+		$this->extended	= $extended;
         $extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'league');		
-		$this->assignRef( 'extendeduser', $extendeduser );
+		$this->extendeduser	= $extendeduser;
 		
 	}
  
@@ -95,8 +95,8 @@ class sportsmanagementViewLeague extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{
-        
-		JRequest::setVar('hidemainmenu', true);
+        $jinput = JFactory::getApplication()->input;
+        $jinput->set('hidemainmenu', true);
         
 		$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ADD_NEW');
         $this->icon = 'league';

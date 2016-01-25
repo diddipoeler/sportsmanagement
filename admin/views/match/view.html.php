@@ -27,7 +27,7 @@
 * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
 * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* OHNE JEDE GEWÄRLEISTUNG, bereitgestellt; sogar ohne die implizite
 * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
 * Siehe die GNU General Public License für weitere Details.
 *
@@ -76,24 +76,25 @@ class sportsmanagementViewMatch extends sportsmanagementView
 	public function init ()
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
         $user = JFactory::getUser();
 		$model = $this->getModel();
         $document = JFactory::getDocument();
         $browser = JBrowser::getInstance();
         $config = JComponentHelper::getParams ( 'com_media' );
-        $this->assignRef ( 'config', $config );
+        $this->config	= $config ;
 
         $project_id	= $app->getUserState( "$option.pid", '0' );
-        $this->assignRef('project_id',$project_id);
+        $this->project_id	= $project_id;
         $default_name_format = '';
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id -> '.$project_id.''),'');
         
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $projectws = $mdlProject->getProject($this->project_id);
-        $this->assignRef('projectws',$projectws);
-        $this->assignRef('eventsprojecttime',$projectws->game_regular_time);
+        $this->projectws	= $projectws;
+        $this->eventsprojecttime	= $projectws->game_regular_time;
         
         //JRequest::setVar('hidemainmenu', true);
         
@@ -119,9 +120,9 @@ class sportsmanagementViewMatch extends sportsmanagementView
         
         $match = $model->getMatchData($this->item->id);
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'match');
-		$this->assignRef('extended', $extended );
-        $this->assignRef('match',$match);
-		$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
+		$this->extended	= $extended;
+        $this->match	= $match;
+		$this->cfg_which_media_tool	= JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
         
         // layout pressebericht
         if ( $this->getLayout() == 'pressebericht' || $this->getLayout() == 'pressebericht_3' )
@@ -184,8 +185,9 @@ class sportsmanagementViewMatch extends sportsmanagementView
      */
     public function initEditEeventsBB()
 	{
-	$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$project_id = $app->getUserState( "$option.pid", '0' );
 		$document = JFactory::getDocument();
 		$params = JComponentHelper::getParams( $option );
@@ -201,7 +203,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 //		{
 //			$homeRoster=$model->getGhostPlayerbb($teams->projectteam1_id);
 //		}
-		$awayRoster = $model->getTeamPersons($teams->projectteam2_id,FALSE,1);
+		$awayRoster = $model->getTeamPersons($teams->projectteam2_id, FALSE, 1);
 		//if (count($awayRoster)==0)
 //		{
 //			$awayRoster=$model->getGhostPlayerbb($teams->projectteam2_id);
@@ -210,17 +212,17 @@ class sportsmanagementViewMatch extends sportsmanagementView
         //$project_model = $this->getModel('projectws');
         
 		// events
-		$events = $model->getEventsOptions($project_id,$this->item->id);
+		$events = $model->getEventsOptions($project_id, $this->item->id);
 		if (!$events)
 		{
 			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS').'<br /><br />');
 			return;
 		}
 
-		$this->assignRef('homeRoster',$homeRoster);
-		$this->assignRef('awayRoster',$awayRoster);
-		$this->assignRef('teams',$teams);
-		$this->assignRef('events',$events);
+		$this->homeRoster	= $homeRoster;
+		$this->awayRoster	= $awayRoster;
+		$this->teams	= $teams;
+		$this->events	= $events;
         
         // diddipoeler
         //$this->assignRef('eventsprojecttime',$project_model->_data->game_regular_time);
@@ -237,8 +239,9 @@ class sportsmanagementViewMatch extends sportsmanagementView
      */
     public function initEdit()
 	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 	$document = JFactory::getDocument();
     $model = $this->getModel();
     $project_id = $app->getUserState( "$option.pid", '0' );
@@ -270,20 +273,20 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$lists ['new_match'] = JHtml::_ ( 'select.genericlist', $newmatches, 'new_match_id', 'class="inputbox" size="1"', 'value', 'text', $this->item->new_match_id );
 
     //$match = $model->getMatchTeams($this->item->id);
-    $lists['count_result'] = JHtml::_('select.booleanlist','count_result','class="inputbox"',$this->item->count_result);
+		$lists['count_result'] = JHtml::_('select.booleanlist','count_result','class="inputbox"',$this->item->count_result);
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match<br><pre>'.print_r($match,true).'</pre>'),'Notice');
         
         // build the html select booleanlist which team got the won
         $myoptions = array();
-        $myoptions[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_NO_TEAM'));
-        $myoptions[] = JHtml::_('select.option','1',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_HOME_TEAM'));
-        $myoptions[] = JHtml::_('select.option','2',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_AWAY_TEAM'));
-        $myoptions[] = JHtml::_('select.option','3',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_LOSS_BOTH_TEAMS'));
-        $myoptions[] = JHtml::_('select.option','4',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_WON_BOTH_TEAMS'));
-        $lists['team_won'] = JHtml::_('select.genericlist',$myoptions,'team_won','class="inputbox" size="1"','value','text',$this->item->team_won);
+        $myoptions[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_NO_TEAM'));
+        $myoptions[] = JHtml::_('select.option', '1', JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_HOME_TEAM'));
+        $myoptions[] = JHtml::_('select.option', '2', JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_AWAY_TEAM'));
+        $myoptions[] = JHtml::_('select.option', '3', JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_LOSS_BOTH_TEAMS'));
+        $myoptions[] = JHtml::_('select.option', '4', JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_WON_BOTH_TEAMS'));
+        $lists['team_won'] = JHtml::_('select.genericlist', $myoptions, 'team_won', 'class="inputbox" size="1"', 'value', 'text', $this->item->team_won);
         
-        $this->assignRef('lists',$lists);
+        $this->lists	= $lists;
         $this->setLayout('edit');
     
     }
@@ -295,10 +298,10 @@ class sportsmanagementViewMatch extends sportsmanagementView
      */
     public function initPicture()
 	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-	$document = JFactory::getDocument();
-    $model = $this->getModel();
+		$jinput = JFactory::getApplication()->input;
+        $option = $jinput->getCmd('option');
+		$document = JFactory::getDocument();
+		$model = $this->getModel();
     
 
         $this->setLayout('picture');
@@ -312,23 +315,24 @@ class sportsmanagementViewMatch extends sportsmanagementView
      */
     public function initPressebericht()
 	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-	$document = JFactory::getDocument();
-    $model = $this->getModel();
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+		$document = JFactory::getDocument();
+		$model = $this->getModel();
     
-    $csv_file = $model->getPressebericht(); 
-$this->assignRef('csv',$csv_file); 
-$matchnumber = $model->getPresseberichtMatchnumber($csv_file);    
-$this->assignRef('matchnumber',$matchnumber);
-if ( $matchnumber )
-{
-$readplayers = $model->getPresseberichtReadPlayers($csv_file);  
-$this->assignRef('csvplayers',$model->csv_player);   
-$this->assignRef('csvinout',$model->csv_in_out);
-$this->assignRef('csvcards',$model->csv_cards);
-$this->assignRef('csvstaff',$model->csv_staff);
-}
+		$csv_file = $model->getPressebericht(); 
+		$this->csv	= $csv_file; 
+		$matchnumber = $model->getPresseberichtMatchnumber($csv_file);    
+		$this->matchnumber	= $matchnumber;
+		if ( $matchnumber )
+			{
+				$readplayers = $model->getPresseberichtReadPlayers($csv_file);  
+				$this->asscsvplayers	= $model->csv_player;   
+				$this->csvinout	= $model->csv_in_out;
+				$this->csvcards	= $model->csv_cards;
+				$this->csvstaff	= $model->csv_staff;
+			}
 
 //build the html options for position
 		$position_id[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
@@ -355,16 +359,16 @@ $this->assignRef('csvstaff',$model->csv_staff);
 			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS').'<br /><br />');
 			return;
 		}
-		$eventlist=array();
+		$eventlist = array();
         $eventlist[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_EVENT' ) );
-		$eventlist=array_merge($eventlist,$events);
+		$eventlist = array_merge($eventlist, $events);
 		
         $lists['events'] = $eventlist;
         unset( $eventlist );
         
-        $this->assignRef( 'lists', $lists );
+        $this->lists	= $lists;
     
-    $this->setLayout('pressebericht');
+		$this->setLayout('pressebericht');
     
     }
     
@@ -375,12 +379,13 @@ $this->assignRef('csvstaff',$model->csv_staff);
      */
     public function initEditStats()
 	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-	$document = JFactory::getDocument();
-    $model = $this->getModel();
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+		$document = JFactory::getDocument();
+		$model = $this->getModel();
     
-    $document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');
+		$document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');
         $document->addScript(JURI::base().'components/'.$option.'/assets/js/editmatchstats.js');
         $teams = $model->getMatchTeams($this->item->id);
         
@@ -390,22 +395,22 @@ $this->assignRef('csvstaff',$model->csv_staff);
 		$staffpositions = $model->getProjectPositionsOptions(0, 2,$this->project_id);
         
         //$homeRoster = $model->getTeamPlayers($teams->projectteam1_id);
-        $homeRoster = $model->getMatchPersons($teams->projectteam1_id,0,$this->item->id,'player');
-		if (count($homeRoster)==0)
+        $homeRoster = $model->getMatchPersons($teams->projectteam1_id, 0, $this->item->id, 'player');
+		if (count($homeRoster) == 0)
 		{
 			//$homeRoster=$model->getGhostPlayer();
 		}
 		//$awayRoster = $model->getTeamPlayers($teams->projectteam2_id);
-        $awayRoster = $model->getMatchPersons($teams->projectteam2_id,0,$this->item->id,'player');
-		if (count($awayRoster)==0)
+        $awayRoster = $model->getMatchPersons($teams->projectteam2_id, 0, $this->item->id, 'player');
+		if (count($awayRoster) == 0)
 		{
 			//$awayRoster=$model->getGhostPlayer();
 		}
         
         //$homeStaff = $model->getMatchStaffs($teams->projectteam1_id,0,$this->item->id);
 		//$awayStaff = $model->getMatchStaffs($teams->projectteam2_id,0,$this->item->id);
-        $homeStaff = $model->getMatchPersons($teams->projectteam1_id,0,$this->item->id,'staff');
-		$awayStaff = $model->getMatchPersons($teams->projectteam2_id,0,$this->item->id,'staff');
+        $homeStaff = $model->getMatchPersons($teams->projectteam1_id, 0, $this->item->id, 'staff');
+		$awayStaff = $model->getMatchPersons($teams->projectteam2_id, 0, $this->item->id, 'staff');
         
         // stats
 		$stats = $model->getInputStats($this->project_id);
@@ -414,8 +419,8 @@ $this->assignRef('csvstaff',$model->csv_staff);
 			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_STATS_POS').'<br /><br />');
 			//return;
 		}
-		$playerstats = $model->getMatchStatsInput($this->item->id,$teams->projectteam1_id,$teams->projectteam2_id);
-		$staffstats = $model->getMatchStaffStatsInput($this->item->id,$teams->projectteam1_id,$teams->projectteam2_id);
+		$playerstats = $model->getMatchStatsInput($this->item->id, $teams->projectteam1_id, $teams->projectteam2_id);
+		$staffstats = $model->getMatchStaffStatsInput($this->item->id, $teams->projectteam1_id, $teams->projectteam2_id);
         
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' positions<br><pre>'.print_r($positions,true).'</pre>'),'');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' stats<br><pre>'.print_r($stats,true).'</pre>'),'');
@@ -424,18 +429,17 @@ $this->assignRef('csvstaff',$model->csv_staff);
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' homeStaff<br><pre>'.print_r($homeStaff,true).'</pre>'),'');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' awayStaff<br><pre>'.print_r($awayStaff,true).'</pre>'),'');
         
-        $this->assignRef('playerstats', $playerstats );
-		$this->assignRef('staffstats', $staffstats );
-        $this->assignRef('stats',$stats);
-        $this->assignRef('homeStaff',$homeStaff);
-		$this->assignRef('awayStaff',$awayStaff);
-        $this->assignRef('positions',$positions);
-		$this->assignRef('staffpositions',$staffpositions);
-        $this->assignRef('homeRoster',$homeRoster);
-		$this->assignRef('awayRoster',$awayRoster);
-        $this->assignRef('teams',$teams);
-        //$this->teams = $teams;
-        $this->assignRef('lists',$lists);
+        $this->playerstats	= $playerstats;
+		$this->staffstats	= $staffstats;
+        $this->stats	= $stats;
+        $this->homeStaff	= $homeStaff;
+		$this->awayStaff	= $awayStaff;
+        $this->positions	= $positions;
+		$this->staffpositions	= $staffpositions;
+        $this->homeRoster	= $homeRoster;
+		$this->awayRoster	= $awayRoster;
+        $this->teams	= $teams;
+        $this->lists	= $lists;
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
         
@@ -449,8 +453,9 @@ $this->assignRef('csvstaff',$model->csv_staff);
      */
     public function initEditEevents()
 	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 	$document = JFactory::getDocument();
     $model = $this->getModel();
     $params = JComponentHelper::getParams ( $option );
@@ -509,49 +514,49 @@ $javascript .= "}". "\n";
         //$app->enqueueMessage(JText::_('sportsmanagementViewMatch editevents teams<br><pre>'.print_r($teams,true).'</pre>'   ),'');
         
 		$teamlist=array();
-		$teamlist[]=JHtml::_('select.option',$teams->projectteam1_id,$teams->team1);
-		$teamlist[]=JHtml::_('select.option',$teams->projectteam2_id,$teams->team2);
-		$lists['teams']=JHtml::_('select.genericlist',$teamlist,'team_id','class="inputbox select-team" ');
+		$teamlist[]=JHtml::_('select.option', $teams->projectteam1_id, $teams->team1);
+		$teamlist[]=JHtml::_('select.option', $teams->projectteam2_id, $teams->team2);
+		$lists['teams'] = JHtml::_('select.genericlist', $teamlist, 'team_id', 'class="inputbox select-team" ');
         // events
-		$events = $model->getEventsOptions($this->project_id,0);
+		$events = $model->getEventsOptions($this->project_id, 0);
 		if (!$events)
 		{
 			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS').'<br /><br />');
 			return;
 		}
-		$eventlist=array();
-		$eventlist=array_merge($eventlist,$events);
+		$eventlist = array();
+		$eventlist = array_merge($eventlist,$events);
 
-		$lists['events']=JHtml::_('select.genericlist',$eventlist,'event_type_id','class="inputbox select-event"');
+		$lists['events'] = JHtml::_('select.genericlist', $eventlist, 'event_type_id', 'class="inputbox select-event"');
         
         //$homeRoster = $model->getTeamPlayers($teams->projectteam1_id);
         //$homeRoster = $model->getMatchPlayers($teams->projectteam1_id,0,$this->item->id);
-        $homeRoster = $model->getMatchPersons($teams->projectteam1_id,0,$this->item->id,'player');
-		if (count($homeRoster)==0)
+        $homeRoster = $model->getMatchPersons($teams->projectteam1_id, 0, $this->item->id, 'player');
+		if (count($homeRoster) == 0)
 		{
 			//$homeRoster=$model->getGhostPlayer();
 		}
 		
         //$awayRoster = $model->getTeamPlayers($teams->projectteam2_id);
         //$awayRoster = $model->getMatchPlayers($teams->projectteam2_id,0,$this->item->id);
-        $awayRoster = $model->getMatchPersons($teams->projectteam2_id,0,$this->item->id,'player');
-		if (count($awayRoster)==0)
+        $awayRoster = $model->getMatchPersons($teams->projectteam2_id, 0, $this->item->id, 'player');
+		if (count($awayRoster) == 0)
 		{
 			//$awayRoster=$model->getGhostPlayer();
 		}
-		$rosters = array('home' => $homeRoster,'away' => $awayRoster);
+		$rosters = array('home' => $homeRoster, 'away' => $awayRoster);
         
         $matchCommentary = $model->getMatchCommentary($this->item->id);
         $matchevents = $model->getMatchEvents($this->item->id);
         $document->addScriptDeclaration( $javascript );
         
-        $this->assignRef('matchevents',$matchevents);
-        $this->assignRef('matchcommentary',$matchCommentary);
-        $this->assignRef('teams',$teams);
-        $this->assignRef('rosters',$rosters);
-        $this->assignRef('lists',$lists);
-        $this->assignRef('default_name_format', $default_name_format );
-        $this->assignRef('default_name_dropdown_list_order', $default_name_dropdown_list_order );
+        $this->matchevents	= $matchevents;
+        $this->matchcommentary	= $matchCommentary;
+        $this->teams	= $teams;
+        $this->rosters	= $rosters;
+        $this->lists	= $lists;
+        $this->default_name_format	= $default_name_format;
+        $this->default_name_dropdown_list_order	= $default_name_dropdown_list_order;
         
         $this->setLayout('editevents');
         
@@ -565,8 +570,9 @@ $javascript .= "}". "\n";
      */
     public function initEditLineup()
 	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 	$document = JFactory::getDocument();
     $model = $this->getModel();
     $default_name_format = '';
@@ -580,14 +586,14 @@ $javascript .= "}". "\n";
         $teamname = ($tid == $match->projectteam1_id) ? $match->team1 : $match->team2;
         
         // get starters
-		$starters = $model->getMatchPersons($tid,0,$this->item->id,'player');
+		$starters = $model->getMatchPersons($tid, 0, $this->item->id, 'player');
         $starters_id = array_keys($starters);
  
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' editlineup starters player'.'<pre>'.print_r($starters,true).'</pre>' ),'');
         
 
 		// get players not already assigned to starter
-        $not_assigned = $model->getTeamPersons($tid,$starters_id,1);
+        $not_assigned = $model->getTeamPersons($tid, $starters_id, 1);
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' editlineup not_assigned player'.'<pre>'.print_r($not_assigned,true).'</pre>' ),'');
         
@@ -597,7 +603,7 @@ $javascript .= "}". "\n";
 			return;
 		}
 
-		$projectpositions = $model->getProjectPositionsOptions(0, 1,$this->project_id);
+		$projectpositions = $model->getProjectPositionsOptions(0, 1, $this->project_id);
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' editlineup player projectpositions'.'<pre>'.print_r($projectpositions,true).'</pre>' ),'');
         		
@@ -608,44 +614,44 @@ $javascript .= "}". "\n";
 		}
 
 		// build select list for not assigned players
-		$not_assigned_options=array();
+		$not_assigned_options = array();
 		foreach ((array) $not_assigned AS $p)
 		{
 			$not_assigned_options[] = JHtml::_( 'select.option',$p->value,'['.$p->jerseynumber.'] '.
 			  									sportsmanagementHelper::formatName(null, $p->firstname, $p->nickname, $p->lastname, $default_name_format) .
 			  									' - ('.JText::_($p->positionname).')');
 		}
-		$lists['team_players'] = JHtml::_(	'select.genericlist',$not_assigned_options,'roster[]',
+		$lists['team_players'] = JHtml::_(	'select.genericlist', $not_assigned_options, 'roster[]',
 											'style="font-size:12px;height:auto;min-width:15em;" class="inputbox" multiple="true" size="18"',
-											'value','text');
+											'value', 'text');
 
 		// build position select
-		$selectpositions[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_IN_POSITION'));
-		$selectpositions = array_merge($selectpositions,$model->getProjectPositionsOptions(0,1,$this->project_id));
-		$lists['projectpositions'] = JHtml::_('select.genericlist',$selectpositions,'project_position_id','class="inputbox" size="1"','value','text', NULL, false, true);
+		$selectpositions[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_IN_POSITION'));
+		$selectpositions = array_merge($selectpositions,$model->getProjectPositionsOptions(0, 1, $this->project_id));
+		$lists['projectpositions'] = JHtml::_('select.genericlist', $selectpositions, 'project_position_id', 'class="inputbox" size="1"', 'value', 'text', NULL, false, true);
 		
         // build player select
 		//$allplayers = $model->getTeamPlayers($tid);
-        $allplayers = $model->getTeamPersons($tid,FALSE,1);
+        $allplayers = $model->getTeamPersons($tid, FALSE, 1);
 		
         $playersoptionsout = array();
-		$playersoptionsout[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_OUT'));
+		$playersoptionsout[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_OUT'));
 		
         foreach ((array)$starters AS $player)
         //foreach ((array)$allplayers AS $player)
 		{
-			$playersoptionsout[] = JHtml::_('select.option',$player->value,
-			  sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format).' - ('.JText::_($player->positionname).')');
+			$playersoptionsout[] = JHtml::_('select.option', $player->value, 
+			sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format).' - ('.JText::_($player->positionname).')');
 		}
         
         $playersoptionsin = array();
-		$playersoptionsin[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_IN'));
+		$playersoptionsin[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_IN'));
 		
         foreach ((array)$not_assigned AS $player)
         //foreach ((array)$allplayers AS $player)
 		{
-			$playersoptionsin[] = JHtml::_('select.option',$player->value,
-			  sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format).' - ('.JText::_($player->positionname).')');
+			$playersoptionsin[] = JHtml::_('select.option', $player->value, 
+			sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format).' - ('.JText::_($player->positionname).')');
 		}
 
 /*		
@@ -667,68 +673,68 @@ $javascript .= "}". "\n";
 
 		foreach ($starters AS $position_id => $players)
 		{
-			$options=array();
+			$options = array();
 			foreach ((array) $players AS $p)
 			{
-				$options[] = JHtml::_('select.option',$p->value,'['.$p->jerseynumber.'] '.
-				  sportsmanagementHelper::formatName(null, $p->firstname, $p->nickname, $p->lastname, $default_name_format));
+				$options[] = JHtml::_('select.option', $p->value, '['.$p->jerseynumber.'] '. 
+					sportsmanagementHelper::formatName(null, $p->firstname, $p->nickname, $p->lastname, $default_name_format));
 			}
 
-			$lists['team_players'.$position_id]=JHtml::_(	'select.genericlist',$options,'position'.$position_id.'[]',
+			$lists['team_players'.$position_id] = JHtml::_(	'select.genericlist',$options,'position'.$position_id.'[]',
 															'style="font-size:12px;height:auto;min-width:15em;" size="4" class="position-starters" multiple="true" ',
-															'value','text');
+															'value', 'text');
 		}
 
-		$substitutions = $model->getSubstitutions($tid,$this->item->id);
+		$substitutions = $model->getSubstitutions($tid, $this->item->id);
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' substitutions'.'<pre>'.print_r($substitutions,true).'</pre>' ),'');
 
 		/**
 		 * staff positions
 		 */
-		$staffpositions = $model->getProjectPositionsOptions(0, 2,$this->project_id);	// get staff not already assigned to starter
+		$staffpositions = $model->getProjectPositionsOptions(0, 2, $this->project_id);	// get staff not already assigned to starter
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' editlineup staff projectpositions'.'<pre>'.print_r($staffpositions,true).'</pre>' ),'');
 
 		// assigned staff
-        $assigned = $model->getMatchPersons($tid,0,$this->item->id,'staff');
+        $assigned = $model->getMatchPersons($tid, 0, $this->item->id, 'staff');
 		$assigned_id = array_keys($assigned);
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' editlineup assigned staff'.'<pre>'.print_r($assigned,true).'</pre>' ),'');
         
         
 		// not assigned staff
-        $not_assigned = $model->getTeamPersons($tid,$assigned_id,2);
+        $not_assigned = $model->getTeamPersons($tid, $assigned_id, 2);
 
 		// build select list for not assigned
 		$not_assigned_options = array();
 		foreach ((array) $not_assigned AS $p)
 		{
-			$not_assigned_options[]=JHtml::_('select.option',$p->value,
-				  sportsmanagementHelper::formatName(null, $p->firstname, $p->nickname, $p->lastname, $default_name_format).' - ('.JText::_($p->positionname).')');
+			$not_assigned_options[] = JHtml::_('select.option',$p->value, 
+				sportsmanagementHelper::formatName(null, $p->firstname, $p->nickname, $p->lastname, $default_name_format).' - ('.JText::_($p->positionname).')');
 		}
-		$lists['team_staffs'] = JHtml::_(	'select.genericlist',$not_assigned_options,'staff[]',
+		$lists['team_staffs'] = JHtml::_(	'select.genericlist', $not_assigned_options,'staff[]', 
 										'style="font-size:12px;height:auto;min-width:15em;" size="18" class="inputbox" multiple="true" size="18"',
-										'value','text');
+										'value', 'text');
 
 		// generate selection list for each position
 		$options = array();
 		foreach ($staffpositions AS $position_id => $pos)
 		{
 			// get players assigned to this position
-			$options=array();
+			$options = array();
 			foreach ($assigned as $staff)
 			{
 				if ($staff->position_id == $pos->pposid)
                 //if ($staff->pposid == $pos->pposid)
 				{
-					$options[]=JHtml::_('select.option',$staff->team_staff_id,
-					  sportsmanagementHelper::formatName(null, $staff->firstname, $staff->nickname, $staff->lastname, $default_name_format));
+					$options[] = JHtml::_('select.option', $staff->team_staff_id, 
+						sportsmanagementHelper::formatName(null, $staff->firstname, $staff->nickname, $staff->lastname, $default_name_format));
 				}
 			}
-			$lists['team_staffs'.$position_id] = JHtml::_(	'select.genericlist',$options,'staffposition'.$position_id.'[]',
+			$lists['team_staffs'.$position_id] = JHtml::_(	'select.genericlist', $options, 'staffposition'.$position_id.'[]', 
 															'style="font-size:12px;height:auto;min-width:15em;" size="4" class="position-staff" multiple="true" ',
-															'value','text');
+															'value', 'text');
 		}
         
         // build the html select booleanlist
@@ -738,15 +744,15 @@ $javascript .= "}". "\n";
         $lists['captain'] = $myoptions;
 
 
-        $this->assignRef('positions',$projectpositions);
-		$this->assignRef('staffpositions',$staffpositions);
-		$this->assignRef('substitutions',$substitutions[$tid]);
-		$this->assignRef('playersoptionsin',$playersoptionsin);
-        $this->assignRef('playersoptionsout',$playersoptionsout);
-        $this->assignRef('tid',$tid);
-		$this->assignRef('teamname',$teamname);
-        $this->assignRef('starters',$starters);
-        $this->assignRef('lists',$lists);
+        $this->positions	= $projectpositions;
+		$this->staffpositions	= $staffpositions;
+		$this->substitutions	= $substitutions[$tid];
+		$this->playersoptionsin	= $playersoptionsin;
+        $this->playersoptionsout	= $playersoptionsout;
+        $this->tid	= $tid;
+		$this->teamname	= $teamname;
+        $this->starters	= $starters;
+        $this->lists	= $lists;
         
         
         $javascript = "\n";
@@ -767,8 +773,9 @@ $javascript .= "}". "\n";
      */
     public function initEditReferees()
 	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 	$document = JFactory::getDocument();
     $model = $this->getModel();
     $default_name_format = '';
@@ -778,7 +785,7 @@ $javascript .= "}". "\n";
         // projekt schiedsrichter
 		$allreferees = array();
 		//$allreferees = $model->getRefereeRoster(0,$this->item->id);
-        $allreferees = $model->getRefereeRoster(0,$this->item->id);
+        $allreferees = $model->getRefereeRoster(0, $this->item->id);
 		$inroster = array();
 		$projectreferees = array();
 		$projectreferees2 = array();
@@ -789,28 +796,28 @@ $javascript .= "}". "\n";
 				$inroster[] = $referee->value;
 			}
 		}
-		$projectreferees = $model->getProjectReferees($inroster,$this->project_id);
+		$projectreferees = $model->getProjectReferees($inroster, $this->project_id);
 
 		if (count($projectreferees) > 0)
 		{
 			foreach ($projectreferees AS $referee)
 			{
-				$projectreferees2[]=JHtml::_('select.option',$referee->value,
+				$projectreferees2[]=JHtml::_('select.option', $referee->value,
 				  sportsmanagementHelper::formatName(null, $referee->firstname, $referee->nickname, $referee->lastname, $default_name_format) .
 				  ' - ('.strtolower(JText::_($referee->positionname)).')');
 			}
 		}
-		$lists['team_referees'] = JHtml::_(	'select.genericlist',$projectreferees2,'roster[]',
+		$lists['team_referees'] = JHtml::_(	'select.genericlist', $projectreferees2,'roster[]', 
 											'style="font-size:12px;height:auto;min-width:15em;" ' .
-											'class="inputbox" multiple="true" size="'.max(10,count($projectreferees2)).'"',
-											'value','text');
+											'class="inputbox" multiple="true" size="'.max(10,count($projectreferees2)).'"', 
+											'value', 'text');
         // projekt positionen                                                    
-  		$selectpositions[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_FUNCTION'));
-		if ($projectpositions = $model->getProjectPositionsOptions(0, 3,$this->project_id))
+  		$selectpositions[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_FUNCTION'));
+		if ($projectpositions = $model->getProjectPositionsOptions(0, 3, $this->project_id))
 		{
 			$selectpositions = array_merge($selectpositions,$projectpositions);
 		}
-		$lists['projectpositions'] = JHtml::_('select.genericlist',$selectpositions,'project_position_id','class="inputbox" size="1"','value','text');
+		$lists['projectpositions'] = JHtml::_('select.genericlist', $selectpositions, 'project_position_id', 'class="inputbox" size="1"', 'value', 'text');
 
 		$squad = array();
 		if (!$projectpositions)
@@ -823,7 +830,7 @@ $javascript .= "}". "\n";
 		foreach ($projectpositions AS $key => $pos)
 		{
 			// get referees assigned to this position
-			$squad[$key] = $model->getRefereeRoster($pos->value,$this->item->id);
+			$squad[$key] = $model->getRefereeRoster($pos->value, $this->item->id);
 		}
 		if (count($squad) > 0)
 		{
@@ -834,14 +841,14 @@ $javascript .= "}". "\n";
 				{
 					foreach ($referees AS $referee)
 					{
-						$temp[$key][]=JHtml::_('select.option',$referee->value,
-						  sportsmanagementHelper::formatName(null, $referee->firstname, $referee->nickname, $referee->lastname, $default_name_format));
+						$temp[$key][]=JHtml::_('select.option',$referee->value, 
+							sportsmanagementHelper::formatName(null, $referee->firstname, $referee->nickname, $referee->lastname, $default_name_format));
 					}
 				}
                 
-				$lists['team_referees'.$key]=JHtml::_(	'select.genericlist',$temp[$key],'position'.$key.'[]',
+				$lists['team_referees'.$key] = JHtml::_(	'select.genericlist', $temp[$key], 'position'.$key.'[]', 
 														' style="font-size:12px;height:auto;min-width:15em;" '.
-														'class="position-starters" multiple="true" ',
+														'class="position-starters" multiple="true" ', 
 														'value','text');
                                                         
                /*
@@ -857,10 +864,10 @@ $javascript .= "}". "\n";
         //$app->enqueueMessage(JText::_('sportsmanagementViewMatch editreferees positions<br><pre>'.print_r($projectpositions,true).'</pre>'   ),'');
         //$app->enqueueMessage(JText::_('sportsmanagementViewMatch editreferees lists<br><pre>'.print_r($lists,true).'</pre>'   ),'');
         
-        $this->assignRef('positions',$projectpositions);   
-       $this->assignRef('lists',$lists);
-       
-       $this->setLayout('editreferees');
+		$this->positions	= $projectpositions;
+		$this->lists	= $lists;
+		
+		$this->setLayout('editreferees');
     }   
  
  
@@ -874,14 +881,15 @@ $javascript .= "}". "\n";
      */
     function _displaySavePressebericht($tpl)
     {
-    $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 	$document = JFactory::getDocument();
     $project_id = $app->getUserState( "$option.pid", '0' );;
     $model = $this->getModel();
     $csv_file_save = $model->savePressebericht();
     
-    $this->assignRef('importData',$model->_success_text);
+    $this->importData	= $model->_success_text;
         
     parent::display($tpl);    
     }
@@ -895,32 +903,33 @@ $javascript .= "}". "\n";
     function _displayPressebericht($tpl)
     {
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$document = JFactory::getDocument();
         $project_id = $app->getUserState( "$option.pid", '0' );;
         $config = JComponentHelper::getParams ( 'com_media' );
-        $this->assignRef ( 'config', $config );
+        $this->config	= $config;
         
 //$app->enqueueMessage(JText::_('displayPressebericht<br><pre>'.print_r($this->_datas['match'],true).'</pre>'   ),'');     
 //    $document->addScript(JURI::root() . 'administrator/components/com_joomleague/assets/js/jquery.csv-0.71.js');       
 //    $document->addScript(JURI::root() . 'administrator/components/com_joomleague/assets/js/jquery.csv.js');
 $model = $this->getModel();
 $csv_file = $model->getPressebericht(); 
-$this->assignRef('csv',$csv_file); 
+$this->csv	= $csv_file; 
 $matchnumber = $model->getPresseberichtMatchnumber($csv_file);    
-$this->assignRef('matchnumber',$matchnumber);
+$this->matchnumber	= $matchnumber;
 if ( $matchnumber )
 {
 $readplayers = $model->getPresseberichtReadPlayers($csv_file);  
-$this->assignRef('csvplayers',$model->csv_player);   
-$this->assignRef('csvinout',$model->csv_in_out);
-$this->assignRef('csvcards',$model->csv_cards);
-$this->assignRef('csvstaff',$model->csv_staff);
+$this->csvplayers	= $model->csv_player;   
+$this->csvinout	= $model->csv_in_out;
+$this->csvcards	= $model->csv_cards;
+$this->csvstaff	= $model->csv_staff;
 }
 
 //build the html options for position
 		$position_id[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
-		if ( $res = $model->getProjectPositionsOptions(0,1) )
+		if ( $res = $model->getProjectPositionsOptions(0, 1) )
 		{
 			$position_id = array_merge( $position_id, $res );
 		}
@@ -943,14 +952,14 @@ $this->assignRef('csvstaff',$model->csv_staff);
 			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_EVENTS_POS').'<br /><br />');
 			return;
 		}
-		$eventlist=array();
+		$eventlist = array();
         $eventlist[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_EVENT' ) );
-		$eventlist=array_merge($eventlist,$events);
+		$eventlist = array_merge($eventlist, $events);
 		
         $lists['events'] = $eventlist;
         unset( $eventlist );
         
-        $this->assignRef( 'lists', $lists );
+        $this->lists	= $lists;
  
         parent::display($tpl);
     }
@@ -1007,7 +1016,9 @@ $this->assignRef('csvstaff',$model->csv_staff);
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
-		JRequest::setVar('hidemainmenu', true);
+		//JRequest::setVar('hidemainmenu', true);
+		$jinput = JFactory::getApplication()->input;
+        $jinput->set('hidemainmenu', true);
 		$user = JFactory::getUser();
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;

@@ -135,12 +135,12 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 //
 //		unset($seasons);
 //        
-        $this->assignRef('lists', $lists);
-        $this->assign('request_url',$uri->toString());
+        $this->lists	= $lists;
+        $this->request_url	$uri->toString();
 //        $this->assign('items',$checktables);
         
         //$this->assign('success',$jinput->getVar('success'));
-        $this->assign('success',$stateVar);
+        $this->success	= $stateVar;
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' success <br><pre>'.print_r($this->success,true).'</pre>'),'');
         
@@ -166,10 +166,10 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
         
         if ( $this->cfg_jl_import )
         {
-        JToolBarHelper::custom('joomleagueimports.importjoomleaguenew','edit','edit',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'),false);
+        JToolBarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'), false);
         }
         
-        JToolBarHelper::custom('joomleagueimports.importjoomleaguenew','edit','edit',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'),false);
+        JToolBarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'), false);
 
 
 //        JToolBarHelper::custom('joomleagueimports.positions','edit','edit',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'),false);
