@@ -54,7 +54,8 @@ jimport ( 'joomla.application.component.view' );
  */
 class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView 
 {
-	function display($tpl = null) 
+	
+    function display($tpl = null) 
     {
 		//global $app;
 		
@@ -100,7 +101,7 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		$this->config	= $config;
 		
 		$revisionDate = '2011-04-28 - 12:00';
-		$this->revisionDate	= $revisionDate );
+		$this->revisionDate	= $revisionDate ;
 		
 		parent::display ( $tpl );
 	}

@@ -714,16 +714,28 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
             
                 
             //$app->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport league<br><pre>'.print_r($this->_datas['league'],true).'</pre>'   ),'');
+            if ( isset($this->_datas['league']) )
+            {
             $this->_league_new_country = (string) $this->_datas['league']->country;
+            }
             //$app->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport league<br><pre>'.print_r($this->_league_new_country,true).'</pre>'   ),'');
             
             // textelemente bereinigen
+            if ( isset($this->_datas['sportstype']) )
+            {
             $this->_datas['sportstype']->name = str_replace('COM_JOOMLEAGUE', strtoupper($option), $this->_datas['sportstype']->name);
+            
             //$app->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport sportstype<br><pre>'.print_r($this->_datas['sportstype'],true).'</pre>'   ),'');
             
             // ereignisse um die textelemente bereinigen
             $temp = explode("_",$this->_datas['sportstype']->name);
             $sport_type_name = array_pop($temp);
+            }
+            else
+            {
+            $sport_type_name = '';    
+            }
+            
             if ( isset($this->_datas['event']) )
             {
             //$app->enqueueMessage(JText::_('sportsmanagementModelJLXMLImport sport_type_name<br><pre>'.print_r($sport_type_name,true).'</pre>'   ),'');
@@ -792,19 +804,26 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
             foreach ( $this->_datas['person'] as $person )
             {
                 $pos_error = true;
+                if ( isset($this->_datas['position']) )
+                {
                 foreach ( $this->_datas['position'] as $position )
                 {
                     if ( $person->position_id == $position->id )
                     {
                         $pos_error = false;
                     }
-                }    
+                }
+                }
+                
+                if ( isset($this->_datas['parentposition']) )
+                {    
                 foreach ( $this->_datas['parentposition'] as $parentposition )
                 {
                     if ( $person->position_id == $parentposition->id )
                     {
                         $pos_error = false;
                     }
+                }
                 }
                 
                 if ( $pos_error )
