@@ -310,9 +310,13 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		$starttime	= $mtime;
         $config['dbo'] = sportsmanagementHelper::getDBConnection(); 
 		$model 		= JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel',$config);
-		$post		= $jinput->get('post');
+		//$post		= $jinput->get('post');
 		
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout <br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
+        $data2  = $jinput->post->getArray(array());
+        //var_dump($data2);
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data2 <br><pre>'.print_r($data2,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post <br><pre>'.print_r($post,true).'</pre>'),'');
         
 		//// Get a refrence of the page instance in joomla
 //		$document	= JFactory::getDocument();
@@ -326,8 +330,12 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 			
 
 		$this->starttime	= $starttime;
-		$this->importData	= $model->importData($post);
-		$this->postData	= $post;
+        
+        $this->importData	= $model->importData($data2);
+		$this->postData	= $data2;
+        
+//		$this->importData	= $model->importData($post);
+//		$this->postData	= $post;
         $this->option	= $option;
                 
         JToolBarHelper::divider();

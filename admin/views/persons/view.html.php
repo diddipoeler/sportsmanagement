@@ -162,7 +162,7 @@ $starttime = microtime();
 		$this->config	= JFactory::getConfig();
 		$this->lists	= $lists;
 		$this->items	= $items;
-		$this->pagination	$pagination;
+		$this->pagination =	$pagination;
 		$this->request_url	= JFactory::getURI()->toString();
         
         

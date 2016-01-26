@@ -5649,6 +5649,9 @@ $query->clear();
 
 	public function importData($post)
 	{
+	   $app = JFactory::getApplication();
+//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post <br><pre>'.print_r($post,true).'</pre>'),'');
+       
 		$option = JRequest::getCmd('option');
         $this->show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         $this->_datas=$this->getData();
@@ -7074,6 +7077,7 @@ JFactory::getDbo()->setQuery( $query );
 $rounds = JFactory::getDbo()->loadObjectList();
 
 $current_round = 0;
+$current_round_old = 0;
 
 // anfang schleife runden        
 foreach( $rounds as $rounddate)
