@@ -27,7 +27,7 @@
 * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
 * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
 * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
 * Siehe die GNU General Public License für weitere Details.
 *
@@ -61,8 +61,9 @@ class sportsmanagementViewPositions extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$uri = JFactory::getURI();
 		$model = $this->getModel();
         
@@ -81,43 +82,43 @@ $starttime = microtime();
 		$pagination = $this->get('Pagination');
         
         $table = JTable::getInstance('position', 'sportsmanagementTable');
-		$this->assignRef('table', $table);
+		$this->table	= $table;
 
 
 
 		//build the html options for parent position
-		$parent_id[]=JHtml::_('select.option','',JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'));
+		$parent_id[] = JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'));
 		if ($res = $model->getParentsPositions())
 		{
-			foreach ($res as $re){$re->text=JText::_($re->text);}
-			$parent_id=array_merge($parent_id,$res);
+			foreach ($res as $re){$re->text = JText::_($re->text);}
+			$parent_id = array_merge($parent_id, $res);
 		}
-		$lists['parent_id']=$parent_id;
+		$lists['parent_id'] = $parent_id;
         //$lists['parents']=$parent_id;
 		unset($parent_id);
 
 		//build the html select list for sportstypes
-		$sportstypes[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_SPORTSTYPE_FILTER'),'id','name');
+		$sportstypes[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_SPORTSTYPE_FILTER'), 'id', 'name');
 		//$allSportstypes =& sportsmanagementModelSportsTypes::getSportsTypes();
 		$allSportstypes = JModelLegacy::getInstance('SportsTypes','sportsmanagementmodel')->getSportsTypes();
-		$sportstypes = array_merge($sportstypes,$allSportstypes);
+		$sportstypes = array_merge($sportstypes, $allSportstypes);
         
-        $this->assignRef('sports_type',$allSportstypes);
+        $this->sports_type	= $allSportstypes;
         
-		$lists['sportstypes'] = JHtml::_( 'select.genericList',
-										$sportstypes,
-										'filter_sports_type',
-										'class="inputbox" onChange="this.form.submit();" style="width:120px"',
-										'id',
-										'name',
+		$lists['sportstypes'] = JHtml::_( 'select.genericList', 
+										$sportstypes, 
+										'filter_sports_type', 
+										'class="inputbox" onChange="this.form.submit();" style="width:120px"', 
+										'id', 
+										'name', 
 										$this->state->get('filter.sports_type'));
 		unset($sportstypes);
-		$this->assign('user',JFactory::getUser());
-		$this->assign('config',JFactory::getConfig());
-		$this->assignRef('lists',$lists);
-		$this->assignRef('items',$items);
-		$this->assignRef('pagination',$pagination);
-		$this->assign('request_url',$uri->toString());
+		$this->user	= JFactory::getUser();
+		$this->config	= JFactory::getConfig();
+		$this->lists	= $lists;
+		$this->items	= $items;
+		$this->pagination	= $pagination;
+		$this->request_url	= $uri->toString();
         
         
 		
@@ -142,8 +143,8 @@ $starttime = microtime();
 		JToolBarHelper::apply('positions.saveshort');
 		JToolBarHelper::editList('position.edit');
 		JToolBarHelper::addNew('position.add');
-		JToolBarHelper::custom('position.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-		JToolBarHelper::archiveList('position.export',JText::_('JTOOLBAR_EXPORT'));
+		JToolBarHelper::custom('position.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
+		JToolBarHelper::archiveList('position.export', JText::_('JTOOLBAR_EXPORT'));
         JToolbarHelper::checkin('positions.checkin');
 		//JToolBarHelper::deleteList('','position.delete');
         if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )

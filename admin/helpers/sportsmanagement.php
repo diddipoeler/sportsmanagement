@@ -2182,10 +2182,12 @@ else
 	 */
 	public static function showColorsLegend($colors)
 	{
-		$favshow = JRequest::getVar('func', '');
+		$jinput = JFactory::getApplication()->input;
+		$favshow = $jinput->getString('func', '');
+		//$favshow = JRequest::getVar('func', '');
 		if (($favshow != 'showCurve') && (sportsmanagementModelProject::$_project->fav_team))
 		{
-			$fav=array('color'=>sportsmanagementModelProject::$_project->fav_team_color,'description'=> JText::_('COM_SPORTSMANAGEMENT_RANKING_FAVTEAM'));
+			$fav = array('color'=>sportsmanagementModelProject::$_project->fav_team_color,'description'=> JText::_('COM_SPORTSMANAGEMENT_RANKING_FAVTEAM'));
 			array_push($colors,$fav);
 		}
 		foreach($colors as $color)
@@ -2215,7 +2217,7 @@ else
 		}
 
 		$length = strlen($value);
-		for ($i =0 ; $i < $length; $i++)
+		for ($i = 0 ; $i < $length; $i++)
 		{
 			$current = ord($value{$i});
 			if (($current == 0x9) ||
@@ -2555,7 +2557,7 @@ else
 		$option = $jinput->getCmd('option');
 		$document = JFactory::getDocument();
 		$view = $jinput->get( 'view' ) ;
-    $layout= $jinput->get( 'layout' ) ;
+    $layout = $jinput->get( 'layout' ) ;
     $view = ucfirst(strtolower($view));
     $layout = ucfirst(strtolower($layout));
     $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');

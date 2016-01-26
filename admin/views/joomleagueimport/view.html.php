@@ -61,13 +61,14 @@ class sportsmanagementViewjoomleagueimport extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
         $document = JFactory::getDocument();
         $model = $this->getModel();
         $uri = JFactory::getURI();
         $this->task = JRequest::getCmd('task');
-        $this->assign('request_url',$uri->toString());
+        $this->request_url	= $uri->toString();
         
         
         if ( $this->getLayout() == 'positions'  )
@@ -92,7 +93,7 @@ class sportsmanagementViewjoomleagueimport extends sportsmanagementView
         
         if ( $this->step <= $this->totals )
             {
-            $successTable = $model->newstructur(0,$count);    
+            $successTable = $model->newstructur(0, $count);    
             //$this->work_table = $this->sm_tables[$this->step];
             $this->bar_value = round( ( $this->step * 100 / $this->totals ), 0);
             }
@@ -169,8 +170,9 @@ $document->addScriptDeclaration( $javascript );
      */
     function initPositions()
     {
-        $option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+        $app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
         $document = JFactory::getDocument();
         $model = $this->getModel();
         $uri = JFactory::getURI();
@@ -178,18 +180,18 @@ $document->addScriptDeclaration( $javascript );
         $inputappend = '';
         $which_table = JRequest::getVar('filter_which_table','');
         
-        $this->assign('joomleague',$model->getImportPositions('joomleague',$which_table) );
-        $this->assign('sportsmanagement',$model->getImportPositions('sportsmanagement') );
+        $this->joomleague	= $model->getImportPositions('joomleague', $which_table);
+        $this->sportsmanagement	= $model->getImportPositions('sportsmanagement');
         
         $nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_POSITION'));
 		if ($res = $model->getImportPositions('sportsmanagement'))
         {
-            $nation = array_merge($nation,$res);
+            $nation = array_merge($nation, $res);
             }
 		
-        $whichtable[] = JHtml::_('select.option','',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TABLE'));
-        $whichtable[] = JHtml::_('select.option','project_position',JText::_('project_position'));
-        $whichtable[] = JHtml::_('select.option','person',JText::_('person'));
+        $whichtable[] = JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TABLE'));
+        $whichtable[] = JHtml::_('select.option', 'project_position', JText::_('project_position'));
+        $whichtable[] = JHtml::_('select.option', 'person', JText::_('person'));
         
         $lists['whichtable'] = JHtmlSelect::genericlist(	$whichtable,
 																'filter_which_table',
@@ -199,11 +201,11 @@ $document->addScriptDeclaration( $javascript );
 																$which_table);
         $lists['position'] = $nation;
         
-        $this->assignRef('lists',$lists);
+        $this->lists	= $lists;
         
-        JToolBarHelper::custom('joomleagueimports.updatepositions','upload','upload',JText::_('COM_SPORTSMANAGEMENT_JL_IMPORT_POSITION_UPDATE'),false);
-        JToolBarHelper::custom('joomleagueimports.updateplayerproposition','upload','upload',JText::_('COM_SPORTSMANAGEMENT_JL_IMPORT_PLAYER_PRO_POSITION_UPDATE'),false);
-        JToolBarHelper::custom('joomleagueimports.updatestaffproposition','upload','upload',JText::_('COM_SPORTSMANAGEMENT_JL_IMPORT_STAFF_PRO_POSITION_UPDATE'),false);
+        JToolBarHelper::custom('joomleagueimports.updatepositions', 'upload', 'upload', JText::_('COM_SPORTSMANAGEMENT_JL_IMPORT_POSITION_UPDATE'), false);
+        JToolBarHelper::custom('joomleagueimports.updateplayerproposition', 'upload', 'upload', JText::_('COM_SPORTSMANAGEMENT_JL_IMPORT_PLAYER_PRO_POSITION_UPDATE'), false);
+        JToolBarHelper::custom('joomleagueimports.updatestaffproposition', 'upload', 'upload', JText::_('COM_SPORTSMANAGEMENT_JL_IMPORT_STAFF_PRO_POSITION_UPDATE'), false);
         
     }
     

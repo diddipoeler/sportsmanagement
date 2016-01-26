@@ -92,7 +92,7 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 		$images 	= $this->get('Images');
 		$pageNav 	= $this->get('Pagination');
         
-        $this->request_url	= $uri->toString());
+        $this->request_url	= $uri->toString();
 
 		if (count($images) > 0 || $search) {
 			$this->images	= $images;
@@ -117,7 +117,8 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 
 	function setImage($index = 0)
 	{
-		if (isset($this->images[$index])) {
+		if (isset($this->images[$index]))
+		{
 			$this->_tmp_img = &$this->images[$index];
 		} else {
 			$this->_tmp_img = new JObject;

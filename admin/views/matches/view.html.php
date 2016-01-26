@@ -27,7 +27,7 @@
 * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
 * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* OHNE JEDE GEWÄHLEISTUNG, bereitgestellt; sogar ohne die implizite
 * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
 * Siehe die GNU General Public License für weitere Details.
 *
@@ -62,13 +62,14 @@ class sportsmanagementViewMatches extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$uri = JFactory::getURI();
         $model = $this->getModel();
 		$params = JComponentHelper::getParams( $option );
         $document = JFactory::getDocument();
-        $view = JRequest::getVar( "view") ;
+        $view = $jinput->get('view') ;
         $_db = sportsmanagementHelper::getDBConnection(); // the method is contextual so we must have a DBO
         $table_info = $_db->getTableFields('#__sportsmanagement_match');
         
@@ -93,24 +94,24 @@ class sportsmanagementViewMatches extends sportsmanagementView
 		$pagination = $this->get('Pagination');
         
         $table = JTable::getInstance('match', 'sportsmanagementTable');
-		$this->assignRef('table', $table);
+		$this->table	= $table;
         
         $this->project_id	= $app->getUserState( "$option.pid", '0' );
         $this->project_art_id	= $app->getUserState( "$option.project_art_id", '0' );
         //$this->project_id	= $app->getUserState( "$option.pid", '0' );
         
-        $this->project_id	= JRequest::getvar('pid', 0);
+        $this->project_id	= $jinput->get('pid', 0);
         if ( !$this->project_id )
         {
             $this->project_id	= $app->getUserState( "$option.pid", '0' );
         }
         
-        $this->rid	= JRequest::getvar('rid', 0);
+        $this->rid	= $jinput->get('rid', 0);
         if ( !$this->rid )
         {
             $this->rid	= $app->getUserState( "$option.rid", '0' );
         }
-        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
 	    $projectws = $mdlProject->getProject($this->project_id);
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -122,8 +123,8 @@ class sportsmanagementViewMatches extends sportsmanagementView
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' projectws<br><pre>'.print_r($projectws,true).'</pre>'),'');
         }
         
-        $mdlRound = JModelLegacy::getInstance("Round", "sportsmanagementModel");
-		$roundws = $mdlRound->getRound($this->rid);;
+        $mdlRound = JModelLegacy::getInstance('Round', 'sportsmanagementModel');
+		$roundws = $mdlRound->getRound($this->rid);
         
         //build the html selectlist for rounds
 		$ress = sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', true);
@@ -174,14 +175,18 @@ class sportsmanagementViewMatches extends sportsmanagementView
 			$divhomeid = 0;
 			//apply the filter only if both teams are from the same division
 			//teams are not from the same division in tournament mode with divisions
-			if( $row->divhomeid == $row->divawayid ) {
+			if( $row->divhomeid == $row->divawayid )
+			{
 				$divhomeid = $row->divhomeid;
-			} else {
-				$row->divhomeid =0;
-				$row->divawayid =0;
 			}
-			if ($projectteams = $mdlProject->getProjectTeamsOptions($this->project_id,$divhomeid)){
-				$teams = array_merge($teams,$projectteams);
+			else
+			{
+				$row->divhomeid = 0;
+				$row->divawayid = 0;
+			}
+			if ($projectteams = $mdlProject->getProjectTeamsOptions($this->project_id, $divhomeid))
+			{
+				$teams = array_merge($teams, $projectteams);
 			}
 			$lists['teams_'+$divhomeid] = $teams;
 			unset($teams);
@@ -205,27 +210,28 @@ class sportsmanagementViewMatches extends sportsmanagementView
 
 
         //build the html options for extratime
-		$match_result_type[] = JHtmlSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RT'));
-		$match_result_type[] = JHtmlSelect::option('1',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_OT'));
-		$match_result_type[] = JHtmlSelect::option('2',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SO'));
+		$match_result_type[] = JHtmlSelect::option('0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RT'));
+		$match_result_type[] = JHtmlSelect::option('1', JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_OT'));
+		$match_result_type[] = JHtmlSelect::option('2', JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SO'));
 		$lists['match_result_type'] = $match_result_type;
 		unset($match_result_type);
         
         //build the html options for article
-        $articles[] = JHtmlSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ARTICLE'));
-        if ($res = sportsmanagementHelper::getArticleList($projectws->category_id)){
-			$articles = array_merge($articles,$res);
+        $articles[] = JHtmlSelect::option('0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ARTICLE'));
+        if ($res = sportsmanagementHelper::getArticleList($projectws->category_id))
+		{
+			$articles = array_merge($articles, $res);
 		}
         $lists['articles'] = $articles;
 		unset($articles);
         
         
         //build the html options for divisions
-		$divisions[] = JHtmlSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
-		$mdlDivisions = JModelLegacy::getInstance("divisions", "sportsmanagementModel");
+		$divisions[] = JHtmlSelect::option('0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
+		$mdlDivisions = JModelLegacy::getInstance('divisions', 'sportsmanagementModel');
 		if ($res = $mdlDivisions->getDivisions($this->project_id))
         {
-			$divisions = array_merge($divisions,$res);
+			$divisions = array_merge($divisions, $res);
 		}
 		$lists['divisions'] = $divisions;
 		unset($divisions);
@@ -236,14 +242,14 @@ class sportsmanagementViewMatches extends sportsmanagementView
         {
         foreach ($table_info['#__sportsmanagement_match'] as $field => $value )
         {
-        $select_Options = sportsmanagementHelper::getExtraSelectOptions($view,$field); 
+        $select_Options = sportsmanagementHelper::getExtraSelectOptions($view, $field); 
         
         if( $select_Options )
         {
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($select_Options,true).'</pre>'),'Notice');  
         
-        $select[] = JHtmlSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'));
-        $select = array_merge($select,$select_Options);  
+        $select[] = JHtmlSelect::option('0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'));
+        $select = array_merge($select, $select_Options);  
         $selectlist[$field] = $select;
 		unset($select);
         }   
@@ -256,16 +262,16 @@ class sportsmanagementViewMatches extends sportsmanagementView
         
 		//$this->assignRef('division',$division);
 
-		$this->assign('user',JFactory::getUser());
-        $this->assignRef('lists',$lists);
-        $this->assignRef('selectlist',$selectlist);
-		$this->assignRef('option',$option);
-		$this->assignRef('matches',$items);
-		$this->assignRef('ress',$ress);
-		$this->assignRef('projectws',$projectws);
-		$this->assignRef('roundws',$roundws);
-		$this->assignRef('pagination',$pagination);
-		$this->assign('request_url',$uri->toString());
+		$this->user	= JFactory::getUser();
+        $this->lists	= $lists;
+        $this->selectlist	= $selectlist;
+		$this->option	= $option;
+		$this->matches	= $items;
+		$this->ress	= $ress;
+		$this->projectws	= $projectws;
+		$this->roundws	= $roundws;
+		$this->pagination	= $pagination;
+		$this->request_url	= $uri->toString();
 		//$this->assignRef('prefill', $params->get('use_prefilled_match_roster',0));
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'Notice');
@@ -273,16 +279,16 @@ class sportsmanagementViewMatches extends sportsmanagementView
         if ( $this->getLayout() == 'massadd' || $this->getLayout() == 'massadd_3')
 		{
 		//build the html options for massadd create type
-		$createTypes=array(	0 => JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD'),
-				1 => JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_1'),
+		$createTypes = array(	0 => JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD'), 
+				1 => JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_1'), 
 				2 => JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_2')
 		);
-		$ctOptions=array();
+		$ctOptions = array();
 		foreach($createTypes AS $key => $value)
         {
-			$ctOptions[] = JHtmlSelect::option($key,$value);
+			$ctOptions[] = JHtmlSelect::option($key, $value);
 		}
-		$lists['createTypes'] = JHtmlSelect::genericlist($ctOptions,'ct[]','class="inputbox" onchange="javascript:displayTypeView();"','value','text',1,'ct');
+		$lists['createTypes'] = JHtmlSelect::genericlist($ctOptions, 'ct[]', 'class="inputbox" onchange="javascript:displayTypeView();"', 'value', 'text', 1, 'ct');
 		unset($createTypes);
 
 		// build the html radio for adding into one round / all rounds
@@ -290,13 +296,13 @@ class sportsmanagementViewMatches extends sportsmanagementView
 		$ynOptions = array();
 		foreach($createYesNo AS $key => $value)
         {
-			$ynOptions[] = JHtmlSelect::option($key,$value);
+			$ynOptions[] = JHtmlSelect::option($key, $value);
 		}
-		$lists['addToRound'] = JHtmlSelect::radiolist($ynOptions,'addToRound','class="inputbox"','value','text',0);
+		$lists['addToRound'] = JHtmlSelect::radiolist($ynOptions, 'addToRound', 'class="inputbox"', 'value', 'text', 0);
 
 		// build the html radio for auto publish new matches
-		$lists['autoPublish'] = JHtmlSelect::radiolist($ynOptions,'autoPublish','class="inputbox"','value','text',0);  
-        $this->assignRef('lists',$lists);
+		$lists['autoPublish'] = JHtmlSelect::radiolist($ynOptions, 'autoPublish', 'class="inputbox"', 'value', 'text', 0);  
+        $this->lists	= $lists;
 		$this->setLayout('massadd');  
         }
 		
@@ -315,14 +321,15 @@ class sportsmanagementViewMatches extends sportsmanagementView
 //        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
         
-		$app	= JFactory::getApplication();
-		$option = JRequest::getCmd('option');
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
         // store the variable that we would like to keep for next time
         // function syntax is setUserState( $key, $value );
         $app->setUserState( "$option.rid", $this->rid );
         $app->setUserState( "$option.pid", $this->project_id );
         
-        $massadd = JRequest::getInt('massadd',0);
+        $massadd = $jinput->getInt('massadd', 0);
 
 		// Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TITLE');
@@ -344,8 +351,8 @@ class sportsmanagementViewMatches extends sportsmanagementView
 			JToolBarHelper::apply('matches.saveshort');
 			JToolBarHelper::divider();
 
-			JToolBarHelper::custom('match.massadd','new.png','new_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_MATCHES'),false);
-			JToolBarHelper::addNew('match.addmatch',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_ADD_MATCH'));
+			JToolBarHelper::custom('match.massadd', 'new.png', 'new_f2.png', JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_MATCHES'), false);
+			JToolBarHelper::addNew('match.addmatch', JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_ADD_MATCH'));
 			JToolBarHelper::deleteList(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_WARNING'), 'match.remove');
 			JToolBarHelper::divider();
 
@@ -353,7 +360,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 		}
 		else
 		{
-			JToolBarHelper::custom('match.cancelmassadd','cancel.png','cancel_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_CANCEL_MATCHADD'),false);
+			JToolBarHelper::custom('match.cancelmassadd', 'cancel.png', 'cancel_f2.png', JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_CANCEL_MATCHADD'), false);
 		}
         
         parent::addToolbar();  

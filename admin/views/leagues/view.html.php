@@ -60,8 +60,9 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
         $inputappend = '';
@@ -86,18 +87,18 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 		$pagination = $this->get('Pagination');
         
         $table = JTable::getInstance('league', 'sportsmanagementTable');
-		$this->assignRef('table', $table);
+		$this->table	= $table;
         
         //build the html options for nation
-		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$nation[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ( $res = JSMCountries::getCountryOptions() )
         {
             $nation = array_merge($nation,$res);
-            $this->assignRef('search_nation',$res);
+            $this->search_nation	= $res;
         }
 		
         $lists['nation'] = $nation;
-        $lists['nation2']= JHtmlSelect::genericlist(	$nation,
+        $lists['nation2'] = JHtmlSelect::genericlist(	$nation,
 																'filter_search_nation',
 																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
 																'value',
@@ -105,12 +106,12 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 																$this->state->get('filter.search_nation'));
 
 		unset($nation);
-        $nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
-        $mdlassociation = JModelLegacy::getInstance("jlextassociations", "sportsmanagementModel");
+        $nation[] = JHtml::_('select.option', '0' ,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
+        $mdlassociation = JModelLegacy::getInstance('jlextassociations', 'sportsmanagementModel');
         if ( $res = $mdlassociation->getAssociations() )
         {
-            $nation = array_merge($nation,$res);
-            $this->assignRef('search_association',$res);
+            $nation = array_merge($nation, $res);
+            $this->search_association	= $res;
         }
         
         $lists['association'] = array();
@@ -123,7 +124,7 @@ class sportsmanagementViewLeagues extends sportsmanagementView
             }
             else
             {
-            $lists['association'][$row->country][] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
+            $lists['association'][$row->country][] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
             $lists['association'][$row->country][] = $row;    
             }
             
@@ -134,7 +135,7 @@ class sportsmanagementViewLeagues extends sportsmanagementView
         //$lists['association'] = $nation;
         
         
-        $lists['association2']= JHtmlSelect::genericlist(	$nation,
+        $lists['association2'] = JHtmlSelect::genericlist(	$nation,
 																'filter_search_association',
 																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
 																'value',
@@ -145,15 +146,15 @@ class sportsmanagementViewLeagues extends sportsmanagementView
         
         unset($myoptions);
         
-        $myoptions[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
-        $mdlagegroup = JModelLegacy::getInstance("agegroups", "sportsmanagementModel");
+        $myoptions[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
+        $mdlagegroup = JModelLegacy::getInstance('agegroups', 'sportsmanagementModel');
         if ( $res = $mdlagegroup->getAgeGroups() )
         {
-            $myoptions = array_merge($myoptions,$res);
-            $this->assignRef('search_agegroup',$res);
+            $myoptions = array_merge($myoptions, $res);
+            $this->search_agegroup	= $res;
         }
         $lists['agegroup'] = $myoptions;
-        $lists['agegroup2']= JHtmlSelect::genericlist(	$myoptions,
+        $lists['agegroup2'] = JHtmlSelect::genericlist(	$myoptions,
 																'filter_search_agegroup',
 																'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
 																'value',
@@ -161,11 +162,11 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 																$this->state->get('filter.search_agegroup'));
         unset($myoptions);
         
-        $this->assign('user',JFactory::getUser());
-		$this->assignRef('lists',$lists);
-		$this->assignRef('items',$items);
-		$this->assignRef('pagination',$pagination);
-		$this->assign('request_url',$uri->toString());
+        $this->user	= JFactory::getUser();
+		$this->lists	= $lists;
+		$this->items	= $items;
+		$this->pagination	= $pagination;
+		$this->request_url	= $uri->toString();
 		
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
@@ -184,8 +185,8 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+		$jinput = JFactory::getApplication()->input;
+        $option = $jinput->getCmd('option');
        
 		//// Get a refrence of the page instance in joomla
 //		$document	= JFactory::getDocument();
@@ -199,8 +200,8 @@ class sportsmanagementViewLeagues extends sportsmanagementView
         
 		JToolBarHelper::addNew('league.add');
 		JToolBarHelper::editList('league.edit');
-		JToolBarHelper::custom('league.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-		JToolBarHelper::archiveList('league.export',JText::_('JTOOLBAR_EXPORT'));
+		JToolBarHelper::custom('league.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
+		JToolBarHelper::archiveList('league.export', JText::_('JTOOLBAR_EXPORT'));
         JToolbarHelper::checkin('leagues.checkin');
         if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
         {

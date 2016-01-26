@@ -59,8 +59,9 @@ class sportsmanagementViewPlaygrounds extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
         
@@ -80,28 +81,28 @@ $starttime = microtime();
 		$this->assignRef('table', $table);
         
         //build the html options for nation
-		$nation[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$nation[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions())
         {
-            $nation=array_merge($nation,$res);
-            $this->assignRef('search_nation',$res);
+            $nation = array_merge($nation, $res);
+            $this->search_nation	= $res;
             }
 		
         $lists['nation'] = $nation;
-        $lists['nation2'] = JHtmlSelect::genericlist(	$nation,
-																'filter_search_nation',
-																'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-																'value',
-																'text',
+        $lists['nation2'] = JHtmlSelect::genericlist(	$nation, 
+																'filter_search_nation', 
+																'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 
+																'value', 
+																'text', 
 																$this->state->get('filter.search_nation'));
 
 
-		$this->assign('user',JFactory::getUser());
-		$this->assign('config',JFactory::getConfig());
-		$this->assignRef('lists',$lists);
-		$this->assignRef('items',$items);
-		$this->assignRef('pagination',$pagination);
-		$this->assign('request_url',$uri->toString());
+		$this->user	= JFactory::getUser();
+		$this->config	= JFactory::getConfig();
+		$this->lists	= $lists;
+		$this->items	= $items;
+		$this->pagination	= $pagination);
+		$this->request_url	= $uri->toString();
         
         
 		
@@ -120,8 +121,8 @@ $starttime = microtime();
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_TITLE');
 		JToolBarHelper::editList('playground.edit');
 		JToolBarHelper::addNew('playground.add');
-		JToolBarHelper::custom('playground.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-		JToolBarHelper::archiveList('playground.export',JText::_('JTOOLBAR_EXPORT'));
+		JToolBarHelper::custom('playground.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
+		JToolBarHelper::archiveList('playground.export', JText::_('JTOOLBAR_EXPORT'));
 		JToolbarHelper::checkin('playgrounds.checkin');
         
         if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
