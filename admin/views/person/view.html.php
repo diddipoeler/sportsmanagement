@@ -186,7 +186,8 @@ class sportsmanagementViewPerson extends sportsmanagementView
 	protected function addToolBar() 
 	{
   	        
-		JRequest::setVar('hidemainmenu', true);
+		$jinput = JFactory::getApplication()->input;
+        $jinput->set('hidemainmenu', true);
 	
         $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_PERSON_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_PERSON_NEW');
         $this->icon = 'person';

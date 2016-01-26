@@ -102,7 +102,7 @@ class sportsmanagementViewPlayground extends sportsmanagementView
         }
 		
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'playground');
-		$this->assignRef( 'extended', $extended );
+		$this->extended	$extended;
         
         $document->addScript('http://maps.google.com/maps/api/js?&sensor=false&language=de');
         $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
@@ -120,7 +120,8 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{
-		JRequest::setVar('hidemainmenu', true);
+		$jinput = JFactory::getApplication()->input;
+        $jinput->set('hidemainmenu', true);
         parent::addToolbar();
 	}
     

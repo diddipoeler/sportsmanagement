@@ -124,7 +124,7 @@ $starttime = microtime();
             }
 		
         $lists['nation'] = $nation;
-        $lists['nation2']= JHtmlSelect::genericlist(	$nation, 
+        $lists['nation2'] = JHtmlSelect::genericlist(	$nation, 
 																'filter_search_nation', 
 																'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 
 																'value', 
@@ -242,7 +242,7 @@ $starttime = microtime();
         
         //build the html select list for positions
 		$positionsList[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
-		$positions=JModelLegacy::getInstance('positions', 'sportsmanagementmodel')->getAllPositions();
+		$positions = JModelLegacy::getInstance('positions', 'sportsmanagementmodel')->getAllPositions();
 		if ($positions)
 		{
 			$positions = array_merge($positionsList, $positions);
@@ -286,7 +286,7 @@ $starttime = microtime();
 		$this->items	= $items;
         $this->user	= $user;
 		$this->pagination	= $pagination;
-		$this->request_url	JFactory::getURI()->toString();
+		$this->request_url	= JFactory::getURI()->toString();
 		$this->type	= $type;
         
         $this->setLayout('assignplayers');
