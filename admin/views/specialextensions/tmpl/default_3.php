@@ -68,8 +68,8 @@ foreach ( $this->Extensions as $key => $value )
 {
 ?>
 <a class="btn" href="index.php?option=com_sportsmanagement&view=<?php echo JText::_($value) ?>">
-<img src="components/com_sportsmanagement/assets/icons/extensions.png" alt="<?php echo JText::_($value) ?>" /><br />
-<span><?php echo JText::_('COM_SPORTSMANAGEMENT_EXT_DFBNETIMPORT') ?></span>
+<img src="components/com_sportsmanagement/assets/icons/<?php echo JText::_($value) ?>.png" width="125" alt="<?php echo JText::_($value) ?>" /><br />
+<span><?php echo JText::_($value) ?></span>
 </a>
 <?php 
 }
