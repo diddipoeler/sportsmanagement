@@ -85,6 +85,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
         {
             sportsmanagementModelPrediction::$roundID = $this->model->_projectRoundsCount;
         }
+        $this->roundID = sportsmanagementModelPrediction::$roundID;
 		?>
 		<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement'); ?>" method='post' name="adminForm" id="adminForm">
 			<input type='hidden' name='option' value='com_sportsmanagement' />
