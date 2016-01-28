@@ -127,7 +127,7 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
 										$res_prediction_members, 
 										'prediction_members[]', 
 										'class="inputbox" multiple="true" onchange="" size="15"', 
-										'value',  
+										'value', 
 										'text');
 	}
 	else

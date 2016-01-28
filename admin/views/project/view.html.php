@@ -158,7 +158,7 @@ class sportsmanagementViewProject extends sportsmanagementView
 	$option = $jinput->getCmd('option');
 	$uri = JFactory::getURI();
 	$user = JFactory::getUser();
-    $starttime = microtime(); 
+    $starttime = microtime();
            
 	$this->item = $this->get('Item');
     
@@ -182,7 +182,7 @@ class sportsmanagementViewProject extends sportsmanagementView
  */
     if ( !$iProjectPositionsCount )
 	{
-		$mdlProjectPositions->insertStandardProjectPositions($this->item->id,$this->item->sports_type_id);    
+		$mdlProjectPositions->insertStandardProjectPositions($this->item->id,$this->item->sports_type_id); 
 	}
 	
 	$iProjectPositionsCount = $mdlProjectPositions->getProjectPositionsCount($this->item->id);
@@ -203,19 +203,19 @@ class sportsmanagementViewProject extends sportsmanagementView
 	$mdlRounds = JModelLegacy::getInstance("Rounds", "sportsmanagementModel");
 	$iMatchDaysCount = $mdlRounds->getRoundsCount($this->item->id);
 		
-	$this->project	$this->item;
+	$this->project	= $this->item;
 	$this->count_projectdivisions	= $iProjectDivisionsCount;
 	$this->count_projectpositions	= $iProjectPositionsCount;
 	$this->count_projectreferees	= $iProjectRefereesCount;
 	$this->count_projectteams	= $iProjectTeamsCount;
-	$this->count_matchdays	= $iMatchDaysCount;  
+	$this->count_matchdays	= $iMatchDaysCount;
     
     // store the variable that we would like to keep for next time
     // function syntax is setUserState( $key, $value );
     $app->setUserState( "$option.pid", $this->item->id);
-    $app->setUserState( "$option.season_id", $this->item->season_id);  
+    $app->setUserState( "$option.season_id", $this->item->season_id);
     $app->setUserState( "$option.project_art_id", $this->item->project_art_id);
-    $app->setUserState( "$option.sports_type_id", $this->item->sports_type_id);  
+    $app->setUserState( "$option.sports_type_id", $this->item->sports_type_id);
     
     
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JComponentHelper::getParams($option)->get('which_article_component'),true).'</pre>'),'Notice');
