@@ -88,28 +88,28 @@ $starttime = microtime();
         //build the html options for nation
 		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ( $res = JSMCountries::getCountryOptions() )
-        {
-            $nation = array_merge($nation,$res);
-            $this->assignRef('search_nation',$res);
-        }
+		{
+            $nation = array_merge($nation, $res);
+			$this->search_nation = $res;
+		}
 		
         $lists['nation'] = $nation;
-        $lists['nation2']= JHtmlSelect::genericlist(	$nation,
-																'filter_search_nation',
-																'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-																'value',
-																'text',
+        $lists['nation2']= JHtmlSelect::genericlist(	$nation, 
+																'filter_search_nation', 
+																'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 
+																'value', 
+																'text', 
 																$this->state->get('filter.search_nation'));
 
 
 
-		$this->assign('user',JFactory::getUser());
-		$this->assignRef('lists',$lists);
-		$this->assignRef('items',$items);
-		$this->assignRef('pagination',$pagination);
-		$this->assign('request_url',$uri->toString());
+		$this->user	= JFactory::getUser();
+		$this->lists	= $lists;
+		$this->items	= $items;
+		$this->pagination	= $pagination;
+		$this->request_url	= $uri->toString();
         
-        $this->assignRef('season_id',$season_id);
+        $this->season_id	= $season_id;
         
         if ( $this->getLayout() == 'assignteams' || $this->getLayout() == 'assignteams_3' )
 		{
@@ -118,11 +118,11 @@ $starttime = microtime();
         
         if ( $this->getLayout() == 'assignpersons' || $this->getLayout() == 'assignpersons_3' )
 		{
-		$season_teams[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
+		$season_teams[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
         $res = $model->getSeasonTeams($season_id); 
         $season_teams = array_merge($season_teams,$res); 
         $lists['season_teams'] = $season_teams;
-        $this->assignRef('lists',$lists);
+        $this->lists	= $lists;
 		$this->setLayout('assignpersons');  
         }
         
@@ -137,7 +137,8 @@ $starttime = microtime();
 	protected function addToolbar()
 	{ 
 		$app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
                
         $canDo = sportsmanagementHelper::getActions();
     // Set toolbar items for the page

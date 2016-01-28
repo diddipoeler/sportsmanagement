@@ -70,8 +70,9 @@ class sportsmanagementViewrosterposition extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
         $document = JFactory::getDocument();
         
         $bildpositionenhome = array();
@@ -149,10 +150,10 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
 		$this->item = $item;
 		$this->script = $script;
         
-        $extended = sportsmanagementHelper::getExtended($item->extended, 'rosterposition');
-		$this->assignRef( 'extended', $extended );
-        
-        $mdlRosterpositions = JModelLegacy::getInstance("rosterpositions", "sportsmanagementModel");
+		$extended = sportsmanagementHelper::getExtended($item->extended, 'rosterposition');
+		$this->extended	= $extended;
+		
+		$mdlRosterpositions = JModelLegacy::getInstance("rosterpositions", "sportsmanagementModel");
         //$bildpositionenhome = $mdlRosterpositions->getRosterHome();
 //        $bildpositionenaway = $mdlRosterpositions->getRosterAway();
      
@@ -161,54 +162,56 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
      //$app->enqueueMessage(JText::_('sportsmanagementViewrosterposition getRosterAway<br><pre>'.print_r($bildpositionenaway,true).'</pre>'),'Notice');
      
      // position ist vorhanden
-     if ( $this->item->id )   
-     {   
-        $count_players = $this->item->players;
+	if ( $this->item->id )  
+	{   
+		$count_players = $this->item->players;
         
         // bearbeiten positionen übergeben
-    $position = 1;
+		$position = 1;
     //$xmlfile=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
 		$jRegistry = new JRegistry;
 		//$jRegistry->loadString($this->item->extended, 'ini');
         
         // welche joomla version ?
         if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-    $jRegistry->loadString($this->item->extended);
-    }
-    else
-    {
+		{
+			$jRegistry->loadString($this->item->extended);
+		}
+		
+		else
+		{
         $jRegistry->loadJSON($this->item->extended);
-        }
-    
-    if ( !$this->item->extended )
-    {
-    $position = 1;
-    switch ($this->item->alias)
-    {
-    case 'HOME_POS':
-    $bildpositionenhome = $mdlRosterpositions->getRosterHome();
-    for($a=0; $a < $count_players; $a++)
-    {
-    $jRegistry->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_TOP', null,$bildpositionenhome[$this->item->name][$a]['heim']['oben']);
-    $jRegistry->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_LEFT', null,$bildpositionenhome[$this->item->name][$a]['heim']['links']);
-    $position++;
-    }
-    $this->assignRef('bildpositionen',$bildpositionenhome);
-    break;
-    case 'AWAY_POS':
-    $bildpositionenaway = $mdlRosterpositions->getRosterAway();
-    for($a=0; $a < $count_players; $a++)
-    {
-    $jRegistry->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_TOP', null,$bildpositionenaway[$this->item->name][$a]['heim']['oben']);
-    $jRegistry->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_LEFT', null,$bildpositionenaway[$this->item->name][$a]['heim']['links']);
-    $position++;
-    }
-    $this->assignRef('bildpositionen',$bildpositionenaway);
-    break;
-    }
+		}
+
+	if ( !$this->item->extended )
+	{
+	$position = 1;
+	switch ($this->item->alias)
+	{
+	case 'HOME_POS':
+	$bildpositionenhome = $mdlRosterpositions->getRosterHome();
+	
+    for($a = 0; $a < $count_players; $a++)
+	{
+	$jRegistry->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_TOP', null,$bildpositionenhome[$this->item->name][$a]['heim']['oben']);
+	$jRegistry->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_LEFT', null,$bildpositionenhome[$this->item->name][$a]['heim']['links']);
+	$position++;
+	}
+	$this->bildpositionen	= $bildpositionenhome;
+	break;
+	case 'AWAY_POS':
+	$bildpositionenaway = $mdlRosterpositions->getRosterAway();
+	for($a = 0; $a < $count_players; $a++)
+	{
+	$jRegistry->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_TOP', null,$bildpositionenaway[$this->item->name][$a]['heim']['oben']);
+	$jRegistry->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_LEFT', null,$bildpositionenaway[$this->item->name][$a]['heim']['links']);
+	$position++;
+	}
+	$this->bildpositionen	= $bildpositionenaway;
+	break;
+	}
         
-    }
+	}
     
     
 //    for($a=$count_players; $a < 11; $a++)
@@ -220,110 +223,110 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
     
     //$app->enqueueMessage(JText::_('sportsmanagementViewrosterposition jRegistry<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
     
-    for($a=0; $a < $count_players; $a++)
+	for($a = 0; $a < $count_players; $a++)
     {
     //if ( $a < $count_players )
 //    {    
-    $bildpositionen[$this->item->name][$a]['heim']['oben'] = $jRegistry->get('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_TOP');
-    $bildpositionen[$this->item->name][$a]['heim']['links'] = $jRegistry->get('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_LEFT');
+	$bildpositionen[$this->item->name][$a]['heim']['oben'] = $jRegistry->get('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_TOP');
+	$bildpositionen[$this->item->name][$a]['heim']['links'] = $jRegistry->get('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_LEFT');
    // }
 //    else
 //    {
 //    $bildpositionen[$this->item->name][$a]['heim']['oben'] = '';
 //    $bildpositionen[$this->item->name][$a]['heim']['links'] = '';    
 //    }
-    $position++;
-    }
-    $this->assignRef('bildpositionen',$bildpositionen);  
+	$position++;
+	}
+	$this->assignRef('bildpositionen', $bildpositionen);  
     
     //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' jRegistry<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
     //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' bildpositionen<br><pre>'.print_r($this->bildpositionen,true).'</pre>'),'Notice');
     
-    }
-    else
-    {
+	}
+	else
+	{
         // neuanlage
-        $addposition	= JRequest::getVar('addposition');
-        $position = 1;
-        $object = new stdClass();
-        $object->id = 0;
-    $object->name = $addposition;
-    $object->short_name = $addposition;
-    $object->country = 'DEU';
-    $object->picture = 'spielfeld_578x1050.png';
-    $xmlfile=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
-    $extended = JForm::getInstance('extended', $xmlfile,array('control'=> 'extended'),
+	$addposition	= $jinput->get('addposition');
+	$position = 1;
+	$object = new stdClass();
+	$object->id = 0;
+	$object->name = $addposition;
+	$object->short_name = $addposition;
+	$object->country = 'DEU';
+	$object->picture = 'spielfeld_578x1050.png';
+	$xmlfile=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'rosterposition.xml';
+	$extended = JForm::getInstance('extended', $xmlfile,array('control'=> 'extended'), 
 				false, '/config');
-    $jRegistry = new JRegistry;
-$jRegistry->loadString('' , 'ini');
-$extended->bind($jRegistry);
+	$jRegistry = new JRegistry;
+	$jRegistry->loadString('' , 'ini');
+	$extended->bind($jRegistry);
 
 
     //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' addposition<br><pre>'.print_r($addposition,true).'</pre>'),'Notice');
     
     
-    switch ($addposition)
-    {
-    case 'HOME_POS':
-    for($a=0; $a < 11; $a++)
-    {
-    $extended->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_TOP', null,$bildpositionenhome[$object->name][$a]['heim']['oben']);
-    $extended->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_LEFT', null,$bildpositionenhome[$object->name][$a]['heim']['links']);
-    $position++;
-    }
-    $this->assignRef('bildpositionen',$bildpositionenhome);
-    break;
-    case 'AWAY_POS':
-    for($a=0; $a < 11; $a++)
-    {
-    $extended->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_TOP', null,$bildpositionenaway[$object->name][$a]['heim']['oben']);
-    $extended->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_LEFT', null,$bildpositionenaway[$object->name][$a]['heim']['links']);
-    $position++;
-    }
-    $this->assignRef('bildpositionen',$bildpositionenaway);
-    break;
-    }
+	switch ($addposition)
+	{
+	case 'HOME_POS':
+	for($a = 0; $a < 11; $a++)
+	{
+	$extended->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_TOP', null, $bildpositionenhome[$object->name][$a]['heim']['oben']);
+	$extended->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_LEFT', null, $bildpositionenhome[$object->name][$a]['heim']['links']);
+	$position++;
+	}
+	$this->bildpositionen	= $bildpositionenhome;
+	break;
+	case 'AWAY_POS':
+	for($a = 0; $a < 11; $a++)
+	{
+	$extended->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_TOP', null, $bildpositionenaway[$object->name][$a]['heim']['oben']);
+	$extended->setValue('COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$position.'_LEFT', null, $bildpositionenaway[$object->name][$a]['heim']['links']);
+	$position++;
+	}
+	$this->assignRef('bildpositionen',$bildpositionenaway);
+	break;
+	}
     $object->extended = $extended;
     
-    $this->form->setValue('short_name',null,$object->short_name);
-    $this->form->setValue('country',null,$object->country);
-    $this->form->setValue('picture',null,$object->picture);
-    $this->form->setValue('name',null,'4231');
+    $this->form->setValue('short_name', null, $object->short_name);
+    $this->form->setValue('country', null, $object->country);
+    $this->form->setValue('picture', null, $object->picture);
+    $this->form->setValue('name', null,'4231');
     
-    $this->item = $object;    
-    }
+	$this->item = $object;   
+	}
     
     //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' bildpositionen<br><pre>'.print_r($this->bildpositionen,true).'</pre>'),'Notice');
     //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' item<br><pre>'.print_r($this->item,true).'</pre>'),'Notice');
         
 
         
-        $javascript = "\n";
-$javascript .= 'jQuery(document).ready(function() {' . "\n";
-$start = 1;
-$ende = 11;
-for ($a = $start; $a <= $ende; $a++ )
-{
-$javascript .= '    jQuery("#draggable_'.$a.'").draggable({stop: function(event, ui) {
+	$javascript = "\n";
+	$javascript .= 'jQuery(document).ready(function() {' . "\n";
+	$start = 1;
+	$ende = 11;
+	for ($a = $start; $a <= $ende; $a++ )
+	{
+	$javascript .= '    jQuery("#draggable_'.$a.'").draggable({stop: function(event, ui) {
     	// Show dropped position.
     	var Stoppos = jQuery(this).position();
     	jQuery("div#stop").text("STOP: \nLeft: "+ Stoppos.left + "\nTop: " + Stoppos.top);
     	jQuery("#extended_COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$a.'_TOP").val(Stoppos.top);
       jQuery("#extended_COM_SPORTSMANAGEMENT_EXT_ROSTERPOSITIONS_'.$a.'_LEFT").val(Stoppos.left);
     }});' . "\n";    
-}
+	}
     
-$javascript .= '  });' . "\n";
-$javascript .= "\n";
+	$javascript .= '  });' . "\n";
+	$javascript .= "\n";
     
-    $document->addScriptDeclaration( $javascript );
+	$document->addScriptDeclaration( $javascript );
     
-        $this->assignRef('form', $this->form);
-        $this->assignRef('option', $option);
+	$this-form	= $this->form;
+	$this->option	= $option;
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item -> <br><pre>'.print_r($this->item,true).'</pre>'),'');
         
-        $this->setLayout('edit');
+	$this->setLayout('edit');
 	}
 
 
@@ -337,17 +340,18 @@ $javascript .= "\n";
 	protected function addToolBar() 
 	{
 	// Get a refrence of the page instance in joomla
-        $document = JFactory::getDocument();
-        $option = JRequest::getCmd('option');
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 //        // Set toolbar items for the page
 //        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
         
-        $document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');
-		JRequest::setVar('hidemainmenu', true);
+		$document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');
+		$jinput->set('hidemainmenu', true);
         
-        $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ROSTERPOSITION_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ROSTERPOSITION_NEW');
-        $this->icon = 'rosterposition';
+		$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ROSTERPOSITION_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ROSTERPOSITION_NEW');
+		$this->icon = 'rosterposition';
         			
     parent::addToolbar();
     }

@@ -64,46 +64,46 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 	public function init ()
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+		$app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$uri = JFactory::getURI();
-        $model	= $this->getModel();
+		$model	= $this->getModel();
 
 		$this->state = $this->get('State'); 
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
+		$this->sortDirection = $this->state->get('list.direction');
+		$this->sortColumn = $this->state->get('list.ordering');
         
         
-        $this->project_id = $jinput->request->get('pid', 0, 'INT');
-        if ( !$this->project_id )
-        {
-        $this->project_id = $app->getUserState( "$option.pid", '0' );
-        }
+		$this->project_id = $jinput->request->get('pid', 0, 'INT');
+		if ( !$this->project_id )
+		{
+			$this->project_id = $app->getUserState( "$option.pid", '0' );
+		}
        
-        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
-	    $project = $mdlProject->getProject($this->project_id);
+		$mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
+		$project = $mdlProject->getProject($this->project_id);
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($this->project_id,true).'</pre>'   ),'');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($project,true).'</pre>'   ),'');
         
-        $this->project_art_id = $project->project_art_id;
-        $this->season_id = $project->season_id;
-        $this->sports_type_id = $project->sports_type_id;
+		$this->project_art_id = $project->project_art_id;
+		$this->season_id = $project->season_id;
+		$this->sports_type_id = $project->sports_type_id;
+		
+		$app->setUserState( "$option.pid", $project->id );
+		$app->setUserState( "$option.season_id", $project->season_id );
+		$app->setUserState( "$option.project_art_id", $project->project_art_id );
+		$app->setUserState( "$option.sports_type_id", $project->sports_type_id );
         
-        $app->setUserState( "$option.pid", $project->id );
-        $app->setUserState( "$option.season_id", $project->season_id );
-        $app->setUserState( "$option.project_art_id", $project->project_art_id );
-        $app->setUserState( "$option.sports_type_id", $project->sports_type_id );
+		$starttime = microtime(); 
+		$items = $this->get('Items');
         
-        $starttime = microtime(); 
-        $items = $this->get('Items');
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
+		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+		{
+			$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+		}
         
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
@@ -111,56 +111,57 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         $table = JTable::getInstance('projectteam', 'sportsmanagementTable');
 		$this->table = $table;
         
-        if ( $this->project_art_id == 3 )
-        {
-            $filter_order = $app->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order','filter_order','t.lastname','cmd');
-        } 
-        else
-        {
-            $filter_order = $app->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order','filter_order','t.name','cmd');
-        }
+		if ( $this->project_art_id == 3 )
+		{
+			$filter_order = $app->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order', 'filter_order', 't.lastname', 'cmd');
+		} 
+		else
+		{
+			$filter_order = $app->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order', 'filter_order', 't.name', 'cmd');
+		}
+		
+		
+		$mdlDivisions = JModelLegacy::getInstance("divisions", "sportsmanagementModel");
+		$projectdivisions = $mdlDivisions->getDivisions($this->project_id);
         
         
-        
-        $mdlDivisions = JModelLegacy::getInstance("divisions", "sportsmanagementModel");
-	    $projectdivisions = $mdlDivisions->getDivisions($this->project_id);
-        
-        
-        $divisionsList[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
-        if ($projectdivisions)
-        { 
-            $projectdivisions = array_merge($divisionsList,$projectdivisions);
-        }
-        $lists['divisions'] = $projectdivisions;
+		$divisionsList[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
+		
+		if ($projectdivisions)
+		{ 
+			$projectdivisions = array_merge($divisionsList,$projectdivisions);
+		}
+		
+		$lists['divisions'] = $projectdivisions;
         
         //build the html select list for project assigned teams
 		$ress = array();
 		$res1 = array();
 		$notusedteams = array();
 
-		if ($ress = $model->getProjectTeams($this->project_id,FALSE))
+		if ($ress = $model->getProjectTeams($this->project_id, FALSE))
 		{
-			$teamslist=array();
+			$teamslist = array();
 			foreach($ress as $res)
 			{
 				if(empty($res1->info))
 				{
-					$project_teamslist[] = JHTMLSelect::option($res->season_team_id,$res->text);
+					$project_teamslist[] = JHtmlSelect::option($res->season_team_id, $res->text);
 				}
 				else
 				{
-					$project_teamslist[] = JHTMLSelect::option($res->season_team_id,$res->text.' ('.$res->info.')');
+					$project_teamslist[] = JHtmlSelect::option($res->season_team_id, $res->text.' ('.$res->info.')');
 				}
 			}
 
-			$lists['project_teams'] = JHTMLSelect::genericlist($project_teamslist, 'project_teamslist[]',
-																' style="width:250px; height:300px;" class="inputbox" multiple="true" size="'.min(30,count($ress)).'"',
-																'value',
+			$lists['project_teams'] = JHtmlSelect::genericlist($project_teamslist, 'project_teamslist[]', 
+																' style="width:250px; height:300px;" class="inputbox" multiple="true" size="'.min(30, count($ress)).'"', 
+																'value', 
 																'text');
 		}
 		else
 		{
-			$lists['project_teams']= '<select name="project_teamslist[]" id="project_teamslist" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
+			$lists['project_teams'] = '<select name="project_teamslist[]" id="project_teamslist" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
 		}
 
 		if ($ress1 = $model->getTeams())
@@ -169,21 +170,21 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 			{
 				foreach ($ress1 as $res1)
 				{
-					$used=0;
+					$used = 0;
 					foreach ($ress as $res)
 					{
 						if ($res1->value == $res->season_team_id)
                         {
-                            $used=1;
+                            $used = 1;
                         }
 					}
 
 					if ($used == 0 && !empty($res1->info)){
-						$notusedteams[] = JHTMLSelect::option($res1->value,$res1->text.' ('.$res1->info.')');
+						$notusedteams[] = JHtmlSelect::option($res1->value, $res1->text.' ('.$res1->info.')');
 					}
 					elseif($used == 0 && empty($res1->info))
 					{
-						$notusedteams[] = JHTMLSelect::option($res1->value,$res1->text);
+						$notusedteams[] = JHtmlSelect::option($res1->value, $res1->text);
 					}
 				}
 			}
@@ -193,11 +194,11 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 				{
 					if(empty($res1->info))
 					{
-						$notusedteams[] = JHTMLSelect::option($res1->value,$res1->text);
+						$notusedteams[] = JHtmlSelect::option($res1->value, $res1->text);
 					}
 					else
 					{
-						$notusedteams[] = JHTMLSelect::option($res1->value,$res1->text.' ('.$res1->info.')');
+						$notusedteams[] = JHtmlSelect::option($res1->value, $res1->text.' ('.$res1->info.')');
 					}
 				}
 			}
@@ -210,10 +211,10 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		//build the html select list for teams
 		if (count($notusedteams) > 0)
 		{
-			$lists['teams'] = JHTMLSelect::genericlist( $notusedteams,
-														'teamslist[]',
-														' style="width:250px; height:300px;" class="inputbox" multiple="true" size="'.min(30,count($notusedteams)).'"',
-														'value',
+			$lists['teams'] = JHtmlSelect::genericlist( $notusedteams, 
+														'teamslist[]', 
+														' style="width:250px; height:300px;" class="inputbox" multiple="true" size="'.min(30, count($notusedteams)).'"', 
+														'value', 
 														'text');
 		}
 		else
@@ -226,15 +227,15 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		unset($notusedteams);
         
         //build the html options for nation
-		$nation[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
+		$nation[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions())
-        {
-            $nation = array_merge($nation,$res);
-            $this->assignRef('search_nation',$res);
-            }
+		{
+			$nation = array_merge($nation, $res);
+			$this->assignRef('search_nation', $res);
+		}
 		
-        $lists['nation']=$nation;
-        $lists['nationpt']= JHtmlSelect::genericlist(	$nation,
+		$lists['nation'] = $nation;
+		$lists['nationpt'] = JHtmlSelect::genericlist(	$nation,
 																'filter_search_nation',
 																'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
 																'value',
@@ -252,30 +253,30 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		$lists['is_in_score'] = $myoptions;
         $lists['use_finally'] = $myoptions;
 
-		$this->assign('user',JFactory::getUser());
-		$this->assign('config',JFactory::getConfig());
-		$this->assignRef('lists',$lists);
-        $this->assignRef('divisions',$projectdivisions);
-        $this->assignRef('division',$division);
-		$this->assignRef('projectteam',$items);
-		$this->assignRef('pagination',$pagination);
-		$this->assign('request_url',$uri->toString());
-        $this->assignRef('project',$project);
-        $this->assignRef('project_art_id',$this->project_art_id);
-        $this->assignRef('lists',$lists);
+		$this->user = JFactory::getUser();
+		$this->config	= JFactory::getConfig();
+		$this->lists	= $lists;
+        $this->divisions	= $projectdivisions;
+        $this->division	= $division;
+		$this->projectteam	= $items;
+		$this->pagination	= $pagination;
+		$this->request_url	= $uri->toString();
+        $this->project	= $project;
+        $this->project_art_id	= $this->project_art_id;
+        $this->lists	= $lists;
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'   ),'');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectteam<br><pre>'.print_r($this->projectteam,true).'</pre>'   ),'');
         
-        if ( $this->getLayout() == 'editlist' || $this->getLayout() == 'editlist_3')
+		if ( $this->getLayout() == 'editlist' || $this->getLayout() == 'editlist_3')
 		{
-        $this->setLayout('editlist');
-        }
+			$this->setLayout('editlist');
+		}
         
-        if ( $this->getLayout() == 'changeteams' || $this->getLayout() == 'changeteams_3')
+		if ( $this->getLayout() == 'changeteams' || $this->getLayout() == 'changeteams_3')
 		{
-        $this->setLayout('changeteams');
-        }
+			$this->setLayout('changeteams');
+		}
 		
 	}
 
@@ -315,14 +316,14 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
             $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTPERSONS_TITLE');
         }
         
-        JToolBarHelper::custom('projectteams.setseasonid','purge.png','purge_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_SEASON_ID'),true);
-		JToolBarHelper::custom('projectteams.matchgroups','purge.png','purge_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_CHANGE_MATCH_GROUPS'),true);
+        JToolBarHelper::custom('projectteams.setseasonid', 'purge.png', 'purge_f2.png', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_SEASON_ID'), true);
+		JToolBarHelper::custom('projectteams.matchgroups', 'purge.png', 'purge_f2.png', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_CHANGE_MATCH_GROUPS'), true);
         JToolBarHelper::deleteList('', 'projectteams.delete');
 
 		JToolBarHelper::apply('projectteams.saveshort');
-        sportsmanagementHelper::ToolbarButton('changeteams','move',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_CHANGE_TEAMS'));
-		sportsmanagementHelper::ToolbarButton('editlist','upload',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_ASSIGN'));
-        JToolBarHelper::custom('projectteam.copy','copy','copy', JText::_('JTOOLBAR_DUPLICATE'), true);
+        sportsmanagementHelper::ToolbarButton('changeteams', 'move', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_CHANGE_TEAMS'));
+		sportsmanagementHelper::ToolbarButton('editlist', 'upload', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_ASSIGN'));
+        JToolBarHelper::custom('projectteam.copy', 'copy', 'copy', JText::_('JTOOLBAR_DUPLICATE'), true);
 		JToolbarHelper::checkin('projectteams.checkin');
         parent::addToolbar();  
 
