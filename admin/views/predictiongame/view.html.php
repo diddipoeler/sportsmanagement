@@ -27,7 +27,7 @@
 * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
 * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
 * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
 * Siehe die GNU General Public License für weitere Details.
 *
@@ -59,8 +59,9 @@ class sportsmanagementViewPredictionGame extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$uri = JFactory::getURI();
 		$user = JFactory::getUser();
 		$model = $this->getModel();
@@ -88,8 +89,8 @@ class sportsmanagementViewPredictionGame extends sportsmanagementView
 		$this->item = $item;
 		$this->script = $script;
 		
-        $this->form->setValue('user_ids',null,$pred_admins);
-        $this->form->setValue('project_ids',null,$pred_projects);
+        $this->form->setValue('user_ids', null, $pred_admins);
+        $this->form->setValue('project_ids', null, $pred_projects);
         
 		//$extended = sportsmanagementHelper::getExtended($item->extended, 'predictiongame');
 		//$this->assignRef( 'extended', $extended );
@@ -107,7 +108,8 @@ class sportsmanagementViewPredictionGame extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{
-		JRequest::setVar('hidemainmenu', true);
+		$jinput = JFactory::getApplication()->input;
+        $jinput->set('hidemainmenu', true);
         
         $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_PREDGAME_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_PREDGAME_NEW');
         $this->icon = 'pgame';

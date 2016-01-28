@@ -27,7 +27,7 @@
 * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
 * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
 * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
 * Siehe die GNU General Public License für weitere Details.
 *
@@ -59,12 +59,13 @@ class sportsmanagementViewProjects extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$uri = JFactory::getUri();
         $model = $this->getModel();
         $inputappend = '';
-        $this->state = $this->get('State'); 
+        $this->state = $this->get('State');
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
         
@@ -82,7 +83,7 @@ class sportsmanagementViewProjects extends sportsmanagementView
 		
         JTable::addIncludePath(JPATH_COMPONENT.DS.'tables');
         $table = JTable::getInstance('project', 'sportsmanagementTable');
-		$this->assignRef('table', $table);
+		$this->table	= $table;
         
         $total = $this->get('Total');
 		$pagination = $this->get('Pagination');
@@ -95,78 +96,78 @@ class sportsmanagementViewProjects extends sportsmanagementView
 
 
 		//build the html select list for userfields
-		$userfields[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_USERFIELD_FILTER'),'id','name');
-		$mdluserfields = JModelLegacy::getInstance('extrafields','sportsmanagementModel');
+		$userfields[] = JHtml::_('select.option', '0' ,JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_USERFIELD_FILTER'), 'id', 'name');
+		$mdluserfields = JModelLegacy::getInstance('extrafields', 'sportsmanagementModel');
 		$alluserfields = $mdluserfields->getExtraFields('project');
-		$userfields = array_merge($userfields,$alluserfields);
+		$userfields = array_merge($userfields, $alluserfields);
         
-        $this->assignRef('userfields',$alluserfields);
+        $this->userfields	= $alluserfields;
         
-		$lists['userfields'] = JHtml::_( 'select.genericList',
-									$userfields,
-									'filter_userfields',
-									'class="inputbox" onChange="this.form.submit();" style="width:120px"',
-									'id',
-									'name',
+		$lists['userfields'] = JHtml::_( 'select.genericList', 
+									$userfields, 
+									'filter_userfields', 
+									'class="inputbox" onChange="this.form.submit();" style="width:120px"', 
+									'id', 
+									'name', 
 									$this->state->get('filter.userfields'));
 		unset($userfields);
         
-        foreach ( $items as $row )
-        {
-            $row->user_field = $mdluserfields->getExtraFieldsProject($row->id);;
-        }
+		foreach ( $items as $row )
+		{
+			$row->user_field = $mdluserfields->getExtraFieldsProject($row->id);
+		}
         
         //build the html select list for leagues
-		$leagues[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER'),'id','name');
+		$leagues[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_LEAGUES_FILTER'), 'id', 'name');
 		$mdlLeagues = JModelLegacy::getInstance('Leagues','sportsmanagementModel');
 		$allLeagues = $mdlLeagues->getLeagues();
-		$leagues = array_merge($leagues,$allLeagues);
+		$leagues = array_merge($leagues, $allLeagues);
         
-        $this->assignRef('league',$allLeagues);
+        $this->league	= $allLeagues;
         
-		$lists['leagues'] = JHtml::_( 'select.genericList',
-									$leagues,
-									'filter_league',
-									'class="inputbox" onChange="this.form.submit();" style="width:120px"',
-									'id',
-									'name',
+		$lists['leagues'] = JHtml::_( 'select.genericList', 
+									$leagues, 
+									'filter_league', 
+									'class="inputbox" onChange="this.form.submit();" style="width:120px"', 
+									'id', 
+									'name', 
 									$this->state->get('filter.league'));
 		unset($leagues);
 		
 		
 		//build the html select list for sportstypes
-		$sportstypes[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),'id','name');
+		$sportstypes[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'), 'id', 'name');
 		$mdlSportsTypes = JModelLegacy::getInstance('SportsTypes', 'sportsmanagementModel');
 		$allSportstypes = $mdlSportsTypes->getSportsTypes();
-		$sportstypes = array_merge($sportstypes,$allSportstypes);
+		$sportstypes = array_merge($sportstypes, $allSportstypes);
         
-        $this->assignRef('sports_type',$allSportstypes);
+        $this->sports_type	= $allSportstypes;
         
         $lists['sportstype'] = $sportstypes;
-		$lists['sportstypes'] = JHtml::_( 'select.genericList',
-										$sportstypes,
-										'filter_sports_type',
-										'class="inputbox" onChange="this.form.submit();" style="width:120px"',
-										'id',
-										'name',
+		$lists['sportstypes'] = JHtml::_( 'select.genericList', 
+										$sportstypes, 
+										'filter_sports_type', 
+										'class="inputbox" onChange="this.form.submit();" style="width:120px"', 
+										'id', 
+										'name', 
 										$this->state->get('filter.sports_type'));
 		unset($sportstypes);
 		
 		
 		//build the html select list for seasons
-		$seasons[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'),'id','name');
+		$seasons[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'id', 'name');
         $mdlSeasons = JModelLegacy::getInstance('Seasons','sportsmanagementModel');
 		$allSeasons = $mdlSeasons->getSeasons();
-		$seasons = array_merge($seasons,$allSeasons);
+		$seasons = array_merge($seasons, $allSeasons);
         
-        $this->assignRef('season',$allSeasons);
+        $this->season	= $allSeasons;
         
-		$lists['seasons'] = JHtml::_( 'select.genericList',
-									$seasons,
-									'filter_season',
-									'class="inputbox" onChange="this.form.submit();" style="width:120px"',
-									'id',
-									'name',
+		$lists['seasons'] = JHtml::_( 'select.genericList', 
+									$seasons, 
+									'filter_season', 
+									'class="inputbox" onChange="this.form.submit();" style="width:120px"', 
+									'id', 
+									'name', 
 									$this->state->get('filter.season'));
 
 		unset($seasons);
@@ -174,68 +175,68 @@ class sportsmanagementViewProjects extends sportsmanagementView
         //build the html options for nation
 		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ( $res = JSMCountries::getCountryOptions() )
-        {
-            $nation = array_merge($nation,$res);
-            $this->assignRef('search_nation',$res);
-        }
+		{
+			$nation = array_merge($nation,$res);
+			$this->search_nation	= $res;
+		}
         
-        $lists['nation'] = $nation;
-        $lists['nation2']= JHtmlSelect::genericlist(	$nation,
-																'filter_search_nation',
-																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-																'value',
-																'text',
+		$lists['nation'] = $nation;
+		$lists['nation2'] = JHtmlSelect::genericlist(	$nation, 
+																'filter_search_nation', 
+																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 
+																'value', 
+																'text', 
 																$this->state->get('filter.search_nation'));
-        $myoptions = array();
-        $myoptions[] = JHtml::_( 'select.option', '', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_PROJECTTYPE_FILTER' ) );
+		$myoptions = array();
+		$myoptions[] = JHtml::_( 'select.option', '', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_PROJECTTYPE_FILTER' ) );
 		$myoptions[] = JHtml::_( 'select.option', 'SIMPLE_LEAGUE', JText::_( 'COM_SPORTSMANAGEMENT_SIMPLE_LEAGUE' ) );
 		$myoptions[] = JHtml::_( 'select.option', 'DIVISIONS_LEAGUE', JText::_( 'COM_SPORTSMANAGEMENT_DIVISIONS_LEAGUE' ) );
-        $myoptions[] = JHtml::_( 'select.option', 'TOURNAMENT_MODE', JText::_( 'COM_SPORTSMANAGEMENT_TOURNAMENT_MODE' ) );
-        $myoptions[] = JHtml::_( 'select.option', 'FRIENDLY_MATCHES', JText::_( 'COM_SPORTSMANAGEMENT_FRIENDLY_MATCHES' ) );
+		$myoptions[] = JHtml::_( 'select.option', 'TOURNAMENT_MODE', JText::_( 'COM_SPORTSMANAGEMENT_TOURNAMENT_MODE' ) );
+		$myoptions[] = JHtml::_( 'select.option', 'FRIENDLY_MATCHES', JText::_( 'COM_SPORTSMANAGEMENT_FRIENDLY_MATCHES' ) );
 		$lists['project_type'] = $myoptions;	
         
-        $lists['project_types'] = JHtml::_( 'select.genericList',
-									$myoptions,
-									'filter_project_type',
-									'class="inputbox" onChange="this.form.submit();" style="width:120px"',
-									'value',
+		$lists['project_types'] = JHtml::_( 'select.genericList', 
+									$myoptions, 
+									'filter_project_type', 
+									'class="inputbox" onChange="this.form.submit();" style="width:120px"', 
+									'value', 
 									'text',
 									$this->state->get('filter.project_type'));
-        unset($myoptions);
+		unset($myoptions);
         
-        $myoptions[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
-        $mdlagegroup = JModelLegacy::getInstance("agegroups", "sportsmanagementModel");
+		$myoptions[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
+		$mdlagegroup = JModelLegacy::getInstance('agegroups', 'sportsmanagementModel');
         if ( $res = $mdlagegroup->getAgeGroups() )
-        {
-            $myoptions = array_merge($myoptions,$res);
-            $this->assignRef('search_agegroup',$res);
-        }
-        $lists['agegroup'] = $myoptions;
-        $lists['agegroup2']= JHtmlSelect::genericlist(	$myoptions,
+		{
+			$myoptions = array_merge($myoptions,$res);
+			$this->assignRef('search_agegroup',$res);
+		}
+		$lists['agegroup'] = $myoptions;
+		$lists['agegroup2']= JHtmlSelect::genericlist(	$myoptions,
 																'filter_search_agegroup',
 																'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-																'value',
-																'text',
+																'value', 
+																'text', 
 																$this->state->get('filter.search_agegroup'));
-        unset($myoptions);
+		unset($myoptions);
         
-        unset($nation);
-        $nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
-        $mdlassociation = JModelLegacy::getInstance("jlextassociations", "sportsmanagementModel");
-        if ( $res = $mdlassociation->getAssociations() )
-        {
-            $nation = array_merge($nation,$res);
-            $this->assignRef('search_association',$res);
-        }
+		unset($nation);
+		$nation[] = JHtml::_('select.option', '0' ,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
+		$mdlassociation = JModelLegacy::getInstance('jlextassociations', 'sportsmanagementModel');
+		if ( $res = $mdlassociation->getAssociations() )
+		{
+            $nation = array_merge($nation, $res);
+            $this->search_association	= $res;
+		}
         
-        $lists['association'] = array();
-        foreach( $res as $row)
-        {
-            if (array_key_exists($row->country, $lists['association'] )) 
-            {
-            $lists['association'][$row->country][] = $row;
+		$lists['association'] = array();
+		foreach( $res as $row)
+		{
+			if (array_key_exists($row->country, $lists['association'] )) 
+			{
+			$lists['association'][$row->country][] = $row;
             //echo "Das Element 'erstes' ist in dem Array vorhanden";
-            }
+			}
             else
             {
             $lists['association'][$row->country][] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
@@ -249,26 +250,26 @@ class sportsmanagementViewProjects extends sportsmanagementView
         //$lists['association'] = $nation;
         
         
-        $lists['association2']= JHtmlSelect::genericlist(	$nation,
-																'filter_search_association',
-																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-																'value',
-																'text',
+		$lists['association2']= JHtmlSelect::genericlist(	$nation, 
+																'filter_search_association', 
+																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 
+																'value', 
+																'text', 
 																$this->state->get('filter.search_association'));
         
         
-        $mdlProjectDivisions = JModelLegacy::getInstance("divisions", "sportsmanagementModel");
-        $mdlRounds = JModelLegacy::getInstance("Rounds", "sportsmanagementModel");
+		$mdlProjectDivisions = JModelLegacy::getInstance('divisions', 'sportsmanagementModel');
+		$mdlRounds = JModelLegacy::getInstance('Rounds', 'sportsmanagementModel');
       
 		$user = JFactory::getUser();
-        $this->assignRef('modeldivision',$mdlProjectDivisions);
-        $this->assignRef('modelround',$mdlRounds);
-		$this->assignRef('user',$user);
-		$this->assignRef('lists',$lists);
-		$this->assignRef('items',$items);
-		$this->assignRef('pagination',$pagination);
+        $this-> modeldivision	= $mdlProjectDivisions;
+        $this->modelround	= $mdlRounds;
+		$this->user	= $user;
+		$this->lists	= $lists;
+		$this->items	= $items;
+		$this->pagination	= $pagination;
 		$url = $uri->toString();
-		$this->assignRef('request_url',$url);
+		$this->request_url	= $url;
         
 
 

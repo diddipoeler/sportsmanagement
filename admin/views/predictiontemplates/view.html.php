@@ -27,7 +27,7 @@
 * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
 * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
 * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
 * Siehe die GNU General Public License für weitere Details.
 *
@@ -64,30 +64,30 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 	public function init ()
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+		$app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
     // Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
-    $model = $this->getModel();
-    $starttime = microtime(); 
+		$model = $this->getModel();
+		$starttime = microtime(); 
     
-    $this->state = $this->get('State'); 
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
+		$this->state = $this->get('State'); 
+		$this->sortDirection = $this->state->get('list.direction');
+		$this->sortColumn = $this->state->get('list.ordering');
         
 		//$this->prediction_id	= $app->getUserState( "$option.prediction_id", '0' );
         
-        $this->prediction_id = $this->state->get('filter.prediction_id');
-        if ( isset($this->prediction_id) )
-        {
-        }
-        else
-        {
+		$this->prediction_id = $this->state->get('filter.prediction_id');
+		if ( isset($this->prediction_id) )
+		{
+		}
+		else
+		{
             //$this->prediction_id = $app->getUserState( "$option.predid", '0' );
-            $this->prediction_id = $jinput->post->get('filter_prediction_id', 0);
-        }   
+			$this->prediction_id = $jinput->post->get('filter_prediction_id', 0);
+		}   
          
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prediction_id -> '.$this->prediction_id.''),'Notice');
         
@@ -100,35 +100,35 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 		
 		
         //$this->prediction_id	= $app->getUserStateFromRequest( $option .'.'.$model->_identifier, 'prediction_id', '0' );
-        $mdlPredictionGame = JModelLegacy::getInstance("PredictionGame", "sportsmanagementModel");
-        $mdlPredictionGames = JModelLegacy::getInstance("PredictionGames", "sportsmanagementModel");
+		$mdlPredictionGame = JModelLegacy::getInstance('PredictionGame', 'sportsmanagementModel');
+		$mdlPredictionGames = JModelLegacy::getInstance('PredictionGames', 'sportsmanagementModel');
         //$mdlPredictionTemplates = JModelLegacy::getInstance("PredictionTemplates", "sportsmanagementModel");
         
         
         
-        if ( isset($this->prediction_id) )
-        {
-        $checkTemplates = $model->checklist($this->prediction_id);    
-        $predictiongame	= $mdlPredictionGame->getPredictionGame( $this->prediction_id );
-        }
-        else
-        {
+		if ( isset($this->prediction_id) )
+		{
+		$checkTemplates = $model->checklist($this->prediction_id);    
+		$predictiongame	= $mdlPredictionGame->getPredictionGame( $this->prediction_id );
+		}
+		else
+		{
             //$this->prediction_id = $app->getUserState( "$option.predid", '0' );
-            $this->prediction_id = $jinput->post->get('filter_prediction_id', 0);
-        }
+			$this->prediction_id = $jinput->post->get('filter_prediction_id', 0);
+		}
         
-        $items = $this->get('Items');
+		$items = $this->get('Items');
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
+		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+		{
+			$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+		}
         
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
         $table = JTable::getInstance('predictiontemplate', 'sportsmanagementTable');
-		$this->assignRef('table', $table);
+		$this->table	= $table;
         
 //echo '<pre>' . print_r( $predictiongame, true ) . '</pre>';
      
@@ -138,19 +138,19 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 		//build the html select list for prediction games
 		$predictions[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME' ) . ' -', 'value', 'text' );
 		if ( $res = $mdlPredictionGames->getPredictionGames() ) 
-        { 
-            $predictions = array_merge( $predictions, $res ); 
-            $this->assignRef('prediction_ids',$res);
-            }
+		{ 
+			$predictions = array_merge( $predictions, $res ); 
+			$this->prediction_ids	= $res;
+		}
             //$this->prediction_id = 0;
 
           
-		$lists['predictions'] = JHtml::_(	'select.genericlist',
-											$predictions,
-											'filter_prediction_id',
-											'class="inputbox" onChange="this.form.submit();" ',
-											'value',
-											'text',
+		$lists['predictions'] = JHtml::_(	'select.genericlist', 
+											$predictions, 
+											'filter_prediction_id', 
+											'class="inputbox" onChange="this.form.submit();" ', 
+											'value', 
+											'text', 
 											$this->state->get('filter.prediction_id')
 										);
 
@@ -158,13 +158,13 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 		unset( $res );
 
         
-        $this->assign('user',JFactory::getUser() );
-		$this->assignRef('pred_id',$this->prediction_id );
-		$this->assignRef('lists',$lists );
-		$this->assignRef('items',$items );
-		$this->assignRef('pagination',$pagination );
-		$this->assignRef('predictiongame',$predictiongame );
-		$this->assign('request_url',$uri->toString());
+        $this->user	= JFactory::getUser();
+		$this->pred_id	= $this->prediction_id;
+		$this->lists	= $lists;
+		$this->items	= $items;
+		$this->pagination	= $pagination;
+		$this->predictiongame	= $predictiongame;
+		$this->request_url	= $uri->toString();
         
         
         
@@ -175,21 +175,15 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{
-	   //// Get a refrence of the page instance in joomla
-//        $document = JFactory::getDocument();
-//        $option = JRequest::getCmd('option');
-//        
-        $this->title = JText::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATES');
-$this->icon = 'templates';
-//        
-//        JToolBarHelper::divider();
-//		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//        JToolBarHelper::preferences($option);
-JToolBarHelper::deleteList('', 'predictiontemplates.delete');
-JToolbarHelper::checkin('predictiontemplates.checkin');
-parent::addToolbar();
+	   
+		$this->title = JText::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATES');
+		$this->icon = 'templates';
+
+		JToolBarHelper::deleteList('', 'predictiontemplates.delete');
+		JToolbarHelper::checkin('predictiontemplates.checkin');
+		parent::addToolbar();
        
-    }   
+	}   
 
 }
 ?>

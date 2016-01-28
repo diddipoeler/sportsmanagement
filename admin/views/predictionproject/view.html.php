@@ -27,7 +27,7 @@
 * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
 * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
 * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
 * Siehe die GNU General Public License für weitere Details.
 *
@@ -63,10 +63,10 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 	public function init ()
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+		$app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$uri 	= JFactory::getURI();
 		$user 	= JFactory::getUser();
 		$model	= $this->getModel();
@@ -110,37 +110,17 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 		// Assign the Data
 		$this->form = $form;
 		$this->item = $item;
-        $this->item->name = '';
+		$this->item->name = '';
 		$this->script = $script;
 		
-        $app->setUserState( "$option.pid", $this->item->project_id );
+		$app->setUserState( "$option.pid", $this->item->project_id );
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__  .' item<br><pre>'.print_r($this->item,true).'</pre>'),'');
-        
-        //$this->form->setValue('user_ids',null,$pred_admins);
-        //$this->form->setValue('project_ids',null,$pred_projects);
-        
-		//$extended = sportsmanagementHelper::getExtended($item->extended, 'predictiongame');
-		//$this->assignRef( 'extended', $extended );
-		//$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
- 
-		// Set the toolbar
-		//$this->addToolBar();
- 
-		// Display the template
-		//parent::display($tpl);
+		
  
 		// Set the document
 		$this->setDocument();
-        
-//        // layout edit
-//        if ( $this->getLayout() == 'edit' || $this->getLayout() == 'edit_3' )
-//		{
-//		$this->setLayout('edit'); 
-//        }
-        
     
-	
 	}
 
 //	function _displayForm($tpl)
@@ -352,7 +332,5 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
 	}
     
-
-
 }
 ?>
