@@ -27,7 +27,7 @@
 * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
 * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
 * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
 * Siehe die GNU General Public License für weitere Details.
 *
@@ -64,7 +64,7 @@ class sportsmanagementViewpredictionmember extends sportsmanagementView
 	 */
 	public function init ()
 	{
-	   $app = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$document = JFactory::getDocument();
 		$option = JRequest::getCmd('option');
         
@@ -96,14 +96,14 @@ class sportsmanagementViewpredictionmember extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{
-  		
-        
-		JRequest::setVar('hidemainmenu', true);
-        
+		
+		$jinput = JFactory::getApplication()->input;
+        $jinput->set('hidemainmenu', true);
+
         $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_ADD_NEW');
         $this->icon = 'pmember';
-  
-        parent::addToolbar();  	
+
+		parent::addToolbar();  	
 		
 	}
     

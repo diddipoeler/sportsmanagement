@@ -27,7 +27,7 @@
 * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
 * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
 * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
 * Siehe die GNU General Public License für weitere Details.
 *
@@ -63,22 +63,22 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
 	{
 	   
        // Reference global application object
-        $app = JFactory::getApplication();
+		$app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $this->state = $this->get('State');
-       $tpl = '';
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+		$this->state = $this->get('State');
+		$tpl = '';
        
-       $this->prediction_id = $this->state->get('filter.prediction_id');
+		$this->prediction_id = $this->state->get('filter.prediction_id');
        
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
 
-    if ( $this->getLayout() == 'default' || $this->getLayout() == 'default_3' )
+	if ( $this->getLayout() == 'default' || $this->getLayout() == 'default_3' )
 		{
 			//$app->setUserState( "$option.prediction_id", $this->state->get('filter.prediction_id') );
-            $this->_display( $tpl );
+			$this->_display( $tpl );
 			return;
 		}
 		
@@ -101,117 +101,103 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
   function _editlist( $tpl = null )
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+		$app = JFactory::getApplication();
+		// JInput object
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
     //$db					= sportsmanagementHelper::getDBConnection();
 		$uri = JFactory::getURI();
-		//$document =& JFactory::getDocument();
-		//$model				=& $this->getModel();
+		
 		// Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
     
-     $this->state = $this->get('State'); 
+		$this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
-        
-    //$optiontext = strtoupper(JRequest::getCmd('option').'_');
-    //$this->assignRef( 'optiontext',			$optiontext );
-    
-//     $baseurl    = JURI::root();
-// 		$document->addScript($baseurl.'administrator/components/com_joomleague/assets/js/autocompleter/1_4/Autocompleter.js');
-// 		$document->addScript($baseurl.'administrator/components/com_joomleague/assets/js/autocompleter/1_4/Autocompleter.Request.js');
-// 		$document->addScript($baseurl.'administrator/components/com_joomleague/assets/js/autocompleter/1_4/Observer.js');
-// 		$document->addScript($baseurl.'administrator/components/com_joomleague/assets/js/autocompleter/1_4/quickaddteam.js');
-// 		$document->addStyleSheet($baseurl.'administrator/components/com_joomleague/assets/css/Autocompleter.css');
-		
-
-    		
+        		
 		$prediction_id		= (int) $app->getUserState( $option . '.prediction_id' );
-		$prediction_name = $this->getModel()->getPredictionProjectName($prediction_id);
-		$this->assignRef( 'prediction_name',			$prediction_name );
+		$prediction_name	= $this->getModel()->getPredictionProjectName($prediction_id);
+		$this->prediction_name	= $prediction_name;
 		
-    $res_prediction_members = $this->getModel()->getPredictionMembers($prediction_id);
+	$res_prediction_members = $this->getModel()->getPredictionMembers($prediction_id);
     
-    if ( $res_prediction_members )
-    {
-    $lists['prediction_members']=JHtml::_(	'select.genericlist',
-										$res_prediction_members,
-										'prediction_members[]',
-										'class="inputbox" multiple="true" onchange="" size="15"',
-										'value',
+	if ( $res_prediction_members )
+		{
+			$lists['prediction_members'] = JHtml::_(	'select.genericlist', 
+										$res_prediction_members, 
+										'prediction_members[]', 
+										'class="inputbox" multiple="true" onchange="" size="15"', 
+										'value',  
 										'text');
-    }
-    else
-    {
-    $lists['prediction_members'] = '<select name="prediction_members[]" id="prediction_members" style="" class="inputbox" multiple="true" size="15"></select>';
-    }
+	}
+	else
+		{
+			$lists['prediction_members'] = '<select name="prediction_members[]" id="prediction_members" style="" class="inputbox" multiple="true" size="15"></select>';
+		}
     
     $res_joomla_members = $this->getModel()->getJLUsers($prediction_id);
     if ( $res_joomla_members )
     {
-    $lists['members']=JHtml::_(	'select.genericlist',
-										$res_joomla_members,
-										'members[]',
-										'class="inputbox" multiple="true" onchange="" size="15"',
-										'value',
+		$lists['members'] = JHtml::_(	'select.genericlist', 
+										$res_joomla_members, 
+										'members[]', 
+										'class="inputbox" multiple="true" onchange="" size="15"', 
+										'value', 
 										'text');
     }
                     																
-    $this->assignRef( 'prediction_id',			$prediction_id );
-    $this->assignRef( 'lists',			$lists );
-    $this->assign('request_url',$uri->toString());
+	$this->prediction_id	= $prediction_id ;
+	$this->lists	= $lists;
+	$this->request_url	= $uri->toString();
     
 		
         
 	}	
 
 	
-    
-    
     /**
      * sportsmanagementViewPredictionMembers::_display()
      * 
      * @param mixed $tpl
      * @return void
      */
-    function _display( $tpl = null )
+	function _display( $tpl = null )
 	{
 // Reference global application object
-        $app = JFactory::getApplication();
+		$app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$document = JFactory::getDocument();
-    $model	= $this->getModel();
+		$model	= $this->getModel();
     	$uri = JFactory::getURI();
         
-         $this->state = $this->get('State'); 
+		$this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
 
-    $items = $this->get('Items');
+		$items = $this->get('Items');
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
-        $table = JTable::getInstance('predictionmember', 'sportsmanagementTable');
-		$this->assignRef('table', $table);
+		$table = JTable::getInstance('predictionmember', 'sportsmanagementTable');
+		$this->table	= $table;
 
         //build the html select list for prediction games
-        $mdlPredGames = JModelLegacy::getInstance("PredictionGames", "sportsmanagementModel");
+        $mdlPredGames = JModelLegacy::getInstance('PredictionGames', 'sportsmanagementModel');
 		$predictions[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME' ), 'value', 'text' );
 		if ( $res = $mdlPredGames->getPredictionGames() ) 
-        { 
-            $predictions = array_merge( $predictions, $res ); 
-            $this->assignRef('prediction_ids',$res);
-            }
-		$lists['predictions'] = JHtml::_(	'select.genericlist',
-											$predictions,
-											'filter_prediction_id',
-											'class="inputbox" onChange="this.form.submit();" ',
-											'value',
-											'text',
+			{ 
+				$predictions = array_merge( $predictions, $res ); 
+				$this->prediction_ids	= $res;
+			}
+			
+		$lists['predictions'] = JHtml::_(	'select.genericlist', 
+											$predictions, 
+											'filter_prediction_id', 
+											'class="inputbox" onChange="this.form.submit();" ', 
+											'value', 
+											'text', 
 											$this->state->get('filter.prediction_id')
 										);
 		unset( $res );
@@ -219,16 +205,13 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
        //$this->prediction_id = $this->state->get('filter.prediction_id');
 
         
-        $this->assign('user',JFactory::getUser());
-		$this->assignRef('lists',$lists);
-        $this->assignRef('pagination',$pagination );
-        $this->assignRef('items',$items );
-        $this->assign('request_url',$uri->toString());
+		$this->user	= JFactory::getUser();
+		$this->lists	= $lists;
+		$this->pagination	= $pagination;
+		$this->items	= $items;
+		$this->request_url	= $uri->toString();
         
         
-        
-        //$this->addToolbar();
-//		parent::display( $tpl );
 	}
     
     /**
@@ -238,34 +221,26 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-	  // $app = JFactory::getApplication();
-//       $option = JRequest::getCmd('option');
-//	// Get a refrence of the page instance in joomla
-//        $document = JFactory::getDocument();
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
-//		// Set toolbar items for the page
-//		
-        $this->title = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_TITLE' );
+
+		$this->title = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_TITLE' );
         
-        JToolBarHelper::custom('predictionmembers.reminder', 'send.png', 'send_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_SEND_REMINDER' ), true );
+		JToolBarHelper::custom('predictionmembers.reminder', 'send.png', 'send_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_SEND_REMINDER' ), true );
 		JToolBarHelper::divider();
         
-        if ( $this->prediction_id )
-        {
+		if ( $this->prediction_id )
+			{
           //JToolBarHelper::custom('predictionmembers.editlist','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_BUTTON_ASSIGN'),false);
           
-          sportsmanagementHelper::ToolbarButton('editlist','new',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_BUTTON_ASSIGN'));
+				sportsmanagementHelper::ToolbarButton('editlist', 'new', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_BUTTON_ASSIGN') );
           
-          JToolBarHelper::publishList('predictionmembers.publish', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVE' ) );
-		  JToolBarHelper::unpublishList('predictionmembers.unpublish', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_REJECT' ) );
-          JToolBarHelper::deleteList( '','predictionmembers.remove' );  
-        }
-		JToolbarHelper::checkin('predictionmembers.checkin');
+				JToolBarHelper::publishList('predictionmembers.publish', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVE' ) );
+				JToolBarHelper::unpublishList('predictionmembers.unpublish', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_REJECT' ) );
+				JToolBarHelper::deleteList( '','predictionmembers.remove' );  
+			}
+				JToolbarHelper::checkin('predictionmembers.checkin');
 
         
-        parent::addToolbar();
+		parent::addToolbar();
         
 		
 	}

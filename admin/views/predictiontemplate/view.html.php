@@ -27,7 +27,7 @@
 * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
 * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
 * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
 * Siehe die GNU General Public License für weitere Details.
 *
@@ -64,40 +64,40 @@ class sportsmanagementViewPredictionTemplate extends sportsmanagementView
 	public function init ()
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+		$app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$uri = JFactory::getURI();
 		$user = JFactory::getUser();
 		$app = JFactory::getApplication();
 		$model = $this->getModel();
 		$lists = array();
-        $starttime = microtime(); 
-        $item = $this->get('Item');
-        $this->item = $item;
+		$starttime = microtime(); 
+		$item = $this->get('Item');
+		$this->item = $item;
         
-        $templatepath = JPATH_COMPONENT_SITE.DS.'settings';
-        $xmlfile = $templatepath.DS.'default'.DS.$item->template.'.xml';
+		$templatepath = JPATH_COMPONENT_SITE.DS.'settings';
+		$xmlfile = $templatepath.DS.'default'.DS.$item->template.'.xml';
         
         //$app->enqueueMessage(JText::_('sportsmanagementViewTemplate xmlfile<br><pre>'.print_r($xmlfile,true).'</pre>'),'Notice');
         
-        $form = JForm::getInstance($item->template, $xmlfile,array('control'=> 'params'));
+		$form = JForm::getInstance($item->template, $xmlfile,array('control'=> 'params'));
 		//$form->bind($jRegistry);
-        $form->bind($item->params);
+		$form->bind($item->params);
         // Assign the Data
-	$this->form = $form;
+		$this->form = $form;
         
-        $script = $this->get('Script');
-        $this->script = $script;
+		$script = $this->get('Script');
+		$this->script = $script;
         
         //$this->prediction_id = $jinput->get('predid', 0, '');
         //$this->prediction_id = $jinput->request->get('predid', 0, 'INT');
-        $this->prediction_id = $app->getUserState( "$option.prediction_id", '0' );
+		$this->prediction_id = $app->getUserState( "$option.prediction_id", '0' );
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prediction_id<br><pre>'.print_r($this->prediction_id,true).'</pre>'),'Notice');
         //$this->prediction_id = $app->getUserState( "$option.predid", '0' );
 //        $predictionGame = $model->getPredictionGame( $this->prediction_id );
-        $this->predictionGame = $model->getPredictionGame( $this->prediction_id );
+		$this->predictionGame = $model->getPredictionGame( $this->prediction_id );
 
 	}
 
@@ -110,8 +110,9 @@ class sportsmanagementViewPredictionTemplate extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-        
-        JRequest::setVar('hidemainmenu', true);
+		
+        J$jinput = JFactory::getApplication()->input;
+        $jinput->set('hidemainmenu', true);
         $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATE_NEW');
         $this->icon = 'predtemplate';
         

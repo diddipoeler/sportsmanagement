@@ -27,7 +27,7 @@
 * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
 * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
 * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
 * Siehe die GNU General Public License für weitere Details.
 *
@@ -66,14 +66,15 @@ class sportsmanagementViewProject extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$uri = JFactory::getURI();
 		$user = JFactory::getUser();
-        $tpl = '';
-        $starttime = microtime(); 
+		$tpl = '';
+		$starttime = microtime(); 
         
-        if ( $this->getLayout() == 'panel' || $this->getLayout() == 'panel_3' )
+		if ( $this->getLayout() == 'panel' || $this->getLayout() == 'panel_3' )
 		{
 			$this->_displayPanel($tpl);
 			return;
@@ -107,10 +108,10 @@ class sportsmanagementViewProject extends sportsmanagementView
         $this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);
         
         $extended = sportsmanagementHelper::getExtended($this->item->extended, 'project');		
-		$this->assignRef('extended', $extended );
+		$this->extended	= $extended;
         
         $extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'project');		
-		$this->assignRef('extendeduser', $extendeduser );
+		$this->extendeduser	= $extendeduser;
         
                
         //$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
@@ -125,19 +126,19 @@ class sportsmanagementViewProject extends sportsmanagementView
             $user->id ;
         }
         
-        $this->assign('checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
-        if ( $this->checkextrafields )
-        {
-            if ( !$isNew )
-            {
-            $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id);
+        $this->checkextrafields	= sportsmanagementHelper::checkUserExtraFields();
+		if ( $this->checkextrafields )
+		{
+			if ( !$isNew )
+			{
+				$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id);
             }
             //$app->enqueueMessage(JText::_('view -> '.'<pre>'.print_r($lists['ext_fields'],true).'</pre>' ),'');
         }
         
         $this->form->setValue('fav_team', null, explode(',',$this->item->fav_team) );
         
-        $this->assignRef('lists',$lists);
+        $this->lists	= $lists;
  
 
 	}
@@ -152,38 +153,37 @@ class sportsmanagementViewProject extends sportsmanagementView
 	 */
 	function _displayPanel($tpl)
 	{
-	$option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
+	$jinput = $app->input;
+	$option = $jinput->getCmd('option');
 	$uri = JFactory::getURI();
 	$user = JFactory::getUser();
     $starttime = microtime(); 
            
 	$this->item = $this->get('Item');
     
-    if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
+	if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+		{
+			$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+		}
     
-    
-       
 	$iProjectDivisionsCount = 0;
 	$mdlProjectDivisions = JModelLegacy::getInstance("divisions", "sportsmanagementModel");
 	$iProjectDivisionsCount = $mdlProjectDivisions->getProjectDivisionsCount($this->item->id);
 	
-    if ( $this->item->project_art_id != 3 )
-    {
-	$iProjectPositionsCount = 0;
-    $mdlProjectPositions = JModelLegacy::getInstance("Projectpositions", "sportsmanagementModel");
+	if ( $this->item->project_art_id != 3 )
+	{
+		$iProjectPositionsCount = 0;
+		$mdlProjectPositions = JModelLegacy::getInstance('Projectpositions', 'sportsmanagementModel');
 /**
  *     sind im projekt keine positionen vorhanden, dann
  *     bitte einmal die standard positionen, torwart, abwehr,
  *     mittelfeld und stürmer einfügen
  */
     if ( !$iProjectPositionsCount )
-    {
-    $mdlProjectPositions->insertStandardProjectPositions($this->item->id,$this->item->sports_type_id);    
-    }
+	{
+		$mdlProjectPositions->insertStandardProjectPositions($this->item->id,$this->item->sports_type_id);    
+	}
 	
 	$iProjectPositionsCount = $mdlProjectPositions->getProjectPositionsCount($this->item->id);
     
@@ -192,23 +192,23 @@ class sportsmanagementViewProject extends sportsmanagementView
 	}
     	
 	$iProjectRefereesCount = 0;
-	$mdlProjectReferees = JModelLegacy::getInstance("Projectreferees", "sportsmanagementModel");
+	$mdlProjectReferees = JModelLegacy::getInstance('Projectreferees', 'sportsmanagementModel');
 	$iProjectRefereesCount = $mdlProjectReferees->getProjectRefereesCount($this->item->id);
 		
 	$iProjectTeamsCount = 0;
-	$mdlProjecteams = JModelLegacy::getInstance("Projectteams", "sportsmanagementModel");
+	$mdlProjecteams = JModelLegacy::getInstance('Projectteams', 'sportsmanagementModel');
 	$iProjectTeamsCount = $mdlProjecteams->getProjectTeamsCount($this->item->id);
 		
 	$iMatchDaysCount = 0;
 	$mdlRounds = JModelLegacy::getInstance("Rounds", "sportsmanagementModel");
 	$iMatchDaysCount = $mdlRounds->getRoundsCount($this->item->id);
 		
-	$this->assignRef('project',$this->item);
-	$this->assignRef('count_projectdivisions',$iProjectDivisionsCount);
-	$this->assignRef('count_projectpositions',$iProjectPositionsCount);
-	$this->assignRef('count_projectreferees', $iProjectRefereesCount);
-	$this->assignRef('count_projectteams', $iProjectTeamsCount );
-	$this->assignRef('count_matchdays', $iMatchDaysCount);  
+	$this->project	$this->item;
+	$this->count_projectdivisions	= $iProjectDivisionsCount;
+	$this->count_projectpositions	= $iProjectPositionsCount;
+	$this->count_projectreferees	= $iProjectRefereesCount;
+	$this->count_projectteams	= $iProjectTeamsCount;
+	$this->count_matchdays	= $iMatchDaysCount;  
     
     // store the variable that we would like to keep for next time
     // function syntax is setUserState( $key, $value );
@@ -249,8 +249,9 @@ class sportsmanagementViewProject extends sportsmanagementView
 	protected function addToolbar()
 	{
 	
-	   $option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
     
     $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_ADD_NEW');
         $this->icon = 'project';

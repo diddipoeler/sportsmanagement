@@ -27,7 +27,7 @@
 * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
 * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
 * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
 * Siehe die GNU General Public License für weitere Details.
 *
@@ -57,14 +57,15 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$uri = JFactory::getURI();
-        $model	= $this->getModel();
+		$model	= $this->getModel();
         
-        $this->state = $this->get('State'); 
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
+		$this->state = $this->get('State'); 
+		$this->sortDirection = $this->state->get('list.direction');
+		$this->sortColumn = $this->state->get('list.ordering');
 
 
 
@@ -73,39 +74,39 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 		$pagination = $this->get('Pagination');
         
         $table = JTable::getInstance('projectreferee', 'sportsmanagementTable');
-		$this->assignRef('table', $table);
+		$this->table	= $table;
         
-        $this->_persontype = JRequest::getVar('persontype');
+        $this->_persontype = $jinput->get('persontype');
         if ( empty($this->_persontype) )
         {
             $this->_persontype	= $app->getUserState( "$option.persontype", '0' );
         }
         $this->project_id	= $app->getUserState( "$option.pid", '0' );
-        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
 	    $project = $mdlProject->getProject($this->project_id);
         
         //build the html options for position
-		$position_id[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REFEREE_FUNCTION'));
-        $mdlPositions = JModelLegacy::getInstance("Positions", "sportsmanagementModel");
+		$position_id[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REFEREE_FUNCTION'));
+        $mdlPositions = JModelLegacy::getInstance('Positions', 'sportsmanagementModel');
 	    //$project_ref_positions = $mdlPositions->getRefereePositions($this->project_id);
-	    $project_ref_positions = $mdlPositions->getProjectPositions($this->project_id,$this->_persontype);
+	    $project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, $this->_persontype);
         if ( $project_ref_positions )
-        {
-        $position_id = array_merge($position_id,$project_ref_positions);
-        $this->assignRef('project_position_id',$project_ref_positions);
-        }
+		{
+		$position_id = array_merge($position_id,$project_ref_positions);
+		$this->project_position_id	= $project_ref_positions;
+		}
 		$lists['project_position_id'] = $position_id;
 		unset($position_id);
 
 
 
-		$this->assign('user',JFactory::getUser());
-		$this->assign('config',JFactory::getConfig());
-		$this->assignRef('lists',$lists);
-		$this->assignRef('items',$items);
-		$this->assignRef('pagination',$pagination);
-		$this->assign('request_url',$uri->toString());
-        $this->assignRef('project',$project);
+		$this->user	= JFactory::getUser();
+		$this->config	= JFactory::getConfig();
+		$this->lists	= $lists;
+		$this->items	= $items;
+		$this->pagination	= $pagination;
+		$this->request_url	= $uri->toString();
+        $this->project	= $project;
         
        
 	
@@ -119,20 +120,16 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
 	protected function addToolbar()
 	{
 	
-	$app	= JFactory::getApplication();
-		$option = JRequest::getCmd('option');
-	 $app->setUserState( "$option.persontype", $this->_persontype );	
-        //// Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
-        
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+		$app->setUserState( "$option.persontype", $this->_persontype );
+    
         $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE');
 		
-		JToolBarHelper::apply('projectreferees.saveshort',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_APPLY'));
+		JToolBarHelper::apply('projectreferees.saveshort', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_APPLY'));
 		//JToolBarHelper::custom('projectreferee.assign','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_ASSIGN'),false);
-        sportsmanagementHelper::ToolbarButton('assignplayers','upload',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_ASSIGN'),'persons',2);
+        sportsmanagementHelper::ToolbarButton('assignplayers', 'upload', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_ASSIGN'),'persons',2);
 		//JToolBarHelper::custom('projectreferees.remove','cancel.png','cancel_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_UNASSIGN'),false);
         JToolBarHelper::deleteList('', 'projectreferees.delete');
         JToolbarHelper::checkin('projectreferees.checkin');

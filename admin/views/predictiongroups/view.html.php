@@ -27,7 +27,7 @@
 * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
 * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
 * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
 * Siehe die GNU General Public License für weitere Details.
 *
@@ -59,14 +59,15 @@ class sportsmanagementViewpredictiongroups extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
-        $model	= $this->getModel();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+		$model	= $this->getModel();
 		$uri = JFactory::getURI();
         
-         $this->state = $this->get('State'); 
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
+		$this->state = $this->get('State'); 
+		$this->sortDirection = $this->state->get('list.direction');
+		$this->sortColumn = $this->state->get('list.ordering');
 
 
 
@@ -74,21 +75,19 @@ class sportsmanagementViewpredictiongroups extends sportsmanagementView
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
-        $table = JTable::getInstance('predictiongroup', 'sportsmanagementTable');
-		$this->assignRef('table', $table);
+		$table = JTable::getInstance('predictiongroup', 'sportsmanagementTable');
+		$this->table	= $table;
         
         if ( !$items )
         {
         $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_GROUPS'),'Error');    
         }
 
-
-
-		$this->assign('user',JFactory::getUser());
-		$this->assignRef('lists',$lists);
-		$this->assignRef('items',$items);
-		$this->assignRef('pagination',$pagination);
-		$this->assign('request_url',$uri->toString());
+		$this->user	= JFactory::getUser();
+		$this->lists	= $lists;
+		$this->items	= $items;
+		$this->pagination	= $pagination;
+		$this->request_url	= $uri->toString();
         
        		
 	}
@@ -108,19 +107,16 @@ class sportsmanagementViewpredictiongroups extends sportsmanagementView
 
         // Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONGROUPS_TITLE');
-$this->icon = 'predgroups';
-		
-        
+		$this->icon = 'predgroups';
+
 		JToolBarHelper::addNew('predictiongroup.add');
 		JToolBarHelper::editList('predictiongroup.edit');
 		JToolBarHelper::custom('predictiongroup.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('predictiongroup.export',JText::_('JTOOLBAR_EXPORT'));
 		JToolBarHelper::deleteList('','predictiongroups.delete', 'JTOOLBAR_DELETE');
-        JToolbarHelper::checkin('predictiongroups.checkin');
-	parent::addToolbar();  
-        
-        
-		
+		JToolbarHelper::checkin('predictiongroups.checkin');
+	parent::addToolbar();
+	
 	}
 }
 ?>

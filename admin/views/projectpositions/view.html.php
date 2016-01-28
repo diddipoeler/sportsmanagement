@@ -27,7 +27,7 @@
 * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
 * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
 * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
 * Siehe die GNU General Public License für weitere Details.
 *
@@ -63,16 +63,17 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$uri = JFactory::getURI();
         $model	= $this->getModel();
         $starttime = microtime(); 
-        $tpl = '';
+		$tpl = '';
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
         
-        if ( $this->getLayout() == 'editlist' || $this->getLayout() == 'editlist_3' )
+		if ( $this->getLayout() == 'editlist' || $this->getLayout() == 'editlist_3' )
 		{
 			$this->_displayEditlist($tpl);
 			return;
@@ -81,42 +82,40 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 //		$filter_order		= $app->getUserStateFromRequest($option.'.'.$model->_identifier.'.po_filter_order','filter_order','po.ordering','cmd');
 //		$filter_order_Dir	= $app->getUserStateFromRequest($option.'.'.$model->_identifier.'.po_filter_order_Dir','filter_order_Dir','','word');
 		
-        $this->state = $this->get('State'); 
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
+		$this->state = $this->get('State'); 
+		$this->sortDirection = $this->state->get('list.direction');
+		this->sortColumn = $this->state->get('list.ordering');
         
 		$items = $this->get('Items');
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
+		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+		{
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
-        $table = JTable::getInstance('projectposition', 'sportsmanagementTable');
-		$this->assignRef('table', $table);
+		$table = JTable::getInstance('projectposition', 'sportsmanagementTable');
+		$this->table	= $table;
                 
         $this->project_id	= $app->getUserState( "$option.pid", '0' );
         
-        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
-	    $project = $mdlProject->getProject($this->project_id);
+		$mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
+		$project = $mdlProject->getProject($this->project_id);
 
 //		// table ordering
 //		$lists['order_Dir']=$filter_order_Dir;
 //		$lists['order']=$filter_order;
 		
-		$this->assign('user',JFactory::getUser());
-		$this->assign('config',JFactory::getConfig());
-		$this->assignRef('lists',$lists);
-		$this->assignRef('positiontool',$items);
-		$this->assignRef('pagination',$pagination);
-		$this->assign('request_url',$uri->toString());
-        $this->assignRef('project',$project);
-		
-        
-        
+		$this->user	= JFactory::getUser();
+		$this->config	= JFactory::getConfig();
+		$this->lists	= $lists;
+		$this->positiontool	$items;
+		$this->pagination	= $pagination;
+		$this->request_url	= $uri->toString();
+        $this->project	= $project;
+
 	}
     
     /**
@@ -128,9 +127,10 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
     function _displayEditlist($tpl)
 	{
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$uri = JFactory::getURI();
 		$model = $this->getModel();
-        $option = JRequest::getCmd('option');
         $document = JFactory::getDocument();
         $starttime = microtime(); 
         
@@ -151,15 +151,15 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
         foreach($items as $item)
         {
             $project_positionslist[] = JHtml::_('select.option',$item->id,JText::_($item->name));
-        }
-        $lists['project_positions']=JHtml::_(	'select.genericlist',
-													$project_positionslist,
-													'project_positionslist[]',
-													'style="width:250px; height:250px;" class="inputbox" multiple="true" size="'.max(15,count($items)).'"',
-													'value',
+		}
+		$lists['project_positions'] = JHtml::_(	'select.genericlist', 
+													$project_positionslist, 
+													'project_positionslist[]', 
+													'style="width:250px; height:250px;" class="inputbox" multiple="true" size="'.max(15,count($items)).'"', 
+													'value', 
 													'text');
-        }
-        else
+		}
+		else
         {
             $lists['project_positions']='<select name="project_positionslist[]" id="project_positionslist" style="width:250px; height:250px;" class="inputbox" multiple="true" size="10"></select>';
         } 
@@ -175,10 +175,10 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 			{
 				foreach ($ress1 as $res1)
 				{
-					if (!in_array($res1,$ress))
+					if ( !in_array($res1, $ress) )
 					{
 						$res1->text=JText::_($res1->text);
-						$notusedpositions[]=$res1;
+						$notusedpositions[] = $res1;
 					}
 				}
 			}
@@ -187,7 +187,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 				foreach ($ress1 as $res1)
 				{
 					$res1->text=JText::_($res1->text);
-					$notusedpositions[]=$res1;
+					$notusedpositions[] = $res1;
 				}
 			}
 		}
@@ -199,25 +199,25 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 		//build the html select list for positions
 		if (count ($notusedpositions) > 0)
 		{
-			$lists['positions']=JHtml::_(	'select.genericlist',
-											$notusedpositions,
-											'positionslist[]',
-											' style="width:250px; height:250px;" class="inputbox" multiple="true" size="'.min(15,count($notusedpositions)).'"',
-											'value',
+			$lists['positions'] = JHtml::_(	'select.genericlist', 
+											$notusedpositions, 
+											'positionslist[]', 
+											' style="width:250px; height:250px;" class="inputbox" multiple="true" size="'.min(15,count($notusedpositions)).'"', 
+											'value', 
 											'text');
 		}
 		else
 		{
-			$lists['positions']='<select name="positionslist[]" id="positionslist" style="width:250px; height:250px;" class="inputbox" multiple="true" size="10"></select>';
+			$lists['positions'] = '<select name="positionslist[]" id="positionslist" style="width:250px; height:250px;" class="inputbox" multiple="true" size="10"></select>';
 		}
                                                   
 
 		
         $document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/sm_functions.js');
-        $this->assign('request_url',$uri->toString());
-        $this->assign('user',JFactory::getUser());
-        $this->assignRef('project',$project);
-        $this->assignRef('lists',$lists);
+        $this->request_url	= $uri->toString();
+        $this->user	= JFactory::getUser();
+        $this->project	= $project;
+        $this->lists	= $lists;
         $this->addToolbar_Editlist();		
 		
         $this->setLayout('editlist');
@@ -239,7 +239,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 //		// Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_TITLE');
         
-        sportsmanagementHelper::ToolbarButton('editlist','upload',JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_BUTTON_UN_ASSIGN'));
+        sportsmanagementHelper::ToolbarButton('editlist', 'upload', JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_BUTTON_UN_ASSIGN'));
 
 		parent::addToolbar();  
 

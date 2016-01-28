@@ -27,7 +27,7 @@
 * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
 * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
 * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
 * Siehe die GNU General Public License für weitere Details.
 *
@@ -60,15 +60,16 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app	= JFactory::getApplication();
-		$option = JRequest::getCmd('option');
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$db	 		= sportsmanagementHelper::getDBConnection();
 		$uri		= JFactory::getURI();
 		$user		= JFactory::getUser();
 		$model		= $this->getModel();
-        $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
+        $this->show_debug_info	= JComponentHelper::getParams($option)->get('show_debug_info', 0);
 
-		$lists=array();
+		$lists = array();
         
         // get the Data
 		$form = $this->get('Form');
@@ -87,7 +88,7 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
 		$this->item = $item;
 		$this->script = $script;
         
-        $this->_persontype = JRequest::getVar('persontype');
+        $this->_persontype = $jinput->get('persontype');
         if ( empty($this->_persontype) )
         {
             $this->_persontype	= $app->getUserState( "$option.persontype", '0' );
@@ -96,7 +97,7 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
         $this->project_id	= $this->item->project_id;
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
-        $this->assignRef('project',$project);
+        $this->project	= $project;
         
         $person_id	= $this->item->person_id;
         //$person_id	= JRequest::getVar('person_id');
@@ -105,7 +106,7 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
         // name für den titel setzen
         $this->item->name = $project_person->lastname.' - '.$project_person->firstname;
         
-        $this->assignRef('project_person',$project_person);
+        $this->project_person	= $project_person;
                       
         
         if ( $this->show_debug_info )
@@ -116,7 +117,7 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
         
 		//$this->assignRef('projectreferee',	$item);
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'projectreferee');		
-		$this->assignRef( 'extended', $extended );
+		$this->extended	= $extended;
         //$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
 		
 
@@ -130,11 +131,12 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-	   $app	= JFactory::getApplication();
-		$option = JRequest::getCmd('option');
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
         
 	
-    	JRequest::setVar('hidemainmenu', true);
+    	$jinput->set('hidemainmenu', true);
         
         $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_PROJECTREFEREE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_PROJECTREFEREE_NEW');
         $this->icon = 'projectreferee';

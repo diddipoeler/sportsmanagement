@@ -27,7 +27,7 @@
 * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
 * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
 * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
 * Siehe die GNU General Public License für weitere Details.
 *
@@ -74,8 +74,8 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
 
 		$uri = JFactory::getURI();
 		$config = JComponentHelper::getParams('com_media');
-		$post = $jinput->get('post');
-		$files = $jinput->get('files');
+		$post = $jinput->post->getArray(array());
+		$files = $jinput->getArray(array('files');
 
 		$this->request_url	= $uri->toString();
 		$this->config	= $config;
