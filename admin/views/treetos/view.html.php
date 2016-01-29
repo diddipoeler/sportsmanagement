@@ -48,8 +48,9 @@ class sportsmanagementViewTreetos extends sportsmanagementView
 
 	public function init ()
 	{
-		$option		= JRequest::getCmd('option');
-		$app	= JFactory::getApplication();
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$this->project_id = $app->getUserState( "$option.pid", '0' );
 		$uri 		= JFactory::getURI()->toString();
 		$user		= JFactory::getUser();
@@ -61,28 +62,28 @@ class sportsmanagementViewTreetos extends sportsmanagementView
 		
 		$model = $this->getModel();
 		//$projectws = $this->get('Data','project');
-        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
 	    $projectws = $mdlProject->getProject($this->project_id);
         
-		$division = $app->getUserStateFromRequest($option.'tt_division','division','','string');
+		$division = $app->getUserStateFromRequest($option.'tt_division', 'division', '', 'string');
 
 		//build the html options for divisions
 		$divisions[]=JHtmlSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
 		$mdlDivisions = JModelLegacy::getInstance("divisions", "sportsmanagementModel");
 		if ($res = $mdlDivisions->getDivisions($this->project_id)){
-			$divisions=array_merge($divisions,$res);
+			$divisions = array_merge($divisions,$res);
 		}
-		$lists['divisions']=$divisions;
+		$lists['divisions'] = $divisions;
 		unset($divisions);
 	
-		$this->assignRef('user', 		$user);
-		$this->assignRef('lists',		$lists);
-		$this->assignRef('items',		$items);
-		$this->assignRef('projectws',	$projectws);
-		$this->assignRef('division',	$division);
-		$this->assignRef('total',		$total);
-		$this->assignRef('pagination',	$pagination);
-		$this->assignRef('request_url',	$uri);
+		$this->user = $user;
+		$this->lists = $lists;
+		$this->items = $items;
+		$this->projectws = $projectws;
+		$this-> division = $division;
+		$this-> total = $total;
+		$this->pagination = $pagination;
+		$this->request_url = $uri;
         
         //$this->setLayout('default');
 

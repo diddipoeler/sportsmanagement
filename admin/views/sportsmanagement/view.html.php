@@ -92,7 +92,8 @@ class sportsmanagementViewsportsmanagement extends sportsmanagementView
         // Set toolbar items for the page
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
-		JRequest::setVar('hidemainmenu', true);
+		$jinput = JFactory::getApplication()->input;
+        $jinput->set('hidemainmenu', true);
 		$user = JFactory::getUser();
 		$userId = $user->id;
 		$isNew = $this->item->id == 0;

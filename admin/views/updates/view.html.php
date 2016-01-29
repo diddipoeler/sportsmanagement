@@ -62,9 +62,10 @@ class sportsmanagementViewUpdates extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
-		$app->setUserState($option.'update_part',0); // 0
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+		$app->setUserState($option.'update_part', 0); // 0
 		$filter_order		= $app->getUserStateFromRequest($option.'updates_filter_order','filter_order','dates','cmd');
 		$filter_order_Dir	= $app->getUserStateFromRequest($option.'updates_filter_order_Dir','filter_order_Dir','','word');
 		
@@ -76,8 +77,8 @@ class sportsmanagementViewUpdates extends sportsmanagementView
 		$versions=$model->getVersions();
 		//$versionhistory=$model->getVersionHistory();
 		$updateFiles = array();
-		$lists=array();
-		$updateFiles=$model->loadUpdateFiles();
+		$lists = array();
+		$updateFiles = $model->loadUpdateFiles();
         /*
         if($updateFiles=$model->loadUpdateFiles()) {
 			for ($i=0, $n=count($updateFiles); $i < $n; $i++)
@@ -98,13 +99,13 @@ class sportsmanagementViewUpdates extends sportsmanagementView
 		}
         */
 		// table ordering
-		$lists['order_Dir']=$filter_order_Dir;
-		$lists['order']=$filter_order;
+		$lists['order_Dir'] = $filter_order_Dir;
+		$lists['order'] = $filter_order;
 		//$this->assignRef('versionhistory',$versionhistory);
-		$this->assignRef('updateFiles',$updateFiles);
-		$this->assign('request_url',$uri->toString());
-		$this->assignRef('lists',$lists);
-        $this->assignRef('option',$option);
+		$this->updateFiles = $updateFiles;
+		$this->request_url = $uri->toString();
+		$this->lists = $lists;
+        $this->option = $option;
         
        
         

@@ -63,55 +63,55 @@ class sportsmanagementViewStatistics extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$document = JFactory::getDocument();
 		$user = JFactory::getUser();
 		$uri = JFactory::getURI();
-        $model	= $this->getModel();
+		$model	= $this->getModel();
         
-        $this->state = $this->get('State'); 
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
+		$this->state = $this->get('State');
+		$this->sortDirection = $this->state->get('list.direction');
+		$this->sortColumn = $this->state->get('list.ordering');
 		
 
-$starttime = microtime(); 
+	$starttime = microtime();
 		$items = $this->get('Items');
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
+		
+		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+		{
+		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+		}
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
 
 
 		$table = JTable::getInstance('statistic', 'sportsmanagementTable');
-		$this->assignRef('table', $table);
+		$this->table = $table;
         
 		//build the html select list for sportstypes
-		$sportstypes[]=JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'),'id','name');
+		$sportstypes[]=JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'), 'id', 'name');
 		//$allSportstypes =& JoomleagueModelSportsTypes::getSportsTypes();
-		$allSportstypes = JModelLegacy::getInstance('SportsTypes','sportsmanagementmodel')->getSportsTypes();		
+		$allSportstypes = JModelLegacy::getInstance('SportsTypes', 'sportsmanagementmodel')->getSportsTypes();		
 		
-		$sportstypes=array_merge($sportstypes,$allSportstypes);
-		$lists['sportstypes']=JHtml::_( 'select.genericList',
-										$sportstypes,
-										'filter_sports_type',
-										'class="inputbox" onChange="this.form.submit();" style="width:120px"',
-										'id',
-										'name',
+		$sportstypes = array_merge($sportstypes, $allSportstypes);
+		$lists['sportstypes']=JHtml::_( 'select.genericList', 
+										$sportstypes, 
+										'filter_sports_type', 
+										'class="inputbox" onChange="this.form.submit();" style="width:120px"', 
+										'id', 
+										'name', 
 										$this->state->get('filter.sports_type'));
 		unset($sportstypes);
 
-		$this->assignRef('user',$user);
-		$this->assign('config',JFactory::getConfig());
-		$this->assignRef('lists',$lists);
-		$this->assignRef('items',$items);
-		$this->assignRef('pagination',$pagination);
-		$this->assign('request_url',$uri->toString());
+		$this->user = $user;
+		$this->config = JFactory::getConfig();
+		$this->lists = $lists;
+		$this->items = $items;
+		$this->pagination = $pagination;
+		$this->request_url = $uri->toString();
         
-        
-		
 	}
 	
 	/**

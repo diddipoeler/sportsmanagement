@@ -64,8 +64,9 @@ class sportsmanagementViewsmquote extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$uri = JFactory::getURI();
         $starttime = microtime(); 
         
@@ -108,7 +109,8 @@ class sportsmanagementViewsmquote extends sportsmanagementView
 	protected function addToolBar() 
 	{
 	
-		JRequest::setVar('hidemainmenu', true);
+		$jinput = JFactory::getApplication()->input;
+        $jinput->set('hidemainmenu', true);
         
         $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_SMQUOTE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_ADD_NEW');
         $this->icon = 'quote';

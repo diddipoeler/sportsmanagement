@@ -60,14 +60,15 @@ class sportsmanagementViewTeam extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app	= JFactory::getApplication();
-		$option = JRequest::getCmd('option');
-        $model = $this->getModel();
-        $starttime = microtime(); 
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+		$model = $this->getModel();
+		$starttime = microtime();
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         
         //$this->assignRef('change_training_date',$model::$change_training_date);
-        $this->change_training_date	= $app->getUserState( "$option.change_training_date", '0' );
+		$this->change_training_date	= $app->getUserState( "$option.change_training_date", '0' );
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' change_training_date<br><pre>'.print_r($this->change_training_date,true).'</pre>'),'');
         
@@ -75,10 +76,10 @@ class sportsmanagementViewTeam extends sportsmanagementView
 		$form = $this->get('Form');
 		$item = $this->get('Item');
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
+		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+		{
+		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+		}
         
 		$script = $this->get('Script');
  
@@ -95,10 +96,10 @@ class sportsmanagementViewTeam extends sportsmanagementView
         
         //$this->item->club_id = $app->getUserState( "$option.club_id", '0' );
         
-        if ( empty($this->item->id) )
-        {
-            $this->form->setValue('club_id', null, $app->getUserState( "$option.club_id", '0' ));
-        }
+		if ( empty($this->item->id) )
+		{
+			$this->form->setValue('club_id', null, $app->getUserState( "$option.club_id", '0' ));
+		}
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($this->item->club_id,true).'</pre>'),'');
         
@@ -106,15 +107,15 @@ class sportsmanagementViewTeam extends sportsmanagementView
         //$app->enqueueMessage(JText::_('sportsmanagementViewTeam display season_ids<br><pre>'.print_r($this->item->season_ids,true).'</pre>'),'Notice');
         
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'team');
-		$this->assignRef( 'extended', $extended );
+		$this->extended = $extended;
         $extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'team');		
-		$this->assignRef( 'extendeduser', $extendeduser );
+		$this->extendeduser = $extendeduser;
         
         $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
-        if ( $this->checkextrafields )
-        {
-            $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($item->id);
-        }
+		if ( $this->checkextrafields )
+		{
+			$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($item->id);
+		}
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
@@ -124,19 +125,19 @@ class sportsmanagementViewTeam extends sportsmanagementView
         //build the html select list for days of week
 		if ($trainingData = $model->getTrainigData($this->item->id))
 		{
-			$daysOfWeek=array(	0 => JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'),
-			1 => JText::_('MONDAY'),
-			2 => JText::_('TUESDAY'),
-			3 => JText::_('WEDNESDAY'),
-			4 => JText::_('THURSDAY'),
-			5 => JText::_('FRIDAY'),
-			6 => JText::_('SATURDAY'),
-			7 => JText::_('SUNDAY'));
-			$dwOptions=array();
+			$daysOfWeek = array( 0 => JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), 
+			1 => JText::_('MONDAY'), 
+			2 => JText::_('TUESDAY'), 
+			3 => JText::_('WEDNESDAY'), 
+			4 => JText::_('THURSDAY'), 
+			5 => JText::_('FRIDAY'), 
+			6 => JText::_('SATURDAY'), 
+			7 => JText::_('SUNDAY') );
+			$dwOptions = array();
 			foreach($daysOfWeek AS $key => $value)
-            {
-                $dwOptions[]=JHtml::_('select.option',$key,$value);
-            }
+			{
+				$dwOptions[]=JHtml::_('select.option',$key,$value);
+			}
 			foreach ($trainingData AS $td)
 			{
 				$lists['dayOfWeek'][$td->id]=JHtml::_('select.genericlist',$dwOptions,'dayofweek['.$td->id.']','class="inputbox"','value','text',$td->dayofweek);
@@ -144,8 +145,8 @@ class sportsmanagementViewTeam extends sportsmanagementView
 			unset($daysOfWeek);
 			unset($dwOptions);
 		}
-        $this->assignRef('trainingData',$trainingData);
-        $this->assignRef('lists',$lists);
+        $this->trainingData = $trainingData;
+        $this->lists = $lists;
         
 
  
@@ -158,7 +159,7 @@ class sportsmanagementViewTeam extends sportsmanagementView
 	protected function addToolBar() 
 	{
 
-		JRequest::setVar('hidemainmenu', true);
+		JFactory::getApplication()->input->set('hidemainmenu', true);
         $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAM_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAM_ADD_NEW');
         $this->icon = 'team';
 

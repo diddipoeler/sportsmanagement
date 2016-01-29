@@ -59,14 +59,15 @@ class sportsmanagementViewsmquotestxt extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
-        $model = $this->getModel();
-        $this->assign('files',$model->getTXTFiles());
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+		$model = $this->getModel();
+		$this->assign('files',$model->getTXTFiles());
        
        //$app->enqueueMessage(JText::_('sportsmanagementViewsmextxmleditors files<br><pre>'.print_r($this->files,true).'</pre>'   ),'');
        
-        $this->assignRef('option',$option);
+        $this->option = $option;
         
        
         

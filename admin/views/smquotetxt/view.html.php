@@ -61,10 +61,11 @@ class sportsmanagementViewsmquotetxt extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
-        $model = $this->getModel();
-        $this->file_name = JRequest::getVar('file_name');
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+		$model = $this->getModel();
+		$this->file_name = $jinput->getString('file_name');
         
         // Initialise variables.
 		$this->form		= $this->get('Form');
@@ -74,7 +75,7 @@ class sportsmanagementViewsmquotetxt extends sportsmanagementView
        
        //$app->enqueueMessage(JText::_('sportsmanagementViewsmextxmleditor contents<br><pre>'.print_r($this->contents,true).'</pre>'   ),'');
        
-        $this->assignRef('option',$option);
+        $this->option = $option;
         
 	}
     
@@ -86,7 +87,8 @@ class sportsmanagementViewsmquotetxt extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-		JRequest::setVar('hidemainmenu', true);
+		$jinput = JFactory::getApplication()->input;
+        $jinput->set('hidemainmenu', true);
         $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_SMQUOTE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_SMQUOTE_ADD_NEW');
         $this->icon = 'quote';
 
