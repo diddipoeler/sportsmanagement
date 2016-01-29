@@ -79,8 +79,8 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		$uri = JFactory::getURI();
 		$config = JComponentHelper::getParams('com_media');
         $upload_maxsize = JComponentHelper::getParams('com_media')->get('upload_maxsize','200');
-		$post = $jinput->get('post');
-		$files = $jinput->get('files');
+		$post = $jinput->post->getArray(array());
+		$files = $jinput->getString('files');
 		$this->request_url	= $uri->toString();
 		$this->upload_maxsize	= $upload_maxsize;
         $this->config	= $config;
