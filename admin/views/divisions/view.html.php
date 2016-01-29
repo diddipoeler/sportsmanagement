@@ -93,7 +93,7 @@ class sportsmanagementViewDivisions extends sportsmanagementView
 
 
 		$this->user	= JFactory::getUser();
-        $this->projectws	= $project);
+        $this->projectws	= $project;
 		$this->lists	= $lists;
 		$this->items	= $items;
 		$this->pagination	= $pagination;
