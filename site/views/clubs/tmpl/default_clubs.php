@@ -43,13 +43,18 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 ?>
 <table class="<?php echo $this->config['table_class']; ?>">
 	<thead>
-	<tr class="sectiontableheader">
+	<tr>
 		<?php if ($this->config['show_small_logo'])		{ ?><th class="club_logo"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBS_LOGO' ); ?></th><?php } ?>
 		<?php if ($this->config['show_medium_logo'])	{ ?><th class="club_logo"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBS_LOGO' ); ?></th><?php } ?>
 		<?php if ($this->config['show_big_logo'])		{ ?><th class="club_logo"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBS_LOGO' ); ?></th><?php } ?>
 		<th class="club_name"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBS_CLUBNAME' ); ?></th>
 		<?php if ($this->config['show_club_teams'])		{ ?><th class="club_teams"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBS_TEAMS' ); ?></th><?php } ?>
-		<?php if ($this->config['show_address'])		{ ?><th class="club_address"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBS_ADDRESS' ); ?></th><?php } ?>
+		
+         <?php if ($this->config['show_club_internetadress_picture']) { ?>
+		<th ><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_HOMEPAGE_PICTURE' ); ?></th>
+		<?php } ?>
+        
+        <?php if ($this->config['show_address'])		{ ?><th class="club_address"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBS_ADDRESS' ); ?></th><?php } ?>
 	</tr>
 	</thead>
 	<?php
@@ -135,7 +140,33 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
 				</td>
 				<?php
 			}
+            
+            if ($this->config['show_club_internetadress_picture']  ) 
+      { 
+      ?>
+			<td >
+            <?php 
+            
+            switch ($this->config['which_internetadress_picture_provider'])
+            {
+            case 'thumbshots':
+            echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$club->website.'">';
+            break;    
+            case 'thumbsniper':
+            //echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$team->club_www.'">';
+            echo '<img style="" src="http://api.thumbsniper.com/api_free.php?size=13&effect='.$this->config['internetadress_picture_thumbsniper_preview'].'&url='.$club->website.'">';
+            break;
+            }
+             
+            
+            ?>
+            
+            
+            </td>
+			<?php 
+      }
 			?>
+            
 			<?php
 			if ($this->config['show_address'])
 			{

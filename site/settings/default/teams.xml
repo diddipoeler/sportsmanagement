@@ -57,7 +57,9 @@ label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
         <field type="spacer">
         </field>
 
-    <field name="show_club_internetadress_picture" type="radio" default="1"
+    <field name="show_club_internetadress_picture" 
+    type="radio" 
+    default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_CLUB_INTERNETADRESS_PICTURE"
 			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_SHOW_CLUB_INTERNETADRESS_PICTURE">
@@ -65,6 +67,27 @@ label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_OPTIONS"
 			<option value="1">JYES</option>
 		</field>
 		
+    <field name="which_internetadress_picture_provider" 
+    type="radio" 
+    default="thumbsniper"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_INTERNETADRESS_PICTURE_PROVIDER"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_INTERNETADRESS_PICTURE_PROVIDER">
+			<option value="thumbshots">thumbshots</option>
+			<option value="thumbsniper">thumbsniper</option>
+		</field>
+    
+    <field name="internetadress_picture_thumbsniper_preview" 
+    type="radio" 
+    default="2"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_INTERNETADRESS_PICTURE_THUMBSNIPER_PREVIEW"
+			description="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_DESCR_INTERNETADRESS_PICTURE_THUMBSNIPER_PREVIEW">
+			<option value="2">3D</option>
+			<option value="1">normal</option>
+		</field>
+    
+    
 		<field name="show_club_number" type="radio" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBINFO_PARAM_LABEL_SHOW_CLUB_NUMBER"

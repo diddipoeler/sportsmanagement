@@ -166,7 +166,25 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
       if ($this->config['show_club_internetadress_picture'] && !empty($team->club_www) ) 
       { 
       ?>
-			<td ><?php echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$team->club_www.'">'; ?></td>
+			<td >
+            <?php 
+            
+            switch ($this->config['which_internetadress_picture_provider'])
+            {
+            case 'thumbshots':
+            echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$team->club_www.'">';
+            break;    
+            case 'thumbsniper':
+            //echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$team->club_www.'">';
+            echo '<img style="" src="http://api.thumbsniper.com/api_free.php?size=13&effect='.$this->config['internetadress_picture_thumbsniper_preview'].'&url='.$team->club_www.'">';
+            break;
+            }
+             
+            
+            ?>
+            
+            
+            </td>
 			<?php 
       }
       else
