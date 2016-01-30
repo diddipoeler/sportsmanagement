@@ -113,8 +113,8 @@ class sportsmanagementViewstatistic extends sportsmanagementView
         //$app->enqueueMessage(JText::_('sportsmanagementViewstatistic params<br><pre>'.print_r($item->params,true).'</pre>'),'Notice');
         //$app->enqueueMessage(JText::_('sportsmanagementViewstatistic params<br><pre>'.print_r($item->baseparams,true).'</pre>'),'Notice');
         
-        $formparams = sportsmanagementHelper::getExtendedStatistic($item->params, $item->class);
-		$this->assignRef( 'formparams', $formparams );
+		$formparams = sportsmanagementHelper::getExtendedStatistic($item->params, $item->class);
+		$this->formparams = $formparams;
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' formparams<br><pre>'.print_r($this->formparams,true).'</pre>'),'Notice');
         
@@ -134,7 +134,7 @@ class sportsmanagementViewstatistic extends sportsmanagementView
 	protected function addToolBar() 
 	{
 	
-		JRequest::setVar('hidemainmenu', true);
+		JFactory::getApplication()->input->set('hidemainmenu', true);
         
         $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_STATISTIC_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_STATISTIC_NEW');
         $this->icon = 'statistic';

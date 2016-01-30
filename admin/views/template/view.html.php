@@ -72,7 +72,7 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 		$app = JFactory::getApplication();
 		$model = $this->getModel();
 		$lists = array();
-        $starttime = microtime(); 
+		$starttime = microtime();
 
 		//get template data
 		//$template =& $this->get('data');
@@ -82,10 +82,10 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 		//$form = $this->get('Form');
 		$item = $this->get('Item');
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
+		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+		{
+		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+		}
         
 		$script = $this->get('Script');
  
@@ -105,21 +105,21 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 			return false;
 		}
 		
-        $this->project_id = $app->getUserState( "$option.pid", '0' );
-        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
-	    $project = $mdlProject->getProject($this->project_id);
+		$this->project_id = $app->getUserState( "$option.pid", '0' );
+		$mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
+		$project = $mdlProject->getProject($this->project_id);
         
         
-        $templatepath = JPATH_COMPONENT_SITE.DS.'settings';
-        $xmlfile = $templatepath.DS.'default'.DS.$item->template.'.xml';
+		$templatepath = JPATH_COMPONENT_SITE.DS.'settings';
+		$xmlfile = $templatepath.DS.'default'.DS.$item->template.'.xml';
         
         //$app->enqueueMessage(JText::_('sportsmanagementViewTemplate xmlfile<br><pre>'.print_r($xmlfile,true).'</pre>'),'Notice');
         
-        $form = JForm::getInstance($item->template, $xmlfile,array('control'=> 'params'));
+		$form = JForm::getInstance($item->template, $xmlfile, array('control'=> 'params'));
 		//$form->bind($jRegistry);
-        $form->bind($item->params);
+		$form->bind($item->params);
       
-        $this->item = $item;
+		$this->item = $item;
         // Assign the Data
 		$this->form = $form;
 		//$this->item = $item;
@@ -130,10 +130,10 @@ class sportsmanagementViewTemplate extends sportsmanagementView
         switch ( $this->form->getName() )
         {
             case 'ranking':
-            $mdlProjecteams = JModelLegacy::getInstance("Projectteams", "sportsmanagementModel");
-	        $iProjectTeamsCount = $mdlProjecteams->getProjectTeamsCount($this->project_id);
-            $this->assignRef('teamscount',$iProjectTeamsCount);
-            $this->form->setFieldAttribute('colors_ranking','rankingteams' , $iProjectTeamsCount);
+            $mdlProjecteams = JModelLegacy::getInstance('Projectteams', 'sportsmanagementModel');
+			$iProjectTeamsCount = $mdlProjecteams->getProjectTeamsCount($this->project_id);
+			$this->assignRef('teamscount',$iProjectTeamsCount);
+			$this->form->setFieldAttribute('colors_ranking', 'rankingteams' , $iProjectTeamsCount);
             $this->form->setFieldAttribute('colors','type' , 'hidden');
             
             $colors = $this->form->getValue('colors');
@@ -141,7 +141,7 @@ class sportsmanagementViewTemplate extends sportsmanagementView
             if ( empty($colors_ranking[1]['von']) )
             {
             $count = 1;    
-            $teile = explode(";",$colors);    
+            $teile = explode(";", $colors);    
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($teile,true).'</pre>'),'Notice');
             foreach($teile as $key => $value )
             {
@@ -149,7 +149,7 @@ class sportsmanagementViewTemplate extends sportsmanagementView
             list($colors_ranking[$count]['von'], $colors_ranking[$count]['bis'], $colors_ranking[$count]['color'], $colors_ranking[$count]['text'] ) = $teile2;  
             $count++;  
             }
-            $this->form->setValue('colors_ranking',null,$colors_ranking);
+            $this->form->setValue('colors_ranking', null, $colors_ranking);
             }
             //$this->form->setFieldAttribute('colors_ranking','default' , $iProjectTeamsCount);
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($colors,true).'</pre>'),'Notice');
@@ -159,24 +159,24 @@ class sportsmanagementViewTemplate extends sportsmanagementView
         }
 
 		$master_id = ($project->master_template) ? $project->master_template : '-1';
-        $templates=array();
-        $res = $model->getAllTemplatesList($project->id,$master_id);
-        $templates=array_merge($templates,$res);
-        $lists['templates'] = JHtml::_('select.genericlist',$templates,
-														'new_id',
-														'class="inputbox" size="1" onchange="javascript: Joomla.submitbutton(\'templates.changetemplate\');"',
-														'value',
-														'text',
+        $templates = array();
+        $res = $model->getAllTemplatesList($project->id, $master_id);
+        $templates = array_merge($templates, $res);
+        $lists['templates'] = JHtml::_('select.genericlist',$templates, 
+														'new_id', 
+														'class="inputbox" size="1" onchange="javascript: Joomla.submitbutton(\'templates.changetemplate\');"', 
+														'value', 
+														'text', 
 														$item->id);
         
         
-        $this->assign('request_url',$uri->toString());
-		$this->assignRef('template',$item);
+        $this->request_url = $uri->toString();
+		$this->template = $item;
         
-        $this->assign('templatename',$this->form->getName());
-		$this->assignRef('project',$project);
-		$this->assignRef('lists',$lists);
-		$this->assignRef('user',$user);
+        $this->templatename = $this->form->getName();
+		$this->project = $project;
+		$this->lists = $lists;
+		$this->user = $user;
         
         // Load the language files for the contact integration
 		$jlang = JFactory::getLanguage();
@@ -193,8 +193,8 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 	protected function addToolbar()
 	{
 	
-        JRequest::setVar('hidemainmenu', true);
-        JRequest::setVar('pid', $this->project_id);
+        JFactory::getApplication()->input->set('hidemainmenu', true);
+        JFactory::getApplication()->input->set('pid', $this->project_id);
         $this->item->name = $this->item->template;
 		//$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_NEW');
         //$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATE_EDIT');

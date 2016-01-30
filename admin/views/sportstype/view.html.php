@@ -61,8 +61,9 @@ class sportsmanagementViewSportsType extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
         
         // get the Data
 		$form = $this->get('Form');
@@ -89,7 +90,7 @@ class sportsmanagementViewSportsType extends sportsmanagementView
 	protected function addToolBar() 
 	{
 	
-		JRequest::setVar('hidemainmenu', true);
+		JFactory::getApplication()->input->set('hidemainmenu', true);
         
         $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_SPORTSTYPE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_SPORTSTYPE_NEW');
         $this->icon = 'sportstype';

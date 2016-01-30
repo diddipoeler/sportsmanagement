@@ -64,77 +64,80 @@ class sportsmanagementViewTeams extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$uri = JFactory::getURI();
-        $model	= $this->getModel();
+		$model	= $this->getModel();
         
-        $this->state = $this->get('State'); 
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
+		$this->state = $this->get('State');
+		$this->sortDirection = $this->state->get('list.direction');
+		$this->sortColumn = $this->state->get('list.ordering');
 
 
-$starttime = microtime(); 
+		$starttime = microtime();
 		$items = $this->get('Items');
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
+		{
+		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+		}
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
         $table = JTable::getInstance('team', 'sportsmanagementTable');
-		$this->assignRef('table', $table);
+		$this->table = $table;
         
         //build the html select list for sportstypes
-		$sportstypes[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),'id','name');
+		$sportstypes[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'), 'id', 'name');
 		$mdlSportsTypes = JModelLegacy::getInstance('SportsTypes', 'sportsmanagementModel');
 		$allSportstypes = $mdlSportsTypes->getSportsTypes();
-		$sportstypes = array_merge($sportstypes,$allSportstypes);
+		$sportstypes = array_merge($sportstypes, $allSportstypes);
         
-        $this->assignRef('sports_type',$allSportstypes);
+		$this->sports_type = $allSportstypes;
         $lists['sportstype'] = $sportstypes;
-		$lists['sportstypes'] = JHtml::_( 'select.genericList',
-										$sportstypes,
-										'filter_sports_type',
-										'class="inputbox" onChange="this.form.submit();" style="width:120px"',
-										'id',
-										'name',
-										$this->state->get('filter.sports_type'));
+		$lists['sportstypes'] = JHtml::_( 'select.genericList', 
+										$sportstypes, 
+										'filter_sports_type', 
+										'class="inputbox" onChange="this.form.submit();" style="width:120px"', 
+										'id', 
+										'name', 
+										$this->state->get('filter.sports_type') );
 		unset($sportstypes);
         
         //build the html options for nation
 		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ( $res = JSMCountries::getCountryOptions() )
-        {
-            $nation = array_merge($nation,$res);
-            $this->assignRef('search_nation',$res);
+		{
+			$nation = array_merge($nation, $res);
+			$this->assignRef('search_nation', $res);
         }
 		
-        $lists['nation'] = $nation;
-        $lists['nation2']= JHtmlSelect::genericlist(	$nation,
-																'filter_search_nation',
-																'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-																'value',
-																'text',
-															$this->state->get('filter.search_nation'));
+		$lists['nation'] = $nation;
+		$lists['nation2'] = JHtmlSelect::genericlist(	$nation, 
+																'filter_search_nation', 
+																'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 
+																'value', 
+																'text', 
+															$this->state->get('filter.search_nation') );
 
 		$myoptions = array();
-        $myoptions[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
-        $mdlagegroup = JModelLegacy::getInstance("agegroups", "sportsmanagementModel");
-        if ( $res = $mdlagegroup->getAgeGroups() )
-        {
-            $myoptions = array_merge($myoptions,$res);
-        }
-        $lists['agegroup'] = $myoptions;
+		$myoptions[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
+		$mdlagegroup = JModelLegacy::getInstance('agegroups', 'sportsmanagementModel');
+		
+		if ( $res = $mdlagegroup->getAgeGroups() )
+		{
+			$myoptions = array_merge($myoptions,$res);
+		}
+		
+		$lists['agegroup'] = $myoptions;
         unset($myoptions);
         
-        $this->assign('user',JFactory::getUser());
-		$this->assign('config',JFactory::getConfig());
-		$this->assignRef('lists',$lists);
-		$this->assignRef('items',$items);
-		$this->assignRef('pagination',$pagination);
-		$this->assign('request_url',$uri->toString());
+        $this->user = JFactory::getUser();
+		$this->config = JFactory::getConfig();
+		$this->lists $lists;
+		$this->items = $items;
+		$this->pagination = $pagination;
+		$this->request_url= $uri->toString();
 		
         
 	
@@ -150,23 +153,23 @@ $starttime = microtime();
 
 		// Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_TITLE');
-$this->icon = 'teams';
+		$this->icon = 'teams';
 		JToolBarHelper::apply('teams.saveshort');
 		JToolBarHelper::addNew('team.add');
 		JToolBarHelper::editList('team.edit');
-		JToolBarHelper::custom('team.copysave','copy.png','copy_f2.png',JText::_('JTOOLBAR_DUPLICATE'),true);
-		JToolBarHelper::custom('team.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-		JToolBarHelper::archiveList('team.export',JText::_('JTOOLBAR_EXPORT'));
+		JToolBarHelper::custom('team.copysave', 'copy.png', 'copy_f2.png', JText::_('JTOOLBAR_DUPLICATE'), true);
+		JToolBarHelper::custom('team.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
+		JToolBarHelper::archiveList('team.export', JText::_('JTOOLBAR_EXPORT'));
 		JToolbarHelper::checkin('teams.checkin');
 		if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
-        {
+		{
 		JToolbarHelper::trash('teams.trash');
-        }
-        else
-        {
-        JToolBarHelper::deleteList('', 'teams.delete', 'JTOOLBAR_DELETE');    
-        }
-        parent::addToolbar();
+		}
+		else
+		{
+		JToolBarHelper::deleteList('', 'teams.delete', 'JTOOLBAR_DELETE');    
+		}
+		parent::addToolbar();
 	}
 }
 ?>

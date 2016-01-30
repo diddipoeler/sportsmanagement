@@ -66,44 +66,43 @@ class sportsmanagementViewSportsTypes extends sportsmanagementView
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
 		$uri = JFactory::getURI();
-        $model	= $this->getModel();
+		$model	= $this->getModel();
         
-        $this->state = $this->get('State'); 
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
+		$this->state = $this->get('State');
+		$this->sortDirection = $this->state->get('list.direction');
+		$this->sortColumn = $this->state->get('list.ordering');
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->state,true).'</pre>'),'');
 
 
-        $starttime = microtime(); 
+		$starttime = microtime();
 		$items = $this->get('Items');
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
+		
+		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+		{
+			$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+		}
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
-        $myoptions = array();
+		$myoptions = array();
 		$myoptions[]		= JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_TEAM' ) );
 		$myoptions[]		= JHtml::_( 'select.option', '1', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_SINGLE' ) );
 
 
         
         $table = JTable::getInstance('sportstype', 'sportsmanagementTable');
-		$this->assignRef('table', $table);
+		$this->table = $table;
         
         // sportart filter
-		$lists['sportart']=$myoptions;
+		$lists['sportart'] = $myoptions;
 
-		$this->assign('user',JFactory::getUser());
-		$this->assignRef('lists',$lists);
-		$this->assignRef('items',$items);
-		$this->assignRef('pagination',$pagination);
-		$this->assign('request_url',$uri->toString());
+		$this->user = JFactory::getUser();
+		$this->lists = $lists;
+		$this->items = $items;
+		$this->pagination = $pagination;
+		$this->request_url = $uri->toString();
       
-	
-		
 	}
 	
 	/**
@@ -113,8 +112,9 @@ class sportsmanagementViewSportsTypes extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		//// Get a refrence of the page instance in joomla
 //		$document	= JFactory::getDocument();
 //        // Set toolbar items for the page
@@ -125,17 +125,18 @@ class sportsmanagementViewSportsTypes extends sportsmanagementView
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_TITLE');
 		JToolBarHelper::addNew('sportstype.add');
 		JToolBarHelper::editList('sportstype.edit');
-		JToolBarHelper::custom('sportstype.import','upload','upload', JText::_('JTOOLBAR_UPLOAD'),false);
+		JToolBarHelper::custom('sportstype.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
 		JToolBarHelper::archiveList('sportstype.export', JText::_('JTOOLBAR_EXPORT'));
         JToolbarHelper::checkin('sportstypes.checkin');
-        if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
-        {
+		
+		if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
+		{
 		JToolbarHelper::trash('sportstypes.trash');
-        }
-        else
-        {
-        JToolBarHelper::deleteList('', 'sportstypes.delete', 'JTOOLBAR_DELETE');    
-        }
+		}
+		else
+		{
+		JToolBarHelper::deleteList('', 'sportstypes.delete', 'JTOOLBAR_DELETE');    
+		}
 		
 		
         parent::addToolbar();

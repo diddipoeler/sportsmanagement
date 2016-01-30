@@ -61,44 +61,45 @@ class sportsmanagementViewsmimageimports extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
         $model = $this->getModel();
         $uri = JFactory::getURI();
         
-        $checkimages = $model->getimagesxml();
-        $this->assign('files',$model->getXMLFiles());
-        $this->state = $this->get('State'); 
+		$checkimages = $model->getimagesxml();
+		$this->files = $model->getXMLFiles();
+		$this->state = $this->get('State');
         
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
+		$this->sortDirection = $this->state->get('list.direction');
+		$this->sortColumn = $this->state->get('list.ordering');
         
         //$filter_state		= $app->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state','filter_state','','word');
         // state filter
 		//$lists['state'] = JHtml::_('grid.state',$filter_state);
         
         //build the html select list
-		$folders[] = JHtml::_('select.option','',JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_FOLDER'),'id','name');
+		$folders[] = JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_FOLDER'),'id','name');
         $allfolders = $model->getXMLFolder();
 		$folders = array_merge($folders,$allfolders);
-		$lists['folders']=JHtml::_( 'select.genericList',
-										$folders,
-										'filter_image_folder',
-										'class="inputbox" onChange="this.form.submit();" style="width:220px"',
-										'id',
-										'name',
+		$lists['folders'] = JHtml::_( 'select.genericList', 
+										$folders, 
+										'filter_image_folder', 
+										'class="inputbox" onChange="this.form.submit();" style="width:220px"', 
+										'id', 
+										'name', 
 										$this->state->get('filter.image_folder'));
                                        
-        $items = $this->get('Items');
+		$items = $this->get('Items');
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
 
-        $this->assignRef('option',$option);
+		$this->option	= $option;
         
-        $this->assignRef('lists',$lists);
-		$this->assignRef('items',$items);
-		$this->assignRef('pagination',$pagination);
-		$this->assign('request_url',$uri->toString());
+		$this-> lists	= $lists;
+		$this->items	= $items;
+		$this->pagination	= $pagination;
+		$this->request_url	= $uri->toString();
         
 //        $this->addToolbar();
 //		parent::display($tpl);
@@ -115,14 +116,14 @@ class sportsmanagementViewsmimageimports extends sportsmanagementView
 //		$document	= JFactory::getDocument();
 //        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
-        
+		$jinput = JFactory::getApplication()->input;
         // Set toolbar items for the page
-        $this->title =JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGES_IMPORT');
-        $this->icon = 'images-import';
-        JToolBarHelper::custom('smimageimports.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-        JToolBarHelper::divider();
+		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGES_IMPORT');
+		$this->icon = 'images-import';
+		JToolBarHelper::custom('smimageimports.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
+		JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
+		JToolBarHelper::preferences($jinput->getCmd('option'));
         
     }    
     

@@ -61,14 +61,14 @@ class sportsmanagementViewsmextxmleditors extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
-        $model = $this->getModel();
-        $this->assign('files',$model->getXMLFiles());
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+        $this->files = $model->getXMLFiles();
        
        //$app->enqueueMessage(JText::_('sportsmanagementViewsmextxmleditors files<br><pre>'.print_r($this->files,true).'</pre>'   ),'');
        
-        $this->assignRef('option',$option);
+        $this->option = $option;
         //$this->addToolbar();
 //		parent::display($tpl);
 	}

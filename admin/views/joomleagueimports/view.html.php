@@ -62,28 +62,28 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 	public function init ()
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $model = $this->getModel();
-        $uri = JFactory::getURI();
+		$app = JFactory::getApplication();
+		// JInput object
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+		$model = $this->getModel();
+		$uri = JFactory::getURI();
+		
+		$this->cfg_jl_import = JComponentHelper::getParams($option)->get( 'cfg_jl_import',1 );
         
-        $this->cfg_jl_import = JComponentHelper::getParams($option)->get( 'cfg_jl_import',1 );
-        
-        if ( $this->cfg_jl_import )
-        {
-        $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_JL_IMPORT_ALLOWED_YES'),'Notice');    
-        }
-        else
-        {
-        $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_JL_IMPORT_ALLOWED_NO'),'Error');    
-        }
-        
-        $stateVar = $app->getUserStateFromRequest( "$option.success", 'success', '' );
-        
-        $model->check_database();
-        
+		if ( $this->cfg_jl_import )
+		{
+		$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_JL_IMPORT_ALLOWED_YES'),'Notice');    
+		}
+		else
+		{
+		$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_JL_IMPORT_ALLOWED_NO'),'Error');    
+		}
+		
+		$stateVar = $app->getUserStateFromRequest( "$option.success", 'success', '' );
+		
+		$model->check_database();
+		
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' stateVar <br><pre>'.print_r($stateVar,true).'</pre>'),'');
         
         //$post = JRequest::get('post');
@@ -96,23 +96,23 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' state <br><pre>'.print_r($this->state,true).'</pre>'),'');
         
         //build the html select list for sportstypes
-		$sportstypes[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),'id','name');
+		$sportstypes[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),'id','name');
 		$mdlSportsTypes = JModelLegacy::getInstance('SportsTypes', 'sportsmanagementModel');
 		$allSportstypes = $mdlSportsTypes->getSportsTypes();
-		$sportstypes = array_merge($sportstypes,$allSportstypes);
-        
-        $variable = $app->getUserStateFromRequest( $option.".filter_sports_type",0 );
-        
-        $lists['sportstype'] = $sportstypes;
-		$lists['sportstypes'] = JHtml::_( 'select.genericList',
-										$sportstypes,
-										'filter_sports_type',
+		$sportstypes = array_merge($sportstypes, $allSportstypes);
+		
+		$variable = $app->getUserStateFromRequest( $option.".filter_sports_type", 0 );
+
+		$lists['sportstype'] = $sportstypes; 
+		$lists['sportstypes'] = JHtml::_( 'select.genericList', 
+										$sportstypes, 
+										'filter_sports_type', 
 										'class="inputbox" onChange="" style="width:120px"',
-										'id',
-										'name',
+										'id', 
+										'name', 
 										$variable);
 		unset($sportstypes);
-        
+		
 //        $databasetool = JModelLegacy::getInstance("databasetool", "sportsmanagementModel");
 //        $this->assign('jl_tables',$databasetool->getJoomleagueImportTables() );
 //        
@@ -135,12 +135,12 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 //
 //		unset($seasons);
 //        
-        $this->lists	= $lists;
-        $this->request_url	$uri->toString();
+		$this->lists	= $lists;
+		$this->request_url	= $uri->toString();
 //        $this->assign('items',$checktables);
         
         //$this->assign('success',$jinput->getVar('success'));
-        $this->success	= $stateVar;
+		$this->success	= $stateVar;
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' success <br><pre>'.print_r($this->success,true).'</pre>'),'');
         
@@ -161,28 +161,28 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 //        $document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
-        $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT');
-        $this->icon = 'joomleague-import';
+		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT');
+		$this->icon = 'joomleague-import';
         
-        if ( $this->cfg_jl_import )
-        {
-        JToolBarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'), false);
-        }
+		if ( $this->cfg_jl_import )
+		{
+		JToolBarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'), false);
+		}
         
-        JToolBarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'), false);
+		JToolBarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'), false);
 
 
 //        JToolBarHelper::custom('joomleagueimports.positions','edit','edit',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'),false);
 //        
 //        JToolBarHelper::custom('joomleagueimports.checkimport','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 //        JToolBarHelper::custom('joomleagueimports.import','new','new',JText::_('JTOOLBAR_DUPLICATE'),false);
-        JToolBarHelper::divider();
+		JToolBarHelper::divider();
 //		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 //        JToolBarHelper::preferences(JRequest::getCmd('option'));
-        parent::addToolbar();
-    }    
-    
-    
-    
+		parent::addToolbar();
+	}
+
+
+
 }
 ?>

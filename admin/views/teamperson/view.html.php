@@ -60,13 +60,14 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app	= JFactory::getApplication();
-		$option = JRequest::getCmd('option');
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$uri		= JFactory::getURI();
 		$user		= JFactory::getUser();
 		$model		= $this->getModel();
 		$lists		= array();
-        $show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+		$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0);
         
         // get the Data
 		$form = $this->get('Form');
@@ -74,7 +75,7 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 		$script = $this->get('Script');
  
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) 
+		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
@@ -90,86 +91,87 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
         $this->project_team_id	= $app->getUserState( "$option.project_team_id", '0' );
         
         //$this->project_id	= sportsmanagementHelper::getTeamplayerProject($this->item->projectteam_id);
-        $this->project_id	= $app->getUserState( "$option.pid", '0' );
-        $this->season_id	= $app->getUserState( "$option.season_id", '0' );
+		$this->project_id	= $app->getUserState( "$option.pid", '0' );
+		$this->season_id	= $app->getUserState( "$option.season_id", '0' );
                
         
-        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
-	    $project = $mdlProject->getProject($this->project_id);
-        $this->assignRef('project',$project);
+		$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+		$project = $mdlProject->getProject($this->project_id);
+		$this->project = $project;
         
-        if ( isset($this->item->projectteam_id) )
-        {
-        $project_team = $mdlProject->getProjectTeam($this->item->projectteam_id);
-        $this->assignRef('project_team',$project_team);
-        }
+		if ( isset($this->item->projectteam_id) )
+		{
+		$project_team = $mdlProject->getProjectTeam($this->item->projectteam_id);
+		$this->assignRef('project_team',$project_team);
+		}
         
-        $person_id	= $this->item->person_id;
-        $mdlPerson = JModelLegacy::getInstance("Person", "sportsmanagementModel");
-	    $project_person = $mdlPerson->getPerson($person_id);
+		$person_id	= $this->item->person_id;
+		$mdlPerson = JModelLegacy::getInstance("Person", "sportsmanagementModel");
+		$project_person = $mdlPerson->getPerson($person_id);
         
         // name für den titel setzen
         $this->item->name = $project_person->lastname.' - '.$project_person->firstname;
         
-        $this->assignRef('project_person',$project_person);
+        $this->project_person = $project_person;
         
         // personendaten setzen
-        $this->form->setValue('injury',null,$project_person->injury);
-        $this->form->setValue('injury_date',null,$project_person->injury_date);
-        $this->form->setValue('injury_end',null,$project_person->injury_end);
-        $this->form->setValue('injury_detail',null,$project_person->injury_detail);
-        $this->form->setValue('injury_date_start',null,$project_person->injury_date_start);
-        $this->form->setValue('injury_date_end',null,$project_person->injury_date_end);
+		$this->form->setValue('injury', null, $project_person->injury);
+		$this->form->setValue('injury_date', null, $project_person->injury_date);
+		$this->form->setValue('injury_end', null, $project_person->injury_end);
+		$this->form->setValue('injury_detail', null, $project_person->injury_detail);
+		$this->form->setValue('injury_date_start', null, $project_person->injury_date_start);
+		$this->form->setValue('injury_date_end', null, $project_person->injury_date_end);
         
-        $this->form->setValue('suspension',null,$project_person->suspension);
-        $this->form->setValue('suspension_date',null,$project_person->suspension_date);
-        $this->form->setValue('suspension_end',null,$project_person->suspension_end);
-        $this->form->setValue('suspension_detail',null,$project_person->suspension_detail);
-        $this->form->setValue('susp_date_start',null,$project_person->susp_date_start);
-        $this->form->setValue('susp_date_end',null,$project_person->susp_date_end);
+		$this->form->setValue('suspension', null, $project_person->suspension);
+		$this->form->setValue('suspension_date', null, $project_person->suspension_date);
+		$this->form->setValue('suspension_end', null, $project_person->suspension_end);
+		$this->form->setValue('suspension_detail', null, $project_person->suspension_detail);
+		$this->form->setValue('susp_date_start', null, $project_person->susp_date_start);
+		$this->form->setValue('susp_date_end', null, $project_person->susp_date_end);
         
-        $this->form->setValue('away',null,$project_person->away);
-		$this->form->setValue('away_date',null,$project_person->away_date);
-        $this->form->setValue('away_end',null,$project_person->away_end);
-        $this->form->setValue('away_detail',null,$project_person->away_detail);
-        $this->form->setValue('away_date_start',null,$project_person->away_date_start);
-        $this->form->setValue('away_date_end',null,$project_person->away_date_end);
+		$this->form->setValue('away', null, $project_person->away);
+		$this->form->setValue('away_date', null, $project_person->away_date);
+		$this->form->setValue('away_end', null, $project_person->away_end);
+		$this->form->setValue('away_detail', null, $project_person->away_detail);
+		$this->form->setValue('away_date_start', null, $project_person->away_date_start);
+		$this->form->setValue('away_date_end', null, $project_person->away_date_end);
         
         //$matchdays = sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', false);
         
-        $projectpositions = array();
+		$projectpositions = array();
 		$projectpositions[] = JHtml::_('select.option',	'0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
-        $mdlPositions = JModelLegacy::getInstance("Positions", "sportsmanagementModel");
+		$mdlPositions = JModelLegacy::getInstance("Positions", "sportsmanagementModel");
 	    //$project_ref_positions = $mdlPositions->getPlayerPositions($this->project_id);
-        $project_ref_positions = $mdlPositions->getProjectPositions($this->project_id,$this->_persontype);
-        if ( $project_ref_positions )
-        {
-        $projectpositions = array_merge( $projectpositions, $project_ref_positions );
-        }
-        $lists['projectpositions'] = JHtml::_(	'select.genericlist',
-												$projectpositions,
-												'project_position_id',
-												'class="inputbox" size="1"',
-												'value',
+		$project_ref_positions = $mdlPositions->getProjectPositions($this->project_id,	$this->_persontype);
+		
+		if ( $project_ref_positions )
+		{
+		$projectpositions = array_merge( $projectpositions, $project_ref_positions );
+		}
+		$lists['projectpositions'] = JHtml::_(	'select.genericlist', 
+												$projectpositions, 
+												'project_position_id', 
+												'class="inputbox" size="1"', 
+												'value', 
 												'text', $this->item->project_position_id );
 		unset($projectpositions);
         
 
 
 
-        $extended = sportsmanagementHelper::getExtended($item->extended, 'teamplayer');
-		$this->assignRef( 'extended', $extended );
-        $this->assignRef( 'lists', $lists );
+		$extended = sportsmanagementHelper::getExtended($item->extended, 'teamplayer');
+		$this->extended = $extended;
+		$this->lists = $lists;
         //$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($this->project_id,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _persontype<br><pre>'.print_r($this->_persontype,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_team_id<br><pre>'.print_r($this->project_team_id,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($this->team_id,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' season_id<br><pre>'.print_r($this->season_id,true).'</pre>'),'');
-        }
+		if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+		{
+		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($this->project_id,true).'</pre>'),'');
+		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _persontype<br><pre>'.print_r($this->_persontype,true).'</pre>'),'');
+		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_team_id<br><pre>'.print_r($this->project_team_id,true).'</pre>'),'');
+		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($this->team_id,true).'</pre>'),'');
+		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' season_id<br><pre>'.print_r($this->season_id,true).'</pre>'),'');
+		}
  
   
  
@@ -182,8 +184,9 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
        
 //	   // Get a refrence of the page instance in joomla
 //        $document = JFactory::getDocument();
@@ -191,16 +194,16 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 //        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
 	   
-		JRequest::setVar('hidemainmenu', true);
+		$jinput->set('hidemainmenu', true);
         
-        if ( isset($this->item->projectteam_id) )
-        {
-        $app->setUserState( "$option.project_team_id", $this->item->projectteam_id );
-        }
+		if ( isset($this->item->projectteam_id) )
+		{
+		$app->setUserState( "$option.project_team_id", $this->item->projectteam_id );
+		}
         
-        $app->setUserState( "$option.pid", $this->project_id );
-        $app->setUserState( "$option.team_id", $this->team_id );
-        $app->setUserState( "$option.season_id", $this->season_id );
+		$app->setUserState( "$option.pid", $this->project_id );
+		$app->setUserState( "$option.team_id", $this->team_id );
+		$app->setUserState( "$option.season_id", $this->season_id );
         
 		$user = JFactory::getUser();
 		$userId = $user->id;

@@ -61,10 +61,13 @@ class sportsmanagementViewsmextxmleditor extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
         $model = $this->getModel();
-        $this->file_name = JRequest::getVar('file_name');
+		// $data2 = $jinput->getString('file_name', "");
+		// var_dump($data2);
+        $this->file_name = $jinput->getString('file_name', "");
         
         // Initialise variables.
 		$this->form		= $this->get('Form');
@@ -74,7 +77,7 @@ class sportsmanagementViewsmextxmleditor extends sportsmanagementView
        
        //$app->enqueueMessage(JText::_('sportsmanagementViewsmextxmleditor contents<br><pre>'.print_r($this->contents,true).'</pre>'   ),'');
        
-        $this->assignRef('option',$option);
+        $this->option = $option;
         //$this->addToolbar();
 //		parent::display($tpl);
 	}
@@ -86,11 +89,12 @@ class sportsmanagementViewsmextxmleditor extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-		JRequest::setVar('hidemainmenu', true);
-        parent::addToolbar();
-        JToolBarHelper::apply('smextxmleditor.apply');
-        JToolBarHelper::save('smextxmleditor.save');
-        JToolBarHelper::cancel('smextxmleditor.cancel', 'JTOOLBAR_CANCEL');
+		$jinput = JFactory::getApplication()->input;
+				$jinput->set('hidemainmenu', true);
+				parent::addToolbar();
+	JToolBarHelper::apply('smextxmleditor.apply');
+	JToolBarHelper::save('smextxmleditor.save');
+	JToolBarHelper::cancel('smextxmleditor.cancel', 'JTOOLBAR_CANCEL');
 
 //        // Get a refrence of the page instance in joomla
 //		$document	= JFactory::getDocument();
@@ -99,8 +103,8 @@ class sportsmanagementViewsmextxmleditor extends sportsmanagementView
 //
 
 //        // Set toolbar items for the page
-        $this->title = $this->file_name;
-$this->icon = 'xml-edit';
+	$this->title = $this->file_name;
+	$this->icon = 'xml-edit';
 
 //        
 //        JToolBarHelper::apply('smextxmleditor.apply');

@@ -62,32 +62,29 @@ class sportsmanagementViewrosterpositions extends sportsmanagementView
 	public function init ()
 	{
 		$app = JFactory::getApplication();
-    $db = sportsmanagementHelper::getDBConnection();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+		$db = sportsmanagementHelper::getDBConnection();
 		$uri = JFactory::getURI();
 		$document	= JFactory::getDocument();
-    $option = JRequest::getCmd('option');
-    $model = $this->getModel();
+		$model = $this->getModel();
     	
-    $this->state = $this->get('State'); 
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
+		$this->state = $this->get('State');
+		$this->sortDirection = $this->state->get('list.direction');
+		$this->sortColumn = $this->state->get('list.ordering');
 
 		$items = $this->get('Items');
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
         
         $table = JTable::getInstance('rosterposition', 'sportsmanagementTable');
-		$this->assignRef('table', $table);
-        
-
-		$this->assign('user',JFactory::getUser());
-		$this->assignRef('lists',$lists);
-		$this->assignRef('items',$items);
-		$this->assignRef('pagination',$pagination);
-		$this->assign('request_url',$uri->toString());
-        
-        
-
+		
+		$this->table	= $table;
+		$this->user	= JFactory::getUser();
+		$this->lists	= $lists;
+		$this->items	= $items;
+		$this->pagination	= $pagination;
+		$this->request_url	= $uri->toString();
 		
 	}
     
@@ -101,22 +98,23 @@ class sportsmanagementViewrosterpositions extends sportsmanagementView
 	
 // Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_TITLE');
-        	JToolBarHelper::custom('rosterpositions.addhome','new','new',JText::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_HOME'),false);
-		JToolBarHelper::custom('rosterpositions.addaway','new','new',JText::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_AWAY'),false);
+        JToolBarHelper::custom('rosterpositions.addhome', 'new', 'new', JText::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_HOME'), false);
+		JToolBarHelper::custom('rosterpositions.addaway', 'new', 'new', JText::_('COM_SPORTSMAMAGEMENT_ADMIN_ROSTERPOSITIONS_AWAY'), false);
 		JToolBarHelper::editList('rosterposition.edit');
 		//JToolBarHelper::custom('rosterposition.import','upload','upload',JText::_('COM_SPORTSMAMAGEMENT_GLOBAL_CSV_IMPORT'),false);
 		//JToolBarHelper::archiveList('rosterposition.export',JText::_('COM_SPORTSMAMAGEMENT_GLOBAL_XML_EXPORT'));
 		
 		//JToolBarHelper::deleteList('', 'rosterpositions.delete');
-        if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
-        {
-		JToolbarHelper::trash('rosterpositions.trash');
-        }
-        else
-        {
-        JToolBarHelper::deleteList('', 'rosterpositions.delete', 'JTOOLBAR_DELETE');    
-        }
-        JToolbarHelper::checkin('rosterpositions.checkin');
+		if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
+		{
+			JToolbarHelper::trash('rosterpositions.trash');
+		}
+		else
+		{
+			JToolBarHelper::deleteList('', 'rosterpositions.delete', 'JTOOLBAR_DELETE');
+		}
+		
+		JToolbarHelper::checkin('rosterpositions.checkin');
 		parent::addToolbar();  
        
        

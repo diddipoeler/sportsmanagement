@@ -59,13 +59,14 @@ class sportsmanagementViewRound extends sportsmanagementView
 	 */
 	public function init ()
 	{
-	   $option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
 		$uri = JFactory::getURI();
 		$user = JFactory::getUser();
         
-        $this->project_id	= $app->getUserState( "$option.pid", '0' );;
-        $this->project_art_id	= $app->getUserState( "$option.project_art_id", '0' );;
+        $this->project_id	= $app->getUserState( "$option.pid", '0' );
+        $this->project_art_id	= $app->getUserState( "$option.project_art_id", '0' );
         
 		// get the Data
 		$form = $this->get('Form');
@@ -73,16 +74,16 @@ class sportsmanagementViewRound extends sportsmanagementView
 		$script = $this->get('Script');
  
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) 
+		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
         
         //$project_id	= $this->item->project_id;
-        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+        $mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
 	    $project = $mdlProject->getProject($this->project_id);
-        $this->assignRef('project',$this->project_id);
+        $this->project	= $this->project_id);
  
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' info<br><pre>'.print_r($_SERVER['REMOTE_ADDR'],true).'</pre>'   ),'');
         
@@ -91,19 +92,16 @@ class sportsmanagementViewRound extends sportsmanagementView
 		$this->item = $item;
 		$this->script = $script;
         
-        if ( $this->item->id )
-        {
+	if ( $this->item->id )
+	{
             // alles ok
-        }
-        else
-        {
-            $this->form->setValue('round_date_first', null, '0000-00-00');
-            $this->form->setValue('round_date_last', null, '0000-00-00');
-        }
-        
-        $this->form->setValue('project_id', null, $this->project_id);
+	}
+	else
+	{
+		$this->form->setValue('round_date_first', null, '0000-00-00');
+		$this->form->setValue('round_date_last', null, '0000-00-00');
+		$this->form->setValue('project_id', null, $this->project_id);
  
-
 	}
 
 	
@@ -116,8 +114,9 @@ class sportsmanagementViewRound extends sportsmanagementView
 	protected function addToolbar()
 	{
 	
-		JRequest::setVar('hidemainmenu', true);
-        JRequest::setVar('pid', $this->project_id);
+		$jinput = JFactory::getApplication()->input;
+        $jinput->set('hidemainmenu', true);
+        $jinput->set('pid', $this->project_id);
         
         $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ROUND_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ROUND_NEW');
         $this->icon = 'round';
