@@ -102,135 +102,128 @@ function ImportTables()
     $option = JRequest::getCmd('option');
 
 	$imports=file_get_contents(JPATH_ADMINISTRATOR.'/components/'.$option.'/sql/install.mysql.utf8.sql');
-	$imports=preg_replace("%/\*(.*)\*/%Us",'',$imports);
-	$imports=preg_replace("%^--(.*)\n%mU",'',$imports);
-	$imports=preg_replace("%^$\n%mU",'',$imports);
 
-	$imports=explode(';',$imports);
-	foreach ($imports as $import)
-	{
-		$import=trim($import);
-		if (!empty($import))
+$imports=preg_replace("%/\*(.*)\*/%Us",'',$imports);
+		$imports=preg_replace("%^--(.*)\n%mU",'',$imports);
+		$imports=preg_replace("%^$\n%mU",'',$imports);
+	
+		$imports=explode(';',$imports);
+		$cntPanel=0;
+		echo JHtml::_('sliders.start','tables',array(
+						'allowAllClose' => true,
+						'startTransition' => true,
+						true));
+		foreach ($imports as $import)
 		{
-			$DummyStr=$import;
-			$DummyStr=substr($DummyStr,strpos($DummyStr,'`')+1);
-			$DummyStr=substr($DummyStr,0,strpos($DummyStr,'`'));
-			$db->setQuery($import);
-			//$pane =& JPane::getInstance('sliders');
-			//echo $pane->startPane('sliders');
-            echo JHtml::_('sliders.start');
-			//echo $pane->startPanel($DummyStr,$DummyStr);
-            echo JHtml::_('sliders.panel', $DummyStr, $DummyStr);
-            
-			//echo JHtml::_('sliders.start','sliders',array('allowAllClose' => true,'startTransition' => true,true));
-			//echo JHtml::_('sliders.panel',$DummyStr,'panel-'.$DummyStr);
-			
-			//echo "<pre>$import</pre>";
-			echo '<table class="adminlist" style="width:100%; " border="0"><thead><tr><td colspan="2" class="key" style="text-align:center;"><h3>';
-			echo "Checking existence of table [$DummyStr] - <span style='color:";
-				if ($db->query()){echo "green'>".JText::_('Success');}else{echo "red'>".JText::_('Failed');}
-			echo '</span>';
-			echo '</h3></td></tr></thead><tbody>';
-			$DummyStr=$import;
-			$DummyStr=substr($DummyStr,strpos($DummyStr,'`')+1);
-			$tableName=substr($DummyStr,0,strpos($DummyStr,'`'));
-			//echo "<br />$tableName<br />";
-
-			$DummyStr=substr($DummyStr,strpos($DummyStr,'(')+1);
-			$DummyStr=substr($DummyStr,0,strpos($DummyStr,'ENGINE'));
-			$keysIndexes=trim(trim(substr($DummyStr,strpos($DummyStr,'PRIMARY KEY'))),')');
-			$indexes=explode("\r\n",$keysIndexes);
-			if ($indexes[0]==$keysIndexes)
+			$import=trim($import);
+			if (!empty($import))
 			{
-				$indexes=explode("\n",$keysIndexes);
+				$DummyStr=$import;
+				$DummyStr=substr($DummyStr,strpos($DummyStr,'`')+1);
+				$DummyStr=substr($DummyStr,0,strpos($DummyStr,'`'));
+				$db->setQuery($import);
+				$panelName = substr(str_replace('joomleague','',str_replace('_','',$DummyStr)),1);
+				echo JHtml::_('sliders.panel',$DummyStr,'panel-'.$panelName);
+					
+				echo '<table class="adminlist" style="width:100%; " border="0"><thead><tr><td colspan="2" class="key" style="text-align:center;"><h3>';
+				echo "Checking existence of table [$DummyStr] - <span style='color:";
+				if ($db->query()){echo "green'>".JText::_('Success');}else{echo "red'>".JText::_('Failed');}
+				echo '</span>';
+				echo '</h3></td></tr></thead><tbody>';
+				$DummyStr=$import;
+				$DummyStr=substr($DummyStr,strpos($DummyStr,'`')+1);
+				$tableName=substr($DummyStr,0,strpos($DummyStr,'`'));
+	
+				$DummyStr=substr($DummyStr,strpos($DummyStr,'(')+1);
+				$DummyStr=substr($DummyStr,0,strpos($DummyStr,'ENGINE'));
+				$keysIndexes=trim(trim(substr($DummyStr,strpos($DummyStr,'PRIMARY KEY'))),')');
+				$indexes=explode("\r\n",$keysIndexes);
 				if ($indexes[0]==$keysIndexes)
 				{
-					$indexes=explode("\r",$keysIndexes);
-				}
-			}
-			//echo '<pre>'.print_r($indexes,true).'</pre>';
-			//echo '<pre>'.print_r($keysIndexes,true).'</pre>';
-
-			$DummyStr=trim(trim(substr($DummyStr,0,strpos($DummyStr,'PRIMARY KEY'))),',');
-			$fields=explode("\r\n",$DummyStr);
-			if ($fields[0]==$DummyStr)
-			{
-				$fields=explode("\n",$DummyStr);
-				if ($fields[0]==$DummyStr){$fields=explode("\r",$DummyStr);}
-			}
-			//echo '<pre>'.print_r($fields,true).'</pre>';
-
-			$newIndexes=array();
-			$i=(-1);
-			foreach ($indexes AS $index)
-			{
-				$dummy=trim($index,' ,');
-				if (!empty($dummy))
-				{
-					$i++;
-					$newIndexes[$i]=$dummy;
-				}
-			}
-			//echo '<pre>'.print_r($newIndexes,true).'</pre>';
-
-			$newFields=array();
-			$i=(-1);
-			foreach ($fields AS $field)
-			{
-				$dummy=trim($field,' ,');
-				if (!empty($dummy))
-				{
-					$i++;
-					$newFields[$i]=$dummy;
-				}
-			}
-			//echo '<pre>'.print_r($newFields,true).'</pre>';
-
-			$rows=count($newIndexes)+1;
-			echo '<tr><th class="key" style="vertical-align:top; width:10; white-space:nowrap; " rowspan="'.$rows.'">';
-			echo JText::sprintf('Table needs following<br />keys/indexes:',$tableName);
-			echo '</th></tr>';
-			$k=0;
-			foreach ($newIndexes AS $index)
-			{
-				$index=trim($index);
-				echo '<tr class="row'.$k.'"><td>';
-				if (!empty($index)){echo $index;}
-				echo '</td></tr>';
-				$k=(1-$k);
-			}
-
-			$rows=count($newIndexes)+1;
-			echo '<tr><th class="key" style="vertical-align:top; width:10; white-space:nowrap; " rowspan="'.$rows.'">';
-			echo JText::_('Dropping keys/indexes:');
-			echo '</th></tr>';
-            $keys = $db->getTableKeys($tableName);
-			foreach ($newIndexes AS $index)
-			{
-				$query='';
-				$index=trim($index);
-				echo '<tr class="row'.$k.'"><td>';
-				if (substr($index,0,11)!='PRIMARY KEY')
-				{
-					$keyName='';
-					$queryDelete='';
-					if (substr($index,0,3)=='KEY')
+					$indexes=explode("\n",$keysIndexes);
+					if ($indexes[0]==$keysIndexes)
 					{
-						$keyName=substr($index,0,strpos($index,'('));
-						$queryDelete="ALTER TABLE `$tableName` DROP $keyName";
+						$indexes=explode("\r",$keysIndexes);
 					}
-					elseif (substr($index,0,5)=='INDEX')
+				}
+	
+				$DummyStr=trim(trim(substr($DummyStr,0,strpos($DummyStr,'PRIMARY KEY'))),',');
+				$fields=explode("\r\n",$DummyStr);
+				if ($fields[0]==$DummyStr)
+				{
+					$fields=explode("\n",$DummyStr);
+					if ($fields[0]==$DummyStr){$fields=explode("\r",$DummyStr);}
+				}
+	
+				$newIndexes=array();
+				$i=(-1);
+				foreach ($indexes AS $index)
+				{
+					$dummy=trim($index,' ,');
+					if (!empty($dummy))
 					{
-						$keyName=substr($index,0,strpos($index,'('));
-						$queryDelete="ALTER TABLE `$tableName` DROP $keyName";
+						$i++;
+						$newIndexes[$i]=$dummy;
 					}
-					elseif (substr($index,0,6)=='UNIQUE')
+				}
+	
+				$newFields=array();
+				$i=(-1);
+				foreach ($fields AS $field)
+				{
+					$dummy=trim($field,' ,');
+					if (!empty($dummy))
 					{
-						$keyName=trim(substr($index,6));
-						$keyName=substr($keyName,0,strpos($keyName,'('));
-						$queryDelete="ALTER TABLE `$tableName` DROP $keyName";
+						$i++;
+						$newFields[$i]=$dummy;
 					}
-                    $skip = false;
+				}
+	
+				$rows=count($newIndexes)+1;
+				echo '<tr><th class="key" style="vertical-align:top; width:10; white-space:nowrap; " rowspan="'.$rows.'">';
+				echo JText::sprintf('Table needs following<br />keys/indexes:',$tableName);
+				echo '</th></tr>';
+				$k=0;
+				foreach ($newIndexes AS $index)
+				{
+					$index=trim($index);
+					echo '<tr class="row'.$k.'"><td>';
+					if (!empty($index)){echo $index;}
+					echo '</td></tr>';
+					$k=(1-$k);
+				}
+	
+				$rows=count($newIndexes)+1;
+				echo '<tr><th class="key" style="vertical-align:top; width:10; white-space:nowrap; " rowspan="'.$rows.'">';
+				echo JText::_('Dropping keys/indexes:');
+				echo '</th></tr>';
+				$keys = $db->getTableKeys($tableName);
+				foreach ($newIndexes AS $index)
+				{
+					$query='';
+					$index=trim($index);
+					echo '<tr class="row'.$k.'"><td>';
+					if (substr($index,0,11)!='PRIMARY KEY')
+					{
+						$keyName='';
+						$queryDelete='';
+						if (substr($index,0,3)=='KEY')
+						{
+							$keyName=substr($index,0,strpos($index,'('));
+							$queryDelete="ALTER TABLE `$tableName` DROP $keyName";
+						}
+						elseif (substr($index,0,5)=='INDEX')
+						{
+							$keyName=substr($index,0,strpos($index,'('));
+							$queryDelete="ALTER TABLE `$tableName` DROP $keyName";
+						}
+						elseif (substr($index,0,6)=='UNIQUE')
+						{
+							$keyName=trim(substr($index,6));
+							$keyName=substr($keyName,0,strpos($keyName,'('));
+							$queryDelete="ALTER TABLE `$tableName` DROP $keyName";
+						}
+						$skip = false;
 						foreach($keys as $key) {
 							preg_match('/`(.*?)`/', $keyName, $reg);
 							if(strcasecmp($key->Key_name, $reg[1])!==0) {
@@ -239,28 +232,28 @@ function ImportTables()
 								break;
 							}
 						}
-                        if($skip) continue;
-					$db->setQuery($queryDelete);
-					echo "$queryDelete - <span style='color:";
+						if($skip) continue;
+						$db->setQuery($queryDelete);
+						echo "$queryDelete - <span style='color:";
 						if ($db->query()){echo "green'>".JText::_('Success');}else{echo "red'>".JText::_('Failed');}
-					echo '</span>';
+						echo '</span>';
+					}
+					else
+					{
+						echo "<span style='color:orange; '>".JText::sprintf('Skipping handling of %1$s',$index).'</span>';
+					}
+					echo '&nbsp;</td></tr>';
+					$k=(1-$k);
 				}
-				else
+	
+				$rows=count($newFields)+1;
+				echo '<tr><th class="key" style="vertical-align:top; width:10; white-space:nowrap; " rowspan="'.$rows.'">';
+				echo JText::_('Updating fields:');
+				echo '</th></tr>';
+				$columns = $db->getTableColumns($tableName, false);
+				foreach ($newFields AS $field)
 				{
-					echo "<span style='color:orange; '>".JText::sprintf('Skipping handling of %1$s',$index).'</span>';
-				}
-				echo '&nbsp;</td></tr>';
-				$k=(1-$k);
-			}
-
-			$rows=count($newFields)+1;
-			echo '<tr><th class="key" style="vertical-align:top; width:10; white-space:nowrap; " rowspan="'.$rows.'">';
-			echo JText::_('Updating fields:');
-			echo '</th></tr>';
-            $columns = $db->getTableColumns($tableName, false);
-			foreach ($newFields AS $field)
-			{
-				$dFfieldName=substr($field,strpos($field,'`')+1);
+					$dFfieldName=substr($field,strpos($field,'`')+1);
 					$fieldName=substr($dFfieldName,0,strpos($dFfieldName,'`'));
 					$dFieldSetting=substr($dFfieldName,strpos($dFfieldName,'`')+1);
 					echo '<tr class="row'.$k.'"><td>';
@@ -297,39 +290,39 @@ function ImportTables()
 					}
 					echo '&nbsp;</td></tr>';
 					$k=(1-$k);
-			}
-
-			$rows=count($newIndexes)+1;
-			echo '<tr><th class="key" style="vertical-align:top; width:10; white-space:nowrap; " rowspan="'.$rows.'">';
-			echo JText::_('Adding keys/indexes:');
-			echo '</th></tr>';
-            $keys = $db->getTableKeys($tableName);
-			foreach ($newIndexes AS $index)
-			{
-				$query='';
-				$index=trim($index);
-				echo '<tr class="row'.$k.'"><td>';
-				if (substr($index,0,11)!='PRIMARY KEY')
+				}
+	
+				$rows=count($newIndexes)+1;
+				echo '<tr><th class="key" style="vertical-align:top; width:10; white-space:nowrap; " rowspan="'.$rows.'">';
+				echo JText::_('Adding keys/indexes:');
+				echo '</th></tr>';
+				$keys = $db->getTableKeys($tableName);
+				foreach ($newIndexes AS $index)
 				{
-					$keyName='';
-					$queryAdd='';
-					if (substr($index,0,3)=='KEY')
+					$query='';
+					$index=trim($index);
+					echo '<tr class="row'.$k.'"><td>';
+					if (substr($index,0,11)!='PRIMARY KEY')
 					{
-						$keyName=substr($index,0,strpos($index,'('));
-						$queryAdd="ALTER TABLE `$tableName` ADD $index";
-					}
-					elseif (substr($index,0,5)=='INDEX')
-					{
-						$keyName=substr($index,0,strpos($index,'('));
-						$queryAdd="ALTER TABLE `$tableName` ADD $index";
-					}
-					elseif (substr($index,0,6)=='UNIQUE')
-					{
-						$keyName=trim(substr($index,6));
-						$keyName=substr($keyName,0,strpos($keyName,'('));
-						$queryAdd="ALTER TABLE `$tableName` ADD $index";
-					}
-                    $skip = false;
+						$keyName='';
+						$queryAdd='';
+						if (substr($index,0,3)=='KEY')
+						{
+							$keyName=substr($index,0,strpos($index,'('));
+							$queryAdd="ALTER TABLE `$tableName` ADD $index";
+						}
+						elseif (substr($index,0,5)=='INDEX')
+						{
+							$keyName=substr($index,0,strpos($index,'('));
+							$queryAdd="ALTER TABLE `$tableName` ADD $index";
+						}
+						elseif (substr($index,0,6)=='UNIQUE')
+						{
+							$keyName=trim(substr($index,6));
+							$keyName=substr($keyName,0,strpos($keyName,'('));
+							$queryAdd="ALTER TABLE `$tableName` ADD $index";
+						}
+						$skip = false;
 						foreach($keys as $key) {
 							preg_match('/`(.*?)`/', $keyName, $reg);
 							if(strcasecmp($key->Key_name, $reg[1])===0) {
@@ -339,30 +332,30 @@ function ImportTables()
 							}
 						}
 						if($skip) continue;
-					$db->setQuery($queryAdd);
-					echo "$queryAdd - <span style='color:";
+						$db->setQuery($queryAdd);
+						echo "$queryAdd - <span style='color:";
 						if ($db->query()){echo "green'>".JText::_('Success');}else{echo "red'>".JText::_('Failed');}
-					echo '</span>';
+						echo '</span>';
+					}
+					else
+					{
+						echo "<span style='color:orange; '>".JText::sprintf('Skipping handling of %1$s',$index).'</span>';
+					}
+					echo '&nbsp;</td></tr>';
+					$k=(1-$k);
 				}
-				else
-				{
-					echo "<span style='color:orange; '>".JText::sprintf('Skipping handling of %1$s',$index).'</span>';
-				}
-				echo '&nbsp;</td></tr>';
-				$k=(1-$k);
+				echo '</tbody></table>';
+				unset($newIndexes);
+				unset($newFields);
+					
 			}
-			echo '</tbody></table>';
-			unset($newIndexes);
-			unset($newFields);
-			
-			//echo $pane->endPanel();
-			//echo $pane->endPane();
-            echo JHtml::_('sliders.end');
-      //echo JHtml::_('sliders.end');
+			unset($import);
 		}
-		unset($import);
-	}
-	return '';
+		echo JHtml::_('sliders.end');
+		return '';
+
+
+
 }
 
 ?>
@@ -373,8 +366,8 @@ function ImportTables()
 	$mtime=$mtime[1] + $mtime[0];
 	$starttime=$mtime;
 
-	JToolBarHelper::title(JText::_('JoomLeage - Database update process'));
-	echo '<h2>'.JText::sprintf(	'JoomLeague v%1$s - %2$s - Filedate: %3$s / %4$s',
+	JToolBarHelper::title(JText::_('JSM Sportsmanagement - Database update process'));
+	echo '<h2>'.JText::sprintf(	'JSM Sportsmanagement v%1$s - %2$s - Filedate: %3$s / %4$s',
 								$version,$updateDescription,$updateFileDate,$updateFileTime).'</h2>';
 	$totalUpdateParts = 2;
 	setUpdatePart();

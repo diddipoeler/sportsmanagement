@@ -602,6 +602,8 @@ class sportsmanagementModelProject extends JModelAdmin
 	public function saveshort()
 	{
 		$app = JFactory::getApplication();
+        $date = JFactory::getDate();
+              
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -632,6 +634,8 @@ class sportsmanagementModelProject extends JModelAdmin
 			$tblProject->id = $pks[$x];
             $tblProject->project_type	= $post['project_type'.$pks[$x]];
             $tblProject->agegroup_id	= $post['agegroup'.$pks[$x]];
+            $tblProject->modified = $date->toSql();
+            $tblProject->modified_timestamp = sportsmanagementHelper::getTimestamp($date->toSql());
 
 			if(!$tblProject->store()) 
             {
@@ -675,6 +679,8 @@ class sportsmanagementModelProject extends JModelAdmin
        $data['agegroup_id'] = $data['request']['agegroup_id'];
        
        $data['fav_team'] = implode(',',$post['jform']['fav_team']);
+       
+       $data['modified_timestamp'] = sportsmanagementHelper::getTimestamp($data['modified']);
        
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{

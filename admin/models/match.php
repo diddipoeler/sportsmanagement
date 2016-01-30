@@ -660,6 +660,8 @@ static $_project_id = 0;
             $object->team2_single_games = $post['team2_single_games'.$pks[$x]];
             $object->content_id = $post['content_id'.$pks[$x]];
             
+            $object->match_timestamp = sportsmanagementHelper::getTimestamp($object->match_date);
+            
             if ( $post['use_legs'] )
             {
                 foreach ( $post['team1_result_split'.$pks[$x]] as $key => $value )
@@ -826,6 +828,8 @@ static $_project_id = 0;
         $data['team2_result_decision'] = $post['team2_result_decision'];
         $data['decision_info'] = $post['decision_info'];
         $data['team_won'] = $post['team_won'];
+        
+        $data['match_timestamp'] = sportsmanagementHelper::getTimestamp($data['match_date']);
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         

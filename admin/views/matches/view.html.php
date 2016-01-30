@@ -237,7 +237,8 @@ class sportsmanagementViewMatches extends sportsmanagementView
 		unset($divisions);
         
         $document->addScript(JURI::base().'components/'.$option.'/assets/js/matches.js');
-        
+
+        $selectlist = array();
         if ( isset($table_info['#__sportsmanagement_match']) )
         {
         foreach ($table_info['#__sportsmanagement_match'] as $field => $value )
