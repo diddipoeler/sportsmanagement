@@ -348,7 +348,8 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_match` (
   KEY `projectteam2_id` (`projectteam2_id`),
   KEY `playground_id` (`playground_id`),
   KEY `new_match_id` (`new_match_id`),
-  KEY `old_match_id` (`old_match_id`)
+  KEY `old_match_id` (`old_match_id`),
+  KEY `match_timestamp` (`match_timestamp`)
   )
 ENGINE = MyISAM
 DEFAULT CHARSET = utf8;
@@ -796,11 +797,13 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project` (
   `hits` INT(11) NOT NULL DEFAULT '0' ,
   `modified_hits` INT(11) NOT NULL DEFAULT '0' ,
   `cr_picture` varchar(255) DEFAULT NULL,
+  `modified_timestamp` INT( 11 ) NOT NULL DEFAULT  '0',
   PRIMARY KEY (`id`) ,
   KEY `league_id` (`league_id`),
   KEY `season_id` (`season_id`),
   KEY `sub_template_id` (`sub_template_id`),
   KEY `sports_type_id` (`sports_type_id`),
+  KEY `modified_timestamp` (`modified_timestamp`),
   UNIQUE INDEX `name, league, season` (`name` ASC, `league_id` ASC, `season_id` ASC)
   )
 ENGINE = MyISAM
