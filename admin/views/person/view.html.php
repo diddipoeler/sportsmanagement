@@ -62,14 +62,14 @@ class sportsmanagementViewPerson extends sportsmanagementView
 	public function init ()
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+	$app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $model = $this->getModel();
-        $option = $jinput->getCmd('option');
+	$jinput = $app->input;
+	$model = $this->getModel();
+	$option = $jinput->getCmd('option');
         // Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-        $starttime = microtime(); 
+	$document = JFactory::getDocument();
+	$starttime = microtime();
         
     // get the Data
 		$form = $this->get('Form');
@@ -133,47 +133,48 @@ class sportsmanagementViewPerson extends sportsmanagementView
         }
         
         $extended = sportsmanagementHelper::getExtended($item->extended, 'person');
-		$this->assignRef( 'extended', $extended );
+		$this->extended =  $extended;
         $extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'person');		
-		$this->assignRef( 'extendeduser', $extendeduser );
+		$this->extendeduser = $extendeduser;
 
 		//$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
  
-    $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
-        if ( $this->checkextrafields )
-        {
-            $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($item->id);
+	$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields();
+	if ( $this->checkextrafields )
+	{
+	$lists = array();
+	$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($item->id);
             //$app->enqueueMessage(JText::_('view -> '.'<pre>'.print_r($lists['ext_fields'],true).'</pre>' ),'');
         }
         
-    $this->assignRef('lists',$lists);
+	$this->lists = $lists;
+	unset($lists);
     
-    
-    $person_age = sportsmanagementHelper::getAge($this->form->getValue('birthday'),$this->form->getValue('deathday'));
+	$person_age = sportsmanagementHelper::getAge($this->form->getValue('birthday'),$this->form->getValue('deathday'));
 //    $app->enqueueMessage(JText::_('personagegroup person_age<br><pre>'.print_r($person_age,true).'</pre>'   ),'');
-    $person_range = $model->getAgeGroupID($person_age);
+	$person_range = $model->getAgeGroupID($person_age);
 //    $app->enqueueMessage(JText::_('personagegroup person_range<br><pre>'.print_r($person_range,true).'</pre>'   ),'');
-    if ( $person_range )
-    {
-        $this->form->setValue('agegroup_id', null, $person_range);
-    }
+	if ( $person_range )
+ 	{
+	$this->form->setValue('agegroup_id', null, $person_range);
+	}
     
-    $document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');
+ 	$document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');
     
-    $javascript = "\n";
-    $javascript .= "window.addEvent('domready', function() {";   
-    $javascript .= 'StartEditshowPersons('.$form->getValue('request_person_art').');' . "\n"; 
-    $javascript .= '});' . "\n"; 
-    $document->addScriptDeclaration( $javascript );
+ 	$javascript = "\n";
+ 	$javascript .= "window.addEvent('domready', function() {";   
+	$javascript .= 'StartEditshowPersons('.$form->getValue('request_person_art').');' . "\n"; 
+	$javascript .= '});' . "\n"; 
+	$document->addScriptDeclaration( $javascript );
     
     // Load the language files for the contact integration
-		$jlang = JFactory::getLanguage();
-		$jlang->load('com_contact', JPATH_ADMINISTRATOR, 'en-GB', true);
-		$jlang->load('com_contact', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
-		$jlang->load('com_contact', JPATH_ADMINISTRATOR, null, true);
+	$jlang = JFactory::getLanguage();
+	$jlang->load('com_contact', JPATH_ADMINISTRATOR, 'en-GB', true);
+	$jlang->load('com_contact', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
+	$jlang->load('com_contact', JPATH_ADMINISTRATOR, null, true);
         
-        $document->addScript('http://maps.google.com/maps/api/js?&sensor=false&language=de');
-        $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
+	$document->addScript('http://maps.google.com/maps/api/js?&sensor=false&language=de');
+	$document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
     
 	}
  
@@ -186,13 +187,13 @@ class sportsmanagementViewPerson extends sportsmanagementView
 	protected function addToolBar() 
 	{
   	        
-		$jinput = JFactory::getApplication()->input;
-        $jinput->set('hidemainmenu', true);
+	$jinput = JFactory::getApplication()->input;
+	$jinput->set('hidemainmenu', true);
 	
-        $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_PERSON_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_PERSON_NEW');
-        $this->icon = 'person';
+	$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_PERSON_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_PERSON_NEW');
+	$this->icon = 'person';
     
-        parent::addToolbar();
+	parent::addToolbar();
         
 	}
     

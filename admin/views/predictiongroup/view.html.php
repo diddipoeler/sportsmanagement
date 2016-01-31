@@ -61,12 +61,19 @@ class sportsmanagementViewpredictiongroup extends sportsmanagementView
 	public function init ()
 	{
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+		$uri 	= JFactory::getURI();
+		$user 	= JFactory::getUser();
+		$model	= $this->getModel();
 
+/*
 		if ($this->getLayout() == 'form')
 		{
 			$this->_displayForm($tpl);
 			return;
 		}
+*/
 
 		// get the Data
 		$form = $this->get('Form');
@@ -99,13 +106,13 @@ class sportsmanagementViewpredictiongroup extends sportsmanagementView
 	protected function addToolbar()
 	{	
 	   
-		J$jinput = JFactory::getApplication()->input;
-        $jinput->set('hidemainmenu', true);
+	$jinput = JFactory::getApplication()->input;
+	$jinput->set('hidemainmenu', true);
         
-        $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_PREDICTION_GROUP_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_PREDICTION_GROUP_NEW');
-        $this->icon = 'pgame';
-  
-          parent::addToolbar();  	      
+	$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_PREDICTION_GROUP_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_PREDICTION_GROUP_NEW');
+	$this->icon = 'pgame';
+
+	parent::addToolbar();  	      
 	}
     
    
