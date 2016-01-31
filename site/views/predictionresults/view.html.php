@@ -56,24 +56,19 @@ require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewPredictionResults extends JViewLegacy
+class sportsmanagementViewPredictionResults extends sportsmanagementView
 {
-	/**
-	 * sportsmanagementViewPredictionResults::display()
-	 * 
-	 * @param mixed $tpl
-	 * @return
-	 */
-	function display($tpl=null)
+	
+	function init()
 	{
-		// Get a refrence of the page instance in joomla
-		$document = JFactory::getDocument();
-		$model = $this->getModel();
-    $option = JRequest::getCmd('option');
-    //$optiontext = strtoupper(JRequest::getCmd('option').'_');
-    //$this->assignRef( 'optiontext',			$optiontext );
-    
-		$app = JFactory::getApplication();
+		//// Get a refrence of the page instance in joomla
+//		$document = JFactory::getDocument();
+//		$model = $this->getModel();
+//    $option = JRequest::getCmd('option');
+//    //$optiontext = strtoupper(JRequest::getCmd('option').'_');
+//    //$this->assignRef( 'optiontext',			$optiontext );
+//    
+//		$app = JFactory::getApplication();
 
 		$this->predictionGame = sportsmanagementModelPrediction::getPredictionGame();
         $this->allowedAdmin = sportsmanagementModelPrediction::getAllowed();
@@ -88,7 +83,7 @@ class sportsmanagementViewPredictionResults extends JViewLegacy
 
       //$this->assignRef('debuginfo',	$model->getDebugInfo());
       
-			$this->model = $model;
+			//$this->model = $model;
 			$this->roundID = sportsmanagementModelPredictionResults::$roundID;
 			$this->config = array_merge($overallConfig,$config);
             $model->config = $this->config;
@@ -131,9 +126,9 @@ if ( !isset($this->config['table_class']) )
 $this->config['table_class'] = 'table';    
 }
 
-			$document->setTitle($pageTitle);
+			$this->document->setTitle($pageTitle);
 
-			parent::display($tpl);
+			//parent::display($tpl);
 		}
 		else
 		{

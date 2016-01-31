@@ -55,15 +55,10 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewpredictionranking extends JViewLegacy
+class sportsmanagementViewpredictionranking extends sportsmanagementView
 {
-	/**
-	 * sportsmanagementViewpredictionranking::display()
-	 * 
-	 * @param mixed $tpl
-	 * @return
-	 */
-	function display($tpl=null)
+	
+	function init()
 	{
 		// Get a refrence of the page instance in joomla
     $app = JFactory::getApplication();
@@ -74,20 +69,20 @@ class sportsmanagementViewpredictionranking extends JViewLegacy
 		$model		= $this->getModel();
     $option = JRequest::getCmd('option');
     //$optiontext = strtoupper(JRequest::getCmd('option').'_');
-//    $this->assignRef( 'optiontext',			$optiontext );
 
-		$this->assign('predictionGame',sportsmanagementModelPrediction::getPredictionGame());
-        $this->assign('allowedAdmin',sportsmanagementModelPrediction::getAllowed());
 
-    // Get data from the model
- 	$items = $this->get('Data');	
- 	$pagination = $this->get('Pagination');
+		$this->predictionGame = sportsmanagementModelPrediction::getPredictionGame();
+        $this->allowedAdmin = sportsmanagementModelPrediction::getAllowed();
+
+    //// Get data from the model
+// 	$items = $this->get('Data');	
+// 	$pagination = $this->get('Pagination');
  
 	// push data into the template
-	$this->assignRef('items', $items);	
-	$this->assignRef('pagination', $pagination);
+	$this->items = $this->get('Data');	
+	$this->pagination =$this->get('Pagination');
     
-    $this->assign('headertitle', JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_TITLE'));
+    $this->headertitle = JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_TITLE');
 		
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' items<br><pre>'.print_r($this->items,true).'</pre>'),'');
         
@@ -100,17 +95,17 @@ class sportsmanagementViewpredictionranking extends JViewLegacy
       
       //$this->assignRef('debuginfo',	$model->getDebugInfo());
       
-			$this->assignRef('model', $model);
-			$this->assignRef('roundID', sportsmanagementModelPrediction::$roundID);
+			//$this->assignRef('model', $model);
+			$this->roundID = sportsmanagementModelPrediction::$roundID;
 			//$this->assignRef('config',				array_merge($overallConfig,$config));
-      $this->assignRef('configavatar', $configavatar );
-      $this->assignRef('configentries', $configentries );
+      $this->configavatar = $configavatar;
+      $this->configentries = $configentries;
       //array_merge($configentries,$config);
-      $this->assign('config', array_merge($overallConfig,$config));
+      $this->config = array_merge($overallConfig,$config);
       
-			$this->assign('predictionMember', sportsmanagementModelPrediction::getPredictionMember($configavatar));
-			$this->assign('predictionProjectS',	sportsmanagementModelPrediction::getPredictionProjectS());
-			$this->assign('actJoomlaUser', JFactory::getUser());
+			$this->predictionMember = sportsmanagementModelPrediction::getPredictionMember($configavatar);
+			$this->predictionProjectS = sportsmanagementModelPrediction::getPredictionProjectS();
+			$this->actJoomlaUser = JFactory::getUser();
 			
 			//echo '<br /><pre>~' . print_r( $this->config, true ) . '~</pre><br />';
             
@@ -127,7 +122,7 @@ class sportsmanagementViewpredictionranking extends JViewLegacy
 			$lists['type'] = $type_array;
 			unset($type_array);
 
-			$this->assignRef('lists',$lists);
+			$this->lists = $lists;
       //$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
 			// Set page title
 			$pageTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_TITLE');
@@ -139,16 +134,16 @@ class sportsmanagementViewpredictionranking extends JViewLegacy
       }
       
       $map_config = $mdlProject->getMapConfig($mdlProject::$cfg_which_database);
-		  $this->assignRef('mapconfig',$map_config ); // Loads the project-template -settings for the GoogleMap
+		  $this->mapconfig = $map_config; // Loads the project-template -settings for the GoogleMap
 			
-      $this->assign('PredictionMembersList',sportsmanagementModelPrediction::getPredictionMembersList($this->config,$this->configavatar) );
+      $this->PredictionMembersList = sportsmanagementModelPrediction::getPredictionMembersList($this->config,$this->configavatar);
       
       $this->geo = new JSMsimpleGMapGeocoder();
 	    $this->geo->genkml3prediction($this->predictionGame->id,$this->PredictionMembersList);
 	  
 			$document->setTitle($pageTitle);
 
-			parent::display($tpl);
+			//parent::display($tpl);
 		}
 		else
 		{
