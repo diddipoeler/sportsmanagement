@@ -1,6 +1,10 @@
 <?php
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
+// Include library dependencies
+//jimport('joomla.filter.input');
+
+jimport('joomla.filter.output');
 
 $uri	= JFactory::getUri();
 
@@ -32,24 +36,20 @@ window.location = oldLocation + '&table=' + sData ;
 </script>
 <?PHP
 
-
-
-$version			= '2.1.12';
-$updateFileDate		= '2013-08-23';
-$updateFileTime		= '23:10';
-$updateDescription	='<span style="color:orange">Update Alias Fields JoomLeague v 2.1.12</span>';
+$version			= '1.0.53';
+$updateFileDate		= '2016-02-01';
+$updateFileTime		= '00:05';
+$updateDescription	='<span style="color:orange">Update Alias Fields.</span>';
 $excludeFile		='false';
 
-//require_once( JPATH_ADMINISTRATOR.'/components/com_joomleague/'. 'helpers' . DS . 'jinstallationhelper.php' );
-
-$maxImportTime=JComponentHelper::getParams('com_joomleague')->get('max_import_time',0);
+$maxImportTime=JComponentHelper::getParams('com_sportsmanagement')->get('max_import_time',0);
 if (empty($maxImportTime))
 {
 	$maxImportTime=880;
 }
 if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImportTime);}
 
-$maxImportMemory=JComponentHelper::getParams('com_joomleague')->get('max_import_memory',0);
+$maxImportMemory=JComponentHelper::getParams('com_sportsmanagement')->get('max_import_memory',0);
 if (empty($maxImportMemory))
 {
 	$maxImportMemory='150M';
@@ -57,7 +57,7 @@ if (empty($maxImportMemory))
 if ((int)ini_get('memory_limit') < (int)$maxImportMemory){ini_set('memory_limit',$maxImportMemory);}
 
 
-$db =& sportsmanagementHelper::getDBConnection();
+$db = sportsmanagementHelper::getDBConnection();
 
 
 if ( $table )
@@ -66,34 +66,26 @@ if ( $table )
 switch ($table)
 {
 case 'person':
-$query="SELECT id, firstname, lastname
-	       	FROM #__joomleague_".$table." 
-            ";
+
+$query = $db->getQuery(true);
+ 
+// Fields to update.
+$fields = array(
+    $db->quoteName('alias') . ' = ' . JFilterOutput::stringURLSafe( 'firstname' ).'-'.JFilterOutput::stringURLSafe( 'lastname' )
+);
+ 
+// Conditions for which records should be updated.
+$conditions = array(
+    $db->quoteName('id') . ' <> 0'
+);
+ 
+$query->update($db->quoteName('#__sportsmanagement_'.$table))->set($fields)->where($conditions);
+ 
 $db->setQuery($query);
-$result = $db->loadObjectList();
-echo '<br>';
-foreach ( $result as $row )
-{
-$parts = array( trim( $row->firstname ), trim( $row->lastname ) );
-$alias= JFilterOutput::stringURLSafe( implode( ' ', $parts ) );
-$row->alias = JFilterOutput::stringURLSafe( $alias );
-
-echo "<span style='color:orange; '>".JText::sprintf('ID-> %1$s Vorname-> %2$s Nachname-> %3$s Alias-> %4$s <br>',$row->id,$row->firstname,$row->lastname,$row->alias).'</span>';
+ 
+$result = $db->execute();
 
 
-$tbl = JTable::getInstance($table, "Table");
-$tbl->load($row->id);   
-$tbl->alias = $row->alias;
-if (!$tbl->store())
-{
-echo 'fehler beim speichern der personendaten <br>';
-} 
-else
-{
-echo "<span style='color:green; '>".JText::sprintf('update: %1$s <br>','OK').'</span>';    
-}
-
-}
 break;
 
 
@@ -105,32 +97,26 @@ case 'playground':
 case 'division':
 case 'project':
 case 'round':
-$query="SELECT id, name
-	       	FROM #__joomleague_".$table." 
-            ";
+
+$query = $db->getQuery(true);
+ 
+// Fields to update.
+$fields = array(
+    $db->quoteName('alias') . ' = ' . JFilterOutput::stringURLSafe( 'name' )
+);
+ 
+// Conditions for which records should be updated.
+$conditions = array(
+    $db->quoteName('id') . ' <> 0'
+);
+ 
+$query->update($db->quoteName('#__sportsmanagement_'.$table))->set($fields)->where($conditions);
+ 
 $db->setQuery($query);
-$result = $db->loadObjectList();
-echo '<br>';
-foreach ( $result as $row )
-{
-$row->alias = JFilterOutput::stringURLSafe( $row->name );
-
-echo "<span style='color:orange; '>".JText::sprintf('ID-> %1$s Name-> %2$s Alias-> %3$s<br>',$row->id,$row->name,$row->alias).'</span>';
+ 
+$result = $db->execute();
 
 
-$tbl = JTable::getInstance($table, "Table");
-$tbl->load($row->id);   
-$tbl->alias = $row->alias;
-if (!$tbl->store())
-{
-echo 'fehler beim speichern<br>';
-} 
-else
-{
-echo "<span style='color:green; '>".JText::sprintf('update: %1$s <br>','OK').'</span>';    
-}
-
-}
 break;
 
 }

@@ -73,7 +73,7 @@ class sportsmanagementViewPredictionTemplate extends sportsmanagementView
 		$app = JFactory::getApplication();
 		$model = $this->getModel();
 		$lists = array();
-		$starttime = microtime();
+		$starttime = microtime(); 
 		$item = $this->get('Item');
 		$this->item = $item;
         
@@ -111,14 +111,14 @@ class sportsmanagementViewPredictionTemplate extends sportsmanagementView
 	protected function addToolbar()
 	{
 		
-	 $jinput = JFactory::getApplication()->input;
-	  $jinput->set('hidemainmenu', true);
-	$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATE_NEW');
-	$this->icon = 'predtemplate';
+        $jinput = JFactory::getApplication()->input;
+        $jinput->set('hidemainmenu', true);
+        $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATE_NEW');
+        $this->icon = 'predtemplate';
         
-	$this->item->name = $this->item->template;
+        $this->item->name = $this->item->template;
 
-	parent::addToolbar();
+        parent::addToolbar();
 
 	}		
 	
