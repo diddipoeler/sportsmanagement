@@ -111,7 +111,7 @@ class sportsmanagementViewPredictionTemplate extends sportsmanagementView
 	protected function addToolbar()
 	{
 		
-        J$jinput = JFactory::getApplication()->input;
+        $jinput = JFactory::getApplication()->input;
         $jinput->set('hidemainmenu', true);
         $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATE_NEW');
         $this->icon = 'predtemplate';
