@@ -136,6 +136,7 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 
 
 		//build the html select list for prediction games
+		$predictions = array();
 		$predictions[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME' ) . ' -', 'value', 'text' );
 		if ( $res = $mdlPredictionGames->getPredictionGames() ) 
 		{ 
@@ -146,16 +147,14 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 
           
 		$lists['predictions'] = JHtml::_(	'select.genericlist', 
-											$predictions, 
-											'filter_prediction_id', 
-											'class="inputbox" onChange="this.form.submit();" ', 
-											'value', 
-											'text', 
-											$this->state->get('filter.prediction_id')
-										);
+								$predictions, 
+								'filter_prediction_id', 
+								'class="inputbox" onChange="this.form.submit();" ', 
+								'value', 
+								'text', 
+								$this->state->get('filter.prediction_id')
+								);
 
-                                        
-		unset( $res );
 
         
         $this->user	= JFactory::getUser();
@@ -165,8 +164,10 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 		$this->pagination	= $pagination;
 		$this->predictiongame	= $predictiongame;
 		$this->request_url	= $uri->toString();
-        
-        
+       
+		unset( $res );
+		unset( $predictions );
+		unset( $lists );
         
 	}
     

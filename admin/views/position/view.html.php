@@ -102,19 +102,21 @@ class sportsmanagementViewPosition extends sportsmanagementView
 		$this->script = $script;
         
         //build the html options for parent position
+        		$parent_id = array();
 		$parent_id[] = JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'));
 		$mdlPositions = JModelLegacy::getInstance('Positions', 'sportsmanagementModel');
 	    
         if ($res = $mdlPositions->getParentsPositions())
 		{
 			foreach ($res as $re)
-            {
-                $re->text = JText::_($re->text);
-            }
+	{
+	$re->text = JText::_($re->text);
+	}
 			$parent_id = array_merge($parent_id,$res);
 		}
 		
-        $lists['parents'] = JHtml::_('select.genericlist', $parent_id, 'parent_id', 'class="inputbox" size="1"', 'value', 'text', $this->item->parent_id);
+	$lists = array();
+	$lists['parents'] = JHtml::_('select.genericlist', $parent_id, 'parent_id', 'class="inputbox" size="1"', 'value', 'text', $this->item->parent_id);
         
 		unset($parent_id);
         
@@ -166,7 +168,7 @@ class sportsmanagementViewPosition extends sportsmanagementView
 		}
 		else
 		{
-			$notusedevents=$res1;
+			$notusedevents = $res1;
 		}
 
     
@@ -221,15 +223,15 @@ class sportsmanagementViewPosition extends sportsmanagementView
         }                
         else
 		{
-		      $lists['statistic'] = '<select name="statistic[]" id="statistic" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
+			$lists['statistic'] = '<select name="statistic[]" id="statistic" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
 		}
                         
-        $document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/sm_functions.js');
+		$document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/sm_functions.js');
         
-        $this->lists	= $lists;
+		$this->lists = $lists;
+	unset($lists);
         //$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
- 
-	
+        	
 	}
  
 	
@@ -241,14 +243,14 @@ class sportsmanagementViewPosition extends sportsmanagementView
 	protected function addToolBar() 
 	{
 	
-		$jinput = JFactory::getApplication()->input;
-        $jinput->set('hidemainmenu', true);
+	$jinput = JFactory::getApplication()->input;
+	$jinput->set('hidemainmenu', true);
         
-        $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_POSITION_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_POSITION_NEW');
-        $this->icon = 'position';
+	$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_POSITION_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_POSITION_NEW');
+	$this->icon = 'position';
         
 
-		parent::addToolbar();
+	parent::addToolbar();
         
 	}
     

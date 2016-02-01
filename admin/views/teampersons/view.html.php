@@ -167,13 +167,14 @@ class sportsmanagementViewteampersons extends sportsmanagementView
 	    $project_team = $mdlProjectTeam->getProjectTeam($this->team_id);
         
         //build the html options for position
+        		$position_id = array();
 		$position_id[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PLAYER_FUNCTION'));
         $mdlPositions = JModelLegacy::getInstance('Positions', 'sportsmanagementModel');
         
 		if ( $this->_persontype == 1 )
 		{
 	    //$project_ref_positions = $mdlPositions->getPlayerPositions($this->project_id);
-		$project_ref_positions = $mdlPositions->getProjectPositions($this->project_id,$this->_persontype);
+		$project_ref_positions = $mdlPositions->getProjectPositions($this->project_id, $this->_persontype);
 		}
 		elseif ( $this->_persontype == 2 )
 		{
@@ -185,7 +186,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView
 		{
 		$position_id = array_merge($position_id,$project_ref_positions);
 		}
-		
+		$lists = array();
 		$lists['project_position_id'] = $position_id;
 		unset($position_id);
 
