@@ -70,6 +70,7 @@ var $_identifier = "allplaygrounds";
         $app = JFactory::getApplication();
         // JInput object
         $jinput = $app->input;
+        $this->use_current_season = $jinput->getVar('use_current_season', '0','request','string');
             $this->limitstart = $jinput->getVar('limitstart', 0, '', 'int');
                 $config['filter_fields'] = array(
                         'v.name',

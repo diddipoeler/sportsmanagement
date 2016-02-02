@@ -43,7 +43,7 @@ defined('_JEXEC') or die('Restricted access');
 
 
 ?>
-        
+<div class="table-responsive">        
 <table class="<?php echo $this->tableclass; ?>">
 
 <thead>
@@ -97,7 +97,7 @@ sortDirection, $this->sortColumn); ?>
 </tr>
 <?php endforeach; ?>
 </table>
-
+</div>
 
 <div class="pagination">
 <p class="counter">

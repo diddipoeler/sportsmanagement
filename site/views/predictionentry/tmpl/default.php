@@ -46,7 +46,9 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('globalviews','predictionheading');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
-?><div class='container'><?php
+?>
+<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
+<?php
 
 	echo $this->loadTemplate('predictionheading');
 	echo $this->loadTemplate('sectionheader');
@@ -63,7 +65,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		}
 		else
 		{
-			if ($this->isNewMember){echo $this->loadTemplate('view_welcome');}
+			if ($this->isNewMember)
+            {
+                echo $this->loadTemplate('view_welcome');
+                }
 
 			if (!$this->tippEntryDone)
 			{
@@ -72,7 +77,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     echo $this->model->createHelptText($predictionProject->mode);
                 }
                 echo $this->loadTemplate('view_tippentry_do');
-                echo $this->loadTemplate('matchday_nav');
+                //echo $this->loadTemplate('matchday_nav');
             if (($this->config['show_help']==1)||($this->config['show_help']==2))
 			{
 				echo $this->model->createHelptText($predictionProject->mode);
@@ -88,11 +93,17 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
   
 //  echo $this->loadTemplate('matchday_nav');
 	
-    echo '<div>';
-		//backbutton
-		echo $this->loadTemplate('backbutton');
-		// footer
-		echo $this->loadTemplate('footer');
-	echo '</div>';
+?>
+<div>
+<?PHP
+//backbutton
+echo $this->loadTemplate('backbutton');
+// footer
+echo $this->loadTemplate('footer');
+?>
+</div>
+<?PHP
 
-?></div>
+?>
+
+</div>

@@ -90,17 +90,18 @@ class sportsmanagementViewallprojects extends sportsmanagementView
 		$user		= JFactory::getUser();
         $starttime = microtime(); 
         $inputappend = '';
-        $this->tableclass = $jinput->getVar('table_class', 'table','request','string');
+        $this->tableclass = $this->jinput->getVar('table_class', 'table','request','string');
+        //$this->use_current_season = $this->jinput->getVar('use_current_season', '0','request','string');
 
-		$state 		= $this->get('State');
-		$items 		= $this->get('Items');
+		$this->state 		= $this->get('State');
+		$this->items 		= $this->get('Items');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		$pagination	= $this->get('Pagination');
+		$this->pagination	= $this->get('Pagination');
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' state<br><pre>'.print_r($state,true).'</pre>'),'');
 		
@@ -117,12 +118,13 @@ class sportsmanagementViewallprojects extends sportsmanagementView
 																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
 																'value',
 																'text',
-																$state->get('filter.search_nation'));
+																$this->state->get('filter.search_nation'));
                                                                 
         unset($temp);
         
         $temp[] = JHtml::_('select.option','',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_LEAGUES'),'id','name' );
-		if ($res = sportsmanagementModelLeagues::getLeagues())
+        $modeltemp = JModelLegacy::getInstance("Leagues", "sportsmanagementModel");
+		if ($res = $modeltemp->getLeagues())
         {
             $temp = array_merge($temp,$res);
             }
@@ -133,12 +135,13 @@ class sportsmanagementViewallprojects extends sportsmanagementView
 																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
 																'id',
 																'name',
-																$state->get('filter.search_leagues'));
+																$this->state->get('filter.search_leagues'));
                                                                 
         unset($temp);
         
         $temp[] = JHtml::_('select.option','',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SEASONS'),'id','name' );
-		if ($res = sportsmanagementModelSeasons::getSeasons())
+        $modeltemp = JModelLegacy::getInstance("Seasons", "sportsmanagementModel");
+		if ($res = $modeltemp->getSeasons())
         {
             $temp = array_merge($temp,$res);
             }
@@ -149,24 +152,24 @@ class sportsmanagementViewallprojects extends sportsmanagementView
 																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
 																'id',
 																'name',
-																$state->get('filter.search_seasons'));
+																$this->state->get('filter.search_seasons'));
                                                                 
         unset($temp);
         
         // Set page title
-		$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ALLPROJECTS_PAGE_TITLE'));
+		$this->document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ALLPROJECTS_PAGE_TITLE'));
         
         $form = new stdClass();
-        $form->limitField = $pagination->getLimitBox();
+        $form->limitField = $this->pagination->getLimitBox();
         
-        $this->filter = $state->get('filter.search');
+        $this->filter = $this->state->get('filter.search');
                
       
 		$this->form = $form;
-		$this->items = $items;
-		$this->state = $state;
+		//$this->items = $items;
+		//$this->state = $state;
 		$this->user = $user;
-		$this->pagination = $pagination;
+		//$this->pagination = $pagination;
         
         $this->sortDirection    = $this->state->get('filter_order_Dir');
         $this->sortColumn       = $this->state->get('filter_order');

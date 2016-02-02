@@ -42,13 +42,15 @@ defined('_JEXEC') or die('Restricted access');
 //echo '<pre>'.print_r($this->items,true).'</pre>';
 
 ?>
-        
+<div class="table-responsive">        
 <table class="<?php echo $this->tableclass;?>">
 
 <thead>
 <tr>
 
 <?PHP
+if ( $this->columns )
+{
 foreach( $this->columns as $key => $value )
 {
 ?>
@@ -57,7 +59,7 @@ foreach( $this->columns as $key => $value )
 </th>
 <?PHP    
 }
-
+}
 ?>
 </tr>
 </thead>
@@ -125,7 +127,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routepar
 </tr>
 <?php endforeach; ?>
 </table>
-
+</div>
 
 <div class="pagination">
 	<p class="counter">

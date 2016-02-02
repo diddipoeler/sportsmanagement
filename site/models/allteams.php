@@ -70,6 +70,7 @@ var $_identifier = "allteams";
         $app = JFactory::getApplication();
         // JInput object
         $jinput = $app->input;
+        $this->use_current_season = $jinput->getVar('use_current_season', '0','request','string');
             $this->limitstart = $jinput->getVar('limitstart', 0, '', 'int');
             
                 $config['filter_fields'] = array(
@@ -227,13 +228,13 @@ public function getStart()
         $query->select('CONCAT_WS( \':\', v.id, v.alias ) AS slug');
         $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS projectslug');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as v');
+		$query->from('#__sportsmanagement_team as v');
         // Join over the clubs
 		$query->select('c.name As club,c.address,c.zipcode,c.country,c.location');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON c.id = v.club_id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = v.id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id');
+		$query->join('INNER','#__sportsmanagement_club AS c ON c.id = v.club_id');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = v.id');
+        $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
         
 //        // Join over the users for the checked out user.
 //		$query->select('uc.name AS editor');
@@ -248,6 +249,11 @@ public function getStart()
 		{
         //$query->where("c.country = '".$search_nation."'");
         $query->where('c.country LIKE '.$db->Quote(''.$this->getState('filter.search_nation').''));
+        }
+        if ( $this->use_current_season )
+        {
+        $filter_season = JComponentHelper::getParams($option)->get('current_season',0);    
+        $query->where('p.season_id IN ('.implode(',',$filter_season).')');
         }
         
         $query->group('v.id');

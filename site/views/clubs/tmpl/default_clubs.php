@@ -41,6 +41,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 ?>
+<div class="table-responsive">
 <table class="<?php echo $this->config['table_class']; ?>">
 	<thead>
 	<tr>
@@ -191,3 +192,4 @@ $teaminfo_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo
 	}
 	?>
 </table>
+</div>

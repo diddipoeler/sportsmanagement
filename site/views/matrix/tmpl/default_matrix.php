@@ -144,7 +144,7 @@ defined('_JEXEC') or die('Restricted access');
    </style>
 <!--<![endif]--> 
 
-<div>
+<div class="table-responsive">
  <?php
 
 	#$this->config['highlight_fav_team'] = 1;

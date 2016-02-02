@@ -60,14 +60,14 @@ class sportsmanagementViewpredictionranking extends sportsmanagementView
 	
 	function init()
 	{
-		// Get a refrence of the page instance in joomla
-    $app = JFactory::getApplication();
-		$document	= JFactory::getDocument();
-		$uri = JFactory :: getURI();
-//		$js ="registerhome('".JURI::base()."','Prediction Game Extension','".$app->getCfg('sitename')."','0');". "\n";
-//    $document->addScriptDeclaration( $js );	
-		$model		= $this->getModel();
-    $option = JRequest::getCmd('option');
+	//	// Get a refrence of the page instance in joomla
+//    $app = JFactory::getApplication();
+//		$document	= JFactory::getDocument();
+//		$uri = JFactory :: getURI();
+////		$js ="registerhome('".JURI::base()."','Prediction Game Extension','".$app->getCfg('sitename')."','0');". "\n";
+////    $document->addScriptDeclaration( $js );	
+//		$model		= $this->getModel();
+//    $option = JRequest::getCmd('option');
     //$optiontext = strtoupper(JRequest::getCmd('option').'_');
 
 
@@ -141,7 +141,7 @@ class sportsmanagementViewpredictionranking extends sportsmanagementView
       $this->geo = new JSMsimpleGMapGeocoder();
 	    $this->geo->genkml3prediction($this->predictionGame->id,$this->PredictionMembersList);
 	  
-			$document->setTitle($pageTitle);
+			$this->document->setTitle($pageTitle);
 
 			//parent::display($tpl);
 		}

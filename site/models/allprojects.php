@@ -70,6 +70,8 @@ var $_identifier = "allprojects";
         $app = JFactory::getApplication();
         // JInput object
         $jinput = $app->input;
+        $this->use_current_season = $jinput->getVar('use_current_season', '0','request','string');
+        
             $this->limitstart = $jinput->getVar('limitstart', 0, '', 'int');
                 $config['filter_fields'] = array(
                         'v.name',
@@ -243,9 +245,9 @@ public function getStart()
         $query->select('CONCAT_WS( \':\', v.id, v.alias ) AS slug');
         $query->select('CONCAT_WS( \':\', l.id, l.alias ) AS leagueslug');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS v');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON l.id = v.league_id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id = v.season_id');
+		$query->from('#__sportsmanagement_project AS v');
+        $query->join('INNER','#__sportsmanagement_league AS l ON l.id = v.league_id');
+        $query->join('INNER','#__sportsmanagement_season AS s ON s.id = v.season_id');
 //        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
 //        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id');
         
@@ -271,6 +273,12 @@ public function getStart()
         if ($this->getState('filter.search_seasons'))
 		{
         $query->where('v.season_id = ' . $this->getState('filter.search_seasons'));
+        }
+        
+        if ( $this->use_current_season )
+        {
+        $filter_season = JComponentHelper::getParams($option)->get('current_season',0);    
+        $query->where('v.season_id IN ('.implode(',',$filter_season).')');
         }
         
         $query->where('v.published = 1');

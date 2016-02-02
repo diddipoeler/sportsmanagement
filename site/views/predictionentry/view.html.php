@@ -52,25 +52,20 @@ jimport('joomla.application.component.view');
  * @version 2014
  * @access public
  */
-class sportsmanagementViewPredictionEntry extends JViewLegacy
+class sportsmanagementViewPredictionEntry extends sportsmanagementView
 {
 
-	/**
-	 * sportsmanagementViewPredictionEntry::display()
-	 * 
-	 * @param mixed $tpl
-	 * @return
-	 */
-	function display($tpl=null)
+	
+	function init()
 	{
-		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-    $option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
-		$model = $this->getModel();
+		//// Get a refrence of the page instance in joomla
+//		$document	= JFactory::getDocument();
+//    $option = JRequest::getCmd('option');
+//		$app = JFactory::getApplication();
+//		$model = $this->getModel();
    
-    $this->assign('headertitle', JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_SECTION_TITLE'));
-		$this->assign('predictionGame',sportsmanagementModelPrediction::getPredictionGame());
+    $this->headertitle = JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_SECTION_TITLE');
+		$this->predictionGame = sportsmanagementModelPrediction::getPredictionGame();
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGame<br><pre>'.print_r($this->predictionGame,true).'</pre>'),'');
         
@@ -82,28 +77,28 @@ class sportsmanagementViewPredictionEntry extends JViewLegacy
 
       
       
-			$this->assignRef('model',$model);
-			$this->assign('config',array_merge($overallConfig,$config));
+		//	$this->assignRef('model',$model);
+			$this->config = array_merge($overallConfig,$config);
       $configavatar	= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
-      $this->assignRef('configavatar',$configavatar );
-			$this->assign('predictionMember',sportsmanagementModelPrediction::getPredictionMember($configavatar));
-			$this->assign('predictionProjectS',sportsmanagementModelPrediction::getPredictionProjectS());
-			$this->assign('actJoomlaUser',JFactory::getUser());
+      $this->configavatar = $configavatar;
+			$this->predictionMember = sportsmanagementModelPrediction::getPredictionMember($configavatar);
+			$this->predictionProjectS = sportsmanagementModelPrediction::getPredictionProjectS();
+			$this->actJoomlaUser = JFactory::getUser();
 			
-            $this->assign('allowedAdmin',sportsmanagementModelPrediction::getAllowed());
+            $this->allowedAdmin = sportsmanagementModelPrediction::getAllowed();
 
-			$this->assign('isPredictionMember',sportsmanagementModelPrediction::checkPredictionMembership());
-			$this->assign('isNotApprovedMember',sportsmanagementModelPrediction::checkIsNotApprovedPredictionMember());
-			$this->assign('isNewMember',$model->newMemberCheck());
-			$this->assign('tippEntryDone',$model->tippEntryDoneCheck());
+			$this->isPredictionMember = sportsmanagementModelPrediction::checkPredictionMembership();
+			$this->isNotApprovedMember = sportsmanagementModelPrediction::checkIsNotApprovedPredictionMember();
+			$this->isNewMember = $this->model->newMemberCheck();
+			$this->tippEntryDone = $this->model->tippEntryDoneCheck();
             
 if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-            $this->assign('websiteName',JFactory::getConfig()->get('config.sitename'));
+            $this->websiteName = JFactory::getConfig()->get('config.sitename');
             }
             else
             {
-			$this->assign('websiteName',JFactory::getConfig()->getValue('config.sitename'));
+			$this->websiteName = JFactory::getConfig()->getValue('config.sitename');
             }
 			
 			//echo $this->loadTemplate( 'assignRefs' );
@@ -130,16 +125,16 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 				$lists['predictionMembers']=JHTML::_('select.genericList',$predictionMembers,'uid','class="inputbox" onchange="this.form.submit(); "','value','text',$dMemberID);
 				unset($res);
 				unset($predictionMembers);
-				$this->assignRef('lists',$lists);
+				$this->lists = $lists;
 			}
 
-      $this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
+      $this->show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0);
 			// Set page title
 			$pageTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_TITLE');
 
-			$document->setTitle($pageTitle);
+			$this->document->setTitle($pageTitle);
 
-			parent::display($tpl);
+			//parent::display($tpl);
 		}
 		else
 		{

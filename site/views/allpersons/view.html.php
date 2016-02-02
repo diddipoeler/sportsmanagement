@@ -64,37 +64,37 @@ JLoader::register('sportsmanagementHelperHtml', $classpath);
  * @version 2014
  * @access public
  */
-class sportsmanagementViewallpersons extends JViewLegacy
+class sportsmanagementViewallpersons extends sportsmanagementView
 {
     protected $state = null;
 	protected $item = null;
 	protected $items = null;
 	protected $pagination = null;
     
+
 	/**
-	 * sportsmanagementViewallpersons::display()
+	 * sportsmanagementViewallpersons::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
-	function display($tpl=null)
+	function init()
 	{
-		// Get a refrence of the page instance in joomla
-		$document = JFactory::getDocument();
-        $option = JRequest::getCmd('option');
-		// Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
+		//// Get a refrence of the page instance in joomla
+//		$document = JFactory::getDocument();
+//        $option = JRequest::getCmd('option');
+//		// Reference global application object
+//        $app = JFactory::getApplication();
+//        // JInput object
+//        $jinput = $app->input;
         $inputappend = '';
-        $this->tableclass = $jinput->getVar('table_class', 'table','request','string');
+        $this->tableclass = $this->jinput->getVar('table_class', 'table','request','string');
 		$user		= JFactory::getUser();
         $starttime = microtime(); 
-        $model	= $this->getModel();
+        //$model	= $this->getModel();
 
 		
-        $state 		= $this->get('State');
-        $items 		= $this->get('Items');
+        $this->state 		= $this->get('State');
+        $this->items 		= $this->get('Items');
         
 		
         
@@ -103,8 +103,8 @@ class sportsmanagementViewallpersons extends JViewLegacy
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		$pagination	= $this->get('Pagination');
-        $this->assignRef('columns',$model->columns);
+		$this->pagination	= $this->get('Pagination');
+        $this->columns = $this->model->columns;
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' pagination<br><pre>'.print_r($pagination,true).'</pre>'),'');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' columns<br><pre>'.print_r($columns,true).'</pre>'),'');
@@ -119,29 +119,29 @@ class sportsmanagementViewallpersons extends JViewLegacy
 																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
 																'value',
 																'text',
-																$state->get('filter.search_nation'));
+																$this->state->get('filter.search_nation'));
                                                                 
         // Set page title
-		$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ALLPERSONS_PAGE_TITLE'));
+		$this->document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ALLPERSONS_PAGE_TITLE'));
         
         $form = new stdClass();
-        $form->limitField = $pagination->getLimitBox();
+        $form->limitField = $this->pagination->getLimitBox();
         
-        $this->filter = $state->get('filter.search');
+        $this->filter = $this->state->get('filter.search');
                
       
-		$this->assignRef('form', $form);
-		$this->assignRef('items', $items);
-		$this->assignRef('state', $state);
-		$this->assignRef('user', $user);
-		$this->assignRef('pagination', $pagination);
+		$this->form = $form;
+		//$this->assignRef('items', $items);
+		//$this->assignRef('state', $state);
+		$this->user = $user;
+		//$this->assignRef('pagination', $pagination);
         
         $this->sortDirection    = $this->state->get('filter_order_Dir');
         $this->sortColumn       = $this->state->get('filter_order');
         
-        $this->assignRef('lists', $lists);
+        $this->lists = $lists;
 
-		parent::display($tpl);
+		//parent::display($tpl);
 	}
 
 }

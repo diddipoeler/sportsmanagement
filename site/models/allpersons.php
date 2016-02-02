@@ -71,6 +71,7 @@ var $_identifier = "allpersons";
         $app = JFactory::getApplication();
         // JInput object
         $jinput = $app->input;
+        $this->use_current_season = $jinput->getVar('use_current_season', '0','request','string');
                 $this->limitstart = $jinput->getVar('limitstart', 0, '', 'int');
 //                JRequest::setVar('limitstart', JRequest::getVar('limitstart', 0, '', 'int'));
                 //$this->setState('limitstart', JRequest::getVar('limitstart', 0, '', 'int'));
@@ -244,10 +245,13 @@ public function getStart()
         //$search_nation	= $this->getState('filter.search_nation');
         $select_columns	= $this->getState('filter.select_columns');
         
+        if ( $select_columns )
+        {
         foreach( $select_columns as $key => $value )
         {
             $select_columns[$key] = 'v.'.$value;
         } 
+        }
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' select_columns' .  ' <br><pre>'.print_r($select_columns,true).'</pre>'),'Notice');
         
@@ -276,16 +280,16 @@ public function getStart()
         
         $query->select('po.name as position_name'); 
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person as v');
+		$query->from('#__sportsmanagement_person as v');
         // Join over the clubs
 //		$query->select('c.name As club');
 //		$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON c.id = v.club_id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS stp ON stp.person_id = v.id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = stp.team_id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = stp.team_id');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS po ON po.id = v.position_id');
+        $query->join('INNER','#__sportsmanagement_season_team_person_id AS stp ON stp.person_id = v.id');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = stp.team_id');
+        $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
+        $query->join('INNER','#__sportsmanagement_team AS t ON t.id = stp.team_id');
+        $query->join('LEFT','#__sportsmanagement_position AS po ON po.id = v.position_id');
         
 //        // Join over the users for the checked out user.
 //		$query->select('uc.name AS editor');
@@ -300,6 +304,11 @@ public function getStart()
 		{
         //$query->where("v.country = '".$search_nation."'");
         $query->where('v.country LIKE '.$db->Quote(''.$this->getState('filter.search_nation').''));
+        }
+        if ( $this->use_current_season )
+        {
+        $filter_season = JComponentHelper::getParams($option)->get('current_season',0);    
+        $query->where('p.season_id IN ('.implode(',',$filter_season).')');
         }
         
         //$query->limit($this->getState('list.start'));

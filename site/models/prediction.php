@@ -505,7 +505,9 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
-		if (!(int)self::$_predictionMember)
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _predictionMember<br><pre>'.print_r(self::$_predictionMember,true).'</pre>'),'Error');
+        
+		if (!self::$_predictionMember)
 		{
 			$query->clear();
 		  // Select some fields
@@ -967,15 +969,29 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
         
 		if ($pid > 0)
 		{
-		  // Select some fields
+		// Select some fields
         $query->select('CONCAT_WS(\':\',r.id,r.alias) AS slug');
         $query->from('#__sportsmanagement_round as r');
         $query->join('INNER', '#__sportsmanagement_project AS p ON p.current_round = r.id');
         $query->where('p.id = '.(int)$pid );
 
-			$db->setQuery($query,0,1);
+		$db->setQuery($query,0,1);
         $result = $db->loadResult();
+        
+        if ( !$result )
+        {
+        $query->clear();
+        $query->select('CONCAT_WS(\':\',r.id,r.alias) AS slug');
+        $query->from('#__sportsmanagement_round as r');
+        $query->join('INNER', '#__sportsmanagement_project AS p ON p.id = r.project_id');
+        $query->where('p.id = '.(int)$pid );
+
+		$db->setQuery($query,0,1);
+        $result = $db->loadResult();    
+        }
+        
         //$app->enqueueMessage(JText::_(__METHOD__.' current round<br><pre>'.print_r($result,true).'</pre>'),'');
+        
 			return $result;
 		}
 		return false;

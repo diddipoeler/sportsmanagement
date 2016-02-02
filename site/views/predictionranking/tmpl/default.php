@@ -41,10 +41,6 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 
 <?php
-//$this->_addPath( 'template', JPATH_COMPONENT . DS .'views' . DS . 'predictionheading' . DS . 'tmpl' );
-//$this->_addPath( 'template', JPATH_COMPONENT . DS . 'views' . DS . 'backbutton' . DS . 'tmpl' );
-//$this->_addPath( 'template', JPATH_COMPONENT . DS . 'views' . DS . 'footer' . DS . 'tmpl' );
-
 // Make sure that in case extensions are written for mentioned (common) views,
 // that they are loaded i.s.o. of the template of this view
 $templatesToLoad = array('globalviews','predictionheading');
@@ -64,16 +60,11 @@ if ($this->config['show_all_user_google_map'])
 echo $this->loadTemplate('maps');
 }
 
-//if ($this->config['show_matchday_pagenav']){echo $this->loadTemplate('matchday_nav');}
-
 if ($this->config['show_help'])
 {
     echo $this->loadTemplate('show_help');
 }
 
-// echo '<div>';
-// echo $this->pagination->getListFooter();
-// echo '</div>';
 ?>
 <div>
 <?PHP

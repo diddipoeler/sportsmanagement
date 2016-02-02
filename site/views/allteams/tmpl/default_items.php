@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 //echo '<pre>'.print_r($this->items,true).'</pre>';
 
 ?>
-        
+<div class="table-responsive">        
 <table class="<?php echo $this->tableclass;?>">
 
 <thead>
@@ -127,7 +127,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('allteams'.$item->id,COM
 
 <tfoot><tr><td colspan="10"><?php //echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
 </table>
-
+</div>
 
 <div class="pagination">
 	<p class="counter">

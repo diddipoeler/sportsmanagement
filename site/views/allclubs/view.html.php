@@ -63,42 +63,42 @@ JLoader::register('sportsmanagementHelperHtml', $classpath);
  * @version 2014
  * @access public
  */
-class sportsmanagementViewallclubs extends JViewLegacy
+class sportsmanagementViewallclubs extends sportsmanagementView
 {
     protected $state = null;
 	protected $item = null;
 	protected $items = null;
 	protected $pagination = null;
     
+	
 	/**
-	 * sportsmanagementViewallclubs::display()
+	 * sportsmanagementViewallclubs::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return void
 	 */
-	function display($tpl=null)
+	function init()
 	{
-		// Get a refrence of the page instance in joomla
-		$document = JFactory::getDocument();
-		// Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
+	//	// Get a refrence of the page instance in joomla
+//		$document = JFactory::getDocument();
+//		// Reference global application object
+//        $app = JFactory::getApplication();
+//        // JInput object
+//        $jinput = $app->input;
         $inputappend = '';
-        $this->tableclass = $jinput->getVar('table_class', 'table','request','string');
-        $option = $jinput->getCmd('option');
+        $this->tableclass = $this->jinput->getVar('table_class', 'table','request','string');
+        //$option = $jinput->getCmd('option');
 		$user		= JFactory::getUser();
         $starttime = microtime(); 
 
-		$state 		= $this->get('State');
-		$items 		= $this->get('Items');
+		$this->state 		= $this->get('State');
+		$this->items 		= $this->get('Items');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		$pagination	= $this->get('Pagination');
+		$this->pagination	= $this->get('Pagination');
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' state<br><pre>'.print_r($state,true).'</pre>'),'');
 		
@@ -112,29 +112,29 @@ class sportsmanagementViewallclubs extends JViewLegacy
 																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
 																'value',
 																'text',
-																$state->get('filter.search_nation'));
+																$this->state->get('filter.search_nation'));
                                                                 
         // Set page title
-		$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ALLCLUBS_PAGE_TITLE'));
+		$this->document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ALLCLUBS_PAGE_TITLE'));
         
         $form = new stdClass();
-        $form->limitField = $pagination->getLimitBox();
+        $form->limitField = $this->pagination->getLimitBox();
         
-        $this->filter = $state->get('filter.search');
+        $this->filter = $this->state->get('filter.search');
                
       
 		$this->form = $form;
-		$this->items = $items;
-		$this->state = $state;
+		//$this->items = $items;
+//		$this->state = $state;
 		$this->user = $user;
-		$this->pagination = $pagination;
+//		$this->pagination = $pagination;
         
         $this->sortDirection    = $this->state->get('filter_order_Dir');
         $this->sortColumn       = $this->state->get('filter_order');
         
         $this->lists = $lists;
 
-		parent::display($tpl);
+		//parent::display($tpl);
 	}
 
 }

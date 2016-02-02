@@ -42,8 +42,6 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.model');
 
-//require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'prediction.php' );
-
 /**
  * sportsmanagementModelPredictionEntry
  * 
@@ -131,6 +129,10 @@ public $_predictionGame	= null;
 //        sportsmanagementModelPrediction::$type = $this->type;
 //        sportsmanagementModelPrediction::$page = $this->page;
 
+        
+        $post = $jinput->post->getArray(array());
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
+        
         sportsmanagementModelPrediction::$roundID = $jinput->getVar('r','0');
        sportsmanagementModelPrediction::$pjID = $jinput->getVar('pj','0');
        sportsmanagementModelPrediction::$from = $jinput->getVar('from',$jinput->getVar('r','0'));
@@ -149,6 +151,8 @@ public $_predictionGame	= null;
         
         sportsmanagementModelPrediction::$type = $jinput->getInt('type',0);
         sportsmanagementModelPrediction::$page = $jinput->getInt('page',1);
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pjID<br><pre>'.print_r(sportsmanagementModelPrediction::$pjID,true).'</pre>'),'');
                
        sportsmanagementModelPrediction::checkRoundID(sportsmanagementModelPrediction::$pjID,sportsmanagementModelPrediction::$roundID);
        
@@ -308,8 +312,10 @@ public $_predictionGame	= null;
      */
     function getTippCount($predictionProjectID,$matchID,$total=3)
 	{
-	   $option = JRequest::getCmd('option');    
     $app = JFactory::getApplication();
+    // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -348,8 +354,11 @@ public $_predictionGame	= null;
 	 */
 	function getMatchesDataForPredictionEntry($predictionGameID,$predictionProjectID,$projectRoundID,$userID,$match_ids=NULL,$round_ids=NULL,$proteams_ids=NULL)
 	{
-		    $option = JRequest::getCmd('option');    
+
     $app = JFactory::getApplication();
+    // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -416,8 +425,10 @@ public $_predictionGame	= null;
 	function savePredictions($allowedAdmin=false)
 	{
     $document	= JFactory::getDocument();
-    $option = JRequest::getCmd('option');    
     $app = JFactory::getApplication();
+    // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
     // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = $db->getQuery(true);

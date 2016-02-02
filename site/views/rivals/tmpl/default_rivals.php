@@ -8,6 +8,7 @@ JHtml::_('behavior.framework');
 //echo ' -><pre>'.print_r($this->opos,true).'</pre>';
 ?>
 <?php echo $this->pagetitle; ?>
+<div class="table-responsive">
 <table class="<?php echo $this->config['table_class']; ?>">
 	<tr class="sectiontableheader">
     <th class="name_row"><?php echo ''; ?></th>
@@ -103,3 +104,4 @@ JHtml::_('behavior.framework');
 	}
 	?>
 </table>
+</div>

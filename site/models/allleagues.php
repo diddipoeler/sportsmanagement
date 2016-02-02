@@ -70,6 +70,7 @@ var $_identifier = "allleagues";
         $app = JFactory::getApplication();
         // JInput object
         $jinput = $app->input;
+        $this->use_current_season = $jinput->getVar('use_current_season', '0','request','string');
             $this->limitstart = $jinput->getVar('limitstart', 0, '', 'int');
                 $config['filter_fields'] = array(
                         'v.name',
@@ -215,7 +216,7 @@ public function getStart()
         // Select some fields
 		$query->select('v.id,v.name,v.picture,v.country');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS v');
+		$query->from('#__sportsmanagement_league AS v');
       
         
         if ($this->getState('filter.search'))
@@ -225,6 +226,13 @@ public function getStart()
         if ($this->getState('filter.search_nation'))
 		{
         $query->where('v.country LIKE '.$db->Quote(''.$this->getState('filter.search_nation').''));
+        }
+        
+        if ( $this->use_current_season )
+        {
+        $filter_season = JComponentHelper::getParams($option)->get('current_season',0);    
+        $query->join('INNER','#__sportsmanagement_project AS p ON v.id = p.league_id');
+        $query->where('p.season_id IN ('.implode(',',$filter_season).')');
         }
         
         $query->group('v.id');
