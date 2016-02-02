@@ -65,6 +65,11 @@ if (empty($maxImportMemory))
 }
 if ((int)ini_get('memory_limit') < (int)$maxImportMemory){ini_set('memory_limit',$maxImportMemory);}
 
+/**
+ * getUpdatePart()
+ * 
+ * @return
+ */
 function getUpdatePart()
 {
 	$option = JRequest::getCmd('option');
@@ -73,6 +78,12 @@ function getUpdatePart()
 	return $update_part;
 }
 
+/**
+ * setUpdatePart()
+ * 
+ * @param integer $val
+ * @return void
+ */
 function setUpdatePart($val=1)
 {
 	$option = JRequest::getCmd('option');
@@ -96,6 +107,11 @@ function setUpdatePart($val=1)
 	$app->setUserState($option.'update_part',$update_part);
 }
 
+/**
+ * ImportTables()
+ * 
+ * @return
+ */
 function ImportTables()
 {
 	$db = sportsmanagementHelper::getDBConnection();
@@ -198,6 +214,12 @@ $imports=preg_replace("%/\*(.*)\*/%Us",'',$imports);
 				echo JText::_('Dropping keys/indexes:');
 				echo '</th></tr>';
 				$keys = $db->getTableKeys($tableName);
+                
+                //echo 'table <pre>'.print_r($tableName,true).'</pre>';
+                //echo 'keys <pre>'.print_r($keys,true).'</pre>';
+                //exit;
+                if ( sizeof($keys) != 0 )
+                        {
 				foreach ($newIndexes AS $index)
 				{
 					$query='';
@@ -224,19 +246,52 @@ $imports=preg_replace("%/\*(.*)\*/%Us",'',$imports);
 							$queryDelete="ALTER TABLE `$tableName` DROP $keyName";
 						}
 						$skip = false;
-						foreach($keys as $key) {
+                        
+                        //echo 'queryDelete <pre>'.print_r($queryDelete,true).'</pre><br>';    
+                        
+                        if ( sizeof($keys) != 0 )
+                        {
+						foreach($keys as $key) 
+                        {
+                            //if ( $key->Table == 'jos_sportsmanagement_person_project_position' )
+//                            {
+//                                exit;
+//                            }
 							preg_match('/`(.*?)`/', $keyName, $reg);
-							if(strcasecmp($key->Key_name, $reg[1])!==0) {
+                            
+//                            if ( $tableName === '#__sportsmanagement_person_project_position' )
+//                        {
+//                            echo 'reg <pre>'.print_r($reg,true).'</pre><br>';
+//                            }
+                            
+							if(strcasecmp($key->Key_name, $reg[1])!==0) 
+                            {
 								echo "<span style='color:orange; '>".JText::sprintf('Skipping handling of %1$s',$queryDelete).'</span>';
 								$skip = true;
 								break;
 							}
 						}
+                        }
+                        
 						if($skip) continue;
+                        //echo 'anzahl keys <pre>'.print_r(sizeof($keys),true).'</pre><br>';
+                        //echo 'queryDelete <pre>'.print_r($queryDelete,true).'</pre>'; 
+                        
+//                        if ( $tableName === '#__sportsmanagement_person_project_position' )
+//                        {
+//                        echo 'anzahl keys <pre>'.print_r(sizeof($keys),true).'</pre><br>';
+//                        echo 'keys <pre>'.print_r($keys,true).'</pre><br>';
+//                        echo 'queryDelete <pre>'.print_r($queryDelete,true).'</pre><br>';    
+//                        exit;
+//                        }
+                        
+                        if ( !empty($queryDelete) )
+                        {
 						$db->setQuery($queryDelete);
 						echo "$queryDelete - <span style='color:";
 						if ($db->query()){echo "green'>".JText::_('Success');}else{echo "red'>".JText::_('Failed');}
 						echo '</span>';
+                        }
 					}
 					else
 					{
@@ -245,6 +300,8 @@ $imports=preg_replace("%/\*(.*)\*/%Us",'',$imports);
 					echo '&nbsp;</td></tr>';
 					$k=(1-$k);
 				}
+                
+                }
 	
 				$rows=count($newFields)+1;
 				echo '<tr><th class="key" style="vertical-align:top; width:10; white-space:nowrap; " rowspan="'.$rows.'">';
@@ -274,19 +331,25 @@ $imports=preg_replace("%/\*(.*)\*/%Us",'',$imports);
 						} 
 					}
 					if($add) {
+					   if ( $query )
+                       {
 						$db->setQuery($query);
 						$db->query();
 						echo "$query - <span style='color:";
 						if ($db->query()){echo "green'>".JText::_('Success');}else{echo "red'>".JText::_('Failed');} //fehlgeschlagen
 						echo '</span>';
+                        }
 					} else {
 						if(array_key_exists($fieldName, $columns)) {
 							$query="ALTER TABLE `$tableName` CHANGE `$fieldName` `$fieldName` $dFieldSetting";
 						}
+                        if ( $query )
+                        {
 						$db->setQuery($query);
 						echo "$query - <span style='color:";
 						if ($db->query()){echo "green'>".JText::_('Success');}else{echo "red'>".JText::_('Failed');} //fehlgeschlagen
 						echo '</span>';
+                        }
 					}
 					echo '&nbsp;</td></tr>';
 					$k=(1-$k);
@@ -332,10 +395,13 @@ $imports=preg_replace("%/\*(.*)\*/%Us",'',$imports);
 							}
 						}
 						if($skip) continue;
+                        if ( $queryAdd )
+                        {
 						$db->setQuery($queryAdd);
 						echo "$queryAdd - <span style='color:";
 						if ($db->query()){echo "green'>".JText::_('Success');}else{echo "red'>".JText::_('Failed');}
 						echo '</span>';
+                        }
 					}
 					else
 					{
