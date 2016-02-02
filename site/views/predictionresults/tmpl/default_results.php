@@ -170,7 +170,7 @@ echo $this->pagination->getListFooter();
             <br />
 		</form>
         
-        
+        <div class="table-responsive">        
 		<table class="<?PHP echo $this->config['table_class']; ?>">
 			<tr>
 				<?php 
@@ -636,6 +636,7 @@ echo '<br />membersMatchesArray<pre>~' . print_r($membersMatchesArray,true) . '~
 			}
 			?>
 		</table>
+        </div>
 	<?php
 	}
 }
