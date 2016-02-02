@@ -57,6 +57,12 @@ $classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.p
 JLoader::register('sportsmanagementHelper', $classpath);
 JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
+if ( !class_exists('JSMCountries') ) 
+{
+//add the classes for handling
+$classpath = JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'countries.php';
+JLoader::register('JSMCountries', $classpath);
+}
 
 if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 {    
