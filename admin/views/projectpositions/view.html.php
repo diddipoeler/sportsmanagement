@@ -63,13 +63,13 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$uri = JFactory::getURI();
-        $model	= $this->getModel();
-        $starttime = microtime(); 
-		$tpl = '';
+		$app		= JFactory::getApplication();
+		$jinput		= $app->input;
+		$option		= $jinput->getCmd('option');
+		$uri		= JFactory::getURI();
+		$model		= $this->getModel();
+		$starttime	= microtime();
+		$tpl 		= '';
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
         
@@ -84,14 +84,14 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 		
 		$this->state = $this->get('State'); 
 		$this->sortDirection = $this->state->get('list.direction');
-		this->sortColumn = $this->state->get('list.ordering');
+		$this->sortColumn = $this->state->get('list.ordering');
         
 		$items = $this->get('Items');
         
 		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		{
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
+			$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+		}
         
 		$total = $this->get('Total');
 		$pagination = $this->get('Pagination');
@@ -99,10 +99,10 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 		$table = JTable::getInstance('projectposition', 'sportsmanagementTable');
 		$this->table	= $table;
                 
-        $this->project_id	= $app->getUserState( "$option.pid", '0' );
+		$this->project_id	= $app->getUserState( "$option.pid", '0' );
         
-		$mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
-		$project = $mdlProject->getProject($this->project_id);
+		$mdlProject	= JModelLegacy::getInstance('Project', 'sportsmanagementModel');
+		$project	= $mdlProject->getProject($this->project_id);
 
 //		// table ordering
 //		$lists['order_Dir']=$filter_order_Dir;
@@ -111,10 +111,10 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 		$this->user	= JFactory::getUser();
 		$this->config	= JFactory::getConfig();
 		$this->lists	= $lists;
-		$this->positiontool	$items;
+		$this->positiontool	= $items;
 		$this->pagination	= $pagination;
 		$this->request_url	= $uri->toString();
-        $this->project	= $project;
+		$this->project	= $project;
 
 	}
     
@@ -126,52 +126,53 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
      */
     function _displayEditlist($tpl)
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$uri = JFactory::getURI();
-		$model = $this->getModel();
-        $document = JFactory::getDocument();
-        $starttime = microtime(); 
+		$app		= JFactory::getApplication();
+		$jinput		= $app->input;
+		$option		= $jinput->getCmd('option');
+		$uri		= JFactory::getURI();
+		$model		= $this->getModel();
+		$document	= JFactory::getDocument();
+		$starttime	= microtime();
         
-        $items = $this->get('Items');
+	$items = $this->get('Items');
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
+	if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+	{
+		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+	}
         
         //build the html select list for project assigned positions
 		$ress = array();
 		$res1 = array();
 		$notusedpositions = array();
-        
-        if ( $items )
-        {
-        foreach($items as $item)
-        {
-            $project_positionslist[] = JHtml::_('select.option',$item->id,JText::_($item->name));
+		$project_positionslist = array();
+		$lists = array();
+	if ( $items )
+	{
+		foreach($items as $item)
+	{
+	$project_positionslist[] = JHtml::_('select.option' , $item->id, JText::_($item->name));
 		}
 		$lists['project_positions'] = JHtml::_(	'select.genericlist', 
-													$project_positionslist, 
-													'project_positionslist[]', 
-													'style="width:250px; height:250px;" class="inputbox" multiple="true" size="'.max(15,count($items)).'"', 
-													'value', 
-													'text');
+								$project_positionslist, 
+								'project_positionslist[]', 
+								'style="width:250px; height:250px;" class="inputbox" multiple="true" size="'.max(15,count($items)).'"', 
+								'value', 
+								'text');
 		}
 		else
-        {
-            $lists['project_positions']='<select name="project_positionslist[]" id="project_positionslist" style="width:250px; height:250px;" class="inputbox" multiple="true" size="10"></select>';
-        } 
+	{
+		$lists['project_positions'] = '<select name="project_positionslist[]" id="project_positionslist" style="width:250px; height:250px;" class="inputbox" multiple="true" size="10"></select>';
+	} 
         
-        $this->project_id	= $app->getUserState( "$option.pid", '0' );
+	$this->project_id	= $app->getUserState( "$option.pid", '0' );
+
+	$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+	$project = $mdlProject->getProject($this->project_id); 
         
-        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
-	    $project = $mdlProject->getProject($this->project_id); 
-        
-        if ($ress1 = $model->getSubPositions($project->sports_type_id))
-		{
-			if ($ress)
+	if ($ress1 = $model->getSubPositions($project->sports_type_id))
+	{
+		if ($ress)
 			{
 				foreach ($ress1 as $res1)
 				{
@@ -213,14 +214,21 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
                                                   
 
 		
-        $document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/sm_functions.js');
-        $this->request_url	= $uri->toString();
-        $this->user	= JFactory::getUser();
-        $this->project	= $project;
-        $this->lists	= $lists;
-        $this->addToolbar_Editlist();		
+	$document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/sm_functions.js');
+	$this->request_url	= $uri->toString();
+	$this->user	= JFactory::getUser();
+	$this->project	= $project;
+	$this->lists	= $lists;
+	$this->addToolbar_Editlist();		
 		
-        $this->setLayout('editlist');
+	$this->setLayout('editlist');
+	
+	unset ($ress);
+	unset ($res1);
+	unset ($notusedpositions);
+	unset ($project_positionslist);
+	unset ($lists);
+	
 	}
     
 
@@ -237,11 +245,11 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 //        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
 //		// Set toolbar items for the page
-		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_TITLE');
+	$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_TITLE');
         
-        sportsmanagementHelper::ToolbarButton('editlist', 'upload', JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_BUTTON_UN_ASSIGN'));
+	sportsmanagementHelper::ToolbarButton('editlist', 'upload', JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_BUTTON_UN_ASSIGN'));
 
-		parent::addToolbar();  
+	parent::addToolbar();
 
 	}
     
@@ -255,7 +263,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_TITLE');
 		JToolBarHelper::save('projectposition.save_positionslist');
 		JToolBarHelper::cancel('projectposition.cancel',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CLOSE'));
-		parent::addToolbar();  
+		parent::addToolbar();
 	}
     
 }
