@@ -75,7 +75,7 @@ class sportsmanagementViewgithubinstall extends sportsmanagementView
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' github_link<br><pre>'.print_r($github_link,true).'</pre>'),'');
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
         
-        //$copy_github_link = $model->CopyGithubLink($github_link);
+        $copy_github_link = $model->CopyGithubLink($github_link);
         $this->request_url	= $uri->toString();
         
  
