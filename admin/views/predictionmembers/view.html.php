@@ -149,8 +149,8 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
 	$this->prediction_id	= $prediction_id ;
 	$this->lists	= $lists;
 	$this->request_url	= $uri->toString();
-    
-		
+    $this->user	= JFactory::getUser();
+		$this->setlayout('editlist');
         
 	}	
 
