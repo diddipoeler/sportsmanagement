@@ -270,7 +270,7 @@ $mailer->setSender($sender);
 //add body
 $message = 'Tip-Results';
 $mailer->setBody($message);
-$send =& $mailer->Send();
+$send = $mailer->Send();
 
 if ( $send !== true ) {
     //echo 'Error sending email: ' . $send->message;
