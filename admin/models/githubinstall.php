@@ -73,7 +73,7 @@ function CopyGithubLink($link)
         $gitinstall = '';
         //$gitinstall = $app->getUserState( "$option.install");
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' install<br><pre>'.print_r($gitinstall,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' install<br><pre>'.print_r($gitinstall,true).'</pre>'),'');
 
 if ( $gitinstall )
 {
@@ -151,7 +151,7 @@ $package['type'] = $type;
 $this->_success_text['Komponente:'] = $my_text;
 
 $install_modules = JFolder::folders($p_dir_modules , $filter = '.');
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' install<br><pre>'.print_r($install_modules,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' install<br><pre>'.print_r($install_modules,true).'</pre>'),'');
 
 $my_text = '';
 foreach( $install_modules as $key => $value)
