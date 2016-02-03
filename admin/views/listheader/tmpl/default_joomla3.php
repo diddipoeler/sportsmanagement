@@ -147,8 +147,14 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 echo $this->loadTemplate('debug');
 }
-?>
 
+
+switch ($view)
+{
+case 'githubinstall':
+break;
+default:
+?>
     
 <div id="filter-bar" class="btn-toolbar">
 			<div class="filter-search btn-group pull-left">
@@ -179,4 +185,9 @@ echo $this->loadTemplate('debug');
 			
 			
 		</div>
-        
+    <?PHP
+break;
+}
+
+
+?>      
