@@ -115,11 +115,11 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
         		
-		$prediction_id		= (int) $app->getUserState( $option . '.prediction_id' );
-		$prediction_name	= $this->getModel()->getPredictionProjectName($prediction_id);
+		//$prediction_id		= (int) $app->getUserState( $option . '.prediction_id' );
+		$prediction_name	= $this->getModel()->getPredictionProjectName($this->prediction_id);
 		$this->prediction_name	= $prediction_name;
 		
-	$res_prediction_members = $this->getModel()->getPredictionMembers($prediction_id);
+	$res_prediction_members = $this->getModel()->getPredictionMembers($this->prediction_id);
     
 	if ( $res_prediction_members )
 		{
@@ -135,7 +135,7 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
 			$lists['prediction_members'] = '<select name="prediction_members[]" id="prediction_members" style="" class="inputbox" multiple="true" size="15"></select>';
 		}
     
-    $res_joomla_members = $this->getModel()->getJLUsers($prediction_id);
+    $res_joomla_members = $this->getModel()->getJLUsers($this->prediction_id);
     if ( $res_joomla_members )
     {
 		$lists['members'] = JHtml::_(	'select.genericlist', 
@@ -146,7 +146,7 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
 										'text');
     }
                     																
-	$this->prediction_id	= $prediction_id ;
+	//$this->prediction_id	= $prediction_id ;
 	$this->lists	= $lists;
 	$this->request_url	= $uri->toString();
     $this->user	= JFactory::getUser();
