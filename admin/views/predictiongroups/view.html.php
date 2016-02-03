@@ -84,7 +84,7 @@ class sportsmanagementViewpredictiongroups extends sportsmanagementView
         }
 
 		$this->user	= JFactory::getUser();
-		$this->lists	= $lists;
+		//$this->lists	= $lists;
 		$this->items	= $items;
 		$this->pagination	= $pagination;
 		$this->request_url	= $uri->toString();
