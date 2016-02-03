@@ -44,7 +44,17 @@ defined('_JEXEC') or die('Restricted access');
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 <p style='text-align:right;'>
-
+<?PHP
+foreach ($this->_success_text as $key => $value)
+		{
+			?>
+			<fieldset>
+				<legend><?php echo JText::_($key); ?></legend>
+				<table class='adminlist'><tr><td><?php echo $value; ?></td></tr></table>
+			</fieldset>
+			<?php
+		}  
+?>		
 <input class='button' type='submit' value='<?php echo JText::_('JSAVE'); ?>' />
 </p>
 <input type="hidden" name="task"				value="githubinstall.store" />
