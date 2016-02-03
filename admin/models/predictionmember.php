@@ -226,7 +226,7 @@ if ( !$result )
     $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $config = JFactory::getConfig();
-  $mailer =& JFactory::getMailer();
+  $mailer = JFactory::getMailer();
   
   //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config <br><pre>'.print_r($config,true).'</pre>'),'');
   
@@ -234,9 +234,21 @@ if ( !$result )
 //$your_name = $config->getValue( 'config.sitename' );
 
 //add the sender Information.
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Joomla! 3.0 code here
+$sender = array( 
+    $config->get( 'config.mailfrom' ),
+    $config->get( 'config.fromname' ) );
+}
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
 $sender = array( 
     $config->getValue( 'config.mailfrom' ),
     $config->getValue( 'config.fromname' ) );
+}
+
 
 $mailer->setSender($sender); 
 
