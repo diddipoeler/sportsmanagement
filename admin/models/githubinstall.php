@@ -115,6 +115,7 @@ $result = JArchive::extract($dest,$extractdir);
 $installer = JInstaller::getInstance();
 // Get the path to the package to install
 $p_dir = JPATH_SITE.DS.'tmp'.DS.'sportsmanagement-master'.DS;
+$p_dir_modules = JPATH_SITE.DS.'tmp'.DS.'sportsmanagement-master'.DS.'modules'.DS;
 // Detect the package type
 $type = JInstallerHelper::detectType($p_dir);        
 
@@ -149,6 +150,20 @@ $package['type'] = $type;
 
 $this->_success_text['Komponente:'] = $my_text;
 
+$install_modules = JFolder::folders($p_dir_modules , $filter = '.');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' install<br><pre>'.print_r($install_modules,true).'</pre>'),'');
+
+$my_text = '';
+foreach( $install_modules as $key => $value)
+{
+ $my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
+			$my_text .= JText::sprintf('Das Modul [ %1$s ] wurde installiert!',"</span><strong>".strtoupper($value)."</strong>");
+			$my_text .= '<br />';
+
+}
+$this->_success_text['Module:'] = $my_text;
+
+
 //echo "<script> alert('".$msg."');window.parent.SqueezeBox.close();   </script>\n";
 //echo "<script> alert('".$msg."');   </script>\n";
 
@@ -157,15 +172,6 @@ $this->_success_text['Komponente:'] = $my_text;
 
 }
 
-foreach ($this->_success_text as $key => $value)
-		{
-			?>
-			<fieldset>
-				<legend><?php echo JText::_($key); ?></legend>
-				<table class='adminlist'><tr><td><?php echo $value; ?></td></tr></table>
-			</fieldset>
-			<?php
-		}            
 
 return $this->_success_text;	
 }
