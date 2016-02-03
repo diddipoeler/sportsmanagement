@@ -321,7 +321,7 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
     
 	$document->addScriptDeclaration( $javascript );
     
-	$this-form	= $this->form;
+	$this->form	= $this->form;
 	$this->option	= $option;
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item -> <br><pre>'.print_r($this->item,true).'</pre>'),'');
