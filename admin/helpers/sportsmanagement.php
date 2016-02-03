@@ -106,7 +106,7 @@ curl_close($ch);
     }
     else
     {
-        return false;
+        return true;
     }
 //    if($file_headers[0] == 'HTTP/1.1 404 Not Found') 
 //    {
