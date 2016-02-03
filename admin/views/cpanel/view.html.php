@@ -332,7 +332,11 @@ class sportsmanagementViewcpanel extends sportsmanagementView
             
             //if ( $this->aktversion )
             //{
-            sportsmanagementHelper::ToolbarButton('default','upload',JText::_('JTOOLBAR_INSTALL'),'githubinstall',1);
+            //sportsmanagementHelper::ToolbarButton('default','upload',JText::_('JTOOLBAR_INSTALL'),'githubinstall',1);
+
+
+$bar = JToolBar::getInstance('toolbar');
+$bar->appendButton( 'Link', $task, ucfirst($task) , 'index.php?option=com_sportsmanagement&&view=githubinstall' );            
             //}
             
             if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
