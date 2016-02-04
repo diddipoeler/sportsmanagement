@@ -1898,7 +1898,7 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_confidential` (
  `clubnummer` VARCHAR( 100 ) NULL DEFAULT NULL,
  `published` TINYINT(1) NOT NULL DEFAULT '1' ,
 PRIMARY KEY (  `id` ),
-  UNIQUE KEY `schluessel` (`name`(150),`link`(150)),
+  UNIQUE KEY `schluessel` (`name`(150),`link`(150),`country`),
   UNIQUE KEY `schluessel2` (`name`(150),`nummer`(50)) 
 ) ENGINE = MYISAM DEFAULT CHARSET = utf8;
 
