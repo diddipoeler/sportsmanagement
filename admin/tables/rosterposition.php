@@ -80,11 +80,13 @@ class sportsmanagementTablerosterposition extends JTable
 	 */
 	function check()
 	{
-		$alias = JFilterOutput::stringURLSafe($this->name);
-
-		if ( empty( $this->alias ) || $this->alias === $alias )
+		// setting alias
+		if ( empty( $this->alias ) )
 		{
-			$this->alias = $alias;
+			$this->alias = JFilterOutput::stringURLSafe( $this->name );
+		}
+		else {
+			$this->alias = JFilterOutput::stringURLSafe( $this->alias ); // make sure the user didn't modify it to something illegal...
 		}
 		//should check name unicity
 		return true;

@@ -72,7 +72,7 @@ abstract class sportsmanagementHelper
     public static function existPicture($picture='',$standard='')
     {
     $app = JFactory::getApplication();
-    
+    $imageArray = '';
     /*
     $file_headers = @get_headers($picture);
     
@@ -97,7 +97,7 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' retcode <pre>'.print_r($retcode, 
 curl_close($ch);
     */
     
-    $imageArray = getimagesize($picture);
+    //$imageArray = getimagesize($picture);
     //$app->enqueueMessage(__METHOD__.' '.__LINE__.' imageArray <pre>'.print_r($imageArray, true).'</pre><br>','');
     
     if ( is_array ($imageArray) )

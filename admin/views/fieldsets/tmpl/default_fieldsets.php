@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie kÃ¶nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spÃ¤teren
+* verÃ¶ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nÃ¼tzlich sein wird, aber
+* OHNE JEDE GEWÃ„HRLEISTUNG, bereitgestellt; sogar ohne die implizite
+* GewÃ¤hrleistung der MARKTFÃ„HIGKEIT oder EIGNUNG FÃœR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fÃ¼r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -40,6 +40,42 @@ defined('_JEXEC') or die('Restricted access');
 
 switch($this->fieldset)
 {
+case 'playground_jquery':
+$backgroundimage = JURI::root().'media/com_sportsmanagement/rosterground/'.$this->item->picture;
+list($width, $height, $type, $attr) = getimagesize($backgroundimage);
+$picture = JURI::root().'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png';
+?>
+
+<style type="text/css">
+    #draggable { width: 100px; height: 70px; background: silver; }
+  </style>
+
+<div id="start">
+<input type='text' id='text' value='' />
+</div>
+
+<div id="stop">
+spieler verschieben
+</div>
+
+<?php
+echo "<div id=\"roster\"   style=\"background-image:url('".$backgroundimage."');background-position:left;position:relative;height:".$height."px;width:".$width."px;\">";
+$schemahome = $this->bildpositionen[$this->item->name];
+$testlauf = 1;
+foreach ( $schemahome as $key => $value )
+{
+//<div id="draggable">
+?>  
+
+<div id="draggable_<?PHP echo $testlauf; ?>" style="position:absolute; width:103px; left:<?PHP echo $value['heim']['links']; ?>px; top:<?PHP echo $value['heim']['oben']; ?>px; text-align:center;">
+<img class="bild_s" style="width:60px;" id="img_<?PHP echo $testlauf; ?>" src="<?PHP echo $picture; ?>" alt="" /><br />
+</div>
+<?php
+$testlauf++;
+}
+echo "</div>";
+
+break;	
 case 'training':
 $view = JRequest::getCmd('view', 'cpanel');
 ?>                
@@ -109,7 +145,7 @@ case 'help':
 						</fieldset>
 <?php                        
 break;
-// für mannschaften des vereines
+// fÃ¼r mannschaften des vereines
 case 'teamsofclub':
 if ( isset($this->teamsofclub) )
 {
@@ -139,7 +175,7 @@ foreach ( $this->teamsofclub as $team )
 break;
 
 
-// für extra felder
+// fÃ¼r extra felder
 case 'extra_fields':
 ?>
 	<fieldset class="adminform">
@@ -171,7 +207,7 @@ case 'extra_fields':
 
 break;
 
-// für google maps    
+// fÃ¼r google maps    
 case 'maps':
 ?>
 <style type="text/css">
@@ -246,7 +282,7 @@ setTimeout(function(){
 <?PHP
 break;
 
-// für google maps    
+// fÃ¼r google maps    
 case 'maps1':
 $plugin = JPluginHelper::getPlugin('system', 'plugin_googlemap3');
 $paramsPlugin = new JRegistry($plugin->params);
@@ -288,7 +324,7 @@ echo JHtml::_('content.prepare', $params);
 
 break;
 
-// für google maps    
+// fÃ¼r google maps    
 case 'maps2':
 $document = JFactory::getDocument();
 $document->addScript('http://maps.google.com/maps/api/js?&sensor=true');
@@ -348,7 +384,7 @@ setTimeout(function(){
 <?PHP
 break;
 
-// für die extended daten
+// fÃ¼r die extended daten
 case 'extended':
 if ( isset($this->extended) )
 {
@@ -396,7 +432,7 @@ else
 }
 break;
 
-// für die extended daten
+// fÃ¼r die extended daten
 case 'extendeduser':
 if ( isset($this->extendeduser) )
 {
@@ -428,7 +464,7 @@ else
 }
 break;
 
-// für die extended daten
+// fÃ¼r die extended daten
 case 'params':
 if ( isset($this->formparams) )
 {

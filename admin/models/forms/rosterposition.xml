@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<form
-	
+<form	
 addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 	<fieldset name="details"
@@ -68,6 +67,7 @@ directory="images/com_sportsmanagement/database/rosterground"
   description="COM_SPORTSMANAGEMENT_TABS_EXTENDED_DESC">
   
   </fieldset>
+
   
 <fieldset name="playground_jquery"
   label="COM_SPORTSMANAGEMENT_TABS_PICTURE"

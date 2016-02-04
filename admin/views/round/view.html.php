@@ -83,7 +83,7 @@ class sportsmanagementViewRound extends sportsmanagementView
         //$project_id	= $this->item->project_id;
         $mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
 	    $project = $mdlProject->getProject($this->project_id);
-        $this->project	= $this->project_id);
+        $this->project	= $this->project_id;
  
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' info<br><pre>'.print_r($_SERVER['REMOTE_ADDR'],true).'</pre>'   ),'');
         
@@ -104,14 +104,14 @@ class sportsmanagementViewRound extends sportsmanagementView
  
 	}
 
-	
+	}
     
 	/**
 	* Add the page title and toolbar.
 	*
 	* @since	1.6
 	*/
-	protected function addToolbar()
+	protected function addToolBar() 
 	{
 	
 		$jinput = JFactory::getApplication()->input;

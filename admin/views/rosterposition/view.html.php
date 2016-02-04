@@ -40,16 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// welche joomla version
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-JHtml::_('behavior.framework', true);
-jimport('joomla.html.html.bootstrap');
-}
-else
-{
-JHtml::_( 'behavior.mootools' );    
-}
+JHtml::_('jquery.ui');
 
 /**
  * sportsmanagementViewrosterposition
@@ -74,6 +65,7 @@ class sportsmanagementViewrosterposition extends sportsmanagementView
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
         $document = JFactory::getDocument();
+        $document->addScript('http://code.jquery.com/ui/1.10.3/jquery-ui.js');
         
         $bildpositionenhome = array();
 $bildpositionenhome['HOME_POS'][0]['heim']['oben'] = 5;
@@ -326,7 +318,7 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item -> <br><pre>'.print_r($this->item,true).'</pre>'),'');
         
-	$this->setLayout('edit');
+	//$this->setLayout('edit');
 	}
 
 
@@ -343,6 +335,7 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
 		$app = JFactory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
+        $document = JFactory::getDocument();
 //        // Set toolbar items for the page
 //        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);

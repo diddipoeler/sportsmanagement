@@ -35,132 +35,68 @@
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
-*/ 
-
-defined('_JEXEC') or die('Restricted access');
-
-$templatesToLoad = array('footer','listheader');
-sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.modal');
-//jimport('joomla.html.pane');
-//jimport( 'joomla.html.html.tabs' );
-
-/*
-$options = array(
-    'onActive' => 'function(title, description){
-        description.setStyle("display", "block");
-        title.addClass("open").removeClass("closed");
-    }',
-    'onBackground' => 'function(title, description){
-        description.setStyle("display", "none");
-        title.addClass("closed").removeClass("open");
-    }',
-    'startOffset' => 0,  // 0 starts on the first tab, 1 starts the second, etc...
-    'useCookie' => true, // this must not be a string. Don't use quotes.
-);
 */
+// No direct access
+defined('_JEXEC') or die('Restricted access');
+$templatesToLoad = array('footer','fieldsets');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.formvalidation');
+$params = $this->form->getFieldsets('params');
 
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
 
-
 ?>
-
-
-
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
-
-		
-<?PHP
-// welche joomla version ?
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-// Define tabs options for version of Joomla! 3.1
-$tabsOptionsJ31 = array(
-            "active" => "panel1" // It is the ID of the active tab.
-        );
-
-echo JHtml::_('bootstrap.startTabSet', 'ID-Tabs-J31-Group', $tabsOptionsJ31);
-$panel = 1;
-foreach ($fieldsets as $fieldset) :
-
-//echo $fieldset->name.'<br>';
-//echo $panel.'<br>';
-
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel'.$panel, $fieldset->name );
-echo $this->loadTemplate($fieldset->name);
-echo JHtml::_('bootstrap.endTab');  
-$panel++;      
-endforeach;
-echo JHtml::_('bootstrap.endTabSet');  
-
-}
-else
-{
-?>    
-<div class="width-40 fltlft">
+ 
+<div class="width-60 fltlft">
 		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_DETAILS'); ?></legend>
+			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_TABS_DETAILS'); ?></legend>
 			<ul class="adminformlist">
 			<?php foreach($this->form->getFieldset('details') as $field) :?>
 				<li><?php echo $field->label; ?>
-				<?php echo $field->input; ?></li>
+				<?php echo $field->input; 
+                
+                if ( $field->name == 'jform[country]' )
+                {
+                echo JSMCountries::getCountryFlag($field->value);    
+                }
+                if ( $field->name == 'jform[website]' )
+                {
+                echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
+                }
+                
+                $suchmuster = array ("jform[","]");
+                $ersetzen = array ('', '');
+                $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
+                
+                switch ($var_onlinehelp)
+                {
+                    case 'id':
+                    break;
+                    default:
+                ?>
+                <a	rel="{handler: 'iframe',size: {x: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH; ?>,y: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT; ?>}}"
+									href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Felder:'.JRequest::getVar( "view").'-'.$var_onlinehelp; ?>"
+									 class="modal">
+									<?php
+									echo JHtml::_(	'image','media/com_sportsmanagement/jl_images/help.png',
+													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
+													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
+									?>
+								</a>
+                
+                <?PHP
+                break;
+                }
+                
+                ?></li>
 			<?php endforeach; ?>
-			</ul>
-		</fieldset>
-
-		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROSTERPOSITIONS_EXTENDED'); ?></legend>
-			<ul class="adminformlist">
-            <?php
-			echo $this->loadTemplate('extended');
-            ?>
 			</ul>
 		</fieldset>
 	</div>
 
-<div class="width-40 fltrt">
-		<?php
-		echo JHtml::_('sliders.start');
-		foreach ($fieldsets as $fieldset) :
-			if ($fieldset->name == 'details') :
-				continue;
-			endif;
-            if ($fieldset->name == 'extended') :
-				continue;
-			endif;
-			echo JHtml::_('sliders.panel', JText::_($fieldset->label), $fieldset->name);
-		if (isset($fieldset->description) && !empty($fieldset->description)) :
-				echo '<p class="tab-description">'.JText::_($fieldset->description).'</p>';
-			endif;
-		echo $this->loadTemplate($fieldset->name);
-        //$this->fieldset = $fieldset->name;
-        //echo $this->loadTemplate('fieldsets');
-		endforeach; ?>
-		<?php echo JHtml::_('sliders.end'); ?>
-
-	
-	</div>    
-
 <?PHP
-}
+echo $this->loadTemplate('editdata');
 ?>
-
-
-
-
-		
-	<div class="clr"></div>
-	
-	
-	<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" />
-	<input type="hidden" name="task" value="rosterposition.edit" />
-	<?php echo JHtml::_('form.token')."\n"; ?>
-</form>
-<?PHP
-echo "<div>";
-echo $this->loadTemplate('footer');
-echo "</div>";
-?>   
