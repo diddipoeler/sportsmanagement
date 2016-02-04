@@ -47,8 +47,8 @@ $params = $this->form->getFieldsets('params');
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
 
-echo ' params<br><pre>'.print_r($params,true).'</pre><br>';
-echo ' fieldsets<br><pre>'.print_r($fieldsets,true).'</pre><br>';
+//echo ' params<br><pre>'.print_r($params,true).'</pre><br>';
+//echo ' fieldsets<br><pre>'.print_r($fieldsets,true).'</pre><br>';
 
 
 ?>
