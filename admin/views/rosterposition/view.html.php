@@ -40,18 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-/*
-// welche joomla version
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-JHtml::_('behavior.framework', true);
-jimport('joomla.html.html.bootstrap');
-}
-else
-{
-JHtml::_( 'behavior.mootools' );    
-}
-*/
+JHtml::_('jquery.ui');
 
 /**
  * sportsmanagementViewrosterposition
@@ -76,6 +65,7 @@ class sportsmanagementViewrosterposition extends sportsmanagementView
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
         $document = JFactory::getDocument();
+        $document->addScript('http://code.jquery.com/ui/1.10.3/jquery-ui.js');
         
         $bildpositionenhome = array();
 $bildpositionenhome['HOME_POS'][0]['heim']['oben'] = 5;
