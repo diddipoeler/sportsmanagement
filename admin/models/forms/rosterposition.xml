@@ -73,7 +73,7 @@ directory="images/com_sportsmanagement/database/rosterground"
   label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
   description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">	
 
-
+<!--
 <field name="picture" 
 type="imagelist" 
 default="spielfeld_578x1050.png" 
@@ -82,7 +82,7 @@ label="COM_SPORTSMANAGEMENT_ADMIN_ROSTER_PLAYGROUND_SELECT"
 description="COM_SPORTSMANAGEMENT_ADMIN_ROSTER_PLAYGROUND_SELECT_DESC" 
 directory="images/com_sportsmanagement/database/rosterground" 
 />	
-
+-->
 
 </fieldset>
 
