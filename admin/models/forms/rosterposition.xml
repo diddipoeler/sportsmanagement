@@ -68,7 +68,7 @@ directory="images/com_sportsmanagement/database/rosterground"
   
   </fieldset>
 
-<!--  
+  
 <fieldset name="playground_jquery"
   label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
   description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">	
@@ -85,6 +85,6 @@ directory="images/com_sportsmanagement/database/rosterground"
 
 
 </fieldset>
--->
+
   			
 </form>
