@@ -139,7 +139,7 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
 		}
 
 		$model = $this->getModel( 'predictionmember' );
-		if( !$model->publish( $cids, 1, $predictionGameID ) )
+		if( !$model->publishpredmembers( $cids, 1, $predictionGameID ) )
 		{
 			echo "<script> alert( '" . $model->getError(true) . "' ); window.history.go(-1); </script>\n";
 		}
@@ -165,7 +165,7 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
 		}
 
 		$model = $this->getModel( 'predictionmember' );
-		if ( !$model->publish( $cids, 0, $predictionGameID ) )
+		if ( !$model->publishpredmembers( $cids, 0, $predictionGameID ) )
 		{
 			echo "<script> alert( '" . $model->getError(true)  ."' ); window.history.go(-1); </script>\n";
 		}

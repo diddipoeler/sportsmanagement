@@ -62,9 +62,9 @@ class sportsmanagementViewLeague extends sportsmanagementView
 	public function init ()
 	{
 		// get the Data
-		$form = $this->get('Form');
-		$item = $this->get('Item');
-		$script = $this->get('Script');
+		$this->form = $this->get('Form');
+		$this->item = $this->get('Item');
+		$this->script = $this->get('Script');
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -72,11 +72,7 @@ class sportsmanagementViewLeague extends sportsmanagementView
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-		// Assign the Data
-		$this->form = $form;
-		$this->item = $item;
-		$this->script = $script;
-		
+				
         $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
         $this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);
         
