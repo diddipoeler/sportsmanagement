@@ -470,7 +470,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 	 * @return	boolean	True on success
 	 * @since	1.5.0a
 	 */
-	function publish( $cid = array(), $publish = 1, $predictionGameID )
+	function publishpredmembers( $cid = array(), $publish = 1, $predictionGameID )
 	{
 	   $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');

@@ -252,7 +252,7 @@ JHtml::_( 'behavior.tooltip' );
 						?>
 					</td>
                     <td><?php echo $row->modified; ?></td>
-                            <td><?php echo $row->username; ?></td> 
+                            <td><?php echo $row->modusername; ?></td> 
 				</tr>
 				<?php
 				$k = 1 - $k;

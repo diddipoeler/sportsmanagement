@@ -69,9 +69,9 @@ class sportsmanagementViewpredictionmember extends sportsmanagementView
 		$option = JRequest::getCmd('option');
         
 		// get the Data
-		$form = $this->get('Form');
-		$item = $this->get('Item');
-		$script = $this->get('Script');
+		$this->form = $this->get('Form');
+		$this->item = $this->get('Item');
+		$this->script = $this->get('Script');
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -79,11 +79,7 @@ class sportsmanagementViewpredictionmember extends sportsmanagementView
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-		// Assign the Data
-		$this->form = $form;
-		$this->item = $item;
-		$this->script = $script;
-		
+				
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($this->item,true).'</pre>'),'');
 
 	}
@@ -102,6 +98,8 @@ class sportsmanagementViewpredictionmember extends sportsmanagementView
 
         $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_ADD_NEW');
         $this->icon = 'pmember';
+        
+        $this->item->name = '';
 
 		parent::addToolbar();  	
 		

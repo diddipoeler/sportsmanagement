@@ -37,85 +37,20 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-// Check to ensure this file is included in Joomla!
-defined( '_JEXEC' ) or die( 'Restricted access' );
+// No direct access
+defined('_JEXEC') or die('Restricted access');
+$templatesToLoad = array('footer','fieldsets');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.formvalidation');
+$params = $this->form->getFieldsets('params');
+// Get the form fieldsets.
+$fieldsets = $this->form->getFieldsets();
 
-jimport( 'joomla.application.component.view' );
+//echo COM_SPORTSMANAGEMENT_FIELDSETS_TEMPLATE;
 
-
-
-/**
- * sportsmanagementViewPredictionMember
- * 
- * @package   
- * @author 
- * @copyright diddi
- * @version 2014
- * @access public
- */
-class sportsmanagementViewPredictionMember extends sportsmanagementView
-{
-	function display( $tpl = null )
-	{
-		$app	=& JFactory::getApplication();
-
-		if ( $this->getLayout() == 'form' )
-		{
-			$this->_displayForm( $tpl );
-			return;
-		}
-
-		//get the predictionuser
-		$predictionuser =& $this->get( 'data' );
-
-		parent::display( $tpl );
-	}
-
-	function _displayForm( $tpl )
-	{
-		$app			=& JFactory::getApplication();
-		$option = JRequest::getCmd('option');
-		$db		=& sportsmanagementHelper::getDBConnection();
-		$uri 	=& JFactory::getURI();
-		$user 	=& JFactory::getUser();
-		$model	=& $this->getModel();
-
-		$lists = array();
-		//get the member data
-		$predictionuser	=& $this->get( 'data' );
-		$isNew			= ( $predictionuser->id < 1 );
-
-		
-
-		// Edit or Create?
-		if ( !$isNew )
-		{
-			//$model->checkout( $user->get( 'id' ) );
-		}
-		else
-		{
-			// initialise new record
-			$predictionuser->order = 0;
-		}
-
-		
-/*        
-        //build the html select list for parent positions
-		$parents[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'Prediction Group' ) . ' -' );
-		if ( $res =& $model->getPredictionGroups() )
-		{
-			$parents = array_merge( $parents, $res );
-		}
-		$lists['parents'] = JHtml::_(	'select.genericlist', $parents, 'group_id', 'class="inputbox" size="1"', 'value', 'text',
-										$predictionuser->group_id );
-		unset( $parents );
-*/
-		//$this->assignRef( 'lists',			$lists );
-        $this->assignRef('form'      	, $this->get('form'));
-		$this->assignRef( 'predictionuser',	$predictionuser );
-
-		parent::display( $tpl );
-	}
-
-}
 ?>
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
+<?PHP
+echo $this->loadTemplate('editdata');  
+?>  
