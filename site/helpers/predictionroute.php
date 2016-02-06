@@ -240,11 +240,20 @@ public static function getPredictionMemberRoute($predictionID,$userID=null,$task
 //		if (!is_null($projectID)){$params['pj']=$projectID;}
 //		if (!is_null($task)){$params['layout']=$task;}
         
+   
         //$params['p'] = $projectID;
         $params['pggroup'] = $groupID;
         $params['pj'] = $projectID;
         $params['r'] = $roundID;
         $params['uid'] = $userID;
+        
+              switch ($task)
+	{
+  case 'edit';
+  $params['layout'] = 'edit';
+	break;					
+  
+  }
 
 		$query = JSMPredictionHelperRoute::buildQuery($params);
 		$link = JRoute::_('index.php?' . $query, false);

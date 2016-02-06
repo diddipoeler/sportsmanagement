@@ -1760,7 +1760,7 @@ $body .= $this->createHelptText($predictionProject->mode);
 	 * @param integer $rowspan
 	 * @return
 	 */
-	function echoLabelTD($labelText,$labelTextHelp,$rowspan=0)
+	public static function echoLabelTD($labelText,$labelTextHelp,$rowspan=0)
 	{
 		?><td class='labelEdit'<?php echo ($rowspan > 1 ? ' rowspan="'.$rowspan.'"' : '')?> ><span class='hasTip' title="<?php echo JText::_($labelTextHelp); ?>"><?php echo JText::_($labelText); ?></span></td><?php
 	}

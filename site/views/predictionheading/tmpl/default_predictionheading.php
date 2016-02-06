@@ -91,6 +91,12 @@ if ( ( isset($this->config['show_prediction_heading']) ) && ( $this->config['sho
 				<td class='' style='text-align:right;' >
 					<form name='predictionMemberSelect' method='post' >
 					<input type='hidden' name='prediction_id' value='<?php echo sportsmanagementModelPrediction::$predictionGameID; ?>' />
+                    
+                    <input type='hidden' name='pj' value='<?php echo sportsmanagementModelPrediction::$pjID; ?>' />
+                    <input type='hidden' name='r' value='<?php echo sportsmanagementModelPrediction::$roundID; ?>' />
+                    <input type='hidden' name='pggroup' value='<?php echo sportsmanagementModelPrediction::$pggroup; ?>' />
+                    <input type='hidden' name='uid' value='<?php echo sportsmanagementModelPrediction::$predictionMemberID; ?>' />
+                    
 					<input type='hidden' name='task' value='predictionusers.select' />
 					<input type='hidden' name='option' value='com_sportsmanagement' />
 					
