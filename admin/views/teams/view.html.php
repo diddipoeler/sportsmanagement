@@ -76,7 +76,7 @@ class sportsmanagementViewTeams extends sportsmanagementView
 
 
 		$starttime = microtime();
-		$items = $this->get('Items');
+		$this->items = $this->get('Items');
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		{
 		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
