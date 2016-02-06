@@ -112,7 +112,7 @@
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITTEAMSLBL" 
 					description="MOD_SPORTSMANAGEMENT_CALENDAR_LIMITTEAMSDESC" />
 					
-				<field name="time_zone" type="timezone" default="UTC" 
+				<field name="time_zone" type="timezone" default="Europe\/Berlin" 
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_LABEL_TIMEZONE"
 					description="MOD_SPORTSMANAGEMENT_CALENDAR_DESC_TIMEZONE" />
 				<field name="dateformat" type="text" default="l, d. F Y"
@@ -123,6 +123,7 @@
 					description="MOD_SPORTSMANAGEMENT_CALENDAR_LABEL_TIME_FORMAT_DESC" />
 									
 				<field name="cal_start_day" type="radio" default="1"
+          class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_CALSTARTDAYLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_CALSTARTDAYDESC">
 					<option value="0">0</option>
 					<option value="1">1</option>
@@ -134,6 +135,7 @@
 				</field>
 
 				<field name="cal_length_days" type="radio" default="2"
+        class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_LENGTHDAYSLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_LENGTHDAYSDESC">
 					<option value="1">1</option>
 					<option value="2">2</option>
@@ -194,6 +196,7 @@
 				</field>
 
 				<field name="team_names" type="radio" default="short_name"
+        class="radio btn-group btn-group-yesno"
 					label="MOD_SPORTSMANAGEMENT_CALENDAR_TEAMNAMESLBL" description="MOD_SPORTSMANAGEMENT_CALENDAR_TEAMNAMESDESC">
 					<option value="-">MOD_SPORTSMANAGEMENT_CALENDAR_NONAMES</option>
 					<option value="short_name">MOD_SPORTSMANAGEMENT_CALENDAR_TEAMNAMESOPTION1</option>
@@ -201,7 +204,9 @@
 					<option value="name">MOD_SPORTSMANAGEMENT_CALENDAR_TEAMNAMESOPTION3</option>
 				</field>
 
-				<field name="team_logos" type="radio" default="-" label="MOD_SPORTSMANAGEMENT_CALENDAR_CLUBLOGOSLBL"
+				<field name="team_logos" type="radio" default="-" 
+        class="radio btn-group btn-group-yesno"
+        label="MOD_SPORTSMANAGEMENT_CALENDAR_CLUBLOGOSLBL"
 					description="MOD_SPORTSMANAGEMENT_CALENDAR_CLUBLOGOSDESC">
 					<option value="-">MOD_SPORTSMANAGEMENT_CALENDAR_NONAMES</option>
 					<option value="logo_small">MOD_SPORTSMANAGEMENT_CALENDAR_CLUBLOGOSOPTION1</option>

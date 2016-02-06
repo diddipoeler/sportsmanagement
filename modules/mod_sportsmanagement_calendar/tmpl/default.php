@@ -162,9 +162,20 @@ case 'headingrow':
 //		$time = JHtml::date ( $row['date'] .' UTC', $params->get('timeformat'), $params->get('time_zone'));
         
         $date = JHtml::date($row['timestamp'] , $params->get('dateformat') );
-        $time = JHtml::date($row['timestamp'] , $params->get('timeformat') );
-        
+        //$time = JHtml::date($row['timestamp'] , $params->get('timeformat') );
+
+/**
+* testausgabe
+*/        
 //        $time2 = JHtml::date($row['date'] , $params->get('timeformat') );
+        
+//        echo 'strtotime   '.JFactory::getDate(strtotime($row['date'])).'<br>';
+//        echo 'getTimestamp   '.sportsmanagementHelper::getTimestamp(JFactory::getDate(strtotime($row['date'])));
+//        echo 'row timestamp '. $row['timestamp'].'<br>';
+        
+        $uhrzeit = date("H:i",$row['timestamp']);
+        $time = date("H:i",$row['timestamp']);
+//        echo " - ",$uhrzeit," Uhr".'<br>';
 //        echo 'row datum '. $row['date'].'<br>';
 //        echo 'datum '.$date.'<br>';
 //        echo 'uhrzeit '.$time.'<br>';
