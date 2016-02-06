@@ -88,13 +88,19 @@ class sportsmanagementControllerPredictionUsers extends JControllerLegacy
 	function select()
 	{
 		JRequest::checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
-		$pID	= JRequest::getVar('prediction_id',	'',		'post',	'int');
-		$uID	= JRequest::getVar('uid',			null,	'post',	'int');
-		if (empty($uID))
+        // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $post = $jinput->post->getArray(array());
+        
+//		$pID	= JRequest::getVar('prediction_id',	'',		'post',	'int');
+//		$uID	= JRequest::getVar('uid',			null,	'post',	'int');
+		if (empty($post ['uid']))
         {
-            $uID = null;
+            $post ['uid'] = null;
             }
-		$link = JSMPredictionHelperRoute::getPredictionMemberRoute($pID,$uID);
+		$link = JSMPredictionHelperRoute::getPredictionMemberRoute($post['prediction_id'],$post['uid'],$post['task'],$post['pj'],$post['pggroup'],$post['r']);
 		//echo '<br />' . $link . '<br />';
 		$this->setRedirect($link);
 	}

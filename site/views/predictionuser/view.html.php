@@ -54,33 +54,35 @@ require_once( JPATH_COMPONENT_SITE . DS . 'models' . DS . 'predictionusers.php' 
  * @version 2014
  * @access public
  */
-class sportsmanagementViewPredictionUser extends JViewLegacy
+class sportsmanagementViewPredictionUser extends sportsmanagementView
 {
 
+	
 	/**
-	 * sportsmanagementViewPredictionUser::display()
+	 * sportsmanagementViewPredictionUser::init()
 	 * 
-	 * @param mixed $tpl
-	 * @return
+	 * @return void
 	 */
-	function display($tpl=null)
+	function init()
 	{
-		// Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-    $option = JRequest::getCmd('option');
-//    $optiontext = strtoupper(JRequest::getCmd('option').'_');
-//    $this->assignRef( 'optiontext',			$optiontext );
-//    $this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
-
-		$app = JFactory::getApplication();
+//		// Get a refrence of the page instance in joomla
+//		$document	= JFactory::getDocument();
+//    $option = JRequest::getCmd('option');
+////    $optiontext = strtoupper(JRequest::getCmd('option').'_');
+////    $this->assignRef( 'optiontext',			$optiontext );
+////    $this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
+//
+//		$app = JFactory::getApplication();
 		
-		$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/json2.js');
-		$document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/swfobject.js');
+		$this->document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/json2.js');
+		$this->document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/swfobject.js');
 		
-		$model		= $this->getModel();
+		//$model		= $this->getModel();
     $mdlPredUsers = JModelLegacy::getInstance("predictionusers", "sportsmanagementModel");
     
-		$this->assign('predictionGame',sportsmanagementModelPrediction::getPredictionGame());
+		$this->predictionGame = sportsmanagementModelPrediction::getPredictionGame();
+        
+        $tippAllowed = false;
 
 		if (isset($this->predictionGame))
 		{
@@ -95,12 +97,12 @@ class sportsmanagementViewPredictionUser extends JViewLegacy
 
 //      $this->assignRef('debuginfo',	$model->getDebugInfo());
       
-			$this->assignRef('model',				$mdlPredUsers);
-			$this->assignRef('roundID',				$this->model->roundID);
-			$this->assign('config',				array_merge($overallConfig,$tipprankingconfig,$config));
-			$this->assignRef('configavatar',				$configavatar );
+			$this->model = $mdlPredUsers;
+			$this->roundID = sportsmanagementModelPrediction::$roundID;
+			$this->config = array_merge($overallConfig,$tipprankingconfig,$config);
+			$this->configavatar = $configavatar;
 			
-			$this->assign('predictionMember',	sportsmanagementModelPrediction::getPredictionMember($configavatar));
+			$this->predictionMember = sportsmanagementModelPrediction::getPredictionMember($configavatar);
 			
       if (!isset($this->predictionMember->id))
 			{
@@ -108,15 +110,16 @@ class sportsmanagementViewPredictionUser extends JViewLegacy
 				$this->predictionMember->pmID=0;
 			}
 			
-			$this->assign('predictionProjectS',	sportsmanagementModelPrediction::getPredictionProjectS());
+			$this->predictionProjectS = sportsmanagementModelPrediction::getPredictionProjectS();
 
-			$this->assign('actJoomlaUser',		JFactory::getUser());
-			$this->assign('isPredictionMember',	sportsmanagementModelPrediction::checkPredictionMembership());
-			$this->assign('memberData',			sportsmanagementModelPredictionUsers::memberPredictionData());
-			$this->assign('allowedAdmin',		sportsmanagementModelPrediction::getAllowed());
+			$this->actJoomlaUser = JFactory::getUser();
+			$this->isPredictionMember = sportsmanagementModelPrediction::checkPredictionMembership();
+			$this->memberData = sportsmanagementModelPredictionUsers::memberPredictionData();
+			$this->allowedAdmin = sportsmanagementModelPrediction::getAllowed();
 			
-			if (!empty($this->predictionMember->user_id)) {
-				$this->assign('showediticon',sportsmanagementModelPrediction::getAllowed($this->predictionMember->user_id));
+			if (!empty($this->predictionMember->user_id)) 
+            {
+				$this->showediticon = sportsmanagementModelPrediction::getAllowed($this->predictionMember->user_id);
 			}
 			
 			$this->_setPointsChartdata(array_merge($flashconfig, $config));
@@ -187,6 +190,7 @@ class sportsmanagementViewPredictionUser extends JViewLegacy
 					$lists['fav_team'][$predictionProject->project_id] = JHTML::_('select.genericList',$projectteams,'fav_team['.$predictionProject->project_id.']','class="inputbox"','value','text',$favTeamsList[$predictionProject->project_id]);
 
 		// kann champion ausgewaehlt werden ?
+        
 		if ( $predictionProject->champ )
           {
           $disabled='';
@@ -206,18 +210,25 @@ class sportsmanagementViewPredictionUser extends JViewLegacy
           $thisTimeDate = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"),1,$predictionProjectSettings->timezone);
           $competitionStartTimeDate = sportsmanagementHelper::getTimestamp($showDate,1,$predictionProjectSettings->timezone);
           $tippAllowed =	( ( $thisTimeDate < $competitionStartTimeDate ) ) ;
-		if (!$tippAllowed){$disabled=' disabled="disabled" ';}else{$disabled=''; }
+		if (!$tippAllowed)
+        {
+            $disabled=' disabled="disabled" ';
+            }
+            else
+            {
+                $disabled=''; 
+            }
           }
           
-          $predictionMembers[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PREDICTION_MEMBER_GROUP'),'value','text');
-			if ( $res = sportsmanagementModelPrediction::getPredictionGroupList())
-            {
-                $predictionMembers = array_merge($predictionMembers,$res);
-                }
-                
-			$lists['grouplist']=JHTML::_('select.genericList',$predictionMembers,'group_id','class="inputbox" '.$disabled.'onchange=""','value','text',$this->predictionMember->group_id);
-			unset($res);
-			unset($predictionMembers);
+          //$predictionMembers[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PREDICTION_MEMBER_GROUP'),'value','text');
+//			if ( $res = sportsmanagementModelPrediction::getPredictionGroupList())
+//            {
+//                $predictionMembers = array_merge($predictionMembers,$res);
+//                }
+//                
+//			$lists['grouplist']=JHTML::_('select.genericList',$predictionMembers,'group_id','class="inputbox" '.$disabled.'onchange=""','value','text',$this->predictionMember->group_id);
+//			unset($res);
+//			unset($predictionMembers);
           
           
           
@@ -238,6 +249,16 @@ echo '<br />predictionuser view.html edit -> this->predictionProjectS <pre>~' . 
           $disabled=' disabled="disabled" ';
           }
           
+          $predictionMembers[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PREDICTION_MEMBER_GROUP'),'value','text');
+			if ( $res = sportsmanagementModelPrediction::getPredictionGroupList())
+            {
+                $predictionMembers = array_merge($predictionMembers,$res);
+                }
+                
+			$lists['grouplist']=JHTML::_('select.genericList',$predictionMembers,'group_id','class="inputbox" '.$disabled.'onchange=""','value','text',$this->predictionMember->group_id);
+			unset($res);
+			unset($predictionMembers);
+          
 					if (!isset($champTeamsList[$predictionProject->project_id]))
           {
           $champTeamsList[$predictionProject->project_id] = 0;
@@ -248,25 +269,25 @@ echo '<br />predictionuser view.html edit -> this->predictionProjectS <pre>~' . 
 					unset($projectteams);
 				}
         
-				$this->assign('form'	, $this->get('form'));
+				$this->form = $this->get('form');
                 $this->form->setValue('picture', null,$this->predictionMember->picture);	
 			}
 			else
 			{
-				$this->assignRef('favTeams',	$favTeamsList);
-				$this->assignRef('champTeams',	$champTeamsList);
+				$this->favTeams = $favTeamsList;
+				$this->champTeams = $champTeamsList;
 			}
 
-			$this->assignRef('lists',$lists);
-            $this->assignRef('tippallowed',$tippAllowed);
+			$this->lists = $lists;
+            $this->tippallowed = $tippAllowed;
       
 			// Set page title
 			$pageTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_TITLE');
             $this->headertitle = JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_TITLE' );
 
-			$document->setTitle($pageTitle);
+			$this->document->setTitle($pageTitle);
 
-			parent::display($tpl);
+			//parent::display($tpl);
 		}
 		else
 		{

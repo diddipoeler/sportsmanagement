@@ -66,10 +66,15 @@ $document->addScriptDeclaration($script);
 $document->addScript(JURI::root().'includes/js/joomla.javascript.js');
 ?>
 <form name='adminForm' id='adminForm' method='post' >
-	<table width='100%'><tr><td class='sectiontableheader'><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_TITLE',$this->predictionGame->name); ?></td></tr></table>
+	<table class="table">
+    <tr>
+    <td class='sectiontableheader'><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_TITLE',$this->predictionGame->name); ?>
+    </td>
+    </tr>
+    </table>
 	<br />
 	<?php /* approved show_profile fav_team champ_tipp slogan reminder receipt admintipp picture */ ?>
-	<table class='plinfo' cellpadding='4' cellspacing='1'>
+	<table class="table" >
 		<tr>
 			<?php
 			echo sportsmanagementModelPrediction::echoLabelTD('COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_NAME','COM_SPORTSMANAGEMENT_PRED_USERS_EDIT_LABEL_HELP_NAME');
@@ -211,7 +216,7 @@ $document->addScript(JURI::root().'includes/js/joomla.javascript.js');
 					?><?php
 						if ($rowspan > 1)
 						{
-							if ($predictionProjectSettings = $this->model->getPredictionProject($predictionProject->project_id))
+							if ($predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id))
 							{
 								echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_USERS_FAVTEAM_IN_PROJECT','<b>'.$predictionProjectSettings->name.'</b>');
 							}
@@ -254,7 +259,7 @@ $document->addScript(JURI::root().'includes/js/joomla.javascript.js');
 					?><?php
 						if ($rowspan > 1)
 						{
-							if ($predictionProjectSettings = $this->model->getPredictionProject($predictionProject->project_id))
+							if ($predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id))
 							{
 								echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_USERS_CHAMPION_IN_PROJECT','<b>'.$predictionProjectSettings->name.'</b>');
 							}
