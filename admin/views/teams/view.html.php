@@ -135,7 +135,11 @@ class sportsmanagementViewTeams extends sportsmanagementView
         $this->user = JFactory::getUser();
 		$this->config = JFactory::getConfig();
 		$this->lists = $lists;
+<<<<<<< HEAD
+		$this->items = $items;
+=======
 //		$this->items = $items;
+>>>>>>> d176d2ac9b927027577c8459e5c4d8024a1fc8ba
 		$this->pagination = $pagination;
 		$this->request_url= $uri->toString();
 		
