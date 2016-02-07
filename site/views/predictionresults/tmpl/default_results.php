@@ -151,7 +151,7 @@ $routeparameter['order'] = '';
 $routeparameter['layout'] = '';
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);            
 
-						$imgTitle=JText::_('COM_SPORTSMANAGEMENT_PRED_ROUND_RESULTS_TITLE');
+						$imgTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_ROUND_RESULTS_TITLE');
 						$desc = JHTML::image('media/com_sportsmanagement/jl_images/icon-16-Matchdays.png',$imgTitle,array('border' => 0,'title' => $imgTitle));
 						echo JHTML::link($link,$desc,array('target' => ''));
 						?>
@@ -172,24 +172,25 @@ echo $this->pagination->getListFooter();
         
         <div class="table-responsive">        
 		<table class="<?PHP echo $this->config['table_class']; ?>">
+        <thead>
 			<tr>
 				<?php 
-                $tdClassStr = "class='sectiontableheader' style='text-align:center; vertical-align:middle; '"; 
+                $tdClassStr = "style='text-align:center; vertical-align:middle; '"; 
                 ?>
-				<td <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK'); ?></td>
+				<th <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK'); ?></th>
 				<?php
 				
         if ($this->config['show_user_icon'])
 				{
-					?><td <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_AVATAR'); ?></td><?php
+					?><th <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_AVATAR'); ?></th><?php
 				}
 				
 				?>
-				<td <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_MEMBER'); ?></td>
+				<th <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_MEMBER'); ?></th>
 				<?php
                 if ($this->config['show_pred_group'])
 				{
-					?><td <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_MEMBER_GROUP'); ?></td><?php
+					?><th <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_MEMBER_GROUP'); ?></th><?php
 				}
                 
 				$match_ids = NULL;
@@ -221,7 +222,7 @@ echo $this->pagination->getListFooter();
 				foreach ($roundMatchesList AS $match)
 				{
 					?>
-					<td <?php echo $tdClassStr; ?> >
+					<th <?php echo $tdClassStr; ?> >
           <?php
           // clublogo oder vereinsflagge
 						
@@ -303,23 +304,24 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->awa
                         }
 						
             ?>
-            </td>
+            </th>
 					<?php
 				}
 				?>
 				<?php
 				if ($this->config['show_points'])
 				{
-					?><td <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_POINTS'); ?></td><?php
+					?><th <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_POINTS'); ?></th><?php
 				}
 				?>
 				<?php
 				if ($this->config['show_average_points'])
 				{
-					?><td <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_AVERAGE'); ?></td><?php
+					?><th <?php echo $tdClassStr; ?> ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_AVERAGE'); ?></th><?php
 				}
 				?>
 			</tr>
+            </thead>
 			<?php
 			
 			if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -556,6 +558,9 @@ echo '<br />membersMatchesArray<pre>~' . print_r($membersMatchesArray,true) . '~
 			$skipMemberCount=($this->model->page > 0) ? (($this->model->page-1)*$this->config['limit']) : 0;
 */
 
+?>
+<tbody>
+<?PHP
 			foreach ($computedMembersRanking AS $key => $value)
 			{
 				if ($i <= $skipMemberCount) { $i++; continue; }
@@ -573,7 +578,7 @@ echo '<br />membersMatchesArray<pre>~' . print_r($membersMatchesArray,true) . '~
     			
     
 					?>
-					<tr class='<?php echo $class; ?>' <?php echo $styleStr; ?> >
+					<tr <?php echo $styleStr; ?> >
 						<td<?php echo $tdStyleStr; ?>><?php echo $value['rank']; ?></td>
 						<?php
 						if ($this->config['show_user_icon'])
@@ -635,6 +640,7 @@ echo '<br />membersMatchesArray<pre>~' . print_r($membersMatchesArray,true) . '~
 				//}
 			}
 			?>
+            </tbody>
 		</table>
         </div>
 	<?php

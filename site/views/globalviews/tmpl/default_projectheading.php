@@ -67,7 +67,16 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
 					<td colspan="<?php echo $nbcols; ?>">
 					<?php
 					$country = $this->project->country;
-					echo JSMCountries::getCountryFlag($country) . ' ' . JSMCountries::getCountryName($country);
+if ( !sportsmanagementHelper::existPicture( JSMCountries::getCountryFlag($country) ) )
+{
+//echo sportsmanagementHelper::getDefaultPlaceholder("icon"). ' ' . JSMCountries::getCountryName($country);    
+echo sportsmanagementHelperHtml::getBootstrapModalImage('country_picture',COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.sportsmanagementHelper::getDefaultPlaceholder("icon"),JSMCountries::getCountryName($country),'20');
+}         
+else
+{
+				echo JSMCountries::getCountryFlag($country) . ' ' . JSMCountries::getCountryName($country);    
+}           
+					
 					?>
 					</td>
 				</tr>
@@ -82,6 +91,11 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
 						<td>
 
 <?PHP
+if ( !sportsmanagementHelper::existPicture( COM_SPORTSMANAGEMENT_PICTURE_SERVER.$this->project->sport_type_picture ) )
+{
+$this->project->sport_type_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");    
+}
+
 echo sportsmanagementHelperHtml::getBootstrapModalImage('sporttype_picture',COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$this->project->sport_type_picture,$this->project->sport_type_name,$this->overallconfig['picture_width']);
 ?>
           
@@ -104,6 +118,10 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('sporttype_picture',COM_
 
 
 <?php 
+if ( !sportsmanagementHelper::existPicture( COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture ) )
+{
+$picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");    
+}
 echo sportsmanagementHelperHtml::getBootstrapModalImage('project_picture',COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture,$this->project->name,$this->overallconfig['picture_width']);
 if ( $copyright )
 {

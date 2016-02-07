@@ -46,6 +46,11 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('globalviews','predictionheading');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
+//$kmlpath = JURI::root().'tmp'.DS.$this->predictionGame->id.'-prediction.kml';
+
+$this->kmlpath = JURI::root().'tmp'.DS.$this->predictionGame->id.'-prediction.kml';
+$this->kmlfile = $this->predictionGame->id.'-prediction.kml';
+
 ?>
 <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
 <?php
@@ -57,7 +62,7 @@ echo $this->loadTemplate('ranking');
 
 if ($this->config['show_all_user_google_map'])
 {
-echo $this->loadTemplate('maps');
+echo $this->loadTemplate('googlemap');
 }
 
 if ($this->config['show_help'])

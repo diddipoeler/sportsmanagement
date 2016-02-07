@@ -100,14 +100,15 @@ else
     }
 }
 ?>
-
+<div class="table-responsive">   
 <table class="<?PHP echo $this->config['table_class']; ?>">
 	<?php
 	foreach( $dates as $date => $games )
 	{
 		?>
 	<!-- DATE HEADER -->
-	<tr class="sectiontableheader">
+    <thead>
+	<tr >
 
 		<?php
 		if ( ($this->config['show_attendance_column']) || ($this->config['show_comments_count'] > 0) )
@@ -141,6 +142,7 @@ else
 		}
 		?>
 	</tr>
+    </thead>
 	<!-- DATE HEADER END-->
 	<!-- GAMES -->
 	<?php
@@ -650,4 +652,5 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 	}
 	?>
 </table>
+</div>
 <br />

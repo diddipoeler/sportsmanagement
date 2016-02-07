@@ -145,7 +145,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 			</tr>
  
                     
-			</table><br />
+			</table>
+            <br />
 			<?php echo JHTML::_( 'form.token' ); ?>
 		</form>
 		<?php
@@ -190,37 +191,40 @@ echo $this->pagination->getListFooter();
                     
 				</table>
 				<?php echo JHTML::_( 'form.token' ); ?>
-			</form><br />
+			</form>
+            <br />
 			<?php
 		
 		}
 		?>
-        <div style="overflow-y:auto;">
-		<table class="<?PHP echo $this->config['table_class'];?>" style="table-layout:fixed" >
+<!--        <div style="overflow-y:auto;"> -->
+        <div class="table-responsive">
+		<table class="<?PHP echo $this->config['table_class'];?>" >
+        <thead>
 			<tr>
-				<td class='sectiontableheader' style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK'); ?></td>
+				<th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK'); ?></th>
 				<?php
                 
                 if ( sportsmanagementModelPrediction::$pggrouprank )
                 {
                     ?>
-                <td class='sectiontableheader' style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_MEMBER_GROUP'); ?></td>    
+                <th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_MEMBER_GROUP'); ?></th>    
                     <?php
                 }
                 else
                 {    
 				if ($this->config['show_user_icon'])
 				{
-					?><td class='sectiontableheader' style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_AVATAR'); ?></td><?php
+					?><th  style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_AVATAR'); ?></th><?php
 				}
 				?>
-				<td class='sectiontableheader' style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_MEMBER'); ?></td>
+				<th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_MEMBER'); ?></th>
 				<?php
                 
                 if ($this->config['show_pred_group'])
 				{
 					?>
-                <td class='sectiontableheader' style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_MEMBER_GROUP'); ?></td>    
+                <th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_MEMBER_GROUP'); ?></th>    
                     <?php
 				}
                 
@@ -229,52 +233,53 @@ echo $this->pagination->getListFooter();
 
         if ($this->config['show_champion_tip'])
 				{
-					?><td class='sectiontableheader' style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_CHAMPION_TIP'); ?></td><?php
+					?><th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_CHAMPION_TIP'); ?></th><?php
 				}
 
 				if ($this->config['show_tip_details'])
 				{
-					?><td class='sectiontableheader' style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_DETAILS'); ?></td><?php
+					?><th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_DETAILS'); ?></th><?php
 				}
 				?>
-				<td class='sectiontableheader' style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_POINTS'); ?></td>
+				<th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_POINTS'); ?></th>
 				<?php
 				if ($this->config['show_average_points'])
 				{
-					?><td class='sectiontableheader' style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_AVERAGE'); ?></td><?php
+					?><th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_AVERAGE'); ?></th><?php
 				}
 				?>
 				<?php
 				if ($this->config['show_count_tips'])
 				{
-					?><td class='sectiontableheader' style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_PREDICTIONS'); ?></td><?php
+					?><th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_PREDICTIONS'); ?></th><?php
 				}
 				?>
 				<?php
 				if ($this->config['show_count_joker'])
 				{
-					?><td class='sectiontableheader' style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_JOKERS'); ?></td><?php
+					?><th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_JOKERS'); ?></th><?php
 				}
 				?>
 				<?php
 				if ($this->config['show_count_topptips'])
 				{
-					?><td class='sectiontableheader' style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_TOPS'); ?></td><?php
+					?><th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_TOPS'); ?></th><?php
 				}
 				?>
 				<?php
 				if ($this->config['show_count_difftips'])
 				{
-					?><td class='sectiontableheader' style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_MARGINS'); ?></td><?php
+					?><th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_MARGINS'); ?></th><?php
 				}
 				?>
 				<?php
 				if ($this->config['show_count_tendtipps'])
 				{
-					?><td class='sectiontableheader' style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_TENDENCIES'); ?></td><?php
+					?><th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_TENDENCIES'); ?></th><?php
 				}
 				?>
 			</tr>
+            </thead>
 			<?php
 
         if (COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO)
@@ -588,7 +593,9 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
                     }    
 				
 
-
+?>
+<tbody>
+<?PHP
 				// schleife über die sortierte tabelle anfang
                 foreach ($computedMembersRanking AS $key => $value)
 				{
@@ -608,7 +615,7 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
 					
                         ?>
                         
-						<tr class='<?php echo $class; ?>' <?php echo $styleStr; ?> >
+						<tr  <?php echo $styleStr; ?> >
 							<td<?php echo $tdStyleStr; ?>><?php echo $value['rank']; ?></td>
 							<?php
 						if ( sportsmanagementModelPrediction::$pggrouprank )
@@ -755,7 +762,7 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
 				}
                 // schleife über die sortierte tabelle ende
 			?>
-            
+            </tbody>
     
     
 		</table>
