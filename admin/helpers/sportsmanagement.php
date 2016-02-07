@@ -73,6 +73,17 @@ abstract class sportsmanagementHelper
     {
     $app = JFactory::getApplication();
     $imageArray = '';
+    
+    if ( !JFile::exists($picture) )
+    {
+    return false;    
+    }
+    else
+    {
+    return true;    
+    }
+    
+    
     /*
     $file_headers = @get_headers($picture);
     

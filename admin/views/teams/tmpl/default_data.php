@@ -47,7 +47,8 @@ JHtml::_('behavior.modal');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-	<div id="editcell">
+<!--	<div id="editcell"> -->
+    <div class="table-responsive">
 		<table class="<?php echo $this->table_data_class; ?>">
 			<thead>
 				<tr>
