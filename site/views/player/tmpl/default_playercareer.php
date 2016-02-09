@@ -87,11 +87,11 @@ if (count($this->historyPlayer) > 0)
 							<?php
                             if ( $this->config['show_project_logo'] ) 
                             { 
-if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$station->project_picture ) )
+if ( !curl_init( $station->project_picture ) )
 				{
 					$station->project_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 				}                                
-                            echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareerproject'.$station->project_id.'-'.$station->team_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$station->project_picture,$station->project_name,'20'); 
+                            echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareerproject'.$station->project_id.'-'.$station->team_id,$station->project_picture,$station->project_name,'20'); 
 							}	
                                 echo JHtml::link($link1,$station->project_name);
 							?></td>
@@ -104,11 +104,11 @@ if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$station->project_pictur
                             <?php 
                             if ( $this->config['show_team_logo'] ) 
                             { 
-if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$station->club_picture ) )
+if ( !curl_init( $station->club_picture ) )
 				{
 					$station->club_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 				}                                  
-                            echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareerteam'.$station->project_id.'-'.$station->team_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$station->club_picture,$station->team_name,'20');
+                            echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareerteam'.$station->project_id.'-'.$station->team_id,$station->club_picture,$station->team_name,'20');
                             }
 							if ( $this->config['show_playercareer_teamlink'] ) 
                             {
@@ -123,7 +123,7 @@ if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$station->club_picture )
                             <td>
                 <?PHP
                 //echo $player_hist->season_picture;
-                echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareerperson'.$station->project_id.'-'.$station->team_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$station->season_picture,$station->team_name,'50');
+                echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareerperson'.$station->project_id.'-'.$station->team_id,$station->season_picture,$station->team_name,'50');
                 ?>
                 </td>
 							<td class="td_l"><?php echo JText::_($station->position_name);

@@ -55,12 +55,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
         
         $picture = $this->teams[0]->$pic;
         //echo $picture.'<br>';
-        if ( !sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture) )
+        if ( !sportsmanagementHelper::existPicture($picture) )
         {
         $picture = sportsmanagementHelper::getDefaultPlaceholder($pic);
         }   
         
-echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch'.$this->teams[0]->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture,$this->teams[0]->name,$this->config['team_picture_width'])
+echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch'.$this->teams[0]->id,$picture,$this->teams[0]->name,$this->config['team_picture_width'])
                              
 		?>
 
@@ -70,12 +70,12 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch'.$this->teams
 
         $picture = $this->teams[1]->$pic;
         //echo $picture.'<br>';
-        if ( !sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture) )
+        if ( !sportsmanagementHelper::existPicture($picture) )
         {
         $picture = sportsmanagementHelper::getDefaultPlaceholder($pic);
         }                         
 
-echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch'.$this->teams[1]->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture,$this->teams[1]->name,$this->config['team_picture_width'])
+echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch'.$this->teams[1]->id,$picture,$this->teams[1]->name,$this->config['team_picture_width'])
         
 		?>
         

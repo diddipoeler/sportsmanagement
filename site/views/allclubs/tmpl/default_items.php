@@ -100,7 +100,7 @@ $item->logo_big = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 </td>
 <td>
 <?PHP 
-echo sportsmanagementHelperHtml::getBootstrapModalImage('allclub'.$item->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$item->logo_big,$item->name,'20')
+echo sportsmanagementHelperHtml::getBootstrapModalImage('allclub'.$item->id,$item->logo_big,$item->name,'20')
 ?> 
 </td>
 <td>

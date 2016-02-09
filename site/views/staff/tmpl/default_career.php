@@ -83,7 +83,7 @@ if (count($this->history) > 0)
                             <td>
                 <?PHP
                 //echo $player_hist->season_picture;
-                echo sportsmanagementHelperHtml::getBootstrapModalImage('career'.$station->project_id.'-'.$station->team_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$station->season_picture,$station->team_name,'50');
+                echo sportsmanagementHelperHtml::getBootstrapModalImage('career'.$station->project_id.'-'.$station->team_id,$station->season_picture,$station->team_name,'50');
                 ?>
                 </td>
                             

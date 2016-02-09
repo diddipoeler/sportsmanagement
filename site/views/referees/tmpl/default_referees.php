@@ -89,7 +89,7 @@ if ( !empty( $this->rows  ) )
 					$refereeName = sportsmanagementHelper::formatName(null, $row->firstname, $row->nickname, $row->lastname, $this->config["name_format"] );
 					if ( $this->config['show_icon'] == 1)
 					{
-echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$row->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$row->picture,$refereeName,$this->config['referee_picture_width']);
+echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$row->id,$row->picture,$refereeName,$this->config['referee_picture_width']);
 
 					}
 					?>

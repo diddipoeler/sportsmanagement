@@ -234,11 +234,11 @@ echo $this->pagination->getListFooter();
                             case 'logo_middle':
                             case 'logo_big':
                             // bild ist nicht vorhanden, dann das standardbild
-                            if ( !sportsmanagementHelper::existPicture( COM_SPORTSMANAGEMENT_PICTURE_SERVER.$match->homeLogo ) )
+                            if ( !sportsmanagementHelper::existPicture( $match->homeLogo ) )
                             {
                             $match->homeLogo = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");    
                             }
-echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->homeid,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$match->homeLogo,$match->homeName,'20');                               
+echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->homeid,$match->homeLogo,$match->homeName,'20');                               
                             ?>                                    
 
                             <?PHP
@@ -277,11 +277,11 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->hom
                             case 'logo_middle':
                             case 'logo_big':
                             // bild ist nicht vorhanden, dann das standardbild
-                            if ( !sportsmanagementHelper::existPicture( COM_SPORTSMANAGEMENT_PICTURE_SERVER.$match->awayLogo ) )
+                            if ( !sportsmanagementHelper::existPicture( $match->awayLogo ) )
                             {
                             $match->awayLogo = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");    
                             }
-echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->awayid,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$match->awayLogo,$match->awayName,'20');                        
+echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->awayid,$match->awayLogo,$match->awayName,'20');                        
                             ?>                                    
                             
                             <?PHP

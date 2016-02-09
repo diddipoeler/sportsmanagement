@@ -160,7 +160,7 @@ if (count($this->stafflist) > 0)
 				<td width="40" class="td_c" nowrap="nowrap">
                 <?php
                 
-echo sportsmanagementHelperHtml::getBootstrapModalImage('staff'.$row->playerid,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$playerName,$this->config['staff_picture_width']);	
+echo sportsmanagementHelperHtml::getBootstrapModalImage('staff'.$row->playerid,$picture,$playerName,$this->config['staff_picture_width']);	
 
       
               

@@ -209,8 +209,8 @@ if ( $schemahome )
 
 
 <?PHP
-//echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$this->team1_club->logo_big, $this->team1_club->name, array('title' => $this->team1_club->name,'class' => "img-rounded" )); 
-echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundteamhome',COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$this->team1_club->logo_big,$this->team1_club->name,'50');     
+//echo JHtml::image($this->team1_club->logo_big, $this->team1_club->name, array('title' => $this->team1_club->name,'class' => "img-rounded" )); 
+echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundteamhome',$this->team1_club->logo_big,$this->team1_club->name,'50');     
 ?>
 
 
@@ -226,8 +226,8 @@ if ( $schemaguest )
 
 
 <?PHP
-//echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$this->team2_club->logo_big, $this->team2_club->name, array('title' => $this->team2_club->name,'class' => "img-rounded" ));    
-echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundteamaway',COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$this->team2_club->logo_big,$this->team2_club->name,'50');  
+//echo JHtml::image($this->team2_club->logo_big, $this->team2_club->name, array('title' => $this->team2_club->name,'class' => "img-rounded" ));    
+echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundteamaway',$this->team2_club->logo_big,$this->team2_club->name,'50');  
 ?>
 
 
@@ -267,10 +267,10 @@ if ( $player->pposid == $pos->pposid && $player->ptid == $this->match->projectte
 // player->ppic = person picture
 // player->picture = teamplay picture
 $picture = $player->picture;
-if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture ) )
+if ( !curl_init( $picture ) )
 {
 $picture = $player->ppic;    
-if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture ) )
+if ( !curl_init( $picture ) )
 {
 $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 }
@@ -294,7 +294,7 @@ echo 'this->heim picture<br /> ~' . $picture . ' ~<br />';
 
 
 <?PHP
-echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundperson'.$player->person_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture,$player->lastname,$this->config['roster_playground_player_picture_width']);     
+echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundperson'.$player->person_id,$picture,$player->lastname,$this->config['roster_playground_player_picture_width']);     
 ?>
  
 
@@ -344,10 +344,10 @@ if ( $player->pposid == $pos->pposid && $player->ptid == $this->match->projectte
 // player->ppic = person picture
 // player->picture = teamplay picture
 $picture = $player->picture;
-if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture ) )
+if ( !curl_init( $picture ) )
 {
 $picture = $player->ppic;    
-if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture ) )
+if ( !curl_init( $picture ) )
 {    
 $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 }
@@ -358,8 +358,8 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 <div id="<?php echo $player->person_id;?>" style="display:<?php echo $div_display;?>;position:absolute; width:103px; left:<?PHP echo $this->schemaaway[$schemaguest][$testlauf]['gast']['links']; ?>px; top:<?PHP echo $this->schemaaway[$schemaguest][$testlauf]['gast']['oben']; ?>px; text-align:center;">
 
 <?PHP
-//echo JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture, $player->lastname, array('title' => $player->lastname,'class' => "img-rounded" ));  
-echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundperson'.$player->person_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture,$player->lastname,$this->config['roster_playground_player_picture_width']);    
+//echo JHtml::image($picture, $player->lastname, array('title' => $player->lastname,'class' => "img-rounded" ));  
+echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplaygroundperson'.$player->person_id,$picture,$player->lastname,$this->config['roster_playground_player_picture_width']);    
 ?>
 
 <a class="link" href=""><font color="white"><?PHP echo $player->lastname." "; ?></font></a>

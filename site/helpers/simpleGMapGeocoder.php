@@ -674,17 +674,17 @@ $kml[] = ' <IconStyle id="' . $row->team_id . 'Icon">';
 $kml[] = ' <Icon>';
 
 //$picturepath = JURI::root().$row->logo_big;
-$picturepath = COM_SPORTSMANAGEMENT_PICTURE_SERVER.$row->logo_big;
+$picturepath = $row->logo_big;
 //if ( !file_exists($picturepath) )
 //{
-//$kml[] = ' <href>' . COM_SPORTSMANAGEMENT_PICTURE_SERVER.$ph_logo_big . '</href>';    
+//$kml[] = ' <href>' . $ph_logo_big . '</href>';    
 //}
 //else
 //{
-//$kml[] = ' <href>' . COM_SPORTSMANAGEMENT_PICTURE_SERVER.$row->logo_big . '</href>';    
+//$kml[] = ' <href>' . $row->logo_big . '</href>';    
 //}
 
-$kml[] = ' <href>' . COM_SPORTSMANAGEMENT_PICTURE_SERVER.$row->logo_big . '</href>';
+$kml[] = ' <href>' . $row->logo_big . '</href>';
 $kml[] = ' </Icon>';
 $kml[] = ' </IconStyle>';
 $kml[] = ' </Style>';    

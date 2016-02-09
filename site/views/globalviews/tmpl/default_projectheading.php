@@ -70,7 +70,7 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
 if ( !sportsmanagementHelper::existPicture( JSMCountries::getCountryFlag($country) ) )
 {
 //echo sportsmanagementHelper::getDefaultPlaceholder("icon"). ' ' . JSMCountries::getCountryName($country);    
-echo sportsmanagementHelperHtml::getBootstrapModalImage('country_picture',COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.sportsmanagementHelper::getDefaultPlaceholder("icon"),JSMCountries::getCountryName($country),'20');
+echo sportsmanagementHelperHtml::getBootstrapModalImage('country_picture',sportsmanagementHelper::getDefaultPlaceholder("icon"),JSMCountries::getCountryName($country),'20');
 }         
 else
 {
@@ -91,12 +91,12 @@ else
 						<td>
 
 <?PHP
-if ( !sportsmanagementHelper::existPicture( COM_SPORTSMANAGEMENT_PICTURE_SERVER.$this->project->sport_type_picture ) )
+if ( !sportsmanagementHelper::existPicture( $this->project->sport_type_picture ) )
 {
 $this->project->sport_type_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");    
 }
 
-echo sportsmanagementHelperHtml::getBootstrapModalImage('sporttype_picture',COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$this->project->sport_type_picture,$this->project->sport_type_name,$this->overallconfig['picture_width']);
+echo sportsmanagementHelperHtml::getBootstrapModalImage('sporttype_picture',$this->project->sport_type_picture,$this->project->sport_type_name,$this->overallconfig['picture_width']);
 ?>
           
 
@@ -118,11 +118,11 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('sporttype_picture',COM_
 
 
 <?php 
-if ( !sportsmanagementHelper::existPicture( COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture ) )
+if ( !sportsmanagementHelper::existPicture( $picture ) )
 {
 $picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");    
 }
-echo sportsmanagementHelperHtml::getBootstrapModalImage('project_picture',COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture,$this->project->name,$this->overallconfig['picture_width']);
+echo sportsmanagementHelperHtml::getBootstrapModalImage('project_picture',$picture,$this->project->name,$this->overallconfig['picture_width']);
 if ( $copyright )
 {
 echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>');

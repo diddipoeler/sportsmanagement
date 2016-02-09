@@ -234,11 +234,11 @@ $query = $db->getQuery(true);
 		$iso2 = self::convertIso3to2($iso_code_3);
 		if ($iso2)
 		{
-			//$path = COM_SPORTSMANAGEMENT_PICTURE_SERVER.'images/com_sportsmanagement/database/flags/'.strtolower($iso2).'.png';
+			//$path = 'images/com_sportsmanagement/database/flags/'.strtolower($iso2).'.png';
             $path = 'images/com_sportsmanagement/database/flags/'.strtolower($iso2).'.png';
-//            if ( !JFile::exists(COM_SPORTSMANAGEMENT_PICTURE_SERVER.'images/com_sportsmanagement/database/flags/'.strtolower($iso2).'.png') )
+//            if ( !JFile::exists('images/com_sportsmanagement/database/flags/'.strtolower($iso2).'.png') )
 //			{
-//                $path = COM_SPORTSMANAGEMENT_PICTURE_SERVER.'administrator/components/com_sportsmanagement/assets/images/delete.png';
+//                $path = 'administrator/components/com_sportsmanagement/assets/images/delete.png';
 //            }    
 			return $path;
 		}
@@ -280,13 +280,13 @@ $query = $db->getQuery(true);
 		$src = $db->loadResult();
         }
         
-        if ( !curl_init(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$src) )
+        if ( !curl_init($src) )
         {
-        $src = COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.JComponentHelper::getParams($option)->get('ph_flags','');
+        $src = JComponentHelper::getParams($option)->get('ph_flags','');
         } 
         else
         {
-        $src = COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$src;    
+        $src = $src;    
         }
         
 		$html='<img src="'.$src.'" alt="'.self::getCountryName($countrycode).'" ';

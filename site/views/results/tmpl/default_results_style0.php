@@ -283,8 +283,8 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('nextmatch'
 		<td width="" class="">
         <?PHP
 
-echo sportsmanagementHelperHtml::getBootstrapModalImage('match_summary'.$game->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$imgsummary,$imgTitle,'20');        
-echo sportsmanagementHelperHtml::getBootstrapModalImage('match_content'.$game->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$imgsummary,$imgTitle,'20');
+echo sportsmanagementHelperHtml::getBootstrapModalImage('match_summary'.$game->id,$imgsummary,$imgTitle,'20');        
+echo sportsmanagementHelperHtml::getBootstrapModalImage('match_content'.$game->id,$imgsummary,$imgTitle,'20');
         
         ?>
 

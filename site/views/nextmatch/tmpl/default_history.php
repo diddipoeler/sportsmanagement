@@ -117,11 +117,11 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
                 
                 <td class="nowrap">
                 <?php
-                if ( !sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$home->picture) )
+                if ( !sportsmanagementHelper::existPicture($home->picture) )
     {
     $home->picture = sportsmanagementHelper::getDefaultPlaceholder('logo_big');    
     }
-				echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch'.$game->id.'-'.$game->projectteam1_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$home->picture,$home->name,'20')
+				echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch'.$game->id.'-'.$game->projectteam1_id,$home->picture,$home->name,'20')
 				?>
                 </td>
                                 
@@ -129,11 +129,11 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
                 
                 <td class="nowrap">
                 <?php
-                if ( !sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$away->picture) )
+                if ( !sportsmanagementHelper::existPicture($away->picture) )
     {
     $away->picture = sportsmanagementHelper::getDefaultPlaceholder('logo_big');    
     }
-				echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch'.$game->id.'-'.$game->projectteam2_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$away->picture,$away->name,'20')
+				echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch'.$game->id.'-'.$game->projectteam2_id,$away->picture,$away->name,'20')
 				?>
                 </td>
                 

@@ -87,7 +87,7 @@ defined('_JEXEC') or die('Restricted access'); ?>
                             <td>
                 <?PHP
                 //echo $player_hist->season_picture;
-                echo sportsmanagementHelperHtml::getBootstrapModalImage('careerstats'.$player_hist->project_id.'-'.$player_hist->team_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$player_hist->season_picture,$player_hist->team_name,'50');
+                echo sportsmanagementHelperHtml::getBootstrapModalImage('careerstats'.$player_hist->project_id.'-'.$player_hist->team_id,$player_hist->season_picture,$player_hist->team_name,'50');
                 ?>
                 </td>
 							<!-- Player stats History - played start -->

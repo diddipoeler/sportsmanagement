@@ -65,7 +65,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
 
 <a href="#" title="<?php echo $this->team->name;?>" data-toggle="modal" data-target=".teamroster">
-<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" alt="<?php echo $this->team->name;?>" width="<?php echo $this->config['team_picture_width'];?>" />
+<img src="<?php echo $picture;?>" alt="<?php echo $this->team->name;?>" width="<?php echo $this->config['team_picture_width'];?>" />
 </a>
 
 
@@ -80,7 +80,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
         </div>
         
         <div class="modal-body">
-            <img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture;?>" class="img-responsive img-rounded center-block">
+            <img src="<?php echo $picture;?>" class="img-responsive img-rounded center-block">
         </div>
         <div class="modal-footer">
 <button class="btn" data-dismiss="modal" aria-hidden="true"><?php echo JText::_('JLIB_HTML_BEHAVIOR_CLOSE');?> </button>

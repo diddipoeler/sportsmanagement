@@ -63,7 +63,7 @@ if ($this->config['show_player_icon'])
 			<div class="jl_rosterperson_picture_column">
 				<div class="jl_rosterperson_pic">
 <?php
-echo sportsmanagementHelperHtml::getBootstrapModalImage('personplayer'.$this->row->person_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$personName,$this->config['player_picture_width']);
+echo sportsmanagementHelperHtml::getBootstrapModalImage('personplayer'.$this->row->person_id,$picture,$personName,$this->config['player_picture_width']);
      
       	
     

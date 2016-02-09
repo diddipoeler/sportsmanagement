@@ -80,7 +80,7 @@ if (!empty($this->matchstaffpositions))
 										$picture = $player->picture;
 										if (!file_exists($picture)){$picture = sportsmanagementHelper::getDefaultPlaceholder("player");}
 										echo '&nbsp;';
-echo sportsmanagementHelperHtml::getBootstrapModalImage('matchstaff'.$player->person_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$imgTitle,$this->config['staff_picture_width']);
+echo sportsmanagementHelperHtml::getBootstrapModalImage('matchstaff'.$player->person_id,$picture,$imgTitle,$this->config['staff_picture_width']);
                                         ?>
                                         
                                         
@@ -113,7 +113,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('matchstaff'.$player->pe
 										$picture = $player->picture;
 										if (!file_exists($picture)){$picture = sportsmanagementHelper::getDefaultPlaceholder("player");}
 
-echo sportsmanagementHelperHtml::getBootstrapModalImage('matchstaff'.$player->person_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$imgTitle,$this->config['staff_picture_width']);
+echo sportsmanagementHelperHtml::getBootstrapModalImage('matchstaff'.$player->person_id,$picture,$imgTitle,$this->config['staff_picture_width']);
 
                                         ?>
                                         

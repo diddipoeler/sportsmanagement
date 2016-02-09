@@ -76,12 +76,12 @@ foreach ($players as $row): ?>
 				{
 					$picture = $row->ppic;
 				}
-				if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture ) )
+				if ( !curl_init( $picture ) )
 				{
 					$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 				}
 				
-echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplayer'.$row->person_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture,$playerName,$this->config['player_picture_width']);				
+echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplayer'.$row->person_id,$picture,$playerName,$this->config['player_picture_width']);				
 
 				?>			  
 				</td>

@@ -61,7 +61,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			$picture = $this->person->picture;
 		}
 	
-echo sportsmanagementHelperHtml::getBootstrapModalImage('playerinfo'.$this->person->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$imgTitle,$this->config['picture_width']);
+echo sportsmanagementHelperHtml::getBootstrapModalImage('playerinfo'.$this->person->id,$picture,$imgTitle,$this->config['picture_width']);
 
 	}
 	?>

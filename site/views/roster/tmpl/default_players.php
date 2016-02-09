@@ -188,7 +188,7 @@ if (!empty($this->rows))
 			{ ?>
 		<th class="td_c"><?php
 				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ROSTER_PLAYED');
-                $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture_path_sport_type_name.'/played.png';
+                $picture = $picture_path_sport_type_name.'/played.png';
                 
 //echo __FILE__.' '.__LINE__.' '.$picture;                
 
@@ -204,7 +204,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 			{ ?>
 		<th class="td_c"><?php
 				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ROSTER_STARTING_LINEUP');
-                $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture_path_sport_type_name.'/startroster.png';
+                $picture = $picture_path_sport_type_name.'/startroster.png';
                 
 //echo __FILE__.' '.__LINE__.' '.$picture;
                 
@@ -216,7 +216,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 		?></th>
 		<th class="td_c"><?php
 				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ROSTER_IN');
-                $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture_path_sport_type_name.'/in.png';
+                $picture = $picture_path_sport_type_name.'/in.png';
                 
 //echo __FILE__.' '.__LINE__.' '.$picture;
                 
@@ -228,7 +228,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 		?></th>
 		<th class="td_c"><?php
 				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ROSTER_OUT');
-                $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture_path_sport_type_name.'/out.png';
+                $picture = $picture_path_sport_type_name.'/out.png';
                 
 //echo __FILE__.' '.__LINE__.' '.$picture;
                 
@@ -241,7 +241,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
         
         <th class="td_c"><?php
 				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
-                $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture_path_sport_type_name.'/uhr.png';
+                $picture = $picture_path_sport_type_name.'/uhr.png';
                 
 //echo __FILE__.' '.__LINE__.' '.$picture;
                 
@@ -280,7 +280,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 							{
 								$iconPath = 'images/com_sportsmanagement/database/events/'.$iconPath;
 							}
-                            if ( !curl_init(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$iconPath) )
+                            if ( !curl_init($iconPath) )
 {
 $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
 }
@@ -366,7 +366,7 @@ $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
             ?>
 		<td width="40" class="td_c" nowrap="nowrap">
 <?PHP
-echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture,$playerName,$this->config['player_picture_width']);
+echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,$picture,$playerName,$this->config['player_picture_width']);
 ?>
 
 		</td>

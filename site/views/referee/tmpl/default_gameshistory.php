@@ -77,7 +77,7 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 						</td>
 						<td class="td_r">
                         <?php 
-echo sportsmanagementHelperHtml::getBootstrapModalImage('gamehistory'.$game->id.'-'.$game->projectteam1_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$game->home_logo,$game->home_name,'20');                        
+echo sportsmanagementHelperHtml::getBootstrapModalImage('gamehistory'.$game->id.'-'.$game->projectteam1_id,$game->home_logo,$game->home_name,'20');                        
                         echo $this->teams[$game->projectteam1_id]->name; 
                         ?>
 						</td>
@@ -87,7 +87,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('gamehistory'.$game->id.
 						<td class="td_l"><?php echo $game->team2_result; ?></td>
 						<td class="td_l">
                         <?php 
-echo sportsmanagementHelperHtml::getBootstrapModalImage('gamehistory'.$game->id.'-'.$game->projectteam2_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$game->away_logo,$game->away_name,'20');                        
+echo sportsmanagementHelperHtml::getBootstrapModalImage('gamehistory'.$game->id.'-'.$game->projectteam2_id,$game->away_logo,$game->away_name,'20');                        
                         echo $this->teams[$game->projectteam2_id]->name; 
                         ?>
 						</td>

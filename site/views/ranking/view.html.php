@@ -55,6 +55,11 @@ class sportsmanagementViewRanking extends sportsmanagementView
 {
 	
 
+	/**
+	 * sportsmanagementViewRanking::init()
+	 * 
+	 * @return void
+	 */
 	function init() 
 	{
 
@@ -199,7 +204,7 @@ class sportsmanagementViewRanking extends sportsmanagementView
 	}
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r(sportsmanagementModelProject::$cfg_which_database,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams'.'<pre>'.print_r($this->teams,true).'</pre>' ),'');
+        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams'.'<pre>'.print_r($this->teams,true).'</pre>' ),'');
 		
 	$no_ranking_reason = '';
 	if ( $this->config['show_notes'] )

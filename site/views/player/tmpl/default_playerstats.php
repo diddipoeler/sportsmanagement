@@ -61,7 +61,7 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
                 <th class="td_l" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE'); ?></th>
 				<th class="td_c"><?php
 				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PERSON_PLAYED');
-                $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture_path_sport_type_name.'/played.png';
+                $picture = $picture_path_sport_type_name.'/played.png';
                 if ( !curl_init($picture) )
 {
 $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
@@ -77,7 +77,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 						?>
 				<th class="td_c"><?php
 				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PERSON_STARTROSTER');
-                $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture_path_sport_type_name.'/startroster.png';
+                $picture = $picture_path_sport_type_name.'/startroster.png';
                 if ( !curl_init($picture) )
 {
 $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
@@ -86,7 +86,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 				?></th>
 				<th class="td_c"><?php
 				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PERSON_IN');
-                $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture_path_sport_type_name.'/in.png';
+                $picture = $picture_path_sport_type_name.'/in.png';
                 if ( !curl_init($picture) )
 {
 $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
@@ -95,7 +95,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 				?></th>
 				<th class="td_c"><?php
 				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PERSON_OUT');
-                $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture_path_sport_type_name.'/out.png';
+                $picture = $picture_path_sport_type_name.'/out.png';
                 if ( !curl_init($picture) )
 {
 $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
@@ -108,7 +108,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
                 ?>
                 <th class="td_c"><?php
 				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
-                $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture_path_sport_type_name.'/uhr.png';
+                $picture = $picture_path_sport_type_name.'/uhr.png';
                 if ( !curl_init($picture) )
 {
 $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
@@ -132,7 +132,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
                 {
                     $iconPath = "images/com_sportsmanagement/database/events/".$iconPath;
                     }
-                    if ( !curl_init(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$iconPath) )
+                    if ( !curl_init($iconPath) )
 {
 $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
 }
@@ -232,12 +232,12 @@ $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
                 <?php
                 if ( $this->config['show_project_logo'] ) 
                             { 
-if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$player_hist->project_picture ) )
+if ( !curl_init( $player_hist->project_picture ) )
 				{
 					$player_hist->project_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 				}
                                                 
-                echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsproject'.$player_hist->project_id.'-'.$player_hist->team_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$player_hist->project_picture,$player_hist->project_name,'20'); 
+                echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsproject'.$player_hist->project_id.'-'.$player_hist->team_id,$player_hist->project_picture,$player_hist->project_name,'20'); 
                 }
                 echo JHtml::link($link1,$player_hist->project_name); 
                 ?>
@@ -246,11 +246,11 @@ if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$player_hist->project_pi
 				<?php
                 if ( $this->config['show_team_logo'] ) 
                             { 
-if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$player_hist->club_picture ) )
+if ( !curl_init( $player_hist->club_picture ) )
 				{
 					$player_hist->club_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 				}                                
-echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsteam'.$player_hist->project_id.'-'.$player_hist->team_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$player_hist->club_picture,$player_hist->team_name,'20');                                
+echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsteam'.$player_hist->project_id.'-'.$player_hist->team_id,$player_hist->club_picture,$player_hist->team_name,'20');                                
                             }    
 					if ( $this->config['show_playerstats_teamlink'] ) 
                     {
@@ -266,7 +266,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsteam'.$playe
                 <td>
                 <?PHP
                 //echo $player_hist->season_picture;
-                echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstats'.$player_hist->project_id.'-'.$player_hist->team_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$player_hist->season_picture,$player_hist->team_name,'50');
+                echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstats'.$player_hist->project_id.'-'.$player_hist->team_id,$player_hist->season_picture,$player_hist->team_name,'50');
                 ?>
                 </td>
 				<!-- Player stats History - played start -->

@@ -254,7 +254,7 @@ foreach ($this->rows as $players)
         
             
 <?PHP
-echo sportsmanagementHelperHtml::getBootstrapModalImage('allplayer'.$players->pid,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$playerName,$this->config['player_picture_width']);
+echo sportsmanagementHelperHtml::getBootstrapModalImage('allplayer'.$players->pid,$picture,$playerName,$this->config['player_picture_width']);
 ?>            
 		</td><?php
 		}

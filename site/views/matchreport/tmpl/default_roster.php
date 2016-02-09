@@ -144,11 +144,11 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
                                             {
                                                 $imgTitle=($this->config['show_player_profile_link'] == 1) ? JText::sprintf('COM_SPORTSMANAGEMENT_MATCHREPORT_PIC', $match_player) : $match_player;
                                                 $picture=$player->picture;
-                                                if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player") ) || !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture ) )
+                                                if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player") ) || !curl_init( $picture ) )
                                                 {
                                                     $picture = $player->ppic;
                                                 }
-                                                if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture ) )
+                                                if ( !curl_init( $picture ) )
                                                 {
                                                     $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
                                                 }
@@ -156,7 +156,7 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
                                                 {
 
 
-echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer'.$player->person_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture,$imgTitle,$this->config['player_picture_width']);
+echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer'.$player->person_id,$picture,$imgTitle,$this->config['player_picture_width']);
                                                 ?>
                                                 
 
@@ -174,7 +174,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer'.$player->p
                                                 } 
                                                 else 
                                                 {
-echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer'.$player->person_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture,$imgTitle,$this->config['player_picture_width']);
+echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer'.$player->person_id,$picture,$imgTitle,$this->config['player_picture_width']);
                                                     ?>
 
  
@@ -245,11 +245,11 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
                                             {
                                                 $imgTitle=($this->config['show_player_profile_link'] == 1) ? JText::sprintf('COM_SPORTSMANAGEMENT_MATCHREPORT_PIC', $match_player) : $match_player;
                                                 $picture=$player->picture;
-                                                if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player") ) || !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture ) )
+                                                if ((empty($picture)) || ($picture == sportsmanagementHelper::getDefaultPlaceholder("player") ) || !curl_init( $picture ) )
                                                 {
                                                     $picture = $player->ppic;
                                                 }
-                                                if ( !curl_init( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture ) )
+                                                if ( !curl_init( $picture ) )
                                                 {
                                                     $picture = sportsmanagementHelper::getDefaultPlaceholder("player");
                                                 }
@@ -265,7 +265,7 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
                                                 }
                                                 else 
                                                 {
-echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer'.$player->person_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture,$imgTitle,$this->config['player_picture_width']);                         
+echo sportsmanagementHelperHtml::getBootstrapModalImage('matchplayer'.$player->person_id,$picture,$imgTitle,$this->config['player_picture_width']);                         
                                                     ?>
     
 

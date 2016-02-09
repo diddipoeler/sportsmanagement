@@ -123,7 +123,7 @@ defined('_JEXEC') or die('Restricted access');
 		{
 			$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 		}
-echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterstaff'.$row->person_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$playerName,$this->config['staff_picture_width']);
+echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterstaff'.$row->person_id,$picture,$playerName,$this->config['staff_picture_width']);
 		
   
 		?>

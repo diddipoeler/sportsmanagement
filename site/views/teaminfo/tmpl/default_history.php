@@ -141,18 +141,12 @@ defined('_JEXEC') or die('Restricted access');
 		<td><?php echo $season->season; ?></td>
 		<td><?php echo $season->league; ?></td>
         <td><?php 
-        //echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$season->season_picture; 
-        
-//        if ( !$season->season_picture )
-//        {
-//            $season->season_picture = 'images/com_sportsmanagement/database/placeholders/placeholder_450_2.png';
-//        }
      
-        if ( !sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$season->season_picture) )
+        if ( !sportsmanagementHelper::existPicture($season->season_picture) )
     {
     $season->season_picture = sportsmanagementHelper::getDefaultPlaceholder('team');    
     }
-        echo sportsmanagementHelperHtml::getBootstrapModalImage('teaminfohistory'.$season->ptid.'-'.$season->projectid,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$season->season_picture,$this->team->name,'50');
+        echo sportsmanagementHelperHtml::getBootstrapModalImage('teaminfohistory'.$season->ptid.'-'.$season->projectid,$season->season_picture,$this->team->name,'50');
         ?></td>
 		<?php if($this->project->project_type=='DIVISIONS_LEAGUE') { ?> 
 		<td><?php echo $season->division_name; ?></td>

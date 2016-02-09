@@ -69,7 +69,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                 ?>
 
 <?PHP
-echo sportsmanagementHelperHtml::getBootstrapModalImage('team2mare'.$this->team1->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$this->team1->name,$this->config['team_picture_width']);                     
+echo sportsmanagementHelperHtml::getBootstrapModalImage('team2mare'.$this->team1->id,$picture,$this->team1->name,$this->config['team_picture_width']);                     
 ?>
                 
 		</td>
@@ -90,7 +90,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('team2mare'.$this->team1
                     $picture = $this->team2->$pic;
                 }   
 
-echo sportsmanagementHelperHtml::getBootstrapModalImage('team2mare'.$this->team2->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$this->team2->name,$this->config['team_picture_width']);                     
+echo sportsmanagementHelperHtml::getBootstrapModalImage('team2mare'.$this->team2->id,$picture,$this->team2->name,$this->config['team_picture_width']);                     
 							
 		?>
         

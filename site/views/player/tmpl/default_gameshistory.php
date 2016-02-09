@@ -66,7 +66,7 @@ if (count($this->games))
 						?>
 					<th class="td_c"><?php
 					$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PERSON_STARTROSTER');
-                    $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture_path_sport_type_name.'/startroster.png';
+                    $picture = $picture_path_sport_type_name.'/startroster.png';
                     //echo $picture;
                     if ( !curl_init($picture) )
 {
@@ -76,7 +76,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 					?></th>
 					<th class="td_c"><?php
 					$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PERSON_IN');
-                    $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture_path_sport_type_name.'/in.png';
+                    $picture = $picture_path_sport_type_name.'/in.png';
                     if ( !curl_init($picture) )
 {
 $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
@@ -85,7 +85,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 					?></th>
 					<th class="td_c"><?php
 					$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PERSON_OUT');
-                    $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture_path_sport_type_name.'/out.png';
+                    $picture = $picture_path_sport_type_name.'/out.png';
                     if ( !curl_init($picture) )
 {
 $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
@@ -95,7 +95,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
                     
                     <th class="td_c"><?php
 				$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PLAYED_TIME');
-                $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture_path_sport_type_name.'/uhr.png';
+                $picture = $picture_path_sport_type_name.'/uhr.png';
                 if ( !curl_init($picture) )
 {
 $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
@@ -119,7 +119,7 @@ $picture = sportsmanagementHelper::getDefaultPlaceholder("icon");
 						$iconPath = "images/com_sportsmanagement/database/events/".$iconPath;
 					}
                     
-                    if ( !curl_init(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$iconPath) )
+                    if ( !curl_init($iconPath) )
 {
 $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
 }
@@ -208,12 +208,12 @@ $teaminfo_away_link = sportsmanagementHelperRoute::getSportsmanagementRoute('tea
 						<?php 
 						if ( $this->config['show_gameshistory_teamlink'] ) 
                         {
-echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id.'-'.$game->projectteam1_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$game->home_logo,$game->home_name,'20');							
+echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id.'-'.$game->projectteam1_id,$game->home_logo,$game->home_name,'20');							
                             echo JHtml::link($teaminfo_home_link, $this->teams[$game->projectteam1_id]->name); 
 						} 
                         else 
                         {
-echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id.'-'.$game->projectteam1_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$game->home_logo,$game->home_name,'20');							
+echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id.'-'.$game->projectteam1_id,$game->home_logo,$game->home_name,'20');							
                             echo $this->teams[$game->projectteam1_id]->name;
 						}
 						?>
@@ -225,12 +225,12 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id
 						<?php 
 						if ( $this->config['show_gameshistory_teamlink'] ) 
                         {
-echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id.'-'.$game->projectteam2_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$game->away_logo,$game->away_name,'20');                            
+echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id.'-'.$game->projectteam2_id,$game->away_logo,$game->away_name,'20');                            
 							echo JHtml::link($teaminfo_away_link, $this->teams[$game->projectteam2_id]->name); 
 						} 
                         else 
                         {
-echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id.'-'.$game->projectteam2_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$game->away_logo,$game->away_name,'20');                            
+echo sportsmanagementHelperHtml::getBootstrapModalImage('gameshistory'.$game->id.'-'.$game->projectteam2_id,$game->away_logo,$game->away_name,'20');                            
 							echo $this->teams[$game->projectteam2_id]->name;
 						}
 						?>

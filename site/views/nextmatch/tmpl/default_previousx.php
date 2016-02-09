@@ -97,13 +97,13 @@ $report_link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchrepor
 				?></td>
                 
                 <td class="nowrap"><?php
-				echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatchprev'.$game->id.'-'.$game->projectteam1_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$game->home_picture,$home->name,'20')
+				echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatchprev'.$game->id.'-'.$game->projectteam1_id,$game->home_picture,$home->name,'20')
 				?></td>
                 
 				<td nowrap="nowrap">-</td>
                 
                 <td class="nowrap"><?php
-				echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatchprev'.$game->id.'-'.$game->projectteam2_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$game->away_picture,$away->name,'20')
+				echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatchprev'.$game->id.'-'.$game->projectteam2_id,$game->away_picture,$away->name,'20')
 				?></td>
                 
 				<td nowrap="nowrap"><?php

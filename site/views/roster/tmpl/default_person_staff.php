@@ -62,7 +62,7 @@ if ($this->config['show_staff_icon']==1)
 			<div class="jl_rosterperson_staffpicture_column">
 				<div class="jl_roster_staffperson_pic">
 <?php
-echo sportsmanagementHelperHtml::getBootstrapModalImage('st'.$this->row->person_id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$picture,$personName,$this->config['staff_picture_width']);	
+echo sportsmanagementHelperHtml::getBootstrapModalImage('st'.$this->row->person_id,$picture,$personName,$this->config['staff_picture_width']);	
      
       	
     

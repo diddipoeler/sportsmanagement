@@ -657,8 +657,8 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
                             if ( isset($champLogo->name) )
                             {
                             $imgTitle = $champLogo->name;
-				//$imgFile = JHTML::image( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$champLogo->logo_big, $imgTitle , array('title' => $imgTitle, 'width' => '20' ));
-                $imgFile = sportsmanagementHelperHtml::getBootstrapModalImage('predranking'.$key,COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$champLogo->logo_big,$imgTitle,'20'); 
+				//$imgFile = JHTML::image( $champLogo->logo_big, $imgTitle , array('title' => $imgTitle, 'width' => '20' ));
+                $imgFile = sportsmanagementHelperHtml::getBootstrapModalImage('predranking'.$key,$champLogo->logo_big,$imgTitle,'20'); 
                             }
                             else
                             {

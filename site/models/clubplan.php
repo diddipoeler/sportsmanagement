@@ -648,7 +648,7 @@ class sportsmanagementModelClubPlan extends JModelLegacy
 				$logo_small = sportsmanagementHelper::getDefaultPlaceholder("clublogosmall");
 			}
 
-			return JHtml::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.$logo_small,"",$params);
+			return JHtml::image($logo_small,"",$params);
 		}
 		elseif ($type==2 && isset($country))
 		{
