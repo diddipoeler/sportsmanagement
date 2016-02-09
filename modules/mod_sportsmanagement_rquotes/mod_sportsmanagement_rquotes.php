@@ -66,18 +66,6 @@ $category = $params->get('category','');
 $rotate = $params->get('rotate');
 $num_of_random = $params->get('num_of_random');
 
-if (JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_dbprefix' ))
-{
-//if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
-//{    
-//DEFINE( strtoupper($module->module).'_PICTURE_SERVER',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) );
-//}
-//else
-//{
-$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;    
-//}
-}
-
 switch ($source) 
 {
 case 'db':

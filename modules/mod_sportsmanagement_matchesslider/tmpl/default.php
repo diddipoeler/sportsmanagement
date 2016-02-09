@@ -83,20 +83,20 @@ echo JHTML :: _('date', $match->match_date, $params->get('timeformat'), null);
 <p style="text-align: center;">
 <?PHP
 
-if ( !sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match->logohome) )
+if ( !sportsmanagementHelper::existPicture($match->logohome) )
 {
 $match->logohome = sportsmanagementHelper::getDefaultPlaceholder('logo_big');    
 }
-if ( !sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match->logoaway) )
+if ( !sportsmanagementHelper::existPicture($match->logoaway) )
 {
 $match->logoaway = sportsmanagementHelper::getDefaultPlaceholder('logo_big');    
 }
     
-echo '<img style="float: left;" src="'.COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match->logohome.'" alt="'.$match->teamhome.'"  width="'.$params->get('xsize').'" title="'.$match->teamhome.'" '.$match->teamhome.' />';
+echo '<img style="float: left;" src="'.$match->logohome.'" alt="'.$match->teamhome.'"  width="'.$params->get('xsize').'" title="'.$match->teamhome.'" '.$match->teamhome.' />';
 echo ''.$match->team1_result;
 echo ' - ';
 echo $match->team2_result.'';
-echo '<img style="float: right;" src="'.COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$match->logoaway.'" alt="'.$match->teamaway.'" width="'.$params->get('xsize').'" title="'.$match->teamaway.'" '.$match->teamaway.' />';
+echo '<img style="float: right;" src="'.$match->logoaway.'" alt="'.$match->teamaway.'" width="'.$params->get('xsize').'" title="'.$match->teamaway.'" '.$match->teamaway.' />';
 ?>
 </p>
 

@@ -83,33 +83,7 @@ DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',JComponentHelper::getParams('c
 }
 
 
-if (JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_dbprefix' ))
-{
-$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;    
-if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
-{    
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
-} 
-}
-else
-{
-if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
-{
-$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;
-if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
-{    
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
-}
-}
-else
-{
-$module->picture_server = JURI::root() ;
-if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
-{    
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
-}
-}
-}
+
 
 $mode = $params->def("mode");
 
@@ -208,11 +182,11 @@ $routeparameter['pid'] = $person['person_slug'];
 //				$thispic = $person['default_picture'];
 //			}
             
-            if ( sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$person['picture']) && $person['picture'] != '' )
+            if ( sportsmanagementHelper::existPicture($person['picture']) && $person['picture'] != '' )
     {
     $thispic = $person['picture'];    
     }
-    elseif ( sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$person['default_picture']) && $person['default_picture'] != '' )
+    elseif ( sportsmanagementHelper::existPicture($person['default_picture']) && $person['default_picture'] != '' )
     {
     $thispic = $person['default_picture'];    
     }

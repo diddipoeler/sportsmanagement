@@ -125,7 +125,7 @@ $picture = $match->playground_club_picture;
 
 if ( $picture )
 {
-$textdiv .= '<p>'.JHtml::image( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$picture,"","width=".$params->get('picture_playground_width')).'</p>';
+$textdiv .= '<p>'.JHtml::image( $picture,"","width=".$params->get('picture_playground_width')).'</p>';
 }
 
 $textdiv.= '</div>';    
@@ -161,11 +161,11 @@ $team1logo= modSportsmanagementPlaygroundplanHelper::getTeamLogo($match->team1,$
 
 if( $params->get('show_picture') == 'logo_big')
 {
-    $textdiv .= '<p>'.JHtml::image( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$team1logo,"","width=".$params->get('picture_width')).'</p>';
+    $textdiv .= '<p>'.JHtml::image( $team1logo,"","width=".$params->get('picture_width')).'</p>';
 }
 else
 {
-$textdiv .= '<p>'.JHtml::image( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$team1logo,"").'</p>';    
+$textdiv .= '<p>'.JHtml::image( $team1logo,"").'</p>';    
 }
 
 }
@@ -181,11 +181,11 @@ $team2logo= modSportsmanagementPlaygroundplanHelper::getTeamLogo($match->team2,$
 
 if( $params->get('show_picture') == 'logo_big')
 {
-    $textdiv .= '<p>'.JHtml::image( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$team2logo,"","width=".$params->get('picture_width')).'</p>';
+    $textdiv .= '<p>'.JHtml::image( $team2logo,"","width=".$params->get('picture_width')).'</p>';
 }
 else
 {
-$textdiv .= '<p>'.JHtml::image( COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$team2logo,"").'</p>';    
+$textdiv .= '<p>'.JHtml::image( $team2logo,"").'</p>';    
 }
 
 

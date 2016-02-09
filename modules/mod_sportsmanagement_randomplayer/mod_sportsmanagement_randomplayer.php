@@ -80,33 +80,7 @@ if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',$paramscomponent->get( 'cfg_which_database' ) );
 }
 
-if (JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_dbprefix' ))
-{
-$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;   
-if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
-{    
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
-} 
-}
-else
-{
-if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
-{
-$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;
-if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
-{    
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
-}
-}
-else
-{
-$module->picture_server = JURI::root() ;
-if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
-{    
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
-}
-}
-}
+
 
 
 // get helper

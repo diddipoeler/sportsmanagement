@@ -129,7 +129,7 @@ class modSportsmanagementTeamStatHelper
 		{
 			if (!empty($item->logo_small))
 			{
-				return JHTML::image(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$item->logo_small, $item->short_name, 'class="teamlogo"');
+				return JHTML::image($item->logo_small, $item->short_name, 'class="teamlogo"');
 			}
 		}		
 		else if ($type == 2 && !empty($item->country))

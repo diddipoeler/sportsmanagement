@@ -58,33 +58,7 @@ JLoader::register('sportsmanagementHelper', $classpath);
 JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
 }
 
-if (JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_dbprefix' ))
-{
-$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;    
-if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
-{    
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
-} 
-}
-else
-{
-if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
-{
-$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;
-if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
-{    
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
-}
-}
-else
-{
-$module->picture_server = JURI::root() ;
-if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
-{    
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
-}
-}
-}
+
 
 require_once (dirname(__FILE__).DS.'helper.php');
 
@@ -272,8 +246,8 @@ $abpfiff = $anstoss + ( ( $list[$i]->game_regular_time + $list[$i]->halftime ) *
 
 $abpfiff = date('H:i:s', strtotime($anstoss) + ($list[$i]->game_regular_time + $list[$i]->halftime)*60);
 
-$matchpart1_pic = (trim($list[$i]->wappenheim) != "")? sprintf('<img src="%s" alt="%s" width="20"/>', COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$list[$i]->wappenheim, $list[$i]->heim) : "";
-$matchpart2_pic = (trim($list[$i]->wappengast) != "")? sprintf('<img src="%s" alt="%s" width="20"/>', COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$list[$i]->wappengast, $list[$i]->gast) : "";
+$matchpart1_pic = (trim($list[$i]->wappenheim) != "")? sprintf('<img src="%s" alt="%s" width="20"/>', $list[$i]->wappenheim, $list[$i]->heim) : "";
+$matchpart2_pic = (trim($list[$i]->wappengast) != "")? sprintf('<img src="%s" alt="%s" width="20"/>', $list[$i]->wappengast, $list[$i]->gast) : "";
 
 //$isoflag =  strtolower($list[$i]->alpha2);
 
@@ -282,7 +256,7 @@ $list_html .=  "<tr>" ;
 // ligaflagge
 if ( $display_ligaflagge )
 {
-$list_html .= "<td>" . "<img src=\"".COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$list[$i]->country_picture."\" alt=\"".$list[$i]->countries_iso_code_3."\" title=\"".$list[$i]->countries_iso_code_3."\" hspace=\"2\" /> " . "</td>";
+$list_html .= "<td>" . "<img src=\"".$list[$i]->country_picture."\" alt=\"".$list[$i]->countries_iso_code_3."\" title=\"".$list[$i]->countries_iso_code_3."\" hspace=\"2\" /> " . "</td>";
 }
 
 // liganame

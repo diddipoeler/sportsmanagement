@@ -342,10 +342,8 @@ class modMatchesSportsmanagementHelper {
 			$defaultlogos = $this->getDefaultLogos();
 			//$matchpart_pic = (!empty ($team->$pt) AND curl_init($team->$pt)) ? $team->$pt : $defaultlogos[$pt];
             $matchpart_pic = (!empty ($team->$pt) AND sportsmanagementHelper::existPicture($team->$pt)) ? $team->$pt : $defaultlogos[$pt];
-            
-//            echo 'server -> '.COM_SPORTSMANAGEMENT_PICTURE_SERVER.'<br>';
-//            echo 'logo -> '.$team->$pt.'<br>';
-//            echo 'pic -> '.$matchpart_pic.'<br>';
+          
+
             
 			if ( JFile::exists(JPATH_ROOT.$matchpart_pic) )
             {
@@ -357,8 +355,7 @@ class modMatchesSportsmanagementHelper {
 				$appendimage .= $whichparam . '="' . $this->params->get('xsize') . '"';
 				elseif ($this->params->get('ysize') > 0) $appendimage .= $whichparam . '="' . $this->params->get('ysize') . '"';
 			}
-			$pic['src'] = (trim($matchpart_pic) != "" && curl_init(trim($matchpart_pic))) ? COM_SPORTSMANAGEMENT_PICTURE_SERVER .
-			DS . $matchpart_pic : $defaultlogos[$pt];
+			$pic['src'] = (trim($matchpart_pic) != "" && curl_init(trim($matchpart_pic))) ? $matchpart_pic : $defaultlogos[$pt];
 			$pic['alt'] = $this->jl_utf8_convert($team->name, 'iso-8859-1', 'utf-8');
 		}
 		$pic['append'] = $appendimage;

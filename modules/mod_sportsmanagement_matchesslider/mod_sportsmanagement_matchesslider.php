@@ -53,34 +53,6 @@ if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
 }
 
-if (JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_dbprefix' ))
-{
-$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;    
-if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
-{    
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
-} 
-}
-else
-{
-if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
-{
-$module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;
-if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
-{    
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
-}
-}
-else
-{
-$module->picture_server = JURI::root() ;
-if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
-{    
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
-}
-}
-}
-
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php');  
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php' );
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'results.php');

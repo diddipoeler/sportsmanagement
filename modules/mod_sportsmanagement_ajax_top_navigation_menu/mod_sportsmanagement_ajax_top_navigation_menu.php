@@ -97,26 +97,6 @@ if ( !defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO') )
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$show_query_debug_info );
 }
 
-if ( !defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE') )
-{
-DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',$paramscomponent->get( 'cfg_which_database' ) );
-}
-
-if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
-{
-if ( !defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER') )
-{    
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$cfg_which_database_server );
-}    
-}
-else
-{
-if ( !defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER') )
-{        
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );
-}    
-}
-
 
 // get helper
 require_once (dirname(__FILE__).DS.'helper.php');
