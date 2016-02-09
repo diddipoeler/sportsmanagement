@@ -76,10 +76,12 @@ abstract class sportsmanagementHelper
     
     if ( !JFile::exists($picture) )
     {
+    //$app->enqueueMessage(__METHOD__.' '.__LINE__.' picture nicht vorhanden <pre>'.print_r($picture, true).'</pre><br>','Error');    
     return false;    
     }
     else
     {
+    //$app->enqueueMessage(__METHOD__.' '.__LINE__.' picture vorhanden <pre>'.print_r($picture, true).'</pre><br>','');    
     return true;    
     }
     
@@ -111,14 +113,14 @@ curl_close($ch);
     //$imageArray = getimagesize($picture);
     //$app->enqueueMessage(__METHOD__.' '.__LINE__.' imageArray <pre>'.print_r($imageArray, true).'</pre><br>','');
     
-    if ( is_array ($imageArray) )
-    {
-        return true;
-    }
-    else
-    {
-        return true;
-    }
+//    if ( is_array ($imageArray) )
+//    {
+//        return true;
+//    }
+//    else
+//    {
+//        return true;
+//    }
 //    if($file_headers[0] == 'HTTP/1.1 404 Not Found') 
 //    {
 //    return false;

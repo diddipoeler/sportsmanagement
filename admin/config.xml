@@ -117,7 +117,7 @@
 		
 		 <field name="cfg_which_database_server" 
   type="text" 
-  default="http://www.fussballineuropa.de/"
+  default=""
 		size="100"
     label="COM_SPORTSMANAGEMENT_SETTINGS_DATABASE_SERVER_TITLE"
 		description="COM_SPORTSMANAGEMENT_SETTINGS_DATABASE_SERVER_DESC">
