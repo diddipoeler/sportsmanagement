@@ -53,7 +53,7 @@ $modal_popup_height = JComponentHelper::getParams(JRequest::getCmd('option'))->g
 $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))->get('cfg_bugtracker_server','') ;
 
 ?>
-	<div id="editcell">
+	<div  class="table-responsive" id="editcell">
 	<!--	<fieldset class="adminform"> -->
 			<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_LEGEND','<i>'.$this->project->name.'</i>'); ?></legend>
 			<?php $cell_count=25; ?>
@@ -280,7 +280,7 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
 												$imageTitle,'title= "'.$imageTitle.'"');
 ?>
 <a href="<?php echo JURI::root().$row->club_logo;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->club_logo;?>" alt="<?php echo $imageTitle;?>" width="auto" height="20" />
+<img src="<?php echo JURI::root().$row->club_logo;?>" alt="<?php echo $imageTitle;?>" width="20" />
 </a>
 <?PHP
 
@@ -314,7 +314,7 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 													$imageTitle,'title= "'.$imageTitle.'"');
 ?>
 <a href="<?php echo JURI::root().$row->club_logo;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->club_logo;?>" alt="<?php echo $imageTitle;?>" width="auto" height="20" />
+<img src="<?php echo JURI::root().$row->club_logo;?>" alt="<?php echo $imageTitle;?>" width="20" />
 </a>
 <?PHP 
 /**
@@ -438,7 +438,7 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 								
 ?>
 <a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="auto" height="30"  />
+<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="100"  />
 </a>
 <?PHP                                 
                                 
@@ -451,7 +451,7 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 													$imageTitle,'title= "'.$imageTitle.'"');
 ?>
 <a href="<?php echo JURI::root().$row->picture;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="auto" height="30" />
+<img src="<?php echo JURI::root().$row->picture;?>" alt="<?php echo $imageTitle;?>" width="100" />
 </a>
 <?PHP                                                     
 								} else {
