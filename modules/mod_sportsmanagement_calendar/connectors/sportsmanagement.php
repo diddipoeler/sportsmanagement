@@ -406,7 +406,7 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
 		if ($image == '-') { return ''; }
 		$logo = '';
         
-        if ( !sportsmanagementHelper::existPicture(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$team->$image) )
+        if ( !sportsmanagementHelper::existPicture($team->$image) )
     {
     $team->$image = sportsmanagementHelper::getDefaultPlaceholder('logo_big');    
     }
@@ -415,7 +415,7 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
         //if ( $team->$image != '' )
 		//{
 			$h = self::$xparams->get('logo_height', 20);
-			$logo = '<img src="'.COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$team->$image.'" alt="'
+			$logo = '<img src="'.$team->$image.'" alt="'
 			.parent::jl_utf8_convert ($team->short_name, 'iso-8859-1', 'utf-8').'" title="'
 			.parent::jl_utf8_convert ($team->name, 'iso-8859-1', 'utf-8').'"';
 			if ($h > 0) 

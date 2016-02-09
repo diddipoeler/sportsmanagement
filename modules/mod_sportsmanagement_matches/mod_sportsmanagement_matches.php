@@ -38,6 +38,7 @@
 */
 
 defined( '_JEXEC' ) or die( 'Direct Access to this location is not allowed.' );
+$app = JFactory::getApplication();
 
 if (! defined('DS'))
 {
@@ -69,12 +70,25 @@ if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
 }
 
+//$app->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+
+if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
+{  
+$module->picture_server = JURI::root(true) ;    
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
+//$app->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
+} 
+
+
+
+/*
 if (JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_dbprefix' ))
 {
 $module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database_server' ) ;    
 if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
 {    
 DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
+$app->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
 } 
 }
 else
@@ -85,18 +99,23 @@ $module->picture_server = JComponentHelper::getParams('com_sportsmanagement')->g
 if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
 {    
 DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
+$app->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
 }
 }
 else
 {
-$module->picture_server = JURI::root() ;
+$module->picture_server = JURI::root(true) ;
+//$module->picture_server = '';
 if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
 {    
 DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$module->picture_server );
+$app->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
 }
 }
 }
+*/
 
+//$app->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' picture server <br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
 
 if (!defined('_JSMMATCHLISTMODPATH')) 
 { 
