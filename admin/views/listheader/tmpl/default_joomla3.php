@@ -39,6 +39,15 @@
 
 defined('_JEXEC') or die('Restricted access');
 $view = JRequest::getCmd('view', 'cpanel');
+$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+        $document = JFactory::getDocument();
+        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+        // retrieve the value of the state variable. If no value is specified,
+        // the specified default value will be returned.
+        // function syntax is getUserState( $key, $default );
+        $project_id = $app->getUserState( "$option.pid", '0' );
 
 
 $buttons = array(
@@ -116,14 +125,73 @@ $buttons = array(
 						)          
                         );
 
+
+$buttonsproject = array( array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=project&layout=panel&id='.$project_id),
+			'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+			'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+			'text' => JText::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_PROJECT'),
+			'access' => array('core.manage', 'com_sportsmanagement'),
+			'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA_PROJECT'
+			),
+array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=templates'),
+			'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+			'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+			'text' => JText::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_TEMPLATES'),
+			'access' => array('core.manage', 'com_sportsmanagement'),
+			'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA_PROJECT'
+			),
+			array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=projectpositions'),
+			'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+			'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+			'text' => JText::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_POSITIONS'),
+			'access' => array('core.manage', 'com_sportsmanagement'),
+			'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA_PROJECT'
+			),
+			array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=projectreferees'),
+			'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+			'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+			'text' => JText::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_REFEREES'),
+			'access' => array('core.manage', 'com_sportsmanagement'),
+			'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA_PROJECT'
+			),
+			array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=projectteams'),
+			'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+			'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+			'text' => JText::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_TEAMS'),
+			'access' => array('core.manage', 'com_sportsmanagement'),
+			'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA_PROJECT'
+			),
+			array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=rounds'),
+			'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+			'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+			'text' => JText::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_ROUNDS'),
+			'access' => array('core.manage', 'com_sportsmanagement'),
+			'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA_PROJECT'
+			)
+
+			
+                        );
+
+
+
 $groupedButtons = array();
 
 //echo ' <br><pre>'.print_r($buttons,true).'</pre>';
 
+if ( $project_id )
+{
+		foreach ($buttonsproject as $button)
+		{
+			$groupedButtons[$button['group']][] = $button;
+		}
+}
+else
+{
 		foreach ($buttons as $button)
 		{
 			$groupedButtons[$button['group']][] = $button;
 		}
+}    		
         
 $html = JHtml::_('links.linksgroups', $groupedButtons);
         
