@@ -118,10 +118,16 @@ echo JHtml::_('select.genericlist', $calendar['teamslist'], 'jlcteam'.$module->i
 <?php
 //echo $calendar['list'];
 $cnt = 0;
-for ($x=0;$x < count($calendar['list']);$x++){
+for ($x=0;$x < count($calendar['list']);$x++)
+{
 	$row = $calendar['list'][$x];
-	if(isset($row['tag'])) {
-		switch ($row['tag']) {
+    
+//echo 'row <pre>'.print_r($row,true).'</pre><br>';
+    
+	if(isset($row['tag'])) 
+    {
+		switch ($row['tag']) 
+        {
 			case 'span':
 				?> <span id="<?php echo $row['divid'];?>"
 	class="<?php echo $row['class'];?>"><?php echo $row['text'];?></span><?php
@@ -133,8 +139,9 @@ case 'div':
 	break;
 case 'table':
 	?>
+<div class="table-responsive">    
 <table style="margin: 0 auto; min-width: 60%;" cellspacing="0"
-	cellpadding="0" class="<?php echo $row['class'];?>">
+	cellpadding="0" class="table table-striped">
 	<?php
 	break;
 case 'divend':
@@ -145,6 +152,7 @@ case 'divend':
 case 'tableend':
 	?>
 </table>
+</div>
 	<?php
 	break;
 case 'headingrow':
