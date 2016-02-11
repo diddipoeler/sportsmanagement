@@ -113,7 +113,16 @@ $buttons = array(
 						'text' => JText::_('COM_SPORTSMANAGEMENT_D_MENU_AGEGROUPS'),
 						'access' => array('core.manage', 'com_sportsmanagement'),
 						'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'
-						)          
+						),
+                        
+                       array(
+						'link' => JRoute::_('index.php?option=com_sportsmanagement&view=agegroups'),
+						'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+						'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+						'text' => JText::_('COM_SPORTSMANAGEMENT_D_MENU_AGEGROUPS'),
+						'access' => array('core.manage', 'com_sportsmanagement'),
+						'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_PROJECT_DATA'
+						)              
                         );
 
 $groupedButtons = array();
@@ -124,6 +133,8 @@ $groupedButtons = array();
 		{
 			$groupedButtons[$button['group']][] = $button;
 		}
+
+//echo ' <br><pre>'.print_r($groupedButtons,true).'</pre>';
         
 $html = JHtml::_('links.linksgroups', $groupedButtons);
         
