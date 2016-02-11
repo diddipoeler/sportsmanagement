@@ -39,7 +39,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 $view = JRequest::getCmd('view', 'cpanel');
-
 $app = JFactory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
@@ -49,6 +48,7 @@ $app = JFactory::getApplication();
         // the specified default value will be returned.
         // function syntax is getUserState( $key, $default );
         $project_id = $app->getUserState( "$option.pid", '0' );
+
 
 $buttons = array(
 					array(
@@ -122,17 +122,9 @@ $buttons = array(
 						'text' => JText::_('COM_SPORTSMANAGEMENT_D_MENU_AGEGROUPS'),
 						'access' => array('core.manage', 'com_sportsmanagement'),
 						'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA'
-						),
-                        
-                       array(
-						'link' => JRoute::_('index.php?option=com_sportsmanagement&view=agegroups'),
-						'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
-						'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
-						'text' => JText::_('COM_SPORTSMANAGEMENT_D_MENU_AGEGROUPS'),
-						'access' => array('core.manage', 'com_sportsmanagement'),
-						'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_PROJECT_DATA'
-						)              
+						)          
                         );
+
 
 $buttonsproject = array( array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=project&layout=panel&id='.$project_id),
 			'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
@@ -179,7 +171,9 @@ array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=templates'
 
 			
                         );
-                        
+
+
+
 $groupedButtons = array();
 
 //echo ' <br><pre>'.print_r($buttons,true).'</pre>';
@@ -197,9 +191,7 @@ else
 		{
 			$groupedButtons[$button['group']][] = $button;
 		}
-}   
-
-//echo ' <br><pre>'.print_r($groupedButtons,true).'</pre>';
+}    		
         
 $html = JHtml::_('links.linksgroups', $groupedButtons);
         

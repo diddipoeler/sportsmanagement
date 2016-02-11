@@ -61,14 +61,13 @@ fieldset button {
     width: auto;
 }
 </style>
-<div class="table-responsive" id="editcell">
+<div id="editcell">
 <!--	<fieldset class="adminform"> -->
 		<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TITLE2','<i>'.$this->roundws->name.'</i>','<i>'.$this->projectws->name.'</i>'); ?></legend>
 		<?php echo $this->loadTemplate('roundselect'); ?>
         	 
 		<!-- Start games list -->
 		<form action="<?php echo $this->request_url; ?>" method="post" id='adminForm' name='adminForm'>
-        <div class="row">
 			<?php
 			$colspan = ($this->projectws->allow_add_time) ? 20 : 19;
 			?>
@@ -88,14 +87,14 @@ fieldset button {
             <?php
             }
             ?>
-						<th >
+						<th width="" >
 							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MATCHNR','mc.match_number',$this->sortDirection,$this->sortColumn); ?>
 						</th>
-						<th >
+						<th class="" >
 							<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_MATCHES_DATE','mc.match_date',$this->sortDirection,$this->sortColumn); ?>
 						</th>
-						<th ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TIME'); ?></th>
-						<th ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_ATT' ); ?></th>
+						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TIME'); ?></th>
+						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_ATT' ); ?></th>
 						<?php 
 							if($this->projectws->project_type=='DIVISIONS_LEAGUE') {
 								$colspan++;
@@ -114,28 +113,28 @@ fieldset button {
 						<?php 
 							}
 						?>
-						<th ><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_CHANGE_ROUNDLIST'); ?></th>
-						<th ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_HOME_TEAM'); ?></th>
-						<th ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_AWAY_TEAM'); ?></th>
-						<th ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT'); ?></th>
+						<th class="title" nowrap="nowrap" ><?php echo JTEXT::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_CHANGE_ROUNDLIST'); ?></th>
+						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_HOME_TEAM'); ?></th>
+						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_AWAY_TEAM'); ?></th>
+						<th style="  "><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT'); ?></th>
 						<?php
 						if ($this->projectws->allow_add_time)
 						{
 							?>
-							<th "><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_TYPE'); ?></th>
+							<th style="text-align:center;  "><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_TYPE'); ?></th>
 							<?php
 						}
 						?>
-                        <th ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_TYPE'); ?></th>
+                        <th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_TYPE'); ?></th>
                         
-                        <th ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_ARTICLE'); ?></th>
+                        <th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_RESULT_ARTICLE'); ?></th>
                         
-						<th ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EVENTS'); ?></th>
-						<th ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_STATISTICS'); ?></th>
-						<th ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_REFEREE'); ?></th>
-                        <th ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL'); ?></th>
+						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_EVENTS'); ?></th>
+						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_STATISTICS'); ?></th>
+						<th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_REFEREE'); ?></th>
+                        <th class="title" ><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL'); ?></th>
 						<th width="1%" ><?php echo JText::_('JSTATUS'); ?></th>
-						<th width="1%" >
+						<th width="1%" class="title" >
 							<?php echo JHtml::_('grid.sort','JGRID_HEADING_ID','mc.id',$this->sortDirection,$this->sortColumn); ?>
 						</th>
 					</tr>
@@ -165,7 +164,7 @@ fieldset button {
 						list($date,$time) = explode(" ",$row->match_date);
 						$time = strftime("%H:%M",strtotime($time));
 						?>
-						<tr >
+						<tr class="<?php echo "row$k"; ?>">
 						<?php if(($row->cancel)>0)
 								{
 									$style="text-align:center;  background-color: #FF9999;";
@@ -175,7 +174,7 @@ fieldset button {
 									$style="text-align:center; ";
 								}
 								?>
-							<td style="<?php //echo $style;?>">
+							<td style="<?php echo $style;?>">
 								<?php
 								echo $this->pagination->getRowOffset($i);
 								?>
@@ -254,11 +253,11 @@ fieldset button {
                                 
 							</td>
               
-							<td >
+							<td class="center">
 								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text" name="match_number<?php echo $row->id; ?>"
 										value="<?php echo $row->match_number; ?>" size="6" tabindex="1" class="inputbox" />
 							</td>
-							<td >
+							<td class="center" nowrap="nowrap">
 								<?php
 								echo JHtml::calendar(	sportsmanagementHelper::convertDate($date),
 														'match_date'.$row->id,
@@ -267,7 +266,7 @@ fieldset button {
 														'size="9"  tabindex="2" ondblclick="copyValue(\'match_date\')" onchange="document.getElementById(\'cb'.$i.'\').checked=true"');
 								?>
 							</td>
-							<td >
+							<td class="left"  nowrap="nowrap">
 
 								<input ondblclick="copyValue('match_time')" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text" name="match_time<?php echo $row->id; ?>"
 										value="<?php echo $time; ?>" size="4" maxlength="5" tabindex="3" class="inputbox" />
@@ -286,7 +285,7 @@ fieldset button {
 										<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT_SHORT'); ?>			
 								</span>
 							</td>
-							<td >
+							<td class="center">
 								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text" name="crowd<?php echo $row->id; ?>"
 										value="<?php echo $row->crowd; ?>" size="4" maxlength="5" tabindex="4" class="inputbox" />
 							</td>
@@ -296,7 +295,7 @@ fieldset button {
                 $append='';
 							  $append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
 							?>
-							<td >
+							<td class="center">
 								<?php
 							echo JHtml::_(	'select.genericlist',$this->lists['divisions'],'division_id'.$row->id,
 												'class="inputbox select-division_id" size="1"'.$append,'value','text',$row->division_id);
@@ -313,14 +312,14 @@ fieldset button {
               $append='';
 							$append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
               ?>
-              <td >
+              <td style="text-align:center; ">
 								<?php
 							echo JHtml::_(	'select.genericlist',$this->lists['project_change_rounds'],'round_id'.$row->id,
 												'class="inputbox select-round_id" size="1"'.$append,'value','text',$row->round_id);
 							?>
 							</td>
               
-							<td >
+							<td class="right"  nowrap="nowrap">
 								<a	onclick="handleRosterIconClick(<?php echo $this->prefill; ?>, this, '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_LAST_ROSTER_ALERT'); ?>', '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_PROJECTTEAM_PLAYERS_ALERT')?>')"
 									rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
 									href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editlineup&match_date=<?php echo $date; ?>&id=<?php echo $row->id; ?>&team=<?php echo $row->projectteam1_id; ?>&prefill="
@@ -356,7 +355,7 @@ fieldset button {
 												'class="inputbox select-hometeam" size="1"'.$append,'value','text',$row->projectteam1_id);
 								?>
 							</td>
-							<td >
+							<td class="left"  nowrap="nowrap">
 								<?php
 								$append='';
 								if ($row->projectteam2_id == 0)
@@ -390,7 +389,7 @@ fieldset button {
 									  ?>
 								</a>
 							</td>
-							<td >
+							<td class="left"  nowrap="nowrap">
 								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team1_result<?php echo $row->id; ?>"
 										value="<?php echo $row->team1_result; ?>" size="2" tabindex="5" class="inputbox" /> : 
 								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team2_result<?php echo $row->id; ?>"
@@ -527,7 +526,7 @@ fieldset button {
 							}
 							?>
                             
-                            <td >
+                            <td class="center">
                             	<?php
                                 if ( $this->selectlist )
                                 {
@@ -552,7 +551,7 @@ fieldset button {
                             
                             </td>
                             
-                            <td >
+                            <td class="center">
                             <?php
                                 
                                     $appendselect =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
@@ -565,7 +564,7 @@ fieldset button {
                                 	?>
                             </td>
                             
-							<td >
+							<td class="center">
                             
                             <a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
 									 href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=pressebericht&id=<?php echo $row->id; ?>"
@@ -603,7 +602,7 @@ fieldset button {
 								//end several events
 								?>
 							</td>
-							<td >
+							<td class="center">
 								<?php
 								//start statistics:
 								?>
@@ -617,7 +616,7 @@ fieldset button {
 								?>
 								</a>								
 							</td>
-							<td >
+							<td class="center">
 								<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
 									href="index.php?option=com_sportsmanagement&tmpl=component&view=match&layout=editreferees&id=<?php echo $row->id; ?>&team=<?php echo $row->team1; ?>"
 									 class="modal open-editreferees"
@@ -636,7 +635,7 @@ fieldset button {
 									 ?>
 								</a>
 							</td>
-							<td >
+							<td style='text-align:center; ' >
 								<?php
 									if ( $row->count_result )
 									{
@@ -652,12 +651,12 @@ fieldset button {
 								?>
 							</td>
                             
-                            <td >
+                            <td class="center">
 								<?php
 								echo $published;
 								?>
 							</td>
-							<td >
+							<td class="center">
 								<?php
 								echo $row->id;
 								?>
@@ -683,7 +682,6 @@ fieldset button {
 			<input type='hidden' name='act' value='' />
 			<input type='hidden' name='task' value='' />
 			<?php echo JHtml::_('form.token')."\n"; ?>
-            </div>
 		</form>
 <!--	</fieldset> -->
 </div>

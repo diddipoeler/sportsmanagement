@@ -44,7 +44,7 @@ $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 
-<div class="table-responsive" id="editcell">
+
 <!--	<div id="editcell"> -->
 	<!--	<fieldset class="adminform"> -->
 			<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_LEGEND','<i>'.$this->project->name.'</i>'); ?></legend>
@@ -237,7 +237,6 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					?>
 				</tbody>
 			</table>
-            </div>
 	<!--	</fieldset> -->
 <!--	</div> -->
 	
