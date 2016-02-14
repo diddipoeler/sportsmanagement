@@ -1,4 +1,6 @@
 <extensionset name="sportsmanagement" description="JSM">
 <extension name="sportsmanagement" element="com_sportsmanagement" type="component" version="1.0.53" detailsurl="https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/sportsmanagement-update.xml"/>
 
+
+
 </extensionset>
