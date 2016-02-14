@@ -160,8 +160,8 @@ JHtml::_('behavior.modal');
 							</td>
 							<td class="center">
 								<?php
-								//echo JHtml::_('grid.id', $i, $row->id);
-                                echo JHtml::_('grid.id', $i, $row->tpid);
+								echo JHtml::_('grid.id', $i, $row->id);
+                                //echo JHtml::_('grid.id', $i, $row->tpid);
 								?>
 							</td>
 							

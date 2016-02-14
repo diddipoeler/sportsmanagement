@@ -157,29 +157,65 @@ class sportsmanagementModelteamperson extends JModelAdmin
 	function saveshort()
 	{
 		$app = JFactory::getApplication();
+        $date = JFactory::getDate();
+	   $user = JFactory::getUser();
         /* Ein Datenbankobjekt beziehen */
         $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Get the input
         $pks = JRequest::getVar('cid', null, 'post', 'array');
-        $post = JRequest::get('post');
+        //$post = JRequest::get('post');
+        $post = $jinput->post->getArray(array());
         $this->_project_id	= $post['pid'];
         $this->persontype	= $post['persontype'];
         
-        //$app->enqueueMessage('saveshort $pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-        //$app->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+//        $app->enqueueMessage('saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+//        $app->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
         
         $result = true;
 		for ($x=0; $x < count($pks); $x++)
 		{
-			$tblPerson = & $this->getTable();
-			$tblPerson->id = $post['person_id'.$pks[$x]];
-			$tblPerson->project_position_id	= $post['project_position_id'.$pks[$x]];
-			$tblPerson->jerseynumber = $post['jerseynumber'.$pks[$x]];
-			$tblPerson->market_value = $post['market_value'.$pks[$x]];
+//			$tblPerson = $this->getTable();
+//			//$tblPerson->id = $post['person_id'.$pks[$x]];
+//            $tblPerson->id = $post['person_id'.$pks[$x]];
+//            $tblPerson->person_id = $pks[$x];
+//			$tblPerson->project_position_id	= $post['project_position_id'.$pks[$x]];
+//			$tblPerson->jerseynumber = $post['jerseynumber'.$pks[$x]];
+//			$tblPerson->market_value = $post['market_value'.$pks[$x]];
+//            $tblPerson->modified = $date->toSql();
+//            $tblPerson->modified_by = $user->get('id');
             
+//            $app->enqueueMessage(__FUNCTION__.' '.__LINE__.' season_team_person_id<br><pre>'.print_r($post['person_id'.$pks[$x]], true).'</pre><br>','Error');
+//            $app->enqueueMessage(__FUNCTION__.' '.__LINE__.' project_position_id<br><pre>'.print_r($post['project_position_id'.$pks[$x]], true).'</pre><br>','Error');
+//            $app->enqueueMessage(__FUNCTION__.' '.__LINE__.' jerseynumber<br><pre>'.print_r($post['jerseynumber'.$pks[$x]], true).'</pre><br>','Error');
+//            $app->enqueueMessage(__FUNCTION__.' '.__LINE__.' market_value<br><pre>'.print_r($post['market_value'.$pks[$x]], true).'</pre><br>','Error');
+            
+            
+            // Fields to update.
+$fields = array(
+    $db->quoteName('project_position_id') . ' = ' . $post['project_position_id'.$pks[$x]],
+    $db->quoteName('jerseynumber') . ' = '.$post['jerseynumber'.$pks[$x]],
+    $db->quoteName('market_value') . ' = '.$post['market_value'.$pks[$x]],
+    $db->quoteName('modified') . ' = '.$db->Quote( '' . $date->toSql() . '' ) ,
+    $db->quoteName('modified_by') . ' = '.$user->get('id')
+    
+);
+ 
+// Conditions for which records should be updated.
+$conditions = array(
+    $db->quoteName('id') . ' = '.$post['person_id'.$pks[$x]]
+);
+
+//exit;
+
+$query->clear(); 
+$query->update($db->quoteName('#__sportsmanagement_season_team_person_id'))->set($fields)->where($conditions);
+$db->setQuery($query);
+//sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+        
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
             $my_text = 'id<br><pre>'.print_r($pks[$x], true).'</pre><br>';
@@ -191,7 +227,8 @@ class sportsmanagementModelteamperson extends JModelAdmin
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
             }
 
-			if(!$tblPerson->store()) 
+			//if(!$tblPerson->store()) 
+            if( !sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__) )
             {
                 $app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($this->_db->getErrorMsg(), true).'</pre><br>','Error');
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
@@ -229,12 +266,17 @@ class sportsmanagementModelteamperson extends JModelAdmin
                 $query->delete($db->quoteName('#__sportsmanagement_person_project_position'));
                 $query->where($conditions);
  
-                $db->setQuery($query);  
+                $db->setQuery($query); 
+                sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+                if ( self::$db_num_rows )
+                {
+                $app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_'.strtoupper('sportsmanagement_person_project_position').'_ITEMS_DELETED',self::$db_num_rows),'');
+                } 
 
-                if (!$db->query())
-		          {
-			            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-		          }
+                //if (!$db->query())
+//		          {
+//			            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+//		          }
                   
                 // Create and populate an object.
                 $profile = new stdClass();
@@ -419,7 +461,7 @@ sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
         $db->quoteName('away_date_start') .'=\''.$data['away_date_start'].'\'',
         $db->quoteName('away_date_end') .'=\''.$data['away_date_end'].'\'',
         
-        $db->quoteName('modified') .'=\''.$date->toSql().'\'',
+        $db->quoteName('modified') .' = '. $db->Quote( '' . $date->toSql() . '' ) .'',
         $db->quoteName('modified_by') .'='.$user->get('id')
         );
      // Conditions for which records should be updated.
