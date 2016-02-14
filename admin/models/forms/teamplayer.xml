@@ -54,6 +54,7 @@
 			name="injury"
 			type="radio"
 			default="0"
+      class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURED"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURED_DESC">
 		<option value="0">JNO</option>
@@ -87,6 +88,7 @@
 			name="suspension"
 			type="radio"
 			default="0"
+      class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENDED"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENDED_DESC">
 		<option value="0">JNO</option>
@@ -120,6 +122,7 @@
 			name="away"
 			type="radio"
 			default="0"
+      class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY_DESC">
 		<option value="0">JNO</option>

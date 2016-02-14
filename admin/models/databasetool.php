@@ -97,19 +97,19 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
             $result = JFactory::getDbo()->execute();
-//            if ( !empty($setModelVar) )
-//            {
-//            $setModelVar::$db_num_rows = JFactory::getDbo()->getAffectedRows();
-//            }
+            if ( !empty($setModelVar) )
+            {
+            $setModelVar::$db_num_rows = JFactory::getDbo()->getAffectedRows();
+            }
 
         }
         else
         {
             $result = JFactory::getDbo()->query();
-//            if ( !empty($setModelVar) )
-//            {
-//            $setModelVar::$db_num_rows = JFactory::getDbo()->getAffectedRows();
-//            }
+            if ( !empty($setModelVar) )
+            {
+            $setModelVar::$db_num_rows = JFactory::getDbo()->getAffectedRows();
+            }
 
         } 
         return $result;   

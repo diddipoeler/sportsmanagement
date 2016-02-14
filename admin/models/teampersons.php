@@ -177,89 +177,34 @@ class sportsmanagementModelTeamPersons extends JModelList
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.		
-		//$db = sportsmanagementHelper::getDBConnection();
         $db = sportsmanagementHelper::getDBConnection(); 
 		$query = $db->getQuery(true);
-        
-        //$search	= $this->getState('filter.search');
 		        
         $this->_project_id	= $app->getUserState( "$option.pid", '0' );
-//        $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
-//        $this->_team_id = JRequest::getVar('team_id');
-//        $this->_persontype = JRequest::getVar('persontype');
-//        $this->_project_team_id = JRequest::getVar('project_team_id');
-//        
-//        if ( !$this->_team_id )
-//        {
-//            $this->_team_id	= $app->getUserState( "$option.team_id", '0' );
-//        }
-//        if ( !$this->_project_team_id )
-//        {
-//            $this->_project_team_id	= $app->getUserState( "$option.project_team_id", '0' );
-//        }
-//        if ( empty($this->_persontype) )
-//        {
-//            $this->_persontype	= $app->getUserState( "$option.persontype", '0' );
-//        }
-        
-//        // Get the WHERE and ORDER BY clauses for the query
-//		$where = self::_buildContentWhere();
-//		$orderby = self::_buildContentOrderBy();
-        
-//        if ( COM_SPORTSMANAGEMENT_USE_NEW_TABLE )
-//        {
             
-        //$query->select('ppl.firstname','ppl.lastname','ppl.nickname','ppl.height','ppl.weight','ppl.injury','ppl.suspension','ppl.away','ppl.id','ppl.id AS person_id');
         $query->select('ppl.id,ppl.firstname,ppl.lastname,ppl.nickname,ppl.picture,ppl.id as person_id,ppl.injury,ppl.suspension,ppl.away,ppl.ordering,ppl.published,ppl.checked_out,ppl.checked_out_time  ');
 		$query->select('ppl.position_id as person_position_id');
-        //$query->select('pos.id as position_id');
         $query->select('tp.id as tpid, tp.market_value, tp.jerseynumber,tp.picture as season_picture');
 		$query->select('u.name AS editor');
         $query->select('st.season_id AS season_id,st.id as projectteam_id');
         $query->select('ppos.id as project_position_id');
-        //$query->select('tp.project_position_id as project_position_id');
+
         $query->from('#__sportsmanagement_person AS ppl');
         $query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp on tp.person_id = ppl.id');
         $query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id and st.season_id = tp.season_id');
-        
         $query->join('LEFT', '#__sportsmanagement_person_project_position AS ppp on ppp.person_id = ppl.id');
-        
         $query->join('LEFT',' #__sportsmanagement_project_position AS ppos ON ppos.id = ppp.project_position_id ');
-        //$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id ');
-        //$query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppl.position_id ');
-        
         $query->join('LEFT', '#__users AS u ON u.id = tp.checked_out');
-//        }
-//        else
-//        {    
-//        $query->select('ppl.firstname','ppl.lastname','ppl.nickname','ppl.height','ppl.weight','ppl.id','ppl.id AS person_id');
-//		$query->select('tp.*','tp.id as tpid');
-//		$query->select('u.name AS editor');
-//        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ppl');
-//        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp on tp.person_id = ppl.id');
-//        $query->join('LEFT', '#__users AS u ON u.id = tp.checked_out');
-//        }
-
-        
-//        if ($where)
-//        {
-//            $query->where($where);
-//        }
-//        if ($orderby)
-//        {
-//            $query->order($orderby);
-//        }
-
 
         $query->where("ppl.published = 1");
         $query->where('st.team_id = '.$this->getState('filter.team_id') );
         $query->where('st.season_id = '.$this->getState('filter.season_id') );
         $query->where('tp.season_id = '.$this->getState('filter.season_id') );
         $query->where('tp.persontype = '.$this->getState('filter.persontype') );
-        
         $query->where('ppp.persontype = '.$this->getState('filter.persontype') );
-        
         $query->where('ppp.project_id = '.$this->_project_id );
+        
+        $query->where("ppos.id IS NOT NULL");
         
         if ($this->getState('filter.search'))
 		{
@@ -272,6 +217,7 @@ class sportsmanagementModelTeamPersons extends JModelList
                 $db->escape($this->getState('list.direction', 'ASC')));
                 
              
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	    {
@@ -301,14 +247,13 @@ class sportsmanagementModelTeamPersons extends JModelList
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.		
-		//$db = sportsmanagementHelper::getDBConnection();
         $db = sportsmanagementHelper::getDBConnection(); 
 		$query = $db->getQuery(true);    
         
         // Select some fields
 		$query->select('ppl.*');
         // From table
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position AS ppl');
+        $query->from('#__sportsmanagement_person_project_position AS ppl');
         $query->where('ppl.project_id = '.$project_id);
         $query->where('ppl.persontype = '.$_persontype);
         
@@ -426,7 +371,6 @@ class sportsmanagementModelTeamPersons extends JModelList
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         // Create a new query object.
-		//$db		= sportsmanagementHelper::getDBConnection();
         $db = sportsmanagementHelper::getDBConnection(); 
 		$query	= $db->getQuery(true);
 		$user	= JFactory::getUser(); 
@@ -437,14 +381,9 @@ class sportsmanagementModelTeamPersons extends JModelList
         // Select some fields
 		$query->select('ppl.*');
         // From table
-//		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person as pl');
-//        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player as tpl on tpl.person_id = pl.id');
-//        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt on pt.id = tpl.projectteam_id');
-//        $query->where('pt.team_id = '.$team_id);
-        
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ppl');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp on tp.person_id = ppl.id');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = tp.team_id');
+        $query->from('#__sportsmanagement_person AS ppl');
+        $query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp on tp.person_id = ppl.id');
+        $query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id');
         $query->where('st.team_id = '.$team_id);
         $query->where('st.season_id = '.$season_id);
         $query->where('tp.team_id = '.$season_id);
@@ -463,14 +402,6 @@ class sportsmanagementModelTeamPersons extends JModelList
 		}
 		return $result;
     }
-
-	
-	
-
-	
-
-	
-
 	
 	/**
 	 * remove specified players from team

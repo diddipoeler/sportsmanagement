@@ -59,6 +59,7 @@ class sportsmanagementModelteamperson extends JModelAdmin
     var $_project_id = 0;
     var $_team_id = 0;
     var $_project_team_id = 0;
+    static $db_num_rows = 0;
   
     /**
 	 * Method override to check if you can edit an existing record.
@@ -203,7 +204,7 @@ class sportsmanagementModelteamperson extends JModelAdmin
                 
                 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
                 {
-                $app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' position_id<br><pre>'.print_r($tblprojectposition->position_id, true).'</pre><br>','Notice');
+                $app->enqueueMessage(__FILE__.' '.__METHOD__.' '.__LINE__.' position_id<br><pre>'.print_r($tblprojectposition->position_id, true).'</pre><br>','Notice');
                 }
                 
                 $tblperson = JTable::getInstance("person", "sportsmanagementTable");
@@ -212,7 +213,7 @@ class sportsmanagementModelteamperson extends JModelAdmin
                 
                 if (!$tblperson->store())
 	            {
-		        $app->enqueueMessage(__FILE__.' '.get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($tblperson->getErrorMsg(), true).'</pre><br>','Error');
+		        $app->enqueueMessage(__FILE__.' '.__METHOD__.' '.__LINE__.' <br><pre>'.print_r($tblperson->getErrorMsg(), true).'</pre><br>','Error');
 	            }
                 
                 // alten eintrag löschen
@@ -222,7 +223,6 @@ class sportsmanagementModelteamperson extends JModelAdmin
                 $conditions = array(
                 $db->quoteName('person_id') . '='.$pks[$x],
                 $db->quoteName('project_id') . '='.$this->_project_id,
-                $db->quoteName('project_position_id') . '= 0',
                 $db->quoteName('persontype') . '='.$this->persontype
                 );
  
@@ -233,7 +233,7 @@ class sportsmanagementModelteamperson extends JModelAdmin
 
                 if (!$db->query())
 		          {
-			      //      $app->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields delete<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+			            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		          }
                   
                 // Create and populate an object.
@@ -297,7 +297,7 @@ class sportsmanagementModelteamperson extends JModelAdmin
 	public function delete(&$pks)
 	{
 	$app = JFactory::getApplication();
-    $app->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
+    //$app->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
     /* Ein Datenbankobjekt beziehen */
     $db = JFactory::getDbo();
     /* Ein JDatabaseQuery Objekt beziehen */
@@ -308,24 +308,62 @@ class sportsmanagementModelteamperson extends JModelAdmin
 		{
 		//JArrayHelper::toInteger($cid);
 			$cids = implode(',',$pks);
-            $app->enqueueMessage(JText::_('delete cids<br><pre>'.print_r($cids,true).'</pre>'),'');
-            // wir löschen mit join
-            $query = 'DELETE mp,ms,me
-            FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player as m    
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player as mp
-            ON mp.teamplayer_id = m.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic as ms
-            ON ms.teamplayer_id = m.id
-            LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event as me
-            ON me.teamplayer_id = m.id
-            WHERE m.id IN ('.$cids.')';
-            $db->setQuery($query);
-            $db->query();
-            if (!$db->query()) 
+                        
+            // delete all 
+$conditions = array(
+    $db->quoteName('teamplayer_id') . ' IN ('.$cids.')'
+);
+$query->clear(); 
+$query->delete($db->quoteName('#__sportsmanagement_match_player'));
+$query->where($conditions);
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+            if ( self::$db_num_rows )
             {
-                $app->enqueueMessage(JText::_('delete getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-                return false; 
+            $app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_'.strtoupper('sportsmanagement_match_player').'_ITEMS_DELETED',self::$db_num_rows),'');
             }
+            
+            // delete all 
+$conditions = array(
+    $db->quoteName('in_for') . ' IN ('.$cids.')'
+);
+$query->clear(); 
+$query->delete($db->quoteName('#__sportsmanagement_match_player'));
+$query->where($conditions);
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+            if ( self::$db_num_rows )
+            {
+            $app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_'.strtoupper('sportsmanagement_match_player').'_ITEMS_DELETED',self::$db_num_rows),'');
+            }
+            
+            // delete all 
+$conditions = array(
+    $db->quoteName('teamplayer_id') . ' IN ('.$cids.')'
+);
+$query->clear(); 
+$query->delete($db->quoteName('#__sportsmanagement_match_statistic'));
+$query->where($conditions);
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+            if ( self::$db_num_rows )
+            {
+            $app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_'.strtoupper('sportsmanagement_match_statistic').'_ITEMS_DELETED',self::$db_num_rows),'');
+            } 
+            
+            // delete all 
+$conditions = array(
+    $db->quoteName('teamplayer_id') . ' IN ('.$cids.')'
+);
+$query->clear(); 
+$query->delete($db->quoteName('#__sportsmanagement_match_event'));
+$query->where($conditions);
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+            if ( self::$db_num_rows )
+            {
+            $app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_'.strtoupper('sportsmanagement_match_event').'_ITEMS_DELETED',self::$db_num_rows),'');
+            }  
             
         }  
     

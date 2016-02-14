@@ -959,6 +959,8 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_round` (
   `picture` VARCHAR(128) NOT NULL DEFAULT 'images/com_sportsmanagement/database/placeholders/placeholder_150.png' ,
   `tournement` TINYINT(1) NOT NULL DEFAULT '0' ,
   `cr_picture` varchar(255) DEFAULT NULL,
+  `rdatefirst_timestamp` INT( 11 ) NOT NULL DEFAULT  '0',  
+  `rdatelast_timestamp` INT( 11 ) NOT NULL DEFAULT  '0',
   PRIMARY KEY (`id`) ,
   KEY `project_id` (`project_id`)
   )

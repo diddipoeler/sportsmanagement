@@ -43,7 +43,7 @@ JHtml::_('behavior.modal');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-
+<div class="table-responsive">
 
 <!--	<div id="editcell"> -->
 	<!--	<fieldset class="adminform"> -->
@@ -238,5 +238,5 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 				</tbody>
 			</table>
 	<!--	</fieldset> -->
-<!--	</div> -->
+	</div> 
 	

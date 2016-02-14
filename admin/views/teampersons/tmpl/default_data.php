@@ -58,7 +58,7 @@ JHtml::_('behavior.modal');
 
 ?>
         
-		<div id="editcell">
+		<div class="table-responsive">
 			<table class="<?php echo $this->table_data_class; ?>">
 				<thead>
 					<tr>
@@ -160,7 +160,8 @@ JHtml::_('behavior.modal');
 							</td>
 							<td class="center">
 								<?php
-								echo JHtml::_('grid.id', $i, $row->id);
+								//echo JHtml::_('grid.id', $i, $row->id);
+                                echo JHtml::_('grid.id', $i, $row->tpid);
 								?>
 							</td>
 							

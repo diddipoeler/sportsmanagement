@@ -74,8 +74,8 @@ defined('_JEXEC') or die('Restricted access');
 										<br />
 										
                                         
-                                        <input id="moveright" type="button" value="Move Right" onclick="move_list_items('staff','staffposition<?php echo $position_id;?>');" />
-                                        <input id="moveleft" type="button" value="Move Left" onclick="move_list_items('staffposition<?php echo $position_id;?>','staff');" />
+                                        <input id="moveright" type="button" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_ASSIGN_TO_LINEUP'); ?>" onclick="move_list_items('staff','staffposition<?php echo $position_id;?>');" />
+                                        <input id="moveleft" type="button" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_DELETE_FROM_LINEUP'); ?>" onclick="move_list_items('staffposition<?php echo $position_id;?>','staff');" />
                                         
                                         
                                         

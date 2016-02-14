@@ -44,7 +44,7 @@ JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
 
 ?>
-
+<div class="table-responsive">
 		<table class="<?php echo $this->table_data_class; ?>">
 			<thead>
 				<tr>
@@ -321,4 +321,4 @@ JHtml::_('behavior.modal');
 				?>
 			</tbody>
 		</table>
-<!--	</div> -->
+	</div>
