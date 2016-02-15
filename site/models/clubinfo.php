@@ -396,8 +396,8 @@ $result = $db->execute();
              // Select some fields
              $query->select('distinct(pt.standard_playground)');
              // From 
-		     $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt');
-             $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.id = pt.team_id');
+		     $query->from('#__sportsmanagement_project_team AS pt');
+             $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
                 // Where
                 $query->where('st.team_id = '.(int)$team->id );
                 $query->where('pt.standard_playground > 0');
@@ -407,6 +407,9 @@ $result = $db->execute();
 				    // Where
                     $query->where('pt.standard_playground <> '. $club->standard_playground );
 				}
+                
+                $query->group('pt.standard_playground');
+                
 				$db->setQuery($query);
 				if ( $res = $db->loadResult() )
 				{
@@ -448,7 +451,7 @@ $result = $db->execute();
           $query->select('id AS value, name AS text, pl.*');
           $query->select('CONCAT_WS( \':\', pl.id, pl.alias ) AS slug');
           // From 
-		  $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS pl');
+		  $query->from('#__sportsmanagement_playground AS pl');
           // Where
           $query->where('id = '. $stadium );
 
