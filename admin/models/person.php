@@ -386,9 +386,12 @@ class sportsmanagementModelperson extends JModelAdmin
     $mdlPersonTable = $mdlPerson->getTable();
     
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');    
-    
+
     switch ($post['persontype'])
             {
+                /**
+                 * spieler
+                 */
                 case 1:
                 $mdl = JModelLegacy::getInstance("seasonteamperson", "sportsmanagementModel");
                 $mdlTable = $mdl->getTable();
@@ -429,12 +432,19 @@ class sportsmanagementModelperson extends JModelAdmin
                 // Set the query using our newly populated query object and execute it.
                 $db->setQuery($insertquery);
                 if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
-                {}
+                {
+                    
+                }
                 else
-                {}
+                {
+                    
+                }
                  
 		        }
                 break;
+                /**
+                 * trainer
+                 */
                 case 2:
                 $mdl = JModelLegacy::getInstance("seasonteamperson", "sportsmanagementModel");
                 $mdlTable = $mdl->getTable();
@@ -475,14 +485,54 @@ class sportsmanagementModelperson extends JModelAdmin
                 // Set the query using our newly populated query object and execute it.
                 $db->setQuery($insertquery);
                 if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
-                {}
+                {
+                    
+                }
                 else
-                {}
+                {
+                    
+                }
                  
 		        }
                 break;
+                /**
+                 * schiedsrichter
+                 */                
+                case 3:
+                $mdl = JModelLegacy::getInstance("seasonperson", "sportsmanagementModel");
+                $mdlTable = $mdl->getTable();
+                for ($x=0; $x < count($cid); $x++)
+                {
+                $mdlPersonTable->load($cid[$x]);    
+                $mdlTable = $mdl->getTable();
+                $mdlTable->person_id = $cid[$x];
+                $mdlTable->team_id = $this->_team_id;
+                $mdlTable->season_id = $this->_season_id;
+                $mdlTable->modified = $db->Quote(''.$modified.'');
+                $mdlTable->modified_by = $modified_by;
+                $mdlTable->picture = $mdlPersonTable->picture;
+                $mdlTable->persontype = 3;
+                $mdlTable->published = 1;
+                   
+                if ($mdlTable->store()===false)
+				{
+				    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+				}
+				else
+				{
+				// Create and populate an object.
+                $profile = new stdClass();
+                $profile->project_id = $this->_project_id;
+                $profile->person_id = $db->insertid();
+                $profile->published = 1;
+                $profile->modified = $db->Quote(''.$modified.'');
+                $profile->modified_by = $modified_by;
+                // Insert the object into the user profile table.
+                $result = JFactory::getDbo()->insertObject('#__sportsmanagement_project_referee', $profile);
+                }
                 
-                
+                }
+                break;
             }
     
     

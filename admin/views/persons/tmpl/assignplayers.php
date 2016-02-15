@@ -58,16 +58,16 @@ $userId		= $user->get('id');
 	
 </script>
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view=persons&layout=assignplayers&tmpl=component&type='.$this->type);?>" method="post" id="component-form" name="adminForm">
-<fieldset>
+<!-- <fieldset> -->
 		<div class="fltrt">
 			<button type="button" onclick="Joomla.submitform('persons.assign', this.form)">
 				<?php echo JText::_('JSAVE');?></button>
-			<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
+			<button id="cancel" type="button" onclick="Joomla.submitform('persons.close', this.form)">
 				<?php echo JText::_('JCANCEL');?></button>
 		</div>
-	</fieldset>
+<!--	</fieldset> -->
     
-	<table>
+	<table class="table">
 		<tr>
 			<td align="left" width="100%">
 				<?php

@@ -199,6 +199,9 @@ $starttime = microtime();
 		$project_name = $project->name;
 		$project_team_id = $app->getUserState($option.'project_team_id');
 		$team_name = $model->getProjectTeamName($project_team_id);
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' persontype<br><pre>'.print_r($this->persontype,true).'</pre>'),'');
+        
 		//$mdlQuickAdd = JModelLegacy::getInstance('Quickadd','sportsmanagementModel');
         
         $items = $this->get('Items');
@@ -279,7 +282,7 @@ $starttime = microtime();
 
 		$this->prjid	= $this->project_id;
 		$this->prj_name	= $project_name;
-		$this->team_id	= $team_id;
+		//$this->team_id	= $team_id;
 		$this->team_name	= $team_name;
 		$this->project_team_id	= $project_team_id;
 		$this->lists	= $lists;

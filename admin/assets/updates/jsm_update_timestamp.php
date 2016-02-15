@@ -78,7 +78,31 @@ switch ($table)
 
 case 'project':
 $query = $db->getQuery(true);
- 
+$query->select('p.id,p.modified');
+$query->from('#__sportsmanagement_project as p');
+$query->where("p.modified_timestamp = 0");
+$db->setQuery($query);
+$result = $db->loadObjectList();
+
+foreach ($result as $projekt)
+{
+$projekt->modified_timestamp = sportsmanagementHelper::getTimestamp($projekt->modified);
+
+// Create an object for the record we are going to update.
+$object = new stdClass();
+// Must be a valid primary key value.
+$object->id = $projekt->id;
+$object->modified_timestamp = $projekt->modified_timestamp;
+
+//echo 'modified_timestamp -> '.$projekt->modified_timestamp.'<br>';
+// Update their details in the table using id as the primary key.
+$result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_project', $object, 'id');
+        
+}
+
+
+
+/* 
 // Fields to update.
 $fields = array(
     $db->quoteName('modified_timestamp') . ' = ' . sportsmanagementHelper::getTimestamp('modified')
@@ -94,12 +118,36 @@ $query->update($db->quoteName('#__sportsmanagement_'.$table))->set($fields)->whe
 $db->setQuery($query);
  
 $result = $db->execute();
+*/
+//exit;
 break;
 
 case 'match':
 
 $query = $db->getQuery(true);
- 
+$query->select('m.id,m.match_date');
+$query->from('#__sportsmanagement_match as m');
+$query->where("m.match_timestamp = 0");
+$db->setQuery($query);
+$result = $db->loadObjectList();
+
+foreach ($result as $match)
+{
+$match->match_timestamp = sportsmanagementHelper::getTimestamp($match->match_date);
+
+// Create an object for the record we are going to update.
+$object = new stdClass();
+// Must be a valid primary key value.
+$object->id = $match->id;
+$object->match_timestamp = $match->match_timestamp;
+// Update their details in the table using id as the primary key.
+$result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id');
+        
+}
+
+
+
+/* 
 // Fields to update.
 $fields = array(
     $db->quoteName('match_timestamp') . ' = ' . sportsmanagementHelper::getTimestamp('match_date')
@@ -115,7 +163,7 @@ $query->update($db->quoteName('#__sportsmanagement_'.$table))->set($fields)->whe
 $db->setQuery($query);
  
 $result = $db->execute();
-
+*/
 
 break;
 
@@ -125,7 +173,7 @@ break;
 
 
 echo '<form method="post" id="adminForm" action="'.$link.'" >';
-echo '<br><input type="button" onclick="document.body.innerHTML=\'please wait...\';sendData(\'person\')" value="Projekte" />';
+echo '<br><input type="button" onclick="document.body.innerHTML=\'please wait...\';sendData(\'project\')" value="Projekte" />';
 echo '<input type="button" onclick="document.body.innerHTML=\'please wait...\';sendData(\'match\')" value="Match" />';
 echo '</form>';
 

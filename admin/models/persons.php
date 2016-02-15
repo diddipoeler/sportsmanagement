@@ -178,8 +178,8 @@ class sportsmanagementModelPersons extends JModelList
         $query->select('pl.*');
         $query->select('pl.id as id2');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person as pl');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup AS ag ON ag.id = pl.agegroup_id');
+		$query->from('#__sportsmanagement_person as pl');
+        $query->join('LEFT', '#__sportsmanagement_agegroup AS ag ON ag.id = pl.agegroup_id');
         // Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id = pl.checked_out');
@@ -187,7 +187,7 @@ class sportsmanagementModelPersons extends JModelList
         // neue struktur wird genutzt
         if ( COM_SPORTSMANAGEMENT_USE_NEW_TABLE && JRequest::getVar('layout') == 'assignplayers' )
         {
-            $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS sp ON sp.person_id = pl.id');
+            $query->join('INNER', '#__sportsmanagement_season_person_id AS sp ON sp.person_id = pl.id');
             $query->where('sp.season_id = '.$this->_season_id);
         }
         
@@ -214,47 +214,38 @@ class sportsmanagementModelPersons extends JModelList
             switch ($this->_type)
             {
                 case 1:
-                // player
+                /**
+                 * spieler
+                 */
                 $Subquery->select('stp.person_id');
-                $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS stp  ');
-                $Subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = stp.team_id');  
-                //$Subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+                $Subquery->from('#__sportsmanagement_season_team_person_id AS stp  ');
+                $Subquery->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = stp.team_id');  
                 $Subquery->where('st.team_id = '.$this->_team_id);
                 $Subquery->where('stp.season_id = '.$this->_season_id);
                 $Subquery->where('stp.persontype = 1');
                 $query->where('pl.id NOT IN ('.$Subquery.')');
                 break;
                 case 2:
-                //staff
+                /**
+                 * trainer
+                 */
                 $Subquery->select('stp.person_id');
-                $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS stp  ');
-                $Subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = stp.team_id');  
-                //$Subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+                $Subquery->from('#__sportsmanagement_season_team_person_id AS stp  ');
+                $Subquery->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = stp.team_id');  
                 $Subquery->where('st.team_id = '.$this->_team_id);
                 $Subquery->where('stp.season_id = '.$this->_season_id);
                 $Subquery->where('stp.persontype = 2');
                 $query->where('pl.id NOT IN ('.$Subquery.')');
-                
-//                $Subquery->select('person_id');
-//                $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS ts ');
-//                $Subquery->where('projectteam_id = '.$this->_project_team_id.' AND ts.person_id = pl.id');
-//                $query->where('pl.id NOT IN ('.$Subquery.')');
                 break;
                 case 3:
-                // referee
+                /**
+                 * schiedsrichter
+                 */
                 $Subquery->select('stp.person_id');
-                $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS stp  ');
-                $Subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = stp.team_id');  
-                //$Subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-                $Subquery->where('st.id = '.$this->_team_id);
+                $Subquery->from('#__sportsmanagement_season_person_id AS stp  ');
                 $Subquery->where('stp.season_id = '.$this->_season_id);
                 $Subquery->where('stp.persontype = 3');
                 $query->where('pl.id NOT IN ('.$Subquery.')');
-                
-//                $Subquery->select('person_id');
-//                $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr ');
-//                $Subquery->where('project_id = '.$this->_project_id.' AND pr.person_id = pl.id');
-//                $query->where('pl.id NOT IN ('.$Subquery.')');
                 break;
                 
             }

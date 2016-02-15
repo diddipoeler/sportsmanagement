@@ -88,6 +88,10 @@ JHtml::_('behavior.modal');
                             echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_IMAGE', 'ppl.picture', $this->sortDirection, $this->sortColumn );
 							?>
 						</th>
+                        <?PHP
+                        if ( $this->_persontype == 1 )
+		                {
+                        ?>
                         <th width="">
 							<?php
                             echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_MARKET_VALUE', 'tp.market_value', $this->sortDirection, $this->sortColumn );
@@ -98,6 +102,9 @@ JHtml::_('behavior.modal');
                             echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_SHIRTNR', 'tp.jerseynumber', $this->sortDirection, $this->sortColumn );
 							?>
 						</th>
+                        <?PHP
+                        }
+                        ?>
 						<th width="">
 							<?php
 							echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_POS', 'ppl.project_position_id', $this->sortDirection, $this->sortColumn );
@@ -243,6 +250,10 @@ JHtml::_('behavior.modal');
                                 }
 								?>
 							</td>
+                            <?PHP
+                            if ( $this->_persontype == 1 )
+		                      {
+                            ?>
               <td class="center">
 								<input<?php echo $inputappend; ?>	type="text" size="4" class="inputbox"
 																	name="market_value<?php echo $row->id; ?>"
@@ -255,6 +266,9 @@ JHtml::_('behavior.modal');
 																	value="<?php echo $row->jerseynumber; ?>"
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 							</td>
+                            <?PHP
+                            }
+                            ?>
 							<td class="nowrap" class="center">
 								<?php
 								if ( $row->project_position_id != 0 )

@@ -89,7 +89,19 @@ JHtml::_( 'behavior.mootools' );
 <?php
 $uri=JURI::root();
 ?>
-<fieldset class="adminform">
+
+<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
+<?PHP
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+echo $this->loadTemplate('joomla3');
+}
+else
+{
+echo $this->loadTemplate('joomla2');    
+}
+?>
+<!-- <fieldset class="adminform"> -->
 	<legend>
 	<?php
 	echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTREFEREES_QUICKADD_REFEREE');
@@ -106,18 +118,9 @@ $uri=JURI::root();
 	</table>
 	<?php echo JHtml::_('form.token'); ?>
 	</form>
-</fieldset>
-<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-<?PHP
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-echo $this->loadTemplate('joomla3');
-}
-else
-{
-echo $this->loadTemplate('joomla2');    
-}
+<!-- </fieldset> -->
 
+<?PHP
 if ( $this->items )
 {
 echo $this->loadTemplate('data');

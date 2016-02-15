@@ -103,7 +103,7 @@ JHtml::_('behavior.modal');
 
 
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-	<fieldset class="adminform">
+<!--	<fieldset class="adminform"> -->
 		
 <?PHP
 if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -118,7 +118,7 @@ echo $this->loadTemplate('joomla2');
 echo $this->loadTemplate('data');
 ?>        
 
-	</fieldset>
+<!--	</fieldset> -->
 	<input type="hidden" name="project_team_id"		value="<?php echo $this->project_team_id; ?>" />
     <input type="hidden" name="team_id"		value="<?php echo $this->team_id; ?>" />
     <input type="hidden" name="pid"		value="<?php echo $this->project_id; ?>" />

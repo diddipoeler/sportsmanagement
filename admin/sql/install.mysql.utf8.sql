@@ -1034,7 +1034,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season_person_id` (
   `cr_picture` varchar(255) DEFAULT NULL,
   `position_id` INT( 11 ) NOT NULL DEFAULT  '0',
   PRIMARY KEY (`id`) ,
-  UNIQUE KEY `combi` (`person_id`,`season_id`,`team_id`) ,
+  UNIQUE KEY `combi` (`person_id`,`season_id`,`team_id`,`persontype`) ,
   KEY `team_id` (`team_id`),
   KEY `season_id` (`season_id`),
   KEY `person_id` (`person_id`)
@@ -1074,7 +1074,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_season_team_person_id` (
   `cr_picture` varchar(255) DEFAULT NULL,
   `position_id` INT( 11 ) NOT NULL DEFAULT  '0',
   PRIMARY KEY (`id`) ,
-  UNIQUE KEY `combi` (`person_id`,`season_id`,`team_id`) ,
+  UNIQUE KEY `combi` (`person_id`,`season_id`,`team_id`,`persontype`) ,
   KEY `team_id` (`team_id`),
   KEY `season_id` (`season_id`),
   KEY `person_id` (`person_id`)

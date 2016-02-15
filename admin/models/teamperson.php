@@ -178,6 +178,16 @@ class sportsmanagementModelteamperson extends JModelAdmin
         $result = true;
 		for ($x=0; $x < count($pks); $x++)
 		{
+		  
+          if ( $post['jerseynumber'.$pks[$x]] == '' )
+          {
+            $post['jerseynumber'.$pks[$x]] = 0;
+          }
+          if ( $post['market_value'.$pks[$x]] == '' )
+          {
+            $post['market_value'.$pks[$x]] = 0;
+          }
+          
 //			$tblPerson = $this->getTable();
 //			//$tblPerson->id = $post['person_id'.$pks[$x]];
 //            $tblPerson->id = $post['person_id'.$pks[$x]];

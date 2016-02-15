@@ -122,6 +122,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		
 		
 		$mdlDivisions = JModelLegacy::getInstance("divisions", "sportsmanagementModel");
+        $projectdivisions = array();
 		$projectdivisions = $mdlDivisions->getDivisions($this->project_id);
         
         
@@ -257,7 +258,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		$this->config	= JFactory::getConfig();
 		$this->lists	= $lists;
         $this->divisions	= $projectdivisions;
-        $this->division	= $division;
+        //$this->division	= $division;
 		$this->projectteam	= $items;
 		$this->pagination	= $pagination;
 		$this->request_url	= $uri->toString();

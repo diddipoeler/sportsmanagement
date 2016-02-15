@@ -120,7 +120,7 @@ class sportsmanagementViewTemplates extends sportsmanagementView
 		$pagination = $this->get('Pagination');
 
 		$this->user = JFactory::getUser();
-		$this-> lists = $lists;
+		//$this->lists = $lists;
 		$this->templates = $templates;
 		$this->projectws = $project;
 		$this->pagination = $pagination;

@@ -1757,12 +1757,14 @@ else
 		}
 	}
 
+
 	/**
-	 * get unix timestamp of specified date
-	 *
-	 * @param string $date now if null
-	 * @param boolean $use_offset use time offset
-	 * @param int $project_serveroffset custom time offset in hours. Use default joomla timeoffset if null
+	 * sportsmanagementHelper::getTimestamp()
+	 * 
+	 * @param mixed $date
+	 * @param integer $use_offset
+	 * @param mixed $offset
+	 * @return
 	 */
 	public static function getTimestamp($date = null, $use_offset = 0, $offset = null)
 	{
