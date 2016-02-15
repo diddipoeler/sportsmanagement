@@ -593,8 +593,12 @@ class JSMCalendar extends PHPCalendar
 		$caldates = array();
 //		$caldates['start'] = date("$year-$month-01 00:00:00");
 //		$caldates['end'] = date("$year-$month-31 23:59:59");
+        
         $caldates['start'] = "$year-$month-01 00:00:00";
 		$caldates['end'] = "$year-$month-31 23:59:59";
+        
+        $caldates['starttimestamp'] = sportsmanagementHelper::getTimestamp($caldates['start']);
+		$caldates['endtimestamp'] = sportsmanagementHelper::getTimestamp($caldates['end']);
         
         $caldates['roundstart'] = "$year-$month-01";
 		$caldates['roundend'] = "$year-$month-31";

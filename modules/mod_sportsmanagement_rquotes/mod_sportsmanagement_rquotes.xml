@@ -74,6 +74,19 @@
 			<option value="db">DATABASE</option>
 	</field>
 	
+  <field 
+	name="showpicture" 
+	type="radio" 
+	default="0" 
+  class="radio btn-group btn-group-yesno"
+	label="MOD_SPORTSMANAGEMENT_RQUOTES_SHOW_PICTURE" 
+	description="MOD_SPORTSMANAGEMENT_RQUOTES_SHOW_PICTURE_DESC"
+	 >
+		<option value ="0">JNO</option>
+    <option value ="1">JYES</option>
+		
+	</field>
+  
 	<field 
 	type="spacer" 
 	default=""
@@ -100,6 +113,7 @@
 	name="randomtext" 
 	type="radio" 
 	default="0" 
+  class="radio btn-group btn-group-yesno"
 	label="MOD_SPORTSMANAGEMENT_RQUOTES_FIELD_TEXT_FILE_ROTATE" 
 	description="MOD_SPORTSMANAGEMENT_RQUOTES_FIELD_ROTATE_TEXT_FILE_DESC"
 	 >

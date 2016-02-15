@@ -524,11 +524,13 @@ $newrows[$key]['link'] = sportsmanagementHelperRoute::getSportsmanagementRoute('
                
 		if (isset($caldates['start']))
         { 
-        $query->where("r.round_date_first >= ".$db->Quote(''.$caldates['roundstart'].'')."");
+        //$query->where("r.round_date_first >= ".$db->Quote(''.$caldates['roundstart'].'')."");
+        $query->where("m.match_timestamp >= ".$caldates['starttimestamp'] );
         }
 		if (isset($caldates['end'])) 
         {
-        $query->where("r.round_date_last <= ".$db->Quote(''.$caldates['roundend'].'')."");
+        //$query->where("r.round_date_last <= ".$db->Quote(''.$caldates['roundend'].'')."");
+        $query->where("m.match_timestamp <= ".$caldates['endtimestamp'] );
         }
 		if (isset($caldates['matchcode']))
         {

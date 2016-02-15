@@ -53,7 +53,14 @@ DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 
 //include helper file	
 require_once(dirname(__FILE__).DS.'helper.php'); 
-require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php'); 
+// prüft vor Benutzung ob die gewünschte Klasse definiert ist
+if ( !class_exists('sportsmanagementHelper') ) 
+{
+//add the classes for handling
+$classpath = JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'helpers'.DS.'sportsmanagement.php';
+JLoader::register('sportsmanagementHelper', $classpath);
+JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
+}
 
 $source = $params->get('source');
 $cfg_which_database = $params->get('cfg_which_database');

@@ -69,6 +69,8 @@ if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
 }
 
+//JHtml::_( 'behavior.framework' );
+//JHTML::_('behavior.modal');
 
 // Reference global application object
 $app = JFactory::getApplication();
@@ -78,9 +80,9 @@ $jinput = $app->input;
 // Include the syndicate functions only once
 require_once (dirname(__FILE__).DS.'helper.php');
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.framework');
-JHtml::_('behavior.modal');
+//JHtml::_('behavior.tooltip');
+//JHtml::_('behavior.framework');
+//JHtml::_('behavior.modal');
 
 $ajax= $jinput->getVar('ajaxCalMod',0,'default','POST');
 $ajaxmod= $jinput->getVar('ajaxmodid',0,'default','POST');
@@ -97,6 +99,7 @@ $startDate= new JDate($params->get('cal_start_date'));
     
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
+//$doc->addScript( JURI::root().'/media/system/js/mootools-core.js');    
 $config = JFactory::getConfig();
 $offset = $config->get('offset');    
 $year = $jinput->getVar('year', $startDate->toFormat('Y'));
@@ -143,6 +146,10 @@ if (!defined('JLC_MODULESCRIPTLOADED'))
 {
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {    
+    //$doc->addScript( JURI::root().'/media/system/js/mootools-core.js');
+    $doc->addScript( JURI::root().'/media/system/js/mootools-core-uncompressed.js');
+    $doc->addScript( JURI::root().'/media/system/js/mootools-more-uncompressed.js');
+    $doc->addScript( JURI::root().'/media/system/js/modal-uncompressed.js');
 	$doc->addScript( JUri::base().'modules'.DS.$module->module.DS.'assets/js'.DS.$module->module.'.js' );
 }
 else

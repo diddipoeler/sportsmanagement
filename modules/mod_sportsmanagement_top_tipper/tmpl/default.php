@@ -89,7 +89,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 			<input type='hidden' name='option' value='com_sportsmanagement' />
 			<input type='hidden' name='controller' value='predictionranking' />
 
-			<table class='blog' cellpadding='0' cellspacing='0' >
+			<table class="table">
 				<tr>
 					<td class='sectiontableheader'>
 						<?php
