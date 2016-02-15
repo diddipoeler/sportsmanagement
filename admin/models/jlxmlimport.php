@@ -6422,9 +6422,9 @@ $query->clear();
         $query = $db->getQuery(true);
         $query->clear();
 		$query->select('m.id');		
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round r ON m.round_id = r.id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = r.project_id');
+		$query->from('#__sportsmanagement_match as m');
+		$query->join('INNER','#__sportsmanagement_round r ON m.round_id = r.id ');
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.id = r.project_id');
         $query->where('p.id = '.$this->_project_id);
         $db->setQuery($query);
         $match_ids = $db->loadObjectList();
@@ -6434,7 +6434,7 @@ $query->clear();
 		}
             
         // die schiedsrichter verarbeiten
-        $query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee where project_id = '.$this->_project_id ;
+        $query = 'SELECT * FROM #__sportsmanagement_project_referee where project_id = '.$this->_project_id ;
 		JFactory::getDbo()->setQuery($query);
 		$result_pr = JFactory::getDbo()->loadObjectList();
         
@@ -6444,10 +6444,10 @@ $query->clear();
             $query = $db->getQuery(true);
             $query->clear();
 		    $query->select('id');		
-		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS t');
+		    $query->from('#__sportsmanagement_season_person_id AS t');
 		    $query->where('t.person_id = '.$protref->person_id);
             $query->where('t.season_id = '.$this->_season_id);
-            $query->where('t.persontype = 3');
+            $query->where('t.persontype IN (0,3) ');
 		    $db->setQuery($query);
 		    $new_person_id = $db->loadResult();
          
@@ -6465,7 +6465,7 @@ $query->clear();
                 $values = array($protref->person_id,$this->_season_id,3,'\''.$protref->picture.'\'');
                 // Prepare the insert query.
                 $insertquery
-                ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id'))
+                ->insert($db->quoteName('#__sportsmanagement_season_person_id'))
                 ->columns($db->quoteName($columns))
                 ->values(implode(',', $values));
                 // Set the query using our newly populated query object and execute it.
@@ -6527,7 +6527,7 @@ $query->clear();
 		    $new_team_id = $db->loadResult();
             */
             $query->select('team_id');		
-		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS t');
+		    $query->from('#__sportsmanagement_season_team_id AS t');
 		    $query->where('t.id = '.$proteam->team_id);
             $query->where('t.season_id = '.$this->_season_id);
 		    $db->setQuery($query);
@@ -6616,8 +6616,8 @@ $query->clear();
             $query = $db->getQuery(true);
             $query->select('tp.*');
             $query->select('p.position_id');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person as p ON p.id = tp.person_id ');
+            $query->from('#__sportsmanagement_team_player AS tp');
+            $query->join('INNER','#__sportsmanagement_person as p ON p.id = tp.person_id ');
             $query->where('tp.projectteam_id = '.$proteam->id);
             //$query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player where projectteam_id = '.$proteam->id ;
             JFactory::getDbo()->setQuery($query);
@@ -6638,10 +6638,10 @@ $query->clear();
                 // ist der spieler schon durch ein anderes projekt angelegt ?
                 $query = $db->getQuery(true);
 		        $query->select('id');		
-		        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS t');
+		        $query->from('#__sportsmanagement_season_person_id AS t');
 		        $query->where('t.person_id = '.$team_member->person_id);
                 $query->where('t.season_id = '.$this->_season_id);
-                $query->where('t.persontype = 1');
+                $query->where('t.persontype IN (0,1)');
 		        $db->setQuery($query);
 		        $new_player_id = $db->loadResult();
                 
@@ -6666,7 +6666,7 @@ $query->clear();
                 $values = array($team_member->person_id,$this->_season_id,1,'\''.$team_member->picture.'\'',$team_member->position_id);
                 // Prepare the insert query.
                 $insertquery
-                ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id'))
+                ->insert($db->quoteName('#__sportsmanagement_season_person_id'))
                 ->columns($db->quoteName($columns))
                 ->values(implode(',', $values));
                 // Set the query using our newly populated query object and execute it.
@@ -6685,11 +6685,11 @@ $query->clear();
                 // spieler dem team/saison schon zugeordnet ?
                 $query = $db->getQuery(true);
 		        $query->select('id');		
-		        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS t');
+		        $query->from('#__sportsmanagement_season_team_person_id AS t');
 		        $query->where('t.person_id = '.$team_member->person_id);
                 $query->where('t.season_id = '.$this->_season_id);
                 $query->where('t.team_id = '.$new_team_id);
-                $query->where('t.persontype = 1');
+                $query->where('t.persontype IN (0,1)');
 		        $db->setQuery($query);
 		        $new_match_player_id = $db->loadResult();
                 
@@ -6715,7 +6715,7 @@ $query->clear();
                 $values = array($team_member->person_id,$this->_season_id,$new_team_id,1,1,'\''.$team_member->picture.'\'',$team_member->project_position_id,$team_member->jerseynumber,$team_member->position_id);
                 // Prepare the insert query.
                 $insertquery
-                ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id'))
+                ->insert($db->quoteName('#__sportsmanagement_season_team_person_id'))
                 ->columns($db->quoteName($columns))
                 ->values(implode(',', $values));
                 // Set the query using our newly populated query object and execute it.
@@ -6750,7 +6750,7 @@ $query->clear();
             $query->where('person_id = ' . $team_member->person_id );
         $query->where('project_id = ' . $this->_project_id );
         $query->where('project_position_id = ' . $team_member->project_position_id );
-        $query->where('persontype = 1');
+        $query->where('persontype IN (0,1)');
         $db->setQuery($query);
 		$db->query();
         $result_ppp = $db->loadResult();
@@ -6770,7 +6770,7 @@ $query->clear();
                 $values = array($team_member->person_id,$this->_project_id,$team_member->project_position_id,1);
                 // Prepare the insert query.
                 $insertquery
-                ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position'))
+                ->insert($db->quoteName('#__sportsmanagement_person_project_position'))
                 ->columns($db->quoteName($columns))
                 ->values(implode(',', $values));
                 // Set the query using our newly populated query object and execute it.
@@ -6807,14 +6807,14 @@ $query->clear();
                 $db->quoteName('teamplayer_id') . '=' . $team_member->id,
                 $db->quoteName('match_id') . 'IN (' . implode(',',$update_match_ids) .')'
                 );
-                $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player'))->set($fields)->where($conditions);
+                $query->update($db->quoteName('#__sportsmanagement_match_player'))->set($fields)->where($conditions);
                 $db->setQuery($query);
                 $result = sportsmanagementModeldatabasetool::runJoomlaQuery();
                 if (!$result)
 			    {
 			    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__); 
 			    }
-                $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event'))->set($fields)->where($conditions);
+                $query->update($db->quoteName('#__sportsmanagement_match_event'))->set($fields)->where($conditions);
                 $db->setQuery($query);
                 $result = sportsmanagementModeldatabasetool::runJoomlaQuery();
                 if (!$result)
@@ -6831,7 +6831,7 @@ $query->clear();
                 $db->quoteName('in_for') . '=' . $team_member->id,
                 $db->quoteName('match_id') . 'IN (' . implode(',',$update_match_ids) .')'
                 );
-                $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player'))->set($fields)->where($conditions);
+                $query->update($db->quoteName('#__sportsmanagement_match_player'))->set($fields)->where($conditions);
                 $db->setQuery($query);
                 $result = sportsmanagementModeldatabasetool::runJoomlaQuery(); 
                 if (!$result)
@@ -6845,8 +6845,8 @@ $query->clear();
             $query = $db->getQuery(true);
             $query->select('tp.*');
             $query->select('p.position_id');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS tp');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person as p ON p.id = tp.person_id ');
+            $query->from('#__sportsmanagement_team_staff AS tp');
+            $query->join('INNER','#__sportsmanagement_person as p ON p.id = tp.person_id ');
             $query->where('tp.projectteam_id = '.$proteam->id);
             //$query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff where projectteam_id = '.$proteam->id ;
             JFactory::getDbo()->setQuery($query);
@@ -6863,10 +6863,10 @@ $query->clear();
                 // ist der spieler schon durch ein anderes projekt angelegt ?
                 $query = $db->getQuery(true);
 		        $query->select('id');		
-		        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS t');
+		        $query->from('#__sportsmanagement_season_person_id AS t');
 		        $query->where('t.person_id = '.$team_member->person_id);
                 $query->where('t.season_id = '.$this->_season_id);
-                $query->where('t.persontype = 2');
+                $query->where('t.persontype IN (0,2)');
 		        $db->setQuery($query);
 		        $new_staff_id = $db->loadResult();
                 
@@ -6891,7 +6891,7 @@ $query->clear();
                 $values = array($team_member->person_id,$this->_season_id,2,'\''.$team_member->picture.'\'',$team_member->position_id);
                 // Prepare the insert query.
                 $insertquery
-                ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id'))
+                ->insert($db->quoteName('#__sportsmanagement_season_person_id'))
                 ->columns($db->quoteName($columns))
                 ->values(implode(',', $values));
                 // Set the query using our newly populated query object and execute it.
@@ -6910,11 +6910,11 @@ $query->clear();
                 // spieler dem team/saison schon zugeordnet ?
                 $query = $db->getQuery(true);
 		        $query->select('id');		
-		        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS t');
+		        $query->from('#__sportsmanagement_season_team_person_id AS t');
 		        $query->where('t.person_id = '.$team_member->person_id);
                 $query->where('t.season_id = '.$this->_season_id);
                 $query->where('t.team_id = '.$new_team_id);
-                $query->where('t.persontype = 2');
+                $query->where('t.persontype IN (0,2)');
 		        $db->setQuery($query);
 		        $new_match_staff_id = $db->loadResult();
                 
@@ -6940,7 +6940,7 @@ $query->clear();
                 $values = array($team_member->person_id,$this->_season_id,$new_team_id,2,1,'\''.$team_member->picture.'\'',$team_member->project_position_id,$team_member->position_id);
                 // Prepare the insert query.
                 $insertquery
-                ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id'))
+                ->insert($db->quoteName('#__sportsmanagement_season_team_person_id'))
                 ->columns($db->quoteName($columns))
                 ->values(implode(',', $values));
                 // Set the query using our newly populated query object and execute it.
@@ -6975,7 +6975,7 @@ $query->clear();
             $query->where('person_id = ' . $team_member->person_id );
         $query->where('project_id = ' . $this->_project_id );
         $query->where('project_position_id = ' . $team_member->project_position_id );
-        $query->where('persontype = 2');
+        $query->where('persontype IN (0,2)');
         $db->setQuery($query);
 		$db->query();
         $result_ppp = $db->loadResult();
@@ -6995,7 +6995,7 @@ $query->clear();
                 $values = array($team_member->person_id,$this->_project_id,$team_member->project_position_id,2);
                 // Prepare the insert query.
                 $insertquery
-                ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position'))
+                ->insert($db->quoteName('#__sportsmanagement_person_project_position'))
                 ->columns($db->quoteName($columns))
                 ->values(implode(',', $values));
                 // Set the query using our newly populated query object and execute it.
@@ -7031,7 +7031,7 @@ $query->clear();
                 $db->quoteName('team_staff_id') . '=' . $team_member->id,
                 $db->quoteName('match_id') . 'IN (' . implode(',',$update_match_ids) .')'
                 );
-                $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff'))->set($fields)->where($conditions);
+                $query->update($db->quoteName('#__sportsmanagement_match_staff'))->set($fields)->where($conditions);
                 $db->setQuery($query);
                 $result = sportsmanagementModeldatabasetool::runJoomlaQuery();
                 if (!$result)
