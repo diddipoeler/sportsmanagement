@@ -133,55 +133,36 @@ $buttonsproject = array( array('link' => JRoute::_('index.php?option=com_sportsm
 			'access' => array('core.manage', 'com_sportsmanagement'),
 			'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA_PROJECT'
 			),
-<<<<<<< HEAD
+
 array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=templates&pid='.$project_id),
-=======
-array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=templates'),
->>>>>>> 5902c18e21ad597ecbe532c427ef6025d3b9fa8b
 			'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 			'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 			'text' => JText::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_TEMPLATES'),
 			'access' => array('core.manage', 'com_sportsmanagement'),
 			'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA_PROJECT'
 			),
-<<<<<<< HEAD
 			array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=projectpositions&pid='.$project_id),
-=======
-			array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=projectpositions'),
->>>>>>> 5902c18e21ad597ecbe532c427ef6025d3b9fa8b
 			'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 			'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 			'text' => JText::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_POSITIONS'),
 			'access' => array('core.manage', 'com_sportsmanagement'),
 			'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA_PROJECT'
 			),
-<<<<<<< HEAD
 			array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=projectreferees&persontype=3&pid='.$project_id),
-=======
-			array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=projectreferees'),
->>>>>>> 5902c18e21ad597ecbe532c427ef6025d3b9fa8b
 			'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 			'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 			'text' => JText::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_REFEREES'),
 			'access' => array('core.manage', 'com_sportsmanagement'),
 			'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA_PROJECT'
 			),
-<<<<<<< HEAD
 			array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=projectteams&pid='.$project_id),
-=======
-			array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=projectteams'),
->>>>>>> 5902c18e21ad597ecbe532c427ef6025d3b9fa8b
 			'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 			'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 			'text' => JText::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_TEAMS'),
 			'access' => array('core.manage', 'com_sportsmanagement'),
 			'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA_PROJECT'
 			),
-<<<<<<< HEAD
 			array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=rounds&pid='.$project_id),
-=======
-			array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=rounds'),
->>>>>>> 5902c18e21ad597ecbe532c427ef6025d3b9fa8b
 			'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 			'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
 			'text' => JText::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_ROUNDS'),
