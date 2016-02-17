@@ -44,7 +44,16 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 {
 JHtml::_('jquery.framework');
 }
-        
+
+?>
+<style>
+.form-control-inline {
+    min-width: 0;
+    width: auto;
+    display: inline;
+}
+</style>
+<?PHP        
 /**
  * sportsmanagementView
  * 

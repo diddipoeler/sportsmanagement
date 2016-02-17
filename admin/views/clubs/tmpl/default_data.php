@@ -308,19 +308,19 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         	?>
 						</td>
                         <td class="">
-								<input<?php echo $inputappend; ?>	type="text" size="10" class="inputbox"
+								<input<?php echo $inputappend; ?>	type="text" size="10" class="form-control form-control-inline"
 																	name="zipcode<?php echo $row->id; ?>"
 																	value="<?php echo $row->zipcode; ?>"
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 							</td>
 						<td class="">
-								<input<?php echo $inputappend; ?>	type="text" size="50" class="inputbox"
+								<input<?php echo $inputappend; ?>	type="text" size="50" class="form-control form-control-inline"
 																	name="location<?php echo $row->id; ?>"
 																	value="<?php echo $row->location; ?>"
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 							</td>
                         <td class="">
-								<input<?php echo $inputappend; ?>	type="text" size="50" class="inputbox"
+								<input<?php echo $inputappend; ?>	type="text" size="50" class="form-control form-control-inline"
 																	name="address<?php echo $row->id; ?>"
 																	value="<?php echo $row->address; ?>"
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
@@ -332,7 +332,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         <?php 
                         $append =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
                         echo JHtml::_(	'select.genericlist',$this->lists['nation'],'country'.$row->id,
-												'class="inputbox" size="1"'.$append,'value','text',$row->country); 
+												'class="form-control form-control-inline" size="1"'.$append,'value','text',$row->country); 
                         ?>
                         </td>
                         <td class="center"><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
@@ -346,7 +346,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 								?>
 							</span>
 							<input  type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" <?php echo $disabled; ?>
-									class="text_area" style="text-align: center" />
+									class="form-control form-control-inline" style="text-align: center" />
 						</td>
 						<td class="center"><?php echo $row->id; ?></td>
 					</tr>

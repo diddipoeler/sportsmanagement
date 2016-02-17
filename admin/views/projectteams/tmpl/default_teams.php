@@ -414,7 +414,7 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 									echo JHtml::_(	'select.genericlist',
 													$this->lists['divisions'],
 													'division_id'.$row->id,
-													$inputappend.'class="inputbox" size="1" onchange="document.getElementById(\'cb' .
+													$inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
 													$i.'\').checked=true"'.$append,
 													'value','text',$row->division_id);
 									?>
@@ -464,68 +464,68 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 								?>
 							</td>
 							<td class="center">
-								<input<?php echo $inputappend; ?>	type="text" size="" class=""
+								<input<?php echo $inputappend; ?>	type="text" size="2" class="form-control form-control-inline"
 																	name="start_points<?php echo $row->id; ?>"
 																	value="<?php echo $row->start_points; ?>"
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 							</td>
 							<td class="center">
-								<input<?php echo $inputappend; ?>	type="text" size="2" class="inputbox"
+								<input<?php echo $inputappend; ?>	type="text" size="2" class="form-control form-control-inline"
 																	name="matches_finally<?php echo $row->id; ?>"
 																	value="<?php echo $row->matches_finally; ?>"
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 							</td>
 							<td class="center">
-								<input<?php echo $inputappend; ?>	type="text" size="2" class="inputbox"
+								<input<?php echo $inputappend; ?>	type="text" size="2" class="form-control form-control-inline"
 																	name="points_finally<?php echo $row->id; ?>"
 																	value="<?php echo $row->points_finally; ?>"
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 							</td>
 							<td class="center">
-								<input<?php echo $inputappend; ?>	type="text" size="2" class="inputbox"
+								<input<?php echo $inputappend; ?>	type="text" size="2" class="form-control form-control-inline"
 																	name="neg_points_finally<?php echo $row->id; ?>"
 																	value="<?php echo $row->neg_points_finally; ?>"
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 							</td>
                             <td class="center">
-								<input<?php echo $inputappend; ?>	type="text" size="2" class="inputbox"
+								<input<?php echo $inputappend; ?>	type="text" size="2" class="form-control form-control-inline"
 																	name="penalty_points<?php echo $row->id; ?>"
 																	value="<?php echo $row->penalty_points; ?>"
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 							</td>
                             
 							<td class="center">
-								<input<?php echo $inputappend; ?>	type="text" size="2" class="inputbox"
+								<input<?php echo $inputappend; ?>	type="text" size="2" class="form-control form-control-inline"
 																	name="won_finally<?php echo $row->id; ?>"
 																	value="<?php echo $row->won_finally; ?>"
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 							</td>
 							<td class="center">
-								<input<?php echo $inputappend; ?>	type="text" size="2" class="inputbox"
+								<input<?php echo $inputappend; ?>	type="text" size="2" class="form-control form-control-inline"
 																	name="draws_finally<?php echo $row->id; ?>"
 																	value="<?php echo $row->draws_finally; ?>"
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 							</td>
 							<td class="center">
-								<input<?php echo $inputappend; ?>	type="text" size="2" class="inputbox"
+								<input<?php echo $inputappend; ?>	type="text" size="2" class="form-control form-control-inline"
 																	name="lost_finally<?php echo $row->id; ?>"
 																	value="<?php echo $row->lost_finally; ?>"
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 							</td>
 							<td class="center">
-								<input<?php echo $inputappend; ?>	type="text" size="2" class="inputbox"
+								<input<?php echo $inputappend; ?>	type="text" size="2" class="form-control form-control-inline"
 																	name="homegoals_finally<?php echo $row->id; ?>"
 																	value="<?php echo $row->homegoals_finally; ?>"
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 							</td>
 							<td class="center">
-								<input<?php echo $inputappend; ?>	type="text" size="2" class="inputbox"
+								<input<?php echo $inputappend; ?>	type="text" size="2" class="form-control form-control-inline"
 																	name="guestgoals_finally<?php echo $row->id; ?>"
 																	value="<?php echo $row->guestgoals_finally; ?>"
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 							</td>
 							<td class="center">
-								<input<?php echo $inputappend; ?>	type="text" size="2" class="inputbox"
+								<input<?php echo $inputappend; ?>	type="text" size="2" class="form-control form-control-inline"
 																	name="diffgoals_finally<?php echo $row->id; ?>"
 																	value="<?php echo $row->diffgoals_finally; ?>"
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
@@ -537,7 +537,7 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 									echo JHtml::_(	'select.genericlist',
 													$this->lists['is_in_score'],
 													'is_in_score'.$row->id,
-													$inputappend.'class="inputbox" size="1" onchange="document.getElementById(\'cb' .
+													$inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
 													$i.'\').checked=true"'.$append,
 													'value','text',$row->is_in_score);
 									?>
@@ -548,7 +548,7 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
 									echo JHtml::_(	'select.genericlist',
 													$this->lists['use_finally'],
 													'use_finally'.$row->id,
-													$inputappend.'class="inputbox" size="1" onchange="document.getElementById(\'cb' .
+													$inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
 													$i.'\').checked=true"'.$append,
 													'value','text',$row->use_finally);
 									?>

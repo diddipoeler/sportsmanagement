@@ -207,7 +207,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         
 					<td>
 						<?php
-							echo JHtml::_('select.genericlist',$this->lists['parent_id'],'parent_id'.$row->id,''.'class="inputbox" size="1" onchange="document.getElementById(\'cb'.$i.'\').checked=true"','value','text',$row->parent_id);
+							echo JHtml::_('select.genericlist',$this->lists['parent_id'],'parent_id'.$row->id,''.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb'.$i.'\').checked=true"','value','text',$row->parent_id);
 						?>
 					</td>
 					<td class="center"><?php echo JText::_(sportsmanagementHelper::getSportsTypeName($row->sports_type_id)); ?></td>
@@ -257,7 +257,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						</span>
 						<input  type="text" name="order[]" size="2"
 								value="<?php echo $row->ordering; ?>" <?php echo $disabled ?>
-								class="text_area" style="text-align: center" />
+								class="form-control form-control-inline" style="text-align: center" />
 					</td>
 					<td align="center"><?php echo $row->id; ?></td>
 				</tr>

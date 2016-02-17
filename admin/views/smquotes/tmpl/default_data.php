@@ -60,6 +60,8 @@ JHtml::_('behavior.modal');
 						echo JHtml::_('grid.sort','JAUTHOR','obj.author',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
+                    <th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); ?>
+					</th>
 					<th>
 						<?php
 						echo JHtml::_('grid.sort','JGLOBAL_ARTICLES','obj.author',$this->sortDirection,$this->sortColumn);
@@ -136,6 +138,36 @@ JHtml::_('behavior.modal');
 						
 						?>
 						<td><?php echo $row->author; ?></td>
+                        
+                        <td >
+								<?php
+								//if (empty($row->picture) || !JFile::exists(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$row->picture))
+                                if (empty($row->picture) )
+								{
+									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').COM_SPORTSMANAGEMENT_PICTURE_SERVER.$row->picture;
+									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
+													$imageTitle,'title= "'.$imageTitle.'"');
+								}
+								elseif ($row->picture == sportsmanagementHelper::getDefaultPlaceholder("player"))
+								{
+									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_DEFAULT_IMAGE');
+									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/information.png',
+													$imageTitle,'title= "'.$imageTitle.'"');
+								}
+								else
+								{
+									//$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
+									//echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
+?>                                    
+<a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$row->picture;?>" title="<?php echo $row->name;?>" class="modal">
+<img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$row->picture;?>" alt="<?php echo $row->name;?>" width="20" />
+</a>
+<?PHP
+								}
+								?>
+							</td>
+                        
+                        
 						<td><?php echo $row->quote; ?></td>
 						<td><?php echo $this->escape($row->category_title); ?></td>
                         
@@ -148,7 +180,7 @@ JHtml::_('behavior.modal');
 								<?php $disabled=true ?	'' : 'disabled="disabled"'; ?>
 							</span>
 							<input	type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" <?php echo $disabled; ?>
-									class="text_area" style="text-align: center" />
+									class="form-control form-control-inline" style="text-align: center" />
 						</td>
 						<td class="center"><?php echo $published; ?></td>
                         <td class="center"><?php echo $row->id; ?></td>

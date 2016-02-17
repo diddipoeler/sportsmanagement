@@ -258,6 +258,8 @@ class sportsmanagementViewteampersons extends sportsmanagementView
         sportsmanagementHelper::ToolbarButton('assignplayers', 'upload', JText::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN'), 'persons', 0);
 		//JToolBarHelper::custom( 'teamplayer.remove', 'cancel.png', 'cancel_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_UNASSIGN' ), false );
         JToolBarHelper::deleteList('', 'teampersons.delete');
+        //JToolBarHelper::deleteList('', 'teampersons.remove');
+        //JToolBarHelper::deleteList('', 'teamperson.delete');
 		JToolBarHelper::divider();
 
 		JToolBarHelper::back( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_BACK', 'index.php?option=com_sportsmanagement&view=projectteams' );

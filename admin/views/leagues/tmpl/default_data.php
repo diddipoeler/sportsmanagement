@@ -171,7 +171,7 @@ JHtml::_('behavior.modal');
                         echo JSMCountries::getCountryFlag($row->country); 
                         $append =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
                         echo JHtml::_(	'select.genericlist',$this->lists['nation'],'country'.$row->id,
-												'class="inputbox" size="1"'.$append,'value','text',$row->country);
+												'class="form-control form-control-inline" size="1"'.$append,'value','text',$row->country);
                         ?>
                         </td>
                         <td class="center"><?php echo JText::_($row->sportstype); ?></td>
@@ -183,7 +183,7 @@ JHtml::_('behavior.modal');
 									echo JHtml::_(	'select.genericlist',
 													$this->lists['agegroup'],
 													'agegroup'.$row->id,
-													$inputappend.'class="inputbox" size="1" onchange="document.getElementById(\'cb' .
+													$inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
 													$i.'\').checked=true"'.$append,
 													'value','text',$row->agegroup_id);
                         
@@ -196,7 +196,7 @@ JHtml::_('behavior.modal');
                          
                         $append =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
                         echo JHtml::_(	'select.genericlist',$this->lists['association'][$row->country],'association'.$row->id,
-												'class="inputbox" size="1"'.$append,'value','text',$row->associations); 
+												'class="form-control form-control-inline" size="1"'.$append,'value','text',$row->associations); 
                         
                         
                         ?>
@@ -238,7 +238,7 @@ JHtml::_('behavior.modal');
 								<?php $disabled=true ?	'' : 'disabled="disabled"'; ?>
 							</span>
 							<input	type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" <?php echo $disabled; ?>
-									class="text_area" style="text-align: center" />
+									class="form-control form-control-inline" style="text-align: center" />
 						</td>
 						<td class="center"><?php echo $row->id; ?></td>
 					</tr>

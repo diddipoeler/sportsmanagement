@@ -231,7 +231,7 @@ JHtml::_('behavior.modal');
 									echo JHtml::_(	'select.genericlist',
 													$this->lists['agegroup'],
 													'agegroup'.$row->id,
-													$inputappend.'class="inputbox" size="1" onchange="document.getElementById(\'cb' .
+													$inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
 													$i.'\').checked=true"'.$append,
 													'value','text',$row->agegroup_id);
                         ?>
@@ -243,7 +243,7 @@ JHtml::_('behavior.modal');
 									echo JHtml::_(	'select.genericlist',
 													$this->lists['project_type'],
 													'project_type'.$row->id,
-													$inputappend.'class="inputbox" size="1" onchange="document.getElementById(\'cb' .
+													$inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
 													$i.'\').checked=true"'.$append,
 													'value','text',$row->project_type);
                         ?>
@@ -309,7 +309,7 @@ JHtml::_('behavior.modal');
 							<span><?php echo $this->pagination->orderUpIcon($i,$i > 0 ,'projects.orderup','JLIB_HTML_MOVE_UP',true); ?></span>
 							<span><?php echo $this->pagination->orderDownIcon($i,$n,$i < $n,'projects.orderdown','JLIB_HTML_MOVE_DOWN',true); ?></span>
 							<?php $disabled=true ?  '' : 'disabled="disabled"';	?>
-							<input type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" <?php echo $disabled ?> class="text_area" style="text-align: center" />
+							<input type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" <?php echo $disabled ?> class="form-control form-control-inline" style="text-align: center" />
 						</td>
 						<td class="center"><?php echo $row->id; ?></td>
                         <td class="center"><?php echo $row->modified; ?></td>

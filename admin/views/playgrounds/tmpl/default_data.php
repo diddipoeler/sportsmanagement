@@ -210,7 +210,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 								<?php $disabled=true ?  '' : 'disabled="disabled"'; ?>
 							</span>
 							<input  type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" <?php echo $disabled ?>
-									class="text_area" style="text-align: center" />
+									class="form-control form-control-inline" style="text-align: center" />
 						</td>
 						<td class="center"><?php echo $row->id; ?></td>
 					</tr>

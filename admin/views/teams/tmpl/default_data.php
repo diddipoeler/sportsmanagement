@@ -205,7 +205,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 									echo JHtml::_(	'select.genericlist',
 													$this->lists['agegroup'],
 													'agegroup'.$row->id,
-													$inputappend.'class="inputbox" size="1" onchange="document.getElementById(\'cb' .
+													$inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
 													$i.'\').checked=true"'.$append,
 													'value','text',$row->agegroup_id);
                         ?>
@@ -216,7 +216,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         //echo JText::_($row->sportstype); 
                         $append =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
                         echo JHtml::_(	'select.genericlist',$this->lists['sportstype'],'sportstype'.$row->id,
-												'class="inputbox" size="1"'.$append,'id','name',$row->sports_type_id);
+												'class="form-control form-control-inline" size="1"'.$append,'id','name',$row->sports_type_id);
                         ?>
                         </td>
 						<td class="center">
@@ -264,7 +264,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 								<?php $disabled=true ?	'' : 'disabled="disabled"'; ?>
 							</span>
 							<input	type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" <?php echo $disabled; ?>
-									class="text_area" style="text-align: center" />
+									class="form-control form-control-inline" style="text-align: center" />
 						</td>
 						<td class="center"><?php echo $row->id; ?></td>
 					</tr>

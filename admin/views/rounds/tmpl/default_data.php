@@ -121,10 +121,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							?>
                             </td>
 							<td class="center">
-								<input tabindex="1" type="text" style="text-align: center" size="5" class="inputbox" name="roundcode<?php echo $row->id; ?>" value="<?php echo $row->roundcode; ?>" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
+								<input tabindex="1" type="text" style="text-align: center" size="5" class="form-control form-control-inline" name="roundcode<?php echo $row->id; ?>" value="<?php echo $row->roundcode; ?>" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 							</td>
 							<td class="center">
-								<input tabindex="2" type="text" size="30" maxlength="64" class="inputbox" name="name<?php echo $row->id; ?>" value="<?php echo $row->name; ?>" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
+								<input tabindex="2" type="text" size="30" maxlength="64" class="form-control form-control-inline" name="name<?php echo $row->id; ?>" value="<?php echo $row->name; ?>" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 							<p class="smallsub">
 						<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias));?></p>
                             </td>
@@ -142,7 +142,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 														'%d-%m-%Y',
 														'size="10" '.$append .
 														'tabindex="3" '.
-														'class="center" '.
+														'class="form-control form-control-inline" '.
 														'onchange="document.getElementById(\'cb'.$i.'\').checked=true"');
 								?>
 							</td>
@@ -160,7 +160,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 														'%d-%m-%Y',
 														'size="10" '.$append .
 														'tabindex="3" '.
-														'class="center" '.
+														'class="form-control form-control-inline" '.
 														'onchange="document.getElementById(\'cb'.$i.'\').checked=true"');
 								?></td>
 							<td class="center" class="nowrap"><?php
@@ -222,7 +222,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 									echo JHtml::_(	'select.genericlist',
 													$this->lists['tournementround'],
 													'tournementround'.$row->id,
-													'class="inputbox" size="1" onchange="document.getElementById(\'cb' .
+													'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
 													$i.'\').checked=true"'.$append,
 													'value','text',$row->tournement);
 									?>

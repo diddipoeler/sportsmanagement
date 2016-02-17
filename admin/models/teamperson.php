@@ -349,6 +349,27 @@ $db->setQuery($query);
 	public function delete(&$pks)
 	{
 	$app = JFactory::getApplication();
+    
+    // JInput object
+        $jinput = $app->input;
+        $post = $jinput->post->getArray(array());
+        $option = $jinput->getCmd('option');
+        
+        $project_team_id = $post['project_team_id'];
+        $team_id = $post['team_id'];
+        $pid = $post['pid'];
+        $persontype = $post['persontype'];
+        
+        $app->enqueueMessage(__METHOD__.' '.__LINE__.' project_team_id<br><pre>'.print_r($project_team_id, true).'</pre><br>','Notice');
+        $app->enqueueMessage(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($team_id, true).'</pre><br>','Notice');
+        $app->enqueueMessage(__METHOD__.' '.__LINE__.' pid<br><pre>'.print_r($pid, true).'</pre><br>','Notice');
+        $app->enqueueMessage(__METHOD__.' '.__LINE__.' persontype<br><pre>'.print_r($persontype, true).'</pre><br>','Notice');
+        
+        $app->enqueueMessage(__METHOD__.' '.__LINE__.' $pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        $app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+    
+    
+    
     //$app->enqueueMessage(JText::_('delete pks<br><pre>'.print_r($pks,true).'</pre>'),'');
     /* Ein Datenbankobjekt beziehen */
     $db = JFactory::getDbo();

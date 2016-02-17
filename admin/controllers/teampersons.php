@@ -73,6 +73,22 @@ class sportsmanagementControllerteampersons extends JControllerAdmin
     } 
   
   /**
+   * sportsmanagementControllerteampersons::remove()
+   * 
+   * @return void
+   */
+  function remove()
+	{
+	$app = JFactory::getApplication();
+    $pks = JRequest::getVar('cid', array(), 'post', 'array');
+    $model = $this->getModel('teampersons');
+    $model->remove($pks);
+	
+    $this->setRedirect('index.php?option=com_sportsmanagement&view=teampersons');    
+        
+   }
+   
+  /**
 	 * Proxy for getModel.
 	 * @since	1.6
 	 */

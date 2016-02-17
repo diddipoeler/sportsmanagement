@@ -410,7 +410,28 @@ class sportsmanagementModelTeamPersons extends JModelList
 	 */
 	function remove($cids)
 	{
-		$count = 0;
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $post = $jinput->post->getArray(array());
+        $option = $jinput->getCmd('option');
+        
+        $project_team_id = $post['project_team_id'];
+        $team_id = $post['team_id'];
+        $pid = $post['pid'];
+        $persontype = $post['persontype'];
+        
+        $app->enqueueMessage(__METHOD__.' '.__LINE__.' project_team_id<br><pre>'.print_r($project_team_id, true).'</pre><br>','Notice');
+        $app->enqueueMessage(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($team_id, true).'</pre><br>','Notice');
+        $app->enqueueMessage(__METHOD__.' '.__LINE__.' pid<br><pre>'.print_r($pid, true).'</pre><br>','Notice');
+        $app->enqueueMessage(__METHOD__.' '.__LINE__.' persontype<br><pre>'.print_r($persontype, true).'</pre><br>','Notice');
+        
+        $app->enqueueMessage(__METHOD__.' '.__LINE__.' cids<br><pre>'.print_r($cids, true).'</pre><br>','Notice');
+        $app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        
+        /*
+        $count = 0;
 		foreach($cids as $cid)
 		{
 			$object=&$this->getTable('teamplayer');
@@ -424,6 +445,7 @@ class sportsmanagementModelTeamPersons extends JModelList
 			}
 		}
 		return $count;
+        */
 	}
 
 }

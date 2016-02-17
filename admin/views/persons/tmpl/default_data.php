@@ -163,19 +163,19 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							?>
 							
 								<input	<?php echo $inputappend; ?> type="text" size="15"
-										class="inputbox" name="firstname<?php echo $row->id; ?>"
+										class="form-control form-control-inline" name="firstname<?php echo $row->id; ?>"
 										value="<?php echo stripslashes(htmlspecialchars($row->firstname)); ?>"
 										onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 							</td>
 							<td class="center">
 								<input	<?php echo $inputappend; ?> type="text" size="15"
-										class="inputbox" name="nickname<?php echo $row->id; ?>"
+										class="form-control form-control-inline" name="nickname<?php echo $row->id; ?>"
 										value="<?php echo stripslashes(htmlspecialchars($row->nickname)); ?>"
 										onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 							</td>
 							<td class="center">
 								<input	<?php echo $inputappend; ?> type="text" size="15"
-										class="inputbox" name="lastname<?php echo $row->id; ?>"
+										class="form-control form-control-inline" name="lastname<?php echo $row->id; ?>"
 										value="<?php echo stripslashes(htmlspecialchars($row->lastname)); ?>"
 										onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 							</td>
@@ -244,7 +244,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 														'%d-%m-%Y',
 														'size="10" '.$append .
 														'tabindex="3" '.
-														'class="center" '.
+														'class="form-control form-control-inline" '.
 														'onchange="document.getElementById(\'cb'.$i.'\').checked=true"');                         
 //								}
 								?>
@@ -258,7 +258,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 									echo JHtml::_(	'select.genericlist',
 													$this->lists['agegroup'],
 													'agegroup'.$row->id,
-													$inputappend.'class="inputbox" size="1" onchange="document.getElementById(\'cb' .
+													$inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
 													$i.'\').checked=true"'.$append,
 													'value','text',$row->agegroup_id);
                         ?>
@@ -273,7 +273,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                                     }
 								echo JHtmlSelect::genericlist(	$this->lists['nation'],
 																'country'.$row->id,
-																$inputappend.' class="inputbox" style="width:140px; '.$append.'" onchange="document.getElementById(\'cb'.$i.'\').checked=true"',
+																$inputappend.' class="form-control form-control-inline" style="width:140px; '.$append.'" onchange="document.getElementById(\'cb'.$i.'\').checked=true"',
 																'value',
 																'text',
 																$row->country);
@@ -285,7 +285,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 								if (empty($row->position_id)){$append=' background-color:#FFCCCC;';}
 								echo JHtmlSelect::genericlist(	$this->lists['positions'],
 																'position'.$row->id,
-																$inputappend.'class="inputbox" style="width:140px; '.$append.'" onchange="document.getElementById(\'cb'.$i.'\').checked=true"',
+																$inputappend.'class="form-control form-control-inline" style="width:140px; '.$append.'" onchange="document.getElementById(\'cb'.$i.'\').checked=true"',
 																'value',
 																'text',
 																$row->position_id);
