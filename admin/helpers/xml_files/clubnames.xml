@@ -1,5 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?> 
 <structur>
-<clubnames><clubname country="DEU" name="FC" >Fußballclub</clubname></clubnames>
+<clubnames><clubname country="DEU" name="AC" >Athletik-Club</clubname></clubnames>
+<clubnames><clubname country="DEU" name="AKS" >Amatorski Klub Sportowy</clubname></clubnames>
+<clubnames><clubname country="DEU" name="ASC" >Allgemeiner Sport Club </clubname></clubnames>
+<clubnames><clubname country="DEU" name="ASK" >Athletic Sport Club </clubname></clubnames>
+<clubnames><clubname country="DEU" name="ASV" >Allgemeiner Sport Verein </clubname></clubnames>
+<clubnames><clubname country="DEU" name="ATB" >Arbeiter Turner Bund </clubname></clubnames>
+<clubnames><clubname country="DEU" name="ATS" >Allgemeine Turnerschaft </clubname></clubnames>
+<clubnames><clubname country="DEU" name="BC" >Ball Club/Ballspielclub </clubname></clubnames>
+<clubnames><clubname country="DEU" name="BSC/BSK" >Ballspielc(k)lub</clubname></clubnames>
+<clubnames><clubname country="DEU" name="BSG " >Betriebsportgemeinschaft</clubname></clubnames>
+<clubnames><clubname country="DEU" name="BSV" >Ballsportverein</clubname></clubnames>
+<clubnames><clubname country="DEU" name="BuEV" >Ballspiel- und Eislauf-Verein </clubname></clubnames>
+<clubnames><clubname country="DEU" name="BV" >Ball-Verein</clubname></clubnames>
+<clubnames><clubname country="DEU" name="CfR" >Club für Rasenspiele </clubname></clubnames>
+<clubnames><clubname country="DEU" name="DFC/DFK" >Deutscher Fussball-C(K)lub </clubname></clubnames>
+<clubnames><clubname country="DEU" name="DJK" >Deutsche Jugendkraft </clubname></clubnames>
+<clubnames><clubname country="DEU" name="DSB" >Deutsche Sportbrüder </clubname></clubnames>
+<clubnames><clubname country="DEU" name="DSC/DSK" >Deutscher Sport C(K)lub </clubname></clubnames>
+<clubnames><clubname country="DEU" name="DSV" >Deutscher Sportverein </clubname></clubnames>
+<clubnames><clubname country="DEU" name="DT" >Deutsche Turnerschaft </clubname></clubnames>
+<clubnames><clubname country="DEU" name="ESV" >Eisenbahner Sport Verein </clubname></clubnames>
+<clubnames><clubname country="DEU" name="ETSV" >Eisenbahner Turn- und Sportverein </clubname></clubnames>
+<clubnames><clubname country="DEU" name="1.(FC)" >1. Fussballclub </clubname></clubnames>
+<clubnames><clubname country="DEU" name="FG" >Fussballgesellschaft</clubname></clubnames>
+<clubnames><clubname country="DEU" name="FK" >Fussball Klub </clubname></clubnames>
+<clubnames><clubname country="DEU" name="FSC" >Fussballsport Club </clubname></clubnames>
+<clubnames><clubname country="DEU" name="FSG" >Fussball Sportgemeinschaft</clubname></clubnames>
+<clubnames><clubname country="DEU" name="FSG" >Frei Sportgemeinschaft </clubname></clubnames>
+<clubnames><clubname country="DEU" name="FSV" >Fussballsportverein</clubname></clubnames>
+<clubnames><clubname country="DEU" name="FT" >Frei Turnerschaft </clubname></clubnames>
+<clubnames><clubname country="DEU" name="FuCC" >Fussball- und Cricket Club </clubname></clubnames>
+<clubnames><clubname country="DEU" name="FV " >Fussball Verein </clubname></clubnames>
+<clubnames><clubname country="DEU" name="GfL" >Gemeinschaft für Leibesübungen</clubname></clubnames>
+<clubnames><clubname country="DEU" name="HSV" >Heeressportverein (bis 1945) </clubname></clubnames>
+<clubnames><clubname country="DEU" name="HSV" >Handel und Sozialversicherung (nach 1945) </clubname></clubnames>
+<clubnames><clubname country="DEU" name="HUS" >Heeressportverein Unteroffiziers-Schule </clubname></clubnames>
+<clubnames><clubname country="DEU" name="ISG" >Industrie-Sport-Gemeinschaft</clubname></clubnames>
+<clubnames><clubname country="DEU" name="JFG" >Jugend Förder Gemeinschaft</clubname></clubnames>
+<clubnames><clubname country="DEU" name="KG" >Kampfgemeinschaft für Rote Sporteinheit </clubname></clubnames>
+<clubnames><clubname country="DEU" name="KSG" >Kriegssportgemeinschaft</clubname></clubnames>
+<clubnames><clubname country="DEU" name="KSV" >Kultur Sportverein </clubname></clubnames>
+<clubnames><clubname country="DEU" name="KVP" >Kasernierte Volkspolizei </clubname></clubnames>
+<clubnames><clubname country="DEU" name="KWU" >Kommunales Wirtschaftsunternehmen</clubname></clubnames>
+<clubnames><clubname country="DEU" name="LSV" >Luftwaffen Sportverein </clubname></clubnames>
+<clubnames><clubname country="DEU" name="MSV" >Militär Sportverein </clubname></clubnames>
+<clubnames><clubname country="DEU" name="MTV" >Männer Turn Verein </clubname></clubnames>
+<clubnames><clubname country="DEU" name="NSTG" >Nationalsozialistische Turngemeinde </clubname></clubnames>
+<clubnames><clubname country="DEU" name="OrPo" >Ordnungspolizei</clubname></clubnames>
+<clubnames><clubname country="DEU" name="OSC" >Olympischer Sportclub </clubname></clubnames>
+<clubnames><clubname country="DEU" name="PSV" >Polizei Sport Verein </clubname></clubnames>
+<clubnames><clubname country="DEU" name="RS" >Rasensport</clubname></clubnames>
+<clubnames><clubname country="DEU" name="RSC" >Rasensportclub</clubname></clubnames>
+<clubnames><clubname country="DEU" name="RSG" >Reichsbahn Sportgemeinschaft </clubname></clubnames>
+<clubnames><clubname country="DEU" name="RTSV" >Rasen Turn Sport Verein </clubname></clubnames>
+<clubnames><clubname country="DEU" name="RV" >Rasenverein</clubname></clubnames>
+<clubnames><clubname country="DEU" name="SB" >Sportbund</clubname></clubnames>
+<clubnames><clubname country="DEU" name="SC/SK" >Sportclub</clubname></clubnames>
+<clubnames><clubname country="DEU" name="SF/Spfr." >Sportfreunde</clubname></clubnames>
+<clubnames><clubname country="DEU" name="SG" >Sportgemeinschaft</clubname></clubnames>
+<clubnames><clubname country="DEU" name="SpTV" >Spiel-und Turnvereinigung</clubname></clubnames>
+<clubnames><clubname country="DEU" name="SpV" >Spielverein/Sportverein</clubname></clubnames>
+<clubnames><clubname country="DEU" name="SpVgg" >Spiel(Sport)vereinigung</clubname></clubnames>
+<clubnames><clubname country="DEU" name="SSC" >Spiel- und Sportklub</clubname></clubnames>
+<clubnames><clubname country="DEU" name="SSG" >Spiel- und Sportgemeinschaft </clubname></clubnames>
+<clubnames><clubname country="DEU" name="SSV" >Spiel- und Sportverein </clubname></clubnames>
+<clubnames><clubname country="DEU" name="STC" >Spiel(Sport)- und Turnclub </clubname></clubnames>
+<clubnames><clubname country="DEU" name="STV" >Sport- und Turnverein </clubname></clubnames>
+<clubnames><clubname country="DEU" name="SU" >Sport Union </clubname></clubnames>
+<clubnames><clubname country="DEU" name="SuBC" >Sport- und Ballspielclub </clubname></clubnames>
+<clubnames><clubname country="DEU" name="SuS" >Spiel- und Sportverein/Spiel und Sport </clubname></clubnames>
+<clubnames><clubname country="DEU" name="SuEV" >Spiel- und Eislaufverein</clubname></clubnames>
+<clubnames><clubname country="DEU" name="SuSV" >Spiel- und Sportverein</clubname></clubnames>
+<clubnames><clubname country="DEU" name="SV" >Spielverein/Sportverein</clubname></clubnames>
+<clubnames><clubname country="DEU" name="SVG" >Spielvereinigung</clubname></clubnames>
+<clubnames><clubname country="DEU" name="TG" >Turngemeinde/Turngemeinschaft</clubname></clubnames>
+<clubnames><clubname country="DEU" name="TSC/TSK" >Turn und Sportc(k)lub </clubname></clubnames>
+<clubnames><clubname country="DEU" name="TSF" >Turn- und Sportfreunde </clubname></clubnames>
+<clubnames><clubname country="DEU" name="TSG" >Turn- und Sportgemeinde </clubname></clubnames>
+<clubnames><clubname country="DEU" name="TSV" >Turn- und Sportverein </clubname></clubnames>
+<clubnames><clubname country="DEU" name="TuB" >Verein für Turner und Bewegungsspiele</clubname></clubnames>
+<clubnames><clubname country="DEU" name="TuFC" >Thor- und Fussballclub </clubname></clubnames>
+<clubnames><clubname country="DEU" name="TuRa" >Turn- und Rasensportverein </clubname></clubnames>
+<clubnames><clubname country="DEU" name="TuRu" >Turn- und Rasensportunion </clubname></clubnames>
+<clubnames><clubname country="DEU" name="TuS" >Turn- und Sportverein </clubname></clubnames>
+<clubnames><clubname country="DEU" name="TuSG" >Turn- und Sportgemeinde </clubname></clubnames>
+<clubnames><clubname country="DEU" name="TuSpo" >Turn- und Sportverein </clubname></clubnames>
+<clubnames><clubname country="DEU" name="TuSV" >Turn-und Sportverein</clubname></clubnames>
+<clubnames><clubname country="DEU" name="TV" >Turnverein</clubname></clubnames>
+<clubnames><clubname country="DEU" name="VfB" >Verein für Bewegungsspiele</clubname></clubnames>
+<clubnames><clubname country="DEU" name="VfB" >Verein für Ballspiele </clubname></clubnames>
+<clubnames><clubname country="DEU" name="VfL" >Verein für Leibesübungen </clubname></clubnames>
+<clubnames><clubname country="DEU" name="VfR" >Verein für Rasenspiele </clubname></clubnames>
+<clubnames><clubname country="DEU" name="VfR" >Verein für Rasensport </clubname></clubnames>
+<clubnames><clubname country="DEU" name="VfTuB" >Verein für Turner- und Ballspiele</clubname></clubnames>
+<clubnames><clubname country="DEU" name="VfTuR" >Verein für Turn- und Rasenspiele </clubname></clubnames>
+<clubnames><clubname country="DEU" name="VfTuV" >Verein für Turn- und Volksspiele</clubname></clubnames>
+<clubnames><clubname country="DEU" name="VfV" >Verein für Volkssport </clubname></clubnames>
+<clubnames><clubname country="DEU" name="VfvB" >Verein für volkstümliche Bewegungsspiele </clubname></clubnames>
+<clubnames><clubname country="DEU" name="VSV" >Volkssportverein</clubname></clubnames>
+<clubnames><clubname country="DEU" name="VTB" >Verein für Turner- und Ballsportarten</clubname></clubnames>
+<clubnames><clubname country="DEU" name="WSG" >Wehrmachtsportgemeinschaft</clubname></clubnames>
+<clubnames><clubname country="DEU" name="WSV" >Wehrmacht Sportverein </clubname></clubnames>
+<clubnames><clubname country="DEU" name="WSV" >Winter Sportverein </clubname></clubnames>
+<clubnames><clubname country="DEU" name="ZSG" >Zentrale Sportgemeinschaft </clubname></clubnames>
+
 
 </structur> 
