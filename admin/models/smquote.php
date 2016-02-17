@@ -55,6 +55,9 @@ jimport('joomla.application.component.modeladmin');
  */
 class sportsmanagementModelsmquote extends JModelAdmin
 {
+	
+static $db_num_rows  = 0;
+
 	/**
 	 * Method override to check if you can edit an existing record.
 	 *
@@ -180,6 +183,9 @@ class sportsmanagementModelsmquote extends JModelAdmin
 	   $app = JFactory::getApplication();
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
+	   $db = JFactory::getDbo();
+$query = $db->getQuery(true);
+
        $post = JRequest::get('post');
        // Set the values
 	   $data['modified'] = $date->toSql();
@@ -211,6 +217,20 @@ class sportsmanagementModelsmquote extends JModelAdmin
                 $app->enqueueMessage(JText::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
             }
            
+// Fields to update.
+$fields = array(
+    $db->quoteName('picture') . ' = ' . $db->quote($data['picture'])
+);
+ 
+// Conditions for which records should be updated.
+$conditions = array(
+    $db->quoteName('author') . ' LIKE ' . $db->quote($data['author'])
+);
+ 
+$query->update($db->quoteName('#__sportsmanagement_rquote'))->set($fields)->where($conditions);
+ 
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);            
 		}
         
         return true;   
