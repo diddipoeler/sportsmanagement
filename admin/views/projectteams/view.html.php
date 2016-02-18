@@ -243,7 +243,16 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 																'text',
 																$this->state->get('filter.search_nation'));
         
-        
+        //build the html select list for all teams
+		$allTeams = array();
+		$all_teams[] = JHTML::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM' ) );
+		if( $allTeams = $model->getAllTeams($this->project_id) ) 
+    {
+			$all_teams=array_merge($all_teams,$allTeams);
+		}
+		$lists['all_teams']=$all_teams;
+		unset($all_teams);
+
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpl<br><pre>'.print_r($tpl,true).'</pre>'   ),'');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' items<br><pre>'.print_r($items,true).'</pre>'   ),'');
 
