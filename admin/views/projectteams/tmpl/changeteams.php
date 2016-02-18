@@ -69,6 +69,6 @@ defined('_JEXEC') or die('Restricted access');
 		</table>
 	</fieldset>
 	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="option"				value="com_joomleague" />
+	<input type="hidden" name="option"				value="com_sportsmanagement" />
 	<?php echo JHtml::_('form.token')."\n"; ?>
 </form>
