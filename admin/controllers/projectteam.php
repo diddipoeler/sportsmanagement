@@ -56,6 +56,18 @@ jimport('joomla.application.component.controllerform');
 class sportsmanagementControllerprojectteam extends JControllerForm
 {
 
+function storechangeteams()
+	{
+$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
+
+}
+
+function cancel()
+	{
+	
+$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
+	
+	}
 
 
 }
