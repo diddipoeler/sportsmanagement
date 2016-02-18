@@ -5,6 +5,11 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
+<button type="button" onclick="Joomla.submitform('projectteam.storechangeteams', this.form)">
+				<?php echo JText::_('JSAVE');?></button>
+			<button id="cancel" type="button" onclick="Joomla.submitform('projectteam.cancel', this.form)">
+				<?php echo JText::_('JCANCEL');?></button>
+	
 	<fieldset class="adminform">
 		<legend>
 		<?php
