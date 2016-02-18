@@ -263,7 +263,7 @@ fieldset button {
 														'match_date'.$row->id,
 														'match_date'.$row->id,
 														'%d-%m-%Y',
-														'size="9"  tabindex="2" ondblclick="copyValue(\'match_date\')" onchange="document.getElementById(\'cb'.$i.'\').checked=true"');
+														'size="9"  tabindex="2" class="form-control form-control-inline" ondblclick="copyValue(\'match_date\')" onchange="document.getElementById(\'cb'.$i.'\').checked=true"');
 								?>
 							</td>
 							<td class="left"  nowrap="nowrap">
