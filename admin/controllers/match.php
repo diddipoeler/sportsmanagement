@@ -332,7 +332,7 @@ class sportsmanagementControllermatch extends JControllerForm
      * 
      * @return void
      */
-    function save()
+    function save($key = NULL, $urlVar = NULL)
 	{
 	// Check for request forgeries.
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
