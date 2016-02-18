@@ -538,11 +538,14 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         
 	   $this->_season_id = $app->getUserState( "$option.season_id", '0' );
        
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projekt_id ->'.$pid.''),'');
+//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _season_id ->'.$this->_season_id.''),'');
+       
         $db = sportsmanagementHelper::getDBConnection();
 
         $query = $db->getQuery(true);
         
-		if ( $pid[0] )
+		if ( $pid )
 		{
 			// jetzt brauchen wir noch das land der liga !
             $query->clear();
@@ -555,14 +558,32 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 			$db->setQuery( $query );
 			$country = $db->loadResult();
 
+// teams aus dem projekt selektieren , damit wir sie nicht in der anzeige haben
+$query->clear();
+// Select some fields
+$query->select('team_id');
+// From table
+$query->from('#__sportsmanagement_project_team');
+$query->where('project_id = ' . $pid);
+$db->setQuery($query);
+$teamresult = $db->loadColumn();
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teamresult, true).'</pre><br>','Notice');
+
+$query->clear();
+$query->select('st.id as value, concat(t.name,\' [\',t.info,\']\' ) as text');
+// From table
+$query->from('#__sportsmanagement_team as t');
+$query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
+$query->join('INNER', '#__sportsmanagement_club AS c ON c.id = t.club_id');
+$query->where('st.season_id = ' . $this->_season_id);
+if ( $teamresult )
+{
+$query->where('st.id NOT IN (' . implode(",",$teamresult) .')' );
+
+}
 
 
-      $query->clear();
-            $query->select('t.id as value, concat(t.name,\' [\',t.info,\']\' ) as text');
-        // From table
-		$query->from('#__sportsmanagement_team as t');
-        $query->join('INNER', '#__sportsmanagement_club as c ON c.id = t.club_id');
-        //$query->order('t.name ASC');
+
         
       if ( $country )
       {
@@ -588,14 +609,20 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 		$db->setQuery($query);
 		if (!$result = $db->loadObjectList())
 		{
-			$app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+//			$app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
+$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_CHANGE_TEAMS'),'Error');			
 			return false;
 		}
 		foreach ($result as $teams)
 		{
 			$teams->name = JText::_($teams->text);
 		}
+
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($result, true).'</pre><br>','Notice');
+		
 		return $result;
+	
+       
 	}
 
 
