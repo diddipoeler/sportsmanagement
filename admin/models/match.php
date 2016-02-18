@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie kÃ¶nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spÃ¤teren
+* verÃ¶ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nÃ¼tzlich sein wird, aber
+* OHNE JEDE GEWÃ„HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* GewÃ¤hrleistung der MARKTFÃ„HIGKEIT oder EIGNUNG FÃœR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fÃ¼r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -67,6 +67,25 @@ class sportsmanagementModelMatch extends JModelAdmin
     var $teams = NULL;
 static $_season_id = 0;
 static $_project_id = 0;
+
+function getRoundMatches($round_id)
+	{
+	// Reference global application object
+        $app = JFactory::getApplication();
+        // Get a db connection.
+        $db = sportsmanagementHelper::getDBConnection();
+        // Create a new query object.
+        $query = $db->getQuery(true);
+$query->select('m.*');
+$query->from('#__sportsmanagement_match AS m');
+$query->where('m.round_id = '.$round_id);
+$query->order('m.match_number');
+
+
+		$db->setQuery($query);
+		return ($db->loadObjectList());
+	}
+
 	
     /**
      * sportsmanagementModelMatch::getMatchEvents()
@@ -321,8 +340,8 @@ static $_project_id = 0;
                 //$app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' alter event<br><pre>'.print_r($event, true).'</pre><br>','');
 			}
             
-            // Gibt das Event bekannt mit den gewünschten Informationen
-            // Beachte das jedes Attribu als Instanz der zugehörenden Klasse erstellt wird
+            // Gibt das Event bekannt mit den gewÃ¼nschten Informationen
+            // Beachte das jedes Attribu als Instanz der zugehÃ¶renden Klasse erstellt wird
             $event->title = $service->newTitle($gcalendar_id->name.', '.$row->roundname);
             $event->where = array($service->newWhere($row->playground_name.','.$row->playground_city .','.$row->playground_address     ));
             $event->content = $service->newContent($row->hometeam.' - '.$row->awayteam.' ('.$row->team1_result.':'.$row->team2_result.')');
@@ -615,7 +634,7 @@ static $_project_id = 0;
         $result=true;
 		for ($x=0; $x < count($pks); $x++)
 		{
-			// änderungen im datum oder der uhrzeit
+			// Ã¤nderungen im datum oder der uhrzeit
             $tblMatch = $this->getTable();;
             $tblMatch->load((int) $pks[$x]);
             
@@ -755,7 +774,7 @@ static $_project_id = 0;
 		{
 			//JArrayHelper::toInteger($cid);
 			$cids = implode(',',$pks);
-            // wir löschen mit join
+            // wir lÃ¶schen mit join
             $query = 'DELETE ms,mss,mst,mev,mre,mpl
             FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m    
             LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic as ms
@@ -2657,7 +2676,7 @@ $csv->auto($dcsv['cachefile']);
     }
     elseif ( $projectteamid == $tblmatch->projectteam2_id )
     {
-        $app->enqueueMessage(JText::_('Auswärtsteam '.$tblteam->name.' wird verarbeitet.'),'Notice');
+        $app->enqueueMessage(JText::_('AuswÃ¤rtsteam '.$tblteam->name.' wird verarbeitet.'),'Notice');
         $find_csv = 'G';
     }        
     
