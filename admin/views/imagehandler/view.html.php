@@ -56,7 +56,11 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 {
 
 	
-	//function display($tpl = null)
+    /**
+     * sportsmanagementViewImagehandler::init()
+     * 
+     * @return
+     */
     public function init ()
 	{
 		$app	= JFactory::getApplication();
@@ -66,7 +70,8 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
         $tpl = '';
 
 
-		if($this->getLayout() == 'upload') {
+		if( $this->getLayout() == 'upload' || $this->getLayout() == 'upload_3' ) 
+        {
 			$this->_displayupload($tpl);
 			return;
 		}
@@ -115,6 +120,12 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 		}
 	}
 
+	/**
+	 * sportsmanagementViewImagehandler::setImage()
+	 * 
+	 * @param integer $index
+	 * @return void
+	 */
 	function setImage($index = 0)
 	{
 		if (isset($this->images[$index]))
@@ -161,6 +172,7 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 		$this->field	= $field;
 		$this->fieldid	= $fieldid;
 		$this->menu	= $menu;
+        $this->setLayout('upload');
 		//parent::display($tpl);
 	}
 }

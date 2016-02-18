@@ -52,7 +52,7 @@ defined('_JEXEC') or die('Restricted access');
 				?>
 				</td>
 				<td class="nowrap" class="center"><?php
-				echo JHtml::_( 'select.genericlist', $this->lists['all_teams'], 'newteamid[' . $row->id . ']', $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cboldteamid' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
+				echo JHtml::_( 'select.genericlist', $this->lists['all_teams'], 'newteamid[' . $row->id . ']', $inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cboldteamid' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
 				?>
 				</td>
 			</tr>

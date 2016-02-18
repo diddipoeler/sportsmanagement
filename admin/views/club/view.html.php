@@ -141,6 +141,7 @@ class sportsmanagementViewClub extends sportsmanagementView
 		//$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
         
         $this->checkextrafields	= sportsmanagementHelper::checkUserExtraFields();
+        $lists = array();
         if ( $this->checkextrafields )
         {
             $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($item->id);
