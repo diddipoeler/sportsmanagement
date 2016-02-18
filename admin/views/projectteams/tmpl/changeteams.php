@@ -10,7 +10,7 @@ defined('_JEXEC') or die('Restricted access');
 			<button id="cancel" type="button" onclick="Joomla.submitform('projectteam.cancel', this.form)">
 				<?php echo JText::_('JCANCEL');?></button>
 	
-	<fieldset class="adminform">
+
 		<legend>
 		<?php
 		echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_CHANGEASSIGN_TEAMS' );
@@ -67,7 +67,7 @@ defined('_JEXEC') or die('Restricted access');
 			}
 			?>
 		</table>
-	</fieldset>
+
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="option"				value="com_sportsmanagement" />
 	<?php echo JHtml::_('form.token')."\n"; ?>
