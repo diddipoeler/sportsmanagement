@@ -58,6 +58,9 @@ class sportsmanagementControllerprojectteam extends JControllerForm
 
 function storechangeteams()
 	{
+		$model		= $this->getModel ('projectteams');
+$model->setNewTeamID();
+
 			$msg = '';
 $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
 
