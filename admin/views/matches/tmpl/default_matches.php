@@ -255,7 +255,7 @@ fieldset button {
               
 							<td class="center">
 								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text" name="match_number<?php echo $row->id; ?>"
-										value="<?php echo $row->match_number; ?>" size="6" tabindex="1" class="inputbox" />
+										value="<?php echo $row->match_number; ?>" size="6" tabindex="1" class="form-control form-control-inline" />
 							</td>
 							<td class="center" nowrap="nowrap">
 								<?php
@@ -269,7 +269,7 @@ fieldset button {
 							<td class="left"  nowrap="nowrap">
 
 								<input ondblclick="copyValue('match_time')" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text" name="match_time<?php echo $row->id; ?>"
-										value="<?php echo $time; ?>" size="4" maxlength="5" tabindex="3" class="inputbox" />
+										value="<?php echo $time; ?>" size="4" maxlength="5" tabindex="3" class="form-control form-control-inline" />
 
 								<a	href="javascript:void(0)"
 									onclick="switchMenu('present<?php echo $row->id; ?>')">&nbsp;
@@ -281,13 +281,13 @@ fieldset button {
 								<span id="present<?php echo $row->id; ?>" style="display: none">
 									<br />
 										<input ondblclick="copyValue('time_present')" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text" name="time_present<?php echo $row->id; ?>"
-												value="<?php echo $row->time_present; ?>" size="4" maxlength="5" tabindex="3" class="inputbox" title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT'); ?>" />		
+												value="<?php echo $row->time_present; ?>" size="4" maxlength="5" tabindex="3" class="form-control form-control-inline" title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT'); ?>" />		
 										<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_PRESENT_SHORT'); ?>			
 								</span>
 							</td>
 							<td class="center">
 								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text" name="crowd<?php echo $row->id; ?>"
-										value="<?php echo $row->crowd; ?>" size="4" maxlength="5" tabindex="4" class="inputbox" />
+										value="<?php echo $row->crowd; ?>" size="4" maxlength="5" tabindex="4" class="form-control form-control-inline" />
 							</td>
 							<?php 
 								if($this->projectws->project_type=='DIVISIONS_LEAGUE') 
@@ -298,7 +298,7 @@ fieldset button {
 							<td class="center">
 								<?php
 							echo JHtml::_(	'select.genericlist',$this->lists['divisions'],'division_id'.$row->id,
-												'class="inputbox select-division_id" size="1"'.$append,'value','text',$row->division_id);
+												'class="form-control form-control-inline" size="1"'.$append,'value','text',$row->division_id);
 							?>
                 <?php 
                 //echo $row->divhome; 
@@ -315,7 +315,7 @@ fieldset button {
               <td style="text-align:center; ">
 								<?php
 							echo JHtml::_(	'select.genericlist',$this->lists['project_change_rounds'],'round_id'.$row->id,
-												'class="inputbox select-round_id" size="1"'.$append,'value','text',$row->round_id);
+												'class="form-control form-control-inline" size="1"'.$append,'value','text',$row->round_id);
 							?>
 							</td>
               
@@ -352,7 +352,7 @@ fieldset button {
 								}
 								$append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
 								echo JHtml::_(	'select.genericlist',$this->lists['teams_'+$row->divhomeid],'projectteam1_id'.$row->id,
-												'class="inputbox select-hometeam" size="1"'.$append,'value','text',$row->projectteam1_id);
+												'class="form-control form-control-inline" size="1"'.$append,'value','text',$row->projectteam1_id);
 								?>
 							</td>
 							<td class="left"  nowrap="nowrap">
@@ -364,7 +364,7 @@ fieldset button {
 								}
 								$append.=' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
 								echo JHtml::_(	'select.genericlist',$this->lists['teams_'+$row->divhomeid],'projectteam2_id'.$row->id,
-												'class="inputbox select-awayteam" size="1"'.$append,'value','text',$row->projectteam2_id);
+												'class="form-control form-control-inline" size="1"'.$append,'value','text',$row->projectteam2_id);
 								?>
 								<a	onclick="handleRosterIconClick(<?php echo $this->prefill; ?>, this, '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_LAST_ROSTER_ALERT'); ?>', '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_PREFILL_PROJECTTEAM_PLAYERS_ALERT')?>')"
 									rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
@@ -391,9 +391,9 @@ fieldset button {
 							</td>
 							<td class="left"  nowrap="nowrap">
 								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team1_result<?php echo $row->id; ?>"
-										value="<?php echo $row->team1_result; ?>" size="2" tabindex="5" class="inputbox" /> : 
+										value="<?php echo $row->team1_result; ?>" size="2" tabindex="5" class="form-control form-control-inline" /> : 
 								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team2_result<?php echo $row->id; ?>"
-										value="<?php echo $row->team2_result; ?>" size="2" tabindex="5" class="inputbox" />
+										value="<?php echo $row->team2_result; ?>" size="2" tabindex="5" class="form-control form-control-inline" />
 								
                                 <?PHP
                                 if ( $this->projectws->project_art_id == 2 )
@@ -401,21 +401,21 @@ fieldset button {
                                 ?>
                                 <br />MP
                                 <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team1_single_matchpoint<?php echo $row->id; ?>"
-										value="<?php echo $row->team1_single_matchpoint; ?>" size="2" tabindex="5" class="inputbox" /> : 
+										value="<?php echo $row->team1_single_matchpoint; ?>" size="2" tabindex="5" class="form-control form-control-inline" /> : 
 								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team2_single_matchpoint<?php echo $row->id; ?>"
-										value="<?php echo $row->team2_single_matchpoint; ?>" size="2" tabindex="5" class="inputbox" />
+										value="<?php echo $row->team2_single_matchpoint; ?>" size="2" tabindex="5" class="form-control form-control-inline" />
                                 
                                 <br />MS
                                 <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team1_single_sets<?php echo $row->id; ?>"
-										value="<?php echo $row->team1_single_sets; ?>" size="2" tabindex="5" class="inputbox" /> : 
+										value="<?php echo $row->team1_single_sets; ?>" size="2" tabindex="5" class="form-control form-control-inline" /> : 
 								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team2_single_sets<?php echo $row->id; ?>"
-										value="<?php echo $row->team2_single_sets; ?>" size="2" tabindex="5" class="inputbox" />
+										value="<?php echo $row->team2_single_sets; ?>" size="2" tabindex="5" class="form-control form-control-inline" />
                                 
                                 <br />MG
                                 <input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team1_single_games<?php echo $row->id; ?>"
-										value="<?php echo $row->team1_single_games; ?>" size="2" tabindex="5" class="inputbox" /> : 
+										value="<?php echo $row->team1_single_games; ?>" size="2" tabindex="5" class="form-control form-control-inline" /> : 
 								<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" <?php if($row->alt_decision==1) echo "class=\"subsequentdecision\" title=\"".JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_SUB_DECISION')."\"" ?> type="text" name="team2_single_games<?php echo $row->id; ?>"
-										value="<?php echo $row->team2_single_games; ?>" size="2" tabindex="5" class="inputbox" />                
+										value="<?php echo $row->team2_single_games; ?>" size="2" tabindex="5" class="form-control form-control-inline" />                
                                 <?PHP
                                 }
                                 ?>
@@ -455,11 +455,11 @@ fieldset button {
 										<input	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" onchange="document.getElementById(\'cb'<?php echo $i; ?>'\').checked=true" type="text" style="font-size: 9px;"
 												name="team1_result_split<?php echo $row->id;?>[]"
 												value="<?php echo (isset($partresults1[$x])) ? $partresults1[$x] : ''; ?>"
-												size="2" tabindex="6" class="inputbox" /> : 
+												size="2" tabindex="6" class="form-control form-control-inline" /> : 
 										<input	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" onchange="document.getElementById(\'cb'<?php echo $i; ?>'\').checked=true" type="text" style="font-size: 9px;"
 												name="team2_result_split<?php echo $row->id; ?>[]"
 												value="<?php echo (isset($partresults2[$x])) ? $partresults2[$x] : ''; ?>"
-												size="2" tabindex="6" class="inputbox" />
+												size="2" tabindex="6" class="form-control form-control-inline" />
 										<?php
 										echo '&nbsp;&nbsp;'.($x+1).".<br />";
 									}    
@@ -475,11 +475,11 @@ fieldset button {
 										<input	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" onchange="document.getElementById(\'cb'<?php echo $i; ?>'\').checked=true" type="text" style="font-size: 9px;"
 												name="team1_result_split<?php echo $row->id;?>[]"
 												value="<?php echo (isset($partresults1[$x])) ? $partresults1[$x] : ''; ?>"
-												size="2" tabindex="6" class="inputbox" /> : 
+												size="2" tabindex="6" class="form-control form-control-inline" /> : 
 										<input	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" onchange="document.getElementById(\'cb'<?php echo $i; ?>'\').checked=true" type="text" style="font-size: 9px;"
 												name="team2_result_split<?php echo $row->id; ?>[]"
 												value="<?php echo (isset($partresults2[$x])) ? $partresults2[$x] : ''; ?>"
-												size="2" tabindex="6" class="inputbox" />
+												size="2" tabindex="6" class="form-control form-control-inline" />
 										<?php
 										echo '&nbsp;&nbsp;'.($x+1).".<br />";
 									}
@@ -492,18 +492,18 @@ fieldset button {
 
 										<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text" style="font-size: 9px;" name="team1_result_ot<?php echo $row->id;?>"
 											value="<?php echo (isset($row->team1_result_ot)) ? $row->team1_result_ot : '';?>"
-											size="2" tabindex="7" class="inputbox" /> : 
+											size="2" tabindex="7" class="form-control form-control-inline" /> : 
 										<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text" style="font-size: 9px;" name="team2_result_ot<?php echo $row->id;?>"
 											value="<?php echo (isset($row->team2_result_ot)) ? $row->team2_result_ot : '';?>"
-											size="2" tabindex="7" class="inputbox" />
+											size="2" tabindex="7" class="form-control form-control-inline" />
 										<?php echo '&nbsp;&nbsp;OT:<br />';?>
 
 										<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text" style="font-size: 9px;" name="team1_result_so<?php echo $row->id;?>"
 											value="<?php echo (isset($row->team1_result_so)) ? $row->team1_result_so : '';?>"
-											size="2" tabindex="8" class="inputbox" /> : 
+											size="2" tabindex="8" class="form-control form-control-inline" /> : 
 										<input onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" type="text" style="font-size: 9px;" name="team2_result_so<?php echo $row->id;?>"
 											value="<?php echo (isset($row->team2_result_so)) ? $row->team2_result_so : '';?>"
-											size="2" tabindex="8" class="inputbox" />
+											size="2" tabindex="8" class="form-control form-control-inline" />
 										<?php echo '&nbsp;&nbsp;SO:<br />';?>
 										<?php
 									}
@@ -518,7 +518,7 @@ fieldset button {
 									<?php
                                     $appendselect =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
 									echo JHtml::_(	'select.genericlist',$this->lists['match_result_type'],
-													'match_result_type'.$row->id,'class="inputbox" size="1" '.$appendselect,'value','text',
+													'match_result_type'.$row->id,'class="form-control form-control-inline" size="1" '.$appendselect,'value','text',
 													$row->match_result_type);
 									?>
 								</td>
@@ -534,7 +534,7 @@ fieldset button {
                                 {
                                     $appendselect =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
                                     echo JHtml::_(	'select.genericlist',$this->selectlist['result_type'],
-													'result_type'.$row->id,'class="inputbox" size="1" '.$appendselect,'value','text',
+													'result_type'.$row->id,'class="form-control form-control-inline" size="1" '.$appendselect,'value','text',
 													$row->result_type);
     
                                 }
@@ -556,7 +556,7 @@ fieldset button {
                                 
                                     $appendselect =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
                                     echo JHtml::_(	'select.genericlist',$this->lists['articles'],
-													'content_id'.$row->id,'class="inputbox" size="1" '.$appendselect,'value','text',
+													'content_id'.$row->id,'class="form-control form-control-inline" size="1" '.$appendselect,'value','text',
 													$row->content_id);
     
                         
