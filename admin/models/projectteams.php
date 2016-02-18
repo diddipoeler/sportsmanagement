@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie kÃ¶nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spÃ¤teren
+* verÃ¶ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nÃ¼tzlich sein wird, aber
+* OHNE JEDE GEWÃ„HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* GewÃ¤hrleistung der MARKTFÃ„HIGKEIT oder EIGNUNG FÃœR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fÃ¼r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -538,7 +538,6 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         
 	   $this->_season_id = $app->getUserState( "$option.season_id", '0' );
        
-		//$db = sportsmanagementHelper::getDBConnection();
         $db = sportsmanagementHelper::getDBConnection();
 
         $query = $db->getQuery(true);
@@ -568,29 +567,12 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
       if ( $country )
       {
       $query->where('c.country LIKE '.$db->Quote(''.$country.''));
-        
-//      $query="SELECT t.id as value, concat(t.name,' [',t.info,']' ) as text
-//					FROM #__".COM_SPORTSMANAGEMENT_TABLE."_team as t
-//					INNER JOIN #__".COM_SPORTSMANAGEMENT_TABLE."_club as c
-//					ON c.id = t.club_id
-//					WHERE c.country = '$country'  
-//					ORDER BY t.name ASC 
-//					";
       }
       else
       {
       $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_LEAGUE_COUNTRY'),'Error');
       $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_SELECT_ALL_TEAMS'),'Notice');
-//      $query->clear();
-//            $query->select('t.id as value, concat(t.name,\' [\',t.info,\']\' ) as text');
-//        // From table
-//		$query->from('#__sportsmanagement_team as t');
-//        $query->join('INNER', '#__sportsmanagement_club as c ON c.id = t.club_id');
-//        $query->order('t.name ASC');
       }
-      
-      
-			
 
 		}
 		else
@@ -599,7 +581,6 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             $query->select('t.id as value, concat(t.name,\' [\',t.info,\']\' ) as text');
         // From table
 		$query->from('#__sportsmanagement_team as t');
-//        $query->order('t.name ASC');
 		}
         
         $query->order('t.name ASC');
@@ -610,7 +591,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 			$app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
 			return false;
 		}
-		foreach ($result as $teams){
+		foreach ($result as $teams)
+		{
 			$teams->name = JText::_($teams->text);
 		}
 		return $result;
