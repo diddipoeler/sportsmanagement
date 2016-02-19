@@ -798,6 +798,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_project` (
   `modified_hits` INT(11) NOT NULL DEFAULT '0' ,
   `cr_picture` varchar(255) DEFAULT NULL,
   `modified_timestamp` INT( 11 ) NOT NULL DEFAULT  '0',
+  `editorgroup` INT( 11 ) DEFAULT '0' ,
   PRIMARY KEY (`id`) ,
   KEY `league_id` (`league_id`),
   KEY `season_id` (`season_id`),
