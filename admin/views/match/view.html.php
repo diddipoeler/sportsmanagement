@@ -128,7 +128,8 @@ $this->request_url	= $uri->toString();
         // layout pressebericht
         if ( $this->getLayout() == 'pressebericht' || $this->getLayout() == 'pressebericht_3' )
 		{
-		$this->initPressebericht();  
+		$this->setLayout('pressebericht');
+		//$this->initPressebericht();  
         }  
         
         // layout editreferees
