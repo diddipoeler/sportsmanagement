@@ -455,6 +455,10 @@ class sportsmanagementControllermatch extends JControllerForm
 			$dest = JPATH_SITE.DS.'tmp'.DS.$upload['name'];
 			$extractdir = JPATH_SITE.DS.'tmp';
 			//$importFile = JPATH_SITE.DS.'tmp'. DS.'pressebericht.jlg';
+if(!JFolder::exists(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'pressebericht'))
+{
+JFolder::create(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'pressebericht');
+}			
             $importFile = JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'pressebericht'.DS.$match_id.'.jlg';
             
 			if (JFile::exists($importFile))
