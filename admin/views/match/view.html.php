@@ -341,7 +341,7 @@ $this->request_url	= $uri->toString();
 
 //build the html options for position
 		$position_id[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
-		if ( $res = $model->getProjectPositionsOptions(0,1) )
+		if ( $res = $model->getProjectPositionsOptions(0,1,$this->project_id) )
 		{
 			$position_id = array_merge( $position_id, $res );
 		}
@@ -350,7 +350,7 @@ $this->request_url	= $uri->toString();
 		unset( $position_id );
         
         $position_id[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
-		if ( $res = $model->getProjectPositionsOptions(0,2) )
+		if ( $res = $model->getProjectPositionsOptions(0,2,$this->project_id) )
 		{
 			$position_id = array_merge( $position_id, $res );
 		}
