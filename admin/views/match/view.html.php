@@ -129,8 +129,11 @@ $this->request_url	= $uri->toString();
         if ( $this->getLayout() == 'pressebericht' || $this->getLayout() == 'pressebericht_3' )
 		{
 		$this->setLayout('pressebericht');
-		//$this->initPressebericht();  
         }  
+        if ( $this->getLayout() == 'readpressebericht' || $this->getLayout() == 'readpressebericht_3' )
+		{
+		$this->initPressebericht();  
+        } 
         
         // layout editreferees
         if ( $this->getLayout() == 'editreferees' || $this->getLayout() == 'editreferees_3' )
@@ -370,7 +373,7 @@ $this->request_url	= $uri->toString();
         
         $this->lists	= $lists;
     
-		$this->setLayout('pressebericht');
+		$this->setLayout('readpressebericht');
     
     }
     
