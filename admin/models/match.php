@@ -2700,6 +2700,9 @@ $csv->auto($dcsv['cachefile']);
         
         // gibt es den spieler
         // Select some fields
+        if ( $teile[0] )
+    {
+
         $query->clear();
         $query->select('id');
         // From the table
@@ -2709,7 +2712,8 @@ $csv->auto($dcsv['cachefile']);
 
 		$db->setQuery($query);
 		$person_id = $db->loadResult();
-        
+    }
+    
         if ( $person_id )
         {
             $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->person_id = $person_id;
@@ -2747,6 +2751,9 @@ $csv->auto($dcsv['cachefile']);
         
         // gibt es den spieler ?
         // Select some fields
+        if ( $teile[0] )
+    {
+
         $query->clear();
         $query->select('id');
         // From the table
@@ -2756,7 +2763,7 @@ $csv->auto($dcsv['cachefile']);
 
 		$db->setQuery($query);
 		$person_id = $db->loadResult();
-        
+    }
         if ( $person_id )
         {
             $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->person_id = $person_id;
@@ -2870,6 +2877,9 @@ $csv->auto($dcsv['cachefile']);
     
     // gibt es den staff ?
     // Select some fields
+    if ( $teile[0] )
+    {
+
         $query->clear();
         $query->select('id');
         // From the table
@@ -2879,7 +2889,7 @@ $csv->auto($dcsv['cachefile']);
 
     $db->setQuery($query);
 	$person_id = $db->loadResult();
-        
+    }
     if ( $person_id )
     {
             $this->csv_staff[$i]->person_id = $person_id;
@@ -2907,6 +2917,9 @@ $csv->auto($dcsv['cachefile']);
     $this->csv_staff[$i]->project_position_id = 0;
     
     // gibt es den staff ?
+    if ( $teile[0] )
+    {
+
         $query->clear();
         $query->select('id');
         // From the table
@@ -2916,7 +2929,7 @@ $csv->auto($dcsv['cachefile']);
 
     $db->setQuery($query);
 	$person_id = $db->loadResult();
-        
+    }        
     if ( $person_id )
     {
             $this->csv_staff[$i]->person_id = $person_id;
@@ -2944,6 +2957,9 @@ $csv->auto($dcsv['cachefile']);
     $this->csv_staff[$i]->project_position_id = 0;
     
     // gibt es den staff ?
+    if ( $teile[0] )
+    {
+
         $query->clear();
         $query->select('id');
         // From the table
@@ -2953,7 +2969,7 @@ $csv->auto($dcsv['cachefile']);
 
     $db->setQuery($query);
 	$person_id = $db->loadResult();
-        
+    }
     if ( $person_id )
     {
             $this->csv_staff[$i]->person_id = $person_id;
@@ -2981,6 +2997,9 @@ $csv->auto($dcsv['cachefile']);
     $this->csv_staff[$i]->project_position_id = 0;
     
     // gibt es den staff ?
+    if ( $teile[0] )
+    {
+
         $query->clear();
         $query->select('id');
         // From the table
@@ -2990,7 +3009,7 @@ $csv->auto($dcsv['cachefile']);
 
     $db->setQuery($query);
 	$person_id = $db->loadResult();
-        
+    }
     if ( $person_id )
     {
             $this->csv_staff[$i]->person_id = $person_id;
@@ -3018,6 +3037,9 @@ $csv->auto($dcsv['cachefile']);
     $this->csv_staff[$i]->project_position_id = 0;
     
     // gibt es den staff ?
+    if ( $teile[0] )
+    {
+
         $query->clear();
         $query->select('id');
         // From the table
@@ -3027,7 +3049,7 @@ $csv->auto($dcsv['cachefile']);
 
     $db->setQuery($query);
 	$person_id = $db->loadResult();
-        
+    }
     if ( $person_id )
     {
             $this->csv_staff[$i]->person_id = $person_id;
@@ -3055,6 +3077,9 @@ $csv->auto($dcsv['cachefile']);
     $this->csv_staff[$i]->project_position_id = 0;
     
     // gibt es den staff ?
+    if ( $teile[0] )
+    {
+
         $query->clear();
         $query->select('id');
         // From the table
@@ -3064,7 +3089,7 @@ $csv->auto($dcsv['cachefile']);
 
     $db->setQuery($query);
 	$person_id = $db->loadResult();
-        
+    }        
     if ( $person_id )
     {
             $this->csv_staff[$i]->person_id = $person_id;
