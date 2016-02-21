@@ -74,16 +74,18 @@ class sportsmanagementViewSeasons extends sportsmanagementView
 
 
 $starttime = microtime(); 
-		$items = $this->get('Items');
+		$this->items = $this->get('Items');
+        
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
-		$total = $this->get('Total');
-		$pagination = $this->get('Pagination');
         
-        $table = JTable::getInstance('season', 'sportsmanagementTable');
-		$this->assignRef('table', $table);
+		$total = $this->get('Total');
+		$this->pagination = $this->get('Pagination');
+        
+//        $table = JTable::getInstance('season', 'sportsmanagementTable');
+		$this->table = JTable::getInstance('season', 'sportsmanagementTable');
         
         //build the html options for nation
 		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
@@ -105,8 +107,8 @@ $starttime = microtime();
 
 		$this->user	= JFactory::getUser();
 		$this->lists	= $lists;
-		$this->items	= $items;
-		$this->pagination	= $pagination;
+		//$this->items	= $items;
+//		$this->pagination	= $pagination;
 		$this->request_url	= $uri->toString();
         
         $this->season_id	= $season_id;

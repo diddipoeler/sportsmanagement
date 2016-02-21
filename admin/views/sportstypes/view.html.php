@@ -76,14 +76,14 @@ class sportsmanagementViewSportsTypes extends sportsmanagementView
 
 
 		$starttime = microtime();
-		$items = $this->get('Items');
+		$this->items = $this->get('Items');
 		
 		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		{
 			$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
 		}
 		$total = $this->get('Total');
-		$pagination = $this->get('Pagination');
+		$this->pagination = $this->get('Pagination');
         
 		$myoptions = array();
 		$myoptions[]		= JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_TEAM' ) );
@@ -91,16 +91,16 @@ class sportsmanagementViewSportsTypes extends sportsmanagementView
 
 
         
-        $table = JTable::getInstance('sportstype', 'sportsmanagementTable');
-		$this->table = $table;
+        //$table = JTable::getInstance('sportstype', 'sportsmanagementTable');
+		$this->table = JTable::getInstance('sportstype', 'sportsmanagementTable');
         
         // sportart filter
 		$lists['sportart'] = $myoptions;
 
 		$this->user = JFactory::getUser();
 		$this->lists = $lists;
-		$this->items = $items;
-		$this->pagination = $pagination;
+//		$this->items = $items;
+		//$this->pagination = $pagination;
 		$this->request_url = $uri->toString();
       
 	}

@@ -249,14 +249,8 @@ class sportsmanagementModelProject extends JModelAdmin
        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-       
        $query->where('pt.id = ' . $projectteam_id);
        
-//		$query='SELECT t.*
-//				  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t
-//                  INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt
-//                  on t.id = pt.team_id 
-//				  WHERE pt.id='.$projectteam_id;
 		$db->setQuery($query);
 		return $db->loadObject();
 	}
@@ -274,60 +268,16 @@ class sportsmanagementModelProject extends JModelAdmin
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
        //// Create a new query object.
-//		$db = JFactory::getDbo();
-
 		$db = sportsmanagementHelper::getDBConnection(); 
         $query	= $db->getQuery(true);
         $query->select('*');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
         $query->where('id = ' . $project_id);
-        
-//		$query='SELECT *
-//				  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project
-//				  WHERE id='.$project_id;
 		
         $db->setQuery($query);
 		return $db->loadObject();
 	}
-
-    
-    /**
-	 * Method to return the project teams array (id, name)
-	 *
-	 * @access  public
-	 * @return  array
-	 * @since 0.1
-	 */
-/*
-	function getProjectTeams($project_id)
-	{
-		$option = JRequest::getCmd('option');
-		$app	= JFactory::getApplication();
-		//$project_id = $app->getUserState($option . 'project');
-
-		$query = '	SELECT	pt.id AS value,
-							t.name AS text,
-							t.short_name AS short_name,
-							t.notes
-
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = t.id
-					WHERE pt.project_id = ' . $project_id . '
-					ORDER BY text ASC ';
-
-		$this->_db->setQuery($query);
-
-		if (!$result = $this->_db->loadObjectList())
-		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-			return false;
-		}
-		else
-		{
-			return $result;
-		}
-	}
-*/
+   
     
     /**
 	 * @param int iDivisionId
@@ -360,7 +310,6 @@ class sportsmanagementModelProject extends JModelAdmin
         {
             // Select some fields
 		    $query->select('pt.id AS value');
-            //$query->select('CASE WHEN CHAR_LENGTH(t.name) < 25 THEN t.name ELSE t.middle_name END AS text');
             $query->select('t.name AS text');
             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
             $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
@@ -642,6 +591,18 @@ class sportsmanagementModelProject extends JModelAdmin
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				return false;
 			}
+            
+            if ( $post['user_field_id'.$pks[$x]] )
+{			
+// Create an object for the record we are going to update.
+$object = new stdClass();
+// Must be a valid primary key value.
+$object->id = $post['user_field_id'.$pks[$x]];
+$object->fieldvalue = $post['user_field'.$pks[$x]];
+// Update their details in the users table using id as the primary key.
+$result = JFactory::getDbo()->updateObject('#__sportsmanagement_user_extra_fields_values', $object, 'id');			
+}	
+
 		}
 		return JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SAVE');
 	}

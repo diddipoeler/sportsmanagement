@@ -76,7 +76,7 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 
 
 
-		$items = $this->get('Items');
+		$this->items = $this->get('Items');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
@@ -84,10 +84,10 @@ class sportsmanagementViewagegroups extends sportsmanagementView
         }
         
 		$total = $this->get('Total');
-		$pagination = $this->get('Pagination');
+		$this->pagination = $this->get('Pagination');
         
-        $table = JTable::getInstance('agegroup', 'sportsmanagementTable');
-        $this->table = $table;
+        //$table = JTable::getInstance('agegroup', 'sportsmanagementTable');
+        $this->table = JTable::getInstance('agegroup', 'sportsmanagementTable');
 		
         //build the html select list for sportstypes
 		$sportstypes[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),'id','name');
@@ -121,9 +121,9 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 																'text',
 																$this->state->get('filter.search_nation'));
 
-		//$app->enqueueMessage(JText::_('items<br><pre>'.print_r($items,true).'</pre>'),'');
+		//$app->enqueueMessage(JText::_('items<br><pre>'.print_r($this->items,true).'</pre>'),'');
         
-        foreach ( $items as $item )
+        foreach ( $this->items as $item )
         {
             $sportstype = $mdlSportsType->getSportstype($item->sportstype_id);
             if ( $sportstype )
@@ -136,7 +136,7 @@ class sportsmanagementViewagegroups extends sportsmanagementView
             }
         }
         
-        if ( count($items)  == 0 )
+        if ( count($this->items)  == 0 )
         {
             $databasetool = JModelLegacy::getInstance("databasetool", "sportsmanagementModel");
             $insert_agegroup = $databasetool->insertAgegroup($this->state->get('filter.search_nation'),$this->state->get('filter.sports_type'));
@@ -147,8 +147,8 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 
 		$this->user = JFactory::getUser();
 		$this->lists = $lists;
-		$this->items = $items;
-		$this->pagination = $pagination;
+//		$this->items = $items;
+//		$this->pagination = $pagination;
 		$this->request_url = $uri->toString();
         
        
@@ -174,6 +174,7 @@ $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_TITLE');
 		JToolBarHelper::editList('agegroup.edit');
 		JToolBarHelper::custom('agegroup.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('agegroup.export',JText::_('JTOOLBAR_EXPORT'));
+        JToolbarHelper::checkin('agegroups.checkin');
 		JToolBarHelper::deleteList('', 'agegroups.delete', 'JTOOLBAR_DELETE');
 		
         parent::addToolbar();

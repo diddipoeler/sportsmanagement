@@ -192,7 +192,6 @@ class sportsmanagementModelProjects extends JModelList
         $query->select('u.name AS editor');
         $query->select('ag.name AS agegroup');
         $query->select('(' . $subQuery . ') AS proteams');
-        //$query->select('(' . $subQuery2 . ' LIMIT 1 ) AS user_field');  
         
     $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p');
     $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id = p.season_id');
@@ -204,9 +203,9 @@ class sportsmanagementModelProjects extends JModelList
   
         if ($this->getState('filter.userfields'))
 		{
+			$query->select('ev.fieldvalue as user_fieldvalue,ev.id as user_field_id');  
 		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields_values as ev ON ev.jl_id = p.id');  
 		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields as ef ON ef.id = ev.field_id');  
-        //$query->where('ef.id LIKE ' . $db->Quote( '' . $search_userfields . '' ));
         $query->where('ef.id = ' . $this->getState('filter.userfields') );
         }
 
