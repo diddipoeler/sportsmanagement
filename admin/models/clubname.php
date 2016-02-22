@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie kÃ¶nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spÃ¤teren
+* verÃ¶ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nÃ¼tzlich sein wird, aber
+* OHNE JEDE GEWÃ„HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* GewÃ¤hrleistung der MARKTFÃ„HIGKEIT oder EIGNUNG FÃœR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fÃ¼r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -49,7 +49,7 @@ jimport('joomla.application.component.modeladmin');
  * sportsmanagementModelclubname
  * 
  * @package 
- * @author Dieter Plöger
+ * @author Dieter PlÃ¶ger
  * @copyright 2016
  * @version $Id$
  * @access public
@@ -254,10 +254,57 @@ class sportsmanagementModelclubname extends JModelAdmin
     {
     // Reference global application object
         $app = JFactory::getApplication();
+        // Create a new query object.		 
+	$db = sportsmanagementHelper::getDBConnection(); 
+$query = $db->getQuery(true);
+
+        $option = JRequest::getCmd('option');
         // JInput object
         $jinput = $app->input;    
+
+$xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/clubnames.xml',true);
         
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' import<br><pre>'.print_r($jinput,true).'</pre>'),'');    
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml <br><pre>'.print_r($xml ,true).'</pre>'),'');    
+     
+     foreach( $xml->children() as $quote )  
+             { 
+              
+             $country = (string)$quote->clubname->attributes()->country; 
+             $name = (string)$quote->clubname->attributes()->name; 
+             $clubname = (string)$quote->clubname;
+             
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' country <br><pre>'.print_r($country ,true).'</pre>'),'Notice');             
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' name <br><pre>'.print_r($name ,true).'</pre>'),'Notice');             
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubname<br><pre>'.print_r($clubname,true).'</pre>'),'Notice');                          
+  
+$query->clear();  
+$query->select('id');  
+$query->from('#__sportsmanagement_club_names');
+$query->where('country LIKE '.$db->Quote(''.$country.'') );
+$query->where('name LIKE '.$db->Quote(''.$name.'') );
+$db->setQuery($query);  
+  
+$result = $db->loadResult();  
+  
+if ( !$result )
+{
+$insertquery = $db->getQuery(true); 
+// Insert columns. 
+$columns = array('country','name','name_long'); 
+// Insert values. 
+$values = array('\''.$country.'\'','\''.$name.'\'','\''.$clubname.'\''); 
+// Prepare the insert query. 
+$insertquery 
+->insert($db->quoteName('#__sportsmanagement_club_names')) 
+->columns($db->quoteName($columns)) 
+->values(implode(',', $values)); 
+// Set the query using our newly populated query object and execute it. 
+$db->setQuery($insertquery); 
+
+sportsmanagementModeldatabasetool::runJoomlaQuery();
+
+}  
+
         
         
     } 
