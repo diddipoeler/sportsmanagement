@@ -303,8 +303,8 @@ $db->setQuery($insertquery);
 
 sportsmanagementModeldatabasetool::runJoomlaQuery();
 
-}  
-
+} 
+		}
         
         
     } 
