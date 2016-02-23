@@ -27,7 +27,7 @@
 * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
 * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
 * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
 * Siehe die GNU General Public License für weitere Details.
 *
@@ -39,45 +39,66 @@
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla controlleradmin library
-jimport('joomla.application.component.controlleradmin');
- 
+
 
 /**
- * sportsmanagementControllerleagues
+ * sportsmanagementViewclubname
  * 
- * @package   
- * @author 
- * @copyright diddi
- * @version 2014
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2016
+ * @version $Id$
  * @access public
  */
-class sportsmanagementControllerleagues extends JControllerAdmin
+class sportsmanagementViewclubname extends sportsmanagementView
 {
+	
+	
     
-    /**
-	 * Method to update checked positions
-     *
-	 * @access	public
-	 * @return	boolean	True on success
-	 *
-	 */
-    function saveshort()
-	{
-	   $model = $this->getModel();
-       $model->saveshort();
-       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
-    } 
-    
+	
 	/**
-	 * Proxy for getModel.
-	 * @since	1.6
+	 * sportsmanagementViewclubname::init()
+	 * 
+	 * @return
 	 */
-	public function getModel($name = 'League', $prefix = 'sportsmanagementModel', $config = Array() ) 
+	public function init ()
 	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
-		return $model;
+		$app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        // get the Data
+		$this->form = $this->get('Form');
+		$this->item = $this->get('Item');
+		$this->script = $this->get('Script');
+ 
+		// Check for errors.
+		if (count($errors = $this->get('Errors'))) 
+		{
+			JError::raiseError(500, implode('<br />', $errors));
+			return false;
+		}
+//		// Assign the Data
+//		$this->form = $form;
+//		$this->item = $item;
+//		$this->script = $script;
+		
+        
 	}
-    
+ 
+	
+	/**
+	 * sportsmanagementViewagegroup::addToolBar()
+	 * 
+	 * @return void
+	 */
+	protected function addToolBar() 
+	{ 
+		
+        
+		JRequest::setVar('hidemainmenu', true);
+		$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_CLUBNAME_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_CLUBNAME_NEW');
+        $this->icon = 'clubname';
+        		
+        parent::addToolbar();
+	}
+	
 }

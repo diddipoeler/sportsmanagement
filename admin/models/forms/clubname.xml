@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form
+	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+	<fieldset name="details"
+  label="COM_SPORTSMANAGEMENT_TABS_DETAILS"
+  description="COM_SPORTSMANAGEMENT_TABS_DETAILS_DESC"  >
+	
+  <field
+			name="id"
+			type="hidden"
+		/>
+		
+		<field
+			name="name"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
+			class="inputbox"
+			required="true"/>
+			
+	<field
+			name="name_long"
+			type="text"
+			label="JFIELD_ALIAS_LABEL"
+			description="JFIELD_ALIAS_DESC"
+			class="inputbox"/>		
+
+<field
+			name="country"
+			type="country"
+			label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_COUNTRY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_COUNTRY_DESC"
+			class="inputbox">
+		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
+	</field>
+	
+         		
+      	
+	</fieldset>			
+
+	<!--
+	<fieldset name="description" 
+  label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
+  description="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION_DESC">		
+			<field
+				name="notes"
+				type="editor"
+				label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_DESCRIPTION"
+				description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_DESCRIPTION_DESC"
+				width="450" 
+				filter="safehtml"/>			
+	</fieldset>		
+	-->
+	
+
+
+	
+</form>

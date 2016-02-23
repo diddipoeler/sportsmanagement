@@ -44,40 +44,73 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.controlleradmin');
  
 
+
 /**
- * sportsmanagementControllerleagues
+ * sportsmanagementControllerclubnames
  * 
- * @package   
- * @author 
- * @copyright diddi
- * @version 2014
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2016
+ * @version $Id$
  * @access public
  */
-class sportsmanagementControllerleagues extends JControllerAdmin
+class sportsmanagementControllerclubnames extends JControllerAdmin
 {
     
-    /**
-	 * Method to update checked positions
-     *
-	 * @access	public
-	 * @return	boolean	True on success
-	 *
-	 */
-    function saveshort()
-	{
-	   $model = $this->getModel();
-       $model->saveshort();
-       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+  
+  
+  
+  /**
+   * sportsmanagementControllerclubnames::import()
+   * 
+   * @return void
+   */
+  public function import()
+    {
+    // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;    
+        
+      $model = $this->getModel();
+       $model->import();  
+      $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));  
+        
     } 
+    
+  /**
+	 * Save the manual order inputs from the list page.
+	 *
+	 * @return	void
+	 * @since	1.6
+	 */
+	/*
+    public function saveorder()
+	{
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		// Get the arrays from the Request
+		$order	= JRequest::getVar('order',	null, 'post', 'array');
+		$originalOrder = explode(',', JRequest::getString('original_order_values'));
+
+		// Make sure something has changed
+		if (!($order === $originalOrder)) {
+			parent::saveorder();
+		} else {
+			// Nothing to reorder
+			$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+			return true;
+		}
+	}
+    */
     
 	/**
 	 * Proxy for getModel.
 	 * @since	1.6
 	 */
-	public function getModel($name = 'League', $prefix = 'sportsmanagementModel', $config = Array() ) 
+	public function getModel($name = 'clubname', $prefix = 'sportsmanagementModel', $config = Array() ) 
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;
 	}
-    
 }

@@ -78,16 +78,18 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 
 
         $starttime = microtime(); 
-		$items = $this->get('Items');
+		$this->items = $this->get('Items');
+        
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
-		$total = $this->get('Total');
-		$pagination = $this->get('Pagination');
         
-        $table = JTable::getInstance('league', 'sportsmanagementTable');
-		$this->table	= $table;
+		$total = $this->get('Total');
+		$this->pagination = $this->get('Pagination');
+        
+//        $table = JTable::getInstance('league', 'sportsmanagementTable');
+		$this->table	= JTable::getInstance('league', 'sportsmanagementTable');
         
         //build the html options for nation
 		$nation[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
@@ -164,8 +166,8 @@ class sportsmanagementViewLeagues extends sportsmanagementView
         
         $this->user	= JFactory::getUser();
 		$this->lists	= $lists;
-		$this->items	= $items;
-		$this->pagination	= $pagination;
+		//$this->items	= $items;
+		//$this->pagination	= $pagination;
 		$this->request_url	= $uri->toString();
 		
         

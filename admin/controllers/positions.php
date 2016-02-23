@@ -58,7 +58,7 @@ class sportsmanagementControllerPositions extends JControllerAdmin
   
 	/**
 	 * Method to update checked positions
-	 *
+     *
 	 * @access	public
 	 * @return	boolean	True on success
 	 *

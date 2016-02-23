@@ -79,12 +79,13 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
         $user = JFactory::getUser();
+        $uri = JFactory::getURI();
 		$model = $this->getModel();
         $document = JFactory::getDocument();
         $browser = JBrowser::getInstance();
         $config = JComponentHelper::getParams ( 'com_media' );
         $this->config	= $config ;
-
+$this->request_url	= $uri->toString();
         $project_id	= $app->getUserState( "$option.pid", '0' );
         $this->project_id	= $project_id;
         $default_name_format = '';
@@ -127,8 +128,12 @@ class sportsmanagementViewMatch extends sportsmanagementView
         // layout pressebericht
         if ( $this->getLayout() == 'pressebericht' || $this->getLayout() == 'pressebericht_3' )
 		{
-		$this->initPressebericht();  
+		$this->setLayout('pressebericht');
         }  
+        if ( $this->getLayout() == 'readpressebericht' || $this->getLayout() == 'readpressebericht_3' )
+		{
+		$this->initPressebericht();  
+        } 
         
         // layout editreferees
         if ( $this->getLayout() == 'editreferees' || $this->getLayout() == 'editreferees_3' )
@@ -336,7 +341,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 
 //build the html options for position
 		$position_id[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
-		if ( $res = $model->getProjectPositionsOptions(0,1) )
+		if ( $res = $model->getProjectPositionsOptions(0,1,$this->project_id) )
 		{
 			$position_id = array_merge( $position_id, $res );
 		}
@@ -345,7 +350,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
 		unset( $position_id );
         
         $position_id[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
-		if ( $res = $model->getProjectPositionsOptions(0,2) )
+		if ( $res = $model->getProjectPositionsOptions(0,2,$this->project_id) )
 		{
 			$position_id = array_merge( $position_id, $res );
 		}
@@ -368,7 +373,7 @@ class sportsmanagementViewMatch extends sportsmanagementView
         
         $this->lists	= $lists;
     
-		$this->setLayout('pressebericht');
+		$this->setLayout('readpressebericht');
     
     }
     

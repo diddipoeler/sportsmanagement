@@ -85,9 +85,9 @@ class sportsmanagementControllermatch extends JControllerForm
 		$post = JRequest::get('post');
 		$model = $this->getModel('match');
 		$add_match_count = $post['add_match_count'];
-		$round_id = JRequest::getInt('rid');
+		$round_id = $post['round_id'];
 		$post['project_id'] = $app->getUserState($option.'.pid',0);
-		$post['round_id'] = $round_id;
+		//$post['round_id'] = $round_id;
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $projectws = $mdlProject->getProject($post['project_id']);
         
@@ -455,6 +455,10 @@ class sportsmanagementControllermatch extends JControllerForm
 			$dest = JPATH_SITE.DS.'tmp'.DS.$upload['name'];
 			$extractdir = JPATH_SITE.DS.'tmp';
 			//$importFile = JPATH_SITE.DS.'tmp'. DS.'pressebericht.jlg';
+if(!JFolder::exists(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'pressebericht'))
+{
+JFolder::create(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'pressebericht');
+}			
             $importFile = JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'pressebericht'.DS.$match_id.'.jlg';
             
 			if (JFile::exists($importFile))

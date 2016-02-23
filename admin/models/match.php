@@ -2630,7 +2630,8 @@ $csv->auto($dcsv['cachefile']);
     {
     $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication(); 
-    $query = JFactory::getDbo()->getQuery(true);
+	$db = sportsmanagementHelper::getDBConnection();
+    $query = $db->getQuery(true);
     
     $csv_player_count = 40;
     $project_id = $app->getUserState( "$option.pid", '0' ); 
@@ -2654,8 +2655,8 @@ $csv->auto($dcsv['cachefile']);
     //$query="SELECT id
 //			FROM #__joomleague_project_team
 //			WHERE project_id=$project_id AND team_id=$favteam";
-			JFactory::getDbo()->setQuery($query);
-			$projectteamid = JFactory::getDbo()->loadResult();
+			$db->setQuery($query);
+			$projectteamid = $db->loadResult();
     //$app->enqueueMessage(JText::_('getPresseberichtReadPlayers projectteamid<br><pre>'.print_r($projectteamid,true).'</pre>'   ),'');    
     
     /*
@@ -2699,28 +2700,32 @@ $csv->auto($dcsv['cachefile']);
         
         // gibt es den spieler
         // Select some fields
+        if ( $teile[0] )
+    {
+
         $query->clear();
         $query->select('id');
         // From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
         $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
         $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
-        
-       // $query="SELECT id
-//				FROM #__joomleague_person 
-//                WHERE firstname like '".trim($teile[1])."' 
-//                AND lastname like '".trim($teile[0])."' ";
-		JFactory::getDbo()->setQuery($query);
-		$person_id = JFactory::getDbo()->loadResult();
-        
+
+		$db->setQuery($query);
+		$person_id = $db->loadResult();
+    }
+    
         if ( $person_id )
         {
             $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->person_id = $person_id;
-            $query="SELECT id,project_position_id
-			FROM #__joomleague_team_player
-			WHERE person_id=$person_id AND projectteam_id=$projectteamid";
-			JFactory::getDbo()->setQuery($query);
-			$projectpersonid = JFactory::getDbo()->loadObject();
+            $query->clear();
+        $query->select('id,project_position_id');
+        // From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player');
+        $query->where('person_id = ' . $person_id );
+        $query->where('projectteam_id = ' . $projectteamid );
+            
+			$db->setQuery($query);
+			$projectpersonid = $db->loadObject();
             $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->project_person_id = $projectpersonid->id;
             $this->csv_player[$csv_file->data[0][$find_csv.'-S'.$a.'-Nr']]->project_position_id = $projectpersonid->project_position_id;
         }
@@ -2746,28 +2751,32 @@ $csv->auto($dcsv['cachefile']);
         
         // gibt es den spieler ?
         // Select some fields
+        if ( $teile[0] )
+    {
+
         $query->clear();
         $query->select('id');
         // From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
         $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
         $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
-        
-//        $query="SELECT id
-//				FROM #__joomleague_person 
-//                WHERE firstname like '".trim($teile[1])."' 
-//                AND lastname like '".trim($teile[0])."' ";
-		JFactory::getDbo()->setQuery($query);
-		$person_id = JFactory::getDbo()->loadResult();
-        
+
+		$db->setQuery($query);
+		$person_id = $db->loadResult();
+    }
         if ( $person_id )
         {
             $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->person_id = $person_id;
-            $query="SELECT id,project_position_id
-			FROM #__joomleague_team_player
-			WHERE person_id=$person_id AND projectteam_id=$projectteamid";
-			JFactory::getDbo()->setQuery($query);
-			$projectpersonid = JFactory::getDbo()->loadObject();
+            $query->clear();
+        $query->select('id,project_position_id');
+        // From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player');
+        $query->where('person_id = ' . $person_id );
+        $query->where('projectteam_id = ' . $projectteamid );
+        
+            
+			$db->setQuery($query);
+			$projectpersonid = $db->loadObject();
             $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->project_person_id = $projectpersonid->id;
             $this->csv_player[$csv_file->data[0][$find_csv.'-A'.$a.'-Nr']]->project_position_id = $projectpersonid->project_position_id;
         }
@@ -2835,14 +2844,16 @@ $csv->auto($dcsv['cachefile']);
     $project_person_id = $this->csv_player[$spielernummer]->project_person_id;
     if ( $project_person_id )
     {
-        $query="SELECT event_type_id
-				FROM #__joomleague_match_event
-                WHERE match_id = ".$match_id." 
-                AND projectteam_id = ".$projectteamid." 
-                AND teamplayer_id = ".$project_person_id."
-                ";
-		JFactory::getDbo()->setQuery($query);
-		$match_event_id = JFactory::getDbo()->loadResult();
+    	$query->clear();
+        $query->select('event_type_id');
+        // From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event');
+        $query->where('match_id = ' . $match_id );
+        $query->where('projectteam_id = ' . $projectteamid );
+        $query->where('teamplayer_id = ' . $project_person_id );
+        
+		$db->setQuery($query);
+		$match_event_id = $db->loadResult();
         $this->csv_cards[$key]->event_type_id = $match_event_id;
     }    
     }
@@ -2866,28 +2877,31 @@ $csv->auto($dcsv['cachefile']);
     
     // gibt es den staff ?
     // Select some fields
+    if ( $teile[0] )
+    {
+
         $query->clear();
         $query->select('id');
         // From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
-        $query->where('firstname LIKE ' . JFactory::getDbo()->Quote( '' . trim($teile[0]) . '' ) ).
-        $query->where('lastname LIKE ' . JFactory::getDbo()->Quote( '' . trim($teile[1]) . '' ) ).
-        
-//    $query="SELECT id
-//	       	FROM #__joomleague_person 
-//            WHERE firstname like '".trim($teile[0])."' 
-//            AND lastname like '".trim($teile[1])."' ";
-    JFactory::getDbo()->setQuery($query);
-	$person_id = JFactory::getDbo()->loadResult();
-        
+        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
+        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
+
+    $db->setQuery($query);
+	$person_id = $db->loadResult();
+    }
     if ( $person_id )
     {
             $this->csv_staff[$i]->person_id = $person_id;
-            $query="SELECT id,project_position_id
-			FROM #__joomleague_team_staff
-			WHERE person_id=$person_id AND projectteam_id=$projectteamid";
-			JFactory::getDbo()->setQuery($query);
-			$projectpersonid = JFactory::getDbo()->loadObject();
+            $query->clear();
+        $query->select('id,project_position_id');
+        // From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff');
+        $query->where('person_id = ' . $person_id );
+        $query->where('projectteam_id = ' . $projectteamid );
+            
+			$db->setQuery($query);
+			$projectpersonid = $db->loadObject();
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
     }
@@ -2903,28 +2917,31 @@ $csv->auto($dcsv['cachefile']);
     $this->csv_staff[$i]->project_position_id = 0;
     
     // gibt es den staff ?
+    if ( $teile[0] )
+    {
+
         $query->clear();
         $query->select('id');
         // From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
-        $query->where('firstname LIKE ' . JFactory::getDbo()->Quote( '' . trim($teile[0]) . '' ) ).
-        $query->where('lastname LIKE ' . JFactory::getDbo()->Quote( '' . trim($teile[1]) . '' ) ).
-        
-//    $query="SELECT id
-//	       	FROM #__joomleague_person 
-//            WHERE firstname like '".trim($teile[0])."' 
-//            AND lastname like '".trim($teile[1])."' ";
-    JFactory::getDbo()->setQuery($query);
-	$person_id = JFactory::getDbo()->loadResult();
-        
+        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
+        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
+
+    $db->setQuery($query);
+	$person_id = $db->loadResult();
+    }        
     if ( $person_id )
     {
             $this->csv_staff[$i]->person_id = $person_id;
-            $query="SELECT id,project_position_id
-			FROM #__joomleague_team_staff
-			WHERE person_id=$person_id AND projectteam_id=$projectteamid";
-			JFactory::getDbo()->setQuery($query);
-			$projectpersonid = JFactory::getDbo()->loadObject();
+            $query->clear();
+        $query->select('id,project_position_id');
+        // From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff');
+        $query->where('person_id = ' . $person_id );
+        $query->where('projectteam_id = ' . $projectteamid );
+            
+			$db->setQuery($query);
+			$projectpersonid = $db->loadObject();
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
     }
@@ -2940,27 +2957,31 @@ $csv->auto($dcsv['cachefile']);
     $this->csv_staff[$i]->project_position_id = 0;
     
     // gibt es den staff ?
+    if ( $teile[0] )
+    {
+
         $query->clear();
         $query->select('id');
         // From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
-        $query->where('firstname LIKE ' . JFactory::getDbo()->Quote( '' . trim($teile[0]) . '' ) ).
-        $query->where('lastname LIKE ' . JFactory::getDbo()->Quote( '' . trim($teile[1]) . '' ) ).
-//    $query="SELECT id
-//	       	FROM #__joomleague_person 
-//            WHERE firstname like '".trim($teile[0])."' 
-//            AND lastname like '".trim($teile[1])."' ";
-    JFactory::getDbo()->setQuery($query);
-	$person_id = JFactory::getDbo()->loadResult();
-        
+        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
+        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
+
+    $db->setQuery($query);
+	$person_id = $db->loadResult();
+    }
     if ( $person_id )
     {
             $this->csv_staff[$i]->person_id = $person_id;
-            $query="SELECT id,project_position_id
-			FROM #__joomleague_team_staff
-			WHERE person_id=$person_id AND projectteam_id=$projectteamid";
-			JFactory::getDbo()->setQuery($query);
-			$projectpersonid = JFactory::getDbo()->loadObject();
+            $query->clear();
+        $query->select('id,project_position_id');
+        // From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff');
+        $query->where('person_id = ' . $person_id );
+        $query->where('projectteam_id = ' . $projectteamid );
+            
+			$db->setQuery($query);
+			$projectpersonid = $db->loadObject();
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
     }
@@ -2976,27 +2997,31 @@ $csv->auto($dcsv['cachefile']);
     $this->csv_staff[$i]->project_position_id = 0;
     
     // gibt es den staff ?
+    if ( $teile[0] )
+    {
+
         $query->clear();
         $query->select('id');
         // From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
-        $query->where('firstname LIKE ' . JFactory::getDbo()->Quote( '' . trim($teile[0]) . '' ) ).
-        $query->where('lastname LIKE ' . JFactory::getDbo()->Quote( '' . trim($teile[1]) . '' ) ).
-//    $query="SELECT id
-//	       	FROM #__joomleague_person 
-//            WHERE firstname like '".trim($teile[0])."' 
-//            AND lastname like '".trim($teile[1])."' ";
-    JFactory::getDbo()->setQuery($query);
-	$person_id = JFactory::getDbo()->loadResult();
-        
+        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
+        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
+
+    $db->setQuery($query);
+	$person_id = $db->loadResult();
+    }
     if ( $person_id )
     {
             $this->csv_staff[$i]->person_id = $person_id;
-            $query="SELECT id,project_position_id
-			FROM #__joomleague_team_staff
-			WHERE person_id=$person_id AND projectteam_id=$projectteamid";
-			JFactory::getDbo()->setQuery($query);
-			$projectpersonid = JFactory::getDbo()->loadObject();
+            $query->clear();
+        $query->select('id,project_position_id');
+        // From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff');
+        $query->where('person_id = ' . $person_id );
+        $query->where('projectteam_id = ' . $projectteamid );
+            
+			$db->setQuery($query);
+			$projectpersonid = $db->loadObject();
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
     }
@@ -3012,27 +3037,31 @@ $csv->auto($dcsv['cachefile']);
     $this->csv_staff[$i]->project_position_id = 0;
     
     // gibt es den staff ?
+    if ( $teile[0] )
+    {
+
         $query->clear();
         $query->select('id');
         // From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
-        $query->where('firstname LIKE ' . JFactory::getDbo()->Quote( '' . trim($teile[0]) . '' ) ).
-        $query->where('lastname LIKE ' . JFactory::getDbo()->Quote( '' . trim($teile[1]) . '' ) ).
-//    $query="SELECT id
-//	       	FROM #__joomleague_person 
-//            WHERE firstname like '".trim($teile[0])."' 
-//            AND lastname like '".trim($teile[1])."' ";
-    JFactory::getDbo()->setQuery($query);
-	$person_id = JFactory::getDbo()->loadResult();
-        
+        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
+        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
+
+    $db->setQuery($query);
+	$person_id = $db->loadResult();
+    }
     if ( $person_id )
     {
             $this->csv_staff[$i]->person_id = $person_id;
-            $query="SELECT id,project_position_id
-			FROM #__joomleague_team_staff
-			WHERE person_id=$person_id AND projectteam_id=$projectteamid";
-			JFactory::getDbo()->setQuery($query);
-			$projectpersonid = JFactory::getDbo()->loadObject();
+            $query->clear();
+        $query->select('id,project_position_id');
+        // From the table
+		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff');
+        $query->where('person_id = ' . $person_id );
+        $query->where('projectteam_id = ' . $projectteamid );
+        
+			$db->setQuery($query);
+			$projectpersonid = $db->loadObject();
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
     }
@@ -3048,27 +3077,27 @@ $csv->auto($dcsv['cachefile']);
     $this->csv_staff[$i]->project_position_id = 0;
     
     // gibt es den staff ?
+    if ( $teile[0] )
+    {
+
         $query->clear();
         $query->select('id');
         // From the table
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person');
-        $query->where('firstname LIKE ' . JFactory::getDbo()->Quote( '' . trim($teile[0]) . '' ) ).
-        $query->where('lastname LIKE ' . JFactory::getDbo()->Quote( '' . trim($teile[1]) . '' ) ).
-//    $query="SELECT id
-//	       	FROM #__joomleague_person 
-//            WHERE firstname like '".trim($teile[0])."' 
-//            AND lastname like '".trim($teile[1])."' ";
-    JFactory::getDbo()->setQuery($query);
-	$person_id = JFactory::getDbo()->loadResult();
-        
+        $query->where('firstname LIKE ' . $db->Quote( '' . trim($teile[0]) . '' ) ).
+        $query->where('lastname LIKE ' . $db->Quote( '' . trim($teile[1]) . '' ) ).
+
+    $db->setQuery($query);
+	$person_id = $db->loadResult();
+    }        
     if ( $person_id )
     {
             $this->csv_staff[$i]->person_id = $person_id;
             $query="SELECT id,project_position_id
 			FROM #__joomleague_team_staff
 			WHERE person_id=$person_id AND projectteam_id=$projectteamid";
-			JFactory::getDbo()->setQuery($query);
-			$projectpersonid = JFactory::getDbo()->loadObject();
+			$db->setQuery($query);
+			$projectpersonid = $db->loadObject();
             $this->csv_staff[$i]->project_person_id = $projectpersonid->id;
             $this->csv_staff[$i]->project_position_id = $projectpersonid->project_position_id;
     }

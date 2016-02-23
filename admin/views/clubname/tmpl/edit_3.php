@@ -27,7 +27,7 @@
 * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
 * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
 * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
 * Siehe die GNU General Public License für weitere Details.
 *
@@ -37,47 +37,20 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-// No direct access to this file
+// No direct access
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla controlleradmin library
-jimport('joomla.application.component.controlleradmin');
- 
+$templatesToLoad = array('footer','fieldsets');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.formvalidation');
+$params = $this->form->getFieldsets('params');
+// Get the form fieldsets.
+$fieldsets = $this->form->getFieldsets();
 
-/**
- * sportsmanagementControllerleagues
- * 
- * @package   
- * @author 
- * @copyright diddi
- * @version 2014
- * @access public
- */
-class sportsmanagementControllerleagues extends JControllerAdmin
-{
-    
-    /**
-	 * Method to update checked positions
-     *
-	 * @access	public
-	 * @return	boolean	True on success
-	 *
-	 */
-    function saveshort()
-	{
-	   $model = $this->getModel();
-       $model->saveshort();
-       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
-    } 
-    
-	/**
-	 * Proxy for getModel.
-	 * @since	1.6
-	 */
-	public function getModel($name = 'League', $prefix = 'sportsmanagementModel', $config = Array() ) 
-	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
-		return $model;
-	}
-    
-}
+//echo COM_SPORTSMANAGEMENT_FIELDSETS_TEMPLATE;
+
+?>
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
+<?PHP
+echo $this->loadTemplate('editdata');  
+?>  

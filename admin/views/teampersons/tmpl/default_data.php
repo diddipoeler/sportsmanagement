@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie kÃ¶nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spÃ¤teren
+* verÃ¶ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nÃ¼tzlich sein wird, aber
+* OHNE JEDE GEWÃ„HRLEISTUNG, bereitgestellt; sogar ohne die implizite
+* GewÃ¤hrleistung der MARKTFÃ„HIGKEIT oder EIGNUNG FÃœR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fÃ¼r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -255,13 +255,13 @@ JHtml::_('behavior.modal');
 		                      {
                             ?>
               <td class="center">
-								<input<?php echo $inputappend; ?>	type="text" size="4" class="inputbox"
+								<input<?php echo $inputappend; ?>	type="text" size="4" class="form-control form-control-inline"
 																	name="market_value<?php echo $row->id; ?>"
 																	value="<?php echo $row->market_value; ?>"
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 							</td>
 							<td class="center">
-								<input<?php echo $inputappend; ?>	type="text" size="4" class="inputbox"
+								<input<?php echo $inputappend; ?>	type="text" size="4" class="form-control form-control-inline"
 																	name="jerseynumber<?php echo $row->id; ?>"
 																	value="<?php echo $row->jerseynumber; ?>"
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
@@ -291,7 +291,7 @@ JHtml::_('behavior.modal');
 								{
 									$append=' style="background-color:#FFCCCC"';
 								}
-								echo JHtml::_( 'select.genericlist', $this->lists['project_position_id'], 'project_position_id' . $row->id, $inputappend . 'class="inputbox" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
+								echo JHtml::_( 'select.genericlist', $this->lists['project_position_id'], 'project_position_id' . $row->id, $inputappend . 'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' . $i . '\').checked=true"' . $append, 'value', 'text', $selectedvalue );
 								
 //                                echo '<br>project_position_id -> '.$row->project_position_id.'';
 //                                echo '<br>position_id -> '.$row->position_id.'';
@@ -352,7 +352,7 @@ JHtml::_('behavior.modal');
 								?>
 								<input	type="text" name="order[]" size="5" value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?>
 										onchange="document.getElementById('cb<?php echo $i; ?>').checked=true"
-                                        class="text_area" style="text-align: center; " />
+                                        class="form-control form-control-inline" style="text-align: center; " />
 							</td>
 							<td class="center">
 								<?php

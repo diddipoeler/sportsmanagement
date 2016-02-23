@@ -15,6 +15,7 @@
 <clubnames><clubname country="DEU" name="BV" >Ball-Verein</clubname></clubnames>
 <clubnames><clubname country="DEU" name="CfR" >Club für Rasenspiele </clubname></clubnames>
 <clubnames><clubname country="DEU" name="DFC/DFK" >Deutscher Fussball-C(K)lub </clubname></clubnames>
+<clubnames><clubname country="DEU" name="DGF" >Dansk Gymnastikforening</clubname></clubnames>
 <clubnames><clubname country="DEU" name="DJK" >Deutsche Jugendkraft </clubname></clubnames>
 <clubnames><clubname country="DEU" name="DSB" >Deutsche Sportbrüder </clubname></clubnames>
 <clubnames><clubname country="DEU" name="DSC/DSK" >Deutscher Sport C(K)lub </clubname></clubnames>
@@ -100,6 +101,7 @@
 <clubnames><clubname country="DEU" name="VfvB" >Verein für volkstümliche Bewegungsspiele </clubname></clubnames>
 <clubnames><clubname country="DEU" name="VSV" >Volkssportverein</clubname></clubnames>
 <clubnames><clubname country="DEU" name="VTB" >Verein für Turner- und Ballsportarten</clubname></clubnames>
+<clubnames><clubname country="DEU" name="VV" >Volksverein</clubname></clubnames>
 <clubnames><clubname country="DEU" name="WSG" >Wehrmachtsportgemeinschaft</clubname></clubnames>
 <clubnames><clubname country="DEU" name="WSV" >Wehrmacht Sportverein </clubname></clubnames>
 <clubnames><clubname country="DEU" name="WSV" >Winter Sportverein </clubname></clubnames>

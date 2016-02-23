@@ -151,6 +151,11 @@ jimport('joomla.html.html.bootstrap');
 <span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_STATISTICS') ?></span>
 </a>
 
+<a class="btn" href="index.php?option=com_sportsmanagement&view=clubnames">
+<img src="components/com_sportsmanagement/assets/icons/statistik.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_CLUBNAMES') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_CLUBNAMES') ?></span>
+</a>
+
 </div>
 
 <hr class="hr-condensed"> 

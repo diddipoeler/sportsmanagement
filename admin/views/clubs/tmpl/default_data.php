@@ -314,13 +314,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 							</td>
 						<td class="">
-								<input<?php echo $inputappend; ?>	type="text" size="50" class="form-control form-control-inline"
+								<input<?php echo $inputappend; ?>	type="text" size="30" class="form-control form-control-inline"
 																	name="location<?php echo $row->id; ?>"
 																	value="<?php echo $row->location; ?>"
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 							</td>
                         <td class="">
-								<input<?php echo $inputappend; ?>	type="text" size="50" class="form-control form-control-inline"
+								<input<?php echo $inputappend; ?>	type="text" size="30" class="form-control form-control-inline"
 																	name="address<?php echo $row->id; ?>"
 																	value="<?php echo $row->address; ?>"
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
