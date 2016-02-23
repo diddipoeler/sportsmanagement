@@ -103,6 +103,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         $this->assignRef('project',$project);
+        $this->setLayout('massadd');  
         
     }    
 
@@ -205,7 +206,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
 		$this->lists	= $lists;
 		
 		$this->addToolbar_Populate();		
-		//parent::display($tpl);
+		$this->setLayout('populate');  
 	}
 	
 	/**
