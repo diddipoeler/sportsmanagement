@@ -39,7 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access');
 ?>
-	<div id="editcell">
+	
 		<fieldset class="adminform">
 			<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_TITLE','<i>'.$this->projectws->name.'</i>'); ?></legend>
 			<form name='copyform' method='post' style='display:inline' id='copyform'>
@@ -164,4 +164,4 @@ defined('_JEXEC') or die('Restricted access');
 				</table>
 			</form>
 		</fieldset>
-	</div>
+	
