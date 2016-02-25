@@ -1,9 +1,9 @@
 <?php
-/** Joomla Sports Management ein Programm zur Verwaltung für alle Sportarten
+/** Joomla Sports Management ein Programm zur Verwaltung fÃ¼r alle Sportarten
 * @version 1.0.26
 * @file		components/sportsmanagement/views/ranking/view.html.php
 * @author diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license This file is part of Joomla Sports Management.
 *
 * Joomla Sports Management is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von Joomla Sports Management.
 *
-* Joomla Sports Management ist Freie Software: Sie können es unter den Bedingungen
+* Joomla Sports Management ist Freie Software: Sie kÃ¶nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spÃ¤teren
+* verÃ¶ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* Joomla Sports Management wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* Joomla Sports Management wird in der Hoffnung, dass es nÃ¼tzlich sein wird, aber
+* OHNE JEDE GEWÃ„HRLEISTUNG, bereitgestellt; sogar ohne die implizite
+* GewÃ¤hrleistung der MARKTFÃ„HIGKEIT oder EIGNUNG FÃœR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fÃ¼r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -267,11 +267,11 @@ class sportsmanagementViewRanking extends sportsmanagementView
 		$lists['type'] = $opp_arr;
 		$this->lists = $lists;
 
-		if (!isset ($config['colors'])) {
-			$config['colors'] = "";
+		if (!isset ($this->config['colors'])) {
+			$this->config['colors'] = "";
 		}
 
-		$this->colors = sportsmanagementModelProject::getColors($config['colors'],sportsmanagementModelProject::$cfg_which_database);
+		$this->colors = sportsmanagementModelProject::getColors($this->config['colors'],sportsmanagementModelProject::$cfg_which_database);
 		//$this->assignRef('result', $model->getTeamInfo());
 		//		$this->assignRef( 'pageNav', $model->pagenav( "ranking", count( $rounds ), $sr->to ) );
 		//		$this->assignRef( 'pageNav2', $model->pagenav2( "ranking", count( $rounds ), $sr->to ) );
