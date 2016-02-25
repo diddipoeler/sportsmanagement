@@ -287,6 +287,7 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 		addfieldpath="/administrator/components/com_sportsmanagement/elements">
 
 		<field name="fav_highlight_type" type="radio" default="1"
+		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_FAV_HIGHLIGHT"
 			description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_FAV_HIGHLIGHT">
 			<option value="1">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION1_FAV_HIGHLIGHT
