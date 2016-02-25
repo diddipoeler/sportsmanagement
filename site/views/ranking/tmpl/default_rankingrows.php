@@ -67,18 +67,18 @@ foreach( $current as $ptid => $team )
 	//Table colors
 	$color = "";
 
-	if ( isset( $this->colors[$j]["von"] ) && $counter == $this->colors[$j]["von"] )
+	if ( isset( $this->colors[$j]["from"] ) && $counter == $this->colors[$j]["from"] )
 	{
 		$color = $this->colors[$j]["color"];
 	}
 
-	if ( isset( $this->colors[$j]["von"] ) && isset( $this->colors[$j]["bis"] ) &&
-			( $counter > $this->colors[$j]["von"] && $counter <= $this->colors[$j]["bis"] ) )
+	if ( isset( $this->colors[$j]["from"] ) && isset( $this->colors[$j]["to"] ) &&
+			( $counter > $this->colors[$j]["from"] && $counter <= $this->colors[$j]["to"] ) )
 	{
 		$color = $this->colors[$j]["color"];
 	}
 
-	if ( isset( $this->colors[$j]["bis"] ) && $counter == $this->colors[$j]["bis"] )
+	if ( isset( $this->colors[$j]["to"] ) && $counter == $this->colors[$j]["to"] )
 	{
 		$j++;
 	}
