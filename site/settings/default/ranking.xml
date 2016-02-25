@@ -236,6 +236,7 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 		</field>
 		
 		<field 	name="use_background_row_color" type="radio" default="1" 
+		class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_USE_BACKGROUND_ROW_COLOR" 
 				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_USE_BACKGROUND_ROW_COLOR">
 			<option value="1">COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_OPTION0_ROW</option>
