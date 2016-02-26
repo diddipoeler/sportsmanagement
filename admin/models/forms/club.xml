@@ -33,15 +33,59 @@
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADMIN"
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADMIN_DESC"
 			/>
-<!-- 
-		<field
-			name="address"
-			type="textarea"
-			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
-			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS_DESC"
+
+       <field name="geocomplete" type="geocomplete" class="inputbox"
+			size="40" label="COM_SPORTSMANAGEMENT_LOCATION_FIELD_GEOCOMPLETE_LABEL"
+			description="COM_SPORTSMANAGEMENT_LOCATION_FIELD_GEOCOMPLETE_DESC" />
+      
+      
+<field
+			name="country"
+			type="country"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_DESC"
+			class="inputbox">
+		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
+	</field>
+  
+<field
+			name="state"
+			size="50"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_STATE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_STATE_DESC"
+			class="inputbox"/>	
+      
+<field
+			name="location"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY_DESC"
+			class="inputbox"/>	 
+      
+ <field
+			name="zipcode"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE_DESC"
+			class="inputbox"/>	
+<!--      
+	<field
+			name="location"
+			size="50"
+			type="text"
+			
+			depends="zipcode"
+			task="locationzipcodeoptions" 
+			key_field="zipcode"
+			value_field="zipcode"
+      varname="id"
+      targettable="countries_plz"
+      
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY_DESC"
 			class="inputbox"/>
 
-     		
 		<field
 			name="zipcode"
 			size="10"
@@ -57,41 +101,28 @@
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE_DESC"
 			class="inputbox"/>
-      	
+-->
+                          
 		<field
-			name="location"
-			size="50"
-			type="text"
-			
-			depends="zipcode"
-			task="locationzipcodeoptions" 
-			key_field="zipcode"
-			value_field="zipcode"
-      varname="id"
-      targettable="countries_plz"
-      
-			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY"
-			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY_DESC"
+			name="address"
+			type="textarea"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS_DESC"
 			class="inputbox"/>
--->
-      	
-		<field
-			name="state"
-			size="50"
+
+ 
+      <field
+			name="latitude"
 			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_STATE"
-			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_STATE_DESC"
-			class="inputbox"/>				
-<!--
-		<field
-			name="country"
-			type="country"
-			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY"
-			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_COUNTRY_DESC"
-			class="inputbox">
-		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
-	</field>
--->
+			label="COM_SPORTSMANAGEMENT_GLOBAL_LATITUDE"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_LATITUDE_DESC"
+			class="inputbox"/>  
+<field
+			name="longitude"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE_DESC"
+			class="inputbox"/>
   
   <field
 			name="associations"
@@ -263,26 +294,21 @@
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_NEW_CLIB_ID_DESC"
 			class="inputbox"/>        
 
-<field
-			name="latitude"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_GLOBAL_LATITUDE"
-			description="COM_SPORTSMANAGEMENT_GLOBAL_LATITUDE_DESC"
-			class="inputbox"/>  
-<field
-			name="longitude"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE"
-			description="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE_DESC"
-			class="inputbox"/>  
+
                               	
 	</fieldset>			
 
-  
+  <!--
 <fields name="request">
 <fieldset name="request"
 label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
   description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS_DESC">    
+
+  <field name="geocomplete" type="geocomplete" class="inputbox"
+			size="40" label="COM_SPORTSMANAGEMENT_LOCATION_FIELD_GEOCOMPLETE_LABEL"
+			description="COM_SPORTSMANAGEMENT_LOCATION_FIELD_GEOCOMPLETE_DESC" />
+      
+
 
 <field
 			name="country"
@@ -293,30 +319,7 @@ label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
 		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
 	</field>
 
-  	<field
-			name="address"
-			type="textarea"
-			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
-			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS_DESC"
-			class="inputbox"/>
-			
-		<field
-			name="zipcode"
-			size="10"
-			type="text"
-			
-			depends="country"
-			task="countryzipcodeoptions" 
-			key_field="country"
-			value_field="country"
-      varname="id"
-      targettable="countries_plz"
-			required=""
-			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE"
-			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE_DESC"
-			class="inputbox"/>
-      	
-		<field
+   <field
 			name="location"
 			size="50"
 			type="text"
@@ -331,14 +334,57 @@ label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY_DESC"
 			class="inputbox"/>
+
+    		<field
+			name="zipcode"
+			size="10"
+			type="text"
+			
+			depends="country"
+			task="countryzipcodeoptions" 
+			key_field="country"
+			value_field="country"
+      varname="id"
+      targettable="countries_plz"
+			required=""
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE_DESC"
+			class="inputbox"/>
+      
+  	<field
+			name="address"
+			type="textarea"
+			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS_DESC"
+			class="inputbox"/>
+			
+
+      	
+		
     
+    <field
+			name="latitude"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_LATITUDE"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_LATITUDE_DESC"
+			class="inputbox"/>  
+<field
+			name="longitude"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE_DESC"
+			class="inputbox"/>  
+      
 </fieldset>
 </fields>		
-  
+-->
+
+<!--  
   <fieldset name="maps"
   label="COM_SPORTSMANAGEMENT_TABS_MAP"
   description="COM_SPORTSMANAGEMENT_TABS_MAP_DESC">
   </fieldset>
+-->
   
   <fieldset name="teamsofclub"
   label="COM_SPORTSMANAGEMENT_TABS_TEAMS_OF_CLUB"

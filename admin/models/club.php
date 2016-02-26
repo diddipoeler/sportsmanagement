@@ -440,15 +440,19 @@ return $teamsofclub;
 //       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
 //       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
 
-       $data['country'] = $data['request']['country'];
-       $data['zipcode'] = $data['request']['zipcode'];
-       $data['location'] = $data['request']['location'];
-       $data['address'] = $data['request']['address'];
+//       $data['country'] = $data['request']['country'];
+//       $data['zipcode'] = $data['request']['zipcode'];
+//       $data['location'] = $data['request']['location'];
+//       $data['address'] = $data['request']['address'];
+//       $data['latitude'] = $data['request']['latitude'];
+//       $data['longitude'] = $data['request']['longitude'];
+       
        
 /**
  *        wenn die plz tabelle genutzt werden soll
  *        dann können wir vorher schon einmal die latitude und longitude selektieren.
  */
+/*
        if ( $cfg_use_plz_table )
        {
        $query->select('a.latitude,a.longitude ');
@@ -475,7 +479,7 @@ return $teamsofclub;
 		$data['longitude'] = $result->longitude;
         
        }
-       
+*/       
        
        
        // gibt es vereinsnamen zum ändern ?
@@ -553,7 +557,7 @@ return $teamsofclub;
         }
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
-        
+/*        
         if (!empty($data['address']))
 		{
 			$address_parts[] = $data['address'];
@@ -634,6 +638,7 @@ return $teamsofclub;
         }
             
         }
+ */
         
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{

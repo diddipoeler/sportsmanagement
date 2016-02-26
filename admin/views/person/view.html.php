@@ -66,14 +66,14 @@ class sportsmanagementViewPerson extends sportsmanagementView
         // JInput object
 	$jinput = $app->input;
 	$model = $this->getModel();
-	$option = $jinput->getCmd('option');
+	$this->option = $jinput->getCmd('option');
         // Get a refrence of the page instance in joomla
 	$document = JFactory::getDocument();
 	$starttime = microtime();
         
     // get the Data
-		$form = $this->get('Form');
-		$item = $this->get('Item');
+		$this->form = $this->get('Form');
+		$this->item = $this->get('Item');
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($item,true).'</pre>'),'');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' form<br><pre>'.print_r($form,true).'</pre>'),'');
@@ -83,7 +83,7 @@ class sportsmanagementViewPerson extends sportsmanagementView
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		$script = $this->get('Script');
+		$this->script = $this->get('Script');
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -91,19 +91,19 @@ class sportsmanagementViewPerson extends sportsmanagementView
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-		// Assign the Data
-		$this->form = $form;
-		$this->item = $item;
-		$this->script = $script;
+//		// Assign the Data
+//		$this->form = $form;
+//		$this->item = $item;
+//		$this->script = $script;
                 
         // name für den titel setzen
         $this->item->name = $this->item->lastname.' - '.$this->item->firstname;
         
-        $this->form->setValue('address_country', 'request', $this->item->address_country);
-        $this->form->setValue('zipcode', 'request', $this->item->zipcode);
-        $this->form->setValue('location', 'request', $this->item->location);
-        $this->form->setValue('address', 'request', $this->item->address);
-        $this->form->setValue('state', 'request', $this->item->state);
+//        $this->form->setValue('address_country', 'request', $this->item->address_country);
+//        $this->form->setValue('zipcode', 'request', $this->item->zipcode);
+//        $this->form->setValue('location', 'request', $this->item->location);
+//        $this->form->setValue('address', 'request', $this->item->address);
+//        $this->form->setValue('state', 'request', $this->item->state);
         
         
         $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
@@ -132,7 +132,7 @@ class sportsmanagementViewPerson extends sportsmanagementView
             $this->form->setValue('deathday', null, '0000-00-00');
         }
         
-        $extended = sportsmanagementHelper::getExtended($item->extended, 'person');
+        $extended = sportsmanagementHelper::getExtended($this->item->extended, 'person');
 		$this->extended =  $extended;
         $extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'person');		
 		$this->extendeduser = $extendeduser;
@@ -140,10 +140,11 @@ class sportsmanagementViewPerson extends sportsmanagementView
 		//$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
  
 	$this->checkextrafields = sportsmanagementHelper::checkUserExtraFields();
+    $lists = array();
 	if ( $this->checkextrafields )
 	{
-	$lists = array();
-	$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($item->id);
+//	$lists = array();
+	$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item-->id);
             //$app->enqueueMessage(JText::_('view -> '.'<pre>'.print_r($lists['ext_fields'],true).'</pre>' ),'');
         }
         
@@ -159,11 +160,11 @@ class sportsmanagementViewPerson extends sportsmanagementView
 	$this->form->setValue('agegroup_id', null, $person_range);
 	}
     
- 	$document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');
+ 	$document->addScript(JURI::base().'components/'.$this->option.'/assets/js/sm_functions.js');
     
  	$javascript = "\n";
  	$javascript .= "window.addEvent('domready', function() {";   
-	$javascript .= 'StartEditshowPersons('.$form->getValue('request_person_art').');' . "\n"; 
+	$javascript .= 'StartEditshowPersons('.$this->form->getValue('request_person_art').');' . "\n"; 
 	$javascript .= '});' . "\n"; 
 	$document->addScriptDeclaration( $javascript );
     
@@ -173,8 +174,11 @@ class sportsmanagementViewPerson extends sportsmanagementView
 	$jlang->load('com_contact', JPATH_ADMINISTRATOR, $jlang->getDefault(), true);
 	$jlang->load('com_contact', JPATH_ADMINISTRATOR, null, true);
         
-	$document->addScript('http://maps.google.com/maps/api/js?&sensor=false&language=de');
-	$document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
+//	$document->addScript('http://maps.google.com/maps/api/js?&sensor=false&language=de');
+//	$document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
+$this->document->addScript((JBrowser::getInstance()->isSSLConnection() ? "https" : "http") . '://maps.googleapis.com/maps/api/js?libraries=places&language=de');
+$this->document->addScript(JURI::base() . 'components/'.$this->option.'/assets/js/geocomplete.js');
+$this->document->addScript(JURI::base() . 'components/'.$this->option.'/views/person/tmpl/edit.js');
     
 	}
  

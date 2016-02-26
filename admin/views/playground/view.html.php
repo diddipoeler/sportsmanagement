@@ -61,19 +61,21 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 	public function init ()
 	{
 		$app = JFactory::getApplication();
-        $document = JFactory::getDocument();
+        // JInput object
+	$jinput = $app->input;
+        //$document = JFactory::getDocument();
         $starttime = microtime(); 
-        
+        $this->option = $jinput->getCmd('option');
         // get the Data
-		$form = $this->get('Form');
-		$item = $this->get('Item');
+		$this->form  = $this->get('Form');
+		$this->item = $this->get('Item');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		$script = $this->get('Script');
+		$this->script = $this->get('Script');
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -81,15 +83,18 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-		// Assign the Data
-		$this->form = $form;
-		$this->item = $item;
-		$this->script = $script;
+//		// Assign the Data
+//		$this->form = $form;
+//		$this->item = $item;
+//		$this->script = $script;
         
-        $this->form->setValue('country', 'request', $this->item->country);
-        $this->form->setValue('zipcode', 'request', $this->item->zipcode);
-        $this->form->setValue('city', 'request', $this->item->city);
-        $this->form->setValue('address', 'request', $this->item->address);
+        //$this->form->setValue('country', 'request', $this->item->country);
+//        $this->form->setValue('zipcode', 'request', $this->item->zipcode);
+//        $this->form->setValue('city', 'request', $this->item->city);
+//        $this->form->setValue('address', 'request', $this->item->address);
+//        $this->form->setValue('latitude', 'request', $this->item->latitude);
+//        $this->form->setValue('longitude', 'request', $this->item->longitude);
+        
         
         if ( $this->item->latitude == 255 )
         {
@@ -101,12 +106,17 @@ class sportsmanagementViewPlayground extends sportsmanagementView
             $this->map = true;
         }
 		
-		$extended = sportsmanagementHelper::getExtended($item->extended, 'playground');
+		$extended = sportsmanagementHelper::getExtended($this->item ->extended, 'playground');
 		$this->extended	= $extended;
         
-        $document->addScript('http://maps.google.com/maps/api/js?&sensor=false&language=de');
-        $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
-        
+//        $document->addScript('http://maps.google.com/maps/api/js?&sensor=false&language=de');
+//        $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
+
+$this->document->addScript((JBrowser::getInstance()->isSSLConnection() ? "https" : "http") . '://maps.googleapis.com/maps/api/js?libraries=places&language=de');
+$this->document->addScript(JURI::base() . 'components/'.$this->option.'/assets/js/geocomplete.js');
+$this->document->addScript(JURI::base() . 'components/'.$this->option.'/views/playground/tmpl/edit.js');
+
+//$this->document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');                    
         //$app->enqueueMessage(JText::_('sportsmanagementViewPlayground display<br><pre>'.print_r($this->extended,true).'</pre>'),'Notice');
 
 

@@ -224,14 +224,17 @@ class sportsmanagementModelPlayground extends JModelAdmin
 	   $data['modified_by'] = $user->get('id');
        $address_parts = array();
        
-       $data['country'] = $data['request']['country'];
-       $data['zipcode'] = $data['request']['zipcode'];
-       $data['city'] = $data['request']['city'];
-       $data['address'] = $data['request']['address'];
+       //$data['country'] = $data['request']['country'];
+//       $data['zipcode'] = $data['request']['zipcode'];
+//       $data['city'] = $data['request']['city'];
+//       $data['address'] = $data['request']['address'];
+//       $data['latitude'] = $data['request']['latitude'];
+//       $data['longitude'] = $data['request']['longitude'];
        
        //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$app->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-       
+
+/*       
        if (!empty($data['address']))
 		{
 			$address_parts[] = $data['address'];
@@ -294,6 +297,7 @@ class sportsmanagementModelPlayground extends JModelAdmin
         $post['extended'][$key] = $value;
         }    
         }
+ */
         
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{

@@ -600,12 +600,12 @@ class sportsmanagementModelperson extends JModelAdmin
        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
-       // request variablen umbauen
-       $data['address_country'] = $data['request']['address_country'];
-       $data['zipcode'] = $data['request']['zipcode'];
-       $data['location'] = $data['request']['location'];
-       $data['address'] = $data['request']['address'];
-       $data['state'] = $data['request']['state'];
+//       // request variablen umbauen
+//       $data['address_country'] = $data['request']['address_country'];
+//       $data['zipcode'] = $data['request']['zipcode'];
+//       $data['location'] = $data['request']['location'];
+//       $data['address'] = $data['request']['address'];
+//       $data['state'] = $data['request']['state'];
        
        
        $data['person_art'] = $data['request']['person_art'];
@@ -644,7 +644,7 @@ class sportsmanagementModelperson extends JModelAdmin
        {
        $data['picture'] = JComponentHelper::getParams($option)->get('ph_player','');
        }
-        
+/*        
        if (!empty($data['address']))
 		{
 			$address_parts[] = $data['address'];
@@ -710,6 +710,7 @@ class sportsmanagementModelperson extends JModelAdmin
         $post['extended'][$key] = $value;
         }    
         }
+*/
         
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{

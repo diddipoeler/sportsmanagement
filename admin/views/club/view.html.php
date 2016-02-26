@@ -61,22 +61,22 @@ class sportsmanagementViewClub extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$document	= JFactory::getDocument();
+		//$document	= JFactory::getDocument();
 		$app	= JFactory::getApplication();
 		$jinput	= $app->input;
-		$option	= $jinput->getCmd('option');
+		$this->option	= $jinput->getCmd('option');
 		$uri = JFactory::getURI();
         $model = $this->getModel();
         $starttime = microtime(); 
         
-        $this->option = $option;
+        //$this->option = $option;
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JRequest::getVar('tmpl'),true).'</pre>'),'Notice');
         $this->tmpl	= $jinput->get('tmpl');
         
         // get the Data
-		$form = $this->get('Form');
-		$item = $this->get('Item');
+		$this->form = $this->get('Form');
+		$this->item = $this->get('Item');
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($item,true).'</pre>'),'');
         
@@ -85,7 +85,7 @@ class sportsmanagementViewClub extends sportsmanagementView
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		$script = $this->get('Script');
+		$this->script = $this->get('Script');
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -94,7 +94,7 @@ class sportsmanagementViewClub extends sportsmanagementView
 			return false;
 		}
         
-        if ( $item->latitude != 255 )
+        if ( $this->item->latitude != 255 )
         {
             $this->googlemap = true;
         }
@@ -102,15 +102,17 @@ class sportsmanagementViewClub extends sportsmanagementView
         {
             $this->googlemap = false;
         }
-		// Assign the Data
-		$this->form = $form;
-		$this->item = $item;
-		$this->script = $script;
+//		// Assign the Data
+//		$this->form = $form;
+//		$this->item = $item;
+//		$this->script = $script;
         
-        $this->form->setValue('country', 'request', $this->item->country);
-        $this->form->setValue('zipcode', 'request', $this->item->zipcode);
-        $this->form->setValue('location', 'request', $this->item->location);
-        $this->form->setValue('address', 'request', $this->item->address);
+//        $this->form->setValue('country', 'request', $this->item->country);
+//        $this->form->setValue('zipcode', 'request', $this->item->zipcode);
+//        $this->form->setValue('location', 'request', $this->item->location);
+//        $this->form->setValue('address', 'request', $this->item->address);
+//        $this->form->setValue('latitude', 'request', $this->item->latitude);
+//        $this->form->setValue('longitude', 'request', $this->item->longitude);
         
         if ( $this->item->id )
         {
@@ -134,7 +136,7 @@ class sportsmanagementViewClub extends sportsmanagementView
             $this->map = true;
         }
 		
-		$extended = sportsmanagementHelper::getExtended($item->extended, 'club');
+		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'club');
 		$this->extended	= $extended;
         $extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'club');		
 		$this->extendeduser	= $extendeduser;
@@ -144,7 +146,7 @@ class sportsmanagementViewClub extends sportsmanagementView
         $lists = array();
         if ( $this->checkextrafields )
         {
-            $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($item->id);
+            $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id);
             //$app->enqueueMessage(JText::_('sportsmanagementViewClub ext_fields'.'<pre>'.print_r($lists['ext_fields'],true).'</pre>' ),'');
         }
         
@@ -157,10 +159,15 @@ class sportsmanagementViewClub extends sportsmanagementView
         
         $this->lists	= $lists;
         
-        $document->addScript('http://maps.google.com/maps/api/js?&sensor=false&language=de');
-        $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
+//        $document->addScript('http://maps.google.com/maps/api/js?&sensor=false&language=de');
+//        $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
 
+$this->document->addScript((JBrowser::getInstance()->isSSLConnection() ? "https" : "http") . '://maps.googleapis.com/maps/api/js?libraries=places&language=de');
+$this->document->addScript(JURI::base() . 'components/'.$this->option.'/assets/js/geocomplete.js');
+$this->document->addScript(JURI::base() . 'components/'.$this->option.'/views/club/tmpl/edit.js');
 
+//$this->document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
+                             
 	}
  
 	

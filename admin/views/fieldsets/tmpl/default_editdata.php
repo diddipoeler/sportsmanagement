@@ -67,8 +67,8 @@ switch ($fieldset->name)
     case 'details':
     ?>
     <div class="row-fluid">
-			<div class="span9">
-				<div class="row-fluid form-horizontal-desktop">
+		<!--	<div class="span9"> -->
+		<!--		<div class="row-fluid form-horizontal-desktop"> -->
 					<div class="span6">
     <?PHP
     foreach( $this->form->getFieldset($fieldset->name) as $field ) 
@@ -87,8 +87,14 @@ switch ($fieldset->name)
     }
     ?>
     </div>
-				</div>
-			</div>
+		<!--		</div> -->
+		<!--	</div> -->
+             <div class="span6">
+						<div class="control-group">
+							<style type="text/css">.map_canvas{width:100%;height:400px;}</style>
+							<div id=""  class="map_canvas"></div>
+						</div>
+					</div>
             </div>
     <?PHP
     break;

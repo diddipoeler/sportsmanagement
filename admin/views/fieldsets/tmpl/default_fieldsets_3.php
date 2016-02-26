@@ -207,182 +207,7 @@ case 'extra_fields':
 
 break;
 
-// für google maps    
-case 'maps':
-?>
-<style type="text/css">
-<!--
-/* die Map */			
-			#map {
-				height: 350px;
-				width: 600px;
-				margin: 20px auto;
-				//border: 5px solid #969696;
-			}
--->
-</style>
 
-<script type="text/javascript">
-// var start;
-/*calculate center points*/
-var start= new google.maps.LatLng(<?php echo $this->item->latitude?>,<?php echo $this->item->longitude?>);
-var image = 'http://maps.google.com/mapfiles/kml/pal2/icon49.png';
-    
-jQuery(function(){ // document.ready
-
-jQuery("#map").gmap3({
-  map:{
-    options: {
-      center: start,
-      zoom: 9,
-      maxZoom: 14 ,
-//      mapTypeId: google.maps.MapTypeId.SATELLITE,
-      mapTypeId: google.maps.MapTypeId.HYBRID,
-      navigationControl: true,
-      mapTypeControlOptions: {
-       style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
-     },
-     //scrollwheel: true,
-      streetViewControl: true
-    }
-  }
-  ,
-  marker:{
-    latLng: start,
-    //position: start,
-    options: {
-     icon: new google.maps.MarkerImage(
-       "http://maps.google.com/mapfiles/kml/pal2/icon49.png",
-       new google.maps.Size(32, 37, "px", "px")
-     )
-    }
- }
-  
-  }
-  ,
-"autofit" )
-                
-});
-
-
-  
-setTimeout(function(){
-  jQuery('#map')
-    .width("600px")
-    .height("350px") 
-    .gmap3({trigger:"resize"})
-    ;
-}, 4000);
-
-
-    
-</script>
-
-<div id="map" class="ui-widget ui-corner-all ui-helper-clearfix"></div>
-<?PHP
-break;
-
-// für google maps    
-case 'maps1':
-$plugin = JPluginHelper::getPlugin('system', 'plugin_googlemap3');
-$paramsPlugin = new JRegistry($plugin->params);
-
-$arrPluginParams = array();
-
-$arrPluginParams[] = "mapType='".$paramsPlugin->get('mapType','')."'";
-$arrPluginParams[] = "zoomWheel='".$paramsPlugin->get('zoomWheel','')."'";
-$arrPluginParams[] = "zoom='".$paramsPlugin->get('zoom','')."'";
-$arrPluginParams[] = "corzoom='".$paramsPlugin->get('corzoom','')."'";
-$arrPluginParams[] = "minzoom='".$paramsPlugin->get('minzoom','')."'";
-$arrPluginParams[] = "maxzoom='".$paramsPlugin->get('maxzoom','')."'";
-$arrPluginParams[] = "showEarthMaptype='".$paramsPlugin->get('showEarthMaptype','')."'";
-
-//$arrPluginParams[] = "kml='".$this->kmlpath."'";
-$arrPluginParams[] = "kmlrenderer='".$paramsPlugin->get('kmlrenderer','')."'";
-$arrPluginParams[] = "kmlsidebar='".$paramsPlugin->get('kmlsidebar','')."'";
-$arrPluginParams[] = "kmlsbwidth='".$paramsPlugin->get('kmlsbwidth','')."'";
-$arrPluginParams[] = "overview='1'";
-$arrPluginParams[] = "lightbox='1'";
-
-$arrPluginParams[] = "width='".$paramsPlugin->get('width','')."'";
-$arrPluginParams[] = "height='".$paramsPlugin->get('height','')."'";
-
-/*
-$params  = "{mosmap mapType='".$paramsPlugin->get('mapType','')."'|dir='1'|zoomWheel='1'|zoom='".$paramsPlugin->get('zoom','')."'|corzoom='0'|minzoom='0'|maxzoom='19'|
-showEarthMaptype='1'|
-showNormalMaptype='1' |showSatelliteMaptype='1' |showTerrainMaptype='1' |showHybridMaptype='1'   
-|kml=''|kmlrenderer='geoxml'|controltype='user'|kmlsidebar='left'|kmlsbwidth='200'|
-lightbox='1'|
-width='".$paramsPlugin->get('width','')."'|height='".$paramsPlugin->get('height','')."' |overview='1'  }";  
-*/
-
-$params  = "{mosmap width='500'\|height='400'\|lat='52.052312'\|lon='4.447141'\|
-zoom='3'\|mapType='Satellite'\|text='sv DWO'\|tooltip='DWO'\|
-marker='1'\|align='center' } ";
-//$params  = "{mosmap mapType='".$paramsPlugin->get('mapType','')."'}";  
-echo JHtml::_('content.prepare', $params);
-
-break;
-
-// für google maps    
-case 'maps2':
-$document = JFactory::getDocument();
-$document->addScript('http://maps.google.com/maps/api/js?&sensor=true');
-//$document->addScript('https://maps.googleapis.com/maps/api/js?v=3.exp');
-?>
-<script language="javascript" type="text/javascript">
-var map;
-
-jQuery(function(){ // document.ready
-//function initialize() {
-	var start = new google.maps.LatLng(<?php echo $this->item->latitude?>,<?php echo $this->item->longitude?>);
- 	var image = 'http://maps.google.com/mapfiles/kml/pal2/icon49.png';
-     var myOptions = {
-      zoom: 12,
-      center: start,
-      mapTypeId: google.maps.MapTypeId.HYBRID
-    };
-    //map = new google.maps.Map($('map'), myOptions);
-    map = new google.maps.Map(document.getElementById('map'),myOptions);
-    var marker = new google.maps.Marker({
-      position: start,
-      map: map,
-      icon: image,
-      title: '<?php echo $this->item->name?>'
-  });
-    
-    kartenwerte();
-//	}
-});	
-    //google.maps.event.addDomListener(window, 'load', initialize);
-    //google.maps.event.trigger(map,'resize');
-    
-	function kartenwerte() {
-	var mapcenter =  map.getCenter();
-	$('conf_center_lat').value =mapcenter.lat();
-	$('conf_center_lng').value =mapcenter.lng();	
-	$('conf_start_zoom').value = map.getZoom();
-	
-	} 
-    
-setTimeout(function(){
-  jQuery('#map')
-    .width("400px")
-    .height("400px") 
-    .gmap3({trigger:"resize"})
-    ;
-}, 4000);
-          
-</script>
-
-
-			
-       
-
-<div id="map" class="ui-widget ui-corner-all ui-helper-clearfix" style="width:400px; height:400px;"></div>
-
-<?PHP
-break;
 
 // für die extended daten
 case 'extended':
@@ -499,12 +324,13 @@ break;
 
 // das ist der standard
 default:
+//echo 'fieldset -><pre> '.print_r($this->fieldset,true).'</pre>';
 ?>
-		<fieldset class="adminform">
-			<table class="admintable">
+		
+			<table class="table">
 					<?php 
                     foreach ($this->form->getFieldset($this->fieldset) as $field): 
-                    //echo 'name -><pre> '.print_r($field->getFieldAttribute(),true).'</pre>';
+                    //echo 'name -><pre> '.print_r($field,true).'</pre>';
                     ?>
 					<tr>
 						<td class="key"><?php echo $field->label; ?></td>
@@ -538,8 +364,95 @@ default:
                 </td>       
 					</tr>					
 					<?php endforeach; ?>
-			</table>
-		</fieldset>
+			
+            <tr>
+            <?PHP
+            if ( $this->fieldset === 'request' )
+            {
+            ?>
+<script type="text/javascript">
+// var start;
+/*calculate center points*/
+
+//var start= new google.maps.LatLng(<?php echo $this->item->latitude?>,<?php echo $this->item->longitude?>);
+//var image = 'http://maps.google.com/mapfiles/kml/pal2/icon49.png';
+    
+//jQuery(function(){ // document.ready
+
+//jQuery("#map").gmap3({
+//  map:{
+//    options: {
+//      center: start,
+//      zoom: 9,
+//      maxZoom: 16 ,
+//      mapTypeId: google.maps.MapTypeId.SATELLITE,
+//      mapTypeId: google.maps.MapTypeId.HYBRID,
+//      navigationControl: true,
+//      mapTypeControlOptions: {
+//       style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+//     },
+//     //scrollwheel: true,
+//      streetViewControl: true
+//    }
+//  }
+//  ,
+//  marker:{
+//    latLng: start,
+//    //position: start,
+//    options: {
+//     icon: new google.maps.MarkerImage(
+//       "http://maps.google.com/mapfiles/kml/pal2/icon49.png",
+//       new google.maps.Size(32, 37, "px", "px")
+//     )
+//    }
+ //}
+//  
+//  }
+//  ,
+//"autofit" )
+//                
+//});
+
+
+  
+//setTimeout(function(){
+//  jQuery('#map')
+//    .width("100%")
+//    .height("350px") 
+//    .gmap3({trigger:"resize"})
+//    ;
+//}, 4000);
+
+
+ 
+      
+    
+</script>            
+           
+				</div>
+                </div>
+                <?PHP
+            }
+            ?>
+            </tr>
+            </table>
+ 
+
+<script>
+//      jQuery(function(){
+//        var center = new google.maps.LatLng(51.165691,10.451526);
+//        jQuery("#geocomplete").geocomplete({
+//          map: ".map_canvas",
+//          types: ['establishment'],
+//          country: 'de'
+//        });
+//        var map =  jQuery("#geocomplete").geocomplete("map")
+//        map.setCenter(center);
+//        map.setZoom(6);
+//      });
+    </script>
+                
+		
 <?PHP
 break;
 }

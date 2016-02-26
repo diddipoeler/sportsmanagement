@@ -85,9 +85,9 @@ class sportsmanagementControllermatch extends JControllerForm
 		$post = JRequest::get('post');
 		$model = $this->getModel('match');
 		$add_match_count = $post['add_match_count'];
-		$round_id = $post['round_id'];
+		$round_id = JRequest::getInt('rid');
 		$post['project_id'] = $app->getUserState($option.'.pid',0);
-		//$post['round_id'] = $round_id;
+		$post['round_id'] = $round_id;
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $projectws = $mdlProject->getProject($post['project_id']);
         
