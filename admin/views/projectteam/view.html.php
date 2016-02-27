@@ -86,7 +86,7 @@ class sportsmanagementViewProjectteam extends sportsmanagementView
         
 		$this->item->name = '';
         
-		$project_id	= $this->item->project_id;;
+		$project_id	= $this->item->project_id;
 		$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 		$project = $mdlProject->getProject($project_id);
 		$this->project = $project;
