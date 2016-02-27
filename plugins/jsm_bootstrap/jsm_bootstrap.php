@@ -104,7 +104,9 @@ class PlgSystemjsm_bootstrap extends JPlugin
         parent::__construct($subject, $params);
 
         $app = JFactory::getApplication();
+		$this->loadLanguage();
         $this->config = $params;
+		$this->subject = $subject;
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'params <br><pre>'.print_r($params,true).'</pre>'),'');
 
         /*
