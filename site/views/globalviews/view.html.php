@@ -63,6 +63,9 @@ class sportsmanagementViewglobalviews extends sportsmanagementView
 	{
        
         $this->document->addScript ( JUri::root(true).'/administrator/components/'.$this->option.'/assets/js/jquery.modal.js' );
+
+//        $this->document->addScript('http://maps.google.com/maps/api/js?&sensor=false&language=de');
+//        $this->document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
 	
 	}
 
