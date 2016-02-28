@@ -1915,8 +1915,8 @@ else
 		if ($config['show_team_link'])
 		{
 		  $routeparameter = array();
-       $routeparameter['s'] = $s;
        $routeparameter['cfg_which_database'] = $cfg_which_database;
+       $routeparameter['s'] = $s;
        $routeparameter['p'] = $projectSlug;
        $routeparameter['tid'] = $teamSlug;
        $routeparameter['ptid'] = $projectteamid;
@@ -1931,8 +1931,8 @@ else
 		if (((!isset($team_plan)) || ($teamid!=$team_plan->id)) && ($config['show_plan_link']))
 		{
 		$routeparameter = array();
+        $routeparameter['cfg_which_database'] = $cfg_which_database;
 		$routeparameter['s'] = $s;
-		$routeparameter['cfg_which_database'] = $cfg_which_database;
 		$routeparameter['p'] = $projectSlug;
 		$routeparameter['tid'] = $teamSlug;
 		$routeparameter['division'] = $division_slug;
@@ -1948,8 +1948,8 @@ else
 		if ($config['show_curve_link'])
 		{
 		$routeparameter = array();
+        $routeparameter['cfg_which_database'] = $cfg_which_database;
 		$routeparameter['s'] = $s;
-		$routeparameter['cfg_which_database'] = $cfg_which_database;
 		$routeparameter['p'] = $projectSlug;
 		$routeparameter['tid1'] = $teamSlug;
 		$routeparameter['tid2'] = 0;
@@ -1965,8 +1965,8 @@ else
 		if ($config['show_teaminfo_link'])
 		{
 		$routeparameter = array();
+        $routeparameter['cfg_which_database'] = $cfg_which_database;
 		$routeparameter['s'] = $s;
-		$routeparameter['cfg_which_database'] = $cfg_which_database;
 		$routeparameter['p'] = $projectSlug;
 		$routeparameter['tid'] = $teamSlug;
 		$routeparameter['ptid'] = $projectteamid;
@@ -1981,8 +1981,8 @@ else
 		if ($config['show_club_link'])
 		{
 		$routeparameter = array();
+        $routeparameter['cfg_which_database'] = $cfg_which_database;
 		$routeparameter['s'] = $s;
-		$routeparameter['cfg_which_database'] = $cfg_which_database;
 		$routeparameter['p'] = $projectSlug;
 		$routeparameter['cid'] = $clubSlug;
 		$routeparameter['task'] = NULL;
@@ -1998,8 +1998,8 @@ else
 		if ($config['show_teamstats_link'])
 		{
 		$routeparameter = array();
+        $routeparameter['cfg_which_database'] = $cfg_which_database;
 		$routeparameter['s'] = $s;
-		$routeparameter['cfg_which_database'] = $cfg_which_database;
 		$routeparameter['p'] = $projectSlug;
 		$routeparameter['tid'] = $teamSlug;
 		
@@ -2013,8 +2013,8 @@ else
 		if ($config['show_clubplan_link'])
 		{
 		$routeparameter = array();
+        $routeparameter['cfg_which_database'] = $cfg_which_database;
 		$routeparameter['s'] = $s;
-		$routeparameter['cfg_which_database'] = $cfg_which_database;
 		$routeparameter['p'] = $projectSlug;
 		$routeparameter['cid'] = $clubSlug;
 		$routeparameter['task'] = NULL;
@@ -2029,8 +2029,8 @@ else
         if ($config['show_rivals_link'])
 		{
 		$routeparameter = array();
+        $routeparameter['cfg_which_database'] = $cfg_which_database;
 		$routeparameter['s'] = $s;
-		$routeparameter['cfg_which_database'] = $cfg_which_database;
 		$routeparameter['p'] = $projectSlug;
 		$routeparameter['tid'] = $teamSlug;
 		
