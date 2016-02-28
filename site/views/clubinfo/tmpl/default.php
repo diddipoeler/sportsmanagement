@@ -56,7 +56,7 @@ echo $this->loadTemplate('debug');
 }
 	echo $this->loadTemplate('projectheading');
 
-	if (($this->config['show_sectionheader'])==1)
+	if ( $this->config['show_sectionheader'] )
 	{ 
 		echo $this->loadTemplate('sectionheader');
 	}
@@ -79,7 +79,8 @@ echo $this->loadTemplate('debug');
 	$this->output['COM_SPORTSMANAGEMENT_TABS_EXTENDED'] = 'extended';
 	}
     
-    if ( $this->config['show_maps'] && (JPluginHelper::isEnabled('system', 'plugin_googlemap2') || JPluginHelper::isEnabled('system', 'plugin_googlemap3')) )
+    //if ( $this->config['show_maps'] && (JPluginHelper::isEnabled('system', 'plugin_googlemap2') || JPluginHelper::isEnabled('system', 'plugin_googlemap3')) )
+    if ( $this->config['show_maps'] )
 	{ 
         $this->output['COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'] = 'googlemap';
 	}
@@ -118,4 +119,4 @@ echo $this->loadTemplate('footer');
 	?>
 <!-- ende clubinfo -->    
 </div>
-</div>
+<!-- </div> -->

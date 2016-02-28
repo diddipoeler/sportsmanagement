@@ -39,20 +39,73 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+//echo $this->kmlfile.'<br>';
+//echo JURI::root(true).'<br>';
+//echo JURI::root().'<br>';
+//$this->kmlfile = 'test-club.kml';
 ?>
-<!-- <div style="width: 100%; float: left"> -->
+
+
+
 <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
 	
 		<h4>
 			<?php echo JText::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>
 		</h4>
+
+
 	
 <?php
 
 if ( !JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' )  )
             {
-                JError::raiseWarning(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_GOOGLEMAP_NOT_ENABLED'));
-                
+//                JError::raiseWarning(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_GOOGLEMAP_NOT_ENABLED'));
+$this->document->addScript('http://maps.google.com/maps/api/js?language=de');
+$this->document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
+        
+?>
+<script type="text/javascript">
+
+jQuery(document).ready(function() {
+   
+jQuery("#jsm_map").gmap3({ 
+  map:{
+    options:{ 
+      //center:{lat: 40.65,lng: -73.95}, 
+      MapTypeId: google.maps.MapTypeId.HYBRID,
+      zoom: 9
+    }
+  },
+  kmllayer:{
+    options:{
+      url: "<?PHP echo JURI::root().'tmp/'.$this->kmlfile; ?>",
+      opts:{
+        suppressInfoWindows: true
+      }
+    },
+    events:{
+      click: function(kml, event){
+        alert(event.featureData.description);
+      }
+    }
+  }
+});   
+   
+});
+
+
+
+
+</script>
+<style>
+.gmap{
+width: 100%;
+height: 570px;
+}
+</style>
+<div id="jsm_map" class="gmap"></div>
+
+<?PHP                
             }
             else
             {
@@ -64,88 +117,13 @@ if ( !JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' )  )
 
 //echo 'kml<br><pre>'.print_r($this->kmlpath,true).'</pre>';
 //echo 'plugin_googlemap3<br><pre>'.print_r($paramsPlugin,true).'</pre>';
-                
-$arrPluginParams = array();
-
-$arrPluginParams[] = "mapType='".$paramsPlugin->get('mapType','')."'";
-$arrPluginParams[] = "zoomWheel='".$paramsPlugin->get('zoomWheel','')."'";
-$arrPluginParams[] = "zoom='".$paramsPlugin->get('zoom','')."'";
-$arrPluginParams[] = "corzoom='".$paramsPlugin->get('corzoom','')."'";
-$arrPluginParams[] = "minzoom='".$paramsPlugin->get('minzoom','')."'";
-$arrPluginParams[] = "maxzoom='".$paramsPlugin->get('maxzoom','')."'";
-$arrPluginParams[] = "showEarthMaptype='".$paramsPlugin->get('showEarthMaptype','')."'";
-
-$arrPluginParams[] = "kml='".$this->kmlpath."'";
-$arrPluginParams[] = "kmlrenderer='".$paramsPlugin->get('kmlrenderer','')."'";
-$arrPluginParams[] = "kmlsidebar='".$paramsPlugin->get('kmlsidebar','')."'";
-$arrPluginParams[] = "kmlsbwidth='".$paramsPlugin->get('kmlsbwidth','')."'";
-$arrPluginParams[] = "overview='1'";
-$arrPluginParams[] = "lightbox='1'";
-
-$arrPluginParams[] = "width='".$paramsPlugin->get('width','')."'";
-$arrPluginParams[] = "height='".$paramsPlugin->get('height','')."'";
-
-/*
-$arrPluginParams[] = "mapType='".$paramsPlugin->get('mapType','')."'";
-$arrPluginParams[] = "zoomWheel='".$paramsPlugin->get('zoomWheel','')."'";
-$arrPluginParams[] = "zoom='".$paramsPlugin->get('zoom','')."'";
-$arrPluginParams[] = "corzoom='".$paramsPlugin->get('corzoom','')."'";
-$arrPluginParams[] = "minzoom='".$paramsPlugin->get('minzoom','')."'";
-$arrPluginParams[] = "maxzoom='".$paramsPlugin->get('maxzoom','')."'";
-$arrPluginParams[] = "showEarthMaptype='".$paramsPlugin->get('showEarthMaptype','')."'";
-
-$arrPluginParams[] = "showNormalMaptype='".$paramsPlugin->get('showNormalMaptype','')."'";
-$arrPluginParams[] = "showSatelliteMaptype='".$paramsPlugin->get('showSatelliteMaptype','')."'";
-$arrPluginParams[] = "showTerrainMaptype='".$paramsPlugin->get('showTerrainMaptype','')."'";
-$arrPluginParams[] = "showHybridMaptype='".$paramsPlugin->get('showHybridMaptype','')."'";
-
-$arrPluginParams[] = "kml='".$kmlpath."'";
-//$arrPluginParams[] = "kmlrenderer='".$paramsPlugin->get('kmlrenderer','')."'";
-$arrPluginParams[] = "kmlrenderer='GeoXML'";
-$arrPluginParams[] = "kmlsidebar='".$paramsPlugin->get('kmlsidebar','')."'";
-$arrPluginParams[] = "kmlsbwidth='".$paramsPlugin->get('kmlsbwidth','')."'";
-$arrPluginParams[] = "overview='".$paramsPlugin->get('overview','')."'";
-$arrPluginParams[] = "lightbox='".$paramsPlugin->get('lightbox','')."'";
-$arrPluginParams[] = "controltype='".$paramsPlugin->get('controltype','')."'";
-
-$arrPluginParams[] = "width='".$paramsPlugin->get('width','')."'";
-$arrPluginParams[] = "height='".$paramsPlugin->get('height','')."'";
-*/
-
-/*                
-$params  = "{mosmap mapType='".$paramsPlugin->get('mapType','')."'|dir='1'|zoomWheel='1'|zoom='".$paramsPlugin->get('zoom','')."'|corzoom='0'|minzoom='0'|maxzoom='19'|
-showEarthMaptype='1'|
-
-showNormalMaptype='1' |showSatelliteMaptype='1' |showTerrainMaptype='1' |showHybridMaptype='1'   
-
-|kml='".$kmlpath."'|kmlrenderer='geoxml'|controltype='user'|kmlsidebar='left'|kmlsbwidth='200'|
-
-
-lightbox='1'|
-
-width='".$paramsPlugin->get('width','')."'|height='".$paramsPlugin->get('height','')."' |overview='1'  }";    
-*/	
-
     
-//    	echo JHtml::_('content.prepare', $params);		
-
-//$params  = '{mosmap ';
-//$params .= implode('|', $arrPluginParams);
-//$params .= "}";
-
-//$params  = "{mosmap kml[0]='http://tech.reumer.net/images/florida.kml'}";		
-//$params  = "{mosmap kml[0]='http://www.fourdirectionsmaine.org/map/tribes.kml'}";
-//$params  = "{mosmap kml[0]='".'tmp'.DS."tribes.kml'}";
 
 $params  = "{mosmap kml[0]='".'tmp'.DS.$this->kmlfile."'}";
-
 echo JHtml::_('content.prepare', $params);
- 
-//		$content = JHtml::_('content.prepare', $params);
-//        echo $content;
-        
-//    $params  = "{mosmap mapType='".$paramsPlugin->get('mapType','')."'|dir='1'|zoomWheel='1'|zoom='".$paramsPlugin->get('zoom','')."'|corzoom='0'|minzoom='0'|maxzoom='19'|showEarthMaptype='1'|showNormalMaptype='1' |showSatelliteMaptype='1' |showTerrainMaptype='1' |showHybridMaptype='1'   |kml='".$this->kmlpath."'|kmlrenderer='GeoXML'|controltype='user'|kmlsidebar='left'|kmlsbwidth='200'|lightbox='1'|width='".$paramsPlugin->get('width','')."'|height='".$paramsPlugin->get('height','')."' |overview='1'  }";    
-//		echo JHtml::_('content.prepare', $params);        
+  
             }
+            
+            
 ?>
 </div>

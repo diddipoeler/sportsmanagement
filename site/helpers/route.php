@@ -414,9 +414,9 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
 	{
 		$params = array(	"option" => "com_sportsmanagement",
 					"view" => "rivals" );
-        
+    $params["cfg_which_database"] = $cfg_which_database;    
         $params["s"] = $s;
-    $params["cfg_which_database"] = $cfg_which_database;
+    
     $params["p"] = $projectid;
     $params["tid"] = $teamid;
     

@@ -290,9 +290,8 @@ jQuery(window).load(function() {
 ?>
 <div>
 <?PHP    
-		echo $this->loadTemplate('backbutton');
-		echo $this->loadTemplate('footer');
-
-	?>
+echo $this->loadTemplate('backbutton');
+echo $this->loadTemplate('footer');
+?>
 </div>
 </div>

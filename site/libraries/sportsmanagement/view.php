@@ -87,8 +87,10 @@ class sportsmanagementView extends JViewLegacy
         
         $this->model = $this->getModel();
         
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($this->params,true).'</pre>'),'');
-        
+//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout -> '.$this->getLayout().''),'');
+//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName -> '.$this->getName().''),'');
+
+       
         switch ($this->view)
         {
             

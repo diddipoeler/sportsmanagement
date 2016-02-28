@@ -52,8 +52,8 @@ $this->kmlpath = JURI::root().'tmp'.DS.$this->playground->id.'-playground.kml';
 $this->kmlfile = $this->playground->id.'-playground.kml';
 
 ?>
-<!-- <div class="joomleague"> -->
-<div class="">
+
+<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>" id="playground">
 	<?php 
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
@@ -61,49 +61,53 @@ echo $this->loadTemplate('debug');
 }
 	echo $this->loadTemplate('projectheading');
 
-	if (($this->config['show_sectionheader'])==1)
+	if ( $this->config['show_sectionheader'] )
 	{ 
 		echo $this->loadTemplate('sectionheader');
 	}
 		
-	if (($this->config['show_playground'])==1)
+	if ( $this->config['show_playground'] )
 	{ 
 		echo $this->loadTemplate('playground');
 	}
 		
-	if (($this->config['show_extended'])==1)
+	if ( $this->config['show_extended'] )
 	{
 		echo $this->loadTemplate('extended');
 	}
 		
-	if (($this->config['show_picture'])==1)
+	if ( $this->config['show_picture'] )
 	{ 
 		echo $this->loadTemplate('picture');
 	}
 		
-	if (($this->config['show_maps'])==1 && (JPluginHelper::isEnabled('system', 'plugin_googlemap2') || JPluginHelper::isEnabled('system', 'plugin_googlemap3')))
+	if ( $this->config['show_maps'] )
 	{ 
 		echo $this->loadTemplate('googlemap');
 	}
 		
-	if (($this->config['show_description'])==1)
+	if ( $this->config['show_description'] )
 	{ 
 		echo $this->loadTemplate('description');
 	}
 
-	if (($this->config['show_teams'])==1)
+	if ( $this->config['show_teams'] )
 	{ 
 		echo $this->loadTemplate('teams');
 	}
 
-	if (($this->config['show_matches'])==1)
+	if ( $this->config['show_matches'] )
 	{ 
 		echo $this->loadTemplate('matches');
 	}	
 
-	echo "<div>";
-		echo $this->loadTemplate('backbutton');
-		echo $this->loadTemplate('footer');
-	echo "</div>";
+	
 	?>
+<div id="backbuttonfooter">
+<?PHP    
+echo $this->loadTemplate('backbutton');
+echo $this->loadTemplate('footer');
+?>
+</div>
+    
 </div>
