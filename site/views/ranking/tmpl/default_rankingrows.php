@@ -113,7 +113,7 @@ foreach( $current as $ptid => $team )
 	echo "\n";
 
 	//**************rank row
-	echo '<td class="rankingrow_rank" ';
+	echo '<td class="rankingrow_rank"';
 	if($color != '') {
 		echo ' style="background-color: ' . $color . '"';
 	}
@@ -132,7 +132,7 @@ foreach( $current as $ptid => $team )
 	echo "\n";
 
 	//**************Last rank (image)
-	echo '<td class="rankingrow_lastrankimg" ';
+	echo '<td class="rankingrow_lastrankimg"';
 	if($color != '' && $config['use_background_row_color']) {
 		echo " style='background-color: " . $color . "'";
 	}
@@ -142,16 +142,16 @@ foreach( $current as $ptid => $team )
 	echo "\n";
 
 	//**************Last rank (number)
-	echo '<td class="rankingrow_lastrank" nowrap="nowrap" ';
+	echo '<td class="rankingrow_lastrank" nowrap="nowrap"';
 	if($color != '' && $config['use_background_row_color']) {
-		echo 'style="background-color:' . $color . '"';
+		echo ' style="background-color:' . $color . '"';
 	}
 	echo '>';
 	if ( ( $this->tableconfig['last_ranking'] == 1 ) && ( isset( $previous[$ptid]->rank ) ) )
 	{
 		echo "(" . $previous[$ptid]->rank . ")";
 	}
-	echo '</span>';
+	//echo '</span>';
 	echo '</td>';
 	echo "\n";
 
@@ -165,7 +165,8 @@ foreach( $current as $ptid => $team )
 	if ( $config['show_logo_small_table'] != "no_logo" )
 	{
 		echo '<td class="rankingrow_logo"';
-		if($color != '' && $config['use_background_row_color']) {
+		if($color != '' && $config['use_background_row_color'])
+		{
 			echo ' style="background-color: ' . $color . '"';
 		}
 		echo ">";
@@ -212,7 +213,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 
 	//**************Team name
 	echo '<td class="rankingrow_teamname" nowrap="nowrap"';
-	if($color != '' && $config['use_background_row_color']) {
+	if($color != '' && $config['use_background_row_color'])
+	{
 		echo ' style="background-color: ' . $color . '"';
 	}
 	echo ">";
@@ -242,8 +244,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 		{
 			case 'PLAYED':
 				echo '<td class="rankingrow_played" ';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				printf( $format, $team->cnt_matches );
@@ -252,9 +255,10 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 				break;
 
 			case 'WINS':
-				echo '<td class="rankingrow" ';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				echo '<td class="rankingrow"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				if (( $config['show_wdl_teamplan_link'])==1)
@@ -272,9 +276,10 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 				break;
 
 			case 'TIES':
-				echo '<td class="rankingrow" ';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				echo '<td class="rankingrow"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				if (( $config['show_wdl_teamplan_link'])==1)
@@ -293,8 +298,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 
 			case 'LOSSES':
 				echo '<td class="rankingrow"';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				if (( $config['show_wdl_teamplan_link'])==1)
@@ -313,8 +319,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 
 			case 'WOT':
 				echo '<td class="rankingrow"';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				printf( $format, $team->cnt_wot );
@@ -324,8 +331,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 
 			case 'WSO':
 				echo '<td class="rankingrow"';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				printf( $format, $team->cnt_wso );
@@ -335,8 +343,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 
 			case 'LOT':
 				echo '<td class="rankingrow"';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				printf( $format, $team->cnt_lot );
@@ -346,8 +355,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 					
 			case 'LSO':
 				echo '<td class="rankingrow"';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				printf( $format, $team->cnt_lso );
@@ -357,8 +367,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 					
 			case 'WINPCT':
 				echo '<td class="rankingrow"';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				printf( $format, sprintf( "%.3F", ($team->winpct() ) ) );
@@ -374,8 +385,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 					$ref_lost = $team->cnt_lost;
 				}
 				echo '<td class="rankingrow"';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				printf( $format, round( ( ( $ref_won - $team->cnt_won ) - ( $ref_lost - $team->cnt_lost ) ) / 2, 1 ) );
@@ -386,8 +398,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 
 			case 'LEGS':
 				echo '<td class="rankingrow"';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				printf( $format, sprintf( "%s:%s", $team->sum_team1_legs, $team->sum_team2_legs ) );
@@ -397,8 +410,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 					
 			case 'LEGS_DIFF':
 				echo '<td class="rankingrow"';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				printf( $format, $team->diff_team_legs );
@@ -408,11 +422,12 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 
 			case 'LEGS_RATIO':
 				echo '<td class="rankingrow"';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
-				$legsratio=round(($team->legsRatio()),2);
+				$legsratio = round(($team->legsRatio()),2);
 				printf( $format, $legsratio );
 				echo '</td>';
 				echo "\n";
@@ -422,8 +437,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 // ausgabe z.b. für tennis                
             case 'MATCHPOINTS':
 				echo '<td class="rankingrow"';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				printf( $format, sprintf( "%s:%s", $team->sum_team1_matchpoint, $team->sum_team2_matchpoint ) );
@@ -432,8 +448,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 				break; 
             case 'MATCHPOINTS_DIFF':
 				echo '<td class="rankingrow"';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				printf( $format, $team->diff_team_matchpoint );
@@ -443,8 +460,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
                    
 			case 'MATCHSETS':
 				echo '<td class="rankingrow"';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				printf( $format, sprintf( "%s:%s", $team->sum_team1_sets, $team->sum_team2_sets ) );
@@ -453,8 +471,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 				break;
             case 'MATCHSETS_DIFF':
 				echo '<td class="rankingrow"';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				printf( $format, $team->diff_team_sets );
@@ -464,8 +483,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
                     
             case 'MATCHGAMES':
 				echo '<td class="rankingrow"';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				printf( $format, sprintf( "%s:%s", $team->sum_team1_games, $team->sum_team2_games ) );
@@ -474,8 +494,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 				break;
            case 'MATCHGAMES_DIFF':
 				echo '<td class="rankingrow"';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				printf( $format, $team->diff_team_games );
@@ -487,8 +508,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
                     		
 			case 'SCOREFOR':
 				echo '<td class="rankingrow"';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				printf( $format, sprintf( "%s" , $team->sum_team1_result ) );
@@ -498,8 +520,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 
 			case 'SCOREAGAINST':
 				echo '<td class="rankingrow"';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				printf( $format, sprintf( "%s", $team->sum_team2_result ) );
@@ -510,10 +533,10 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 			case 'SCOREPCT':
 				echo '<td class="rankingrow"';
 				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
-				$scorepct=round(($team->scorePct()),2);
+				$scorepct = round(($team->scorePct()),2);
 				printf( $format, $scorepct );
 					
 				echo '</td>';
@@ -523,7 +546,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 			case 'RESULTS':
 				echo '<td class="rankingrow"';
 				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				printf( $format, sprintf( "%s" . ":" . "%s", $team->sum_team1_result, $team->sum_team2_result ) );
@@ -534,7 +557,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 			case 'DIFF':
 				echo '<td class="rankingrow"';
 				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				printf( $format, $team->diff_team_results );
@@ -545,7 +568,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 			case 'POINTS':
 				echo '<td class="rankingrow_points"';
 				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				printf( $format, $team->getPoints() );
@@ -556,7 +579,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
             case 'PENALTYPOINTS':
 				echo '<td class="rankingrow_points"';
 				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				printf( $format2, $team->penalty_points );
@@ -567,7 +590,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 			case 'NEGPOINTS':
 				echo '<td class="rankingrow"';
 				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				printf( $format, $team->neg_points );
@@ -578,7 +601,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 			case 'OLDNEGPOINTS':
 				echo '<td class="rankingrow"';
 				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				printf( $format, sprintf( "%s" . ":" . "%s", $team->getPoints(), $team->neg_points ) );
@@ -589,7 +612,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 			case 'POINTS_RATIO':
 				echo '<td class="rankingrow"';
 				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				$pointsratio=round(($team->pointsRatio()),2);
@@ -601,7 +624,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 			case 'BONUS':
 				echo '<td class="rankingrow"';
 				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				printf( $format, $team->bonus_points );
@@ -631,8 +654,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 
 			case 'QUOT':
 				echo '<td class="rankingrow"';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				$pointsquot = number_format( $team->pointsQuot(), 3, ",", "." );
@@ -643,8 +667,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 
 			case 'TADMIN':
 				echo '<td class="rankingrow"';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				printf( $format, $team->team->username );
@@ -654,8 +679,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 
 			case 'GFA':
 				echo '<td class="rankingrow"';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				$gfa=round(($team->getGFA()),2);
@@ -667,8 +693,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 
 			case 'GAA':
 				echo '<td class="rankingrow"';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				$gaa=round(($team->getGAA()),2);
@@ -680,11 +707,12 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 
 			case 'PPG':
 				echo '<td class="rankingrow"';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
-				$gaa=round(($team->getPPG()),2);
+				$gaa = round(($team->getPPG()),2);
 				printf( $format, $gaa );
 
 				echo '</td>';
@@ -693,11 +721,12 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 
 			case 'PPP':
 				echo '<td class="rankingrow"';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
-				$gaa=round(($team->getPPP()),2);
+				$gaa = round(($team->getPPP()),2);
 				printf( $format, $gaa );
 
 				echo '</td>';
@@ -706,15 +735,17 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 
 			case 'LASTGAMES':
 				echo '<td class="rankingrow lastgames"';
-				if($color != '' && $config['use_background_row_color']) {
-					echo 'style="background-color:' . $color . '"';
+				if($color != '' && $config['use_background_row_color'])
+				{
+					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
 				foreach ($this->previousgames[$ptid] as $g)
 				{
 					$txt = $this->teams[$g->projectteam1_id]->name.' [ '. $g->team1_result . ' - '. $g->team2_result . ' ] '.$this->teams[$g->projectteam2_id]->name;
 					$attribs = array('title' => $txt);
-					if (!$img = sportsmanagementHelperHtml::getThumbUpDownImg($g, $ptid, $attribs)) {
+					if (!$img = sportsmanagementHelperHtml::getThumbUpDownImg($g, $ptid, $attribs))
+					{
 						continue;
 					}
 					switch (sportsmanagementHelper::getTeamMatchResult($g, $ptid))
@@ -734,7 +765,7 @@ $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0)
 $routeparameter['s'] = JRequest::getInt('s',0);
 $routeparameter['p'] = $g->project_slug;
 $routeparameter['mid'] = $g->slug;
-$url = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);  
+$url = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
 
 					//$url = JRoute::_(sportsmanagementHelperRoute::getMatchReportRoute($g->project_slug, $g->slug,JRequest::getInt('cfg_which_database',0)));
 					echo JHtml::link($url, $img, $attr);
