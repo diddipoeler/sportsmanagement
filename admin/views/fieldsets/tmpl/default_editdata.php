@@ -118,8 +118,13 @@ else
 {
 ?>                
 
-
 <div class="width-40 fltrt">
+	
+<div class="control-group">
+<style type="text/css">.map_canvas{width:100%;height:400px;}</style>
+<div id=""  class="map_canvas"></div>
+</div>
+
 		<?php
 		echo JHtml::_('sliders.start');
 		foreach ($fieldsets as $fieldset) :
