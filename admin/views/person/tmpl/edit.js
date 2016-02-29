@@ -22,9 +22,9 @@ dpjQuery(document).ready(function(){
         }
      });
 	dpjQuery("#jform_geocomplete").bind("geocode:result", function(event, result){
-		if (dpjQuery("#jform_geocomplete").data('initialized')) {
+		//if (dpjQuery("#jform_geocomplete").data('initialized')) {
 			setGeoResult(result);
-		}
+		//}
 		dpjQuery("#jform_geocomplete").data('initialized', true);
 	});
 	dpjQuery("#jform_geocomplete").bind("geocode:dragged", function(event, latLng){
