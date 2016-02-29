@@ -89,40 +89,32 @@ SqueezeBox.open(url, {
 </script>	
 
 <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>" style="text-align:center; clear:both">
+
+<br />      
       
-      <br />      
-      
-              <a title= "<?php echo JText::_('COM_SPORTSMANAGEMENT_SITE_LINK')?>" target= "_blank" href="http://www.fussballineuropa.de">
-                <img src= "<?php echo  JURI::root( true );?>/components/com_sportsmanagement/assets/images/logo_transparent.png" width="180" height="auto"</a>            
-      <br />
-      <?php echo JText::_( "COM_SPORTSMANAGEMENT_DESC" ); ?>
-      <br />      
-      <?php echo JText::_( "COM_SPORTSMANAGEMENT_COPYRIGHT" ); ?> : &copy; 
-      <a href="http://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>
-      <br />      
-      <?php echo JText::_( "COM_SPORTSMANAGEMENT_VERSION" ); ?> :       
-      <?php 
-      //echo JText::sprintf( '%1$s', sportsmanagementHelper::getVersion() ); 
-      echo JHtml::link('index.php?option='.$option.'&amp;view=about',sprintf('Version %1$s (diddipoeler)',sportsmanagementHelper::getVersion()));
-      ?>
-      <br />    
+<a title= "<?php echo JText::_('COM_SPORTSMANAGEMENT_SITE_LINK')?>" target="_blank" href="http://www.fussballineuropa.de">
+<img src= "<?php echo  JURI::root( true );?>/components/com_sportsmanagement/assets/images/logo_transparent.png" width="180" height="auto"></a>            
+	<br />
+	<?php echo JText::_( "COM_SPORTSMANAGEMENT_DESC" ); ?>
+	<br />      
+	<?php echo JText::_( "COM_SPORTSMANAGEMENT_COPYRIGHT" ); ?> : &copy; 
+	<a href="http://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>
+	<br />      
+	<?php echo JText::_( "COM_SPORTSMANAGEMENT_VERSION" ); ?> :       
+	<?php 
+		//echo JText::sprintf( '%1$s', sportsmanagementHelper::getVersion() );
+	echo JHtml::link('index.php?option='.$option.'&amp;view=about',sprintf('Version %1$s (diddipoeler)',sportsmanagementHelper::getVersion()));
+	?>
+	<br />    
       
       
 <!-- Button HTML (to Trigger Modal) -->
 <a href="<?php echo $cfg_bugtracker_server; ?>" rel="modaljsm:open">Bug-Tracker</a>
-      <br />
-<a href="<?php echo $cfg_help_server; ?>" rel="modaljsm:open">Online-Help</a>      
-      <br />      
+<br />
+<a href="<?php echo $cfg_help_server; ?>" rel="modaljsm:open">Online-Help</a>
+<br />
 
-
-
-
-
-    
-
-     
-              
-    </div>   
+</div>
 
 
             
