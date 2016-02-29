@@ -86,6 +86,8 @@ function getAddresString()
 
 function setGeoResult(result)
 {
+var street_number = '';
+var route = '';	
 	dpjQuery('#location-form #details input:not("#jform_title")').removeAttr('value');
 	
 	for(var i=0;i<result.address_components.length;i++){
@@ -93,10 +95,15 @@ function setGeoResult(result)
 
 			case 'route':
 				dpjQuery("#jform_address").val(result.address_components[i].long_name);
+				route = result.address_components[i].long_name;
 			break;
 			case 'locality':
 				dpjQuery("#jform_city").val(result.address_components[i].long_name);
 			break;
+			case 'street_number':
+			street_number = result.address_components[i].long_name;
+			break;
+
 		  case 'administrative_area_level_1':
 			dpjQuery("#jform_state").val(result.address_components[i].long_name);
       dpjQuery("#extended_COM_SPORTSMANAGEMENT_ADMINISTRATIVE_AREA_LEVEL_1_LONG_NAME").val(result.address_components[i].long_name);
@@ -114,6 +121,10 @@ function setGeoResult(result)
 			break;
 		}
 	}
+
+route += ' ';
+route += street_number;
+dpjQuery("#jform_address").val(route);
 	
 	if (typeof result.geometry.location.lat === 'function')
 	{
