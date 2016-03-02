@@ -656,13 +656,16 @@ $kml[] = ' </Style>';
 
 foreach ( $allteams as $row )
 {
+if ( $row->lng != '' && $row->lng != '255.00000000' )
+{
+	
 // logo_big    
 $kml[] = ' <Style id="' . $row->team_id . 'Style">';
 $kml[] = ' <IconStyle id="' . $row->team_id . 'Icon">';
 $kml[] = ' <Icon>';
 
 //$picturepath = JURI::root().$row->logo_big;
-$picturepath = $row->logo_big;
+$picturepath = JURI::root().$row->logo_big;
 //if ( !file_exists($picturepath) )
 //{
 //$kml[] = ' <href>' . $ph_logo_big . '</href>';    
@@ -677,6 +680,7 @@ $kml[] = ' </Icon>';
 $kml[] = ' </IconStyle>';
 $kml[] = ' </Style>';    
 }    
+}
 
 $kml[] = ' <Folder>';
 $kml[] = ' <open>1</open>';
