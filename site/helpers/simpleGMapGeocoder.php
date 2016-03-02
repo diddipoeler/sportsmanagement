@@ -305,21 +305,6 @@ $this->writekml3prediction($allmembers,$project_id,$type);
 function genkml3($project_id,$allteams)
 {
 $type = 'ranking';
-    
-/*
-echo 'genkml3 project_id<br><pre>';
-    print_r($project_id);
-    echo '</pre><br>';
-echo 'genkml3 allteams<br><pre>';
-    print_r($allteams);
-    echo '</pre><br>';
-*/
-
-/*
-echo 'genkml3 allteams<br><pre>';
-    print_r($allteams);
-    echo '</pre><br>';
-*/
 
 foreach ( $allteams as $row )
 {
@@ -355,7 +340,7 @@ $address_parts = array();
         
         if ( $row->latitude == 255 )
 		{
-		  
+/*		  
         $coords = $this->JLgetGeoCoords($row->address_string);
 		if ( $coords["status"] == 'OK')
 		{
@@ -379,7 +364,7 @@ $address_parts = array();
     
     
     }
-
+*/
 }
 else
 {
@@ -421,13 +406,13 @@ function getGeoCoords($address)
       OBSOLETE, now using utf8_encode
       
       // replace special characters (eg. German "Umlaute")
-      $address = str_replace("ä", "ae", $address);
-      $address = str_replace("ö", "oe", $address);
-      $address = str_replace("ü", "ue", $address);
-      $address = str_replace("Ä", "Ae", $address);
-      $address = str_replace("Ö", "Oe", $address);
-      $address = str_replace("Ü", "Ue", $address);
-      $address = str_replace("ß", "ss", $address);
+      $address = str_replace("Ã¤", "ae", $address);
+      $address = str_replace("Ã¶", "oe", $address);
+      $address = str_replace("Ã¼", "ue", $address);
+      $address = str_replace("Ã„", "Ae", $address);
+      $address = str_replace("Ã–", "Oe", $address);
+      $address = str_replace("Ãœ", "Ue", $address);
+      $address = str_replace("ÃŸ", "ss", $address);
     */
     
     //$address = utf8_encode($address);
