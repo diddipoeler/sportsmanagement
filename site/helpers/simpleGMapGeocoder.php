@@ -682,7 +682,7 @@ $kml[] = ' <Folder>';
 $kml[] = ' <open>1</open>';
 foreach ( $allteams as $row )
 {
-if ( $row->lng )
+if ( $row->lng != '' && $row->lng != '255.00000000' )
 {
 $kml[] = ' <Placemark id="placemark' . $row->team_id . '">';
 $kml[] = ' <open>1</open>';
