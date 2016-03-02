@@ -675,7 +675,7 @@ $picturepath = JURI::root().$row->logo_big;
 //$kml[] = ' <href>' . $row->logo_big . '</href>';    
 //}
 
-$kml[] = ' <href>' . $row->logo_big . '</href>';
+$kml[] = ' <href>' . JURI::root().$row->logo_big . '</href>';
 $kml[] = ' </Icon>';
 $kml[] = ' </IconStyle>';
 $kml[] = ' </Style>';    
