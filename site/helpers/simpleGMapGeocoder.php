@@ -338,8 +338,8 @@ $address_parts = array();
 		$row->type = 'bar';
 		
         
-        if ( $row->latitude == 255 )
-		{
+ //       if ( $row->latitude == 255 )
+//		{
 /*		  
         $coords = $this->JLgetGeoCoords($row->address_string);
 		if ( $coords["status"] == 'OK')
@@ -365,14 +365,17 @@ $address_parts = array();
     
     }
 */
-}
-else
-{
-    $row->lat = $row->latitude;
-    $row->lng = $row->longitude;    
+//}
+//else
+//{
+//    $row->lat = $row->latitude;
+//    $row->lng = $row->longitude;    
     
-}
+//}
 
+ $row->lat = $row->latitude;
+ $row->lng = $row->longitude;  
+    
 /*
 echo 'genkml3 allteams<br><pre>';
     print_r($coords);
