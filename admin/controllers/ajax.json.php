@@ -110,10 +110,12 @@ class sportsmanagementControllerAjax extends JControllerLegacy
        // JInput object
         $jinput = $app->input;
         $model = $this->getModel('ajax');
-        echo json_encode((array) $model->getProjects( $jinput->getVar('s','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' ) ));
-        JFactory::getApplication()->close();    
+        //$this->input->get->get('menutype')
+        echo json_encode((array) $model->getProjects( $jinput->get->get('s'), $jinput->get->get('required'),$jinput->get->get('slug'),$jinput->get->get( 'dbase' ) ));
+        $app->close();    
         } 
         
+
         
         /**
          * sportsmanagementControllerAjax::seasons()

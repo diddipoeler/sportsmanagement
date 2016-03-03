@@ -337,6 +337,7 @@ default:
 						<td><?php echo $field->input; ?></td>
                         <td>
                         <?PHP
+                        //echo 'field_name -> '.$field->name;
                         $suchmuster = array ("jform[","]","request[");
                 $ersetzen = array ('', '', '');
                 $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);

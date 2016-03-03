@@ -252,6 +252,7 @@
 			name="enable_sb" 
 			type="radio" 
 			default="0"
+      class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_KUNENA" 
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_KUNENA_DESC">
 			<option value="0">JNO</option>

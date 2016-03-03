@@ -80,7 +80,68 @@ switch ($fieldset->name)
 						</div>
 						<div class="controls">
 							<?php echo $field->input; ?>
-						</div>
+						
+                        <?PHP
+                        $suchmuster = array ("jform[","]","request[");
+                $ersetzen = array ('', '', '');
+                $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
+                        //echo 'field_name -> '.$field->name;
+//                        echo 'var_onlinehelp -> '.$var_onlinehelp;
+                        switch ($var_onlinehelp)
+                {
+                    case 'id':
+                    break;
+                    default:
+                ?>
+                <a	rel="{handler: 'iframe',size: {x: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH; ?>,y: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT; ?>}}"
+									href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Felder:'.JRequest::getVar( "view").'-'.$var_onlinehelp; ?>"
+									 class="modal">
+									<?php
+									echo JHtml::_(	'image','media/com_sportsmanagement/jl_images/help.png',
+													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
+													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
+									?>
+								</a>
+                
+                <?PHP
+                if ( $field->name == 'jform[country]' )
+                {
+                echo JSMCountries::getCountryFlag($field->value);    
+                }
+                
+                if ( $field->name == 'jform[standard_playground]' )
+                {
+                //echo sportsmanagementHelper::getPicturePlayground($field->value);
+                $picture = sportsmanagementHelper::getPicturePlayground($field->value);
+                //echo $picture;
+                //echo JHtml::image($picture, 'Playground', array('title' => 'Playground','width' => '50' )); 
+                //echo JHtml::_('image', $picture, 'Playground',array('title' => 'Playground','width' => '50' )); 
+?>
+<a href="<?php echo JURI::root().$picture;?>" title="<?php echo 'Playground';?>" class="modal">
+<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo 'Playground';?>" width="50" />
+</a>
+<?PHP                   
+                }
+                
+                if ( $field->name == 'jform[website]' )
+                {
+                //echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
+                echo '<img style="" src="http://api.thumbsniper.com/api_free.php?size=13&effect=1&url='.$field->value.'">'; 
+                }
+                if ( $field->name == 'jform[twitter]' )
+                {
+                //echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
+                echo '<img style="" src="http://api.thumbsniper.com/api_free.php?size=13&effect=1&url='.$field->value.'">'; 
+                }
+                if ( $field->name == 'jform[facebook]' )
+                {
+                //echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
+                echo '<img style="" src="http://api.thumbsniper.com/api_free.php?size=13&effect=1&url='.$field->value.'">'; 
+                }
+                break;
+                }
+                        ?>
+                        </div>
 					</div>
 				<?php
 
