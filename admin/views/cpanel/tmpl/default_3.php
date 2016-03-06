@@ -179,6 +179,11 @@ jimport('joomla.html.html.bootstrap');
 <span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_IMAGE_IMPORT') ?></span>
 </a>
 
+<a class="btn" href="index.php?option=com_sportsmanagement&view=joomleagueimports&layout=default">
+<img src="components/com_sportsmanagement/assets/icons/joomleague.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_JOOMLEAGUE_IMPORT') ?>" /><br />
+<span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_JOOMLEAGUE_IMPORT') ?></span>
+</a>
+
 </div> 
 
 <hr class="hr-condensed"> 

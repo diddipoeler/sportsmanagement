@@ -453,15 +453,38 @@ function newstructurjlimport($season_id,$jl_table,$jsm_table,$project_id)
     $db = JFactory::getDbo(); 
     $option = JRequest::getCmd('option');
     $starttime = microtime(); 
+    $query = $db->getQuery(true);
         
 //    $season_id = $app->getUserState( "$option.season_id", '0' );
 //    $jl_table = $app->getUserState( "$option.jl_table", '' );
 //    $jsm_table = $app->getUserState( "$option.jsm_table", '' );
     
-    // felder für den import auslesen
-    $jl_fields = $db->getTableFields($jl_table);
-    $jsm_fields = $db->getTableFields($jsm_table);
-    
+/**
+* hier muss auch wieder zwischen den joomla versionen unterschieden werden
+* felder für den import auslesen
+*/                
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Joomla! 3.0 code here
+$jl_fields = $db->getTableColumns($jl_table);
+$jsm_fields = $db->getTableColumns($jsm_table);
+$jl_fields[$jl_table] = $jl_fields;
+$jsm_fields[$jsm_table] = $jsm_fields;
+}
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
+$jl_fields = $db->getTableFields($jl_table);
+$jsm_fields = $db->getTableFields($jsm_table);
+}
+         
+
+//    $jl_fields = $db->getTableFields($jl_table);
+//    $jsm_fields = $db->getTableFields($jsm_table);
+
+/**
+* umsetzung der project teams 
+*/     
     if ( preg_match("/project_team/i", $jsm_table) )
     {
 $my_text;
@@ -469,17 +492,36 @@ $my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$store
 $my_text .= '<br />';
 $my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$existingInDbColor. '"<strong>Daten aus der Tabelle: ( '.$jl_table.' ) werden in die neue Struktur umgesetzt!"!</strong>'.'</span>';
 $my_text .= '<br />';
+
+$query->clear();
+//$query->select('pt.*');
+$query->select('p.name as importprojectname');
+// From joomleague table
+$query->from($jl_table.' AS pt');
+$query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
+$query->where('p.id = '.$project_id);
+            
+if ( $season_id )
+{
+$query->select('p.season_id');
+$query->where('p.season_id = '.$season_id);
+}
+$db->setQuery($query);
+$importprojectname = $db->loadResult();  
+
+$my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$existingInDbColor. '"<strong>Daten aus dem Projekt: ( '.$importprojectname.' ) werden in die neue Struktur umgesetzt!"!</strong>'.'</span>';
+$my_text .= '<br />';
 //$app->enqueueMessage(JText::_('Daten aus der Tabelle: ( '.$jsm_table.' ) werden in die neue Struktur umgesetzt!'),'Notice');
 
             // Select some fields
-            $query = $db->getQuery(true);
+//            $query = $db->getQuery(true);
             $query->clear();
 		    $query->select('pt.*');
-            //$query->select('p.season_id');
+            $query->select('p.name as importprojectname');
             // From joomleague table
 		    $query->from($jl_table.' AS pt');
             $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
-            //$query->where('pt.import = 0');
+            $query->where('p.id = '.$project_id);
             
             if ( $season_id )
             {
@@ -496,9 +538,20 @@ $my_text .= '<br />';
         }
         
             $result = $db->loadObjectList();
-            
+                        
             foreach ( $result as $row )
             {
+                
+                $query->clear();
+                $query->select('id');
+                // From table
+                $query->from('#__sportsmanagement_season_team_id');
+                $query->where('season_id = '.$row->season_id);
+                $query->where('team_id = '.$row->team_id);
+                $db->setQuery($query);
+                $new_id = $db->loadResult();
+                if ( !$new_id )
+                {
                 // Create and populate an object.
                 $temp = new stdClass();
                 $temp->season_id = $row->season_id;
@@ -509,19 +562,20 @@ $my_text .= '<br />';
                 {
                     $new_id = $db->insertid();
                 }
-                else
-                {
-                    // Select some fields
-                    $query = $db->getQuery(true);
-                    $query->clear();
-		            $query->select('id');
-                    // From table
-                    $query->from('#__sportsmanagement_season_team_id');
-                    $query->where('season_id = '.$row->season_id);
-                    $query->where('team_id = '.$row->team_id);
-                    $db->setQuery($query);
-                    $new_id = $db->loadResult();
                 }
+//                else
+//                {
+//                    // Select some fields
+//                    //$query = $db->getQuery(true);
+//                    $query->clear();
+//		            $query->select('id');
+//                    // From table
+//                    $query->from('#__sportsmanagement_season_team_id');
+//                    $query->where('season_id = '.$row->season_id);
+//                    $query->where('team_id = '.$row->team_id);
+//                    $db->setQuery($query);
+//                    $new_id = $db->loadResult();
+//                }
                 
 //                // Create an object for the record we are going to joomleague update.
 //                $object = new stdClass();
@@ -586,23 +640,39 @@ $my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$store
 $my_text .= '<br />';
      
             }
-            sportsmanagementModeljoomleagueimports::$_success['Projectteam:'] = $my_text;
+            sportsmanagementModeljoomleagueimports::$_success['Projectteam:'] .= $my_text;
             
             }
             elseif ( preg_match("/team_player/i", $jsm_table) )
     {
-    
+
+/**
+* umsetzung der teamplayer 
+*/     
     //$team_player = array();
     sportsmanagementModeljoomleagueimports::$team_player[$project_id][0] = 0;
     $my_text;
     $my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
 $my_text .= '<br />';
+    
     //$app->enqueueMessage(JText::_('Daten aus der Tabelle: ( '.$jsm_table.' ) werden in die neue Struktur umgesetzt!'),'Notice');    
     
 $my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$existingInDbColor. '"<strong>Daten aus der Tabelle: ( '.$jl_table.' ) werden in die neue Struktur umgesetzt!"!</strong>'.'</span>';
-$my_text .= '<br />';        
+$my_text .= '<br />';  
+
+$query->clear();
+//$query->select('pt.*');
+$query->select('p.name as importprojectname');
+$query->from('#__sportsmanagement_project AS p');
+$query->where('p.id = '.$project_id);
+$db->setQuery($query);            
+$importprojectname = $db->loadResult();  
+
+      
+$my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$existingInDbColor. '"<strong>team_player Daten aus dem Projekt: ( '.$importprojectname.' ) werden in die neue Struktur umgesetzt!"!</strong>'.'</span>';
+$my_text .= '<br />';
         
-        $query = $db->getQuery(true);
+//        $query = $db->getQuery(true);
         $query->clear();
         $query->select('tp.*,st.team_id');
         $query->select('pers.firstname,pers.lastname');
@@ -613,7 +683,7 @@ $my_text .= '<br />';
         $query->join('INNER','#__sportsmanagement_person as pers ON pers.id = tp.person_id ');
         
         
-        //$query->where('tp.import = 0');
+        $query->where('p.id = '.$project_id);
         
         if ( $season_id )
             {
@@ -622,6 +692,8 @@ $my_text .= '<br />';
             }
             
             $db->setQuery($query);
+            
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
             
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
@@ -633,6 +705,20 @@ $my_text .= '<br />';
         
         foreach ( $result as $row )
             {
+                
+                $query->clear();
+		        $query->select('id');
+                // From table
+                $query->from('#__sportsmanagement_season_person_id');
+                $query->where('person_id = '.$row->person_id);
+                $query->where('season_id = '.$row->season_id);
+                $query->where('team_id = '.$row->team_id);
+                $query->where('persontype = 1');
+                $db->setQuery($query);
+                $new_id = $db->loadResult();
+                
+                if ( !$new_id )
+                {
                 // als erstes wird der spieler der saison zugeordnet
                 // Create and populate an object.
                 $temp = new stdClass();
@@ -643,10 +729,11 @@ $my_text .= '<br />';
                 $temp->persontype = 1;
                 // Insert the object into the user profile table.
                 $result = JFactory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
+                }
                 
                 // ist der spieler schon in der season team person tabelle ?
                 // Select some fields
-                $query = $db->getQuery(true);
+                //$query = $db->getQuery(true);
                 $query->clear();
 		        $query->select('id');
                 // From table
@@ -722,12 +809,16 @@ $result_update = $db->execute();
             //$team_player[$row->id] = $new_id;
             sportsmanagementModeljoomleagueimports::$team_player[$project_id][$row->id] = $new_id;
             }
-            sportsmanagementModeljoomleagueimports::$_success['Team Player Projekt('.$project_id.'):'] = $my_text;
+            sportsmanagementModeljoomleagueimports::$_success['Team Player Projekt('.$project_id.'):'] .= $my_text;
             //return $team_player;
             
     }
     elseif ( preg_match("/team_staff/i", $jsm_table) )
     {
+/**
+* umsetzung der team mitarbeiter
+*/        
+         
         $my_text;
         $my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
 $my_text .= '<br />';
@@ -738,8 +829,20 @@ $my_text .= '<br />';
         //$app->enqueueMessage(JText::_('Daten aus der Tabelle: ( '.$jsm_table.' ) werden in die neue Struktur umgesetzt!'),'Notice');
 $my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$existingInDbColor. '"<strong>Daten aus der Tabelle: ( '.$jl_table.' ) werden in die neue Struktur umgesetzt!"!</strong>'.'</span>';
 $my_text .= '<br />';
+
+$query->clear();
+//$query->select('pt.*');
+$query->select('p.name as importprojectname');
+$query->from('#__sportsmanagement_project AS p');
+$query->where('p.id = '.$project_id);
+$db->setQuery($query);            
+$importprojectname = $db->loadResult();  
+
+      
+$my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$existingInDbColor. '"<strong>team_player Daten aus dem Projekt: ( '.$importprojectname.' ) werden in die neue Struktur umgesetzt!"!</strong>'.'</span>';
+$my_text .= '<br />';
         
-    $query = $db->getQuery(true);
+//    $query = $db->getQuery(true);
         $query->clear();
         $query->select('tp.*,st.team_id');
         $query->from($jl_table.' AS tp');
@@ -748,7 +851,7 @@ $my_text .= '<br />';
         $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
         $query->join('INNER','#__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
         $query->join('INNER','#__sportsmanagement_person as pers ON pers.id = tp.person_id ');
-        //$query->where('tp.import = 0');
+        $query->where('p.id = '.$project_id);
         
         if ( $season_id )
             {
@@ -768,6 +871,19 @@ $my_text .= '<br />';
         
         foreach ( $result as $row )
             {
+                
+                $query->clear();
+		        $query->select('id');
+                // From table
+                $query->from('#__sportsmanagement_season_person_id');
+                $query->where('person_id = '.$row->person_id);
+                $query->where('season_id = '.$row->season_id);
+                $query->where('team_id = '.$row->team_id);
+                $query->where('persontype = 2');
+                $db->setQuery($query);
+                $new_id = $db->loadResult();
+                if ( !$new_id )
+                {
                 // als erstes wird der spieler der saison zugeordnet
                 // Create and populate an object.
                 $temp = new stdClass();
@@ -778,6 +894,7 @@ $my_text .= '<br />';
                 $temp->persontype = 2;
                 // Insert the object into the user profile table.
                 $result = JFactory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
+                }
                 
                 // ist der spieler schon in der season team person tabelle ?
                 // Select some fields
@@ -853,11 +970,14 @@ $result_update = $db->execute();
     //$team_staff[$row->id] = $new_id;
     sportsmanagementModeljoomleagueimports::$team_staff[$project_id][$row->id] = $new_id;                
     } 
-    sportsmanagementModeljoomleagueimports::$_success['Team Staff ('.$project_id.'):'] = $my_text; 
+    sportsmanagementModeljoomleagueimports::$_success['Team Staff ('.$project_id.'):'] .= $my_text; 
     //return $team_staff;
     }      
     elseif ( preg_match("/project_referee/i", $jsm_table) )
     {
+/**
+* projekt schiedsrichter 
+*/        
         $my_text;
         $my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
 $my_text .= '<br />';
@@ -868,15 +988,26 @@ $my_text .= '<br />';
 $my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$existingInDbColor. '"<strong>Daten aus der Tabelle: ( '.$jsm_table.' ) werden in die neue Struktur umgesetzt!"!</strong>'.'</span>';
 $my_text .= '<br />';
 
+$query->clear();
+//$query->select('pt.*');
+$query->select('p.name as importprojectname');
+$query->from('#__sportsmanagement_project AS p');
+$query->where('p.id = '.$project_id);
+$db->setQuery($query);            
+$importprojectname = $db->loadResult();  
 
-$query = $db->getQuery(true);
+      
+$my_text .= '<span style="color:'.sportsmanagementModeljoomleagueimports::$existingInDbColor. '"<strong>team_player Daten aus dem Projekt: ( '.$importprojectname.' ) werden in die neue Struktur umgesetzt!"!</strong>'.'</span>';
+$my_text .= '<br />';
+
+//$query = $db->getQuery(true);
         $query->clear();
         $query->select('tp.*');
         $query->select('pers.firstname,pers.lastname');
         $query->from($jl_table.' AS tp');
         $query->join('INNER','#__sportsmanagement_project AS p ON p.id = tp.project_id');
         $query->join('INNER','#__sportsmanagement_person as pers ON pers.id = tp.person_id ');
-
+$query->where('p.id = '.$project_id);
 
 if ( $season_id )
             {
@@ -889,6 +1020,20 @@ if ( $season_id )
 
 foreach ( $result as $row )
             {
+                
+                $query->clear();
+		        $query->select('id');
+                // From table
+                $query->from('#__sportsmanagement_season_person_id');
+                $query->where('person_id = '.$row->person_id);
+                $query->where('season_id = '.$row->season_id);
+                $query->where('team_id = 0');
+                $query->where('persontype = 3');
+                $db->setQuery($query);
+                $new_id = $db->loadResult();
+                
+                if ( !$new_id )
+                {
                 // als erstes wird der spieler der saison zugeordnet
                 // Create and populate an object.
                 $temp = new stdClass();
@@ -900,6 +1045,7 @@ foreach ( $result as $row )
                 $temp->published = 1;
                 // Insert the object into the table.
                 $result = JFactory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
+                }
                 
                 if ( $result )
                 {
@@ -929,7 +1075,7 @@ sportsmanagementModeljoomleagueimports::$project_referee[$project_id][$row->pers
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' __joomleague_project_referee -> <br><pre>'.print_r($project_referee,true).'</pre>'),'');
  
-sportsmanagementModeljoomleagueimports::$_success['Project Referee neue Struktur ('.$project_id.'):'] = $my_text; 
+sportsmanagementModeljoomleagueimports::$_success['Project Referee neue Struktur ('.$project_id.'):'] .= $my_text; 
     //return $project_referee;       
 }             
 

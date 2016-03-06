@@ -265,12 +265,25 @@ static $project_referee = array();
 static $team_staff = array();
 
 
+/**
+ * sportsmanagementModeljoomleagueimports::check_database()
+ * 
+ * @return void
+ */
 function check_database()
 {
 $conf = JFactory::getConfig();
 $app = JFactory::getApplication();
-$params = JComponentHelper::getParams( 'com_sportsmanagement' );    
-$debug = $conf->getValue('config.debug');
+$params = JComponentHelper::getParams( 'com_sportsmanagement' );   
+// welche joomla version ?
+            if(version_compare(JVERSION,'3.0.0','ge')) 
+        { 
+$debug = $conf->get('config.debug');
+}
+else
+{
+$debug = $conf->getValue('config.debug');    
+}
 
 $option = array(); //prevent problems
 $option['driver']   = $params->get( 'jl_dbtype' );            // Database driver name
@@ -284,8 +297,11 @@ $option['prefix']   = $params->get( 'jl_dbprefix' );             // Database pre
 // überhaupt den zugriff auf die datenbank hat.
 $jl_access = JDatabase::getInstance( $option );    
 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_access<br><pre>'.print_r($jl_access,true).'</pre>'),'');
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<br><pre>'.print_r($jl_access->getErrorMsg(),true).'</pre>'),'Error');
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_access<br><pre>'.print_r($jl_access,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<br><pre>'.print_r($jl_access->getErrorMsg(),true).'</pre>'),'Error');
+
+
 /*
 if ( JError::isError($jl_access) ) {
 			header('HTTP/1.1 500 Internal Server Error');
@@ -602,6 +618,8 @@ $app = JFactory::getApplication();
 $jinput = $app->input;
 $option = $jinput->getCmd('option');
 
+self::$_success = '';
+
 $sports_type_id = $jinput->post->get('filter_sports_type', 0);
 //$this->setState('filter.sports_type', $sports_type_id);
 $app->setUserState( $option.'.filter_sports_type', $sports_type_id );
@@ -615,7 +633,7 @@ $query = $db->getQuery(true);
 $exportfields = array();        
 $table_copy = array();        
 
-$table_copy[] = 'associations';
+//$table_copy[] = 'associations';
 
 $table_copy[] = 'club';
 $table_copy[] = 'division';
@@ -625,6 +643,8 @@ $table_copy[] = 'match_commentary';
 $table_copy[] = 'person';
 $table_copy[] = 'playground';
 
+$table_copy[] = 'position';
+$table_copy[] = 'position_eventtype';
 $table_copy[] = 'position_statistic';
 
 $table_copy[] = 'project';
@@ -654,19 +674,57 @@ $table_copy[] = 'prediction_template';
         
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' table_copy <br><pre>'.print_r($table_copy,true).'</pre>'),'');        
 
+$tables = $db->getTableList();
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tables <br><pre>'.print_r($tables,true).'</pre>'),'');     
+
+//$table_copy = array(); 
+//$table_copy[] = 'club';
+
 /**
 * als erstes kommen die tabellen, die nur kopiert werden !
 */        
 $my_text = '';  
 $my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
 $my_text .= '<br />';
+
 foreach ( $table_copy as $key => $value )
 {
-$jsm_table = '#__sportsmanagement_'.$value;
+    
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' key <br><pre>'.print_r($key,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value <br><pre>'.print_r($value,true).'</pre>'),'');
+    
 $jl_table = '#__joomleague_'.$value;
-                
+$jsm_table = '#__sportsmanagement_'.$value;
+
+/**
+ * hier überprüfen wir noch sicherheitshalber ob die jl tabelle existiert
+ */
+$prefix = $db->getPrefix();
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prefix <br><pre>'.print_r($prefix,true).'</pre>'),'');
+$key_table = array_search($prefix.'joomleague_'.$value, $tables);
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_table <br><pre>'.print_r($jl_table,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' key_table <br><pre>'.print_r($key_table,true).'</pre>'),'');
+
+if ( $key_table )
+{
+/**
+* hier muss auch wieder zwischen den joomla versionen unterschieden werden
+*/                
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Joomla! 3.0 code here
+$jl_fields = $db->getTableColumns('#__joomleague_'.$value);
+$jsm_fields = $db->getTableColumns('#__sportsmanagement_'.$value);
+$jl_fields[$jl_table] = $jl_fields;
+$jsm_fields[$jsm_table] = $jsm_fields;
+
+}
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
 $jl_fields = $db->getTableFields('#__joomleague_'.$value);
 $jsm_fields = $db->getTableFields('#__sportsmanagement_'.$value);
+}
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_fields <br><pre>'.print_r($jl_fields,true).'</pre>'),'');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_fields <br><pre>'.print_r($jsm_fields,true).'</pre>'),'');            
@@ -685,10 +743,19 @@ else
 /**
 * die landesverbände übernehmen
 */    
+/*
 if ( $value == 'associations' )
 {
 $db->truncateTable($jsm_table);    
 }    
+else
+{
+$db->truncateTable($jsm_table);    
+}
+*/
+
+sportsmanagementModeldatabasetool::setSportsManagementTableQuery($jsm_table,'truncate');
+
 
 $query = $db->getQuery(true);
 $query->clear();
@@ -762,6 +829,8 @@ $my_text .= '<br />';
 }   
 
 }
+
+}
          
 }
 
@@ -806,127 +875,13 @@ self::$_success['Tabellenaktualisierung:'] = $my_text;
 /**
  * jetzt kommen die hauptpositionen
  */
-$jl_position = array(); 
-$my_text = '';
-$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-$my_text .= '<br />';
-$query = $db->getQuery(true);
-$query->clear();
-$query->select('*');
-$query->from('#__joomleague_position');
-$query->where('parent_id = 0');
-$db->setQuery($query);
-$result = $db->loadObjectList();
 
-if ( $result )
-{
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' __joomleague_position -> <br><pre>'.print_r($result,true).'</pre>'),'');  
-foreach( $result as $row )
-{
-    
-$query = $db->getQuery(true);
-$query->clear();
-$query->select('id');
-$query->from('#__sportsmanagement_position');
-$query->where('name LIKE '. $db->Quote( '' . $row->name . '') );
-$db->setQuery($query);
-$pos_result = $db->loadResult();
-
-if ( $pos_result )
-{
-$jl_position[$row->id] = $pos_result;   
-$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Position: ( '.$row->name.' ) in der Tabelle alt -> ('.$row->id.')  neu -> ('.$pos_result.') vorhanden!</strong>'.'</span>';
-$my_text .= '<br />';    
-}
-else
-{    
-$mdl = JModelLegacy::getInstance("position", "sportsmanagementModel");
-$mdlTable = $mdl->getTable();    
-
-$mdlTable->name = $row->name;
-$mdlTable->alias = $row->alias;
-$mdlTable->parent_id = $row->parent_id;
-$mdlTable->persontype = $row->persontype;
-$mdlTable->sports_type_id = $sports_type_id;
-$mdlTable->published = $row->published;
-
-if ($mdlTable->store()===false)
-{
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-}
-else
-{
-$jl_position[$row->id] = $db->insertid();
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Position: ( '.$row->name.' ) in der Tabelle alt -> ('.$row->id.')  neu -> ('.$db->insertid().') angelegt!</strong>'.'</span>';
-$my_text .= '<br />'; 
-}
-
-}
-
-}
-  
-}
 
 /**
  * jetzt kommen die nebenpositionen
  */
-$query = $db->getQuery(true);
-$query->clear();
-$query->select('*');
-$query->from('#__joomleague_position');
-$query->where('parent_id != 0');
-$db->setQuery($query);
-$result = $db->loadObjectList();
 
-if ( $result )
-{
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' __joomleague_position -> <br><pre>'.print_r($result,true).'</pre>'),'');  
-foreach( $result as $row )
-{
-
-$query = $db->getQuery(true);
-$query->clear();
-$query->select('id');
-$query->from('#__sportsmanagement_position');
-$query->where('name LIKE '. $db->Quote( '' . $row->name . '') );
-$db->setQuery($query);
-$pos_result = $db->loadResult();
-
-if ( $pos_result )
-{
-$jl_position[$row->id] = $pos_result; 
-$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Position: ( '.$row->name.' ) in der Tabelle alt -> ('.$row->id.')  neu -> ('.$pos_result.') vorhanden!</strong>'.'</span>';
-$my_text .= '<br />';     
-}
-else
-{  
-$mdl = JModelLegacy::getInstance("position", "sportsmanagementModel");
-$mdlTable = $mdl->getTable();    
-
-$mdlTable->name = $row->name;
-$mdlTable->alias = $row->alias;
-$mdlTable->parent_id = $jl_position[$row->parent_id];
-$mdlTable->persontype = $row->persontype;
-$mdlTable->sports_type_id = $sports_type_id;
-$mdlTable->published = $row->published;
-
-if ($mdlTable->store()===false)
-{
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-}
-else
-{
-$jl_position[$row->id] = $db->insertid();
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Position: ( '.$row->name.' ) in der Tabelle alt -> ('.$row->id.')  neu -> ('.$db->insertid().') angelegt!</strong>'.'</span>';
-$my_text .= '<br />'; 
-}
-
-}
-
-}
-  
-}
-
+$my_text = '';
 self::$_success['Positionen:'] = $my_text;
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_position -> <br><pre>'.print_r($jl_position,true).'</pre>'),'');
@@ -934,172 +889,21 @@ self::$_success['Positionen:'] = $my_text;
 /**
  * als nächstes müssen wir die ereignisse verarbeiten
  */
-$jl_eventtype = array(); 
+
 $my_text = '';
-$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-$my_text .= '<br />';
-$query = $db->getQuery(true);
-$query->clear();
-$query->select('*');
-$query->from('#__joomleague_eventtype');
-//$query->where('parent_id != 0');
-$db->setQuery($query);
-$result = $db->loadObjectList();
-
-if ( $result )
-{
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' __joomleague_position -> <br><pre>'.print_r($result,true).'</pre>'),'');  
-foreach( $result as $row )
-{
-    
-$query = $db->getQuery(true);
-$query->clear();
-$query->select('id');
-$query->from('#__sportsmanagement_eventtype');
-$query->where('name LIKE '. $db->Quote( '' . $row->name . '') );
-$db->setQuery($query);
-$pos_result = $db->loadResult();
-
-if ( $pos_result )
-{
-$jl_eventtype[$row->id] = $pos_result;  
-$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Eventtype: ( '.$row->name.' ) in der Tabelle vorhanden!</strong>'.'</span>';
-$my_text .= '<br />';    
-}
-else
-{    
-$mdl = JModelLegacy::getInstance("eventtype", "sportsmanagementModel");
-$mdlTable = $mdl->getTable();    
-
-$mdlTable->name = $row->name;
-$mdlTable->alias = $row->alias;
-$mdlTable->parent_id = $row->parent_id;
-$mdlTable->icon = $row->icon;
-$mdlTable->sports_type_id = $row->sports_type_id;
-$mdlTable->published = $row->published;
-
-if ($mdlTable->store()===false)
-{
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-}
-else
-{
-$jl_eventtype[$row->id] = $db->insertid();
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Eventtype: ( '.$row->name.' ) in der Tabelle angelegt!</strong>'.'</span>';
-$my_text .= '<br />'; 
-}
-
-}
-
-}
-  
-}
-
 self::$_success['Eventtypes:'] = $my_text;
 
 /**
  * jetzt werden die ereignisse zu den positionen verarbeitet
  */
-$my_text = '';
-
-$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-$my_text .= '<br />';
-
-$query = $db->getQuery(true);
-$query->clear();
-$query->select('*');
-$query->from('#__joomleague_position_eventtype');
-$db->setQuery($query);
-$result = $db->loadObjectList();
-
-if ( $result )
-{
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' __joomleague_position -> <br><pre>'.print_r($result,true).'</pre>'),'');  
-foreach( $result as $row )
-{
-$mdl = JModelLegacy::getInstance("positioneventtype", "sportsmanagementModel");
-$mdlTable = $mdl->getTable();    
-
-$mdlTable->position_id = $jl_position[$row->position_id];
-$mdlTable->eventtype_id = $jl_eventtype[$row->eventtype_id];
-
-if ($mdlTable->store()===false)
-{
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-$my_text .= '<span style="color:'.self::$existingInDbColor. '"<strong>Position Eventtype: ( '.$row->id.' ) in der Tabelle vorhanden!</strong>'.'</span>';
-$my_text .= '<br />'; 
-}
-else
-{
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Position Eventtype: ( '.$row->id.' ) in der Tabelle angelegt!</strong>'.'</span>';
-$my_text .= '<br />'; 
-}
-    
-}
-
-}    
+$my_text = '';  
 self::$_success['Position Eventtypes:'] = $my_text;
 
 /**
  * dann die positions id´s in den tabellen updaten
  */
+
 $my_text = '';
-$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-$my_text .= '<br />';
-
-foreach( $jl_position as $key => $value )
-{
-// Fields to update.
-    $fields = array(
-    $db->quoteName('position_id') .'=\''.$value.'\''
-        );
-     // Conditions for which records should be updated.
-    $conditions = array(
-    $db->quoteName('position_id') .'='. $key
-    );
-    $query->clear();
-     $query->update($db->quoteName('#__sportsmanagement_person'))->set($fields)->where($conditions);
-     $db->setQuery($query);  
-     if (!sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__))
-		{
-		    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-		} 
-        else
-{
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.self::$db_num_rows.' Daten in der Tabelle: ( __sportsmanagement_person ) aktualisiert!</strong>'.'</span>';
-$my_text .= '<br />';  
-}
-
-    $query->clear();    
-    $query->update($db->quoteName('#__sportsmanagement_project_position'))->set($fields)->where($conditions);
-     $db->setQuery($query);  
-     if (!sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__))
-		{
-		    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-		}
-else
-{
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.self::$db_num_rows.' Daten in der Tabelle: ( __sportsmanagement_project_position ) aktualisiert!</strong>'.'</span>';
-$my_text .= '<br />';  
-}
-
-    $query->clear();    
-    $query->update($db->quoteName('#__sportsmanagement_position_statistic'))->set($fields)->where($conditions);
-     $db->setQuery($query);  
-     if (!sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__))
-		{
-		    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-		}         
-else
-{
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.self::$db_num_rows.' Daten in der Tabelle: ( __sportsmanagement_position_statistic ) aktualisiert!</strong>'.'</span>';
-$my_text .= '<br />';  
-}
-           
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Position: ( '.$key.' ) mit ( '.$value.' ) aktualisiert!</strong>'.'</span>';
-$my_text .= '<br />'; 
-}
-
 self::$_success['Positions:'] = $my_text;
 
 /**
@@ -1112,6 +916,18 @@ $query->select('*');
 $query->from('#__sportsmanagement_project');
 $db->setQuery($query);
 $result = $db->loadObjectList();
+
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'success<br><pre>'.print_r(self::$_success,true).'</pre>'),'');
+//$app->setUserState( "$option.success", self::$_success );
+//return;
+
+sportsmanagementModeldatabasetool::setSportsManagementTableQuery('#__sportsmanagement_project_team','truncate');
+sportsmanagementModeldatabasetool::setSportsManagementTableQuery('#__sportsmanagement_season_team_id','truncate');
+sportsmanagementModeldatabasetool::setSportsManagementTableQuery('#__sportsmanagement_season_person_id','truncate');
+sportsmanagementModeldatabasetool::setSportsManagementTableQuery('#__sportsmanagement_season_team_person_id','truncate');
+
+//return; 
 
 if ( $result )
 {
@@ -1126,13 +942,13 @@ $jl_table = '#__joomleague_project_team';
 $jsm_table = '#__sportsmanagement_project_team';
 $mdl = JModelLegacy::getInstance("joomleagueimport", "sportsmanagementModel");
 $mdl->newstructurjlimport($row->season_id,$jl_table,$jsm_table,$row->id);
+
 /**
  * jetzt werden die team spieler umgesetzt
  */
 $jl_table = '#__sportsmanagement_team_player';
 $jsm_table = '#__sportsmanagement_team_player';
 $mdl = JModelLegacy::getInstance("joomleagueimport", "sportsmanagementModel");
-//$team_player = $mdl->newstructurjlimport($row->season_id,$jl_table,$jsm_table,$row->project_id);
 $mdl->newstructurjlimport($row->season_id,$jl_table,$jsm_table,$row->id);
 
 /**
@@ -1141,7 +957,6 @@ $mdl->newstructurjlimport($row->season_id,$jl_table,$jsm_table,$row->id);
 $jl_table = '#__sportsmanagement_team_staff';
 $jsm_table = '#__sportsmanagement_team_staff';
 $mdl = JModelLegacy::getInstance("joomleagueimport", "sportsmanagementModel");
-//$team_staff = $mdl->newstructurjlimport($row->season_id,$jl_table,$jsm_table,$row->project_id);
 $mdl->newstructurjlimport($row->season_id,$jl_table,$jsm_table,$row->id);
 
 /**
@@ -1150,16 +965,22 @@ $mdl->newstructurjlimport($row->season_id,$jl_table,$jsm_table,$row->id);
 $jl_table = '#__joomleague_project_referee';
 $jsm_table = '#__sportsmanagement_project_referee';
 $mdl = JModelLegacy::getInstance("joomleagueimport", "sportsmanagementModel");
-//$project_referee = $mdl->newstructurjlimport($row->season_id,$jl_table,$jsm_table,$row->project_id);
 $mdl->newstructurjlimport($row->season_id,$jl_table,$jsm_table,$row->id);
 
 }
- 
+
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' __sportsmanagement_team_player -> <br><pre>'.print_r(self::$team_player,true).'</pre>'),'');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' __sportsmanagement_team_staff -> <br><pre>'.print_r(self::$team_staff,true).'</pre>'),'');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' __joomleague_project_referee -> <br><pre>'.print_r(self::$project_referee,true).'</pre>'),'');
 
 }    
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'success<br><pre>'.print_r(self::$team_player,true).'</pre>'),'');
+
+$app->setUserState( "$option.success", self::$_success );
+return;
+
+
 
 /**
  * jetzt werden die match events importiert

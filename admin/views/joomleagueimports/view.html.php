@@ -87,7 +87,7 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' stateVar <br><pre>'.print_r($stateVar,true).'</pre>'),'');
         
         //$post = JRequest::get('post');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' post <br><pre>'.print_r($post,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' _success <br><pre>'.print_r(sportsmanagementModeljoomleagueimports::$_success,true).'</pre>'),'');
         
         
         
@@ -166,7 +166,7 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
         
 		if ( $this->cfg_jl_import )
 		{
-		JToolBarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'), false);
+		//JToolBarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'), false);
 		}
         
 		JToolBarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'), false);

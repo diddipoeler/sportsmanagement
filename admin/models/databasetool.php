@@ -524,11 +524,27 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
             
             foreach( $xml->children() as $quote ) 
             {
+            $author = '';
+            $notes = '';
+            $daily_number = '';
+            $zitat = '';
             
+            if ( isset($quote->quote->attributes()->author) )
+            {
             $author = str_replace("\\", "\\\\", (string)$quote->quote->attributes()->author );
+            }
+            if ( isset($quote->quote->attributes()->notes) )
+            {
             $notes = (string)$quote->quote->attributes()->notes;
+            }
+            if ( isset($quote->quote->attributes()->daily_number) )
+            {
             $daily_number = (string)$quote->quote->attributes()->daily_number;
+            }
+            if ( isset($quote->quote) )
+            {
             $zitat = (string)$quote->quote;
+            }
             
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' quote<br><pre>'.print_r($quote,true).'</pre>'),'Notice');
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' author<br><pre>'.print_r($author,true).'</pre>'),'Notice');
