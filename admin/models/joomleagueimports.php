@@ -814,18 +814,14 @@ foreach ( $jl_fields[$jl_table] as $key2 => $value2 )
             $query->clear();
             $query = 'INSERT INTO '.$jsm_table.' ('.$select_fields.') SELECT '.$select_fields.' FROM '.$jl_table;
             $db->setQuery($query);
-            if (!$db->query())
-		    {
-			$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-		    }
-            else
-            {
+            sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+
             //$app->enqueueMessage(JText::_('Daten aus der Tabelle: ( '.$jl_table.' ) in die Tabelle: ( '.$jsm_table.' ) importiert!'),'Notice');    
 
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Daten aus der Tabelle: ( '.$jl_table.' ) in die Tabelle: ( '.$jsm_table.' ) importiert!</strong>'.'</span>';
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.self::$db_num_rows.' Daten aus der Tabelle: ( '.$jl_table.' ) in die Tabelle: ( '.$jsm_table.' ) importiert!</strong>'.'</span>';
 $my_text .= '<br />';             
             
-            }
+
 
 if ( $value == 'position' )
 {
@@ -1030,7 +1026,7 @@ $db->setQuery($query);
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query,true).'</pre>'),'');
 
-sportsmanagementModeldatabasetool::runJoomlaQuery();
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 $my_text = '<span style="color:'.self::$storeSuccessColor. '"<strong>'.self::$db_num_rows.' Daten in die Tabelle: ( __sportsmanagement_project_referee ) eingefügt!</strong>'.'</span>';
 $my_text .= '<br />';     
 self::$_success['Projekt Schiedsrichter:'] = $my_text; 
@@ -1066,7 +1062,7 @@ $db->setQuery($query);
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query,true).'</pre>'),'');
 
-sportsmanagementModeldatabasetool::runJoomlaQuery();
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 $my_text = '<span style="color:'.self::$storeSuccessColor. '"<strong>'.self::$db_num_rows.' Daten in die Tabelle: ( __sportsmanagement_match_player ) eingefügt!</strong>'.'</span>';
 $my_text .= '<br />';     
 
