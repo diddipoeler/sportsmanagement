@@ -1031,6 +1031,9 @@ $db->setQuery($query);
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query,true).'</pre>'),'');
 
 sportsmanagementModeldatabasetool::runJoomlaQuery();
+$my_text = '<span style="color:'.self::$storeSuccessColor. '"<strong>'.self::$db_num_rows.' Daten in die Tabelle: ( __sportsmanagement_project_referee ) eingefügt!</strong>'.'</span>';
+$my_text .= '<br />';     
+self::$_success['Projekt Schiedsrichter:'] = $my_text; 
 
 $db->truncateTable('#__sportsmanagement_match_player');
 $query = $db->getQuery(true);
@@ -1064,7 +1067,10 @@ $db->setQuery($query);
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query,true).'</pre>'),'');
 
 sportsmanagementModeldatabasetool::runJoomlaQuery();
+$my_text = '<span style="color:'.self::$storeSuccessColor. '"<strong>'.self::$db_num_rows.' Daten in die Tabelle: ( __sportsmanagement_match_player ) eingefügt!</strong>'.'</span>';
+$my_text .= '<br />';     
 
+self::$_success['Spieler Startaufstellung:'] = $my_text; 
 
 $app->setUserState( "$option.success", self::$_success );
 return;
