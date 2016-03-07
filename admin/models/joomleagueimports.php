@@ -1032,7 +1032,38 @@ $db->setQuery($query);
 
 sportsmanagementModeldatabasetool::runJoomlaQuery();
 
+$db->truncateTable('#__sportsmanagement_match_player');
+$query = $db->getQuery(true);
+$query->clear();
 
+$query = 'INSERT INTO #__sportsmanagement_match_player (id,match_id,teamplayer_id,came_in,in_for,in_out_time,project_position_id) 
+select
+mp.id,  
+mp.match_id, 
+stp.id as teamplayer_id,
+mp.came_in,
+mp.in_for,
+mp.in_out_time,
+propos.id as project_position_id
+from #__joomleague_match_player as mp
+inner join #__joomleague_team_player as tp on tp.id = mp.teamplayer_id
+inner join #__joomleague_project_team as pt on pt.id = tp.projectteam_id
+inner join #__joomleague_project as p on p.id = pt.project_id
+
+left join #__sportsmanagement_project_position as propos on propos.project_id = pt.project_id
+and propos.position_id = tp.position_id
+
+
+left join #__sportsmanagement_season_team_person_id as stp on 
+stp.person_id = tp.person_id
+and stp.team_id = pt.team_id
+and stp.season_id = p.season_id
+where mp.came_in = 0;';
+$db->setQuery($query);
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query,true).'</pre>'),'');
+
+sportsmanagementModeldatabasetool::runJoomlaQuery();
 
 
 $app->setUserState( "$option.success", self::$_success );
