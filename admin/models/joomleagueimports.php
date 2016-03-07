@@ -1005,7 +1005,7 @@ $mdl->newstructurjlimport($row->season_id,$jl_table,$jsm_table,$row->id);
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'success<br><pre>'.print_r(self::$team_player,true).'</pre>'),'');
 
-
+$db->truncateTable('#__sportsmanagement_project_referee');
 $query = $db->getQuery(true);
 $query->clear();
 $query = 'INSERT INTO #__sportsmanagement_project_referee (id,project_id,project_position_id,person_id,published,picture)
