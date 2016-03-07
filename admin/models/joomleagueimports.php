@@ -1005,6 +1005,36 @@ $mdl->newstructurjlimport($row->season_id,$jl_table,$jsm_table,$row->id);
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'success<br><pre>'.print_r(self::$team_player,true).'</pre>'),'');
 
+
+$query = $db->getQuery(true);
+$query->clear();
+$query = 'INSERT INTO #__sportsmanagement_project_referee (id,project_id,project_position_id,person_id,published,picture)
+select
+mp.id,  
+mp.project_id, 
+propos.id as project_position_id,
+stp.id as person_id,
+1 as published,
+mp.picture
+from #__joomleague_project_referee as mp
+inner join #__joomleague_project as p on p.id = mp.project_id
+
+left join #__sportsmanagement_project_position as propos on propos.project_id = mp.project_id
+and propos.position_id = mp.position_id
+
+left join #__sportsmanagement_season_person_id as stp on 
+stp.person_id = mp.person_id
+and stp.season_id = p.season_id
+where stp.persontype = 3;';
+$db->setQuery($query);
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'query<br><pre>'.print_r($query,true).'</pre>'),'');
+
+sportsmanagementModeldatabasetool::runJoomlaQuery();
+
+
+
+
 $app->setUserState( "$option.success", self::$_success );
 return;
 
