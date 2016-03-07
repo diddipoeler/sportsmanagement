@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie kÃ¶nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spÃ¤teren
+* verÃ¶ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nÃ¼tzlich sein wird, aber
+* OHNE JEDE GEWÃ„HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* GewÃ¤hrleistung der MARKTFÃ„HIGKEIT oder EIGNUNG FÃœR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fÃ¼r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -55,7 +55,7 @@ update #__sportsmanagement_project set name = replace(name, 'Kreisligen', 'Kreis
 umsetzung der spieler in den paarungen
 
 ########################################################################################
-1.) einfügen der startaufstellung 
+1.) einfÃ¼gen der startaufstellung 
 ----------------------------------------------------------------------------------------
 INSERT INTO j25_sportsmanagement_match_player (id,match_id,teamplayer_id,came_in,in_for,in_out_time) 
 
@@ -293,8 +293,8 @@ $option['password'] = $params->get( 'jl_password' );   // Password for database 
 $option['database'] = $params->get( 'jl_db' );      // Database name
 $option['prefix']   = $params->get( 'jl_dbprefix' );             // Database prefix (may be empty)
  
-// zuerst noch überprüfen, ob der user
-// überhaupt den zugriff auf die datenbank hat.
+// zuerst noch Ã¼berprÃ¼fen, ob der user
+// Ã¼berhaupt den zugriff auf die datenbank hat.
 $jl_access = JDatabase::getInstance( $option );    
 
 
@@ -481,7 +481,7 @@ function gettotals()
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_table<br><pre>'.print_r($jsm_table,true).'</pre>'),'');
 
         // Das "i" nach der Suchmuster-Begrenzung kennzeichnet eine Suche ohne
-            // Berücksichtigung von Groß- und Kleinschreibung
+            // BerÃ¼cksichtigung von GroÃŸ- und Kleinschreibung
             if ( preg_match("/project_team/i", $jsm_table) ) 
             {
             
@@ -559,7 +559,7 @@ $app = JFactory::getApplication();
         $jl_table = $jl[$value];
         
         // Das "i" nach der Suchmuster-Begrenzung kennzeichnet eine Suche ohne
-            // Berücksichtigung von Groß- und Kleinschreibung
+            // BerÃ¼cksichtigung von GroÃŸ- und Kleinschreibung
             if (preg_match("/project_team/i", $jsm_table)) 
             {
                 // store the variable that we would like to keep for next time
@@ -697,7 +697,7 @@ $jl_table = '#__joomleague_'.$value;
 $jsm_table = '#__sportsmanagement_'.$value;
 
 /**
- * hier überprüfen wir noch sicherheitshalber ob die jl tabelle existiert
+ * hier Ã¼berprÃ¼fen wir noch sicherheitshalber ob die jl tabelle existiert
  */
 $prefix = $db->getPrefix();
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prefix <br><pre>'.print_r($prefix,true).'</pre>'),'');
@@ -741,7 +741,7 @@ else
 {
 
 /**
-* die landesverbände übernehmen
+* die landesverbÃ¤nde Ã¼bernehmen
 */    
 /*
 if ( $value == 'associations' )
@@ -754,7 +754,8 @@ $db->truncateTable($jsm_table);
 }
 */
 
-sportsmanagementModeldatabasetool::setSportsManagementTableQuery($jsm_table,'truncate');
+$db->truncateTable($jsm_table);
+//sportsmanagementModeldatabasetool::setSportsManagementTableQuery($jsm_table,'truncate');
 
 
 $query = $db->getQuery(true);
@@ -826,6 +827,26 @@ $my_text .= '<br />';
             
             }
 
+if ( $value == 'position' )
+{
+$query = $db->getQuery(true);
+$query->clear();
+// Fields to update.
+$fields = array(
+    $db->quoteName('sports_type_id') . ' = ' . $sports_type_id
+);
+ 
+// Conditions for which records should be updated.
+$conditions = array(
+    $db->quoteName('sports_type_id') . ' != '.$sports_type_id
+);
+ 
+$query->update($db->quoteName('#__sportsmanagement_position'))->set($fields)->where($conditions);
+
+$db->setQuery($query);
+$result = $db->execute();
+}
+
 }   
 
 }
@@ -837,8 +858,8 @@ $my_text .= '<br />';
 self::$_success['Tabellenkopie:'] = $my_text;
 
 /**
- * nach der kopie der tabellen müssen wir die sportart bei den mannschaften setzen.
- * sonst gibt es in der übersicht der projektmannschaften eine fehlermeldung.
+ * nach der kopie der tabellen mÃ¼ssen wir die sportart bei den mannschaften setzen.
+ * sonst gibt es in der Ã¼bersicht der projektmannschaften eine fehlermeldung.
  */
 $query = $db->getQuery(true);
 $my_text = '';
@@ -887,7 +908,7 @@ self::$_success['Positionen:'] = $my_text;
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_position -> <br><pre>'.print_r($jl_position,true).'</pre>'),'');
 
 /**
- * als nächstes müssen wir die ereignisse verarbeiten
+ * als nÃ¤chstes mÃ¼ssen wir die ereignisse verarbeiten
  */
 
 $my_text = '';
@@ -900,7 +921,7 @@ $my_text = '';
 self::$_success['Position Eventtypes:'] = $my_text;
 
 /**
- * dann die positions id´s in den tabellen updaten
+ * dann die positions idÂ´s in den tabellen updaten
  */
 
 $my_text = '';
@@ -922,10 +943,17 @@ $result = $db->loadObjectList();
 //$app->setUserState( "$option.success", self::$_success );
 //return;
 
+$db->truncateTable('#__sportsmanagement_project_team');
+$db->truncateTable('#__sportsmanagement_season_team_id');
+$db->truncateTable('#__sportsmanagement_season_person_id');
+$db->truncateTable('#__sportsmanagement_season_team_person_id');
+
+/*
 sportsmanagementModeldatabasetool::setSportsManagementTableQuery('#__sportsmanagement_project_team','truncate');
 sportsmanagementModeldatabasetool::setSportsManagementTableQuery('#__sportsmanagement_season_team_id','truncate');
 sportsmanagementModeldatabasetool::setSportsManagementTableQuery('#__sportsmanagement_season_person_id','truncate');
 sportsmanagementModeldatabasetool::setSportsManagementTableQuery('#__sportsmanagement_season_team_person_id','truncate');
+*/
 
 //return; 
 
@@ -1006,8 +1034,8 @@ if ( $result )
 foreach( $result as $row )
 {
 /**
- * vorher müssen wir überprüfen ob es den eintrag schon gibt.
- * ansonsten haben wir doppelte einträge.
+ * vorher mÃ¼ssen wir Ã¼berprÃ¼fen ob es den eintrag schon gibt.
+ * ansonsten haben wir doppelte eintrÃ¤ge.
  */
 $query = $db->getQuery(true);
 $query->clear();
@@ -1080,8 +1108,8 @@ if ( $result )
 foreach( $result as $row )
 {
 /**
- * vorher müssen wir überprüfen ob es den eintrag schon gibt.
- * ansonsten haben wir doppelte einträge.
+ * vorher mÃ¼ssen wir Ã¼berprÃ¼fen ob es den eintrag schon gibt.
+ * ansonsten haben wir doppelte eintrÃ¤ge.
  */
 $query = $db->getQuery(true);
 $query->clear();
@@ -1154,8 +1182,8 @@ if ( $result )
 foreach( $result as $row )
 {
 /**
- * vorher müssen wir überprüfen ob es den eintrag schon gibt.
- * ansonsten haben wir doppelte einträge.
+ * vorher mÃ¼ssen wir Ã¼berprÃ¼fen ob es den eintrag schon gibt.
+ * ansonsten haben wir doppelte eintrÃ¤ge.
  */
 $query = $db->getQuery(true);
 $query->clear();
@@ -1232,8 +1260,8 @@ if ( $result )
 foreach( $result as $row )
 {
 /**
- * vorher müssen wir überprüfen ob es den eintrag schon gibt.
- * ansonsten haben wir doppelte einträge.
+ * vorher mÃ¼ssen wir Ã¼berprÃ¼fen ob es den eintrag schon gibt.
+ * ansonsten haben wir doppelte eintrÃ¤ge.
  */
 $query = $db->getQuery(true);
 $query->clear();
@@ -1304,8 +1332,8 @@ if ( $result )
 foreach( $result as $row )
 {
 /**
- * vorher müssen wir überprüfen ob es den eintrag schon gibt.
- * ansonsten haben wir doppelte einträge.
+ * vorher mÃ¼ssen wir Ã¼berprÃ¼fen ob es den eintrag schon gibt.
+ * ansonsten haben wir doppelte eintrÃ¤ge.
  */
 $query = $db->getQuery(true);
 $query->clear();
@@ -1468,8 +1496,8 @@ $my_text .= '<br />';
 self::$_success['Template:'] = $my_text;        
 
 /**
- * und zum schluss müssen wir noch die  konfiguration der komponente änder
- * damit der import nicht 2 mal durchgeführt wird
+ * und zum schluss mÃ¼ssen wir noch die  konfiguration der komponente Ã¤nder
+ * damit der import nicht 2 mal durchgefÃ¼hrt wird
  */
 $params = JComponentHelper::getParams($option);
 $xmlfile = JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'config.xml';
@@ -1551,7 +1579,7 @@ function import()
             
             $jsm_table = $jsm[$value];
             $jl_table = $jl[$value];
-            // wenn in der jsm tabelle einträge vorhanden sind
+            // wenn in der jsm tabelle eintrÃ¤ge vorhanden sind
             // dann wird nicht kopiert. es soll kein schaden entstehen
             $query = $db->getQuery(true);
             $query->clear();
@@ -1565,13 +1593,13 @@ function import()
             
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'totals<br><pre>'.print_r($totals,true).'</pre>'),'');
             
-            // noch die zu importierenden tabellen prüfen
+            // noch die zu importierenden tabellen prÃ¼fen
             // Das "i" nach der Suchmuster-Begrenzung kennzeichnet eine Suche ohne
-            // Berücksichtigung von Groß- und Kleinschreibung
+            // BerÃ¼cksichtigung von GroÃŸ- und Kleinschreibung
             if ( preg_match("/project_team/i", $jsm_table) || preg_match("/team_player/i", $jsm_table) || preg_match("/team_staff/i", $jsm_table) ) 
             {
             $app->enqueueMessage(JText::_('Sie muessen die Daten aus der Tabelle: ( '.$jl_table.' ) in die neue Struktur umsetzen!'),'');
-            // wir müssen ein neues feld an die tabelle zum import einfügen
+            // wir mÃ¼ssen ein neues feld an die tabelle zum import einfÃ¼gen
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_fields<br><pre>'.print_r($jl_fields,true).'</pre>'),'');
             if (array_key_exists('import', $jl_fields[$jl_table]  ) )
             {
