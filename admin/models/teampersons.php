@@ -316,7 +316,18 @@ class sportsmanagementModelTeamPersons extends JModelList
         {
             foreach( $result as $row )
             {
+                $query->clear();
+                $query->select('person_id');
+                $query->from('#__sportsmanagement_person_project_position');
+                $query->where('person_id = '.$row->person_id);
+                $query->where('project_id = '.$project_id);
+                $query->where('project_position_id = '.$row->project_position_id);
+                $query->where('persontype = '.$persontype);
+                $db->setQuery($query);
+                $resultcheck = $db->loadResult();
+                if ( !$resultcheck )
             // projekt position eintragen
+                {
                 // Create a new query object.
                 $insertquery = $db->getQuery(true);
                 // Insert columns.
@@ -343,7 +354,7 @@ class sportsmanagementModelTeamPersons extends JModelList
                 {
                     $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($insertquery->dump(),true).'</pre>'),'Notice');
                 }
-                
+                }
             }
         return TRUE;
         }
