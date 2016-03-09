@@ -692,9 +692,10 @@ from #__joomleague_match_player as mp
 inner join #__joomleague_team_player as tp on tp.id = mp.teamplayer_id
 inner join #__joomleague_project_team as pt on pt.id = tp.projectteam_id
 inner join #__joomleague_project as p on p.id = pt.project_id
+left join #__joomleague_project_position as jlpp on jlpp.id = tp.project_position_id 
 
 left join #__sportsmanagement_project_position as propos on propos.project_id = pt.project_id
-and propos.position_id = tp.position_id
+and propos.position_id = jlpp.position_id
 
 left join #__sportsmanagement_season_team_person_id as stp on 
 stp.person_id = tp.person_id
@@ -743,9 +744,10 @@ from #__joomleague_match_player as mp
 inner join #__joomleague_team_player as tp on tp.id = mp.teamplayer_id
 inner join #__joomleague_project_team as pt on pt.id = tp.projectteam_id
 inner join #__joomleague_project as p on p.id = pt.project_id
+left join #__joomleague_project_position as jlpp on jlpp.id = tp.project_position_id 
 
 left join #__sportsmanagement_project_position as propos on propos.project_id = pt.project_id
-and propos.position_id = tp.position_id
+and propos.position_id = jlpp.position_id
 
 left join #__sportsmanagement_season_team_person_id as stp on 
 stp.person_id = tp.person_id
@@ -776,9 +778,10 @@ from #__joomleague_match_staff as mp
 inner join #__joomleague_team_staff as tp on tp.id = mp.team_staff_id
 inner join #__joomleague_project_team as pt on pt.id = tp.projectteam_id
 inner join #__joomleague_project as p on p.id = pt.project_id
+left join #__joomleague_project_position as jlpp on jlpp.id = tp.project_position_id 
 
 left join #__sportsmanagement_project_position as propos on propos.project_id = pt.project_id
-and propos.position_id = tp.position_id
+and propos.position_id = jlpp.position_id
 
 left join #__sportsmanagement_season_team_person_id as stp on 
 stp.person_id = tp.person_id
