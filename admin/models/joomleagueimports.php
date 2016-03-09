@@ -618,9 +618,10 @@ stp.id as person_id,
 mp.picture
 from #__joomleague_project_referee as mp
 inner join #__joomleague_project as p on p.id = mp.project_id
+left join #__joomleague_project_position as jlpp on jlpp.id = mp.project_position_id 
 
 left join #__sportsmanagement_project_position as propos on propos.project_id = mp.project_id
-and propos.position_id = mp.position_id
+and propos.position_id = jlpp.position_id
 
 left join #__sportsmanagement_season_person_id as stp on 
 stp.person_id = mp.person_id
