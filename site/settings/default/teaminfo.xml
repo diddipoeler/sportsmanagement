@@ -17,6 +17,7 @@
 		</field>
     
     <field name="show_teaminfo_tabs" type="radio" default="no_tabs"
+    class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_TEAMINFO_PARAM_LABEL_SHOW_RESULT_TABS"
 			description="COM_SPORTSMANAGEMENT_FES_TEAMINFO_PARAM_DESCR_SHOW_RESULT_TABS">
 			<option value="no_tabs">COM_SPORTSMANAGEMENT_FES_TEAMINFO_NO_TABS</option>
@@ -141,7 +142,8 @@
   label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_HISTORY_OPTIONS"  
   description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_HISTORY_OPTIONS">
 
-		<field name="ordering_teams_seasons" type="list" default="1"
+		<field name="ordering_teams_seasons" type="radio" default="1"
+    class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_TEAMINFO_PARAM_LABEL_ORDERING_TEAMS" 
       description="COM_SPORTSMANAGEMENT_FES_TEAMINFO_PARAM_DESCR_ORDERING_TEAMS">
 			<option value="0">COM_SPORTSMANAGEMENT_FES_TEAMINFO_PARAM_OPTION0_ORDERING_TEAMS</option>

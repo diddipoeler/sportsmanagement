@@ -39,6 +39,7 @@
 		</field>
 
 		<field 	name="show_players_layout" type="radio" default="no_tabs" 
+    class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_PLAYERS_LAYOUT" 
 				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_PLAYERS_LAYOUT">
 			<option value="no_tabs">COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_OPTION1_PLAYER_STANDARD</option>

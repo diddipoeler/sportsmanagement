@@ -15,6 +15,7 @@
 		</field>
 
     <field name="show_nextmatch_tabs" type="radio" default="no_tabs"
+    class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_LABEL_SHOW_RESULT_TABS"
 			description="COM_SPORTSMANAGEMENT_FES_NEXTMATCH_PARAM_DESCR_SHOW_RESULT_TABS">
 			<option value="no_tabs">COM_SPORTSMANAGEMENT_FES_NEXTMATCH_NO_TABS</option>

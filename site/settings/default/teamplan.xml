@@ -13,6 +13,7 @@
 			value="0">Basic</option> <option value="1">Extended</option> </field> -->
 
 		<field name="plan_order" type="radio" default="ASC"
+    class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_PLAN_ORDER" description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_PLAN_ORDER">
 			<option value="ASC">COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_OPTION0_PLAN_ORDER</option>
 			<option value="DESC">COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_OPTION1_PLAN_ORDER</option>
@@ -32,6 +33,7 @@
 		</field>
 
 		<field name="show_plan_layout" type="radio" default="plan_default"
+    class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_SHOW_PLAN_LAYOUT" description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_SHOW_PLAN_LAYOUT">
 			<option value="plan_default">COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_SHOW_PLAN_LAYOUT_DEFAULT</option>
 			<option value="plan_sorted_by_date">COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_SHOW_PLAN_LAYOUT_SORTED_BY_DATE</option>
@@ -131,7 +133,8 @@
 			<option value="1">JYES</option>
 		</field>
 
-		<field name="show_playground_name" type="list" default="shortname"
+		<field name="show_playground_name" type="radio" default="shortname"
+    class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_SHOW_PLAYGROUND_NAME" description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_SHOW_PLAYGROUND_NAME">
 			<option value="name">COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_OPTION0_SHOW_PLAYGROUND_NAME</option>
 			<option value="shortname">COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_OPTION1_SHOW_PLAYGROUND_NAME</option>
@@ -198,6 +201,7 @@
         </field>
         
         <field name="show_comments_count" type="radio" default="0"
+        class="radio btn-group btn-group-yesno"
             label="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_LABEL_SHOW_COMMENTS" description="COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_DESCR_SHOW_COMMENTS">
             <option value="0">JNO</option>
             <option value="1">COM_SPORTSMANAGEMENT_FES_TEAMPLAN_PARAM_OPTION1_SHOW_COMMENTS_GRAPHIC</option>

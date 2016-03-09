@@ -37,6 +37,7 @@
 			
 		</field>
 		<field name="MatchesOrderBy" type="radio" default="ASC"
+    class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_LABEL_MATCHESORDERBY" description="COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_DESCR_MATCHESORDERBY">
 			<option value="ASC">COM_SPORTSMANAGEMENT_GLOBAL_ASC</option>
 			<option value="DESC">COM_SPORTSMANAGEMENT_GLOBAL_DESC</option>

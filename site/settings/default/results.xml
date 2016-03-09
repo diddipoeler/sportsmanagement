@@ -122,7 +122,8 @@
 			<option value="1">JYES</option>
 		</field>
 
-		<field	name="show_playground_name" type="list" default="shortname"
+		<field	name="show_playground_name" type="radio" default="shortname"
+    class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_SHOW_PLAYGROUND_NAME"
 				description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_DESCR_SHOW_PLAYGROUND_NAME">
 			<option value="name">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION0_SHOW_PLAYGROUND_NAME</option>
@@ -186,6 +187,7 @@
 		</field>
 
 		<field	name="show_comments_count" type="radio" default="0"
+    class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_SHOW_COMMENTS"
 				description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_DESCR_SHOW_COMMENTS">
 			<option value="0">JNO</option>
@@ -207,7 +209,8 @@
 			<option value="1">JYES</option>
 		</field>
 
-		<field	name="show_division_name" type="list" default="name"
+		<field	name="show_division_name" type="radio" default="name"
+    class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_LABEL_SHOW_DIVISION_NAME"
 				description="COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_DESCR_SHOW_DIVISION_NAME">
 			<option value="name">COM_SPORTSMANAGEMENT_FES_RESULTS_PARAM_OPTION0_SHOW_DIVISION_NAME</option>
