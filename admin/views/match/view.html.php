@@ -278,7 +278,7 @@ $this->request_url	= $uri->toString();
 		$lists ['new_match'] = JHtml::_ ( 'select.genericlist', $newmatches, 'new_match_id', 'class="inputbox" size="1"', 'value', 'text', $this->item->new_match_id );
 
     //$match = $model->getMatchTeams($this->item->id);
-		$lists['count_result'] = JHtml::_('select.booleanlist','count_result','class="inputbox"',$this->item->count_result);
+		$lists['count_result'] = JHtml::_('select.booleanlist','count_result','class="radio btn-group btn-group-yesno"',$this->item->count_result);
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match<br><pre>'.print_r($match,true).'</pre>'),'Notice');
         
@@ -389,6 +389,7 @@ $this->request_url	= $uri->toString();
 		$option = $jinput->getCmd('option');
 		$document = JFactory::getDocument();
 		$model = $this->getModel();
+        $lists = array();
     
 		$document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');
         $document->addScript(JURI::base().'components/'.$option.'/assets/js/editmatchstats.js');

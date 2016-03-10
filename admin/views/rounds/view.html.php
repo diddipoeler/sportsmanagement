@@ -115,31 +115,31 @@ class sportsmanagementViewRounds extends sportsmanagementView
 	 */
 	function _displayDefault($tpl)
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$db = sportsmanagementHelper::getDBConnection();
-		$uri = JFactory::getURI();
+		//$app = JFactory::getApplication();
+//		$jinput = $app->input;
+//		$option = $jinput->getCmd('option');
+//		$db = sportsmanagementHelper::getDBConnection();
+//		$uri = JFactory::getURI();
         
-        $this->state = $this->get('State'); 
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
+       // $this->state = $this->get('State'); 
+//        $this->sortDirection = $this->state->get('list.direction');
+//        $this->sortColumn = $this->state->get('list.ordering');
         
         $starttime = microtime(); 
 		$matchday = $this->get('Items');
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
-		$total = $this->get('Total');
-		$pagination = $this->get('Pagination');
-        $model = $this->getModel();
+		//$total = $this->get('Total');
+//		$pagination = $this->get('Pagination');
+//        $model = $this->getModel();
         
-        $table = JTable::getInstance('round', 'sportsmanagementTable');
-		$this->assignRef('table', $table);
+        $this->able = JTable::getInstance('round', 'sportsmanagementTable');
+		
         
         //$project_id	= JRequest::getVar('pid');
-		$this->project_id	= $app->getUserState( "$option.pid", '0' );
+		$this->project_id	= $this->app->getUserState( "$this->option.pid", '0' );
         
 		$mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
 		$project = $mdlProject->getProject($this->project_id);
@@ -156,11 +156,11 @@ class sportsmanagementViewRounds extends sportsmanagementView
 				
 		//$this->assignRef('massadd',$massadd);				
 		$this->lists	= $lists;
-		$this->matchday	= $matchday;
+		$this->matchday	= $this->items;
 		$this->project	= $project;
-		$this->pagination	= $pagination;
-		$this->request_url	= $uri->toString();
-        $this->user	= JFactory::getUser();
+		//$this->pagination	= $pagination;
+//		$this->request_url	= $uri->toString();
+//        $this->user	= JFactory::getUser();
         
 
 		

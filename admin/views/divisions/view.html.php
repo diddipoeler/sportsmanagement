@@ -61,43 +61,29 @@ class sportsmanagementViewDivisions extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$db	= sportsmanagementHelper::getDBConnection();
-		$uri = JFactory::getURI();
-        $model = $this->getModel();
-        
-        $this->state = $this->get('State'); 
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
+	
 
-        
-        $this->project_id	= $app->getUserState( "$option.pid", '0' );
+        $lists = array();
+        $this->project_id	= $this->app->getUserState( "$this->option.pid", '0' );
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         
 
         $starttime = microtime(); 
-        $items = $this->get('Items');
+    
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
-		$total = $this->get('Total');
-		$pagination = $this->get('Pagination');
+		
         
-        $table = JTable::getInstance('division', 'sportsmanagementTable');
-		$this->table	= $table;
+        $this->table = JTable::getInstance('division', 'sportsmanagementTable');
+		
 
-
-
-		$this->user	= JFactory::getUser();
+		
         $this->projectws	= $project;
 		$this->lists	= $lists;
-		$this->items	= $items;
-		$this->pagination	= $pagination;
-		$this->request_url	= $uri->toString();
+		
         
         
 		

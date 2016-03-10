@@ -21,7 +21,8 @@
 		<field
 				name="cancel"
 				type="radio"
-				default="0"				
+				default="0"		
+        class="radio btn-group btn-group-yesno"		
 				label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_CANCEL"
 				description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_CANCEL_DESC">
 			<option value="0">JNO</option>
@@ -58,7 +59,8 @@
 		<field
 				name="show_report"
 				type="radio"
-				default="0"				
+				default="0"		
+        class="radio btn-group btn-group-yesno"		
 				label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MR_SHOW"
 				description="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MR_SHOW_DESC">
 			<option value="0">JNO</option>

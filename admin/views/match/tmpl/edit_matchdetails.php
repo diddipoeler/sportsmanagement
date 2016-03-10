@@ -93,7 +93,7 @@ function toggle_altdecision() {
 					<tr>
 						<td class="key"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_SUB_DEC' );?></td>
 						<td colspan="3">
-							<select	name="alt_decision" id="alt_decision">
+							<select	name="alt_decision" id="alt_decision" class="radio btn-group btn-group-yesno"		>
 								<option	value="0"<?php if ( $this->match->alt_decision == 0 ){echo ' selected="selected"'; } ?>>
 									<?php echo JText::_('JNO');?>
 								</option>

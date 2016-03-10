@@ -66,13 +66,10 @@ class sportsmanagementViewProject extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$uri = JFactory::getURI();
-		$user = JFactory::getUser();
+		
 		$tpl = '';
 		$starttime = microtime(); 
+        $lists = array();
         
 		if ( $this->getLayout() == 'panel' || $this->getLayout() == 'panel_3' )
 		{
@@ -82,16 +79,14 @@ class sportsmanagementViewProject extends sportsmanagementView
         
         JRequest::setVar('hidemainmenu', true);
 
-		// get the Data
-		$form = $this->get('Form');
-		$item = $this->get('Item');
+		
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		$script = $this->get('Script');
+		
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -99,10 +94,7 @@ class sportsmanagementViewProject extends sportsmanagementView
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-		// Assign the Data
-		$this->form = $form;
-		$this->item = $item;
-		$this->script = $script;
+		
         
         $this->form->setValue('sports_type_id', 'request', $this->item->sports_type_id);
         $this->form->setValue('agegroup_id', 'request', $this->item->agegroup_id);

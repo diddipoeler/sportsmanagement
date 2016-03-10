@@ -74,6 +74,8 @@ class sportsmanagementModelDivisions extends JModelList
                 parent::__construct($config);
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
                 parent::setDbo($getDBConnection);
+                $app = JFactory::getApplication();
+                $this->jinput = $app->input;
         }
         
     /**
@@ -125,7 +127,9 @@ class sportsmanagementModelDivisions extends JModelList
 	{
 		$app	= JFactory::getApplication();
 		$option = JRequest::getCmd('option');
-        $this->_project_id	= $app->getUserState( "$option.pid", '0' );
+        //$this->jinput = $app->input;
+        //$this->_project_id	= $app->getUserState( "$option.pid", '0' );
+        $this->_project_id = $this->jinput->getVar('pid');
         
         //$app->enqueueMessage(JText::_('sportsmanagementModelDivisions _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'Notice');
         
@@ -133,8 +137,8 @@ class sportsmanagementModelDivisions extends JModelList
         // Create a new query object.
         $query = $this->_db->getQuery(true);
         $query->select('dv.*,dvp.name AS parent_name,u.name AS editor');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS dv');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS dvp ON dvp.id = dv.parent_id');
+        $query->from('#__sportsmanagement_division AS dv');
+        $query->join('LEFT', '#__sportsmanagement_division AS dvp ON dvp.id = dv.parent_id');
         $query->join('LEFT', '#__users AS u ON u.id = dv.checked_out');
 
         $query->where(' dv.project_id = ' . $this->_project_id);
@@ -177,16 +181,10 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $query->select('id AS value,name AS text');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division');
+        $query->from('#__sportsmanagement_division');
         $query->where('project_id = ' . $project_id);
         $query->order('name ASC');
         
-//		$query = '	SELECT	id AS value,
-//					name AS text
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_division
-//					WHERE project_id=' . $project_id .
-//					' ORDER BY name ASC ';
-
 		$db->setQuery( $query );
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
@@ -223,16 +221,10 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 		$query = $db->getQuery(true);
         
         $query->select('count(*) AS count');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p on p.id = d.project_id');
+        $query->from('#__sportsmanagement_division AS d');
+        $query->join('INNER', '#__sportsmanagement_project AS p on p.id = d.project_id');
         $query->where('p.id = ' . $project_id);
-        
-        
-//		$query='SELECT count(*) AS count
-//		FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d
-//		JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p on p.id = d.project_id
-//		WHERE p.id='.$project_id;
-        
+                
 		$db->setQuery($query);
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )

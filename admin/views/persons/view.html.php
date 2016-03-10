@@ -88,7 +88,7 @@ $starttime = microtime();
 
 		$this->table = JTable::getInstance('person', 'sportsmanagementTable');
 
-		$this->app->setUserState($option.'task','');
+		$this->app->setUserState($this->option.'task','');
 
 
 

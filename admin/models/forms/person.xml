@@ -108,8 +108,8 @@
       		
 	<field
 			name="published"
-			type="list"
-			class="inputbox"
+			type="radio"
+			class="radio btn-group btn-group-yesno"
 			default="1"
 			size="1"
 			label="JSTATUS"

@@ -58,8 +58,8 @@ if($close == 1) {
 }
 ?>
 <form  action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" id='adminform' method='post' style='display:inline' name='adminform' >
-	<div id="jlstatsform">
-	<fieldset>
+<!--	<div id="jlstatsform"> -->
+<!--	<fieldset> -->
 		<div class="fltrt">
 			<button type="button" onclick="Joomla.submitform('matches.savestats', this.form);">
 				<?php echo JText::_('JAPPLY');?></button>
@@ -71,7 +71,7 @@ if($close == 1) {
 		<div class="configuration" >
 			Stats
 		</div>
-	</fieldset>
+<!--	</fieldset> -->
 	<div class="clear"></div>
 		<?php
 		echo JHtml::_('tabs.start','tabs', array('useCookie'=>1));
@@ -94,6 +94,6 @@ if($close == 1) {
 		<input type="hidden" name="boxchecked" value="0" />
 		
 		<?php echo JHtml::_( 'form.token' ); ?>
-	</div>
+<!--	</div> -->
 </form>
 <div style="clear: both"></div>
