@@ -946,7 +946,7 @@ $query->order('m.match_number');
 		$db->setQuery($query);
 		$matches = $db->loadObjectList();
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
 		if ($matches)
 		{

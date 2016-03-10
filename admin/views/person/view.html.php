@@ -141,7 +141,7 @@ class sportsmanagementViewPerson extends sportsmanagementView
     
 	$person_age = sportsmanagementHelper::getAge($this->form->getValue('birthday'),$this->form->getValue('deathday'));
 //    $app->enqueueMessage(JText::_('personagegroup person_age<br><pre>'.print_r($person_age,true).'</pre>'   ),'');
-	$person_range = $model->getAgeGroupID($person_age);
+	$person_range = $this->model->getAgeGroupID($person_age);
 //    $app->enqueueMessage(JText::_('personagegroup person_range<br><pre>'.print_r($person_range,true).'</pre>'   ),'');
 	if ( $person_range )
  	{
