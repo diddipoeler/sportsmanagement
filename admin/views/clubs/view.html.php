@@ -63,17 +63,10 @@ class sportsmanagementViewClubs extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$uri = JFactory::getURI();
-        $model = $this->getModel();
+	
         $my_text = '';
         
-        $this->state = $this->get('State'); 
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
-        
+              
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
         $my_text .= ' <br><pre>'.print_r($this->state,true).'</pre>';    
@@ -84,18 +77,15 @@ class sportsmanagementViewClubs extends sportsmanagementView
         $starttime = microtime(); 
         $inputappend = '';
 
-		$items		= $this->get('Items');
-        
+
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		$total = $this->get('Total');
-		$pagination = $this->get('Pagination');
+	
         
-        $table = JTable::getInstance('club', 'sportsmanagementTable');
-		$this->table = $table;
+		$this->table = JTable::getInstance('club', 'sportsmanagementTable');
         
         //build the html select list for seasons
 		$seasons[]	= JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'id', 'name');
@@ -134,12 +124,9 @@ class sportsmanagementViewClubs extends sportsmanagementView
 
 
 
-		$this->user			= JFactory::getUser();
-		$this->config		= JFactory::getConfig();
+	
 		$this->lists		= $lists;
-		$this->items		= $items;
-		$this->pagination	= $pagination;
-		$this->request_url	= $uri->toString();
+	
 		
         
 	}

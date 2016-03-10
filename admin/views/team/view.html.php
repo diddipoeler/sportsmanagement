@@ -60,28 +60,24 @@ class sportsmanagementViewTeam extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$model = $this->getModel();
+		
 		$starttime = microtime();
+        $lists = array();
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         
-        //$this->assignRef('change_training_date',$model::$change_training_date);
-		$this->change_training_date	= $app->getUserState( "$option.change_training_date", '0' );
+
+		$this->change_training_date	= $this->app->getUserState( "$this->option.change_training_date", '0' );
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' change_training_date<br><pre>'.print_r($this->change_training_date,true).'</pre>'),'');
         
-        // get the Data
-		$form = $this->get('Form');
-		$item = $this->get('Item');
+        
         
 		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		{
 		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
 		}
         
-		$script = $this->get('Script');
+	
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -89,16 +85,13 @@ class sportsmanagementViewTeam extends sportsmanagementView
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-		// Assign the Data
-		$this->form = $form;
-		$this->item = $item;
-		$this->script = $script;
+	
         
         //$this->item->club_id = $app->getUserState( "$option.club_id", '0' );
         
 		if ( empty($this->item->id) )
 		{
-			$this->form->setValue('club_id', null, $app->getUserState( "$option.club_id", '0' ));
+			$this->form->setValue('club_id', null, $app->getUserState( "$this->option.club_id", '0' ));
 		}
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($this->item->club_id,true).'</pre>'),'');
@@ -106,7 +99,7 @@ class sportsmanagementViewTeam extends sportsmanagementView
 		//$this->item->season_ids = explode(",", $this->item->season_ids);
         //$app->enqueueMessage(JText::_('sportsmanagementViewTeam display season_ids<br><pre>'.print_r($this->item->season_ids,true).'</pre>'),'Notice');
         
-		$extended = sportsmanagementHelper::getExtended($item->extended, 'team');
+		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'team');
 		$this->extended = $extended;
         $extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'team');		
 		$this->extendeduser = $extendeduser;
@@ -123,7 +116,7 @@ class sportsmanagementViewTeam extends sportsmanagementView
         }
         
         //build the html select list for days of week
-		if ($trainingData = $model->getTrainigData($this->item->id))
+		if ($trainingData = $this->model->getTrainigData($this->item->id))
 		{
 			$daysOfWeek = array( 0 => JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT'), 
 			1 => JText::_('MONDAY'), 

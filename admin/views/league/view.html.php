@@ -61,11 +61,7 @@ class sportsmanagementViewLeague extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		// get the Data
-		$this->form = $this->get('Form');
-		$this->item = $this->get('Item');
-		$this->script = $this->get('Script');
- 
+		 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
 		{

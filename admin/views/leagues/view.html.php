@@ -60,36 +60,29 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$uri = JFactory::getURI();
-        $model	= $this->getModel();
+	
         $inputappend = '';
         $startmemory = memory_get_usage();
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' bilderpfad<br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
         
-        $this->state = $this->get('State'); 
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
+    
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' state<br><pre>'.print_r($this->state,true).'</pre>'),'');
 
 
         $starttime = microtime(); 
-		$this->items = $this->get('Items');
+	
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		$total = $this->get('Total');
-		$this->pagination = $this->get('Pagination');
+
         
-//        $table = JTable::getInstance('league', 'sportsmanagementTable');
-		$this->table	= JTable::getInstance('league', 'sportsmanagementTable');
+
+		$this->table = JTable::getInstance('league', 'sportsmanagementTable');
         
         //build the html options for nation
 		$nation[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
@@ -164,11 +157,8 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 																$this->state->get('filter.search_agegroup'));
         unset($myoptions);
         
-        $this->user	= JFactory::getUser();
+
 		$this->lists	= $lists;
-		//$this->items	= $items;
-		//$this->pagination	= $pagination;
-		$this->request_url	= $uri->toString();
 		
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )

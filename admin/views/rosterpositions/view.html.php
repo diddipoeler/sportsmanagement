@@ -61,30 +61,11 @@ class sportsmanagementViewrosterpositions extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$db = sportsmanagementHelper::getDBConnection();
-		$uri = JFactory::getURI();
-		$document	= JFactory::getDocument();
-		$model = $this->getModel();
-    	
-		$this->state = $this->get('State');
-		$this->sortDirection = $this->state->get('list.direction');
-		$this->sortColumn = $this->state->get('list.ordering');
-
-		$items = $this->get('Items');
-		$total = $this->get('Total');
-		$pagination = $this->get('Pagination');
-        
-        $table = JTable::getInstance('rosterposition', 'sportsmanagementTable');
 		
-		$this->table	= $table;
-		$this->user	= JFactory::getUser();
-		//$this->lists	= $lists;
-		$this->items	= $items;
-		$this->pagination	= $pagination;
-		$this->request_url	= $uri->toString();
+        
+        $this->table = JTable::getInstance('rosterposition', 'sportsmanagementTable');
+		
+		
 		
 	}
     

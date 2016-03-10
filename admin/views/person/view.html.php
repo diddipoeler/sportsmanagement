@@ -61,19 +61,10 @@ class sportsmanagementViewPerson extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		// Reference global application object
-	$app = JFactory::getApplication();
-        // JInput object
-	$jinput = $app->input;
-	$model = $this->getModel();
-	$this->option = $jinput->getCmd('option');
-        // Get a refrence of the page instance in joomla
-	$document = JFactory::getDocument();
+		
 	$starttime = microtime();
         
-    // get the Data
-		$this->form = $this->get('Form');
-		$this->item = $this->get('Item');
+
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($item,true).'</pre>'),'');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' form<br><pre>'.print_r($form,true).'</pre>'),'');
@@ -83,7 +74,7 @@ class sportsmanagementViewPerson extends sportsmanagementView
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		$this->script = $this->get('Script');
+
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -91,10 +82,7 @@ class sportsmanagementViewPerson extends sportsmanagementView
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-//		// Assign the Data
-//		$this->form = $form;
-//		$this->item = $item;
-//		$this->script = $script;
+
                 
         // name für den titel setzen
         $this->item->name = $this->item->lastname.' - '.$this->item->firstname;
@@ -160,13 +148,13 @@ class sportsmanagementViewPerson extends sportsmanagementView
 	$this->form->setValue('agegroup_id', null, $person_range);
 	}
     
- 	$document->addScript(JURI::base().'components/'.$this->option.'/assets/js/sm_functions.js');
+ 	$this->document->addScript(JURI::base().'components/'.$this->option.'/assets/js/sm_functions.js');
     
  	$javascript = "\n";
  	$javascript .= "window.addEvent('domready', function() {";   
 	$javascript .= 'StartEditshowPersons('.$this->form->getValue('request_person_art').');' . "\n"; 
 	$javascript .= '});' . "\n"; 
-	$document->addScriptDeclaration( $javascript );
+	$this->document->addScriptDeclaration( $javascript );
     
     // Load the language files for the contact integration
 	$jlang = JFactory::getLanguage();

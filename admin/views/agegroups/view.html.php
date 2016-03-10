@@ -60,33 +60,17 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$uri = JFactory::getURI();
-        $model	= $this->getModel();
+		
         $starttime = microtime(); 
         $mdlSportsType = JModelLegacy::getInstance('SportsType', 'sportsmanagementModel');
-        
-        $this->state = $this->get('State'); 
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
-        
+              
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' state<br><pre>'.print_r($this->state,true).'</pre>'),'');
-
-
-
-		$this->items = $this->get('Items');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
-        
-		$total = $this->get('Total');
-		$this->pagination = $this->get('Pagination');
-        
-        //$table = JTable::getInstance('agegroup', 'sportsmanagementTable');
+
         $this->table = JTable::getInstance('agegroup', 'sportsmanagementTable');
 		
         //build the html select list for sportstypes
@@ -145,11 +129,9 @@ class sportsmanagementViewagegroups extends sportsmanagementView
         
 
 
-		$this->user = JFactory::getUser();
+
 		$this->lists = $lists;
-//		$this->items = $items;
-//		$this->pagination = $pagination;
-		$this->request_url = $uri->toString();
+
         
        
 		

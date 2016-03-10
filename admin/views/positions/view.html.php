@@ -61,34 +61,23 @@ class sportsmanagementViewPositions extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$uri = JFactory::getURI();
-		$model = $this->getModel();
-        
-        $this->state = $this->get('State'); 
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
-		
+			
 
 $starttime = microtime(); 
-		$items = $this->get('Items');
+		//$items = $this->get('Items');
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
-		$total = $this->get('Total');
-		$pagination = $this->get('Pagination');
+		
         
-        $table = JTable::getInstance('position', 'sportsmanagementTable');
-		$this->table	= $table;
+		$this->table = JTable::getInstance('position', 'sportsmanagementTable');
 
 
 
 		//build the html options for parent position
 		$parent_id[] = JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_IS_P_POSITION'));
-		if ($res = $model->getParentsPositions())
+		if ($res = $this->model->getParentsPositions())
 		{
 			foreach ($res as $re){$re->text = JText::_($re->text);}
 			$parent_id = array_merge($parent_id, $res);
@@ -113,12 +102,10 @@ $starttime = microtime();
 										'name', 
 										$this->state->get('filter.sports_type'));
 		unset($sportstypes);
-		$this->user	= JFactory::getUser();
-		$this->config	= JFactory::getConfig();
-		$this->lists	= $lists;
-		$this->items	= $items;
-		$this->pagination	= $pagination;
-		$this->request_url	= $uri->toString();
+		
+		$this->lists = $lists;
+
+		
         
         
 		

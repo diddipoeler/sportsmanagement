@@ -59,32 +59,25 @@ class sportsmanagementViewjlextcountries extends sportsmanagementView
      */
     public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$uri = JFactory::getURI();
-        $model	= $this->getModel();
+		
         $inputappend = '';
         
         //$app->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
         //$app->enqueueMessage(JText::_('Layout -> ').$this->getLayout(),'');
         
-        $this->state = $this->get('State'); 
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
+        
         $starttime = microtime(); 
-		$items = $this->get('Items');
+		
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		$total = $this->get('Total');
-		$pagination = $this->get('Pagination');
+		
         
-        $table = JTable::getInstance('jlextcountry', 'sportsmanagementTable');
-		$this->table	= $table;
+        $this->table = JTable::getInstance('jlextcountry', 'sportsmanagementTable');
+
         
          //build the html options for nation
 		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FEDERATION'));
@@ -104,11 +97,9 @@ class sportsmanagementViewjlextcountries extends sportsmanagementView
 																$this->state->get('filter.federation'));
                                                                 
 
-		$this->user	= JFactory::getUser();
+	
 		$this->lists	= $lists;
-		$this->items	= $items;
-		$this->pagination	= $pagination;
-		$this->request_url	= $uri->toString();
+	
 
 
 

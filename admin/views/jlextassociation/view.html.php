@@ -61,31 +61,21 @@ class sportsmanagementViewJlextassociation extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
-		$app	= JFactory::getApplication();
+		
         $starttime = microtime(); 
-        
-        // get the Data
-		$form = $this->get('Form');
-		$item = $this->get('Item');
-        
+                       
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		$script = $this->get('Script');
- 
+		 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
 		{
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-		// Assign the Data
-		$this->form = $form;
-		$this->item = $item;
-		$this->script = $script;
         
 
 	}

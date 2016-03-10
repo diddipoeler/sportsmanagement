@@ -60,35 +60,29 @@ class sportsmanagementViewPosition extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$uri = JFactory::getURI();
-        $model = $this->getModel();
-        $document = JFactory::getDocument();
+		
+		
         $starttime = microtime(); 
         
         if ( JPluginHelper::isEnabled( 'system', 'jqueryeasy' ) )
         {
-            $app->enqueueMessage(JText::_('jqueryeasy ist installiert'),'Notice');
+            $this->app->enqueueMessage(JText::_('jqueryeasy ist installiert'),'Notice');
             $this->jquery = true;
         }
         else
         {
-            $app->enqueueMessage(JText::_('jqueryeasy ist nicht installiert'),'Error');
+            $this->app->enqueueMessage(JText::_('jqueryeasy ist nicht installiert'),'Error');
             $this->jquery = false;
         }
         
-        // get the Data
-		$form = $this->get('Form');
-		$item = $this->get('Item');
+        
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		$script = $this->get('Script');
+		
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -96,10 +90,7 @@ class sportsmanagementViewPosition extends sportsmanagementView
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-		// Assign the Data
-		$this->form = $form;
-		$this->item = $item;
-		$this->script = $script;
+		
         
         //build the html options for parent position
         		$parent_id = array();
@@ -226,7 +217,7 @@ class sportsmanagementViewPosition extends sportsmanagementView
 			$lists['statistic'] = '<select name="statistic[]" id="statistic" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
 		}
                         
-		$document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/sm_functions.js');
+		$this->document->addScript(JURI::base().'components/com_sportsmanagement/assets/js/sm_functions.js');
         
 		$this->lists = $lists;
 	unset($lists);

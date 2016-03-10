@@ -95,6 +95,43 @@ class sportsmanagementView extends JViewLegacy
         
         $this->layout = $this->getLayout();
         
+/**
+ * alles aufrufen was für die views benötigt wird
+ */
+        
+        $this->document	= JFactory::getDocument();   
+        $this->app = JFactory::getApplication();
+		$this->jinput = $this->app->input;
+		$this->option = $this->jinput->getCmd('option');
+		$this->uri = JFactory::getURI();
+        $this->model = $this->getModel();
+
+/**
+ * bei der einzelverarbeitung
+*/        
+        if ( $this->layout == 'edit')
+        {
+        // get the Data
+		$this->form = $this->get('Form');
+		$this->item = $this->get('Item');
+		$this->script = $this->get('Script');    
+        }
+/**
+ * in der listansicht
+*/        
+        else
+        {    
+        $this->state = $this->get('State'); 
+        $this->sortDirection = $this->state->get('list.direction');
+        $this->sortColumn = $this->state->get('list.ordering');
+        $this->items = $this->get('Items');
+        $this->total = $this->get('Total');
+		$this->pagination = $this->get('Pagination');
+        $this->user	= JFactory::getUser();
+		$this->config = JFactory::getConfig();
+        $this->request_url	= $this->uri->toString();
+        }
+        
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
             $this->setLayout($this->getLayout() . '_3');

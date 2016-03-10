@@ -61,22 +61,15 @@ class sportsmanagementViewClub extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		//$document	= JFactory::getDocument();
-		$app	= JFactory::getApplication();
-		$jinput	= $app->input;
-		$this->option	= $jinput->getCmd('option');
-		$uri = JFactory::getURI();
-        $model = $this->getModel();
+		
         $starttime = microtime(); 
         
         //$this->option = $option;
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JRequest::getVar('tmpl'),true).'</pre>'),'Notice');
-        $this->tmpl	= $jinput->get('tmpl');
+        $this->tmpl	= $this->jinput->get('tmpl');
         
-        // get the Data
-		$this->form = $this->get('Form');
-		$this->item = $this->get('Item');
+        
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($item,true).'</pre>'),'');
         
@@ -85,7 +78,7 @@ class sportsmanagementViewClub extends sportsmanagementView
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		$this->script = $this->get('Script');
+		
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -102,10 +95,7 @@ class sportsmanagementViewClub extends sportsmanagementView
         {
             $this->googlemap = false;
         }
-//		// Assign the Data
-//		$this->form = $form;
-//		$this->item = $item;
-//		$this->script = $script;
+
         
 //        $this->form->setValue('country', 'request', $this->item->country);
 //        $this->form->setValue('zipcode', 'request', $this->item->zipcode);
@@ -153,8 +143,7 @@ class sportsmanagementViewClub extends sportsmanagementView
         // die mannschaften zum verein
         if ( $this->item->id )
         {
-            $teamsofclub = $model->teamsofclub($this->item->id);
-            $this->teamsofclub	= $teamsofclub;
+            $this->teamsofclub = $this->model->teamsofclub($this->item->id);
         }
         
         $this->lists	= $lists;

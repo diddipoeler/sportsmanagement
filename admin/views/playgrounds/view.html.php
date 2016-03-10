@@ -59,26 +59,17 @@ class sportsmanagementViewPlaygrounds extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$uri = JFactory::getURI();
-        $model	= $this->getModel();
-        
-        $this->state = $this->get('State'); 
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
+		
 $starttime = microtime(); 
-		$items = $this->get('Items');
+		
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
-		$total = $this->get('Total');
-		$pagination = $this->get('Pagination');
+		
         
-        $table = JTable::getInstance('playground', 'sportsmanagementTable');
-		$this->assignRef('table', $table);
+        $this->table = JTable::getInstance('playground', 'sportsmanagementTable');
+
         
         //build the html options for nation
 		$nation[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
@@ -97,12 +88,9 @@ $starttime = microtime();
 																$this->state->get('filter.search_nation'));
 
 
-		$this->user	= JFactory::getUser();
-		$this->config	= JFactory::getConfig();
+	
 		$this->lists	= $lists;
-		$this->items	= $items;
-		$this->pagination	= $pagination;
-		$this->request_url	= $uri->toString();
+	
         
         
 		

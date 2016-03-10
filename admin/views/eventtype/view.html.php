@@ -60,10 +60,7 @@ class sportsmanagementVieweventtype extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		// get the Data
-		$form = $this->get('Form');
-		$item = $this->get('Item');
-		$script = $this->get('Script');
+		
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -71,10 +68,7 @@ class sportsmanagementVieweventtype extends sportsmanagementView
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-		// Assign the Data
-		$this->form = $form;
-		$this->item = $item;
-		$this->script = $script;
+		
 		
 // 		$extended = sportsmanagementHelper::getExtended($item->extended, 'eventtype');
 // 		$this->assignRef( 'extended', $extended );

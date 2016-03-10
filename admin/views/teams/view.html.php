@@ -64,28 +64,16 @@ class sportsmanagementViewTeams extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$uri = JFactory::getURI();
-		$model	= $this->getModel();
-        
-		$this->state = $this->get('State');
-		$this->sortDirection = $this->state->get('list.direction');
-		$this->sortColumn = $this->state->get('list.ordering');
-
-
+		
 		$starttime = microtime();
-		$this->items = $this->get('Items');
+		
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		{
 		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
 		}
-		$total = $this->get('Total');
-		$pagination = $this->get('Pagination');
+		
         
-        $table = JTable::getInstance('team', 'sportsmanagementTable');
-		$this->table = $table;
+		$this->table = JTable::getInstance('team', 'sportsmanagementTable');
         
         //build the html select list for sportstypes
 		$sportstypes[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'), 'id', 'name');
@@ -132,12 +120,10 @@ class sportsmanagementViewTeams extends sportsmanagementView
 		$lists['agegroup'] = $myoptions;
         unset($myoptions);
         
-        $this->user = JFactory::getUser();
-		$this->config = JFactory::getConfig();
+       
 		$this->lists = $lists;
 
-		$this->pagination = $pagination;
-		$this->request_url= $uri->toString();
+	
 		
         
 	

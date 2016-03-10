@@ -59,32 +59,20 @@ class sportsmanagementViewSeasons extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		// Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-		$uri = JFactory::getURI();
-        $model	= $this->getModel();
-        $season_id = $jinput->getVar('id');
-        
-        $this->state = $this->get('State'); 
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
-
+		
+        $season_id = $this->jinput->getVar('id');
 
 $starttime = microtime(); 
-		$this->items = $this->get('Items');
+
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		$total = $this->get('Total');
-		$this->pagination = $this->get('Pagination');
+
         
-//        $table = JTable::getInstance('season', 'sportsmanagementTable');
+
 		$this->table = JTable::getInstance('season', 'sportsmanagementTable');
         
         //build the html options for nation
@@ -105,11 +93,8 @@ $starttime = microtime();
 
 
 
-		$this->user	= JFactory::getUser();
+		
 		$this->lists	= $lists;
-		//$this->items	= $items;
-//		$this->pagination	= $pagination;
-		$this->request_url	= $uri->toString();
         
         $this->season_id	= $season_id;
         

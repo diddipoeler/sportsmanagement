@@ -60,48 +60,31 @@ class sportsmanagementViewSportsTypes extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		// Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-		$uri = JFactory::getURI();
-		$model	= $this->getModel();
-        
-		$this->state = $this->get('State');
-		$this->sortDirection = $this->state->get('list.direction');
-		$this->sortColumn = $this->state->get('list.ordering');
-        
+		        
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->state,true).'</pre>'),'');
 
 
 		$starttime = microtime();
-		$this->items = $this->get('Items');
 		
 		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		{
 			$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
 		}
-		$total = $this->get('Total');
-		$this->pagination = $this->get('Pagination');
+
         
 		$myoptions = array();
 		$myoptions[]		= JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_TEAM' ) );
 		$myoptions[]		= JHtml::_( 'select.option', '1', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_SINGLE' ) );
 
 
-        
-        //$table = JTable::getInstance('sportstype', 'sportsmanagementTable');
 		$this->table = JTable::getInstance('sportstype', 'sportsmanagementTable');
         
         // sportart filter
 		$lists['sportart'] = $myoptions;
 
-		$this->user = JFactory::getUser();
+
 		$this->lists = $lists;
-//		$this->items = $items;
-		//$this->pagination = $pagination;
-		$this->request_url = $uri->toString();
+
       
 	}
 	
