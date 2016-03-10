@@ -434,7 +434,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	 * @param mixed $eventtype_id
 	 * @return
 	 */
-	public static function getTeamEventStat($eventtype_id)
+	function getTeamEventStat($eventtype_id)
 	{
 		$app = JFactory::getApplication();
     $option = JRequest::getCmd('option');
