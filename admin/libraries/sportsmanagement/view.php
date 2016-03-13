@@ -46,13 +46,7 @@ JHtml::_('jquery.framework');
 }
 
 ?>
-<style>
-.form-control-inline {
-    min-width: 0;
-    width: auto;
-    display: inline;
-}
-</style>
+
 <?PHP        
 /**
  * sportsmanagementView
