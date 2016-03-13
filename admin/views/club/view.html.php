@@ -118,7 +118,7 @@ class sportsmanagementViewClub extends sportsmanagementView
         
         if ( $this->item->latitude == 255 )
         {
-            $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_NO_GEOCODE'),'Error');
+            $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_NO_GEOCODE'),'Error');
             $this->map = false;
         }
         else
