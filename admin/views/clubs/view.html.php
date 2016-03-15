@@ -127,11 +127,7 @@ class sportsmanagementViewClubs extends sportsmanagementView
 	
 		$this->lists		= $lists;
 
-/**
-* dadurch werden die spaltenbreiten optimiert
-*/
-$this->document->addStyleSheet(JUri::root() .'administrator/components/com_sportsmanagement/assets/css/form_control.css', 'text/css');	
-		
+
         
 	}
 	
