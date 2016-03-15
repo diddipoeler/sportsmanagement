@@ -129,6 +129,11 @@ class sportsmanagementViewMatches extends sportsmanagementView
         //build the html selectlist for rounds
 		$ress = sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', true);
 
+		/**
+		* dadurch werden die spaltenbreiten optimiert
+		*/
+		$this->document->addStyleSheet(JUri::root() .'administrator/components/com_sportsmanagement/assets/css/form_control.css', 'text/css');
+
 		foreach ($ress as $res)
 		{
 			$datum = sportsmanagementHelper::convertDate($res->round_date_first, 1).' - '.sportsmanagementHelper::convertDate($res->round_date_last, 1);

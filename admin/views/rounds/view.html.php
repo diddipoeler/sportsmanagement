@@ -66,6 +66,11 @@ class sportsmanagementViewRounds extends sportsmanagementView
 		$app = JFactory::getApplication();
         $this->massadd = 0;
         $tpl = NULL;
+		/**
+		* dadurch werden die spaltenbreiten optimiert
+		*/
+		$this->document->addStyleSheet(JUri::root() .'administrator/components/com_sportsmanagement/assets/css/form_control.css', 'text/css');
+
         
 		if ($this->getLayout()=='default' || $this->getLayout()=='default_3')
 		{
