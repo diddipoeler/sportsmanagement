@@ -64,22 +64,16 @@ class sportsmanagementViewsmquote extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$uri = JFactory::getURI();
+	
         $starttime = microtime(); 
-        
-        // get the Data
-		$form = $this->get('Form');
-		$item = $this->get('Item');
+       
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		$script = $this->get('Script');
+
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -87,16 +81,10 @@ class sportsmanagementViewsmquote extends sportsmanagementView
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-		// Assign the Data
-		$this->form = $form;
-		$this->item = $item;
-		$this->script = $script;
+		
 		$this->item->name = $this->item->author;
         
-		//$extended = sportsmanagementHelper::getExtended($item->extended, 'league');
-		//$this->assignRef( 'extended', $extended );
-		//$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
- 
+		 
 
 	}
  

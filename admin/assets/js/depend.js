@@ -1,37 +1,5 @@
-/**
- * @copyright	Copyright (C) 2005-2013 JoomLeague.net. All rights reserved.
- * @license	GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- */
-
-/**
- * javascript for dependant element xml parameter
- * 
- * 
- */
-
 // add update of field when fields it depends on change.
 window.addEvent('domready', function() {
-	$$('.depend').each(function(element) {
-		var depends = element.getProperty('depends');
-		var myelement = element;
-		var prefix = getElementIdPrefix(element);
-
-		// Attach update_depend to the change event of all elements it depends upon,
-		// so that when (one of) the dependencies change, the element is refreshed. 
-		depends.split(',').each(function(el) {
-			$(prefix + el).addEvent('change', function(event) {
-				update_depend(myelement);
-			});
-		});
-
-		// Refresh the element also after the page is loaded (to fill the element)
-		update_depend(myelement);
-	});
 
 	$$('.mdepend').addEvent('click', function() {
 		// rebuild hidden field list
@@ -43,33 +11,89 @@ window.addEvent('domready', function() {
 			}
 		});
 		this.getParent().getElement('input').value = sel.join("|");
-	}).fireEvent('click');
+	});
+
+	$$('.depend').each(function(element) {
+		// get value of attribute "depends", can be multiple
+		var depends = element.getProperty('depends');
+		// create array
+		var dependsArray = depends.split(',');
+		// gets the active element
+		var myelement = element;
+
+		// gets the prefix of the current element
+		var prefix = getElementIdPrefix(element);
+
+		// Attach update_depend to the change event of all elements it depends upon,
+		// so that when (one of) the dependencies change, the element is refreshed.
+		dependsArray.each(function(el) {
+
+			// incoming: string, without prefix so let's attach the prefix
+			var combined = '#'+String(prefix)+String(el);
+			var newid = document.id(combined);
+
+			jQuery(combined).change(function() {
+				update_depend(myelement);
+			});
+		});
+
+		// Refresh the element also after the page is loaded (to fill the element)
+		load_default(myelement);
+
+	});
 });
 
-// update dependant element function
-function update_depend(element) {
+
+// load default values
+function load_default(element) {
+
+	// the element that will be changed upon change of depend
 	var combo = element;
+	// prefix
 	var prefix = getElementIdPrefix(element);
+	// do we have a required attributed?
 	var required = element.getProperty('required') || 'false';
-	required = (required=='true') ? "&required=true" : "&required=false" ;
-	var value = combo.getProperty('current');
+
+	if (required == 'true') {
+		var required = "&required=true";
+	}
+	if (required == 'false') {
+		var required = "&required=false";
+	}
+
+	var selectedItems = combo.getProperty('current').split('|');
 	var depends = combo.getProperty('depends').split(',');
 	var dependquery = '';
 	depends.each(function(str) {
 		dependquery += '&' + str + '=' + $(prefix + str).value;
 	});
 
+	var loaddefault = 1;
 	var task = combo.getProperty('task');
 	var postStr = '';
-	var url = 'index.php?option=com_sportsmanagement&format=json&task=ajax.' + task 
-			+ required + dependquery;
+	var url = 'index.php?option=com_sportsmanagement&format=json&task=ajax.' + task
+		+ required + dependquery;
+    
+    alert(url);
+    
 	var theAjax = new Request.JSON({
 		url : url,
 		method : 'post',
 		postBody : postStr,
 		onSuccess : function(response) {
+			/* var JSON_output = JSON.stringify(response); */
+
+			// options is equal to the response
 			var options = response;
+
+      alert(url);
+      alert(response);
+      
+      //console.log("Ajax Link: " + url);
+      
 			var headingLine = null;
+
+			// @todo: check!
 			if (combo.getProperty('isrequired') == 0) {
 				// In case the element is not mandatory, then first option is 'select': keep it
 				// Remark : the old solution options.unshift(combo.options[0]); does not work properly
@@ -78,19 +102,105 @@ function update_depend(element) {
 				headingLine = {value: combo.options[0].value, text: combo.options[0].text};
 			}
 			combo.empty();
+
+			// adding first option
 			if (headingLine != null) {
-				//new Element('option', headingLine).injectInside(combo);
-				new Element('option', headingLine).inject(combo);
+				new Element('option', headingLine).injec(combo,'inside');
 			}
+
 			options.each(function(el) {
-				if (typeof el == "undefined") return;
-				if (value != null && value == el.value) {
-					el.selected = "selected";
-				}
-				//new Element('option', el).injectInside(combo);
-				new Element('option', el).inject(combo);
+				/*
+				 if (typeof el == "undefined") return;
+				 if (selectedItems != null && selectedItems.indexOf(el.value) != -1) {
+				 el.selected = "selected";
+				 }
+				 */
+         alert(el);
+				new Element('option', {'value': el.value, 'text':el.text}).inject(combo,'inside');
 			});
-			combo.fireEvent('click');
+
+			jQuery(combo).val(selectedItems);
+			jQuery(combo).trigger("chosen:updated");
+			jQuery(combo).trigger("liszt:updated");
+
+		}
+	});
+
+	theAjax.post();
+}
+
+
+
+
+
+// update dependant element function
+function update_depend(element) {
+
+	// the element that will be changed upon change of depend
+	var combo = element;
+	// prefix
+	var prefix = getElementIdPrefix(element);
+	// do we have a required attributed?
+	var required = element.getProperty('required') || 'false';
+
+	if (required == 'true') {
+		var required = "&required=true";
+	}
+	if (required == 'false') {
+		var required = "&required=false";
+	}
+
+	var selectedItems = combo.getProperty('current').split('|');
+	var depends = combo.getProperty('depends').split(',');
+	var dependquery = '';
+	depends.each(function(str) {
+		dependquery += '&' + str + '=' + $(prefix + str).value;
+	});
+
+	var task = combo.getProperty('task');
+	var postStr = '';
+	var url = 'index.php?option=com_sportsmanagement&format=json&task=ajax.' + task
+		+ required + dependquery;
+	var theAjax = new Request.JSON({
+		url : url,
+		method : 'post',
+		postBody : postStr,
+		onSuccess : function(response) {
+			/* var JSON_output = JSON.stringify(response); */
+
+			// options is equal to the response
+			var options = response;
+     // alert(response);
+
+			var headingLine = null;
+
+			// @todo: check!
+			if (combo.getProperty('isrequired') == 0) {
+				// In case the element is not mandatory, then first option is 'select': keep it
+				// Remark : the old solution options.unshift(combo.options[0]); does not work properly
+				//          It seems to result in problems in the mootools library.
+				//          Therefore a different approach is taken.
+				headingLine = {value: combo.options[0].value, text: combo.options[0].text};
+			}
+			combo.empty();
+
+			// adding first option
+			if (headingLine != null) {
+				new Element('option', headingLine).injec(combo,'inside');
+			}
+
+			options.each(function(el) {
+				/*
+				 if (typeof el == "undefined") return;
+				 if (selectedItems != null && selectedItems.indexOf(el.value) != -1) {
+				 el.selected = "selected";
+				 }
+				 */
+				new Element('option', {'value': el.value, 'text':el.text}).inject(combo,'inside');
+			});
+
+			jQuery(combo).trigger("chosen:updated");
+			jQuery(combo).trigger("liszt:updated");
 		}
 	});
 
@@ -99,7 +209,7 @@ function update_depend(element) {
 
 /** The element IDs can be either "jform_request_" (for menu items) or "jform_params_" (for modules)
  *  This function will check if we have to do with menu items or modules, and return the right
- *  prefix to be used for element-IDs */ 
+ *  prefix to be used for element-IDs */
 function getElementIdPrefix(el) {
 	var id = el.getProperty('id');
 	var infix = id.replace(/^jform_(\w+)_.*$/, "$1");

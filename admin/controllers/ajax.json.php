@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
+* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
+* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License f?r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -109,10 +109,33 @@ class sportsmanagementControllerAjax extends JControllerLegacy
             $app = JFactory::getApplication();
        // JInput object
         $jinput = $app->input;
-        $model = $this->getModel('ajax');
+        //$model = $this->getModel('ajax');
+        // Some more code
+//$app->enqueueMessage('Here was a small warning'. 'warning');
+
+        try
+    {
+ 
+      $result = $this->getModel('ajax')->getProjects($jinput->get->get('s'), $jinput->get->get('required'),$jinput->get->get('slug'),$jinput->get->get( 'dbase' ));
+      
+ if ( count($result) == 1 )
+ {
+ $app->enqueueMessage('Keine Projekte gefunden','Error');
+ }
+ else
+ {
+$app->enqueueMessage('Projekte gefunden','Message');    
+ }
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }
         //$this->input->get->get('menutype')
-        echo json_encode((array) $model->getProjects( $jinput->get->get('s'), $jinput->get->get('required'),$jinput->get->get('slug'),$jinput->get->get( 'dbase' ) ));
-        $app->close();    
+        //echo json_encode((array) $model->getProjects( $jinput->get->get('s'), $jinput->get->get('required'),$jinput->get->get('slug'),$jinput->get->get( 'dbase' ) ));
+//        $app->close();    
         } 
         
 
@@ -127,9 +150,22 @@ class sportsmanagementControllerAjax extends JControllerLegacy
             $app = JFactory::getApplication();
        // JInput object
         $jinput = $app->input;
-        $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getseasons($jinput->getVar('cfg_which_database','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false') ));
-                JFactory::getApplication()->close();    
+        //$model = $this->getModel('ajax');
+//                echo json_encode((array) $model->getseasons($jinput->getVar('cfg_which_database','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false') ));
+//                JFactory::getApplication()->close();   
+                
+try
+    {
+ 
+      $result = $this->getModel('ajax')->getseasons($jinput->getVar('cfg_which_database','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'));
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }
+                     
         }    
         
         /**
@@ -204,9 +240,21 @@ class sportsmanagementControllerAjax extends JControllerLegacy
             $app = JFactory::getApplication();
        // JInput object
         $jinput = $app->input;
-                $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getProjectDivisionsOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+               // $model = $this->getModel('ajax');
+//                echo json_encode((array) $model->getProjectDivisionsOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
+//                JFactory::getApplication()->close();
+                
+    try
+    {
+ 
+      $result = $this->getModel('ajax')->getProjectDivisionsOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' ));
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }                
         }
 
         /**
@@ -234,9 +282,22 @@ class sportsmanagementControllerAjax extends JControllerLegacy
             $app = JFactory::getApplication();
        // JInput object
         $jinput = $app->input;
-                $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getProjectTeamsByDivisionOptions($jinput->getVar('p','0'), JRequest::getInt( 'division' ), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+                //$model = $this->getModel('ajax');
+//                echo json_encode((array) $model->getProjectTeamsByDivisionOptions($jinput->getVar('p','0'), JRequest::getInt( 'division' ), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
+//                JFactory::getApplication()->close();
+                
+try
+    {
+ 
+      $result = $this->getModel('ajax')->getProjectTeamsByDivisionOptions($jinput->getVar('p','0'), $jinput->getVar( 'division','0' ), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),$jinput->getVar( 'dbase','0' ));
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }
+                    
         }
 
         /**
@@ -294,9 +355,22 @@ class sportsmanagementControllerAjax extends JControllerLegacy
             $app = JFactory::getApplication();
        // JInput object
         $jinput = $app->input;
-                $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getProjectTeamOptions($jinput->getVar('p','0'),$jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' ) ));
-                JFactory::getApplication()->close();
+    //            $model = $this->getModel('ajax');
+//                echo json_encode((array) $model->getProjectTeamOptions($jinput->getVar('p','0'),$jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' ) ));
+//                JFactory::getApplication()->close();
+                
+try
+    {
+ 
+      $result = $this->getModel('ajax')->getProjectTeamOptions($jinput->getVar('p','0'),$jinput->getVar('required','false'),$jinput->getVar('slug','false'),$jinput->getVar( 'dbase','0' ));
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }
+                    
         }
         
         /**
@@ -414,9 +488,22 @@ class sportsmanagementControllerAjax extends JControllerLegacy
             $app = JFactory::getApplication();
        // JInput object
         $jinput = $app->input;
-            $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getProjectRoundOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),'ASC',NULL,JRequest::getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+            //$model = $this->getModel('ajax');
+//                echo json_encode((array) $model->getProjectRoundOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),'ASC',NULL,JRequest::getInt( 'dbase' )));
+//                JFactory::getApplication()->close();
+                
+        try
+    {
+ 
+      $result = $this->getModel('ajax')->getProjectRoundOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),'ASC',NULL,JRequest::getInt( 'dbase' ));
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }        
+                
         }
 
         /**
