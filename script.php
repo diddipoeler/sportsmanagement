@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie kÃ¶nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spÃ¤teren
+* verÃ¶ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nÃ¼tzlich sein wird, aber
+* OHNE JEDE GEWÃ„HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* GewÃ¤hrleistung der MARKTFÃ„HIGKEIT oder EIGNUNG FÃœR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fÃ¼r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -223,7 +223,7 @@ class com_sportsmanagementInstallerScript
 	$mainframe = JFactory::getApplication();
     $db = JFactory::getDbo();
     
-    // sicherheitshalber 4 dateien löschen, die ich falsch angelegt habe.
+    // sicherheitshalber 4 dateien lÃ¶schen, die ich falsch angelegt habe.
     // aber nur wenn sie vorhanden sind
     $file_to_delete = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'models'.DS.'fields'.DS.'link.php'; 
     JFile::delete($file_to_delete);
@@ -409,7 +409,7 @@ echo self::getFxInitJSCode('steps');
     {
         if( JFolder::delete(JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_sportsmanagement'.DS.$value) )
         {
-        //echo 'Der Ordner wurde gelöscht';
+        //echo 'Der Ordner wurde gelÃ¶scht';
         }
     }
     $folderSite  = JFolder::folders(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement',
@@ -420,7 +420,7 @@ echo self::getFxInitJSCode('steps');
     {
         if( JFolder::delete(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.$value) )
         {
-        //echo 'Der Ordner wurde gelöscht';
+        //echo 'Der Ordner wurde gelÃ¶scht';
         }
     }
     
@@ -664,12 +664,12 @@ echo self::getFxInitJSCode('steps');
         break;
         }
         
-        // auf alle faelle einschalten        
+        // auf alle faelle erst mal nicht einschalten        
         // Create an object for the record we are going to update.
         $object = new stdClass();
         // Must be a valid primary key value.
         $object->extension_id = $plugin_id;
-        $object->enabled = 1;
+        $object->enabled = 0;
         // Update their details in the users table using id as the primary key.
         $result = JFactory::getDbo()->updateObject('#__extensions', $object, 'extension_id');  
         
@@ -726,12 +726,12 @@ echo self::getFxInitJSCode('steps');
         break;
         }
         
-        // auf alle faelle einschalten        
+        // auf alle faelle erst mal nicht einschalten        
         // Create an object for the record we are going to update.
         $object = new stdClass();
         // Must be a valid primary key value.
         $object->extension_id = $plugin_id;
-        $object->enabled = 1;
+        $object->enabled = 0;
         // Update their details in the users table using id as the primary key.
         $result = JFactory::getDbo()->updateObject('#__extensions', $object, 'extension_id');  
         

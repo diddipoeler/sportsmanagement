@@ -428,7 +428,7 @@ $query = $db->getQuery(true);
 									$location='',
 									$flag='',
 									$country='',
-									$address)
+									$addressString='COM_SPORTSMANAGEMENT_ADDRESS_FORM')
 	{
 	  if (empty($name)) $address = self::checkAddressString('%NAME%', '', $address);
 	  if (empty($address)) $address = self::checkAddressString('%ADDRESS%', '', $address);
