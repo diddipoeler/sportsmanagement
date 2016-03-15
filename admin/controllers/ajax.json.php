@@ -248,7 +248,14 @@ try
     {
  
       $result = $this->getModel('ajax')->getProjectDivisionsOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' ));
- 
+ if ( count($result) == 1 )
+ {
+ $app->enqueueMessage('Keine Gruppen gefunden','Error');
+ }
+ else
+ {
+$app->enqueueMessage('Gruppen gefunden','Message');    
+ }
       echo new JResponseJson($result);
     }
     catch(Exception $e)
@@ -496,7 +503,14 @@ try
     {
  
       $result = $this->getModel('ajax')->getProjectRoundOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),'ASC',NULL,JRequest::getInt( 'dbase' ));
- 
+  if ( count($result) == 1 )
+ {
+ $app->enqueueMessage('Keine Runden gefunden','Error');
+ }
+ else
+ {
+$app->enqueueMessage('Runden gefunden','Message');    
+ }
       echo new JResponseJson($result);
     }
     catch(Exception $e)
