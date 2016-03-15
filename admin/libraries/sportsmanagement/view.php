@@ -97,11 +97,9 @@ class sportsmanagementView extends JViewLegacy
         $this->app = JFactory::getApplication();
 		$this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');
-<<<<<<< HEAD
+
         $this->format = $this->jinput->getCmd('format');
-=======
-		$this->format = $this->jinput->getCmd('format');
->>>>>>> de7338e4a045213ef0d876856d5a7145afa06fd3
+
 		$this->uri = JFactory::getURI();
         $this->model = $this->getModel();
 
