@@ -61,11 +61,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_NAME','obj.name',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
-					<th>
-						<?php
-						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_ALIAS','obj.alias',$this->sortDirection,$this->sortColumn);
-						?>
-					</th>
+					
                     
                     <th>
 						<?php
@@ -162,7 +158,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						
 						?>
 						
-						<td><?php echo $row->alias; ?></td>
+						
                         
                         <td><?php echo $row->age_from; ?></td>
                         <td><?php echo $row->age_to; ?></td>
