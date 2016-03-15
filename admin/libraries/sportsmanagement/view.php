@@ -97,6 +97,7 @@ class sportsmanagementView extends JViewLegacy
         $this->app = JFactory::getApplication();
 		$this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');
+        $this->format = $this->jinput->getCmd('format');
 		$this->uri = JFactory::getURI();
         $this->model = $this->getModel();
 
@@ -115,6 +116,14 @@ class sportsmanagementView extends JViewLegacy
 */        
         else
         {    
+/**
+* dadurch werden die spaltenbreiten optimiert
+*/
+if ( $this->format != 'json' )
+{
+$this->document->addStyleSheet(JUri::root() .'administrator/components/com_sportsmanagement/assets/css/form_control.css', 'text/css');
+}
+           
         $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
