@@ -240,6 +240,9 @@ $script[] = "						$('#".$this->id." option').each(function() {";
 $script[] = "								jQuery('select#".$this->id." option').remove();";
 $script[] = "						});";
 $script[] = "";
+
+$script[] = " alert('r data -> ' + r.data);";
+
 $script[] = "if (r.messages)";
 $script[] = "		{";
 //$script[] = " alert('r messages -> ' + r.messages);";
