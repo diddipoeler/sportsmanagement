@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
+* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
+* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License f?r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -235,12 +235,21 @@ switch ($view)
 }
 
 $script[] = "						dataType: 'json'";
-$script[] = "					}).done(function(data) {";
+$script[] = "					}).done(function(r) {";
 $script[] = "						$('#".$this->id." option').each(function() {";
 $script[] = "								jQuery('select#".$this->id." option').remove();";
 $script[] = "						});";
 $script[] = "";
-$script[] = "						$.each(data, function (i, val) {";
+$script[] = "if (r.messages)";
+$script[] = "		{";
+//$script[] = " alert('r messages -> ' + r.messages);";
+$script[] = "			// All the enqueued messages of the app object can simple be";
+$script[] = "			// rendered by the respective helper function of Joomla!";
+$script[] = "			// They will automatically be displayed at the messages section of the template";
+$script[] = "			Joomla.renderMessages(r.messages);";
+$script[] = "		}";
+$script[] = "						$.each(r.data, function (i, val) {";
+//$script[] = " alert('r data -> ' + r.data);";
 $script[] = "							var option = $('<option>');";
 $script[] = "							option.text(val.text).val(val.value);";
 

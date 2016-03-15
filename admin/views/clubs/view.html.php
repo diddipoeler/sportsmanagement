@@ -127,7 +127,6 @@ class sportsmanagementViewClubs extends sportsmanagementView
 	
 		$this->lists		= $lists;
 
-
         
 	}
 	
