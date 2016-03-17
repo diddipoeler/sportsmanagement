@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="2.5" client="site" method="upgrade">
+	<name>MOD_SPORTSMANAGEMENT_ACT_SEASON</name>
+	<author>diddipoeler</author>
+	<creationDate>2016-03-31</creationDate>
+	<copyright>JSM-TEAM</copyright>
+	<license>GNU/GPL</license>
+	<authorEmail>diddipoeler@arcor.de</authorEmail>
+	<authorUrl>http://www.fussballineuropa.de</authorUrl>
+	<version>1.0</version>
+	<description>MOD_SPORTSMANAGEMENT_ACT_SEASON_DESC</description>
+	<files>
+		<filename module="mod_sportsmanagement_act_season">mod_sportsmanagement_act_season.php</filename>
+		<filename>index.html</filename>
+    <filename>helper.php</filename>
+    <folder>tmpl</folder>
+    <folder>img</folder>
+    <folder>js</folder>
+		<folder>css</folder>
+    <folder>img</folder>
+	</files>
+	
+	<languages>
+		
+		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_act_season.ini</language>
+		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_act_season.sys.ini</language>
+		
+	</languages>
+<config>
+		<fields name="params">
+			<fieldset 	name="basic"
+						addfieldpath="/administrator/components/com_sportsmanagement/elements">  
+        
+        <!--
+     <field name="new_project_article" 
+    type="radio" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="MOD_SPORTSMANAGEMENT_NEW_PROJECT_ARTICLE" 
+      description="MOD_SPORTSMANAGEMENT_NEW_PROJECT_ARTICLE_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+    <field name="mycategory"
+		type="category"
+		extension="com_content"
+		label="MOD_SPORTSMANAGEMENT_NEW_PROJECT_CATEGORY"
+		description="MOD_SPORTSMANAGEMENT_NEW_PROJECT_CATEGORY_DESC" />
+		 -->
+
+    </fieldset>
+
+<fieldset
+					name="advanced">
+					<field
+						name="layout"
+						type="modulelayout"
+						label="JFIELD_ALT_LAYOUT_LABEL"
+						description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+
+					<field
+						name="moduleclass_sfx"
+						type="text"
+						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+
+					<field
+						name="cache"
+						type="list"
+						default="1"
+						label="COM_MODULES_FIELD_CACHING_LABEL"
+						description="COM_MODULES_FIELD_CACHING_DESC">
+						<option
+							value="1">JGLOBAL_USE_GLOBAL</option>
+						<option
+							value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+					</field>
+
+					<field
+						name="cache_time"
+						type="text"
+						default="900"
+						label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+						description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
+				</fieldset>
+
+		</fields>
+	</config>	 
+  
+</extension>
