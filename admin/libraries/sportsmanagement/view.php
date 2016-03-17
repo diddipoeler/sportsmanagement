@@ -101,7 +101,17 @@ class sportsmanagementView extends JViewLegacy
         $this->format = $this->jinput->getCmd('format');
 
 		$this->uri = JFactory::getURI();
-        $this->model = $this->getModel();
+        
+        switch ( $view )
+            {
+            case 'predictions';
+            
+            break;
+            default:
+        $this->model = $this->getModel();    
+            break;    
+            }  
+        
 
 /**
  * bei der einzelverarbeitung
