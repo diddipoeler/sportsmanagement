@@ -182,7 +182,7 @@
 <module module="mod_sportsmanagement_matchesslider" client="site"  position="" published=""/>
 
 <module module="mod_sportsmanagement_new_project" client="site"  position="" published=""/>
-
+<module module="mod_sportsmanagement_act_season" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_playgroundplan" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_playground_ticker" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_randomplayer" client="site"  position="" published=""/>
