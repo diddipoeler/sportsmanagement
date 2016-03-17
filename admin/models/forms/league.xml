@@ -57,6 +57,40 @@
 		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
 	</field>	
 	
+
+<field
+			name="published_act_season"
+			type="radio"
+			class="radio btn-group btn-group-yesno"
+			default="1"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ACT_SEASON_MOD"
+			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ACT_SEASON_MOD_DESC">
+			<option
+				value="1">
+				JPUBLISHED</option>
+			<option
+				value="0">
+				JUNPUBLISHED</option>
+		</field>
+
+<field
+			name="published"
+			type="radio"
+			class="radio btn-group btn-group-yesno"
+			default="1"
+			size="1"
+			label="JSTATUS"
+			description="JFIELD_PUBLISHED_DESC">
+			<option
+				value="1">
+				JPUBLISHED</option>
+			<option
+				value="0">
+				JUNPUBLISHED</option>
+		</field>	  
+  
+  
 	<field
 			name="federation"
 			type="federationslist"

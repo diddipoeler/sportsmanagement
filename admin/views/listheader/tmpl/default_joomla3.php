@@ -222,6 +222,10 @@ switch ($view)
 {
 case 'githubinstall':
 break;
+case 'updates':
+break;
+case 'databasetools':
+break;
 default:
 ?>
     
