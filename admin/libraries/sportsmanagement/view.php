@@ -131,12 +131,26 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
 }
 
 
-        $this->state = $this->get('State'); 
+        switch ( $view )
+            {
+            case 'predictions';
+            
+            break;
+            default:
+            $this->state = $this->get('State'); 
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
         $this->items = $this->get('Items');
         $this->total = $this->get('Total');
-		$this->pagination = $this->get('Pagination');
+		$this->pagination = $this->get('Pagination');    
+            break;    
+            }    
+        //$this->state = $this->get('State'); 
+//        $this->sortDirection = $this->state->get('list.direction');
+//        $this->sortColumn = $this->state->get('list.ordering');
+//        $this->items = $this->get('Items');
+//        $this->total = $this->get('Total');
+//		$this->pagination = $this->get('Pagination');
         $this->user	= JFactory::getUser();
 		$this->config = JFactory::getConfig();
         $this->request_url	= $this->uri->toString();
