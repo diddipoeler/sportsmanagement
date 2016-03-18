@@ -48,6 +48,9 @@ if ( $start == 1 )
 {
 ?>    
 <div class="row">
+
+
+
 <?PHP    
 }    
 $createroute = array(	"option" => "com_sportsmanagement",
@@ -63,21 +66,34 @@ $createroute = array(	"option" => "com_sportsmanagement",
 
 $query = sportsmanagementHelperRoute::buildQuery( $createroute );
 $link = JRoute::_( 'index.php?' . $query, false );
-
+/*
+<a href="#" class="btn primary">
+  <img src="some_icon.png" class="pull-left"/>
+  Text
+</a>
+*/
 ?>
-<div class="col-lg-1">
+<div class="col-lg-2">
 <!-- <button type="button" class="btn btn-info btn-block"> -->
-<a href="#" class="btn btn-info" role="button">
+
+
+<a href="<?PHP echo $link;  ?>" class="<? echo $params->get('button_class'); ?>  btn-block" role="button">
+<span>
 <?PHP
 echo JSMCountries::getCountryFlag( $row->country );
-echo JHTML::link( $link, JText::_( $row->name  ) );
+?>
+</span>
+<?PHP
+//echo JHTML::link( $link, JText::_( $row->name.' - ( '.$row->liganame.' )'  ) );
+//echo JHTML::link( $link, JText::_( $row->name  ) );
+echo JText::_( $row->name  );
 ?>
 </a>
 <!-- </button> -->
 </div>
 <?PHP
 $start++;
-if ( $start == 13 )
+if ( $start == 7 )
 {
 $start = 1;    
 ?>    

@@ -30,7 +30,22 @@
 		<fields name="params">
 			<fieldset 	name="basic"
 						addfieldpath="/administrator/components/com_sportsmanagement/elements">  
-        
+ 
+ <field 	name="button_class" 
+    type="list" 
+    default="btn btn-default" 
+		class=""
+				label="MOD_SPORTSMANAGEMENT_LABEL_BUTTON_STYLE" 
+				description="MOD_SPORTSMANAGEMENT_DESCR_BUTTON_STYLE">
+			<option value="btn btn-default">MOD_SPORTSMANAGEMENT_LABEL_BUTTON_STYLE_DEFAULT</option>
+			<option value="btn btn-primary">MOD_SPORTSMANAGEMENT_LABEL_BUTTON_STYLE_PRIMARY</option>
+			<option value="btn btn-success">MOD_SPORTSMANAGEMENT_LABEL_BUTTON_STYLE_SUCCESS</option>
+			<option value="btn btn-info">MOD_SPORTSMANAGEMENT_LABEL_BUTTON_STYLE_INFO</option>
+			<option value="btn btn-warning">MOD_SPORTSMANAGEMENT_LABEL_BUTTON_STYLE_WARNING</option>
+			<option value="btn btn-danger">MOD_SPORTSMANAGEMENT_LABEL_BUTTON_STYLE_DANGER</option>
+			<option value="btn btn-link">MOD_SPORTSMANAGEMENTLABEL_BUTTON_STYLE_LINK</option>
+		</field>
+       
         <!--
      <field name="new_project_article" 
     type="radio" 
