@@ -40,14 +40,14 @@
 defined('_JEXEC') or die('Restricted access');
 $view = JRequest::getCmd('view', 'cpanel');
 $app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-        $document = JFactory::getDocument();
-        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
-        // retrieve the value of the state variable. If no value is specified,
-        // the specified default value will be returned.
-        // function syntax is getUserState( $key, $default );
-        $project_id = $app->getUserState( "$option.pid", '0' );
+$jinput = $app->input;
+$option = $jinput->getCmd('option');
+$document = JFactory::getDocument();
+//$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+// retrieve the value of the state variable. If no value is specified,
+// the specified default value will be returned.
+// function syntax is getUserState( $key, $default );
+$project_id = $app->getUserState( "$option.pid", '0' );
 
 
 $buttons = array(
@@ -168,6 +168,13 @@ array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=templates&
 			'text' => JText::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_ROUNDS'),
 			'access' => array('core.manage', 'com_sportsmanagement'),
 			'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA_PROJECT'
+			),
+			array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=divisions&pid='.$project_id),
+			'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+			'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+			'text' => JText::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_DIVISIONS'),
+			'access' => array('core.manage', 'com_sportsmanagement'),
+			'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA_PROJECT'
 			)
 
 			
@@ -227,6 +234,12 @@ break;
 case 'databasetools':
 break;
 default:
+if (preg_match("/jsm/i", $view)) 
+{
+echo "Es wurde eine Übereinstimmung gefunden.";
+} 
+else 
+{
 ?>
     
 <div id="filter-bar" class="btn-toolbar">
@@ -259,6 +272,7 @@ default:
 			
 		</div>
     <?PHP
+    }
 break;
 }
 

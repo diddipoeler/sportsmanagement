@@ -81,7 +81,7 @@ $view = JRequest::getCmd('view', 'cpanel');
 ?>                
                         <fieldset class="adminform">
                                 
-                                <table class='admintable'>
+                                <table class="table">
                                         <tr>
                                                 <td class='key' nowrap='nowrap'>
                                                         <?php echo JText::_('JACTION_CREATE'); ?>&nbsp;<input type='checkbox' name='add_trainingData' id='add' value='1' onchange='javascript:submitbutton("<?php echo $view; ?>.apply");' />
@@ -153,7 +153,7 @@ if ( isset($this->teamsofclub) )
    
 ?>
 <fieldset class="adminform">
-<table>
+<table class="table">
 <?php
 foreach ( $this->teamsofclub as $team )
 {
@@ -180,7 +180,7 @@ case 'extra_fields':
 ?>
 	<fieldset class="adminform">
 	
-	<table>
+	<table class="table">
     <?php
     if ( $this->lists )
     {

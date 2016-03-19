@@ -61,8 +61,7 @@ class sportsmanagementViewagegroup extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		
- 
+
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
 		{
