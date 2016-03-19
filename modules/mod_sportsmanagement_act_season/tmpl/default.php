@@ -73,7 +73,7 @@ $link = JRoute::_( 'index.php?' . $query, false );
 </a>
 */
 ?>
-<div class="col-lg-2">
+<div class="col-sm-2">
 <!-- <button type="button" class="btn btn-info btn-block"> -->
 
 
