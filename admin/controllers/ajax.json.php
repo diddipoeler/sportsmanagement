@@ -99,6 +99,42 @@ class sportsmanagementControllerAjax extends JControllerLegacy
         
         
         
+        
+        public function associationsoptions()
+        {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
+        //$model = $this->getModel('ajax');
+        // Some more code
+//$app->enqueueMessage('Here was a small warning'. 'warning');
+
+        try
+    {
+ 
+      $result = $this->getModel('ajax')->getassociationsoptions($jinput->get->get('country'), $jinput->get->get('required'),$jinput->get->get('slug'),$jinput->get->get( 'dbase' ));
+      
+      //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
+      
+ if ( count($result) == 1 )
+ {
+ $app->enqueueMessage('Keine Landesverbände gefunden','Error');
+ }
+ else
+ {
+$app->enqueueMessage('Landesverbände gefunden','Message');    
+ }
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }    
+            
+            
+        }
+        
         /**
          * sportsmanagementControllerAjax::projects()
          * 

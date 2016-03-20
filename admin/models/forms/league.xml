@@ -102,7 +102,11 @@
 			description="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_LIST_DESC"/>	
 	
 
-		
+<!--
+landesverbaende zum ausgewaehlten land
+-->		
+
+<!--
   <field
 			name="associations"
 			type="associationslist" 
@@ -117,7 +121,24 @@
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
 		</field>
-      	
+-->
+
+  <field
+			name="associations"
+			type="dependsql" 
+      depends="country"
+			task="associationsoptions" 
+      size="10"
+			
+
+			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION"
+			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION_DESC"
+			class="inputbox">
+      <option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
+		</field>
+          	
 	</fieldset>			
 
   <fields name="request">
@@ -145,13 +166,8 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 			depends="sports_type_id"
 			task="personagegroupoptions" 
       size="10"
-      
-      
-      
       key_field="sports_type_id"
 			value_field="sports_type_id"
-			
-			
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP_DESC"
 			class="inputbox">
