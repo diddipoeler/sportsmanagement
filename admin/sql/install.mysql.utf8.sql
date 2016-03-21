@@ -267,6 +267,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_league` (
   `agegroup_id` INT( 11 ) NOT NULL DEFAULT  '0',
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   `cr_picture` varchar(255) DEFAULT NULL,
+  `published_act_season` TINYINT(1) NOT NULL DEFAULT '0' ,
   PRIMARY KEY (`id`) ,
   KEY `country` (`country`),
   KEY `sports_type_id` (`sports_type_id`)
@@ -608,6 +609,8 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_person` (
   `agegroup_id` INT( 11 ) NOT NULL DEFAULT  '0',
   `hits` INT(11) NOT NULL DEFAULT '0' ,
   `modified_hits` INT(11) NOT NULL DEFAULT '0' ,
+  `birthday_timestamp` INT( 11 ) NOT NULL DEFAULT  '0',
+  `deathday_timestamp` INT( 11 ) NOT NULL DEFAULT  '0',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   KEY `country` (`country`),

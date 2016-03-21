@@ -10,7 +10,7 @@
 	<copyright>Copyright Info</copyright>
 	<license>License Info</license>
 	<!--  The version string is recorded in the components table -->
-	<version>1.0.55</version>
+	<version>1.0.56</version>
 	<!-- The description is optional and defaults to the name -->
 	<description>COM_SPORTSMANAGEMENT_DESCRIPTION</description>
  
@@ -182,7 +182,7 @@
 <module module="mod_sportsmanagement_matchesslider" client="site"  position="" published=""/>
 
 <module module="mod_sportsmanagement_new_project" client="site"  position="" published=""/>
-
+<module module="mod_sportsmanagement_act_season" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_playgroundplan" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_playground_ticker" client="site"  position="" published=""/>
 <module module="mod_sportsmanagement_randomplayer" client="site"  position="" published=""/>

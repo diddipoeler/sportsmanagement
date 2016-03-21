@@ -62,12 +62,12 @@ class sportsmanagementViewUpdates extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$app->setUserState($option.'update_part', 0); // 0
-		$filter_order		= $app->getUserStateFromRequest($option.'updates_filter_order','filter_order','dates','cmd');
-		$filter_order_Dir	= $app->getUserStateFromRequest($option.'updates_filter_order_Dir','filter_order_Dir','','word');
+	//	$app = JFactory::getApplication();
+//		$jinput = $app->input;
+	//	$option = $jinput->getCmd('option');
+		$this->app->setUserState($this->option.'update_part', 0); // 0
+		$filter_order		= $this->app->getUserStateFromRequest($this->option.'updates_filter_order','filter_order','dates','cmd');
+		$filter_order_Dir	= $this->app->getUserStateFromRequest($this->option.'updates_filter_order_Dir','filter_order_Dir','','word');
 		
 		
         
@@ -105,7 +105,7 @@ class sportsmanagementViewUpdates extends sportsmanagementView
 		$this->updateFiles = $updateFiles;
 		$this->request_url = $uri->toString();
 		$this->lists = $lists;
-        $this->option = $option;
+
         
        
         

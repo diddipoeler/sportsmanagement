@@ -46,8 +46,19 @@ $modalwidth = JComponentHelper::getParams($this->option)->get('modal_popup_width
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm">
-	
+<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
+<?PHP
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+echo $this->loadTemplate('joomla3');
+}
+else
+{
+echo $this->loadTemplate('joomla2');    
+}
+
+
+?>		
   
   <?php
   // tabs anzeigen
@@ -55,7 +66,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
   echo JHtml::_('tabs.start','tabs_updates', array('useCookie'=>1)); 
   echo JHtml::_('tabs.panel', JText::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_LIST'), 'panel'.($idxTab++)); 
   ?>
-  <table class="adminlist">
+  <table class="table">
 		<thead>
 			<tr>
 				<th width="5" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>

@@ -72,7 +72,7 @@ class sportsmanagementViewsmquote extends sportsmanagementView
         {
         $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
-        
+        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->layout,true).'</pre>'),'Notice');
 
  
 		// Check for errors.

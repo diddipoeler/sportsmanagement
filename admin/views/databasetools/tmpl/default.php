@@ -45,18 +45,18 @@ JHtml::_( 'behavior.tooltip' );
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 
 <?PHP
-//if(version_compare(JVERSION,'3.0.0','ge')) 
-//{
-//echo $this->loadTemplate('joomla3');
-//}
-//else
-//{
-//echo $this->loadTemplate('joomla2');    
-//}
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+echo $this->loadTemplate('joomla3');
+}
+else
+{
+echo $this->loadTemplate('joomla2');    
+}
 ?>
 
-	<div id="editcell">
-		<table class="adminlist">
+<!--	<div id="editcell"> -->
+		<table class="table">
 			<thead>
 				<tr>
 					<th class="title" class="nowrap">
@@ -178,7 +178,7 @@ JHtml::_( 'behavior.tooltip' );
 
 			</tbody>
 		</table>
-	</div>
+<!--	</div> -->
 
 	<input type="hidden" name="task" value="databasetool.execute" />
 	<?php echo JHtml::_( 'form.token' ); ?>

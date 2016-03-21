@@ -99,6 +99,42 @@ class sportsmanagementControllerAjax extends JControllerLegacy
         
         
         
+        
+        public function associationsoptions()
+        {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
+        //$model = $this->getModel('ajax');
+        // Some more code
+//$app->enqueueMessage('Here was a small warning'. 'warning');
+
+        try
+    {
+ 
+      $result = $this->getModel('ajax')->getassociationsoptions($jinput->get->get('country'), $jinput->get->get('required'),$jinput->get->get('slug'),$jinput->get->get( 'dbase' ));
+      
+      //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
+      
+ if ( count($result) == 1 )
+ {
+ $app->enqueueMessage('Keine Landesverbände gefunden','Error');
+ }
+ else
+ {
+$app->enqueueMessage('Landesverbände gefunden','Message');    
+ }
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }    
+            
+            
+        }
+        
         /**
          * sportsmanagementControllerAjax::projects()
          * 
@@ -248,7 +284,14 @@ try
     {
  
       $result = $this->getModel('ajax')->getProjectDivisionsOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' ));
- 
+ if ( count($result) == 1 )
+ {
+ $app->enqueueMessage('Keine Gruppen gefunden','Error');
+ }
+ else
+ {
+$app->enqueueMessage('Gruppen gefunden','Message');    
+ }
       echo new JResponseJson($result);
     }
     catch(Exception $e)
@@ -496,7 +539,14 @@ try
     {
  
       $result = $this->getModel('ajax')->getProjectRoundOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),'ASC',NULL,JRequest::getInt( 'dbase' ));
- 
+  if ( count($result) == 1 )
+ {
+ $app->enqueueMessage('Keine Runden gefunden','Error');
+ }
+ else
+ {
+$app->enqueueMessage('Runden gefunden','Message');    
+ }
       echo new JResponseJson($result);
     }
     catch(Exception $e)

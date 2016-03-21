@@ -81,7 +81,7 @@ $view = JRequest::getCmd('view', 'cpanel');
 ?>                
                         <fieldset class="adminform">
                                 
-                                <table class='admintable'>
+                                <table class='table'>
                                         <tr>
                                                 <td class='key' nowrap='nowrap'>
                                                         <?php echo JText::_('JACTION_CREATE'); ?>&nbsp;<input type='checkbox' name='add_trainingData' id='add' value='1' onchange='javascript:submitbutton("<?php echo $view; ?>.apply");' />
@@ -501,7 +501,7 @@ break;
 default:
 ?>
 		<fieldset class="adminform">
-			<table class="admintable">
+			<table class="table">
 					<?php 
                     foreach ($this->form->getFieldset($this->fieldset) as $field): 
                     //echo 'name -><pre> '.print_r($field->getFieldAttribute(),true).'</pre>';

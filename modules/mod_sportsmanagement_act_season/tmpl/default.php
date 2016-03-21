@@ -27,7 +27,7 @@
 * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
 * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
 * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
 * Siehe die GNU General Public License für weitere Details.
 *
@@ -37,57 +37,69 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-// No direct access to this file
+// no direct access
 defined('_JEXEC') or die('Restricted access');
 
-/**
- * sportsmanagementViewagegroup
- * 
- * @package 
- * @author diddi
- * @copyright 2014
- * @version $Id$
- * @access public
- */
-class sportsmanagementViewagegroup extends sportsmanagementView
+$start = 1;
+foreach ( $list as $row )
 {
-	
-	
-    
-	/**
-	 * sportsmanagementViewagegroup::init()
-	 * 
-	 * @return
-	 */
-	public function init ()
-	{
 
-		// Check for errors.
-		if (count($errors = $this->get('Errors'))) 
-		{
-			JError::raiseError(500, implode('<br />', $errors));
-			return false;
-		}
-		
-		
-        
-	}
- 
-	
-	/**
-	 * sportsmanagementViewagegroup::addToolBar()
-	 * 
-	 * @return void
-	 */
-	protected function addToolBar() 
-	{ 
-		
-        
-		JRequest::setVar('hidemainmenu', true);
-		$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_AGEGROUPE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_AGEGROUPE_NEW');
-        $this->icon = 'agegroup';
-        		
-        parent::addToolbar();
-	}
-	
-}
+if ( $start == 1 )
+{
+?>    
+<div class="row">
+
+
+
+<?PHP    
+}    
+$createroute = array(	"option" => "com_sportsmanagement",
+							"view" => "ranking",
+                            "cfg_which_database" => 0,
+                            "s" => 0,
+							"p" => $row->id,
+                            "type" => 0,
+              "r" => $row->roundcode,
+              "from" => 0,
+              "to" => 0,
+              "division" => 0, );
+
+$query = sportsmanagementHelperRoute::buildQuery( $createroute );
+$link = JRoute::_( 'index.php?' . $query, false );
+/*
+<a href="#" class="btn primary">
+  <img src="some_icon.png" class="pull-left"/>
+  Text
+</a>
+*/
+?>
+<div class="col-sm-2">
+<!-- <button type="button" class="btn btn-info btn-block"> -->
+
+
+<a href="<?PHP echo $link;  ?>" class="<? echo $params->get('button_class'); ?>  btn-block" role="button">
+<span>
+<?PHP
+echo JSMCountries::getCountryFlag( $row->country );
+?>
+</span>
+<?PHP
+//echo JHTML::link( $link, JText::_( $row->name.' - ( '.$row->liganame.' )'  ) );
+//echo JHTML::link( $link, JText::_( $row->name  ) );
+echo JText::_( $row->name  );
+?>
+</a>
+<!-- </button> -->
+</div>
+<?PHP
+$start++;
+if ( $start == 7 )
+{
+$start = 1;    
+?>    
+</div>
+<?PHP    
+} 
+    
+}    
+?>

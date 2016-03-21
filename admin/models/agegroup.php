@@ -112,7 +112,7 @@ class sportsmanagementModelagegroup extends JModelAdmin
 		}
                 
         $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($option)->get('ph_icon',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/agegroups');
+        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/agegroups');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         
         $prefix = $app->getCfg('dbprefix');
@@ -120,7 +120,7 @@ class sportsmanagementModelagegroup extends JModelAdmin
         //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' prefix<br><pre>'.print_r($prefix,true).'</pre>'),'');
         //$whichtabel = $this->getTable();
         //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' whichtabel<br><pre>'.print_r($whichtabel,true).'</pre>'),'');
-        
+        /*
         $query->select('*');
 			$query->from('information_schema.columns');
             $query->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_agegroup' ");
@@ -146,7 +146,7 @@ class sportsmanagementModelagegroup extends JModelAdmin
             }
             
            } 
-           
+          */ 
 		return $form;
 	}
     

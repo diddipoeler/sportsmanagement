@@ -98,14 +98,33 @@ function __construct( )
         $this->menue_itemid = JRequest::getInt( "Itemid", 0 );
         
         $this->request['r'] = (int) $this->request['r'];
+        if ( isset($this->request['from']) )
+        {
         $this->request['from'] = (int) $this->request['from'];
+        }
+        else
+        {
+        $this->request['from'] = (int) $this->request['r'];
+        }
+        
+        if ( isset($this->request['to']) )
+        {
         $this->request['to'] = (int) $this->request['to'];
+        }
+        else
+        {
+        $this->request['to'] = (int) $this->request['r'];
+        }
+
+
+
         
         //$this->color_from = JRequest::getVar( "color_from");
         //$this->color_to = JRequest::getVar( "color_to");
         
         $item = $menu->getItem($this->menue_itemid);
-        $this->menue_params = new JParameter($item->params);
+//        $this->menue_params = new JParameter($item->params);
+        $this->menue_params = new JRegistry();
         
         if ( $this->menue_params->get('jl_tree_jquery_version') )
         {
@@ -325,7 +344,7 @@ echo '0.) from round -> <br /><pre>~'.print_r($this->from,true).'~</pre><br />';
 echo '0.) to round -> <br /><pre>~'.print_r($this->to,true).'~</pre><br />';
 }
 
-// wurden die wichtigen einstellungen übergeben ?
+// wurden die wichtigen einstellungen ï¿½ben ?
 if ( !array_key_exists('tree_name', $this->request) )
 {
     $this->request['tree_name'] = 'middle_name';
@@ -432,6 +451,8 @@ $user = JFactory::getUser();
 $db = JFactory::getDBO();
 $query = $db->getQuery(true);
 
+//echo '1.) rounds -> <br /><pre>~'.print_r($rounds,true).'~</pre><br />';
+
 //$query2 = $db->getQuery(true);
 //$query3 = $db->getQuery(true);
 
@@ -452,6 +473,10 @@ $round_matches[512] = 512;
 $round_matches[1024] = 1024;
 $round_matches[2048] = 2048;
 
+//echo '1.) project_art_id -> <br /><pre>~'.print_r($this->project_art_id,true).'~</pre><br />';
+//echo '1.) tree_name -> <br /><pre>~'.print_r($this->request['tree_name'],true).'~</pre><br />';
+$this->request['tree_name'] = 'name';
+
 if ( $this->project_art_id == 3 )
 {
 
@@ -461,19 +486,19 @@ $query->select("concat(c1.lastname,' - ',c1.firstname,'' ) AS firstname,c1.count
 $query->select("concat(c2.lastname,' - ',c2.firstname,'' ) AS secondname,c2.country as secondcountry,c2.picture as secondlogo");
 
 // From the table
-$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');        
-$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON m.round_id = r.id');  
+$query->from('#__sportsmanagement_match AS m');        
+$query->join('INNER','#__sportsmanagement_round AS r ON m.round_id = r.id');  
 
 $subQuery->select("tt1.id as team_id,c1.lastname,c1.firstname,c1.country,c1.picture");
-$subQuery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS c1');
-$subQuery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS tp1 ON c1.id = tp1.person_id');
-$subQuery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt1 ON tt1.team_id = tp1.id');  
+$subQuery->from('#__sportsmanagement_person AS c1');
+$subQuery->join('INNER','#__sportsmanagement_season_person_id AS tp1 ON c1.id = tp1.person_id');
+$subQuery->join('INNER','#__sportsmanagement_project_team AS tt1 ON tt1.team_id = tp1.id');  
 $query->join('LEFT','(' . $subQuery . ') AS c1 on m.projectteam1_id = c1.team_id ');
 
 $subQuery2->select("tt2.id as team_id,c2.lastname,c2.firstname,c2.country,c2.picture");
-$subQuery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS c2');
-$subQuery2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS tp2 ON c2.id = tp2.person_id');
-$subQuery2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt2 ON tt2.team_id = tp2.id');  
+$subQuery2->from('#__sportsmanagement_person AS c2');
+$subQuery2->join('INNER','#__sportsmanagement_season_person_id AS tp2 ON c2.id = tp2.person_id');
+$subQuery2->join('INNER','#__sportsmanagement_project_team AS tt2 ON tt2.team_id = tp2.id');  
 $query->join('LEFT','(' . $subQuery2 . ') AS c2 on m.projectteam2_id = c2.team_id ');
 //$query2 = $query;       
 }
@@ -485,21 +510,21 @@ $query->select("c1.teamname AS firstname,c1.country as firstcountry,c1.logo_big 
 $query->select("c2.teamname AS secondname,c2.country as secondcountry,c2.logo_big as secondlogo");
 
 // From the table
-$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');        
-$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON m.round_id = r.id');  
+$query->from('#__sportsmanagement_match AS m');        
+$query->join('INNER','#__sportsmanagement_round AS r ON m.round_id = r.id');  
 
 $subQuery->select("tt1.id as team_id,t1.".$this->request['tree_name']." as teamname,c1.country,c1.logo_big");
-$subQuery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1');
-$subQuery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c1 ON c1.id = t1.club_id');
-$subQuery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS tp1 ON t1.id = tp1.team_id');
-$subQuery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt1 ON tt1.team_id = tp1.id');  
+$subQuery->from('#__sportsmanagement_team AS t1');
+$subQuery->join('INNER','#__sportsmanagement_club AS c1 ON c1.id = t1.club_id');
+$subQuery->join('INNER','#__sportsmanagement_season_team_id AS tp1 ON t1.id = tp1.team_id');
+$subQuery->join('INNER','#__sportsmanagement_project_team AS tt1 ON tt1.team_id = tp1.id');  
 $query->join('LEFT','(' . $subQuery . ') AS c1 on m.projectteam1_id = c1.team_id ');
 
 $subQuery2->select("tt2.id as team_id,t2.".$this->request['tree_name']." as teamname,c2.country,c2.logo_big");
-$subQuery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2');
-$subQuery2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c2 ON c2.id = t2.club_id');
-$subQuery2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS tp2 ON t2.id = tp2.team_id');
-$subQuery2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt2 ON tt2.team_id = tp2.id');  
+$subQuery2->from('#__sportsmanagement_team AS t2');
+$subQuery2->join('INNER','#__sportsmanagement_club AS c2 ON c2.id = t2.club_id');
+$subQuery2->join('INNER','#__sportsmanagement_season_team_id AS tp2 ON t2.id = tp2.team_id');
+$subQuery2->join('INNER','#__sportsmanagement_project_team AS tt2 ON tt2.team_id = tp2.id');  
 $query->join('LEFT','(' . $subQuery2 . ') AS c2 on m.projectteam2_id = c2.team_id ');
 //$query2 = $query;
 }
@@ -526,6 +551,8 @@ $query->where('r.project_id = '.$this->projectid);
 
 $db->setQuery($query);
 $result = $db->loadObjectList();
+
+//echo '1.) result -> <br /><pre>~'.print_r($result,true).'~</pre><br />';
 		
 if ( $this->debug_info )
 {
@@ -561,8 +588,8 @@ else
 $row->secondlogo = JURI::base().$row->secondlogo;
 }
 
-// prüfen ob die ergebnisse in der runde schon gesetzt sind
-// die runde kann ja auch hin- und rückspiel beinhalten
+// prï¿½b die ergebnisse in der runde schon gesetzt sind
+// die runde kann ja auch hin- und rï¿½el beinhalten
 if ( array_key_exists($round->roundcode, $this->bracket) && count($result) > 1 )
 {
 
@@ -679,7 +706,7 @@ echo '1.) this->exist_result -> <br /><pre>~'.print_r($this->exist_result,true).
 echo '1.) Roundcode gesetzt -> <br /><pre>~'.print_r($roundcode,true).'~</pre><br />';
 }
 
-// passt die erste gewählte runde zu einem turnierbaum ?
+// passt die erste gewï¿½te runde zu einem turnierbaum ?
 $count_matches = sizeof( $this->bracket[$round->roundcode] );
 
 //echo '1.) size bracket -> <br /><pre>~'.print_r(sizeof( $this->bracket[$round->roundcode] ),true).'~</pre><br />';
@@ -781,6 +808,8 @@ if ( $this->debug_info )
 echo '2.) query 1.Mannschaft -> <br /><pre>~'.print_r($query,true).'~</pre><br />';
 echo '2.) result 1.Mannschaft -> <br /><pre>~'.print_r($result,true).'~</pre><br />';
 }
+
+//echo '2.) result 1.Mannschaft -> <br /><pre>~'.print_r($result,true).'~</pre><br />';
 
 if ( $result  )
 {
@@ -960,12 +989,6 @@ $query->where('(m.projectteam1_id = '.$key->projectteam2_id.' or m.projectteam2_
 $query->where('r.id = '.$round->id);
 $query->where('r.project_id = '.$this->projectid);
 
-//$query_WHERE = ' WHERE m.published = 1 
-//			  AND r.id = '.$round->id.'
-//              and (m.projectteam1_id = '.$key->projectteam2_id.' or m.projectteam2_id = '.$key->projectteam2_id.' ) 
-//			  AND r.project_id = '.$this->projectid;
-
-//$query = $query_SELECT.$query_FROM.$query_WHERE.$query_END;
 $db->setQuery($query);
 $result = $db->loadObjectList();
 
@@ -1149,7 +1172,7 @@ $result = true;
 
 }
 
-// müssen freilose angelegt werden ?
+// mï¿½freilose angelegt werden ?
 $count_matches = sizeof ( $this->bracket[$round->roundcode] );
 if ( $this->debug_info )
 {
@@ -1183,6 +1206,7 @@ echo 'Gesamt. this->bracket -> <br /><pre>~'.print_r($this->bracket,true).'~</pr
 echo 'Gesamt. this->exist_result -> <br /><pre>~'.print_r($this->exist_result,true).'~</pre><br />';
 }
 
+//echo 'Gesamt. this->exist_result -> <br /><pre>~'.print_r($this->exist_result,true).'~</pre><br />';
 
 // jetzt die teams und ergebnisse zusammenstellen
 $varteams = array();

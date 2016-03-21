@@ -241,7 +241,7 @@ $script[] = "								jQuery('select#".$this->id." option').remove();";
 $script[] = "						});";
 $script[] = "";
 
-$script[] = " alert('r data -> ' + r.data);";
+//$script[] = " alert('r data -> ' + r.data);";
 
 $script[] = "if (r.messages)";
 $script[] = "		{";

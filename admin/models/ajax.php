@@ -102,6 +102,30 @@ class sportsmanagementModelAjax extends JModelLegacy
         }
         
         
+        static function getassociationsoptions($country = NULL, $required = false, $slug = false,$dabse = false)
+        {
+            // Reference global application object
+        $app = JFactory::getApplication();
+        $db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+        
+        
+			
+			$query->select('t.id AS value, t.name AS text');
+			$query->from('#__sportsmanagement_associations AS t');
+			$query->where("t.country LIKE " . $db->Quote(''.$country.'') );
+			$query->where('t.parent_id = 0');
+			$query->order('t.name');
+			$db->setQuery($query);
+			//$options = $db->loadObjectList();
+			
+			$sections = $db->loadObjectList();
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' country<br><pre>'.print_r($country,true).'</pre>'),'Notice');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sections<br><pre>'.print_r($sections,true).'</pre>'),'Notice'); 
+            
+            return self::addGlobalSelectElement($db->loadObjectList(), $required);     
+            
+        }
         
         /**
          * sportsmanagementModelAjax::getseasons()

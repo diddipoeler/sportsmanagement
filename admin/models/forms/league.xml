@@ -57,6 +57,40 @@
 		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
 	</field>	
 	
+
+<field
+			name="published_act_season"
+			type="radio"
+			class="radio btn-group btn-group-yesno"
+			default="1"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ACT_SEASON_MOD"
+			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ACT_SEASON_MOD_DESC">
+			<option
+				value="1">
+				JPUBLISHED</option>
+			<option
+				value="0">
+				JUNPUBLISHED</option>
+		</field>
+
+<field
+			name="published"
+			type="radio"
+			class="radio btn-group btn-group-yesno"
+			default="1"
+			size="1"
+			label="JSTATUS"
+			description="JFIELD_PUBLISHED_DESC">
+			<option
+				value="1">
+				JPUBLISHED</option>
+			<option
+				value="0">
+				JUNPUBLISHED</option>
+		</field>	  
+  
+  
 	<field
 			name="federation"
 			type="federationslist"
@@ -68,7 +102,11 @@
 			description="COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATION_LIST_DESC"/>	
 	
 
-		
+<!--
+landesverbaende zum ausgewaehlten land
+-->		
+
+<!--
   <field
 			name="associations"
 			type="associationslist" 
@@ -83,7 +121,24 @@
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
 		</field>
-      	
+-->
+
+  <field
+			name="associations"
+			type="dependsql" 
+      depends="country"
+			task="associationsoptions" 
+      size="10"
+			
+
+			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION"
+			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION_DESC"
+			class="inputbox">
+      <option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
+		</field>
+          	
 	</fieldset>			
 
   <fields name="request">
@@ -111,13 +166,8 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 			depends="sports_type_id"
 			task="personagegroupoptions" 
       size="10"
-      
-      
-      
       key_field="sports_type_id"
 			value_field="sports_type_id"
-			
-			
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP_DESC"
 			class="inputbox">
