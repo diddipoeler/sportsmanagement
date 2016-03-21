@@ -106,6 +106,8 @@ class sportsmanagementModelAjax extends JModelLegacy
         {
             // Reference global application object
         $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
         $db = JFactory::getDbo();
 		$query = $db->getQuery(true);
         
@@ -114,16 +116,18 @@ class sportsmanagementModelAjax extends JModelLegacy
 			$query->select('t.id AS value, t.name AS text');
 			$query->from('#__sportsmanagement_associations AS t');
 			$query->where("t.country LIKE " . $db->Quote(''.$country.'') );
-			$query->where('t.parent_id = 0');
+			//$query->where('t.parent_id = 0');
 			$query->order('t.name');
 			$db->setQuery($query);
 			//$options = $db->loadObjectList();
 			
 			$sections = $db->loadObjectList();
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' country<br><pre>'.print_r($country,true).'</pre>'),'Notice');
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sections<br><pre>'.print_r($sections,true).'</pre>'),'Notice'); 
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' country<br><pre>'.print_r($country,true).'</pre>'),'Notice');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sections<br><pre>'.print_r($sections,true).'</pre>'),'Notice');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice'); 
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jinput<br><pre>'.print_r($jinput,true).'</pre>'),'Notice');
             
-            return self::addGlobalSelectElement($db->loadObjectList(), $required);     
+            return self::addGlobalSelectElement($sections, $required);     
             
         }
         

@@ -98,6 +98,7 @@ class JFormFieldDependSQL extends JFormField
 		$lang->load("com_sportsmanagement", JPATH_ADMINISTRATOR);
         
        $attribs = '';
+       $norequest = 0;
 		$required = $this->element['required'] == "true" ? 'true' : 'false';
 		$key = ($this->element['key_field'] ? $this->element['key_field'] : 'value');
 		$val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
@@ -105,7 +106,7 @@ class JFormFieldDependSQL extends JFormField
 		$depends = $this->element['depends'];
         $slug = $this->element['slug'];
         $query = (string)$this->element['query'];
-        
+        $norequest = $this->element['norequest'];
 
 		
         $project_id = $this->form->getValue('id');
@@ -130,14 +131,20 @@ class JFormFieldDependSQL extends JFormField
         switch ($option)
         {
             case 'com_modules':
-            $div = 'params';
+            $div = 'params_';
             break;
             case 'com_sportsmanagement':
-            //$div = '';
-            $div = 'request';
+            if ( $norequest )
+            {
+            $div = '';
+            }
+            else
+            {
+            $div = 'request_';
+            }
             break;
             default:
-            $div = 'request';
+            $div = 'request_';
             break;
         }
         
@@ -153,6 +160,10 @@ class JFormFieldDependSQL extends JFormField
 //        {
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view -> '.$view.''),'Notice');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' option -> '.$option.''),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' norequest -> '.$norequest.''),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' fieldset<br><pre>'.print_r($this->fieldset,true).'</pre>'),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jform<br><pre>'.print_r($this->jform,true).'</pre>'),'Notice');
+        
 //        
 //        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database -> '.$this->form->getValue('cfg_which_database',$div).' name -> '.$this->name),'Notice');
         
@@ -209,8 +220,8 @@ $script[] = "						$('#".$this->id."').trigger('liszt:updated');";
 $script[] = "					});";
 */
 
-$script[] = "				$('#jform_".$div."_".$depends."').change(function(){";
-$script[] = "					var value = $('#jform_".$div."_".$depends."').val();";
+$script[] = "				$('#jform_".$div.$depends."').change(function(){";
+$script[] = "					var value = $('#jform_".$div.$depends."').val();";
 //$script[] = "					var dbparam = $('#jform_params_cfg_which_database').val();";
 //$script[] = "					var dbparam = $('#jform_home').prop('checked');";
 //$script[] = "					var dbparam = $('input:radio[name=jform_home]:checked').val();";
@@ -219,6 +230,9 @@ $script[] = "					var value = $('#jform_".$div."_".$depends."').val();";
 
 //$script[] = " alert('task -> ' + ".$ajaxtask.");";
 //$script[] = " alert('depends -> ' + ".$depends.");";
+
+$script[] = "					var	url = 'index.php?option=com_sportsmanagement&format=json&dbase=".$cfg_which_database."&slug=".$slug."&task=ajax.".$ajaxtask."&".$depends."=' + value;";
+//$script[] = " alert('url -> ' + url);";
 
 $script[] = "					$.ajax({";
 switch ($view)
@@ -230,9 +244,11 @@ switch ($view)
     $script[] = "						url: 'index.php?option=com_sportsmanagement&format=json&dbase=".$cfg_which_database."&slug=".$slug."&task=ajax.".$ajaxtask."&country=".$key_value."&".$depends."=' + value,";
     break;
     default:
-    $script[] = "						url: 'index.php?option=com_sportsmanagement&format=json&dbase=".$cfg_which_database."&slug=".$slug."&task=ajax.".$ajaxtask."&".$depends."=' + value,";
+    $script[] = "						url: url,";
     break;
 }
+
+
 
 $script[] = "						dataType: 'json'";
 $script[] = "					}).done(function(r) {";

@@ -112,7 +112,7 @@ class sportsmanagementControllerAjax extends JControllerLegacy
         try
     {
  
-      $result = $this->getModel('ajax')->getassociationsoptions($jinput->get->get('country'), $jinput->get->get('required'),$jinput->get->get('slug'),$jinput->get->get( 'dbase' ));
+      $result = $this->getModel('ajax')->getassociationsoptions(JRequest::getVar( 'country' ), $jinput->get->get('required'),$jinput->get->get('slug'),$jinput->get->get( 'dbase' ));
       
       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
       
@@ -229,9 +229,33 @@ try
             $app = JFactory::getApplication();
        // JInput object
         $jinput = $app->input;
-                $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getpersonpositionoptions(JRequest::getInt( 'sports_type_id' ), $jinput->getVar('required','false'),JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+//                $model = $this->getModel('ajax');
+//                echo json_encode((array) $model->getpersonpositionoptions(JRequest::getInt( 'sports_type_id' ), $jinput->getVar('required','false'),JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' )));
+//                JFactory::getApplication()->close();
+                
+try
+    {
+ 
+      $result = $this->getModel('ajax')->getpersonpositionoptions($jinput->get->get('sports_type_id'), $jinput->get->get('required'),$jinput->get->get('slug'),$jinput->get->get( 'dbase' ));
+      
+      //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
+      
+ if ( count($result) == 1 )
+ {
+ $app->enqueueMessage('Keine Positionen gefunden','Error');
+ }
+ else
+ {
+$app->enqueueMessage('Positionen gefunden','Message');    
+ }
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }    
+                    
         }
         
         /**
@@ -244,9 +268,33 @@ try
             $app = JFactory::getApplication();
        // JInput object
         $jinput = $app->input;
-                $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getpersonagegroupoptions(JRequest::getInt( 'sports_type_id' ), $jinput->getVar('required','false'),JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' ),JRequest::getInt( 'project' ) ) );
-                JFactory::getApplication()->close();
+//                $model = $this->getModel('ajax');
+//                echo json_encode((array) $model->getpersonagegroupoptions(JRequest::getInt( 'sports_type_id' ), $jinput->getVar('required','false'),JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' ),JRequest::getInt( 'project' ) ) );
+//                JFactory::getApplication()->close();
+        
+        try
+    {
+ 
+      $result = $this->getModel('ajax')->getpersonagegroupoptions($jinput->get->get('sports_type_id'), $jinput->get->get('required'),$jinput->get->get('slug'),$jinput->get->get( 'dbase' ),$jinput->get->get( 'project' ));
+      
+      //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
+      
+ if ( count($result) == 1 )
+ {
+ $app->enqueueMessage('Keine Altersgruppe gefunden','Error');
+ }
+ else
+ {
+$app->enqueueMessage('Altersgruppe gefunden','Message');    
+ }
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }  
+        
         }
 
         
