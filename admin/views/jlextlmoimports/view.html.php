@@ -64,8 +64,8 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
 		$app = JFactory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-    $lang = JFactory::getLanguage();
-    $document	= JFactory::getDocument();
+		$lang = JFactory::getLanguage();
+		document	= JFactory::getDocument();
     
 	
     
@@ -75,7 +75,7 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
 		$uri = JFactory::getURI();
 		$config = JComponentHelper::getParams('com_media');
 		$post = $jinput->post->getArray(array());
-		$files = $jinput->getArray(array('files');
+		$files = $jinput->getArray(array('files'));
 
 		$this->request_url	= $uri->toString();
 		$this->config	= $config;
