@@ -264,6 +264,8 @@ $table_copy[] = 'team_staff';
 
 $table_copy[] = 'template_config';
 
+$table_copy[] = 'user_extra_fields';
+$table_copy[] = 'user_extra_fields_values';
 
 $table_copy[] = 'prediction_admin';
 $table_copy[] = 'prediction_game';
