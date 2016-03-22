@@ -228,11 +228,15 @@ $script[] = "					var value = $('#jform_".$div.$depends."').val();";
 
 //$script[] = " alert('value -> ' + value);";
 
+$script[] = "if (window.console) console.log('json value -> ' + value);";
+
 //$script[] = " alert('task -> ' + ".$ajaxtask.");";
 //$script[] = " alert('depends -> ' + ".$depends.");";
 
 $script[] = "					var	url = 'index.php?option=com_sportsmanagement&format=json&dbase=".$cfg_which_database."&slug=".$slug."&task=ajax.".$ajaxtask."&".$depends."=' + value;";
 //$script[] = " alert('url -> ' + url);";
+
+$script[] = "if (window.console) console.log('json url -> ' + url);";
 
 $script[] = "					$.ajax({";
 switch ($view)

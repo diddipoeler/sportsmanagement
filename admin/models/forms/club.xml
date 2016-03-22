@@ -123,7 +123,27 @@
 			label="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_LONGITUDE_DESC"
 			class="inputbox"/>
-  
+
+<field
+			name="associations"
+			type="dependsql" 
+      size="10"
+      
+      depends="country"
+			task="associationsoptions" 
+      value_field="country"
+      key_field="country"
+			default="0"
+      norequest="1"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSOCIATION"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSOCIATION_DESC"
+			class="form-control form-control-inline">
+      <option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
+		</field>
+
+<!--      
   <field
 			name="associations"
 			type="associationslist" 
@@ -138,6 +158,7 @@
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
 		</field>
+-->
       	
 	<field
 			name="phone"
