@@ -86,7 +86,7 @@ $query->from('#__sportsmanagement_project as pro');
 $query->join('INNER','#__sportsmanagement_league as le on le.id = pro.league_id');
 $query->where('le.published_act_season = 1 ');
 $query->where('pro.season_id IN ('.$seasons.')');
-$query->order('l.country');
+$query->order('le.country');
 
 $db->setQuery( $query );
 $result = $db->loadObjectList();
