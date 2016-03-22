@@ -123,21 +123,25 @@ landesverbaende zum ausgewaehlten land
 		</field>
 -->
 
-  <field
+ <field
 			name="associations"
 			type="dependsql" 
+      size="10"
+      
       depends="country"
 			task="associationsoptions" 
-      size="10"
-			
-
-			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION"
-			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_ASSOCIATION_DESC"
+      value_field="country"
+      key_field="country"
+			default="0"
+      norequest="1"
+			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSOCIATION"
+			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSOCIATION_DESC"
 			class="inputbox">
       <option
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
 		</field>
+  
           	
 	</fieldset>			
 
