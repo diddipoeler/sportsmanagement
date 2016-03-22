@@ -345,6 +345,25 @@
 			<field name="sis_meinvereinspasswort" type="text" size="40" default="" label="COM_SPORTSMANAGEMENT_SETTINGS_SETMEINEVEREINSPASS" description="COM_SPORTSMANAGEMENT_SETTINGS_SETMEINEVEREINSPASS_DESC" />     
   </fieldset>
 
+<fieldset name="ishd-konfiguration"
+	label="COM_SPORTSMANAGEMENT_CONFIG_ISHD_SETTINGS_LABEL"
+		description="COM_SPORTSMANAGEMENT_CONFIG_ISHD_SETTINGS_DESC"
+		addfieldpath="/administrator/components/com_sportsmanagement/models/fields">  
+
+<field name="ishd_benutzernamer" 
+type="text" 
+size="40" 
+default="" 
+label="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_BENUTZERNAME" 
+description="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_BENUTZERNAME_DESC" />
+<field name="ishd_kennwort" 
+type="text" 
+size="40" 
+default="" 
+label="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_KENNWORT" 
+description="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_KENNWORT_DESC" />     
+		
+</fieldset>		
 <!-- register 3 -->		
 	<fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_PLACEHOLDER_IMAGES"
 		addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
