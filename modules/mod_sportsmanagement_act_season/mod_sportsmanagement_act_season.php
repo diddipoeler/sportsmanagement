@@ -70,7 +70,12 @@ require_once (dirname(__FILE__).DS.'helper.php');
 
 $document = JFactory::getDocument();
 
-//$new_project_article   = $params->get( 'new_project_article', 0 );
+/**
+ * die übersetzungen der länder laden
+ */
+$language = JFactory::getLanguage();
+$language->load('com_sportsmanagement', JPATH_ADMINISTRATOR, null, true);
+
 $season_ids      = JComponentHelper::getParams('com_sportsmanagement')->get( 'current_season' );
 
 $list = modJSMActSeasonHelper::getData($season_ids);
