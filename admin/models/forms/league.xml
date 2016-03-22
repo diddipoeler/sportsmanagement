@@ -15,7 +15,7 @@
 			size="100"
 			label="COM_SPORTSMANAGEMENT_GLOBAL_NAME"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_NAME_DESC"
-			class="inputbox"
+			class="form-control form-control-inline"
 			required="true"/>
 	<field
 			name="middle_name"
@@ -23,14 +23,14 @@
 			size="100"
 			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_MIDDLE_NAME"
 			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_MIDDLE_NAME_DESC"
-			class="inputbox"/>
+			class="form-control form-control-inline"/>
 	<field
 			name="short_name"
 			type="text"
 			size="100"
 			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_SHORT_NAME"
 			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_SHORT_NAME_DESC"
-			class="inputbox"
+			class="form-control form-control-inline"
 			required="true"/>
 	<field
 			name="alias"
@@ -38,7 +38,7 @@
 			size="100"
 			label="JFIELD_ALIAS_LABEL"
 			description="JFIELD_ALIAS_DESC"
-			class="inputbox"/>	
+			class="form-control form-control-inline"/>	
 			
 			<field
 			name="website"
@@ -46,14 +46,14 @@
 			type="text"
 			label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_WEBSITE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_WEBSITE_DESC"
-			class="inputbox"/>	
+			class="form-control form-control-inline"/>	
 			
 	<field
 			name="country"
 			type="country"
 			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_COUNTRY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_COUNTRY_DESC"
-			class="inputbox">
+			class="form-control form-control-inline">
 		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
 	</field>	
 	
@@ -136,7 +136,7 @@ landesverbaende zum ausgewaehlten land
       norequest="1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSOCIATION"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ASSOCIATION_DESC"
-			class="inputbox">
+			class="form-control form-control-inline">
       <option
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
@@ -174,7 +174,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 			value_field="sports_type_id"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AGEGROUP_DESC"
-			class="inputbox">
+			class="form-control form-control-inline">
       <option
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DO_NOT_USE</option>
@@ -192,7 +192,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 				default=""				
 				label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT_PICTURE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_EDIT_PICTURE_DESC"
-				class="inputbox"
+				class="form-control form-control-inline"
 				preview="show"	
         targetfolder="leagues"			
 				directory=""/>
@@ -202,7 +202,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 			type="text"
 			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_PICTURE_CR"
 			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_PICTURE_CR_DESC"
-			class="inputbox"/>
+			class="form-control form-control-inline"/>
       		
 	</fieldset>
 
