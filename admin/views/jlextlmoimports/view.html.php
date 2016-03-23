@@ -65,7 +65,7 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		$lang = JFactory::getLanguage();
-		document	= JFactory::getDocument();
+		$document	= JFactory::getDocument();
     
 	
     
@@ -80,8 +80,8 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
 		$this->request_url	= $uri->toString();
 		$this->config	= $config;
 		$teile = explode("-",$lang->getTag());
-    $country = JSMCountries::convertIso2to3($teile[1]);
-    $this->country	= $country;
+		$country = JSMCountries::convertIso2to3($teile[1]);
+		$this->country	= $country;
 		$countries = JSMCountries::getCountryOptions();
 		$lists['countries'] = JHtml::_('select.genericlist', $countries, 'country', 'class="inputbox" size="1"', 'value', 'text', $country);
 		$this->countries	= $lists['countries'];
