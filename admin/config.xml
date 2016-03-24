@@ -350,7 +350,7 @@
 		description="COM_SPORTSMANAGEMENT_CONFIG_ISHD_SETTINGS_DESC"
 		addfieldpath="/administrator/components/com_sportsmanagement/models/fields">  
 
-<field name="ishd_benutzernamer" 
+<field name="ishd_benutzername" 
 type="text" 
 size="40" 
 default="" 
@@ -362,6 +362,12 @@ size="40"
 default="" 
 label="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_KENNWORT" 
 description="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_KENNWORT_DESC" />     
+<field name="ishd_stammverein" 
+type="clublist" 
+
+default="" 
+label="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_CLUB" 
+description="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_CLUB_DESC" />  
 		
 </fieldset>		
 <!-- register 3 -->		
