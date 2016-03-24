@@ -59,9 +59,9 @@ $option = $jinput->getCmd('option');
 $db = JFactory::getDbo();
 $query = $db->getQuery(true);
 
-$username = JComponentHelper::getParams($option)->get('ishd_benutzernamer');;
+$username = JComponentHelper::getParams($option)->get('ishd_benutzername');;
 $password = JComponentHelper::getParams($option)->get('ishd_kennwort');;
-$url_clubs      = 'https://www.ishd.de/licenses/clubs.xml';
+$url_clubs = 'https://www.ishd.de/licenses/clubs.xml';
 
 /*
 $context = stream_context_create(array(
