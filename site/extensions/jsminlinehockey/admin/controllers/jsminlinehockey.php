@@ -18,7 +18,16 @@ function __construct()
         
     }
     
-    
+    function getclubs()
+    {
+    $model = $this->getModel ( 'jsminlinehockey' );
+    $clubs  = $model->getClubs();
+    $msg = 'Vereine importiert';
+    $link = 'index.php?option=com_sportsmanagement&view=clubs'; 
+$this->setRedirect ( $link, $msg ); 
+
+    }
+
     function save() {
 	   //$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication ();
