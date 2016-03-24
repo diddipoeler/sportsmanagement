@@ -169,6 +169,20 @@ if ( !$db->loadResult() )
 {
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_name nicht vorhanden<br><pre>'.print_r($team_name ,true).'</pre>'),'');
 $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_name nicht vorhanden -> '.$team_name.'-'.$team.'-'.$club_id),'');
+
+// Create and populate an object.
+$profile = new stdClass();
+$profile->club_id = $club_id;
+$profile->name = $team_name;
+$profile->info= $team;
+$profile->alias = JFilterOutput::stringURLSafe( $team_name );;
+ 
+// Insert the object into the user profile table.
+$result = JFactory::getDbo()->insertObject('#__sportsmanagement_team', $profile);
+
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_name angelegt -> '.$team_name.'-'.$team.'-'.$club_id),'');
+
+
 }
 else
 {
