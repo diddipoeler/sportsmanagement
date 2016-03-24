@@ -155,6 +155,12 @@ class sportsmanagementViewTeams extends sportsmanagementView
 		{
 		JToolBarHelper::deleteList('', 'teams.delete', 'JTOOLBAR_DELETE');    
 		}
+		
+		if ( $this->jinput->get->get('club_id') )
+		{
+		JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=clubs');
+		}
+
 		parent::addToolbar();
 	}
 }
