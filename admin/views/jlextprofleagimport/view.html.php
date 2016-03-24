@@ -62,18 +62,18 @@ class sportsmanagementViewjlextprofleagimport extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
+		//$app = JFactory::getApplication();
+//		$jinput = $app->input;
+//		$option = $jinput->getCmd('option');
 		$lang = JFactory::getLanguage();
-		$document	= JFactory::getDocument();
+		//$document	= JFactory::getDocument();
     
-		$uri = JFactory::getURI();
+		//$uri = JFactory::getURI();
 		$config = JComponentHelper::getParams('com_media');
-		$post = $input->get('post');
-		$files = $input->get('files');
+		$post = $this->jinput->get('post');
+		$files = $this->jinput->get('files');
 
-		$this->request_url	= $uri->toString();
+//		$this->request_url	= $uri->toString();
 		$this->config	= $config;
 		$teile = explode("-",$lang->getTag());
 		$country = JSMCountries::convertIso2to3($teile[1]);
@@ -109,6 +109,7 @@ class sportsmanagementViewjlextprofleagimport extends sportsmanagementView
         
         // Set toolbar items for the page
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROF_LEAGUE_IMPORT_TITLE_1'),'profleage-cpanel');
+        JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=extensions');
         JToolBarHelper::divider();
 //            sportsmanagementHelper::ToolbarButtonOnlineHelp();
 //			JToolBarHelper::preferences($option);

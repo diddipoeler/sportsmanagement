@@ -45,7 +45,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
 <div id="editcell">
 	<form enctype='multipart/form-data' action='<?php echo $this->request_url; ?>' method='post' id='adminForm'>
-		<table class='adminlist'>
+		<table class='table'>
 			<thead><tr><th><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_TABLE_TITLE_1', $this->config->get('upload_maxsize') ); ?></th></tr></thead>
 			<tfoot><tr><td><?php
 				echo '<p>';

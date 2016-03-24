@@ -105,7 +105,7 @@ class sportsmanagementView extends JViewLegacy
         switch ( $view )
             {
             case 'predictions';
-            
+            case 'extensions';
             break;
             default:
         $this->model = $this->getModel();    
@@ -144,7 +144,7 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
         switch ( $view )
             {
             case 'predictions';
-            
+            case 'extensions';
             break;
             default:
             $this->state = $this->get('State'); 

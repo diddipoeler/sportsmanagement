@@ -61,23 +61,23 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
+		//$app = JFactory::getApplication();
+//		$jinput = $app->input;
+//		$option = $jinput->getCmd('option');
 		$lang = JFactory::getLanguage();
-		$document	= JFactory::getDocument();
+		//$document	= JFactory::getDocument();
     
 	
     
 		
 		//JLToolBarHelper::onlinehelp();
 
-		$uri = JFactory::getURI();
+		//$uri = JFactory::getURI();
 		$config = JComponentHelper::getParams('com_media');
-		$post = $jinput->post->getArray(array());
-		$files = $jinput->getArray(array('files'));
+		$post = $this->jinput->post->getArray(array());
+		$files = $this->jinput->getArray(array('files'));
 
-		$this->request_url	= $uri->toString();
+		//$this->request_url	= $uri->toString();
 		$this->config	= $config;
 		$teile = explode("-",$lang->getTag());
 		$country = JSMCountries::convertIso2to3($teile[1]);
@@ -108,7 +108,7 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
 //        // Set toolbar items for the page
 //        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
-        
+        JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=extensions');
         parent::addToolbar();
 
 	}

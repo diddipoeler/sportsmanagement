@@ -56,6 +56,11 @@ jimport('joomla.application.component.controllerform');
 class sportsmanagementControllertemplate extends JControllerForm
 {
 
+/**
+ * sportsmanagementControllertemplate::__construct()
+ * 
+ * @return void
+ */
 function __construct()
 	{
 		$app	= JFactory::getApplication();

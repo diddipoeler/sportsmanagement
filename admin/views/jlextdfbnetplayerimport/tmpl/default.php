@@ -86,7 +86,7 @@ echo '</pre>';
 
 <div id="editcell">
 	<form enctype='multipart/form-data' method='post' name="adminForm">
-		<table class='adminlist'>
+		<table class='table'>
 			<thead>
 			  <tr>
 			    <th>

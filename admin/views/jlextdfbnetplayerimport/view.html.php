@@ -55,7 +55,8 @@ jimport ( 'joomla.application.component.view' );
 class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView 
 {
 	
-    function display($tpl = null) 
+    function init()
+    //function display($tpl = null) 
     {
 		//global $app;
 		
@@ -89,21 +90,21 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		// Set toolbar items for the page
 		//JToolBarHelper::title ( JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_TITLE_1_3' ), 'generic.png' );
 		//JToolBarHelper::help ( 'screen.joomleague', true );
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$uri = JFactory::getURI ();
+		//$app = JFactory::getApplication();
+//		$jinput = $app->input;
+//		$option = $jinput->getCmd('option');
+//		$uri = JFactory::getURI ();
 		$config = JComponentHelper::getParams ( 'com_media' );
-		$post = $input->post;
-		$files = $input->get('files');
+		$post = $this->jinput->post;
+		$files = $this->jinput->get('files');
 		
-		$this->request_url	= $uri->toString ();
+		//$this->request_url	= $uri->toString ();
 		$this->config	= $config;
 		
 		$revisionDate = '2011-04-28 - 12:00';
 		$this->revisionDate	= $revisionDate ;
 		
-		parent::display ( $tpl );
+		//parent::display ( $tpl );
 	}
 	
     /*
@@ -161,7 +162,7 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		$import_version = 'NEW';
 		$this->import_version	= $import_version;
 		
-		$this->addToolbar ();
+		//$this->addToolbar ();
 		parent::display ( $tpl );
 	}
     
@@ -214,6 +215,7 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
         
         // Set toolbar items for the page
 		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT' ),'dfbnet' );
+        JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=extensions');
         JToolBarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
 		JToolBarHelper::preferences($option);

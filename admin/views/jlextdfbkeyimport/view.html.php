@@ -62,7 +62,8 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		//global $app;
+		$tpl = '';
+        //global $app;
 
     /*
     echo '<pre>';
@@ -76,26 +77,26 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
     echo '</pre>';
     */
     
-		if ( $this->getLayout() == 'default')
+		if ( $this->getLayout() == 'default' || $this->getLayout() == 'default_3' )
 		{
 			$this->_displayDefault( $tpl );
 			return;
 		}
 
-    if ( $this->getLayout() == 'default_createdays')
+    if ( $this->getLayout() == 'default_createdays' )
 		{
 			$this->_displayDefaultCreatedays( $tpl );
 			return;
 		}
 		
 		
-		if ( $this->getLayout() == 'default_firstmatchday')
+		if ( $this->getLayout() == 'default_firstmatchday' )
 		{
 			$this->_displayDefaultFirstMatchday( $tpl );
 			return;
 		}
 		
-		if ( $this->getLayout() == 'default_savematchdays')
+		if ( $this->getLayout() == 'default_savematchdays' )
 		{
 			$this->_displayDefaultSaveMatchdays( $tpl );
 			return;
@@ -114,33 +115,33 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 	 */
 	function _displayDefault( $tpl )
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
+		//$app = JFactory::getApplication();
+//		$jinput = $app->input;
+//		$option = $jinput->getCmd('option');
 
 		$db		= sportsmanagementHelper::getDBConnection();
-		$uri 	= JFactory::getURI();
-		$user 	= JFactory::getUser();
-		$model	= $this->getModel();
+//		$uri 	= JFactory::getURI();
+//		$user 	= JFactory::getUser();
+//		$model	= $this->getModel();
 
     //get the project
 //		$projectid = $model->getProject();
 //		$this->assignRef( 'projectid',		$projectid );
         
-        $this->project_id	= $app->getUserState( "$option.pid", '0' );
+        $this->project_id	= $this->app->getUserState( "$this->option.pid", '0' );
 		
-    $istable = $model->checkTable();
+    $istable = $this->model->checkTable();
     
     if ( empty($this->project_id) )
     {
     JError::raiseWarning( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_1' ) );
-    $app->redirect( 'index.php?option=' . $option .'&view=projects' );
+    $this->app->redirect( 'index.php?option=' . $this->option .'&view=projects' );
     }
     else
     {
     // project selected. projectteams available ?
     //build the html options for projectteams
-		if ( $res =  $model->getProjectteams($this->project_id) )
+		if ( $res =  $this->model->getProjectteams($this->project_id) )
 		{
 		   $projectteams[] = JHtml::_( 'select.option', '0', '- ' . JText::_( 'Select projectteams' ) . ' -' );
 			 $projectteams = array_merge( $projectteams, $res );
@@ -151,7 +152,7 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
        
        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($dfbteams,true).'</pre>'),'');
        
-       if ( $resdfbkey = $model->getDFBKey($dfbteams,'FIRST') )
+       if ( $resdfbkey = $this->model->getDFBKey($dfbteams,'FIRST') )
 		   {
 		   $dfbday = array();
 		   $dfbday = array_merge( $dfbday, $resdfbkey );
@@ -159,21 +160,21 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 		   unset( $dfbday );
 		   
 		   // matchdays available ?
-		   if ( $resmatchdays = $model->getMatchdays($this->project_id) )
+		   if ( $resmatchdays = $this->model->getMatchdays($this->project_id) )
 		   {
 		   
        // matches available
-		   if ( $resmatches = $model->getMatches($this->project_id) )
+		   if ( $resmatches = $this->model->getMatches($this->project_id) )
 		   {
 		   JError::raiseNotice( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_2' ) );
 		   JError::raiseWarning(500,JText::sprintf( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_7' , $resmatches ));
-		   $app->redirect( 'index.php?option=' . $option .'&view=rounds' );
+		   $this->app->redirect( 'index.php?option=' . $this->option .'&view=rounds' );
 		   }
 		   else
 		   {
 //        JError::raiseWarning( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_3' ) );
 //        JError::raiseNotice( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_4' ) );
-       $app->redirect( 'index.php?option=' . $option .'&view=jlextdfbkeyimport&layout=default_firstmatchday' );       
+       $this->app->redirect( 'index.php?option=' . $this->option .'&view=jlextdfbkeyimport&layout=default_firstmatchday' );       
        }
 		   
 		   
@@ -182,16 +183,16 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
 		   {
        JError::raiseWarning( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_3' ) );
        JError::raiseNotice( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_4' ) );
-       $app->redirect( 'index.php?option=' . $option .'&view=jlextdfbkeyimport&layout=default_createdays' );
+       $this->app->redirect( 'index.php?option=' . $this->option .'&view=jlextdfbkeyimport&layout=default_createdays' );
        }
               
        }
        else
        {
-       $procountry = $model->getCountry($this->project_id);
+       $procountry = $this->model->getCountry($this->project_id);
        //JError::raiseWarning( 500, JText::_( '[DFB-Key Tool] Error: No DFB-Key for '.$dfbteams.'  Teams available!' ) );
        JError::raiseWarning(500,JText::sprintf( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_6' , $dfbteams , JSMCountries::getCountryFlag($procountry) , $procountry ));
-       $app->redirect( 'index.php?option=' . $option .'&view=projects' );
+       $this->app->redirect( 'index.php?option=' . $this->option .'&view=projects' );
        }
        
        unset( $projectteams ); 
@@ -201,7 +202,7 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
     {
 //    JError::raiseNotice( 500, JText::_( '[DFB-Key Tool] Notice: No Teams assigned!' ) );
     JError::raiseError( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_ERROR_5' ) );
-    $app->redirect( 'index.php?option=' . $option .'&view=projectteams' );
+    $this->app->redirect( 'index.php?option=' . $this->option .'&view=projectteams' );
     
     }
     

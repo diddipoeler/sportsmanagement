@@ -54,10 +54,10 @@ class sportsmanagementViewextensions extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+		//$option = JRequest::getCmd('option');
+//		$app = JFactory::getApplication();
         
-        $params = JComponentHelper::getParams( $option );
+        $params = JComponentHelper::getParams( $this->option );
         $this->sporttypes = $params->get( 'cfg_sport_types' );
         
         //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->sporttypes,true).'</pre>'),'');
