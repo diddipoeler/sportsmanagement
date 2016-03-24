@@ -106,7 +106,7 @@ class sportsmanagementViewjsminlinehockey extends sportsmanagementView
         $document = JFactory::getDocument();
         // Set toolbar items for the page
         JToolBarHelper::save('jsminlinehockey.getteams', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_TEAMS');
-
+JToolBarHelper::save('jsminlinehockey.getclubs', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_CLUBS');
     }    
 
 
