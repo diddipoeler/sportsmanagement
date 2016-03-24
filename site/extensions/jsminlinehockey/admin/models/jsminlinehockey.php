@@ -51,6 +51,84 @@ require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'l
         parent::__construct();
         }
         
+function getClubs()
+{
+$app = JFactory::getApplication ();
+$jinput = $app->input;
+$option = $jinput->getCmd('option');
+$db = JFactory::getDbo();
+$query = $db->getQuery(true);
+
+$username = JComponentHelper::getParams($option)->get('ishd_benutzernamer');;
+$password = JComponentHelper::getParams($option)->get('ishd_kennwort');;
+$url_clubs      = 'https://www.ishd.de/licenses/clubs.xml';
+
+/*
+$context = stream_context_create(array(
+    'http' => array(
+        'header' => "Authorization: Basic " . base64_encode("$username:$password")
+    )
+));
+$data = file_get_contents($url, false, $context);
+$xml = simplexml_load_string($data);
+*/
+
+
+$curl = curl_init($url_clubs);
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+//curl_setopt($curl, CURLOPT_HEADER, 1);
+curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+curl_setopt($curl, CURLOPT_USERPWD, $username.':'.$password );
+$result = curl_exec($curl);
+$code = curl_getinfo ($curl, CURLINFO_HTTP_CODE);
+
+//$xml = JFactory::getXML($result,true); 
+$xml = simplexml_load_string($result );
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' url      <br><pre>'.print_r($url,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' username <br><pre>'.print_r($username ,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' password <br><pre>'.print_r($password ,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data <br><pre>'.print_r($data ,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml <br><pre>'.print_r($xml ,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' code <br><pre>'.print_r($code ,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result <br><pre>'.print_r($result ,true).'</pre>'),'');
+
+foreach( $xml->children() as $quote )  
+{ 
+$club_id = (string)$quote->club_id;
+$club_name = (string)$quote->club_name;
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name<br><pre>'.print_r($club_name,true).'</pre>'),'');
+
+// Select some fields 
+$query->clear(); 
+$query->select('id'); 
+// From the table 
+$query->from('#__sportsmanagement_club'); 
+$query->where('id = '.$club_id ); 
+$db->setQuery($query); 
+if ( !$db->loadResult() ) 
+{
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name nicht vorhanden<br><pre>'.print_r($club_name,true).'</pre>'),'');
+// Create and populate an object.
+$profile = new stdClass();
+$profile->id = $club_id;
+$profile->name = $club_name;
+$profile->alias = JFilterOutput::stringURLSafe( $club_name );;
+ 
+// Insert the object into the user profile table.
+$result = JFactory::getDbo()->insertObject('#__sportsmanagement_club', $profile);
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name angelegt<br><pre>'.print_r($club_name,true).'</pre>'),'');
+}
+else
+{
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name vorhanden<br><pre>'.print_r($club_name,true).'</pre>'),'Notice');
+}
+
+}
+
+}
+
 
 function getdata()
 {
