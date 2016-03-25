@@ -234,6 +234,16 @@ $script[] = "if (window.console) console.log('json value -> ' + value);";
 //$script[] = " alert('depends -> ' + ".$depends.");";
 
 $script[] = "					var	url = 'index.php?option=com_sportsmanagement&format=json&dbase=".$cfg_which_database."&slug=".$slug."&task=ajax.".$ajaxtask."&".$depends."=' + value;";
+
+switch ($ajaxtask)
+{
+case 'personagegroupoptions':
+$script[] = "					var valuecountry = $('#jform_country').val();";
+$script[] = "if (window.console) console.log('json valuecountry -> ' + valuecountry);";
+$script[] = " url = url + '&country=' + valuecountry;";
+break;
+}
+
 //$script[] = " alert('url -> ' + url);";
 
 $script[] = "if (window.console) console.log('json url -> ' + url);";

@@ -128,7 +128,6 @@
 			name="associations"
 			type="dependsql" 
       size="10"
-      
       depends="country"
 			task="associationsoptions" 
       value_field="country"

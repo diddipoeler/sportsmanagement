@@ -99,7 +99,47 @@ class sportsmanagementControllerAjax extends JControllerLegacy
         
         
         
+        /**
+         * sportsmanagementControllerAjax::countryclubagegroupoptions()
+         * 
+         * @return void
+         */
+        public function countryclubagegroupoptions()
+        {
+        $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;    
         
+         try
+    {
+ 
+      $result = $this->getModel('ajax')->getcountryclubagegroupoptions($jinput->get->get('club_id'), $jinput->get->get('required'),$jinput->get->get('slug'),$jinput->get->get( 'dbase' ));
+      
+      //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
+      
+ if ( count($result) == 1 )
+ {
+ $app->enqueueMessage('Keine Altersgruppen gefunden','Error');
+ }
+ else
+ {
+$app->enqueueMessage('Altersgruppen gefunden','Message');    
+ }
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }        
+            
+        }
+        
+        /**
+         * sportsmanagementControllerAjax::associationsoptions()
+         * 
+         * @return void
+         */
         public function associationsoptions()
         {
             $app = JFactory::getApplication();
@@ -275,7 +315,7 @@ $app->enqueueMessage('Positionen gefunden','Message');
         try
     {
  
-      $result = $this->getModel('ajax')->getpersonagegroupoptions($jinput->get->get('sports_type_id'), $jinput->get->get('required'),$jinput->get->get('slug'),$jinput->get->get( 'dbase' ),$jinput->get->get( 'project' ));
+      $result = $this->getModel('ajax')->getpersonagegroupoptions($jinput->get->get('sports_type_id'), $jinput->get->get('required'),$jinput->get->get('slug'),$jinput->get->get( 'dbase' ),$jinput->get->get( 'project' ),$jinput->get->get( 'country' ));
       
       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
       

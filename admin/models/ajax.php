@@ -102,6 +102,63 @@ class sportsmanagementModelAjax extends JModelLegacy
         }
         
         
+        /**
+         * sportsmanagementModelAjax::getcountryclubagegroupoptions()
+         * 
+         * @param integer $club_id
+         * @param bool $required
+         * @param bool $slug
+         * @param bool $dbase
+         * @return
+         */
+        static function getcountryclubagegroupoptions($club_id = 0, $required = false, $slug = false,$dbase = false)
+        {
+            // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+       
+       //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' sports_type_id<br><pre>'.print_r($sports_type_id,true).'</pre>'),'');
+       
+       // Get a db connection.
+        if ( !$dbase )
+        {
+            $db = sportsmanagementHelper::getDBConnection();
+        }
+        else
+        {
+            $db = sportsmanagementHelper::getDBConnection(TRUE,TRUE);
+        }
+        $query = $db->getQuery(true);
+        // Select some fields
+        $query->select('CONCAT_WS(\':\', a.id, a.alias) AS value,concat(a.name, \' - \',a.country) AS text');
+        // From 
+		$query->from('#__sportsmanagement_agegroup AS a');
+        $query->join('INNER',' #__sportsmanagement_club AS c ON c.country = a.country ');
+        // Where
+        if ( $club_id )
+        {
+        $query->where('c.id = ' . $club_id );
+        }
+        // order
+        $query->order('a.name');
+
+                $db->setQuery( $query );
+                                                           
+                return self::addGlobalSelectElement($db->loadObjectList(), $required);    
+            
+        }
+        
+        /**
+         * sportsmanagementModelAjax::getassociationsoptions()
+         * 
+         * @param mixed $country
+         * @param bool $required
+         * @param bool $slug
+         * @param bool $dabse
+         * @return
+         */
         static function getassociationsoptions($country = NULL, $required = false, $slug = false,$dabse = false)
         {
             // Reference global application object
@@ -404,7 +461,7 @@ class sportsmanagementModelAjax extends JModelLegacy
          * @param bool $required
          * @return
          */
-        public static function getpersonagegroupoptions($sports_type_id, $required = false, $slug = false, $dabse = false, $project_id = 0 )
+        public static function getpersonagegroupoptions($sports_type_id=0, $required = false, $slug = false, $dabse = false, $project_id = 0, $country = '' )
         {
             // Reference global application object
         $app = JFactory::getApplication();
@@ -425,7 +482,7 @@ class sportsmanagementModelAjax extends JModelLegacy
         }
         $query = $db->getQuery(true);
         
-         $query->select('a.id AS value, concat(a.name, \' von: \',a.age_from,\' bis: \',a.age_to,\' Stichtag: \',a.deadline_day) AS text');
+         $query->select('a.id AS value, concat(a.country, \'-\',a.name, \' von: \',a.age_from,\' bis: \',a.age_to,\' Stichtag: \',a.deadline_day) AS text');
 			$query->from('#__sportsmanagement_agegroup as a');
             
             if ( $project_id )
@@ -438,6 +495,12 @@ class sportsmanagementModelAjax extends JModelLegacy
             if ( $sports_type_id )
             {
             $query->where('a.sportstype_id = '.$sports_type_id);
+            }
+            
+            if ( $country )
+            {
+            $query->where('a.country LIKE ' . $db->Quote(''.$country.'') );    
+                
             }
             
 			$query->order('a.name');    
