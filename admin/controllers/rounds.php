@@ -66,6 +66,9 @@ class sportsmanagementControllerrounds extends JControllerAdmin
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
+        $this->app = JFactory::getApplication();
+		$this->jinput = $this->app->input;
+		$this->option = $this->jinput->getCmd('option');
 
 		//$this->registerTask('saveshort',	'saveshort');
 	}
@@ -119,10 +122,11 @@ class sportsmanagementControllerrounds extends JControllerAdmin
 	 */
     function saveshort()
 	{
-	   $model = $this->getModel();
+	   $this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
+       $model = $this->getModel();
        $msg = $model->saveshort();
        //$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
-       $this->setRedirect('index.php?option=com_sportsmanagement&view=rounds',$msg);
+       $this->setRedirect('index.php?option=com_sportsmanagement&view=rounds&pid='.$this->project_id,$msg);
     } 
   
   

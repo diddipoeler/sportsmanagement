@@ -160,11 +160,11 @@ class sportsmanagementModeldivision extends JModelAdmin
 				if (!$row->store())
 				{
 					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-					return false;
+					return JText::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_SAVE_NO_SELECT');
 				}
 			}
 		}
-		return true;
+		return JText::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_SAVE');
 	}
     
     	/**

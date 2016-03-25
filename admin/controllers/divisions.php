@@ -72,6 +72,26 @@ class sportsmanagementControllerdivisions extends JControllerAdmin
 
 		//$this->registerTask('saveshort',	'saveshort');
 	}
+
+	/**
+	 * sportsmanagementControllerdivisions::saveOrder()
+	 * 
+	 * @return void
+	 */
+	public function saveOrder()
+	{
+	$this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
+
+	$model = $this->getModel();
+    //$pks = JRequest::getInt( 'cid', array() );	//is sanitized
+//	$order = JRequest::getInt('order', array() );   
+    
+    $pks = $this->jinput->get('cid',array(),'array');
+    $order = $this->jinput->get('order',array(),'array');
+    
+    $msg = $model->saveorder($pks,$order);
+    $this->setRedirect('index.php?option=com_sportsmanagement&view=divisions&pid='.$this->project_id,$msg);   
+    }   
     
 /**
  * sportsmanagementControllerdivisions::saveshort()
