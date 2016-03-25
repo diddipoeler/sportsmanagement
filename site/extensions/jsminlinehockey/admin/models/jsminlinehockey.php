@@ -16,6 +16,15 @@ if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImp
 $maxImportMemory='350M';
 if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit',$maxImportMemory);}
 
+/**
+ * sportsmanagementModeljsminlinehockey
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2016
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementModeljsminlinehockey extends JModelLegacy
 {
 
@@ -39,6 +48,11 @@ var $storeFailedColor = 'red';
 
 
 
+/**
+ * sportsmanagementModeljsminlinehockey::__construct()
+ * 
+ * @return void
+ */
 function __construct()
 	{
 		$mainframe = JFactory::getApplication();
@@ -51,6 +65,11 @@ require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'l
         parent::__construct();
         }
         
+/**
+ * sportsmanagementModeljsminlinehockey::getClubs()
+ * 
+ * @return void
+ */
 function getClubs()
 {
 $app = JFactory::getApplication ();
@@ -62,7 +81,7 @@ $query = $db->getQuery(true);
 $username = JComponentHelper::getParams($option)->get('ishd_benutzername');;
 $password = JComponentHelper::getParams($option)->get('ishd_kennwort');;
 $stammverein = JComponentHelper::getParams($option)->get('ishd_stammverein');;
-$url_clubs = 'https://www.ishd.de/licenses/clubs.xml';
+$url_clubs = 'https://www.ishd.de/api/licenses/clubs.xml';
 
 /*
 $context = stream_context_create(array(
@@ -131,7 +150,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name vorhanden -> '
 
 // ################ anfang ############
 // jetzt holen wir uns die mannschaften
-$url_teams = 'https://www.ishd.de/licenses/clubs/'.$club_id.'/teams.xml';
+$url_teams = 'https://www.ishd.de/api/licenses/clubs/'.$club_id.'/teams.xml';
 $curl = curl_init($url_teams);
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
@@ -195,7 +214,7 @@ if ( $stammverein == $club_id  )
 $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team spieler lesen -> '.$team_name.'-'.$team.'-'.$club_id),'');
 
 // jetzt holen wir uns die spieler
-$url_player = 'https://www.ishd.de/licenses/clubs/'.$club_id.'/teams/'.rawurlencode($team);
+$url_player = 'https://www.ishd.de/api/licenses/clubs/'.$club_id.'/teams/'.rawurlencode($team);
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' url_player <br><pre>'.print_r($url_player ,true).'</pre>'),'');
 $curl = curl_init($url_player);
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
