@@ -124,7 +124,7 @@ class sportsmanagementViewagegroups extends sportsmanagementView
         {
             $databasetool = JModelLegacy::getInstance("databasetool", "sportsmanagementModel");
             $insert_agegroup = $databasetool->insertAgegroup($this->state->get('filter.search_nation'),$this->state->get('filter.sports_type'));
-        $app->enqueueMessage(JText::_('Zu diesem Land/Sportart gibt es keine Altersgruppen'),'Error');
+        $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_NO_RESULT'),'Error');
         }
         
 
