@@ -113,6 +113,7 @@ class sportsmanagementViewDivisions extends sportsmanagementView
         JToolBarHelper::publish('divisions.publish', 'JTOOLBAR_PUBLISH', true);
 		JToolBarHelper::unpublish('divisions.unpublish', 'JTOOLBAR_UNPUBLISH', true);
         JToolBarHelper::checkin('divisions.checkin');
+        JToolBarHelper::apply('divisions.saveshort');
 		JToolBarHelper::divider();
 		
 		JToolBarHelper::addNew('division.add');

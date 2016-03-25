@@ -145,7 +145,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					<?php else : ?>
 							<?php echo $this->escape($row->name); ?>
 					<?php endif; ?>
-                        
+<input tabindex="2" type="hidden" size="30" maxlength="64" class="form-control form-control-inline" name="name<?php echo $row->id; ?>" value="<?php echo $row->name; ?>" onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />                        
                         
                         
                         <?php //echo $checked; ?>

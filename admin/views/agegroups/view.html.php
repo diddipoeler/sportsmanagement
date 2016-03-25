@@ -154,6 +154,7 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_TITLE');
 		JToolBarHelper::addNew('agegroup.add');
 		JToolBarHelper::editList('agegroup.edit');
+        JToolBarHelper::apply('agegroups.saveshort');
 		JToolBarHelper::custom('agegroup.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('agegroup.export',JText::_('JTOOLBAR_EXPORT'));
         JToolbarHelper::checkin('agegroups.checkin');

@@ -167,6 +167,60 @@ class sportsmanagementModeldivision extends JModelAdmin
 		return true;
 	}
     
+    	/**
+    	 * sportsmanagementModeldivision::saveshort()
+    	 * 
+    	 * @return
+    	 */
+    	public function saveshort()
+	{
+		// Reference global application object
+        $app = JFactory::getApplication();
+        $date = JFactory::getDate();
+	   $user = JFactory::getUser();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        
+        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
+        
+        // Get the input
+        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        if ( !$pks )
+        {
+            return JText::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_SAVE_NO_SELECT');
+        }
+        $post = JRequest::get('post');
+        
+        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+        {
+        $app->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+        $app->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+        }
+        
+        //$result=true;
+		for ($x=0; $x < count($pks); $x++)
+		{
+			$tblRound = & $this->getTable();
+			$tblRound->id = $pks[$x];
+			$tblRound->name	= $post['name'.$pks[$x]];
+            
+            $tblRound->alias = JFilterOutput::stringURLSafe( $post['name'.$pks[$x]] );
+            // Set the values
+		    $tblRound->modified = $date->toSql();
+		    $tblRound->modified_by = $user->get('id');
+        
+            
+
+			if(!$tblRound->store()) 
+            {
+				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+				return false;
+			}
+		}
+		return JText::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_SAVE');
+	}
+    
     /**
 	 * Method to save the form data.
 	 *

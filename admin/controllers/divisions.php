@@ -55,12 +55,42 @@ jimport('joomla.application.component.controlleradmin');
  */
 class sportsmanagementControllerdivisions extends JControllerAdmin
 {
-  
+
+/**
+	 * Constructor.
+	 *
+	 * @param	array An optional associative array of configuration settings.
+	 * @see		JController
+	 * @since	1.6
+	 */
+	public function __construct($config = array())
+	{
+		parent::__construct($config);
+        $this->app = JFactory::getApplication();
+		$this->jinput = $this->app->input;
+		$this->option = $this->jinput->getCmd('option');
+
+		//$this->registerTask('saveshort',	'saveshort');
+	}
+    
+/**
+ * sportsmanagementControllerdivisions::saveshort()
+ * 
+ * @return void
+ */
+function saveshort()
+	{
+	   $this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
+	   $model = $this->getModel();
+       $msg = $model->saveshort();
+       $this->setRedirect('index.php?option=com_sportsmanagement&view=divisions&pid='.$this->project_id,$msg);
+    } 
+      
 	/**
 	 * Proxy for getModel.
 	 * @since	1.6
 	 */
-	public function getModel($name = 'Division', $prefix = 'sportsmanagementModel') 
+	public function getModel($name = 'Division', $prefix = 'sportsmanagementModel', $config = Array()  ) 
 	{
 		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
 		return $model;
