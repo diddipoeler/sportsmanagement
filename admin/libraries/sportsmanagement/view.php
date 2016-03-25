@@ -97,10 +97,9 @@ class sportsmanagementView extends JViewLegacy
         $this->app = JFactory::getApplication();
 		$this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');
-
         $this->format = $this->jinput->getCmd('format');
-
 		$this->uri = JFactory::getURI();
+        $this->user = JFactory::getUser();
         
         switch ( $view )
             {
@@ -148,22 +147,16 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
             break;
             default:
             $this->state = $this->get('State'); 
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
-        $this->items = $this->get('Items');
-        $this->total = $this->get('Total');
-		$this->pagination = $this->get('Pagination');    
+            $this->sortDirection = $this->state->get('list.direction');
+            $this->sortColumn = $this->state->get('list.ordering');
+            $this->items = $this->get('Items');
+            $this->total = $this->get('Total');
+		    $this->pagination = $this->get('Pagination');    
             break;    
             }    
-        //$this->state = $this->get('State'); 
-//        $this->sortDirection = $this->state->get('list.direction');
-//        $this->sortColumn = $this->state->get('list.ordering');
-//        $this->items = $this->get('Items');
-//        $this->total = $this->get('Total');
-//		$this->pagination = $this->get('Pagination');
-        $this->user	= JFactory::getUser();
-		$this->config = JFactory::getConfig();
-        $this->request_url	= $this->uri->toString();
+            $this->user	= JFactory::getUser();
+		    $this->config = JFactory::getConfig();
+            $this->request_url	= $this->uri->toString();
         }
         
         if(version_compare(JVERSION,'3.0.0','ge')) 

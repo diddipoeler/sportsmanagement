@@ -117,6 +117,8 @@ echo JHtml::_('bootstrap.endTab');
 
 <div>		
 <input type='hidden' name='user_id' value='<?php echo $this->user->id; ?>'/>
+<input type='hidden' name='template' value='<?php echo $this->item->template; ?>'/>
+<input type='hidden' name='title' value='<?php echo $this->item->title; ?>'/>
 <input type="hidden" name="task" value="template.edit"/>
         
 <?php echo JHtml::_('form.token'); ?>

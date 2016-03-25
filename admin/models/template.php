@@ -178,8 +178,7 @@ class sportsmanagementModeltemplate extends JModelAdmin
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');
        
-       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' task<br><pre>'.print_r($input->get('task'),true).'</pre>'),'Notice');
-       
+//       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' task<br><pre>'.print_r($input->get('task'),true).'</pre>'),'Notice');
 //       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
 //       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
@@ -218,11 +217,17 @@ class sportsmanagementModeltemplate extends JModelAdmin
         // for save as copy
 		if ( $input->get('task') == 'save2copy' )
 		{
-		$origTable = clone $this->getTable();
-		$origTable->load($input->getInt('id'));
+		//$origTable = clone $this->getTable();
+        $origTable = $this->getTable();
+		//$origTable->load($input->getInt('id'));
+        $origTable->load( (int) $data['id'] );
         $data['project_id'] = $app->getUserState( "$option.pid", '0' );
-              
+        $data['title'] = $post['title'];      
+        $data['template'] = $post['template'];
         }  
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        
         // zuerst sichern, damit wir bei einer neuanlage die id haben
        if ( parent::save($data) )
        {

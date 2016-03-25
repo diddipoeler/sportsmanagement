@@ -63,14 +63,14 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 	public function init ()
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        //$app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-		$uri = JFactory::getURI();
-		$user = JFactory::getUser();
-		$app = JFactory::getApplication();
-		$model = $this->getModel();
+//        $this->jinput = $app->input;
+        //$option = $this->jinput->getCmd('option');
+		//$uri = JFactory::getURI();
+//		$user = JFactory::getUser();
+		//$app = JFactory::getApplication();
+		//$model = $this->getModel();
 		$lists = array();
 		$starttime = microtime();
 
@@ -80,21 +80,21 @@ class sportsmanagementViewTemplate extends sportsmanagementView
         
         // get the Data
 		//$form = $this->get('Form');
-		$item = $this->get('Item');
+		//$item = $this->get('Item');
         
 		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		{
-		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+		$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
 		}
         
-		$script = $this->get('Script');
+		//$script = $this->get('Script');
  
  /*       
-        if (is_array($item->params))
+        if (is_array($this->item->params))
         {
-        $app->enqueueMessage(JText::_('sportsmanagementViewTemplate params<br><pre>'.print_r($item->params,true).'</pre>'),'Error');  
-        $item->params = json_encode($item->params,true);  
-        $app->enqueueMessage(JText::_('sportsmanagementViewTemplate new params<br><pre>'.print_r($item->params,true).'</pre>'),'Error');
+        $app->enqueueMessage(JText::_('sportsmanagementViewTemplate params<br><pre>'.print_r($this->item->params,true).'</pre>'),'Error');  
+        $this->item->params = json_encode($this->item->params,true);  
+        $app->enqueueMessage(JText::_('sportsmanagementViewTemplate new params<br><pre>'.print_r($this->item->params,true).'</pre>'),'Error');
         }
  */
  
@@ -105,27 +105,27 @@ class sportsmanagementViewTemplate extends sportsmanagementView
 			return false;
 		}
 		
-		$this->project_id = $app->getUserState( "$option.pid", '0' );
+		$this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
 		$mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
 		$project = $mdlProject->getProject($this->project_id);
         
         
 		$templatepath = JPATH_COMPONENT_SITE.DS.'settings';
-		$xmlfile = $templatepath.DS.'default'.DS.$item->template.'.xml';
+		$xmlfile = $templatepath.DS.'default'.DS.$this->item->template.'.xml';
         
-        //$app->enqueueMessage(JText::_('sportsmanagementViewTemplate xmlfile<br><pre>'.print_r($xmlfile,true).'</pre>'),'Notice');
+        //$this->app->enqueueMessage(JText::_('sportsmanagementViewTemplate xmlfile<br><pre>'.print_r($xmlfile,true).'</pre>'),'Notice');
         
-		$form = JForm::getInstance($item->template, $xmlfile, array('control'=> 'params'));
+		$form = JForm::getInstance($this->item->template, $xmlfile, array('control'=> 'params'));
 		//$form->bind($jRegistry);
-		$form->bind($item->params);
+		$form->bind($this->item->params);
       
-		$this->item = $item;
+		//$this->item = $item;
         // Assign the Data
 		$this->form = $form;
 		//$this->item = $item;
-		$this->script = $script;
+		//$this->script = $script;
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->form->getName(),true).'</pre>'),'Notice');
+        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->item,true).'</pre>'),'Notice');
         
         switch ( $this->form->getName() )
         {
@@ -142,7 +142,7 @@ class sportsmanagementViewTemplate extends sportsmanagementView
             {
             $count = 1;    
             $teile = explode(";", $colors);    
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($teile,true).'</pre>'),'Notice');
+            //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($teile,true).'</pre>'),'Notice');
             foreach($teile as $key => $value )
             {
             $teile2 = explode(",",$value);      
@@ -152,31 +152,31 @@ class sportsmanagementViewTemplate extends sportsmanagementView
             $this->form->setValue('colors_ranking', null, $colors_ranking);
             }
             //$this->form->setFieldAttribute('colors_ranking','default' , $iProjectTeamsCount);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($colors,true).'</pre>'),'Notice');
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($colors_ranking,true).'</pre>'),'Notice');
+            //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($colors,true).'</pre>'),'Notice');
+            //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($colors_ranking,true).'</pre>'),'Notice');
             
             break;
         }
 
 		$master_id = ($project->master_template) ? $project->master_template : '-1';
         $templates = array();
-        $res = $model->getAllTemplatesList($project->id, $master_id);
+        $res = $this->model->getAllTemplatesList($project->id, $master_id);
         $templates = array_merge($templates, $res);
         $lists['templates'] = JHtml::_('select.genericlist',$templates, 
 														'new_id', 
 														'class="inputbox" size="1" onchange="javascript: Joomla.submitbutton(\'templates.changetemplate\');"', 
 														'value', 
 														'text', 
-														$item->id);
+														$this->item->id);
         
         
-        $this->request_url = $uri->toString();
-		$this->template = $item;
+        //$this->request_url = $uri->toString();
+		$this->template = $this->item;
         
         $this->templatename = $this->form->getName();
 		$this->project = $project;
 		$this->lists = $lists;
-		$this->user = $user;
+		//$this->user = $user;
         
         // Load the language files for the contact integration
 		$jlang = JFactory::getLanguage();

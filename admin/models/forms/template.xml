@@ -9,6 +9,15 @@
 			type="hidden"
 		/>
 	
+  <field
+			name="template"
+			type="hidden"
+		/>
 			
+   <field
+			name="title"
+			type="hidden"
+		/>
+       
 	</fieldset>				
 </form>
