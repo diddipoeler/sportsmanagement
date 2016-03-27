@@ -47,7 +47,7 @@ foreach ( $list as $row )
 if ( $start == 1 )
 {
 ?>    
-<div class="row">
+<div class="row-">
 
 
 
@@ -77,7 +77,7 @@ $link = JRoute::_( 'index.php?' . $query, false );
 <!-- <button type="button" class="btn btn-info btn-block"> -->
 
 
-<a href="<?PHP echo $link;  ?>" class="<? echo $params->get('button_class'); ?>  btn-block" role="button">
+<a href="<?PHP echo $link;  ?>" class="<?PHP echo $params->get('button_class'); ?>  btn-block" role="button">
 <span>
 <?PHP
 echo JSMCountries::getCountryFlag( $row->country );
@@ -95,11 +95,11 @@ echo JText::_( $row->name  );
 $start++;
 if ( $start == 7 )
 {
-$start = 1;    
-?>    
+$start = 1;  
+?>
 </div>
-<?PHP    
-} 
+<?PHP
+}
     
-}    
+}
 ?>
