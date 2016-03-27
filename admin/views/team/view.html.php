@@ -74,7 +74,7 @@ class sportsmanagementViewTeam extends sportsmanagementView
         
 		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		{
-		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+		$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
 		}
         
 	
@@ -87,17 +87,17 @@ class sportsmanagementViewTeam extends sportsmanagementView
 		}
 	
         
-        //$this->item->club_id = $app->getUserState( "$option.club_id", '0' );
+        //$this->item->club_id = $this->app->getUserState( "$option.club_id", '0' );
         
 		if ( empty($this->item->id) )
 		{
-			$this->form->setValue('club_id', null, $app->getUserState( "$this->option.club_id", '0' ));
+			$this->form->setValue('club_id', null, $this->app->getUserState( "$this->option.club_id", '0' ));
 		}
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($this->item->club_id,true).'</pre>'),'');
+        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($this->item->club_id,true).'</pre>'),'');
         
 		//$this->item->season_ids = explode(",", $this->item->season_ids);
-        //$app->enqueueMessage(JText::_('sportsmanagementViewTeam display season_ids<br><pre>'.print_r($this->item->season_ids,true).'</pre>'),'Notice');
+        //$this->app->enqueueMessage(JText::_('sportsmanagementViewTeam display season_ids<br><pre>'.print_r($this->item->season_ids,true).'</pre>'),'Notice');
         
 		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'team');
 		$this->extended = $extended;
@@ -112,7 +112,7 @@ class sportsmanagementViewTeam extends sportsmanagementView
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($this->item->club_id,true).'</pre>'),'');
+            $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($this->item->club_id,true).'</pre>'),'');
         }
         
         //build the html select list for days of week

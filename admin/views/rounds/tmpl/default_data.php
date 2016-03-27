@@ -131,10 +131,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							<td class="center">
 								<?php
 								$date1 = sportsmanagementHelper::convertDate($row->round_date_first, 1);
-								$append='';
+								$append = '';
 								if (($date1 == '00-00-0000') || ($date1 == ''))
 								{
-									$append=' style="background-color:#FFCCCC;" ';
+									$append = ' style="background-color:#FFCCCC;" ';
+                                    $date1 = '';
 								}
 								echo JHtml::calendar(	$date1,
 														'round_date_first'.$row->id,
@@ -149,10 +150,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							<td class="center">&nbsp;-&nbsp;</td>
 							<td class="center"><?php
 								$date2 = sportsmanagementHelper::convertDate($row->round_date_last, 1);
-								$append='';
+								$append = '';
 								if (($date2 == '00-00-0000') || ($date2 == ''))
 								{
-									$append=' style="background-color:#FFCCCC;"';
+									$append = ' style="background-color:#FFCCCC;"';
+                                    $date2 = '';
 								}
 								echo JHtml::calendar(	$date2,
 														'round_date_last'.$row->id,
