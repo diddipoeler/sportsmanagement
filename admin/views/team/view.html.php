@@ -52,10 +52,10 @@ defined('_JEXEC') or die('Restricted access');
 class sportsmanagementViewTeam extends sportsmanagementView
 {
 	
+
 	/**
-	 * sportsmanagementViewTeam::display()
+	 * sportsmanagementViewTeam::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return
 	 */
 	public function init ()
@@ -67,7 +67,13 @@ class sportsmanagementViewTeam extends sportsmanagementView
         
 
 		$this->change_training_date	= $this->app->getUserState( "$this->option.change_training_date", '0' );
+        //$this->club_id = $this->jinput->get('club_id');
+        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($this->club_id,true).'</pre>'),'');
+        //$this->app->enqueueMessage(__METHOD__.' '.__LINE__.'jinput <br><pre>'.print_r($this->jinput, true).'</pre><br>','Notice');
         
+//        $post = $this->jinput->post->getArray();
+//        $this->app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
+
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' change_training_date<br><pre>'.print_r($this->change_training_date,true).'</pre>'),'');
         
         
@@ -91,10 +97,13 @@ class sportsmanagementViewTeam extends sportsmanagementView
         
 		if ( empty($this->item->id) )
 		{
-			$this->form->setValue('club_id', null, $this->app->getUserState( "$this->option.club_id", '0' ));
+			//$foo = $this->jinput->get->get('club_id');
+            //$this->form->setValue('club_id', null, $this->jinput->get->get('club_id'));
+            $this->form->setValue('club_id', null, $this->app->getUserState( "$this->option.club_id", '0' ));
+            $this->item->club_id = $this->app->getUserState( "$this->option.club_id", '0' );
 		}
         
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($this->item->club_id,true).'</pre>'),'');
+        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item club_id<br><pre>'.print_r($this->item->club_id,true).'</pre>'),'');
         
 		//$this->item->season_ids = explode(",", $this->item->season_ids);
         //$this->app->enqueueMessage(JText::_('sportsmanagementViewTeam display season_ids<br><pre>'.print_r($this->item->season_ids,true).'</pre>'),'Notice');

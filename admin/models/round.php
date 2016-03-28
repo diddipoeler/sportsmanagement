@@ -200,13 +200,21 @@ class sportsmanagementModelround extends JModelAdmin
         
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         
-        // Get the input
-        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        //// Get the input
+//        $pks = JRequest::getVar('cid', null, 'post', 'array');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($pks,true).'</pre>'   ),'');
+        $pks = $jinput->get('cid',array(),'array');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($pks,true).'</pre>'   ),'');
         if ( !$pks )
         {
             return JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_SAVE_NO_SELECT');
         }
-        $post = JRequest::get('post');
+        
+        //$post = $jinput->post;
+        $post = $jinput->post->getArray();
+//        $app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
+//        $post = JRequest::get('post');
+//        $app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
@@ -217,10 +225,10 @@ class sportsmanagementModelround extends JModelAdmin
         //$result=true;
 		for ($x=0; $x < count($pks); $x++)
 		{
-			$tblRound = & $this->getTable();
+			$tblRound = $this->getTable();
 			$tblRound->id = $pks[$x];
-            $tblRound->roundcode	= $post['roundcode'.$pks[$x]];
-            $tblRound->tournement	= $post['tournementround'.$pks[$x]];
+            $tblRound->roundcode = $post['roundcode'.$pks[$x]];
+            $tblRound->tournement = $post['tournementround'.$pks[$x]];
 			$tblRound->name	= $post['name'.$pks[$x]];
             
             $tblRound->alias = JFilterOutput::stringURLSafe( $post['name'.$pks[$x]] );
@@ -229,7 +237,7 @@ class sportsmanagementModelround extends JModelAdmin
 		    $tblRound->modified_by = $user->get('id');
         
             $tblRound->round_date_first	= sportsmanagementHelper::convertDate($post['round_date_first'.$pks[$x]], 0);
-            $tblRound->round_date_last	= sportsmanagementHelper::convertDate($post['round_date_last'.$pks[$x]], 0);;
+            $tblRound->round_date_last = sportsmanagementHelper::convertDate($post['round_date_last'.$pks[$x]], 0);;
             
             if ( ( $tblRound->round_date_last == '0000-00-00' || $tblRound->round_date_last == '' )  && $tblRound->round_date_first != '0000-00-00'  )
             {

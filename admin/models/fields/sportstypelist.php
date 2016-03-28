@@ -78,7 +78,7 @@ class JFormFieldsportstypelist extends JFormFieldList
 	{
 		// Initialize variables.
 		$options = array();
-    
+    $lang = JFactory::getLanguage();
     $db = sportsmanagementHelper::getDBConnection(FALSE,FALSE);
 			$query = $db->getQuery(true);
 			
@@ -88,6 +88,13 @@ class JFormFieldsportstypelist extends JFormFieldList
 			$db->setQuery($query);
 			$options = $db->loadObjectList();
     
+    $extension = "COM_SPORTSMANAGEMENT";
+		$source = JPATH_ADMINISTRATOR . '/components/' . $extension;
+		$lang->load("$extension", JPATH_ADMINISTRATOR, null, false, false)
+		||	$lang->load($extension, $source, null, false, false)
+		||	$lang->load($extension, JPATH_ADMINISTRATOR, $lang->getDefault(), false, false)
+		||	$lang->load($extension, $source, $lang->getDefault(), false, false);
+        
     foreach ( $options as $row )
     {
        $row->text = JText::_($row->text);

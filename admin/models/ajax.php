@@ -132,21 +132,34 @@ class sportsmanagementModelAjax extends JModelLegacy
         }
         $query = $db->getQuery(true);
         // Select some fields
-        $query->select('CONCAT_WS(\':\', a.id, a.alias) AS value,concat(a.name, \' - \',a.country) AS text');
+        //$query->select('CONCAT_WS(\':\', a.id, a.alias) AS value,concat(a.name, \' - \',a.country) AS text');
+        $query->select('a.id AS value,concat(a.name, \' - \',a.country) AS text');
         // From 
 		$query->from('#__sportsmanagement_agegroup AS a');
-        $query->join('INNER',' #__sportsmanagement_club AS c ON c.country = a.country ');
+        
         // Where
         if ( $club_id )
         {
+        $query->join('INNER',' #__sportsmanagement_club AS c ON c.country = a.country ');
         $query->where('c.id = ' . $club_id );
-        }
         // order
         $query->order('a.name');
-
-                $db->setQuery( $query );
-                                                           
-                return self::addGlobalSelectElement($db->loadObjectList(), $required);    
+        $db->setQuery( $query );
+        return self::addGlobalSelectElement($db->loadObjectList(), $required);
+        }
+        else
+        {
+        $temp = new stdClass();
+        $temp->value = 0;
+        //$temp->text = ''; 
+        $temp->text = JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_CLUB');
+        $export[] = $temp;
+        // COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_CLUB
+        // COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_CLUBS_LEGEND
+        // COM_SPORTSMANAGEMENT_GLOBAL_SELECT_CLUB   
+        return self::addGlobalSelectElement($export, $required);    
+        }
+            
             
         }
         

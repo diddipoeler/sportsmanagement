@@ -81,6 +81,7 @@ echo $this->loadTemplate('data');
 	<input type="hidden" name="boxchecked"			value="0" />
 	<input type="hidden" name="filter_order"		value="<?php echo $this->sortColumn; ?>" />
 	<input type="hidden" name="filter_order_Dir"	value="" />
+    <input type="hidden" name="club_id"		value="<?php echo $this->club_id; ?>" />
 	<?php echo JHtml::_('form.token'); ?>
 </form>
 <?PHP

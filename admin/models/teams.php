@@ -83,6 +83,20 @@ class sportsmanagementModelTeams extends JModelList
                         'ag.name'
                         );
                 parent::__construct($config);
+                
+                $this->app = JFactory::getApplication();
+		$this->jinput = $this->app->input;
+		$this->option = $this->jinput->getCmd('option');
+        
+        $this->club_id = $this->jinput->post->get('club_id');
+        if ( empty($this->club_id)  )
+        {
+        $this->club_id = $this->jinput->get->get('club_id');
+        }
+        
+        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jinput<br><pre>'.print_r($this->jinput ,true).'</pre>'),'');
+//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($this->club_id,true).'</pre>'),'');
+        
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
                 parent::setDbo($getDBConnection);
         }
@@ -96,10 +110,10 @@ class sportsmanagementModelTeams extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Initialise variables.
-		$app = JFactory::getApplication('administrator');
+//		$app = JFactory::getApplication();
+//        $option = JRequest::getCmd('option');
+//        // Initialise variables.
+//		$app = JFactory::getApplication('administrator');
         
         //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
 
@@ -138,8 +152,8 @@ class sportsmanagementModelTeams extends JModelList
 	 */
 	function getListQuery()
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+		//$app = JFactory::getApplication();
+//        $option = JRequest::getCmd('option');
 
         // Create a new query object.
 		$db		= $this->getDbo();
@@ -152,12 +166,12 @@ class sportsmanagementModelTeams extends JModelList
         $query->select('st.name AS sportstype');
         $query->select('ag.name AS agename');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = t.sports_type_id');
+		$query->from('#__sportsmanagement_team AS t');
+        $query->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = t.sports_type_id');
         $query->join('LEFT', '#__sportsmanagement_agegroup as ag ON ag.id = t.agegroup_id');
         // Join over the clubs
 		$query->select('c.name As clubname,c.country');
-		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON c.id = t.club_id');
+		$query->join('LEFT', '#__sportsmanagement_club AS c ON c.id = t.club_id');
         // Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id = t.checked_out');
@@ -176,10 +190,14 @@ class sportsmanagementModelTeams extends JModelList
 		{
         $query->where('t.sports_type_id = ' . $this->getState('filter.sports_type') );
         }        
-        if ($cid = JRequest::getvar('club_id', 0, 'GET', 'INT')) 
+        if ( $this->club_id ) 
                 {
-                    $app->setUserState( "$option.club_id", $cid); 
-                    $query->where('club_id ='. $cid);
+                    $this->app->setUserState( "$this->option.club_id", $this->club_id); 
+                    $query->where('club_id ='. $this->club_id);
+                }
+                else
+                {
+                $this->app->setUserState( "$this->option.club_id", '0');     
                 }
         
 
@@ -215,7 +233,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         // Select some fields
 		$query->select('id,id AS value,name,club_id,short_name, middle_name,info');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team');
+		$query->from('#__sportsmanagement_team');
         $query->order('name');
 
 		$db->setQuery($query);
@@ -261,8 +279,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         // Select some fields
 		$query->select('pt.id, st.team_id, pt.project_id');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as pt');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt.team_id ');
+		$query->from('#__sportsmanagement_project_team as pt');
+        $query->join('INNER','#__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
         $query->where('pt.standard_playground = '.(int)$playground_id);
         
         $starttime = microtime(); 
@@ -282,7 +300,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
                 $query->clear();
 		$query->select('name, short_name, notes');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team');
+		$query->from('#__sportsmanagement_team');
         $query->where('id='.(int)$row->team_id);
 
 $starttime = microtime(); 
@@ -298,7 +316,7 @@ $starttime = microtime();
                 $query->clear();
 		$query->select('name');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
+		$query->from('#__sportsmanagement_project');
         $query->where('id='.$row->project_id);
 $starttime = microtime(); 
                 $db->setQuery( $query );
@@ -343,7 +361,7 @@ $starttime = microtime();
         // Select some fields
 		$query->select('t.id, t.name');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
+		$query->from('#__sportsmanagement_team AS t');
         $query->where('t.id IN ('.$listTeamId.')');
 
         $db->setQuery( $query );

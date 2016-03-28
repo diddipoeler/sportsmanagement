@@ -57,8 +57,9 @@
 <!--
 		    addfieldpath="/administrator/components/com_sportsmanagement/elements"
 -->
-      
-<field
+
+<!--      
+<field  
 			name="sports_type_id"
 			type="sportstypes"
 			default="0"
@@ -70,8 +71,36 @@
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORT_TYPE</option>
 		</field>
+-->
 
+    <field  
+			name="sports_type_id"
+			type="sportstypelist"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE"
+			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_DESC"
+			required="false">
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_SELECT</option>
+		</field>
+    
+<field
+			name="club_id"
+			type="clublist"
+			class="inputbox"
+			default="0"
+			size="1"
+			required="true"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_CLUB"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_CLUB_DESC" >
 
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_CLUB</option>
+		</field>	
+    
 <field addfieldpath="/administrator/components/com_sportsmanagement/models/fields"
 			name="agegroup_id"
 			type="dependsql" 
@@ -106,20 +135,7 @@
 		</field>		
 -->
           	
-	<field
-			name="club_id"
-			type="clublist"
-			class="inputbox"
-			default="0"
-			size="1"
-			required="true"
-			label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_CLUB"
-			description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_CLUB_DESC" >
-
-			<option
-				value="0">
-				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_CLUB</option>
-		</field>	
+	
     
     <field
 			name="merge_clubs"

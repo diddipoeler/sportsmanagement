@@ -97,7 +97,8 @@ class sportsmanagementViewTeams extends sportsmanagementView
 		if ( $res = JSMCountries::getCountryOptions() )
 		{
 			$nation = array_merge($nation, $res);
-			$this->assignRef('search_nation', $res);
+			//$this->assignRef('search_nation', $res);
+            $this->search_nation = $res;
         }
 		
 		$lists['nation'] = $nation;
@@ -120,8 +121,10 @@ class sportsmanagementViewTeams extends sportsmanagementView
 		$lists['agegroup'] = $myoptions;
         unset($myoptions);
         
-       
-		$this->lists = $lists;
+       $this->club_id = $this->jinput->get->get('club_id');
+       //$this->jinput->set('club_id', $this->club_id);
+       //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($this->club_id,true).'</pre>'),'');
+	   $this->lists = $lists;
 
 	
 		

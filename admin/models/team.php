@@ -57,6 +57,28 @@ class sportsmanagementModelteam extends JModelAdmin
 {
     static $change_training_date = false;
     
+    
+    /**
+	 * Override parent constructor.
+	 *
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 *
+	 * @see     JModelLegacy
+	 * @since   3.2
+	 */
+	public function __construct($config = array())
+	{
+		parent::__construct($config);
+        
+        $this->app = JFactory::getApplication();
+        $this->jinput = $this->app->input;
+		$this->option = $this->jinput->getCmd('option');
+        $this->club_id = $this->app->getUserState( "$this->option.club_id", '0' );
+        
+        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($this->club_id ,true).'</pre>'),'');
+	
+	}
+    
 	/**
 	 * Method override to check if you can edit an existing record.
 	 *
@@ -200,7 +222,7 @@ class sportsmanagementModelteam extends JModelAdmin
 	 */
 	function saveorder($pks = NULL, $order = NULL)
 	{
-		$row =& $this->getTable();
+		$row = $this->getTable();
 		
 		// update ordering values
 		for ($i=0; $i < count($pks); $i++)
@@ -236,8 +258,8 @@ class sportsmanagementModelteam extends JModelAdmin
         // Select some fields
 		$query->select('c.logo_small,c.country,t.name,t.id as team_id');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team t');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_club c ON c.id = t.club_id');
+		$query->from('#__sportsmanagement_team t');
+        $query->join('LEFT', '#__sportsmanagement_club c ON c.id = t.club_id');
         $query->where('t.id = '.$team_id);
         
 
@@ -271,7 +293,6 @@ class sportsmanagementModelteam extends JModelAdmin
         else
         {
         $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
-//        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pthome ON pthome.team_id = st.id');   
         $query->where('st.id = '.$pro_team_id); 
         }
 
@@ -288,17 +309,19 @@ class sportsmanagementModelteam extends JModelAdmin
 	 */
 	public function save($data)
 	{
-	   $option = JRequest::getCmd('option');
-	$app	= JFactory::getApplication();
-    
+	   //$option = JRequest::getCmd('option');
+	//$app	= JFactory::getApplication();
+
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($this->club_id ,true).'</pre>'),'');
+
     // store the variable that we would like to keep for next time
     // function syntax is setUserState( $key, $value );
-    $app->setUserState( "$option.change_training_date", self::$change_training_date);
+    $this->app->setUserState( "$this->option.change_training_date", self::$change_training_date);
     
     //// Get a db connection.
-//        $db = JFactory::getDbo();
+        $db = JFactory::getDbo();
         
-        $query = JFactory::getDbo()->getQuery(true);
+        $query = $db->getQuery(true);
        
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
@@ -307,13 +330,13 @@ class sportsmanagementModelteam extends JModelAdmin
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');
        
-       //$app->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$app->enqueueMessage(JText::_('sportsmanagementModelteam post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       //$this->app->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+       //$this->app->enqueueMessage(JText::_('sportsmanagementModelteam post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
        // hat der user die bildfelder geleert, werden die standards gesichert.
        if ( empty($data['picture']) )
        {
-       $data['picture'] = JComponentHelper::getParams($option)->get('ph_team','');
+       $data['picture'] = JComponentHelper::getParams($this->option)->get('ph_team','');
        }
        
        if (isset($post['extended']) && is_array($post['extended'])) 
@@ -357,7 +380,7 @@ class sportsmanagementModelteam extends JModelAdmin
             if ( $isNew )
             {
                 //Here you can do other tasks with your newly saved record...
-                $app->enqueueMessage(JText::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
+                $this->app->enqueueMessage(JText::plural(strtoupper($this->option) . '_N_ITEMS_CREATED', $id),'');
             }
            
 		}
@@ -394,7 +417,7 @@ class sportsmanagementModelteam extends JModelAdmin
 
 		if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 		{
-//            $app->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
+//            $this->app->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
 		}  
           
           }
@@ -404,15 +427,24 @@ class sportsmanagementModelteam extends JModelAdmin
         
         
        
-        //$app->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+        //$this->app->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         //-------extra fields-----------//
         sportsmanagementHelper::saveExtraFields($post,$data['id']);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' change_training_date<br><pre>'.print_r(self::$change_training_date,true).'</pre>'),'');
+        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' change_training_date<br><pre>'.print_r(self::$change_training_date,true).'</pre>'),'');
         
         // Proceed with the save
 		//return parent::save($data);
+        
+        if ( !empty($this->club_id) )
+        {
+        $this->jinput->post->set('club_id', $this->club_id);    
+        $this->jinput->set('club_id', $this->club_id);
+        }
+        
+        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jinput<br><pre>'.print_r($this->jinput ,true).'</pre>'),'');
+        
         return true;
            
     }
