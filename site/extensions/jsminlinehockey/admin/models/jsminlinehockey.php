@@ -88,6 +88,26 @@ $current_season = JComponentHelper::getParams($option)->get('current_season');
 //$url_clubs = 'https://www.ishd.de/api/licenses/clubs.xml';
 //$url_clubs = 'https://www.ishd.de/api/licenses/clubs.json';
 
+// Select some fields 
+$query->clear(); 
+$query->select('id'); 
+// From the table 
+$query->from('#__sportsmanagement_sports_type'); 
+$query->where('name LIKE '.$db->Quote(''.'COM_SPORTSMANAGEMENT_ST_SKATER_HOCKEY'.'') ); 
+$db->setQuery($query); 
+$sports_type_id = $db->loadResult();
+if ( !$sports_type_id ) 
+{
+// Create and populate an object.
+$profile = new stdClass();
+$profile->name = 'COM_SPORTSMANAGEMENT_ST_SKATER_HOCKEY';
+
+// Insert the object into the user profile table.
+$result = JFactory::getDbo()->insertObject('#__sportsmanagement_sports_type', $profile);
+$sports_type_id = $db->insertid();
+}
+
+
 
 switch ( $post['check'] )
 {
@@ -206,7 +226,8 @@ $profile->club_id = $club_id;
 $profile->name = $team;
 $profile->short_name = $team;
 $profile->middle_name = $team;
-$profile->info= $team_name;
+$profile->info = $team_name;
+$profile->sports_type_id = $sports_type_id;
 $profile->alias = JFilterOutput::stringURLSafe( $team );;
  
 // Insert the object into the user profile table.
@@ -226,6 +247,7 @@ $object->name = $team;
 $object->short_name = $team;
 $object->middle_name = $team;
 $object->info= $team_name;
+$object->sports_type_id = $sports_type_id;
 $object->alias = JFilterOutput::stringURLSafe( $team );;
 // Update their details in the users table using id as the primary key.
 $result = JFactory::getDbo()->updateObject('#__sportsmanagement_team', $object, 'id');
