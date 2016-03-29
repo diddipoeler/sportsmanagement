@@ -314,6 +314,7 @@
       description="COM_SPORTSMANAGEMENT_SETTINGS_SPORT_TYPES_DESC">
 			<option value="soccer">COM_SPORTSMANAGEMENT_ST_SOCCER</option>
 			<option value="hockey">COM_SPORTSMANAGEMENT_ST_HOCKEY</option>
+			<option value="skaterhockey">COM_SPORTSMANAGEMENT_ST_SKATER_HOCKEY</option>
 			<option value="american_football">COM_SPORTSMANAGEMENT_ST_AMERICAN_FOOTBALL</option>
 			<option value="icehockey">COM_SPORTSMANAGEMENT_ST_ICEHOCKEY</option>
 			<option value="volleyball">COM_SPORTSMANAGEMENT_ST_VOLLEYBALL</option>
