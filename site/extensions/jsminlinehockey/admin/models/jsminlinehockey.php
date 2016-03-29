@@ -81,9 +81,10 @@ $query = $db->getQuery(true);
 $post = $jinput->post->getArray();
 //$app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
 
-$username = JComponentHelper::getParams($option)->get('ishd_benutzername');;
-$password = JComponentHelper::getParams($option)->get('ishd_kennwort');;
-$stammverein = JComponentHelper::getParams($option)->get('ishd_stammverein');;
+$username = JComponentHelper::getParams($option)->get('ishd_benutzername');
+$password = JComponentHelper::getParams($option)->get('ishd_kennwort');
+$stammverein = JComponentHelper::getParams($option)->get('ishd_stammverein');
+$current_season = JComponentHelper::getParams($option)->get('current_season');
 //$url_clubs = 'https://www.ishd.de/api/licenses/clubs.xml';
 //$url_clubs = 'https://www.ishd.de/api/licenses/clubs.json';
 
