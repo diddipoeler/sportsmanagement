@@ -129,7 +129,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							<?php
 						
 						?>
-						<td><?php echo $row->name; ?></td>
+						<td><?php echo JText::_($row->name); ?></td>
 						
 						<td class="center">
 							<?php
