@@ -171,7 +171,7 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 		}
 
 		// Get folder from request
-		$folder = $jinput->get( 'folder', '' );
+		$folder = $jinput->getString( 'folder', '' );
 		//$folder = $this->getState('folder');
 		$search = $this->getState('search');
 
@@ -179,6 +179,8 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 		$basePath = JPATH_SITE.DS.'images'.DS.$option.DS.'database'.DS.$folder;
 
 		$images 	= array ();
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' folder -> '.$folder.''),'Notice');
 
 		// Get the list of files and folders from the given folder
 		$fileList 	= JFolder::files($basePath);

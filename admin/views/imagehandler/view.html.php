@@ -83,6 +83,9 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 		$fieldid 	= JRequest::getVar( 'fieldid' );
 		$search 	= $app->getUserStateFromRequest( 'com_sportsmanagement.imageselect', 'search', '', 'string' );
 		$search 	= trim(JString::strtolower( $search ) );
+        
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' type -> '.$type.''),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' folder -> '.$folder.''),'Notice');
 
 		//add css
 		//$version = urlencode(sportsmanagementHelper::getVersion());
