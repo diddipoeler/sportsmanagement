@@ -55,6 +55,69 @@ jimport('joomla.application.component.controller');
 class sportsmanagementControllerDatabaseTool extends JControllerLegacy
 {
 
+function repair()
+{
+$app = JFactory::getApplication();
+		$model = $this->getModel('databasetool');
+		$jsm_tables = $model->getSportsManagementTables();
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_tables<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');	
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_tables<br><pre>'.print_r($jsm_tables,true).'</pre>'),'');	
+
+foreach( $jsm_tables as $key => $value )
+{
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_tables<br><pre>'.print_r($value,true).'</pre>'),'');	
+$model->setSportsManagementTableQuery($value , $this->getTask() );
+}
+
+
+$msg = 'Alle Tabellen repariert'; 
+//$this->setRedirect('index.php?option=com_sportsmanagement&view=databasetools',$msg); 
+	$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg); 
+}
+
+function truncate()
+{
+$app = JFactory::getApplication();
+		$model = $this->getModel('databasetool');
+		$jsm_tables = $model->getSportsManagementTables();
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_tables<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');	
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_tables<br><pre>'.print_r($jsm_tables,true).'</pre>'),'');	
+
+foreach( $jsm_tables as $key => $value )
+{
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_tables<br><pre>'.print_r($value,true).'</pre>'),'');	
+$model->setSportsManagementTableQuery($value , $this->getTask() );
+}
+
+$msg = 'Alle Tabellen geleert'; 
+//$this->setRedirect('index.php?option=com_sportsmanagement&view=databasetools',$msg); 
+	$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg); 
+}
+
+function optimize()
+{
+$app = JFactory::getApplication();
+		$model = $this->getModel('databasetool');
+		$jsm_tables = $model->getSportsManagementTables();
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_tables<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');	
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_tables<br><pre>'.print_r($jsm_tables,true).'</pre>'),'');	
+
+foreach( $jsm_tables as $key => $value )
+{
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_tables<br><pre>'.print_r($value,true).'</pre>'),'');	
+$model->setSportsManagementTableQuery($value , $this->getTask() );
+}
+
+$msg = 'Alle Tabellen optimiert'; 
+$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg); 
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_tables<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');	
+//$this->setRedirect('index.php?option=com_sportsmanagement&view=close',$msg); 
+	
+}
+
+
+
+
 
 }
 ?>
