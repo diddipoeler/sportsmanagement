@@ -166,7 +166,10 @@ curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
 curl_setopt($curl, CURLOPT_USERPWD, $username.':'.$password );
 $result = curl_exec($curl);
 $code = curl_getinfo ($curl, CURLINFO_HTTP_CODE);
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result teams <br><pre>'.print_r($result ,true).'</pre>'),'Notice');
+if ( $stammverein == $row->id  )
+{
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result teams <br><pre>'.print_r($result ,true).'</pre>'),'Notice');
+}
 $json_object_teams = json_decode($result);
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($json_object_teams,true).'</pre>'),'');
 
@@ -244,7 +247,10 @@ curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
 curl_setopt($curl, CURLOPT_USERPWD, $username.':'.$password );
 $result = curl_exec($curl);
 $code = curl_getinfo ($curl, CURLINFO_HTTP_CODE);
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result teams <br><pre>'.print_r($result ,true).'</pre>'),'Notice');
+if ( $stammverein == $row->club_id  )
+{
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result teams <br><pre>'.print_r($result ,true).'</pre>'),'Notice');
+}
 $json_object_players = json_decode($result);
 
 foreach( $json_object_players->players as $key_player => $value_player )
@@ -254,7 +260,7 @@ $player_last_name = $value_player->last_name;
 $player_first_name = $value_player->first_name;
 $player_date_of_birth = $value_player->date_of_birth;
 $player_full_face_req = $value_player->full_face_req;
-$player_licence_number = $value_player->license_number;
+$player_license_number = $value_player->license_number;
 $player_remarks = $value_player->remarks;
 $player_approved = $value_player->approved;
 $player_nationality = $value_player->nationality;
@@ -280,7 +286,7 @@ $profile->firstname = $player_first_name;
 $profile->lastname = $player_last_name;
 $profile->country = 'DEU';
 $profile->birthday = $player_date_of_birth;
-$profile->knvbnr = $player_licence_number;
+$profile->knvbnr = $player_license_number;
 $profile->published = 1;
 $parts = array( trim( $player_first_name ), trim( $player_last_name ) );
 $profile->alias = JFilterOutput::stringURLSafe( implode( ' ', $parts ) );
@@ -292,6 +298,13 @@ $result = JFactory::getDbo()->insertObject('#__sportsmanagement_person', $profil
 else
 {
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' spieler vorhanden -> '.$player_last_name.'-'.$player_id),'Notice');
+// Create an object for the record we are going to update.
+$object = new stdClass();
+// Must be a valid primary key value.
+$object->id = $player_id;
+$object->knvbnr = $player_license_number;
+// Update their details in the users table using id as the primary key.
+$result = JFactory::getDbo()->updateObject('#__custom_table', $object, 'id');
 }
 
 
