@@ -203,6 +203,8 @@ $profile = new stdClass();
 $profile->id = $team_id;
 $profile->club_id = $club_id;
 $profile->name = $team;
+$profile->short_name = $team;
+$profile->middle_name = $team;
 $profile->info= $team_name;
 $profile->alias = JFilterOutput::stringURLSafe( $team );;
  
@@ -211,11 +213,22 @@ $result = JFactory::getDbo()->insertObject('#__sportsmanagement_team', $profile)
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_name angelegt -> '.$team_id.'-'.$team_name.'-'.$team.'-'.$club_id),'Notice');
 
-
 }
 else
 {
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_name vorhanden -> '.$team_id.'-'.$team_name.'-'.$team.'-'.$club_id),'Notice');
+// Create an object for the record we are going to update.
+$object = new stdClass();
+// Must be a valid primary key value.
+$object->id = $team_id;
+$object->name = $team;
+$object->short_name = $team;
+$object->middle_name = $team;
+$object->info= $team_name;
+$object->alias = JFilterOutput::stringURLSafe( $team );;
+// Update their details in the users table using id as the primary key.
+$result = JFactory::getDbo()->updateObject('#__sportsmanagement_team', $object, 'id');
+	
 }
 }
 
@@ -304,7 +317,7 @@ $object = new stdClass();
 $object->id = $player_id;
 $object->knvbnr = $player_license_number;
 // Update their details in the users table using id as the primary key.
-$result = JFactory::getDbo()->updateObject('#__custom_table', $object, 'id');
+$result = JFactory::getDbo()->updateObject('#__sportsmanagement_person', $object, 'id');
 }
 
 
