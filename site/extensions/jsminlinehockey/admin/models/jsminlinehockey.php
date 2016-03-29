@@ -78,23 +78,20 @@ $option = $jinput->getCmd('option');
 $db = JFactory::getDbo();
 $query = $db->getQuery(true);
 
+$post = $jinput->post->getArray();
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
+
 $username = JComponentHelper::getParams($option)->get('ishd_benutzername');;
 $password = JComponentHelper::getParams($option)->get('ishd_kennwort');;
 $stammverein = JComponentHelper::getParams($option)->get('ishd_stammverein');;
 //$url_clubs = 'https://www.ishd.de/api/licenses/clubs.xml';
+//$url_clubs = 'https://www.ishd.de/api/licenses/clubs.json';
+
+
+switch ( $post['check'] )
+{
+case 'clubs':
 $url_clubs = 'https://www.ishd.de/api/licenses/clubs.json';
-
-/*
-$context = stream_context_create(array(
-    'http' => array(
-        'header' => "Authorization: Basic " . base64_encode("$username:$password")
-    )
-));
-$data = file_get_contents($url, false, $context);
-$xml = simplexml_load_string($data);
-*/
-
-
 $curl = curl_init($url_clubs);
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
@@ -104,25 +101,10 @@ curl_setopt($curl, CURLOPT_USERPWD, $username.':'.$password );
 $result = curl_exec($curl);
 $code = curl_getinfo ($curl, CURLINFO_HTTP_CODE);
 
-//$xml = JFactory::getXML($result,true); 
-//$xml = simplexml_load_string($result );
-
 // Will dump a beauty json :3
 $json_object_clubs = json_decode($result);
 $json_array = json_decode($result,true);
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($json_object,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result array<br><pre>'.print_r($json_array,true).'</pre>'),'');
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' stammverein <br><pre>'.print_r($stammverein ,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' url      <br><pre>'.print_r($url,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' username <br><pre>'.print_r($username ,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' password <br><pre>'.print_r($password ,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data <br><pre>'.print_r($data ,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml <br><pre>'.print_r($xml ,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' code <br><pre>'.print_r($code ,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result <br><pre>'.print_r($result ,true).'</pre>'),'');
-
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($result,true).'</pre>'),'');
 foreach( $json_object_clubs->clubs as $key_club => $value_club )
 {
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($value_club->club_id,true).'</pre>'),'');
@@ -140,7 +122,7 @@ $query->where('id = '.$club_id );
 $db->setQuery($query); 
 if ( !$db->loadResult() ) 
 {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name nicht vorhanden -> '.$club_name.''),'');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name nicht vorhanden -> '.$club_name.''),'');
 // Create and populate an object.
 $profile = new stdClass();
 $profile->id = $club_id;
@@ -150,17 +132,32 @@ $profile->alias = JFilterOutput::stringURLSafe( $club_name );;
  
 // Insert the object into the user profile table.
 $result = JFactory::getDbo()->insertObject('#__sportsmanagement_club', $profile);
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name angelegt -> '.$club_name.''),'');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name angelegt -> '.$club_name.''),'');
 }
 else
 {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name vorhanden -> '.$club_name.'-'.$club_id),'Notice');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name vorhanden -> '.$club_name.'-'.$club_id),'Notice');
 }
+}
+break;
 
+case 'teams':
+// Select some fields 
+$query->clear(); 
+$query->select('id'); 
+// From the table 
+$query->from('#__sportsmanagement_club'); 
+$db->setQuery($query); 
 
+$db_clubs = $db->loadObjectList();
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($db_clubs,true).'</pre>'),'');
+
+foreach( $db_clubs as $row )
+{
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($row->id,true).'</pre>'),'');
 // ################ anfang ############
 // jetzt holen wir uns die mannschaften
-$url_teams = 'https://www.ishd.de/api/licenses/clubs/'.$club_id.'/teams.json';
+$url_teams = 'https://www.ishd.de/api/licenses/clubs/'.$row->id.'/teams.json';
 $curl = curl_init($url_teams);
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
@@ -172,7 +169,6 @@ $code = curl_getinfo ($curl, CURLINFO_HTTP_CODE);
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result teams <br><pre>'.print_r($result ,true).'</pre>'),'Notice');
 $json_object_teams = json_decode($result);
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($json_object_teams,true).'</pre>'),'');
-
 
 foreach( $json_object_teams->teams as $key_team => $value_team )
 {
@@ -217,13 +213,27 @@ $result = JFactory::getDbo()->insertObject('#__sportsmanagement_team', $profile)
 else
 {
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_name vorhanden -> '.$team_id.'-'.$team_name.'-'.$team.'-'.$club_id),'Notice');
-
+}
 }
 
+}
+break;
 
+case 'players':
+// Select some fields 
+$query->clear(); 
+$query->select('id,club_id'); 
+// From the table 
+$query->from('#__sportsmanagement_team'); 
+$db->setQuery($query); 
+
+$db_teams = $db->loadObjectList();
+
+foreach( $db_teams as $row )
+{
 // ################ anfang ############
 // jetzt holen wir uns die spieler
-$url_players = 'https://www.ishd.de/api/licenses/clubs/'.$club_id.'/teams/'.$team_id.'.json';
+$url_players = 'https://www.ishd.de/api/licenses/clubs/'.$row->club_id.'/teams/'.$row->id.'.json';
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' url_players <br><pre>'.print_r($url_players,true).'</pre>'),'Notice');
 
 $curl = curl_init($url_players);
@@ -289,11 +299,11 @@ else
 }
 
 
-}
-
-
 
 }
+break;
+}
+
 
 
 
