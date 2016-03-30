@@ -35,7 +35,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <input class='button' type='submit' value='<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_UPLOAD_BUTTON'); ?>' />
 </fieldset>
 <input type='hidden' name='sent' value='1' />
-		
+<input type='hidden' name='projectid' value='<?php echo $this->projectid ; ?>' />		
 <input type='hidden' name='task' value='jsminlinehockey.save' />
                     
 </form>
