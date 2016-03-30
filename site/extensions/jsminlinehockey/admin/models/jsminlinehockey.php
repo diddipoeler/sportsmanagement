@@ -277,6 +277,8 @@ $teams[$temp->team_name_home] = $temp->team_id_home;
 }
 else
 {
+if ( $temp->club_id_home )
+{
 $query->clear();
 $query->select('id');
 $query->from('#__sportsmanagement_team');
@@ -286,9 +288,12 @@ $db->setQuery( $query );
 $temp->team_id_home = $db->loadResult();
 $teams[$temp->team_name_home] = $temp->team_id_home;
 }
+}
 
+if ( $temp->team_id_home )
+{
 $temp->projectteam1_id = $this->checkProjectTeam($temp->team_id_home,$post['projectid'],$season_id);
-
+}
 
 
 $temp->club_name_away = $value_match->away_team->club->name;
@@ -304,6 +309,8 @@ $teams[$temp->team_name_away] = $temp->team_id_away;
 }
 else
 {
+if ( $temp->club_id_away)
+{
 $query->clear();
 $query->select('id');
 $query->from('#__sportsmanagement_team');
@@ -313,7 +320,11 @@ $db->setQuery( $query );
 $temp->team_id_away = $db->loadResult();
 $teams[$temp->team_name_away] = $temp->team_id_away;
 }
+}
+if ( $temp->team_id_away)
+{
 $temp->projectteam2_id = $this->checkProjectTeam($temp->team_id_away,$post['projectid'],$season_id);
+}
 
 $temp->team1_result = $value_match->home_goals;
 $temp->team2_result = $value_match->away_goals;
