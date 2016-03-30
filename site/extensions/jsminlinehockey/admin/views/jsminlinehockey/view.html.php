@@ -59,13 +59,13 @@ class sportsmanagementViewjsminlinehockey extends sportsmanagementView
 		$uri = JFactory::getURI();
 		$user = JFactory::getUser();
 		
-		$model = $this->getModel();
+		//$model = $this->getModel();
 
     
-    $projectid = $mainframe->getUserState( "$option.pid", '0' );
+    $this->projectid = $this->jinput->get("pid", '0' );
     
-    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid -> '.$projectid.''),'');
-    
+    $mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid -> '.$this->projectid.''),'');
+    $this->matchlink = $this->model->getMatchLink($this->projectid);
     //$project = sportsmanagementModelProject::getProject($projectid);
     
 	
@@ -107,6 +107,12 @@ class sportsmanagementViewjsminlinehockey extends sportsmanagementView
         // Set toolbar items for the page
         JToolBarHelper::save('jsminlinehockey.getteams', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_TEAMS');
 JToolBarHelper::save('jsminlinehockey.getclubs', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_CLUBS');
+
+if ( $this->projectid )
+{
+JToolBarHelper::save('jsminlinehockey.getmatches', 'COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_GET_MATCHES');
+}
+
     }    
 
 
