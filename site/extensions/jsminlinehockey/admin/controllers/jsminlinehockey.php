@@ -18,6 +18,18 @@ function __construct()
         
     }
     
+    function getmatches()
+    {
+    $model = $this->getModel ( 'jsminlinehockey' );
+    $clubs  = $model->getmatches();
+    $msg = 'Spiele importiert';
+    $link = 'index.php?option=com_sportsmanagement&view=clubs'; 
+$this->setRedirect ( $link, $msg ); 
+
+    
+    }
+
+
     function getclubs()
     {
     $model = $this->getModel ( 'jsminlinehockey' );
