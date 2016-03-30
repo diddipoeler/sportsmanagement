@@ -66,6 +66,74 @@ require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'l
         }
 
 
+function getmatches()
+{
+$app = JFactory::getApplication ();
+$jinput = $app->input;
+$option = $jinput->getCmd('option');
+$db = JFactory::getDbo();
+$query = $db->getQuery(true);
+
+$post = $jinput->post->getArray();
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
+
+$url_clubs = $post['matchlink'];
+$curl = curl_init($url_clubs);
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+//curl_setopt($curl, CURLOPT_HEADER, 1);
+curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+curl_setopt($curl, CURLOPT_USERPWD, $username.':'.$password );
+$result = curl_exec($curl);
+$code = curl_getinfo ($curl, CURLINFO_HTTP_CODE);
+
+// Will dump a beauty json :3
+$json_object_matches = json_decode($result);
+$json_array = json_decode($result,true);
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($result,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($json_object_matches,true).'</pre>'),'');
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' schedule<br><pre>'.print_r( sizeof($json_object_matches->_embedded->schedule) ,true).'</pre>'),'');
+
+
+for($a=0; $a < sizeof($json_object_matches->_embedded->schedule)  ;$a++ )
+{
+
+$value_match = $json_object_matches->_embedded->schedule[$a];
+
+if ( $a == 0 )
+{
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($value_match,true).'</pre>'),'');
+}
+
+$temp = new stdClass();
+$temp->match_id = $value_match->id;
+$temp->match_date = substr($value_match->date_time,0,10).' '.substr($value_match->date_time,11,8);
+$temp->club_name_home = $value_match->home_team->club->name;
+$temp->club_id_home = $value_match->home_team->club->id;
+$temp->club_website_home = $value_match->home_team->club->website->url;
+$temp->team_name_home = $value_match->home_team->full_name;
+$temp->team_id_home = $value_match->home_team->team_id;
+
+$temp->club_name_away = $value_match->away_team->club->name;
+$temp->club_id_away = $value_match->away_team->club->id;
+$temp->club_website_away = $value_match->away_team->club->website->url;
+$temp->team_name_away = $value_match->away_team->full_name;
+$temp->team_id_away = $value_match->away_team->team_id;
+
+$temp->team1_result = $value_match->home_goals;
+$temp->team2_result = $value_match->away_goals;
+
+
+$exportmatches[] = $temp;
+}
+
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' exportmatches<br><pre>'.print_r($exportmatches,true).'</pre>'),'');
+
+
+}
+
+
 function getMatchLink($projectid)
 {
 $option = JRequest::getCmd('option');
@@ -94,6 +162,7 @@ if($app ->isAdmin())
 return $derlink;
 }
 
+        
 /**
  * sportsmanagementModeljsminlinehockey::getClubs()
  * 
@@ -109,6 +178,9 @@ $query = $db->getQuery(true);
 
 $post = $jinput->post->getArray();
 //$app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
+ini_set('max_execution_time', 300);
+$app->enqueueMessage(__METHOD__.' '.__LINE__.'memory_limit <br><pre>'.print_r(ini_get('memory_limit'), true).'</pre><br>','Notice');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.'max_execution_time <br><pre>'.print_r(ini_get('max_execution_time'), true).'</pre><br>','Notice');
 
 $username = JComponentHelper::getParams($option)->get('ishd_benutzername');
 $password = JComponentHelper::getParams($option)->get('ishd_kennwort');
