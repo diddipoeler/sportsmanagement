@@ -64,7 +64,36 @@ require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'l
 }
         parent::__construct();
         }
-        
+
+
+function getMatchLink($projectid)
+{
+$option = JRequest::getCmd('option');
+$app = JFactory::getApplication();
+$post = JRequest::get('post');
+//$project_id = $mainframe->getUserState( "$option.pid", '0' );
+$db = JFactory::getDBO();
+$query = $db->getQuery(true);    
+
+$query->select('ev.fieldvalue');
+$query->from('#__sportsmanagement_user_extra_fields_values as ev ');
+$query->join('INNER','#__sportsmanagement_user_extra_fields as ef ON ef.id = ev.field_id');
+$query->where('ev.jl_id = '.$projectid);
+$query->where('ef.name LIKE '.$db->Quote(''.JRequest::getVar('view').''));
+$query->where('ef.template_backend LIKE '.$db->Quote(''.'project'.''));
+$query->where('ef.field_type LIKE '.$db->Quote(''.'link'.''));
+$db->setQuery( $query );
+$derlink  = $db->loadResult();
+    
+if($app ->isAdmin()) 
+{
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');    
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' link -> '.$derlink.''),'Notice');
+}    
+
+return $derlink;
+}
+
 /**
  * sportsmanagementModeljsminlinehockey::getClubs()
  * 
