@@ -267,6 +267,7 @@ $temp->match_date = substr($value_match->date_time,0,10).' '.substr($value_match
 $temp->club_name_home = $value_match->home_team->club->name;
 $temp->club_id_home = $value_match->home_team->club->id;
 $temp->club_website_home = $value_match->home_team->club->website->url;
+$temp->club_infosite_home = $value_match->home_team->club->_links->self->href;
 $temp->team_name_home = $value_match->home_team->full_name;
 $temp->team_id_home = $value_match->home_team->team_id;
 $temp->team_info_home = $value_match->home_team->alternate_team_name;
@@ -299,6 +300,7 @@ $temp->projectteam1_id = $this->checkProjectTeam($temp->team_id_home,$post['proj
 $temp->club_name_away = $value_match->away_team->club->name;
 $temp->club_id_away = $value_match->away_team->club->id;
 $temp->club_website_away = $value_match->away_team->club->website->url;
+$temp->club_infosite_away = $value_match->away_team->club->_links->self->href;
 $temp->team_name_away = $value_match->away_team->full_name;
 $temp->team_id_away = $value_match->away_team->team_id;
 $temp->team_info_away = $value_match->away_team->alternate_team_name;
@@ -452,6 +454,72 @@ $match->color = $this->storeSuccessColor;
     
 }    
 
+
+
+}
+
+// sportanlagen 
+foreach ( $exportmatches as $i => $match)
+{
+
+if ( $match->club_id_home )
+{
+$url_clubs = 'https://www.ishd.de'.$match->club_infosite_home.'.json';
+$curl = curl_init($url_clubs);
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+//curl_setopt($curl, CURLOPT_HEADER, 1);
+curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+curl_setopt($curl, CURLOPT_USERPWD, $username.':'.$password );
+$result = curl_exec($curl);
+$code = curl_getinfo ($curl, CURLINFO_HTTP_CODE);
+
+// Will dump a beauty json :3
+$json_object_club = json_decode($result);
+$json_array = json_decode($result,true);
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($result,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($json_object_club,true).'</pre>'),'');
+
+$playground_id = $json_object_club->venue->venue->id;
+$playground_short_name = $json_object_club->venue->venue->name;
+$playground_name = $json_object_club->venue->venue->full_name;
+$playground_club_id = $json_object_club->id;
+
+$playground_street = $json_object_club->venue->venue->address->street ;
+$playground_postal_code = $json_object_club->venue->venue->address->postal_code;
+$playground_city = $json_object_club->venue->venue->address->city ;
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($playground_id,true).'</pre>'),'');
+
+// Select some fields  
+$query->clear();  
+$query->select('id');  
+// From the table  
+$query->from('#__sportsmanagement_playground');  
+$query->where('id = '.$playground_id );  
+$db->setQuery($query);  
+
+if ( !$db->loadResult() ) 
+{
+// Create and populate an object. 
+$profile = new stdClass(); 
+$profile->id = $playground_id; 
+$profile->club_id = $playground_club_id; 
+$profile->name = $playground_name; 
+$profile->short_name = $playground_short_name; 
+$profile->address = $playground_street; 
+$profile->zipcode = $playground_postal_code; 
+$profile->city = $playground_city; 
+$profile->country = 'DEU';
+$profile->alias = JFilterOutput::stringURLSafe( $playground_name );; 
+   
+// Insert the object into the user profile table. 
+$result = JFactory::getDbo()->insertObject('#__sportsmanagement_playground', $profile); 
+
+}
+
+
+}
 
 
 }
