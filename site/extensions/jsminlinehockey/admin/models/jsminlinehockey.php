@@ -76,8 +76,59 @@ $query = $db->getQuery(true);
 
 $post = $jinput->post->getArray();
 //$app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid -> '.$post['projectid'].''),'');
 
-for( $page =1; $page < 3 ; $page++  )
+$teams = array();
+
+$spieltag = 1;
+
+$query->clear();
+$query->select('id');
+$query->from('#__sportsmanagement_round');
+$query->where('roundcode LIKE '.$db->Quote(''.$spieltag.''));
+$query->where('project_id = '.$post['projectid']);
+$db->setQuery( $query );
+$round_id = $db->loadResult();
+
+
+if ( empty($round_id) )
+{
+
+// wenn nichts gefunden wurde neue runde anlegen
+$newround = new stdClass();
+$newround->roundcode = $spieltag;
+$newround->name = $spieltag.'.Spieltag';
+$newround->project_id = $post['projectid'];
+
+// Insert the object
+$result = JFactory::getDbo()->insertObject('#__sportsmanagement_round', $newround);
+// runde angelegt
+if ( $result )
+{
+$round_id = $db->insertid();      
+}   
+
+}
+
+$url_clubs = $post['matchlink'];
+$curl = curl_init($url_clubs);
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+//curl_setopt($curl, CURLOPT_HEADER, 1);
+curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+curl_setopt($curl, CURLOPT_USERPWD, $username.':'.$password );
+$result = curl_exec($curl);
+$code = curl_getinfo ($curl, CURLINFO_HTTP_CODE);
+
+// Will dump a beauty json :3
+$json_object_matches = json_decode($result);
+$json_array = json_decode($result,true);
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($result,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($json_object_matches,true).'</pre>'),'');
+$pages = $json_object_matches->pages;
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($pages ,true).'</pre>'),'');
+
+for( $page =1; $page <= $pages ; $page++  )
 {
 $url_clubs = $post['matchlink'].'?page='.$page;
 $curl = curl_init($url_clubs);
@@ -109,6 +160,7 @@ if ( $a == 0 )
 }
 
 $temp = new stdClass();
+$temp->round_id = $round_id;
 $temp->match_id = $value_match->id;
 $temp->match_date = substr($value_match->date_time,0,10).' '.substr($value_match->date_time,11,8);
 $temp->club_name_home = $value_match->home_team->club->name;
@@ -116,12 +168,47 @@ $temp->club_id_home = $value_match->home_team->club->id;
 $temp->club_website_home = $value_match->home_team->club->website->url;
 $temp->team_name_home = $value_match->home_team->full_name;
 $temp->team_id_home = $value_match->home_team->team_id;
+$temp->team_info_home = $value_match->home_team->alternate_team_name;
+
+if ( $temp->team_id_home )
+{
+$teams[$temp->team_name_home] = $temp->team_id_home;
+}
+else
+{
+$query->clear();
+$query->select('id');
+$query->from('#__sportsmanagement_team');
+$query->where('info LIKE '.$db->Quote(''.$temp->team_info_home.''));
+$query->where('club_id = '.$temp->club_id_home);
+$db->setQuery( $query );
+$temp->team_id_home = $db->loadResult();
+$teams[$temp->team_name_home] = $temp->team_id_home;
+}
 
 $temp->club_name_away = $value_match->away_team->club->name;
 $temp->club_id_away = $value_match->away_team->club->id;
 $temp->club_website_away = $value_match->away_team->club->website->url;
 $temp->team_name_away = $value_match->away_team->full_name;
 $temp->team_id_away = $value_match->away_team->team_id;
+$temp->team_info_away = $value_match->away_team->alternate_team_name;
+
+if ( $temp->team_id_away)
+{
+$teams[$temp->team_name_away] = $temp->team_id_away;
+}
+else
+{
+$query->clear();
+$query->select('id');
+$query->from('#__sportsmanagement_team');
+$query->where('info LIKE '.$db->Quote(''.$temp->team_info_away.''));
+$query->where('club_id = '.$temp->club_id_away);
+$db->setQuery( $query );
+$temp->team_id_away = $db->loadResult();
+$teams[$temp->team_name_away] = $temp->team_id_away;
+}
+
 
 $temp->team1_result = $value_match->home_goals;
 $temp->team2_result = $value_match->away_goals;
@@ -132,6 +219,7 @@ $exportmatches[] = $temp;
 
 }
 
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');
 $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' exportmatches<br><pre>'.print_r($exportmatches,true).'</pre>'),'');
 
 
