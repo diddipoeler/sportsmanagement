@@ -2184,6 +2184,9 @@ ok[points_tipp_joker] => 0					Points for wrong prediction with Joker
 		else
 		{
 			$addTotalSelect = 1;
+			$output .= '<option value="0"';
+$output .= '>'.JText::_('COM_SPORTSMANAGEMENT_ALL_PROJECTS').'</option>';
+
 		}
 		foreach ($predictionProjects AS $predictionProject)
 		{
