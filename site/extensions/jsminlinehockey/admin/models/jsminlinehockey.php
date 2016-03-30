@@ -77,7 +77,9 @@ $query = $db->getQuery(true);
 $post = $jinput->post->getArray();
 //$app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
 
-$url_clubs = $post['matchlink'];
+for( $page =1; $page < 3 ; $page++  )
+{
+$url_clubs = $post['matchlink'].'?page='.$page;
 $curl = curl_init($url_clubs);
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
@@ -126,6 +128,8 @@ $temp->team2_result = $value_match->away_goals;
 
 
 $exportmatches[] = $temp;
+}
+
 }
 
 $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' exportmatches<br><pre>'.print_r($exportmatches,true).'</pre>'),'');
