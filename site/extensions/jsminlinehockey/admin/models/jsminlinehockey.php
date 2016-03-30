@@ -66,6 +66,101 @@ require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'l
         }
 
 
+function checkProjectTeam($team_id,$project_id,$season_id)
+{
+$option = JRequest::getCmd('option');
+$mainframe = JFactory::getApplication();
+$db = JFactory::getDBO();
+$query = $db->getQuery(true);
+
+$query->clear();
+$query->select('id');
+$query->from('#__sportsmanagement_season_team_id');
+$query->where('team_id = '.$team_id);
+$query->where('season_id = '.$season_id);
+$db->setQuery( $query );
+$season_team_id = $db->loadResult();
+// team ist der saison zugeordnet
+if ( $season_team_id )
+{
+//$temp->season_team_id = $season_team_id;
+
+$query->clear();
+$query->select('id');
+$query->from('#__sportsmanagement_project_team');
+$query->where('team_id = '.$season_team_id);
+$query->where('project_id = '.$project_id);
+$db->setQuery( $query );
+$projectteam_id = $db->loadResult();
+
+// dem project zugeordnet
+if ( $projectteam_id )
+{
+return $projectteam_id;
+}
+else
+{
+    
+// und dem projekt hinzuf?gen
+$temp_project_team = new stdClass();
+$temp_project_team->team_id = $season_team_id;
+$temp_project_team->project_id = $project_id;
+// Insert the object into the table.
+$result_project_team = JFactory::getDbo()->insertObject('#__sportsmanagement_project_team', $temp_project_team);
+
+if ( $result_project_team )
+{
+return $db->insertid();
+}
+else
+{
+return 0;     
+}    
+
+}    
+
+}
+else
+{
+// team ist nicht der saison zugeordnet  
+// Create and populate an object.
+$temp_season_team_id = new stdClass();
+$temp_season_team_id->team_id = $team_id;
+$temp_season_team_id->season_id = $season_id;
+// Insert the object into the table.
+$result_season_team_id = JFactory::getDbo()->insertObject('#__sportsmanagement_season_team_id', $temp_season_team_id);
+if ( $result_season_team_id )
+{
+$season_team_id = $db->insertid();
+// und dem projekt hinzuf?gen
+$temp_project_team = new stdClass();
+$temp_project_team->team_id = $season_team_id;
+$temp_project_team->project_id = $project_id;
+// Insert the object into the table.
+$result_project_team = JFactory::getDbo()->insertObject('#__sportsmanagement_project_team', $temp_project_team);
+
+if ( $result_project_team )
+{
+return $db->insertid();
+}
+else
+{
+return 0;     
+}
+
+}
+else
+{
+return 0;                   
+}    
+                  
+    
+}
+
+
+
+}
+
 function getmatches()
 {
 $app = JFactory::getApplication ();
@@ -80,8 +175,14 @@ $post = $jinput->post->getArray();
 
 $teams = array();
 
-$spieltag = 1;
+$query->clear();
+$query->select('season_id');
+$query->from('#__sportsmanagement_project');
+$query->where('id = '.$post['projectid']);
+$db->setQuery( $query );
+$season_id = $db->loadResult();
 
+$spieltag = 1;
 $query->clear();
 $query->select('id');
 $query->from('#__sportsmanagement_round');
@@ -186,6 +287,10 @@ $temp->team_id_home = $db->loadResult();
 $teams[$temp->team_name_home] = $temp->team_id_home;
 }
 
+$temp->projectteam1_id = $this->checkProjectTeam($temp->team_id_home,$post['projectid'],$season_id);
+
+
+
 $temp->club_name_away = $value_match->away_team->club->name;
 $temp->club_id_away = $value_match->away_team->club->id;
 $temp->club_website_away = $value_match->away_team->club->website->url;
@@ -208,7 +313,7 @@ $db->setQuery( $query );
 $temp->team_id_away = $db->loadResult();
 $teams[$temp->team_name_away] = $temp->team_id_away;
 }
-
+$temp->projectteam2_id = $this->checkProjectTeam($temp->team_id_away,$post['projectid'],$season_id);
 
 $temp->team1_result = $value_match->home_goals;
 $temp->team2_result = $value_match->away_goals;
@@ -219,9 +324,126 @@ $exportmatches[] = $temp;
 
 }
 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' exportmatches<br><pre>'.print_r($exportmatches,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' exportmatches<br><pre>'.print_r($exportmatches,true).'</pre>'),'');
 
+
+/**
+ * spiele einfügen anfang
+ */
+foreach ( $exportmatches as $i => $match)
+{
+if ( $match->projectteam1_id && $match->projectteam2_id && $match->round_id )
+{
+// spielpaarung suchen
+// gibt es das spiel ?
+$query->clear();
+$query->select('id');
+$query->from('#__sportsmanagement_match');
+$query->where('import_match_id = '.$match->match_id);
+$query->where('projectteam1_id = '.$match->projectteam1_id);
+$query->where('projectteam2_id = '.$match->projectteam2_id);
+$db->setQuery( $query );
+$match_id  = $db->loadResult();        
+
+if ( $match_id )
+{
+
+if ( is_numeric($match->team1_result) && is_numeric($match->team2_result) )
+{    
+$row = JTable::getInstance('match','sportsmanagementTable');
+$row->load((int) $match_id);    
+$row->team1_result = $match->team1_result;
+$row->team2_result = $match->team2_result;
+$row->team1_result_split = $match->team1_result_split;
+$row->team2_result_split = $match->team2_result_split;
+$row->match_date = $match->match_date;
+$row->division_id = $match->division_id;
+$row->import_match_id = $match->match_id;
+
+$row->match_timestamp = sportsmanagementHelper::getTimestamp($match->match_date);
+$row->published = 1;
+
+if (!$row->store())
+{
+$match->info = 'Error Update';
+$match->color = $this->storeFailedColor;  
+}
+else
+{
+$match->info = 'Update';
+$match->color = $this->storeSuccessColor;      
+}   
+
+}
+else
+{
+// aber das datum updaten
+$row = JTable::getInstance('match','sportsmanagementTable');
+$row->load((int) $match_id);    
+$row->match_date = $match->match_date;
+$row->match_timestamp = sportsmanagementHelper::getTimestamp($match->match_date);
+$row->division_id = $match->division_id;
+$row->published = 1;
+$row->import_match_id = $match->match_id;
+
+if (!$row->store())
+{
+$match->info = 'No Result - Error Update';
+$match->color = $this->storeFailedColor;  
+}
+else
+{
+$match->info = 'No Result - Update';
+$match->color = $this->storeSuccessColor;      
+}
+    
+}
+    
+}    
+else
+{
+// bei einer normalen liga und vorhandener runde
+// kann das spiel angelegt werden
+if ( $match->round_id && $match->projectteam1_id && $match->projectteam2_id )
+{    
+$rowInsert = JTable::getInstance('match','sportsmanagementTable');
+$rowInsert->import_match_id = $match->match_id;
+$rowInsert->round_id = $match->round_id;
+$rowInsert->projectteam1_id = $match->projectteam1_id;
+$rowInsert->projectteam2_id = $match->projectteam2_id;
+
+if ( is_numeric($match->team1_result) && is_numeric($match->team2_result) )
+{ 
+$rowInsert->team1_result = $match->team1_result;
+$rowInsert->team2_result = $match->team2_result;
+}
+
+$rowInsert->match_date = $match->match_date;
+$rowInsert->match_timestamp = sportsmanagementHelper::getTimestamp($match->match_date);
+$rowInsert->published = 1;
+
+
+if (!$rowInsert->store())
+{
+$match->info = 'Error Insert';
+$match->color = $this->storeFailedColor;  
+}
+else
+{
+$match->info = 'Insert';
+$match->color = $this->storeSuccessColor;      
+}     
+    
+}    
+    
+}
+    
+}    
+
+
+
+}
 
 }
 
