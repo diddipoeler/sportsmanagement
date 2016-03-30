@@ -25,6 +25,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 
 <fieldset style='text-align: center; '>
+<input type="text" id="matchlink" name="matchlink"  value="<?php echo $this->matchlink; ?>"  size="100" maxlength="100" >
+
 <input type="radio" name="check" value="clubs" checked="checked"> Vereine
 <input type="radio" name="check" value="teams"> Mannschaften
 <input type="radio" name="check" value="players"> Spieler
