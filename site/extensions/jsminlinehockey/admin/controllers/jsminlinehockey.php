@@ -23,7 +23,7 @@ function __construct()
     $model = $this->getModel ( 'jsminlinehockey' );
     $clubs  = $model->getmatches();
     $msg = 'Spiele importiert';
-    $link = 'index.php?option=com_sportsmanagement&view=clubs'; 
+    $link = 'index.php?option=com_sportsmanagement&view=projects'; 
 $this->setRedirect ( $link, $msg ); 
 
     
