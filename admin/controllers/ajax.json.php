@@ -158,11 +158,11 @@ $app->enqueueMessage('Altersgruppen gefunden','Message');
       
  if ( count($result) == 1 )
  {
- $app->enqueueMessage('Keine Landesverbände gefunden','Error');
+ $app->enqueueMessage('Keine LandesverbÃ¤nde gefunden','Error');
  }
  else
  {
-$app->enqueueMessage('Landesverbände gefunden','Message');    
+$app->enqueueMessage('LandesverbÃ¤nde gefunden','Message');    
  }
  
       echo new JResponseJson($result);
@@ -192,7 +192,7 @@ $app->enqueueMessage('Landesverbände gefunden','Message');
         try
     {
  
-      $result = $this->getModel('ajax')->getProjects($jinput->get->get('s'), $jinput->get->get('required'),$jinput->get->get('slug'),$jinput->get->get( 'dbase' ));
+      $result = $this->getModel('ajax')->getProjects($jinput->get->getInt('s'), $jinput->get->get('required'),$jinput->get->get('slug'),$jinput->get->get( 'dbase' ));
       
  if ( count($result) == 1 )
  {
