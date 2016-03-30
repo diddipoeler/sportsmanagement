@@ -304,7 +304,7 @@ $script[] = "});";
         //if ( $ajaxtask && $value )
         //{
         $ajaxtask = 'get'.$ajaxtask;    
-        $result = sportsmanagementModelAjax::$ajaxtask($value,$required,$slug);
+        $result = sportsmanagementModelAjax::$ajaxtask((int)$value,$required,$slug);
         //}
 
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' script<br><pre>'.print_r($script,true).'</pre>'),'Notice');
