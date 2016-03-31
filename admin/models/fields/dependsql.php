@@ -131,7 +131,7 @@ class JFormFieldDependSQL extends JFormField
         switch ($option)
         {
             case 'com_modules':
-            $div = 'params_';
+            $div = 'params';
             break;
             case 'com_sportsmanagement':
             if ( $norequest )
@@ -140,11 +140,11 @@ class JFormFieldDependSQL extends JFormField
             }
             else
             {
-            $div = 'request_';
+            $div = 'request';
             }
             break;
             default:
-            $div = 'request_';
+            $div = 'request';
             break;
         }
         
@@ -220,8 +220,8 @@ $script[] = "						$('#".$this->id."').trigger('liszt:updated');";
 $script[] = "					});";
 */
 
-$script[] = "				$('#jform_".$div.$depends."').change(function(){";
-$script[] = "					var value = $('#jform_".$div.$depends."').val();";
+$script[] = "				$('#jform_".$div.'_'.$depends."').change(function(){";
+$script[] = "					var value = $('#jform_".$div.'_'.$depends."').val();";
 //$script[] = "					var dbparam = $('#jform_params_cfg_which_database').val();";
 //$script[] = "					var dbparam = $('#jform_home').prop('checked');";
 //$script[] = "					var dbparam = $('input:radio[name=jform_home]:checked').val();";
@@ -310,7 +310,7 @@ $script[] = "});";
         //if ( $ajaxtask && $value )
         //{
         $ajaxtask = 'get'.$ajaxtask;    
-        $result = sportsmanagementModelAjax::$ajaxtask((int)$value,$required,$slug);
+        $result = sportsmanagementModelAjax::$ajaxtask($value,$required,$slug);
         //}
 
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' script<br><pre>'.print_r($script,true).'</pre>'),'Notice');
