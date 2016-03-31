@@ -256,7 +256,7 @@ JHtml::_( 'behavior.mootools' );
 								$disabled=true ?	'' : 'disabled="disabled"';
 								?>
 								<input	type="text" name="order[]" size="5"
-										value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?> class="text_area"
+										value="<?php echo $row->ordering; ?>" <?php echo $disabled; ?> class="form-control form-control-inline"
 										style="text-align: center; " />
 							</td>
 							<td class="center"><?php echo $row->id; ?></td>
