@@ -838,6 +838,7 @@ $javascript .= "}". "\n";
 			// get referees assigned to this position
 			$squad[$key] = $model->getRefereeRoster($pos->value, $this->item->id);
 		}
+        
 		if (count($squad) > 0)
 		{
 			foreach ($squad AS $key => $referees)
@@ -847,7 +848,7 @@ $javascript .= "}". "\n";
 				{
 					foreach ($referees AS $referee)
 					{
-						$temp[$key][]=JHtml::_('select.option',$referee->value, 
+						$temp[$key][] = JHtml::_('select.option',$referee->value, 
 							sportsmanagementHelper::formatName(null, $referee->firstname, $referee->nickname, $referee->lastname, $default_name_format));
 					}
 				}
@@ -856,13 +857,7 @@ $javascript .= "}". "\n";
 														' style="font-size:12px;height:auto;min-width:15em;" '.
 														'class="position-starters" multiple="true" ', 
 														'value','text');
-                                                        
-               /*
-               $lists['team_referees'.$key]=JHtml::_(	'select.genericlist','position','position'.$key.'[]',
-														' style="font-size:12px;height:auto;min-width:15em;" '.
-														'class="inputbox position-starters" multiple="true" ',
-														'value','text');   
-                                                        */                                      
+                                     
                                                         
 			}
 		}

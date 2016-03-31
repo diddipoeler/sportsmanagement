@@ -85,7 +85,7 @@ if($close == 1) {
 	<div class="clear"></div>
 		<fieldset class="adminform">
 			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ER_DESCR'); ?></legend>
-			<table class='adminlist'>
+			<table class="table">
 			<thead>
 				<tr>
 					<th>
@@ -104,7 +104,7 @@ if($close == 1) {
 						?>
 					</td>
 					<td style="text-align:center; vertical-align:top; ">
-						<table>
+						<table class="table">
 							<?php
 							foreach ($this->positions AS $key => $pos)
 							{
@@ -115,8 +115,8 @@ if($close == 1) {
 										<br />
 										
                                         
-                                        <input id="moveright" type="button" value="Move Right" onclick="move_list_items('roster','position<?php echo $key;?>');" />
-                                        <input id="moveleft" type="button" value="Move Left" onclick="move_list_items('position<?php echo $key;?>','roster');" />
+                                        <input id="moveright" type="button" value="<?php echo JText::_('JGLOBAL_RIGHT'); ?>" onclick="move_list_items('roster','position<?php echo $key;?>');" />
+                                        <input id="moveleft" type="button" value="<?php echo JText::_('JGLOBAL_LEFT'); ?>" onclick="move_list_items('position<?php echo $key;?>','roster');" />
                                         
 									</td>
 									<td>

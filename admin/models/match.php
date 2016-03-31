@@ -1365,7 +1365,8 @@ $query->order('m.match_number');
 $query->select('pref.id AS value,pr.firstname,pr.nickname,pr.lastname');
 $query->from('#__sportsmanagement_match_referee AS mr');
 $query->join('LEFT','#__sportsmanagement_project_referee AS pref ON mr.project_referee_id=pref.id AND pref.published = 1');
-$query->join('LEFT','#__sportsmanagement_person AS pr ON pref.person_id=pr.id AND pr.published = 1');
+$query->join('LEFT','#__sportsmanagement_season_person_id AS spi ON pref.person_id=spi.id');
+$query->join('LEFT','#__sportsmanagement_person AS pr ON spi.person_id=pr.id AND pr.published = 1');
 $query->where('mr.match_id = '. $match_id);
 
 		if ($project_position_id > 0)
@@ -1503,16 +1504,12 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
             
         if ( $project_position_id > 0 )
 		{
-//			$query .= " AND mp.project_position_id='".$project_position_id."'";
             // Where
             $query->where('mp.project_position_id = '.$project_position_id);
 		}
-//		$query .= " ORDER BY mp.project_position_id, mp.ordering,
-//					pl.lastname, pl.firstname ASC";
 		// Order
         $query->order('mp.project_position_id, mp.ordering,	pl.lastname, pl.firstname ASC');
         JFactory::getDbo()->setQuery($query);
-        //}
         
         $result = JFactory::getDbo()->loadObjectList($id);
         
@@ -1557,15 +1554,6 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
         $query->where('ppos.project_id = '.  $project_id);
         $query->order('stat.ordering, ps.ordering');
         
-//		//$match =& $this->getData();
-//		//$project_id=$match->project_id;
-//		$query=' SELECT stat.id,stat.name,stat.short,stat.class,stat.icon,stat.calculated,ppos.position_id AS posid'
-//		.' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic AS stat '
-//		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ON ps.statistic_id=stat.id '
-//		.' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id=ps.position_id '
-//		.' WHERE ppos.project_id='.  $project_id
-//		.' ORDER BY stat.ordering, ps.ordering ';
-        
 		JFactory::getDbo()->setQuery($query);
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
@@ -1604,9 +1592,6 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
         $query->select('*');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic ');
         $query->where('match_id = '.$match_id);
-        
-//        //$match =& $this->getData();
-//		$query = 'SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic  WHERE match_id='.$match_id;
         
 		JFactory::getDbo()->setQuery($query);
         
@@ -1647,9 +1632,6 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
         $query->select('*');
         $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic ');
         $query->where('match_id = '.$match_id);
-        
-//        //$match =& $this->getData();
-//		$query='SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic WHERE match_id='.$match_id;
         
 		JFactory::getDbo()->setQuery($query);
         
@@ -1694,16 +1676,6 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
         
         $query->where('ppos.project_id = '.$project_id);
         $query->where('pos.persontype = '.$person_type);
-        
-//		//$project_id=$app->getUserState($option.'project');
-//		$query='	SELECT	ppos.id AS value,
-//							pos.name AS text,
-//							pos.id AS posid,
-//                            pos.id AS pposid
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos
-//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id=pos.id
-//					WHERE ppos.project_id='.$project_id.'
-//					  AND pos.persontype='.$person_type;
 
 		if ($id > 0)
 		{
@@ -1767,17 +1739,6 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
         
         $query->order('pet.ordering, et.ordering');
         $query->group('et.id');
-        
-//        $query='	SELECT DISTINCT	et.id AS value,
-//									et.name AS text,
-//									et.icon AS icon
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m
-//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.project_id='.$project_id.'
-//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet ON pet.position_id=ppos.position_id
-//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et ON et.id=pet.eventtype_id
-//					WHERE m.id='.$match_id.'
-//                    AND et.published=1
-//					ORDER BY pet.ordering, et.ordering';
                     
 		JFactory::getDbo()->setQuery($query);
         
@@ -1842,9 +1803,6 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
             $query->delete(JFactory::getDBO()->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee'));
             $query->where('match_id = '.$post['id']);
             $query->where('project_referee_id NOT IN ('.$peids.')');
-            
-//			$query="	DELETE FROM #__".COM_SPORTSMANAGEMENT_TABLE."_match_referee
-//						WHERE match_id=".$post['id']." AND project_referee_id NOT IN (".$peids.")";
 		}
 		JFactory::getDbo()->setQuery($query);
 		if (!sportsmanagementModeldatabasetool::runJoomlaQuery()) 
@@ -1917,20 +1875,7 @@ function getPlayerEventsbb($teamplayer_id=0,$event_type_id=0,$match_id=0)
         $query->where('me.teamplayer_id = '.$teamplayer_id);
         $query->where('me.event_type_id = '.$event_type_id);
         $query->order('me.teamplayer_id ASC');
-        
-//		$query='	SELECT	me.projectteam_id,
-//							me.id,
-//							me.match_id,
-//							me.teamplayer_id,
-//							me.event_type_id,
-//							me.event_sum,
-//                            me.event_time,
-//                            me.notice
-//					FROM #__joomleague_match_event AS me
-//					WHERE me.match_id='.(int) $this->_id.'
-//					AND	  me.teamplayer_id='.(int) $teamplayer_id.'
-//					AND	  me.event_type_id=' .(int) $event_type_id.'
-//					ORDER BY me.teamplayer_id ASC ';
+
 		JFactory::getDBO()->setQuery($query);
 		$result = JFactory::getDBO()->loadObjectList();
 		if(count($result)>0)
@@ -2043,14 +1988,6 @@ function getPlayerEventsbb($teamplayer_id=0,$event_type_id=0,$match_id=0)
 		$team = $post['team'];
         
         //$app->enqueueMessage('sportsmanagementModelMatch updateStaff<br><pre>'.print_r($post, true).'</pre><br>','Notice');
-        
-//		// we first remove the records of starter for this team and this game,then add them again from updated data.
-//		$query='	DELETE mp
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff AS mp
-//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS tp ON tp.id=mp.team_staff_id
-//					WHERE	mp.match_id='.JFactory::getDbo()->Quote($mid).' AND
-//							tp.projectteam_id='.JFactory::getDbo()->Quote($team);
-//		JFactory::getDbo()->setQuery($query);
         
         $query = JFactory::getDBO()->getQuery(true);
 
