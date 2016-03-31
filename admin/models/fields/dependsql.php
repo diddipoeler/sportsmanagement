@@ -272,7 +272,7 @@ $script[] = "						});";
 $script[] = "";
 
 //$script[] = " alert('r data -> ' + r.data);";
-
+$script[] = "if (window.console) console.log('json data -> ' + r.data);";
 $script[] = "if (r.messages)";
 $script[] = "		{";
 //$script[] = " alert('r messages -> ' + r.messages);";
