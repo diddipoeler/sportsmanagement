@@ -272,7 +272,13 @@ $script[] = "						});";
 $script[] = "";
 
 //$script[] = " alert('r data -> ' + r.data);";
-$script[] = "if (window.console) console.log('json data -> ' + r.data);";
+//$script[] = "if (window.console) console.log('json data -> ' + r.data);";
+
+$script[] = "						$.each(r.data, function (i, val) {";
+$script[] = "if (window.console) console.log('json value-> ' + val.value);";
+$script[] = "if (window.console) console.log('json text-> ' + val.text);";
+$script[] = "						});";
+
 $script[] = "if (r.messages)";
 $script[] = "		{";
 //$script[] = " alert('r messages -> ' + r.messages);";
