@@ -104,7 +104,7 @@ class JFormFieldDependSQL extends JFormField
 		$val = ($this->element['value_field'] ? $this->element['value_field'] : $this->name);
 		$ajaxtask = $this->element['task'];
 		$depends = $this->element['depends'];
-        $slug = $this->element['slug'];
+        $slug = $this->element['slug'] == "true" ? 'true' : 'false';
         $query = (string)$this->element['query'];
         $norequest = $this->element['norequest'];
 
