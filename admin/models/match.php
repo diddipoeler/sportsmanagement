@@ -1352,23 +1352,29 @@ $query->order('m.match_number');
 	 */
 	public static function getRefereeRoster($project_position_id=0,$match_id=0)
 	{
-		$query='	SELECT	pref.id AS value,
-							pr.firstname,
-							pr.nickname,
-							pr.lastname
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pref ON mr.project_referee_id=pref.id
-					 AND pref.published = 1
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pr ON pref.person_id=pr.id
-					 AND pr.published = 1
-					WHERE mr.match_id='. $match_id;
+	// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+
+// Select some fields
+$query->select('pref.id AS value,pr.firstname,pr.nickname,pr.lastname');
+$query->from('#__sportsmanagement_match_referee AS mr');
+$query->join('LEFT','#__sportsmanagement_project_referee AS pref ON mr.project_referee_id=pref.id AND pref.published = 1');
+$query->join('LEFT','#__sportsmanagement_person AS pr ON pref.person_id=pr.id AND pr.published = 1');
+$query->where('mr.match_id = '. $match_id);
+
 		if ($project_position_id > 0)
 		{
-			$query .= ' AND mr.project_position_id='.$project_position_id;
+		$query->where('mr.project_position_id = '.$project_position_id);	
 		}
-		$query .= ' ORDER BY mr.project_position_id, mr.ordering ASC';
-		JFactory::getDbo()->setQuery($query);
-		return JFactory::getDbo()->loadObjectList('value');
+		$query->order('mr.project_position_id, mr.ordering ASC');
+		$db->setQuery($query);
+		return $db->loadObjectList('value');
 	}
     
     /**
@@ -1380,26 +1386,36 @@ $query->order('m.match_number');
 	 */
 	public static function getProjectReferees($already_sel=false, $project_id)
 	{
-		$query=' SELECT	pref.id AS value,'
-		.' pl.firstname,'
-		.' pl.nickname,'
-		.' pl.lastname,'
-		.' pl.info,'
-		.' pos.name AS positionname '
-		.' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl '
-		.' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pref ON pref.person_id=pl.id '
-		.' AND pref.published=1 '
-		.' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id=pref.project_position_id '
-		.' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id=ppos.position_id '
-		.' WHERE pref.project_id='.$project_id
-		.' AND pl.published = 1';
+	// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        // Get a db connection.
+        $db = JFactory::getDbo();
+        $query = $db->getQuery(true);
+
+// Select some fields
+$query->select('pref.id AS value,pl.firstname,pl.nickname,pl.lastname,pl.info,pos.name AS positionname');
+$query->from('#__sportsmanagement_person AS pl');
+
+$query->join('LEFT','#__sportsmanagement_season_person_id AS spi ON spi.person_id=pl.id');
+
+$query->join('LEFT','#__sportsmanagement_project_referee AS pref ON pref.person_id=spi.id AND pref.published=1');
+$query->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id=pref.project_position_id');
+$query->join('LEFT','#__sportsmanagement_position AS pos ON pos.id=ppos.position_id');
+$query->where('pref.project_id='.$project_id);
+$query->where('pl.published = 1');
+
+		
 		if (is_array($already_sel) && count($already_sel) > 0)
 		{
-			$query .= " AND pref.id NOT IN (".implode(',',$already_sel).")";
+		$query->where('pref.id NOT IN ('.implode(',',$already_sel).')' );
 		}
-		$query .= " ORDER BY pl.lastname ASC ";
-		JFactory::getDbo()->setQuery($query);
-		return JFactory::getDbo()->loadObjectList('value');
+
+		$query->order('pl.lastname ASC');
+		$db->setQuery($query);
+		return $db->loadObjectList('value');
 	}
     
  
