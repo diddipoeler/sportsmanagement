@@ -183,12 +183,7 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 	<?php
 	if ( $this->config['show_match_referees'] )
     {
-$routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
-$routeparameter['p'] = $this->project->id;
-$routeparameter['pid'] = $ref->person_id;
-$link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routeparameter);
+
     	
 		if (!empty($this->referees)): ?>
 			<?php $html = array(); ?>
@@ -196,7 +191,12 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routepa
 				<td colspan="3"><span class=""><?php echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_REFEREE' ); ?></span>
 				<?php foreach ($this->referees AS $ref): ?> 
 				<?php 
-				//$referee_link = sportsmanagementHelperRoute::getRefereeRoute($this->project->id, $ref->person_id,JRequest::getInt('cfg_which_database',0));
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->id;
+$routeparameter['pid'] = $ref->person_id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routeparameter);
 				?>
 				<?php $html[] = JHtml::link ($link, sportsmanagementHelper::formatName(null, $ref->firstname, $ref->nickname, $ref->lastname, $this->config["name_format"])) .' ('.$ref->position_name.')'; ?>
 				<?php endforeach;?> <span><?php echo implode('</span>, <span>', $html); ?></span>
