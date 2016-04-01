@@ -261,11 +261,12 @@ class sportsmanagementModelNextMatch extends JModelLegacy
         // Select some fields
 		$query->select('p.firstname, p.nickname, p.lastname, p.country, p.id as person_id');
         $query->select('pos.name AS position_name');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr  ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pref ON mr.project_referee_id = pref.id  ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON p.id = pref.person_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position ppos ON ppos.id = mr.project_position_id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id  ');
+        $query->from('#__sportsmanagement_match_referee AS mr  ');
+        $query->join('INNER','#__sportsmanagement_project_referee AS pref ON mr.project_referee_id = pref.id  ');
+        $query->join('INNER','#__sportsmanagement_season_person_id AS spi ON pref.person_id=spi.id');
+        $query->join('INNER','#__sportsmanagement_person AS p ON p.id = spi.person_id ');
+        $query->join('INNER','#__sportsmanagement_project_position ppos ON ppos.id = mr.project_position_id');
+        $query->join('INNER','#__sportsmanagement_position AS pos ON pos.id = ppos.position_id  ');
    
         $query->where('mr.match_id = '. $db->Quote($match->id) );
         $query->where('p.published = 1');
