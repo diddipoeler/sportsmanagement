@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie kÃ¶nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spÃ¤teren
+* verÃ¶ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nÃ¼tzlich sein wird, aber
+* OHNE JEDE GEWÃ„HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* GewÃ¤hrleistung der MARKTFÃ„HIGKEIT oder EIGNUNG FÃœR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fÃ¼r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -134,16 +134,6 @@ public function __construct($config = array())
 		parent::populateState('p.lastname', 'asc');
 	}
 
-
-
-
-
-
-
-
-
-
-
 	/**
 	 * sportsmanagementModelProjectReferees::getListQuery()
 	 * 
@@ -171,11 +161,6 @@ public function __construct($config = array())
             $this->_project_team_id	= $app->getUserState( "$option.project_team_id", '0' );
         }
        
-       
-//        // Get the WHERE and ORDER BY clauses for the query
-//		$where = $this->_buildContentWhere();
-//		$orderby = $this->_buildContentOrderBy();
-        
         // Create a new query object.
         $query = JFactory::getDbo()->getQuery(true);
         // Select some fields
@@ -201,21 +186,6 @@ public function __construct($config = array())
 						   'OR LOWER(p.firstname) LIKE ' . JFactory::getDbo()->Quote( '%' . $this->getState('filter.search') . '%' ) .
 						   'OR LOWER(p.nickname) LIKE ' . JFactory::getDbo()->Quote( '%' . $this->getState('filter.search') . '%' ) . ')');
         }
-        
-//        $query->select(array('p.firstname',
-//				'p.lastname',
-//				'p.nickname',
-//				'p.phone',
-//				'p.email',
-//				'p.mobile',
-//				'pref.*',
-//				'pref.project_position_id',
-//				'u.name AS editor',
-//				'pref.picture'))
-//        ->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p')
-//        ->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pref on pref.person_id = p.id')
-//        ->join('LEFT', '#__users AS u ON u.id = pref.checked_out');
-
 
 $query->order(JFactory::getDbo()->escape($this->getState('list.ordering', 'p.lastname')).' '.
                 JFactory::getDbo()->escape($this->getState('list.direction', 'ASC')));
@@ -227,68 +197,9 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 
 		return $query;
         
-        
-//        if ($where)
-//        {
-//            $query->where($where);
-//        }
-//        if ($orderby)
-//        {
-//            $query->order($orderby);
-//        }
-//
-//		
-//		return $query;
+
 	}
 
-//	function _buildContentOrderBy()
-//	{
-//		$option = JRequest::getCmd('option');
-//		$app = JFactory::getApplication();
-//		$filter_order		= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'p_filter_order','filter_order','p.lastname','cmd');
-//		$filter_order_Dir	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'p_filter_order_Dir','filter_order_Dir','','word');
-//		if ($filter_order=='p.lastname')
-//		{
-//			$orderby='p.lastname '.$filter_order_Dir;
-//		}
-//		else
-//		{
-//			$orderby=''.$filter_order.' '.$filter_order_Dir.', p.lastname ';
-//		}
-//		return $orderby;
-//	}
-
-//	function _buildContentWhere()
-//	{
-//		$option = JRequest::getCmd('option');
-//		$app = JFactory::getApplication();
-//		
-//		$search			= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'p_search','search','','string');
-//		$search_mode	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'p_search_mode','search_mode','','string');
-//		$search=JString::strtolower($search);
-//		$where=array();
-//		$where[]='pref.project_id='.$this->_project_id;
-//		$where[]='p.published = 1';
-//		if ($search)
-//		{
-//			if ($search_mode)
-//			{
-//				$where[] =	'(LOWER(p.lastname) LIKE '.JFactory::getDbo()->Quote($search.'%') .
-//				'OR LOWER(p.firstname) LIKE '.JFactory::getDbo()->Quote($search.'%') .
-//				'OR LOWER(p.nickname) LIKE '.JFactory::getDbo()->Quote($search.'%').')';
-//			}
-//			else
-//			{
-//				$where[] =	'(LOWER(p.lastname) LIKE '.JFactory::getDbo()->Quote('%'.$search.'%').
-//				'OR LOWER(p.firstname) LIKE '.JFactory::getDbo()->Quote('%'.$search.'%') .
-//				'OR LOWER(p.nickname) LIKE '.JFactory::getDbo()->Quote('%'.$search.'%').')';
-//			}
-//		}
-//		$where=(count($where) ? ''.implode(' AND ',$where) : '');
-//		return $where;
-//	}
-
-	
 
 	/**
 	 * add the specified persons to team
@@ -317,13 +228,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS r ON r.person_id = pt.id');
         $query->where('r.project_id = '.$project_id);  
         $query->where('pt.published = 1');
-        
-//		$query='	SELECT	pt.id
-//				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pt
-//				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS r ON r.person_id=pt.id
-//				WHERE r.project_id='.JFactory::getDbo()->Quote($this->_project_id).'
-//						AND pt.published = 1';
-                        
+
 		$db->setQuery($query);
     
     if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -360,7 +265,6 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         $query->where('pl.id = '.$pid);  
         $query->where('pl.published = 1');
         
-//				$query="SELECT picture FROM #__".COM_SPORTSMANAGEMENT_TABLE."_person AS pl WHERE pl.id='$pid' AND pl.published = 1";
 				JFactory::getDbo()->setQuery($query);
 				$player = JFactory::getDbo()->loadObject();
 				if ($player)
@@ -422,11 +326,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr');
         $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p on p.id = pr.project_id');
         $query->where('p.id = '.$project_id);  
-        
-//		$query='SELECT count(*) AS count
-//				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr
-//				JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p on p.id = pr.project_id
-//				WHERE p.id='.$project_id;
+
 		JFactory::getDbo()->setQuery($query);
 		return JFactory::getDbo()->loadResult();
 	}
