@@ -212,6 +212,7 @@ depends="project"
 				</field>
 
 				<field 	name="lastsortorder" type="radio" default="asc"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_ORDERING_OF_LAST_MATCHES_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_ORDERING_OF_LAST_MATCHES_DESCR">
 					<option value="asc">MOD_SPORTSMANAGEMENT_MATCHES_ASC</option>
@@ -408,7 +409,8 @@ depends="project"
 					<option value="2">MOD_SPORTSMANAGEMENT_MATCHES_ALL_TEAMS</option>
 				</field>
 
-				<field 	name="team_link_status" type="list" default="none"
+				<field 	name="team_link_status" type="radio" default="none"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_TEAM_LINKS_TITLE" 
 						description="">
 					<option value="none">MOD_SPORTSMANAGEMENT_MATCHES_HIDE_LINKS</option>
