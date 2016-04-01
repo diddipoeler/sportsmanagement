@@ -1780,7 +1780,10 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
 		$peid = array();
 		$result = true;
 		$positions = $post['positions'];
-        
+
+$paramsmail = JComponentHelper::getParams($option)->get('ishd_referee_insert_match_mail');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' paramsmail <br><pre>'.print_r($paramsmail ,true).'</pre>'),'');    
+
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post'.'<pre>'.print_r($post,true).'</pre>' ),'');
         
 		//$project_id=$post['project'];
