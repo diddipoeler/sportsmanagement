@@ -503,9 +503,21 @@ class sportsmanagementModelperson extends JModelAdmin
                 $mdlTable = $mdl->getTable();
                 for ($x=0; $x < count($cid); $x++)
                 {
-                $mdlPersonTable->load($cid[$x]);    
-                $mdlTable = $mdl->getTable();
-                $mdlTable->person_id = $cid[$x];
+                $query = $db->getQuery(true);
+                $query->select('id'); 
+         $query->from('#__sportsmanagement_season_person_id'); 
+         $query->where('person_id = '.$cid[$x]); 
+         $query->where('team_id = 0');
+         $query->where('season_id = '.$this->_season_id);
+         $query->where('persontype = 3');
+         $db->setQuery($query); 
+	 $season_person_id = $db->loadResult(); 
+          
+                $mdlPersonTable->load($cid[$x]);   
+
+$mdlTable = new stdClass();
+$mdlTable->id               = $season_person_id;
+              $mdlTable->person_id = $cid[$x];
                 $mdlTable->team_id = 0;
                 $mdlTable->season_id = $this->_season_id;
                 $mdlTable->modified = $db->Quote(''.$modified.'');
@@ -513,23 +525,39 @@ class sportsmanagementModelperson extends JModelAdmin
                 $mdlTable->picture = $mdlPersonTable->picture;
                 $mdlTable->persontype = 3;
                 $mdlTable->published = 1;
+
+try {
+    $result = $db->insertObject('#__sportsmanagement_season_person_id', $mdlTable);
+    $season_person_id = $db->insertid();
+}
+catch (Exception $e){
+    $result = $db->updateObject('#__sportsmanagement_season_person_id', $mdlTable, 'id');
+}
+
+
+
+
+
+                 
+//                $mdlTable = $mdl->getTable();
+  
                    
-                if ($mdlTable->store()===false)
-				{
-				    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
-				}
-				else
-				{
+                //if ($mdlTable->store()===false)
+//				{
+//				    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+//				}
+//				else
+//				{
 				// Create and populate an object.
                 $profile = new stdClass();
                 $profile->project_id = $this->_project_id;
-                $profile->person_id = $db->insertid();
+                $profile->person_id = $season_person_id;
                 $profile->published = 1;
                 $profile->modified = $db->Quote(''.$modified.'');
                 $profile->modified_by = $modified_by;
                 // Insert the object into the user profile table.
                 $result = JFactory::getDbo()->insertObject('#__sportsmanagement_project_referee', $profile);
-                }
+               // }
                 
                 }
                 break;
