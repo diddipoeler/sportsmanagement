@@ -365,11 +365,26 @@ label="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_KENNWORT"
 description="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_KENNWORT_DESC" />     
 <field name="ishd_stammverein" 
 type="clublist" 
-
 default="" 
 label="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_CLUB" 
 description="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_CLUB_DESC" />  
-		
+
+<field
+name="ishd_referee_insert_match_mail"
+type="editor"
+label="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_MAIL_REFEREE_INSERT"
+description="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_MAIL_REFEREE_INSERT_DESC"
+width="450" 
+filter="safehtml"/>
+
+<field
+name="ishd_referee_delete_match_mail"
+type="editor"
+label="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_MAIL_REFEREE_DELETE"
+description="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_MAIL_REFEREE_DELETE_DESC"
+width="450" 
+filter="safehtml"/>
+
 </fieldset>		
 <!-- register 3 -->		
 	<fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_PLACEHOLDER_IMAGES"
