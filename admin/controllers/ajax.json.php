@@ -63,6 +63,9 @@ class sportsmanagementControllerAjax extends JControllerLegacy
         public function __construct()
         {
                 parent::__construct();
+                $this->app = JFactory::getApplication();
+                // JInput object
+        $this->jinput = $this->app->input;
         }
         
         
@@ -73,12 +76,32 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function locationzipcodeoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-        $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getlocationzipcodeoptions(JRequest::getVar( 'zipcode' ), $jinput->getVar('required','false'),JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' ),JRequest::getVar( 'country' ) ));
-                JFactory::getApplication()->close();    
+                   
+try
+    {
+ 
+      $result = $this->getModel('ajax')->getlocationzipcodeoptions($this->jinput->get->getString('zipcode'),
+       $this->jinput->get->getString('required'),
+       $this->jinput->get->getString('slug'),
+       $this->jinput->get->getString('dbase'),
+       $this->jinput->get->getString('country') );
+      
+ if ( count($result) == 1 )
+ {
+ //$this->app->enqueueMessage('Keine Altersgruppen gefunden','Error');
+ }
+ else
+ {
+//$this->app->enqueueMessage('Altersgruppen gefunden','Message');    
+ }
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }        
+            
         } 
         
         
@@ -89,12 +112,32 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function countryzipcodeoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-        $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getcountryzipcodeoptions(JRequest::getVar( 'country' ), $jinput->getVar('required','false'),JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' ) ));
-                JFactory::getApplication()->close();    
+                    
+try
+    {
+ 
+      $result = $this->getModel('ajax')->getcountryzipcodeoptions($this->jinput->get->getString('country'),
+       $this->jinput->get->getString('required'),
+       $this->jinput->get->getString('slug'),
+       $this->jinput->get->getString('dbase'),
+       $this->jinput->get->getString('p') );
+      
+ if ( count($result) == 1 )
+ {
+ //$this->app->enqueueMessage('Keine Altersgruppen gefunden','Error');
+ }
+ else
+ {
+//$this->app->enqueueMessage('Altersgruppen gefunden','Message');    
+ }
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }                
+        
         } 
         
         
@@ -106,24 +149,23 @@ class sportsmanagementControllerAjax extends JControllerLegacy
          */
         public function countryclubagegroupoptions()
         {
-        $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;    
+       
         
          try
     {
  
-      $result = $this->getModel('ajax')->getcountryclubagegroupoptions($jinput->get->get('club_id'), $jinput->get->get('required'),$jinput->get->get('slug'),$jinput->get->get( 'dbase' ));
-      
-      //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
+      $result = $this->getModel('ajax')->getcountryclubagegroupoptions($this->jinput->get->getString('club_id'),
+       $this->jinput->get->getString('required'),
+       $this->jinput->get->getString('slug'),
+       $this->jinput->get->getString('dbase') );
       
  if ( count($result) == 1 )
  {
- $app->enqueueMessage('Keine Altersgruppen gefunden','Error');
+ $this->app->enqueueMessage('Keine Altersgruppen gefunden','Error');
  }
  else
  {
-$app->enqueueMessage('Altersgruppen gefunden','Message');    
+$this->app->enqueueMessage('Altersgruppen gefunden','Message');    
  }
  
       echo new JResponseJson($result);
@@ -142,27 +184,23 @@ $app->enqueueMessage('Altersgruppen gefunden','Message');
          */
         public function associationsoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-        //$model = $this->getModel('ajax');
-        // Some more code
-//$app->enqueueMessage('Here was a small warning'. 'warning');
+            
 
         try
     {
  
-      $result = $this->getModel('ajax')->getassociationsoptions(JRequest::getVar( 'country' ), $jinput->get->get('required'),$jinput->get->get('slug'),$jinput->get->get( 'dbase' ));
-      
-      //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
-      
+      $result = $this->getModel('ajax')->getassociationsoptions($this->jinput->get->getString('country'),
+       $this->jinput->get->getString('required'),
+       $this->jinput->get->getString('slug'),
+       $this->jinput->get->getString('dbase') );
+     
  if ( count($result) == 1 )
  {
- $app->enqueueMessage('Keine Landesverbände gefunden','Error');
+ $this->app->enqueueMessage('Keine Landesverbände gefunden','Error');
  }
  else
  {
-$app->enqueueMessage('Landesverbände gefunden','Message');    
+$this->app->enqueueMessage('Landesverbände gefunden','Message');    
  }
  
       echo new JResponseJson($result);
@@ -182,25 +220,22 @@ $app->enqueueMessage('Landesverbände gefunden','Message');
          */
         public function projects()
         {
-            $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-        //$model = $this->getModel('ajax');
-        // Some more code
-//$app->enqueueMessage('Here was a small warning'. 'warning');
 
         try
     {
  
-      $result = $this->getModel('ajax')->getProjects($jinput->get->get('s'), $jinput->get->get('required'),$jinput->get->get('slug'),$jinput->get->get( 'dbase' ));
+      $result = $this->getModel('ajax')->getProjects($this->jinput->get->getString('s'),
+       $this->jinput->get->getString('required'),
+       $this->jinput->get->getString('slug'),
+       $this->jinput->get->getString('dbase') );
       
  if ( count($result) == 1 )
  {
- $app->enqueueMessage('Keine Projekte gefunden','Error');
+ $this->app->enqueueMessage('Keine Projekte gefunden','Error');
  }
  else
  {
-$app->enqueueMessage('Projekte gefunden','Message');    
+$this->app->enqueueMessage('Projekte gefunden','Message');    
  }
  
       echo new JResponseJson($result);
@@ -209,9 +244,7 @@ $app->enqueueMessage('Projekte gefunden','Message');
     {
       echo new JResponseJson($e);
     }
-        //$this->input->get->get('menutype')
-        //echo json_encode((array) $model->getProjects( $jinput->get->get('s'), $jinput->get->get('required'),$jinput->get->get('slug'),$jinput->get->get( 'dbase' ) ));
-//        $app->close();    
+
         } 
         
 
@@ -223,17 +256,13 @@ $app->enqueueMessage('Projekte gefunden','Message');
          */
         public function seasons()
         {
-            $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-        //$model = $this->getModel('ajax');
-//                echo json_encode((array) $model->getseasons($jinput->getVar('cfg_which_database','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false') ));
-//                JFactory::getApplication()->close();   
-                
+               
 try
     {
  
-      $result = $this->getModel('ajax')->getseasons($jinput->getVar('cfg_which_database','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'));
+      $result = $this->getModel('ajax')->getseasons($this->jinput->get->getString('cfg_which_database'),
+       $this->jinput->get->getString('required'),
+       $this->jinput->get->getString('slug') );
  
       echo new JResponseJson($result);
     }
@@ -251,12 +280,20 @@ try
          */
         public function personlistoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-                $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getpersonlistoptions(JRequest::getInt( 'person_art' ), $jinput->getVar('required','false'),JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+            try
+    {
+ 
+      $result = $this->getModel('ajax')->getpersonlistoptions($this->jinput->get->getString('person_art'),
+      $this->jinput->get->getString('required'),
+      $this->jinput->get->getString('slug'),
+      $this->jinput->get->getString('dbase') );
+        echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }
+            
         }
         
         /**
@@ -266,27 +303,22 @@ try
          */
         public function personpositionoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-//                $model = $this->getModel('ajax');
-//                echo json_encode((array) $model->getpersonpositionoptions(JRequest::getInt( 'sports_type_id' ), $jinput->getVar('required','false'),JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' )));
-//                JFactory::getApplication()->close();
-                
+                          
 try
     {
  
-      $result = $this->getModel('ajax')->getpersonpositionoptions($jinput->get->get('sports_type_id'), $jinput->get->get('required'),$jinput->get->get('slug'),$jinput->get->get( 'dbase' ));
-      
-      //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
+      $result = $this->getModel('ajax')->getpersonpositionoptions($this->jinput->get->getString('sports_type_id'),
+      $this->jinput->get->getString('required'),
+      $this->jinput->get->getString('slug'),
+      $this->jinput->get->getString('dbase') );
       
  if ( count($result) == 1 )
  {
- $app->enqueueMessage('Keine Positionen gefunden','Error');
+ $this->app->enqueueMessage('Keine Positionen gefunden','Error');
  }
  else
  {
-$app->enqueueMessage('Positionen gefunden','Message');    
+$this->app->enqueueMessage('Positionen gefunden','Message');    
  }
  
       echo new JResponseJson($result);
@@ -305,19 +337,16 @@ $app->enqueueMessage('Positionen gefunden','Message');
          */
         public function personagegroupoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-//                $model = $this->getModel('ajax');
-//                echo json_encode((array) $model->getpersonagegroupoptions(JRequest::getInt( 'sports_type_id' ), $jinput->getVar('required','false'),JRequest::getInt( 'slug' ),JRequest::getInt( 'dbase' ),JRequest::getInt( 'project' ) ) );
-//                JFactory::getApplication()->close();
-        
+           
         try
     {
  
-      $result = $this->getModel('ajax')->getpersonagegroupoptions($jinput->get->get('sports_type_id'), $jinput->get->get('required'),$jinput->get->get('slug'),$jinput->get->get( 'dbase' ),$jinput->get->get( 'project' ),$jinput->get->get( 'country' ));
-      
-      //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'Notice');
+      $result = $this->getModel('ajax')->getpersonagegroupoptions($this->jinput->get->getString('sports_type_id'),
+      $this->jinput->get->getString('required'),
+      $this->jinput->get->getString('slug'),
+      $this->jinput->get->getString('dbase'),
+      $this->jinput->get->getString('project'),
+      $this->jinput->get->getString('country') );
       
  if ( count($result) == 1 )
  {
@@ -346,12 +375,29 @@ $app->enqueueMessage('Altersgruppe gefunden','Message');
          */
         public function predictionmembersoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-                $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getpredictionmembersoptions(JRequest::getInt( 'prediction_id' ), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+                    
+      try
+    {
+ 
+      $result = $this->getModel('ajax')->getpredictionmembersoptions($this->jinput->get->getString('prediction_id'),
+      $this->jinput->get->getString('required'),
+      $this->jinput->get->getString('slug'),
+      $this->jinput->get->getString('dbase') );
+ if ( count($result) == 1 )
+ {
+ $this->app->enqueueMessage('Keine Gruppen gefunden','Error');
+ }
+ else
+ {
+$this->app->enqueueMessage('Gruppen gefunden','Message');    
+ }
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }  
+          
         }
         
         /**
@@ -361,24 +407,21 @@ $app->enqueueMessage('Altersgruppe gefunden','Message');
          */
         public function projectdivisionsoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-               // $model = $this->getModel('ajax');
-//                echo json_encode((array) $model->getProjectDivisionsOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
-//                JFactory::getApplication()->close();
-                
+                          
     try
     {
  
-      $result = $this->getModel('ajax')->getProjectDivisionsOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' ));
+      $result = $this->getModel('ajax')->getProjectDivisionsOptions($this->jinput->get->getString('p'),
+      $this->jinput->get->getString('required'),
+      $this->jinput->get->getString('slug'),
+      $this->jinput->get->getString('dbase') );
  if ( count($result) == 1 )
  {
- $app->enqueueMessage('Keine Gruppen gefunden','Error');
+ $this->app->enqueueMessage('Keine Gruppen gefunden','Error');
  }
  else
  {
-$app->enqueueMessage('Gruppen gefunden','Message');    
+$this->app->enqueueMessage('Gruppen gefunden','Message');    
  }
       echo new JResponseJson($result);
     }
@@ -395,12 +438,29 @@ $app->enqueueMessage('Gruppen gefunden','Message');
          */
         public function projecteventsoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-                $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getProjectEventsOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+            
+ try
+    {
+ 
+      $result = $this->getModel('ajax')->getProjectEventsOptions($this->jinput->get->getString('p'),
+      $this->jinput->get->getString('required'),
+      $this->jinput->get->getString('slug'),
+      $this->jinput->get->getString('dbase') );
+ if ( count($result) == 1 )
+ {
+ //$this->app->enqueueMessage('Keine Gruppen gefunden','Error');
+ }
+ else
+ {
+//$this->app->enqueueMessage('Gruppen gefunden','Message');    
+ }
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }  
+                   
         }
 
         /**
@@ -410,17 +470,15 @@ $app->enqueueMessage('Gruppen gefunden','Message');
          */
         public function projectteamsbydivisionoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-                //$model = $this->getModel('ajax');
-//                echo json_encode((array) $model->getProjectTeamsByDivisionOptions($jinput->getVar('p','0'), JRequest::getInt( 'division' ), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
-//                JFactory::getApplication()->close();
-                
+                           
 try
     {
  
-      $result = $this->getModel('ajax')->getProjectTeamsByDivisionOptions($jinput->getVar('p','0'), $jinput->getVar( 'division','0' ), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),$jinput->getVar( 'dbase','0' ));
+      $result = $this->getModel('ajax')->getProjectTeamsByDivisionOptions($this->jinput->get->getString('p'),
+      $this->jinput->get->getString('division'),
+      $this->jinput->get->getString('required'),
+      $this->jinput->get->getString('slug'),
+      $this->jinput->get->getString('dbase') );
  
       echo new JResponseJson($result);
     }
@@ -438,12 +496,23 @@ try
          */
         public function projectsbysportstypesoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-                $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getProjectsBySportsTypesOptions(JRequest::getInt('sportstype'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+       
+try
+    {
+ 
+      $result = $this->getModel('ajax')->getProjectsBySportsTypesOptions($this->jinput->get->getString('sportstype'),
+      $this->jinput->get->getString('required'),
+      $this->jinput->get->getString('slug'),
+      $this->jinput->get->getString('dbase') );
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }        
+        
+        
         }
         
         /**
@@ -453,12 +522,22 @@ try
          */
         public function agegroupsbysportstypesoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-                $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getAgeGroupsBySportsTypesOptions(JRequest::getInt('sportstype'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+                  
+try
+    {
+ 
+      $result = $this->getModel('ajax')->getAgeGroupsBySportsTypesOptions($this->jinput->get->getString('sportstype'),
+      $this->jinput->get->getString('required'),
+      $this->jinput->get->getString('slug'),
+      $this->jinput->get->getString('dbase') );
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }      
+            
         }
 
         /**
@@ -468,12 +547,22 @@ try
          */
         public function projectsbycluboptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-                $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getProjectsByClubOptions(JRequest::getInt( 'cid' ), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+                    
+try
+    {
+ 
+      $result = $this->getModel('ajax')->getProjectsByClubOptions($this->jinput->get->getString('cid'),
+      $this->jinput->get->getString('required'),
+      $this->jinput->get->getString('slug'),
+      $this->jinput->get->getString('dbase') );
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }            
+        
         }
 
         /**
@@ -483,17 +572,14 @@ try
          */
         public function projectteamoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-    //            $model = $this->getModel('ajax');
-//                echo json_encode((array) $model->getProjectTeamOptions($jinput->getVar('p','0'),$jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' ) ));
-//                JFactory::getApplication()->close();
-                
+                           
 try
     {
  
-      $result = $this->getModel('ajax')->getProjectTeamOptions($jinput->getVar('p','0'),$jinput->getVar('required','false'),$jinput->getVar('slug','false'),$jinput->getVar( 'dbase','0' ));
+      $result = $this->getModel('ajax')->getProjectTeamOptions($this->jinput->get->getString('p'),
+      $this->jinput->get->getString('required'),
+      $this->jinput->get->getString('slug'),
+      $this->jinput->get->getString('dbase') );
  
       echo new JResponseJson($result);
     }
@@ -511,12 +597,23 @@ try
          */
         public function projectteamsptidoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-                $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getProjectTeamPtidOptions($jinput->getVar('p','0'),$jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' ) ));
-                JFactory::getApplication()->close();
+          
+ 
+ try
+    {
+ 
+      $result = $this->getModel('ajax')->getProjectTeamPtidOptions($this->jinput->get->getString('p'),
+      $this->jinput->get->getString('required'),
+      $this->jinput->get->getString('slug'),
+      $this->jinput->get->getString('dbase') );
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }
+           
         }
         
         /**
@@ -526,12 +623,23 @@ try
          */
         public function projectplayeroptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-                $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getProjectPlayerOptions($jinput->getVar('p','0'),$jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+            
+try
+    {
+ 
+      $result = $this->getModel('ajax')->getProjectPlayerOptions($this->jinput->get->getString('p'),
+      $this->jinput->get->getString('required'),
+      $this->jinput->get->getString('slug'),
+      $this->jinput->get->getString('dbase') );
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }
+           
+       
         }
 
         /**
@@ -541,12 +649,22 @@ try
          */
         public function projectstaffoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-                $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getProjectStaffOptions($jinput->getVar('p','0'),$jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+                    
+try
+    {
+ 
+      $result = $this->getModel('ajax')->getProjectStaffOptions($this->jinput->get->getString('p'),
+      $this->jinput->get->getString('required'),
+      $this->jinput->get->getString('slug'),
+      $this->jinput->get->getString('dbase') );
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }
+            
         }
 
         /**
@@ -556,12 +674,22 @@ try
          */
         public function projectcluboptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-                $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getProjectClubOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+                   
+try
+    {
+ 
+      $result = $this->getModel('ajax')->getProjectClubOptions($this->jinput->get->getString('p'),
+      $this->jinput->get->getString('required'),
+      $this->jinput->get->getString('slug'),
+      $this->jinput->get->getString('dbase') );
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }
+            
         }
 
         /**
@@ -571,12 +699,22 @@ try
          */
         public function projectstatsoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-                $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getProjectStatOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+            
+try
+    {
+ 
+      $result = $this->getModel('ajax')->getProjectStatOptions($this->jinput->get->getString('p'),
+      $this->jinput->get->getString('required'),
+      $this->jinput->get->getString('slug'),
+      $this->jinput->get->getString('dbase') );
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }
+            
         }
 
         /**
@@ -586,12 +724,22 @@ try
          */
         public function matchesoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-                $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getMatchesOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+            
+try
+    {
+ 
+      $result = $this->getModel('ajax')->getMatchesOptions($this->jinput->get->getString('p'),
+      $this->jinput->get->getString('required'),
+      $this->jinput->get->getString('slug'),
+      $this->jinput->get->getString('dbase') );
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }
+            
         }
 
         /**
@@ -601,12 +749,22 @@ try
          */
         public function refereesoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-                $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getRefereesOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+                   
+try
+    {
+ 
+      $result = $this->getModel('ajax')->getRefereesOptions($this->jinput->get->getString('p'),
+      $this->jinput->get->getString('required'),
+      $this->jinput->get->getString('slug'),
+      $this->jinput->get->getString('dbase') );
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }
+           
         }
 
         /**
@@ -616,24 +774,24 @@ try
          */
         public function projectroundoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-            //$model = $this->getModel('ajax');
-//                echo json_encode((array) $model->getProjectRoundOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),'ASC',NULL,JRequest::getInt( 'dbase' )));
-//                JFactory::getApplication()->close();
-                
+                           
         try
     {
- 
-      $result = $this->getModel('ajax')->getProjectRoundOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),'ASC',NULL,JRequest::getInt( 'dbase' ));
+
+      $result = $this->getModel('ajax')->getProjectRoundOptions($this->jinput->get->getString('p'),
+      $this->jinput->get->getString('required'),
+      $this->jinput->get->getString('slug'),
+      'ASC',
+      NULL,
+      $this->jinput->get->getString('dbase') );
+      
   if ( count($result) == 1 )
  {
- $app->enqueueMessage('Keine Runden gefunden','Error');
+ $this->app->enqueueMessage('Keine Runden gefunden','Error');
  }
  else
  {
-$app->enqueueMessage('Runden gefunden','Message');    
+$this->app->enqueueMessage('Runden gefunden','Message');    
  }
       echo new JResponseJson($result);
     }
@@ -651,12 +809,23 @@ $app->enqueueMessage('Runden gefunden','Message');
          */
         public function projecttreenodeoptions()
         {
-            $app = JFactory::getApplication();
-       // JInput object
-        $jinput = $app->input;
-                $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getProjectTreenodeOptions($jinput->getVar('p','0'), $jinput->getVar('required','false'),$jinput->getVar('slug','false'),JRequest::getInt( 'dbase' )));
-                JFactory::getApplication()->close();
+            
+        
+try
+    {
+ 
+      $result = $this->getModel('ajax')->getProjectTreenodeOptions($this->jinput->get->getString('p'),
+      $this->jinput->get->getString('required'),
+      $this->jinput->get->getString('slug'),
+      $this->jinput->get->getString('dbase') );
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }
+            
         }
         
         /**
