@@ -370,10 +370,26 @@ label="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_CLUB"
 description="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_CLUB_DESC" />  
 
 <field
+name="ishd_referee_insert_match_mail_subject"
+type="editor"
+label="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_MAIL_REFEREE_INSERT_SUBJECT"
+description="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_MAIL_REFEREE_INSERT_SUBJECT_DESC"
+width="450" 
+filter="safehtml"/>
+
+<field
 name="ishd_referee_insert_match_mail"
 type="editor"
 label="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_MAIL_REFEREE_INSERT"
 description="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_MAIL_REFEREE_INSERT_DESC"
+width="450" 
+filter="safehtml"/>
+
+<field
+name="ishd_referee_delete_match_mail_subject"
+type="editor"
+label="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_MAIL_REFEREE_DELETE_SUBJECT"
+description="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_MAIL_REFEREE_DELETE_SUBJECT_DESC"
 width="450" 
 filter="safehtml"/>
 
