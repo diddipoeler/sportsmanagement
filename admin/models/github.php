@@ -37,6 +37,12 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
+/**
+ * kleine beispiele
+ * https://packagist.org/packages/joomla/github
+ * /
+
+
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
