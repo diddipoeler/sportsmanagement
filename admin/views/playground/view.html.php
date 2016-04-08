@@ -60,13 +60,13 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		
+		$this->app = JFactory::getApplication();
         $starttime = microtime(); 
         
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
 		
@@ -82,7 +82,7 @@ class sportsmanagementViewPlayground extends sportsmanagementView
         
         if ( $this->item->latitude == 255 )
         {
-            $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_NO_GEOCODE'),'Error');
+            $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_NO_GEOCODE'),'Error');
             $this->map = false;
         }
         else
@@ -90,8 +90,8 @@ class sportsmanagementViewPlayground extends sportsmanagementView
             $this->map = true;
         }
 		
-		$extended = sportsmanagementHelper::getExtended($this->item ->extended, 'playground');
-		$this->extended	= $extended;
+		//$extended = sportsmanagementHelper::getExtended($this->item ->extended, 'playground');
+		$this->extended	= sportsmanagementHelper::getExtended($this->item->extended, 'playground');
         
 //        $document->addScript('http://maps.google.com/maps/api/js?&sensor=false&language=de');
 //        $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
