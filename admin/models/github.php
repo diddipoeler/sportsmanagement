@@ -97,38 +97,107 @@ class sportsmanagementModelgithub extends JModelLegacy
      */
     function addissue()
     {
-    
+    /**
+     * gibt es den github token
+     */
     if ( empty($this->post['gh_token']) )
     {
     $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_TOKEN'),'Error');
-    
+    /**
+     * wenn nicht kann es aber einen user mit passwort geben
+     */
     if ( empty($this->post['api_username']) && empty($this->post['api_password']) ) 
  		{ 
 $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_USER_PASSWORD'),'Error');
 return false;
  		} 
+        else
+        {
+        $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_USER_PASSWORD'),'Notice');    
+
+
+    /**
+     * hat die nachricht einen titel ?
+     */
+    if ( empty($this->post['title']) )
+    {
+    $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_TITLE'),'Error');
+    return false;    
+    }
+    else
+    {
+    /**
+    * ist die nachricht auch ausgefüllt ?
+    */    
+    if ( empty($this->post['message']) )
+    {
+    $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_MESSAGE'),'Error');
+    return false;    
+    }
+    else
+    {
+    $insertresult = $this->insertissue();    
+    
+//    [number] => 272
+//    [title] => Backend-View: sportstypes Layout: default
+    
+    //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' insertresult<br><pre>'.print_r($insertresult,true).'</pre>'),'');    
+    }    
+        
+    }
+            
+        }
             
     return false; 
     }    
     
     
              
-             if ( empty($this->post['title']) )
-    {
-    $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_TITLE'),'Error');
-    return false;    
-    }    
+        
     
-    if ( empty($this->post['message']) )
-    {
-    $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_MESSAGE'),'Error');
-    return false;    
-    }    
-    
-    $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($this->post,true).'</pre>'),'');    
+//    if ( empty($this->post['message']) )
+//    {
+//    $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_NO_MESSAGE'),'Error');
+//    return false;    
+//    }    
+//    
+//    $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($this->post,true).'</pre>'),'');    
         
     }
     
+    
+    /**
+     * sportsmanagementModelgithub::insertissue()
+     * 
+     * @return void
+     */
+    function insertissue()
+    {
+    $github_user = JComponentHelper::getParams($this->option)->get('cfg_github_username','');
+        $github_repo = JComponentHelper::getParams($this->option)->get('cfg_github_repository','');    
+    $gh_options = new JRegistry();
+// If an API token is set in the params, use it for authentication 
+ 		if ( $this->post['gh_token'] ) 
+ 		{ 
+ 			$gh_options->set('gh.token', $this->post['gh_token'] ); 
+ 		} 
+ 		// Set the username and password if set in the params 
+ 		else
+ 		{ 
+ 			$gh_options->set('api.username', $this->post['api_username'] ); 
+ 			$gh_options->set('api.password', $this->post['api_password'] ); 
+			
+ 		} 
+
+$github = new JGithub($gh_options);
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' github <br><pre>'.print_r($github ,true).'</pre>'),'');    
+
+// Create an issue
+$labels = array($this->post['labels']);
+return $github->issues->create($github_user, $github_repo, $this->post['title'], $this->post['message'], $this->post['api_username'], $this->post['milestones'], $labels);    
+       
+    }    
+        
     
     /**
      * sportsmanagementModelgithub::getGithubList()
@@ -164,10 +233,9 @@ $gh_options = new JRegistry();
  		else
 // 		elseif ($params->get('gh_user', '') && $params->get('gh_password')) 
  		{ 
-// 			$gh_options->set('api.username', $params->get('gh_user', '')); 
-// 			$gh_options->set('api.password', $params->get('gh_password', '')); 
- 			$gh_options->set('api.username', 'diddipoeler' ); 
- 			$gh_options->set('api.password', 'dp190460' );  			
+ 			$gh_options->set('api.username', $params->get('gh_user', '')); 
+ 			$gh_options->set('api.password', $params->get('gh_password', '')); 
+			
  		} 
 
         
