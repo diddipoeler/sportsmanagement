@@ -346,6 +346,7 @@
 			<field name="sis_meinvereinspasswort" type="text" size="40" default="" label="COM_SPORTSMANAGEMENT_SETTINGS_SETMEINEVEREINSPASS" description="COM_SPORTSMANAGEMENT_SETTINGS_SETMEINEVEREINSPASS_DESC" />     
   </fieldset>
 
+<!-- ishd parameter -->
 <fieldset name="ishd-konfiguration"
 	label="COM_SPORTSMANAGEMENT_CONFIG_ISHD_SETTINGS_LABEL"
 		description="COM_SPORTSMANAGEMENT_CONFIG_ISHD_SETTINGS_DESC"
@@ -402,7 +403,7 @@ width="450"
 filter="safehtml"/>
 
 </fieldset>		
-<!-- register 3 -->		
+<!-- platzhalter -->		
 	<fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_PLACEHOLDER_IMAGES"
 		addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 	
@@ -502,7 +503,7 @@ filter="safehtml"/>
 				
 	</fieldset>
 
-<!-- register 4 -->
+<!-- frontend -->
 <fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_FRONTEND"
   label="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_FRONTEND">
 
@@ -521,12 +522,29 @@ class="radio btn-group btn-group-yesno"
     		
 </fieldset>
 
-<!-- register 5 -->	
+<!-- backend -->	
 	<fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_BACKEND"
 	label="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_BACKEND"
 		
   	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+
+<field name="gh_user" type="text"
+			description="COM_SPORTSMANAGEMENT_FIELD_GH_USER_DESC"
+			label="COM_SPORTSMANAGEMENT_FIELD_GH_USER_LABEL"
+		/>
+
+		<field name="gh_password" type="password"
+			description="COM_SPORTSMANAGEMENT_FIELD_GH_PASSWORD_DESC"
+			label="COM_SPORTSMANAGEMENT_FIELD_GH_PASSWORD_LABEL"
+		/>
+
+		<field name="gh_token" type="text"
+			description="COM_SPORTSMANAGEMENT_FIELD_GH_TOKEN_DESC"
+			label="COM_SPORTSMANAGEMENT_FIELD_GH_TOKEN_LABEL"
+		/>
+
+
 <!--	
 <field name="jl_database_server" 
   type="text" 
