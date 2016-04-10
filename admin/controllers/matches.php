@@ -426,6 +426,9 @@ class sportsmanagementControllermatches extends JControllerAdmin
 			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_REFEREES_ERROR').'<br />';
 		}
         
+        //$link = 'index.php?option='.$option.'&close='.JRequest::getString('close', 0).'&tmpl=component&view=match&layout=editreferees&id='.$post['id'];
+
+        
         if ( JRequest::getString('close', 0) == 1 )
         {
             $link = 'index.php?option='.$option.'&view=close&tmpl=component';
@@ -434,6 +437,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
         {
             $link = 'index.php?option='.$option.'&close='.JRequest::getString('close', 0).'&tmpl=component&view=match&layout=editreferees&id='.$post['id'];
         }
+
         
 		//echo $link.'<br />';
 		$this->setRedirect($link,$msg);

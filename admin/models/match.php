@@ -55,6 +55,9 @@ JLoader::import('joomla.utilities.simplecrypt');
  * @copyright diddi
  * @version 2014
  * @access public
+ * 
+ * https://docs.joomla.org/Sending_email_from_extensions
+ * 
  */
 class sportsmanagementModelMatch extends JModelAdmin
 {
@@ -895,7 +898,7 @@ $query->order('m.match_number');
         // Select some fields
         $query->select('m.*');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_single AS m');
+		$query->from('#__sportsmanagement_match_single AS m');
         
         // Where
         $query->where('m.match_id = '.(int) $match_id );
@@ -984,14 +987,14 @@ $query->order('m.match_number');
         $query->select('CONCAT_WS(\':\',pg.id,pg.alias) AS playground_slug ');
         $query->select('pg.picture AS playground_picture,pg.name AS playground_name ');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id = m.projectteam1_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.id = pt1.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id = st1.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON pt2.id = m.projectteam2_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = pt2.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id = st2.team_id ');
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS pg ON pg.id = m.playground_id ');
+		$query->from('#__sportsmanagement_match AS m');
+        $query->join('INNER',' #__sportsmanagement_project_team AS pt1 ON pt1.id = m.projectteam1_id ');
+        $query->join('INNER',' #__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
+        $query->join('INNER',' #__sportsmanagement_team AS t1 ON t1.id = st1.team_id ');
+        $query->join('INNER',' #__sportsmanagement_project_team AS pt2 ON pt2.id = m.projectteam2_id ');
+        $query->join('INNER',' #__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id ');
+        $query->join('INNER',' #__sportsmanagement_team AS t2 ON t2.id = st2.team_id ');
+        $query->join('LEFT',' #__sportsmanagement_playground AS pg ON pg.id = m.playground_id ');
         // Where
         $query->where('m.id = '.(int) $match_id );
                 
@@ -1040,8 +1043,6 @@ $query->order('m.match_number');
         $query->select('pl.firstname,pl.nickname,pl.lastname,pl.info,sp.jerseynumber,pl.ordering');
         
         $query->select('pos.name AS positionname');
-        
-        //$query->select('ppos.position_id,ppos.id AS pposid');
 
         // From 
 		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pl');
@@ -1052,8 +1053,6 @@ $query->order('m.match_number');
         $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = ppp.project_position_id');
         $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id ');
         
-        //$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = pl.position_id ');
-        //$query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = pos.id ');
         $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id ');
         $query->where('pt.id = '.  $projectteam_id);
         $query->where('pl.published = 1');
@@ -1068,7 +1067,6 @@ $query->order('m.match_number');
             $query->where("sp.id NOT IN (".implode(',',$filter).")");
 		}
 
-        //$query->order("pos.ordering");
         $query->order("pl.lastname ASC");
 		JFactory::getDbo()->setQuery($query);
 		
@@ -1136,27 +1134,6 @@ $query->order('m.match_number');
         $query->join('LEFT','#__sportsmanagement_season_team_id AS st1 ON st1.team_id = sp1.team_id and st1.season_id = sp1.season_id'); 
         $query->join('LEFT','#__sportsmanagement_project_team AS pt1 ON st1.id = pt1.team_id');
 
-/*        
-		$query='SELECT mp.*,'
-		.' p1.firstname AS firstname, p1.nickname AS nickname, p1.lastname AS lastname,'
-		.' p2.firstname AS out_firstname,p2.nickname AS out_nickname, p2.lastname AS out_lastname,'
-		.' pos.name AS in_position, came_in'
-		.' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp '
-		.' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp1 ON tp1.id=mp.teamplayer_id '
-		.' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p1 ON tp1.person_id=p1.id '
-		.'   AND p1.published = 1'
-		.' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_player AS tp2 ON tp2.id=mp.in_for '
-		.' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p2 ON tp2.person_id=p2.id '
-		.'   AND p2.published = 1'
-		.' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON mp.project_position_id=ppos.id '
-		.' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id=pos.id '
-		.' WHERE mp.match_id='.$match_id
-		.'   AND came_in>0 '
-		.'   AND tp1.projectteam_id='.$tid
-		.' ORDER by (mp.in_out_time+0) ';
-*/        
-        
-        //$query->where('ppp.project_id = '.$project_id);
         $query->where('pt1.project_id = '.$project_id);
         $query->where('mp.match_id = '.$match_id);
         $query->where('came_in > 0');
@@ -1323,24 +1300,26 @@ $query->order('m.match_number');
 	{
 	   $app = JFactory::getApplication();
        $option = JRequest::getCmd('option');
+       // Create a new query object.		
+		$db = sportsmanagementHelper::getDBConnection();
+		$query = $db->getQuery(true);
        
-	   $query = JFactory::getDbo()->getQuery(true);
        // Select some fields
 		$query->select('mc.*');
         $query->select('t1.name as team1,t2.name as team2');
         $query->select('u.name AS editor');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS mc ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON mc.projectteam1_id = pt1.id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt1.team_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id = st1.team_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON mc.projectteam2_id = pt2.id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 ON st2.id = pt2.team_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id = st2.team_id ');
+        $query->from('#__sportsmanagement_match AS mc ');
+        $query->join('INNER','#__sportsmanagement_project_team AS pt1 ON mc.projectteam1_id = pt1.id ');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
+        $query->join('INNER','#__sportsmanagement_team AS t1 ON t1.id = st1.team_id ');
+        $query->join('INNER','#__sportsmanagement_project_team AS pt2 ON mc.projectteam2_id = pt2.id ');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
+        $query->join('INNER','#__sportsmanagement_team AS t2 ON t2.id = st2.team_id ');
         $query->join('LEFT','#__users u ON u.id = mc.checked_out');
         $query->where('mc.id = ' . $match_id );
 
-		JFactory::getDbo()->setQuery($query);
-		return	JFactory::getDbo()->loadObject();
+		$db->setQuery($query);
+		return	$db->loadObject();
 
 	}
     
@@ -1350,7 +1329,7 @@ $query->order('m.match_number');
 	 * @param int $project_position_id
 	 * @return array of referee ids
 	 */
-	public static function getRefereeRoster($project_position_id=0,$match_id=0)
+	public static function getRefereeRoster($project_position_id=0,$match_id=0,$project_referee_id=0)
 	{
 	// Reference global application object
         $app = JFactory::getApplication();
@@ -1362,16 +1341,20 @@ $query->order('m.match_number');
         $query = $db->getQuery(true);
 
 // Select some fields
-$query->select('pref.id AS value,pr.firstname,pr.nickname,pr.lastname');
+$query->select('pref.id AS value,pr.firstname,pr.nickname,pr.lastname,pr.email');
 $query->from('#__sportsmanagement_match_referee AS mr');
 $query->join('LEFT','#__sportsmanagement_project_referee AS pref ON mr.project_referee_id=pref.id AND pref.published = 1');
 $query->join('LEFT','#__sportsmanagement_season_person_id AS spi ON pref.person_id=spi.id');
 $query->join('LEFT','#__sportsmanagement_person AS pr ON spi.person_id=pr.id AND pr.published = 1');
 $query->where('mr.match_id = '. $match_id);
 
-		if ($project_position_id > 0)
+		if ( $project_position_id )
 		{
 		$query->where('mr.project_position_id = '.$project_position_id);	
+		}
+        if ( $project_referee_id )
+		{
+		$query->where('mr.project_referee_id = '.$project_referee_id);	
 		}
 		$query->order('mr.project_position_id, mr.ordering ASC');
 		$db->setQuery($query);
@@ -1774,76 +1757,176 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
 	function updateReferees($post)
 	{
 		$app = JFactory::getApplication();
+        $config = JFactory::getConfig();
         $option = JRequest::getCmd('option');
-        $query = JFactory::getDBO()->getQuery(true);
+        // Create a new query object.		
+		$db = sportsmanagementHelper::getDBConnection();
+		$query = $db->getQuery(true);
+        
+        $sender = array( 
+    $config->get( 'mailfrom' ),
+    $config->get( 'fromname' ) 
+);
+
         $mid = $post['id'];
 		$peid = array();
 		$result = true;
 		$positions = $post['positions'];
 
 $paramsmail = JComponentHelper::getParams($option)->get('ishd_referee_insert_match_mail');
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' paramsmail <br><pre>'.print_r($paramsmail ,true).'</pre>'),'');    
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' paramsmail <br><pre>'.print_r($paramsmail ,true).'</pre>'),'');    
 
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post'.'<pre>'.print_r($post,true).'</pre>' ),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post'.'<pre>'.print_r($post,true).'</pre>' ),'');
         
 		//$project_id=$post['project'];
 		foreach ($positions AS $key => $pos)
 		{
-			if (isset($post['position'.$key])) { $peid=array_merge((array) $post['position'.$key],$peid); }
+			if (isset($post['position'.$key])) 
+            { 
+                $peid = array_merge((array) $post['position'.$key],$peid);
+                 }
 		}
+
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' peid'.'<pre>'.print_r($peid,true).'</pre>' ),'');
         
-		if ($peid == null)
+		//if ( $peid == null )
+        if ( !$peid )
 		{ 
 		  // Delete all referees assigned to this match
-          $query->delete(JFactory::getDBO()->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee'));
-          $query->where('match_id = '.$post['id']);
+          $query->delete($db->quoteName('#__sportsmanagement_match_referee'));
+          $query->where('match_id = '.$mid);
     	}
 		else
 		{ 
-		  // Delete all referees which are not selected anymore from this match
+/**
+* erst die schiedsrichter selektieren die gelöscht werden
+* damit wir eine email senden können, dass sie vom spiel
+* ausgetragen werden. 
+*/		  
+$peids = implode(',',$peid);
+$query->clear();
+// Select some fields
+		$query->select('id');
+		// From the match table
+		$query->from('#__sportsmanagement_match_referee');
+        $query->where('match_id = '.$mid);
+        $query->where('project_referee_id NOT IN ('.$peids.')');
+		$db->setQuery($query);
+        $result_referee_delete = $db->loadObjectList();          
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' delete referees: <br><pre>'.print_r($result_referee_delete ,true).'</pre>'),'Error');          
+          
+          // Delete all referees which are not selected anymore from this match
 			JArrayHelper::toInteger($peid);
 			$peids = implode(',',$peid);
-            $query->delete(JFactory::getDBO()->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee'));
-            $query->where('match_id = '.$post['id']);
+            $query->clear();
+            $query->delete($db->quoteName('#__sportsmanagement_match_referee'));
+            $query->where('match_id = '.$mid);
             $query->where('project_referee_id NOT IN ('.$peids.')');
 		}
-		JFactory::getDbo()->setQuery($query);
+        
+		$db->setQuery($query);
 		if (!sportsmanagementModeldatabasetool::runJoomlaQuery()) 
         { 
-            $this->setError(JFactory::getDbo()->getErrorMsg()); 
-            $result=false; 
+            $this->setError($db->getErrorMsg()); 
+            $result = false; 
         }
         
-		foreach ($positions AS $key=>$pos)
+		foreach ( $positions AS $key => $pos )
 		{
-			if (isset($post['position'.$key]))
+			if ( isset($post['position'.$key]) )
 			{
 				for ($x=0; $x < count($post['position'.$key]); $x++)
 				{
-					$project_referee_id=$post['position'.$key][$x];
-					$query="	SELECT *
-								FROM #__".COM_SPORTSMANAGEMENT_TABLE."_match_referee
-								WHERE match_id=$mid AND project_referee_id=$project_referee_id";
+					$project_referee_id = $post['position'.$key][$x];
+                    $query->clear();
+                    // Select some fields
+		$query->select('id');
+		// From the match table
+		$query->from('#__sportsmanagement_match_referee');
+        $query->where('match_id = '.$mid);
+        $query->where('project_referee_id = '.$project_referee_id);
+        
 
-					JFactory::getDbo()->setQuery($query);
-					if ($result=JFactory::getDbo()->loadResult())
+					$db->setQuery($query);
+                    $result_referee = $db->loadResult();
+					if ( $result_referee )
 					{
-						$query="	UPDATE #__".COM_SPORTSMANAGEMENT_TABLE."_match_referee
-									SET project_position_id='$key',ordering= '$x'
-									WHERE id='$result' AND match_id='$mid' AND project_referee_id='$project_referee_id'";
+					   // Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->id = $result;
+        $object->project_position_id = $key;
+        $object->ordering = $x;
+        // Update their details in the table using id as the primary key.
+        try {
+        $result = $db->updateObject('#__sportsmanagement_match_referee', $object, 'id');
+}
+catch (Exception $e){
+sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+}
+ 
+        
 					}
 					else
 					{
-						$query="	INSERT INTO #__".COM_SPORTSMANAGEMENT_TABLE."_match_referee
-										(match_id,project_referee_id, project_position_id, ordering) VALUES
-										('$mid','$project_referee_id','$key','$x')";
-					}
-					JFactory::getDbo()->setQuery($query);
-					if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
-					{
-						sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
-						$result=false;
-					}
+					   $profile = new stdClass();
+                $profile->match_id = $mid;
+                $profile->project_referee_id = $project_referee_id;
+                $profile->project_position_id = $key;
+                $profile->ordering = $x;
+                // Insert the object into the table.
+                try {
+                $result = $db->insertObject('#__sportsmanagement_match_referee', $profile);
+                
+                if ( $result )
+                {
+                $query->clear();    
+                $match_teams = self::getMatchTeams($mid);
+                $match_detail = self::getMatchData($mid);
+                $refreee_detail = self::getRefereeRoster($key,$mid,$project_referee_id); 
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' refreee_detail <br><pre>'.print_r($refreee_detail ,true).'</pre>'),'');                
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match_detail <br><pre>'.print_r($match_detail ,true).'</pre>'),'');
+
+$mailer = JFactory::getMailer();
+$mailer->setSender($sender);
+$recipient = $refreee_detail[$project_referee_id]->email;
+$mailer->addRecipient($recipient);
+                
+//$body = "Your body string\nin double quotes if you want to parse the \nnewlines etc";
+$body = sprintf($paramsmail,
+$refreee_detail[$project_referee_id]->firstname,
+$refreee_detail[$project_referee_id]->lastname,
+'Schiedsrichterverein',
+'Schiedsrichterstufe',
+date("d.m.Y - H:i", $match_detail->match_timestamp),
+$match_detail->playground_name,
+'Ligakurzname',
+$match_teams->team1,
+$match_teams->team2);
+
+$mailer->setSubject('Neueinteilung Schiedsrichtereinsatz am : '.date("d.m.Y - H:i", $match_detail->match_timestamp));
+$mailer->isHTML(true);
+$mailer->Encoding = 'base64';
+$mailer->setBody($body);
+$send = $mailer->Send();
+if ( $send !== true ) 
+{
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Error sending email: <br><pre>'.print_r($send->__toString() ,true).'</pre>'),'Error'); 
+} 
+else 
+{
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Mail sent <br><pre>'.print_r($mailer ,true).'</pre>'),''); 
+}                    
+                }
+                
+                
+                
+                }
+catch (Exception $e){
+sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+}
+                					}
+				
 				}
 			}
 		}

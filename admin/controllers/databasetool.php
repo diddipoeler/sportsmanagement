@@ -55,6 +55,11 @@ jimport('joomla.application.component.controller');
 class sportsmanagementControllerDatabaseTool extends JControllerLegacy
 {
 
+/**
+ * sportsmanagementControllerDatabaseTool::repair()
+ * 
+ * @return void
+ */
 function repair()  
 {  
 $app = JFactory::getApplication();  
@@ -75,6 +80,11 @@ $msg = 'Alle Tabellen repariert';
 	$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);   
 }  
 
+/**
+ * sportsmanagementControllerDatabaseTool::optimize()
+ * 
+ * @return void
+ */
 function optimize()  
 {  
 $app = JFactory::getApplication();  
@@ -97,6 +107,11 @@ $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=compon
 }  
 
 
+/**
+ * sportsmanagementControllerDatabaseTool::truncate()
+ * 
+ * @return void
+ */
 function truncate()  
 {  
 $app = JFactory::getApplication();  

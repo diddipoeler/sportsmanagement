@@ -82,7 +82,21 @@ class sportsmanagementModelagegroups extends JModelList
                 parent::__construct($config);
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
                 parent::setDbo($getDBConnection);
-                
+        
+        // Reference global application object
+        $this->app = JFactory::getApplication();
+        $this->user	= JFactory::getUser(); 
+        $this->db = $this->getDbo();
+		$this->query = $this->db->getQuery(true);
+        // JInput object
+        $this->jinput = $this->app->input;
+        $this->option = $this->jinput->getCmd('option');
+        $this->pks = $this->jinput->get('cid',array(),'array');
+        $this->post = $this->jinput->post->getArray(array());
+
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _db <br><pre>'.print_r($this->_db,true).'</pre>'),'Notice');
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' db <br><pre>'.print_r($this->db,true).'</pre>'),'Notice');
+        
         }
         
     /**
@@ -94,12 +108,8 @@ class sportsmanagementModelagegroups extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Initialise variables.
-		$app = JFactory::getApplication('administrator');
-        
-        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->db,true).'</pre>'),'Notice');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -133,51 +143,36 @@ class sportsmanagementModelagegroups extends JModelList
 	 */
 	function getListQuery()
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        
-        //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
-//        $search_nation		= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search_nation','search_nation','','word');
-//        $filter_sports_type	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.filter_sports_type','filter_sports_type','','int');
-        // Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
-		$user	= JFactory::getUser(); 
-		
         // Select some fields
-		$query->select(implode(",",$this->filter_fields));
+		$this->query->select(implode(",",$this->filter_fields));
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup as obj');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = obj.sportstype_id');
-        $query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
-        
-        
-        
-        
+		$this->query->from('#__sportsmanagement_agegroup as obj');
+        $this->query->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = obj.sportstype_id');
+        $this->query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
+  
         if ($this->getState('filter.search') )
 		{
-        $query->where('LOWER(obj.name) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%') );
+        $this->query->where('LOWER(obj.name) LIKE '.$this->db->Quote('%'.$this->getState('filter.search').'%') );
         }
         if ($this->getState('filter.search_nation'))
 		{
-        $query->where('obj.country LIKE '.$db->Quote('%'.$this->getState('filter.search_nation').'%') );
+        $this->query->where('obj.country LIKE '.$this->db->Quote('%'.$this->getState('filter.search_nation').'%') );
         }
         if ($this->getState('filter.sports_type'))
 		{
-        $query->where('obj.sportstype_id = '.$this->getState('filter.sports_type'));
+        $this->query->where('obj.sportstype_id = '.$this->getState('filter.sports_type'));
         }
-        
-		//$query->order(self::_buildContentOrderBy());
-        $query->order($db->escape($this->getState('list.ordering', 'obj.name')).' '.
-                $db->escape($this->getState('list.direction', 'ASC')));
+
+        $this->query->order($this->db->escape($this->getState('list.ordering', 'obj.name')).' '.
+                $this->db->escape($this->getState('list.direction', 'ASC')));
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $my_text = ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        $my_text = ' <br><pre>'.print_r($this->query->dump(),true).'</pre>';    
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
         
-		return $query;
+		return $this->query;
         
 	}
     
@@ -188,27 +183,15 @@ class sportsmanagementModelagegroups extends JModelList
      */
     function getAgeGroups()
     {
-        $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $search_nation = '';
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($app,true).'</pre>'),'Notice');
-        
-        
-        // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection();
-        // Create a new query object.
-        $query = $db->getQuery(true);
-         $query->select('a.id AS value, concat(a.name, \' von: \',a.age_from,\' bis: \',a.age_to,\' Stichtag: \',a.deadline_day) AS text');
-			$query->from('#__sportsmanagement_agegroup as a');
+         $this->query->select('a.id AS value, concat(a.name, \' von: \',a.age_from,\' bis: \',a.age_to,\' Stichtag: \',a.deadline_day) AS text');
+			$this->query->from('#__sportsmanagement_agegroup as a');
                        
-        $query->order('a.name ASC');
+        $this->query->order('a.name ASC');
 
-        $db->setQuery($query);
-        if (!$result = $db->loadObjectList())
+        $this->db->setQuery($this->query);
+        if (!$result = $this->db->loadObjectList())
         {
-            sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->db->getErrorMsg(), __LINE__);
             return array();
         }
 

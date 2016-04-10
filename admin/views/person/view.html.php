@@ -132,7 +132,7 @@ class sportsmanagementViewPerson extends sportsmanagementView
 	if ( $this->checkextrafields )
 	{
 //	$lists = array();
-	$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item-->id);
+	$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id);
             //$app->enqueueMessage(JText::_('view -> '.'<pre>'.print_r($lists['ext_fields'],true).'</pre>' ),'');
         }
         

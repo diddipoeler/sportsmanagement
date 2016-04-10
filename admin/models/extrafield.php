@@ -168,6 +168,9 @@ class sportsmanagementModelextrafield extends JModelAdmin
 	public function save($data)
 	{
 	   $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
        $post = JRequest::get('post');
