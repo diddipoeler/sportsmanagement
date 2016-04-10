@@ -75,11 +75,10 @@ class sportsmanagementView extends JViewLegacy
 	 */
 	public function display ($tpl = null)
 	{
-	   $option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
+//	   $option = JRequest::getCmd('option');
+//		$app = JFactory::getApplication();
         
-        $view = JRequest::getCmd('view', 'cpanel');
-        $this->tmpl = JRequest::getCmd('tmpl', '');
+        
         
 		if (count($errors = $this->get('Errors')))
 		{
@@ -98,10 +97,12 @@ class sportsmanagementView extends JViewLegacy
 		$this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');
         $this->format = $this->jinput->getCmd('format');
+        $this->view = $this->jinput->getCmd('view', 'cpanel');
+        $this->tmpl = $this->jinput->getCmd('tmpl', '');
 		$this->uri = JFactory::getURI();
         $this->user = JFactory::getUser();
         
-        switch ( $view )
+        switch ( $this->view )
             {
             case 'predictions';
             case 'extensions';
@@ -140,7 +141,7 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
 }
 
 
-        switch ( $view )
+        switch ( $this->view )
             {
             case 'predictions';
             case 'extensions';
@@ -176,7 +177,7 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
         }
         
         
-        $app->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
+        $this->app->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
 
 //		if (sportsmanagementHelper::isJoomlaVersion('2.5'))
 //		{
@@ -199,7 +200,7 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
         // hier wird gesteuert, welcher menüeintrag aktiv ist.
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-            switch ( $view )
+            switch ( $this->view )
             {
                 case 'projects';
                 case 'projectteams';
@@ -244,9 +245,9 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
 	 */
 	protected function addToolbar ()
 	{
-	   $option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
-        $view = JRequest::getCmd('view', 'cpanel');
+	   //$option = JRequest::getCmd('option');
+		//$app = JFactory::getApplication();
+        //$view = JRequest::getCmd('view', 'cpanel');
 		$canDo = sportsmanagementHelper::getActions();
         
         // in der joomla 3 version kann man die filter setzen
@@ -254,7 +255,7 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
         {
         JHtmlSidebar::setAction('index.php?option=com_sportsmanagement');   
         
-        switch ($view)
+        switch ($this->view)
         {
         case 'projects':
         case 'persons':
@@ -365,7 +366,7 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
         {
         $isNew = $this->item->id == 0;
         $canDo = sportsmanagementHelper::getActions($this->item->id);
-        $view = JRequest::getCmd('view', 'edit');
+        //$view = JRequest::getCmd('view', 'edit');
             if (empty($this->title))
 		    {
             if ( $isNew )
@@ -383,31 +384,31 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
 			// For new records, check the create permission.
 			if ($canDo->get('core.create')) 
 			{
-				JToolBarHelper::apply($view.'.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save($view.'.save', 'JTOOLBAR_SAVE');
-				JToolBarHelper::custom($view.'.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+				JToolBarHelper::apply($this->view.'.apply', 'JTOOLBAR_APPLY');
+				JToolBarHelper::save($this->view.'.save', 'JTOOLBAR_SAVE');
+				JToolBarHelper::custom($this->view.'.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 			}
-			JToolBarHelper::cancel($view.'.cancel', 'JTOOLBAR_CANCEL');
+			JToolBarHelper::cancel($this->view.'.cancel', 'JTOOLBAR_CANCEL');
 		}
 		else
 		{
 			if ($canDo->get('core.edit'))
 			{
 				// We can save the new record
-				JToolBarHelper::apply($view.'.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save($view.'.save', 'JTOOLBAR_SAVE');
+				JToolBarHelper::apply($this->view.'.apply', 'JTOOLBAR_APPLY');
+				JToolBarHelper::save($this->view.'.save', 'JTOOLBAR_SAVE');
  
 				// We can save this record, but check the create permission to see if we can return to make a new one.
 				if ($canDo->get('core.create')) 
 				{
-					JToolBarHelper::custom($view.'.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+					JToolBarHelper::custom($this->view.'.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 				}
 			}
 			if ($canDo->get('core.create')) 
 			{
-				JToolBarHelper::custom($view.'.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+				JToolBarHelper::custom($this->view.'.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
 			}
-			JToolBarHelper::cancel($view.'.cancel', 'JTOOLBAR_CLOSE');
+			JToolBarHelper::cancel($this->view.'.cancel', 'JTOOLBAR_CLOSE');
 		}    
             
             
@@ -477,12 +478,14 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
             }    
         }
         
+        sportsmanagementHelper::ToolbarButton('addissue','new',JText::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE'),'github',0,$this->view,$this->layout);
+        sportsmanagementHelper::ToolbarButtonOnlineHelp();
         if ($canDo->get('core.admin'))
 		{
 			JToolBarHelper::preferences('com_sportsmanagement');
 			JToolBarHelper::divider();
 		}
-        sportsmanagementHelper::ToolbarButtonOnlineHelp();
+        
         
         
 	}

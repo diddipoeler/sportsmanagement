@@ -27,7 +27,7 @@
 * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
 * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
 * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
 * Siehe die GNU General Public License für weitere Details.
 *
@@ -40,79 +40,66 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
-// import Joomla view library
-jimport('joomla.application.component.view');
- 
+// import Joomla controllerform library
+jimport('joomla.application.component.controllerform');
+
 
 /**
- * sportsmanagementViewextrafield
+ * sportsmanagementControllergithub
  * 
- * @package   
- * @author 
- * @copyright diddi
- * @version 2014
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2016
+ * @version $Id$
  * @access public
  */
-class sportsmanagementViewextrafield extends sportsmanagementView
+class sportsmanagementControllergithub extends JControllerForm
 {
-	
-	
-	/**
-	 * sportsmanagementViewextrafield::init()
-	 * 
-	 * @return
-	 */
-	public function init ()
-	{
-		//$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-//		$uri = JFactory::getURI();
-//        $starttime = microtime(); 
-        
-       // // get the Data
-//		$form = $this->get('Form');
-//		$item = $this->get('Item');
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
-        {
-        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
-        }
-        
-//		$script = $this->get('Script');
- 
-		// Check for errors.
-		if (count($errors = $this->get('Errors'))) 
-		{
-			JError::raiseError(500, implode('<br />', $errors));
-			return false;
-		}
-//		// Assign the Data
-//		$this->form = $form;
-//		$this->item = $item;
-//		$this->script = $script;
-		
-//		$extended = sportsmanagementHelper::getExtended($item->extended, 'jlextcountry');
-//		$this->assignRef( 'extended', $extended );
-		$this->cfg_which_media_tool	= JComponentHelper::getParams($this->option)->get('cfg_which_media_tool', 0);
- 
 
-	}
- 
-	/**
-	 * Setting the toolbar
+ /**
+	 * Constructor.
+	 *
+	 * @param	array An optional associative array of configuration settings.
+	 * @see		JController
+	 * @since	1.6
 	 */
-	protected function addToolBar() 
+	public function __construct($config = array())
 	{
-        $app	= JFactory::getApplication();
-		$jinput	= $app->input;
-		$jinput->set('hidemainmenu', true);
-        
-        $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_EXTRAFIELD_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_EXTRAFIELD_NEW');
-        $this->icon = 'extrafield';
-		
-        parent::addToolbar();
+		parent::__construct($config);
+        $this->app = JFactory::getApplication();
+		$this->jinput = $this->app->input;
+		$this->option = $this->jinput->getCmd('option');
+        $this->model = $this->getModel();
+        $this->post = $this->jinput->post->getArray(array());  
+
+		//$this->registerTask('saveshort',	'saveshort');
 	}
     
+/**
+ * sportsmanagementControllergithub::addissue()
+ * 
+ * @return void
+ */
+function addissue()
+{
+  // Check for request forgeries
+		JRequest::checkToken() or die('JINVALID_TOKEN');
+
+       $msg = $this->model->addissue();
+       $this->setRedirect('index.php?option=com_sportsmanagement&view=github&tmpl=component&layout=github_result',$msg);    
+    
+}
+
+/**
+	 * Proxy for getModel.
+	 * @since	1.6
+	 */
+	public function getModel($name = 'github', $prefix = 'sportsmanagementModel', $config = Array() ) 
+	{
+		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+		return $model;
+	}
 
 }
+
+?>

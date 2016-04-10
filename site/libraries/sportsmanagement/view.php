@@ -82,7 +82,7 @@ class sportsmanagementView extends JViewLegacy
         // Get a refrence of the page instance in joomla
 		$this->document = JFactory::getDocument();
         $this->option = $this->jinput->getCmd('option');
-        
+        $this->user = JFactory::getUser();
         $this->view = $this->jinput->getVar("view");
         
         $this->model = $this->getModel();

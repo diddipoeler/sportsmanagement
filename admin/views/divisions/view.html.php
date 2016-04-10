@@ -96,9 +96,9 @@ class sportsmanagementViewDivisions extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
+	//	$app = JFactory::getApplication();
+//		$jinput = $app->input;
+//		$option = $jinput->getCmd('option');
        
 		//$option = JRequest::getCmd('option');
 //        // Get a refrence of the page instance in joomla

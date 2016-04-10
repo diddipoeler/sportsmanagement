@@ -87,11 +87,11 @@ class sportsmanagementViewallclubs extends sportsmanagementView
         $inputappend = '';
         $this->tableclass = $this->jinput->getVar('table_class', 'table','request','string');
         //$option = $jinput->getCmd('option');
-		$user		= JFactory::getUser();
+//		$user		= JFactory::getUser();
         $starttime = microtime(); 
 
-		$this->state 		= $this->get('State');
-		$this->items 		= $this->get('Items');
+		$this->state = $this->get('State');
+		$this->items = $this->get('Items');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
@@ -126,11 +126,11 @@ class sportsmanagementViewallclubs extends sportsmanagementView
 		$this->form = $form;
 		//$this->items = $items;
 //		$this->state = $state;
-		$this->user = $user;
+//		$this->user = $user;
 //		$this->pagination = $pagination;
         
-        $this->sortDirection    = $this->state->get('filter_order_Dir');
-        $this->sortColumn       = $this->state->get('filter_order');
+        $this->sortDirection = $this->state->get('filter_order_Dir');
+        $this->sortColumn = $this->state->get('filter_order');
         
         $this->lists = $lists;
 

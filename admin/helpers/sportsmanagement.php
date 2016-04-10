@@ -2531,7 +2531,7 @@ else
      * @param integer $type
      * @return void
      */
-    static function ToolbarButton($layout = Null,$icon_image = 'upload',$alt_text = 'My Label',$view = '',$type=0)
+    static function ToolbarButton($layout = Null,$icon_image = 'upload',$alt_text = 'My Label',$view = '',$type=0,$issueview=NULL,$issuelayout=NULL)
 	{
 		$app = JFactory::getApplication();
 		$jinput = $app->input;
@@ -2548,7 +2548,7 @@ else
     $modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width',0) ;
     $modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height',0) ;
     $bar = JToolBar::getInstance('toolbar');
-    $page_url = JFilterOutput::ampReplace('index.php?option=com_sportsmanagement&view='.$view.'&tmpl=component&layout='.$layout.'&type='.$type );
+    $page_url = JFilterOutput::ampReplace('index.php?option=com_sportsmanagement&view='.$view.'&tmpl=component&layout='.$layout.'&type='.$type.'&issueview='.$issueview.'&issuelayout='.$issuelayout );
     
     $bar->appendButton('Popup', $icon_image, $alt_text, $page_url, $modal_popup_width, $modal_popup_height);
     

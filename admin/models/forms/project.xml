@@ -27,7 +27,7 @@
 			description="COM_SPORTSMANAGEMENT_GLOBAL_ALIAS_DESC"
 			size="68"
 			maxlength="100"
-			class="text_area"/>
+			class="form-control form-control-inline"/>
 		
     <field
 			name="staffel_id"
@@ -342,7 +342,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 		<field
 			name="current_round_auto"
 			type="list"
-			class="inputbox"
+			class="form-control form-control-inline"
 			default="1"
 			size="1"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_AUTO_CURRENT_MD"
@@ -517,7 +517,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 			description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_SELECT_TEAM_DESC"
 			multiple="true"
 			size="10"
-			class="inputbox"/>	
+			class="form-control form-control-inline"/>	
 	
 		<field 
 			name="fav_team_highlight_type" 

@@ -21,6 +21,7 @@
 				name="sportsart"
 				type="radio"
 				default="0"
+        class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_ADMIN_SPORTSART"
 				description="COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_DESC">
 			<option value="0">COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_TEAM</option>	
