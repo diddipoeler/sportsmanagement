@@ -113,9 +113,9 @@ class sportsmanagementViewProject extends sportsmanagementView
         {
             $this->form->setValue('start_date', null, date("Y-m-d"));
             $this->form->setValue('start_time', null, '18:00');
-            $this->form->setValue('admin', null, $user->id);
-            $this->form->setValue('editor', null, $user->id);
-            $user->id ;
+            $this->form->setValue('admin', null, $this->user->id);
+            $this->form->setValue('editor', null, $this->user->id);
+            //$user->id ;
         }
         
         $this->checkextrafields	= sportsmanagementHelper::checkUserExtraFields();
