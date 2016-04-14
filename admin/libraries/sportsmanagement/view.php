@@ -106,6 +106,7 @@ class sportsmanagementView extends JViewLegacy
             {
             case 'predictions';
             case 'extensions';
+            //case 'github';
             break;
             default:
         $this->model = $this->getModel();    
@@ -145,6 +146,7 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
             {
             case 'predictions';
             case 'extensions';
+            //case 'github';
             break;
             default:
             $this->state = $this->get('State'); 
@@ -478,7 +480,7 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
             }    
         }
         
-        sportsmanagementHelper::ToolbarButton('addissue','new',JText::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE'),'github',0,$this->view,$this->layout);
+        sportsmanagementHelper::ToolbarButton('addissue','jsm-issue',JText::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE'),'github',0,$this->view,$this->layout);
         sportsmanagementHelper::ToolbarButtonOnlineHelp();
         if ($canDo->get('core.admin'))
 		{
