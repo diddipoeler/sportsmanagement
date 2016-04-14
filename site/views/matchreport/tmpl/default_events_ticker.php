@@ -158,7 +158,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
                         
                         if ($this->config['event_link_player'] == 1 && $me->playerid != 0)
                         {
-                            $player_link = sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$me->team_id,$me->playerid);
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['tid'] = $me->team_id;
+$routeparameter['pid'] = $me->playerid;
+$player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);                            
+            //                $player_link = sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$me->team_id,$me->playerid);
                             $match_player = JHtml::link($player_link,$match_player);
                         }                         
                         
@@ -254,7 +261,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			  if ($this->config['event_link_player'] == 1) {
 				if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
 				{
-				    $outName = JHtml::link(sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$me->ptid,$me->out_person_id),$outName);
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['tid'] = $me->ptid;
+$routeparameter['pid'] = $me->out_person_id;
+$player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);				    
+				    $outName = JHtml::link($player_link,$outName);
 				} else {
 				    $outName = $outName;
 				}
@@ -283,7 +297,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 			  if ($this->config['event_link_player'] == 1) {
 				if ( ($this->config['show_player_profile_link'] == 1) || (($this->config['show_player_profile_link'] == 2) && ($isFavTeam)) )
 				{
-				    $inName = JHtml::link(sportsmanagementHelperRoute::getPlayerRoute($this->project->slug,$me->ptid,$me->out_person_id),$inName);
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->project->slug;
+$routeparameter['tid'] = $me->ptid;
+$routeparameter['pid'] = $me->out_person_id;
+$player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);				    
+				    $inName = JHtml::link($player_link,$inName);
 				} else {
 				    $inName = $inName;
 				}
