@@ -157,11 +157,11 @@ class modJSMClubiconsHelper
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($this->module,true).'</pre>'),'');
         
         $imgtype = $this->params->get( 'logotype','logo_middle' );
-		$logourl = $this->module->picture_server.DS.$item->$imgtype;
+		$logourl = $item->$imgtype;
 
 		if ( !sportsmanagementHelper::existPicture($logourl) )
 {
-$logourl = $this->module->picture_server.DS.sportsmanagementHelper::getDefaultPlaceholder('logo_big');    
+$logourl = sportsmanagementHelper::getDefaultPlaceholder('logo_big');    
 }
 
 //        if ( JFile::exists($logourl) )
