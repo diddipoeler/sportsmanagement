@@ -2642,7 +2642,7 @@ else
         $query->select('name AS text');
         $query->select('id, name, round_date_first, round_date_last, roundcode');
         
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+        $query->from('#__sportsmanagement_round');
         
         $query->where('project_id = '.$project_id);
         $query->where('published = 1');

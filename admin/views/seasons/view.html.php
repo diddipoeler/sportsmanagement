@@ -106,7 +106,7 @@ $starttime = microtime();
         if ( $this->getLayout() == 'assignpersons' || $this->getLayout() == 'assignpersons_3' )
 		{
 		$season_teams[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'));
-        $res = $model->getSeasonTeams($season_id); 
+        $res = $this->model->getSeasonTeams($season_id); 
         $season_teams = array_merge($season_teams,$res); 
         $lists['season_teams'] = $season_teams;
         $this->lists	= $lists;
