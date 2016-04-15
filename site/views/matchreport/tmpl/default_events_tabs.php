@@ -68,7 +68,7 @@ $idxTab = 0;
 <?PHP
 foreach ($this->eventtypes AS $event)
 {
-//$text = JText::_($event->name);
+$active = ($idxTab==0) ? 'in active' : ''; 
 
 $pic_tab = $event->icon;
 if ($pic_tab == '/events/event.gif')
@@ -90,6 +90,7 @@ $text = JText::_($event->name);
 </li>
 
 <?PHP
+$idxTab++;
 }
 ?>
 </ul> 
