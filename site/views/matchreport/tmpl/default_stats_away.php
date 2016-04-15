@@ -77,7 +77,14 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 									<tr class="starter">
 										<td class="playername">
 										<?php
-										    $player_link = sportsmanagementHelperRoute::getPlayerRoute( $this->project->slug, $player->team_slug, $player->person_slug );
+$routeparameter = array();  
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);  
+$routeparameter['s'] = JRequest::getInt('s',0);  
+$routeparameter['p'] = $this->project->slug;  
+$routeparameter['tid'] = $player->team_slug;  
+$routeparameter['pid'] = $player->person_slug;  
+$player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);  										
+										    //$player_link = sportsmanagementHelperRoute::getPlayerRoute( $this->project->slug, $player->team_slug, $player->person_slug );
 										    $prefix = $player->jerseynumber ? $player->jerseynumber."." : null;
 										    $match_player = sportsmanagementHelper::formatName($prefix,$player->firstname,$player->nickname,$player->lastname, $this->config["name_format"]);
 										    $isFavTeam = in_array( $player->team_id, explode(",",$this->project->fav_team)); 
