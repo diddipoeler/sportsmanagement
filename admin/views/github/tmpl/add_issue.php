@@ -39,6 +39,9 @@
 
 defined('_JEXEC') or die('Restricted access');
 
+// Include the component HTML helpers.
+JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 
         {
@@ -46,10 +49,13 @@ JHtml::_('jquery.framework');
 }
 
 JHtml::_('behavior.tooltip');
-//JHtml::_('behavior.formvalidation');
+
+JHtml::_('behavior.formvalidation');
+JHtml::_('behavior.keepalive');
 
 //$params = $this->form->getFieldsets('params');
 //save and close 
+/*
 $close = JRequest::getInt('close',0);
 if($close == 1) {
 	?><script>
@@ -59,22 +65,50 @@ if($close == 1) {
 	</script>
 	<?php 
 }
+*/
+
+
+JFactory::getDocument()->addScriptDeclaration('
+	Joomla.submitbutton = function(task)
+	{
+		if (task == "github.cancel" )
+		{
+			' . '
+
+			if (window.opener && task == "github.cancel" )
+			{
+				window.opener.document.closeEditWindow = self;
+				window.opener.setTimeout("window.document.closeEditWindow.close()", 1000);
+			}
+
+			Joomla.submitform(task, document.getElementById("addissue-form"));
+		}
+	};
+');
 
 ?>
 
-<div id='alt_addissue_enter' style='display:block'>
+<div class="container-popup">
+
+<div class="pull-right">
+<button class="btn" type="button" onclick="Joomla.submitbutton('github.cancel', this.form);"><?php echo JText::_('JCANCEL') ?></button>
+</div>
+
+<div class="clearfix"></div>
+
 	<fieldset class='adminform'>
 		<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE','<i>'.'</i>'); ?></legend>
-		<form  action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" id='component-form' method='post' style='display:inline' name='adminform' >
+		<form  action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" id='addissue-form' method='post' style='display:inline' name='adminform' >
         
         <fieldset>
 		<div class="fltrt">
 			<button type="button" onclick="Joomla.submitform('github.addissue', this.form)">
 				<?php echo JText::_('JSAVE');?></button>
-			<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
-				<?php echo JText::_('JCANCEL');?></button>
+
 		</div>
 		
+
+        
 	</fieldset>
     
 
@@ -117,6 +151,7 @@ if($close == 1) {
             </table>
             <input type="hidden" name="component" value="<?PHP echo $this->option; ?>" />
             <input type='hidden' name='task' value='' />
+            <input type="hidden" name="close" id="close" value="0" />
             <input type="hidden" name="gh.token" value="<?PHP echo $this->gh_token; ?>" />
             <input type="hidden" name="api.username" value="<?PHP echo $this->api_username; ?>" />
             <input type="hidden" name="api.password" value="<?PHP echo $this->api_password; ?>" />

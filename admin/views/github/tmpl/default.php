@@ -1,7 +1,27 @@
 <?PHP
 
+
+
+defined('_JEXEC') or die('Restricted access');
+$templatesToLoad = array('footer','listheader');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+JHtml::_( 'behavior.tooltip' );
+
+
 $attribs['width'] = '20px';
 $attribs['height'] = 'auto';
+
+/*
+// welche joomla version ?
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+echo $this->loadTemplate('joomla3');
+}
+else
+{
+echo $this->loadTemplate('joomla2');    
+}
+*/
 
 ?>
 <table class="table" >

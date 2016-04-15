@@ -75,6 +75,25 @@ class sportsmanagementControllergithub extends JControllerForm
 		//$this->registerTask('saveshort',	'saveshort');
 	}
     
+    /**
+     * sportsmanagementControllergithub::cancel()
+     * 
+     * @param mixed $key
+     * @return void
+     */
+    function cancel($key = NULL)
+{
+    $msg = JText::_('JLIB_HTML_BEHAVIOR_CLOSE');
+		
+        
+        
+            $link = 'index.php?option='.$this->option.'&view=close&tmpl=component';
+        
+        
+		//echo $link.'<br />';
+		$this->setRedirect($link,$msg);
+    }
+    
 /**
  * sportsmanagementControllergithub::addissue()
  * 

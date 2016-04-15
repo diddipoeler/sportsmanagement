@@ -83,6 +83,16 @@ class sportsmanagementModelSportsTypes extends JModelList
                 parent::__construct($config);
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
                 parent::setDbo($getDBConnection);
+        
+        // Reference global application object
+        $this->app = JFactory::getApplication();
+        $this->user	= JFactory::getUser();     
+        // JInput object
+        $this->jinput = $this->app->input;
+        $this->option = $this->jinput->getCmd('option');
+        $this->jsmdb = $this->getDbo();
+        $this->query = $this->jsmdb->getQuery(true);
+        
         }
         
     /**
@@ -94,29 +104,12 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Initialise variables.
-		$app = JFactory::getApplication('administrator');
-        
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+	        
+        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
-
-//		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
-//		$this->setState('filter.state', $published);
-
-//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
-//		$this->setState('filter.image_folder', $image_folder);
-        
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
-
-
-//		// Load the parameters.
-//		$params = JComponentHelper::getParams('com_sportsmanagement');
-//		$this->setState('params', $params);
 
 		// List state information.
 		parent::populateState('s.name', 'asc');
@@ -130,35 +123,27 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	function getListQuery()
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        //$search	= $this->getState('filter.search');
-        // Create a new query object.
-		//$db		= $this->getDbo();
-        $db = sportsmanagementHelper::getDBConnection();
-		$query	= $db->getQuery(true);
-		$user	= JFactory::getUser(); 
-  
+		  
         // Select some fields
-		$query->select(implode(",",$this->filter_fields));
+		$this->query->select(implode(",",$this->filter_fields));
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS s');
-        $query->join('LEFT', '#__users AS uc ON uc.id = s.checked_out');
+		$this->query->from('#__sportsmanagement_sports_type AS s');
+        $this->query->join('LEFT', '#__users AS uc ON uc.id = s.checked_out');
         
         if ($this->getState('filter.search'))
 		{
-        $query->where('LOWER(s.name) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%'));
+        $this->query->where('LOWER(s.name) LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search').'%'));
         }
         
-        $query->order($db->escape($this->getState('list.ordering', 's.name')).' '.
-                $db->escape($this->getState('list.direction', 'ASC')));
+        $this->query->order($this->jsmdb->escape($this->getState('list.ordering', 's.name')).' '.
+                $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
                 
 		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->query->dump(),true).'</pre>'),'Notice');
         }
         
-		return $query;
+		return $this->query;
         
 	}
 
@@ -172,21 +157,16 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 * @return	array
 	 * @since	1.5.0a
 	 */
-	public static function getSportsTypes()
+	//public static function getSportsTypes()
+    public function getSportsTypes()
 	{
-		$app = JFactory::getApplication();
-        //$db = sportsmanagementHelper::getDBConnection();
-        $db = sportsmanagementHelper::getDBConnection();
-        $query	= $db->getQuery(true);
-        $query->select('id, name, name AS text,icon');
-        $query->from('#__sportsmanagement_sports_type');
-        $query->order('name ASC');
-		//$query='SELECT id, name, name AS text FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type ORDER BY name ASC ';
-		$db->setQuery($query);
-		if ( !$result = $db->loadObjectList() )
+	
+        $this->query->select('id, name, name AS text,icon');
+        $this->query->from('#__sportsmanagement_sports_type');
+        $this->query->order('name ASC');
+		$this->jsmdb->setQuery($this->query);
+		if ( !$result = $this->jsmdb->loadObjectList() )
 		{
-			//$this->setError($db->getErrorMsg());COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_NO_RESULT
-            //$app->enqueueMessage(JText::_('getSportsTypes<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
             $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_NO_RESULT'),'Error');
 			return array();
 		}
@@ -205,24 +185,19 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getProjectsCount($sporttypeid=0) 
     {
-        $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Create a new query object.
-		//$db	= $this->getDbo();
-        $db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        $query->select('count(*) AS count');
-        $query->from('#__sportsmanagement_sports_type AS st');
-        $query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
-        $query->where('st.id = '.$sporttypeid);
+        
+        $this->query->select('count(*) AS count');
+        $this->query->from('#__sportsmanagement_sports_type AS st');
+        $this->query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
+        $this->query->where('st.id = '.$sporttypeid);
 
-		$db->setQuery($query);
-		if (!$db->query())
+		$this->jsmdb->setQuery($this->query);
+		if (!$this->jsmdb->query())
 		{
-			$this->setError($db->getErrorMsg());
+			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
 		}
-		return $db->loadObject()->count;
+		return $this->jsmdb->loadObject()->count;
 	}
 	
   
@@ -235,22 +210,17 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getPlaygroundsOnlyCount($sporttypeid=0) 
     {
-        $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Create a new query object.
-		//$db	= $this->getDbo();
-        $db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        $query->select('count(*) AS count');
-        $query->from('#__sportsmanagement_playground AS p ');
+        
+        $this->query->select('count(*) AS count');
+        $this->query->from('#__sportsmanagement_playground AS p ');
 
-		$db->setQuery($query);
-		if (!$db->query())
+		$this->jsmdb->setQuery($this->query);
+		if (!$this->jsmdb->query())
 		{
-			$this->setError($db->getErrorMsg());
+			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
 		}
-		return $db->loadObject()->count;
+		return $this->jsmdb->loadObject()->count;
 	}
   
   
@@ -262,22 +232,17 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getLeaguesOnlyCount($sporttypeid=0) 
     {
-        $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Create a new query object.
-		//$db	= $this->getDbo();
-        $db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        $query->select('count(*) AS count');
-        $query->from('#__sportsmanagement_league AS l');
+       
+        $this->query->select('count(*) AS count');
+        $this->query->from('#__sportsmanagement_league AS l');
 
-		$db->setQuery($query);
-		if (!$db->query())
+		$this->jsmdb->setQuery($this->query);
+		if (!$this->jsmdb->query())
 		{
-			$this->setError($db->getErrorMsg());
+			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
 		}
-		return $db->loadObject()->count;
+		return $this->jsmdb->loadObject()->count;
 	}
   
   
@@ -289,24 +254,19 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getPersonsOnlyCount($sporttypeid=0) 
     {
-        $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Create a new query object.
-		//$db	= $this->getDbo();
-        $db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        $query->select('count(*) AS count');
-        $query->from('#__sportsmanagement_person AS c');
+        
+        $this->query->select('count(*) AS count');
+        $this->query->from('#__sportsmanagement_person AS c');
 
-		$db->setQuery($query);
-		if (!$db->query())
+		$this->jsmdb->setQuery($this->query);
+		if (!$this->jsmdb->query())
 		{
-			$this->setError($db->getErrorMsg());
+			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
 		}
         
-        $result = $db->loadObject()->count;
-        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+        $result = $this->jsmdb->loadObject()->count;
+        $this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 	}
   
@@ -319,23 +279,18 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getClubsOnlyCount($sporttypeid=0) 
     {
-        $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Create a new query object.
-		//$db = sportsmanagementHelper::getDBConnection();$db	= $this->getDbo();
-        $db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        $query->select('count(*) AS count');
-        $query->from('#__sportsmanagement_club AS c');
+       
+        $this->query->select('count(*) AS count');
+        $this->query->from('#__sportsmanagement_club AS c');
 
-		$db->setQuery($query);
-		if (!$db->query())
+		$this->jsmdb->setQuery($this->query);
+		if (!$this->jsmdb->query())
 		{
-			$this->setError($db->getErrorMsg());
+			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
 		}
-		$result = $db->loadObject()->count;
-        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		$result = $this->jsmdb->loadObject()->count;
+        $this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 	}
 	
@@ -348,26 +303,21 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getLeaguesCount($sporttypeid=0) 
     {
-        $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Create a new query object.
-		//$db	= $this->getDbo();
-        $db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        $query->select('count(*) AS count');
-        $query->from('#__sportsmanagement_sports_type AS st');
-        $query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
-        $query->join('INNER','#__sportsmanagement_league AS l ON l.id = p.league_id');
-        $query->where('st.id = '.$sporttypeid);
+        
+        $this->query->select('count(*) AS count');
+        $this->query->from('#__sportsmanagement_sports_type AS st');
+        $this->query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
+        $this->query->join('INNER','#__sportsmanagement_league AS l ON l.id = p.league_id');
+        $this->query->where('st.id = '.$sporttypeid);
 
-		$db->setQuery($query);
-		if (!$db->query())
+		$this->jsmdb->setQuery($this->query);
+		if (!$this->jsmdb->query())
 		{
-			$this->setError($db->getErrorMsg());
+			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
 		}
-		$result = $db->loadObject()->count;
-        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		$result = $this->jsmdb->loadObject()->count;
+        $this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 	}
 	
@@ -380,23 +330,18 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getSeasonsOnlyCount($sporttypeid=0) 
     {
-        $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Create a new query object.
-		//$db	= $this->getDbo();
-        $db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        $query->select('count(*) AS count');
-        $query->from('#__sportsmanagement_season AS s ');
+        
+        $this->query->select('count(*) AS count');
+        $this->query->from('#__sportsmanagement_season AS s ');
 
-		$db->setQuery($query);
-		if (!$db->query())
+		$this->jsmdb->setQuery($this->query);
+		if (!$this->jsmdb->query())
 		{
-			$this->setError($db->getErrorMsg());
+			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
 		}
-		$result = $db->loadObject()->count;
-        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		$result = $this->jsmdb->loadObject()->count;
+        $this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 	}
   
@@ -409,26 +354,21 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getSeasonsCount($sporttypeid=0) 
     {
-        $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Create a new query object.
-		//$db	= $this->getDbo();
-        $db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        $query->select('count(*) AS count');
-        $query->from('#__sportsmanagement_sports_type AS st');
-        $query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
-        $query->join('INNER','#__sportsmanagement_season AS s ON s.id = p.season_id');
-        $query->where('st.id = '.$sporttypeid);
+        
+        $this->query->select('count(*) AS count');
+        $this->query->from('#__sportsmanagement_sports_type AS st');
+        $this->query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
+        $this->query->join('INNER','#__sportsmanagement_season AS s ON s.id = p.season_id');
+        $this->query->where('st.id = '.$sporttypeid);
 
-		$db->setQuery($query);
-		if (!$db->query())
+		$this->jsmdb->setQuery($this->query);
+		if (!$this->jsmdb->query())
 		{
-			$this->setError($db->getErrorMsg());
+			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
 		}
-		$result = $db->loadObject()->count;
-        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		$result = $this->jsmdb->loadObject()->count;
+        $this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 	}
 	
@@ -441,26 +381,21 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getProjectTeamsCount($sporttypeid=0) 
     {
-        $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Create a new query object.
-		//$db	= $this->getDbo();
-        $db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        $query->select('count(*) AS count');
-        $query->from('#__sportsmanagement_sports_type AS st');
-        $query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
-        $query->join('INNER','#__sportsmanagement_project_team AS ptt ON ptt.project_id = p.id');
-        $query->where('st.id = '.$sporttypeid);
+        
+        $this->query->select('count(*) AS count');
+        $this->query->from('#__sportsmanagement_sports_type AS st');
+        $this->query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
+        $this->query->join('INNER','#__sportsmanagement_project_team AS ptt ON ptt.project_id = p.id');
+        $this->query->where('st.id = '.$sporttypeid);
 
-		$db->setQuery($query);
-		if (!$db->query())
+		$this->jsmdb->setQuery($this->query);
+		if (!$this->jsmdb->query())
 		{
-			$this->setError($db->getErrorMsg());
+			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
 		}
-		$result = $db->loadObject()->count;
-        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		$result = $this->jsmdb->loadObject()->count;
+        $this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 	}
 
@@ -473,29 +408,24 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getProjectTeamsPlayersCount($sporttypeid=0) 
     {
-        $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Create a new query object.
-		//$db	= $this->getDbo();
-        $db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        $query->select('count(*) AS count');
-        $query->from('#__sportsmanagement_sports_type AS st');
-        $query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
-        $query->join('INNER','#__sportsmanagement_project_team AS ptt ON ptt.project_id = p.id');
-        $query->join('INNER','#__sportsmanagement_season_team_id as st2 ON st2.id = ptt.team_id ');
-        $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp1 ON tp1.team_id = st2.team_id');
         
-        $query->where('st.id = '.$sporttypeid);
+        $this->query->select('count(*) AS count');
+        $this->query->from('#__sportsmanagement_sports_type AS st');
+        $this->query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
+        $this->query->join('INNER','#__sportsmanagement_project_team AS ptt ON ptt.project_id = p.id');
+        $this->query->join('INNER','#__sportsmanagement_season_team_id as st2 ON st2.id = ptt.team_id ');
+        $this->query->join('INNER','#__sportsmanagement_season_team_person_id AS tp1 ON tp1.team_id = st2.team_id');
+        
+        $this->query->where('st.id = '.$sporttypeid);
 		
-		$db->setQuery($query);
-		if (!$db->query())
+		$this->jsmdb->setQuery($this->query);
+		if (!$this->jsmdb->query())
 		{
-			$this->setError($db->getErrorMsg());
+			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
 		}
-		$result = $db->loadObject()->count;
-        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		$result = $this->jsmdb->loadObject()->count;
+        $this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 	}
 	
@@ -508,26 +438,21 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getProjectDivisionsCount($sporttypeid=0) 
     {
-        $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Create a new query object.
-		//$db	= $this->getDbo();
-        $db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        $query->select('count(*) AS count');
-        $query->from('#__sportsmanagement_sports_type AS st');
-        $query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
-        $query->join('INNER','#__sportsmanagement_division AS d ON d.project_id = p.id');
-        $query->where('st.id = '.$sporttypeid);
+        
+        $this->query->select('count(*) AS count');
+        $this->query->from('#__sportsmanagement_sports_type AS st');
+        $this->query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
+        $this->query->join('INNER','#__sportsmanagement_division AS d ON d.project_id = p.id');
+        $this->query->where('st.id = '.$sporttypeid);
 	
-	$db->setQuery($query);
-	if (!$db->query())
+	$this->jsmdb->setQuery($this->query);
+	if (!$this->jsmdb->query())
 	{
-	$this->setError($db->getErrorMsg());
+	$this->setError($this->jsmdb->getErrorMsg());
 	return false;
 	}
-	$result = $db->loadObject()->count;
-        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+	$result = $this->jsmdb->loadObject()->count;
+        $this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 	}
 
@@ -540,26 +465,21 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getProjectRoundsCount($sporttypeid=0) 
     {
-        $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Create a new query object.
-		//$db	= $this->getDbo();
-        $db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        $query->select('count(*) AS count');
-        $query->from('#__sportsmanagement_sports_type AS st');
-        $query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
-        $query->join('INNER','#__sportsmanagement_round AS r ON r.project_id = p.id');
-        $query->where('st.id = '.$sporttypeid);
+        
+        $this->query->select('count(*) AS count');
+        $this->query->from('#__sportsmanagement_sports_type AS st');
+        $this->query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
+        $this->query->join('INNER','#__sportsmanagement_round AS r ON r.project_id = p.id');
+        $this->query->where('st.id = '.$sporttypeid);
 		
-		$db->setQuery($query);
-		if (!$db->query())
+		$this->jsmdb->setQuery($this->query);
+		if (!$this->jsmdb->query())
 		{
-			$this->setError($db->getErrorMsg());
+			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
 		}
-		$result = $db->loadObject()->count;
-        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		$result = $this->jsmdb->loadObject()->count;
+        $this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 	}
 
@@ -572,27 +492,22 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getProjectMatchesCount($sporttypeid=0) 
     {
-        $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Create a new query object.
-		//$db	= $this->getDbo();
-        $db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        $query->select('count(*) AS count');
-        $query->from('#__sportsmanagement_sports_type AS st');
-        $query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
-        $query->join('INNER','#__sportsmanagement_round AS r ON r.project_id = p.id');
-        $query->join('INNER','#__sportsmanagement_match AS m ON m.round_id = r.id');
-        $query->where('st.id = '.$sporttypeid);
+        
+        $this->query->select('count(*) AS count');
+        $this->query->from('#__sportsmanagement_sports_type AS st');
+        $this->query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
+        $this->query->join('INNER','#__sportsmanagement_round AS r ON r.project_id = p.id');
+        $this->query->join('INNER','#__sportsmanagement_match AS m ON m.round_id = r.id');
+        $this->query->where('st.id = '.$sporttypeid);
 		
-		$db->setQuery($query);
-		if (!$db->query())
+		$this->jsmdb->setQuery($this->query);
+		if (!$this->jsmdb->query())
 		{
-			$this->setError($db->getErrorMsg());
+			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
 		}
-		$result = $db->loadObject()->count;
-        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		$result = $this->jsmdb->loadObject()->count;
+        $this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 	}
 
@@ -606,27 +521,22 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getProjectMatchesEventsNameCount($sporttypeid=0) 
   {
-    $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Create a new query object.
-		//$db	= $this->getDbo();
-        $db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        $query->select('count( me.id ) as total');
-        $query->select('me.event_type_id,p.sports_type_id,et.name,et.icon');
-        $query->from('#__sportsmanagement_match_event as me');
-        $query->join('INNER','#__sportsmanagement_match AS m ON me.match_id= m.id');
-        $query->join('INNER','#__sportsmanagement_round AS r ON m.round_id = r.id');
-        $query->join('INNER','#__sportsmanagement_project AS p ON r.project_id = p.id');
-        $query->join('INNER','#__sportsmanagement_eventtype AS et ON me.event_type_id = et.id');
-        $query->where('st.id = '.$sporttypeid);
-        $query->group('me.event_type_id');
+    
+        $this->query->select('count( me.id ) as total');
+        $this->query->select('me.event_type_id,p.sports_type_id,et.name,et.icon');
+        $this->query->from('#__sportsmanagement_match_event as me');
+        $this->query->join('INNER','#__sportsmanagement_match AS m ON me.match_id= m.id');
+        $this->query->join('INNER','#__sportsmanagement_round AS r ON m.round_id = r.id');
+        $this->query->join('INNER','#__sportsmanagement_project AS p ON r.project_id = p.id');
+        $this->query->join('INNER','#__sportsmanagement_eventtype AS et ON me.event_type_id = et.id');
+        $this->query->where('st.id = '.$sporttypeid);
+        $this->query->group('me.event_type_id');
        
 
-	$db->setQuery($query);
-			if (!$result = $db->loadObjectList())
+	$this->jsmdb->setQuery($this->query);
+			if (!$result = $this->jsmdb->loadObjectList())
 	    {
-			$this->setError($db->getErrorMsg());
+			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
 		}
 		return $result;
@@ -641,28 +551,23 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getProjectMatchesEventsCount($sporttypeid=0) 
     {
-	  $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Create a new query object.
-		//$db	= $this->getDbo();
-        $db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        $query->select('count(*) AS count');
-        $query->from('#__sportsmanagement_sports_type AS st');
-        $query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
-        $query->join('INNER','#__sportsmanagement_round AS r ON r.project_id = p.id');
-        $query->join('INNER','#__sportsmanagement_match AS m ON m.round_id = r.id');
-        $query->join('INNER','#__sportsmanagement_match_event AS me ON me.match_id = m.id');
-        $query->where('st.id = '.$sporttypeid);
+	  
+        $this->query->select('count(*) AS count');
+        $this->query->from('#__sportsmanagement_sports_type AS st');
+        $this->query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
+        $this->query->join('INNER','#__sportsmanagement_round AS r ON r.project_id = p.id');
+        $this->query->join('INNER','#__sportsmanagement_match AS m ON m.round_id = r.id');
+        $this->query->join('INNER','#__sportsmanagement_match_event AS me ON me.match_id = m.id');
+        $this->query->where('st.id = '.$sporttypeid);
 		
-		$db->setQuery($query);
-		if (!$db->query())
+		$this->jsmdb->setQuery($this->query);
+		if (!$this->jsmdb->query())
 		{
-			$this->setError($db->getErrorMsg());
+			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
 		}
-		$result = $db->loadObject()->count;
-        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		$result = $this->jsmdb->loadObject()->count;
+        $this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 	}
 
@@ -675,28 +580,23 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getProjectMatchesStatsCount($sporttypeid=0) 
     {
-        $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Create a new query object.
-		//$db	= $this->getDbo();
-        $db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        $query->select('count(*) AS count');
-        $query->from('#__sportsmanagement_sports_type AS st');
-        $query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
-        $query->join('INNER','#__sportsmanagement_round AS r ON r.project_id = p.id');
-        $query->join('INNER','#__sportsmanagement_match AS m ON m.round_id = r.id');
-        $query->join('INNER','#__sportsmanagement_match_statistic AS ms ON ms.match_id = m.id');
-        $query->where('st.id = '.$sporttypeid);
+        
+        $this->query->select('count(*) AS count');
+        $this->query->from('#__sportsmanagement_sports_type AS st');
+        $this->query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
+        $this->query->join('INNER','#__sportsmanagement_round AS r ON r.project_id = p.id');
+        $this->query->join('INNER','#__sportsmanagement_match AS m ON m.round_id = r.id');
+        $this->query->join('INNER','#__sportsmanagement_match_statistic AS ms ON ms.match_id = m.id');
+        $this->query->where('st.id = '.$sporttypeid);
 		
-		$db->setQuery($query);
-		if (!$db->query())
+		$this->jsmdb->setQuery($this->query);
+		if (!$this->jsmdb->query())
 		{
-			$this->setError($db->getErrorMsg());
+			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
 		}
-		$result = $db->loadObject()->count;
-        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+		$result = $this->jsmdb->loadObject()->count;
+        $this->jsmdb->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 	}
 
