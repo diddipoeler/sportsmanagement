@@ -109,7 +109,14 @@ $player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$r
 									<tr class="sub">
 										<td class="playername">
 										<?php
-										    $player_link = sportsmanagementHelperRoute::getPlayerRoute( $this->project->slug, $sub->team_slug, $sub->person_slug );
+$routeparameter = array();  
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);  
+$routeparameter['s'] = JRequest::getInt('s',0);  
+$routeparameter['p'] = $this->project->slug;  
+$routeparameter['tid'] = $sub->team_slug;  
+$routeparameter['pid'] = $sub->person_slug;  
+$player_link = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);  										
+										   // $player_link = sportsmanagementHelperRoute::getPlayerRoute( $this->project->slug, $sub->team_slug, $sub->person_slug );
 										    $match_player = sportsmanagementHelper::formatName(null,$sub->firstname,$sub->nickname,$sub->lastname, $this->config["name_format"]);
 										    $isFavTeam = in_array( $sub->team_id, explode(",",$this->project->fav_team)); 
 										    
