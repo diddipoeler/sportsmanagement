@@ -123,7 +123,7 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	function getListQuery()
 	{
-		  
+		$this->query->clear();  
         // Select some fields
 		$this->query->select(implode(",",$this->filter_fields));
         // From table
@@ -160,7 +160,7 @@ class sportsmanagementModelSportsTypes extends JModelList
 	//public static function getSportsTypes()
     public function getSportsTypes()
 	{
-	
+	$this->query->clear();
         $this->query->select('id, name, name AS text,icon');
         $this->query->from('#__sportsmanagement_sports_type');
         $this->query->order('name ASC');
@@ -185,7 +185,7 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getProjectsCount($sporttypeid=0) 
     {
-        
+        $this->query->clear();
         $this->query->select('count(*) AS count');
         $this->query->from('#__sportsmanagement_sports_type AS st');
         $this->query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
@@ -210,7 +210,7 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getPlaygroundsOnlyCount($sporttypeid=0) 
     {
-        
+        $this->query->clear();
         $this->query->select('count(*) AS count');
         $this->query->from('#__sportsmanagement_playground AS p ');
 
@@ -232,7 +232,7 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getLeaguesOnlyCount($sporttypeid=0) 
     {
-       
+       $this->query->clear();
         $this->query->select('count(*) AS count');
         $this->query->from('#__sportsmanagement_league AS l');
 
@@ -254,7 +254,7 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getPersonsOnlyCount($sporttypeid=0) 
     {
-        
+        $this->query->clear();
         $this->query->select('count(*) AS count');
         $this->query->from('#__sportsmanagement_person AS c');
 
@@ -279,7 +279,7 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getClubsOnlyCount($sporttypeid=0) 
     {
-       
+       $this->query->clear();
         $this->query->select('count(*) AS count');
         $this->query->from('#__sportsmanagement_club AS c');
 
@@ -303,7 +303,7 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getLeaguesCount($sporttypeid=0) 
     {
-        
+        $this->query->clear();
         $this->query->select('count(*) AS count');
         $this->query->from('#__sportsmanagement_sports_type AS st');
         $this->query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
@@ -330,7 +330,7 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getSeasonsOnlyCount($sporttypeid=0) 
     {
-        
+        $this->query->clear();
         $this->query->select('count(*) AS count');
         $this->query->from('#__sportsmanagement_season AS s ');
 
@@ -354,7 +354,7 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getSeasonsCount($sporttypeid=0) 
     {
-        
+        $this->query->clear();
         $this->query->select('count(*) AS count');
         $this->query->from('#__sportsmanagement_sports_type AS st');
         $this->query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
@@ -381,7 +381,7 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getProjectTeamsCount($sporttypeid=0) 
     {
-        
+        $this->query->clear();
         $this->query->select('count(*) AS count');
         $this->query->from('#__sportsmanagement_sports_type AS st');
         $this->query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
@@ -408,7 +408,7 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getProjectTeamsPlayersCount($sporttypeid=0) 
     {
-        
+        $this->query->clear();
         $this->query->select('count(*) AS count');
         $this->query->from('#__sportsmanagement_sports_type AS st');
         $this->query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
@@ -438,7 +438,7 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getProjectDivisionsCount($sporttypeid=0) 
     {
-        
+        $this->query->clear();
         $this->query->select('count(*) AS count');
         $this->query->from('#__sportsmanagement_sports_type AS st');
         $this->query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
@@ -465,7 +465,7 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getProjectRoundsCount($sporttypeid=0) 
     {
-        
+        $this->query->clear();
         $this->query->select('count(*) AS count');
         $this->query->from('#__sportsmanagement_sports_type AS st');
         $this->query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
@@ -492,7 +492,7 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getProjectMatchesCount($sporttypeid=0) 
     {
-        
+        $this->query->clear();
         $this->query->select('count(*) AS count');
         $this->query->from('#__sportsmanagement_sports_type AS st');
         $this->query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
@@ -521,7 +521,7 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getProjectMatchesEventsNameCount($sporttypeid=0) 
   {
-    
+    $this->query->clear();
         $this->query->select('count( me.id ) as total');
         $this->query->select('me.event_type_id,p.sports_type_id,et.name,et.icon');
         $this->query->from('#__sportsmanagement_match_event as me');
@@ -551,7 +551,7 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getProjectMatchesEventsCount($sporttypeid=0) 
     {
-	  
+	  $this->query->clear();
         $this->query->select('count(*) AS count');
         $this->query->from('#__sportsmanagement_sports_type AS st');
         $this->query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
@@ -580,7 +580,7 @@ class sportsmanagementModelSportsTypes extends JModelList
 	 */
 	public function getProjectMatchesStatsCount($sporttypeid=0) 
     {
-        
+        $this->query->clear();
         $this->query->select('count(*) AS count');
         $this->query->from('#__sportsmanagement_sports_type AS st');
         $this->query->join('INNER','#__sportsmanagement_project AS p ON p.sports_type_id = st.id');
