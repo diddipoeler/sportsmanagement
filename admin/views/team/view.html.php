@@ -116,7 +116,10 @@ class sportsmanagementViewTeam extends sportsmanagementView
         $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields() );
 		if ( $this->checkextrafields )
 		{
+			if ( $this->item->id )
+			{
 			$lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id);
+			}
 		}
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
