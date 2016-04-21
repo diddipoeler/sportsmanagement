@@ -331,8 +331,5 @@ else
 <!-- END of match events -->
 <br />
 <?PHP
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 27306741bd3a6535c7422e0f4aff7c9b8bfde6a9
+
