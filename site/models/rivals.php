@@ -16,7 +16,7 @@ defined('_JEXEC') or die;
  * sportsmanagementModelRivals
  * 
  * @package 
- * @author Dieter Plöger
+ * @author Dieter PlÃ¶ger
  * @copyright 2016
  * @version $Id$
  * @access public
@@ -126,23 +126,28 @@ class sportsmanagementModelRivals extends JModelLegacy
 		, t1.club_id AS club1_id
 		, t2.club_id AS club2_id');
 	    $query->from('#__sportsmanagement_match AS m'); 
-        $query->join('LEFT','#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id');
-        $query->join('LEFT','#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id');
+        $query->join('INNER','#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id');
+        $query->join('INNER','#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id');
         
-        $query->join('LEFT','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
-        $query->join('LEFT','#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
         
-        $query->join('LEFT','#__sportsmanagement_team AS t1 ON t1.id = st1.team_id');
-        $query->join('LEFT','#__sportsmanagement_club AS c1 ON c1.id = t1.club_id');
+        $query->join('INNER','#__sportsmanagement_team AS t1 ON t1.id = st1.team_id');
+        $query->join('INNER','#__sportsmanagement_club AS c1 ON c1.id = t1.club_id');
         
-        $query->join('LEFT','#__sportsmanagement_team AS t2 ON t2.id = st2.team_id');
-        $query->join('LEFT','#__sportsmanagement_club AS c2 ON c2.id = t2.club_id');
+        $query->join('INNER','#__sportsmanagement_team AS t2 ON t2.id = st2.team_id');
+        $query->join('INNER','#__sportsmanagement_club AS c2 ON c2.id = t2.club_id');
         
         $query->where('m.published = 1');
         
         //$query->where('( (m.projectteam1_id = ' .$this->teamid. ' )'.' OR (m.projectteam2_id = ' .$this->teamid. ' ) )');
         $query->where('( (t1.id = ' .$this->teamid. ' )'.' OR (t2.id = ' .$this->teamid. ' ) )');
         $query->where('(m.team1_result IS NOT NULL OR m.alt_decision > 0)' );
+        $query->where('(m.cancel IS NULL OR m.cancel = 0)' );
+        
+        $query->where('pt1.project_id = '.$this->projectid );
+        $query->where('pt2.project_id = '.$this->projectid );
+        
         $query->where('(m.cancel IS NULL OR m.cancel = 0)' );
         
         $query->order('m.id');   
