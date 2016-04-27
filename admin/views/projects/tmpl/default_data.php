@@ -213,7 +213,29 @@ JHtml::_('behavior.modal');
                             <p class="smallsub">
 						<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias));?></p>
 						</td>
-						<td><?php echo $row->league; ?></td>
+						<td>
+							<?php 
+							//echo $row->league; 
+if ( $this->state->get('filter.search_nation') ) 
+{
+//echo $this->state->get('filter.search_nation').'<br>';	
+//echo $this->league.'<br>'; 
+
+echo JHtml::_(	'select.genericlist',
+		$this->league,
+		'league'.$row->id,
+		$inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
+		$i.'\').checked=true"'.$append,
+		'id','name',$row->league_id);
+					
+}						
+else
+{
+echo $row->league.'<br>'; 
+}
+							
+							?>
+							</td>
                         <td class="center"><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
 						<td class="center"><?php echo $row->season; ?></td>
                         
