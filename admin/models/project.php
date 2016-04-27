@@ -583,6 +583,13 @@ class sportsmanagementModelProject extends JModelAdmin
 			$tblProject->id = $pks[$x];
             $tblProject->project_type	= $post['project_type'.$pks[$x]];
             $tblProject->agegroup_id	= $post['agegroup'.$pks[$x]];
+            
+            if ( $post['league'.$pks[$x]] )
+            {
+            $tblProject->league_id	= $post['league'.$pks[$x]];
+            }
+
+            
             $tblProject->modified = $date->toSql();
             $tblProject->modified_timestamp = sportsmanagementHelper::getTimestamp($date->toSql());
 
