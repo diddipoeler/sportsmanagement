@@ -220,7 +220,7 @@ if ( $this->state->get('filter.search_nation') )
 {
 //echo $this->state->get('filter.search_nation').'<br>';	
 //echo $this->league.'<br>'; 
-
+$append = ' style="background-color:#bbffff"';
 echo JHtml::_(	'select.genericlist',
 		$this->league,
 		'league'.$row->id,
