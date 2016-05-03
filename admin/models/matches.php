@@ -326,6 +326,23 @@ class sportsmanagementModelMatches extends JModelList
   
   }
   
+  function getMatchesCount($project_id)
+  {
+  $db = sportsmanagementHelper::getDBConnection();
+$query = $db->getQuery(true);
+
+$query->select('count(m.id)');
+$query->from('#__sportsmanagement_match as m');
+$query->join('INNER','#__sportsmanagement_round as r ON r.id = m.round_id');
+$query->where('r.project_id = '.$project_id);
+$db->setQuery($query);
+		return $db->loadResult();
+
+
+
+  }
+
+
 	/**
 	 * sportsmanagementModelMatches::getMatchesByRound()
 	 * 
