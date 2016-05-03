@@ -311,6 +311,8 @@ echo $row->league.'<br>';
                         
                         <td class="center">
                         <a href="<?php echo $link2rounds; ?>"><?php echo $this->modelround->getRoundsCount($row->id); ?></a>
+                        <br>
+                        <?php echo $this->modelmatches->getMatchesCount($row->id); ?>
                         </td>
                         
                         <td class="center">
