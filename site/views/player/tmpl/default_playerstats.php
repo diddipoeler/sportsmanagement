@@ -57,9 +57,22 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 			<thead>
 			<tr class="sectiontableheader">
 				<th class="td_l" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION'); ?></th>
+                <?PHP
+                if ( $this->config['show_plstats_team'] )
+	{
+	   ?>
 				<th class="td_l" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_TEAM'); ?></th>
+                <?PHP
+                }
+                if ( $this->config['show_plstats_ppicture'] )
+	{
+                ?>
                 <th class="td_l" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE'); ?></th>
-				<th class="td_c"><?php
+                 <?PHP
+                }
+                ?>
+				<th class="td_c">
+                <?php
 				$imageTitle = JText::_('COM_SPORTSMANAGEMENT_PERSON_PLAYED');
                 $picture = $picture_path_sport_type_name.'/played.png';
                 if ( !curl_init($picture) )
@@ -242,6 +255,10 @@ if ( !curl_init( $player_hist->project_picture ) )
                 echo JHtml::link($link1,$player_hist->project_name); 
                 ?>
 				</td>
+     <?PHP           
+                if ( $this->config['show_plstats_team'] )
+	{
+	   ?>
 				<td class="td_l" class="nowrap">
 				<?php
                 if ( $this->config['show_team_logo'] ) 
@@ -252,23 +269,34 @@ if ( !curl_init( $player_hist->club_picture ) )
 				}                                
 echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsteam'.$player_hist->project_id.'-'.$player_hist->team_id,$player_hist->club_picture,$player_hist->team_name,'20');                                
                             }    
-					if ( $this->config['show_playerstats_teamlink'] ) 
+					
+                    if ( $this->config['show_playerstats_teamlink'] ) 
                     {
 						echo JHtml::link($link2,$player_hist->team_name);
 					} 
                     else 
                     {
 						echo $player_hist->team_name;
-					} 
+					}
+                    
+                     
 				?>
 				</td>
+                <?PHP
+                }
+                if ( $this->config['show_plstats_ppicture'] )
+	{
                 
+                ?>
                 <td>
                 <?PHP
                 //echo $player_hist->season_picture;
                 echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstats'.$player_hist->project_id.'-'.$player_hist->team_id,$player_hist->season_picture,$player_hist->team_name,'50');
                 ?>
                 </td>
+                <?PHP
+                }
+                ?>
 				<!-- Player stats History - played start -->
 				<td class="td_c"><?php
 				//echo ($this->inoutstat->played > 0) ? $this->inoutstat->played : '0';

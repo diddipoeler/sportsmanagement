@@ -103,37 +103,143 @@
 			<option value="1">JYES</option>
 		</field>
 		
-		<field	name="show_gameshistory" type="radio" default="1"   class="radio btn-group btn-group-yesno"
+<!-- spielhistorie im projekt  -->    
+		<field	name="show_gameshistory" 
+    type="radio" 
+    default="1"   
+    class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_GAMES_HISTORY"
 				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_GAMES_HISTORY">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-
-		<field	name="show_plstats" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+    <field	name="show_gameshistory_team" 
+    type="radio" 
+    default="1"   
+    class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_GAMES_HISTORY_TEAM"
+				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_GAMES_HISTORY_TEAM">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+    <field	name="show_gameshistory_ppicture" 
+    type="radio" 
+    default="1"   
+    class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_GAMES_HISTORY_PPICTURE"
+				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_GAMES_HISTORY_PPICTURE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+<!-- karriere als spieler  -->
+		<field	name="show_plstats" 
+    type="radio" 
+    default="1"  
+    class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_PL_CAREER"
 				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_PL_CAREER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-
-		<field	name="show_career_stats" type="radio" default="1" class="radio btn-group btn-group-yesno"
+    <field	name="show_plstats_team" 
+    type="radio" 
+    default="1"  
+    class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_PL_CAREER_TEAM"
+				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_PL_CAREER_TEAM">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+    <field	name="show_plstats_ppicture" 
+    type="radio" 
+    default="1"  
+    class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_PL_CAREER_PPICTURE"
+				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_PL_CAREER_PPICTURE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+<!-- spielerstatistiken  -->
+		<field	name="show_career_stats" 
+    type="radio" 
+    default="1" 
+    class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_PL_CAREER_STATS"
 				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_PL_CAREER_STATS">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		
-		<field	name="show_plcareer" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+    	<field	name="show_career_stats_team" 
+    type="radio" 
+    default="1" 
+    class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_PL_CAREER_STATS_TEAM"
+				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_PL_CAREER_STATS_TEAM">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+    	<field	name="show_career_stats_ppicture" 
+    type="radio" 
+    default="1" 
+    class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_PL_CAREER_STATS_PPICTURE"
+				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_PL_CAREER_STATS_PPICTURE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+<!-- karriere als spieler  -->		
+		<field	name="show_plcareer" 
+    type="radio" 
+    default="1"  
+    class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_PL_CAREER"
 				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_PL_CAREER">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-
-		<field	name="show_stcareer" type="radio" default="1"  class="radio btn-group btn-group-yesno"
+    	<field	name="show_plcareer_team" 
+    type="radio" 
+    default="1"  
+    class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_PL_CAREER_TEAM"
+				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_PL_CAREER_TEAM">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+    	<field	name="show_plcareer_ppicture" 
+    type="radio" 
+    default="1"  
+    class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_PL_CAREER_PPICTURE"
+				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_PL_CAREER_PPICTURE">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+<!-- karriere als mannschaftsmitarbeiter  -->
+		<field	name="show_stcareer" 
+    type="radio" 
+    default="1"  
+    class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_STAFF_CAREER"
 				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_STAFF_CAREER">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+    	<field	name="show_stcareer_team" 
+    type="radio" 
+    default="1"  
+    class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_STAFF_CAREER_TEAM"
+				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_STAFF_CAREER_TEAM">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+    	<field	name="show_stcareer_ppicture" 
+    type="radio" 
+    default="1"  
+    class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_STAFF_CAREER_PPICTURE"
+				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_STAFF_CAREER_PPICTURE">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>

@@ -49,16 +49,45 @@ if (count($this->historyPlayer) > 0)
 			<td>
 				<table id="playerhistory" class="<?PHP echo $this->config['history_table_class']; ?>" >
 					<tr class="sectiontableheader">
-						<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION');
-							?></th>
-						<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_SEASON');
-							?></th>
-						<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_TEAM');
-							?></th>
-                        <th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE');
-							?></th>    
-						<th class="td_l"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_POSITION');
-							?></th>
+						<th class="td_l">
+                        <?php echo 
+                        JText::_('COM_SPORTSMANAGEMENT_PERSON_COMPETITION');
+							?>
+                            </th>
+						<th class="td_l">
+                        <?php 
+                        echo JText::_('COM_SPORTSMANAGEMENT_PERSON_SEASON');
+							?>
+                            </th>
+                            
+                             <?PHP
+                if ( $this->config['show_plcareer_team'] )
+	{
+	   ?>
+						<th class="td_l">
+                        <?php 
+                        echo JText::_('COM_SPORTSMANAGEMENT_PERSON_TEAM');
+							?>
+                            </th>
+                            <?PHP
+                            }
+                            if ( $this->config['show_plcareer_ppicture'] )
+	{
+                            ?>
+                        <th class="td_l">
+                        <?php 
+                        echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE');
+							?>
+                            </th>  
+                             <?PHP
+                            }
+                            
+                            ?>  
+						<th class="td_l">
+                        <?php 
+                        echo JText::_('COM_SPORTSMANAGEMENT_PERSON_POSITION');
+							?>
+                            </th>
 					</tr>
 					<?php
 					$k=0;
@@ -100,6 +129,10 @@ if ( !curl_init( $station->project_picture ) )
                             echo $station->season_name;
 								?>
                                 </td>
+                                 <?PHP
+                if ( $this->config['show_plcareer_team'] )
+	{
+	   ?>
 							<td class="td_l">
                             <?php 
                             if ( $this->config['show_team_logo'] ) 
@@ -120,12 +153,21 @@ if ( !curl_init( $station->club_picture ) )
 							}
 							?>
                             </td>
+                            <?PHP
+                            }
+                            if ( $this->config['show_plcareer_ppicture'] )
+	{
+                            ?>
                             <td>
                 <?PHP
                 //echo $player_hist->season_picture;
                 echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareerperson'.$station->project_id.'-'.$station->team_id,$station->season_picture,$station->team_name,'50');
                 ?>
                 </td>
+                 <?PHP
+                            }
+                            
+                            ?>
 							<td class="td_l"><?php echo JText::_($station->position_name);
 								?></td>
 						</tr>
