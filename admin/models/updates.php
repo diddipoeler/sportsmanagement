@@ -102,7 +102,9 @@ class sportsmanagementModelUpdates extends JModelLegacy
 			$data['build']=!empty($build) ? $build : $result->build ;
 			$data['revision']=!empty($revision) ? $revision : $result->revision;			
 		}
-		
+/**
+* wird nicht benötigt
+*/		
 //		if (!$tableVersion->bind($data))
 //		{
 //			echo $this->_db->getErrorMsg();
