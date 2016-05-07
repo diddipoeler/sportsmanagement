@@ -46,6 +46,8 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
 //$picture_path_sport_type_name = 'images/com_sportsmanagement/database/events/'.$this->project->fs_sport_type_name;
 //}
 
+$colspan = 1;
+            
 ?>
 
 <!-- Player stats History START -->
@@ -60,12 +62,14 @@ $picture_path_sport_type_name = 'images/com_sportsmanagement/database/events';
                 <?PHP
                 if ( $this->config['show_plstats_team'] )
 	{
+	   $colspan++;
 	   ?>
 				<th class="td_l" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_TEAM'); ?></th>
                 <?PHP
                 }
                 if ( $this->config['show_plstats_ppicture'] )
 	{
+	   $colspan++;
                 ?>
                 <th class="td_l" class="nowrap"><?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_PLAYERS_PICTURE'); ?></th>
                  <?PHP
@@ -387,15 +391,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsteam'.$playe
 				}
 			}
 			
-            $colspan = 3;
-            if ( $this->config['show_plstats_team'] )
-	        {
-	        $colspan = $colspan - 1;   
-            }       
-            if ( $this->config['show_plstats_ppicture'] )
-	        {
-	        $colspan = $colspan - 1;   
-            }
+            
             ?>
 			<tr class="career_stats_total">
 				<td class="td_r" colspan="<?php echo $colspan; ?>  "><b><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_CAREER_TOTAL'); ?></b></td>
