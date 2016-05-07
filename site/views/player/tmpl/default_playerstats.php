@@ -386,9 +386,19 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playerstatsteam'.$playe
 			$k=(1-$k);
 				}
 			}
-			?>
+			
+            $colspan = 3;
+            if ( $this->config['show_plstats_team'] )
+	        {
+	        $colspan = $colspan - 1;   
+            }       
+            if ( $this->config['show_plstats_ppicture'] )
+	        {
+	        $colspan = $colspan - 1;   
+            }
+            ?>
 			<tr class="career_stats_total">
-				<td class="td_r" colspan="3"><b><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_CAREER_TOTAL'); ?></b></td>
+				<td class="td_r" colspan="<?php echo $colspan; ?>  "><b><?php echo JText::_('COM_SPORTSMANAGEMENT_PERSON_CAREER_TOTAL'); ?></b></td>
 				<td class="td_c"><?php echo $career['played']; ?></td>
 				<?php //substitution system
 				if	($this->config['show_substitution_stats'] && isset($this->overallconfig['use_jl_substitution']) &&
