@@ -102,13 +102,15 @@ class sportsmanagementModelUpdates extends JModelLegacy
 			$data['build']=!empty($build) ? $build : $result->build ;
 			$data['revision']=!empty($revision) ? $revision : $result->revision;			
 		}
-		
-		if (!$tableVersion->bind($data))
-		{
-			echo $this->_db->getErrorMsg();
-			$this->setError(JText::_('Binding failed'));
-			return false;
-		}
+/**
+* wird nicht benötigt
+*/		
+//		if (!$tableVersion->bind($data))
+//		{
+//			echo $this->_db->getErrorMsg();
+//			$this->setError(JText::_('Binding failed'));
+//			return false;
+//		}
 		// Store the item to the database
 		if (!$store=$tableVersion->store())
 		{
