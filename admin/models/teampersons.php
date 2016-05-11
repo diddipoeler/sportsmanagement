@@ -395,7 +395,7 @@ class sportsmanagementModelTeamPersons extends JModelList
         $query->from('#__sportsmanagement_person AS ppl');
         $query->join('INNER', '#__sportsmanagement_season_team_person_id AS tp on tp.person_id = ppl.id');
         $query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = tp.team_id');
-        $query->where('st.team_id = '.$team_id);
+        $query->where('st.team_id IN ('.$team_id.')');
         $query->where('st.season_id = '.$season_id);
         $query->where('tp.team_id = '.$season_id);
         
