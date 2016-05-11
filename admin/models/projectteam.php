@@ -228,15 +228,15 @@ class sportsmanagementModelprojectteam extends JModelAdmin
 				$result = false;
 			}
 		
-/*			
+			
 // Create an object for the record we are going to update.
 $object = new stdClass();
 // Must be a valid primary key value.
-$object->id = 1;
+$object->id = $post['club_id'.$pks[$x]];
 $object->location = $post['location'.$pks[$x]];
 // Update their details in the users table using id as the primary key.
 $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 'id');
-*/			
+			
 			
 		}
 		return $result;
