@@ -379,6 +379,17 @@ $link = 'index.php?option=com_sportsmanagement&view=club&layout=edit&tmpl=compon
                             <?PHP
                             echo $row->longitude;
                             ?>
+                            <br>
+	<input<?php echo $inputappend; ?> type="text" size="25" class="form-control form-control-inline"
+	name="location<?php echo $row->id; ?>"
+	value="<?php echo $row->location; ?>"
+	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />  
+	
+	<input<?php echo $inputappend; ?> type="hidden" size="25" class="form-control form-control-inline"
+	name="club_id<?php echo $row->id; ?>"
+	value="<?php echo $row->club_id; ?>"
+	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />  
+	
                             </td>
                             
 							<td class="center"><?php
