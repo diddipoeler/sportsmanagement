@@ -6385,7 +6385,12 @@ $query->clear();
 
 			// daten für die neue zuordnung setzen
             $this->setNewDataStructur();
-            sportsmanagementModeldatabasetool::setNewPicturePath();
+/**
+ * zum schluss werden noch die bilderpfade umgesetzt
+ */
+$mdl = JModelLegacy::getInstance("databasetool", "sportsmanagementModel"); 
+$mdl->setNewPicturePath();            
+
             return $this->_success_text;
 		}
 		else

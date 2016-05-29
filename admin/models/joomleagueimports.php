@@ -545,7 +545,7 @@ catch (Exception $e) {
 
 self::$_success['Tabellenkopie:'] = $my_text;
 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'success<br><pre>'.print_r(self::$_success,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'success<br><pre>'.print_r(self::$_success,true).'</pre>'),'');
 
 /**
  * nach der kopie der tabellen müssen wir die sportart bei den mannschaften setzen.
@@ -2083,7 +2083,8 @@ $mdl->checkProjectPositions($row->project_id,2,$row->team_id,$row->season_id,1);
 /**
  * zum schluss werden noch die bilderpfade umgesetzt
  */
-sportsmanagementModeldatabasetool::setNewPicturePath();
+$mdl = JModelLegacy::getInstance("databasetool", "sportsmanagementModel"); 
+$mdl->setNewPicturePath();
 
 
 /*
