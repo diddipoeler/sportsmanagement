@@ -77,7 +77,8 @@ class sportsmanagementControllerImagehandler extends JControllerLegacy
 		// Check for request forgeries
 		JRequest::checkToken() or die( 'JINVALID_TOKEN' );
 
-		$file	= $jinput->getVar( 'userfile', '', 'files', 'array' );
+		//$file	= $jinput->getVar( 'userfile', '', 'files', 'array' );
+        $file = $jinput->files->get('userfile');
 		//$task	= $jinput->getVar( 'task' );
 		$type	= $jinput->getVar( 'type' );
 		$folder	= ImageSelectSM::getfolder($type);
@@ -92,9 +93,11 @@ class sportsmanagementControllerImagehandler extends JControllerLegacy
 		//$base_Dir = JPATH_SITE . DS . 'media' . DS . 'com_joomleague' . DS . $folder . DS;
 		$base_Dir = JPATH_SITE . DS . 'images' . DS . $option . DS .'database'.DS. $folder . DS;
         
-        $app->enqueueMessage(JText::_($type),'');
-        $app->enqueueMessage(JText::_($folder),'');
-        $app->enqueueMessage(JText::_($base_Dir),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jinput<pre>'.print_r($jinput,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' file<pre>'.print_r($file,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$type),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$folder),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$base_Dir),'');
 
     //do we have an imagelink?
     if ( !empty( $linkaddress ) )

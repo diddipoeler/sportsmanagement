@@ -169,11 +169,13 @@ static $_foldertype = '';
 	function check( $file )
 	{
 		jimport( 'joomla.filesystem.file' );
+$app = JFactory::getApplication();
+		$params = JComponentHelper::getParams( 'com_sportsmanagement' );
 
-		$params =& JComponentHelper::getParams( 'com_sportsmanagement' );
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' file<pre>'.print_r($file,true).'</pre>'),'');
 
-		$sizelimit	= $params->get( 'image_max_size', 120 )*1024; //size limit in kb
-		$imagesize	= $file['size'];
+		$sizelimit = $params->get( 'image_max_size', 120 )*1024; //size limit in kb
+		$imagesize = $file['size'];
 /*
 		//check if the upload is an image...getimagesize will return false if not
 		if ( !getimagesize( $file['tmp_name'] ) )
@@ -183,9 +185,11 @@ static $_foldertype = '';
 		}
 */
 		//check if the imagefiletype is valid
-		$fileext	= JFile::getExt($file['name']);
+		$fileext = JFile::getExt($file['name']);
 
-		$allowable	= array ( 'gif', 'jpg','jpeg', 'png','bmp','GIF', 'JPG','JPEG', 'PNG', 'BMP' );
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' fileext<pre>'.print_r($fileext,true).'</pre>'),'');
+
+		$allowable	= array ('gif','jpg','jpeg','png','bmp','GIF','JPG','JPEG','PNG','BMP');
 		if ( !in_array( $fileext, $allowable ) )
 		{
 			JError::raiseWarning( 100, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_ERROR1' ) . ': ' . htmlspecialchars( $file['name'], ENT_COMPAT, 'UTF-8' ) );
