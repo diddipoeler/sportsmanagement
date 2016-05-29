@@ -60,41 +60,41 @@ class sportsmanagementModeljoomleagueimport extends JModelList
 
 
 
-/**
- * sportsmanagementModeljoomleagueimport::getImportPositions()
- * 
- * @param string $component
- * @return
- */
-function getImportPositions($component = 'joomleague',$which_table='project_position')
-{
-    $app = JFactory::getApplication();
-    $db = JFactory::getDbo(); 
-    $option = JRequest::getCmd('option');
-    
-    // Select some fields
-            $query = $db->getQuery(true);
-            $query->clear();
-		    $query->select('pos.*,pos.id as value, pos.name as text');
-// From table
-		    $query->from('#__'.$component.'_position as pos');
-            
-switch ($component)
-{
-    case 'joomleague':
-    $query->join('INNER', '#__'.$component.'_'.$which_table.' AS pp ON pp.position_id = pos.id');
-    //$query->join('INNER', '#__'.$component.'_person AS pp ON pp.position_id = pos.id');
-    $query->group('pos.id');
-    break;
-}
-            
-    
-    
-    $db->setQuery($query);
-    $result = $db->loadObjectList();
-    return $result;
-}
-
+///**
+// * sportsmanagementModeljoomleagueimport::getImportPositions()
+// * 
+// * @param string $component
+// * @return
+// */
+//function getImportPositions($component = 'joomleague',$which_table='project_position')
+//{
+//    $app = JFactory::getApplication();
+//    $db = JFactory::getDbo(); 
+//    $option = JRequest::getCmd('option');
+//    
+//    // Select some fields
+//            $query = $db->getQuery(true);
+//            $query->clear();
+//		    $query->select('pos.*,pos.id as value, pos.name as text');
+//// From table
+//		    $query->from('#__'.$component.'_position as pos');
+//            
+//switch ($component)
+//{
+//    case 'joomleague':
+//    $query->join('INNER', '#__'.$component.'_'.$which_table.' AS pp ON pp.position_id = pos.id');
+//    //$query->join('INNER', '#__'.$component.'_person AS pp ON pp.position_id = pos.id');
+//    $query->group('pos.id');
+//    break;
+//}
+//            
+//    
+//    
+//    $db->setQuery($query);
+//    $result = $db->loadObjectList();
+//    return $result;
+//}
+//
 
 
 

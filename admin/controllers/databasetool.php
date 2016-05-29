@@ -63,8 +63,8 @@ class sportsmanagementControllerDatabaseTool extends JControllerLegacy
 function repair()  
 {  
 $app = JFactory::getApplication();  
-		$model = $this->getModel('databasetool');  
-		$jsm_tables = $model->getSportsManagementTables();  
+$model = $this->getModel('databasetool');  
+$jsm_tables = $model->getSportsManagementTables();  
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_tables<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');	  
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_tables<br><pre>'.print_r($jsm_tables,true).'</pre>'),'');	  
   
@@ -77,7 +77,7 @@ $model->setSportsManagementTableQuery($value , $this->getTask() );
   
 $msg = 'Alle Tabellen repariert';   
 //$this->setRedirect('index.php?option=com_sportsmanagement&view=databasetools',$msg);   
-	$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);   
+$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);   
 }  
 
 /**
@@ -88,8 +88,8 @@ $msg = 'Alle Tabellen repariert';
 function optimize()  
 {  
 $app = JFactory::getApplication();  
-		$model = $this->getModel('databasetool');  
-		$jsm_tables = $model->getSportsManagementTables();  
+$model = $this->getModel('databasetool');  
+$jsm_tables = $model->getSportsManagementTables();  
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_tables<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');	  
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_tables<br><pre>'.print_r($jsm_tables,true).'</pre>'),'');	  
   
@@ -115,8 +115,8 @@ $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=compon
 function truncate()  
 {  
 $app = JFactory::getApplication();  
-		$model = $this->getModel('databasetool');  
-		$jsm_tables = $model->getSportsManagementTables();  
+$model = $this->getModel('databasetool');  
+$jsm_tables = $model->getSportsManagementTables();  
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_tables<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');	  
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_tables<br><pre>'.print_r($jsm_tables,true).'</pre>'),'');	  
   
@@ -132,7 +132,29 @@ $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=compon
 }  
 
 
+/**
+ * sportsmanagementControllerDatabaseTool::picturepath()
+ * 
+ * @return void
+ */
+function picturepath()
+{
+$app = JFactory::getApplication();  
+$model = $this->getModel('databasetool');    
+$model->setNewPicturePath();
 
+//$jsm_tables = $model->getSportsManagementTables();      
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_tables<br><pre>'.print_r($jsm_tables,true).'</pre>'),'');	      
+//foreach( $jsm_tables as $key => $value )  
+//{  
+//if ( preg_match("/sportsmanagement/i", $value )  )
+//{
+//// update #__sportsmanagement_project set name = replace(name, 'Kreisligen', 'Kreisliga')";    
+//}
+//
+//}
+            
+}
 
 }
 ?>

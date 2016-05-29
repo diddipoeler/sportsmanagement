@@ -80,7 +80,14 @@ class sportsmanagementModelclubnames extends JModelList
                 parent::__construct($config);
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
                 parent::setDbo($getDBConnection);
-                
+        // Reference global application object
+        $this->app = JFactory::getApplication();
+        $this->user	= JFactory::getUser();     
+        // JInput object
+        $this->jinput = $this->app->input;
+        $this->option = $this->jinput->getCmd('option');
+        $this->jsmdb = $this->getDbo();
+        $this->query = $this->jsmdb->getQuery(true);
         }
         
     /**

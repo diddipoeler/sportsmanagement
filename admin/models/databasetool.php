@@ -77,6 +77,14 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
                 parent::__construct($config);
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
                 parent::setDbo($getDBConnection);
+        // Reference global application object
+        $this->app = JFactory::getApplication();
+        $this->user	= JFactory::getUser();     
+        // JInput object
+        $this->jinput = $this->app->input;
+        $this->option = $this->jinput->getCmd('option');
+        $this->jsmdb = $this->getDbo();
+        $this->query = $this->jsmdb->getQuery(true);
         }
         
     /**
@@ -417,6 +425,111 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
         }
         }    
 		return $result;
+    }
+    
+    
+    /**
+     * sportsmanagementModeldatabasetool::setNewPicturePath()
+     * 
+     * @return void
+     */
+    function setNewPicturePath()
+    {
+    // Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('picture') . " = replace(picture, 'com_joomleague', 'com_sportsmanagement') " 
+);
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('picture') . ' LIKE '.$this->jsmdb->Quote('%'.'com_joomleague'.'%')
+);        
+$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_person'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->query);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
+self::runJoomlaQuery(__CLASS__);    
+$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
+
+$this->query->clear();
+// Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('picture') . " = replace(picture, 'com_joomleague', 'com_sportsmanagement') " 
+);
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('picture') . ' LIKE '.$this->jsmdb->Quote('%'.'com_joomleague'.'%')
+);        
+$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_playground'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->query);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
+self::runJoomlaQuery(__CLASS__);
+$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
+
+$this->query->clear();
+// Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('picture') . " = replace(picture, 'com_joomleague', 'com_sportsmanagement') " 
+);
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('picture') . ' LIKE '.$this->jsmdb->Quote('%'.'com_joomleague'.'%')
+);        
+$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_team'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->query);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
+//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');
+self::runJoomlaQuery(__CLASS__);                
+$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
+
+
+$this->query->clear();
+// Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('logo_big') . " = replace(logo_big, 'com_joomleague', 'com_sportsmanagement') " 
+);
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('logo_big') . ' LIKE '.$this->jsmdb->Quote('%'.'com_joomleague'.'%')
+);        
+$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->query);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
+//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');
+self::runJoomlaQuery(__CLASS__);                
+$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
+
+$this->query->clear();
+// Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('logo_middle') . " = replace(logo_middle, 'com_joomleague', 'com_sportsmanagement') " 
+);
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('logo_middle') . ' LIKE '.$this->jsmdb->Quote('%'.'com_joomleague'.'%')
+);        
+$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->query);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
+//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');
+self::runJoomlaQuery(__CLASS__);                
+$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
+
+$this->query->clear();
+// Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('logo_small') . " = replace(logo_small, 'com_joomleague', 'com_sportsmanagement') " 
+);
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('logo_small') . ' LIKE '.$this->jsmdb->Quote('%'.'com_joomleague'.'%')
+);        
+$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->query);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
+//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');
+self::runJoomlaQuery(__CLASS__);                
+$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
+
+    
     }
     
     /**
@@ -1451,7 +1564,7 @@ foreach( $xml->events as $event )
      */
     function build_SelectQuery($tablename,$param1,$st_id = 0)
 {
-	$query="SELECT * FROM #__".COM_SPORTSMANAGEMENT_TABLE."_".$tablename." WHERE name='".$param1."' and sports_type_id = ".$st_id." ";
+	$query = "SELECT * FROM #__sportsmanagement_".$tablename." WHERE name='".$param1."' and sports_type_id = ".$st_id." ";
 	return $query;
 }
 
@@ -1469,8 +1582,19 @@ foreach( $xml->events as $event )
  */
 function build_InsertQuery_Position($tablename,$param1,$param2,$param3,$param4,$sports_type_id,$order_count)
 {
-	$alias=JFilterOutput::stringURLSafe($param1);
-	$query="INSERT INTO #__".COM_SPORTSMANAGEMENT_TABLE."_".$tablename." (`name`,`alias`,`".$param2."`,`parent_id`,`sports_type_id`,`published`,`ordering`) VALUES ('".$param1."','".$alias."','".$param4."','".$param3."','".$sports_type_id."','1','".$order_count."')";
+    // Get a db connection.
+//    $db = JFactory::getDbo(); 
+//    $query = $db->getQuery(true);
+//    // Select some fields
+//    $query->select('max(import_id) AS count');
+//    // From the table
+//    $query->from('#__sportsmanagement_'.$tablename);
+//	$db->setQuery($query);
+//	$count_id = $db->loadResult();
+    $count_id = 0;
+        
+	$alias = JFilterOutput::stringURLSafe($param1);
+	$query = "INSERT INTO #__sportsmanagement_".$tablename." (`name`,`alias`,`".$param2."`,`parent_id`,`sports_type_id`,`published`,`ordering`,`import_id`) VALUES ('".$param1."','".$alias."','".$param4."','".$param3."','".$sports_type_id."','1','".$order_count."','".$count_id."')";
 	return $query;
 }
 
@@ -1486,8 +1610,18 @@ function build_InsertQuery_Position($tablename,$param1,$param2,$param3,$param4,$
  */
 function build_InsertQuery_Event($tablename,$param1,$param2,$sports_type_id,$order_count)
 {
-	$alias=JFilterOutput::stringURLSafe($param1);
-	$query="INSERT INTO #__".COM_SPORTSMANAGEMENT_TABLE."_".$tablename." (`name`,`alias`,`icon`,`sports_type_id`,`published`,`ordering`) VALUES ('".$param1."','".$alias."','".$param2."','".$sports_type_id."','1','".$order_count."')";
+	// Get a db connection.
+//    $db = JFactory::getDbo(); 
+//    $query = $db->getQuery(true);
+//    // Select some fields
+//    $query->select('max(import_id) AS count');
+//    // From the table
+//    $query->from('#__sportsmanagement_'.$tablename);
+//	$db->setQuery($query);
+//	$count_id = $db->loadResult();
+    $count_id = 0;
+    $alias = JFilterOutput::stringURLSafe($param1);
+	$query = "INSERT INTO #__sportsmanagement_".$tablename." (`name`,`alias`,`icon`,`sports_type_id`,`published`,`ordering`,`import_id`) VALUES ('".$param1."','".$alias."','".$param2."','".$sports_type_id."','1','".$order_count."','".$count_id."')";
 	return $query;
 }
 
@@ -1500,10 +1634,17 @@ function build_InsertQuery_Event($tablename,$param1,$param2,$sports_type_id,$ord
  */
 function build_InsertQuery_PositionEventType($param1,$param2)
 {
-	$query="	INSERT INTO	#__".COM_SPORTSMANAGEMENT_TABLE."_position_eventtype
-				(`position_id`,`eventtype_id`)
-				VALUES
-				('".$param1."','".$param2."')";
+    // Get a db connection.
+//    $db = JFactory::getDbo(); 
+//    $query = $db->getQuery(true);
+//    // Select some fields
+//    $query->select('max(import_id) AS count');
+//    // From the table
+//    $query->from('#__sportsmanagement_'.$tablename);
+//	$db->setQuery($query);
+//	$count_id = $db->loadResult();
+    $count_id = 0;
+	$query = "INSERT INTO	#__sportsmanagement_position_eventtype (`position_id`,`eventtype_id`,`import_id`) VALUES ('".$param1."','".$param2."','".$count_id."')";
 	return $query;
 }
 

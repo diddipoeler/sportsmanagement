@@ -80,7 +80,7 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 		$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_JL_IMPORT_ALLOWED_NO'),'Error');    
 		}
 		
-		$stateVar = $app->getUserStateFromRequest( "$option.success", 'success', '' );
+		//$stateVar = $app->getUserStateFromRequest( "$option.success", 'success', '' );
 		
 		$model->check_database();
 		
@@ -140,9 +140,9 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 //        $this->assign('items',$checktables);
         
         //$this->assign('success',$jinput->getVar('success'));
-		$this->success	= $stateVar;
+		$this->success	= $app->getUserStateFromRequest( $option.".jl_table_import_success", 0 );
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' success <br><pre>'.print_r($this->success,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' success <br><pre>'.print_r($this->success,true).'</pre>'),'');
         
         //$this->addToolbar();
 		//parent::display($tpl);
@@ -169,8 +169,8 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 		//JToolBarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'), false);
 		}
         
-		JToolBarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'), false);
-
+		JToolBarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_START_BUTTON'), false);
+JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=projects');    
 
 //        JToolBarHelper::custom('joomleagueimports.positions','edit','edit',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'),false);
 //        

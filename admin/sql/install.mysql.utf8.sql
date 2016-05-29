@@ -103,6 +103,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_club` (
   `cr_logo_small` varchar(255) DEFAULT NULL,
   `hits` INT(11) NOT NULL DEFAULT '0' ,
   `modified_hits` INT(11) NOT NULL DEFAULT '0' ,
+  `import_id` INT(11) NOT NULL DEFAULT '0' ,
   PRIMARY KEY (`id`) ,
   KEY `standard_playground` (`standard_playground`),
   KEY `country` (`country`)

@@ -58,22 +58,22 @@ class sportsmanagementControllerjoomleagueimport extends JControllerAdmin
   
 
 
-/**
- * sportsmanagementControllerjoomleagueimport::newstructur()
- * 
- * @return void
- */
-function newstructur()
-{
-    $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $model	= $this->getModel();
-        $result = $model->newstructur();
-        
-        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
-    
-}
-
+///**
+// * sportsmanagementControllerjoomleagueimport::newstructur()
+// * 
+// * @return void
+// */
+//function newstructur()
+//{
+//    $app = JFactory::getApplication();
+//        $option = JRequest::getCmd('option');
+//        $model	= $this->getModel();
+//        $result = $model->newstructur();
+//        
+//        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+//    
+//}
+//
 	/**
 	 * Proxy for getModel.
 	 * @since	1.6

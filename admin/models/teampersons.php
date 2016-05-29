@@ -280,7 +280,7 @@ class sportsmanagementModelTeamPersons extends JModelList
      * @param mixed $season_id
      * @return
      */
-    function checkProjectPositions($project_id,$persontype,$team_id,$season_id)
+    function checkProjectPositions($project_id,$persontype,$team_id,$season_id,$insert=1)
     {
         // Reference global application object
         $app = JFactory::getApplication();
@@ -296,7 +296,28 @@ class sportsmanagementModelTeamPersons extends JModelList
         $modified = $date->toSql();
 	    $modified_by = $user->get('id');
        
+/**
+ * tabelle: sportsmanagement_person_project_position
+ * feld import_id einfügen
+ */
+$jsm_table = '#__sportsmanagement_person_project_position'; 
+try { 
+$query = $db->getQuery(true);
+$query->clear();
+$query = "ALTER TABLE `".$jsm_table."` ADD `import_id` INT(11) NOT NULL DEFAULT '0' "   ;
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+//$result = $db->execute();
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
+
        // Select some fields
+       $query = $db->getQuery(true);
+       $query->clear();
 		$query->select('stp.person_id,ppos.id as project_position_id');
         $query->from('#__sportsmanagement_season_team_person_id as stp');
         $query->join('INNER','#__sportsmanagement_person AS p ON p.id = stp.person_id'); 
@@ -312,6 +333,9 @@ class sportsmanagementModelTeamPersons extends JModelList
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
         $result = $db->loadObjectList();
+        
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($result,true).'</pre>'),'Notice');
+        
         if ( $result )
         {
             foreach( $result as $row )
@@ -331,9 +355,9 @@ class sportsmanagementModelTeamPersons extends JModelList
                 // Create a new query object.
                 $insertquery = $db->getQuery(true);
                 // Insert columns.
-                $columns = array('person_id','project_id','project_position_id','persontype');
+                $columns = array('person_id','project_id','project_position_id','persontype','import_id');
                 // Insert values.
-                $values = array($row->person_id,$project_id,$row->project_position_id,$persontype);
+                $values = array($row->person_id,$project_id,$row->project_position_id,$persontype,1);
                 // Prepare the insert query.
                 $insertquery
                 ->insert($db->quoteName('#__sportsmanagement_person_project_position'))
@@ -344,6 +368,8 @@ class sportsmanagementModelTeamPersons extends JModelList
                 
                 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($insertquery->dump(),true).'</pre>'),'Notice');
                 
+                if ( $insert )
+                {
                 if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
                 {
                     $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($insertquery->dump(),true).'</pre>'),'Error');
@@ -352,8 +378,10 @@ class sportsmanagementModelTeamPersons extends JModelList
                 }
                 else
                 {
-                    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($insertquery->dump(),true).'</pre>'),'Notice');
+                    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($insertquery->dump(),true).'</pre>'),'Notice');
                 }
+                }
+                
                 }
             }
         return TRUE;

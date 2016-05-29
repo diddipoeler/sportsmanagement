@@ -57,132 +57,141 @@ class sportsmanagementControllerjoomleagueimports extends JControllerAdmin
 
 
 
+/**
+ * sportsmanagementControllerjoomleagueimports::importjoomleaguenew()
+ * 
+ * @return void
+ */
 function importjoomleaguenew()
 {
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        //$option = JRequest::getCmd('option');
         $model	= $this->getModel();
         $result = $model->importjoomleaguenew();
+        $app->setUserState( $this->option.".jl_table_import_success", $result );
         
+//        $model::$_success = $result;
         $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
 
 }
 
   
-/**
- * sportsmanagementControllerjoomleagueimports::updateplayerproposition()
- * 
- * @return void
- */
-function updateplayerproposition()
-{
-    $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $model	= $this->getModel();  
-        $model->updateplayerproposition();
-    $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view=joomleagueimport&layout=positions'  , false));
-}
+///**
+// * sportsmanagementControllerjoomleagueimports::updateplayerproposition()
+// * 
+// * @return void
+// */
+//function updateplayerproposition()
+//{
+//    $app = JFactory::getApplication();
+//        $option = JRequest::getCmd('option');
+//        $model	= $this->getModel();  
+//        $model->updateplayerproposition();
+//    $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view=joomleagueimport&layout=positions'  , false));
+//}
 
-/**
- * sportsmanagementControllerjoomleagueimports::updatestaffproposition()
- * 
- * @return void
- */
-function updatestaffproposition()
-{
-    $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $model	= $this->getModel();  
-        $model->updatestaffproposition();
-    $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view=joomleagueimport&layout=positions'  , false));
-}
+///**
+// * sportsmanagementControllerjoomleagueimports::updatestaffproposition()
+// * 
+// * @return void
+// */
+//function updatestaffproposition()
+//{
+//    $app = JFactory::getApplication();
+//        $option = JRequest::getCmd('option');
+//        $model	= $this->getModel();  
+//        $model->updatestaffproposition();
+//    $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view=joomleagueimport&layout=positions'  , false));
+//}
 
 
-/**
- * sportsmanagementControllerjoomleagueimports::updatepositions()
- * 
- * @return void
- */
-function updatepositions()
-{
-    $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $model	= $this->getModel();  
-        $model->updatepositions();
-    $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view=joomleagueimport&layout=positions'  , false));
-}
+///**
+// * sportsmanagementControllerjoomleagueimports::updatepositions()
+// * 
+// * @return void
+// */
+//function updatepositions()
+//{
+//    $app = JFactory::getApplication();
+//        $option = JRequest::getCmd('option');
+//        $model	= $this->getModel();  
+//        $model->updatepositions();
+//    $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view=joomleagueimport&layout=positions'  , false));
+//}
 
   
-  /**
-   * sportsmanagementControllerjoomleagueimports::positions()
-   * 
-   * @return void
-   */
-  function positions()
-  {
-  $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $model	= $this->getModel();  
-    $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view=joomleagueimport&layout=positions'  , false));
-  }
+//  /**
+//   * sportsmanagementControllerjoomleagueimports::positions()
+//   * 
+//   * @return void
+//   */
+//  function positions()
+//  {
+//  $app = JFactory::getApplication();
+//        $option = JRequest::getCmd('option');
+//        $model	= $this->getModel();  
+//    $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view=joomleagueimport&layout=positions'  , false));
+//  }
   
-  /**
-   * sportsmanagementControllerjoomleagueimports::checkimport()
-   * 
-   * @return void
-   */
-  function checkimport()
-    {
-        $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $model	= $this->getModel();
-        //$post = JRequest::get('post');
-        //JRequest::setVar('post', $post,'post');
-        
-        if ( $model->checkimport() )
-        {
-            $totals = $model->gettotals();
-            $app->setUserState( "$option.step", 0);
-            $app->setUserState( "$option.totals", $totals);  
-        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view=joomleagueimport&task=joomleagueimport.newstructur&tmpl=component'  , false));    
-        }
-        else
-        {
-        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));    
-        }
-        
-    }    
-  /**
-   * sportsmanagementControllerjoomleagueimports::import()
-   * 
-   * @return void
-   */
-  function import()
-    {
-        $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $model	= $this->getModel();
-        $result = $model->import();
-        
-        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+//  /**
+//   * sportsmanagementControllerjoomleagueimports::checkimport()
+//   * 
+//   * @return void
+//   */
+//  function checkimport()
+//    {
+//        $app = JFactory::getApplication();
+//        $option = JRequest::getCmd('option');
+//        $model	= $this->getModel();
+//        //$post = JRequest::get('post');
+//        //JRequest::setVar('post', $post,'post');
+//        
+//        if ( $model->checkimport() )
+//        {
+//            $totals = $model->gettotals();
+//            $app->setUserState( "$option.step", 0);
+//            $app->setUserState( "$option.totals", $totals);  
+//        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view=joomleagueimport&task=joomleagueimport.newstructur&tmpl=component'  , false));    
+//        }
+//        else
+//        {
+//        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));    
+//        }
+//        
+//    }    
 
-}
 
-/**
- * sportsmanagementControllerjoomleagueimports::newstructur()
- * 
- * @return void
- */
-function newstructur()
-{
-    $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $model	= $this->getModel();
-        $result = $model->newstructur();
-        
-        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
-    
-}
+//  /**
+//   * sportsmanagementControllerjoomleagueimports::import()
+//   * 
+//   * @return void
+//   */
+//  function import()
+//    {
+//        $app = JFactory::getApplication();
+//        $option = JRequest::getCmd('option');
+//        $model	= $this->getModel();
+//        $result = $model->import();
+//        
+//        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+//
+//}
+
+///**
+// * sportsmanagementControllerjoomleagueimports::newstructur()
+// * 
+// * @return void
+// */
+//function newstructur()
+//{
+//    $app = JFactory::getApplication();
+//        $option = JRequest::getCmd('option');
+//        $model	= $this->getModel();
+//        $result = $model->newstructur();
+//        
+//        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+//    
+//}
 
 	/**
 	 * Proxy for getModel.
