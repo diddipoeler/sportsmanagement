@@ -2080,6 +2080,12 @@ $mdl->checkProjectPositions($row->project_id,1,$row->team_id,$row->season_id,1);
 $mdl->checkProjectPositions($row->project_id,2,$row->team_id,$row->season_id,1);
 }
 
+/**
+ * zum schluss werden noch die bilderpfade umgesetzt
+ */
+sportsmanagementModeldatabasetool::setNewPicturePath();
+
+
 /*
 $query = $db->getQuery(true);
 $query->clear();

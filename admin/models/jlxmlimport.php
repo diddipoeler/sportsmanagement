@@ -5587,6 +5587,11 @@ $query->clear();
 		}
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::_importTreetomatch()
+	 * 
+	 * @return
+	 */
 	private function _importTreetomatch()
 	{
 		$my_text='';
@@ -5628,6 +5633,11 @@ $query->clear();
 		}
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::_beforeFinish()
+	 * 
+	 * @return void
+	 */
 	private function _beforeFinish()
 	{
 		// convert favorite teams
@@ -5647,6 +5657,12 @@ $query->clear();
 		sportsmanagementModeldatabasetool::runJoomlaQuery();
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::importData()
+	 * 
+	 * @param mixed $post
+	 * @return
+	 */
 	public function importData($post)
 	{
 	   $app = JFactory::getApplication();
@@ -6369,7 +6385,7 @@ $query->clear();
 
 			// daten für die neue zuordnung setzen
             $this->setNewDataStructur();
-            
+            sportsmanagementModeldatabasetool::setNewPicturePath();
             return $this->_success_text;
 		}
 		else
