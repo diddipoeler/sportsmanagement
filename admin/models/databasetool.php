@@ -1583,7 +1583,7 @@ foreach( $xml->events as $event )
 function build_InsertQuery_Position($tablename,$param1,$param2,$param3,$param4,$sports_type_id,$order_count)
 {
     // Get a db connection.
-//    $db = JFactory::getDbo(); 
+    $db = JFactory::getDbo(); 
 //    $query = $db->getQuery(true);
 //    // Select some fields
 //    $query->select('max(import_id) AS count');
@@ -1591,6 +1591,24 @@ function build_InsertQuery_Position($tablename,$param1,$param2,$param3,$param4,$
 //    $query->from('#__sportsmanagement_'.$tablename);
 //	$db->setQuery($query);
 //	$count_id = $db->loadResult();
+
+/**
+ * feld import_id einfügen
+ */
+try { 
+$query = $db->getQuery(true);
+$query->clear();
+$query = "ALTER TABLE `#__sportsmanagement_".$tablename."` ADD `import_id` INT(11) NOT NULL DEFAULT '0' "   ;
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+//$result = $db->execute();
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
+
     $count_id = 0;
         
 	$alias = JFilterOutput::stringURLSafe($param1);
@@ -1611,7 +1629,7 @@ function build_InsertQuery_Position($tablename,$param1,$param2,$param3,$param4,$
 function build_InsertQuery_Event($tablename,$param1,$param2,$sports_type_id,$order_count)
 {
 	// Get a db connection.
-//    $db = JFactory::getDbo(); 
+    $db = JFactory::getDbo(); 
 //    $query = $db->getQuery(true);
 //    // Select some fields
 //    $query->select('max(import_id) AS count');
@@ -1619,6 +1637,24 @@ function build_InsertQuery_Event($tablename,$param1,$param2,$sports_type_id,$ord
 //    $query->from('#__sportsmanagement_'.$tablename);
 //	$db->setQuery($query);
 //	$count_id = $db->loadResult();
+
+/**
+ * feld import_id einfügen
+ */
+try { 
+$query = $db->getQuery(true);
+$query->clear();
+$query = "ALTER TABLE `#__sportsmanagement_".$tablename."` ADD `import_id` INT(11) NOT NULL DEFAULT '0' "   ;
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+//$result = $db->execute();
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
+
     $count_id = 0;
     $alias = JFilterOutput::stringURLSafe($param1);
 	$query = "INSERT INTO #__sportsmanagement_".$tablename." (`name`,`alias`,`icon`,`sports_type_id`,`published`,`ordering`,`import_id`) VALUES ('".$param1."','".$alias."','".$param2."','".$sports_type_id."','1','".$order_count."','".$count_id."')";
@@ -1635,7 +1671,7 @@ function build_InsertQuery_Event($tablename,$param1,$param2,$sports_type_id,$ord
 function build_InsertQuery_PositionEventType($param1,$param2)
 {
     // Get a db connection.
-//    $db = JFactory::getDbo(); 
+    $db = JFactory::getDbo(); 
 //    $query = $db->getQuery(true);
 //    // Select some fields
 //    $query->select('max(import_id) AS count');
@@ -1643,6 +1679,24 @@ function build_InsertQuery_PositionEventType($param1,$param2)
 //    $query->from('#__sportsmanagement_'.$tablename);
 //	$db->setQuery($query);
 //	$count_id = $db->loadResult();
+
+/**
+ * feld import_id einfügen
+ */
+try { 
+$query = $db->getQuery(true);
+$query->clear();
+$query = "ALTER TABLE `#__sportsmanagement_position_eventtype` ADD `import_id` INT(11) NOT NULL DEFAULT '0' "   ;
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+//$result = $db->execute();
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
+
     $count_id = 0;
 	$query = "INSERT INTO	#__sportsmanagement_position_eventtype (`position_id`,`eventtype_id`,`import_id`) VALUES ('".$param1."','".$param2."','".$count_id."')";
 	return $query;
