@@ -146,7 +146,7 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
             {
             case 'predictions';
             case 'extensions';
-            //case 'github';
+            case 'jlxmlexports';
             break;
             default:
             $this->state = $this->get('State'); 
