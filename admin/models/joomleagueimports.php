@@ -800,19 +800,47 @@ $query = $db->getQuery(true);
 $query->clear(); 
 $query->update($db->quoteName('#__sportsmanagement_person'))->set($fields)->where($conditions);
 $db->setQuery($query);
+try{
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
 $query->clear(); 
 $query->update($db->quoteName('#__sportsmanagement_project_position'))->set($fields)->where($conditions);
 $db->setQuery($query);
+try{
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
 $query->clear(); 
 $query->update($db->quoteName('#__sportsmanagement_position_eventtype'))->set($fields)->where($conditions);
 $db->setQuery($query);
+try{
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
 $query->clear(); 
 $query->update($db->quoteName('#__sportsmanagement_position_statistic'))->set($fields)->where($conditions);
 $db->setQuery($query);
+try{
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
 $my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Position '.$row->name.' im Spieler/Projektpositionen aktualisiert !</strong>'.'</span>';
 $my_text .= '<br />';
 }
