@@ -78,11 +78,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					
                     <th width="">
 						<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUB_POSTAL_CODE','a.zipcode',$this->sortDirection,$this->sortColumn); ?>
-					</th>
-                    <th width="">
+					<br />
 						<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CITY','a.location',$this->sortDirection,$this->sortColumn); ?>
-					</th>
-                    <th width="">
+					<br />
 						<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS','a.address',$this->sortDirection,$this->sortColumn); ?>
 					</th>
                     
@@ -90,8 +88,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     
                     <th width="">
 						<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUBS_LATITUDE','a.latitude',$this->sortDirection,$this->sortColumn); ?>
-					</th>
-                    <th width="">
+					<br />
 						<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUBS_LONGITUDE','a.longitude',$this->sortDirection,$this->sortColumn); ?>
 					</th>
                     
@@ -312,22 +309,23 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 																	name="zipcode<?php echo $row->id; ?>"
 																	value="<?php echo $row->zipcode; ?>"
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
-							</td>
-						<td class="">
+							<br />
 								<input<?php echo $inputappend; ?>	type="text" size="30" class="form-control form-control-inline"
 																	name="location<?php echo $row->id; ?>"
 																	value="<?php echo $row->location; ?>"
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
-							</td>
-                        <td class="">
+						<br />
 								<input<?php echo $inputappend; ?>	type="text" size="30" class="form-control form-control-inline"
 																	name="address<?php echo $row->id; ?>"
 																	value="<?php echo $row->address; ?>"
 																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
 							</td>
                             
-                        <td class=""><?php echo $row->latitude; ?></td>
-                        <td class=""><?php echo $row->longitude; ?></td>
+                        <td class="">
+                        <?php echo $row->latitude; ?>
+                        <br />
+                        <?php echo $row->longitude; ?>
+                        </td>
                         <td class="center">
                         <?php 
                         $append =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
