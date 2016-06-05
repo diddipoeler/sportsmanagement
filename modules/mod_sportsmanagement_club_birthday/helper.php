@@ -103,6 +103,10 @@ $dateformat = "DATE_FORMAT(c.founded,'%Y-%m-%d') AS date_of_birth";
 
 if ( $season_ids )
 {
+foreach ($season_ids as $key=>$val) 
+{
+     $season_ids[$key]  = (int)$val;
+}    
 $seasons = implode(",",$season_ids); 
 }
 	$query = $database->getQuery(true);
