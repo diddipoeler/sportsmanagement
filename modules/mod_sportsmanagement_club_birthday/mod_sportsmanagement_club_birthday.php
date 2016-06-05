@@ -99,11 +99,12 @@ $refresh = $params->def("refresh");
 $minute = $params->def("minute");
 $height = $params->def("height");
 $width  = $params->def("width");
+$season_ids = $params->def("s");
 
 $futuremessage = htmlentities(trim(JText::_($params->get('futuremessage'))), ENT_COMPAT , 'UTF-8');
 // Prevent that result is null when either $players or $crew is null by casting each to an array.
 //$persons = array_merge((array)$players, (array)$crew);
-$clubs = modSportsmanagementClubBirthdayHelper::getClubs($limit);
+$clubs = modSportsmanagementClubBirthdayHelper::getClubs($limit,$season_ids);
 if(count($clubs)>1)   $clubs = modSportsmanagementClubBirthdayHelper::jl_birthday_sort($clubs,$params->def("sort_order"));
 
 if ( $show_debug_info )

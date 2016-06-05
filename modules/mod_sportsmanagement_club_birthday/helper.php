@@ -85,13 +85,15 @@ public static function jl_birthday_sort ($array, $sort)
         return $res;
 	}    
 
+
 /**
  * modSportsmanagementClubBirthdayHelper::getClubs()
  * 
  * @param mixed $limit
+ * @param mixed $season_ids
  * @return
  */
-public static function getClubs($limit)
+public static function getClubs($limit,$season_ids)
 	{
 	   $app = JFactory::getApplication();
 $birthdaytext='';
@@ -99,7 +101,10 @@ $database = sportsmanagementHelper::getDBConnection();
 // get club info, we have to make a function for this
 $dateformat = "DATE_FORMAT(c.founded,'%Y-%m-%d') AS date_of_birth";
 
-
+if ( $season_ids )
+{
+$seasons = implode(",",$season_ids); 
+}
 	$query = $database->getQuery(true);
     $query->select('c.id, c.founded, c.name, c.alias, c.founded_year,c.logo_big AS picture, c.country,DATE_FORMAT(c.founded, \'%m-%d\')AS daymonth,YEAR( CURRENT_DATE( ) ) as year');
     $query->select('(YEAR( CURRENT_DATE( ) ) - YEAR( c.founded ) + IF(DATE_FORMAT(CURDATE(), \'%m.%d\') > DATE_FORMAT(c.founded, \'%m.%d\'), 1, 0)) AS age, YEAR( CURRENT_DATE( ) ) - c.founded_year as age_year');
@@ -112,7 +117,10 @@ $dateformat = "DATE_FORMAT(c.founded,'%Y-%m-%d') AS date_of_birth";
     $query->join('INNER',' #__sportsmanagement_project_team as pt ON st.id = pt.team_id ');
     $query->join('INNER',' #__sportsmanagement_project as p ON p.id = pt.project_id ');
     $query->where('( c.founded != \'0000-00-00\' AND c.founded_year != \'0000\'  AND c.founded_year != \'\' ) ');
-			
+	if ( $seasons )
+    {
+    $query->where('st.season_id IN ('.$seasons.')');    
+    }		
     $query->group('c.id');
 
     $query->order('days_to_birthday ASC');
