@@ -118,7 +118,8 @@ else
 {
 	//$usedteams = $params->get('teams');
     $usedp = $params->get('teams','0');
-    $usedteams = (is_array($usedp)) ? implode(",", $usedp) : $usedp;
+    $usedteams = (is_array($usedp)) ? implode(",",array_map('intval', $usedp)) : (int) $usedp;
+
 }
 
 $birthdaytext='';
