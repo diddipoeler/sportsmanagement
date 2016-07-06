@@ -1165,7 +1165,7 @@ $db->setQuery($query);
         $query->join('INNER',' #__sportsmanagement_match as m ON m.id = me.match_id');
         $query->join('INNER',' #__sportsmanagement_round as r ON m.round_id = r.id ');
         // Where
-        $query->where('r.project_id = ' . $db->Quote($project_id));
+        $query->where('r.project_id = ' . $project_id );
         // group
         $query->group('et.id');
         // order
