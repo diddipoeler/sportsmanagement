@@ -999,14 +999,18 @@ class sportsmanagementModelAjax extends JModelLegacy
         $query = $db->getQuery(true);
                 
         // Select some fields
-        $query->select("CONCAT_WS(':', p.id, p.alias) AS value,CONCAT(p.lastname, ', ', p.firstname, ' (', p.birthday, ')') AS text");
+        $query->select("CONCAT_WS(':', p.id, p.alias) AS value");
+        $query->select("CONCAT(p.lastname, ', ', p.firstname, ' (', p.birthday, ')') AS text");
         // From 
 		$query->from('#__sportsmanagement_person AS p');
         $query->join('INNER',' #__sportsmanagement_season_team_person_id AS stp ON stp.person_id = p.id ');
         $query->join('INNER',' #__sportsmanagement_season_team_id AS st ON st.team_id = stp.team_id ');
         $query->join('INNER',' #__sportsmanagement_project_team pt ON pt.team_id = st.id ');
         // Where
+        if ( $project_id )
+        {
         $query->where('pt.project_id = ' . $project_id);
+        }
         $query->where('p.published = 1');
         $query->where('stp.persontype = 1');
         // group
@@ -1040,14 +1044,18 @@ class sportsmanagementModelAjax extends JModelLegacy
         }
         $query = $db->getQuery(true);
         // Select some fields
-        $query->select("CONCAT_WS(':', p.id, p.alias) AS value,CONCAT(p.lastname, ', ', p.firstname, ' (', p.birthday, ')') AS text");
+        $query->select("CONCAT_WS(':', p.id, p.alias) AS value");
+        $query->select("CONCAT(p.lastname, ', ', p.firstname, ' (', p.birthday, ')') AS text");
         // From 
 		$query->from('#__sportsmanagement_person AS p');
         $query->join('INNER',' #__sportsmanagement_season_team_person_id AS stp ON stp.person_id = p.id ');
         $query->join('INNER',' #__sportsmanagement_season_team_id AS st ON st.team_id = stp.team_id ');
         $query->join('INNER',' #__sportsmanagement_project_team pt ON pt.team_id = st.id ');
         // Where
-        $query->where('pt.project_id = ' . $db->Quote($project_id));
+        if ( $project_id )
+        {
+        $query->where('pt.project_id = ' . $project_id );
+        }
         $query->where('p.published = 1');
         $query->where('stp.persontype = 2');
         // group
@@ -1301,7 +1309,7 @@ $db->setQuery($query);
          * @param bool $required
          * @return
          */
-        function getProjectTreenodeOptions($project_id, $required = false, $slug = false, $dbase = false)
+        public static function getProjectTreenodeOptions($project_id, $required = false, $slug = false, $dbase = false)
         {
             $option = JRequest::getCmd('option');
 	   $app = JFactory::getApplication();
