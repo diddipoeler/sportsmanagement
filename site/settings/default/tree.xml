@@ -52,11 +52,7 @@
 				description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_FIELDBORDERCOLOR">
 		</field>
 
-		<field 	name="tree_field_fontsize" type="text" default="8"
-				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_FONTSIZE" 
-				description="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_DESCR_FONTSIZE">
-
-		</field>
+	
 
 		<field 	name="tree_field_width" type="text" default="75"
 				label="COM_SPORTSMANAGEMENT_FES_TREE_FIELD_LABEL_FIELDWIDTH" 
