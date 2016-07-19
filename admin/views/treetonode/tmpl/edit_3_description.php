@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 				{
 					$append=' style="background-color:#bbffff"';
 				}
-				echo JHtml::_(	'select.genericlist',$this->lists['team'],'team_id'.$this->node->id,
+				echo JHtml::_(	'select.genericlist',$this->lists['team'],'team_id',
 				'class="inputbox select-hometeam" size="1"'.$append,'value','text',$this->node->team_id);
 				?>
 					</td>

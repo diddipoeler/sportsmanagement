@@ -4,7 +4,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.model');
+jimport('joomla.application.component.modellist');
 //require_once (JPATH_COMPONENT.DS.'models'.DS.'list.php');
 
 
@@ -18,7 +18,7 @@ class sportsmanagementModelTreetos extends JModelList
         {
             $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-                $this->_project_id	= $app->getUserState( "$option.pid", '0' );
+                self::$_project_id = $app->getUserState( "$option.pid", '0' );
                 //$config['filter_fields'] = array(
 //                        'r.name',
 //                        'r.roundcode',
@@ -44,9 +44,9 @@ class sportsmanagementModelTreetos extends JModelList
         // Select some fields
 		$query->select('tt.*');
 		// From the rounds table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_treeto AS tt');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_division d on d.id = tt.division_id');
-        $query->where('tt.project_id = ' . $this->_project_id);
+		$query->from('#__sportsmanagement_treeto AS tt');
+        $query->join('LEFT', '#__sportsmanagement_division d on d.id = tt.division_id');
+        $query->where('tt.project_id = ' . self::$_project_id);
 		
 //        $query = '	SELECT	tt.* ';
 //		$query .=	' FROM #__joomleague_treeto AS tt ';

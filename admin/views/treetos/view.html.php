@@ -43,47 +43,64 @@ defined('_JEXEC') or die('Restricted access');
 
 
 
+/**
+ * sportsmanagementViewTreetos
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2016
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementViewTreetos extends sportsmanagementView
 {
 
+	/**
+	 * sportsmanagementViewTreetos::init()
+	 * 
+	 * @return void
+	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$this->project_id = $app->getUserState( "$option.pid", '0' );
-		$uri 		= JFactory::getURI()->toString();
-		$user		= JFactory::getUser();
+		//$app = JFactory::getApplication();
+//		$jinput = $app->input;
+//		$option = $jinput->getCmd('option');
+//		$this->project_id = $app->getUserState( "$option.pid", '0' );
+//		$uri 		= JFactory::getURI()->toString();
+//		$user		= JFactory::getUser();
+//		
+//		// Get data from the model
+//		$items		= $this->get('Data');
+//		$total		= $this->get('Total');
+//		$pagination = $this->get('Pagination');
 		
-		// Get data from the model
-		$items		= $this->get('Data');
-		$total		= $this->get('Total');
-		$pagination = $this->get('Pagination');
-		
-		$model = $this->getModel();
+		//$model = $this->getModel();
 		//$projectws = $this->get('Data','project');
+        
+        $this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
         $mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
 	    $projectws = $mdlProject->getProject($this->project_id);
         
-		$division = $app->getUserStateFromRequest($option.'tt_division', 'division', '', 'string');
+		$division = $this->app->getUserStateFromRequest($this->option.'tt_division', 'division', '', 'string');
 
 		//build the html options for divisions
-		$divisions[]=JHtmlSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
+		$divisions[] = JHtmlSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_DIVISION'));
 		$mdlDivisions = JModelLegacy::getInstance("divisions", "sportsmanagementModel");
-		if ($res = $mdlDivisions->getDivisions($this->project_id)){
+		if ($res = $mdlDivisions->getDivisions($this->project_id))
+        {
 			$divisions = array_merge($divisions,$res);
 		}
 		$lists['divisions'] = $divisions;
 		unset($divisions);
 	
-		$this->user = $user;
+		//$this->user = $user;
 		$this->lists = $lists;
-		$this->items = $items;
+		//$this->items = $items;
 		$this->projectws = $projectws;
-		$this-> division = $division;
-		$this-> total = $total;
-		$this->pagination = $pagination;
-		$this->request_url = $uri;
+		$this->division = $division;
+		//$this->total = $total;
+		//$this->pagination = $pagination;
+		//$this->request_url = $uri;
         
         //$this->setLayout('default');
 
@@ -91,16 +108,21 @@ class sportsmanagementViewTreetos extends sportsmanagementView
 //		parent::display($tpl);
 	}
 
+	/**
+	 * sportsmanagementViewTreetos::addToolbar()
+	 * 
+	 * @return void
+	 */
 	protected function addToolbar()
 	{
 		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_TITLE'),'Tree');
 
 		JToolBarHelper::apply('treeto.saveshort');
-		JToolBarHelper::publishList('treeto.publish');
-		JToolBarHelper::unpublishList('treeto.unpublish');
+		JToolBarHelper::publishList('treetos.publish');
+		JToolBarHelper::unpublishList('treetos.unpublish');
 		JToolBarHelper::divider();
 
-		JToolBarHelper::addNew('treeto.save');
+		JToolBarHelper::addNew('treetos.save');
 		JToolBarHelper::deleteList(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOS_WARNING'), 'treeto.remove');
 		JToolBarHelper::divider();
         

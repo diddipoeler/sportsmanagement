@@ -1,13 +1,5 @@
 <?php
-/**
- * @copyright	Copyright (C) 2006-2014 joomleague.at. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- */
+
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
@@ -15,105 +7,123 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 jimport( 'joomla.application.component.view' );
 //jimport('joomla.filesystem.file');
 
+
 /**
- * HTML View class for the Joomleague component
- *
- * @static
- * @package		Joomleague
- * @since 0.1
-*/
-class JoomleagueViewTreeto extends JLGView
+ * sportsmanagementViewTreeto
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2016
+ * @version $Id$
+ * @access public
+ */
+class sportsmanagementViewTreeto extends sportsmanagementView
 {
-	function display( $tpl = null )
+	
+    /**
+     * sportsmanagementViewTreeto::init()
+     * 
+     * @return
+     */
+    public function init ()
+    //function display( $tpl = null )
 	{
-		$app = JFactory::getApplication();
-		if ( $this->getLayout() == 'form' )
+		//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' getLayout <br><pre>'.print_r($this->getLayout(),true).'</pre>'),'');
+		if ( $this->getLayout() == 'edit' || $this->getLayout() == 'edit_3' )
 		{
-			$this->_displayForm( $tpl );
+			$this->_displayForm(  );
 			return;
 		}
-		elseif ($this->getLayout() == 'gennode')
+		elseif ($this->getLayout() == 'gennode' || $this->getLayout() == 'gennode_3' )
 		{
-			$this->_displayGennode($tpl);
+			$this->_displayGennode();
 			return;
 		}
-		parent::display( $tpl );
+	//	parent::display( $tpl );
 	}
 
-	function _displayForm($tpl)
+	function _displayForm()
 	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
-		$db = JFactory::getDbo();
-		$uri = JFactory::getURI();
-		$user = JFactory::getUser();
-		$model = $this->getModel();
-		$lists=array();
+		//$option = JRequest::getCmd('option');
+//		$app = JFactory::getApplication();
+//		$db = JFactory::getDbo();
+//		$uri = JFactory::getURI();
+//		$user = JFactory::getUser();
+//		$model = $this->getModel();
+//		$lists = array();
 
-		$treeto = $this->get('data');
-		$script = $this->get('Script');
-		$this->script = $script;
+		//$treeto = $this->get('data');
+		//$script = $this->get('Script');
+//		$this->script = $script;
 		//if there is no image selected, use default picture
 		//		$default = JoomleagueHelper::getDefaultPlaceholder("team");
 		//		if (empty($treeto->trophypic)){$treeto->trophypic=$default;}
 
 		// fail if checked out not by 'me'
-		if ($model->isCheckedOut($user->get('id')))
-		{
-			$msg=JText::sprintf('DESCBEINGEDITTED',JText::_('The treeto'),$treeto->id);
-			$app->redirect('index.php?option='.$option,$msg);
-		}
+		//if ($model->isCheckedOut($user->get('id')))
+//		{
+//			$msg=JText::sprintf('DESCBEINGEDITTED',JText::_('The treeto'),$treeto->id);
+//			$app->redirect('index.php?option='.$option,$msg);
+//		}
 
-		$this->assignRef('form' 	,$this->get('form'));
-		$this->assignRef('treeto',$treeto);
+		//$this->assignRef('form' 	,$this->get('form'));
+//		$this->assignRef('treeto',$treeto);
 
-		$this->addToolBar();
-		parent::display($tpl);
+		//$this->addToolBar();
+		//parent::display($tpl);
 		$this->setDocument();
+        //$this->setLayout('edit');  
 	}
 
-	function _displayGennode($tpl)
+	function _displayGennode()
 	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
-		$db = JFactory::getDbo();
-		$uri = JFactory::getURI();
-		$user = JFactory::getUser();
-		$model = $this->getModel();
-		$lists=array();
+		//$option = JRequest::getCmd('option');
+//		$app = JFactory::getApplication();
+//		$db = JFactory::getDbo();
+//		$uri = JFactory::getURI();
+//		$user = JFactory::getUser();
+//		$model = $this->getModel();
+		
+        $this->form = $this->get('Form');
+        
+        $lists = array();
 
-		$treeto = $this->get('data');
+		$this->treeto = $this->get('Item');
 		$projectws = $this->get('Data','project');
-		$this->assignRef('form' 	,$this->get('form'));
-		$this->assignRef('projectws',$projectws);
+		//$this->assignRef('form' 	,$this->get('form'));
+        $this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
+        $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
+	    $this->projectws = $mdlProject->getProject($this->project_id);
+		//$this->assignRef('projectws',$projectws);
 		$this->assignRef('lists',$lists);
-		$this->assignRef('treeto',$treeto);
+		//$this->assignRef('treeto',$treeto);
 
 		$this->addToolBar_Gennode();
-		parent::display($tpl);
+		//parent::display($tpl);
+        $this->setLayout('gennode');  
 	}
 
 	protected function addToolBar_Gennode()
 	{
-		JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_TREETO_TITLE_GENERATE'));
-		JToolBarHelper::back('Back','index.php?option=com_joomleague&view=treetos&task=treeto.display');
-		JToolBarHelper::help('screen.joomleague', true);
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_TITLE_GENERATE'));
+		JToolBarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetos&task=treeto.display');
+		//JToolBarHelper::help('screen.joomleague', true);
 	}
 
 	protected function addToolBar()
 	{
-		JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_TREETO_TITLE'));
-		JLToolBarHelper::save('treeto.save');
-		JLToolBarHelper::apply('treeto.apply');
-		JToolBarHelper::back('Back','index.php?option=com_joomleague&view=treetos&task=treeto.display');
-		JToolBarHelper::help('screen.joomleague', true);
+		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_TITLE'));
+		JToolBarHelper::save('treeto.save');
+		JToolBarHelper::apply('treeto.apply');
+		JToolBarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetos&task=treeto.display');
+		//JToolBarHelper::help('screen.joomleague', true);
 	}
 
 	protected function setDocument()
 	{
-		$document = JFactory::getDocument();
-		$version = urlencode(JoomleagueHelper::getVersion());
-		$document->addScript(JUri::root() . $this->script);
+		//$document = JFactory::getDocument();
+//		$version = urlencode(JoomleagueHelper::getVersion());
+//		$document->addScript(JUri::root() . $this->script);
 	}
 }
 ?>

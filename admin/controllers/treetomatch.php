@@ -1,126 +1,53 @@
 <?php
 
-
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die('Restricted access');
-
-jimport('joomla.application.component.controller');
+defined('_JEXEC') or die;
 
 
-class sportsmanagementControllerTreetomatch extends JControllerLegacy
+class sportsmanagementControllerTreetomatch extends JControllerForm
 {
 
-	public function __construct()
+	public function __construct($config = array())
 	{
-		parent::__construct();
-
-		// Register Extra tasks
-		$this->registerTask('add','display');
-		$this->registerTask('edit','display');
-		$this->registerTask('apply','save');
+	//	$app = JFactory::getApplication();
+//		$jinput = $app->input;
+//		$jinput->set('layout','form');
+        
+        parent::__construct($config);
+        // Reference global application object
+        $this->jsmapp = JFactory::getApplication();
+        // JInput object
+        $this->jsmjinput = $this->jsmapp->input;
+        $this->jsmoption = $this->jsmjinput->getCmd('option');
+        $this->jsmdocument = JFactory::getDocument();
 	}
 
-	public function display($cachable = false, $urlparams = false)
+	/**
+	 * Function that allows child controller access to model data after the data
+	 * has been saved.
+	 *
+	 * @param JModelLegacy $model	The data model object.
+	 * @param array $validData		The validated data.
+	 *
+	 * @return void
+	 */
+	protected function postSaveHook(JModelLegacy $model,$validData = array())
 	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
-		$document = JFactory::getDocument();
-
-	 	$model=$this->getModel('treetomatchs');
-		$viewType=$document->getType();
-		$view=$this->getView('treetomatchs',$viewType);
-		$view->setModel($model,true);	// true is for the default model;
-
-		$projectws=$this->getModel('project');
-		$projectws->setId($app->getUserState($option.'project',0));
-		$view->setModel($projectws);
-			if ( $nid = JRequest::getVar( 'nid', null, '', 'array' ) )
-		{
-			$app->setUserState( $option . 'node_id', $nid[0] );
-		}
-		if ( $tid = JRequest::getVar( 'tid', null, '', 'array' ) )
-		{
-			$app->setUserState( $option . 'treeto_id', $tid[0] );
-		}
-		$nodews = $this->getModel( 'treetonode' );
-		$nodews->setId( $app->getUserState( $option.'node_id') );
-		$view->setModel( $nodews );
-		
-		switch($this->getTask())
-		{
-			case 'edit'	:
-			{
-				$model=$this->getModel('treetomatch');
-				$viewType=$document->getType();
-				$view=$this->getView('treetomatch',$viewType);
-				$view->setModel($model,true);	// true is for the default model;
-				$view->setModel($projectws);
-				
-				JRequest::setVar('hidemainmenu',0);
-				JRequest::setVar('layout','form');
-				JRequest::setVar('view','treetomatch');
-				JRequest::setVar('edit',true);
-
-				$model=$this->getModel('treetomatch');
-				$model->checkout();
-			} break;
-
-			case 'matchadd':
-			{
-				JRequest::setVar('matchadd',true);
-			} break;
-
-		}
-		parent::display();
+		return;
 	}
-
-	public function editlist()
-	{
-		$option = JRequest::getCmd('option');
-
-		$app	= JFactory::getApplication();
-		$document	= JFactory::getDocument();
-		$model		= $this->getModel ('treetomatchs');
-		$viewType	= $document->getType();
-		$view		= $this->getView  ('treetomatchs', $viewType);
-		$view->setModel($model, true);  // true is for the default model;
-
-		$projectws = $this->getModel ('project');
-		$projectws->setId($app->getUserState($option . 'project', 0));
-		$view->setModel($projectws);
-		
-			if ( $nid = JRequest::getVar( 'nid', null, '', 'array' ) )
-		{
-			$app->setUserState( $option . 'node_id', $nid[0] );
-		}
-		if ( $tid = JRequest::getVar( 'tid', null, '', 'array' ) )
-		{
-			$app->setUserState( $option . 'treeto_id', $tid[0] );
-		}
-		$nodews = $this->getModel( 'treetonode' );
-		$nodews->setId( $app->getUserState( $option.'node_id') );
-		$view->setModel( $nodews );
-		
-		JRequest::setVar('hidemainmenu', 0);
-		JRequest::setVar('layout', 'editlist' );
-		JRequest::setVar('view', 'treetomatchs');
-		JRequest::setVar('edit', true);
-
-		// Checkout the project
-		//	$model = $this->getModel('treetomatchs');
-
-		parent::display();
-	}
-
-	public function save_matcheslist()
-	{
-		$post	= JRequest::get('post');
-		$cid	= JRequest::getVar('cid', array(0), 'post', 'array');
-		$post['id'] = (int) $cid[0];
-
+    
+    
+    function save_matcheslist()
+    {
+        $msg = '';
+    $post = $this->jsmjinput->post->getArray();    
+    $cid = $this->jsmjinput->get('cid',array(),'array');
+    $post['id'] = $this->jsmjinput->get('nid');
+    
+//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pid<br><pre>'.print_r($post,true).'</pre>'),'Notice');    
+//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cid<br><pre>'.print_r($cid,true).'</pre>'),'Notice');
+    
 		$model = $this->getModel('treetomatchs');
-
-		if ($model->store($post))
+		if($model->store($post))
 		{
 			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_CTRL_SAVED');
 		}
@@ -129,30 +56,13 @@ class sportsmanagementControllerTreetomatch extends JControllerLegacy
 			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_CTRL_ERROR_SAVE') . $model->getError();
 		}
 
-		// Check the table in so it can be edited.... we are done with it anyway
-		//$model->checkin();
-		$link = 'index.php?option=com_joomleague&view=treetonodes&task=treetonode.display';
-		$this->setRedirect($link, $msg);
-	}
-
-	public function publish()
-	{
-		$cid=JRequest::getVar('cid',array(),'post','array');
-		JArrayHelper::toInteger($cid);
-		if (count($cid) < 1){JError::raiseError(500,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TO_PUBLISH'));}
-		$model=$this->getModel('treetomatch');
-		if (!$model->publish($cid,1)){echo "<script> alert('".$model->getError(true)."'); window.history.go(-1); </script>\n";}
-		$this->setRedirect('index.php?option=com_joomleague&task=treetomatch.display&view=treetomatchs');
-	}
-
-	public function unpublish()
-	{
-		$cid=JRequest::getVar('cid',array(),'post','array');
-		JArrayHelper::toInteger($cid);
-		if (count($cid) < 1){JError::raiseError(500,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TO_UNPUBLISH'));}
-		$model=$this->getModel('treetomatch');
-		if (!$model->publish($cid,0)){echo "<script> alert('".$model->getError(true)."'); window.history.go(-1); </script>\n";}
-		$this->setRedirect('index.php?option=com_joomleague&task=treetomatch.display&view=treetomatchs');
-	}
+    $link = 'index.php?option=com_sportsmanagement&view=treetomatchs&layout=editlist&nid=' . $this->jsmjinput->get('nid').'&tid='.$this->jsmjinput->get('tid').'&pid='.$this->jsmjinput->get('pid');    
+    $this->setRedirect($link,$msg);
+    
+    
+    
+    }
+    
+    
+    
 }
-?>

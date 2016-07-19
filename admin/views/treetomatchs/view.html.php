@@ -1,65 +1,64 @@
 <?php
-/**
- * @copyright	Copyright (C) 2006-2014 joomleague.at. All rights reserved.
- * @license		GNU/GPL, see LICENSE.php
- * Joomla! is free software. This version may have been modified pursuant
- * to the GNU General Public License, and as distributed it includes or
- * is derivative of works licensed under the GNU General Public License or
- * other free or open source software licenses.
- * See COPYRIGHT.php for copyright notices and details.
- */
+
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-/**
- * HTML View class for the Joomleague component
- *
- * @package	JoomLeague
- * @since	0.1
- */
-class JoomleagueViewTreetomatchs extends JLGView
+
+class sportsmanagementViewTreetomatchs extends sportsmanagementView
 {
 
 	public function init ()
 	{
-		if ($this->getLayout() == 'editlist')
+	   
+       //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'Notice');
+       
+		if ( $this->getLayout() == 'editlist' || $this->getLayout() == 'editlist_3' )
 		{
-			$this->_displayEditlist($tpl);
+			$this->_displayEditlist();
 			return;
 		}
 
-		if ($this->getLayout()=='default')
+		if ( $this->getLayout()=='default' || $this->getLayout()=='default_3' )
 		{
-			$this->_displayDefault($tpl);
+			$this->_displayDefault();
 			return;
 		}
-		parent::display($tpl);
+		//parent::display($tpl);
 	}
 
-	function _displayEditlist($tpl)
+	function _displayEditlist()
 	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
-		$project_id = $app->getUserState( $option . 'project' );
-		$node_id = $app->getUserState( $option . 'node_id' );
+//		$option = JRequest::getCmd('option');
+//		$app = JFactory::getApplication();
+		$project_id = $this->jinput->get('pid');
+		$node_id = $this->jinput->get('nid');
 		
-		$uri = JFactory::getURI();
+		//$uri = JFactory::getURI();
 
-		$treetomatchs = $this->get('Data');
-		$total = $this->get('Total');
-		$model = $this->getModel();
+		//$treetomatchs = $this->get('Data');
+        $treetomatchs = $this->items;
+		//$total = $this->get('Total');
+		//$model = $this->getModel();
 
-		$projectws = $this->get('Data','project');
-		$nodews = $this->get('Data','node');
+		//$projectws = $this->get('Data','project');
+        $mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
+		$projectws = $mdlProject->getProject($project_id);
+        
+        $mdlTreetoNode = JModelLegacy::getInstance('treetonode', 'sportsmanagementModel');
+        $nodews = $mdlTreetoNode->getNode($node_id);
+        
+        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nodews<br><pre>'.print_r($nodews,true).'</pre>'),'Notice');
+        
+		//$nodews = $this->get('Data','node');
 		//build the html select list for node assigned matches
 		$ress = array();
 		$res1 = array();
 		$notusedmatches = array();
 
-		if ($ress =& $model->getNodeMatches($node_id))
+		if ($ress = $this->model->getNodeMatches($node_id))
 		{
 			$matcheslist=array();
 			foreach($ress as $res)
@@ -84,9 +83,9 @@ class JoomleagueViewTreetomatchs extends JLGView
 			$lists['node_matches']= '<select name="node_matcheslist[]" id="node_matcheslist" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
 		}
 
-		if ($ress1 =& $model->getMatches())
+		if ($ress1 = $this->model->getMatches())
 		{
-			if ($ress =& $model->getNodeMatches($node_id))
+			if ($ress = $this->model->getNodeMatches($node_id))
 			{
 				foreach ($ress1 as $res1)
 				{
@@ -122,7 +121,7 @@ class JoomleagueViewTreetomatchs extends JLGView
 		}
 		else
 		{
-			JError::raiseWarning('ERROR_CODE','<br />'.JText::_('COM_JOOMLEAGUE_ADMIN_TREETOMATCH_ADD_MATCH').'<br /><br />');
+			JError::raiseWarning('ERROR_CODE','<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_ADD_MATCH').'<br /><br />');
 		}
 
 		//build the html select list for matches
@@ -143,40 +142,84 @@ class JoomleagueViewTreetomatchs extends JLGView
 		unset($res1);
 		unset($notusedmatches);
 
-		$this->assignRef('user',JFactory::getUser());
-		$this->assignRef('lists',$lists);
-		$this->assignRef('treetomatchs',$treetomatchs);
-		$this->assignRef('projectws',$projectws);
-		$this->assignRef('nodews',$nodews);
-		$this->assignRef('pagination',$pagination);
-		$this->assignRef('request_url',$uri->toString());
+		//$this->assignRef('user',JFactory::getUser());
+		$this->lists = $lists;
+		$this->treetomatchs = $treetomatchs;
+		$this->projectws = $projectws;
+		$this->nodews = $nodews;
+        
+        $this->addToolBarEditlist();
+        $this->setLayout('editlist');
+		//$this->pagination = $pagination;
+		//$this->assignRef('request_url',$uri->toString());
 
-		parent::display($tpl);
+		//parent::display($tpl);
 	}
 
-	function _displayDefault($tpl)
+	function _displayDefault()
 	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
-		$uri = JFactory::getURI();
+//		$option = JRequest::getCmd('option');
+//		$app = JFactory::getApplication();
+//		$uri = JFactory::getURI();
 
-		$match = $this->get('Data');
-		$total = $this->get('Total');
-		$pagination = $this->get('Pagination');
+		//$match = $this->get('Data');
+		//$total = $this->get('Total');
+		//$pagination = $this->get('Pagination');
 
-		$model = $this->getModel();
-		$projectws = $this->get('Data','project');
-		$nodews = $this->get('Data','node');
+		//$model = $this->getModel();
+		//$projectws = $this->get('Data','project');
+        $this->project_id = $this->jinput->get('pid');
+		$mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
+		$projectws = $mdlProject->getProject($this->project_id);
+        
+//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($projectws,true).'</pre>'),'Notice');
+//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' items<br><pre>'.print_r($this->items,true).'</pre>'),'Notice');
+        
+		//$nodews = $this->get('Data','node');
+        $mdlTreetoNode = JModelLegacy::getInstance('treetonode', 'sportsmanagementModel');
+        $nodews = $mdlTreetoNode->getNode($this->jinput->get('nid'));
+        
+//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' nodews<br><pre>'.print_r($nodews,true).'</pre>'),'Notice');
 
-		$this->assignRef('match',$match);
-		$this->assignRef('projectws',$projectws);
-		$this->assignRef('nodews',$nodews);
-		$this->assignRef('total',$total);
-		$this->assignRef('pagination',$pagination);
-		$this->assignRef('request_url',$uri->toString());
+		$this->match = $this->items;
+		$this->projectws = $projectws;
+		$this->nodews = $nodews;
+		$this->total = $this->total;
+		$this->pagination = $this->pagination;
+        
+        $this->addToolBarDefault();
+        $this->setLayout('default');
+		//$this->assignRef('request_url',$uri->toString());
 
-		parent::display($tpl);
+		//parent::display($tpl);
 	}
+
+protected function addToolBarEditlist()
+	{
+	   $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_ASSIGN');
+	JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_ASSIGN' ) );
+
+JToolBarHelper::save( 'treetomatch.save_matcheslist' );
+
+// for existing items the button is renamed `close` and the apply button is showed
+//JLToolBarHelper::cancel( 'cancel', 'COM_JOOMLEAGUE_GLOBAL_CLOSE' );
+JToolBarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetonodes&layout=default&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid') );   
+       
+       
+       }
+       
+protected function addToolBarDefault()
+	{
+	   $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_TITLE');
+	JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_TITLE'));
+
+//JLToolBarHelper::save();
+JToolBarHelper::custom('treetomatch.editlist','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_BUTTON_ASSIGN'),false);
+JToolBarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetonodes&layout=default&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid'));   
+       
+       
+       }
+
 
 }
 ?>
