@@ -1009,7 +1009,7 @@ class sportsmanagementModelAjax extends JModelLegacy
         // Where
         if ( $project_id )
         {
-        $query->where('pt.project_id = ' . $project_id);
+        $query->where('pt.project_id = ' . (int) $project_id);
         }
         $query->where('p.published = 1');
         $query->where('stp.persontype = 1');
