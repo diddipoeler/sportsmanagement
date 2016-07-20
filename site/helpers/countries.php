@@ -280,7 +280,7 @@ $query = $db->getQuery(true);
 		$src = $db->loadResult();
         }
         
-        if ( !curl_init($src) )
+        if ( !$src )
         {
         $src = JComponentHelper::getParams($option)->get('ph_flags','');
         } 
