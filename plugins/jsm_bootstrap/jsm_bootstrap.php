@@ -164,7 +164,7 @@ class PlgSystemjsm_bootstrap extends JPlugin
         $document = JFactory::getDocument();
         $load_bootstrap = $this->params->def('load_bootstrap', 1);
         $load_bootstrap_css = $this->params->def('load_bootstrap_css', 1);
-        $load_bootstrap_version = $this->params->def('load_bootstrap_version', '3.3.4');
+        $load_bootstrap_version = $this->params->def('load_bootstrap_version', '3.3.6');
         $load_k2css = $this->params->def('load_k2css', 1);
 
         if (version_compare(JVERSION, '3.0.0', 'ge')) {
