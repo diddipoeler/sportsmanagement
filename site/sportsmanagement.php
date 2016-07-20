@@ -42,6 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 
 // zur unterscheidung von joomla 2.5 und 3
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.view', JPATH_SITE);
+JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_ADMINISTRATOR);
 
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {

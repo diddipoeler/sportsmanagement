@@ -51,7 +51,7 @@ jimport('joomla.application.component.modellist');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelallleagues extends JModelList
+class sportsmanagementModelallleagues extends JSMModelList
 {
 
 var $_identifier = "allleagues";
@@ -78,8 +78,8 @@ var $_identifier = "allleagues";
                         'v.country'
                         );
                 parent::__construct($config);
-                $getDBConnection = sportsmanagementHelper::getDBConnection();
-                parent::setDbo($getDBConnection);
+                //$getDBConnection = sportsmanagementHelper::getDBConnection();
+                parent::setDbo($this->jsmdb);
         }
 
 /**
@@ -202,53 +202,62 @@ public function getStart()
      */
     function getListQuery()
 	{
-		// Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+		//// Reference global application object
+//        $app = JFactory::getApplication();
+//        // JInput object
+//        $jinput = $app->input;
+//        
         
         // Create a new query object.
-		$db		= sportsmanagementHelper::getDBConnection();
-		$query	= $db->getQuery(true);
-		$user	= JFactory::getUser(); 
+//		$db		= sportsmanagementHelper::getDBConnection();
+//		$query	= $db->getQuery(true);
+		//$user	= JFactory::getUser(); 
 		
         // Select some fields
-		$query->select('v.id,v.name,v.picture,v.country');
+        $this->jsmquery->clear();
+		$this->jsmquery->select('v.id,v.name,v.picture,v.country');
         // From table
-		$query->from('#__sportsmanagement_league AS v');
+		$this->jsmquery->from('#__sportsmanagement_league AS v');
       
         
         if ($this->getState('filter.search'))
 		{
-        $query->where('LOWER(v.name) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%'));
+        $this->jsmquery->where('LOWER(v.name) LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search').'%'));
         }
         if ($this->getState('filter.search_nation'))
 		{
-        $query->where('v.country LIKE '.$db->Quote(''.$this->getState('filter.search_nation').''));
+        $this->jsmquery->where('v.country LIKE '.$this->jsmdb->Quote(''.$this->getState('filter.search_nation').''));
         }
         
         if ( $this->use_current_season )
         {
-        $filter_season = JComponentHelper::getParams($option)->get('current_season',0);    
-        $query->join('INNER','#__sportsmanagement_project AS p ON v.id = p.league_id');
-        $query->where('p.season_id IN ('.implode(',',$filter_season).')');
+        $filter_season = JComponentHelper::getParams($this->jsmoption)->get('current_season',0);    
+        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($filter_season,true).'</pre>'),'Notice');
+        $this->jsmquery->join('INNER','#__sportsmanagement_project AS p ON v.id = p.league_id');
+/**
+ * sicherheitshalber noch eine abfrage, wenn der user die nutzung der saison eingeschaltet,
+ * aber keine saisons hintlergt hat
+*/        
+        if ( $filter_season )
+        {
+        $this->jsmquery->where('p.season_id IN ('.implode(',',$filter_season).')');
+        }
         }
         
-        $query->group('v.id');
+        $this->jsmquery->group('v.id');
 
-        $query->order($db->escape($this->getState('filter_order', 'v.name')).' '.$db->escape($this->getState('filter_order_Dir', 'ASC') ) );
+        $this->jsmquery->order($this->jsmdb->escape($this->getState('filter_order', 'v.name')).' '.$this->jsmdb->escape($this->getState('filter_order_Dir', 'ASC') ) );
 if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {        
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
         }
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
         
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' ordering<br><pre>'.print_r($this->getState('filter_order'),true).'</pre>'),'');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' direction<br><pre>'.print_r($this->getState('filter_order_Dir'),true).'</pre>'),'');
         
-		return $query;
+		return $this->jsmquery;
 
 	}
     
