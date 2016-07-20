@@ -745,7 +745,14 @@ catch (Exception $e) {
 $query->clear(); 
 $query->update($db->quoteName('#__sportsmanagement_project_referee'))->set($fields)->where($conditions);
 $db->setQuery($query);
+try{
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
 $query->clear(); 
 $query->update($db->quoteName('#__sportsmanagement_project_team'))->set($fields)->where($conditions);
 $db->setQuery($query);
@@ -1005,7 +1012,14 @@ $query = $db->getQuery(true);
 $query->clear(); 
 $query->update($db->quoteName('#__sportsmanagement_project_team'))->set($fields)->where($conditions);
 $db->setQuery($query);
+try{
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
 //$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>query - ';
 //$my_text .= JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>');
 //$my_text .= '</strong>'.'</span>';
