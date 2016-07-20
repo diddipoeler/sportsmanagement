@@ -60,7 +60,7 @@ class sportsmanagementModelTeamPersons extends JModelList
     var $_team_id = 0;
     var $_project_team_id = 0;
     var $_persontype = 0;
-    
+    static $db_num_rows = 0;
     
     /**
      * sportsmanagementModelTeamPersons::__construct()
