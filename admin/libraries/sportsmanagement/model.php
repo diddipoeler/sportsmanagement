@@ -189,7 +189,7 @@ if( $this->jsmapp->isSite() )
         $form->setFieldAttribute('trikot_away', 'directory', 'com_sportsmanagement/database/clubs/trikot');
         $form->setFieldAttribute('trikot_away', 'type', $cfg_which_media_tool);
         
-        $prefix = $app->getCfg('dbprefix');
+        $prefix = $this->jsmapp->getCfg('dbprefix');
 
         $this->jsmquery->clear();
         $this->jsmquery->select('*');
