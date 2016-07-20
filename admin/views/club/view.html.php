@@ -77,8 +77,7 @@ class sportsmanagementViewClub extends sportsmanagementView
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
-        
-		
+        	
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -95,23 +94,25 @@ class sportsmanagementViewClub extends sportsmanagementView
         {
             $this->googlemap = false;
         }
+       
 
-        
-//        $this->form->setValue('country', 'request', $this->item->country);
-//        $this->form->setValue('zipcode', 'request', $this->item->zipcode);
-//        $this->form->setValue('location', 'request', $this->item->location);
-//        $this->form->setValue('address', 'request', $this->item->address);
-//        $this->form->setValue('latitude', 'request', $this->item->latitude);
-//        $this->form->setValue('longitude', 'request', $this->item->longitude);
-        
         if ( $this->item->id )
         {
             // alles ok
+            $timestamp = strtotime($this->item->founded);
+            if ( !$timestamp )
+            {
+                $this->item->founded = '';
+            }
+            $timestamp = strtotime($this->item->dissolved);
+            if ( !$timestamp )
+            {
+                $this->item->dissolved = '';
+            }
+            
         }
         else
         {
-//            $this->item->founded = '';
-//            $this->item->dissolved = '';
             $this->form->setValue('founded', null, '0000-00-00');
             $this->form->setValue('dissolved', null, '0000-00-00');
         }
@@ -146,7 +147,7 @@ class sportsmanagementViewClub extends sportsmanagementView
             $this->teamsofclub = $this->model->teamsofclub($this->item->id);
         }
         
-        $this->lists	= $lists;
+        $this->lists = $lists;
         
 //        $document->addScript('http://maps.google.com/maps/api/js?&sensor=false&language=de');
 //        $document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');

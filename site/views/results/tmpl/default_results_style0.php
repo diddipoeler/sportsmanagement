@@ -105,20 +105,33 @@ else
 	<?php
 	foreach( $dates as $date => $games )
 	{
-		?>
+    
+    	?>
 	<!-- DATE HEADER -->
     <thead>
 	<tr >
 
 		<?php
+        $timestamp = strtotime($date);
 		if ( ($this->config['show_attendance_column']) || ($this->config['show_comments_count'] > 0) )
 		{
 			?>
-			<th colspan="<?php echo $nbcols-$nbcols_header; ?>"><?php 
+			<th colspan="<?php echo $nbcols-$nbcols_header; ?>">
+            <?php 
             //echo JHtml::date( $date, JText::_('COM_SPORTSMANAGEMENT_RESULTS_GAMES_DATE_MONTH'));
+            if ( !$timestamp )
+    {
+        echo '';
+    }
+    else
+    {
             echo JHtml::date( $date, JText::_('COM_SPORTSMANAGEMENT_RESULTS_GAMES_DATE_DAY'));
-                if ($this->config['show_matchday_dateheader']) {
-                    echo ' - ' . JText::sprintf( 'COM_SPORTSMANAGEMENT_RESULTS_GAMEDAY_NB',$this->roundcode ); } ?>
+            }
+                if ($this->config['show_matchday_dateheader']) 
+                {
+                    echo ' - ' . JText::sprintf( 'COM_SPORTSMANAGEMENT_RESULTS_GAMEDAY_NB',$this->roundcode ); 
+                    } 
+                    ?>
             </th>
             <?php
             if ($this->config['show_attendance_column']) {
@@ -134,9 +147,21 @@ else
 
 		} else {
 			?>
-			<th colspan="<?php echo $nbcols; ?>"><?php echo JHtml::date( $date, JTExt::_('COM_SPORTSMANAGEMENT_RESULTS_GAMES_DATE_DAY'));
-                if ($this->config['show_matchday_dateheader']) {
-                    echo ' - ' . JText::sprintf( 'COM_SPORTSMANAGEMENT_RESULTS_GAMEDAY_NB',$this->roundcode ); } ?>
+			<th colspan="<?php echo $nbcols; ?>">
+            <?php 
+            if ( !$timestamp )
+    {
+        echo '';
+    }
+    else
+    {
+            echo JHtml::date( $date, JTExt::_('COM_SPORTSMANAGEMENT_RESULTS_GAMES_DATE_DAY'));
+            }
+                if ($this->config['show_matchday_dateheader']) 
+                {
+                    echo ' - ' . JText::sprintf( 'COM_SPORTSMANAGEMENT_RESULTS_GAMEDAY_NB',$this->roundcode ); 
+                    } 
+                    ?>
             </th>
 		<?php
 		}

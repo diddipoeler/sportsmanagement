@@ -75,16 +75,19 @@ class sportsmanagementControllerResults extends JControllerLegacy
 	{
 	// Initialise variables.
     $app = JFactory::getApplication();
+    // JInput object
+    $jinput = $app->input;
     $model = $this->getModel('results');
     // Get the input
-    $pks = JRequest::getVar('cid', null, 'post', 'array');
-    $post = JRequest::get('post');
-    $layout = JRequest::getCmd('layout', 'form');
+    $pks = $jinput->getVar('cid', null, 'post', 'array');
+    $post = $jinput->post->getArray();
+    $layout = $jinput->getCmd('layout', 'form');
     
 //    $app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
 //    $app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+
     $model->saveshort();
-// view=results&cfg_which_database=0&s=0&p=1:1-bundesliga-2015-16&r=14:14-spieltag&division=0&mode=0&order=&layout=form    
+   
     $this->setRedirect('index.php?option=com_sportsmanagement&view=results&cfg_which_database='.$post['cfg_which_database'].'&s='.$post['s'].'&p='.$post['p'].'&r='.$post['r'].'&division='.$post['division'].'&mode='.$post['mode'].'&order='.$post['order']   .'&layout='.$layout );
                
     }   

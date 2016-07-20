@@ -77,9 +77,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 	?>	
 	<!-- Date -->
 	<?php
-    if ($this->config['show_match_date'] == 1)
+    $timestamp = strtotime($this->match->match_date);
+    if ( $this->config['show_match_date'] )
     {
-        if ($this->match->match_date > 0)
+        if ( $timestamp )
         {
             ?>
             
@@ -95,9 +96,9 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
 	<!-- Time -->
 	<?php
-    if ($this->config['show_match_time'] == 1)
+    if ( $this->config['show_match_time'] )
     {
-        if ($this->match->match_date > 0)
+        if ( $timestamp )
         {
             ?>
             
@@ -125,7 +126,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
 	<!-- match number -->
 	<?php
-    if ($this->config['show_match_number'] == 1)
+    if ( $this->config['show_match_number'] )
     {
         if ($this->match->match_number > 0): ?>
        
@@ -140,7 +141,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
     ?>
 	<!-- playground -->
 	<?php
-    if ($this->config['show_match_playground'] == 1)
+    if ( $this->config['show_match_playground'] )
     {
         if ($this->match->playground_id > 0): ?>
         <?php 
@@ -177,7 +178,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('matchpg'.$this->match->
     ?>
 	<!-- referees -->
 	<?php
-    if ($this->config['show_match_referees'] == 1)
+    if ( $this->config['show_match_referees'] )
     {    
         if ( $this->matchreferees )
         {
@@ -219,7 +220,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('matchreferee'.$referee-
     ?>
 	<!-- crowd -->
 	<?php
-    if ($this->config['show_match_crowd'] == 1)
+    if ( $this->config['show_match_crowd'] )
     {
         if ( $this->match->crowd > 0 ): ?>
             

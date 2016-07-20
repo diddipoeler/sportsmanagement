@@ -68,9 +68,8 @@ class sportsmanagementModelclub extends JSMModelAdmin
 	{
 		parent::__construct($config);
 	
-    //$this->jsmapp = JFactory::getApplication();
-    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
-    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
+//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
+//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
     
 	}	
 
@@ -193,7 +192,7 @@ class sportsmanagementModelclub extends JSMModelAdmin
         
         $query->clear();
 $query->select('t.id,t.name');
-$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
+$query->from('#__sportsmanagement_team AS t');
 $query->where('t.club_id = '.$club_id);
 $db->setQuery( $query );
 $teamsofclub = $db->loadObjectList();
@@ -306,40 +305,43 @@ return $teamsofclub;
        }
  
        // wurden jahre mitgegeben ?
-       if ( !empty($data['founded']) )
+       $timestamp = strtotime($data['founded']);
+       if ( $timestamp )
        {
        $data['founded']	= sportsmanagementHelper::convertDate($data['founded'],0);
        }
-       if ( !empty($data['dissolved']) )
+       $timestamp = strtotime($data['dissolved']);
+       if ( $timestamp )
        {
        $data['dissolved'] = sportsmanagementHelper::convertDate($data['dissolved'],0);
        }
-        
-       if ( $data['founded'] == '' )
+       
+       $timestamp = strtotime($data['founded']); 
+       if ( !$timestamp )
         {
         $data['founded'] = '0000-00-00';   
         $data['founded_year'] = ''; 
         }
-       if ( $data['founded'] != '0000-00-00'  )
+       if ( $timestamp  )
         {
         $data['founded_year'] = date('Y',strtotime($data['founded']));
-        //$post['founded_year'] = date('Y',strtotime($data['founded']));
         }
         else
         {
             $data['founded_year'] = $data['founded_year'];
         }
         
-        if ( $data['dissolved'] == '' )
+        
+        $timestamp = strtotime($data['dissolved']); 
+        if ( !$timestamp )
         {
         $data['dissolved'] = '0000-00-00';   
         $data['dissolved_year'] = ''; 
         }
         
-        if ( $data['dissolved'] != '0000-00-00' )  
+        if ( $timestamp )  
         {
         $data['dissolved_year'] = date('Y',strtotime($data['dissolved']));
-        //$post['dissolved_year'] = date('Y',strtotime($data['dissolved']));
         }
         else
         {

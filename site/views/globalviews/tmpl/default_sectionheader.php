@@ -69,7 +69,8 @@ switch ( $view )
 	<tr>
 		<td class="contentheading"><?php
 		$pageTitle = 'COM_SPORTSMANAGEMENT_MATCHREPORT_TITLE';
-		if ( isset( $this->round->name ) )
+        $timestamp = strtotime($this->match->match_date);
+		if ( isset( $this->round->name ) && $timestamp )
 		{
 			$matchDate = sportsmanagementHelper::getTimestamp( $this->match->match_date, 1 );
 			echo '&nbsp;' . JText::sprintf(	$pageTitle,
@@ -78,6 +79,10 @@ switch ( $view )
 			sportsmanagementHelperHtml::showMatchTime($this->match, $this->config, $this->overallconfig, $this->project) );
 		
 		}
+        elseif ( isset( $this->round->name ) && !$timestamp )
+		{
+		  echo '&nbsp;' . JText::sprintf( $pageTitle, $this->round->name, '', '' );
+		}  
 		else
 		{
 			echo '&nbsp;' . JText::sprintf( $pageTitle, '', '', '' );
