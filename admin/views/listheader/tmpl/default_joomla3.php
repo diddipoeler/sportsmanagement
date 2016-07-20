@@ -175,6 +175,13 @@ array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=templates&
 			'text' => JText::_('COM_SPORTSMANAGEMENT_P_SIDEBAR_DIVISIONS'),
 			'access' => array('core.manage', 'com_sportsmanagement'),
 			'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA_PROJECT'
+			),
+			array('link' => JRoute::_('index.php?option=com_sportsmanagement&view=treetos&pid='.$project_id),
+			'image' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+			'icon' => 'com_sportsmanagement/assets/icons/transparent_schrift_48.png',
+			'text' => JText::_('COM_SPORTSMANAGEMENT_P_PANEL_TREE'),
+			'access' => array('core.manage', 'com_sportsmanagement'),
+			'group' => 'COM_SPORTSMANAGEMENT_D_HEADING_BASIS_DATA_PROJECT'
 			)
 
 			
@@ -232,6 +239,10 @@ break;
 case 'updates':
 break;
 case 'databasetools':
+break;
+case 'treetonodes':
+break;
+case 'treetomatchs':
 break;
 default:
 if (preg_match("/jsm/i", $view)) 

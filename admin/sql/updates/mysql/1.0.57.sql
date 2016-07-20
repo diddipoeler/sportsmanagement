@@ -1,4 +1,4 @@
-ALTER TABLE `#__sportsmanagement_club` ADD `import_id` INT(11) NOT NULL DEFAULT '0' ;
+
 
 
 INSERT INTO `#__sportsmanagement_version_history` (`id`, `date`, `text`, `version`) VALUES

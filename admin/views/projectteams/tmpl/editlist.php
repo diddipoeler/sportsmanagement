@@ -45,8 +45,8 @@ $uri = JFactory::getURI();
 ?>
 <!-- import the functions to move the events between selection lists  -->
 <?php
-$version = urlencode(sportsmanagementHelper::getVersion());
-echo JHtml::script( 'JL_eventsediting.js?v='.$version,'administrator/components/com_sportsmanagement/assets/js/');
+//$version = urlencode(sportsmanagementHelper::getVersion());
+//echo JHtml::script( 'JL_eventsediting.js?v='.$version,'administrator/components/com_sportsmanagement/assets/js/');
 ?>
 <script>
 	function submitbutton(pressbutton)
@@ -118,10 +118,10 @@ echo JHtml::script( 'JL_eventsediting.js?v='.$version,'administrator/components/
 					</td>
 					<td style="text-align:center; ">
                     
-<input id="moveright" type="button" value="Move Right" onclick="move_list_items('teamslist','project_teamslist');" />
-<input id="moverightall" type="button" value="Move Right All" onclick="move_list_items_all('teamslist','project_teamslist');" />
-<input id="moveleft" type="button" value="Move Left" onclick="move_list_items('project_teamslist','teamslist');" />
-<input id="moveleftall" type="button" value="Move Left All" onclick="move_list_items_all('project_teamslist','teamslist');" />                    
+<input id="moveright" type="button" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_ASSIGN_TEAM_TO_PROJEKT'); ?>" onclick="move_list_items('teamslist','project_teamslist');" />
+<input id="moverightall" type="button" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_ASSIGN_TEAM_ALL_TO_PROJEKT'); ?>" onclick="move_list_items_all('teamslist','project_teamslist');" />
+<input id="moveleft" type="button" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_UNASSIGN_TEAM_TO_PROJEKT'); ?>" onclick="move_list_items('project_teamslist','teamslist');" />
+<input id="moveleftall" type="button" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_UNASSIGN_TEAM_ALL_TO_PROJEKT'); ?>" onclick="move_list_items_all('project_teamslist','teamslist');" />                    
 						
 					</td>
 					<td>

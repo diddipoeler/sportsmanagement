@@ -54,7 +54,7 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 	}
 </script>
 
-		<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_LEGEND','<i>'.$this->projectws->name.'</i>'); ?></legend>
+		
 	
 		<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm"  name="adminForm">
 <?PHP

@@ -53,64 +53,20 @@ jimport('joomla.application.component.controllerform');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerperson extends JControllerForm
+class sportsmanagementControllerperson extends JSMControllerForm
 {
 
-function __construct($config = array())
+    /**
+	 * Class Constructor
+	 *
+	 * @param	array	$config		An optional associative array of configuration settings.
+	 * @return	void
+	 * @since	1.5
+	 */
+	function __construct($config = array())
 	{
 		parent::__construct($config);
 
-		// Map the apply task to the save method.
-		$this->registerTask('apply', 'save');
 	}
-    
-function save()
-	{
-	   // Check for request forgeries.
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
-
-		// Initialise variables.
-		$app = JFactory::getApplication();
-        $db = sportsmanagementHelper::getDBConnection();
-        $id	= JRequest::getInt('id');
-        $tmpl = JRequest::getVar('tmpl');
-		$model = $this->getModel('person');
-        $data = JRequest::getVar('jform', array(), 'post', 'array');
-        //$createTeam = JRequest::getVar('createTeam');
-        $return = $model->save($data);
-        
-        // Set the redirect based on the task.
-		switch ($this->getTask())
-		{
-			case 'apply':
-				$message = JText::_('JLIB_APPLICATION_SAVE_SUCCESS');
-                $message = '';
-                if ( $tmpl )
-                {
-				$this->setRedirect('index.php?option=com_sportsmanagement&view=person&layout=edit&tmpl=component&id='.$id, $message);
-                }
-                else
-                {
-                $this->setRedirect('index.php?option=com_sportsmanagement&view=person&layout=edit&id='.$id, $message);    
-                }
-				break;
-
-			case 'save':
-			default:
-            if ( $tmpl )
-                {
-				$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
-                }
-                else
-                {
-                $this->setRedirect('index.php?option=com_sportsmanagement&view=persons');    
-                }
-				break;
-		}
-
-		return true;
-
-
-}
 
 }

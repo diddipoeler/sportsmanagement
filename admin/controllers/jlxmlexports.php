@@ -40,12 +40,12 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
-// import Joomla controllerform library
-jimport('joomla.application.component.controllerform');
+// import Joomla controlleradmin library
+jimport('joomla.application.component.controlleradmin');
  
 
 /**
- * sportsmanagementControllerclub
+ * sportsmanagementControllerjlxmlexports
  * 
  * @package 
  * @author Dieter Plöger
@@ -53,20 +53,36 @@ jimport('joomla.application.component.controllerform');
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerclub extends JSMControllerForm
+class sportsmanagementControllerjlxmlexports extends JControllerAdmin
 {
 
-    /**
-	 * Class Constructor
-	 *
-	 * @param	array	$config		An optional associative array of configuration settings.
-	 * @return	void
-	 * @since	1.5
+  
+  /**
+   * sportsmanagementControllerjlxmlexports::export()
+   * 
+   * @return void
+   */
+  public function export()
+    {
+    // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;    
+        $project_id = $jinput->getVar('pid');
+      $model = $this->getModel();
+       $model->exportData();  
+      $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&pid='.$project_id, false));  
+        
+    } 
+
+    
+	/**
+	 * Proxy for getModel.
+	 * @since	1.6
 	 */
-	function __construct($config = array())
+	public function getModel($name = 'jlxmlexports', $prefix = 'sportsmanagementModel', $config = Array() ) 
 	{
-		parent::__construct($config);
-
+		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+		return $model;
 	}
-
 }

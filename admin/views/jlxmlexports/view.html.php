@@ -43,17 +43,45 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.application.component.view');
 
 
+/**
+ * sportsmanagementViewJLXMLExports
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2016
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementViewJLXMLExports extends sportsmanagementView
 {
+    
+	/**
+	 * sportsmanagementViewJLXMLExports::init()
+	 * 
+	 * @return void
+	 */
 	function init()
 	{
-		// Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_TITLE'),'generic.png');
-
-
 
 
 	}
 
+    /**
+	* Add the page title and toolbar.
+	*
+	* @since	1.7
+	*/
+	protected function addToolbar()
+	{
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$option = $jinput->getCmd('option');
+        JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_TITLE'),'generic.png');
+        //JToolBarHelper::archiveList('jlxmlexports.export',JText::_('JTOOLBAR_EXPORT'));
+        JToolBarHelper::custom('jlxmlexports.export', 'upload', 'upload', JText::_('JTOOLBAR_EXPORT'), false);
+        parent::addToolbar();
+        
+        }
+        
 }
 ?>

@@ -43,7 +43,6 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
  
-
 /**
  * sportsmanagementModelseason
  * 
@@ -53,127 +52,135 @@ jimport('joomla.application.component.modeladmin');
  * @version 2014
  * @access public
  */
-/**
- * sportsmanagementModelseason
- * 
- * @package   
- * @author 
- * @copyright diddi
- * @version 2014
- * @access public
- */
-class sportsmanagementModelseason extends JModelAdmin
+class sportsmanagementModelseason extends JSMModelAdmin
 {
+
+	/**
+	 * Override parent constructor.
+	 *
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 *
+	 * @see     JModelLegacy
+	 * @since   3.2
+	 */
+	public function __construct($config = array())
+	{
+		parent::__construct($config);
 	
+    //$this->jsmapp = JFactory::getApplication();
+    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
+    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
+    
+	}	
   
 	
-  /**
-	 * Method override to check if you can edit an existing record.
-	 *
-	 * @param	array	$data	An array of input data.
-	 * @param	string	$key	The name of the key for the primary key.
-	 *
-	 * @return	boolean
-	 * @since	1.6
-	 */
-	protected function allowEdit($data = array(), $key = 'id')
-	{
-		// Check specific edit permission then general edit permission.
-		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
-	}
+//  /**
+//	 * Method override to check if you can edit an existing record.
+//	 *
+//	 * @param	array	$data	An array of input data.
+//	 * @param	string	$key	The name of the key for the primary key.
+//	 *
+//	 * @return	boolean
+//	 * @since	1.6
+//	 */
+//	protected function allowEdit($data = array(), $key = 'id')
+//	{
+//		// Check specific edit permission then general edit permission.
+//		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
+//	}
     
-	/**
-	 * Returns a reference to the a Table object, always creating it.
-	 *
-	 * @param	type	The table type to instantiate
-	 * @param	string	A prefix for the table class name. Optional.
-	 * @param	array	Configuration array for model. Optional.
-	 * @return	JTable	A database object
-	 * @since	1.6
-	 */
-	public function getTable($type = 'Season', $prefix = 'sportsmanagementTable', $config = array()) 
-	{
-	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
-		return JTable::getInstance($type, $prefix, $config);
-	}
+//	/**
+//	 * Returns a reference to the a Table object, always creating it.
+//	 *
+//	 * @param	type	The table type to instantiate
+//	 * @param	string	A prefix for the table class name. Optional.
+//	 * @param	array	Configuration array for model. Optional.
+//	 * @return	JTable	A database object
+//	 * @since	1.6
+//	 */
+//	public function getTable($type = 'Season', $prefix = 'sportsmanagementTable', $config = array()) 
+//	{
+//	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
+//		return JTable::getInstance($type, $prefix, $config);
+//	}
     
-	/**
-	 * Method to get the record form.
-	 *
-	 * @param	array	$data		Data for the form.
-	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-	 * @return	mixed	A JForm object on success, false on failure
-	 * @since	1.6
-	 */
-	public function getForm($data = array(), $loadData = true) 
-	{
-		// Get the form.
-		$form = $this->loadForm('com_sportsmanagement.season', 'season', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) 
-		{
-			return false;
-		}
-		return $form;
-	}
+//	/**
+//	 * Method to get the record form.
+//	 *
+//	 * @param	array	$data		Data for the form.
+//	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
+//	 * @return	mixed	A JForm object on success, false on failure
+//	 * @since	1.6
+//	 */
+//	public function getForm($data = array(), $loadData = true) 
+//	{
+//		// Get the form.
+//		$form = $this->loadForm('com_sportsmanagement.season', 'season', array('control' => 'jform', 'load_data' => $loadData));
+//		if (empty($form)) 
+//		{
+//			return false;
+//		}
+//		return $form;
+//	}
     
-	/**
-	 * Method to get the script that have to be included on the form
-	 *
-	 * @return string	Script files
-	 */
-	public function getScript() 
-	{
-		return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
-	}
+//	/**
+//	 * Method to get the script that have to be included on the form
+//	 *
+//	 * @return string	Script files
+//	 */
+//	public function getScript() 
+//	{
+//		return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
+//	}
     
-	/**
-	 * Method to get the data that should be injected in the form.
-	 *
-	 * @return	mixed	The data for the form.
-	 * @since	1.6
-	 */
-	protected function loadFormData() 
-	{
-		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.season.data', array());
-		if (empty($data)) 
-		{
-			$data = $this->getItem();
-		}
-		return $data;
-	}
+//	/**
+//	 * Method to get the data that should be injected in the form.
+//	 *
+//	 * @return	mixed	The data for the form.
+//	 * @since	1.6
+//	 */
+//	protected function loadFormData() 
+//	{
+//		// Check the session for previously entered form data.
+//		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.season.data', array());
+//		if (empty($data)) 
+//		{
+//			$data = $this->getItem();
+//		}
+//		return $data;
+//	}
 	
-	/**
-	 * Method to save item order
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	1.5
-	 */
-	function saveorder($pks = NULL, $order = NULL)
-	{
-		$date = JFactory::getDate();
-	   $user = JFactory::getUser();
-        $row =& $this->getTable();
-		
-		// update ordering values
-		for ($i=0; $i < count($pks); $i++)
-		{
-			$row->load((int) $pks[$i]);
-			if ($row->ordering != $order[$i])
-			{
-				$row->ordering = $order[$i];
-                $row->modified = $date->toSql();
-                $row->modified_by = $user->get('id');
-				if (!$row->store())
-				{
-					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-					return false;
-				}
-			}
-		}
-		return true;
-	}
+//	/**
+//	 * Method to save item order
+//	 *
+//	 * @access	public
+//	 * @return	boolean	True on success
+//	 * @since	1.5
+//	 */
+//	function saveorder($pks = NULL, $order = NULL)
+//	{
+//		$date = JFactory::getDate();
+//	   $user = JFactory::getUser();
+//        $row =& $this->getTable();
+//		
+//		// update ordering values
+//		for ($i=0; $i < count($pks); $i++)
+//		{
+//			$row->load((int) $pks[$i]);
+//			if ($row->ordering != $order[$i])
+//			{
+//				$row->ordering = $order[$i];
+//                $row->modified = $date->toSql();
+//                $row->modified_by = $user->get('id');
+//				if (!$row->store())
+//				{
+//					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+//					return false;
+//				}
+//			}
+//		}
+//		return true;
+//	}
     
     /**
 	 * Method to save the form data.
@@ -184,19 +191,19 @@ class sportsmanagementModelseason extends JModelAdmin
 	 */
 	public function save($data)
 	{
-	   // Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-       $date = JFactory::getDate();
-	   $user = JFactory::getUser();
-       $post = $jinput->get('post');
+	   //// Reference global application object
+//        $app = JFactory::getApplication();
+//        // JInput object
+//        $jinput = $app->input;
+//        $option = $jinput->getCmd('option');
+//       $date = JFactory::getDate();
+//	   $user = JFactory::getUser();
+       $post = $this->jsmjinput->post->getArray();
 
        
        // Set the values
-	   $data['modified'] = $date->toSql();
-	   $data['modified_by'] = $user->get('id');
+	   $data['modified'] = $this->jsmdate->toSql();
+	   $data['modified_by'] = $this->jsmuser->get('id');
        
        //$app->enqueueMessage(JText::_(' save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$app->enqueueMessage(JText::_(' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
@@ -224,7 +231,7 @@ class sportsmanagementModelseason extends JModelAdmin
             if ( $isNew )
             {
                 //Here you can do other tasks with your newly saved record...
-                $app->enqueueMessage(JText::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
+                $this->jsmapp->enqueueMessage(JText::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id),'');
             }
            
 		}

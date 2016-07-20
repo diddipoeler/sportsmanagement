@@ -147,6 +147,7 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
             case 'predictions';
             case 'extensions';
             case 'jlxmlexports';
+            case 'treeto';
             break;
             default:
             $this->state = $this->get('State'); 
@@ -394,19 +395,19 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
 		}
 		else
 		{
-			if ($canDo->get('core.edit'))
+			if ( $canDo->get('core.edit') )
 			{
 				// We can save the new record
 				JToolBarHelper::apply($this->view.'.apply', 'JTOOLBAR_APPLY');
 				JToolBarHelper::save($this->view.'.save', 'JTOOLBAR_SAVE');
  
 				// We can save this record, but check the create permission to see if we can return to make a new one.
-				if ($canDo->get('core.create')) 
+				if ( $canDo->get('core.create') && $this->view != 'treetonode' ) 
 				{
 					JToolBarHelper::custom($this->view.'.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 				}
 			}
-			if ($canDo->get('core.create')) 
+			if ( $canDo->get('core.create')  && $this->view != 'treetonode' ) 
 			{
 				JToolBarHelper::custom($this->view.'.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
 			}

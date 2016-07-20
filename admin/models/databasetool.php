@@ -71,6 +71,12 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
     static $bar_value = 0;
     
     
+    /**
+     * sportsmanagementModeldatabasetool::__construct()
+     * 
+     * @param mixed $config
+     * @return void
+     */
     public function __construct($config = array())
         {   
 

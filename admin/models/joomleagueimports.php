@@ -765,6 +765,35 @@ $my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Projekt '.
 $my_text .= '<br />';
 }
 
+/**
+ * master template setzen
+ */
+foreach( $result as $row )
+{
+// Fields to update.
+$fields = array(
+    $db->quoteName('master_template') . ' = ' . $row->id
+);
+// Conditions for which records should be updated.
+$conditions = array(
+    $db->quoteName('master_template') . ' = '.$row->import_id,
+    $db->quoteName('import_id') . ' != 0'
+);
+
+$query->clear(); 
+$query->update($db->quoteName('#__sportsmanagement_project'))->set($fields)->where($conditions);
+$db->setQuery($query);
+try{
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
+
+}
+
 //self::$_success['Update Runden/Gruppen/Projektpositionen/Projektschiedsrichter/Projektmannschaft:'] = $my_text;
 
 

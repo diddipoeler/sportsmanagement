@@ -53,6 +53,7 @@ JHtml::_('behavior.tooltip');JHtml::_('behavior.modal');
 		}
 	}
 </script>
+<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_LEGEND','<i>'.$this->projectws->name.'</i>'); ?></legend>
 			<table class="<?php echo $this->table_data_class; ?>">
 				<thead>
 					<?php 
