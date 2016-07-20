@@ -53,240 +53,30 @@ jimport('joomla.application.component.modeladmin');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelclub extends JModelAdmin
+class sportsmanagementModelclub extends JSMModelAdmin
 {
+
 	/**
-	 * Method override to check if you can edit an existing record.
+	 * Override parent constructor.
 	 *
-	 * @param	array	$data	An array of input data.
-	 * @param	string	$key	The name of the key for the primary key.
+	 * @param   array  $config  An optional associative array of configuration settings.
 	 *
-	 * @return	boolean
-	 * @since	1.6
+	 * @see     JModelLegacy
+	 * @since   3.2
 	 */
-	protected function allowEdit($data = array(), $key = 'id')
+	public function __construct($config = array())
 	{
-		// Check specific edit permission then general edit permission.
-		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
-	}
-    
-	/**
-	 * Returns a reference to the a Table object, always creating it.
-	 *
-	 * @param	type	The table type to instantiate
-	 * @param	string	A prefix for the table class name. Optional.
-	 * @param	array	Configuration array for model. Optional.
-	 * @return	JTable	A database object
-	 * @since	1.6
-	 */
-	public function getTable($type = 'club', $prefix = 'sportsmanagementTable', $config = array()) 
-	{
-	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
-		return JTable::getInstance($type, $prefix, $config);
-	}
-    
-	/**
-	 * Method to get the record form.
-	 *
-	 * @param	array	$data		Data for the form.
-	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-	 * @return	mixed	A JForm object on success, false on failure
-	 * @since	1.6
-	 */
-	public function getForm($data = array(), $loadData = true) 
-	{
-		// Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $db		= sportsmanagementHelper::getDBConnection();
-        $query = $db->getQuery(true);
-        $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        $show_team_community = JComponentHelper::getParams($option)->get('show_team_community',0);
-        
-        $cfg_use_plz_table = JComponentHelper::getParams($option)->get('cfg_use_plz_table',0);
-        
-        //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
-        // Get the form.
-		$form = $this->loadForm('com_sportsmanagement.club', 'club', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) 
-		{
-			return false;
-		}
-        
-        $row = $this->getTable();
-        $row->load((int) $form->getValue('id'));
-        $country = $row->country;
-        
-        /**
-         * soll die postleitzahlendatentabelle genutzt werden ?
-         */        
-        if ( $cfg_use_plz_table )
-        {
-        /**
-        * wenn es aber zu dem land keine einträge
-        * in der plz tabelle gibt, dann die normale
-        * eingabe dem user anbieten        
-        */
-        $query->select('count(*) as anzahl');
-        $query->from('#__sportsmanagement_countries_plz as a');
-        $query->join('INNER', '#__sportsmanagement_countries AS c ON c.alpha2 = a.country_code'); 
-        $query->where('c.alpha3 LIKE ' . $db->Quote(''.$country.'') );
-        $db->setQuery($query);
-        $result = $db->loadResult();
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
-        
-        if ( $result )
-        {    
-        $form->setFieldAttribute('zipcode', 'type', 'dependsql', 'request');
-        $form->setFieldAttribute('zipcode', 'size', '10', 'request');     
-        $form->setFieldAttribute('location', 'type', 'dependsql', 'request');
-        $form->setFieldAttribute('location', 'size', '10', 'request');
-        }
-        
-        }
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' row<br><pre>'.print_r($row,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' country<br><pre>'.print_r($country,true).'</pre>'),'');
-        
-        if ( !$show_team_community )
-        {
-            $form->setFieldAttribute('merge_teams', 'type', 'hidden');
-        }
-        
-        // welche joomla version ?
-        if(version_compare(JVERSION,'3.0.0','ge')) 
-        {
-        $form->setFieldAttribute('founded', 'type', 'calendar');
-        $form->setFieldAttribute('dissolved', 'type', 'calendar');  
-        }
-        else
-        {
-        $form->setFieldAttribute('founded', 'type', 'customcalendar');  
-        $form->setFieldAttribute('dissolved', 'type', 'customcalendar');
-        }
-        
-        $form->setFieldAttribute('logo_small', 'default', JComponentHelper::getParams($option)->get('ph_logo_small',''));
-        $form->setFieldAttribute('logo_small', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/clubs/small');
-        $form->setFieldAttribute('logo_small', 'type', $cfg_which_media_tool);
-        
-        $form->setFieldAttribute('logo_middle', 'default', JComponentHelper::getParams($option)->get('ph_logo_medium',''));
-        $form->setFieldAttribute('logo_middle', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/clubs/medium');
-        $form->setFieldAttribute('logo_middle', 'type', $cfg_which_media_tool);
-        
-        $form->setFieldAttribute('logo_big', 'default', JComponentHelper::getParams($option)->get('ph_logo_big',''));
-        $form->setFieldAttribute('logo_big', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/clubs/large');
-        $form->setFieldAttribute('logo_big', 'type', $cfg_which_media_tool);
-        
-        $form->setFieldAttribute('trikot_home', 'default', JComponentHelper::getParams($option)->get('ph_logo_small',''));
-        //$form->setFieldAttribute('trikot_home', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/clubs/trikot_home');
-        $form->setFieldAttribute('trikot_home', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/clubs/trikot');
-        $form->setFieldAttribute('trikot_home', 'type', $cfg_which_media_tool);
-        
-        $form->setFieldAttribute('trikot_away', 'default', JComponentHelper::getParams($option)->get('ph_logo_small',''));
-        //$form->setFieldAttribute('trikot_away', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/clubs/trikot_away');
-        $form->setFieldAttribute('trikot_away', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/clubs/trikot');
-        $form->setFieldAttribute('trikot_away', 'type', $cfg_which_media_tool);
-        
-        $prefix = $app->getCfg('dbprefix');
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prefix<br><pre>'.print_r($prefix,true).'</pre>'),'');
-        //$whichtabel = $this->getTable();
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' whichtabel<br><pre>'.print_r($whichtabel,true).'</pre>'),'');
-        
-        $query->clear();
-        $query->select('*');
-			$query->from('information_schema.columns');
-            $query->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_club' ");
-			
-			$db->setQuery($query);
-            
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            
-			$result = $db->loadObjectList();
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
-            
-            foreach($result as $field )
-        {
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' COLUMN_NAME<br><pre>'.print_r($field->COLUMN_NAME,true).'</pre>'),'');
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' DATA_TYPE<br><pre>'.print_r($field->DATA_TYPE,true).'</pre>'),'');
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' CHARACTER_MAXIMUM_LENGTH<br><pre>'.print_r($field->CHARACTER_MAXIMUM_LENGTH,true).'</pre>'),'');
-            
-            switch ($field->COLUMN_NAME)
-            {
-                case 'country':
-                case 'merge_teams':
-                break;
-                default:
-            switch ($field->DATA_TYPE)
-            {
-                case 'varchar':
-                $form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
-                break;
-            }
-                break;
-            }
-           } 
-        
-		return $form;
-	}
-    
-	/**
-	 * Method to get the script that have to be included on the form
-	 *
-	 * @return string	Script files
-	 */
-	public function getScript() 
-	{
-		return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
-	}
-    
-	/**
-	 * Method to get the data that should be injected in the form.
-	 *
-	 * @return	mixed	The data for the form.
-	 * @since	1.6
-	 */
-	protected function loadFormData() 
-	{
-		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.club.data', array());
-		if (empty($data)) 
-		{
-			$data = $this->getItem();
-		}
-		return $data;
-	}
+		parent::__construct($config);
 	
-	/**
-	 * Method to save item order
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	1.5
-	 */
-	function saveorder($pks = NULL, $order = NULL)
-	{
-		$row =& $this->getTable();
-		
-		// update ordering values
-		for ($i=0; $i < count($pks); $i++)
-		{
-			$row->load((int) $pks[$i]);
-			if ($row->ordering != $order[$i])
-			{
-				$row->ordering=$order[$i];
-				if (!$row->store())
-				{
-					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-					return false;
-				}
-			}
-		}
-		return true;
-	}
+    //$this->jsmapp = JFactory::getApplication();
+    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
+    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
     
+	}	
+
+
+   
+   
     /**
 	 * Method to update checked clubs
 	 *
@@ -555,91 +345,7 @@ return $teamsofclub;
         {
             $data['dissolved_year'] = $data['dissolved_year'];
         }
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
-/*        
-        if (!empty($data['address']))
-		{
-			$address_parts[] = $data['address'];
-		}
-		if (!empty($data['state']))
-		{
-			$address_parts[] = $data['state'];
-		}
-		if (!empty($data['location']))
-		{
-			if (!empty($data['zipcode']))
-			{
-				$address_parts[] = $data['zipcode']. ' ' .$data['location'];
-                $address_parts2[] = $data['zipcode']. ' ' .$data['location'];
-			}
-			else
-			{
-				$address_parts[] = $data['location'];
-                $address_parts2[] = $data['location'];
-			}
-		}
-		if (!empty($data['country']))
-		{
-			$address_parts[] = JSMCountries::getShortCountryName($data['country']);
-            $address_parts2[] = JSMCountries::getShortCountryName($data['country']);
-		}
-		$address = implode(', ', $address_parts);
-		$coords = sportsmanagementHelper::resolveLocation($address);
-		
-//		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' address_parts<br><pre>'.print_r($address_parts,true).'</pre>' ),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' coords<br><pre>'.print_r($coords,true).'</pre>' ),'');
-        
-        if ( !$coords )
-        {
-        $address = implode(', ', $address_parts2);
-		$coords = sportsmanagementHelper::resolveLocation($address);
-//		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' address_parts2<br><pre>'.print_r($address_parts2,true).'</pre>' ),'');
-//		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' coords<br><pre>'.print_r($coords,true).'</pre>' ),'');    
-        }    
-        
-        if ( $coords )
-        {
-        foreach( $coords as $key => $value )
-		{
-        $post['extended'][$key] = $value;
-        }
-		
-		$data['latitude'] = $coords['latitude'];
-		$data['longitude'] = $coords['longitude'];
-        }
-        else
-        {
-        $address_parts = array();
-        if (!empty($data['address']))
-		{
-		$address_parts[] = $data['address'];
-		}
-        if (!empty($data['location']))
-		{
-		$address_parts[] = $data['location'];
-		}
-		if (!empty($data['country']))
-		{
-		$address_parts[] = JSMCountries::getShortCountryName($data['country']);
-		}
-        
-        $address = implode(',', $address_parts);
-        $coords = sportsmanagementHelper::getOSMGeoCoords($address);
-		
-		//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' coords<br><pre>'.print_r($coords,true).'</pre>' ),'');
-        
-        $data['latitude'] = $coords['latitude'];
-		$data['longitude'] = $coords['longitude'];
-        
-        foreach( $coords as $key => $value )
-		{
-        $post['extended'][$key] = $value;
-        }
-            
-        }
- */
-        
+
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
 			// Convert the extended field to a string.
@@ -658,6 +364,19 @@ return $teamsofclub;
         // Set the values
 		$data['modified'] = $date->toSql();
 		$data['modified_by'] = $user->get('id');
+        
+         // Alter the title for Save as Copy
+		if ($this->jsmjinput->get('task') == 'save2copy')
+		{
+			$orig_table = $this->getTable();
+			$orig_table->load((int) $this->jsmjinput->getInt('id'));
+            $data['id'] = 0;
+
+			if ($data['name'] == $orig_table->name)
+			{
+				$data['name'] .= ' ' . JText::_('JGLOBAL_COPY');
+			}
+		}
         
         // zuerst sichern, damit wir bei einer neuanlage die id haben
        if ( parent::save($data) )
