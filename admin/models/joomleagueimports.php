@@ -553,8 +553,8 @@ self::$_success['Tabellenkopie:'] = $my_text;
  */
 $query = $db->getQuery(true);
 $my_text = '';
-$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-$my_text .= '<br />'; 
+//$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
+//$my_text .= '<br />'; 
 // Fields to update.
 $fields = array(
     $db->quoteName('sports_type_id') . ' = '. $sports_type_id 
@@ -566,13 +566,13 @@ $conditions = array(
 $query->update($db->quoteName('#__sportsmanagement_team'))->set($fields)->where($conditions);
 $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.self::$db_num_rows.' Daten in der Tabelle: ( __sportsmanagement_team ) aktualisiert!</strong>'.'</span>';
-$my_text .= '<br />';     
+//$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.self::$db_num_rows.' Daten in der Tabelle: ( __sportsmanagement_team ) aktualisiert!</strong>'.'</span>';
+//$my_text .= '<br />';     
 $query->update($db->quoteName('#__sportsmanagement_project'))->set($fields)->where($conditions);
 $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.self::$db_num_rows.' Daten in der Tabelle: ( __sportsmanagement_project ) aktualisiert!</strong>'.'</span>';
-$my_text .= '<br />';     
+//$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.self::$db_num_rows.' Daten in der Tabelle: ( __sportsmanagement_project ) aktualisiert!</strong>'.'</span>';
+//$my_text .= '<br />';     
 
 //self::$_success['Tabellenaktualisierung:'] = $my_text; 
 
@@ -580,8 +580,8 @@ $my_text .= '<br />';
  * jetzt werden den mannschaften die importierten vereine zugeordnet
  */
 $my_text = ''; 
-$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-$my_text .= '<br />'; 
+//$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
+//$my_text .= '<br />'; 
 $query = $db->getQuery(true);
 $query->clear();
 $query->select('name,id,import_id');
@@ -611,8 +611,8 @@ $query->clear();
 $query->update($db->quoteName('#__sportsmanagement_playground'))->set($fields)->where($conditions);
 $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Verein '.$row->name.' in den Mannschaften/Spielorte aktualisiert !</strong>'.'</span>';
-$my_text .= '<br />';
+//$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Verein '.$row->name.' in den Mannschaften/Spielorte aktualisiert !</strong>'.'</span>';
+//$my_text .= '<br />';
 }
 
 //self::$_success['Update Mannschaften/Spielorte:'] = $my_text; 
@@ -622,8 +622,8 @@ $my_text .= '<br />';
  */
 
 $my_text = ''; 
-$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-$my_text .= '<br />'; 
+//$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
+//$my_text .= '<br />'; 
 $query = $db->getQuery(true);
 $query->clear();
 $query->select('name,id,import_id');
@@ -648,8 +648,8 @@ $query->clear();
 $query->update($db->quoteName('#__sportsmanagement_project'))->set($fields)->where($conditions);
 $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Saison '.$row->name.' im Projekt aktualisiert !</strong>'.'</span>';
-$my_text .= '<br />';
+//$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Saison '.$row->name.' im Projekt aktualisiert !</strong>'.'</span>';
+//$my_text .= '<br />';
 }
 
 //self::$_success['Update Saison:'] = $my_text;
@@ -658,8 +658,8 @@ $my_text .= '<br />';
  * jetzt werden die ligen zugeordnet
  */
 $my_text = ''; 
-$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-$my_text .= '<br />'; 
+//$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
+//$my_text .= '<br />'; 
 $query = $db->getQuery(true);
 $query->clear();
 $query->select('name,id,import_id');
@@ -686,8 +686,8 @@ $query->update($db->quoteName('#__sportsmanagement_project'))->set($fields)->whe
 $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Liga '.$row->name.' im Projekt aktualisiert !</strong>'.'</span>';
-$my_text .= '<br />';
+//$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Liga '.$row->name.' im Projekt aktualisiert !</strong>'.'</span>';
+//$my_text .= '<br />';
 
 }
 
@@ -697,8 +697,8 @@ $my_text .= '<br />';
  * jetzt werden die projekte zugeordnet
  */
 $my_text = ''; 
-$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-$my_text .= '<br />'; 
+//$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
+//$my_text .= '<br />'; 
 $query = $db->getQuery(true);
 $query->clear();
 $query->select('name,id,import_id');
@@ -723,10 +723,6 @@ $query->clear();
 $query->update($db->quoteName('#__sportsmanagement_round'))->set($fields)->where($conditions);
 $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>query round - ';
-$my_text .= JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>');
-$my_text .= '</strong>'.'</span>';
-$my_text .= '<br />';
 $query->clear(); 
 $query->update($db->quoteName('#__sportsmanagement_division'))->set($fields)->where($conditions);
 $db->setQuery($query);
@@ -768,8 +764,8 @@ $query->clear();
 $query->update($db->quoteName('#__sportsmanagement_template_config'))->set($fields)->where($conditions);
 $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Projekt '.$row->name.' im Runden/Gruppen/Projektpositionen/Projektschiedsrichter/Projektmannschaft aktualisiert !</strong>'.'</span>';
-$my_text .= '<br />';
+//$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Projekt '.$row->name.' im Runden/Gruppen/Projektpositionen/Projektschiedsrichter/Projektmannschaft aktualisiert !</strong>'.'</span>';
+//$my_text .= '<br />';
 }
 
 /**
@@ -808,8 +804,8 @@ catch (Exception $e) {
  * jetzt werden die positionen/events zugeordnet
  */
 $my_text = ''; 
-$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-$my_text .= '<br />'; 
+//$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
+//$my_text .= '<br />'; 
 $query = $db->getQuery(true);
 $query->clear();
 $query->select('name,id,import_id');
@@ -877,8 +873,8 @@ catch (Exception $e) {
 //    $db->transactionRollback();
 //    JErrorPage::render($e);
 }
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Position '.$row->name.' im Spieler/Projektpositionen aktualisiert !</strong>'.'</span>';
-$my_text .= '<br />';
+//$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Position '.$row->name.' im Spieler/Projektpositionen aktualisiert !</strong>'.'</span>';
+//$my_text .= '<br />';
 }
 
 
@@ -927,8 +923,8 @@ $query->clear();
 $query->update($db->quoteName('#__sportsmanagement_match_event'))->set($fields)->where($conditions);
 $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Eventtype '.$row->name.' im Positionen aktualisiert !</strong>'.'</span>';
-$my_text .= '<br />';
+//$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Eventtype '.$row->name.' im Positionen aktualisiert !</strong>'.'</span>';
+//$my_text .= '<br />';
 }
 
 //self::$_success['Update Personen/Projektpositionen:'] = $my_text;
@@ -938,8 +934,8 @@ $my_text .= '<br />';
  * jetzt werden die personen zugeordnet
  */
 $my_text = ''; 
-$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-$my_text .= '<br />'; 
+//$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
+//$my_text .= '<br />'; 
 $query = $db->getQuery(true);
 $query->clear();
 $query->select('alias as name,id,import_id');
@@ -964,10 +960,6 @@ $query->clear();
 $query->update($db->quoteName('#__sportsmanagement_team_player'))->set($fields)->where($conditions);
 $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
-//$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>query round - ';
-//$my_text .= JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>');
-//$my_text .= '</strong>'.'</span>';
-//$my_text .= '<br />';
 $query->clear(); 
 $query->update($db->quoteName('#__sportsmanagement_team_staff'))->set($fields)->where($conditions);
 $db->setQuery($query);
@@ -976,8 +968,8 @@ $query->clear();
 $query->update($db->quoteName('#__sportsmanagement_project_referee'))->set($fields)->where($conditions);
 $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Spieler '.$row->name.' im Team-Spieler/Team-Staff aktualisiert !</strong>'.'</span>';
-$my_text .= '<br />';
+//$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Spieler '.$row->name.' im Team-Spieler/Team-Staff aktualisiert !</strong>'.'</span>';
+//$my_text .= '<br />';
 }
 
 //self::$_success['Update Team-Spieler/Team-Staff:'] = $my_text;
@@ -987,8 +979,8 @@ $my_text .= '<br />';
  * jetzt werden die teams zugeordnet
  */
 $my_text = ''; 
-$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
-$my_text .= '<br />'; 
+//$my_text .= '<span style="color:'.self::$storeInfo. '"<strong> ( '.__METHOD__.' )  ( '.__LINE__.' ) </strong>'.'</span>';
+//$my_text .= '<br />'; 
 $query = $db->getQuery(true);
 $query->clear();
 $query->select('name,id,import_id');
@@ -1020,12 +1012,9 @@ catch (Exception $e) {
 //    $db->transactionRollback();
 //    JErrorPage::render($e);
 }
-//$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>query - ';
-//$my_text .= JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>');
-//$my_text .= '</strong>'.'</span>';
+
+//$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Spieler '.$row->name.' im Projektteam aktualisiert !</strong>'.'</span>';
 //$my_text .= '<br />';
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Spieler '.$row->name.' im Projektteam aktualisiert !</strong>'.'</span>';
-$my_text .= '<br />';
 }
 
 //self::$_success['Update Projektteam:'] = $my_text;
