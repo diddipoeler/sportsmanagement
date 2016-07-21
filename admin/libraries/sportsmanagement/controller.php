@@ -3,6 +3,9 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+// import Joomla controllerform library
+//jimport('joomla.application.component.controllerform');
+
 /**
  * JSMControllerForm
  * 
@@ -62,8 +65,12 @@ class JSMControllerForm extends JControllerForm
         $data = $this->jsmjinput->getVar('jform', array(), 'post', 'array');
         $createTeam = $this->jsmjinput->getVar('createTeam');
         $return = $model->save($data);
-        
+        if ( empty($id) )
+        {
+            $id = $this->jsmdb->insertid();
+        }
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
+//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' return<br><pre>'.print_r($return,true).'</pre>'),'');
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' key<br><pre>'.print_r($key,true).'</pre>'),'');
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' urlVar<br><pre>'.print_r($urlVar,true).'</pre>'),'');
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->option <br><pre>'.print_r($this->option ,true).'</pre>'),'');
@@ -73,10 +80,6 @@ class JSMControllerForm extends JControllerForm
         switch ($this->view_item)
 		{
 		case 'club':  
-        if ( empty($id) )
-        {
-            $id = $this->jsmdb->insertid();
-        }
         
         if ($createTeam)
 		{

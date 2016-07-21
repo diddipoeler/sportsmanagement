@@ -41,7 +41,7 @@
 defined('_JEXEC') or die('Restricted access');
  
 // import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
+//jimport('joomla.application.component.modeladmin');
  
 
 /**
@@ -53,158 +53,23 @@ jimport('joomla.application.component.modeladmin');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPlayground extends JModelAdmin
+class sportsmanagementModelPlayground extends JSMModelAdmin
 {
     
     static $playground = NULL;
     static $cfg_which_database = 0;
 
-  /**
-	 * Method override to check if you can edit an existing record.
-	 *
-	 * @param	array	$data	An array of input data.
-	 * @param	string	$key	The name of the key for the primary key.
-	 *
-	 * @return	boolean
-	 * @since	1.6
-	 */
-	protected function allowEdit($data = array(), $key = 'id')
-	{
-		// Check specific edit permission then general edit permission.
-		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
-	}
+  
     
-	/**
-	 * Returns a reference to the a Table object, always creating it.
-	 *
-	 * @param	type	The table type to instantiate
-	 * @param	string	A prefix for the table class name. Optional.
-	 * @param	array	Configuration array for model. Optional.
-	 * @return	JTable	A database object
-	 * @since	1.6
-	 */
-	public function getTable($type = 'playground', $prefix = 'sportsmanagementTable', $config = array()) 
-	{
-	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
-		return JTable::getInstance($type, $prefix, $config);
-	}
-    
-	/**
-	 * Method to get the record form.
-	 *
-	 * @param	array	$data		Data for the form.
-	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-	 * @return	mixed	A JForm object on success, false on failure
-	 * @since	1.6
-	 */
-	public function getForm($data = array(), $loadData = true) 
-	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $db		= $this->getDbo();
-        $query = $db->getQuery(true);
-        $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
-        // Get the form.
-		$form = $this->loadForm('com_sportsmanagement.playground', 'playground', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) 
-		{
-			return false;
-		}
-		
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($option)->get('ph_team',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/playgrounds');
-        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
-        
-        $prefix = $app->getCfg('dbprefix');
-        
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' prefix<br><pre>'.print_r($prefix,true).'</pre>'),'');
-        //$whichtabel = $this->getTable();
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' whichtabel<br><pre>'.print_r($whichtabel,true).'</pre>'),'');
-        
-        $query->select('*');
-			$query->from('information_schema.columns');
-            $query->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_playground' ");
-			
-			$db->setQuery($query);
-            
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            
-			$result = $db->loadObjectList();
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
-            
-            foreach($result as $field )
-        {
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COLUMN_NAME<br><pre>'.print_r($field->COLUMN_NAME,true).'</pre>'),'');
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' DATA_TYPE<br><pre>'.print_r($field->DATA_TYPE,true).'</pre>'),'');
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' CHARACTER_MAXIMUM_LENGTH<br><pre>'.print_r($field->CHARACTER_MAXIMUM_LENGTH,true).'</pre>'),'');
-            
-            switch ($field->DATA_TYPE)
-            {
-                case 'varchar':
-                $form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
-                break;
-            }
-            
-           } 
-           
-        return $form;
-	}
-    
-	/**
-	 * Method to get the script that have to be included on the form
-	 *
-	 * @return string	Script files
-	 */
-	public function getScript() 
-	{
-		return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
-	}
-    
-	/**
-	 * Method to get the data that should be injected in the form.
-	 *
-	 * @return	mixed	The data for the form.
-	 * @since	1.6
-	 */
-	protected function loadFormData() 
-	{
-		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.playground.data', array());
-		if (empty($data)) 
-		{
-			$data = $this->getItem();
-		}
-		return $data;
-	}
 	
-	/**
-	 * Method to save item order
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	1.5
-	 */
-	function saveorder($pks = NULL, $order = NULL)
-	{
-		$row =& $this->getTable();
-		
-		// update ordering values
-		for ($i=0; $i < count($pks); $i++)
-		{
-			$row->load((int) $pks[$i]);
-			if ($row->ordering != $order[$i])
-			{
-				$row->ordering=$order[$i];
-				if (!$row->store())
-				{
-					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-					return false;
-				}
-			}
-		}
-		return true;
-	}
+    
+
+    
+
+    
+	
+	
+
     
     /**
 	 * Method to save the form data.
@@ -215,89 +80,15 @@ class sportsmanagementModelPlayground extends JModelAdmin
 	 */
 	public function save($data)
 	{
-	   $app = JFactory::getApplication();
-       $date = JFactory::getDate();
-	   $user = JFactory::getUser();
-       $post = JRequest::get('post');
+	  
+      
+       $post = $this->jsmjinput->post->getArray();
        // Set the values
-	   $data['modified'] = $date->toSql();
-	   $data['modified_by'] = $user->get('id');
+	   $data['modified'] = $this->jsmdate->toSql();
+	   $data['modified_by'] = $this->jsmuser->get('id');
        $address_parts = array();
        
-       //$data['country'] = $data['request']['country'];
-//       $data['zipcode'] = $data['request']['zipcode'];
-//       $data['city'] = $data['request']['city'];
-//       $data['address'] = $data['request']['address'];
-//       $data['latitude'] = $data['request']['latitude'];
-//       $data['longitude'] = $data['request']['longitude'];
-       
-       //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$app->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
 
-/*       
-       if (!empty($data['address']))
-		{
-			$address_parts[] = $data['address'];
-		}
-		
-		if (!empty($data['city']))
-		{
-			if (!empty($data['zipcode']))
-			{
-				$address_parts[] = $data['zipcode']. ' ' .$data['city'];
-			}
-			else
-			{
-				$address_parts[] = $data['city'];
-			}
-		}
-		if (!empty($data['country']))
-		{
-			$address_parts[] = JSMCountries::getShortCountryName($data['country']);
-		}
-		$address = implode(', ', $address_parts);
-		$coords = sportsmanagementHelper::resolveLocation($address);
-		
-		//$app->enqueueMessage(JText::_('sportsmanagementModelclub coords -> '.'<pre>'.print_r($coords,true).'</pre>' ),'');
-        
-        if ( $coords )
-        {
-        foreach( $coords as $key => $value )
-		{
-        $post['extended'][$key] = $value;
-        }
-		
-		$data['latitude'] = $coords['latitude'];
-		$data['longitude'] = $coords['longitude'];
-        }
-        else
-        {
-        $address_parts = array();
-        if (!empty($data['address']))
-		{
-		$address_parts[] = $data['address'];
-		}
-        if (!empty($data['location']))
-		{
-		$address_parts[] = $data['location'];
-		}
-		if (!empty($data['country']))
-		{
-		$address_parts[] = JSMCountries::getShortCountryName($data['country']);
-		}
-        $address = implode(',', $address_parts);
-        $coords = sportsmanagementHelper::getOSMGeoCoords($address);
-		
-		//$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' coords<br><pre>'.print_r($coords,true).'</pre>' ),'');
-        
-        $data['latitude'] = $coords['latitude'];
-		$data['longitude'] = $coords['longitude'];
-        foreach( $coords as $key => $value )
-		{
-        $post['extended'][$key] = $value;
-        }    
-        }
- */
         
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
@@ -306,11 +97,6 @@ class sportsmanagementModelPlayground extends JModelAdmin
 			$parameter->loadArray($post['extended']);
 			$data['extended'] = (string)$parameter;
 		}
-        
-        //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-        
-        // Proceed with the save
-		//return parent::save($data);
         
         // zuerst sichern, damit wir bei einer neuanlage die id haben
        if ( parent::save($data) )
@@ -322,12 +108,14 @@ class sportsmanagementModelPlayground extends JModelAdmin
             if ( $isNew )
             {
                 //Here you can do other tasks with your newly saved record...
-                $app->enqueueMessage(JText::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
+                $this->jsmapp->enqueueMessage(JText::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id),'');
             }
-           
-		}
-        
         return true;    
+		}
+        else
+        {
+        return false;
+        }    
     }
     
     /**

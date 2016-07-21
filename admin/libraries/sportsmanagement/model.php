@@ -40,6 +40,7 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+jimport('joomla.application.component.modeladmin');
 
 /**
  * JSMModelAdmin
@@ -217,6 +218,40 @@ if( $this->jsmapp->isSite() )
             }
                 break;
             }
+           } 
+        break;
+        case 'playground':
+        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
+        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/playgrounds');
+        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
+        
+        $prefix = $this->jsmapp->getCfg('dbprefix');
+
+        $this->jsmquery->clear();
+        $this->jsmquery->select('*');
+			$this->jsmquery->from('information_schema.columns');
+            $this->jsmquery->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_playground' ");
+			
+			$this->jsmdb->setQuery($this->jsmquery);
+            
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            
+			$result = $this->jsmdb->loadObjectList();
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
+            
+            foreach($result as $field )
+        {
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COLUMN_NAME<br><pre>'.print_r($field->COLUMN_NAME,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' DATA_TYPE<br><pre>'.print_r($field->DATA_TYPE,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' CHARACTER_MAXIMUM_LENGTH<br><pre>'.print_r($field->CHARACTER_MAXIMUM_LENGTH,true).'</pre>'),'');
+            
+            switch ($field->DATA_TYPE)
+            {
+                case 'varchar':
+                $form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
+                break;
+            }
+            
            } 
         break;
         case 'agegroup':
