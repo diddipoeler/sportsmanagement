@@ -56,7 +56,7 @@ Joomla.submitbutton = function(task)
 			Joomla.submitform(task);
 			return true;
 		} else {
-			alert(Joomla.JText._('helloworld, some values are not acceptable.','Some values are unacceptable'));
+			//alert(Joomla.JText._('helloworld, some values are not acceptable.','Some values are unacceptable'));
 			return false;
 		}
 	}
