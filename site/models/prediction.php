@@ -1310,7 +1310,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
 	 * @param mixed $predictionMemberID
 	 * @return
 	 */
-	function getPredictionMemberEMailAdress($predictionMemberID)
+	public static function getPredictionMemberEMailAdress($predictionMemberID)
 	{
 	   // Reference global application object
         $app = JFactory::getApplication();
@@ -1322,7 +1322,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
 		$query = $db->getQuery(true);
         // Select some fields
         $query->select('user_id');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member');
+        $query->from('#__sportsmanagement_prediction_member');
         $query->where('id = '.(int)$predictionMemberID);
 
 		$db->setQuery($query);
@@ -1365,7 +1365,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
    * @param mixed $joomlaUserID
    * @return
    */
-  function sendMemberTipResults($predictionMemberID,$predictionGameID,$RoundID,$ProjectID,$joomlaUserID) 
+  public static function sendMemberTipResults($predictionMemberID,$predictionGameID,$RoundID,$ProjectID,$joomlaUserID) 
   {
   
   // Reference global application object
@@ -1376,7 +1376,8 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
   $document	= JFactory::getDocument();
   $app = JFactory::getApplication();
   
-  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($RoundID,true).'</pre>'),'');
+//  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r($RoundID,true).'</pre>'),'');
+//  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ProjectID<br><pre>'.print_r($ProjectID,true).'</pre>'),'');
   
   $configprediction	= self::getPredictionTemplateConfig('predictionentry');
   $overallConfig = self::getPredictionOverallConfig();
@@ -1384,6 +1385,8 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
   $predictionProjectSettings = self::getPredictionProject($ProjectID);
   $predictionProject = self::getPredictionGame();
   $predictionProjectS = self::getPredictionProjectS();
+  $match_ids = array();
+  $round_ids = array();
   
   if ( $configprediction['use_pred_select_matches'] )
       {
@@ -1404,12 +1407,23 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
   $predictionGameMemberMail = self::getPredictionMemberEMailAdress($predictionMemberID);
 
   //Fetch the mail object
-	$mailer =& JFactory::getMailer();
+	$mailer = JFactory::getMailer();
 	// als html
 	$mailer->isHTML(TRUE);
   //Set a sender
-	$config =& JFactory::getConfig();
-	$sender = array($config->getValue('config.mailfrom'),$config->getValue('config.fromname'));
+	$config = JFactory::getConfig();
+    if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        // Joomla! 3.0 code here
+        $sender = array($config->get('mailfrom'),$config->get('fromname'));
+        }
+        elseif(version_compare(JVERSION,'2.5.0','ge')) 
+        {
+        // Joomla! 2.5 code here
+        $sender = array($config->getValue('config.mailfrom'),$config->getValue('config.fromname'));
+        }
+
+	//$sender = array($config->getValue('config.mailfrom'),$config->getValue('config.fromname'));
 	$mailer->setSender($sender);
   $mailer->addRecipient($predictionGameMemberMail);				
 	//Create the mail

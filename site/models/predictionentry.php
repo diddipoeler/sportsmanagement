@@ -356,7 +356,7 @@ public $_predictionGame	= null;
 	 * @param mixed $match_ids
 	 * @return
 	 */
-	function getMatchesDataForPredictionEntry($predictionGameID,$predictionProjectID,$projectRoundID,$userID,$match_ids=NULL,$round_ids=NULL,$proteams_ids=NULL)
+	public static function getMatchesDataForPredictionEntry($predictionGameID,$predictionProjectID,$projectRoundID,$userID,$match_ids=NULL,$round_ids=NULL,$proteams_ids=NULL)
 	{
 
     $app = JFactory::getApplication();
@@ -450,8 +450,6 @@ public $_predictionGame	= null;
         $pids = $jinput->getVar('pids', null, 'post', 'array');
 		JArrayHelper::toInteger($pids);
 
-
-
 		$cids = $jinput->getVar('cids',array(),'post','array');
 		$prids = $jinput->getVar('prids',array(),'post','array');
 		$homes = $jinput->getVar('homes',array(),'post','array');
@@ -466,15 +464,17 @@ public $_predictionGame	= null;
 		$predictionGameID = $jinput->get('prediction_id',0,'int');
 		$joomlaUserID = $jinput->get('user_id',0,'int');
  
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pids<br><pre>'.print_r($pids,true).'</pre>'),'');
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prids<br><pre>'.print_r($prids,true).'</pre>'),''); 
-
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' homes<br><pre>'.print_r($homes,true).'</pre>'),'');
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' aways<br><pre>'.print_r($aways,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pids<br><pre>'.print_r($pids,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prids<br><pre>'.print_r($prids,true).'</pre>'),''); 
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' homes<br><pre>'.print_r($homes,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' aways<br><pre>'.print_r($aways,true).'</pre>'),'');
  
     // _predictionMember
     $configavatar = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
     $predictionMemberInfo = sportsmanagementModelPrediction::getPredictionMember($configavatar);
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' configavatar<br><pre>'.print_r($configavatar,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionMemberInfo<br><pre>'.print_r($predictionMemberInfo,true).'</pre>'),'');
     
 		$changedResultArray	= array();
 
@@ -582,7 +582,7 @@ catch (Exception $e) {
 //    $db->transactionRollback();
 //    JErrorPage::render($e);
 }
-                        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' update<br><pre>'.print_r($temp,true).'</pre>'),'');
+//                        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' update<br><pre>'.print_r($temp,true).'</pre>'),'');
                         
 //                        $query	= $db->getQuery(true);
 //                        $query->clear();
@@ -629,7 +629,7 @@ catch (Exception $e) {
 //    $db->transactionRollback();
 //    JErrorPage::render($e);
 }
-                        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' insert<br><pre>'.print_r($temp,true).'</pre>'),'');
+//                        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' insert<br><pre>'.print_r($temp,true).'</pre>'),'');
 
 					if ( !$resultquery )
 					{
@@ -692,6 +692,12 @@ catch (Exception $e) {
     // email mit tippergebnissen senden
     if ( $predictionMemberInfo->reminder )
     {
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' mID<br><pre>'.print_r($mID,true).'</pre>'),'Error');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($predictionGameID,true).'</pre>'),'Error');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' RoundID<br><pre>'.print_r($RoundID,true).'</pre>'),'Error');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ProjectID<br><pre>'.print_r($ProjectID,true).'</pre>'),'Error');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' joomlaUserID<br><pre>'.print_r($joomlaUserID,true).'</pre>'),'Error');
+        
     sportsmanagementModelPrediction::sendMemberTipResults($mID,$predictionGameID,$RoundID,$ProjectID,$joomlaUserID);
     }
     

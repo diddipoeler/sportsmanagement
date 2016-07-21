@@ -206,7 +206,7 @@ echo '<br />roundResults<pre>~' . print_r($roundResults,true) . '~</pre><br />';
 				<input type='hidden' name='user_id' value='<?php echo $this->predictionMember->user_id; ?>' />
 				<input type='hidden' name='memberID' value='<?php echo $this->predictionMember->pmID; ?>' />
 				<input type='hidden' name='r' value='<?php echo sportsmanagementModelPrediction::$roundID; ?>' />
-				<input type='hidden' name='pjID' value='<?php echo (int)$this->model->pjID; ?>' />
+				<input type='hidden' name='pjID' value='<?php echo (int)sportsmanagementModelPredictionEntry::$pjID; ?>' />
 				<input type='hidden' name='pids[]' value='<?php echo (int)sportsmanagementModelPrediction::$pjID; ?>' />
 				<input type='hidden' name='ptippmode[<?php echo (int)sportsmanagementModelPrediction::$pjID; ?>]' value='<?php echo $predictionProject->mode; ?>' />
 				<input type='hidden' name='jokerCount' value='<?php echo $memberProjectJokersCount; ?>' />
