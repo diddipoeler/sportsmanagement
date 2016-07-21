@@ -84,7 +84,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 			<input type='hidden' name='option' value='com_sportsmanagement' />
 			<input type='hidden' name='pggroup' value='<?php echo sportsmanagementModelPrediction::$pggroup; ?>' />
             <input type='hidden' name='pggrouprank' value='<?php echo sportsmanagementModelPrediction::$pggrouprank; ?>' />
-
+<div class="table-responsive">
 			<table class="table" >
 				<tr>
 					<td>
@@ -146,6 +146,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
  
                     
 			</table>
+            </div>
             <br />
 			<?php echo JHTML::_( 'form.token' ); ?>
 		</form>
@@ -172,7 +173,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 			<input type='hidden' name='option' value='com_sportsmanagement' />
 			<input type='hidden' name='pggroup' value='<?php echo sportsmanagementModelPrediction::$pggroup; ?>' />
             <input type='hidden' name='pggrouprank' value='<?php echo sportsmanagementModelPrediction::$pggrouprank; ?>' />
-            
+            <div class="table-responsive">
 				<table class="table">
 					<tr>
 						<td><?php echo JHTML::_('select.genericlist',$this->lists['type'],'type','class="inputbox" size="1"','value','text',sportsmanagementModelPrediction::$type); ?></td>
@@ -190,6 +191,7 @@ echo $this->pagination->getListFooter();
 </tfoot>                    
                     
 				</table>
+                </div>
 				<?php echo JHTML::_( 'form.token' ); ?>
 			</form>
             <br />

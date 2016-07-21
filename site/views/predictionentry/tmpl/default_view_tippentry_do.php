@@ -170,11 +170,11 @@ echo '<br />roundResults<pre>~' . print_r($roundResults,true) . '~</pre><br />';
 				<input type='hidden' name='pjID' value='<?php echo sportsmanagementModelPrediction::$pjID; ?>' />
 				<?php echo JHTML::_('form.token'); ?>
 
-
+<div class="table-responsive">
 				<table class="table" >
 					<tr>
-						<td class='sectiontableheader'><b><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_SUBTITLE_01'); ?></b></td>
-						<td class='sectiontableheader' style='text-align:right; ' width='20%' nowrap='nowrap' >
+						<td class=""><b><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_SUBTITLE_01'); ?></b></td>
+					<!--	<td class="" style='text-align:right; ' width='20%'  > -->
 							<?php
                             if ( $this->config['use_pred_select_rounds'] )
       {
@@ -185,12 +185,14 @@ echo '<br />roundResults<pre>~' . print_r($roundResults,true) . '~</pre><br />';
 //							$htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="document.forms[\'resultsRoundSelector\'].r.value=this.value;submit()"','value','text',$this->model->roundID);
 							$htmlRoundsOptions = JHTML::_('select.genericlist',$rounds,'r','class="inputbox" size="1" onchange="this.form.submit();"','value','text',sportsmanagementModelPrediction::$roundID );
 							echo JText::sprintf(	'COM_SPORTSMANAGEMENT_PRED_ENTRY_SUBTITLE_02',
-													$htmlRoundsOptions,
-													sportsmanagementModelPrediction::createProjectSelector(sportsmanagementModelPrediction::$_predictionProjectS,(int)sportsmanagementModelPrediction::$pjID));
+													'<td>'.$htmlRoundsOptions.'</td>',
+													'<td>'.sportsmanagementModelPrediction::createProjectSelector(sportsmanagementModelPrediction::$_predictionProjectS,(int)sportsmanagementModelPrediction::$pjID).'</td>');
 							?>
-						</td>
+					<!--	</td> -->
 					</tr>
-				</table><br />
+				</table>
+                </div>
+                <br />
 				<?php echo JHTML::_( 'form.token' ); ?>
 			</form>
 			<?php $formName = 'predictionDoTipp'.(int)sportsmanagementModelPrediction::$pjID; ?>
@@ -241,10 +243,10 @@ echo '<br />memberID<pre>~' . print_r($this->predictionMember->pmID,true) . '~</
 						}
 					}
 				</script>
-                
+                <div class="table-responsive">
 				<table class="<?PHP echo $this->config['table_class']; ?>" >
 					<tr>
-						<th class='sectiontableheader' style='text-align:center; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_DATE_TIME'); ?></th>
+						<th class="" style='text-align:center; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_DATE_TIME'); ?></th>
 						<th class='sectiontableheader' style='text-align:center; ' colspan="5" ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MATCH'); ?></th>
 						<th class='sectiontableheader' style='text-align:center; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_RESULT'); ?></th>
 						<th class='sectiontableheader' style='text-align:center; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_YOURS'); ?></th>
@@ -663,9 +665,10 @@ echo JHtml::image(JURI::root().$logo_away, $imgTitle, array('title' => $imgTitle
 						?>
 					</tr>
 				</table>
-               
+               </div>
 				<?php echo JHTML::_( 'form.token' ); ?>
-			</form><br />
+			</form>
+            <br />
 			<?php
 //			if (($this->config['show_help']==1)||($this->config['show_help']==2))
 //			{

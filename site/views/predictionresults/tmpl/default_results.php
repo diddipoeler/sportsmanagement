@@ -103,7 +103,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 			
 			<?php echo JHTML::_('form.token'); ?>
 
-
+<div class="table-responsive">
 			<table class="table" >
 				<tr>
 					<td >
@@ -167,6 +167,7 @@ echo $this->pagination->getListFooter();
 </tfoot>  
                 
 			</table>
+            </div>
             <br />
 		</form>
         
