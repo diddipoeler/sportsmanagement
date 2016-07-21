@@ -53,7 +53,7 @@ jimport('joomla.application.component.controllerform');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerleague extends JSMControllerForm
+class sportsmanagementControllerleague extends JControllerForm
 {
 
     /**
