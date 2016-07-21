@@ -73,15 +73,27 @@ else
 {
 	foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionProject)
 	{
-		//$predictionProject->joker=0;
+
+//echo __FILE__.' '.__LINE__.' 1 predictionProject project_id<br><pre>'.print_r($predictionProject->project_id,true).'</pre>';			
+//echo __FILE__.' '.__LINE__.' 1 model->pjID project_id<br><pre>'.print_r(sportsmanagementModelPredictionEntry::$pjID,true).'</pre>';
+		
+        //$predictionProject->joker=0;
 		$gotSettings = $predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject(sportsmanagementModelPrediction::$pjID);
-		if ( ( ( $this->model->pjID == $predictionProject->project_id ) && ($gotSettings) ) || ( $this->model->pjID == 0 ) )
+//echo __FILE__.' '.__LINE__.' 1 gotSettings<br><pre>'.print_r($gotSettings,true).'</pre>';        
+		if ( ( ( (int)sportsmanagementModelPredictionEntry::$pjID == (int)$predictionProject->project_id ) && ($gotSettings) ) || ( (int)sportsmanagementModelPredictionEntry::$pjID == 0 ) )
+        //if ( ( ( $this->model->pjID == $predictionProject->project_id ) && ($gotSettings) )  )
 		{
-			$this->model->pjID = sportsmanagementModelPrediction::$pjID;
+			
+//echo __FILE__.' '.__LINE__.' 2 predictionProject project_id<br><pre>'.print_r($predictionProject->project_id,true).'</pre>';			
+//echo __FILE__.' '.__LINE__.' 2 model->pjID project_id<br><pre>'.print_r(sportsmanagementModelPredictionEntry::$pjID,true).'</pre>';
+            
+            sportsmanagementModelPredictionEntry::$pjID = sportsmanagementModelPrediction::$pjID;
       $this->model->predictionProject = $predictionProject;
 			$actualProjectCurrentRound = sportsmanagementModelPrediction::getProjectSettings(sportsmanagementModelPrediction::$pjID);
 
-//echo __FILE__.' '.__LINE__.' project_id<br><pre>'.print_r($predictionProject->project_id,true).'</pre>';			
+//echo __FILE__.' '.__LINE__.' 3 predictionProject project_id<br><pre>'.print_r($predictionProject->project_id,true).'</pre>';			
+//echo __FILE__.' '.__LINE__.' 3 model->pjID project_id<br><pre>'.print_r(sportsmanagementModelPredictionEntry::$pjID,true).'</pre>';
+
 //echo __FILE__.' '.__LINE__.' roundID<br><pre>'.print_r(sportsmanagementModelPrediction::$roundID,true).'</pre>';            
             
             if (!isset( sportsmanagementModelPrediction::$roundID ) || ( (int)sportsmanagementModelPrediction::$roundID < 1 ) )

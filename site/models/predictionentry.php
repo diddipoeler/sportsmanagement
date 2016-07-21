@@ -71,7 +71,7 @@ public $_predictionGame	= null;
     static $roundID	= 0;
     public $pggroup	= 0;
     public $pggrouprank	= 0;
-    public $pjID = 0;
+    static $pjID = 0;
     public $isNewMember	= 0;
     
     public $tippEntryDone = 0;
@@ -132,6 +132,10 @@ public $_predictionGame	= null;
         
         $post = $jinput->post->getArray(array());
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
+       
+       self::$pjID = $jinput->getVar('pj','0');
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pjID<br><pre>'.print_r(self::$pjID,true).'</pre>'),'');
         
         sportsmanagementModelPrediction::$roundID = $jinput->getVar('r','0');
        sportsmanagementModelPrediction::$pjID = $jinput->getVar('pj','0');
@@ -438,26 +442,35 @@ public $_predictionGame	= null;
 
     $result	= true;
 
-		$post	= JRequest::get('post');
+		$post = $jinput->post->getArray();
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
 
-		$pids = JRequest::getVar('pids',array(),'post','array');
+		//$pids = JRequest::getVar('pids',array(),'post','array');
+        $pids = $jinput->getVar('pids', null, 'post', 'array');
 		JArrayHelper::toInteger($pids);
 
-		$cids = JRequest::getVar('cids',array(),'post','array');
-		$prids = JRequest::getVar('prids',array(),'post','array');
-		$homes = JRequest::getVar('homes',array(),'post','array');
-		$aways = JRequest::getVar('aways',array(),'post','array');
-		$tipps = JRequest::getVar('tipps',array(),'post','array');
-		$jokers	= JRequest::getVar('jokers',array(),'post','array');
-		$mID = JRequest::getVar('memberID',0,'post','int');
-		
-    $RoundID = JRequest::getVar('r',0,'post','int');
-    $ProjectID = JRequest::getVar('pjID',0,'post','int');
 
-		$predictionGameID = JRequest::getVar('prediction_id','','post','int');
-		$joomlaUserID = JRequest::getVar('user_id','','post','int');
+
+		$cids = $jinput->getVar('cids',array(),'post','array');
+		$prids = $jinput->getVar('prids',array(),'post','array');
+		$homes = $jinput->getVar('homes',array(),'post','array');
+		$aways = $jinput->getVar('aways',array(),'post','array');
+		$tipps = $jinput->getVar('tipps',array(),'post','array');
+		$jokers	= $jinput->getVar('jokers',array(),'post','array');
+		$mID = $jinput->get('memberID',0,'int');
+		
+    $RoundID = $jinput->get('r',0,'int');
+    $ProjectID = $jinput->get('pjID',0,'int');
+
+		$predictionGameID = $jinput->get('prediction_id',0,'int');
+		$joomlaUserID = $jinput->get('user_id',0,'int');
+ 
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pids<br><pre>'.print_r($pids,true).'</pre>'),'');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prids<br><pre>'.print_r($prids,true).'</pre>'),''); 
+
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' homes<br><pre>'.print_r($homes,true).'</pre>'),'');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' aways<br><pre>'.print_r($aways,true).'</pre>'),'');
  
     // _predictionMember
     $configavatar = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
@@ -481,11 +494,25 @@ public $_predictionGame	= null;
 				//echo 'prID:~'.$dprID.'~ ';
 
 				$dHome = $homes[$pids[$x]][$cids[$pids[$x]][$y]]; $tmp_dHome = $dHome;
-				if ((!isset($homes[$pids[$x]][$cids[$pids[$x]][$y]]))||(trim($dHome==''))){$dHome = "NULL";}else{$dHome = $dHome;}
+				if ((!isset($homes[$pids[$x]][$cids[$pids[$x]][$y]]))||(trim($dHome=='')))
+                {
+                    $dHome = "NULL";
+                    }
+                    else
+                    {
+                        $dHome = $dHome;
+                        }
 				//echo 'Home:~'.$dHome.'~ ';
 
 				$dAway = $aways[$pids[$x]][$cids[$pids[$x]][$y]]; $tmp_dAway = $dAway;
-				if ((!isset($aways[$pids[$x]][$cids[$pids[$x]][$y]]))||(trim($dAway==''))){$dAway = "NULL";}else{$dAway = $dAway;}
+				if ((!isset($aways[$pids[$x]][$cids[$pids[$x]][$y]]))||(trim($dAway=='')))
+                {
+                    $dAway = "NULL";
+                    }
+                    else
+                    {
+                        $dAway = $dAway;
+                        }
 				//echo 'Away:~'.$dAway.'~ ';
 
 				/*
@@ -495,8 +522,16 @@ public $_predictionGame	= null;
 				$dJoker = (isset($jokers[$pids[$x]][$cids[$pids[$x]][$y]])) ? "1" : 'NULL';
 				//echo 'Joker:~'.$dJoker.'~ ';
 
-				$dTipp = $tipps[$pids[$x]][$cids[$pids[$x]][$y]]; $tmp_dTipp = $dTipp;
-				if ((!isset($tipps[$pids[$x]][$cids[$pids[$x]][$y]]))||(trim($dTipp==''))){$dTipp = "NULL";}else{$dTipp = $dTipp;}
+				$dTipp = $tipps[$pids[$x]][$cids[$pids[$x]][$y]]; 
+                $tmp_dTipp = $dTipp;
+				if ((!isset($tipps[$pids[$x]][$cids[$pids[$x]][$y]]))||(trim($dTipp=='')))
+                {
+                    $dTipp = "NULL";
+                    }
+                    else
+                    {
+                        $dTipp = $dTipp;
+                        }
 				//echo 'Tipp:~'.$dTipp.'~ ';
 				//echo '<br />';
 
@@ -514,23 +549,54 @@ public $_predictionGame	= null;
 
 					if ($dTipp=="NULL")
 					{
-						if ($tmp_dHome > $tmp_dAway){$dTipp = "1";}elseif($tmp_dHome < $tmp_dAway){$dTipp = "2";}else{$dTipp = "0";}
+						if ($tmp_dHome > $tmp_dAway)
+                        {
+                            $dTipp = "1";
+                            }
+                            elseif($tmp_dHome < $tmp_dAway)
+                            {
+                                $dTipp = "2";
+                                }
+                                else
+                                {
+                                    $dTipp = "0";
+                                    }
 					}
 
 					if (!empty($dprID))
 					{
-                        $query	= $db->getQuery(true);
-                        $query->clear();
-		                $query->update('#__sportsmanagement_prediction_result');
-		                $query->set(' tipp_home = '.$dHome );
-                        $query->set(' tipp_away = '.$dAway );
-                        $query->set(' tipp = '.$dTipp );
-                        $query->set(' joker = '.$dJoker );
-		                $query->where(' id = ' . (int) $dprID );
-                		$db->setQuery((string)$query);
-                        //$db->query();
+					   // Create and populate an object.
                         
-                        if( !$db->query() )
+                        $temp = new stdClass();
+                        $temp->id = (int) $dprID ;
+                        $temp->tipp = $dTipp;
+                        $temp->tipp_home = $dHome;
+                        $temp->tipp_away = $dAway;
+                        $temp->joker = $dJoker;
+                        // Update the object
+                        try{
+                        $resultquery = JFactory::getDbo()->updateObject('#__sportsmanagement_prediction_result', $temp, 'id');
+                        }
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
+                        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' update<br><pre>'.print_r($temp,true).'</pre>'),'');
+                        
+//                        $query	= $db->getQuery(true);
+//                        $query->clear();
+//		                $query->update('#__sportsmanagement_prediction_result');
+//		                $query->set(' tipp_home = '.$dHome );
+//                        $query->set(' tipp_away = '.$dAway );
+//                        $query->set(' tipp = '.$dTipp );
+//                        $query->set(' joker = '.$dJoker );
+//		                $query->where(' id = ' . (int) $dprID );
+//                		$db->setQuery($query);
+                        
+                        
+                        if( !$resultquery )
+                        //if( !$db->query() )
 					{
 
                         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
@@ -555,8 +621,15 @@ public $_predictionGame	= null;
                         $temp->tipp_away = $dAway;
                         $temp->joker = $dJoker;
                         // Insert the object
+try{
                         $resultquery = JFactory::getDbo()->insertObject('#__sportsmanagement_prediction_result', $temp);
-                        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' insert<br><pre>'.print_r($temp,true).'</pre>'),'');
+                        }
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
+                        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' insert<br><pre>'.print_r($temp,true).'</pre>'),'');
 
 					if ( !$resultquery )
 					{

@@ -271,28 +271,32 @@ $option = $jinput->getCmd('option');
 	function addtipp()
 	{
 		JRequest::checkToken() or jexit(JText::_('JL_PRED_ENTRY_INVALID_TOKEN_PREDICTIONS_NOT_SAVED'));
-    $option = JRequest::getCmd('option');
+    
+    $app = JFactory::getApplication();
+		$document = JFactory::getDocument();
+    
     // JInput object
        $jinput = $app->input;
-       
+       $option = $jinput->getCmd('option');
+       $post = $jinput->post->getArray();
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
     //$optiontext = strtoupper(JRequest::getCmd('option').'_');
-		$app = JFactory::getApplication();
-		$document = JFactory::getDocument();
 		
-		$msg	= '';
-		$link	= '';
+		
+		$msg = '';
+		$link = '';
 
-		$predictionGameID	= JRequest::getVar('prediction_id',	'','post','int');
-		$joomlaUserID		= JRequest::getVar('user_id',		'','post','int');
-        $memberID		= JRequest::getVar('memberID',		'','post','int');
-		$round_id			= JRequest::getVar('round_id',		'','post','int');
-		$pjID				= JRequest::getVar('pjID',			'','post','int');
-		$set_r				= JRequest::getVar('set_r',			'','post','int');
-		$set_pj				= JRequest::getVar('set_pj',		'','post','int');
+		$predictionGameID = $jinput->getVar('prediction_id','','post','int');
+		$joomlaUserID = $jinput->getVar('user_id','','post','int');
+        $memberID = $jinput->getVar('memberID','','post','int');
+		$round_id = $jinput->getVar('round_id','','post','int');
+		$pjID = $jinput->getVar('pjID','','post','int');
+		$set_r = $jinput->getVar('set_r','','post','int');
+		$set_pj	= $jinput->getVar('set_pj','','post','int');
 
-		$model		= $this->getModel('Prediction');
-		$user		= JFactory::getUser();
-		$isMember	= $model->checkPredictionMembership();
+		$model = $this->getModel('Prediction');
+		$user = JFactory::getUser();
+		$isMember = $model->checkPredictionMembership();
 		$allowedAdmin = $model->getAllowed();
 
 		if ( ( ( $user->id != $joomlaUserID ) ) && ( !$allowedAdmin ) )

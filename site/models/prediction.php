@@ -2276,22 +2276,22 @@ $output .= '>'.JText::_('COM_SPORTSMANAGEMENT_ALL_PROJECTS').'</option>';
     }
 		
 		
-		$result_home	= $memberResult->homeResult;
-		$result_away	= $memberResult->awayResult;
+		$result_home = $memberResult->homeResult;
+		$result_away = $memberResult->awayResult;
 
-		$result_dHome	= $memberResult->homeDecision;
-		$result_dAway	= $memberResult->awayDecision;
+		$result_dHome = $memberResult->homeDecision;
+		$result_dAway = $memberResult->awayDecision;
 
-		$tipp_home	= $memberResult->prHomeTipp;
-		$tipp_away	= $memberResult->prAwayTipp;
+		$tipp_home = $memberResult->prHomeTipp;
+		$tipp_away = $memberResult->prAwayTipp;
 
-		$tipp		= $memberResult->prTipp;
-		$joker		= $memberResult->prJoker;
+		$tipp = $memberResult->prTipp;
+		$joker = $memberResult->prJoker;
 
-		$points		= $memberResult->prPoints;
-		$top		= $memberResult->prTop;
-		$diff		= $memberResult->prDiff;
-		$tend		= $memberResult->prTend;
+		$points	= $memberResult->prPoints;
+		$top = $memberResult->prTop;
+		$diff = $memberResult->prDiff;
+		$tend = $memberResult->prTend;
 
 		
     if ( $predictionProject->mode == 1 )
@@ -2443,11 +2443,11 @@ $output .= '>'.JText::_('COM_SPORTSMANAGEMENT_ALL_PROJECTS').'</option>';
 
 		if ($returnArray)
 		{
-			$memberResult->tipp		= $tipp;
-			$memberResult->points	= $points;
-			$memberResult->top		= $top;
-			$memberResult->diff		= $diff;
-			$memberResult->tend		= $tend;
+			$memberResult->tipp	= $tipp;
+			$memberResult->points = $points;
+			$memberResult->top = $top;
+			$memberResult->diff	= $diff;
+			$memberResult->tend	= $tend;
 
 			return $memberResult;
 		}
