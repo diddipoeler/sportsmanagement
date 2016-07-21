@@ -432,11 +432,13 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,
 		}
 		?></td>
 		<?php
+        $timestamp_birth = strtotime($row->birthday);
+        $timestamp_death = strtotime($row->deathday);
 		if ($this->config['show_birthday'] > 0)
 		{
 			?>
 		<td width="10%" nowrap="nowrap" style="text-align: center;"><?php
-			if ($row->birthday !="0000-00-00")
+			if ( $timestamp_birth )
 			{
 				switch ($this->config['show_birthday'])
 				{
@@ -469,7 +471,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('player'.$row->playerid,
 				$birthdateStr="-";
 			}
 			// deathday
-			if ( $row->deathday !="0000-00-00" )
+			if ( $timestamp_death )
 			{
 				$birthdateStr .= ' [&dagger; '.JHtml::date($row->deathday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')).']';
 			}

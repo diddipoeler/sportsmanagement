@@ -131,10 +131,12 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playerinfo'.$this->pers
 			<?php
 			}
 
-     
+            $timestamp_birth = strtotime($this->person->birthday);
+            $timestamp_death = strtotime($this->person->deathday);
+            
 			if (( $this->config[ 'show_birthday' ] > 0 ) &&
 			( $this->config[ 'show_birthday' ] < 5 ) &&
-			( $this->person->birthday != '0000-00-00' ))
+			( $timestamp_birth ))
 			{
 				#$this->config['show_birthday'] = 4;
 			
@@ -161,22 +163,25 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playerinfo'.$this->pers
 				switch ( $this->config['show_birthday'] )
 				{
 					case 1:	 // show Birthday and Age
-						$birthdateStr =	$this->person->birthday != "0000-00-00" ?
+						$birthdateStr =	$timestamp_birth ?
 						JHtml::date( $this->person->birthday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')) : "-";
 						$birthdateStr .= "&nbsp;(" . sportsmanagementHelper::getAge( $this->person->birthday,$this->person->deathday ) . ")";
 						break;
 
 					case 2:	 // show Only Birthday
-						$birthdateStr =	$this->person->birthday != "0000-00-00" ?
+						$birthdateStr =	$timestamp_birth ?
 						JHtml::date( $this->person->birthday, JText::_('COM_SPORTSMANAGEMENT_GLOBAL_DAYDATE')) : "-";
 						break;
 
 					case 3:	 // show Only Age
-						$birthdateStr = sportsmanagementHelper::getAge( $this->person->birthday,$this->person->deathday );
+						if ( $timestamp_birth && $timestamp_death )
+                        {
+                        $birthdateStr = sportsmanagementHelper::getAge( $this->person->birthday,$this->person->deathday );
+                        }
 						break;
 
 					case 4:	 // show Only Year of birth
-						$birthdateStr =	$this->person->birthday != "0000-00-00" ?
+						$birthdateStr =	$timestamp_birth ?
 						JHtml::date( $this->person->birthday, JText::_( '%Y' ) ) : "-";
 						break;
 
@@ -193,7 +198,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playerinfo'.$this->pers
             
 			<?php
 			}
-			if 	( $this->person->deathday != '0000-00-00' )
+			if 	( $timestamp_death )
 			{
 			?>
 			
