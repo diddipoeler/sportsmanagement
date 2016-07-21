@@ -132,7 +132,7 @@ class sportsmanagementModelleague extends JSMModelAdmin
             if ( $isNew )
             {
                 //Here you can do other tasks with your newly saved record...
-                $app->enqueueMessage(JText::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id),'');
+                $this->jsmapp->enqueueMessage(JText::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id),'');
             }
            
 		}
