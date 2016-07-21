@@ -1434,8 +1434,9 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
 	{
 	
   $body = '';
-  
-  // jetzt die ergebnisse
+/**
+  * jetzt die ergebnisse
+  */  
   $body .= "<html>"; 
 
 $body .= "<table class='blog' cellpadding='0' cellspacing='0' width='100%'>";
@@ -1455,8 +1456,10 @@ $body .= "</table>";
 	$body .= "<th class='sectiontableheader' style='text-align:center;'>" . JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_YOURS') . "</th>";
 	$body .= "<th class='sectiontableheader' style='text-align:center;'>" . JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_POINTS') . "</th>";
 	$body .= "</tr>";
-	
-	// schleife �ber die ergebnisse in der runde
+
+/**
+ * schleife über die ergebnisse in der runde
+ */	
 	foreach ($roundResults AS $result)
 	{
   $class = ($k==0) ? 'sectiontableentry1' : 'sectiontableentry2';
@@ -1485,8 +1488,9 @@ $body .= "</table>";
 
   $homeName = self::getMatchTeam($result->projectteam1_id);
 	$awayName = self::getMatchTeam($result->projectteam2_id);
-
-// clublogo oder vereinsflagge hometeam	
+/**
+ * clublogo oder vereinsflagge hometeam	
+ */
 $body .= "<td nowrap='nowrap' class='td_r'>";
 $body .= $homeName;
 $body .= "</td>";
@@ -1512,8 +1516,9 @@ $body .= "</td>";
 $body .= "<td nowrap='nowrap' class='td_c'>";	
 $body .= "<b>" . $configprediction['seperator'] . "</b>";
 $body .= "</td>";	
-
-// clublogo oder vereinsflagge awayteam
+/**
+ * clublogo oder vereinsflagge awayteam
+ */
 $body .= "<td nowrap='nowrap' class='td_c'>";
 if ( $configprediction['show_logo_small'] == 1 )
 {
@@ -1540,30 +1545,38 @@ $body .= "</td>";
 $body .= "<td class='td_c'>";
 $body .= $resultHome . $configprediction['seperator'] . $resultAway;
 $body .= "</td>";
-
-// tippergebnisse
+/**
+ * tippergebnisse
+ */
 $body .= "<td class='td_c'>";
-
-if ( $predictionProject->mode == '0' )	// Tipp in normal mode
+/**
+ * Tipp in normal mode
+ */
+if ( $predictionProject->mode == '0' )	
 {
 $body .= $result->tipp_home . $configprediction['seperator'] . $result->tipp_away;
 }
-if ( $predictionProject->mode == '1' )	// Tipp in toto mode
+/**
+ * Tipp in toto mode
+ */
+if ( $predictionProject->mode == '1' )	
 {
 $body .= $result->tipp;
 }
 $body .= "</td>";
 
-
-// punkte
+/**
+ * punkte
+ */
 $body .= "<td class='td_c'>";
 $points = self::getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
 $totalPoints = $totalPoints+$points;
 $body .=  $points;
 $body .= "</td>";
 $body .= "</tr>";
-
-// tendencen im tippspiel  
+/**
+ * tendencen im tippspiel  
+ */
 if ( $configprediction['show_tipp_tendence'] )
 {
 
@@ -1574,11 +1587,17 @@ $body .= "</td>";
 
 $body .= "<td class='td_l' colspan='8'>";
 
+$totalCount = sportsmanagementModelPredictionEntry::getTippCount($ProjectID, $result->id, 3);
+$homeCount = sportsmanagementModelPredictionEntry::getTippCount($ProjectID, $result->id, 1);
+$awayCount = sportsmanagementModelPredictionEntry::getTippCount($ProjectID, $result->id, 2);
+$drawCount = sportsmanagementModelPredictionEntry::getTippCount($ProjectID, $result->id, 0);
 
-$totalCount = sportsmanagementModelPredictionEntry::getTippCount($predictionGameID, $result->id, 3);
-$homeCount = sportsmanagementModelPredictionEntry::getTippCount($predictionGameID, $result->id, 1);
-$awayCount = sportsmanagementModelPredictionEntry::getTippCount($predictionGameID, $result->id, 2);
-$drawCount = sportsmanagementModelPredictionEntry::getTippCount($predictionGameID, $result->id, 0);
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($predictionGameID,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result->id<br><pre>'.print_r($result->id,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' totalCount<br><pre>'.print_r($totalCount,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' homeCount<br><pre>'.print_r($homeCount,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' awayCount<br><pre>'.print_r($awayCount,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' drawCount<br><pre>'.print_r($drawCount,true).'</pre>'),'');
 
 if ($totalCount > 0)
 {

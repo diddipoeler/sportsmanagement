@@ -547,8 +547,8 @@ public $_predictionGame	= null;
 					)
 				{
 
-					if ($dTipp=="NULL")
-					{
+					//if ($dTipp=="NULL")
+					//{
 						if ($tmp_dHome > $tmp_dAway)
                         {
                             $dTipp = "1";
@@ -561,7 +561,7 @@ public $_predictionGame	= null;
                                 {
                                     $dTipp = "0";
                                     }
-					}
+					//}
 
 					if (!empty($dprID))
 					{
