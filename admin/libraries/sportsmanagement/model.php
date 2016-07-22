@@ -118,7 +118,58 @@ if( $this->jsmapp->isSite() )
         
         switch ($this->getName())
 		{
-		case 'club':
+		case 'project':
+        $sports_type_id = $form->getValue('sports_type_id');
+        $this->jsmquery->clear();
+        // select some fields
+		$this->jsmquery->select('name');
+		// from table
+		$this->jsmquery->from('#__sportsmanagement_sports_type');
+        // where
+        $this->jsmquery->where('id = '.(int) $sports_type_id);
+        $this->jsmdb->setQuery($this->jsmquery);
+        $result = $this->jsmdb->loadResult();
+        
+        switch ($result)
+        {
+            case 'COM_SPORTSMANAGEMENT_ST_TENNIS';
+            break;
+            default:
+            $form->setFieldAttribute('use_tie_break', 'type', 'hidden');
+            $form->setFieldAttribute('tennis_single_matches', 'type', 'hidden');
+            $form->setFieldAttribute('tennis_double_matches', 'type', 'hidden');
+            break;
+        }
+        
+        switch ( JComponentHelper::getParams($this->jsmoption)->get('which_article_component') )
+        {
+        case 'com_content':
+        $form->setFieldAttribute('category_id', 'type', 'category');
+        $form->setFieldAttribute('category_id', 'extension', 'com_content');
+        break;
+        case 'com_k2':
+        $form->setFieldAttribute('category_id', 'type', 'categorylistk2');
+
+        break;
+        }
+        
+        // welche joomla version ?
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        $form->setFieldAttribute('start_date', 'type', 'calendar'); 
+        }
+        else
+        {
+        $form->setFieldAttribute('start_date', 'type', 'customcalendar');  
+        }
+        
+        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
+        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/projects');
+        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
+        
+        
+        break;
+        case 'club':
         $row = $this->getTable();
         $row->load((int) $form->getValue('id'));
         $country = $row->country;
@@ -220,6 +271,81 @@ if( $this->jsmapp->isSite() )
             }
            } 
         break;
+        case 'team':
+        if ( !$show_team_community )
+        {
+            $form->setFieldAttribute('merge_clubs', 'type', 'hidden');
+        }
+        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
+        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/teams');
+        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
+        $prefix = $this->jsmapp->getCfg('dbprefix');
+        $this->jsmquery->clear();
+        $this->jsmquery->select('*');
+		$this->jsmquery->from('information_schema.columns');
+        $this->jsmquery->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_team' ");
+		$this->jsmdb->setQuery($this->jsmquery);
+        $result = $this->jsmdb->loadObjectList();
+        
+        foreach($result as $field )
+        {
+            switch ($field->COLUMN_NAME)
+            {
+                case 'country':
+                case 'merge_clubs':
+                break;
+                default:
+            switch ($field->DATA_TYPE)
+            {
+                case 'varchar':
+                $form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
+                break;
+            }
+            break;
+            }
+           } 
+       
+        break;
+        case 'sportstype':
+        $form->setFieldAttribute('icon', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
+        $form->setFieldAttribute('icon', 'directory', 'com_sportsmanagement/database/sport_types');
+        $form->setFieldAttribute('icon', 'type', $cfg_which_media_tool);
+        
+        $prefix = $this->jsmapp->getCfg('dbprefix');
+        
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' prefix<br><pre>'.print_r($prefix,true).'</pre>'),'');
+        //$whichtabel = $this->getTable();
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' whichtabel<br><pre>'.print_r($whichtabel,true).'</pre>'),'');
+        
+        $this->jsmquery->clear();
+        $this->jsmquery->select('*');
+			$this->jsmquery->from('information_schema.columns');
+            $this->jsmquery->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_sports_type' ");
+			
+			$this->jsmdb->setQuery($this->jsmquery);
+            
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+            
+			$result = $this->jsmdb->loadObjectList();
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
+            
+            foreach($result as $field )
+        {
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COLUMN_NAME<br><pre>'.print_r($field->COLUMN_NAME,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' DATA_TYPE<br><pre>'.print_r($field->DATA_TYPE,true).'</pre>'),'');
+            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' CHARACTER_MAXIMUM_LENGTH<br><pre>'.print_r($field->CHARACTER_MAXIMUM_LENGTH,true).'</pre>'),'');
+            
+            switch ($field->DATA_TYPE)
+            {
+                case 'varchar':
+                $form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
+                break;
+            }
+            
+           } 
+        
+        break;
+        
         case 'playground':
         $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/playgrounds');

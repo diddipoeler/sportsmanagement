@@ -41,7 +41,7 @@
 defined('_JEXEC') or die('Restricted access');
  
 // import Joomla controllerform library
-jimport('joomla.application.component.controllerform');
+//jimport('joomla.application.component.controllerform');
  
 
 /**
@@ -53,7 +53,7 @@ jimport('joomla.application.component.controllerform');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerleague extends JControllerForm
+class sportsmanagementControllerleague extends JSMControllerForm
 {
 
     /**
@@ -66,7 +66,22 @@ class sportsmanagementControllerleague extends JControllerForm
 	function __construct($config = array())
 	{
 		parent::__construct($config);
+    }    
 
+
+
+    /**
+	 * Function that allows child controller access to model data after the data
+	 * has been saved.
+	 *
+	 * @param JModelLegacy $model	The data model object.
+	 * @param array $validData		The validated data.
+	 *
+	 * @return void
+	 */
+	protected function postSaveHook(JModelLegacy $model,$validData = array())
+	{
+		return;
 	}
 
 }

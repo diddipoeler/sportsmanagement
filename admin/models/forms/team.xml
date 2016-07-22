@@ -80,9 +80,9 @@
 			size="1"
 			label="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE"
 			description="COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_DESC"
-			required="false">
+			required="true">
 			<option
-				value="0">
+				value="">
 				COM_SPORTSMANAGEMENT_GLOBAL_SPORT_TYPE_SELECT</option>
 		</field>
     
@@ -97,7 +97,7 @@
 			description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_CLUB_DESC" >
 
 			<option
-				value="0">
+				value="">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_CLUB</option>
 		</field>	
     

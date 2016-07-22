@@ -37,6 +37,8 @@ class JSMControllerForm extends JControllerForm
         $this->jsmdocument = JFactory::getDocument();
         $this->jsmuser = JFactory::getUser();
         $this->jsmdate = JFactory::getDate();
+//        $this->option = $this->jsmjinput->getCmd('option');
+        $this->club_id = $this->jsmapp->getUserState( "$this->option.club_id", '0' );
         
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
         
@@ -95,6 +97,7 @@ class JSMControllerForm extends JControllerForm
         }
         break;
         }     
+        
         // Set the redirect based on the task.
 		switch ($this->getTask())
 		{
@@ -130,8 +133,17 @@ class JSMControllerForm extends JControllerForm
                 }
                 else
                 {
+                    switch ($this->view_item)
+		{
+		case 'club':  
                 	$this->setRedirect(
-								JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list . $this->getRedirectToListAppend(), false), $message);   
+								JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&club_id='.$this->club_id.$this->getRedirectToListAppend(), false), $message);
+                                break;
+                                default:
+                                $this->setRedirect(
+								JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list . $this->getRedirectToListAppend(), false), $message);
+                                break;
+                                }   
                 }
 				break;
 		}

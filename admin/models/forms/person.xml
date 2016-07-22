@@ -24,7 +24,7 @@
 			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_L_NAME_DESC"
 			class="inputbox"
 			size="90"
-			required=""/>		
+			required="true"/>		
 		<field
 			name="nickname"
 			type="text"
@@ -279,7 +279,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 			required="true"
 			validate="">
 			<option
-				value="0">
+				value="">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORTSTYPE</option>
 		</field>
     

@@ -278,7 +278,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
 			required="true"
 			validate="">
 			<option
-				value="0">
+				value="">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SPORTSTYPE</option>
 		</field>
     

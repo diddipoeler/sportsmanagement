@@ -47,7 +47,7 @@ JHtml::_('behavior.formvalidation');
 $fieldsets = $this->form->getFieldsets();
 
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" id="adminForm" name="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" id="adminForm" name="adminForm" class="form-validate">
 
 <div class="form-horizontal">
 <fieldset>

@@ -53,182 +53,27 @@ jimport('joomla.application.component.modeladmin');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelProject extends JModelAdmin
+class sportsmanagementModelProject extends JSMModelAdmin
 {
 	static $db_num_rows = 0;
     var $_tables_to_delete = array();
   
+	/**
+	 * Override parent constructor.
+	 *
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 *
+	 * @see     JModelLegacy
+	 * @since   3.2
+	 */
+	public function __construct($config = array())
+	{
+		parent::__construct($config);
 	
-  /**
-	 * Method override to check if you can edit an existing record.
-	 *
-	 * @param	array	$data	An array of input data.
-	 * @param	string	$key	The name of the key for the primary key.
-	 *
-	 * @return	boolean
-	 * @since	1.6
-	 */
-	protected function allowEdit($data = array(), $key = 'id')
-	{
-		// Check specific edit permission then general edit permission.
-		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
-	}
+//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
+//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
     
-    
-	/**
-	 * Returns a reference to the a Table object, always creating it.
-	 *
-	 * @param	type	The table type to instantiate
-	 * @param	string	A prefix for the table class name. Optional.
-	 * @param	array	Configuration array for model. Optional.
-	 * @return	JTable	A database object
-	 * @since	1.6
-	 */
-	public function getTable($type = 'project', $prefix = 'sportsmanagementTable', $config = array()) 
-	{
-	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
-		return JTable::getInstance($type, $prefix, $config);
-	}
-    
-	/**
-	 * Method to get the record form.
-	 *
-	 * @param	array	$data		Data for the form.
-	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-	 * @return	mixed	A JForm object on success, false on failure
-	 * @since	1.6
-	 */
-	public function getForm($data = array(), $loadData = true) 
-	{
-		// Reference global application object
-        $app = JFactory::getApplication();
-        // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        // Create a new query object.
-        //$db = sportsmanagementHelper::getDBConnection();
-        $db = sportsmanagementHelper::getDBConnection(); 
-        $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
-
-        //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-        
-        // Get the form.
-		$form = $this->loadForm('com_sportsmanagement.project', 'project', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) 
-		{
-			return false;
-		}
-        
-        //$app->enqueueMessage(JText::_(__FILE__.' '.__FUNCTION__. '<br><pre>'.print_r($form,true).'</pre>'),'Notice');
-        $sports_type_id = $form->getValue('sports_type_id');
-        
-        $query = $db->getQuery(true);
-        // select some fields
-		$query->select('name');
-		// from table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type');
-        // where
-        $query->where('id = '.(int) $sports_type_id);
-        $db->setQuery($query);
-        $result = $db->loadResult();
-        
-        switch ($result)
-        {
-            case 'COM_SPORTSMANAGEMENT_ST_TENNIS';
-            break;
-            default:
-            $form->setFieldAttribute('use_tie_break', 'type', 'hidden');
-            $form->setFieldAttribute('tennis_single_matches', 'type', 'hidden');
-            $form->setFieldAttribute('tennis_double_matches', 'type', 'hidden');
-            break;
-        }
-        
-        //$app->enqueueMessage(JText::_(__FILE__.' '.__FUNCTION__. ' sports_type_id<br><pre>'.print_r($result,true).'</pre>'),'Notice');
-        
-        switch ( JComponentHelper::getParams($option)->get('which_article_component') )
-        {
-        case 'com_content':
-        $form->setFieldAttribute('category_id', 'type', 'category');
-        $form->setFieldAttribute('category_id', 'extension', 'com_content');
-        break;
-        case 'com_k2':
-        $form->setFieldAttribute('category_id', 'type', 'categorylistk2');
-
-        break;
-        }
-        
-        // welche joomla version ?
-        if(version_compare(JVERSION,'3.0.0','ge')) 
-        {
-        $form->setFieldAttribute('start_date', 'type', 'calendar'); 
-        }
-        else
-        {
-        $form->setFieldAttribute('start_date', 'type', 'customcalendar');  
-        }
-        
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($option)->get('ph_logo_big',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/projects');
-        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
-        
-		return $form;
-	}
-    
-	/**
-	 * Method to get the script that have to be included on the form
-	 *
-	 * @return string	Script files
-	 */
-	public function getScript() 
-	{
-		return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
-	}
-    
-	/**
-	 * Method to get the data that should be injected in the form.
-	 *
-	 * @return	mixed	The data for the form.
-	 * @since	1.6
-	 */
-	protected function loadFormData() 
-	{
-		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.project.data', array());
-		if (empty($data)) 
-		{
-			$data = $this->getItem();
-		}
-		return $data;
-	}
-	
-	/**
-	 * Method to save item order
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	1.5
-	 */
-	function saveorder($pks = NULL, $order = NULL)
-	{
-		$row =& $this->getTable();
-		
-		// update ordering values
-		for ($i=0; $i < count($pks); $i++)
-		{
-			$row->load((int) $pks[$i]);
-			if ($row->ordering != $order[$i])
-			{
-				$row->ordering=$order[$i];
-				if (!$row->store())
-				{
-					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-					return false;
-				}
-			}
-		}
-		return true;
-	}
+	}	   
     
     /**
 	 * return 

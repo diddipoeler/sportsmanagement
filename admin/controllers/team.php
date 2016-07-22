@@ -41,7 +41,7 @@
 defined('_JEXEC') or die('Restricted access');
  
 // import Joomla controllerform library
-jimport('joomla.application.component.controllerform');
+//jimport('joomla.application.component.controllerform');
  
 
 /**
@@ -53,69 +53,39 @@ jimport('joomla.application.component.controllerform');
  * @version 2014
  * @access public
  */
-class sportsmanagementControllerteam extends JControllerForm
+class sportsmanagementControllerteam extends JSMControllerForm
 {
 
-/**
-	 * Class constructor.
+    /**
+	 * Class Constructor
 	 *
-	 * @param   array  $config  A named array of configuration variables.
-	 *
-	 * @since   1.6
+	 * @param	array	$config		An optional associative array of configuration settings.
+	 * @return	void
+	 * @since	1.5
 	 */
-	public function __construct($config = array())
+	function __construct($config = array())
 	{
 		parent::__construct($config);
-        $this->app = JFactory::getApplication();
-        $this->jinput = $this->app->input;
-		$this->option = $this->jinput->getCmd('option');
-        $this->club_id = $this->app->getUserState( "$this->option.club_id", '0' );
-        
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask() ,true).'</pre>'),'');
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($this->club_id ,true).'</pre>'),'');
+    }    
 
 
+
+    /**
+	 * Function that allows child controller access to model data after the data
+	 * has been saved.
+	 *
+	 * @param JModelLegacy $model	The data model object.
+	 * @param array $validData		The validated data.
+	 *
+	 * @return void
+	 */
+	protected function postSaveHook(JModelLegacy $model,$validData = array())
+	{
+		return;
 	}
     
     
-    /**
-     * sportsmanagementControllerteam::save()
-     * 
-     * @param mixed $key
-     * @param mixed $urlVar
-     * @return void
-     */
-    public function save ($key = null, $urlVar = null)
-	{
 
-//	   $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask() ,true).'</pre>'),'');
-		$data = JRequest::getVar('jform', array(), 'post', 'array');
-        
-    $result = parent::save($key, $urlVar);
-    
-    switch ($this->getTask())
-				{
-					case 'apply':
-//						$this->setRedirect(
-//								JRoute::_(
-//										'index.php?option=' . $this->option . '&view=' . $this->view_item .
-//												 $this->getRedirectToItemAppend($newEventId, $urlVar), false));
-						break;
-					case 'save2new':
-//						$this->setRedirect(
-//								JRoute::_(
-//										'index.php?option=' . $this->option . '&view=' . $this->view_item .
-//												 $this->getRedirectToItemAppend(null, $urlVar), false));
-						break;
-					default:
-						$this->setRedirect(
-								JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list. '&club_id=' .$this->club_id , false));
-						break;
-				}
-    
-    
-    }    
-    
     
     
 
