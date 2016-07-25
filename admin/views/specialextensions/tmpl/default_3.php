@@ -66,9 +66,15 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <?php 
 foreach ( $this->Extensions as $key => $value )
 {
+$logo = "components/com_sportsmanagement/assets/icons/".JText::_($value).'.png'; 
+if	( !file_exists($logo) )
+{
+$logo = JURI::root().'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
+}   
+//echo $logo.'<br>';
 ?>
 <a class="btn" href="index.php?option=com_sportsmanagement&view=<?php echo JText::_($value) ?>">
-<img src="components/com_sportsmanagement/assets/icons/<?php echo JText::_($value) ?>.png" width="125" alt="<?php echo JText::_($value) ?>" /><br />
+<img src="<?php echo $logo ?>" width="125" alt="<?php echo JText::_($value) ?>" /><br />
 <span><?php echo JText::_($value) ?></span>
 </a>
 <?php 

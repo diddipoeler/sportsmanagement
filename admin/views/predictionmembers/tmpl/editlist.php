@@ -75,7 +75,7 @@ if($close == 1) {
 ?>
 
 
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 	
     <fieldset>
 		<div class="fltrt">

@@ -202,12 +202,12 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
 
 		// get info from project
         $query->select('master_template,extension');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
+        $query->from('#__sportsmanagement_project');
         $query->where('id = '.(int)$project_id);
 //		$query='SELECT master_template,extension FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project WHERE id='.(int)$project_id;
 
 		$db->setQuery($query);
-        
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         { 
 $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
@@ -225,7 +225,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
 		// get records
         $query->clear();
         $query->select('template');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config');
+        $query->from('#__sportsmanagement_template_config');
         $query->where('project_id = '.(int)$project_id);
 //		$query='SELECT template FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config WHERE project_id='.(int) $project_id;
 
@@ -377,7 +377,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
           // Select some fields
         $query->select('id');
 		// From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config');
+		$query->from('#__sportsmanagement_template_config');
         $query->where('template LIKE '.$db->Quote(''.$template.''));
         $query->where('project_id = '.(int)$project_id);
 			$db->setQuery($query);

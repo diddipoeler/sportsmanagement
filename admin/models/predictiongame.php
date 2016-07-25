@@ -55,90 +55,90 @@ require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'models'.DS.'predictiongames.php')
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPredictionGame extends JModelAdmin
+class sportsmanagementModelPredictionGame extends JSMModelAdmin
 {
 	
-/**
-	 * Method override to check if you can edit an existing record.
-	 *
-	 * @param	array	$data	An array of input data.
-	 * @param	string	$key	The name of the key for the primary key.
-	 *
-	 * @return	boolean
-	 * @since	1.6
-	 */
-	protected function allowEdit($data = array(), $key = 'id')
-	{
-		// Check specific edit permission then general edit permission.
-		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
-	}
+///**
+//	 * Method override to check if you can edit an existing record.
+//	 *
+//	 * @param	array	$data	An array of input data.
+//	 * @param	string	$key	The name of the key for the primary key.
+//	 *
+//	 * @return	boolean
+//	 * @since	1.6
+//	 */
+//	protected function allowEdit($data = array(), $key = 'id')
+//	{
+//		// Check specific edit permission then general edit permission.
+//		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
+//	}
     
-	/**
-	 * Returns a reference to the a Table object, always creating it.
-	 *
-	 * @param	type	The table type to instantiate
-	 * @param	string	A prefix for the table class name. Optional.
-	 * @param	array	Configuration array for model. Optional.
-	 * @return	JTable	A database object
-	 * @since	1.6
-	 */
-	public function getTable($type = 'predictiongame', $prefix = 'sportsmanagementTable', $config = array()) 
-	{
-	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
-		return JTable::getInstance($type, $prefix, $config);
-	}
+//	/**
+//	 * Returns a reference to the a Table object, always creating it.
+//	 *
+//	 * @param	type	The table type to instantiate
+//	 * @param	string	A prefix for the table class name. Optional.
+//	 * @param	array	Configuration array for model. Optional.
+//	 * @return	JTable	A database object
+//	 * @since	1.6
+//	 */
+//	public function getTable($type = 'predictiongame', $prefix = 'sportsmanagementTable', $config = array()) 
+//	{
+//	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
+//		return JTable::getInstance($type, $prefix, $config);
+//	}
     
-	/**
-	 * Method to get the record form.
-	 *
-	 * @param	array	$data		Data for the form.
-	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-	 * @return	mixed	A JForm object on success, false on failure
-	 * @since	1.6
-	 */
-	public function getForm($data = array(), $loadData = true) 
-	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-        //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
-        // Get the form.
-		$form = $this->loadForm('com_sportsmanagement.predictiongame', 'predictiongame', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) 
-		{
-			return false;
-		}
-              
-        
-		return $form;
-	}
+//	/**
+//	 * Method to get the record form.
+//	 *
+//	 * @param	array	$data		Data for the form.
+//	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
+//	 * @return	mixed	A JForm object on success, false on failure
+//	 * @since	1.6
+//	 */
+//	public function getForm($data = array(), $loadData = true) 
+//	{
+//		$app = JFactory::getApplication();
+//        $option = JRequest::getCmd('option');
+//        $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
+//        //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
+//        // Get the form.
+//		$form = $this->loadForm('com_sportsmanagement.predictiongame', 'predictiongame', array('control' => 'jform', 'load_data' => $loadData));
+//		if (empty($form)) 
+//		{
+//			return false;
+//		}
+//              
+//        
+//		return $form;
+//	}
     
-	/**
-	 * Method to get the script that have to be included on the form
-	 *
-	 * @return string	Script files
-	 */
-	public function getScript() 
-	{
-		return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
-	}
+//	/**
+//	 * Method to get the script that have to be included on the form
+//	 *
+//	 * @return string	Script files
+//	 */
+//	public function getScript() 
+//	{
+//		return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
+//	}
     
-	/**
-	 * Method to get the data that should be injected in the form.
-	 *
-	 * @return	mixed	The data for the form.
-	 * @since	1.6
-	 */
-	protected function loadFormData() 
-	{
-		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.predictiongame.data', array());
-		if (empty($data)) 
-		{
-			$data = $this->getItem();
-		}
-		return $data;
-	}
+//	/**
+//	 * Method to get the data that should be injected in the form.
+//	 *
+//	 * @return	mixed	The data for the form.
+//	 * @since	1.6
+//	 */
+//	protected function loadFormData() 
+//	{
+//		// Check the session for previously entered form data.
+//		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.predictiongame.data', array());
+//		if (empty($data)) 
+//		{
+//			$data = $this->getItem();
+//		}
+//		return $data;
+//	}
 	
     
     /**
@@ -203,30 +203,32 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 	
 
 	/**
-	* Method to return a prediction game item array
-	*
-	* @access  public
-	* @return  object
-	*/
+	 * Method to return a prediction game item array
+	 * sportsmanagementModelPredictionGame::getPredictionGame()
+	 * 
+	 * @param integer $id
+	 * @return
+	 */
 	function getPredictionGame($id=0)
 	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+//	   $app = JFactory::getApplication();
+//        $option = JRequest::getCmd('option');
+//        // Create a new query object.		
+//		$db = sportsmanagementHelper::getDBConnection();
+//		$query = $db->getQuery(true);
         
         if ( $id )
         {
         // Select some fields
-        $query->select('*');
-        $query->from('#__sportsmanagement_prediction_game');
-        $query->where('id = ' . $id);
+        $this->jsmquery->clear();
+        $this->jsmquery->select('*');
+        $this->jsmquery->from('#__sportsmanagement_prediction_game');
+        $this->jsmquery->where('id = ' . $id);
 
-		$db->setQuery( $query );
-		if ( !$result = $db->loadObject() )
+		$this->jsmdb->setQuery( $this->jsmquery );
+		if ( !$result = $this->jsmdb->loadObject() )
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__);
 			return false;
 		}
 		else
@@ -249,30 +251,31 @@ class sportsmanagementModelPredictionGame extends JModelAdmin
 	*/
 	function getPredictionProjectIDs($prediction_id=0)
 	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+	   //$app = JFactory::getApplication();
+//        $option = JRequest::getCmd('option');
+//        // Create a new query object.		
+//		$db = sportsmanagementHelper::getDBConnection();
+//		$query = $db->getQuery(true);
         
         if ( $prediction_id )
         {
         // Select some fields
-        $query->select('project_id');
-        $query->from('#__sportsmanagement_prediction_project');
-        $query->where('prediction_id = ' . $prediction_id);
+        $this->jsmquery->clear();
+        $this->jsmquery->select('project_id');
+        $this->jsmquery->from('#__sportsmanagement_prediction_project');
+        $this->jsmquery->where('prediction_id = ' . $prediction_id);
 
-		$db->setQuery($query);
+		$this->jsmdb->setQuery($this->jsmquery);
         
         if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 // Joomla! 3.0 code here
-		return $db->loadColumn();
+		return $this->jsmdb->loadColumn();
 }
 elseif(version_compare(JVERSION,'2.5.0','ge')) 
 {
 // Joomla! 2.5 code here
-		return $db->loadResultArray();
+		return $this->jsmdb->loadResultArray();
 }
 
 }

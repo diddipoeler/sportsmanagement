@@ -53,7 +53,7 @@ jimport( 'joomla.application.component.modellist' );
  * @version 2014
  * @access public
  */
-class sportsmanagementModelPredictionGames extends JModelList
+class sportsmanagementModelPredictionGames extends JSMModelList
 {
 	var $_identifier = "predgames";
 	
@@ -301,6 +301,66 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 		}
         
 	}
+    
+    
+    /**
+     * sportsmanagementModelPredictionGames::getPredictionGamesMatches()
+     * 
+     * @param mixed $predictionGameID
+     * @param mixed $predictionProjectID
+     * @param mixed $userID
+     * @return
+     */
+    function getPredictionGamesMatches($predictionGameID,$predictionProjectID,$userID)
+	{
+	   $this->jsmquery->clear();
+	$this->jsmquery->select('m.id,m.round_id,m.match_date,m.projectteam1_id,m.projectteam2_id,m.team1_result,m.team2_result,m.team1_result_decision,m.team2_result_decision');
+        $this->jsmquery->select('r.id AS roundcode,r.round_date_first,r.round_date_last');
+        $this->jsmquery->select('pr.tipp,pr.tipp_home,pr.tipp_away,pr.joker,pr.id AS prid');
+        $this->jsmquery->select('p.id AS project_id,p.name AS project_name');
+        
+        $this->jsmquery->select('t1.name AS home_name');
+        $this->jsmquery->select('t2.name AS away_name');
+        
+        $this->jsmquery->select('c1.logo_big AS home_logo_big,c1.country AS home_country');
+        $this->jsmquery->select('c2.logo_big AS away_logo_big,c2.country AS away_country');
+        
+        $this->jsmquery->from('#__sportsmanagement_match AS m');
+        $this->jsmquery->join('INNER', '#__sportsmanagement_round AS r ON r.id = m.round_id');
+        $this->jsmquery->join('INNER', '#__sportsmanagement_project AS p ON p.current_round = r.id');
+        $this->jsmquery->join('LEFT', '#__sportsmanagement_prediction_result AS pr ON pr.match_id = m.id
+                     AND pr.prediction_id = '.(int)$predictionGameID.' AND pr.user_id = '.$userID.' AND pr.project_id = '. $predictionProjectID . '' );
+        $this->jsmquery->join('LEFT', '#__sportsmanagement_prediction_game AS pg ON pg.id = '.(int)$predictionGameID);
+        
+        $this->jsmquery->join('LEFT','#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id');
+        $this->jsmquery->join('LEFT','#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id');
+        
+        $this->jsmquery->join('LEFT','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id ');
+        $this->jsmquery->join('LEFT','#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id ');
+        
+        $this->jsmquery->join('LEFT','#__sportsmanagement_team AS t1 ON t1.id = st1.team_id');
+        $this->jsmquery->join('LEFT','#__sportsmanagement_club AS c1 ON c1.id = t1.club_id');
+        
+        $this->jsmquery->join('LEFT','#__sportsmanagement_team AS t2 ON t2.id = st2.team_id');
+        $this->jsmquery->join('LEFT','#__sportsmanagement_club AS c2 ON c2.id = t2.club_id');
+        
+        
+
+		$this->jsmquery->where('r.project_id = ' . $predictionProjectID . '' );
+        //$this->jsmquery->where('r.id = '.(int)$projectRoundID);
+       
+        $this->jsmquery->where('m.published = 1');
+        $this->jsmquery->where('m.match_date <> \'0000-00-00 00:00:00\'');
+        $this->jsmquery->where('(m.cancel IS NULL OR m.cancel = 0)');      
+       $this->jsmquery->order('m.match_date ASC');
+    				
+		$this->jsmdb->setQuery($this->jsmquery);
+        
+        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
+        
+		$results = $this->jsmdb->loadObjectList();
+       return $results;
+    }   
 
 	/**
 	* Method to return a prediction games array

@@ -56,22 +56,22 @@ jimport('joomla.application.component.view');
 class sportsmanagementViewpredictionmember extends sportsmanagementView
 {
 	
+	
 	/**
-	 * sportsmanagementViewpredictionmember::display()
+	 * sportsmanagementViewpredictionmember::init()
 	 * 
-	 * @param mixed $tpl
 	 * @return
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$document = JFactory::getDocument();
-		$option = JRequest::getCmd('option');
-        
-		// get the Data
-		$this->form = $this->get('Form');
-		$this->item = $this->get('Item');
-		$this->script = $this->get('Script');
+//		$app = JFactory::getApplication();
+//		$document = JFactory::getDocument();
+//		$option = JRequest::getCmd('option');
+//        
+//		// get the Data
+//		$this->form = $this->get('Form');
+//		$this->item = $this->get('Item');
+//		$this->script = $this->get('Script');
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 

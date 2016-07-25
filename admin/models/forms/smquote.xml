@@ -56,7 +56,7 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 		</field>
         		      		
 		
-
+<!--
   <field
 			name="person_id"
 			type="personlist"
@@ -68,6 +68,7 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 		>
 			<option value="0">COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_SELECT_PERSON</option>
 		</field>
+-->
         		      		
 	</fieldset>	
 

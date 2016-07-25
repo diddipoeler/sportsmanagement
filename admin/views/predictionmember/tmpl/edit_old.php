@@ -77,7 +77,7 @@ $uri =& JFactory::getURI();
 	}
 </style>
 
-<form action="index.php" method="post"  id="adminForm">
+<form action="index.php" method="post"  id="adminForm" class="form-validate">
 	<div class="col50">
 		<fieldset class="adminform">
 			<legend>

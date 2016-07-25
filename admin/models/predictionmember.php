@@ -44,6 +44,8 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla modelform library
 jimport('joomla.application.component.modeladmin');
 
+require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'models' . DS . 'prediction.php');
+require_once(JPATH_ROOT.DS.'components'.DS.'com_sportsmanagement'.DS. 'models' . DS . 'predictionentry.php');
 
 /**
  * sportsmanagementModelpredictionmember
@@ -135,12 +137,29 @@ if ( !$result )
    */
   function sendEmailtoMembers($cid,$prediction_id)
   {
-    $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+    //$app = JFactory::getApplication();
+//        $option = JRequest::getCmd('option');
         $config = JFactory::getConfig();
   $mailer = JFactory::getMailer();
   
-  //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config <br><pre>'.print_r($config,true).'</pre>'),'');
+$language = JFactory::getLanguage();
+$language->load($this->jsmoption, JPATH_SITE, $language->getTag(), true);
+
+sportsmanagementModelPrediction::$predictionGameID = $prediction_id;
+$configprediction = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionentry');
+$overallConfig = sportsmanagementModelPrediction::getPredictionOverallConfig();
+$configprediction = array_merge($overallConfig,$configprediction);
+    
+  // als html
+  $mailer->isHTML(TRUE);
+  
+  $pred_reminder_mail_text = JComponentHelper::getParams($this->jsmoption)->get('pred_reminder_mail_text',0);
+  
+  
+//  $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config <br><pre>'.print_r($config,true).'</pre>'),'');
+//  $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' language->getTag() <br><pre>'.print_r($language->getTag(),true).'</pre>'),'');
+//  $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' configprediction <br><pre>'.print_r($configprediction,true).'</pre>'),'');
+//  $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pred_reminder_mail_text <br><pre>'.print_r($pred_reminder_mail_text,true).'</pre>'),'');
   
 //  $meta_keys[] = $config->getValue( 'config.MetaKeys' );
 //$your_name = $config->getValue( 'config.sitename' );
@@ -164,39 +183,251 @@ $sender = array(
 
 $mailer->setSender($sender); 
 
+$mdlPredictionGame = JModelLegacy::getInstance('PredictionGame', 'sportsmanagementModel');
+$mdlPredictionGames = JModelLegacy::getInstance('PredictionGames', 'sportsmanagementModel');
+
+$predictiongame = $mdlPredictionGame->getPredictionGame($prediction_id);
+$predictionproject = $mdlPredictionGame->getPredictionProjectIDs($prediction_id);
+
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sender<br><pre>'.print_r($sender,true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictiongame<br><pre>'.print_r($predictiongame,true).'</pre>'),'');
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionproject<br><pre>'.print_r($predictionproject,true).'</pre>'),'');
+
+ 
+
   foreach ( $cid as $key => $value )
     {
+$body = '';
+/**
+  * jetzt die ergebnisse
+  */  
+$body .= "<html>";         
     $member_email = $this->getPredictionMemberEMailAdress( $value );
+    $fromdate = ''; 
+    $predictionlink = '';
+    $projectcount = 0;
+    foreach ( $predictionproject as $project_key => $project_value )
+    {
+    $predictiongamematches = $mdlPredictionGames->getPredictionGamesMatches($prediction_id,$project_value,$member_email->user_id);
     
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($member_email,true).'</pre>'),'');
+//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_value<br><pre>'.print_r($project_value,true).'</pre>'),'');
+//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictiongamematches<br><pre>'.print_r($predictiongamematches,true).'</pre>'),'');
+    
+    $body .= "<table class='table' width='100%' cellpadding='0' cellspacing='0'>";
+  
+	$body .= "<tr>";
+	$body .= "<th class='sectiontableheader' style='text-align:center;'>" . JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_DATE_TIME') . "</th>";
+	$body .= "<th class='sectiontableheader' style='text-align:center;' colspan='5' >" . JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MATCH') . "</th>";
+	$body .= "<th class='sectiontableheader' style='text-align:center;'>" . JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_RESULT') . "</th>";
+	$body .= "<th class='sectiontableheader' style='text-align:center;'>" . JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_YOURS') . "</th>";
+	$body .= "<th class='sectiontableheader' style='text-align:center;'>" . JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_POINTS') . "</th>";
+	$body .= "</tr>";
+    /**
+ * schleife über die ergebnisse in der runde
+ */	
+	foreach ($predictiongamematches AS $result)
+	{
+	$class = ($k==0) ? 'sectiontableentry1' : 'sectiontableentry2';
+
+	$resultHome = (isset($result->team1_result)) ? $result->team1_result : '-';
+	if (isset($result->team1_result_decision))
+    {
+        $resultHome = $result->team1_result_decision;
+        }
+	$resultAway = (isset($result->team2_result)) ? $result->team2_result : '-';
+	if (isset($result->team2_result_decision))
+    {
+        $resultAway = $result->team2_result_decision;
+        }
+  $closingtime = $configprediction['closing_time'] ;//3600=1 hour
+	$matchTimeDate = sportsmanagementHelper::getTimestamp($result->match_date,1,$predictionProjectSettings->timezone);
+	$thisTimeDate = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"),1,$predictionProjectSettings->timezone);
+	$matchTimeDate = $matchTimeDate - $closingtime;
+    $body .= "<tr class='" . $class ."'>";
+	$body .= "<td class='td_c'>";
+	$body .= JHtml::date($result->match_date, 'd.m.Y H:i', false);
+	$body .= " - ";
+	//$body .= JHTML::date(date("Y-m-d H:i:s",$matchTimeDate),$configprediction['time_format']); 
+	$body .= "</td>";
+ /**
+ * clublogo oder vereinsflagge hometeam	
+ */
+$body .= "<td nowrap='nowrap' class='td_r'>";
+$body .= $result->home_name;
+$body .= "</td>";
+$body .= "<td nowrap='nowrap' class='td_c'>";
+$imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $result->home_name);
+$body .=  JSMCountries::getCountryFlag($result->home_country);
+if	(($result->home_logo_big == '') || (!file_exists($result->home_logo_big)))
+{
+$result->home_logo_big = 'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
+}
+$body .=  JHTML::image(JURI::root().$result->home_logo_big,$imgTitle,array(' title' => $imgTitle,' width' => 30));
+$body .=  ' ' ;   
+$body .= "</td>";	
+$body .= "<td nowrap='nowrap' class='td_c'>";	
+$body .= "<b>" . "-" . "</b>";
+$body .= "</td>";    
+/**
+ * clublogo oder vereinsflagge awayteam
+ */
+$body .= "<td nowrap='nowrap' class='td_c'>";
+$imgTitle = JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_LOGO_OF', $result->away_name);
+$body .=  ' ';
+$body .=  JSMCountries::getCountryFlag($result->away_country);
+if	(($result->away_logo_big == '') || (!file_exists($result->away_logo_big)))
+{
+$result->away_logo_big = 'images/com_sportsmanagement/database/placeholders/placeholder_150.png';
+}
+$body .=  JHTML::image(JURI::root().$result->away_logo_big,$imgTitle,array(' title' => $imgTitle,' width' => 30));
+$body .= "</td>";				
+$body .= "<td nowrap='nowrap' class='td_l'>";
+$body .= $result->away_name;
+$body .= "</td>";	
+/**
+ * spielergebnisse
+ */
+$body .= "<td class='td_c'>";
+$body .= $result->tipp_home . '-' . $result->tipp_away;
+$body .= "</td>";
+/**
+ * tippergebnisse
+ */
+$body .= "<td class='td_c'>";
+/**
+ * Tipp in normal mode
+ */
+if ( $predictionProject->mode == '0' )	
+{
+$body .= $result->tipp_home . $configprediction['seperator'] . $result->tipp_away;
+}
+/**
+ * Tipp in toto mode
+ */
+if ( $predictionProject->mode == '1' )	
+{
+$body .= $result->tipp;
+}
+$body .= "</td>";
+
+/**
+ * punkte
+ */
+$body .= "<td class='td_c'>";
+$points = sportsmanagementModelPrediction::getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
+$totalPoints = $totalPoints+$points;
+$body .=  $points;
+$body .= "</td>";
+$body .= "</tr>";
+/**
+ * tendencen im tippspiel  
+ */
+if ( $configprediction['show_tipp_tendence'] )
+{
+
+$body .= "<tr class='tipp_tendence'>";
+$body .= "<td class='td_c'>";
+$body .= "&nbsp;"; 
+$body .= "</td>";
+
+$body .= "<td class='td_l' colspan='8'>";
+
+$totalCount = sportsmanagementModelPredictionEntry::getTippCount($project_value, $result->id, 3);
+$homeCount = sportsmanagementModelPredictionEntry::getTippCount($project_value, $result->id, 1);
+$awayCount = sportsmanagementModelPredictionEntry::getTippCount($project_value, $result->id, 2);
+$drawCount = sportsmanagementModelPredictionEntry::getTippCount($project_value, $result->id, 0);
+
+if ($totalCount > 0)
+{
+$percentageH = round(( $homeCount * 100 / $totalCount ),2);
+$percentageD = round(( $drawCount * 100 / $totalCount ),2);
+$percentageA = round(( $awayCount * 100 / $totalCount ),2);
+}
+else
+{
+$percentageH = 0;
+$percentageD = 0;
+$percentageA = 0;
+}
+
+$body .= "<span style='color:" . $configprediction['color_home_win'] ."' >";
+$body .= JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_PERCENT_HOME_WIN',$percentageH,$homeCount) . "</span><br />";
+$body .= "<span style='color:" . $configprediction['color_draw'] ."'>";
+$body .= JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_PERCENT_DRAW',$percentageD,$drawCount) . "</span><br />";
+$body .= "<span style='color:" . $configprediction['color_guest_win'] ."'>";
+$body .= JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_PERCENT_AWAY_WIN',$percentageA,$awayCount) . "</span>";
+$body .= "</td>";
+//$body .= "<td colspan='8'>&nbsp;</td>";
+$body .= "</tr>";
+}
+else
+{
+$k = (1-$k);							
+}
+       
+       
+    }  
+
+if ( $projectcount )
+   {
+   $fromdate .= ' und '; 
+   }    
+$fromdate .= JHtml::date($result->round_date_first, 'd.m.Y', false).'-'.JHtml::date($result->round_date_last, 'd.m.Y', false);
+   
+$body .= "<tr>";
+$body .= "<td colspan='8'>&nbsp;</td>";
+$body .= "<td class='td_c'>" . JText::sprintf('COM_SPORTSMANAGEMENT_PRED_ENTRY_TOTAL_POINTS_COUNT',$totalPoints) ."</td>";
+$body .= "</tr>";            	
+$body .= "<table>";   
+ 
+ $projectcount++;
+    }
+$body .= "</html><br>";
+    
+//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' member_email<br><pre>'.print_r($member_email,true).'</pre>'),'');
     
     //add the recipient. $recipient = $user_email;
-    $mailer->addRecipient($member_email); 
+    $mailer->addRecipient($member_email->email); 
     //add the subject
      $subject = addslashes(
 				sprintf(
 				JText::_( "COM_SPORTSMANAGEMENT_EMAIL_PREDICTION_REMINDER_TIPS_RESULTS" ),
-				'perdictionname' ) );
+				$predictiongame->name ) );
     $mailer->setSubject($subject);
-
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' subject<br><pre>'.print_r($subject,true).'</pre>'),'');
 //add body
-$message = 'Tip-Results';
+$message = $pred_reminder_mail_text;
+
+$message = str_replace('[PREDICTIONMEMBER]', $member_email->username, $message);
+$message = str_replace('[PREDICTIONRESULTS]', $body, $message);
+$message = str_replace('[FROMDATE]', $fromdate, $message);
+
+
+$message = str_replace('[PREDICTIONENTRIES]', $predictionlink, $message);
+
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+// Joomla! 3.0 code here
+$message = str_replace('[PREDICTIONADMIN]', $config->get( 'sitename' ), $message);
+}
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
+$message = str_replace('[PREDICTIONADMIN]', $config->getValue( 'sitename' ), $message);
+}
+
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' message<br><pre>'.print_r($message,true).'</pre>'),'Error');
+
 $mailer->setBody($message);
 $send = $mailer->Send();
 
 if ( $send !== true ) {
     //echo 'Error sending email: ' . $send->message;
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($send->message,true).'</pre>'),'Error');
+//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($send->message,true).'</pre>'),'Error');
 } else {
     //echo 'Mail sent';
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($send->message,true).'</pre>'),'');
+//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($send->message,true).'</pre>'),'');
 }
-   
-				
-    
-
-
-//    JUtility::sendMail( '', '', $member_email, $subject, $message );
 
     }
   
@@ -325,34 +556,29 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 	 */
 	function getPredictionMemberEMailAdress( $predictionMemberID )
 	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        
-		
-    //echo '<br />predictionMemberID<pre>~' . print_r( $predictionMemberID, true ) . '~</pre><br />';
-		
-    $query =	'	SELECT user_id
-						FROM #__sportsmanagement_prediction_member
-						WHERE	id = ' . $predictionMemberID;
-		
-    echo $query . '<br />';
-		
-    $this->_db->setQuery( $query );
-		if ( !$user_id = $this->_db->loadResult() ) { return false; }
-		
-    echo '<br />user_id<pre>~' . print_r( $user_id, true ) . '~</pre><br />';
+	// Select some fields
+        $this->jsmquery->clear();
+        $this->jsmquery->select('user_id');
+        $this->jsmquery->from('#__sportsmanagement_prediction_member');
+        $this->jsmquery->where('id = ' . $predictionMemberID);
 
-		$query =	'	SELECT u.email
-						FROM #__users AS u
-						WHERE	
-								u.block = 0 AND
-								u.id = ' . $user_id . '
-						ORDER BY u.email';
+
+    $this->jsmdb->setQuery( $this->jsmquery );
+		if ( !$user_id = $this->jsmdb->loadResult() ) 
+        { 
+            return false; 
+            }
 		
-    echo $query . '<br />';
+	// Select some fields
+        $this->jsmquery->clear();
+        $this->jsmquery->select('email,username,id as user_id');
+        $this->jsmquery->from('#__users AS u');
+        $this->jsmquery->where('u.block = 0');
+        $this->jsmquery->where('u.id = ' . $user_id);
+        $this->jsmquery->order('u.email');
 		
-    $this->_db->setQuery( $query );
-		return $this->_db->loadResult();
+    $this->jsmdb->setQuery( $this->jsmquery );
+		return $this->jsmdb->loadObject();
 	}
     
     /**

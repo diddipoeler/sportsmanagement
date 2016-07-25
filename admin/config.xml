@@ -346,6 +346,7 @@
 			<field name="sis_meinvereinspasswort" type="text" size="40" default="" label="COM_SPORTSMANAGEMENT_SETTINGS_SETMEINEVEREINSPASS" description="COM_SPORTSMANAGEMENT_SETTINGS_SETMEINEVEREINSPASS_DESC" />     
   </fieldset>
 
+<!-- register 3 -->
 <!-- ishd parameter -->
 <fieldset name="ishd-konfiguration"
 	label="COM_SPORTSMANAGEMENT_CONFIG_ISHD_SETTINGS_LABEL"
@@ -402,7 +403,9 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_ISHD_MAIL_REFEREE_DELETE_DESC"
 width="450" 
 filter="safehtml"/>
 
-</fieldset>		
+</fieldset>	
+
+<!-- register 4 -->	
 <!-- platzhalter -->		
 	<fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_PLACEHOLDER_IMAGES"
 		addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
@@ -481,17 +484,7 @@ filter="safehtml"/>
 				description="COM_SPORTSMANAGEMENT_SETTINGS_MATCH_MAIL_HEADER_DESC"
 				size="50"
 				filter="safehtml"/>	
-<!--
-		<field
-				name="match_mail_text"
-				type="textarea"
-				default="Hallo Sportsfreunde, das Spiel am [FROMDATE] um [FROMTIME] Uhr wurde auf den [TODATE] auf [TOTIME] Uhr verlegt.Gruß [MAILFROM]"
-				label="COM_SPORTSMANAGEMENT_SETTINGS_MATCH_MAIL_TEXT"
-				description="COM_SPORTSMANAGEMENT_SETTINGS_MATCH_MAIL_TEXT_DESC"
-				rows="5" 
-        cols="50"
-				filter="safehtml"/>			
--->
+
 		<field
 				name="match_mail_text"
 				type="editor"
@@ -500,7 +493,16 @@ filter="safehtml"/>
 				description="COM_SPORTSMANAGEMENT_SETTINGS_MATCH_MAIL_TEXT_DESC"
 				width="450" 
 				filter="safehtml"/>
-				
+
+		<field
+				name="pred_reminder_mail_text"
+				type="editor"
+				default="Hallo [PREDICTIONMEMBER], am [FROMDATE] finden folgende Begegnungen statt, für die du noch keine Tipps abgegeben hast.[PREDICTIONRESULTS] Hier [PREDICTIONENTRIES] kommst du direkt zum Tippspiel. Gruß [PREDICTIONADMIN]"
+				label="COM_SPORTSMANAGEMENT_SETTINGS_PRED_REMINDER_MAIL_TEXT"
+				description="COM_SPORTSMANAGEMENT_SETTINGS_PRED_REMINDER_MAIL_TEXT_DESC"
+				width="450" 
+				filter="safehtml"/>
+        				
 	</fieldset>
 
 <!-- frontend -->

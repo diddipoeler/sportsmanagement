@@ -50,7 +50,7 @@ $fieldsets = $this->form->getFieldsets();
 //echo COM_SPORTSMANAGEMENT_FIELDSETS_TEMPLATE;
 
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
  
 <div class="width-60 fltlft">
 		<fieldset class="adminform">

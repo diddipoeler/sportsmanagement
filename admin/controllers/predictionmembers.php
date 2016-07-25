@@ -56,8 +56,31 @@ jimport('joomla.application.component.controlleradmin');
 class sportsmanagementControllerpredictionmembers extends JControllerAdmin
 {
     
+	/**
+	 * Constructor.
+	 *
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 *
+	 * @see     JControllerLegacy
+	 * @since   1.6
+	 */
+	public function __construct($config = array())
+	{
+		parent::__construct($config);
+        
+        // Reference global application object
+        $this->jsmapp = JFactory::getApplication();
+        // JInput object
+        $this->jsmjinput = $this->jsmapp->input;
+
+
+	}    
     
-    
+    /**
+     * sportsmanagementControllerpredictionmembers::save_memberlist()
+     * 
+     * @return void
+     */
     function save_memberlist()
     {
     	
@@ -85,7 +108,6 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
        
     }
        
-    // send a reminder mail to make a tipp on needed prediction games to selected members
 	/**
 	 * sportsmanagementControllerpredictionmembers::sendReminder()
 	 * 
@@ -93,19 +115,31 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
 	 */
 	function reminder()
 	{
-		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEND_REMINDER_MAIL' ), 'generic.png' );
-		JToolBarHelper::back( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_BACK', 'index.php?option=com_sportsmanagement&view=predictionmembers' );
+//	   // Reference global application object
+//        $this->jsmapp = JFactory::getApplication();
+//        // JInput object
+//        $this->jsmjinput = $this->jsmapp->input;
+        
+//		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEND_REMINDER_MAIL' ), 'generic.png' );
+//		JToolBarHelper::back( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_BACK', 'index.php?option=com_sportsmanagement&view=predictionmembers' );
 
-		echo 'This will send an email to all members of the prediction game with reminder option enabled. Are you sure?';
-		$post		= JRequest::get( 'post' );
-		$cid		= JRequest::getVar( 'cid', array(0), 'post', 'array' );
-		$pgmid		= JRequest::getVar( 'prediction_id', array(0), 'post', 'array' );
-		$post['id'] = (int) $cid[0];
-		$post['predgameid'] = (int) $pgmid[0];
-		echo '<pre>'; print_r($post); echo '</pre>';
+//		echo 'This will send an email to all members of the prediction game with reminder option enabled. Are you sure?';
+		//$post = JRequest::get( 'post' );
+        $post = $this->jsmjinput->post->getArray();
+//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+        
+		//$cid = JRequest::getVar( 'cid', array(0), 'post', 'array' );
+        $cid = $this->jsmjinput->getVar('cid', null, 'post', 'array');
+//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cid<br><pre>'.print_r($cid,true).'</pre>'),'Notice');
+        
+		$pgmid = JRequest::getVar( 'prediction_id', 0, 'post', 'INT' );
+//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pgmid<br><pre>'.print_r($pgmid,true).'</pre>'),'Notice');
+//		$post['id'] = (int) $cid[0];
+//		$post['predgameid'] = (int) $pgmid[0];
+//		echo '<pre>'; print_r($post); echo '</pre>';
 
 
-		if ( $post['predgameid'] == 0 )
+		if ( $pgmid == 0 )
 		{
 			JError::raiseWarning( 500, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SELECT_ERROR' ) );
 		}

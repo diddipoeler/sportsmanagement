@@ -46,7 +46,7 @@ $params = $this->form->getFieldsets('params');
 JHtml::_( 'behavior.modal' );
 ?>
 <div id="gamesevents">
-	<form method="post" id="adminForm">
+	<form method="post" id="adminForm" class="form-validate">
 		<?php
         // welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 

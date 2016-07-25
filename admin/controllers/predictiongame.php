@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 // import Joomla controllerform library
-jimport('joomla.application.component.controllerform');
+//jimport('joomla.application.component.controllerform');
  
 
 /**
@@ -52,9 +52,36 @@ jimport('joomla.application.component.controllerform');
  * @version 2013
  * @access public
  */
-class sportsmanagementControllerpredictiongame extends JControllerForm
+class sportsmanagementControllerpredictiongame extends JSMControllerForm
 {
 
+    /**
+	 * Class Constructor
+	 *
+	 * @param	array	$config		An optional associative array of configuration settings.
+	 * @return	void
+	 * @since	1.5
+	 */
+	function __construct($config = array())
+	{
+		parent::__construct($config);
+    }    
+
+
+
+    /**
+	 * Function that allows child controller access to model data after the data
+	 * has been saved.
+	 *
+	 * @param JModelLegacy $model	The data model object.
+	 * @param array $validData		The validated data.
+	 *
+	 * @return void
+	 */
+	protected function postSaveHook(JModelLegacy $model,$validData = array())
+	{
+		return;
+	}
 
 }
 ?>
