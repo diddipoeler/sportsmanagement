@@ -481,7 +481,7 @@ $this->request_url	= $uri->toString();
         
         $javascript .= 'jQuery(document).ready(function() {' . "\n";
         $javascript .= "updatePlayerSelect();". "\n";
-        $javascript .= "$('team_id').addEvent('change', updatePlayerSelect);". "\n";
+        $javascript .= "jQuery('#team_id').change(updatePlayerSelect);". "\n";
         $javascript .= '  });' . "\n";
         $javascript .= "\n";
         
@@ -489,9 +489,9 @@ $this->request_url	= $uri->toString();
         $javascript .= "function updatePlayerSelect() {". "\n";
         //$javascript .= " alert('value -> ' + matchid);";
         
-        $javascript .= "if($('cell-player'))". "\n";
-	    $javascript .= "$('cell-player').empty().appendChild(". "\n";
-		$javascript .= "getPlayerSelect($('team_id').selectedIndex));". "\n";
+        $javascript .= "if(jQuery('#cell-player'))". "\n";
+	    $javascript .= "jQuery('#cell-player').empty().append(". "\n";
+		$javascript .= "getPlayerSelect(jQuery('#team_id')[0].selectedIndex));". "\n";
             
         $javascript .= "}". "\n";
 
@@ -501,14 +501,18 @@ $javascript .= "function getPlayerSelect(index) {". "\n";
 	$javascript .= "// the script)". "\n";
 	$javascript .= "var roster = rosters[index];". "\n";
 	$javascript .= "// build select". "\n";
-	$javascript .= "var select = new Element('select', {". "\n";
-		$javascript .= "id : 'teamplayer_id'". "\n";
-	$javascript .= "});". "\n";
-	$javascript .= "for ( var i = 0, n = roster.length; i < n; i++) {". "\n";
-		$javascript .= "new Element('option', {". "\n";
-			$javascript .= "value : roster[i].value". "\n";
-		$javascript .= "}).set('text',roster[i].text).injectInside(select);". "\n";
-	$javascript .= "}". "\n";
+	$javascript .= "
+    	var select = jQuery(\"<select>\").attr({id: 'teamplayer_id',class:'span3'});
+    
+    
+    ". "\n";
+	$javascript .= "
+    for (var i = 0, n = roster.length; i < n; i++) {
+		select.append(jQuery(\"<option>\").attr({value : roster[i].value}).text(roster[i].text));
+	}
+    
+    
+    ". "\n";
 	$javascript .= "return select;". "\n";
 $javascript .= "}". "\n";
         
