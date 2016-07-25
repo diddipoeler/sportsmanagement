@@ -670,8 +670,8 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
     // Select some fields
     $query->clear();
           $query->select('t.params');
-          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_template AS t');
-          $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game AS p ON p.id = t.prediction_id');
+          $query->from('#__sportsmanagement_prediction_template AS t');
+          $query->join('INNER', '#__sportsmanagement_prediction_game AS p ON p.id = t.prediction_id');
           $query->where('t.template = '.$db->Quote($template));
           $query->where('p.id = '.(int)self::$predictionGameID );
 
@@ -1434,6 +1434,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
 	{
 	
   $body = '';
+  $totalPoints = 0;
 /**
   * jetzt die ergebnisse
   */  
@@ -1462,7 +1463,8 @@ $body .= "</table>";
  */	
 	foreach ($roundResults AS $result)
 	{
-  $class = ($k==0) ? 'sectiontableentry1' : 'sectiontableentry2';
+  //$class = ($k==0) ? 'sectiontableentry1' : 'sectiontableentry2';
+  $class = '';
 
 	$resultHome = (isset($result->team1_result)) ? $result->team1_result : '-';
 	if (isset($result->team1_result_decision))
@@ -1545,6 +1547,7 @@ $body .= "</td>";
 $body .= "<td class='td_c'>";
 $body .= $resultHome . $configprediction['seperator'] . $resultAway;
 $body .= "</td>";
+
 /**
  * tippergebnisse
  */
@@ -1570,7 +1573,7 @@ $body .= "</td>";
  */
 $body .= "<td class='td_c'>";
 $points = self::getMemberPredictionPointsForSelectedMatch($predictionProject,$result);
-$totalPoints = $totalPoints+$points;
+$totalPoints = $totalPoints + $points;
 $body .=  $points;
 $body .= "</td>";
 $body .= "</tr>";
@@ -1624,7 +1627,7 @@ $body .= "</tr>";
 }
 else
 {
-$k = (1-$k);							
+//$k = (1-$k);							
 }
 
   }
@@ -1638,7 +1641,7 @@ $body .= "</tr>";
   
 if (($configprediction['show_help']==1)||($configprediction['show_help']==2))
 {
-$body .= $this->createHelptText($predictionProject->mode);
+$body .= sportsmanagementModelPredictionEntry::createHelptText($predictionProject->mode);
 }  
   
   
@@ -1649,7 +1652,7 @@ $body .= $this->createHelptText($predictionProject->mode);
 	$mailer->setBody($body);
   
   //Sending the mail
-	$send =& $mailer->Send();
+	$send =  $mailer->Send();
 	if ($send !== true)
 	{
 	//echo 'Error sending email to:<br />'.print_r($recipient,true).'<br />';

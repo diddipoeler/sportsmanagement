@@ -299,9 +299,14 @@ else
             $query->from('#__sportsmanagement_round AS r ');
             $query->where('r.id = '.(int)self::$round);
             $query->where('r.project_id = ' . (int)self::$projectid );
+            try {
 	$db->setQuery($query);
 	$result = $db->loadObject();
-    
+            }
+catch (Exception $e){
+    echo $e->getMessage();
+}
+
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
     
     if ( !$result )

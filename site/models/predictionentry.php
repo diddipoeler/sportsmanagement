@@ -280,7 +280,7 @@ public $_predictionGame	= null;
 	 * @param integer $gameMode
 	 * @return
 	 */
-	function createHelptText($gameMode=0)
+	public static function createHelptText($gameMode=0)
 	{
   //$option = JRequest::getCmd('option').'_';
 		$gameModeStr = ($gameMode==0) ? JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_STANDARD_MODE') : JText::_($option.'JL_PRED_ENTRY_TOTO_MODE');
@@ -314,7 +314,7 @@ public $_predictionGame	= null;
      * @param integer $total
      * @return
      */
-    function getTippCount($predictionProjectID,$matchID,$total=3)
+    public static function getTippCount($predictionProjectID,$matchID,$total=3)
 	{
     $app = JFactory::getApplication();
     // JInput object

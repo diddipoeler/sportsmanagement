@@ -563,9 +563,9 @@ class sportsmanagementModelRoster extends JModelLegacy
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
        $starttime = microtime(); 
-       
+       $result = '';
        $query->select('max(round_date_last)');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round '); 
+        $query->from('#__sportsmanagement_round '); 
         $query->where('project_id ='.(int)self::$projectid);
                     
         $db->setQuery($query);
@@ -576,11 +576,19 @@ class sportsmanagementModelRoster extends JModelLegacy
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-        if (!$result = $db->loadResult())
-		{
-			$this->setError($db->getErrorMsg());
-			return false;
-		}
+        try{
+			$db->setQuery($query);
+			$result = $db->loadResult();
+				      }
+catch (Exception $e){
+    echo $e->getMessage();
+}
+
+//        if (!$result = $db->loadResult())
+//		{
+//			$this->setError($db->getErrorMsg());
+//			return false;
+//		}
 		return $result;
         
     }

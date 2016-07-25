@@ -740,6 +740,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 					echo ' style="background-color:' . $color . '"';
 				}
 				echo '>';
+                if ( isset($this->previousgames[$ptid]) )
+                {
 				foreach ($this->previousgames[$ptid] as $g)
 				{
 					$txt = $this->teams[$g->projectteam1_id]->name.' [ '. $g->team1_result . ' - '. $g->team2_result . ' ] '.$this->teams[$g->projectteam2_id]->name;
@@ -770,6 +772,7 @@ $url = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rout
 					//$url = JRoute::_(sportsmanagementHelperRoute::getMatchReportRoute($g->project_slug, $g->slug,JRequest::getInt('cfg_which_database',0)));
 					echo JHtml::link($url, $img, $attr);
 				}
+                }
 				echo '</td>';
 				echo "\n";
 				break;

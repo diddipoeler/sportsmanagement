@@ -477,7 +477,7 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
-        
+        $result = '';
         $project = self::getProject($cfg_which_database,__METHOD__);
 
         if (!self::$_current_round)
@@ -536,10 +536,13 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
 			}
             
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' round<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            
+              try{
 			$db->setQuery($query);
 			$result = $db->loadObject();
-				
+				      }
+catch (Exception $e){
+    echo $e->getMessage();
+}
 			// If result is empty, it probably means either this is not started, either this is over, depending on the mode. 
 			// Either way, do not change current value
 			if (!$result)
@@ -554,9 +557,14 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
             $query->where('r.id = '.$project->current_round);
             $query->where('r.project_id = '. $project->id);
 
+            try{
 				$db->setQuery($query);
 				$result = $db->loadObject();
-				
+				}
+catch (Exception $e){
+    echo $e->getMessage();
+}
+
 				if (!$result)
 				{
 				    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($project,true).'</pre>'),'');
@@ -597,8 +605,13 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
 //					    $result = $db->loadObject();
 //					}
 					
+          try{
                     $db->setQuery($query);
-	                $result = $db->loadObject();    
+	                $result = $db->loadObject();  
+                  }
+catch (Exception $e){
+    echo $e->getMessage();
+}  
 				}
 			}
 			

@@ -82,6 +82,7 @@ foreach ( $this->currentRanking as $division => $cu_rk )
 	else
 	{
 	?>
+    <div class="table-responsive">
 	<table class="<?PHP echo $this->config['table_class']; ?>">
 		<?php
 			echo $this->loadTemplate('rankingheading');
@@ -91,6 +92,7 @@ foreach ( $this->currentRanking as $division => $cu_rk )
 			echo $this->loadTemplate('rankingrows');
 		?>
 	</table>
+    </div>
 	<br />
 	<?php
 	}

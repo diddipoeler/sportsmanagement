@@ -66,7 +66,7 @@ foreach ( $this->secondRank as $division => $cu_rk )
 			</td>
 		</tr>
 	</table>
-
+<div class="table-responsive">
 	<table class="<?PHP echo $this->config['table_class']; ?>">
 	<?php
 		foreach( $cu_rk as $ptid => $team )
@@ -80,11 +80,13 @@ foreach ( $this->secondRank as $division => $cu_rk )
 		echo $this->loadTemplate('rankingrows');
 	?>
 	</table>
+    </div>
 	<?php
 	}
 	else
 	{
 	?>
+    <div class="table-responsive">
 	<table class="<?PHP echo $this->config['table_class']; ?>">
 		<?php
 			echo $this->loadTemplate('rankingheading');
@@ -94,6 +96,7 @@ foreach ( $this->secondRank as $division => $cu_rk )
 			echo $this->loadTemplate('rankingrows');
 		?>
 	</table>
+    </div>
 	<br />
 	<?php
 	}
