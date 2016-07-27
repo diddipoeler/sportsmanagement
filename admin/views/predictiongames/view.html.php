@@ -40,10 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-
-
-
-
 /**
  * sportsmanagementViewPredictionGames
  * 
@@ -101,7 +97,7 @@ class sportsmanagementViewPredictionGames extends sportsmanagementView
 				$this->prediction_id = $jinput->request->get('prediction_id', 0);
 			} 
 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prediction_id<br><pre>'.print_r($this->prediction_id,true).'</pre>'),'');        
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prediction_id<br><pre>'.print_r($this->prediction_id,true).'</pre>'),'');        
         
         //$this->prediction_id	= $app->getUserStateFromRequest( $option .'.'.$model->_identifier, 'prediction_id', '0' );
         //$app->enqueueMessage(JText::_('sportsmanagementViewPredictionGames prediction_id<br><pre>'.print_r($this->prediction_id,true).'</pre>'),'Notice');

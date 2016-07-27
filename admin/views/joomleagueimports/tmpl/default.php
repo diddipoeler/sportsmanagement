@@ -78,6 +78,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
     
 <div id='editcell'>
 <?PHP
+if ( $this->success )
+{
 foreach ($this->success as $key => $value)
 		{
 			?>
@@ -87,6 +89,7 @@ foreach ($this->success as $key => $value)
 			</fieldset>
 			<?php
 		}
+}        
 ?>
 </div>
 

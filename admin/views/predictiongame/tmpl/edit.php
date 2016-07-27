@@ -42,7 +42,7 @@ $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
-
+JHtml::_('behavior.formvalidation');
 
 $params = $this->form->getFieldsets('params');
 // Get the form fieldsets.

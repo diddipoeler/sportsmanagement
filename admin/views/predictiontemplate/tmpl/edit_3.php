@@ -44,12 +44,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 $params = $this->form->getFieldsets('params');
 $fieldsets = $this->form->getFieldsets();
 
-/*
+
 JHtmlBehavior::formvalidation();
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
-*/
-//$component_text = 'COM_SPORTSMANAGEMENT_';
+
+
 
 $i    = 1;
 ?>

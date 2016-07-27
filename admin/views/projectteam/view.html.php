@@ -72,7 +72,8 @@ class sportsmanagementViewProjectteam extends sportsmanagementView
 		$item = $this->get('Item');
 		$script = $this->get('Script');
  
-		// Check for errors.
+		$lists = '';
+        // Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
 			JError::raiseError(500, implode('<br />', $errors));

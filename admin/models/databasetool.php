@@ -639,7 +639,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
 		    $this->my_text .= JText::_('Installiere Zitate').'</strong></span><br />';
 			$this->my_text .= JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' wird installiert !').'<br />';
             
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' quotes<br><pre>'.print_r($quotes,true).'</pre>'),'Notice');
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' quotes<br><pre>'.print_r($xml->children(),true).'</pre>'),'Notice');
             
             foreach( $xml->children() as $quote ) 
             {
@@ -647,18 +647,21 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
             $notes = '';
             $daily_number = '';
             $zitat = '';
-            
-            if ( isset($quote->quote->attributes()->author) )
+            $attr = $quote->quote->attributes();
+            if ( isset($quote->quote) )
+            {
+            if ( isset($attr['author']) )
             {
             $author = str_replace("\\", "\\\\", (string)$quote->quote->attributes()->author );
             }
-            if ( isset($quote->quote->attributes()->notes) )
+            if ( isset($attr['notes']) )
             {
             $notes = (string)$quote->quote->attributes()->notes;
             }
-            if ( isset($quote->quote->attributes()->daily_number) )
+            if ( isset($attr['daily_number']) )
             {
             $daily_number = (string)$quote->quote->attributes()->daily_number;
+            }
             }
             if ( isset($quote->quote) )
             {
@@ -698,45 +701,6 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
             
             }
             
-//            foreach( $xml->$quotes as $quote ) 
-//            {
-//                
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' quote<br><pre>'.print_r($quote,true).'</pre>'),'Notice');
-//                
-//            $author = '';
-//            $zitat = '';
-//            $name = $quote->getElementByPath('quote');
-//            $attributes = $name->attributes();
-//            $author = $attributes['author'];
-//            $notes = $attributes['notes'];
-//            $author = str_replace("\\", "\\\\", $author);
-//            $zitat = $name->data();
-//
-//            $insertquery = $db->getQuery(true);
-//            // Insert columns.
-//            $columns = array('daily_number','author','quote','notes');
-//            // Insert values.
-//            $values = array('\''.$temp[1].'\'','\''.$author.'\'','\''.$zitat.'\'','\''.$notes.'\'');
-//            // Prepare the insert query.
-//            $insertquery
-//            ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_rquote'))
-//            ->columns($db->quoteName($columns))
-//            ->values(implode(',', $values));
-//            // Set the query using our newly populated query object and execute it.
-//            $db->setQuery($insertquery);
-//                
-//	        if (!$db->query())
-//			{
-//			self::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
-//            }
-//			else
-//			{
-//    	    } 
-//            
-//            
-//            
-//            }
-            
             }
             else
             {
@@ -756,19 +720,6 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
             }
             
             $quote_version = (string)$xml->$document;
-            
-//// joomla versionen
-//            if(version_compare(JVERSION,'3.0.0','ge')) 
-//        {
-//    $quote_version = (string)$xml->$document;
-//            }
-//            else
-//            {
-//            foreach( $xml->$document as $version ) 
-//            {
-//            $quote_version = $version->data();
-//            }
-//            }
             
             $this->my_text .= '<span style="color:'.$this->existingInDbColor.'"><strong>';
 					$this->my_text .= JText::_('Installierte Zitate').'</strong></span><br />';

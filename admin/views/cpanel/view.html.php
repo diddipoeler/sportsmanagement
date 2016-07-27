@@ -189,15 +189,20 @@ class sportsmanagementViewcpanel extends sportsmanagementView
                     
         // es können aber auch neue positionen oder ereignisse dazu kommen
         $insert_sport_type = $databasetool->insertSportType($type); 
+        if ( isset($model->_success_text['Sportart ('.$type.')  :']) )
+        {
         $model->_success_text['Sportart ('.$type.')  :'] .= $databasetool->my_text;
-        
+        }
         if ( $country )
         {
         foreach ( $country as $keyc => $typec )
         {    
         $insert_agegroup = $databasetool->insertAgegroup($typec,$insert_sport_type);  
         //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($insert_agegroup,true).'</pre>'),'');
-        $model->_success_text['Altersgruppen:'] .= $insert_agegroup;  
+        if ( isset($model->_success_text['Altersgruppen:']) )
+        {
+        $model->_success_text['Altersgruppen:'] .= $insert_agegroup;
+        }  
         }
         //$databasetool->_success_text['Altersgruppen:'] .= $databasetool->_success_text; 
         //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($databasetool->my_text,true).'</pre>'),'');

@@ -59,24 +59,12 @@ class sportsmanagementViewPredictionGame extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$uri = JFactory::getURI();
-		$user = JFactory::getUser();
-		$model = $this->getModel();
-      
         
-        // get the Data
-		$form = $this->get('Form');
-		$item = $this->get('Item');
-		$script = $this->get('Script');
-        
-        $pred_admins = sportsmanagementModelPredictionGames::getAdmins($item->id);
-		$pred_projects = $model->getPredictionProjectIDs($item->id);
+        $pred_admins = sportsmanagementModelPredictionGames::getAdmins($this->item->id);
+		$pred_projects = $this->model->getPredictionProjectIDs($this->item->id);
  
-		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pred_admins<br><pre>'.print_r($pred_admins,true).'</pre>'),'');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pred_projects<br><pre>'.print_r($pred_projects,true).'</pre>'),'');
+//		$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pred_admins<br><pre>'.print_r($pred_admins,true).'</pre>'),'');
+//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pred_projects<br><pre>'.print_r($pred_projects,true).'</pre>'),'');
         
         // Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -84,20 +72,10 @@ class sportsmanagementViewPredictionGame extends sportsmanagementView
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-		// Assign the Data
-		$this->form = $form;
-		$this->item = $item;
-		$this->script = $script;
-		
+
         $this->form->setValue('user_ids', null, $pred_admins);
         $this->form->setValue('project_ids', null, $pred_projects);
-        
-		//$extended = sportsmanagementHelper::getExtended($item->extended, 'predictiongame');
-		//$this->assignRef( 'extended', $extended );
-		//$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
- 
-		    
-	
+
 	}
     
     

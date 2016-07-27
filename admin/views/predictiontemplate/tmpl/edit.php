@@ -40,12 +40,11 @@
 defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-/*
+
 JHtmlBehavior::formvalidation();
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
-*/
-//$component_text = 'COM_SPORTSMANAGEMENT_';
+
 
 $i    = 1;
 ?>

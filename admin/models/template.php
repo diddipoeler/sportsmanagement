@@ -53,111 +53,111 @@ jimport('joomla.application.component.modeladmin');
  * @version 2014
  * @access public
  */
-class sportsmanagementModeltemplate extends JModelAdmin
+class sportsmanagementModeltemplate extends JSMModelAdmin
 {
-	/**
-	 * Method override to check if you can edit an existing record.
-	 *
-	 * @param	array	$data	An array of input data.
-	 * @param	string	$key	The name of the key for the primary key.
-	 *
-	 * @return	boolean
-	 * @since	1.6
-	 */
-	protected function allowEdit($data = array(), $key = 'id')
-	{
-		// Check specific edit permission then general edit permission.
-		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
-	}
+//	/**
+//	 * Method override to check if you can edit an existing record.
+//	 *
+//	 * @param	array	$data	An array of input data.
+//	 * @param	string	$key	The name of the key for the primary key.
+//	 *
+//	 * @return	boolean
+//	 * @since	1.6
+//	 */
+//	protected function allowEdit($data = array(), $key = 'id')
+//	{
+//		// Check specific edit permission then general edit permission.
+//		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
+//	}
     
-	/**
-	 * Returns a reference to the a Table object, always creating it.
-	 *
-	 * @param	type	The table type to instantiate
-	 * @param	string	A prefix for the table class name. Optional.
-	 * @param	array	Configuration array for model. Optional.
-	 * @return	JTable	A database object
-	 * @since	1.6
-	 */
-	public function getTable($type = 'template', $prefix = 'sportsmanagementTable', $config = array()) 
-	{
-	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
-		return JTable::getInstance($type, $prefix, $config);
-	}
+//	/**
+//	 * Returns a reference to the a Table object, always creating it.
+//	 *
+//	 * @param	type	The table type to instantiate
+//	 * @param	string	A prefix for the table class name. Optional.
+//	 * @param	array	Configuration array for model. Optional.
+//	 * @return	JTable	A database object
+//	 * @since	1.6
+//	 */
+//	public function getTable($type = 'template', $prefix = 'sportsmanagementTable', $config = array()) 
+//	{
+//	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
+//		return JTable::getInstance($type, $prefix, $config);
+//	}
     
-	/**
-	 * Method to get the record form.
-	 *
-	 * @param	array	$data		Data for the form.
-	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-	 * @return	mixed	A JForm object on success, false on failure
-	 * @since	1.6
-	 */
-	public function getForm($data = array(), $loadData = true) 
-	{
-		// Get the form.
-		$form = $this->loadForm('com_sportsmanagement.template', 'template', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) 
-		{
-			return false;
-		}
-		return $form;
-	}
+//	/**
+//	 * Method to get the record form.
+//	 *
+//	 * @param	array	$data		Data for the form.
+//	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
+//	 * @return	mixed	A JForm object on success, false on failure
+//	 * @since	1.6
+//	 */
+//	public function getForm($data = array(), $loadData = true) 
+//	{
+//		// Get the form.
+//		$form = $this->loadForm('com_sportsmanagement.template', 'template', array('control' => 'jform', 'load_data' => $loadData));
+//		if (empty($form)) 
+//		{
+//			return false;
+//		}
+//		return $form;
+//	}
     
-	/**
-	 * Method to get the script that have to be included on the form
-	 *
-	 * @return string	Script files
-	 */
-	public function getScript() 
-	{
-		return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
-	}
+//	/**
+//	 * Method to get the script that have to be included on the form
+//	 *
+//	 * @return string	Script files
+//	 */
+//	public function getScript() 
+//	{
+//		return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
+//	}
     
-	/**
-	 * Method to get the data that should be injected in the form.
-	 *
-	 * @return	mixed	The data for the form.
-	 * @since	1.6
-	 */
-	protected function loadFormData() 
-	{
-		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.template.data', array());
-		if (empty($data)) 
-		{
-			$data = $this->getItem();
-		}
-		return $data;
-	}
+//	/**
+//	 * Method to get the data that should be injected in the form.
+//	 *
+//	 * @return	mixed	The data for the form.
+//	 * @since	1.6
+//	 */
+//	protected function loadFormData() 
+//	{
+//		// Check the session for previously entered form data.
+//		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.template.data', array());
+//		if (empty($data)) 
+//		{
+//			$data = $this->getItem();
+//		}
+//		return $data;
+//	}
 	
-	/**
-	 * Method to save item order
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	1.5
-	 */
-	function saveorder($pks = NULL, $order = NULL)
-	{
-		$row =& $this->getTable();
-		
-		// update ordering values
-		for ($i=0; $i < count($pks); $i++)
-		{
-			$row->load((int) $pks[$i]);
-			if ($row->ordering != $order[$i])
-			{
-				$row->ordering=$order[$i];
-				if (!$row->store())
-				{
-					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-					return false;
-				}
-			}
-		}
-		return true;
-	}
+//	/**
+//	 * Method to save item order
+//	 *
+//	 * @access	public
+//	 * @return	boolean	True on success
+//	 * @since	1.5
+//	 */
+//	function saveorder($pks = NULL, $order = NULL)
+//	{
+//		$row =& $this->getTable();
+//		
+//		// update ordering values
+//		for ($i=0; $i < count($pks); $i++)
+//		{
+//			$row->load((int) $pks[$i]);
+//			if ($row->ordering != $order[$i])
+//			{
+//				$row->ordering=$order[$i];
+//				if (!$row->store())
+//				{
+//					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
+//					return false;
+//				}
+//			}
+//		}
+//		return true;
+//	}
     
     /**
 	 * Method to save the form data.
@@ -263,11 +263,13 @@ class sportsmanagementModeltemplate extends JModelAdmin
 		$query1	= $db->getQuery(true);
         $query2	= $db->getQuery(true);
         $query3	= $db->getQuery(true);
+        $result1 = array();
+        $result2 = array();
                 
         // Select some fields
 		$query1->select('template');
         // From table
-		$query1->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config');
+		$query1->from('#__sportsmanagement_template_config');
         $query1->where('project_id = '.$project_id);
         $db->setQuery($query1);
 
@@ -282,18 +284,24 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 		$current = $db->loadResultArray();
 }
 
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current<br><pre>'.print_r($current,true).'</pre>'),'Notice');
         if ( $current )
         {
         $current = implode("','",$current);
         }
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current<br><pre>'.print_r($current,true).'</pre>'),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' current<br><pre>'.print_r($current,true).'</pre>'),'Notice');
+        
         
         // Select some fields
 		$query2->select('id as value, title as text');
         // From table
-		$query2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config');
-        $query2->where('project_id = '.$master_id.' and template NOT IN (\''.$current.'\') ');
+		$query2->from('#__sportsmanagement_template_config');
+        $query2->where('project_id = '.$master_id);
+        if ( $current )
+        {
+        $query2->where('template NOT IN (\''.$current.'\') ');    
+        }
         $db->setQuery($query2);
         $result1 = $db->loadObjectList();
         
@@ -302,10 +310,11 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 			$template->text = JText::_($template->text);
 		}
         
+        
         // Select some fields
 		$query3->select('id as value, title as text');
         // From table
-		$query3->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_template_config');
+		$query3->from('#__sportsmanagement_template_config');
         $query3->where('project_id = '.$project_id);
         $query3->order('title');
         $db->setQuery($query3);
@@ -316,7 +325,18 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 			$template->text = JText::_($template->text);
 		}
         
-		return array_merge($result2,$result1);
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result1<br><pre>'.print_r($result1,true).'</pre>'),'Notice');
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result2<br><pre>'.print_r($result2,true).'</pre>'),'Notice');
+        
+        if ( $result1 )
+        {
+        return array_merge($result2,$result1);    
+        }
+        else
+        {
+        return ($result2);    
+        }
+		
 	}
     
     

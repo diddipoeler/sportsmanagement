@@ -64,14 +64,6 @@ class sportsmanagementViewpredictionmember extends sportsmanagementView
 	 */
 	public function init ()
 	{
-//		$app = JFactory::getApplication();
-//		$document = JFactory::getDocument();
-//		$option = JRequest::getCmd('option');
-//        
-//		// get the Data
-//		$this->form = $this->get('Form');
-//		$this->item = $this->get('Item');
-//		$this->script = $this->get('Script');
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -79,8 +71,6 @@ class sportsmanagementViewpredictionmember extends sportsmanagementView
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-				
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($this->item,true).'</pre>'),'');
 
 	}
  

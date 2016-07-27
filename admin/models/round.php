@@ -52,135 +52,12 @@ jimport('joomla.application.component.modeladmin');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelround extends JModelAdmin
+class sportsmanagementModelround extends JSMModelAdmin
 {
     var $_identifier = "rounds";
     static $db_num_rows = 0;
     var $_tables_to_delete = array();
-    
-	/**
-	 * Method override to check if you can edit an existing record.
-	 *
-	 * @param	array	$data	An array of input data.
-	 * @param	string	$key	The name of the key for the primary key.
-	 *
-	 * @return	boolean
-	 * @since	1.6
-	 */
-	protected function allowEdit($data = array(), $key = 'id')
-	{
-		// Check specific edit permission then general edit permission.
-		return JFactory::getUser()->authorise('core.edit', 'com_sportsmanagement.message.'.((int) isset($data[$key]) ? $data[$key] : 0)) or parent::allowEdit($data, $key);
-	}
-    
-	/**
-	 * Returns a reference to the a Table object, always creating it.
-	 *
-	 * @param	type	The table type to instantiate
-	 * @param	string	A prefix for the table class name. Optional.
-	 * @param	array	Configuration array for model. Optional.
-	 * @return	JTable	A database object
-	 * @since	1.6
-	 */
-	public function getTable($type = 'round', $prefix = 'sportsmanagementTable', $config = array()) 
-	{
-	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
-		return JTable::getInstance($type, $prefix, $config);
-	}
-    
-	/**
-	 * Method to get the record form.
-	 *
-	 * @param	array	$data		Data for the form.
-	 * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
-	 * @return	mixed	A JForm object on success, false on failure
-	 * @since	1.6
-	 */
-	public function getForm($data = array(), $loadData = true) 
-	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
-		// Get the form.
-		$form = $this->loadForm('com_sportsmanagement.round', 'round', array('control' => 'jform', 'load_data' => $loadData));
-		if (empty($form)) 
-		{
-			return false;
-		}
-        
-        // welche joomla version ?
-        if(version_compare(JVERSION,'3.0.0','ge')) 
-        {
-        $form->setFieldAttribute('round_date_first', 'type', 'calendar');
-        $form->setFieldAttribute('round_date_last', 'type', 'calendar');       
-        }
-        else
-        {
-        $form->setFieldAttribute('round_date_first', 'type', 'customcalendar');
-        $form->setFieldAttribute('round_date_last', 'type', 'customcalendar');
-        }
-        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($option)->get('ph_team',''));
-        $form->setFieldAttribute('picture', 'directory', 'com_'.COM_SPORTSMANAGEMENT_TABLE.'/database/rounds');
-        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
-        
-		return $form;
-	}
-    
-	/**
-	 * Method to get the script that have to be included on the form
-	 *
-	 * @return string	Script files
-	 */
-	public function getScript() 
-	{
-		return 'administrator/components/com_sportsmanagement/models/forms/sportsmanagement.js';
-	}
-    
-	/**
-	 * Method to get the data that should be injected in the form.
-	 *
-	 * @return	mixed	The data for the form.
-	 * @since	1.6
-	 */
-	protected function loadFormData() 
-	{
-		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.round.data', array());
-		if (empty($data)) 
-		{
-			$data = $this->getItem();
-		}
-		return $data;
-	}
-    
-    /**
-	 * Method to save item order
-	 *
-	 * @access	public
-	 * @return	boolean	True on success
-	 * @since	1.5
-	 */
-	function saveorder($pks = NULL, $order = NULL)
-	{
-		$row =& $this->getTable();
-		
-		// update ordering values
-		for ($i=0; $i < count($pks); $i++)
-		{
-			$row->load((int) $pks[$i]);
-			if ($row->ordering != $order[$i])
-			{
-				$row->ordering=$order[$i];
-				if (!$row->store())
-				{
-					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-    
+   
     /**
 	 * Method to update checked project rounds
 	 *
@@ -566,8 +443,22 @@ class sportsmanagementModelround extends JModelAdmin
             
         //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
-        // Proceed with the save
-		return parent::save($data);   
+        // zuerst sichern, damit wir bei einer neuanlage die id haben
+       if ( parent::save($data) )
+       {
+			$id =  (int) $this->getState($this->getName().'.id');
+            $isNew = $this->getState($this->getName() . '.new');
+            $data['id'] = $id;
+            
+            if ( $isNew )
+            {
+                //Here you can do other tasks with your newly saved record...
+                $this->jsmapp->enqueueMessage(JText::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id),'');
+            }
+           
+		}
+        
+        return true;    
     } 
     
     

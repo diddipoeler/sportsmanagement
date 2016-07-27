@@ -118,6 +118,22 @@ if( $this->jsmapp->isSite() )
         
         switch ($this->getName())
 		{
+		case 'round':
+        // welche joomla version ?
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        $form->setFieldAttribute('round_date_first', 'type', 'calendar');
+        $form->setFieldAttribute('round_date_last', 'type', 'calendar');       
+        }
+        else
+        {
+        $form->setFieldAttribute('round_date_first', 'type', 'customcalendar');
+        $form->setFieldAttribute('round_date_last', 'type', 'customcalendar');
+        }
+        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
+        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/rounds');
+        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
+        break;  
 		case 'project':
         $sports_type_id = $form->getValue('sports_type_id');
         $this->jsmquery->clear();
@@ -168,6 +184,19 @@ if( $this->jsmapp->isSite() )
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         
         
+        break;
+        case 'projectteam':
+        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
+        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/projectteams');
+        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
+        
+        $form->setFieldAttribute('trikot_home', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
+        $form->setFieldAttribute('trikot_home', 'directory', 'com_sportsmanagement/database/projectteams/trikot_home');
+        $form->setFieldAttribute('trikot_home', 'type', $cfg_which_media_tool);
+        
+        $form->setFieldAttribute('trikot_away', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_small',''));
+        $form->setFieldAttribute('trikot_away', 'directory', 'com_sportsmanagement/database/projectteams/trikot_away');
+        $form->setFieldAttribute('trikot_away', 'type', $cfg_which_media_tool);
         break;
         case 'club':
         $row = $this->getTable();
