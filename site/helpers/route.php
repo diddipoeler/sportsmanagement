@@ -1394,7 +1394,8 @@ $params = array(	"option" => "com_sportsmanagement",
 
 
 		$query = self::buildQuery( $params );
-		$link = JRoute::_( 'index.php?' . $query , false );
+		//$link = JRoute::_( 'index.php?' . $query , false );
+        $link = JRoute::_( 'index2.php?' . $query , false );
 
 		return $link;
     }   

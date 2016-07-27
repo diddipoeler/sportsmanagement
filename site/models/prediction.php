@@ -362,7 +362,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
                 
                 if (!self::$_predictionGame)
 		{
-		  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+//		  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		}  
                 
 			}
