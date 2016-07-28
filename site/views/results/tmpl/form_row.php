@@ -275,7 +275,7 @@ else
 		//$desc = JHtml::image(	JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
 		$desc = JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png';
         
-        echo sportsmanagementHelperHtml::getBootstrapModalImage('home_lineup'.$team1->projectteamid,$desc,$imgTitle,'20',$url);
+        //echo sportsmanagementHelperHtml::getBootstrapModalImage('home_lineup'.$team1->projectteamid,$desc,$imgTitle,'20',$url);
 ?>
 				<!--
                 <a rel="{handler: \'iframe\',size: {x:900,y:500}}"
@@ -292,17 +292,18 @@ else
 <!--
  <a href="#" data-toggle="modal" data-target-color="lightblue" data-target="#bannerformmodal<?php echo $team1->projectteamid; ?>">Load me <?php echo $team1->projectteamid; ?></a>
 -->
-<a href="#bannerformmodal<?php echo $team1->projectteamid; ?>" data-toggle="modal" data-target-color="lightblue" >Load me <?php echo $team1->projectteamid; ?></a>
 
-<div class="modal fade bannerformmodal<?php echo $team1->projectteamid; ?>" 
+<a href="#home_lineup<?php echo $thismatch->id; ?>" data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png'; ?>" >home_lineup<?php echo $thismatch->id; ?></a>
+
+<div class="modal fade home_lineup<?php echo $thismatch->id; ?>" 
 data-modal-color="" 
 data-backdrop="static" 
 data-keyboard="false"
 tabindex="-1" 
 role="dialog" 
-aria-labelledby="bannerformmodal" 
+aria-labelledby="home_lineup" 
 aria-hidden="true"  
-id="bannerformmodal<?php echo $team1->projectteamid; ?>">
+id="home_lineup<?php echo $thismatch->id; ?>">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
      <!-- <div class="modal-content"> -->
@@ -314,55 +315,9 @@ id="bannerformmodal<?php echo $team1->projectteamid; ?>">
           
           <form id="requestacallform" method="POST" name="requestacallform">
 
-            <div class="form-group">
-              <div class="input-group">                               
-                <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                <input id="first_name" type="text" class="form-control" placeholder="First Name" name="first_name"/>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="input-group">                               
-                <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                <input id="last_name" type="text" class="form-control" placeholder="Last Name" name="last_name"/>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="input-group">                               
-                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                <input id="email1" type="text" class="form-control" placeholder="Email" name="email1" onchange="validateEmailAdd();"/>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="input-group">                               
-                <span class="input-group-addon"><i class="fa fa-group"></i></span>
-                <input id="company_name_c" type="text" class="form-control" placeholder="Company Name" name="company_name_c"/>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="input-group">                               
-                <span class="input-group-addon"><i class="fa fa-phone"></i></span>
-                <input id="phone_mobile" type="text" class="form-control" placeholder="Mobile" name="phone_mobile"/>
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-building-o"></i></span>
-                <select class="form-control" name="monthly_rental" class="selectpicker">
-                  <option>How many seats do you have available?</option>
-                  <option>10-50</option>
-                  <option>50-100</option>
-                  <option>100-200</option>
-                  <option>200-500</option>
-                  <option>500+</option>
-                </select>
-              </div>
-            </div>
-            <div class="control-group">
-              <div class="controls">                     
-                <textarea id="description" type="text" name="description"  placeholder="Description"></textarea>
-              </div>
-            </div>
-
+<?PHP
+//echo $this->loadTemplate('editlineup');
+?>
           </form>
           
         </div>
@@ -374,6 +329,7 @@ id="bannerformmodal<?php echo $team1->projectteamid; ?>">
     </div>
   </div>
 </div>
+
 <!-- Button HTML (to Trigger Modal) -->
 <!--
 <a href="<?php echo $url; ?>" rel="modaljsm:open"><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png'; ?>" > </a>
@@ -412,13 +368,53 @@ id="bannerformmodal<?php echo $team1->projectteamid; ?>">
 		//$desc = JHtml::image(	JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
         $desc = JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png';
         
-        echo sportsmanagementHelperHtml::getBootstrapModalImage('away_lineup'.$team2->projectteamid,$desc,$imgTitle,'20',$url);
+//        echo sportsmanagementHelperHtml::getBootstrapModalImage('away_lineup'.$team2->projectteamid,$desc,$imgTitle,'20',$url);
 		?>
 
 <!-- Button HTML (to Trigger Modal) -->
 <!--
 <a href="<?php echo $url; ?>" rel="modaljsm:open"><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png'; ?>" > </a>
 -->
+
+<a href="#away_lineup<?php echo $thismatch->id; ?>" data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png'; ?>" >away_lineup<?php echo $thismatch->id; ?></a>
+
+<div class="modal fade away_lineup<?php echo $thismatch->id; ?>" 
+data-modal-color="" 
+data-backdrop="static" 
+data-keyboard="false"
+tabindex="-1" 
+role="dialog" 
+aria-labelledby="away_lineup" 
+aria-hidden="true"  
+id="away_lineup<?php echo $thismatch->id; ?>">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+     <!-- <div class="modal-content"> -->
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="myModalLabel">Contact Form</h4>
+        </div>
+        <div class="modal-body">
+          
+          <form id="requestacallform" method="POST" name="requestacallform">
+
+<?PHP
+//echo $this->loadTemplate('editlineup');
+?>
+          </form>
+          
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-blue">Submit</button>
+          <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+        </div>        
+     <!-- </div> -->
+    </div>
+  </div>
+</div>
+
+
+
 	
     </td>
 	<!-- Edit match results -->
@@ -531,7 +527,7 @@ id="bannerformmodal<?php echo $team1->projectteamid; ?>">
 		//$desc = JHtml::image(JURI::root().'media/com_sportsmanagement/jl_images/events.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
         $desc = JURI::root().'media/com_sportsmanagement/jl_images/events.png';
         
-        echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_events'.$thismatch->id,$desc,$imgTitle,'20',$url);
+        //echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_events'.$thismatch->id,$desc,$imgTitle,'20',$url);
         
 		?>
         
@@ -539,6 +535,44 @@ id="bannerformmodal<?php echo $team1->projectteamid; ?>">
 <!--
 <a href="<?php echo $url; ?>" rel="modaljsm:open"><img src="<?php echo JURI::root().'media/com_sportsmanagement/jl_images/events.png'; ?>" > </a>
 -->
+
+<a href="#edit_events<?php echo $thismatch->id; ?>" data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'media/com_sportsmanagement/jl_images/events.png'; ?>" >edit_events<?php echo $thismatch->id; ?></a>
+
+<div class="modal fade edit_events<?php echo $thismatch->id; ?>" 
+data-modal-color="" 
+data-backdrop="static" 
+data-keyboard="false"
+tabindex="-1" 
+role="dialog" 
+aria-labelledby="edit_events" 
+aria-hidden="true"  
+id="edit_events<?php echo $thismatch->id; ?>">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+     <!-- <div class="modal-content"> -->
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="myModalLabel">Contact Form</h4>
+        </div>
+        <div class="modal-body">
+          
+          <form id="requestacallform" method="POST" name="requestacallform">
+
+<?PHP
+//echo $this->loadTemplate('editevents');
+?>
+          </form>
+          
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-blue">Submit</button>
+          <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+        </div>        
+     <!-- </div> -->
+    </div>
+  </div>
+</div>
+
 
 	</td>
 	<!-- Edit match statistics -->
@@ -551,13 +585,51 @@ id="bannerformmodal<?php echo $team1->projectteamid; ?>">
 		//$desc = JHtml::image(JURI::root().'administrator/components/com_sportsmanagement/assets/images/calc16.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
         $desc = JURI::root().'administrator/components/com_sportsmanagement/assets/images/calc16.png';
         
-        echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_statistics'.$thismatch->id,$desc,$imgTitle,'20',$url);
+        //echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_statistics'.$thismatch->id,$desc,$imgTitle,'20',$url);
 		?>
         
 <!-- Button HTML (to Trigger Modal) -->
 <!--
 <a href="<?php echo $url; ?>" rel="modaljsm:open"><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/calc16.png'; ?>" > </a>
 -->
+
+<a href="#edit_statistics<?php echo $thismatch->id; ?>" data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/calc16.png'; ?>" >edit_statistics<?php echo $thismatch->id; ?></a>
+
+<div class="modal fade edit_statistics<?php echo $thismatch->id; ?>" 
+data-modal-color="" 
+data-backdrop="static" 
+data-keyboard="false"
+tabindex="-1" 
+role="dialog" 
+aria-labelledby="edit_statistics" 
+aria-hidden="true"  
+id="edit_statistics<?php echo $thismatch->id; ?>">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+     <!-- <div class="modal-content"> -->
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="myModalLabel">Contact Form</h4>
+        </div>
+        <div class="modal-body">
+          
+          <form id="requestacallform" method="POST" name="requestacallform">
+
+<?PHP
+echo $this->loadTemplate('editstats');
+?>
+          </form>
+          
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-blue">Submit</button>
+          <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+        </div>        
+     <!-- </div> -->
+    </div>
+  </div>
+</div>
+
 
 	</td>
 	<!-- Edit referee -->
@@ -569,14 +641,54 @@ id="bannerformmodal<?php echo $team1->projectteamid; ?>">
 		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_REFEREE_BACKEND');
 		//$desc = JHtml::image(	JURI::root().'/administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
         $desc = JURI::root().'/administrator/components/com_sportsmanagement/assets/images/players_add.png';
-        
-         echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_referees'.$thismatch->id,$desc,$imgTitle,'20',$url);
+        //echo $url; 
+         //echo sportsmanagementHelperHtml::getBootstrapModalImage('edit_referees'.$thismatch->id,$desc,$imgTitle,'20',$url);
 		?>
         
 <!-- Button HTML (to Trigger Modal) -->
 <!-- 
 <a href="<?php echo $url; ?>" rel="modaljsm:open"><img src="<?php echo JURI::root().'media/com_sportsmanagement/jl_images/players_add.png'; ?>" ></a>
 -->
+
+<a href="#edit_referees<?php echo $thismatch->id; ?>" data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'media/com_sportsmanagement/jl_images/players_add.png'; ?>" >edit referees<?php echo $thismatch->id; ?></a>
+
+<div class="modal fade edit_referees<?php echo $thismatch->id; ?>" 
+data-modal-color="" 
+data-backdrop="static" 
+data-keyboard="false"
+tabindex="-1" 
+role="dialog" 
+aria-labelledby="edit_referees" 
+aria-hidden="true"  
+id="edit_referees<?php echo $thismatch->id; ?>">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+     <!-- <div class="modal-content"> -->
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="myModalLabel">Contact Form</h4>
+        </div>
+        <div class="modal-body">
+          
+          <form id='edit-referee-<?php echo $this->game->id;?>' method="POST" name="requestacallform" action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>">
+
+<?PHP
+echo $this->loadTemplate('editreferees');
+?>
+          </form>
+          
+        </div>
+        <!--
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-blue">Submit</button>
+          <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+        </div>   
+        -->     
+     <!-- </div> -->
+    </div>
+  </div>
+</div>
+
 	</td>
 	<!-- Published -->
 	<td valign='top' style='text-align: center;'>

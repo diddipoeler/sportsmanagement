@@ -77,12 +77,19 @@ class sportsmanagementViewResults extends JViewLegacy
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
+        $this->layout = $jinput->getCmd('layout');
         $roundcode = 0;
+        $default_name_format = '';
+        
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' layout'.'<pre>'.print_r($layout,true).'</pre>' ),'');
+        
 //		$version = urlencode(sportsmanagementHelper::getVersion());
 //		$css		= 'components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
 //		$document->addStyleSheet($css);
 
-		$document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
+//		$document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/views/sportsmanagement/submitbutton.js' );
+        
+        $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
         
         $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/jquery.modal.js' );
         $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/bootstrap-switch.js' );
@@ -218,7 +225,27 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpl'.'<pre>'.print_r($tpl,true).'</pre>' ),'');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout -> '.$this->getLayout().''),'');
 
-		parent::display($tpl);
+		
+        switch ($this->layout)
+        {
+            case 'form':
+            //$document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/views/sportsmanagement/submitbutton.js' );
+            
+        
+        // projekt positionen                                                    
+  		$selectpositions[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_REF_FUNCTION'));
+		if ($projectpositions = sportsmanagementModelMatch::getProjectPositionsOptions(0, 3,$this->project->id))
+		{
+			$selectpositions = array_merge($selectpositions,$projectpositions);
+		}
+		$this->lists['projectpositions'] = JHtml::_('select.genericlist',$selectpositions,'project_position_id','class="inputbox" size="1"','value','text');
+        
+        $this->assignRef('positions',$projectpositions);            
+            break;
+        }
+        
+        
+        parent::display($tpl);
 	}
 
 	/**

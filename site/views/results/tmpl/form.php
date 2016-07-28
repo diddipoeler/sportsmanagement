@@ -178,6 +178,70 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 					{
 						$this->assignRef('game', $match);
 						$this->assignRef('i', $i);
+
+/**
+* 
+*/                        
+//$allreferees = sportsmanagementModelMatch::getRefereeRoster(0,$match->id);
+//		if (isset($allreferees))
+//		{
+//			foreach ($allreferees AS $referee) 
+//            {
+//				$inroster[] = $referee->value;
+//			}
+//		} 
+/*
+$projectreferees = sportsmanagementModelMatch::getProjectReferees($inroster,$this->project->id);        
+		if (count($projectreferees) > 0)
+		{
+			foreach ($projectreferees AS $referee)
+			{
+				$projectreferees2[]=JHtml::_('select.option',$referee->value,
+				  sportsmanagementHelper::formatName(null, $referee->firstname, $referee->nickname, $referee->lastname, $default_name_format) .
+				  ' - ('.strtolower(JText::_($referee->positionname)).')');
+			}
+		}
+		$this->lists['team_referees'] = JHtml::_(	'select.genericlist',$projectreferees2,'roster[]',
+											'style="font-size:12px;height:auto;min-width:15em;" ' .
+											'class="inputbox" multiple="true" size="'.max(10,count($projectreferees2)).'"',
+											'value','text');        
+        
+//		if (!$projectpositions)
+//		{
+//			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_REF_POS').'<br /><br />');
+//			return;
+//		}
+
+		// generate selection list for each position
+        $squad = array();
+		foreach ($this->lists['projectpositions'] AS $key => $pos)
+		{
+			// get referees assigned to this position
+			$squad[$key] = sportsmanagementModelMatch::getRefereeRoster($pos->value,$match->id);
+		}
+		if (count($squad) > 0)
+		{
+			foreach ($squad AS $key => $referees)
+			{
+				$temp[$key] = array();
+				if (isset($referees))
+				{
+					foreach ($referees AS $referee)
+					{
+						$temp[$key][]=JHtml::_('select.option',$referee->value,
+						  sportsmanagementHelper::formatName(null, $referee->firstname, $referee->nickname, $referee->lastname, $default_name_format));
+					}
+				}
+                
+				$lists['team_referees'.$key]=JHtml::_(	'select.genericlist',$temp[$key],'position'.$key.'[]',
+														' style="font-size:12px;height:auto;min-width:15em;" '.
+														'class="position-starters" multiple="true" ',
+														'value','text');
+                                     
+                                                        
+			}
+		}  
+         */                      
 						echo $this->loadTemplate('row');
 					}
 					$k = 1 - $k;
@@ -201,9 +265,6 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
         <input type='hidden' name='order' value='<?php echo sportsmanagementModelResults::$order; ?>' />
         <input type='hidden' name='layout' value='form' />
         <input type='hidden' name='task' value='results.saveshort' />
-        
-		
-		
 		<input type='hidden' name='sel_r' value='<?php echo sportsmanagementModelProject::$roundslug; ?>' />
 		<input type='hidden' name='Itemid' value='<?php echo JRequest::getInt('Itemid', 1, 'get'); ?>' />
 		<input type='hidden' name='boxchecked' value='0' id='boxchecked' />

@@ -61,7 +61,7 @@ if (!empty($this->matches))
 $teamid = JRequest::getInt('tid');
 $nbcols = 0;
 ?>
-
+<div class="table-responsive">   
 <table class="<?php echo $this->config['table_class']; ?>">
 	<thead>
 	<tr >
@@ -1099,6 +1099,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 	}
 	?>
 </table>
+</div>
 	<?php
 }
 else

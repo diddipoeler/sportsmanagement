@@ -88,7 +88,7 @@ if ($this->config['show_comments_count'] > 0){
 	$separate_comments 	= $pluginParams->get( 'separate_comments', 0 );
 }
 ?>
-
+<div class="table-responsive">   
 <table class="<?PHP echo $this->config['table_class']; ?>">
 	<?php
 	foreach( $dates as $date => $games )
@@ -609,4 +609,5 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 	}
 	?>
 </table>
+</div>
 <br />

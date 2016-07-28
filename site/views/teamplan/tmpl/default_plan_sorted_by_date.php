@@ -46,7 +46,7 @@ if (!empty($this->matches))
 {
 $teamid=JRequest::getInt('tid');
 ?>
-	<thead>
+<!--	<thead> -->
 	<?php
 		//sort matches by dates
 		$gamesByDate = Array();
@@ -68,7 +68,8 @@ $teamid=JRequest::getInt('tid');
 				if ( substr( $match->match_date, 0, 10 ) != $pr_id)
 				{			
 				?>
-				<table class='fixtures'>
+                <div class="table-responsive">   
+				<table class='table'>
 					<tr class="sectiontableheader">
 						<th class="td_l" colspan=16>
 							<?php echo JHtml::date($match->match_date,JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_MATCHDATE'));?>
@@ -79,7 +80,7 @@ $teamid=JRequest::getInt('tid');
 				$pr_id = substr( $match->match_date, 0, 10 );
 				}	
 		?>
-	</thead>
+<!--	</thead> -->
 	<?php
 
 		$hometeam=$this->teams[$match->projectteam1_id];
@@ -677,6 +678,7 @@ $teamid=JRequest::getInt('tid');
 	}
 	?>
 </table>
+</div>
 	<?php
 }
 else
