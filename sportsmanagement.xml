@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="2.5" method="upgrade">
+<extension type="component" version="2.5.0" method="upgrade">
  
 	<name>COM_SPORTSMANAGEMENT</name>
 	<!-- The following elements are optional and free of formatting conttraints -->
-	<creationDate>April 2013</creationDate>
+	<creationDate>2013-04-01</creationDate>
 	<author>diddipoeler, stony, svdoldie, donclumsy</author>
 	<authorEmail>diddipoeler@gmx.de</authorEmail>
 	<authorUrl>http://www.fussballineuropa.de</authorUrl>
