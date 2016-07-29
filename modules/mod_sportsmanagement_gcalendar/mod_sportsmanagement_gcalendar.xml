@@ -17,14 +17,20 @@
 		<filename>index.html</filename>
 		<filename>helper.php</filename>
 		<folder>tmpl</folder>
-		<folder>language</folder>
 	</files>
+	<languages>
+	<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_gcalendar.ini</language>
+	<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_gcalendar.sys.ini</language>
+	<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_gcalendar.ini</language>
+	<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_gcalendar.sys.ini</language>
+	<language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_gcalendar.ini</language>
+	<language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_gcalendar.sys.ini</language>
+	</languages>
 	
 	
 	<config>
 		<fields name="params"  addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-			<fieldset name="basic"
-      description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
+			<fieldset name="basic" description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
 				<field name="calendarids" type="gcalendar" default="" multiple="true"
 					label="MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_CALENDAR_IDS_LABEL" description="MOD_SPORTSMANAGEMENT_GCALENDAR_FIELD_CALENDAR_IDS_DESC" />
 				<field name="compact_events" type="list" default="2" class="btn-group" 
