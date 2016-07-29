@@ -224,7 +224,10 @@ $jinput = $app->input;
 $option = $jinput->getCmd('option');
 $date = JFactory::getDate();
 $user = JFactory::getUser();
-       
+
+$modified = $date->toSql();
+$modified_by = $user->get('id');
+              
 self::$_success = '';
 
 $sports_type_id = $jinput->post->get('filter_sports_type', 0);
@@ -1647,15 +1650,12 @@ catch (Exception $e) {
 $query = $db->getQuery(true);
 $query->clear();
 $query->select('ts.id as team_staff_id,ts.projectteam_id,ts.person_id');
-
 $query->select('p.id as project_id,p.season_id');
 $query->select('sst.team_id');
-
 $query->from('#__sportsmanagement_team_staff as ts');
 $query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.id = ts.projectteam_id');
 $query->join('INNER', '#__sportsmanagement_project as p ON p.id = pt.project_id');
 $query->join('INNER', '#__sportsmanagement_season_team_id as sst ON sst.id = pt.team_id and sst.season_id = p.season_id');
-
 $query->where('p.import_id != 0');
 $db->setQuery($query);
 $result = $db->loadObjectList();
@@ -1688,6 +1688,9 @@ $temp->person_id = $row->person_id;
 $temp->team_id = $row->team_id;
 $temp->persontype = 2;
 $temp->import_id = 1;
+$temp->published = 1;
+$temp->modified = $db->Quote(''.$modified.'');
+$temp->modified_by = $modified_by;
 try {
 // Insert the object into table.
 $result_insert = JFactory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
@@ -1726,6 +1729,9 @@ $temp->person_id = $row->person_id;
 $temp->team_id = $row->team_id;
 $temp->persontype = 2;
 $temp->import_id = 1;
+$temp->published = 1;
+$temp->modified = $db->Quote(''.$modified.'');
+$temp->modified_by = $modified_by;
 try {
 // Insert the object into table.
 $result_insert = JFactory::getDbo()->insertObject('#__sportsmanagement_season_team_person_id', $temp);
@@ -1774,15 +1780,12 @@ sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 $query = $db->getQuery(true);
 $query->clear();
 $query->select('ts.id as teamplayer_id,ts.projectteam_id,ts.person_id');
-
 $query->select('p.id as project_id,p.season_id');
 $query->select('sst.team_id');
-
 $query->from('#__sportsmanagement_team_player as ts');
 $query->join('INNER', '#__sportsmanagement_project_team AS pt ON pt.id = ts.projectteam_id');
 $query->join('INNER', '#__sportsmanagement_project as p ON p.id = pt.project_id');
 $query->join('INNER', '#__sportsmanagement_season_team_id as sst ON sst.id = pt.team_id and sst.season_id = p.season_id');
-
 $query->where('p.import_id != 0');
 $db->setQuery($query);
 $result = $db->loadObjectList();
@@ -1815,6 +1818,9 @@ $temp->person_id = $row->person_id;
 $temp->team_id = $row->team_id;
 $temp->persontype = 1;
 $temp->import_id = 1;
+$temp->published = 1;
+$temp->modified = $db->Quote(''.$modified.'');
+$temp->modified_by = $modified_by;
 try {
 // Insert the object into table.
 $result_insert = JFactory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);
@@ -1852,6 +1858,9 @@ $temp->person_id = $row->person_id;
 $temp->team_id = $row->team_id;
 $temp->persontype = 1;
 $temp->import_id = 1;
+$temp->published = 1;
+$temp->modified = $db->Quote(''.$modified.'');
+$temp->modified_by = $modified_by;
 try {
 // Insert the object into table.
 $result_insert = JFactory::getDbo()->insertObject('#__sportsmanagement_season_team_person_id', $temp);
@@ -1972,6 +1981,9 @@ $temp->person_id = $row->person_id;
 //$temp->team_id = $row->team_id;
 $temp->persontype = 3;
 $temp->import_id = 1;
+$temp->published = 1;
+$temp->modified = $db->Quote(''.$modified.'');
+$temp->modified_by = $modified_by;
 try {
 // Insert the object into table.
 $result_insert = JFactory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $temp);

@@ -1339,6 +1339,7 @@ $query->order('m.match_number');
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
+        $result = '';
 
 // Select some fields
 $query->select('pref.id AS value,pr.firstname,pr.nickname,pr.lastname,pr.email');
@@ -1357,8 +1358,15 @@ $query->where('mr.match_id = '. $match_id);
 		$query->where('mr.project_referee_id = '.$project_referee_id);	
 		}
 		$query->order('mr.project_position_id, mr.ordering ASC');
+try{
 		$db->setQuery($query);
-		return $db->loadObjectList('value');
+		$result = $db->loadObjectList('value');
+         }
+catch (Exception $e){
+    echo $e->getMessage();
+}
+
+return $result;
 	}
     
     /**
@@ -1378,6 +1386,7 @@ $query->where('mr.match_id = '. $match_id);
         // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
+        $result = '';
 
 // Select some fields
 $query->select('pref.id AS value,pl.firstname,pl.nickname,pl.lastname,pl.info,pos.name AS positionname');
@@ -1398,8 +1407,17 @@ $query->where('pl.published = 1');
 		}
 
 		$query->order('pl.lastname ASC');
+        try{
 		$db->setQuery($query);
-		return $db->loadObjectList('value');
+		$result = $db->loadObjectList('value');
+         }
+catch (Exception $e){
+    echo $e->getMessage();
+}
+
+return $result;
+
+
 	}
     
  
@@ -1650,12 +1668,14 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
 		$option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
         $starttime = microtime(); 
-       
-        $query = JFactory::getDbo()->getQuery(true);
+        // Get a db connection.
+        $db = JFactory::getDbo();
+       $result = '';
+        $query = $db->getQuery(true);
         
         $query->select('ppos.id AS value,pos.name AS text,pos.id AS posid,pos.id AS pposid');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = pos.id ');
+        $query->from('#__sportsmanagement_position AS pos ');
+        $query->join('INNER','#__sportsmanagement_project_position AS ppos ON ppos.position_id = pos.id ');
         
         $query->where('ppos.project_id = '.$project_id);
         $query->where('pos.persontype = '.$person_type);
@@ -1668,7 +1688,7 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
 		//$query .= ' ORDER BY pos.ordering';
         $query->order('pos.ordering');
         
-		JFactory::getDbo()->setQuery($query);
+		$db->setQuery($query);
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
@@ -1676,12 +1696,22 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		if (!$result = JFactory::getDbo()->loadObjectList('value'))
-		{
-			sportsmanagementModeldatabasetool::writeErrorLog( __METHOD__, __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
-			return false;
-		}
-		return $result;
+        try{
+		$db->setQuery($query);
+		$result = $db->loadObjectList('value');
+         }
+catch (Exception $e){
+    echo $e->getMessage();
+}
+
+return $result;
+
+//		if (!$result = JFactory::getDbo()->loadObjectList('value'))
+//		{
+//			sportsmanagementModeldatabasetool::writeErrorLog( __METHOD__, __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
+//			return false;
+//		}
+//		return $result;
 	}
     
     /**

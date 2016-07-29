@@ -239,7 +239,9 @@ class sportsmanagementModelperson extends JSMModelAdmin
     $mdlPerson = JModelLegacy::getInstance("person", "sportsmanagementModel");
     $mdlPersonTable = $mdlPerson->getTable();
     
-    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');    
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _team_id<br><pre>'.print_r($this->_team_id,true).'</pre>'),'');    
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _project_team_id<br><pre>'.print_r($this->_project_team_id,true).'</pre>'),'');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _season_id<br><pre>'.print_r($this->_season_id,true).'</pre>'),'');
 
     switch ($post['persontype'])
             {
@@ -264,7 +266,7 @@ class sportsmanagementModelperson extends JSMModelAdmin
                 $mdlTable->active = 1;
                 $mdlTable->published = 1;
                 $mdlTable->person_id = $cid[$x];   
-                if ($mdlTable->store()===false)
+                if ( $mdlTable->store() === false )
 				{
 				    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 				}
@@ -272,26 +274,33 @@ class sportsmanagementModelperson extends JSMModelAdmin
 				{
 				}
                 // projekt position eintragen
+                // zuerst die positions id zum projekt ermitteln.
+                $this->jsmquery->clear();  
+                $this->jsmquery->select('id');
+                $this->jsmquery->from('#__sportsmanagement_project_position');
+                $this->jsmquery->where('project_id = '. $this->_project_id );
+                $this->jsmquery->where('position_id ='. $mdlPersonTable->position_id );
+                $this->jsmdb->setQuery($this->jsmquery);
+		        $res = $this->jsmdb->loadResult();
+                
                 // Create a new query object.
                 $insertquery = $db->getQuery(true);
                 // Insert columns.
-                $columns = array('person_id','project_id','project_position_id','persontype');
+                $columns = array('person_id','project_id','project_position_id','persontype','modified','modified_by');
                 // Insert values.
-                $values = array($cid[$x],$this->_project_id,0,1);
+                $values = array($cid[$x],$this->_project_id,$res,1,$db->Quote(''.$modified.''),$modified_by);
                 // Prepare the insert query.
                 $insertquery
-                ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position'))
+                ->insert($db->quoteName('#__sportsmanagement_person_project_position'))
                 ->columns($db->quoteName($columns))
                 ->values(implode(',', $values));
                 // Set the query using our newly populated query object and execute it.
                 $db->setQuery($insertquery);
-                if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
-                {
-                    
+                try {
+                sportsmanagementModeldatabasetool::runJoomlaQuery();
                 }
-                else
-                {
-                    
+                catch (Exception $e){
+                   
                 }
                  
 		        }
@@ -317,7 +326,7 @@ class sportsmanagementModelperson extends JSMModelAdmin
                 $mdlTable->active = 1;
                 $mdlTable->published = 1;
                 $mdlTable->person_id = $cid[$x];   
-                if ($mdlTable->store()===false)
+                if ( $mdlTable->store() === false )
 				{
 				    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 				}
@@ -325,26 +334,32 @@ class sportsmanagementModelperson extends JSMModelAdmin
 				{
 				}
                 // projekt position eintragen
+                // zuerst die positions id zum projekt ermitteln.
+                $this->jsmquery->clear();  
+                $this->jsmquery->select('id');
+                $this->jsmquery->from('#__sportsmanagement_project_position');
+                $this->jsmquery->where('project_id = '. $this->_project_id );
+                $this->jsmquery->where('position_id ='. $mdlPersonTable->position_id );
+                $this->jsmdb->setQuery($this->jsmquery);
+		        $res = $this->jsmdb->loadResult();
                 // Create a new query object.
                 $insertquery = $db->getQuery(true);
                 // Insert columns.
-                $columns = array('person_id','project_id','project_position_id','persontype');
+                $columns = array('person_id','project_id','project_position_id','persontype','modified','modified_by');
                 // Insert values.
-                $values = array($cid[$x],$this->_project_id,0,2);
+                $values = array($cid[$x],$this->_project_id,$res,2,$db->Quote(''.$modified.''),$modified_by);
                 // Prepare the insert query.
                 $insertquery
-                ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person_project_position'))
+                ->insert($db->quoteName('#__sportsmanagement_person_project_position'))
                 ->columns($db->quoteName($columns))
                 ->values(implode(',', $values));
                 // Set the query using our newly populated query object and execute it.
                 $db->setQuery($insertquery);
-                if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
-                {
-                    
+                try {
+                sportsmanagementModeldatabasetool::runJoomlaQuery();
                 }
-                else
-                {
-                    
+                catch (Exception $e){
+                   
                 }
                  
 		        }
@@ -370,7 +385,7 @@ class sportsmanagementModelperson extends JSMModelAdmin
                 $mdlPersonTable->load($cid[$x]);   
 
 $mdlTable = new stdClass();
-$mdlTable->id               = $season_person_id;
+$mdlTable->id = $season_person_id;
               $mdlTable->person_id = $cid[$x];
                 $mdlTable->team_id = 0;
                 $mdlTable->season_id = $this->_season_id;
