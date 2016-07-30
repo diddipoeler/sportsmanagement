@@ -1593,6 +1593,9 @@ $temp = new stdClass();
 $temp->season_id = $row->season_id;
 $temp->team_id = $row->team_id;
 $temp->import_id = 1;
+$temp->published = 1;
+$temp->modified = $db->Quote(''.$modified.'');
+$temp->modified_by = $modified_by;
 try { 
 // Insert the object into table.
 $result_insert = JFactory::getDbo()->insertObject('#__sportsmanagement_season_team_id', $temp);
