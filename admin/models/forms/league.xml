@@ -53,7 +53,8 @@
 			type="country"
 			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_COUNTRY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_COUNTRY_DESC"
-			class="form-control form-control-inline">
+			class="form-control form-control-inline"
+      required="true">
 		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
 	</field>	
 	
