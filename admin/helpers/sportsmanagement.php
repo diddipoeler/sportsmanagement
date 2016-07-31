@@ -2849,18 +2849,22 @@ public static function getExtraSelectOptions($view = '', $field = '', $template 
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' template<br><pre>'.print_r($template,true).'</pre>'),'Notice');
         
         $query->select('ef.*,ev.fieldvalue as fvalue,ev.id as value_id ');
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields as ef ');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields_values as ev ON ( ef.id = ev.field_id AND ev.jl_id = '.$jlid .')' );
+		$query->from('#__sportsmanagement_user_extra_fields as ef ');
+        $query->join('LEFT', '#__sportsmanagement_user_extra_fields_values as ev ON ( ef.id = ev.field_id AND ev.jl_id = '.$jlid .')' );
         $query->where('ef.template_'.$template.' LIKE ' . $db->Quote(''.JRequest::getVar('view').'') );
         //$query->where('ev.jl_id = '.$jlid );
         $query->order('ef.ordering');
         
+    
+		
+		try {
         $db->setQuery($query);
-		if (!$result = $db->loadObjectList())
-		{
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-			return false;
+        $result = $db->loadObjectList();
+    }
+    catch (Exception $e){
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+			$result = false;
 		}
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($result,true).'</pre>'),'Error');
@@ -2899,7 +2903,7 @@ $conditions = array(
 	$db->quoteName('jl_id') . '='.$pid
 );
  
-$query->delete($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields_values'));
+$query->delete($db->quoteName('#__sportsmanagement_user_extra_fields_values'));
 $query->where($conditions);
  
 $db->setQuery($query);  
