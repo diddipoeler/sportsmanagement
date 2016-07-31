@@ -2906,13 +2906,21 @@ $conditions = array(
 $query->delete($db->quoteName('#__sportsmanagement_user_extra_fields_values'));
 $query->where($conditions);
  
-$db->setQuery($query);  
+//$db->setQuery($query);  
 
-if (!$db->query())
-		{
-			
-            $app->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields delete<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-		}
+	try {
+        $db->setQuery($query);
+        $result = $db->query();
+    }
+    catch (Exception $e){
+        
+        }
+        
+//if (!$db->query())
+//		{
+//			
+//            $app->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields delete<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+//		}
         
 // Create a new query object.
         $query = $db->getQuery(true);
@@ -2926,13 +2934,21 @@ if (!$db->query())
             ->columns($db->quoteName($columns))
             ->values(implode(',', $values));
         // Set the query using our newly populated query object and execute it.
-        $db->setQuery($query);
+        //$db->setQuery($query);
 
-if (!$db->query())
-		{
-			
-            $app->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields insert<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-		}
+	try {
+        $db->setQuery($query);
+        $result = $db->query();
+    }
+    catch (Exception $e){
+        
+        }
+        
+//if (!$db->query())
+//		{
+//			
+//            $app->enqueueMessage(JText::_('sportsmanagementHelper saveExtraFields insert<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+//		}
 
 			}
 		}
