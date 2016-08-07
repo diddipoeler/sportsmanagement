@@ -210,12 +210,14 @@ return self::$_success;
 }
 
 
+
 /**
  * sportsmanagementModeljoomleagueimports::importjoomleaguenew()
  * 
+ * @param integer $importstep
  * @return
  */
-function importjoomleaguenew()
+function importjoomleaguenew($importstep=0)
 {
 // Reference global application object
 $app = JFactory::getApplication();
@@ -487,7 +489,7 @@ foreach ( $jl_fields[$jl_table] as $key2 => $value2 )
             sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
             }
             catch (Exception $e) {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
+            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
             }
 
             //$app->enqueueMessage(JText::_('Daten aus der Tabelle: ( '.$jl_table.' ) in die Tabelle: ( '.$jsm_table.' ) importiert!'),'Notice');    

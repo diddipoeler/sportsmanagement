@@ -238,6 +238,33 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
 		return self::$jsmtables;
     }
     
+    /**
+     * sportsmanagementModeldatabasetool::getJoomleagueTables()
+     * 
+     * @return
+     */
+    function getJoomleagueTablesTruncate()
+    {
+        $app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        $db = JFactory::getDbo();
+        //$jsmtables = array();
+        $prefix = $app->getCfg('dbprefix');
+        
+        $result = $db->getTableList();
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prefix <br><pre>'.print_r($prefix,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTableList <br><pre>'.print_r($result,true).'</pre>'),'');
+        
+        foreach ( $result as $key => $value )
+        {
+        if ( preg_match("/joomleague/i", $value ) && preg_match("/".$prefix."/i", $value )  )
+        {
+        self::$jsmtables[] = $value;
+        }   
+        }
+      
+		return self::$jsmtables;
+    }
     
     /**
      * sportsmanagementModeldatabasetool::checkImportTablesJlJsm()

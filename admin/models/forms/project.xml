@@ -217,7 +217,7 @@
 
       <!-- http://docs.joomla.org/Category_form_field_type -->
       <field name="category_id" 
-      type="" 
+      type="media" 
       extension="" 
       label="JCATEGORIES" 
       description="JGLOBAL_CHOOSE_CATEGORY_DESC" />
@@ -561,7 +561,7 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST_AGEGROUP"
   description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
 			<field
 				name="picture"
-				type=""
+				type="media"
 				default=""				
 				label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT_PICTURE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT_PICTURE"

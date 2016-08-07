@@ -504,7 +504,7 @@ default="0"
   description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
 			<field
 				name="picture"
-				type=""
+				type="media"
 				default=""					
 				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_PICTURE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_PICTURE_DESC"

@@ -94,19 +94,19 @@ class sportsmanagementControllerUpdate extends JControllerLegacy
 	 */
 	function save()
 	{
-		JToolBarHelper::back(JText::_('COM_SPORTSMANAGEMENT_BACK_UPDATELIST'),JRoute::_('index.php?option=com_sportsmanagement&view=updates&task=update.display'));
-		$post=JRequest::get('post');
-		$file_name=JRequest::getVar('file_name');
-		$path=explode('/',$file_name);
+		//JToolBarHelper::back(JText::_('COM_SPORTSMANAGEMENT_BACK_UPDATELIST'),JRoute::_('index.php?option=com_sportsmanagement&view=updates&task=update.display'));
+		$post = JRequest::get('post');
+		$file_name = JRequest::getVar('file_name');
+		$path = explode('/',$file_name);
 		if (count($path) > 1)
 		{
-			$filepath=JPATH_COMPONENT_SITE.DS.'extensions'.DS.$path[0].DS.'admin'.DS.'install'.DS.$path[1];
+			$filepath = JPATH_COMPONENT_SITE.DS.'extensions'.DS.$path[0].DS.'admin'.DS.'install'.DS.$path[1];
 		}
 		else
 		{
-			$filepath=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'updates'.DS.$path[0];
+			$filepath = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'updates'.DS.$path[0];
 		}
-		$model=$this->getModel('updates');
+		$model = $this->getModel('updates');
 		echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_FROM_FILE','<b>'.$filepath.'</b>');
 		if (JFile::exists($filepath))
 		{

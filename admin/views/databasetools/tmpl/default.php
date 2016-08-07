@@ -101,6 +101,25 @@ echo $this->loadTemplate('joomla2');
 					</td>
 				</tr>
                 
+                <tr>
+					<td class="nowrap" valign="top">
+						<?php
+						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.truncatejl&tmpl=component' );
+						?>
+						
+                        <a class="modal" rel="{handler: 'iframe', size: {x: '630', y: '200'}}" href="<?php echo $link; ?>" title="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATE2JL' ); ?>">
+							<?php
+							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATEJL' );
+							?>
+						</a>
+					</td>
+					<td>
+						<?php
+						echo JText::_( "COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATEJL_DESCR" );
+						?>
+					</td>
+				</tr>
+                
 				<tr>
 					<td class="nowrap" valign="top">
 						<?php

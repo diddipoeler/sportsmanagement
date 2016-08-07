@@ -81,7 +81,7 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
   description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
 				
 		<field 	name="assocflag" 
-				type="" 
+				type="media" 
 				default=""
 				directory=""
 				preview="show"	
@@ -90,7 +90,7 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 				description="COM_SPORTSMANAGEMENT_GLOBAL_FLAG_DESC">
 		</field>
 		<field 	name="picture" 
-				type=""
+				type="media"
         default=""  
 				directory=""
 				preview="show"			

@@ -128,8 +128,30 @@ $model->setSportsManagementTableQuery($value , $this->getTask() );
   
 $msg = 'Alle Tabellen geleert';   
 //$this->setRedirect('index.php?option=com_sportsmanagement&view=databasetools',$msg);   
-$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);   
+$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component&info=truncate',$msg);   
 }  
+
+
+/**
+ * sportsmanagementControllerDatabaseTool::truncatejl()
+ * 
+ * @return void
+ */
+function truncatejl()
+{
+$app = JFactory::getApplication();  
+$model = $this->getModel('databasetool');      
+$jl_tables = $model->getJoomleagueTablesTruncate();  
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_tables<br><pre>'.print_r($jl_tables,true).'</pre>'),'');	  
+
+foreach( $jl_tables as $key => $value )  
+{  
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_tables<br><pre>'.print_r($value,true).'</pre>'),'');	  
+$model->setSportsManagementTableQuery($value , 'TRUNCATE' );  
+}      
+    
+}
+
 
 
 /**

@@ -78,7 +78,7 @@
   description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
 			<field
 				name="picture"
-				type=""
+				type="media"
 				default=""				
 				label="COM_SPORTSMANAGEMENT_ADMIN_POSITION_EDIT_PICTURE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_POSITION_EDIT_PICTURE_DESC"

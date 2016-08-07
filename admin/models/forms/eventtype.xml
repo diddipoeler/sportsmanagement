@@ -51,6 +51,7 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 		<field
 			name="splitt"
 			type="radio"
+      class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_NOTE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_NOTE_DESC"
 			default="0">
@@ -72,6 +73,7 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 		<field
 			name="double"
 			type="radio"
+      class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_PAIR_EVENT"
 			description="COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_PAIR_EVENT_DESC"
 			default="0">
@@ -85,7 +87,7 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
   description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
 				
 		<field 	name="icon" 
-				type="" 
+				type="media" 
 				default=""
 				directory=""
 				preview="show"	

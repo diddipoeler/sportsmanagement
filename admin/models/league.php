@@ -41,7 +41,7 @@
 defined('_JEXEC') or die('Restricted access');
  
 // import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
+//jimport('joomla.application.component.modeladmin');
  
 
 /**
@@ -54,6 +54,7 @@ jimport('joomla.application.component.modeladmin');
  * @access public
  */
 class sportsmanagementModelleague extends JSMModelAdmin
+//class sportsmanagementModelleague extends JModelAdmin
 {
 	
 	/**
@@ -187,5 +188,11 @@ class sportsmanagementModelleague extends JSMModelAdmin
 		}
 		return $result;
 	}
-    
+
+
+
+
+
+
+        
 }

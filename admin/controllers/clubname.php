@@ -41,8 +41,7 @@
 defined('_JEXEC') or die('Restricted access');
  
 // import Joomla controllerform library
-jimport('joomla.application.component.controllerform');
- 
+//jimport('joomla.application.component.controllerform');
 
 
 /**
@@ -54,9 +53,19 @@ jimport('joomla.application.component.controllerform');
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerclubname extends JControllerForm
+class sportsmanagementControllerclubname extends JSMControllerForm
 {
 
-
+    /**
+	 * Class Constructor
+	 *
+	 * @param	array	$config		An optional associative array of configuration settings.
+	 * @return	void
+	 * @since	1.5
+	 */
+	function __construct($config = array())
+	{
+		parent::__construct($config);
+    }   
 
 }

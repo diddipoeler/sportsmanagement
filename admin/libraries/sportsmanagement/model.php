@@ -41,6 +41,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.modeladmin');
+jimport('joomla.application.component.modellist');
 
 /**
  * JSMModelAdmin
@@ -116,8 +117,202 @@ if( $this->jsmapp->isSite() )
 			return false;
 		}
         
+        $prefix = $this->jsmapp->getCfg('dbprefix');
+        
         switch ($this->getName())
 		{
+		case 'position':
+        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
+        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
+        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
+         $this->jsmquery->clear();
+        $this->jsmquery->select('*');
+			$this->jsmquery->from('information_schema.columns');
+            $this->jsmquery->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_position' ");
+			
+			$this->jsmdb->setQuery($this->jsmquery);
+            
+			$result = $this->jsmdb->loadObjectList();
+
+            
+            foreach($result as $field )
+        {
+
+            switch ($field->DATA_TYPE)
+            {
+                case 'varchar':
+                $form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
+                break;
+            }
+            
+           } 
+        break;
+        case 'statistic':
+        $form->setFieldAttribute('icon', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
+        $form->setFieldAttribute('icon', 'directory', 'com_sportsmanagement/database/statistics');
+        $form->setFieldAttribute('icon', 'type', $cfg_which_media_tool);
+         $this->jsmquery->clear();
+        $this->jsmquery->select('*');
+			$this->jsmquery->from('information_schema.columns');
+            $this->jsmquery->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_statistic' ");
+			
+			$this->jsmdb->setQuery($this->jsmquery);
+            
+			$result = $this->jsmdb->loadObjectList();
+
+            
+            foreach($result as $field )
+        {
+
+            switch ($field->DATA_TYPE)
+            {
+                case 'varchar':
+                $form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
+                break;
+            }
+            
+           } 
+        break;
+        case 'projectreferee':
+        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
+        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/projectreferees');
+        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
+        break;
+        case 'division':
+        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
+        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/divisions');
+        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
+        break;
+        case 'teamperson':
+        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_player',''));
+        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/teamplayers');
+        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
+        break;
+        case 'smquote':
+        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
+        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
+        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
+        break;
+        case 'jlextfederation':
+         $form->setFieldAttribute('assocflag', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_flags',''));
+        $form->setFieldAttribute('assocflag', 'directory', 'com_sportsmanagement/database/flags_associations');
+        $form->setFieldAttribute('assocflag', 'type', $cfg_which_media_tool);
+        
+        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
+        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/associations');
+        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
+
+        $this->jsmquery->clear();
+        $this->jsmquery->select('*');
+			$this->jsmquery->from('information_schema.columns');
+            $this->jsmquery->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_federations' ");
+			
+			$this->jsmdb->setQuery($this->jsmquery);
+            
+			$result = $this->jsmdb->loadObjectList();
+
+            
+            foreach($result as $field )
+        {
+
+            switch ($field->DATA_TYPE)
+            {
+                case 'varchar':
+                $form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
+                break;
+            }
+            
+           } 
+        break;
+        case 'jlextcountry':
+        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_flags',''));
+        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/flags');
+        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
+
+        $this->jsmquery->clear();
+        $this->jsmquery->select('*');
+			$this->jsmquery->from('information_schema.columns');
+            $this->jsmquery->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_countries' ");
+			try {
+			$this->jsmdb->setQuery($this->jsmquery);
+			$result = $this->jsmdb->loadObjectList();
+            foreach($result as $field )
+        {
+
+            switch ($field->DATA_TYPE)
+            {
+                case 'varchar':
+                $form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
+                break;
+            }
+            
+           } 
+            }
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
+
+            
+        break;
+        case 'jlextassociation':
+        $form->setFieldAttribute('assocflag', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_flags',''));
+        $form->setFieldAttribute('assocflag', 'directory', 'com_sportsmanagement/database/flags_associations');
+        $form->setFieldAttribute('assocflag', 'type', $cfg_which_media_tool);
+        
+        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_logo_big',''));
+        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/associations');
+        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
+       
+        $this->jsmquery->clear();
+        $this->jsmquery->select('*');
+			$this->jsmquery->from('information_schema.columns');
+            $this->jsmquery->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_jlextassociation' ");
+			
+			$this->jsmdb->setQuery($this->jsmquery);
+
+			$result = $this->jsmdb->loadObjectList();
+
+            foreach($result as $field )
+        {
+
+
+            switch ($field->DATA_TYPE)
+            {
+                case 'varchar':
+                $form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
+                break;
+            }
+
+           } 
+        break;
+        case 'eventtype':
+         $form->setFieldAttribute('icon', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_icon',''));
+        $form->setFieldAttribute('icon', 'directory', 'com_sportsmanagement/database/events');
+        $form->setFieldAttribute('icon', 'type', $cfg_which_media_tool);
+
+       $this->jsmquery->clear();
+        $this->jsmquery->select('*');
+			$this->jsmquery->from('information_schema.columns');
+            $this->jsmquery->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_eventtype' ");
+			
+			$this->jsmdb->setQuery($this->jsmquery);
+ 
+			$result = $this->jsmdb->loadObjectList();
+            
+            foreach($result as $field )
+        {
+
+            switch ($field->DATA_TYPE)
+            {
+                case 'varchar':
+                $form->setFieldAttribute($field->COLUMN_NAME, 'size', $field->CHARACTER_MAXIMUM_LENGTH);
+                break;
+            }
+            
+           } 
+        break;  
 		case 'round':
         // welche joomla version ?
         if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -269,8 +464,6 @@ if( $this->jsmapp->isSite() )
         //$form->setFieldAttribute('trikot_away', 'directory', 'com_sportsmanagement/database/clubs/trikot_away');
         $form->setFieldAttribute('trikot_away', 'directory', 'com_sportsmanagement/database/clubs/trikot');
         $form->setFieldAttribute('trikot_away', 'type', $cfg_which_media_tool);
-        
-        $prefix = $this->jsmapp->getCfg('dbprefix');
 
         $this->jsmquery->clear();
         $this->jsmquery->select('*');
@@ -308,7 +501,7 @@ if( $this->jsmapp->isSite() )
         $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/teams');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
-        $prefix = $this->jsmapp->getCfg('dbprefix');
+
         $this->jsmquery->clear();
         $this->jsmquery->select('*');
 		$this->jsmquery->from('information_schema.columns');
@@ -340,30 +533,18 @@ if( $this->jsmapp->isSite() )
         $form->setFieldAttribute('icon', 'directory', 'com_sportsmanagement/database/sport_types');
         $form->setFieldAttribute('icon', 'type', $cfg_which_media_tool);
         
-        $prefix = $this->jsmapp->getCfg('dbprefix');
-        
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' prefix<br><pre>'.print_r($prefix,true).'</pre>'),'');
-        //$whichtabel = $this->getTable();
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' whichtabel<br><pre>'.print_r($whichtabel,true).'</pre>'),'');
-        
         $this->jsmquery->clear();
         $this->jsmquery->select('*');
 			$this->jsmquery->from('information_schema.columns');
             $this->jsmquery->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_sports_type' ");
 			
 			$this->jsmdb->setQuery($this->jsmquery);
-            
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            
+
 			$result = $this->jsmdb->loadObjectList();
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
-            
+
             foreach($result as $field )
         {
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COLUMN_NAME<br><pre>'.print_r($field->COLUMN_NAME,true).'</pre>'),'');
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' DATA_TYPE<br><pre>'.print_r($field->DATA_TYPE,true).'</pre>'),'');
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' CHARACTER_MAXIMUM_LENGTH<br><pre>'.print_r($field->CHARACTER_MAXIMUM_LENGTH,true).'</pre>'),'');
-            
+
             switch ($field->DATA_TYPE)
             {
                 case 'varchar':
@@ -379,8 +560,6 @@ if( $this->jsmapp->isSite() )
         $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams($this->jsmoption)->get('ph_team',''));
         $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/playgrounds');
         $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
-        
-        $prefix = $this->jsmapp->getCfg('dbprefix');
 
         $this->jsmquery->clear();
         $this->jsmquery->select('*');
@@ -388,18 +567,12 @@ if( $this->jsmapp->isSite() )
             $this->jsmquery->where("TABLE_NAME LIKE '".$prefix."sportsmanagement_playground' ");
 			
 			$this->jsmdb->setQuery($this->jsmquery);
-            
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-            
+
 			$result = $this->jsmdb->loadObjectList();
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
-            
+
             foreach($result as $field )
         {
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' COLUMN_NAME<br><pre>'.print_r($field->COLUMN_NAME,true).'</pre>'),'');
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' DATA_TYPE<br><pre>'.print_r($field->DATA_TYPE,true).'</pre>'),'');
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' CHARACTER_MAXIMUM_LENGTH<br><pre>'.print_r($field->CHARACTER_MAXIMUM_LENGTH,true).'</pre>'),'');
-            
+
             switch ($field->DATA_TYPE)
             {
                 case 'varchar':
@@ -449,8 +622,6 @@ if( $this->jsmapp->isSite() )
         $form->setFieldAttribute('birthday', 'type', 'customcalendar');
         $form->setFieldAttribute('deathday', 'type', 'customcalendar');  
         }
-
-        $prefix = $this->jsmapp->getCfg('dbprefix');
         
         $this->jsmquery->clear();
         $this->jsmquery->select('*');

@@ -27,7 +27,7 @@
 * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
 * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
 * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
 * Siehe die GNU General Public License für weitere Details.
 *
@@ -37,75 +37,50 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-// No direct access to this file
+// Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
- 
-// import Joomla modelform library
-//jimport('joomla.application.component.modeladmin');
- 
+
+jimport('joomla.html.html.bootstrap');
+jimport('joomla.application.component.view');
+
 
 /**
- * sportsmanagementModeltrainingdata
+ * sportsmanagementViewUpdate
  * 
- * @package 
- * @author diddi
- * @copyright 2014
- * @version $Id$
+ * @package   
+ * @author 
+ * @copyright diddi
+ * @version 2014
  * @access public
  */
-class sportsmanagementModeltrainingdata extends JSMModelAdmin
+class sportsmanagementViewUpdate extends sportsmanagementView
 {
-
-	/**
-	 * Returns a reference to the a Table object, always creating it.
-	 *
-	 * @param	type	The table type to instantiate
-	 * @param	string	A prefix for the table class name. Optional.
-	 * @param	array	Configuration array for model. Optional.
-	 * @return	JTable	A database object
-	 * @since	1.6
-	 */
-	public function getTable($type = 'TeamTrainingData', $prefix = 'sportsmanagementTable', $config = array()) 
-	{
-	$config['dbo'] = sportsmanagementHelper::getDBConnection(); 
-		return JTable::getInstance($type, $prefix, $config);
-	}
-
 	
+	/**
+	 * sportsmanagementViewUpdate::init()
+	 * 
+	 * @return void
+	 */
+	public function init ()
+	{
 
 
+	}
     
     /**
-	 * Method to save the form data.
-	 *
-	 * @param	array	The form data.
-	 * @return	boolean	True on success.
-	 * @since	1.6
-	 */
-	public function save($data)
+	* Add the page title and toolbar.
+	*
+	* @since	1.7
+	*/
+	protected function addToolbar()
 	{
-	   $app = JFactory::getApplication();
-       $date = JFactory::getDate();
-	   $user = JFactory::getUser();
-       $post = JRequest::get('post');
-       // Set the values
-	   $data['modified'] = $date->toSql();
-	   $data['modified_by'] = $user->get('id');
         
-       // zuerst sichern, damit wir bei einer neuanlage die id haben
-       if ( parent::save($data) )
-       {
-			$id =  (int) $this->getState($this->getName().'.id');
-            $isNew = $this->getState($this->getName() . '.new');
-            $data['id'] = $id;
-            
-            if ( $isNew )
-            {
-                //Here you can do other tasks with your newly saved record...
-                $this->jsmapp->enqueueMessage(JText::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id),'');
-            }
-           
-		}
-    }   
+        parent::addToolbar();
+
+        
+    }    
+    
+    
     
 }
+?>

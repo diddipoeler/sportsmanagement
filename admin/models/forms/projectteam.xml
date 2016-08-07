@@ -136,7 +136,7 @@
   description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">	
 			<field
 				name="picture"
-				type=""
+				type="media"
 				default=""				
 				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_PIC"
 				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_PIC_DESC"
@@ -154,7 +154,7 @@
 			
       <field
 				name="trikot_home"
-				type=""
+				type="media"
 				default="" 
 				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_HOME"
 				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_HOME_DESC"
@@ -163,7 +163,7 @@
 				directory=""/>				
 			<field
 				name="trikot_away"
-				type=""
+				type="media"
 				default=""
 				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_AWAY"
 				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_TRIKOT_AWAY_DESC"
@@ -174,7 +174,7 @@
         <!--
         <field
 				name="logo_big"
-				type=""
+				type="media"
 				default=""
 				label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE_DESC"

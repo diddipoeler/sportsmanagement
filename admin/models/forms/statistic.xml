@@ -93,7 +93,7 @@
   description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
 			<field
 				name="icon"
-				type=""
+				type="media"
 				default=""				
 				label="COM_SPORTSMANAGEMENT_GLOBAL_ICON"
 				description="COM_SPORTSMANAGEMENT_GLOBAL_ICON_DESC"
@@ -121,7 +121,7 @@
   description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
 				
 		<field 	name="icon" 
-				type="" 
+				type="media" 
 				directory=""
 				preview="show"				
 				label="COM_SPORTSMANAGEMENT_GLOBAL_ICON" 

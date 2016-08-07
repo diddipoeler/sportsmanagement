@@ -41,8 +41,12 @@
 defined('_JEXEC') or die('Restricted access');
 //jimport('joomla.html.pane');
 
-jimport('joomla.html.html.sliders');
-jimport('joomla.html.html.tabs');
+//jimport('joomla.html.html.sliders');
+//jimport('joomla.html.html.tabs');
+JHtml::_('bootstrap.framework');
+jimport('joomla.html.html.bootstrap');
+//jimport('joomla.application.component.view');
+//jimport('joomla.html.html.bootstrap');
   
 $version			= '1.0.53';
 $updateFileDate		= '2016-02-01';
@@ -51,14 +55,14 @@ $updateDescription	='<span style="color:orange">Update all tables using the curr
 $excludeFile		='false';
 $option = JRequest::getCmd('option');
 
-$maxImportTime=JComponentHelper::getParams($option)->get('max_import_time',0);
+$maxImportTime = JComponentHelper::getParams($option)->get('max_import_time',0);
 if (empty($maxImportTime))
 {
 	$maxImportTime=880;
 }
 if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImportTime);}
 
-$maxImportMemory=JComponentHelper::getParams($option)->get('max_import_memory',0);
+$maxImportMemory = JComponentHelper::getParams($option)->get('max_import_memory',0);
 if (empty($maxImportMemory))
 {
 	$maxImportMemory='150M';
@@ -74,7 +78,7 @@ function getUpdatePart()
 {
 	$option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
-	$update_part=$app->getUserState($option.'update_part');
+	$update_part = $app->getUserState($option.'update_part');
 	return $update_part;
 }
 
@@ -117,7 +121,7 @@ function ImportTables()
 	$db = sportsmanagementHelper::getDBConnection();
     $option = JRequest::getCmd('option');
 
-	$imports=file_get_contents(JPATH_ADMINISTRATOR.'/components/'.$option.'/sql/install.mysql.utf8.sql');
+	$imports = file_get_contents(JPATH_ADMINISTRATOR.'/components/'.$option.'/sql/install.mysql.utf8.sql');
 
 $imports=preg_replace("%/\*(.*)\*/%Us",'',$imports);
 		$imports=preg_replace("%^--(.*)\n%mU",'',$imports);
@@ -125,10 +129,39 @@ $imports=preg_replace("%/\*(.*)\*/%Us",'',$imports);
 	
 		$imports=explode(';',$imports);
 		$cntPanel=0;
-		echo JHtml::_('sliders.start','tables',array(
-						'allowAllClose' => true,
-						'startTransition' => true,
-						true));
+//		echo JHtml::_('sliders.start','tables',array(
+//						'allowAllClose' => true,
+//						'startTransition' => true,
+//						true));
+
+
+/*
+// Example accordion usage
+echo JHtml::_('bootstrap.startAccordion', 'slide-example', array('active' => 'slide2'));
+echo JHtml::_('bootstrap.addSlide', 'slide-example', JText::_('Slide 1'), 'slide1');
+echo "Content of slide 1";
+echo JHtml::_('bootstrap.endSlide');
+echo JHtml::_('bootstrap.addSlide', 'slide-example', JText::_('Slide 2'), 'slide2');
+echo "Content of slide 2";
+echo JHtml::_('bootstrap.endSlide');
+echo JHtml::_('bootstrap.addSlide', 'slide-example', JText::_('Slide 3'), 'slide3');
+echo "Content of slide 3";
+echo JHtml::_('bootstrap.endSlide');
+echo JHtml::_('bootstrap.addSlide', 'slide-example', JText::_('Slide 4'), 'slide4');
+echo "Content of slide 4";
+echo JHtml::_('bootstrap.endSlide');
+echo JHtml::_('bootstrap.endAccordion');
+*/
+
+
+//$slidesOptions = '';
+ // Define slides options
+        $slidesOptions = array(
+            "active" => "slide1_id" // It is the ID of the active tab.
+        );
+echo JHtml::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions);
+
+$slide_id = 1;                        
 		foreach ($imports as $import)
 		{
 			$import=trim($import);
@@ -138,10 +171,12 @@ $imports=preg_replace("%/\*(.*)\*/%Us",'',$imports);
 				$DummyStr=substr($DummyStr,strpos($DummyStr,'`')+1);
 				$DummyStr=substr($DummyStr,0,strpos($DummyStr,'`'));
 				$db->setQuery($import);
-				$panelName = substr(str_replace('joomleague','',str_replace('_','',$DummyStr)),1);
-				echo JHtml::_('sliders.panel',$DummyStr,'panel-'.$panelName);
-					
-				echo '<table class="adminlist" style="width:100%; " border="0"><thead><tr><td colspan="2" class="key" style="text-align:center;"><h3>';
+				$panelName = substr(str_replace('sportsmanagement','',str_replace('_','',$DummyStr)),1);
+				
+                //echo JHtml::_('sliders.panel',$DummyStr,'panel-'.$panelName);
+				echo JHtml::_('bootstrap.addSlide', 'slide-group-id', JText::_($panelName), "slide".$slide_id."_id");
+                	
+				echo '<table class="table" style="width:100%; " border="0"><thead><tr><td colspan="2" class="key" style="text-align:center;"><h3>';
 				echo "Checking existence of table [$DummyStr] - <span style='color:";
 				if ($db->query()){echo "green'>".JText::_('Success');}else{echo "red'>".JText::_('Failed');}
 				echo '</span>';
@@ -413,11 +448,13 @@ $imports=preg_replace("%/\*(.*)\*/%Us",'',$imports);
 				echo '</tbody></table>';
 				unset($newIndexes);
 				unset($newFields);
-					
+				$slide_id++;	
 			}
 			unset($import);
+            echo JHtml::_('bootstrap.endSlide');
 		}
-		echo JHtml::_('sliders.end');
+		//echo JHtml::_('sliders.end');
+        echo JHtml::_('bootstrap.endAccordion');
 		return '';
 
 

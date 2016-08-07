@@ -1,4 +1,41 @@
 <?php
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 
 defined('_JEXEC') or die;
 
@@ -6,14 +43,29 @@ defined('_JEXEC') or die;
 //require_once JPATH_COMPONENT . '/models/item.php';
 
 // import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
+//jimport('joomla.application.component.modeladmin');
 
 
-class sportsmanagementModelTreetonode extends JModelAdmin
+/**
+ * sportsmanagementModelTreetonode
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2016
+ * @version $Id$
+ * @access public
+ */
+class sportsmanagementModelTreetonode extends JSMModelAdmin
 {
 
 //var $_project_id = 0;
 
+/**
+ * sportsmanagementModelTreetonode::__construct()
+ * 
+ * @param mixed $config
+ * @return void
+ */
 public function __construct($config = array())
         {   
  
@@ -40,6 +92,12 @@ public function __construct($config = array())
         }    
         
         
+        /**
+         * sportsmanagementModelTreetonode::save()
+         * 
+         * @param mixed $data
+         * @return
+         */
         public function save($data)
 	{
 	
@@ -70,6 +128,12 @@ public function __construct($config = array())
 //		return true;
 //	}
     
+    /**
+     * sportsmanagementModelTreetonode::getNode()
+     * 
+     * @param integer $node_id
+     * @return
+     */
     function getNode($node_id=0)
 	{
 	$this->jsmquery->clear();
@@ -115,6 +179,11 @@ public function __construct($config = array())
 //	}
 
 
+	/**
+	 * sportsmanagementModelTreetonode::getNodeMatch()
+	 * 
+	 * @return
+	 */
 	function getNodeMatch()
 	{
 ////		$option = $this->input->getCmd('option');
@@ -178,6 +247,11 @@ public function __construct($config = array())
 	}
 
 
+	/**
+	 * sportsmanagementModelTreetonode::setUnpublishNode()
+	 * 
+	 * @return
+	 */
 	function setUnpublishNode()
 	{
 		$app = JFactory::getApplication();
@@ -198,64 +272,62 @@ public function __construct($config = array())
 		return true;
 	}
 
-	/**
-	 * Returns a Table object, always creating it
-	 *
-	 * @param
-	 *        	type The table type to instantiate
-	 * @param
-	 *        	string A prefix for the table class name. Optional.
-	 * @param
-	 *        	array Configuration array for model. Optional.
-	 * @return JTable database object
-	 */
-	public function getTable($type = 'TreetoNode',$prefix = 'sportsmanagementTable',$config = array())
-	{
-		return JTable::getInstance($type,$prefix,$config);
-	}
+//	/**
+//	 * Returns a Table object, always creating it
+//	 *
+//	 * @param
+//	 *        	type The table type to instantiate
+//	 * @param
+//	 *        	string A prefix for the table class name. Optional.
+//	 * @param
+//	 *        	array Configuration array for model. Optional.
+//	 * @return JTable database object
+//	 */
+//	public function getTable($type = 'TreetoNode',$prefix = 'sportsmanagementTable',$config = array())
+//	{
+//		return JTable::getInstance($type,$prefix,$config);
+//	}
 
-	/**
-	 * Method to get the record form.
-	 *
-	 * @param array $data
-	 *        	the form.
-	 * @param boolean $loadData
-	 *        	the form is to load its own data (default case), false if not.
-	 * @return mixed JForm object on success, false on failure
-	 */
-
-
-	public function getForm($data = array(),$loadData = true)
-	{
-		//// Get the form.
-//		$form = $this->loadForm('com_sportsmanagement.' . $this->name,$this->name,array(
-//				'load_data' => $loadData
-//		));
-        // Get the form.
-		$form = $this->loadForm('com_sportsmanagement.treetonode', 'treetonode', array('control' => 'jform', 'load_data' => $loadData));
-        
-		if(empty($form))
-		{
-			return false;
-		}
-		return $form;
-	}
+//	/**
+//	 * Method to get the record form.
+//	 *
+//	 * @param array $data
+//	 *        	the form.
+//	 * @param boolean $loadData
+//	 *        	the form is to load its own data (default case), false if not.
+//	 * @return mixed JForm object on success, false on failure
+//	 */
+//	public function getForm($data = array(),$loadData = true)
+//	{
+//		//// Get the form.
+////		$form = $this->loadForm('com_sportsmanagement.' . $this->name,$this->name,array(
+////				'load_data' => $loadData
+////		));
+//        // Get the form.
+//		$form = $this->loadForm('com_sportsmanagement.treetonode', 'treetonode', array('control' => 'jform', 'load_data' => $loadData));
+//        
+//		if(empty($form))
+//		{
+//			return false;
+//		}
+//		return $form;
+//	}
 
 
-	/**
-	 * Method to get the data that should be injected in the form.
-	 *
-	 * @return mixed data for the form.
-	 */
-    protected function loadFormData()
-	{
-		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.' . $this->name . '.data',array());
-		if(empty($data))
-		{
-			$data = $this->getItem();
-		}
-		return $data;
-	}
+//	/**
+//	 * Method to get the data that should be injected in the form.
+//	 *
+//	 * @return mixed data for the form.
+//	 */
+//    protected function loadFormData()
+//	{
+//		// Check the session for previously entered form data.
+//		$data = JFactory::getApplication()->getUserState('com_sportsmanagement.edit.' . $this->name . '.data',array());
+//		if(empty($data))
+//		{
+//			$data = $this->getItem();
+//		}
+//		return $data;
+//	}
 
 }

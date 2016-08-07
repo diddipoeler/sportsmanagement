@@ -6,7 +6,7 @@ defined('_JEXEC') or die('Restricted access');
 
 //jimport('joomla.application.component.controller');
 // import Joomla controllerform library
-jimport('joomla.application.component.controllerform');
+//jimport('joomla.application.component.controllerform');
 
 
 
@@ -19,7 +19,7 @@ jimport('joomla.application.component.controllerform');
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerTreeto extends JControllerForm
+class sportsmanagementControllerTreeto extends JSMControllerForm
 {
 //	protected $view_list = 'treetos';
 //	

@@ -234,7 +234,7 @@ label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
   description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
 			<field
 				name="picture"
-				type=""
+				type="media"
         default=""
 				label="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_PICTURE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUND_PICTURE_DESC"

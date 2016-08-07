@@ -63,12 +63,12 @@ class sportsmanagementViewclubname extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // get the Data
-		$this->form = $this->get('Form');
-		$this->item = $this->get('Item');
-		$this->script = $this->get('Script');
+//		$app = JFactory::getApplication();
+//        $option = JRequest::getCmd('option');
+//        // get the Data
+//		$this->form = $this->get('Form');
+//		$this->item = $this->get('Item');
+//		$this->script = $this->get('Script');
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 

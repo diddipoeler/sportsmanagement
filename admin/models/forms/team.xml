@@ -198,7 +198,7 @@
   description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
 			<field
 				name="picture"
-				type=""
+				type="media"
 				default=""				
 				label="COM_SPORTSMANAGEMENT_ADMIN_TEAM_PIC"
 				description="COM_SPORTSMANAGEMENT_ADMIN_TEAM_PIC_DESC"

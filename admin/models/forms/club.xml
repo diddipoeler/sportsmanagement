@@ -417,7 +417,7 @@ label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
   description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_DESC">
 			<field
 				name="logo_small"
-				type=""
+				type="media"
 				default=""				
 				label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL"
 				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_SMALL_DESC"
@@ -435,7 +435,7 @@ label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
 			
 			<field
 				name="logo_middle"
-				type=""
+				type="media"
 				default="" 
 				label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_MIDDLE_DESC"
@@ -453,7 +453,7 @@ label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
         			
 			<field
 				name="logo_big"
-				type=""
+				type="media"
 				default=""
 				label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_LOGO_LARGE_DESC"
@@ -471,7 +471,7 @@ label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
        
        <field
 				name="trikot_home"
-				type=""
+				type="media"
 				default="" 
 				label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_HOME"
 				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_HOME_DESC"
@@ -481,7 +481,7 @@ label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
 				directory=""/>				
 			<field
 				name="trikot_away"
-				type=""
+				type="media"
 				default=""
 				label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_AWAY"
 				description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_TRIKOT_AWAY_DESC"

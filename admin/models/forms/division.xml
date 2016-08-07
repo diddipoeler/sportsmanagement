@@ -62,7 +62,7 @@
 	<fieldset name="picture">
 			<field
 				name="picture"
-				type=""
+				type="media"
 				default=""				
 				label="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_EDIT_PICTURE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_EDIT_PICTURE"

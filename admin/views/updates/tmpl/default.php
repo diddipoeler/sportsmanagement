@@ -46,6 +46,30 @@ $modalwidth = JComponentHelper::getParams($this->option)->get('modal_popup_width
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
+<style>
+/*  #myModal1 .modal-dialog {
+    width: 80%;
+  }
+*/  
+
+/*
+.modaljsm {
+    width: 80%;
+    height: 60%;
+  }  
+  */
+.modal-dialog {
+    width: 80%;
+  }  
+.modal-dialog,
+.modal-content {
+    /* 95% of window height */
+    height: 95%;
+}  
+
+
+</style>
+
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 <?PHP
 if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -91,16 +115,43 @@ echo $this->loadTemplate('joomla2');
 				<?php
 					$linkTitle=$row['file_name'];
 					$linkParams="title='".JText::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_MAKE_UPDATE')."'";
+                    $link = 'index.php?option=com_sportsmanagement&tmpl=component&view=update&task=update.save&file_name='.$row['file_name'];
 					//echo JHtml::link($link,$linkTitle,$linkParams);
                     ?>
                     <td class="center" nowrap="nowrap">
+                    <!--
 								<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
 									href="index.php?option=com_sportsmanagement&tmpl=component&view=update&task=update.save&file_name=<?php echo $row['file_name']; ?>"
 									 class="modal">
                                     <?php
                                     echo $row['file_name'];
                                     ?> 
-                    </a>                 
+                    </a>
+                    
+                    <a	href="javascript:openLink('<?php echo $link; ?>')">
+									 <?php
+									 
+								 	$image = 'icon-16-Teams.png';
+								 	$title=  '';
+								 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
+													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_EDIT_DETAILS'),
+													 'title= "' .$title. '"');
+													 
+										
+									 									 ?>
+								</a>
+                                -->
+<?PHP
+$name = "myModal";
+$html = '<a href="#modal-' . $i.'" data-toggle="modal" class="btn">'.$row['file_name'].'</a>';
+$params = array();
+$params['title']  = "test";
+$params['url']    = 'index.php?option=com_sportsmanagement&tmpl=component&view=update&task=update.save&file_name='.$row['file_name'];
+$params['height'] = 400;
+$params['width']  = "100%";
+echo $html .= JHtml::_('bootstrap.renderModal', 'modal-' . $i, $params);
+
+?>                                                 
 					</td>
 				<td><?php
 					if($row['updateDescription'] != "")
