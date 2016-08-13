@@ -631,6 +631,7 @@ $query->where('import_id != 0');
 $db->setQuery($query);
 $result = $db->loadObjectList();
 
+$zaehler = 1;
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 foreach( $result as $row )
 {
@@ -652,13 +653,18 @@ $query->clear();
 $query->update($db->quoteName('#__sportsmanagement_playground'))->set($fields)->where($conditions);
 $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Verein '.$row->name.' in den Mannschaften/Spielorte aktualisiert !</strong>'.'</span>';
-$my_text .= '<br />';
+$zaehler++;
+//$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Verein '.$row->name.' in den Mannschaften/Spielorte aktualisiert !</strong>'.'</span>';
+//$my_text .= '<br />';
 }
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.$zaehler.'Verein in den Mannschaften/Spielorte aktualisiert !</strong>'.'</span>';
+$my_text .= '<br />';
+
 
 /**
  * jetzt werden die importierten spielorte zugeordnet
  */
+$zaehler = 1; 
 $query->clear();
 $query->select('name,id,import_id');
 $query->from('#__sportsmanagement_playground');
@@ -683,10 +689,12 @@ $query->clear();
 $query->update($db->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
 $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
-$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Sportstätten '.$row->name.' in den Vereinen aktualisiert !</strong>'.'</span>';
-$my_text .= '<br />';
+$zaehler++;
+//$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Sportstätten '.$row->name.' in den Vereinen aktualisiert !</strong>'.'</span>';
+//$my_text .= '<br />';
 }
-
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.$zaehler.'Sportstätten in den Vereinen aktualisiert !</strong>'.'</span>';
+$my_text .= '<br />';
  
 $endtime = sportsmanagementModeldatabasetool::getRunTime();
 $totaltime = ($endtime - $starttime);

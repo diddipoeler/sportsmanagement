@@ -189,7 +189,7 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
      * 
      * @return
      */
-    function getRunTime()
+    public static function getRunTime()
     {
         $mtime = microtime();
 $mtime = explode(" ",$mtime);
