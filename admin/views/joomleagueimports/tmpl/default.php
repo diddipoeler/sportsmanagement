@@ -42,6 +42,40 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
+
+if ( $this->jl_table_import_step != 'ENDE' )
+{
+?>
+
+<script>
+
+jQuery(document).ready(function () {
+    document.getElementById('delayMsg').innerHTML = '';
+    delayRedirect();
+    // Handler for .ready() called.
+//    window.setTimeout(function () {
+//        location.href = "<?php echo $this->request_url.'&task=joomleagueimports.importjoomleaguenew'; ?>";
+//    }, 2000);
+});
+
+function delayRedirect(){
+    document.getElementById('delayMsg').innerHTML = '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP'); ?>';
+    var count = 5;
+    setInterval(function(){
+        count--;
+        document.getElementById('countDown').innerHTML = count;
+        if (count == 0) {
+            document.getElementById('delayMsg').innerHTML = '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP_START'); ?>';
+            window.location = '<?php echo $this->request_url.'&task=joomleagueimports.importjoomleaguenew'; ?>'; 
+        }
+    },1000);
+}
+
+</script>
+
+<?PHP    
+}
+
 //echo '<br><pre>'.print_r($this->success,true).'</pre>';
 
 ?>
@@ -71,11 +105,15 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <img src= "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/jl.png" width="180" height="auto" >
 </td>
 <td class="nowrap" align="center">
+<div id="delayMsg"></div>
+</td>
+<td class="nowrap" align="center">
 <img src= "<?php echo JURI::base( true ) ?>/components/com_sportsmanagement/assets/icons/logo_transparent.png" width="180" height="auto" >
 </td>
 </tr>
 </table>
-    
+  
+<!-- <input type="button" onclick="delayRedirect()" value="Click to Redirect"/>  -->
 <div id='editcell'>
 <?PHP
 if ( $this->success )
@@ -103,6 +141,7 @@ foreach ($this->success as $key => $value)
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="filter_order" value="" />
 <input type="hidden" name="filter_order_Dir" value="" />
+<input type="hidden" name="jl_table_import_step" value="<?php echo $this->jl_table_import_step; ?>" />
 
 <?php echo JHtml::_('form.token')."\n"; ?>
 </form>

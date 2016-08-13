@@ -55,7 +55,33 @@ jimport('joomla.application.component.controlleradmin');
 class sportsmanagementControllerjoomleagueimports extends JControllerAdmin
 {
 
-
+/**
+	 * Class Constructor
+	 *
+	 * @param	array	$config		An optional associative array of configuration settings.
+	 * @return	void
+	 * @since	1.5
+	 */
+	function __construct($config = array())
+	{
+		parent::__construct($config);
+        //$this->jsmdb = sportsmanagementHelper::getDBConnection();
+        // Reference global application object
+        $this->jsmapp = JFactory::getApplication();
+        // JInput object
+        $this->jsmjinput = $this->jsmapp->input;
+        //$this->jsmoption = $this->jsmjinput->getCmd('option');
+//        $this->jsmdocument = JFactory::getDocument();
+//        $this->jsmuser = JFactory::getUser();
+//        $this->jsmdate = JFactory::getDate();
+////        $this->option = $this->jsmjinput->getCmd('option');
+//        $this->club_id = $this->jsmapp->getUserState( "$this->option.club_id", '0' );
+        
+//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
+        
+		// Map the apply task to the save method.
+		//$this->registerTask('apply', 'save');
+	}
 
 /**
  * sportsmanagementControllerjoomleagueimports::importjoomleaguenew()
@@ -64,14 +90,33 @@ class sportsmanagementControllerjoomleagueimports extends JControllerAdmin
  */
 function importjoomleaguenew()
 {
-        $app = JFactory::getApplication();
+        //$app = JFactory::getApplication();
         //$option = JRequest::getCmd('option');
-        $model	= $this->getModel();
-        $result = $model->importjoomleaguenew();
-        $app->setUserState( $this->option.".jl_table_import_success", $result );
         
+        //$jl_table_import_step = $app->getUserState( "$this->option.jl_table_import_step", 0 );
+        $jl_table_import_step = $this->jsmjinput->get('jl_table_import_step',0);
+        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
+        
+        if ( $jl_table_import_step != 'ENDE' )
+        {
+        $model	= $this->getModel();
+        $result = $model->importjoomleaguenew($jl_table_import_step);
+        $jl_table_import_step = $this->jsmjinput->get('jl_table_import_step',0);
+        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' model result <br><pre>'.print_r($result,true).'</pre>'),'');
+        //$result = $model->importjoomleaguenewtest($jl_table_import_step);
+        $this->jsmapp->setUserState( $this->option.".jl_table_import_success", $result );
+        //sleep(3);
+        //$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&task=joomleagueimports.importjoomleaguenew&layout=default&jl_table_import_step='.$jl_table_import_step, false));
+        
+        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&layout=default&jl_table_import_step='.$jl_table_import_step, false));
+        
+        }
+        else
+        {
 //        $model::$_success = $result;
-        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+        //$this->jsmapp->setUserState( "$this->option.jl_table_import_step", 0 );
+        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&jl_table_import_step=0', false));
+        }
 
 }
 

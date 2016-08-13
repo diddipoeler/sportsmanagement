@@ -85,10 +85,10 @@ echo $this->loadTemplate('joomla2');
             <tr>
 					<td class="nowrap" valign="top">
 						<?php
-						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.truncate&tmpl=component' );
+						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.truncate' );
 						?>
 						
-                        <a class="modal" rel="{handler: 'iframe', size: {x: '630', y: '200'}}" href="<?php echo $link; ?>" title="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATE2' ); ?>">
+                        <a href="<?php echo $link; ?>" title="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATE2' ); ?>">
 							<?php
 							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATE' );
 							?>
@@ -104,10 +104,10 @@ echo $this->loadTemplate('joomla2');
                 <tr>
 					<td class="nowrap" valign="top">
 						<?php
-						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.truncatejl&tmpl=component' );
+						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.truncatejl' );
 						?>
 						
-                        <a class="modal" rel="{handler: 'iframe', size: {x: '630', y: '200'}}" href="<?php echo $link; ?>" title="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATE2JL' ); ?>">
+                        <a href="<?php echo $link; ?>" title="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATE2JL' ); ?>">
 							<?php
 							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TRUNCATEJL' );
 							?>
@@ -123,9 +123,9 @@ echo $this->loadTemplate('joomla2');
 				<tr>
 					<td class="nowrap" valign="top">
 						<?php
-						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.optimize&tmpl=component' );
+						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.optimize' );
 						?>
-						<a class="modal" rel="{handler: 'iframe', size: {x: '630', y: '200'}}" href="<?php echo $link; ?>" title="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_OPTIMIZE2' ); ?>">
+						<a href="<?php echo $link; ?>" title="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_OPTIMIZE2' ); ?>">
 							<?php
 							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_OPTIMIZE' );
 							?>
@@ -141,11 +141,11 @@ echo $this->loadTemplate('joomla2');
 				<tr>
 					<td class="nowrap" valign="top">
 						<?php
-						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.repair&tmpl=component' );
+                        $link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.repair' );
 						?>
 						
-                        <a class="modal" rel="{handler: 'iframe', size: {x: '630', y: '200'}}" href="<?php echo $link; ?>" title="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_REPAIR2' ); ?>">
-							<?php
+							<a href="<?php echo $link; ?>" title="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_REPAIR2' ); ?>">
+                            <?php
 							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_REPAIR' );
 							?>
 						</a>
@@ -160,10 +160,10 @@ echo $this->loadTemplate('joomla2');
                 <tr>
 					<td class="nowrap" valign="top">
 						<?php
-						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.picturepath&tmpl=component' );
+						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.picturepath' );
 						?>
 						
-                        <a class="modal" rel="{handler: 'iframe', size: {x: '630', y: '200'}}" href="<?php echo $link; ?>" title="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_PICTURE_PATH_MIGRATION2' ); ?>">
+                        <a  href="<?php echo $link; ?>" title="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_PICTURE_PATH_MIGRATION2' ); ?>">
 							<?php
 							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_PICTURE_PATH_MIGRATION' );
 							?>
@@ -179,10 +179,10 @@ echo $this->loadTemplate('joomla2');
                 <tr>
 					<td class="nowrap" valign="top">
 						<?php
-						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.updatetemplatemasters&tmpl=component' );
+						$link = JRoute::_( 'index.php?option=com_sportsmanagement&view=databasetool&task=databasetool.updatetemplatemasters' );
 						?>
 						
-                        <a class="modal" rel="{handler: 'iframe', size: {x: '630', y: '200'}}" href="<?php echo $link; ?>" title="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_UPDATE_TEMPLATE_MASTERS2' ); ?>">
+                        <a  href="<?php echo $link; ?>" title="<?php echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_UPDATE_TEMPLATE_MASTERS2' ); ?>">
 							<?php
 							echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_UPDATE_TEMPLATE_MASTERS' );
 							?>

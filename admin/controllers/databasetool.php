@@ -76,8 +76,8 @@ $model->setSportsManagementTableQuery($value , $this->getTask() );
   
   
 $msg = 'Alle Tabellen repariert';   
-//$this->setRedirect('index.php?option=com_sportsmanagement&view=databasetools',$msg);   
-$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);   
+$this->setRedirect('index.php?option=com_sportsmanagement&view=databasetools',$msg);   
+//$this->setRedirect('index.php?option='.$this->option.'&view='.$this->view_list,$msg);   
 }  
 
 /**
@@ -100,10 +100,10 @@ $model->setSportsManagementTableQuery($value , $this->getTask() );
 }  
   
 $msg = 'Alle Tabellen optimiert';   
-$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);   
+//$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);   
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_tables<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');	  
 //$this->setRedirect('index.php?option=com_sportsmanagement&view=close',$msg);   
-	  
+$this->setRedirect('index.php?option=com_sportsmanagement&view=databasetools',$msg);   	  
 }  
 
 
@@ -128,7 +128,8 @@ $model->setSportsManagementTableQuery($value , $this->getTask() );
   
 $msg = 'Alle Tabellen geleert';   
 //$this->setRedirect('index.php?option=com_sportsmanagement&view=databasetools',$msg);   
-$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component&info=truncate',$msg);   
+//$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component&info=truncate',$msg);
+$this->setRedirect('index.php?option=com_sportsmanagement&view=databasetools',$msg);      
 }  
 
 
@@ -149,10 +150,24 @@ foreach( $jl_tables as $key => $value )
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_tables<br><pre>'.print_r($value,true).'</pre>'),'');	  
 $model->setSportsManagementTableQuery($value , 'TRUNCATE' );  
 }      
-    
+$msg = 'Alle JL Tabellen geleert';   
+$this->setRedirect('index.php?option=com_sportsmanagement&view=databasetools',$msg);       
 }
 
 
+/**
+ * sportsmanagementControllerDatabaseTool::updatetemplatemasters()
+ * 
+ * @return void
+ */
+function updatetemplatemasters()
+{
+    
+    
+    
+$msg = 'Alle Templates angepasst';   
+$this->setRedirect('index.php?option=com_sportsmanagement&view=databasetools',$msg);    
+}
 
 /**
  * sportsmanagementControllerDatabaseTool::picturepath()
@@ -175,7 +190,9 @@ $model->setNewPicturePath();
 //}
 //
 //}
-            
+
+$msg = 'Alle Bilderpfade angepasst';   
+$this->setRedirect('index.php?option=com_sportsmanagement&view=databasetools',$msg);               
 }
 
 }

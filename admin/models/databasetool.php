@@ -185,6 +185,20 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
 }
     
     /**
+     * sportsmanagementModeldatabasetool::getRunTime()
+     * 
+     * @return
+     */
+    function getRunTime()
+    {
+        $mtime = microtime();
+$mtime = explode(" ",$mtime);
+$mtime = $mtime[1] + $mtime[0];
+return $mtime;
+        
+    }
+    
+    /**
      * sportsmanagementModeldatabasetool::getQueryTime()
      * 
      * @param mixed $starttime
@@ -462,12 +476,69 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
     
     
     /**
+     * sportsmanagementModeldatabasetool::setNewComponentName()
+     * 
+     * @return void
+     */
+    function setNewComponentName()
+    {
+    $this->query->clear();
+    // Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('title') . " = replace(title, 'COM_JOOMLEAGUE', 'COM_SPORTSMANAGEMENT') " 
+);
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('title') . ' LIKE '.$this->jsmdb->Quote('%'.'COM_JOOMLEAGUE'.'%')
+);        
+$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_template_config'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->query);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
+self::runJoomlaQuery(__CLASS__);    
+$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert (template_config).'),'Notice');    
+
+
+    $this->query->clear();
+    // Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('extended') . " = replace(extended, 'COM_JOOMLEAGUE', 'COM_SPORTSMANAGEMENT') " 
+);
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('extended') . ' LIKE '.$this->jsmdb->Quote('%'.'COM_JOOMLEAGUE'.'%')
+);        
+$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_rosterposition'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->query);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
+self::runJoomlaQuery(__CLASS__);    
+$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert (rosterposition).'),'Notice');        
+
+    $this->query->clear();
+    // Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('extended') . " = replace(extended, 'JL_EXT', 'COM_SPORTSMANAGEMENT_EXT') " 
+);
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('extended') . ' LIKE '.$this->jsmdb->Quote('%'.'JL_EXT'.'%')
+);        
+$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_rosterposition'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->query);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
+self::runJoomlaQuery(__CLASS__);    
+$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert (rosterposition).'),'Notice');
+
+        
+    }
+        
+    /**
      * sportsmanagementModeldatabasetool::setNewPicturePath()
      * 
      * @return void
      */
     function setNewPicturePath()
     {
+    $this->query->clear();
     // Fields to update.
 $fields = array(
     $this->jsmdb->quoteName('picture') . " = replace(picture, 'com_joomleague', 'com_sportsmanagement') " 
