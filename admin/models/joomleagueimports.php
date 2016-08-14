@@ -243,6 +243,9 @@ $table_copy = array();
 
 if ( $jl_table_import_step == 0 )
 {
+
+$table_copy[] = 'associations';    
+    
 $table_copy[] = 'club';
 $table_copy[] = 'division';
 $table_copy[] = 'league';
@@ -695,6 +698,44 @@ $zaehler++;
 }
 $my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.$zaehler.'Sportstätten in den Vereinen aktualisiert !</strong>'.'</span>';
 $my_text .= '<br />';
+
+/**
+ * jetzt werden die importierten landesverbände zugeordnet
+ */
+$zaehler = 1; 
+$query->clear();
+$query->select('name,id,import_id');
+$query->from('#__sportsmanagement_associations');
+$query->where('import_id != 0');
+$db->setQuery($query);
+$result = $db->loadObjectList();
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+foreach( $result as $row )
+{
+// Fields to update.
+$fields = array(
+    $db->quoteName('associations') . ' = ' . $row->id
+);
+// Conditions for which records should be updated.
+$conditions = array(
+    $db->quoteName('associations') . ' = '.$row->import_id,
+    $db->quoteName('import_id') . ' != 0'
+);
+$query = $db->getQuery(true);
+$query->clear(); 
+$query->update($db->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+$zaehler++;
+//$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Sportstätten '.$row->name.' in den Vereinen aktualisiert !</strong>'.'</span>';
+//$my_text .= '<br />';
+}
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.$zaehler.'Sportstätten in den Vereinen aktualisiert !</strong>'.'</span>';
+$my_text .= '<br />';
+
+
+
  
 $endtime = sportsmanagementModeldatabasetool::getRunTime();
 $totaltime = ($endtime - $starttime);

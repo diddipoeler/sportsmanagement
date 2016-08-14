@@ -633,6 +633,39 @@ $this->jsmdb->setQuery($this->query);
 self::runJoomlaQuery(__CLASS__);                
 $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
 
+
+$this->query->clear();
+// Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('picture') . " = replace(picture, 'com_joomleague', 'com_sportsmanagement') " 
+);
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('picture') . ' LIKE '.$this->jsmdb->Quote('%'.'com_joomleague'.'%')
+);        
+$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_associations'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->query);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
+//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');
+self::runJoomlaQuery(__CLASS__);                
+$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
+
+$this->query->clear();
+// Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('assocflag') . " = replace(assocflag, 'com_joomleague', 'com_sportsmanagement') " 
+);
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('assocflag') . ' LIKE '.$this->jsmdb->Quote('%'.'com_joomleague'.'%')
+);        
+$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_associations'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->query);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
+//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');
+self::runJoomlaQuery(__CLASS__);                
+$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
+
     
     }
     
