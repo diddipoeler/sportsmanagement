@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_('behavior.tooltip');
-//JHtml::_('behavior.formvalidation');
+JHtml::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
 
 // Get the form fieldsets.

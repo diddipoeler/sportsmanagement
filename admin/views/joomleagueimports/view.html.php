@@ -42,13 +42,6 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
 
-/*
-
-d.kleis@1und1.de
-f.maurer@1und1.de
-
-
-*/
 /**
  * sportsmanagementViewjoomleagueimports
  * 
