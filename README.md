@@ -7,7 +7,7 @@ Das Team
 ================
 * Entwickler: diddipoeler
 * Language manager & Wiki: stony
-* Übersetzer: sk-plehanovec
+* Übersetzer: sk-plehanovec, teddy
 * Tester: svdoldie
 * Designer: donclumsy
 
