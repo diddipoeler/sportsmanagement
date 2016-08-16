@@ -123,6 +123,17 @@ class sportsmanagementView extends JViewLegacy
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
 		$this->script = $this->get('Script');    
+        
+        $this->document->addScriptDeclaration("
+	Joomla.submitbutton = function(task)
+	{
+		if (task == '".$this->view.".cancel' || document.formvalidator.isValid(document.getElementById('adminForm')))
+		{
+			Joomla.submitform(task, document.getElementById('adminForm'));
+		}
+	};
+
+");
         }
 /**
  * in der listansicht

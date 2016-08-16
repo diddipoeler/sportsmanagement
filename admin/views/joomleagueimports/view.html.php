@@ -35,6 +35,7 @@
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
+* 
 */
 
 // Check to ensure this file is included in Joomla!
