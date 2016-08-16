@@ -140,7 +140,7 @@ class sportsmanagementModelSportsTypes extends JModelList
                 
 		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->query->dump(),true).'</pre>'),'Notice');
+        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->query->dump(),true).'</pre>'),'Notice');
         }
         
 		return $this->query;
@@ -167,7 +167,7 @@ class sportsmanagementModelSportsTypes extends JModelList
 		$this->jsmdb->setQuery($this->query);
 		if ( !$result = $this->jsmdb->loadObjectList() )
 		{
-            $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_NO_RESULT'),'Error');
+            $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_NO_RESULT'),'Error');
 			return array();
 		}
 		foreach ($result as $sportstype){
