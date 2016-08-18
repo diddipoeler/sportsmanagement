@@ -95,12 +95,15 @@ function importjoomleaguenew()
         
         //$jl_table_import_step = $app->getUserState( "$this->option.jl_table_import_step", 0 );
         $jl_table_import_step = $this->jsmjinput->get('jl_table_import_step',0);
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
+        $sports_type_id = $this->jsmjinput->get('filter_sports_type', 0);
+        
+//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
+//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' sports_type_id <br><pre>'.print_r($sports_type_id,true).'</pre>'),'');
         
         if ( $jl_table_import_step != 'ENDE' )
         {
         $model	= $this->getModel();
-        $result = $model->importjoomleaguenew($jl_table_import_step);
+        $result = $model->importjoomleaguenew($jl_table_import_step,$sports_type_id);
         $jl_table_import_step = $this->jsmjinput->get('jl_table_import_step',0);
         //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' model result <br><pre>'.print_r($result,true).'</pre>'),'');
         //$result = $model->importjoomleaguenewtest($jl_table_import_step);
@@ -108,7 +111,7 @@ function importjoomleaguenew()
         //sleep(3);
         //$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&task=joomleagueimports.importjoomleaguenew&layout=default&jl_table_import_step='.$jl_table_import_step, false));
         
-        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&layout=default&jl_table_import_step='.$jl_table_import_step, false));
+        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&layout=default&jl_table_import_step='.$jl_table_import_step.'&filter_sports_type='.$sports_type_id, false));
         
         }
         else

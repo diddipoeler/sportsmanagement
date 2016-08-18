@@ -196,7 +196,7 @@ return self::$_success;
  * @param integer $importstep
  * @return
  */
-function importjoomleaguenew($importstep=0)
+function importjoomleaguenew($importstep=0,$sports_type_id=0)
 {
 // Reference global application object
 $app = JFactory::getApplication();
@@ -219,11 +219,13 @@ $starttime = sportsmanagementModeldatabasetool::getRunTime();
 $jl_table_import_step = $jinput->get('jl_table_import_step',0);
 //$jl_table_import_step = $importstep;
 
-$sports_type_id = $jinput->post->get('filter_sports_type', 0);
-//$this->setState('filter.sports_type', $sports_type_id);
-$app->setUserState( $option.'.filter_sports_type', $sports_type_id );
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' importstep <br><pre>'.print_r($importstep,true).'</pre>'),'');
+$jinput->set('filter_sports_type', $sports_type_id);
+//$sports_type_id = $jinput->post->get('filter_sports_type', 0);
+//$this->setState('filter.sports_type', $sports_type_id);
+//$app->setUserState( $option.'.filter_sports_type', $sports_type_id );
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' sports_type_id <br><pre>'.print_r($sports_type_id,true).'</pre>'),'');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 
 
@@ -596,12 +598,22 @@ $conditions = array(
 );
 $query->update($db->quoteName('#__sportsmanagement_team'))->set($fields)->where($conditions);
 $db->setQuery($query);
+try{
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+}
+catch (Exception $e) {
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
+}
 //$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.self::$db_num_rows.' Daten in der Tabelle: ( __sportsmanagement_team ) aktualisiert!</strong>'.'</span>';
 //$my_text .= '<br />';     
 $query->update($db->quoteName('#__sportsmanagement_project'))->set($fields)->where($conditions);
 $db->setQuery($query);
+try{
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+}
+catch (Exception $e) {
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
+}
 $my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>'.self::$db_num_rows.' Daten in der Tabelle: ( __sportsmanagement_project ) aktualisiert!</strong>'.'</span>';
 $my_text .= '<br />';     
 
@@ -651,11 +663,21 @@ $query = $db->getQuery(true);
 $query->clear(); 
 $query->update($db->quoteName('#__sportsmanagement_team'))->set($fields)->where($conditions);
 $db->setQuery($query);
+try{
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+}
+catch (Exception $e) {
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
+}
 $query->clear(); 
 $query->update($db->quoteName('#__sportsmanagement_playground'))->set($fields)->where($conditions);
 $db->setQuery($query);
+try{
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+}
+catch (Exception $e) {
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
+}
 $zaehler++;
 //$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Verein '.$row->name.' in den Mannschaften/Spielorte aktualisiert !</strong>'.'</span>';
 //$my_text .= '<br />';
@@ -726,7 +748,12 @@ $query = $db->getQuery(true);
 $query->clear(); 
 $query->update($db->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
 $db->setQuery($query);
+try{
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+}
+catch (Exception $e) {
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
+}
 $zaehler++;
 //$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Sportstätten '.$row->name.' in den Vereinen aktualisiert !</strong>'.'</span>';
 //$my_text .= '<br />';
@@ -782,7 +809,12 @@ $query = $db->getQuery(true);
 $query->clear(); 
 $query->update($db->quoteName('#__sportsmanagement_project'))->set($fields)->where($conditions);
 $db->setQuery($query);
+try{
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+}
+catch (Exception $e) {
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
+}
 $my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Saison '.$row->name.' im Projekt aktualisiert !</strong>'.'</span>';
 $my_text .= '<br />';
 }
@@ -832,7 +864,12 @@ $query = $db->getQuery(true);
 $query->clear(); 
 $query->update($db->quoteName('#__sportsmanagement_project'))->set($fields)->where($conditions);
 $db->setQuery($query);
+try{
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+}
+catch (Exception $e) {
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
+}
 
 $my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Liga '.$row->name.' im Projekt aktualisiert !</strong>'.'</span>';
 $my_text .= '<br />';

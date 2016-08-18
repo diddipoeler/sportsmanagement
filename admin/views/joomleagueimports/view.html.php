@@ -103,7 +103,7 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 		$allSportstypes = $mdlSportsTypes->getSportsTypes();
 		$sportstypes = array_merge($sportstypes, $allSportstypes);
 		
-		$variable = $this->app->getUserStateFromRequest( $this->option.".filter_sports_type", 0 );
+		$variable = $this->jinput->get('filter_sports_type',0);
 
 		$lists['sportstype'] = $sportstypes; 
 		$lists['sportstypes'] = JHtml::_( 'select.genericList', 

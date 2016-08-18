@@ -97,7 +97,7 @@ class sportsmanagementModeleventtype extends JSMModelAdmin
             if ( $isNew )
             {
                 //Here you can do other tasks with your newly saved record...
-                $app->enqueueMessage(JText::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
+                $app->enqueueMessage(JText::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id),'');
             }
            
 		}
