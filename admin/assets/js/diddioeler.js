@@ -73,6 +73,29 @@ jQuery("#ajaxresponse").html(baseajaxurl);
           
         //alert("hallo");
         //jQuery("#ajaxresponse").html("hallo");    
+        
+jQuery.ajax({
+  type: 'POST', // type of request either Get or Post
+  url: url + querystring, // Url of the page where to post data and receive response 
+//  data: {
+//            'token': '1' // <-- THIS IS IMPORTANT
+//            
+//        }, // data to be post
+  //data: jQuery("#component-form").serialize(),
+  dataType:"json",
+//  success: commentsaved
+  success: commentsaved, //function to be called on successful reply from server
+  error: function (xhr, ajaxOptions, thrownError) {
+        alert(xhr.status);
+        alert(thrownError);
+      }
+  
+//  error: function (xhr, ajaxOptions, thrownError) {
+//        alert(xhr.status);
+//        alert(thrownError);
+//      }
+});
+        
 }
 
 function save_new_comment()
@@ -97,10 +120,10 @@ jQuery("#ajaxresponse").html(baseajaxurl);
 jQuery.ajax({
   type: 'POST', // type of request either Get or Post
   url: url + querystring, // Url of the page where to post data and receive response 
-  data: {
-            'token': '1' // <-- THIS IS IMPORTANT
-            
-        }, // data to be post
+//  data: {
+//            'token': '1' // <-- THIS IS IMPORTANT
+//            
+//        }, // data to be post
   //data: jQuery("#component-form").serialize(),
   dataType:"json",
 //  success: commentsaved
@@ -169,10 +192,10 @@ var querystring = '&event_id=' + eventid;
 jQuery.ajax({
  type: 'POST', // type of request either Get or Post
  url: url + querystring, // Url of the page where to post data and receive response 
- data: {
-            'token': '1' // <-- THIS IS IMPORTANT
-            
-        }, // data to be post
+// data: {
+//            'token': '1' // <-- THIS IS IMPORTANT
+//            
+//        }, // data to be post
  //data: jQuery("#component-form").serialize(),
  dataType:"json",
  success: commentarydeleted,   //function to be called on successful reply from server

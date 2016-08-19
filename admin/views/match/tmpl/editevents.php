@@ -110,7 +110,7 @@ var rosters = Array(homeroster, awayroster);
 
 
 
-<form  action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" id='adminform' method='post' style='display:inline' name='adminform' >
+<form   id='adminform' method='post' style='display:inline' name='adminform' >
 <div id="gamesevents">
 
 <div id="UserError" ></div>
@@ -286,20 +286,9 @@ var rosters = Array(homeroster, awayroster);
 		</fieldset>
 </div>
 <div style="clear: both"></div>
-<?php //echo JHtml::_('form.token')."\n"; ?>
-
-<input type="hidden" id="token" name="token" value="
 <?php 
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-echo JSession::getFormToken();    
-}
-else
-{    
-echo JUtility::getToken(); 
-}
+echo JHtml::_('form.token'); ?>
 
-
-?>" />	
+	
 </form>
 
