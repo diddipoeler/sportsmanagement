@@ -1947,10 +1947,6 @@ catch (Exception $e) {
 //    JErrorPage::render($e);
 }
 
-
-
-
-
 /**
  * tabelle: sportsmanagement_match_staff
  * schlüsselfelder: match_id, team_staff_id, project_position_id
@@ -2050,7 +2046,7 @@ $result_insert = JFactory::getDbo()->insertObject('#__sportsmanagement_season_te
 catch (Exception $e) {
     // catch any database errors.
 //    $db->transactionRollback();
-    JErrorPage::render($e);
+//    JErrorPage::render($e);
 //    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'Error');
 }
 if ( $result_insert )
@@ -2139,7 +2135,7 @@ $result_insert = JFactory::getDbo()->insertObject('#__sportsmanagement_season_pe
 catch (Exception $e) {
     // catch any database errors.
 //    $db->transactionRollback();
-    JErrorPage::render($e);
+//    JErrorPage::render($e);
 //    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'Error');
 }
 if ( $result_insert )

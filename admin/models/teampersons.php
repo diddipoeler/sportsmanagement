@@ -187,7 +187,7 @@ class sportsmanagementModelTeamPersons extends JModelList
         $query->select('tp.id as tpid, tp.market_value, tp.jerseynumber,tp.picture as season_picture');
 		$query->select('u.name AS editor');
         $query->select('st.season_id AS season_id,st.id as projectteam_id');
-        //$query->select('ppos.id as project_position_id');
+        $query->select('ppos.id as project_position_id');
 
         $query->from('#__sportsmanagement_person AS ppl');
         $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp on tp.person_id = ppl.id');
@@ -230,7 +230,7 @@ class sportsmanagementModelTeamPersons extends JModelList
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
         return $query;
 	}

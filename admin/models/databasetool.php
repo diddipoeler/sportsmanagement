@@ -513,8 +513,8 @@ $this->jsmdb->setQuery($this->query);
 self::runJoomlaQuery(__CLASS__);    
 $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert (rosterposition).'),'Notice');        
 
-    $this->query->clear();
-    // Fields to update.
+$this->query->clear();
+// Fields to update.
 $fields = array(
     $this->jsmdb->quoteName('extended') . " = replace(extended, 'JL_EXT', 'COM_SPORTSMANAGEMENT_EXT') " 
 );
@@ -527,6 +527,22 @@ $this->jsmdb->setQuery($this->query);
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
 self::runJoomlaQuery(__CLASS__);    
 $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert (rosterposition).'),'Notice');
+
+
+$this->query->clear();
+// Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('name') . " = replace(name, 'COM_JOOMLEAGUE', 'COM_SPORTSMANAGEMENT') " 
+);
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('name') . ' LIKE '.$this->jsmdb->Quote('%'.'COM_JOOMLEAGUE'.'%')
+);        
+$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_eventtype'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->query);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
+self::runJoomlaQuery(__CLASS__);    
+$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert (eventtype).'),'Notice');
 
         
     }
@@ -666,6 +682,21 @@ $this->jsmdb->setQuery($this->query);
 self::runJoomlaQuery(__CLASS__);                
 $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
 
+$this->query->clear();
+// Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('icon') . " = replace(icon, 'com_joomleague', 'com_sportsmanagement') " 
+);
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('icon') . ' LIKE '.$this->jsmdb->Quote('%'.'com_joomleague'.'%')
+);        
+$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_eventtype'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->query);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
+//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');
+self::runJoomlaQuery(__CLASS__);                
+$this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
     
     }
     
