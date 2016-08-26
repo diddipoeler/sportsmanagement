@@ -88,7 +88,20 @@ $query = $db->getQuery(true);
 			$parameter->loadArray($post['extended']);
 			$data['extended'] = (string)$parameter;
 		}
-        
+        // Alter the title for Save as Copy
+		if ($this->jsmjinput->get('task') == 'save2copy')
+		{
+			$orig_table = $this->getTable();
+			$orig_table->load((int) $this->jsmjinput->getInt('id'));
+            $data['id'] = 0;
+
+			if ($data['name'] == $orig_table->name)
+			{
+				$data['name'] .= ' ' . JText::_('JGLOBAL_COPY');
+				$data['alias'] = JFilterOutput::stringURLSafe( $data['name'] );
+			}
+		}
+
         //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         
         // zuerst sichern, damit wir bei einer neuanlage die id haben
