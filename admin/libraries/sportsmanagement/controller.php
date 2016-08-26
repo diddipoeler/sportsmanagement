@@ -10,7 +10,7 @@ jimport('joomla.application.component.controllerform');
  * JSMControllerForm
  * 
  * @package 
- * @author Dieter Plöger
+ * @author Dieter PlÃ¶ger
  * @copyright 2016
  * @version $Id$
  * @access public
@@ -61,15 +61,15 @@ class JSMControllerForm extends JControllerForm
      		// Initialise variables.
 		//$app = JFactory::getApplication();
         //$db = sportsmanagementHelper::getDBConnection();
-        $id	= $this->jsmjinput->getInt('id');
         $tmpl = $this->jsmjinput->getVar('tmpl');
 		$model = $this->getModel($this->view_item);
         $data = $this->jsmjinput->getVar('jform', array(), 'post', 'array');
         $createTeam = $this->jsmjinput->getVar('createTeam');
         $return = $model->save($data);
+        $id = $this->jsmdb->insertid();
         if ( empty($id) )
         {
-            $id = $this->jsmdb->insertid();
+             $id = $this->jsmjinput->getInt('id');
         }
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' return<br><pre>'.print_r($return,true).'</pre>'),'');
@@ -116,6 +116,14 @@ class JSMControllerForm extends JControllerForm
 												 $this->getRedirectToItemAppend($id), false), $message); 
                 }
 				break;
+case 'save2copy':
+$this->setRedirect(
+					JRoute::_(
+						'index.php?option=' . $this->option . '&view=' . $this->view_item
+						. $this->getRedirectToItemAppend($id), false
+					)
+				);
+break;
 
 			case 'save2new':
             $message = JText::_('JLIB_APPLICATION_SAVE_SUCCESS');
