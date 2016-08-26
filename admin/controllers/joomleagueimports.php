@@ -118,11 +118,23 @@ function importjoomleaguenew()
         {
 //        $model::$_success = $result;
         //$this->jsmapp->setUserState( "$this->option.jl_table_import_step", 0 );
-        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&jl_table_import_step=0', false));
+        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&jl_table_import_step=0&layout=infofield', false));
         }
 
 }
 
+
+/**
+ * sportsmanagementControllerjoomleagueimports::importjoomleagueagegroup()
+ * 
+ * @return void
+ */
+function importjoomleagueagegroup()
+{
+    
+    $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&layout=infofield', false));
+    
+}
   
 ///**
 // * sportsmanagementControllerjoomleagueimports::updateplayerproposition()

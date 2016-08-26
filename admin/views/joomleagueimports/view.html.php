@@ -73,6 +73,16 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 		$this->cfg_jl_import = JComponentHelper::getParams($this->option)->get( 'cfg_jl_import',1 );
         $this->jl_table_import_step = $this->jinput->get('jl_table_import_step',0);
         
+        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout -> '.$this->getLayout().''),'');
+        
+        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($this->jl_table_import_step,true).'</pre>'),'');
+        
+        if ( !$this->jl_table_import_step )
+        {
+        $this->model->check_database();
+        }
+        //$this->app->enqueueMessage($this->request_url,'Notice');  
+        
 		if ( $this->cfg_jl_import )
 		{
 		$this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_JL_IMPORT_ALLOWED_YES'),'Notice');    
@@ -144,6 +154,22 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
         //$this->assign('success',$jinput->getVar('success'));
 		$this->success = $this->app->getUserStateFromRequest( $this->option.".jl_table_import_success", 0 );
         
+        if ( $this->getLayout() == 'infofield' || $this->getLayout() == 'infofield_3' )
+		{
+			$myoptions[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
+		$mdlagegroup = JModelLegacy::getInstance('agegroups', 'sportsmanagementModel');
+        if ( $res = $mdlagegroup->getAgeGroups() )
+		{
+			$myoptions = array_merge($myoptions,$res);
+			$this->assignRef('search_agegroup',$res);
+		}
+		$lists['agegroup'] = $myoptions;  
+        
+        
+        $this->lists = $lists;  
+		$this->setLayout('infofield');
+        } 
+        
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' request_url <br><pre>'.print_r($this->request_url,true).'</pre>'),'');
         
         //$this->addToolbar();
@@ -170,8 +196,10 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 		{
 		//JToolBarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'), false);
 		}
-        
+        if ( $this->getLayout() == 'default' || $this->getLayout() == 'default_3' )
+		{
 		JToolBarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_START_BUTTON'), false);
+        }
 JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=projects');    
 
 //        JToolBarHelper::custom('joomleagueimports.positions','edit','edit',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'),false);

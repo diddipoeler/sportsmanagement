@@ -107,8 +107,7 @@ class sportsmanagementViewteampersons extends sportsmanagementView
         {
         // fehlen im projekt die positionen ?
         // wenn ja, dann fehlende positionen hinzufügen
-        $this->restartpage = $model->checkProjectPositions($this->project_id, $this->_persontype, $this->team_id, $this->season_id);    
-//        $this->restartpage = $restartpage;
+//        $this->restartpage = $model->checkProjectPositions($this->project_id, $this->_persontype, $this->team_id, $this->season_id);    
 		}
 		else
 		{

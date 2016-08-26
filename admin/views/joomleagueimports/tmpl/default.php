@@ -45,17 +45,21 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 if ( $this->jl_table_import_step != 'ENDE' )
 {
+
 ?>
 
 <script>
 
 jQuery(document).ready(function () {
     document.getElementById('delayMsg').innerHTML = '';
+
     delayRedirect();
     // Handler for .ready() called.
 //    window.setTimeout(function () {
 //        location.href = "<?php echo $this->request_url.'&task=joomleagueimports.importjoomleaguenew'; ?>";
 //    }, 2000);
+
+
 });
 
 function delayRedirect(){
@@ -75,6 +79,47 @@ function delayRedirect(){
 
 <?PHP    
 }
+
+if ( $this->jl_table_import_step === 'ENDE' )
+{
+
+?>
+
+<script>
+
+jQuery(document).ready(function () {
+    document.getElementById('delayMsg').innerHTML = '';
+
+    delayRedirect();
+    // Handler for .ready() called.
+//    window.setTimeout(function () {
+//        location.href = "<?php echo $this->request_url.'&task=joomleagueimports.importjoomleaguenew'; ?>";
+//    }, 2000);
+
+
+});
+
+function delayRedirect(){
+    document.getElementById('delayMsg').innerHTML = '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP'); ?>';
+    var count = 5;
+    setInterval(function(){
+        count--;
+        document.getElementById('countDown').innerHTML = count;
+        if (count == 0) {
+            document.getElementById('delayMsg').innerHTML = '<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_JOOMLEAGUE_IMPORT_STEP_START'); ?>';
+            window.location = '<?php echo $this->request_url.'&task=joomleagueimports.importjoomleagueagegroup'; ?>'; 
+        }
+    },1000);
+}
+
+</script>
+
+<?PHP    
+}
+
+
+
+
 
 //echo '<br><pre>'.print_r($this->success,true).'</pre>';
 

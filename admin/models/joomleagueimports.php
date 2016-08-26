@@ -91,12 +91,15 @@ function check_database()
 {
 $conf = JFactory::getConfig();
 $app = JFactory::getApplication();
-$params = JComponentHelper::getParams( 'com_sportsmanagement' );   
- /**
-  * welche joomla version ?
-  */
-            if(version_compare(JVERSION,'3.0.0','ge')) 
-        { 
+$params = JComponentHelper::getParams( 'com_sportsmanagement' );  
+$db = JFactory::getDbo(); 
+$query = $db->getQuery(true);
+ 
+/**
+ * welche joomla version ?
+ */
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{ 
 $debug = $conf->get('config.debug');
 }
 else
@@ -118,7 +121,6 @@ $option['prefix']   = $params->get( 'jl_dbprefix' );    //          Database pre
  */
 $jl_access = JDatabase::getInstance( $option );    
 
-
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_access<br><pre>'.print_r($jl_access,true).'</pre>'),'');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<br><pre>'.print_r($jl_access->getErrorMsg(),true).'</pre>'),'Error');
 
@@ -135,6 +137,184 @@ if ( JError::isError($jl_access) ) {
 
 		$jl_access->debug( $debug );
 */            
+
+/**
+ * fehlende jl felder hinzufügen für alte versionen
+ */
+try { 
+$query = $db->getQuery(true);    
+$query->clear();
+$query = "ALTER TABLE `#__joomleague_division` ADD `tree_id` INT(11) NOT NULL DEFAULT '0' "   ;
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+//$result = $db->execute();
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
+try { 
+$query = $db->getQuery(true);    
+$query->clear();
+$query = "ALTER TABLE `#__joomleague_match_player` ADD `position_id` INT(11) NOT NULL DEFAULT '0' "   ;
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+//$result = $db->execute();
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
+try { 
+$query = $db->getQuery(true);    
+$query->clear();
+$query = "ALTER TABLE `#__joomleague_match_referee` ADD `referee_id` INT(11) NOT NULL DEFAULT '0' "   ;
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+//$result = $db->execute();
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
+try { 
+$query = $db->getQuery(true);    
+$query->clear();
+$query = "ALTER TABLE `#__joomleague_match_referee` ADD `position_id` INT(11) NOT NULL DEFAULT '0' "   ;
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+//$result = $db->execute();
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
+try { 
+$query = $db->getQuery(true);    
+$query->clear();
+$query = "ALTER TABLE `#__joomleague_match_staff` ADD `staff_id` INT(11) NOT NULL DEFAULT '0' "   ;
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+//$result = $db->execute();
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
+try { 
+$query = $db->getQuery(true);    
+$query->clear();
+$query = "ALTER TABLE `#__joomleague_match_staff` ADD `position_id` INT(11) NOT NULL DEFAULT '0' "   ;
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+//$result = $db->execute();
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
+try { 
+$query = $db->getQuery(true);    
+$query->clear();
+$query = "ALTER TABLE `#__joomleague_project_referee` ADD `position_id` INT(11) NOT NULL DEFAULT '0' "   ;
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+//$result = $db->execute();
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
+try { 
+$query = $db->getQuery(true);    
+$query->clear();
+$query = "ALTER TABLE `#__joomleague_team_player` ADD `position_id` INT(11) NOT NULL DEFAULT '0' "   ;
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+//$result = $db->execute();
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
+try { 
+$query = $db->getQuery(true);    
+$query->clear();
+$query = "ALTER TABLE `#__joomleague_team_staff` ADD `position_id` INT(11) NOT NULL DEFAULT '0' "   ;
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+//$result = $db->execute();
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
+
+try { 
+$query = $db->getQuery(true);    
+$query->clear();
+$query = "ALTER TABLE `#__joomleague_team_trainingdata` ADD `team_id_in_project` INT(11) NOT NULL DEFAULT '0' "   ;
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+//$result = $db->execute();
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
+
+try { 
+$query = $db->getQuery(true);    
+$query->clear();
+$query = "ALTER TABLE `#__joomleague_project_team` ADD `mark` int(11) DEFAULT NULL "   ;
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+//$result = $db->execute();
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
+try { 
+$query = $db->getQuery(true);    
+$query->clear();
+$query = "ALTER TABLE `#__joomleague_project` ADD `serveroffset` varchar(6) NOT NULL DEFAULT '-01:00' "   ;
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+//$result = $db->execute();
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
+try { 
+$query = $db->getQuery(true);    
+$query->clear();
+$query = "ALTER TABLE `#__joomleague_project` ADD `tree_id` INT(11) NOT NULL DEFAULT '0' "   ;
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+//$result = $db->execute();
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
+
+
+
 }
 
 
@@ -147,48 +327,6 @@ function get_success()
 {
 return self::$_success;    
 }
-
-
-//function importjoomleaguenewtest($importstep=0)
-//{
-//// Reference global application object
-//$app = JFactory::getApplication();
-//// JInput object
-//$jinput = $app->input;
-//$option = $jinput->getCmd('option');
-//$date = JFactory::getDate();
-//$user = JFactory::getUser();
-//
-//$modified = $date->toSql();
-//$modified_by = $user->get('id');
-//              
-//self::$_success = '';
-//
-//$jl_table_import_step = $app->getUserState( "$option.jl_table_import_step", 0 );
-//
-//$sports_type_id = $jinput->post->get('filter_sports_type', 0);
-////$this->setState('filter.sports_type', $sports_type_id);
-//$app->setUserState( $option.'.filter_sports_type', $sports_type_id );
-//
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' importstep <br><pre>'.print_r($importstep,true).'</pre>'),'');
-//
-//if ( $jl_table_import_step === 0 )
-//{
-//}
-//if ( $jl_table_import_step === 1 )
-//{
-//}
-//
-//$jl_table_import_step++;
-//$app->setUserState( $option.".jl_table_import_step", $jl_table_import_step );
-////sleep(10);
-////  = $app->getUserState( "$option.jl_table_import_step", '0' )
-///**
-// * ausstieg aus dem import zum testen
-// */
-//return self::$_success;
-//
-//}
 
 /**
  * sportsmanagementModeljoomleagueimports::importjoomleaguenew()
@@ -210,7 +348,7 @@ $modified = $date->toSql();
 $modified_by = $user->get('id');
               
 self::$_success = '';
-
+$my_text = '';
 //$mtime = microtime();
 //$mtime = explode(" ",$mtime);
 //$mtime = $mtime[1] + $mtime[0];
@@ -243,7 +381,474 @@ $table_copy = array();
 //switch ($importstep)
 //{
 
+
+
 if ( $jl_table_import_step == 0 )
+{
+    
+try { 
+$query = $db->getQuery(true);
+$query->clear();
+$query = "ALTER TABLE #__joomleague_match_player ADD INDEX `match_id` (`match_id`) "   ;
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+//$result = $db->execute();
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+} 
+try { 
+$query = $db->getQuery(true);
+$query->clear();
+$query = "ALTER TABLE #__joomleague_match_staff ADD INDEX `match_id` (`match_id`) "   ;
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+//$result = $db->execute();
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
+try { 
+$query = $db->getQuery(true);
+$query->clear();
+$query = "ALTER TABLE #__joomleague_match_referee ADD INDEX `match_id` (`match_id`) "   ;
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+//$result = $db->execute();
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}  
+try { 
+$query = $db->getQuery(true);
+$query->clear();
+$query = "ALTER TABLE #__joomleague_match ADD INDEX `round_id` (`round_id`) "   ;
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+//$result = $db->execute();
+}
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}     
+/**
+ * alle personen veröffentlichen
+ */
+$query = $db->getQuery(true);
+$query->clear();
+// Fields to update.
+$fields = array(
+    $db->quoteName('published') . ' = 1'
+);
+ 
+// Conditions for which records should be updated.
+$conditions = array(
+    $db->quoteName('published') . ' = 0'
+);
+ 
+$query->update($db->quoteName('#__joomleague_person'))->set($fields)->where($conditions);
+$db->setQuery($query);
+try{
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+}
+catch (Exception $e) {
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
+}
+
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Daten in der Tabelle: ( __joomleague_person ) aktualisiert!</strong>'.'</span>';
+$my_text .= '<br />';     
+    
+$endtime = sportsmanagementModeldatabasetool::getRunTime();
+$totaltime = ($endtime - $starttime);
+self::$_success['Laufzeit:'] = JText::sprintf('This page was created in %1$s seconds',$totaltime);
+self::$_success['JL-Update:'] = $my_text;
+$jl_table_import_step++;
+$jinput->set('jl_table_import_step', $jl_table_import_step);
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
+return self::$_success;    
+}
+
+if ( $jl_table_import_step == 1 )
+{
+/**
+ * die positionen bei den schiedsrichtern setzen
+ */
+$query = $db->getQuery(true);
+$query->clear();
+$query->select('pr.id,pr.project_id,pr.position_id,pt.id as project_position_id');
+$query->from('#__joomleague_project_referee as pr');
+$query->join('INNER', '#__joomleague_project_position AS pt ON pt.project_id = pr.project_id and pt.position_id = pr.position_id ');
+$query->where('pr.position_id != 0');
+$db->setQuery($query);
+$result = $db->loadObjectList();
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' result <br><pre>'.print_r($result,true).'</pre>'),'');
+
+foreach( $result as $row )
+{
+$mdlTable = new stdClass();
+$mdlTable->id = $row->id;
+$mdlTable->project_position_id = $row->project_position_id;
+try {
+    $result_update = $db->updateObject('#__joomleague_project_referee', $mdlTable, 'id');
+}
+catch (Exception $e){
+    
+}
+}
+
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Daten in der Tabelle: ( __joomleague_project_referee ) aktualisiert!</strong>'.'</span>';
+$my_text .= '<br />';     
+    
+$endtime = sportsmanagementModeldatabasetool::getRunTime();
+$totaltime = ($endtime - $starttime);
+self::$_success['Laufzeit:'] = JText::sprintf('This page was created in %1$s seconds',$totaltime);
+self::$_success['JL-Update:'] = $my_text;
+$jl_table_import_step++;
+$jinput->set('jl_table_import_step', $jl_table_import_step);
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
+return self::$_success;    
+}
+
+if ( $jl_table_import_step == 2 )
+{
+/**
+ * die positionen bei den betreuern setzen
+ */
+$query = $db->getQuery(true);
+$query->clear();
+$query->select('pr.id,pr.position_id,pt.project_id');
+//$query->select('(SELECT pp.id FROM #__joomleague_project_position AS pp WHERE pp.project_id = pt.project_id and pp.position_id = pr.position_id) AS '.$db->QuoteName('project_position_id'));
+$query->from('#__joomleague_team_staff as pr');
+$query->join('INNER', '#__joomleague_project_team AS pt ON pt.id = pr.projectteam_id');
+$query->where('pr.project_position_id = 0');
+$query->where('pr.position_id != 0');
+$db->setQuery($query);
+$result = $db->loadObjectList();
+
+foreach( $result as $row )
+{
+$query = $db->getQuery(true);
+$query->clear();
+$query->select('id');
+$query->from('#__joomleague_project_position');
+$query->where('position_id = '.$row->position_id);
+$query->where('project_id = '.$row->project_id);
+$db->setQuery($query);       
+$mdlTable = new stdClass();
+$mdlTable->id = $row->id;
+$mdlTable->project_position_id = $db->loadResult();
+$mdlTable->published = 1;
+try {
+    $result_update = $db->updateObject('#__joomleague_team_staff', $mdlTable, 'id');
+}
+catch (Exception $e){
+    
+}
+}
+
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Daten in der Tabelle: ( __joomleague_team_staff ) aktualisiert!</strong>'.'</span>';
+$my_text .= '<br />';     
+    
+$endtime = sportsmanagementModeldatabasetool::getRunTime();
+$totaltime = ($endtime - $starttime);
+self::$_success['Laufzeit:'] = JText::sprintf('This page was created in %1$s seconds',$totaltime);
+self::$_success['JL-Update:'] = $my_text;
+$jl_table_import_step++;
+$jinput->set('jl_table_import_step', $jl_table_import_step);
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
+return self::$_success;    
+}
+
+if ( $jl_table_import_step == 3 )
+{
+/**
+ * die positionen bei den spielern setzen
+ */
+$query = $db->getQuery(true);
+$query->clear();
+$query->select('pr.id,pr.position_id,pt.project_id');
+//$query->select('(SELECT pp.id FROM #__joomleague_project_position AS pp WHERE pp.project_id = pt.project_id and pp.position_id = pr.position_id) AS '.$db->QuoteName('project_position_id'));
+$query->from('#__joomleague_team_player as pr');
+$query->join('INNER', '#__joomleague_project_team AS pt ON pt.id = pr.projectteam_id');
+$query->where('pr.position_id != 0');
+$query->where('pr.project_position_id = 0');
+$db->setQuery($query);
+$result = $db->loadObjectList();
+
+foreach( $result as $row )
+{
+$query = $db->getQuery(true);
+$query->clear();
+$query->select('id');
+$query->from('#__joomleague_project_position');
+$query->where('position_id = '.$row->position_id);
+$query->where('project_id = '.$row->project_id);
+$db->setQuery($query);      
+$mdlTable = new stdClass();
+$mdlTable->id = $row->id;
+$mdlTable->project_position_id = $db->loadResult();
+$mdlTable->published = 1;
+try {
+    $result_update = $db->updateObject('#__joomleague_team_player', $mdlTable, 'id');
+}
+catch (Exception $e){
+    
+}
+}
+
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Daten in der Tabelle: ( __joomleague_team_player ) aktualisiert!</strong>'.'</span>';
+$my_text .= '<br />';     
+    
+$endtime = sportsmanagementModeldatabasetool::getRunTime();
+$totaltime = ($endtime - $starttime);
+self::$_success['Laufzeit:'] = JText::sprintf('This page was created in %1$s seconds',$totaltime);
+self::$_success['JL-Update:'] = $my_text;
+$jl_table_import_step++;
+$jinput->set('jl_table_import_step', $jl_table_import_step);
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
+return self::$_success;    
+}
+
+if ( $jl_table_import_step == 4 )
+{
+/**
+ * die positionen bei den spielen spieler setzen
+ */
+
+$query = $db->getQuery(true);
+$query->clear();
+$query->select('mp.id,mp.position_id,r.project_id');
+//$query->select('(SELECT pp.id FROM #__joomleague_project_position AS pp WHERE pp.project_id = r.project_id and pp.position_id = mp.position_id) AS '.$db->QuoteName('project_position_id'));
+$query->from('#__joomleague_match_player as mp');
+$query->join('INNER', '#__joomleague_match AS m ON m.id = mp.match_id');
+$query->join('INNER', '#__joomleague_round AS r ON r.id = m.round_id');
+$query->where('mp.position_id != 0');
+$query->where('mp.project_position_id = 0');
+$db->setQuery($query);
+$result = $db->loadObjectList();
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' dump <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+
+foreach( $result as $row )
+{
+$query = $db->getQuery(true);
+$query->clear();
+$query->select('id');
+$query->from('#__joomleague_project_position');
+$query->where('position_id = '.$row->position_id);
+$query->where('project_id = '.$row->project_id);
+$db->setQuery($query);    
+$mdlTable = new stdClass();
+$mdlTable->id = $row->id;
+$mdlTable->project_position_id = $db->loadResult();
+//$mdlTable->published = 1;
+try {
+    $result_update = $db->updateObject('#__joomleague_match_player', $mdlTable, 'id');
+}
+catch (Exception $e){
+    
+}
+}
+
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Daten in der Tabelle: ( __joomleague_match_player ) aktualisiert!</strong>'.'</span>';
+$my_text .= '<br />';     
+    
+$endtime = sportsmanagementModeldatabasetool::getRunTime();
+$totaltime = ($endtime - $starttime);
+self::$_success['Laufzeit:'] = JText::sprintf('This page was created in %1$s seconds',$totaltime);
+self::$_success['JL-Update:'] = $my_text;
+$jl_table_import_step++;
+$jinput->set('jl_table_import_step', $jl_table_import_step);
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
+return self::$_success;    
+}
+
+if ( $jl_table_import_step == 5 )
+{
+/**
+ * die positionen bei den spielen betreuern setzen
+ */
+ 
+$query = $db->getQuery(true);
+$query->clear();
+$query->select('mp.id,mp.position_id,r.project_id');
+//$query->select('(SELECT pp.id FROM #__joomleague_project_position AS pp WHERE pp.project_id = r.project_id and pp.position_id = mp.position_id) AS '.$db->QuoteName('project_position_id'));
+$query->from('#__joomleague_match_staff as mp');
+$query->join('INNER', '#__joomleague_match AS m ON m.id = mp.match_id');
+$query->join('INNER', '#__joomleague_round AS r ON r.id = m.round_id');
+$query->where('mp.position_id != 0');
+$query->where('mp.project_position_id = 0');
+$db->setQuery($query);
+$result = $db->loadObjectList();
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' dump <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+
+//$jinput->set('jl_table_import_step','ENDE');
+//return self::$_success;
+
+foreach( $result as $row )
+{
+$query = $db->getQuery(true);
+$query->clear();
+$query->select('id');
+$query->from('#__joomleague_project_position');
+$query->where('position_id = '.$row->position_id);
+$query->where('project_id = '.$row->project_id);
+$db->setQuery($query);
+    
+$mdlTable = new stdClass();
+$mdlTable->id = $row->id;
+$mdlTable->project_position_id = $db->loadResult();
+//$mdlTable->published = 1;
+try {
+    $result_update = $db->updateObject('#__joomleague_match_staff', $mdlTable, 'id');
+}
+catch (Exception $e){
+    
+}
+}
+
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Daten in der Tabelle: ( __joomleague_match_staff ) aktualisiert!</strong>'.'</span>';
+$my_text .= '<br />';     
+    
+$endtime = sportsmanagementModeldatabasetool::getRunTime();
+$totaltime = ($endtime - $starttime);
+self::$_success['Laufzeit:'] = JText::sprintf('This page was created in %1$s seconds',$totaltime);
+self::$_success['JL-Update:'] = $my_text;
+$jl_table_import_step++;
+$jinput->set('jl_table_import_step', $jl_table_import_step);
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
+return self::$_success;    
+}
+
+if ( $jl_table_import_step == 6 )
+{
+/**
+ * die positionen bei den spielen schiedsrichter setzen
+ */
+ 
+$query = $db->getQuery(true);
+$query->clear();
+$query->select('mp.id,mp.position_id,r.project_id,mp.referee_id');
+//$query->select('(SELECT pp.id FROM #__joomleague_project_position AS pp WHERE pp.project_id = r.project_id and pp.position_id = mp.position_id) AS '.$db->QuoteName('project_position_id'));
+$query->from('#__joomleague_match_referee as mp');
+$query->join('INNER', '#__joomleague_match AS m ON m.id = mp.match_id');
+$query->join('INNER', '#__joomleague_round AS r ON r.id = m.round_id');
+$query->where('mp.position_id != 0');
+$query->where('mp.project_position_id = 0');
+$db->setQuery($query);
+$result = $db->loadObjectList();
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' dump <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+
+//$jinput->set('jl_table_import_step','ENDE');
+//return self::$_success;
+
+foreach( $result as $row )
+{
+$query = $db->getQuery(true);
+$query->clear();
+$query->select('id');
+$query->from('#__joomleague_project_position');
+$query->where('position_id = '.$row->position_id);
+$query->where('project_id = '.$row->project_id);
+$db->setQuery($query);
+    
+$mdlTable = new stdClass();
+$mdlTable->id = $row->id;
+$mdlTable->project_referee_id = $row->referee_id;
+$mdlTable->project_position_id = $db->loadResult();
+//$mdlTable->published = 1;
+try {
+    $result_update = $db->updateObject('#__joomleague_match_referee', $mdlTable, 'id');
+}
+catch (Exception $e){
+    
+}
+}
+
+
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Daten in der Tabelle: ( __joomleague_match_referee ) aktualisiert!</strong>'.'</span>';
+$my_text .= '<br />';         
+$endtime = sportsmanagementModeldatabasetool::getRunTime();
+$totaltime = ($endtime - $starttime);
+self::$_success['Laufzeit:'] = JText::sprintf('This page was created in %1$s seconds',$totaltime);
+self::$_success['Tabellenkopie:'] = $my_text;
+$jl_table_import_step++;
+$jinput->set('jl_table_import_step', $jl_table_import_step);
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
+return self::$_success;    
+}
+
+if ( $jl_table_import_step == 7 )
+{
+
+
+
+    
+$endtime = sportsmanagementModeldatabasetool::getRunTime();
+$totaltime = ($endtime - $starttime);
+self::$_success['Laufzeit:'] = JText::sprintf('This page was created in %1$s seconds',$totaltime);
+self::$_success['Tabellenkopie:'] = $my_text;
+$jl_table_import_step++;
+$jinput->set('jl_table_import_step', $jl_table_import_step);
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
+return self::$_success;    
+}
+
+if ( $jl_table_import_step == 8 )
+{
+
+
+
+    
+$endtime = sportsmanagementModeldatabasetool::getRunTime();
+$totaltime = ($endtime - $starttime);
+self::$_success['Laufzeit:'] = JText::sprintf('This page was created in %1$s seconds',$totaltime);
+self::$_success['Tabellenkopie:'] = $my_text;
+$jl_table_import_step++;
+$jinput->set('jl_table_import_step', $jl_table_import_step);
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
+return self::$_success;    
+}
+
+if ( $jl_table_import_step == 9 )
+{
+
+
+
+    
+$endtime = sportsmanagementModeldatabasetool::getRunTime();
+$totaltime = ($endtime - $starttime);
+self::$_success['Laufzeit:'] = JText::sprintf('This page was created in %1$s seconds',$totaltime);
+self::$_success['Tabellenkopie:'] = $my_text;
+$jl_table_import_step++;
+$jinput->set('jl_table_import_step', $jl_table_import_step);
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jinput <br><pre>'.print_r($jinput,true).'</pre>'),'');
+return self::$_success;    
+}
+
+
+
+    
+if ( $jl_table_import_step == 10 )
 {
 
 $table_copy[] = 'associations';    
@@ -574,9 +1179,9 @@ return self::$_success;
 }
 
 /**
- * importschritt 1
+ * importschritt 11
  */
-if ( $jl_table_import_step == 1 )
+if ( $jl_table_import_step == 11 )
 {
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'success<br><pre>'.print_r(self::$_success,true).'</pre>'),'');
 
@@ -628,9 +1233,9 @@ return self::$_success;
 }
 
 /**
- * importschritt 2
+ * importschritt 12
  */
-if ( $jl_table_import_step == 2 )
+if ( $jl_table_import_step == 12 )
 {
 /**
  * jetzt werden die importierten vereine zugeordnet
@@ -775,9 +1380,9 @@ return self::$_success;
 }
 
 /**
- * importschritt 3
+ * importschritt 13
  */
-if ( $jl_table_import_step == 3 )
+if ( $jl_table_import_step == 13 )
 {
 /**
  * jetzt werden die saisons zugeordnet
@@ -830,9 +1435,9 @@ return self::$_success;
 }
 
 /**
- * importschritt 4
+ * importschritt 14
  */
-if ( $jl_table_import_step == 4 )
+if ( $jl_table_import_step == 14 )
 {
 /**
  * jetzt werden die ligen zugeordnet
@@ -887,9 +1492,9 @@ return self::$_success;
 }
 
 /**
- * importschritt 5
+ * importschritt 15
  */
-if ( $jl_table_import_step == 5 )
+if ( $jl_table_import_step == 15 )
 {
 
 /**
@@ -1007,9 +1612,9 @@ return self::$_success;
 }
 
 /**
- * importschritt 6
+ * importschritt 16
  */
-if ( $jl_table_import_step == 6 )
+if ( $jl_table_import_step == 16 )
 {
 
 /**
@@ -1150,9 +1755,9 @@ return self::$_success;
 }
 
 /**
- * importschritt 7
+ * importschritt 17
  */
-if ( $jl_table_import_step == 7 )
+if ( $jl_table_import_step == 17 )
 {
 
 /**
@@ -1208,9 +1813,9 @@ return self::$_success;
 }
 
 /**
- * importschritt 8
+ * importschritt 18
  */
-if ( $jl_table_import_step == 8 )
+if ( $jl_table_import_step == 18 )
 {
 
 /**
@@ -1266,9 +1871,9 @@ return self::$_success;
 }
 
 /**
- * importschritt 9
+ * importschritt 19
  */
-if ( $jl_table_import_step == 9 )
+if ( $jl_table_import_step == 19 )
 {
 
 /**
@@ -1380,9 +1985,9 @@ return self::$_success;
 }
 
 /**
- * importschritt 10
+ * importschritt 20
  */
-if ( $jl_table_import_step == 10 )
+if ( $jl_table_import_step == 20 )
 {
 
 /**
@@ -1485,9 +2090,9 @@ return self::$_success;
 }
 
 /**
- * importschritt 11
+ * importschritt 21
  */
-if ( $jl_table_import_step == 11 )
+if ( $jl_table_import_step == 21 )
 {
 
 /**
@@ -1636,9 +2241,9 @@ return self::$_success;
 }
 
 /**
- * importschritt 12
+ * importschritt 22
  */
-if ( $jl_table_import_step == 12 )
+if ( $jl_table_import_step == 22 )
 {
 /**
  * jetzt werden die spiel id´s eingetragen
@@ -1703,14 +2308,14 @@ self::$_success['Laufzeit:'] = JText::sprintf('This page was created in %1$s sec
 self::$_success['Update Spiele:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
 
 /**
- * importschritt 13
+ * importschritt 23
  */
-if ( $jl_table_import_step == 13 )
+if ( $jl_table_import_step == 23 )
 {
 /**
  * ab hier beginnt die umsetzung in die neue jsm struktur
@@ -2329,14 +2934,14 @@ self::$_success['Laufzeit:'] = JText::sprintf('This page was created in %1$s sec
 self::$_success['Update Spiele:'] = $my_text;
 $jl_table_import_step++;
 $jinput->set('jl_table_import_step',$jl_table_import_step);
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' jl_table_import_step <br><pre>'.print_r($jl_table_import_step,true).'</pre>'),'');
 return self::$_success;
 }
 
 /**
- * importschritt 14
+ * importschritt 24
  */
-if ( $jl_table_import_step == 14 )
+if ( $jl_table_import_step == 24 )
 {
 /**
  * statistic id umsetzen
@@ -2395,9 +3000,9 @@ return self::$_success;
 }
 
 /**
- * importschritt 15
+ * importschritt 25
  */
-if ( $jl_table_import_step == 15 )
+if ( $jl_table_import_step == 25 )
 {
 /**
  * projekt positionen pro spieler einfügen
@@ -2436,9 +3041,9 @@ return self::$_success;
 }
 
 /**
- * importschritt 16
+ * importschritt 26
  */
-if ( $jl_table_import_step == 16 )
+if ( $jl_table_import_step == 26 )
 {
 $my_text = '';
 
