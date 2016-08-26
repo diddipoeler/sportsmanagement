@@ -198,11 +198,9 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('playerinfo'.$this->pers
             
 			<?php
 			}
-			if 	( $timestamp_death )
+			if 	( $timestamp_death && $this->config['show_deathday'] )
 			{
 			?>
-			
-            
             <address>
 			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_PERSON_DEATHDAY' ); ?></strong>
 			<?php 

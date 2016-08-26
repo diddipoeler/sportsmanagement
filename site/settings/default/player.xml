@@ -3,6 +3,7 @@
 	<name><![CDATA[COM_SPORTSMANAGEMENT_FES_PLAYER_NAME]]></name>
 	<description><![CDATA[COM_SPORTSMANAGEMENT_FES_PLAYER_DESCR]]></description>
 
+  <!-- reiter 1 -->
 	<fieldset name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
   label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"  
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS"
@@ -254,6 +255,7 @@
 -->
 	</fieldset>
 	
+  <!-- reiter 2 -->
 	<fieldset name="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ELEMET_ORDER" 
 	label="COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_ELEMET_ORDER" 
 		description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_ELEMET_ORDER">	
@@ -317,7 +319,8 @@
 			
 		</field>
 	</fieldset>
-
+  
+  <!-- reiter 3 -->
 	<fieldset name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONOPTIONS" 
 	label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONOPTIONS" 
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PERSONOPTIONS"
@@ -373,6 +376,13 @@
 			<option value="4">COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_OPTION4_BIRTHDAY</option>
 		</field>		
 
+    <field 	name="show_deathday" type="radio" default="0"  class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_DEATHDAY" 
+				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_DEATHDAY">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>		
+    
 		<field 	name="show_person_address" type="radio" default="0"  class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_LABEL_SHOW_PERS_ADDRESS" 
 				description="COM_SPORTSMANAGEMENT_FES_PLAYER_PARAM_DESCR_SHOW_PERS_ADDRESS">
