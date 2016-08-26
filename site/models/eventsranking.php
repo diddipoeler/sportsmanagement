@@ -206,10 +206,10 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
        
        $query->select('et.id as etid,me.event_type_id as id,et.*');
        $query->select('CONCAT_WS( \':\', et.id, et.alias ) AS event_slug');
-       $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype as et');
-       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event as me ON et.id = me.event_type_id');
-       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m ON m.id = me.match_id');
-       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round as r ON m.round_id = r.id');
+       $query->from('#__sportsmanagement_eventtype as et');
+       $query->join('INNER','#__sportsmanagement_match_event as me ON et.id = me.event_type_id');
+       $query->join('INNER','#__sportsmanagement_match as m ON m.id = me.match_id');
+       $query->join('INNER','#__sportsmanagement_round as r ON m.round_id = r.id');
                 
 		if (self::$projectid > 0)
 		{

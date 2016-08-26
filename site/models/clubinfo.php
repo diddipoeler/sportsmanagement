@@ -495,7 +495,7 @@ $result = $db->execute();
   
   if ( $row->new_club_id )
   {
-  $this->getClubHistory( $row->id );
+  self::getClubHistory( $row->id );
   }
   else
   {

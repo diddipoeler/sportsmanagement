@@ -1416,16 +1416,38 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
         {
         // Joomla! 3.0 code here
         $sender = array($config->get('mailfrom'),$config->get('fromname'));
+        $adminsenderemail = $config->get('mailfrom');
         }
         elseif(version_compare(JVERSION,'2.5.0','ge')) 
         {
         // Joomla! 2.5 code here
         $sender = array($config->getValue('config.mailfrom'),$config->getValue('config.fromname'));
+        $adminsenderemail = $config->getValue('config.mailfrom');
         }
 
 	//$sender = array($config->getValue('config.mailfrom'),$config->getValue('config.fromname'));
 	$mailer->setSender($sender);
-  $mailer->addRecipient($predictionGameMemberMail);				
+  
+  $recipient = $predictionGameMemberMail;
+
+/**
+ * zur sicherheit die tipeingaben auch dem admin zusenden
+ */
+if ( $configprediction['send_admin_user_tipentry'] )
+{  
+  $recipient[] = $sender[0];  
+}
+  //$mailer->addRecipient($predictionGameMemberMail);				
+  $mailer->addRecipient($recipient);
+
+
+
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sender<br><pre>'.print_r($sender,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' recipient<br><pre>'.print_r($recipient,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameMemberMail<br><pre>'.print_r($predictionGameMemberMail,true).'</pre>'),'');
+//$mailer->addRecipient($recipient);
+
 	//Create the mail
 	$mailer->setSubject(JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MAIL_TITLE'));
   
@@ -1658,6 +1680,7 @@ $body .= sportsmanagementModelPredictionEntry::createHelptText($predictionProjec
 	//echo 'Error sending email to:<br />'.print_r($recipient,true).'<br />';
 	//echo 'Error message: '.$send->message;
 	$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MAIL_SEND_ERROR'),'Error');
+    //$app->enqueueMessage($send->message,'Error');
 	}
 	else
 	{

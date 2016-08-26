@@ -599,13 +599,20 @@ class sportsmanagementModelPlayer extends JModelLegacy
         $query->where('me.match_id = '.$match_id);
     
     }
+    
+    try{
     $db->setQuery($query);
     $cardsresult = $db->loadObjectList(); 
     foreach ( $cardsresult as $row )
     {
         $result -= ( $game_regular_time - $row->event_time );
     }   
-    
+    }
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $my_text = 'dump <pre>'.print_r($query->dump(),true).'</pre>';

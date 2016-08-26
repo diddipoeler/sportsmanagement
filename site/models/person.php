@@ -331,10 +331,10 @@ $result = $db->execute();
 	   $query = $db->getQuery(true);
        
        $query->select('SUM(me.event_sum) as total');
-       $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me'); 
-       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp1 ON tp1.id = me.teamplayer_id');
-       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.team_id = tp1.team_id'); 
-       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON st1.id = pt.team_id');
+       $query->from('#__sportsmanagement_match_event AS me'); 
+       $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp1 ON tp1.id = me.teamplayer_id');
+       $query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.team_id = tp1.team_id'); 
+       $query->join('INNER','#__sportsmanagement_project_team AS pt ON st1.id = pt.team_id');
 
         $query->where('me.event_type_id = ' . (int) $eventid);
         $query->where('tp1.person_id = ' . (int) self::$personid);
