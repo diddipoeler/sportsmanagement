@@ -154,9 +154,11 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
         //$this->assign('success',$jinput->getVar('success'));
 		$this->success = $this->app->getUserStateFromRequest( $this->option.".jl_table_import_success", 0 );
         
+        
+        
         if ( $this->getLayout() == 'infofield' || $this->getLayout() == 'infofield_3' )
 		{
-			$myoptions[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
+		$myoptions[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
 		$mdlagegroup = JModelLegacy::getInstance('agegroups', 'sportsmanagementModel');
         if ( $res = $mdlagegroup->getAgeGroups() )
 		{
@@ -165,6 +167,7 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 		}
 		$lists['agegroup'] = $myoptions;  
         
+        $this->get_info_fields = $this->model->get_info_fields();
         
         $this->lists = $lists;  
 		$this->setLayout('infofield');
@@ -199,6 +202,10 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
         if ( $this->getLayout() == 'default' || $this->getLayout() == 'default_3' )
 		{
 		JToolBarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_START_BUTTON'), false);
+        }
+         if ( $this->getLayout() == 'infofield' || $this->getLayout() == 'infofield_3' )
+		{
+		JToolBarHelper::custom('joomleagueimports.joomleaguesetagegroup', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_SETAGEGROUP_START_BUTTON'), false);
         }
 JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=projects');    
 

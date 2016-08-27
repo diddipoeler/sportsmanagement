@@ -83,6 +83,82 @@ static $team_staff = array();
 
 
 /**
+ * sportsmanagementModeljoomleagueimports::joomleaguesetagegroup()
+ * 
+ * @return void
+ */
+function joomleaguesetagegroup()
+{
+// Reference global application object
+$app = JFactory::getApplication();
+// JInput object
+$jinput = $app->input;    
+$post = $jinput->post->getArray(array());   
+$db = JFactory::getDbo(); 
+$query = $db->getQuery(true);  
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');    
+$a = 0;
+foreach( $post['agegroup'] as $key => $value )
+{
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' key<br><pre>'.print_r($key, true).'</pre><br>','Notice');
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($value, true).'</pre><br>','Notice');
+
+$query = $db->getQuery(true);
+$query->clear();
+// Fields to update.
+$fields = array(
+    $db->quoteName('agegroup_id') . ' = ' . $value
+);
+ 
+// Conditions for which records should be updated.
+$conditions = array(
+    $db->quoteName('info') . ' LIKE '.$db->Quote(''.$key.'')
+);
+ 
+$query->update($db->quoteName('#__sportsmanagement_team'))->set($fields)->where($conditions);
+
+$db->setQuery($query);
+try{
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+}
+catch (Exception $e) {
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
+}
+$a++;
+}
+
+return $a;
+    
+}
+
+/**
+ * sportsmanagementModeljoomleagueimports::get_info_fields()
+ * 
+ * @return void
+ */
+function get_info_fields()
+{
+$conf = JFactory::getConfig();
+$app = JFactory::getApplication();
+$params = JComponentHelper::getParams( 'com_sportsmanagement' );  
+$db = JFactory::getDbo(); 
+$query = $db->getQuery(true);    
+
+$query->clear();
+$query->select('info,agegroup_id');
+$query->from('#__sportsmanagement_team');
+//$query->join('INNER', '#__joomleague_project_position AS pt ON pt.project_id = pr.project_id and pt.position_id = pr.position_id ');
+$query->where('info NOT LIKE '.$db->Quote(''.''));
+$query->group('info,agegroup_id');
+$db->setQuery($query);
+$result = $db->loadObjectList();
+    
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,true).'</pre>'),'');
+return $result;    
+}
+
+
+/**
  * sportsmanagementModeljoomleagueimports::check_database()
  * 
  * @return void
