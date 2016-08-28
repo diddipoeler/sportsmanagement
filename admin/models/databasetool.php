@@ -476,6 +476,110 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
     
     
     /**
+     * sportsmanagementModeldatabasetool::setParamstoJSON()
+     * 
+     * @return void
+     */
+    function setParamstoJSON()
+    {
+    $this->query->clear();   
+    $this->query->select('template,params');
+// From table
+$this->query->from('#__sportsmanagement_template_config');
+$this->query->where('params not LIKE '.$this->jsmdb->Quote(''.'') );
+$this->query->where('import_id != 0');
+$this->query->group('template');
+$this->jsmdb->setQuery( $this->query );
+$record_jl = $this->jsmdb->loadObjectList();
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' params <br><pre>'.print_r($record_jl,true).'</pre>'),'');        
+
+$defaultpath = JPATH_COMPONENT_SITE.DS.'settings'.DS.'default';
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' defaultpath <br><pre>'.print_r($defaultpath,true).'</pre>'),'');
+    
+foreach ( $record_jl as $row )
+{
+$defaultvalues = array();
+$defaultvalues = explode('\n', $row->params);
+$parameter = new JRegistry;
+                    
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+$ini = $parameter->loadString($defaultvalues[0]);
+}
+else
+{
+$ini = $parameter->loadINI($defaultvalues[0]);
+}    
+
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' ini <br><pre>'.print_r($ini,true).'</pre>'),'');
+
+/**
+ * beim import kann es vorkommen, das wir in der neuen komponente
+ * zusätzliche felder haben, die mit abgespeichert werden müssen
+ */
+$xmlfile = $defaultpath.DS.$row->template.'.xml';
+
+if( file_exists($xmlfile) )
+{
+$newparams = array();
+$xml = JFactory::getXML($xmlfile,true);
+foreach ($xml->fieldset as $paramGroup)
+{
+foreach ($paramGroup->field as $param)
+{
+$newparams[(string)$param->attributes()->name] = (string)$param->attributes()->default;
+}
+} 
+
+foreach ( $newparams as $key => $value )
+{
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+$value = $ini->get($key);
+}
+else
+{
+//$value = $ini->getValue($key);
+}
+if ( isset($value) )
+{
+$newparams[$key] = $value;
+}
+} 
+$t_params = json_encode( $newparams ); 
+}
+else
+{
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' template <br><pre>'.print_r($row->template,true).'</pre>'),'Error');    
+$ini = $parameter->toArray($ini);
+$t_params = json_encode( $ini ); 
+}
+
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' template <br><pre>'.print_r($row->template,true).'</pre>'),'');
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' t_params <br><pre>'.print_r($t_params,true).'</pre>'),'');
+
+$this->query->clear();
+    // Fields to update.
+$fields = array(
+    $this->jsmdb->quoteName('params') . ' = '.$this->jsmdb->Quote(''.$t_params.'') 
+);
+// Conditions for which records should be updated.
+$conditions = array(
+    $this->jsmdb->quoteName('template') . ' LIKE '.$this->jsmdb->Quote(''.$row->template.'')
+);        
+$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_template_config'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->query);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
+self::runJoomlaQuery(__CLASS__);
+    
+    
+}    
+    
+    
+    
+        
+    }
+    /**
      * sportsmanagementModeldatabasetool::setNewComponentName()
      * 
      * @return void

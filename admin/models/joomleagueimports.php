@@ -416,14 +416,9 @@ $exportfields1 = array();
 $exportfields2 = array();           
 $table_copy = array();        
 
-//$table_copy[] = 'associations';
-
-//$stringedInt = (string) $importstep;
-//switch ($importstep)
-//{
-
-
-
+/**
+ * importschritt 0
+ */
 if ( $jl_table_import_step == 0 )
 {
     
@@ -517,6 +512,9 @@ $jinput->set('jl_table_import_step', $jl_table_import_step);
 return self::$_success;    
 }
 
+/**
+ * importschritt 1
+ */
 if ( $jl_table_import_step == 1 )
 {
 /**
@@ -559,6 +557,9 @@ $jinput->set('jl_table_import_step', $jl_table_import_step);
 return self::$_success;    
 }
 
+/**
+ * importschritt 2
+ */
 if ( $jl_table_import_step == 2 )
 {
 /**
@@ -610,6 +611,9 @@ $jinput->set('jl_table_import_step', $jl_table_import_step);
 return self::$_success;    
 }
 
+/**
+ * importschritt 3
+ */
 if ( $jl_table_import_step == 3 )
 {
 /**
@@ -661,6 +665,9 @@ $jinput->set('jl_table_import_step', $jl_table_import_step);
 return self::$_success;    
 }
 
+/**
+ * importschritt 4
+ */
 if ( $jl_table_import_step == 4 )
 {
 /**
@@ -716,6 +723,9 @@ $jinput->set('jl_table_import_step', $jl_table_import_step);
 return self::$_success;    
 }
 
+/**
+ * importschritt 5
+ */
 if ( $jl_table_import_step == 5 )
 {
 /**
@@ -775,6 +785,9 @@ $jinput->set('jl_table_import_step', $jl_table_import_step);
 return self::$_success;    
 }
 
+/**
+ * importschritt 6
+ */
 if ( $jl_table_import_step == 6 )
 {
 /**
@@ -835,6 +848,9 @@ $jinput->set('jl_table_import_step', $jl_table_import_step);
 return self::$_success;    
 }
 
+/**
+ * importschritt 7
+ */
 if ( $jl_table_import_step == 7 )
 {
 
@@ -852,6 +868,9 @@ $jinput->set('jl_table_import_step', $jl_table_import_step);
 return self::$_success;    
 }
 
+/**
+ * importschritt 8
+ */
 if ( $jl_table_import_step == 8 )
 {
 
@@ -869,10 +888,11 @@ $jinput->set('jl_table_import_step', $jl_table_import_step);
 return self::$_success;    
 }
 
+/**
+ * importschritt 9
+ */
 if ( $jl_table_import_step == 9 )
 {
-
-
 
     
 $endtime = sportsmanagementModeldatabasetool::getRunTime();
@@ -886,9 +906,9 @@ $jinput->set('jl_table_import_step', $jl_table_import_step);
 return self::$_success;    
 }
 
-
-
-    
+/**
+ * importschritt 10
+ */    
 if ( $jl_table_import_step == 10 )
 {
 
@@ -3099,6 +3119,10 @@ $my_text .= '<br />';
 
 $mdl->setNewComponentName();
 $my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Komponentenname angepasst !</strong>'.'</span>';
+$my_text .= '<br />';
+
+$mdl->setParamstoJSON();
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Feld Params in template_config in JSON umgesetzt !</strong>'.'</span>';
 $my_text .= '<br />';
 
 $endtime = sportsmanagementModeldatabasetool::getRunTime();
