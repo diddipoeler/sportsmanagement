@@ -337,86 +337,86 @@ if( $this->jsmapp->isSite() )
 /**
  * differenzierung zwischen den views
  */       
-       switch ( $this->jsmview )
-       {
-       case 'position':
-       if (isset($post['position_eventslist']) && is_array($post['position_eventslist'])) 
-	   {
-	   if ( $data['id'] )
-       {
-       $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'position_eventslist<br><pre>'.print_r($post['position_eventslist'],true).'</pre>'),'Notice');
-       $mdl = JModelLegacy::getInstance("positioneventtype", "sportsmanagementModel");
-       $mdl->store($post,$data['id']);
-       }
-       }
-        
-       if (isset($post['position_statistic']) && is_array($post['position_statistic'])) 
-	   {
-	   if ( $data['id'] )
-       {
-       $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'position_statistic<br><pre>'.print_r($post['position_statistic'],true).'</pre>'),'Notice');
-       $mdl = JModelLegacy::getInstance("positionstatistic", "sportsmanagementModel");
-       $mdl->store($post,$data['id']);
-       }
-	   }
-       break;
-       case 'club':
-       sportsmanagementHelper::saveExtraFields($post,$data['id']);
-       break; 
-       case 'project':
-       sportsmanagementHelper::saveExtraFields($post,$data['id']);
-       break; 
-       case 'team':
-       if (isset($data['season_ids']) && is_array($data['season_ids'])) 
+		switch ( $this->jsmview )
 		{
-		  foreach( $data['season_ids'] as $key => $value )
-          {
-          
-        $query->clear();  
-        $query->select('id');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id');
-        $query->where('team_id ='. $data['id'] );
-        $query->where('season_id ='. $value );
-        JFactory::getDbo()->setQuery($query);
-		$res = JFactory::getDbo()->loadResult();
-        
-        if ( !$res )
-        {
-        $query->clear();
+		case 'position':
+		if (isset($post['position_eventslist']) && is_array($post['position_eventslist']))
+		{
+		if ( $data['id'] )
+		{
+		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'position_eventslist<br><pre>'.print_r($post['position_eventslist'],true).'</pre>'),'Notice');
+		$mdl = JModelLegacy::getInstance("positioneventtype", "sportsmanagementModel");
+		$mdl->store($post,$data['id']);
+		}
+		}
+
+		if (isset($post['position_statistic']) && is_array($post['position_statistic'])) 
+		{
+		if ( $data['id'] )
+		{
+		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'position_statistic<br><pre>'.print_r($post['position_statistic'],true).'</pre>'),'Notice');
+		$mdl = JModelLegacy::getInstance("positionstatistic", "sportsmanagementModel");
+		$mdl->store($post,$data['id']);
+		}
+		}
+		break;
+		case 'club':
+		sportsmanagementHelper::saveExtraFields($post,$data['id']);
+		break;
+		case 'project':
+		sportsmanagementHelper::saveExtraFields($post,$data['id']);
+		break;
+		case 'team':
+		if (isset($data['season_ids']) && is_array($data['season_ids'])) 
+		{
+		foreach( $data['season_ids'] as $key => $value )
+		{
+		$this->jsmquery->clear();
+		$this->jsmquery->select('id');
+		$this->jsmquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id');
+		$this->jsmquery->where('team_id ='. $data['id'] );
+		$this->jsmquery->where('season_id ='. $value );
+		//JFactory::getDbo()->setQuery($query);
+		$this->jsmdb->setQuery($this->jsmquery);
+		$result = $this->jsmdb->loadObjectList();
+
+		if ( !$result )
+		{
+		$this->jsmdb->clear();
         // Insert columns.
-        $columns = array('team_id','season_id');
-        // Insert values.
-        $values = array($data['id'],$value);
-        // Prepare the insert query.
-        $query
-            ->insert(JFactory::getDbo()->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id'))
-            ->columns(JFactory::getDbo()->quoteName($columns))
-            ->values(implode(',', $values));
-        // Set the query using our newly populated query object and execute it.
-        JFactory::getDbo()->setQuery($query);
+		$columns = array('team_id','season_id');
+		// Insert values.
+		$values = array($data['id'],$value);
+		// Prepare the insert query.
+		$this->jsmdb
+			->insert($this->jsmdb->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id'))
+			->columns($this->jsmdb->quoteName($columns))
+			->values(implode(',', $values));
+		// Set the query using our newly populated query object and execute it.
+		$this->jsmdb->setQuery($this->jsmquery);
 
 		if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
 		{
 //            $this->app->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
-		}  
+		}
           
         }
 		//$mdl = JModelLegacy::getInstance("seasonteam", "sportsmanagementModel");
 		}
         }
-        sportsmanagementHelper::saveExtraFields($post,$data['id']);
-       break;
-       default:
-       break; 
-       }
-               
-        return true;  
-        }
-        else
-        {
-            return false;
-        }
-    }
+		sportsmanagementHelper::saveExtraFields($post,$data['id']);
+		break;
+		default:
+		break;
+		}
+     
+		return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
     
     /**
 	 * Method to get the record form.
