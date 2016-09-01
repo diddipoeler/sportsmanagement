@@ -189,7 +189,7 @@ $app = JFactory::getApplication();
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' fileext<pre>'.print_r($fileext,true).'</pre>'),'');
 
-		$allowable	= array ('gif','jpg','jpeg','png','bmp','GIF','JPG','JPEG','PNG','BMP');
+		$allowable	= array ('gif','jpg','jpeg','png','bmp','svg', 'GIF','JPG','JPEG','PNG','BMP','SVG');
 		if ( !in_array( $fileext, $allowable ) )
 		{
 			JError::raiseWarning( 100, JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_ERROR1' ) . ': ' . htmlspecialchars( $file['name'], ENT_COMPAT, 'UTF-8' ) );
