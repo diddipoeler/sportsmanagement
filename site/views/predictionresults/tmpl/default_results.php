@@ -267,7 +267,6 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('predresult'.$match->hom
                         
 						?>
                         <span class='hasTip' title="<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_PRED_RESULTS_RESULT_HINT',$match->homeName,$match->awayName,$outputStr); ?>"><?php echo $outputStr; ?></span>
-                        <br />
                         <?php
 						
                         
