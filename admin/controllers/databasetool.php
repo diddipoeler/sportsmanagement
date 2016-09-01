@@ -143,7 +143,7 @@ function truncatejl()
 $app = JFactory::getApplication();  
 $model = $this->getModel('databasetool');      
 $jl_tables = $model->getJoomleagueTablesTruncate();  
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_tables<br><pre>'.print_r($jl_tables,true).'</pre>'),'');	  
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jl_tables<br><pre>'.print_r($jl_tables,true).'</pre>'),'');	  
 
 foreach( $jl_tables as $key => $value )  
 {  

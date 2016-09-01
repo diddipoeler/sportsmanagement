@@ -53,56 +53,10 @@ defined('_JEXEC') or die('Restricted access');
  * @version 2013
  * @access public
  */
-class sportsmanagementModeljlextfederation extends JModelAdmin
+class sportsmanagementModeljlextfederation extends JSMModelAdmin
 {
     
-    /**
-	 * Method to save the form data.
-	 *
-	 * @param	array	The form data.
-	 * @return	boolean	True on success.
-	 * @since	1.6
-	 */
-	public function save($data)
-	{
-	   $app = JFactory::getApplication();
-       $date = JFactory::getDate();
-	   $user = JFactory::getUser();
-       $post = JRequest::get('post');
-       // Set the values
-	   $data['modified'] = $date->toSql();
-	   $data['modified_by'] = $user->get('id');
-        
-        // Alter the title for Save as Copy
-		if ($this->jsmjinput->get('task') == 'save2copy')
-		{
-			$orig_table = $this->getTable();
-			$orig_table->load((int) $this->jsmjinput->getInt('id'));
-            $data['id'] = 0;
-
-			if ($data['name'] == $orig_table->name)
-			{
-				$data['name'] .= ' ' . JText::_('JGLOBAL_COPY');
-				$data['alias'] = JFilterOutput::stringURLSafe( $data['name'] );
-			}
-		}
-
-        // zuerst sichern, damit wir bei einer neuanlage die id haben
-       if ( parent::save($data) )
-       {
-			$id =  (int) $this->getState($this->getName().'.id');
-            $isNew = $this->getState($this->getName() . '.new');
-            $data['id'] = $id;
-            
-            if ( $isNew )
-            {
-                //Here you can do other tasks with your newly saved record...
-                $app->enqueueMessage(JText::plural(strtoupper($option) . '_N_ITEMS_CREATED', $id),'');
-            }
-           
-		}
-	   return true; 
-    }   
+   
 
 
 }

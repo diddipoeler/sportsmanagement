@@ -41,7 +41,7 @@
 defined('_JEXEC') or die('Restricted access');
  
 // import Joomla modelform library
-jimport('joomla.application.component.modeladmin');
+//jimport('joomla.application.component.modeladmin');
  
 
 /**
@@ -128,57 +128,6 @@ class sportsmanagementModelagegroup extends JSMModelAdmin
 		}
 		return JText::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_SAVE');
 	}
-    
-    /**
-	 * Method to save the form data.
-	 *
-	 * @param	array	The form data.
-	 * @return	boolean	True on success.
-	 * @since	1.6
-	 */
-	public function save($data)
-	{
-	  // // Reference global application object
-//        $app = JFactory::getApplication();
-//        // JInput object
-//        $jinput = $app->input;
-//       $date = JFactory::getDate();
-//	   $user = JFactory::getUser();
-       $post = $this->jsmjinput->post->getArray();
-       // Set the values
-	   $data['modified'] = $this->jsmdate->toSql();
-	   $data['modified_by'] = $this->jsmuser->get('id');
-       
-       // Alter the title for Save as Copy
-		if ($this->jsmjinput->get('task') == 'save2copy')
-		{
-			$orig_table = $this->getTable();
-			$orig_table->load((int) $this->jsmjinput->getInt('id'));
-            $data['id'] = 0;
-
-			if ($data['name'] == $orig_table->name)
-			{
-				$data['name'] .= ' ' . JText::_('JGLOBAL_COPY');
-				$data['alias'] = JFilterOutput::stringURLSafe( $data['name'] );
-			}
-		}
-         
-       // zuerst sichern, damit wir bei einer neuanlage die id haben
-       if ( parent::save($data) )
-       {
-			$id =  (int) $this->getState($this->getName().'.id');
-            $isNew = $this->getState($this->getName() . '.new');
-            $data['id'] = $id;
-            
-            if ( $isNew )
-            {
-                //Here you can do other tasks with your newly saved record...
-                $this->jsmapp->enqueueMessage(JText::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id),'');
-            }
-           
-		}
         
-        return true;  
-    }   
     
 }

@@ -60,7 +60,7 @@ $i    = 1;
 
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view=template&layout=edit&id='.(int) $this->template->id); ?>" method="post" id="adminForm" name="adminForm" >
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->template->id); ?>" method="post" id="adminForm" name="adminForm" >
 	<div style='text-align: right;'>
 		<?php echo $this->lists['templates']; ?>
 	</div>

@@ -144,7 +144,7 @@ class sportsmanagementModelteam extends JSMModelAdmin
 	 * @return	boolean	True on success.
 	 * @since	1.6
 	 */
-	public function save($data)
+	public function savenichtmehr($data)
 	{
 	   //$option = JRequest::getCmd('option');
 	//$app	= JFactory::getApplication();

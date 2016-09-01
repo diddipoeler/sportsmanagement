@@ -8,7 +8,7 @@ $calendar = $this->gcalendar;
 JHtml::_('behavior.tooltip');
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $calendar->id); ?>" method="post" name="adminForm" id="gcalendar-form">
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $calendar->id); ?>" method="post" name="adminForm" id="gcalendar-form">
 	<div class="width-100 fltlft">
 		<fieldset class="adminform">
 			<legend><?php echo JText::_( 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDAR_DETAILS' ); ?></legend>

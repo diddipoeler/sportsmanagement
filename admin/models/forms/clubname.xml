@@ -31,7 +31,8 @@
 			type="country"
 			label="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_COUNTRY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_COUNTRY_DESC"
-			class="inputbox">
+			class="inputbox"
+      required="true">
 		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
 	</field>
 	

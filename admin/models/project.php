@@ -466,7 +466,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_user_extra_field
 	 * @return	boolean	True on success.
 	 * @since	1.6
 	 */
-	public function save($data)
+	public function savenichtmehr($data)
 	{
 	   $app = JFactory::getApplication();
        $address_parts = array();

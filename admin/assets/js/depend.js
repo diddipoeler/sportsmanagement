@@ -1,3 +1,14 @@
+/**
+ * Joomleague
+ *
+ * @copyright	Copyright (C) 2005-2015 joomleague.at. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @link		http://www.joomleague.at
+ *
+ * @description	javascript for dependant element xml parameter
+ */
+
+
 // add update of field when fields it depends on change.
 window.addEvent('domready', function() {
 
@@ -71,11 +82,8 @@ function load_default(element) {
 	var loaddefault = 1;
 	var task = combo.getProperty('task');
 	var postStr = '';
-	var url = 'index.php?option=com_sportsmanagement&format=json&task=ajax.' + task
+	var url = 'index.php?option=com_joomleague&format=json&task=ajax.' + task
 		+ required + dependquery;
-    
-    alert(url);
-    
 	var theAjax = new Request.JSON({
 		url : url,
 		method : 'post',
@@ -85,11 +93,9 @@ function load_default(element) {
 
 			// options is equal to the response
 			var options = response;
-
+      
       alert(url);
       alert(response);
-      
-      //console.log("Ajax Link: " + url);
       
 			var headingLine = null;
 
@@ -115,7 +121,6 @@ function load_default(element) {
 				 el.selected = "selected";
 				 }
 				 */
-         alert(el);
 				new Element('option', {'value': el.value, 'text':el.text}).inject(combo,'inside');
 			});
 
@@ -159,7 +164,7 @@ function update_depend(element) {
 
 	var task = combo.getProperty('task');
 	var postStr = '';
-	var url = 'index.php?option=com_sportsmanagement&format=json&task=ajax.' + task
+	var url = 'index.php?option=com_joomleague&format=json&task=ajax.' + task
 		+ required + dependquery;
 	var theAjax = new Request.JSON({
 		url : url,
@@ -170,7 +175,7 @@ function update_depend(element) {
 
 			// options is equal to the response
 			var options = response;
-     // alert(response);
+
 
 			var headingLine = null;
 

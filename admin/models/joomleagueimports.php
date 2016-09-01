@@ -265,6 +265,15 @@ catch (Exception $e) {
 try { 
 $query = $db->getQuery(true);    
 $query->clear();
+$query = "ALTER TABLE `#__joomleague_match_referee` ADD `project_position_id` INT(11) NOT NULL DEFAULT '0' "   ;
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+}
+catch (Exception $e) {
+}
+try { 
+$query = $db->getQuery(true);    
+$query->clear();
 $query = "ALTER TABLE `#__joomleague_match_staff` ADD `staff_id` INT(11) NOT NULL DEFAULT '0' "   ;
 $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
@@ -274,7 +283,7 @@ catch (Exception $e) {
 try { 
 $query = $db->getQuery(true);    
 $query->clear();
-$query = "ALTER TABLE `#__joomleague_match_staff` ADD `project_position_id` INT(11) NOT NULL DEFAULT '0' "   ;
+$query = "ALTER TABLE `#__joomleague_match_staff` ADD `position_id` INT(11) NOT NULL DEFAULT '0' "   ;
 $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 }
@@ -283,7 +292,7 @@ catch (Exception $e) {
 try { 
 $query = $db->getQuery(true);    
 $query->clear();
-$query = "ALTER TABLE `#__joomleague_match_staff` ADD `position_id` INT(11) NOT NULL DEFAULT '0' "   ;
+$query = "ALTER TABLE `#__joomleague_match_staff` ADD `project_position_id` INT(11) NOT NULL DEFAULT '0' "   ;
 $db->setQuery($query);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 }
@@ -371,8 +380,24 @@ sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 }
 catch (Exception $e) {
 }
-
-
+try { 
+$query = $db->getQuery(true);    
+$query->clear();
+$query = "ALTER TABLE `#__joomleague_project` ADD `admin` INT(11) NOT NULL DEFAULT '0' "   ;
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+}
+catch (Exception $e) {
+}
+try { 
+$query = $db->getQuery(true);    
+$query->clear();
+$query = "ALTER TABLE `#__joomleague_project` ADD `editor` INT(11) NOT NULL DEFAULT '0' "   ;
+$db->setQuery($query);
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
+}
+catch (Exception $e) {
+}
 
 }
 

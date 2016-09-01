@@ -79,6 +79,7 @@ public function __construct($config = array())
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
         $this->jsmoption = $this->jsmjinput->getCmd('option');
+        $this->jsmview = $this->jsmjinput->getCmd('view');
         $this->jsmdocument = JFactory::getDocument();
         $this->jsmuser = JFactory::getUser(); 
         $this->jsmdate = JFactory::getDate();
@@ -88,6 +89,8 @@ public function __construct($config = array())
  */ 
 if ( $this->jsmapp->isAdmin() )
 {
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsmoption<br><pre>'.print_r($this->jsmoption,true).'</pre>'),'Notice');
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsmview<br><pre>'.print_r($this->jsmview,true).'</pre>'),'Notice');    
 //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isAdmin<br><pre>'.print_r($this->jsmapp->isAdmin(),true).'</pre>'),'');    
 }  
 if( $this->jsmapp->isSite() )
@@ -96,7 +99,325 @@ if( $this->jsmapp->isSite() )
 }    
         }    
 
+    /**
+	 * Method to save the form data.
+	 *
+	 * @param	array	The form data.
+	 * @return	boolean	True on success.
+	 * @since	1.6
+	 */
+	public function save($data)
+	{
+       $post = $this->jsmjinput->post->getArray();
+       //$view = $this->jsmjinput->getCmd('view');
+       //$view = $this->jsmjinput->get('view', '', 'CMD');
+       
+//       $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsmoption<br><pre>'.print_r($this->jsmoption,true).'</pre>'),'Notice');
+//       $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsmview<br><pre>'.print_r($this->jsmview,true).'</pre>'),'Notice');
+//       $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view_item<br><pre>'.print_r($this->view_item,true).'</pre>'),'Notice');
+//       $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view<br><pre>'.print_r($view,true).'</pre>'),'Notice');
 
+/**
+ * differenzierung zwischen den views
+ */       
+       switch ( $this->jsmview )
+       {
+       case 'league': 
+       $data['sports_type_id'] = $data['request']['sports_type_id'];
+       $data['agegroup_id'] = $data['request']['agegroup_id'];
+       break; 
+       default:
+       break; 
+       }
+       
+       //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+       
+       if (isset($post['extended']) && is_array($post['extended'])) 
+		{
+			// Convert the extended field to a string.
+			$parameter = new JRegistry;
+			$parameter->loadArray($post['extended']);
+			$data['extended'] = (string)$parameter;
+		}
+        
+        if (isset($post['extendeduser']) && is_array($post['extendeduser'])) 
+		{
+			// Convert the extended field to a string.
+			$parameter = new JRegistry;
+			$parameter->loadArray($post['extendeduser']);
+			$data['extendeduser'] = (string)$parameter;
+		}
+       
+        // Set the values
+	   $data['modified'] = $this->jsmdate->toSql();
+	   $data['modified_by'] = $this->jsmuser->get('id');
+
+/**
+ * differenzierung zwischen den views
+ */       
+       switch ( $this->jsmview )
+       {
+       case 'template': 
+       if (isset($post['params']['colors_ranking']) && is_array($post['params']['colors_ranking'])) 
+	   {
+	   $colors = array();
+       foreach ( $post['params']['colors_ranking'] as $key => $value )
+       {
+       if ( !empty($value['von']) )
+       {
+       $colors[] = implode(",",$value);
+       }
+       }
+       $post['params']['colors'] = implode(";",$colors); 
+       }       
+       break; 
+       case 'club':
+       // gibt es vereinsnamen zum ändern ?
+       if (isset($post['team_id']) && is_array($post['team_id'])) 
+       {
+        foreach ( $post['team_id'] as $key => $value )
+        {
+        $team_id = $post['team_id'][$key];  
+        $team_name = $post['team_value_id'][$key];  
+        // Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->id = $team_id;
+        $object->name = $team_name;
+        $object->alias = JFilterOutput::stringURLSafe( $team_name );
+        // Update their details in the table using id as the primary key.
+        $result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team', $object, 'id');
+        }
+        
+       }
+       
+       // hat der user die bildfelder geleert, werden die standards gesichert.
+       if ( empty($data['logo_big']) )
+       {
+       $data['logo_big'] = JComponentHelper::getParams($option)->get('ph_logo_big','');
+       }
+       if ( empty($data['logo_middle']) )
+       {
+       $data['logo_middle'] = JComponentHelper::getParams($option)->get('ph_logo_medium','');
+       }
+       if ( empty($data['logo_small']) )
+       {
+       $data['logo_small'] = JComponentHelper::getParams($option)->get('ph_logo_small','');
+       }
+ 
+       // wurden jahre mitgegeben ?
+       $timestamp = strtotime($data['founded']);
+       if ( $timestamp )
+       {
+       $data['founded']	= sportsmanagementHelper::convertDate($data['founded'],0);
+       }
+       $timestamp = strtotime($data['dissolved']);
+       if ( $timestamp )
+       {
+       $data['dissolved'] = sportsmanagementHelper::convertDate($data['dissolved'],0);
+       }
+       
+       $timestamp = strtotime($data['founded']); 
+       if ( !$timestamp )
+        {
+        $data['founded'] = '0000-00-00';   
+        $data['founded_year'] = ''; 
+        }
+       if ( $timestamp  )
+        {
+        $data['founded_year'] = date('Y',strtotime($data['founded']));
+        }
+        else
+        {
+            $data['founded_year'] = $data['founded_year'];
+        }
+        
+        
+        $timestamp = strtotime($data['dissolved']); 
+        if ( !$timestamp )
+        {
+        $data['dissolved'] = '0000-00-00';   
+        $data['dissolved_year'] = ''; 
+        }
+        
+        if ( $timestamp )  
+        {
+        $data['dissolved_year'] = date('Y',strtotime($data['dissolved']));
+        }
+        else
+        {
+            $data['dissolved_year'] = $data['dissolved_year'];
+        }
+       break;
+       case 'team':
+       if ( $post['delete'] )
+        {
+            self::DeleteTrainigData($post['delete'][0]);
+        }
+        
+        if ( $post['tdids'] )
+        {
+            self::UpdateTrainigData($post);
+        }
+        
+        if ( $post['add_trainingData'] )
+        {
+            self::addNewTrainigData($data[id]);
+        }
+       break;   
+       case 'project':
+       $data['start_date']	= sportsmanagementHelper::convertDate($data['start_date'],0);
+       $data['sports_type_id'] = $data['request']['sports_type_id'];
+       $data['agegroup_id'] = $data['request']['agegroup_id'];
+       $data['fav_team'] = implode(',',$post['jform']['fav_team']);
+       $data['modified_timestamp'] = sportsmanagementHelper::getTimestamp($data['modified']);
+       break; 
+       default:
+       break; 
+       }
+       
+       if (isset($post['params']) && is_array($post['params'])) 
+		{
+			// Convert the params field to a string.
+			//$parameter = new JRegistry;
+			//$parameter->loadArray($post['params']);
+            $paramsString = json_encode( $post['params'] );
+			//$data['params'] = (string)$parameter;
+            $data['params'] = $paramsString;
+		}
+        
+        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+               
+        // Alter the title for Save as Copy 
+ 		if ($this->jsmjinput->get('task') == 'save2copy') 
+ 		{ 
+ 			$orig_table = $this->getTable(); 
+ 			$orig_table->load((int) $this->jsmjinput->getInt('id')); 
+            $data['id'] = 0; 
+  /**
+ * differenzierung zwischen den views
+ */       
+            switch ( $this->jsmview )
+            {
+            case 'template': 
+            $data['project_id'] = $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' );
+            $data['title'] = $post['title'];      
+            $data['template'] = $post['template'];
+            break;  
+            case 'project':
+            $data['current_round'] = 0;
+            break;  
+            default:
+            break; 
+            }
+            
+ 			if ($data['name'] == $orig_table->name) 
+ 			{ 
+ 				$data['name'] .= ' ' . JText::_('JGLOBAL_COPY'); 
+ 				$data['alias'] = JFilterOutput::stringURLSafe( $data['name'] ); 
+ 			} 
+ 		} 
+
+        
+       // zuerst sichern, damit wir bei einer neuanlage die id haben
+       if ( parent::save($data) )
+       {
+			$id =  (int) $this->getState($this->getName().'.id');
+            $isNew = $this->getState($this->getName() . '.new');
+            $data['id'] = $id;
+            
+            if ( $isNew )
+            {
+                //Here you can do other tasks with your newly saved record...
+                $this->jsmapp->enqueueMessage(JText::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id),'');
+            }
+           
+		
+
+/**
+ * differenzierung zwischen den views
+ */       
+       switch ( $this->jsmview )
+       {
+       case 'position':
+       if (isset($post['position_eventslist']) && is_array($post['position_eventslist'])) 
+	   {
+	   if ( $data['id'] )
+       {
+       $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'position_eventslist<br><pre>'.print_r($post['position_eventslist'],true).'</pre>'),'Notice');
+       $mdl = JModelLegacy::getInstance("positioneventtype", "sportsmanagementModel");
+       $mdl->store($post,$data['id']);
+       }
+       }
+        
+       if (isset($post['position_statistic']) && is_array($post['position_statistic'])) 
+	   {
+	   if ( $data['id'] )
+       {
+       $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'position_statistic<br><pre>'.print_r($post['position_statistic'],true).'</pre>'),'Notice');
+       $mdl = JModelLegacy::getInstance("positionstatistic", "sportsmanagementModel");
+       $mdl->store($post,$data['id']);
+       }
+	   }
+       break;
+       case 'club':
+       sportsmanagementHelper::saveExtraFields($post,$data['id']);
+       break; 
+       case 'project':
+       sportsmanagementHelper::saveExtraFields($post,$data['id']);
+       break; 
+       case 'team':
+       if (isset($data['season_ids']) && is_array($data['season_ids'])) 
+		{
+		  foreach( $data['season_ids'] as $key => $value )
+          {
+          
+        $query->clear();  
+        $query->select('id');
+        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id');
+        $query->where('team_id ='. $data['id'] );
+        $query->where('season_id ='. $value );
+        JFactory::getDbo()->setQuery($query);
+		$res = JFactory::getDbo()->loadResult();
+        
+        if ( !$res )
+        {
+        $query->clear();
+        // Insert columns.
+        $columns = array('team_id','season_id');
+        // Insert values.
+        $values = array($data['id'],$value);
+        // Prepare the insert query.
+        $query
+            ->insert(JFactory::getDbo()->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id'))
+            ->columns(JFactory::getDbo()->quoteName($columns))
+            ->values(implode(',', $values));
+        // Set the query using our newly populated query object and execute it.
+        JFactory::getDbo()->setQuery($query);
+
+		if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
+		{
+//            $this->app->enqueueMessage(JText::_('sportsmanagementModelteam save<br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
+		}  
+          
+        }
+		//$mdl = JModelLegacy::getInstance("seasonteam", "sportsmanagementModel");
+		}
+        }
+        sportsmanagementHelper::saveExtraFields($post,$data['id']);
+       break;
+       default:
+       break; 
+       }
+               
+        return true;  
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
     /**
 	 * Method to get the record form.
 	 *

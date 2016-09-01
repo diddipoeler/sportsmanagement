@@ -47,7 +47,7 @@ JHtml::_('behavior.formvalidation');
 $fieldsets = $this->form->getFieldsets();
 
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&layout=edit&id='.(int) $this->item->id); ?>" method="post" id="adminForm" name="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id); ?>" method="post" id="adminForm" name="adminForm">
 <fieldset class="adminform">
 			<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_LEGEND_DESC','<i>'.$this->item->name.'</i>'); ?></legend>
 	

@@ -68,14 +68,14 @@ class sportsmanagementTableclubname extends JTable
 	 */
 	function check()
 	{
-		// setting alias
-		if ( empty( $this->alias ) )
-		{
-			$this->alias = JFilterOutput::stringURLSafe( $this->name );
-		}
-		else {
-			$this->alias = JFilterOutput::stringURLSafe( $this->alias ); // make sure the user didn't modify it to something illegal...
-		}
+//		// setting alias
+//		if ( empty( $this->alias ) )
+//		{
+//			$this->alias = JFilterOutput::stringURLSafe( $this->name );
+//		}
+//		else {
+//			$this->alias = JFilterOutput::stringURLSafe( $this->alias ); // make sure the user didn't modify it to something illegal...
+//		}
 		//should check name unicity
 		return true;
 	}

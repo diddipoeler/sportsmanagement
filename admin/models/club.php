@@ -207,7 +207,7 @@ return $teamsofclub;
 	 * @return	boolean	True on success.
 	 * @since	1.6
 	 */
-	public function save($data)
+	public function savenichtmehr($data)
 	{
 	   // Reference global application object
         $app = JFactory::getApplication();

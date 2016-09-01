@@ -65,42 +65,7 @@ class sportsmanagementModelsportstype extends JSMModelAdmin
 //    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
     
 	}	   
-   
-    /**
-	 * Method to save the form data.
-	 *
-	 * @param	array	The form data.
-	 * @return	boolean	True on success.
-	 * @since	1.6
-	 */
-	public function save($data)
-	{
-	   $app = JFactory::getApplication();
-       $date = JFactory::getDate();
-	   $user = JFactory::getUser();
-       $post = JRequest::get('post');
-       // Set the values
-	   $data['modified'] = $date->toSql();
-	   $data['modified_by'] = $user->get('id');
-       
-       //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$app->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-       
-       if (isset($post['extended']) && is_array($post['extended'])) 
-		{
-			// Convert the extended field to a string.
-			$parameter = new JRegistry;
-			$parameter->loadArray($post['extended']);
-			$data['extended'] = (string)$parameter;
-		}
-        
-        //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-        
-        // Proceed with the save
-		return parent::save($data);   
-    }
-    
-    
+
      /**
 	 * return 
 	 *
@@ -109,11 +74,12 @@ class sportsmanagementModelsportstype extends JSMModelAdmin
 	 */
 	function getSportstype($sportstype_id)
 	{
-		$query='SELECT *
-				  FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type
-				  WHERE id = '.$sportstype_id;
-		$this->_db->setQuery($query);
-		return $this->_db->loadObject();
+		$this->jsmquery->clear();
+        $this->jsmquery->select('*');
+        $this->jsmquery->from('#__sportsmanagement_sports_type');
+        $this->jsmquery->where('id = '.$sportstype_id);
+		$this->jsmdb->setQuery($this->jsmquery);
+		return $this->jsmdb->loadObject();
 	}
 	
 	

@@ -52,10 +52,7 @@ defined('_JEXEC') or die('Restricted access');
  */
 class sportsmanagementViewclubname extends sportsmanagementView
 {
-	
-	
-    
-	
+
 	/**
 	 * sportsmanagementViewclubname::init()
 	 * 
@@ -63,24 +60,16 @@ class sportsmanagementViewclubname extends sportsmanagementView
 	 */
 	public function init ()
 	{
-//		$app = JFactory::getApplication();
-//        $option = JRequest::getCmd('option');
-//        // get the Data
-//		$this->form = $this->get('Form');
-//		$this->item = $this->get('Item');
-//		$this->script = $this->get('Script');
- 
+
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
 		{
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-//		// Assign the Data
-//		$this->form = $form;
-//		$this->item = $item;
-//		$this->script = $script;
-		
+    
+//    $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' item <br><pre>'.print_r($this->item,true).'</pre>'),'');
+//    $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout -> '.$this->getLayout().''),'');
         
 	}
  
@@ -92,7 +81,6 @@ class sportsmanagementViewclubname extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{ 
-		
         
 		JRequest::setVar('hidemainmenu', true);
 		$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_CLUBNAME_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_CLUBNAME_NEW');

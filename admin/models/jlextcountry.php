@@ -57,28 +57,6 @@ jimport('joomla.filesystem.archive');
  */
 class sportsmanagementModeljlextcountry extends JSMModelAdmin
 {
-
-    /**
-	 * Method to save the form data.
-	 *
-	 * @param	array	The form data.
-	 * @return	boolean	True on success.
-	 * @since	1.6
-	 */
-	public function save($data)
-	{
-	   $app = JFactory::getApplication();
-       $date = JFactory::getDate();
-	   $user = JFactory::getUser();
-       $post = JRequest::get('post');
-       // Set the values
-	   $data['modified'] = $date->toSql();
-	   $data['modified_by'] = $user->get('id');
-        
-       // Proceed with the save
-	   return parent::save($data); 
-    } 
-    
     
     /**
      * sportsmanagementModeljlextcountry::importplz()

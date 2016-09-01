@@ -102,6 +102,48 @@ class sportsmanagementModelAjax extends JModelLegacy
         }
         
         
+        
+        /**
+         * sportsmanagementModelAjax::getpersoncontactid()
+         * 
+         * @param integer $show_user_profile
+         * @param bool $required
+         * @return
+         */
+        static function getpersoncontactid($show_user_profile=0, $required = false)
+        {
+        $db = sportsmanagementHelper::getDBConnection();   
+        $query = $db->getQuery(true); 
+        switch ($show_user_profile)
+        {
+            case 0:
+            
+            break;
+            case 1:
+            $query = $db->getQuery(true);
+            // Select some fields
+            $query->select('a.id AS value,concat(a.name, \' - \',a.username) AS text');
+            // From 
+		    $query->from('#__users AS a');
+            $query->order('a.name');
+            $db->setQuery( $query );
+            return self::addGlobalSelectElement($db->loadObjectList(), $required);  
+            break;
+            case 2;
+            $query = $db->getQuery(true);
+            // Select some fields
+            $query->select('a.id AS value,concat(a.firstname, \' - \',a.lastname) AS text');
+            // From 
+		    $query->from('#__comprofiler AS a');
+            $query->order('a.lastname');
+            $db->setQuery( $query );
+            return self::addGlobalSelectElement($db->loadObjectList(), $required);  
+            break;
+        }    
+          
+        }
+        
+        
         /**
          * sportsmanagementModelAjax::getcountryclubagegroupoptions()
          * 

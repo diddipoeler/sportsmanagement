@@ -74,7 +74,7 @@ class sportsmanagementViewTemplates extends sportsmanagementView
 		$this->project_id	= $app->getUserState( "$option.pid", '0' );
 		$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 		$project = $mdlProject->getProject($this->project_id);
-        
+        $lists = '';
 		$allTemplates = $model->checklist($this->project_id);
 
         // das sind die eigenen templates

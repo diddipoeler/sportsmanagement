@@ -117,7 +117,7 @@ class sportsmanagementView extends JViewLegacy
 /**
  * bei der einzelverarbeitung
 */        
-        if ( $this->layout == 'edit')
+        if ( $this->layout == 'edit' || $this->layout == 'edit_3' )
         {
         // get the Data
 		$this->form = $this->get('Form');
@@ -240,7 +240,7 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
                 break;
             }
             
-        if ( $this->layout == 'edit')
+        if ( $this->layout == 'edit' || $this->layout == 'edit_3' )
         {}
         else
         {    
@@ -376,7 +376,7 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
         }    
         
         
-        if ( $this->layout == 'edit')
+        if ( $this->layout == 'edit'  || $this->layout == 'edit_3' )
         {
         $isNew = $this->item->id == 0;
         $canDo = sportsmanagementHelper::getActions($this->item->id);
@@ -469,7 +469,7 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
 //				'.icon-48-' . $this->icon . ' {background-image: url('.JURI::root().'administrator/components/com_sportsmanagement/assets/images/' . $this->icon .
 //						 '.png);background-repeat: no-repeat;}');
 
-		if ( $this->layout == 'edit')
+		if ( $this->layout == 'edit' || $this->layout == 'edit_3' )
         {
         if ($isNew) 
 		{

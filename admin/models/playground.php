@@ -58,65 +58,6 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
     
     static $playground = NULL;
     static $cfg_which_database = 0;
-
-  
-    
-	
-    
-
-    
-
-    
-	
-	
-
-    
-    /**
-	 * Method to save the form data.
-	 *
-	 * @param	array	The form data.
-	 * @return	boolean	True on success.
-	 * @since	1.6
-	 */
-	public function save($data)
-	{
-	  
-      
-       $post = $this->jsmjinput->post->getArray();
-       // Set the values
-	   $data['modified'] = $this->jsmdate->toSql();
-	   $data['modified_by'] = $this->jsmuser->get('id');
-       $address_parts = array();
-       
-
-        
-       if (isset($post['extended']) && is_array($post['extended'])) 
-		{
-			// Convert the extended field to a string.
-			$parameter = new JRegistry;
-			$parameter->loadArray($post['extended']);
-			$data['extended'] = (string)$parameter;
-		}
-        
-        // zuerst sichern, damit wir bei einer neuanlage die id haben
-       if ( parent::save($data) )
-       {
-			$id =  (int) $this->getState($this->getName().'.id');
-            $isNew = $this->getState($this->getName() . '.new');
-            $data['id'] = $id;
-            
-            if ( $isNew )
-            {
-                //Here you can do other tasks with your newly saved record...
-                $this->jsmapp->enqueueMessage(JText::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id),'');
-            }
-        return true;    
-		}
-        else
-        {
-        return false;
-        }    
-    }
     
     /**
      * sportsmanagementModelplayground::getAddressString()

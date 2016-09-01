@@ -55,53 +55,7 @@ defined('_JEXEC') or die('Restricted access');
  */
 class sportsmanagementModelstatistic extends JSMModelAdmin
 {
-   
-    /**
-	 * Method to save the form data.
-	 *
-	 * @param	array	The form data.
-	 * @return	boolean	True on success.
-	 * @since	1.6
-	 */
-	public function save($data)
-	{
-	   $app = JFactory::getApplication();
-       $date = JFactory::getDate();
-	   $user = JFactory::getUser();
-       $post = JRequest::get('post');
-       // Set the values
-	   $data['modified'] = $date->toSql();
-	   $data['modified_by'] = $user->get('id');
-       
-       //$app->enqueueMessage(JText::_('sportsmanagementModelstatistic save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$app->enqueueMessage(JText::_('sportsmanagementModelstatistic post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-       
-       if (isset($post['extended']) && is_array($post['extended'])) 
-		{
-			// Convert the extended field to a string.
-			$parameter = new JRegistry;
-			$parameter->loadArray($post['extended']);
-			$data['extended'] = (string)$parameter;
-		}
-        
-        if (isset($post['params']) && is_array($post['params'])) 
-		{
-			// Convert the extended field to a string.
-            //$paramsString = json_encode( $post['params'] );
-            //$data['params'] = $paramsString;
-            
-			$parameter = new JRegistry;
-			$parameter->loadArray($post['params']);
-			$data['params'] = (string)$parameter;
-            
-            
-		}
-        
-        //$app->enqueueMessage(JText::_('sportsmanagementModelstatistic save data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-        
-        // Proceed with the save
-		return parent::save($data);   
-    }
+
     
     
 }

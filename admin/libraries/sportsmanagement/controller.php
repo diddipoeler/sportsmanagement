@@ -64,6 +64,7 @@ class JSMControllerForm extends JControllerForm
         $tmpl = $this->jsmjinput->getVar('tmpl');
 		$model = $this->getModel($this->view_item);
         $data = $this->jsmjinput->getVar('jform', array(), 'post', 'array');
+        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
         $createTeam = $this->jsmjinput->getVar('createTeam');
         $return = $model->save($data);
         $id = $this->jsmdb->insertid();
@@ -71,14 +72,19 @@ class JSMControllerForm extends JControllerForm
         {
              $id = $this->jsmjinput->getInt('id');
         }
+        
+        
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' return<br><pre>'.print_r($return,true).'</pre>'),'');
+//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' id<br><pre>'.print_r($id,true).'</pre>'),'');
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' key<br><pre>'.print_r($key,true).'</pre>'),'');
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' urlVar<br><pre>'.print_r($urlVar,true).'</pre>'),'');
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->option <br><pre>'.print_r($this->option ,true).'</pre>'),'');
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->view_item <br><pre>'.print_r($this->view_item ,true).'</pre>'),'');
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->view_list<br><pre>'.print_r($this->view_list,true).'</pre>'),'');
         
+        if ( $return )
+        {
         switch ($this->view_item)
 		{
 		case 'club':  
@@ -156,7 +162,18 @@ break;
 				break;
 		}
 
-		return true;   
+		return true;
+        }   
+        else
+        {
+            //JError::raiseError( 4711, 'A severe error occurred' );
+            $this->setRedirect(
+								JRoute::_(
+										'index.php?option=' . $this->option . '&view=' . $this->view_item .
+												 $this->getRedirectToItemAppend($id), false), $message); 
+            JError::raiseError( 4711, $this->jsmdb->getErrorMsg() );
+            return false;
+        }
      }      
     
 }    

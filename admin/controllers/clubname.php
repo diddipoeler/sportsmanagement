@@ -63,9 +63,9 @@ class sportsmanagementControllerclubname extends JSMControllerForm
 	 * @return	void
 	 * @since	1.5
 	 */
-	function __construct($config = array())
-	{
-		parent::__construct($config);
-    }   
+//	function __construct($config = array())
+//	{
+//		parent::__construct($config);
+//    }   
 
 }

@@ -43,6 +43,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITION_DETAILS_LEGEND'); ?>
 	</legend>
 	<table class="admintable">
+        <tr>
+			<td class="key"><?php echo $this->form->getLabel('id'); ?></td>
+			<td><?php echo $this->form->getInput('id'); ?></td>
+		</tr>
 		<tr>
 			<td class="key"><?php echo $this->form->getLabel('name'); ?></td>
 			<td><?php echo $this->form->getInput('name'); ?></td>

@@ -70,6 +70,39 @@ class sportsmanagementControllerAjax extends JControllerLegacy
         
         
         /**
+         * sportsmanagementControllerAjax::personcontactid()
+         * 
+         * @return void
+         */
+        public function personcontactid()
+        {
+        try
+    {
+ 
+      $result = $this->getModel('ajax')->getpersoncontactid($this->jinput->get->getString('show_user_profile'),
+       $this->jinput->get->getString('required') );
+
+      
+ if ( count($result) == 1 )
+ {
+ $this->app->enqueueMessage('Keine Benutzer gefunden','Error');
+ }
+ else
+ {
+$this->app->enqueueMessage('Benutzer gefunden','Message');    
+ }
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }         
+            
+            
+        }    
+        
+        /**
          * sportsmanagementControllerAjax::locationzipcodeoptions()
          * 
          * @return void

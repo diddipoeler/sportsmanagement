@@ -109,6 +109,26 @@ public function __construct()
         
         
         /**
+         * sportsmanagementControllerAjax::personcontactid()
+         * 
+         * @return void
+         */
+        public function personcontactid()
+        {
+        $app = JFactory::getApplication();    
+        $model = $this->getModel('ajax');
+        $result = $model->getpersoncontactid( $this->input->get->get('show_user_profile') );
+        //echo $result;
+        echo json_encode($result);
+        //echo new JResponseJson($result);
+        //$this->input->get->get('menutype')
+        //echo json_encode((array) $model->getProjects( $jinput->get->get('s'), $jinput->get->get('required'),$jinput->get->get('slug'),$jinput->get->get( 'dbase' ) ));
+        
+        $app->close();        
+            
+        }
+        
+        /**
          * sportsmanagementControllerAjax::projects()
          * 
          * @return void
