@@ -4,7 +4,6 @@
 	<author>diddipoeler</author>
 	<authorEmail>diddipoeler@arcor.de</authorEmail>
 	<authorUrl>www.fussballineuropa.de</authorUrl>
-	<copiright>kein</copiright>
 	<creationDate>Februar 2014</creationDate>
 	<copyright>(C) 2014 </copyright>
 	<license>kein</license>
@@ -27,8 +26,12 @@
 	</files>
 
 	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_liveticker.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.mod_sportsmanagement_liveticker.sys.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_liveticker.ini</language>
 		<language tag="de-DE">language/de-DE/de-DE.mod_sportsmanagement_liveticker.sys.ini</language>
+		<language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_liveticker.ini</language>
+		<language tag="it-IT">language/it-IT/it-IT.mod_sportsmanagement_liveticker.sys.ini</language>
 		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_liveticker.ini</language>
 		<language tag="ru-RU">language/ru-RU/ru-RU.mod_sportsmanagement_liveticker.sys.ini</language>
 		</languages>
