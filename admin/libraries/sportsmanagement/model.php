@@ -252,17 +252,17 @@ if( $this->jsmapp->isSite() )
        case 'team':
        if ( $post['delete'] )
         {
-            self::DeleteTrainigData($post['delete'][0]);
+            sportsmanagementModelteam::DeleteTrainigData($post['delete'][0]);
         }
         
         if ( $post['tdids'] )
         {
-            self::UpdateTrainigData($post);
+            sportsmanagementModelteam::UpdateTrainigData($post);
         }
         
         if ( $post['add_trainingData'] )
         {
-            self::addNewTrainigData($data[id]);
+            sportsmanagementModelteam::addNewTrainigData($data[id]);
         }
        break;   
        case 'project':
