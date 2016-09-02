@@ -47,7 +47,7 @@ jimport('joomla.application.component.modellist');
  * JSMModelAdmin
  * 
  * @package 
- * @author Dieter Plöger
+ * @author Dieter PlÃ¶ger
  * @copyright 2016
  * @version $Id$
  * @access public
@@ -172,7 +172,7 @@ if( $this->jsmapp->isSite() )
        }       
        break; 
        case 'club':
-       // gibt es vereinsnamen zum ändern ?
+       // gibt es vereinsnamen zum Ã¤ndern ?
        if (isset($post['team_id']) && is_array($post['team_id'])) 
        {
         foreach ( $post['team_id'] as $key => $value )
@@ -382,13 +382,13 @@ if( $this->jsmapp->isSite() )
 
 		if ( !$result )
 		{
-		$this->jsmdb->clear();
+		$this->jsmquery->clear();
         // Insert columns.
 		$columns = array('team_id','season_id');
 		// Insert values.
 		$values = array($data['id'],$value);
 		// Prepare the insert query.
-		$this->jsmdb
+		$this->jsmquery
 			->insert($this->jsmdb->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id'))
 			->columns($this->jsmdb->quoteName($columns))
 			->values(implode(',', $values));
@@ -725,7 +725,7 @@ catch (Exception $e) {
         if ( $cfg_use_plz_table )
         {
         /**
-        * wenn es aber zu dem land keine einträge
+        * wenn es aber zu dem land keine eintrÃ¤ge
         * in der plz tabelle gibt, dann die normale
         * eingabe dem user anbieten        
         */
@@ -1068,7 +1068,7 @@ catch (Exception $e) {
  * JSMModelList
  * 
  * @package 
- * @author Dieter Plöger
+ * @author Dieter PlÃ¶ger
  * @copyright 2016
  * @version $Id$
  * @access public
@@ -1122,7 +1122,7 @@ if( $this->jsmapp->isSite() )
  * JSMModelLegacy
  * 
  * @package 
- * @author Dieter Plöger
+ * @author Dieter PlÃ¶ger
  * @copyright 2016
  * @version $Id$
  * @access public
