@@ -43,7 +43,12 @@ defined('_JEXEC') or die('Restricted access');
 <div class="row">
 <legend>
 <strong>
-<?php echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING'); ?>
+<?php 
+if ( $params->get('show_training_modul_header') )
+{
+echo JText::_('COM_SPORTSMANAGEMENT_TEAMINFO_TRAINING'); 
+}
+?>
 </strong>
 </legend>
 
