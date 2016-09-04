@@ -117,7 +117,7 @@ define('SERVICES_JSON_SUPPRESS_ERRORS', 32);
 * $value = $json->decode($input);
 * </code>
 */
-class Services_JSON
+class JSMServices_JSON
 {
    /**
     * constructs a new JSON instance
@@ -772,8 +772,8 @@ class Services_JSON
     {
         if (class_exists('pear')) {
             return PEAR::isError($data, $code);
-        } elseif (is_object($data) && (get_class($data) == 'services_json_error' ||
-                                 is_subclass_of($data, 'services_json_error'))) {
+        } elseif (is_object($data) && (get_class($data) == 'jsmservices_json_error' ||
+                                 is_subclass_of($data, 'jsmservices_json_error'))) {
             return true;
         }
 
@@ -783,7 +783,7 @@ class Services_JSON
 
 if (class_exists('PEAR_Error')) {
 
-    class Services_JSON_Error extends PEAR_Error
+    class JSMServices_JSON_Error extends PEAR_Error
     {
         function Services_JSON_Error($message = 'unknown error', $code = null,
                                      $mode = null, $options = null, $userinfo = null)
@@ -797,7 +797,7 @@ if (class_exists('PEAR_Error')) {
     /**
      * @todo Ultimately, this class shall be descended from PEAR_Error
      */
-    class Services_JSON_Error
+    class JSMServices_JSON_Error
     {
         function Services_JSON_Error($message = 'unknown error', $code = null,
                                      $mode = null, $options = null, $userinfo = null)
