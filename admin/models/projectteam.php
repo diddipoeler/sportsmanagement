@@ -291,74 +291,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
         
     }
     
-    /**
-	 * Method to save the form data.
-	 *
-	 * @param	array	The form data.
-	 * @return	boolean	True on success.
-	 * @since	1.6
-	 */
-	public function save($data)
-	{
-	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
-       $date = JFactory::getDate();
-	   $user = JFactory::getUser();
-       $post = JRequest::get('post');
-       // Set the values
-	   $data['modified'] = $date->toSql();
-	   $data['modified_by'] = $user->get('id');
-       
-       //$app->enqueueMessage(JText::_('sportsmanagementModelprojectteam save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$app->enqueueMessage(JText::_('sportsmanagementModelprojectteam post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-       
-       if (isset($post['extended']) && is_array($post['extended'])) 
-		{
-			// Convert the extended field to a string.
-			$parameter = new JRegistry;
-			$parameter->loadArray($post['extended']);
-			$data['extended'] = (string)$parameter;
-		}
-        
-        if ( $post['delete'] )
-        {
-            $mdlTeam = JModelLegacy::getInstance("Team", "sportsmanagementModel");
-            $mdlTeam->DeleteTrainigData($post['delete'][0]);
-        }
-        
-        if ( $post['add_trainingData'] )
-        {
-            $row = JTable::getInstance( 'seasonteam', 'sportsmanagementTable' );
-            $row->load( (int)$post['jform']['team_id'] );
-            $mdlTeam = JModelLegacy::getInstance("Team", "sportsmanagementModel");
-            $mdlTeam->addNewTrainigData($row->team_id);
-        }
-        
-        if ( $post['tdids'] )
-        {
-        $mdlTeam = JModelLegacy::getInstance("Team", "sportsmanagementModel");
-        $mdlTeam->UpdateTrainigData($post);
-        }
-        
-/**
- * das mannschaftsfoto wird zusätzlich abgespeichert,
- * damit man die historischen kader sieht        
- */
-        // Create an object for the record we are going to update.
-        $object = new stdClass();
-        // Must be a valid primary key value.
-        $object->id = (int)$post['jform']['team_id'];
-        $object->picture = $post['jform']['picture'];
-        $object->modified = $date->toSql();
-	    $object->modified_by = $user->get('id');
-        // Update their details in the table using id as the primary key.
-        $result = JFactory::getDbo()->updateObject('#__sportsmanagement_season_team_id', $object, 'id');
-        
-        //$app->enqueueMessage(JText::_('sportsmanagementModelprojectteam save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-        
-        // Proceed with the save
-		return parent::save($data);   
-    }
+
     
     /**
      * sportsmanagementModelprojectteam::delete()

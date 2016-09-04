@@ -52,7 +52,7 @@ $fieldsets = $this->form->getFieldsets();
 //$version = urlencode(sportsmanagementHelper::getVersion());
 //echo JHtml::script('JL_eventsediting.js?v='.$version,'administrator/components/com_sportsmanagement/assets/js/');
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id); ?>" method="post" id="adminForm" name="adminForm" >
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id); ?>" method="post" id="adminForm" name="adminForm" class="form-validate">
 
 <div class="form-horizontal">
 <?php 

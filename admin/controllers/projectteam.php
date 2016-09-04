@@ -66,12 +66,12 @@ $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=compon
 
 }
 
-function cancel()
-	{
-		$msg = '';
-$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
-	
-	}
+//function cancel()
+//	{
+//		$msg = '';
+//$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);
+//	
+//	}
 
 
 }

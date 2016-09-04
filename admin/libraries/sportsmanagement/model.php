@@ -109,6 +109,8 @@ if( $this->jsmapp->isSite() )
 	public function save($data)
 	{
        $post = $this->jsmjinput->post->getArray();
+       $address_parts = array();
+       $person_double = array();
        //$view = $this->jsmjinput->getCmd('view');
        //$view = $this->jsmjinput->get('view', '', 'CMD');
        
@@ -117,18 +119,22 @@ if( $this->jsmapp->isSite() )
 //       $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view_item<br><pre>'.print_r($this->view_item,true).'</pre>'),'Notice');
 //       $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view<br><pre>'.print_r($view,true).'</pre>'),'Notice');
 
-/**
- * differenzierung zwischen den views
- */       
-       switch ( $this->jsmview )
-       {
-       case 'league': 
-       $data['sports_type_id'] = $data['request']['sports_type_id'];
-       $data['agegroup_id'] = $data['request']['agegroup_id'];
-       break; 
-       default:
-       break; 
-       }
+
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+
+///**
+// * differenzierung zwischen den views
+// */       
+//       switch ( $this->jsmview )
+//       {
+//       case 'league': 
+//       $data['sports_type_id'] = $data['request']['sports_type_id'];
+//       $data['agegroup_id'] = $data['request']['agegroup_id'];
+//       break; 
+//       default:
+//       break; 
+//       }
        
        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
        
@@ -151,12 +157,99 @@ if( $this->jsmapp->isSite() )
         // Set the values
 	   $data['modified'] = $this->jsmdate->toSql();
 	   $data['modified_by'] = $this->jsmuser->get('id');
+       $data['checked_out'] = 0;
+       $data['checked_out_time'] = $this->jsmdb->getNullDate();
 
 /**
  * differenzierung zwischen den views
  */       
        switch ( $this->jsmview )
        {
+       case 'projectteam':
+       if ( $post['delete'] )
+        {
+            $mdlTeam = JModelLegacy::getInstance("Team", "sportsmanagementModel");
+            $mdlTeam->DeleteTrainigData($post['delete'][0]);
+        }
+        
+        if ( $post['add_trainingData'] )
+        {
+            $row = JTable::getInstance( 'seasonteam', 'sportsmanagementTable' );
+            $row->load( (int)$post['jform']['team_id'] );
+            $mdlTeam = JModelLegacy::getInstance("Team", "sportsmanagementModel");
+            $mdlTeam->addNewTrainigData($row->team_id);
+        }
+        
+        if ( $post['tdids'] )
+        {
+        $mdlTeam = JModelLegacy::getInstance("Team", "sportsmanagementModel");
+        $mdlTeam->UpdateTrainigData($post);
+        }
+        
+/**
+ * das mannschaftsfoto wird zusätzlich abgespeichert,
+ * damit man die historischen kader sieht        
+ */
+        // Create an object for the record we are going to update.
+        $object = new stdClass();
+        // Must be a valid primary key value.
+        $object->id = (int)$post['jform']['team_id'];
+        $object->picture = $post['jform']['picture'];
+        $object->modified = $this->jsmdate->toSql();
+	    $object->modified_by = $this->jsmuser->get('id');
+        // Update their details in the table using id as the primary key.
+        $result = JFactory::getDbo()->updateObject('#__sportsmanagement_season_team_id', $object, 'id'); 
+
+       break;  
+       case 'league': 
+       $data['sports_type_id'] = $data['request']['sports_type_id'];
+       $data['agegroup_id'] = $data['request']['agegroup_id'];
+       break; 
+       case 'person': 
+       $data['person_art'] = $data['request']['person_art'];
+       $data['person_id1'] = $data['request']['person_id1'];
+       $data['person_id2'] = $data['request']['person_id2'];
+       $data['sports_type_id'] = $data['request']['sports_type_id'];
+       $data['position_id'] = $data['request']['position_id'];
+       $data['agegroup_id'] = $data['request']['agegroup_id'];
+
+       
+       switch($data['person_art'])
+        {
+            case 1:
+            break;
+            case 2:
+            if ( $data['person_id1'] && $data['person_id2'] )
+            {
+            $person_1 = $data['person_id1'];
+            $person_2 = $data['person_id2'];
+            $table = 'person';
+            $row = JTable::getInstance( $table, 'sportsmanagementTable' );
+            $row->load((int) $person_1);
+            $person_double[] = $row->firstname.' '.$row->lastname;
+            $row->load((int) $person_2);
+            $person_double[] = $row->firstname.' '.$row->lastname;
+            $data['lastname'] = implode(" - ",$person_double);
+            $data['firstname'] = '';
+            }
+            break;
+            
+        }
+        
+       // hat der user die bildfelder geleert, werden die standards gesichert.
+       if ( empty($data['picture']) )
+       {
+       $data['picture'] = JComponentHelper::getParams($this->jsmoption)->get('ph_player','');
+       }
+       $data['birthday'] = sportsmanagementHelper::convertDate($data['birthday'],0);
+       $data['deathday'] = sportsmanagementHelper::convertDate($data['deathday'],0);
+       $data['injury_date_start'] = sportsmanagementHelper::convertDate($data['injury_date_start'],0);
+       $data['injury_date_end'] = sportsmanagementHelper::convertDate($data['injury_date_end'],0);
+       $data['susp_date_start'] = sportsmanagementHelper::convertDate($data['susp_date_start'],0);
+       $data['susp_date_end'] = sportsmanagementHelper::convertDate($data['susp_date_end'],0);
+       $data['away_date_start'] = sportsmanagementHelper::convertDate($data['away_date_start'],0);
+       $data['away_date_end'] = sportsmanagementHelper::convertDate($data['away_date_end'],0);
+       break;
        case 'template': 
        if (isset($post['params']['colors_ranking']) && is_array($post['params']['colors_ranking'])) 
 	   {
@@ -288,13 +381,15 @@ if( $this->jsmapp->isSite() )
         
         //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
                
-        // Alter the title for Save as Copy 
+/**
+ * Alter the title for Save as Copy
+ */ 
  		if ($this->jsmjinput->get('task') == 'save2copy') 
  		{ 
  			$orig_table = $this->getTable(); 
  			$orig_table->load((int) $this->jsmjinput->getInt('id')); 
             $data['id'] = 0; 
-  /**
+/**
  * differenzierung zwischen den views
  */       
             switch ( $this->jsmview )
@@ -318,8 +413,9 @@ if( $this->jsmapp->isSite() )
  			} 
  		} 
 
-        
-       // zuerst sichern, damit wir bei einer neuanlage die id haben
+/**
+ * zuerst sichern, damit wir bei einer neuanlage die id haben
+ */         
        if ( parent::save($data) )
        {
 			$id =  (int) $this->getState($this->getName().'.id');
@@ -328,18 +424,74 @@ if( $this->jsmapp->isSite() )
             
             if ( $isNew )
             {
-                //Here you can do other tasks with your newly saved record...
+/**
+ * Here you can do other tasks with your newly saved record...
+ */                
                 $this->jsmapp->enqueueMessage(JText::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id),'');
             }
-           
-		
 
 /**
  * differenzierung zwischen den views
  */       
 		switch ( $this->jsmview )
 		{
-		case 'position':
+		case 'person':
+        if (isset($data['season_ids']) && is_array($data['season_ids'])) 
+		{
+		$message = '';  
+		foreach( $data['season_ids'] as $key => $value )
+        {
+        $this->jsmquery->clear();  
+        $this->jsmquery->select('spi.id,s.name');
+        $this->jsmquery->from('#__sportsmanagement_season_person_id as spi');
+        $this->jsmquery->join('INNER', '#__sportsmanagement_season AS s ON s.id = spi.season_id ');
+        $this->jsmquery->where('spi.person_id ='. $data['id'] );
+        $this->jsmquery->where('spi.season_id ='. $value );
+        $this->jsmdb->setQuery($this->jsmquery);
+		$res = $this->jsmdb->loadObject();
+        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Error');
+        if ( !$res )
+        {
+        $this->jsmquery->clear();
+        // Insert columns.
+        $columns = array('person_id','season_id','modified','modified_by');
+        // Insert values.
+        $values = array($data['id'],$value,$this->jsmdb->Quote(''.$data['modified'].''),$data['modified_by']);
+        // Prepare the insert query.
+        $this->jsmquery
+            ->insert($this->jsmdb->quoteName('#__sportsmanagement_season_person_id'))
+            ->columns($this->jsmdb->quoteName($columns))
+            ->values(implode(',', $values));
+        $this->jsmdb->setQuery($this->jsmquery);
+        
+try{
+sportsmanagementModeldatabasetool::runJoomlaQuery();
+}
+catch (Exception $e) {
+//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($e,true).'</pre>'),'');    
+}
+
+//		if (!sportsmanagementModeldatabasetool::runJoomlaQuery())
+//		{
+//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error');
+//		}  
+        $message .= 'Saisonzuordnung : '.$res->name.' angelegt.<br>';
+        }
+        else
+        {
+        $message .= 'Saisonzuordnung : '.$res->name.' schon vorhanden.<br>';    
+        }
+          
+        }
+        $this->jsmapp->enqueueMessage($message, 'message');
+
+		}
+        
+        //-------extra fields-----------//
+        sportsmanagementHelper::saveExtraFields($post,$data['id']);
+        
+        break;
+        case 'position':
 		if (isset($post['position_eventslist']) && is_array($post['position_eventslist']))
 		{
 		if ( $data['id'] )
@@ -373,7 +525,7 @@ if( $this->jsmapp->isSite() )
 		{
 		$this->jsmquery->clear();
 		$this->jsmquery->select('id');
-		$this->jsmquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id');
+		$this->jsmquery->from('#__sportsmanagement_season_team_id');
 		$this->jsmquery->where('team_id ='. $data['id'] );
 		$this->jsmquery->where('season_id ='. $value );
 		//JFactory::getDbo()->setQuery($query);
@@ -389,7 +541,7 @@ if( $this->jsmapp->isSite() )
 		$values = array($data['id'],$value);
 		// Prepare the insert query.
 		$this->jsmquery
-			->insert($this->jsmdb->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id'))
+			->insert($this->jsmdb->quoteName('#__sportsmanagement_season_team_id'))
 			->columns($this->jsmdb->quoteName($columns))
 			->values(implode(',', $values));
 		// Set the query using our newly populated query object and execute it.

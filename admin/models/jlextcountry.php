@@ -112,7 +112,7 @@ $source	= JFile::read($file);
 //$app->enqueueMessage(JText::_('source <br><pre>'.print_r($source,true).'</pre>'   ),'');
 
 //# tab delimited, and encoding conversion
-	$csv = new parseCSV();
+	$csv = new JSMparseCSV();
 	//$csv->encoding('UTF-16', 'UTF-8');
 	$csv->delimiter = "\t";
     $csv->heading = false;

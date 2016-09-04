@@ -46,7 +46,7 @@ $params = $this->form->getFieldsets('params');
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id); ?>" method="post" id="adminForm" name="adminForm" >
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id); ?>" method="post" id="adminForm" name="adminForm" class="form-validate">
 	
 <div class="form-horizontal">
 <?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
@@ -70,10 +70,20 @@ switch ($fieldset->name)
     <?PHP
     foreach( $this->form->getFieldset($fieldset->name) as $field ) 
     {
+
         ?>
 					<div class="control-group">
 						<div class="control-label">
-							<?php echo $field->label; ?>
+							<?php 
+                                if ( $fieldset->name == 'description' )
+    {
+    echo JText::sprintf($field->label, $this->item->name,$this->project->name);    
+    }    
+    else
+    {
+                            echo $field->label;
+                            }
+                             ?>
 						</div>
 						<div class="controls">
 							<?php echo $field->input; ?>

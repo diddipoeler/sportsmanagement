@@ -445,7 +445,7 @@ catch (Exception $e){
 	 * @return	boolean	True on success.
 	 * @since	1.6
 	 */
-	public function save($data)
+	public function savenichtmehr($data)
 	{
 	   // Reference global application object
  //       $app = JFactory::getApplication();
@@ -519,7 +519,6 @@ catch (Exception $e){
         
         $data['birthday'] = sportsmanagementHelper::convertDate($data['birthday'],0);
         $data['deathday'] = sportsmanagementHelper::convertDate($data['deathday'],0);
-        
         $data['injury_date_start'] = sportsmanagementHelper::convertDate($data['injury_date_start'],0);
         $data['injury_date_end'] = sportsmanagementHelper::convertDate($data['injury_date_end'],0);
         $data['susp_date_start'] = sportsmanagementHelper::convertDate($data['susp_date_start'],0);

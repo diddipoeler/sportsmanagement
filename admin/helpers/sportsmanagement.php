@@ -2972,7 +2972,7 @@ $query->where($conditions);
 		$status = null;	
 		if(!empty($content))
 		{
-			$json = new Services_JSON();
+			$json = new JSMServices_JSON();
 			$status = $json->decode($content);
 		}
 

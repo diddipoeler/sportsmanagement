@@ -128,39 +128,6 @@ class sportsmanagementModelprojectreferee extends JSMModelAdmin
       return parent::delete($pks);   
    } 
    
-   /**
-	 * Method to save the form data.
-	 *
-	 * @param	array	The form data.
-	 * @return	boolean	True on success.
-	 * @since	1.6
-	 */
-	public function save($data)
-	{
-	   $app = JFactory::getApplication();
-       $date = JFactory::getDate();
-	   $user = JFactory::getUser();
-       $post = JRequest::get('post');
-       // Set the values
-	   $data['modified'] = $date->toSql();
-	   $data['modified_by'] = $user->get('id');
-       
-       //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-       //$app->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-       
-       if (isset($post['extended']) && is_array($post['extended'])) 
-		{
-			// Convert the extended field to a string.
-			$parameter = new JRegistry;
-			$parameter->loadArray($post['extended']);
-			$data['extended'] = (string)$parameter;
-		}
-        
-        //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
-        
-        // Proceed with the save
-		return parent::save($data);   
-    }
-	
+
 	
 }

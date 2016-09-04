@@ -60,21 +60,21 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$db	 		= sportsmanagementHelper::getDBConnection();
-		$uri		= JFactory::getURI();
-		$user		= JFactory::getUser();
-		$model		= $this->getModel();
-        $this->show_debug_info	= JComponentHelper::getParams($option)->get('show_debug_info', 0);
+		//$app = JFactory::getApplication();
+//		$jinput = $app->input;
+//		$option = $jinput->getCmd('option');
+//		$db	 		= sportsmanagementHelper::getDBConnection();
+//		$uri		= JFactory::getURI();
+//		$user		= JFactory::getUser();
+//		$model		= $this->getModel();
+        $this->show_debug_info	= JComponentHelper::getParams($this->option)->get('show_debug_info', 0);
 
 		$lists = array();
         
-        // get the Data
-		$form = $this->get('Form');
-		$item = $this->get('Item');
-		$script = $this->get('Script');
+//        // get the Data
+//		$form = $this->get('Form');
+//		$item = $this->get('Item');
+//		$script = $this->get('Script');
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -83,15 +83,15 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
 			return false;
 		}
                       
-		// Assign the Data
-		$this->form = $form;
-		$this->item = $item;
-		$this->script = $script;
+//		// Assign the Data
+//		$this->form = $form;
+//		$this->item = $item;
+//		$this->script = $script;
         
-        $this->_persontype = $jinput->get('persontype');
+        $this->_persontype = $this->jinput->get('persontype');
         if ( empty($this->_persontype) )
         {
-            $this->_persontype	= $app->getUserState( "$option.persontype", '0' );
+            $this->_persontype	= $this->app->getUserState( "$this->option.persontype", '0' );
         }
         
         $this->project_id	= $this->item->project_id;
@@ -111,12 +111,12 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
         
         if ( $this->show_debug_info )
         {
-            $app->enqueueMessage(JText::_('sportsmanagementViewProjectReferee project_ref_positions<br><pre>'.print_r($project_ref_positions,true).'</pre>'),'');
+            $this->app->enqueueMessage(JText::_('sportsmanagementViewProjectReferee project_ref_positions<br><pre>'.print_r($project_ref_positions,true).'</pre>'),'');
         }
         
         
 		//$this->assignRef('projectreferee',	$item);
-		$extended = sportsmanagementHelper::getExtended($item->extended, 'projectreferee');		
+		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'projectreferee');		
 		$this->extended	= $extended;
         //$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
 		
@@ -131,18 +131,18 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
+		//$app = JFactory::getApplication();
+		//$jinput = $app->input;
+		//$option = $jinput->getCmd('option');
         
 	
-    	$jinput->set('hidemainmenu', true);
+    	$this->jinput->set('hidemainmenu', true);
         
         $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_PROJECTREFEREE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_PROJECTREFEREE_NEW');
         $this->icon = 'projectreferee';
 
-        $app->setUserState( "$option.pid", $this->item->project_id );
-        $app->setUserState( "$option.persontype", $this->_persontype );	
+        $this->app->setUserState( "$this->option.pid", $this->item->project_id );
+        $this->app->setUserState( "$this->option.persontype", $this->_persontype );	
         
 	
         

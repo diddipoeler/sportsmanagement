@@ -2633,7 +2633,7 @@ $dcsv['cachefile']	= JPATH_SITE.DS.'/tmp/'.md5($dcsv['file']);
 	fclose($fp);
 
 // New ParseCSV object.
-$csv = new parseCSV();
+$csv = new JSMparseCSV();
 //$csv->encoding('UTF-8', 'UTF-8');
 // Parse CSV with auto delimiter detection
 $csv->auto($dcsv['cachefile']);
@@ -2643,7 +2643,7 @@ $csv->auto($dcsv['cachefile']);
     
     /*
     # tab delimited, and encoding conversion
-	$csv = new parseCSV();
+	$csv = new JSMparseCSV();
 	//$csv->encoding('UTF-16', 'UTF-8');
 	//$csv->delimiter = ";";
     $csv->auto($file);

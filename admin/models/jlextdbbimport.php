@@ -1238,7 +1238,7 @@ if ( $whichfile == 'playerfile' )
 {
 	// Spielerdatei
 	# tab delimited, and encoding conversion
-	$csv = new parseCSV();
+	$csv = new JSMparseCSV();
 	$csv->encoding('UTF-16', 'UTF-8');
 	// Spielerdatei des DFBNet ist seit 2013 mit einem Tabulator als Delimiter, deswegen ist eine Auswahl nicht erforderlich
 	$csv->delimiter = "\t";
@@ -1294,7 +1294,7 @@ elseif ( $whichfile == 'matchfile' )
 {
 	// Spielplan anfang
 	# tab delimited, and encoding conversion
-	$csv = new parseCSV();
+	$csv = new JSMparseCSV();
 	$csv->encoding('UTF-16', 'UTF-8');
 	// Spielplan des DFBNet ist seit 2013 mit einem Tabulator als Delimiter, deswegen ist eine Auswahl nicht erforderlich
 	$csv->delimiter = "\t";

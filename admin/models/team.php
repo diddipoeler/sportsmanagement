@@ -114,27 +114,30 @@ class sportsmanagementModelteam extends JSMModelAdmin
 	 */
 	function getTeam($team_id=0,$pro_team_id=0)
 	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-		$db		= JFactory::getDbo();
-		$query	= $db->getQuery(true);
+//	   $app = JFactory::getApplication();
+//        $option = JRequest::getCmd('option');
+//		$db		= JFactory::getDbo();
+//		$query	= $db->getQuery(true);
+        $this->jsmquery->clear();
         // Select some fields
-		$query->select('t.*');
+		$this->jsmquery->select('t.*');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team t');
+		$this->jsmquery->from('#__sportsmanagement_team t');
         
         if ( $team_id)
         {
-        $query->where('t.id = '.$team_id);
+        $this->jsmquery->where('t.id = '.$team_id);
         }
         else
         {
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
-        $query->where('st.id = '.$pro_team_id); 
+        $this->jsmquery->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
+        $this->jsmquery->where('st.id = '.$pro_team_id); 
         }
+        
+//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
 
-		$db->setQuery($query);
-		return $db->loadObject();
+		$this->jsmdb->setQuery($this->jsmquery);
+		return $this->jsmdb->loadObject();
 	}
     
     /**
