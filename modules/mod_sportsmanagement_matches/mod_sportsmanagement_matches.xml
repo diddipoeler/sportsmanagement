@@ -75,7 +75,7 @@
 						directory="/modules/mod_sportsmanagement_matches/assets/images" 
 						hide_default="1" hide_none="0" />
 
-        <field 	name="project" 
+        <field 	name="p" 
 			task="projects" 
       type="dependsql"
       depends="s"
@@ -143,10 +143,10 @@
 <field name="teams" 
 type="dependsql" 
 default="0" 
-depends="project"
+depends="p"
 					task="projectteamoptions" 
 					key_field="project_id"
-			value_field="project"
+			value_field="p"
       slug="true"
       required="false"
 					label="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_TITLE" 
