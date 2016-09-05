@@ -165,6 +165,16 @@ if( $this->jsmapp->isSite() )
  */       
        switch ( $this->jsmview )
        {
+       case 'rounds':
+       $data['round_date_first'] = sportsmanagementHelper::convertDate($data['round_date_first'],0);
+       $data['round_date_last']	= sportsmanagementHelper::convertDate($data['round_date_last'],0);
+       if ( !isset($data['id']) )
+       {
+        $data['id'] = 0;
+        $data['project_id'] = $post['pid'];
+        $data['roundcode'] = $post['next_roundcode'];
+       }
+       break; 
        case 'projectteam':
        if ( $post['delete'] )
         {
@@ -379,7 +389,7 @@ if( $this->jsmapp->isSite() )
             $data['params'] = $paramsString;
 		}
         
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
                
 /**
  * Alter the title for Save as Copy

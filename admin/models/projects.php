@@ -170,12 +170,12 @@ class sportsmanagementModelProjects extends JModelList
         $subQuery2 = $db->getQuery(true);
         
         $subQuery->select('count(pt.id)');
-        $subQuery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt');
+        $subQuery->from('#__sportsmanagement_project_team AS pt');
         $subQuery->where('pt.project_id = p.id');
         
         $subQuery2->select('ef.name');
-        $subQuery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields_values as ev ');
-        $subQuery2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields as ef ON ef.id = ev.field_id');
+        $subQuery2->from('#__sportsmanagement_user_extra_fields_values as ev ');
+        $subQuery2->join('INNER','#__sportsmanagement_user_extra_fields as ef ON ef.id = ev.field_id');
         $subQuery2->where('ev.jl_id = p.id');
         $subQuery2->where('ef.template_backend LIKE '.$db->Quote(''.'project'.''));
         $subQuery2->where('ev.fieldvalue != '.$db->Quote(''.''));
@@ -193,19 +193,19 @@ class sportsmanagementModelProjects extends JModelList
         $query->select('ag.name AS agegroup');
         $query->select('(' . $subQuery . ') AS proteams');
         
-    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p');
-    $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id = p.season_id');
-    $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON l.id = p.league_id');
-    $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = p.sports_type_id');
-    $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup AS ag ON ag.id = p.agegroup_id');
+    $query->from('#__sportsmanagement_project AS p');
+    $query->join('LEFT', '#__sportsmanagement_season AS s ON s.id = p.season_id');
+    $query->join('LEFT', '#__sportsmanagement_league AS l ON l.id = p.league_id');
+    $query->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = p.sports_type_id');
+    $query->join('LEFT', '#__sportsmanagement_agegroup AS ag ON ag.id = p.agegroup_id');
     $query->join('LEFT', '#__users AS u ON u.id = p.checked_out');
     $query->join('LEFT', '#__users AS u1 ON u1.id = p.modified_by');
   
         if ($this->getState('filter.userfields'))
 		{
 			$query->select('ev.fieldvalue as user_fieldvalue,ev.id as user_field_id');  
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields_values as ev ON ev.jl_id = p.id');  
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields as ef ON ef.id = ev.field_id');  
+		$query->join('INNER','#__sportsmanagement_user_extra_fields_values as ev ON ev.jl_id = p.id');  
+		$query->join('INNER','#__sportsmanagement_user_extra_fields as ef ON ef.id = ev.field_id');  
         $query->where('ef.id = ' . $this->getState('filter.userfields') );
         }
 

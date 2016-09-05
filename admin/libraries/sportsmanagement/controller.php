@@ -58,12 +58,14 @@ class JSMControllerForm extends JControllerForm
 		// Check for request forgeries.
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
         
-     		// Initialise variables.
+     	// Initialise variables.
 		//$app = JFactory::getApplication();
         //$db = sportsmanagementHelper::getDBConnection();
+        $post = $this->jsmjinput->post->getArray();
         $tmpl = $this->jsmjinput->getVar('tmpl');
 		$model = $this->getModel($this->view_item);
         $data = $this->jsmjinput->getVar('jform', array(), 'post', 'array');
+        $setRedirect = '';
         //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
         $createTeam = $this->jsmjinput->getVar('createTeam');
         $return = $model->save($data);
@@ -102,6 +104,9 @@ class JSMControllerForm extends JControllerForm
 				$mdlTeam->save($tpost);
         }
         break;
+        case 'rounds': 
+        $setRedirect = '&pid='.$post['pid'];
+        break;
         }     
         
         // Set the redirect based on the task.
@@ -116,27 +121,16 @@ class JSMControllerForm extends JControllerForm
                 else
                 {
                 //$this->setRedirect('index.php?option=com_sportsmanagement&view=club&layout=edit&id='.$id, $message);   
-                $this->setRedirect(
-								JRoute::_(
-										'index.php?option=' . $this->option . '&view=' . $this->view_item .
-												 $this->getRedirectToItemAppend($id), false), $message); 
+                $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend($id).$setRedirect, false), $message); 
                 }
 				break;
 case 'save2copy':
-$this->setRedirect(
-					JRoute::_(
-						'index.php?option=' . $this->option . '&view=' . $this->view_item
-						. $this->getRedirectToItemAppend($id), false
-					)
-				);
+$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend($id).$setRedirect, false));
 break;
 
 			case 'save2new':
             $message = JText::_('JLIB_APPLICATION_SAVE_SUCCESS');
-						$this->setRedirect(
-								JRoute::_(
-										'index.php?option=' . $this->option . '&view=' . $this->view_item .
-												 $this->getRedirectToItemAppend(null, $urlVar), false), $message);
+			$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_item .$this->getRedirectToItemAppend(null, $urlVar).$setRedirect, false), $message);
             
             break;
 			default:
@@ -150,12 +144,10 @@ break;
                     switch ($this->view_item)
 		{
 		case 'club':  
-                	$this->setRedirect(
-								JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&club_id='.$this->club_id.$this->getRedirectToListAppend(), false), $message);
+        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&club_id='.$this->club_id.$this->getRedirectToListAppend(), false), $message);
                                 break;
                                 default:
-                                $this->setRedirect(
-								JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list . $this->getRedirectToListAppend(), false), $message);
+                                $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list. $this->getRedirectToListAppend().$setRedirect, false), $message);
                                 break;
                                 }   
                 }
@@ -167,10 +159,7 @@ break;
         else
         {
             //JError::raiseError( 4711, 'A severe error occurred' );
-            $this->setRedirect(
-								JRoute::_(
-										'index.php?option=' . $this->option . '&view=' . $this->view_item .
-												 $this->getRedirectToItemAppend($id), false), $message); 
+            $this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_item .$this->getRedirectToItemAppend($id).$setRedirect, false), $message); 
             JError::raiseError( 4711, $this->jsmdb->getErrorMsg() );
             return false;
         }

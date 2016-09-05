@@ -208,11 +208,13 @@ class sportsmanagementModelSeasons extends JModelList
             break;
             
             default:
-            	$this->query->clear();
+            $this->query->clear();
             // Select some fields
 		    $this->query->select(implode(",",$this->filter_fields));
+            $this->query->select('uc.name AS editor');
 		    // From the seasons table
 		    $this->query->from('#__sportsmanagement_season as s');
+            $this->query->join('LEFT', '#__users AS uc ON uc.id = s.checked_out');
             if ($this->getState('filter.search'))
 		    {
             $this->query->where(' LOWER(s.name) LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search').'%'));
@@ -227,7 +229,7 @@ class sportsmanagementModelSeasons extends JModelList
         $this->query->order($this->jsmdb->escape($this->getState('list.ordering', $this->_order)).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
  
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->query->dump(),true).'</pre>'),'Notice');
+//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->query->dump(),true).'</pre>'),'Notice');
  
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {

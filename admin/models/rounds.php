@@ -152,18 +152,18 @@ class sportsmanagementModelRounds extends JModelList
 		// Select some fields
 		$query->select('r.*');
 		// From the rounds table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round as r');
+		$query->from('#__sportsmanagement_round as r');
         // join match
         $subQuery1->select('count(published)');
-        $subQuery1->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match ');
+        $subQuery1->from('#__sportsmanagement_match ');
         $subQuery1->where('round_id=r.id and published=0');
         // join match
         $subQuery2->select('count(*)');
-        $subQuery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match ');
+        $subQuery2->from('#__sportsmanagement_match ');
         $subQuery2->where('round_id=r.id AND cancel=0 AND (team1_result is null OR team2_result is null)');
         // join match
         $subQuery3->select('count(*)');
-        $subQuery3->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match ');
+        $subQuery3->from('#__sportsmanagement_match ');
         $subQuery3->where('round_id=r.id');
         
         $query->select('('.$subQuery1.') AS countUnPublished');
@@ -212,7 +212,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	  // Select some fields
         $query->select('count(*) AS count');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+		$query->from('#__sportsmanagement_round');
         $query->where('project_id = '.$project_id);  
 
 		$db->setQuery($query);

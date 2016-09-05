@@ -145,6 +145,7 @@ class sportsmanagementModelagegroups extends JModelList
 	{
         // Select some fields
 		$this->query->select(implode(",",$this->filter_fields));
+        $this->query->select('uc.name AS editor');
         // From table
 		$this->query->from('#__sportsmanagement_agegroup as obj');
         $this->query->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = obj.sportstype_id');
@@ -171,6 +172,8 @@ class sportsmanagementModelagegroups extends JModelList
         $my_text = ' <br><pre>'.print_r($this->query->dump(),true).'</pre>';    
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
+        
+        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->query->dump(),true).'</pre>'),'Notice');
         
 		return $this->query;
         
