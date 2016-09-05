@@ -53,7 +53,7 @@ jimport('joomla.application.component.modellist');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelTeams extends JModelList
+class sportsmanagementModelTeams extends JSMModelList
 {
 	var $_identifier = "teams";
     //static $cfg_which_database = 0;
@@ -249,6 +249,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         //$playground = self::getPlayground();
         if ( $playground_id > 0 )
         {
+        $this->query->clear();
         // Select some fields
 		$this->query->select('pt.id, st.team_id, pt.project_id');
         // From table
