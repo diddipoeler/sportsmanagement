@@ -54,7 +54,7 @@
 					required="">
 			</field>
 			
-		 <field 	name="projects"
+		 <field 	name="p"
       size="5" 
 			task="projects" 
       type="dependsql"
@@ -77,10 +77,10 @@
 <field name="teams" 
 type="dependsql" 
 default="0" 
-depends="projects"
+depends="p"
 					task="projectteamoptions" 
 					key_field="project_id"
-			value_field="projects"
+			value_field="p"
 					label="MOD_SPORTSMANAGEMENT_TRAININGSDATA_TEAM_ID_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_TRAININGSDATA_TEAM_ID_LABEL_DESC" />
 
