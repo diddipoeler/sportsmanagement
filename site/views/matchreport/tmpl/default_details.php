@@ -80,14 +80,21 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
     $timestamp = strtotime($this->match->match_date);
     if ( $this->config['show_match_date'] )
     {
-        if ( $timestamp )
+        if ( $this->match->match_date != '0000-00-00 00:00:00' )
         {
             ?>
-            
-            
             <address>
 			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_DATE' ); ?></strong>
 			<?php echo JHtml::date($this->match->match_date, JText::_('COM_SPORTSMANAGEMENT_MATCHREPORT_GAMES_DATE')); ?>
+            </address>
+            <?php
+        }
+        else
+        {
+            ?>
+            <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_DATE' ); ?></strong>
+			<?php echo ''; ?>
             </address>
             <?php
         }
@@ -98,14 +105,21 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 	<?php
     if ( $this->config['show_match_time'] )
     {
-        if ( $timestamp )
+        if ( $this->match->match_date != '0000-00-00 00:00:00' )
         {
             ?>
-            
-            
              <address>
 			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_TIME' ); ?></strong>
 			<?php echo sportsmanagementHelperHtml::showMatchTime($this->match, $this->config, $this->overallconfig, $this->project); ?>
+            </address>
+            <?php
+        }
+        else
+        {
+            ?>
+             <address>
+			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_MATCHREPORT_TIME' ); ?></strong>
+			<?php echo ''; ?>
             </address>
             <?php
         }
