@@ -48,7 +48,7 @@
 		
   <field name="cfg_help_server" 
   type="text" 
-  default="http://smwiki.diddipoeler.de/index.php/" 
+  default="http://jsm-wiki.diddipoeler.de/index.php/" 
 		size="100"
     label="COM_SPORTSMANAGEMENT_SETTINGS_HELPSERVER"
 		description="COM_SPORTSMANAGEMENT_SETTINGS_HELPSERVER_DESC">
