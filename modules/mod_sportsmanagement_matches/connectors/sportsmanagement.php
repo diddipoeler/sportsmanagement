@@ -130,39 +130,7 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 			return 'DATE(m.match_date)';
 		}
 	}
-	
-	/**
-	 * MatchesSportsmanagementConnector::buildWhere()
-	 * 
-	 * @return void
-	 */
-/*
-	public function buildWhere() {
-		$this->getUsedTeams();
-		if ($this->id > 0) {
-			$this->conditions[0] = "(m.id = '" . $this->id . "')";
-		} else {
-			$this->conditions[] = "p.published = 1"; //project
-			$this->conditions[] = "m.published = 1"; //match
-			$this->conditions[] = $this->getTimeLimit();
-			$p = $this->params->get('project');
-			if (!empty ($p)) {
-				$projectstring = (is_array($p)) ? implode(",", array_map('intval', $p) ) : $p;
-				if($projectstring != '-1' AND $projectstring != '') {
-					$this->conditions[] = "(pt1.project_id IN (" . $projectstring . ") OR pt2.project_id IN (" . $projectstring . "))";
-				}
-			} 
 
-			$nu = $this->params->get('project_not_used');
-			if (!empty ($nu)) {
-				$notusedstring = (is_array($nu)) ? implode(",", array_map('intval', $nu) ) : $nu;
-				if($notusedstring != '-1' AND $notusedstring != '') {
-					$this->conditions[] = "(pt1.project_id NOT IN (" . $notusedstring . ") OR pt2.project_id NOT IN (" . $notusedstring . "))";
-				} 
-			}
-		}
-	}
-*/
     
 	/**
 	 * MatchesSportsmanagementConnector::getMatches()
@@ -183,7 +151,7 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
         
 		$limit = ($this->params->get('limit', 0) > 0) ? $this->params->get('limit', 0) : 1;
         
-        $p = $this->params->get('project');
+        $p = $this->params->get('p');
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($p,true).'</pre>'),'Notice');
         
