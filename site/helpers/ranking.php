@@ -403,7 +403,12 @@ class JSMRanking
 
 			$decision = $match->decision;
             
-                     
+		$mp1 = 0;
+		$mp2 = 0;
+                $se1 = 0;
+		$se2 = 0;
+                $ga1 = 0;
+		$ga2 = 0;                     
 			if ($decision == 0)
 			{
 				$home_score = $match->home_score;
