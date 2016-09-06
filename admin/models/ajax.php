@@ -501,10 +501,10 @@ class sportsmanagementModelAjax extends JModelLegacy
             
         $result = $db->loadObjectList();
         
-//        foreach ($result as $row)
-//        {
-//            $row->name = JText::_($row->name);
-//        }
+        foreach ($result as $row)
+        {
+            $row->text = JText::_($row->text);
+        }
         
         return self::addGlobalSelectElement($result, $required);
         }
