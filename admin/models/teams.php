@@ -271,11 +271,11 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
                 $teams[$row->id]->project_team[] = $row;
                 // Select some fields
-                $this->query->clear();
-		$this->query->select('name, short_name, notes');
+                $this->jsmquery->clear();
+		$this->jsmquery->select('name, short_name, notes');
         // From table
-		$this->query->from('#__sportsmanagement_team');
-        $this->query->where('id='.(int)$row->team_id);
+		$this->jsmquery->from('#__sportsmanagement_team');
+        $this->jsmquery->where('id='.(int)$row->team_id);
 
 $starttime = microtime(); 
                 $this->jsmdb->setQuery( $this->jsmquery );
