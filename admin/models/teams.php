@@ -241,7 +241,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
      * @param mixed $playground_id
      * @return
      */
-    public static function getTeams($playground_id)
+    function getTeams($playground_id)
     {
         
         $teams = array();
@@ -249,17 +249,17 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         //$playground = self::getPlayground();
         if ( $playground_id > 0 )
         {
-        $this->query->clear();
+        $this->jsmquery->clear();
         // Select some fields
-		$this->query->select('pt.id, st.team_id, pt.project_id');
+	$this->jsmquery->select('pt.id, st.team_id, pt.project_id');
         // From table
-		$this->query->from('#__sportsmanagement_project_team as pt');
-        $this->query->join('INNER','#__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
-        $this->query->where('pt.standard_playground = '.(int)$playground_id);
+	$this->jsmquery->from('#__sportsmanagement_project_team as pt');
+        $this->jsmquery->join('INNER','#__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
+        $this->jsmquery->where('pt.standard_playground = '.(int)$playground_id);
         
         $starttime = microtime(); 
 
-            $this->jsmdb->setQuery( $this->query );
+            $this->jsmdb->setQuery( $this->jsmquery );
             if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
@@ -278,7 +278,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         $this->query->where('id='.(int)$row->team_id);
 
 $starttime = microtime(); 
-                $this->jsmdb->setQuery( $this->query );
+                $this->jsmdb->setQuery( $this->jsmquery );
                 if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
@@ -287,13 +287,13 @@ $starttime = microtime();
                 $teams[ $row->id ]->teaminfo[] = $this->jsmdb->loadObjectList();
                 
                 // Select some fields
-                $this->query->clear();
-		$this->query->select('name');
+                $this->jsmquery->clear();
+		$this->jsmquery->select('name');
         // From table
-		$this->query->from('#__sportsmanagement_project');
-        $this->query->where('id='.$row->project_id);
+		$this->jsmquery->from('#__sportsmanagement_project');
+        $this->jsmquery->where('id='.$row->project_id);
 $starttime = microtime(); 
-                $this->jsmdb->setQuery( $this->query );
+                $this->jsmdb->setQuery( $this->jsmquery );
                 if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
@@ -311,7 +311,7 @@ $starttime = microtime();
      * @param mixed $games
      * @return
      */
-    public static function getTeamsFromMatches( & $games )
+    function getTeamsFromMatches( & $games )
     {
         
         $teams = Array();
@@ -329,12 +329,13 @@ $starttime = microtime();
         $listTeamId = implode( ",", array_unique( $teamsId ) );
         
         // Select some fields
-		$this->query->select('t.id, t.name');
+        $this->jsmquery->clear();
+	$this->jsmquery->select('t.id, t.name');
         // From table
-		$this->query->from('#__sportsmanagement_team AS t');
-        $this->query->where('t.id IN ('.$listTeamId.')');
+	$this->jsmquery->from('#__sportsmanagement_team AS t');
+        $this->jsmquery->where('t.id IN ('.$listTeamId.')');
 
-        $this->jsmdb->setQuery( $this->query );
+        $this->jsmdb->setQuery( $this->jsmquery );
         $result = $this->jsmdb->loadObjectList();
 
         foreach ( $result as $r )
