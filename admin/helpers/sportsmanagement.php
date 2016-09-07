@@ -2537,6 +2537,12 @@ else
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
     
+$zusatz = '';
+$project_id = $jinput->get('pid');  
+if ( $project_id )
+{
+	$zusatz = '&pid='.$project_id;
+}
     //$app->enqueueMessage(JText::_('ToolbarButton layout<br><pre>'.print_r(JRequest::getVar('layout'),true).'</pre>'),'Notice');
     //$app->enqueueMessage(JText::_('ToolbarButton get<br><pre>'.print_r($_GET,true).'</pre>'),'Notice');
     
@@ -2548,7 +2554,7 @@ else
     $modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width',0) ;
     $modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height',0) ;
     $bar = JToolBar::getInstance('toolbar');
-    $page_url = JFilterOutput::ampReplace('index.php?option=com_sportsmanagement&view='.$view.'&tmpl=component&layout='.$layout.'&type='.$type.'&issueview='.$issueview.'&issuelayout='.$issuelayout );
+    $page_url = JFilterOutput::ampReplace('index.php?option=com_sportsmanagement&view='.$view.'&tmpl=component&layout='.$layout.'&type='.$type.'&issueview='.$issueview.'&issuelayout='.$issuelayout.$zusatz );
     
     $bar->appendButton('Popup', $icon_image, $alt_text, $page_url, $modal_popup_width, $modal_popup_height);
     
