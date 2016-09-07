@@ -165,7 +165,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 		$lists['project_positions'] = '<select name="project_positionslist[]" id="project_positionslist" style="width:250px; height:250px;" class="inputbox" multiple="true" size="10"></select>';
 	} 
         
-	$this->project_id	= $app->getUserState( "$option.pid", '0' );
+	$this->project_id = $this->jinput->get('pid');
 
 	$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	$project = $mdlProject->getProject($this->project_id); 
