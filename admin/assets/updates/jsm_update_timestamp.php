@@ -7,7 +7,7 @@ defined('_JEXEC') or die('Restricted access');
 jimport('joomla.filter.output');
 
 
-// prüft vor Benutzung ob die gewünschte Klasse definiert ist
+// prÃ¼ft vor Benutzung ob die gewÃ¼nschte Klasse definiert ist
 if ( !class_exists('sportsmanagementHelper') ) 
 {
 //add the classes for handling
@@ -86,6 +86,8 @@ $result = $db->loadObjectList();
 
 foreach ($result as $projekt)
 {
+if ( $projekt->modified != $db->getNullDate() )
+{
 $projekt->modified_timestamp = sportsmanagementHelper::getTimestamp($projekt->modified);
 
 // Create an object for the record we are going to update.
@@ -97,7 +99,8 @@ $object->modified_timestamp = $projekt->modified_timestamp;
 //echo 'modified_timestamp -> '.$projekt->modified_timestamp.'<br>';
 // Update their details in the table using id as the primary key.
 $result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_project', $object, 'id');
-        
+}
+
 }
 
 
@@ -133,6 +136,8 @@ $result = $db->loadObjectList();
 
 foreach ($result as $match)
 {
+if ( $match->match_date != $db->getNullDate() )
+{
 $match->match_timestamp = sportsmanagementHelper::getTimestamp($match->match_date);
 
 // Create an object for the record we are going to update.
@@ -142,7 +147,8 @@ $object->id = $match->id;
 $object->match_timestamp = $match->match_timestamp;
 // Update their details in the table using id as the primary key.
 $result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id');
-        
+}
+
 }
 
 
