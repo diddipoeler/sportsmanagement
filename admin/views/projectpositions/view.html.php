@@ -99,7 +99,7 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 		$table = JTable::getInstance('projectposition', 'sportsmanagementTable');
 		$this->table	= $table;
                 
-		$this->project_id	= $app->getUserState( "$option.pid", '0' );
+		$this->project_id	= $this->jinput->get('pid');
         
 		$mdlProject	= JModelLegacy::getInstance('Project', 'sportsmanagementModel');
 		$project	= $mdlProject->getProject($this->project_id);
