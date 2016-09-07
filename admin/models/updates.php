@@ -71,12 +71,14 @@ class sportsmanagementModelUpdates extends JModelLegacy
 		$data=array();
 		$updateArray=array();
 		$file_name=$file;
-
+$this->app = JFactory::getApplication();
 		if ($file=='jl_upgrade-0_93b_to_1_5.php'){return '';}
-		
-		$tableVersion = JTable::getInstance('Version','Table');
-		$query='SELECT id,count FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_version where file='.$this->_db->Quote($file);
-		$this->_db->setQuery($query);		
+		$data['id'] = 0;
+		$data['count'] = 0;
+
+		$query='SELECT id,count FROM #__sportsmanagement_version where file LIKE '.$this->_db->Quote($file);
+		$this->_db->setQuery($query);	
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'),'Notice');			
 		if (!$result=$this->_db->loadObject())
 		{
 			$this->setError($this->_db->getErrorMsg());
@@ -86,13 +88,16 @@ class sportsmanagementModelUpdates extends JModelLegacy
 			$data['id']=$result->id;
 			$data['count']=(int) $result->count + 1;
 		}
-		$data['file']=$file_name;
+		$data['file'] = $file_name;
 
-		$query="SELECT * FROM #__".COM_SPORTSMANAGEMENT_TABLE."_version where file='joomleague'";
+		$query="SELECT * FROM #__sportsmanagement_version where file LIKE 'sportsmanagement'";
 		$this->_db->setQuery($query);
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'),'Notice');			
 		if (!$result=$this->_db->loadObject())
 		{
 			$this->setError($this->_db->getErrorMsg());
+
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Notice');			
 		}
 		else 
 		{
@@ -102,22 +107,26 @@ class sportsmanagementModelUpdates extends JModelLegacy
 			$data['build']=!empty($build) ? $build : $result->build ;
 			$data['revision']=!empty($revision) ? $revision : $result->revision;			
 		}
-/**
-* wird nicht benötigt
-*/		
-//		if (!$tableVersion->bind($data))
-//		{
-//			echo $this->_db->getErrorMsg();
-//			$this->setError(JText::_('Binding failed'));
-//			return false;
-//		}
-		// Store the item to the database
-//		if (!$store=$tableVersion->store())
-//		{
-//			echo $this->_db->getErrorMsg();
-//			$this->setError($this->_db->getErrorMsg());
-//			return false;
-//		}
+// Create and populate an object.
+$object= new stdClass();
+$object->id = $data['id'];
+$object->count = $data['count'];
+$object->file = $data['file'];
+
+ 
+if ( $data['id'] ) 
+{
+// Update their details in the table using id as the primary key.
+$result = JFactory::getDbo()->updateObject('#__sportsmanagement_version', $object, 'id');
+}
+else
+{
+$object->count = 1;
+// Insert the object into the table.
+$result = $this->_db->insertObject('#__sportsmanagement_version', $object);	
+}		
+
+
 		return '';
 	}
 
