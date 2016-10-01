@@ -3281,6 +3281,9 @@ public function getOSMGeoCoords($address)
         case 'com_k2':
         $query->from('#__k2_items as c');
         break;
+        default:
+        $query->from('#__content as c');
+        break;
     }
     $query->where('catid ='. $project_category_id );
        JFactory::getDBO()->setQuery($query); 
