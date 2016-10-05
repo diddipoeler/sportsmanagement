@@ -264,7 +264,7 @@ $lang->load($extension, $base_dir, $language_tag, $reload);
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sitename <br><pre>'.print_r($config->getValue( 'config.sitename' ),true).'</pre>'),'');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' MetaKeys <br><pre>'.print_r($config->getValue( 'config.MetaKeys' ),true).'</pre>'),'');
 
-$document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/sm_functions.js');
+$document->addScript(JURI::root(true).'/components/com_sportsmanagement/assets/js/sm_functions.js');
 
 //$document->addScriptDeclaration('jQuery.noConflict();');
         
