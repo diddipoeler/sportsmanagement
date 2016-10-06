@@ -91,10 +91,10 @@ class sportsmanagementViewResults extends JViewLegacy
         
         $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/smsportsmanagement.js' );
         
-        $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/jquery.modal.js' );
-        $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/bootstrap-switch.js' );
+        $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/jquery.modal.js' );
+        $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/bootstrap-switch.js' );
         
-        $document->addScript ( JUri::root(true).'/administrator/components/'.$option.'/assets/js/bootstrap-datepicker.js' );
+        $document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/bootstrap-datepicker.js' );
         
         //$document->addScript ( JUri::root(true).'/components/'.$option.'/assets/js/bootstrap-dialog.min.js' );
         //$document->addScript ( 'https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/js/bootstrap-dialog.min.js' );
