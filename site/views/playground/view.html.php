@@ -70,6 +70,8 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 	$this->games = $this->model->getNextGames($this->jinput->getInt( "p", 0 ),$this->jinput->getInt( "pgid", 0 ));
 	$this->gamesteams = $mdlJSMTeams->getTeamsFromMatches( $this->games );
         
+        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playground<br><pre>'.print_r($this->playground,true).'</pre>'   ),'');
+        
         // diddipoeler
         $this->geo = new JSMsimpleGMapGeocoder();
         $this->geo->genkml3file($this->playground->id,$this->address_string,'playground',$this->playground->picture,$this->playground->name,$this->playground->latitude,$this->playground->longitude);

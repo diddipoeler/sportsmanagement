@@ -113,41 +113,46 @@ function genkml3file($id, $address_string, $type, $picture, $name,$latitude = 25
 $params		 	=	JComponentHelper::getParams('com_sportsmanagement');
 $ph_logo_big	=	$params->get('ph_logo_big',0);
     
-$lat = '';
-$lng = '';
 
-if ( $latitude == 255 )
-{ 
-$coords = $this->JLgetGeoCoords($address_string);
-		
-        if ( $coords["status"] == 'OK')
-		{
-    $lat = $coords["results"][0]["geometry"]["location"]["lat"];
-    $lng = $coords["results"][0]["geometry"]["location"]["lng"];
-    }
-	  else
-	  {
-	  $osm = $this->getOSMGeoCoords($address_string);
-    
-    if ( $osm )
-    {
-    $lat = $osm['lat'];
-    $lng = $osm['lng'];
-    }
-    else
-    {
-    $mapquest = $this->getGeoCoordsMapQuest($address_string);    
-    $lat = '';
-    $lng = '';
-    }
-    
-    }
-}
-else
-{
-    $lat = $latitude;
+//$lat = '';
+//$lng = '';
+//
+//if ( $latitude == 255 )
+//{ 
+//$coords = $this->JLgetGeoCoords($address_string);
+//		
+//        if ( $coords["status"] == 'OK')
+//		{
+//    $lat = $coords["results"][0]["geometry"]["location"]["lat"];
+//    $lng = $coords["results"][0]["geometry"]["location"]["lng"];
+//    }
+//	  else
+//	  {
+//	  $osm = $this->getOSMGeoCoords($address_string);
+//    
+//    if ( $osm )
+//    {
+//    $lat = $osm['lat'];
+//    $lng = $osm['lng'];
+//    }
+//    else
+//    {
+//    $mapquest = $this->getGeoCoordsMapQuest($address_string);    
+//    $lat = '';
+//    $lng = '';
+//    }
+//    
+//    }
+//}
+//else
+//{
+//$lat = $latitude;
+//$lng = $longitude;
+//}
+
+$lat = $latitude;
 $lng = $longitude;
-}
+
 // Creates an array of strings to hold the lines of the KML file.
 $kml = array('<?xml version="1.0" encoding="UTF-8"?>');
 $kml[] = '<kml xmlns="http://earth.google.com/kml/2.1">';
@@ -156,16 +161,27 @@ $kml[] = ' <Style id="' . $id . 'Style">';
 $kml[] = ' <IconStyle id="' . $id . 'Icon">';
 $kml[] = ' <Icon>';
 
+switch ($type)
+{
+case 'playground':
+$kml[] = ' <href>' .'http://maps.google.com/mapfiles/kml/pal2/icon49.png'.'</href>';
+break;  
+default:
+$kml[] = ' <href>' . JURI::root().$picture . '</href>';
+break;  
+}
+
 //$picturepath = JURI::root().$row->logo_big;
-$picturepath = JPATH_SITE.DS.$picture;
-if ( !file_exists($picturepath) || !$picture  )
-{
-$kml[] = ' <href>' . JURI::root().$ph_logo_big . '</href>';    
-}
-else
-{
-$kml[] = ' <href>' . JURI::root().$picture . '</href>';    
-}
+//$picturepath = JPATH_SITE.DS.$picture;
+//if ( !file_exists($picturepath) || !$picture  )
+//{
+//$kml[] = ' <href>' . JURI::root().$ph_logo_big . '</href>';    
+//}
+//else
+//{
+//$kml[] = ' <href>' . JURI::root().$picture . '</href>';    
+//}
+
 
 $kml[] = ' </Icon>';
 $kml[] = ' </IconStyle>';
