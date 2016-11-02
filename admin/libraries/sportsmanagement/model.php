@@ -309,47 +309,47 @@ if( $this->jsmapp->isSite() )
        }
  
        // wurden jahre mitgegeben ?
-       $timestamp = strtotime($data['founded']);
-       if ( $timestamp )
+       //$timestamp = strtotime($data['founded']);
+       if ( $data['founded'] != '0000-00-00' && $data['founded'] != '' )
        {
        $data['founded']	= sportsmanagementHelper::convertDate($data['founded'],0);
        }
-       $timestamp = strtotime($data['dissolved']);
-       if ( $timestamp )
+       //$timestamp = strtotime($data['dissolved']);
+       if ( $data['dissolved'] != '0000-00-00' && $data['dissolved'] != ''  )
        {
        $data['dissolved'] = sportsmanagementHelper::convertDate($data['dissolved'],0);
        }
        
-       $timestamp = strtotime($data['founded']); 
-       if ( !$timestamp )
+       //$timestamp = strtotime($data['founded']); 
+       if ( $data['founded'] == '0000-00-00' || $data['founded'] == '' )
         {
         $data['founded'] = '0000-00-00';   
-        $data['founded_year'] = ''; 
+        //$data['founded_year'] = ''; 
         }
-       if ( $timestamp  )
+       if ( $data['founded'] != '0000-00-00' && $data['founded'] != ''  )
         {
         $data['founded_year'] = date('Y',strtotime($data['founded']));
         }
         else
         {
-            $data['founded_year'] = $data['founded_year'];
+        $data['founded_year'] = $data['founded_year'];
         }
         
         
-        $timestamp = strtotime($data['dissolved']); 
-        if ( !$timestamp )
+        //$timestamp = strtotime($data['dissolved']); 
+        if ( $data['dissolved'] == '0000-00-00' || $data['dissolved'] == '' )
         {
         $data['dissolved'] = '0000-00-00';   
-        $data['dissolved_year'] = ''; 
+        //$data['dissolved_year'] = ''; 
         }
         
-        if ( $timestamp )  
+        if ( $data['dissolved'] != '0000-00-00' && $data['dissolved'] != '' )  
         {
         $data['dissolved_year'] = date('Y',strtotime($data['dissolved']));
         }
         else
         {
-            $data['dissolved_year'] = $data['dissolved_year'];
+        $data['dissolved_year'] = $data['dissolved_year'];
         }
        break;
        case 'team':

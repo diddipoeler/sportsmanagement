@@ -99,22 +99,26 @@ class sportsmanagementViewClub extends sportsmanagementView
         if ( $this->item->id )
         {
             // alles ok
-            $timestamp = strtotime($this->item->founded);
-            if ( !$timestamp )
+            //$timestamp = strtotime($this->item->founded);
+            //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item<br><pre>'.print_r($this->item,true).'</pre>'),'');
+            if ( $this->item->founded == '0000-00-00' )
             {
                 $this->item->founded = '';
+                $this->form->setValue('founded','');
             }
-            $timestamp = strtotime($this->item->dissolved);
-            if ( !$timestamp )
+            //$timestamp = strtotime($this->item->dissolved);
+            //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dissolved item<br><pre>'.print_r($timestamp,true).'</pre>'),'');            
+            if ( $this->item->dissolved == '0000-00-00' )
             {
                 $this->item->dissolved = '';
+                $this->form->setValue('dissolved','');
             }
             
         }
         else
         {
-            $this->form->setValue('founded', null, '0000-00-00');
-            $this->form->setValue('dissolved', null, '0000-00-00');
+            $this->form->setValue('founded', '');
+            $this->form->setValue('dissolved', '');
         }
         
         if ( $this->item->latitude == 255 )

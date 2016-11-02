@@ -103,26 +103,6 @@ $result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_project',
 
 }
 
-
-
-/* 
-// Fields to update.
-$fields = array(
-    $db->quoteName('modified_timestamp') . ' = ' . sportsmanagementHelper::getTimestamp('modified')
-);
- 
-// Conditions for which records should be updated.
-$conditions = array(
-    $db->quoteName('id') . ' <> 0'
-);
- 
-$query->update($db->quoteName('#__sportsmanagement_'.$table))->set($fields)->where($conditions);
- 
-$db->setQuery($query);
- 
-$result = $db->execute();
-*/
-//exit;
 break;
 
 case 'match':
@@ -150,26 +130,6 @@ $result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_match', $
 }
 
 }
-
-
-
-/* 
-// Fields to update.
-$fields = array(
-    $db->quoteName('match_timestamp') . ' = ' . sportsmanagementHelper::getTimestamp('match_date')
-);
- 
-// Conditions for which records should be updated.
-$conditions = array(
-    $db->quoteName('id') . ' <> 0'
-);
- 
-$query->update($db->quoteName('#__sportsmanagement_'.$table))->set($fields)->where($conditions);
- 
-$db->setQuery($query);
- 
-$result = $db->execute();
-*/
 
 break;
 

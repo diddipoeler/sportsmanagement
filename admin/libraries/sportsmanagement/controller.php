@@ -163,6 +163,20 @@ break;
             JError::raiseError( 4711, $this->jsmdb->getErrorMsg() );
             return false;
         }
-     }      
+     }
+     
+    /**
+	 * Function that allows child controller access to model data after the data
+	 * has been saved.
+	 *
+	 * @param JModelLegacy $model	The data model object.
+	 * @param array $validData		The validated data.
+	 *
+	 * @return void
+	 */
+	protected function postSaveHook(JModelLegacy $model,$validData = array())
+	{
+		return;
+	}           
     
 }    

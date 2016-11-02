@@ -3168,6 +3168,70 @@ $mdl->setParamstoJSON();
 $my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Feld Params in template_config in JSON umgesetzt !</strong>'.'</span>';
 $my_text .= '<br />';
 
+/**
+ * timestamp im projekt setzen
+ */
+$query = $db->getQuery(true);
+$query->clear();
+$query->select('p.id,p.modified');
+$query->from('#__sportsmanagement_project as p');
+$query->where("p.modified_timestamp = 0");
+$db->setQuery($query);
+$result = $db->loadObjectList();
+
+foreach ($result as $projekt)
+{
+if ( $projekt->modified != $db->getNullDate() )
+{
+$projekt->modified_timestamp = sportsmanagementHelper::getTimestamp($projekt->modified);
+
+// Create an object for the record we are going to update.
+$object = new stdClass();
+// Must be a valid primary key value.
+$object->id = $projekt->id;
+$object->modified_timestamp = $projekt->modified_timestamp;
+
+// Update their details in the table using id as the primary key.
+$result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_project', $object, 'id');
+}
+
+}
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Timestamp in den projekten gesetzt !</strong>'.'</span>';
+$my_text .= '<br />';
+
+/**
+ * timestamp in den spielen setzen
+ */
+$query = $db->getQuery(true);
+$query->clear();
+$query->select('m.id,m.match_date');
+$query->from('#__sportsmanagement_match as m');
+$query->where("m.match_timestamp = 0");
+$db->setQuery($query);
+$result = $db->loadObjectList();
+
+foreach ($result as $match)
+{
+if ( $match->match_date != $db->getNullDate() )
+{
+$match->match_timestamp = sportsmanagementHelper::getTimestamp($match->match_date);
+
+// Create an object for the record we are going to update.
+$object = new stdClass();
+// Must be a valid primary key value.
+$object->id = $match->id;
+$object->match_timestamp = $match->match_timestamp;
+// Update their details in the table using id as the primary key.
+$result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id');
+}
+
+}
+$my_text .= '<span style="color:'.self::$storeSuccessColor. '"<strong>Timestamp in den spielen gesetzt !</strong>'.'</span>';
+$my_text .= '<br />';
+
+
+
+
 $endtime = sportsmanagementModeldatabasetool::getRunTime();
 $totaltime = ($endtime - $starttime);
 self::$_success['Laufzeit:'] = JText::sprintf('This page was created in %1$s seconds',$totaltime);
