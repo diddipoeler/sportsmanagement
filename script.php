@@ -120,9 +120,12 @@ class com_sportsmanagementInstallerScript
 		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_UPDATE_TEXT') . $parent->get('manifest')->version . '</p>';
 	}
  
+
 	/**
+	 * com_sportsmanagementInstallerScript::preflight()
 	 * method to run before an install/update/uninstall method
-	 *
+	 * @param mixed $type
+	 * @param mixed $parent
 	 * @return void
 	 */
 	function preflight($type, $parent) 
@@ -213,9 +216,12 @@ class com_sportsmanagementInstallerScript
         
 	}
  
+
 	/**
+	 * com_sportsmanagementInstallerScript::postflight()
 	 * method to run after an install/update/uninstall method
-	 *
+	 * @param mixed $type
+	 * @param mixed $parent
 	 * @return void
 	 */
 	function postflight($type, $parent) 
@@ -276,6 +282,7 @@ echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab2_id');
     echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab4_id');  
 
     self::createImagesFolder();
+    self::installJoomlaExtensions($parent);
     echo JHtml::_('bootstrap.endPanel'); 
     
 //    self::migratePicturePath();
@@ -297,6 +304,7 @@ echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab2_id');
     echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab4_id');  
 
     self::createImagesFolder();
+    self::installJoomlaExtensions($parent);
     echo JHtml::_('bootstrap.endPanel');
     
 //    self::migratePicturePath();
@@ -395,6 +403,12 @@ echo self::getFxInitJSCode('steps');
 	}
     
     
+    /**
+     * com_sportsmanagementInstallerScript::deleteFolders()
+     * 
+     * @param mixed $parent
+     * @return void
+     */
     public function deleteFolders($parent)
     {
     $mainframe = JFactory::getApplication();
@@ -595,10 +609,28 @@ echo self::getFxInitJSCode('steps');
                 
         }
         
-        
+
+    
+    /**
+     * com_sportsmanagementInstallerScript::installJoomlaExtensions()
+     * 
+     * @param mixed $parent
+     * @return void
+     */
+    public function installJoomlaExtensions($parent)
+	{
+  $mainframe = JFactory::getApplication();
+  $src = $parent->getParent()->getPath('source');
+  $manifest = $parent->getParent()->manifest;
+  $db = JFactory::getDBO();
+  
+  JFolder::copy(JPATH_ROOT.'/administrator/components/com_sportsmanagement/libraries/joomla/', JPATH_ROOT.'/', '', true);
+  
+  }
 	/**
+	 * com_sportsmanagementInstallerScript::installPlugins()
 	 * method to install the plugins
-	 *
+	 * @param mixed $parent
 	 * @return void
 	 */
 	public function installPlugins($parent)
@@ -745,9 +777,11 @@ echo self::getFxInitJSCode('steps');
     }
     
     
-    /**
+
+	/**
+	 * com_sportsmanagementInstallerScript::installModules()
 	 * method to install the modules
-	 *
+	 * @param mixed $parent
 	 * @return void
 	 */
 	public function installModules($parent)
