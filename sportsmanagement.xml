@@ -167,8 +167,9 @@
 		<!-- Note: No spaces or linebreaks allowed between the server tags -->
     <!--
 		<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.github.com/diddipoeler/sportsmanagement/master/sportsmanagement-update.xml</server>
+   	<server type="collection">https://raw.github.com/diddipoeler/sportsmanagement/master/list.xml</server>
     -->
-	<server type="collection">https://raw.github.com/diddipoeler/sportsmanagement/master/list.xml</server>
+<server type="extension" priority="1" name="SportsManagement Update Site">https://raw.githubusercontent.com/diddipoeler/sportsmanagement/master/update-server.xml</server>
   </updateservers>
 
 
