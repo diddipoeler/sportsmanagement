@@ -37,7 +37,7 @@
 		<field
 			name="round_date_first"
 			size="10"
-			default="00-00-0000"
+			default=""
 			type="calendar"
 			label="COM_SPORTSMANAGEMENT_ADMIN_ROUND_START"
 			description="COM_SPORTSMANAGEMENT_ADMIN_ROUND_START_DESC"
@@ -46,7 +46,7 @@
 		<field
 			name="round_date_last"
 			size="10"
-			default="00-00-0000"
+			default=""
 			type="calendar"
 			label="COM_SPORTSMANAGEMENT_ADMIN_ROUND_END"
 			description="COM_SPORTSMANAGEMENT_ADMIN_ROUND_END_DESC"

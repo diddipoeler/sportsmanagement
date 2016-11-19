@@ -193,6 +193,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_division` (
   `modified_by` INT NULL ,
   `picture` VARCHAR(128) NOT NULL DEFAULT '' ,
   `cr_picture` varchar(255) DEFAULT NULL,
+  `rankingparams` TEXT NOT NULL ,
   PRIMARY KEY (`id`),
  KEY `project_id` (`project_id`),
  KEY `parent_id` (`parent_id`)
@@ -298,7 +299,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_match` (
   `team1_result_split` VARCHAR(64) NULL DEFAULT NULL ,
   `team2_result_split` VARCHAR(64) NULL DEFAULT NULL ,
   `match_result_type` TINYINT(4) NOT NULL DEFAULT '0' ,
-  `team_won` TINYINT(4) NOT NULL DEFAULT '0' ,
+  `team_won` INT(11) NOT NULL DEFAULT '0' ,
   `team1_result_ot` FLOAT NULL DEFAULT NULL ,
   `team2_result_ot` FLOAT NULL DEFAULT NULL ,
   `team1_result_so` FLOAT NULL DEFAULT NULL ,
@@ -338,7 +339,6 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_match` (
   `approved_date` DATE NOT NULL DEFAULT  '0000-00-00',
   `approved_time` TIME NOT NULL DEFAULT  '00:00',
   `approved_user` INT( 11 ) NOT NULL DEFAULT  '0',
-  
   `gcal_event_id` VARCHAR(150) NULL DEFAULT NULL ,
   `result_type` INT(11) NOT NULL DEFAULT '0' ,
   `content_id` INT( 11 ) NOT NULL DEFAULT  '0',

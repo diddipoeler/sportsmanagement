@@ -113,6 +113,7 @@ $object = new stdClass();
 // Must be a valid primary key value.
 $object->id = $post['club_id'.$pks[$x]];
 $object->location = $post['location'.$pks[$x]];
+$object->founded_year = $post['founded_year'.$pks[$x]];
 // Update their details in the users table using id as the primary key.
 $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 'id');
 			

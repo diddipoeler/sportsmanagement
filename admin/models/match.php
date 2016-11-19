@@ -59,7 +59,7 @@ JLoader::import('joomla.utilities.simplecrypt');
  * https://docs.joomla.org/Sending_email_from_extensions
  * 
  */
-class sportsmanagementModelMatch extends JModelAdmin
+class sportsmanagementModelMatch extends JSMModelAdmin
 {
 
 	const MATCH_ROSTER_STARTER			= 0;
@@ -71,6 +71,30 @@ class sportsmanagementModelMatch extends JModelAdmin
 static $_season_id = 0;
 static $_project_id = 0;
 
+	/**
+	 * Override parent constructor.
+	 *
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 *
+	 * @see     JModelLegacy
+	 * @since   3.2
+	 */
+	public function __construct($config = array())
+	{
+		parent::__construct($config);
+	
+//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
+//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
+    
+	}	   
+    
+    
+/**
+ * sportsmanagementModelMatch::getRoundMatches()
+ * 
+ * @param mixed $round_id
+ * @return
+ */
 function getRoundMatches($round_id)
 	{
 	// Reference global application object
@@ -673,7 +697,6 @@ $query->order('m.match_number');
             $object->division_id = $post['division_id'.$pks[$x]];
             $object->projectteam1_id = $post['projectteam1_id'.$pks[$x]];
             $object->projectteam2_id = $post['projectteam2_id'.$pks[$x]];
-            
             $object->team1_single_matchpoint = $post['team1_single_matchpoint'.$pks[$x]];
             $object->team2_single_matchpoint = $post['team2_single_matchpoint'.$pks[$x]];
             $object->team1_single_sets = $post['team1_single_sets'.$pks[$x]];
@@ -681,9 +704,18 @@ $query->order('m.match_number');
             $object->team1_single_games = $post['team1_single_games'.$pks[$x]];
             $object->team2_single_games = $post['team2_single_games'.$pks[$x]];
             $object->content_id = $post['content_id'.$pks[$x]];
-            
             $object->match_timestamp = sportsmanagementHelper::getTimestamp($object->match_date);
-            
+
+/**
+ * handelt es sich um eine turnierrunde ?
+ */
+$this->jsmquery->clear(); 
+$this->jsmquery->select('tournement');
+$this->jsmquery->from('#__sportsmanagement_round');
+$this->jsmquery->where('id = '.$object->round_id);
+$this->jsmdb->setQuery($this->jsmquery);
+$tournement_round = $this->jsmdb->loadResult();
+                    
             if ( $post['use_legs'] )
             {
                 foreach ( $post['team1_result_split'.$pks[$x]] as $key => $value )
@@ -715,18 +747,69 @@ $query->order('m.match_number');
             {    
             $object->team1_result	= $post['team1_result'.$pks[$x]];
             $object->team2_result	= $post['team2_result'.$pks[$x]];
+            /**
+             * wer ist der sieger des spiels in der turnierrunde
+             * nach regulärer spielzeit
+             */
+            if ( $tournement_round )
+            {
+            if ( $object->team1_result > $object->team2_result )
+            {
+                $object->team_won = $object->projectteam1_id;
+                $object->team_lost = $object->projectteam2_id;
+            }
+            if ( $object->team1_result < $object->team2_result )
+            {
+                $object->team_won = $object->projectteam2_id;
+                $object->team_lost = $object->projectteam1_id;
+            }        
+            }
             }
              
             if ( is_numeric($post['team1_result_ot'.$pks[$x]]) && is_numeric($post['team2_result_ot'.$pks[$x]]) )    
             {    
             $object->team1_result_ot	= $post['team1_result_ot'.$pks[$x]];
             $object->team2_result_ot	= $post['team2_result_ot'.$pks[$x]];
+            /**
+             * wer ist der sieger des spiels in der turnierrunde
+             * nach verlängerung
+             */
+            if ( $tournement_round )
+            {
+            if ( $object->team1_result_ot > $object->team2_result_ot )
+            {
+                $object->team_won = $object->projectteam1_id;
+                $object->team_lost = $object->projectteam2_id;
+            }
+            if ( $object->team1_result_ot < $object->team2_result_ot )
+            {
+                $object->team_won = $object->projectteam2_id;
+                $object->team_lost = $object->projectteam1_id;
+            }        
+            }
             }
             
             if ( is_numeric($post['team1_result_so'.$pks[$x]]) && is_numeric($post['team2_result_so'.$pks[$x]]) )    
             {    
             $object->team1_result_so	= $post['team1_result_so'.$pks[$x]];
             $object->team2_result_so	= $post['team2_result_so'.$pks[$x]];
+            /**
+             * wer ist der sieger des spiels in der turnierrunde
+             * nach elfmeterschiessen
+             */
+            if ( $tournement_round )
+            {
+            if ( $object->team1_result_so > $object->team2_result_so )
+            {
+                $object->team_won = $object->projectteam1_id;
+                $object->team_lost = $object->projectteam2_id;
+            }
+            if ( $object->team1_result_so < $object->team2_result_so )
+            {
+                $object->team_won = $object->projectteam2_id;
+                $object->team_lost = $object->projectteam1_id;
+            }        
+            }
             }
                             
             }
@@ -736,7 +819,7 @@ $query->order('m.match_number');
             $object->team2_result_split	= implode(";",$post['team2_result_split'.$pks[$x]]);
 
         // Update their details in the table using id as the primary key.
-        $result_update = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match', $object, 'id', true);
+        $result_update = JFactory::getDbo()->updateObject('#__sportsmanagement_match', $object, 'id', true);
             if(!$result_update) 
             {
 				//$this->setError(JFactory::getDbo()->getErrorMsg());

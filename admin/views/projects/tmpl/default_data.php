@@ -322,15 +322,18 @@ echo $row->league.'<br>';
                         <td class="center">
                         <?php 
                         echo $row->user_field; 
-                        echo JHtml::link('index.php?option=com_sportsmanagement&view='. $row->user_field.'&pid='.$row->id,
-								                       JHtml::image(JUri::root().'administrator/components/com_sportsmanagement/assets/images/information.png', JText::_($row->user_field)));
+                        $teile = explode("<br>", $row->user_field);
+                        //echo '<pre>'.print_r($teile,true).'</pre>';
+                        for ($a=0; $a < sizeof($teile); $a++ )
+                        {
+                        echo JHtml::link('index.php?option=com_sportsmanagement&view='. $teile[$a].'&pid='.$row->id,
+			JHtml::image(JUri::root().'administrator/components/com_sportsmanagement/assets/images/information.png', JText::_($teile[$a]))).'<br>';
+			}
                         if ( $this->state->get('filter.userfields') )
                         {
                         ?>
 <input type="text" size="100" class="inputbox" name="user_field<?php echo $row->id; ?>" value="<?php echo $row->user_fieldvalue; ?>"
-																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />                        
-
-
+onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />                        
 
 <input type="text" size="10" class="inputbox" name="user_field_id<?php echo $row->id; ?>" value="<?php echo $row->user_field_id; ?>" >
 
