@@ -56,6 +56,11 @@ JHtml::_('behavior.tooltip');
 class sportsmanagementViewTeamPlan extends sportsmanagementView
 {
 
+	/**
+	 * sportsmanagementViewTeamPlan::init()
+	 * 
+	 * @return void
+	 */
 	function init()
 	{
 	        
@@ -75,11 +80,7 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
 			$this->matches_refering = sportsmanagementModelTeamPlan::getMatchesRefering($this->config);
 			$this->matchesperround = sportsmanagementModelTeamPlan::getMatchesPerRound($this->config,$this->rounds);
 		}
-        
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' project<br><pre>'.print_r($project,true).'</pre>'),'');
-        
-    //$this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
-    
+   
 		// Set page title
 		if (empty($this->ptid))
 		{
@@ -108,7 +109,6 @@ class sportsmanagementViewTeamPlan extends sportsmanagementView
             $this->config['table_class'] = 'table';
         }
 
-		//parent::display($tpl);
 	}
 
 	/**

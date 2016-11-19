@@ -63,8 +63,6 @@ class sportsmanagementViewTeams extends sportsmanagementView
 	
 		$this->division = sportsmanagementModelProject::getDivision($this->jinput->getInt( "division", 0 ),$this->jinput->getInt('cfg_which_database',0));
         $this->teams = sportsmanagementModelProject::getTeams($this->jinput->getInt( "division", 0 ),'name',$this->jinput->getInt('cfg_which_database',0));
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
 
 		// Set page title
 		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_TEAMS_TITLE' );

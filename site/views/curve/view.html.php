@@ -62,27 +62,14 @@ class sportsmanagementViewCurve extends sportsmanagementView
 	 */
 	function init()
 	{
-	//// Reference global application object
-//        $app = JFactory::getApplication();
-//        // JInput object
-//        $jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-//		// Get a reference of the page instance in joomla
-//		$document = JFactory::getDocument();
-//		$uri      = JFactory::getURI();
+
 		$js = $this->baseurl . '/components/'.$this->option.'/assets/js/json2.js';
 		$this->document->addScript($js);
 		$js = $this->baseurl . '/components/'.$this->option.'/assets/js/swfobject.js';
 		$this->document->addScript($js);
 
-		//$division = $jinput->getInt('division', 0);
-
-		//$model = $this->getModel();
 		$rankingconfig = sportsmanagementModelProject::getTemplateConfig( "ranking",sportsmanagementModelCurve::$cfg_which_database );
 		$flashconfig = sportsmanagementModelProject::getTemplateConfig( "flash",sportsmanagementModelCurve::$cfg_which_database );
-		//$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
-
-		//$this->assign( 'project', sportsmanagementModelProject::getProject($model::$cfg_which_database) );
 
 		if ( isset( $this->project ) )
 		{
@@ -125,8 +112,6 @@ class sportsmanagementViewCurve extends sportsmanagementView
 				$divisions[0] = $div;
 				$teams = sportsmanagementModelProject::getTeams(sportsmanagementModelCurve::$division,'name',sportsmanagementModelCurve::$cfg_which_database);
                 
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');
-                
 				$i=0;
 				foreach ((array) $teams as $t) {
 					$options[] = JHtml::_( 'select.option', $t->id, $t->name );
@@ -145,13 +130,11 @@ class sportsmanagementViewCurve extends sportsmanagementView
 				$team2select[$div->id] = JHtml::_('select.genericlist', $options, 'tid2_'.$div->id, 'onchange="reload_curve_chart_'.$div->id.'()" class="inputbox" style="font-size:9px;"','value', 'text', $teamid2);		
 			}
 
-			//$this->assign( 'overallconfig', sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database) );
 			if ( !isset( $this->overallconfig['seperator'] ) )
 			{
 				$this->overallconfig['seperator'] = ":";
 			}
-			//$this->assignRef('config',$config );
-			//$this->assignRef('model',$model);
+
 			$this->colors = sportsmanagementModelProject::getColors($rankingconfig['colors'],sportsmanagementModelCurve::$cfg_which_database);
 			$this->divisions = $divisions;
 			$this->division = $this->model->getDivision(sportsmanagementModelCurve::$division);
@@ -170,7 +153,7 @@ class sportsmanagementViewCurve extends sportsmanagementView
 			}
 			$this->document->setTitle( $pageTitle );
 		}
-		//parent::display( $tpl );
+
 	}
 
 	/**

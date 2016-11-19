@@ -137,7 +137,6 @@ class sportsmanagementViewTeamInfo extends sportsmanagementView
             $this->config['table_class'] = 'table';
         }
 
-		//parent::display( $tpl );
 	}
 }
 ?>

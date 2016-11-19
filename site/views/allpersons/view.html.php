@@ -70,7 +70,6 @@ class sportsmanagementViewallpersons extends sportsmanagementView
 	protected $item = null;
 	protected $items = null;
 	protected $pagination = null;
-    
 
 	/**
 	 * sportsmanagementViewallpersons::init()
@@ -79,25 +78,14 @@ class sportsmanagementViewallpersons extends sportsmanagementView
 	 */
 	function init()
 	{
-		//// Get a refrence of the page instance in joomla
-//		$document = JFactory::getDocument();
-//        $option = JRequest::getCmd('option');
-//		// Reference global application object
-//        $app = JFactory::getApplication();
-//        // JInput object
-//        $jinput = $app->input;
+
         $inputappend = '';
         $this->tableclass = $this->jinput->getVar('table_class', 'table','request','string');
 		$user		= JFactory::getUser();
         $starttime = microtime(); 
-        //$model	= $this->getModel();
-
-		
         $this->state 		= $this->get('State');
         $this->items 		= $this->get('Items');
-        
-		
-        
+
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
@@ -105,10 +93,6 @@ class sportsmanagementViewallpersons extends sportsmanagementView
         
 		$this->pagination	= $this->get('Pagination');
         $this->columns = $this->model->columns;
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' pagination<br><pre>'.print_r($pagination,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' columns<br><pre>'.print_r($columns,true).'</pre>'),'');
-		
         //build the html options for nation
 		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions()){$nation=array_merge($nation,$res);}
@@ -126,22 +110,13 @@ class sportsmanagementViewallpersons extends sportsmanagementView
         
         $form = new stdClass();
         $form->limitField = $this->pagination->getLimitBox();
-        
         $this->filter = $this->state->get('filter.search');
-               
-      
 		$this->form = $form;
-		//$this->assignRef('items', $items);
-		//$this->assignRef('state', $state);
 		$this->user = $user;
-		//$this->assignRef('pagination', $pagination);
-        
-        $this->sortDirection    = $this->state->get('filter_order_Dir');
-        $this->sortColumn       = $this->state->get('filter_order');
-        
+        $this->sortDirection = $this->state->get('filter_order_Dir');
+        $this->sortColumn = $this->state->get('filter_order');
         $this->lists = $lists;
 
-		//parent::display($tpl);
 	}
 
 }

@@ -60,7 +60,6 @@ jimport('joomla.filesystem.file');
 class sportsmanagementViewResultsranking extends sportsmanagementView 
 {
 
-
 	/**
 	 * sportsmanagementViewResultsranking::init()
 	 * 
@@ -68,41 +67,8 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 	 */
 	function init()
 	{
-		//// welche joomla version
-//if(version_compare(JVERSION,'3.0.0','ge')) 
-//{
-//JHtml::_('behavior.framework', true);
-//}
-//else
-//{
-//JHtml::_( 'behavior.mootools' );    
-//}
-		//// Reference global application object
-//        $app = JFactory::getApplication();
-//        // JInput object
-//        $jinput = $app->input;
-//        $option = $jinput->getCmd('option');
-//		$params = $app->getParams();
-//		// get a reference of the page instance in joomla
-//		$document = JFactory :: getDocument();
-//		$uri = JFactory :: getURI();
         
         $this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
-        
-	//	$cfg_which_database = $jinput->getInt('cfg_which_database',0);
-        
-        /*
-        // add the css files
-		$version = urlencode(JoomleagueHelper::getVersion());
-		$css		= 'components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
-		$document->addStyleSheet($css);
-        */
-        
-        /*
-		// add some javascript
-		$version = urlencode(JoomleagueHelper::getVersion());
-		$document->addScript( JURI::base(true).'/components/com_sportsmanagement/assets/js/results.js?v='.$version);
-        */
         
 		// add the ranking model
 		$rankingmodel = new sportsmanagementModelRanking();
@@ -121,7 +87,6 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 		$roundcode = $mdlRound->getRoundcode($rankingmodel::$round,$this->jinput->getInt('cfg_which_database',0));
         $this->paramconfig = $rankingmodel::$paramconfig;
         $this->paramconfig['p'] = $project->slug;
-		//$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true,NULL,$cfg_which_database);
 		
 		$resultsconfig = sportsmanagementModelProject::getTemplateConfig('results',$this->jinput->getInt('cfg_which_database',0));
 		if (!isset($resultsconfig['switch_home_guest'])){$resultsconfig['switch_home_guest']=0;}
@@ -131,12 +96,8 @@ class sportsmanagementViewResultsranking extends sportsmanagementView
 		// merge the 2 config files
 		$config = array_merge($rankingconfig, $resultsconfig);
 
-//		$this->assign('project',sportsmanagementModelProject::getProject($cfg_which_database));
-//		$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig($cfg_which_database));
-
 		$this->config = array_merge($this->overallconfig, $config);
 		$this->tableconfig = $rankingconfig;
-//		$this->assignRef('params',$params);
 		$this->showediticon = $resultsmodel->getShowEditIcon();
 		$this->division = $resultsmodel->getDivision();
 		$this->divisions = sportsmanagementModelProject::getDivisions(0,$this->jinput->getInt('cfg_which_database',0));
@@ -177,19 +138,12 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking',$
 		$this->current_round = $rankingmodel::$current_round;
 		$this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$this->jinput->getInt('cfg_which_database',0));
 		$this->previousgames = $rankingmodel->getPreviousGames($this->jinput->getInt('cfg_which_database',0));
-//		$this->action',$uri->toString());
         
 		//rankingcolors
 		if (!isset ($this->config['colors'])) {
 			$this->config['colors'] = "";
 		}
 		$this->colors = sportsmanagementModelProject::getColors($this->config['colors'],$this->jinput->getInt('cfg_which_database',0));
-        
-        //$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
-        //$this->assign('use_joomlaworks', JComponentHelper::getParams('com_sportsmanagement')->get('use_joomlaworks',0) );
-
-		
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' what_to_show_first<br><pre>'.print_r($this->params->get('what_to_show_first'),true).'</pre>'),'');
         
         // Set page title
 		$pageTitle = ($this->params->get('what_to_show_first', 0) == 0)
@@ -202,7 +156,6 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking',$
 		}
 		$this->document->setTitle($pageTitle);
         
-        //$view = $jinput->getVar( "view") ;
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
         $this->document->addCustomTag($stylelink);
         
@@ -245,16 +198,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking',$
     }
 
 	}
-    
-		/*
-		//build feed links
-		$feed = 'index.php?option=com_sportsmanagement&view=results&p='.$this->project->id.'&format=feed';
-		$rss = array('type' => 'application/rss+xml', 'title' => JText::_('COM_SPORTSMANAGEMENT_RESULTS_RSSFEED'));
 
-		// add the links
-		$document->addHeadLink(JRoute::_($feed.'&type=rss'), 'alternate', 'rel', $rss);
-		*/
-		//JViewLegacy::display($tpl);
 	}
 	
 	/**

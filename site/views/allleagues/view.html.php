@@ -78,18 +78,11 @@ class sportsmanagementViewallleagues extends sportsmanagementView
 	 */
 	function init()
 	{
-		//// Get a refrence of the page instance in joomla
-//		$document = JFactory::getDocument();
-//		// Reference global application object
-//        $app = JFactory::getApplication();
-//        // JInput object
-//        $jinput = $app->input;
+
         $inputappend = '';
         $this->tableclass = $this->jinput->getVar('table_class', 'table','request','string');
-        //$option = $this->jinput->getCmd('option');
 		$user		= JFactory::getUser();
         $starttime = microtime(); 
-
 		$this->state 		= $this->get('State');
 		$this->items 		= $this->get('Items');
         
@@ -99,8 +92,6 @@ class sportsmanagementViewallleagues extends sportsmanagementView
         }
         
 		$this->pagination	= $this->get('Pagination');
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' state<br><pre>'.print_r($state,true).'</pre>'),'');
 		
         //build the html options for nation
 		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
@@ -119,25 +110,15 @@ class sportsmanagementViewallleagues extends sportsmanagementView
                                                                 
         // Set page title
 		$this->document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ALLLEAGUES_PAGE_TITLE'));
-        
         $form = new stdClass();
         $form->limitField = $this->pagination->getLimitBox();
-        
         $this->filter = $this->state->get('filter.search');
-               
-      
 		$this->form = $form;
-		//$this->items = $items;
-//		$this->state = $state;
 		$this->user = $user;
-		//$this->pagination = $pagination;
-        
         $this->sortDirection    = $this->state->get('filter_order_Dir');
         $this->sortColumn       = $this->state->get('filter_order');
-        
         $this->lists = $lists;
 
-		//parent::display($tpl);
 	}
 
 }

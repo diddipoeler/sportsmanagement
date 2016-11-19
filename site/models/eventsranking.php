@@ -93,21 +93,6 @@ class sportsmanagementModelEventsRanking extends JModelLegacy
 	}
 
 	/**
-	 * sportsmanagementModelEventsRanking::getDivision()
-	 * 
-	 * @return
-	 */
-	function getDivision()
-	{
-		$division = null;
-		if (self::$divisionid != 0)
-		{
-			$division = sportsmanagementModelProject::getDivision(self::$divisionid);
-		}
-		return $division;
-	}
-
-	/**
 	 * sportsmanagementModelEventsRanking::getTeamId()
 	 * 
 	 * @return

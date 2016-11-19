@@ -78,20 +78,11 @@ class sportsmanagementViewallprojects extends sportsmanagementView
 	 */
 	function init()
 	{
-	//	// Get a refrence of the page instance in joomla
-//		$document = JFactory::getDocument();
-//        $option = JRequest::getCmd('option');
-//		// Reference global application object
-//        $app = JFactory::getApplication();
-//        // JInput object
-//        $jinput = $app->input;
-        
         
 		$user		= JFactory::getUser();
         $starttime = microtime(); 
         $inputappend = '';
         $this->tableclass = $this->jinput->getVar('table_class', 'table','request','string');
-        //$this->use_current_season = $this->jinput->getVar('use_current_season', '0','request','string');
 
 		$this->state 		= $this->get('State');
 		$this->items 		= $this->get('Items');
@@ -102,8 +93,6 @@ class sportsmanagementViewallprojects extends sportsmanagementView
         }
         
 		$this->pagination	= $this->get('Pagination');
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' state<br><pre>'.print_r($state,true).'</pre>'),'');
 		
         //build the html options for nation
 		$temp[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
@@ -161,22 +150,13 @@ class sportsmanagementViewallprojects extends sportsmanagementView
         
         $form = new stdClass();
         $form->limitField = $this->pagination->getLimitBox();
-        
         $this->filter = $this->state->get('filter.search');
-               
-      
 		$this->form = $form;
-		//$this->items = $items;
-		//$this->state = $state;
 		$this->user = $user;
-		//$this->pagination = $pagination;
-        
-        $this->sortDirection    = $this->state->get('filter_order_Dir');
-        $this->sortColumn       = $this->state->get('filter_order');
-        
+        $this->sortDirection = $this->state->get('filter_order_Dir');
+        $this->sortColumn = $this->state->get('filter_order');
         $this->lists = $lists;
 
-	//	parent::display($tpl);
 	}
 
 }

@@ -73,22 +73,12 @@ class sportsmanagementViewallteams extends sportsmanagementView
 	
 	function init()
 	{
-	//	// Get a refrence of the page instance in joomla
-//		$document = JFactory::getDocument();
-//		// Reference global application object
-//        $app = JFactory::getApplication();
-//        // JInput object
-//        $jinput = $app->input;
+
         $inputappend = '';
         $this->tableclass = $this->jinput->getVar('table_class', 'table','request','string');
 		$user = JFactory::getUser();
         $starttime = microtime(); 
-        //$option = $jinput->getCmd('option');
-        //$limitstart = JRequest::getVar('limitstart', 0, '', 'int');
-
 		$this->state = $this->get('State');
-        //$state->setState('list.start', $limitstart);
-
 		$this->items = $this->get('Items');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
@@ -97,11 +87,7 @@ class sportsmanagementViewallteams extends sportsmanagementView
         }
         
 		$this->pagination	= $this->get('Pagination');
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' limitstart<br><pre>'.print_r($limitstart,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' state<br><pre>'.print_r($state,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' pagination<br><pre>'.print_r($pagination,true).'</pre>'),'');
-		
+	
         //build the html options for nation
 		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions()){$nation=array_merge($nation,$res);}
@@ -119,22 +105,13 @@ class sportsmanagementViewallteams extends sportsmanagementView
         
         $form = new stdClass();
         $form->limitField = $this->pagination->getLimitBox();
-        
         $this->filter = $this->state->get('filter.search');
-               
-      
 		$this->form = $form;
-		//$this->items = $items;
-//		$this->state = $state;
 		$this->user = $user;
-//		$this->pagination = $pagination;
-        
-        $this->sortDirection    = $this->state->get('filter_order_Dir');
-        $this->sortColumn       = $this->state->get('filter_order');
-        
+        $this->sortDirection = $this->state->get('filter_order_Dir');
+        $this->sortColumn = $this->state->get('filter_order');
         $this->lists = $lists;
 
-		//parent::display($tpl);
 	}
 
 }

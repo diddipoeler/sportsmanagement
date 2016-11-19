@@ -52,7 +52,6 @@ jimport( 'joomla.application.component.view');
  */
 class sportsmanagementViewPlayground extends sportsmanagementView
 {
-	
     
 	/**
 	 * sportsmanagementViewPlayground::init()
@@ -70,7 +69,7 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 	$this->games = $this->model->getNextGames($this->jinput->getInt( "p", 0 ),$this->jinput->getInt( "pgid", 0 ));
 	$this->gamesteams = $mdlJSMTeams->getTeamsFromMatches( $this->games );
         
-        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playground<br><pre>'.print_r($this->playground,true).'</pre>'   ),'');
+        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playground<br><pre>'.print_r($this->playground,true).'</pre>'   ),'');
         
         // diddipoeler
         $this->geo = new JSMsimpleGMapGeocoder();

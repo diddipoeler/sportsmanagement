@@ -52,8 +52,6 @@ jimport( 'joomla.application.component.view' );
  */
 class sportsmanagementViewClubs extends sportsmanagementView
 {
-	
-    
 
     /**
      * sportsmanagementViewClubs::init()
@@ -62,20 +60,11 @@ class sportsmanagementViewClubs extends sportsmanagementView
      */
     function init()
 	{
-//		// Get a refrence of the page instance in joomla
-//		$document= JFactory::getDocument();
-//
-//		$model = $this->getModel();
-//		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
-//		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
+
 		$division = sportsmanagementModelProject::getDivision(sportsmanagementModelClubs::$divisionid,sportsmanagementModelClubs::$cfg_which_database);
-//		$overallconfig = sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
 		$clubs = $this->model->getClubs();
 
-		//$this->project = $project;
 		$this->division = $division;
-//		$this->overallconfig = $overallconfig ;
-//		$this->config = $config ;
 		$this->clubs = $clubs;
 
 		// Set page title
@@ -91,7 +80,6 @@ class sportsmanagementViewClubs extends sportsmanagementView
 		$this->document->setTitle( $pageTitle );
         $this->headertitle = $pageTitle;
 
-	//	parent::display( $tpl );
 	}
 }
 ?>

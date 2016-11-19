@@ -58,6 +58,11 @@ jimport('joomla.application.component.view');
 class sportsmanagementViewpredictionranking extends sportsmanagementView
 {
 	
+	/**
+	 * sportsmanagementViewpredictionranking::init()
+	 * 
+	 * @return void
+	 */
 	function init()
 	{
 	//	// Get a refrence of the page instance in joomla

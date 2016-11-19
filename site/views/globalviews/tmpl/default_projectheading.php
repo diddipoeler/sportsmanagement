@@ -67,15 +67,15 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
 					<td colspan="<?php echo $nbcols; ?>">
 					<?php
 					$country = $this->project->country;
-if ( !sportsmanagementHelper::existPicture( JSMCountries::getCountryFlag($country) ) )
-{
+//if ( !sportsmanagementHelper::existPicture( JSMCountries::getCountryFlag($country) ) )
+//{
 //echo sportsmanagementHelper::getDefaultPlaceholder("icon"). ' ' . JSMCountries::getCountryName($country);    
-echo sportsmanagementHelperHtml::getBootstrapModalImage('country_picture',sportsmanagementHelper::getDefaultPlaceholder("icon"),JSMCountries::getCountryName($country),'20');
-}         
-else
-{
+//echo sportsmanagementHelperHtml::getBootstrapModalImage('country_picture',sportsmanagementHelper::getDefaultPlaceholder("icon"),JSMCountries::getCountryName($country),'20');
+//}         
+//else
+//{
 				echo JSMCountries::getCountryFlag($country) . ' ' . JSMCountries::getCountryName($country);    
-}           
+//}           
 					
 					?>
 					</td>

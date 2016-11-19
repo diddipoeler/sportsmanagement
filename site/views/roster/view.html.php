@@ -101,10 +101,7 @@ class sportsmanagementViewRoster extends sportsmanagementView
 				$this->playerstats = $this->model->getRosterStats();
 			}
 
-			//$this->assign('stafflist',$model->getStaffList());
             $this->stafflist = $this->model->getTeamPlayers(2);
-            
-            //$app->enqueueMessage(JText::_('getTeamPlayers stafflist<br><pre>'.print_r($this->stafflist,true).'</pre>'),'');
 
 			// Set page title
 			$this->document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE',$this->team->name));
@@ -115,7 +112,6 @@ class sportsmanagementViewRoster extends sportsmanagementView
 			$this->document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_TITLE', "Project team does not exist"));
 		}
         
-        //$view = $jinput->getVar( "view") ;
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
         $this->document->addCustomTag($stylelink);
         
@@ -141,9 +137,6 @@ class sportsmanagementViewRoster extends sportsmanagementView
             $this->config['table_class'] = 'table';
         }
 
-//$this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
-
-		//parent::display($tpl);
 	}
 
 }

@@ -56,28 +56,22 @@ class sportsmanagementViewPredictionEntry extends sportsmanagementView
 {
 
 	
+	/**
+	 * sportsmanagementViewPredictionEntry::init()
+	 * 
+	 * @return void
+	 */
 	function init()
 	{
-		//// Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
-//    $option = JRequest::getCmd('option');
-//		$app = JFactory::getApplication();
-//		$model = $this->getModel();
    
     $this->headertitle = JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_SECTION_TITLE');
 		$this->predictionGame = sportsmanagementModelPrediction::getPredictionGame();
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGame<br><pre>'.print_r($this->predictionGame,true).'</pre>'),'');
-        
+       
 		if (isset($this->predictionGame))
 		{
-			//echo '<br /><pre>~' . print_r($this->getName(),true) . '~</pre><br />';
 			$config	= sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
 			$overallConfig = sportsmanagementModelPrediction::getPredictionOverallConfig();
 
-      
-      
-		//	$this->assignRef('model',$model);
 			$this->config = array_merge($overallConfig,$config);
       $configavatar	= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
       $this->configavatar = $configavatar;
@@ -100,9 +94,6 @@ if(version_compare(JVERSION,'3.0.0','ge'))
             {
 			$this->websiteName = JFactory::getConfig()->getValue('config.sitename');
             }
-			
-			//echo $this->loadTemplate( 'assignRefs' );
-			//echo '<br /><pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';
 
 			if ($this->allowedAdmin)
 			{
@@ -134,7 +125,6 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 
 			$this->document->setTitle($pageTitle);
 
-			//parent::display($tpl);
 		}
 		else
 		{

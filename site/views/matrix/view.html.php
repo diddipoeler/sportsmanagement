@@ -60,33 +60,11 @@ class sportsmanagementViewMatrix extends sportsmanagementView
 	 */
 	function init()
 	{
-	   
-        //// Reference global application object
-//        $app = JFactory::getApplication();
-//        // JInput object
-//        $jinput = $app->input;
-//		// Get a refrence of the page instance in joomla
-//		$document= JFactory::getDocument();
-//        $option = $jinput->getCmd('option');
-//		$model = $this->getModel();
-//		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
-//		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
-//		
-//		$this->assignRef('model', $model);
-//		$this->assignRef('project', $project);
-//		$this->assign('overallconfig', sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database) );
-//
-//		$this->assignRef('config', $config );
 
 		$this->divisionid = sportsmanagementModelMatrix::$divisionid;
 		$this->roundid = sportsmanagementModelMatrix::$roundid;
 		$this->division = $this->model->getDivision();
 		$this->round = $this->model->getRound();
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' divisionid<br><pre>'.print_r($model::$divisionid,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($model::$cfg_which_database,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'Notice');
-        
         
         if ( isset($this->config['teamnames']) && $this->config['teamnames'] )
         {
@@ -190,7 +168,6 @@ class sportsmanagementViewMatrix extends sportsmanagementView
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
         }
         
-		//parent::display( $tpl );
 	}
 }
 ?>

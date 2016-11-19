@@ -68,33 +68,11 @@ class sportsmanagementViewResultsmatrix extends sportsmanagementView
 	 */
 	function init()
 	{
-		//// welche joomla version
-//if(version_compare(JVERSION,'3.0.0','ge')) 
-//{
-//JHtml::_('behavior.framework', true);
-//}
-//else
-//{
-//JHtml::_( 'behavior.mootools' );    
-//}
-	//	// Reference global application object
-//        $app = JFactory::getApplication();
-//        // JInput object
-//        $jinput = $app->input;
-//        $option = $jinput->getCmd('option');
+
 		$params = $this->app->getParams();
-//		// get a reference of the page instance in joomla
-//		$document = JFactory :: getDocument();
-//		$uri = JFactory :: getURI();
         
         $this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
         
-		/*
-        // add the css files
-		$version = urlencode(JoomleagueHelper::getVersion());
-		$css		= 'components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
-		$document->addStyleSheet($css);
-        */
 		// add the matrix model
 		$matrixmodel = new sportsmanagementModelMatrix();
 		// add the matrix config file
@@ -103,19 +81,12 @@ class sportsmanagementViewResultsmatrix extends sportsmanagementView
 		// add the results model
 		$resultsmodel	= new sportsmanagementModelResults();
 		$project = sportsmanagementModelProject::getProject($this->jinput->getInt('cfg_which_database',0));
-		
-        /*
-		// add some javascript
-		$version = urlencode(JoomleagueHelper::getVersion());
-		$document->addScript( JURI::base(true).'/components/com_sportsmanagement/assets/js/results.js?v='.$version );
-        */
         
 		// add the results config file
 		$resultsconfig = sportsmanagementModelProject::getTemplateConfig('results',$this->jinput->getInt('cfg_which_database',0));
 		
 		$mdlRound = JModelLegacy::getInstance("Round", "sportsmanagementModel");
 		$roundcode = $mdlRound->getRoundcode($resultsmodel::$roundid);
-		//$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true,NULL,$jinput->getInt('cfg_which_database',0));
 		$rounds = sportsmanagementModelProject::getRoundOptions('ASC',$this->jinput->getInt('cfg_which_database',0));
 		
 		if (!isset($resultsconfig['switch_home_guest'])){$resultsconfig['switch_home_guest']=0;}
@@ -125,10 +96,7 @@ class sportsmanagementViewResultsmatrix extends sportsmanagementView
 		// merge the 2 config files
 		$config = array_merge($matrixconfig, $resultsconfig);
 
-		//$this->assign('project',sportsmanagementModelProject::getProject($jinput->getInt('cfg_which_database',0)));
-//		$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig($jinput->getInt('cfg_which_database',0)));
 		$this->config = array_merge($this->overallconfig, $config);
-
 		$this->tableconfig = $matrixconfig;
 		$this->params = $params;
 		$this->showediticon = $resultsmodel->getShowEditIcon();
@@ -145,8 +113,6 @@ class sportsmanagementViewResultsmatrix extends sportsmanagementView
 		
 		$options = self::getRoundSelectNavigation($rounds);
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' rounds<br><pre>'.print_r($rounds,true).'</pre>'),'');
-
 		$this->matchdaysoptions = $options;
         $routeparameter = array();
 $routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database',0);
@@ -177,9 +143,6 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsmatrix',$r
 		$this->config['image_placeholder'] = '';
         }
         
-        //$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
-        //$this->assign('use_joomlaworks', JComponentHelper::getParams('com_sportsmanagement')->get('use_joomlaworks',0) );
-
 		// Set page title
 		$pageTitle = ($this->params->get('what_to_show_first', 0) == 0)
 		? JText::_('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE').' & ' . JText :: _('COM_SPORTSMANAGEMENT_MATRIX_PAGE_TITLE')
@@ -190,7 +153,6 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsmatrix',$r
 		}
 		$this->document->setTitle($pageTitle);
         
-//        $view = $jinput->getVar( "view") ;
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$this->option.'/assets/css/'.$this->view.'.css'.'" type="text/css" />' ."\n";
         $this->document->addCustomTag($stylelink);
         
@@ -206,7 +168,6 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsmatrix',$r
          sportsmanagementHelperHtml::$project = $project;
          sportsmanagementHelperHtml::$teams = $this->teams;
          
-		//JViewLegacy::display($tpl);
 	}
 
 	/**

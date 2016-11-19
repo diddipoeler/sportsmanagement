@@ -60,16 +60,7 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
 	 */
 	function init()
 	{
-	//	// Get a refrence of the page instance in joomla
-//		$document = JFactory::getDocument();
-//		$uri = JFactory::getURI();
-//		$model = $this->getModel();
-//        
-//        // Reference global application object
-//        $app = JFactory::getApplication();
-//        // JInput object
-//        $jinput = $app->input;
-//        $option = $jinput->getCmd('option');
+
         $this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
         
         $js = "window.addEvent('domready', function() {"."\n";
@@ -77,14 +68,6 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
         $js .= "})"."\n";
         $this->document->addScriptDeclaration( $js );
         
-        
-		//$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
-//		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
-//		$this->assignRef('project',$project);
-//		$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database));
-//		$this->assignRef('config',$config);
-        
-		//$this->showclubconfig = $showclubconfig;
 		$this->favteams = sportsmanagementModelProject::getFavTeams(sportsmanagementModelClubPlan::$cfg_which_database);
 		$this->club = sportsmanagementModelClubInfo::getClub();
         
@@ -163,11 +146,10 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
         $fromteamseasons[] = JHTML :: _('select.option', '0', JText :: _('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_SEASON'));
 		$fromteamseasons = array_merge($fromteamseasons, $this->teamseasons);
 		$lists['fromteamseasons'] = $fromteamseasons;
-        
-		//$this->assignRef('model',$model);
-		//$this->assign('action',$uri->toString());
-        
-        // auswahl welche spiele
+
+/**
+ * auswahl welche spiele
+ */        
     $opp_arr = array ();
     $opp_arr[] = JHTML :: _('select.option', "0", JText :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_ALL'));
 	$opp_arr[] = JHTML :: _('select.option', "1", JText :: _('COM_SPORTSMANAGEMENT_FES_CLUBPLAN_PARAM_OPTION_TYPE_MATCHES_HOME'));
@@ -182,17 +164,16 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
 			$pageTitle .= ': '.$this->club->name;
 		}
 		$this->document->setTitle($pageTitle);
-		
-		//$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
-
-		//build feed links
+/**
+ * build feed links
+ */
 		$project_id = (!empty($this->project->id)) ? '&p='.$this->project->id : '';
 		$club_id = (!empty($this->club->id)) ? '&cid='.$this->club->id : '';
 		$rssVar = (!empty($this->club->id)) ? $club_id : $project_id;
 
 		//$feed='index.php?option=com_sportsmanagement&view=clubplan&cid='.$this->club->id.'&format=feed';
-		$feed='index.php?option=com_sportsmanagement&view=clubplan'.$rssVar.'&format=feed';
-		$rss=array('type' => 'application/rss+xml','title' => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_RSSFEED'));
+		$feed = 'index.php?option=com_sportsmanagement&view=clubplan'.$rssVar.'&format=feed';
+		$rss = array('type' => 'application/rss+xml','title' => JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_RSSFEED'));
 
 		// add the links
 		$this->document->addHeadLink(JRoute::_($feed.'&type=rss'),'alternate','rel',$rss);
@@ -205,8 +186,7 @@ class sportsmanagementViewClubPlan extends sportsmanagementView
  */
         
         $this->headertitle = JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_PAGE_TITLE').' '.$this->club->name;
-        
-		//parent::display($tpl);
+
 	}
 
 }

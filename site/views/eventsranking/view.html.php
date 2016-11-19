@@ -55,20 +55,10 @@ class sportsmanagementViewEventsRanking extends sportsmanagementView
 	
 	function init()
 	{
-		//// Get a refrence of the page instance in joomla
-//		$document = JFactory :: getDocument();
-//		$uri = JFactory :: getURI();
-//        // Reference global application object
-//        $app = JFactory::getApplication();
-//        // JInput object
-//        $jinput = $app->input;
-//        $option = $jinput->getCmd('option');
 
 $this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/assets/js/smsportsmanagement.js' );
-		// read the config-data from template file
-		//$model = $this->getModel();
+
         sportsmanagementModelProject::setProjectID($this->jinput->getInt('p',0),$this->jinput->getInt('cfg_which_database',0));
-		//$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$this->jinput->getInt('cfg_which_database',0),__METHOD__);
 
 		$this->division = sportsmanagementModelProject::getDivision(0,$this->jinput->getInt('cfg_which_database',0));
 		$this->matchid = sportsmanagementModelEventsRanking::$matchid;
@@ -81,8 +71,6 @@ $this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/ass
 		$this->pagination = $this->get('Pagination');
 		$this->eventranking = $this->model->getEventRankings($this->limit);
 		$this->multiple_events = count($this->eventtypes) > 1 ;
-
-		//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
         
         $prefix = JText::_('COM_SPORTSMANAGEMENT_EVENTSRANKING_PAGE_TITLE');
 		if ( $this->multiple_events )
@@ -119,7 +107,6 @@ $this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/ass
         
         $this->headertitle = $this->pagetitle;
 
-		//parent::display($tpl);
 	}
 
 }

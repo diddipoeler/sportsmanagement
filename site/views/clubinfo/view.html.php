@@ -137,13 +137,6 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
         $this->clubhistorysorttree = '';    
         }
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' historyobj<br><pre>'.print_r($historyobj,true).'</pre>'),'');
-        
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubhistory<br><pre>'.print_r($this->clubhistory,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubhistoryhtml<br><pre>'.print_r($this->clubhistoryhtml,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubhistorytree<br><pre>'.print_r($this->clubhistorytree,true).'</pre>'),'');
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubhistorysorttree<br><pre>'.print_r($this->clubhistorysorttree,true).'</pre>'),'');
-        
         $this->document->addScript( JURI::base().'components/'.$this->option.'/assets/js/dtree.js' );        
         $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/dtree.css');  
     
@@ -161,7 +154,6 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
             $this->config['table_class'] = 'table';
         }
         
-		//parent::display( $tpl );
 	}
 }
 ?>
