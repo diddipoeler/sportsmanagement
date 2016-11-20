@@ -59,7 +59,9 @@
 			 </field>
 	</fieldset>		
 	
-	<fieldset name="picture">
+	<fieldset name="picture"
+  label="COM_SPORTSMANAGEMENT_TABS_PICTURE"
+  description="COM_SPORTSMANAGEMENT_TABS_PICTURE_DESC">
 			<field
 				name="picture"
 				type="media"
@@ -78,5 +80,10 @@
 			class="inputbox"/>	
 	</fieldset>
 	
+  <fieldset name="rankingparams"
+  label="COM_SPORTSMANAGEMENT_TABS_DIVISION_RANKING"
+  description="COM_SPORTSMANAGEMENT_TABS_DIVISION_RANKING_DESC">
+				
+	</fieldset>
 	
 </form>

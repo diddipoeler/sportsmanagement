@@ -46,7 +46,8 @@ $params = $this->form->getFieldsets('params');
 $fieldsets = $this->form->getFieldsets();
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
-
+<input type="hidden" name="project_id" value="<?php echo $this->item->project_id; ?>" />
+<input type="hidden" name="pid" value="<?php echo $this->item->project_id; ?>" />
 <?php 
 echo $this->loadTemplate('editdata');
 ?>

@@ -64,18 +64,12 @@ class sportsmanagementViewDivision extends sportsmanagementView
 	{
 		
         $starttime = microtime(); 
-        
-        //$this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
-
 		$lists = array();
-        
 
-        
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
-        
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -83,16 +77,12 @@ class sportsmanagementViewDivision extends sportsmanagementView
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-                      
 
-        
-        $this->project_id	= $this->app->getUserState( "$this->option.pid", '0' );
+        $this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
-        $this->project	= $project;
-       
-
-		
+        $this->project = $project;
+	
 	}
 
 	
@@ -108,9 +98,8 @@ class sportsmanagementViewDivision extends sportsmanagementView
 	$jinput->set('hidemainmenu', true);
 	$jinput->set('pid', $this->project_id);
 
-        $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_DIVISIONS_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_DIVISIONS_NEW');
-        $this->icon = 'division';
-        
+    $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_DIVISIONS_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_DIVISIONS_NEW');
+    $this->icon = 'division';
     
     parent::addToolbar();
 	}	

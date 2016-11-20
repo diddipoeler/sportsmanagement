@@ -289,6 +289,12 @@ else
 }
 break;
 
+/**
+ * tabellenpositionen in de gruppen/divisionen
+ */
+case 'rankingparams':
+
+break;
 // für die extended daten
 case 'params':
 if ( isset($this->formparams) )

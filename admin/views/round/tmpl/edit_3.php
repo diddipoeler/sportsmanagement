@@ -102,13 +102,13 @@ echo JHtml::_('bootstrap.endTab');
 <?php echo JHtml::_('bootstrap.endTabSet'); ?>
 </fieldset>
 </div> 
-    	
-	<div class="clr"></div>
+   	
+<div class="clr"></div>
 
-	<input type="hidden" name="project_id" value="<?php echo $this->item->project_id; ?>" />
-	<input type="hidden" name="pid" value="<?php echo $this->item->project_id; ?>" />
-	<input type="hidden" name="task" value="round.edit" />
-	<?php echo JHtml::_('form.token'); ?>
+<input type="hidden" name="project_id" value="<?php echo $this->item->project_id; ?>" />
+<input type="hidden" name="pid" value="<?php echo $this->item->project_id; ?>" />
+<input type="hidden" name="task" value="round.edit" />
+<?php echo JHtml::_('form.token'); ?>
 </form>
 <?PHP
 echo "<div>";
