@@ -76,6 +76,14 @@ class sportsmanagementModelDivisions extends JModelList
                 parent::setDbo($getDBConnection);
                 $app = JFactory::getApplication();
                 $this->jinput = $app->input;
+                $option = JRequest::getCmd('option');
+                self::$_project_id	= JRequest::getInt('pid',0);
+                if ( !self::$_project_id )
+                {
+                self::$_project_id	= $app->getUserState( "$option.pid", '0' );    
+                }
+                $app->setUserState( "$option.pid", self::$_project_id ); 
+                
         }
         
     /**
@@ -129,7 +137,7 @@ class sportsmanagementModelDivisions extends JModelList
 		$option = JRequest::getCmd('option');
         //$this->jinput = $app->input;
         //$this->_project_id	= $app->getUserState( "$option.pid", '0' );
-        $this->_project_id = $this->jinput->getVar('pid');
+        //$this->_project_id = $this->jinput->getVar('pid');
         
         //$app->enqueueMessage(JText::_('sportsmanagementModelDivisions _project_id<br><pre>'.print_r($this->_project_id,true).'</pre>'),'Notice');
         
@@ -141,7 +149,7 @@ class sportsmanagementModelDivisions extends JModelList
         $query->join('LEFT', '#__sportsmanagement_division AS dvp ON dvp.id = dv.parent_id');
         $query->join('LEFT', '#__users AS u ON u.id = dv.checked_out');
 
-        $query->where(' dv.project_id = ' . $this->_project_id);
+        $query->where(' dv.project_id = ' . self::$_project_id);
         
         if ($this->getState('filter.search') )
 		{

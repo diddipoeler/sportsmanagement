@@ -54,6 +54,50 @@ defined('_JEXEC') or die('Restricted access');
  */
 class sportsmanagementModeldivision extends JSMModelAdmin
 {
+
+
+/**
+ * sportsmanagementModeldivision::count_teams_division()
+ * 
+ * @param integer $division_id
+ * @return void
+ */
+function count_teams_division($division_id = 0)
+{
+$division_teams = array();
+$this->jsmquery->clear();
+$this->jsmquery->select('m.projectteam1_id');
+$this->jsmquery->from('#__sportsmanagement_match as m');
+$this->jsmquery->where('division_id = '.$division_id);
+$this->jsmquery->where('projectteam1_id != 0');
+$this->jsmquery->group('projectteam1_id');
+$this->jsmdb->setQuery($this->jsmquery);
+$results = $this->jsmdb->loadObjectList('projectteam1_id');
+foreach ( $results as $key => $value )
+{
+$division_teams[$key] = $key;
+}
+//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($results, true).'</pre><br>','Notice');
+
+$this->jsmquery->clear();
+$this->jsmquery->select('m.projectteam2_id');
+$this->jsmquery->from('#__sportsmanagement_match as m');
+$this->jsmquery->where('division_id = '.$division_id);
+$this->jsmquery->where('projectteam2_id != 0');
+$this->jsmquery->group('projectteam2_id');
+$this->jsmdb->setQuery($this->jsmquery);
+$results = $this->jsmdb->loadObjectList('projectteam2_id');
+foreach ( $results as $key => $value )
+{
+$division_teams[$key] = $key;
+}
+//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($results, true).'</pre><br>','Notice');
+
+//$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($division_teams, true).'</pre><br>','Notice');
+
+return count($division_teams);
+
+}
     
     	/**
     	 * sportsmanagementModeldivision::saveshort()

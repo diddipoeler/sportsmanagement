@@ -83,7 +83,14 @@
   <fieldset name="rankingparams"
   label="COM_SPORTSMANAGEMENT_TABS_DIVISION_RANKING"
   description="COM_SPORTSMANAGEMENT_TABS_DIVISION_RANKING_DESC">
-				
+
+<field
+			name="rankingparams"
+			type="text"
+			label="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_RANKING"
+			description="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_RANKING_DESC"
+			class="inputbox"/>
+      				
 	</fieldset>
 	
 </form>
