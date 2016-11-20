@@ -171,6 +171,16 @@ if( $this->jsmapp->isSite() )
        $data['project_id'] = $post['pid'];
        }
        break; 
+       case 'round':
+       if ( $data['round_date_first'] != '00-00-0000' && $data['round_date_first'] != '' )
+       {
+       $data['round_date_first'] = sportsmanagementHelper::convertDate($data['round_date_first'],0);
+       }
+       if ( $data['round_date_last'] != '00-00-0000' && $data['round_date_last'] != '' )
+       {
+       $data['round_date_last'] = sportsmanagementHelper::convertDate($data['round_date_last'],0);
+       }
+       break;
        case 'rounds':
        $data['round_date_first'] = sportsmanagementHelper::convertDate($data['round_date_first'],0);
        $data['round_date_last']	= sportsmanagementHelper::convertDate($data['round_date_last'],0);
