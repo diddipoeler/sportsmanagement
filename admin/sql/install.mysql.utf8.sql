@@ -193,7 +193,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_division` (
   `modified_by` INT NULL ,
   `picture` VARCHAR(128) NOT NULL DEFAULT '' ,
   `cr_picture` varchar(255) DEFAULT NULL,
-  `rankingparams` TEXT NULL DEFAULT NULL,
+  `rankingparams` TEXT NOT NULL ,
   PRIMARY KEY (`id`),
  KEY `project_id` (`project_id`),
  KEY `parent_id` (`parent_id`)
