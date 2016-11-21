@@ -292,7 +292,7 @@ break;
 /**
  * tabellenpositionen in de gruppen/divisionen
  */
-case 'rankingparams':
+case 'paramsranking':
 
 break;
 // für die extended daten
