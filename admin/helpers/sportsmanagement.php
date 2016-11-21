@@ -2195,7 +2195,7 @@ else
 	 * @param mixed $colors
 	 * @return void
 	 */
-	public static function showColorsLegend($colors)
+	public static function showColorsLegend($colors,$divisions)
 	{
 		$jinput = JFactory::getApplication()->input;
 		$favshow = $jinput->getString('func', '');
@@ -2213,12 +2213,12 @@ else
 			}
 
 		}
-/*
-		foreach( $this->divisions as $division )
+
+		foreach( $divisions as $division )
 		{
 		echo '<td align="center" style=""><b>'.$division->name.'</b>&nbsp;</td>';
 		}	
-	*/
+	
 	
 	}
 
