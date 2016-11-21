@@ -4,6 +4,7 @@
 		<field
 			name="rankingparams"
 			type="jsmcolorsranking"
+		       rankingteams=""
 			label="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_RANKING"
 			description="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_RANKING_DESC"
 			class="">
