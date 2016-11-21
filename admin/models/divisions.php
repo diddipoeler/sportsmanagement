@@ -54,7 +54,7 @@ jimport('joomla.application.component.modellist');
 class sportsmanagementModelDivisions extends JModelList
 {
 	var $_identifier = "divisions";
-    var $_project_id = 0;
+    static  $_project_id = 0;
 	
     /**
      * sportsmanagementModelDivisions::__construct()
