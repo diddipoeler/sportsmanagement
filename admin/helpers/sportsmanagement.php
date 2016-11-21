@@ -2213,12 +2213,12 @@ else
 			}
 
 		}
-
+/*
 		foreach( $this->divisions as $division )
 		{
 		echo '<td align="center" style=""><b>'.$division->name.'</b>&nbsp;</td>';
 		}	
-	
+	*/
 	
 	}
 
