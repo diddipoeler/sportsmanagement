@@ -2189,13 +2189,16 @@ else
 		}
 	}
 
+	
+
 	/**
 	 * sportsmanagementHelper::showColorsLegend()
 	 * 
 	 * @param mixed $colors
+	 * @param mixed $divisions
 	 * @return void
 	 */
-	public static function showColorsLegend($colors,$divisions)
+	public static function showColorsLegend($colors,$divisions=NULL)
 	{
 		$jinput = JFactory::getApplication()->input;
 		$favshow = $jinput->getString('func', '');
@@ -2205,6 +2208,9 @@ else
 			$fav = array('color'=>sportsmanagementModelProject::$_project->fav_team_color,'description'=> JText::_('COM_SPORTSMANAGEMENT_RANKING_FAVTEAM'));
 			array_push($colors,$fav);
 		}
+        
+        if ( !$divisions )
+        {
 		foreach($colors as $color)
 		{
 			if (trim($color['description']) != '')
@@ -2213,6 +2219,7 @@ else
 			}
 
 		}
+        }
 
 		foreach( $divisions as $division )
 		{
@@ -2239,9 +2246,9 @@ $colors = sportsmanagementModelProject::getColors($configvalues,sportsmanagement
 		{
 			if (trim($color['description']) != '')
 			{
-				echo '<tr>';
+				//echo '<tr>';
 				echo '<td align="center" style="background-color:'.$color['color'].';"><b>'.$color['description'].'</b>&nbsp;</td>';
-				echo '</tr>';	
+				//echo '</tr>';	
 			}
 
 		}
