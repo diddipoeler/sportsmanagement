@@ -82,7 +82,13 @@ class sportsmanagementViewDivision extends sportsmanagementView
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         $this->project = $project;
-        
+$count_teams = $this->model->count_teams_division($this->item->id);
+$extended = sportsmanagementHelper::getExtended($this->item->rankingparams, 'division');
+$this->extended = $extended;
+$this->extended->setFieldAttribute('rankingparams', 'rankingteams' , $count_teams);
+		
+		
+/*		
         if ( !$this->item->rankingparams )
         {
         $count_teams = $this->model->count_teams_division($this->item->id);
@@ -96,7 +102,7 @@ $colors_ranking[$a]['color'] = '';
 $colors_ranking[$a]['text'] = ''; 
 }
 $this->form->setValue('rankingparams', null, $colors_ranking);
-
+*/
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->form,true).'</pre>'),'Notice');
         
         
