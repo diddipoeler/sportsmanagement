@@ -107,7 +107,7 @@ $this->form->setValue('rankingparams', null, $colors_ranking);
         
         
         
-        }
+        //}
 	
 	}
 
