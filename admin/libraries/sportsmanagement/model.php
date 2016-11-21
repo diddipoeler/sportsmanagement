@@ -170,11 +170,11 @@ if( $this->jsmapp->isSite() )
        {
        $data['project_id'] = $post['pid'];
        }
-       if (isset($post['extended']['rankingparams']) && is_array($post['extended']['rankingparams'])) 
+       if (isset($post['extended']) && is_array($post['extended'])) 
 		{
 			// Convert the extended field to a string.
 			$parameter = new JRegistry;
-			$parameter->loadArray($post['extended']['rankingparams']);
+			$parameter->loadArray($post['extended']);
 			$data['rankingparams'] = (string)$parameter;
 		}
 
