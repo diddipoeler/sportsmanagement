@@ -2216,7 +2216,37 @@ else
 
 		foreach( $divisions as $division )
 		{
+		echo '<tr>';	
 		echo '<td align="center" style=""><b>'.$division->name.'</b>&nbsp;</td>';
+$jRegistry = new JRegistry;
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        $jRegistry->loadString($division->rankingparams); 
+        }
+        else
+        {
+        $jRegistry->loadJSON($division->rankingparams);
+        }
+        $configvalues = $jRegistry->toArray();
+        $colors = array();
+for($a=1; $a <= sizeof($configvalues[rankingparams]); $a++ )
+{
+$colors[] = implode(",",$configvalues[rankingparams][$a] );
+}   
+$configvalues = implode(";",$colors);       
+$colors = sportsmanagementModelProject::getColors($configvalues,sportsmanagementModelProject::$cfg_which_database);        			
+		foreach($colors as $color)
+		{
+			if (trim($color['description']) != '')
+			{
+				echo '<tr>';
+				echo '<td align="center" style="background-color:'.$color['color'].';"><b>'.$color['description'].'</b>&nbsp;</td>';
+				echo '</tr>';	
+			}
+
+		}
+			
+		echo '</tr>';	
 		}	
 	
 	
