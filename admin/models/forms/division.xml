@@ -83,13 +83,6 @@
   <fieldset name="paramsranking"
   label="COM_SPORTSMANAGEMENT_TABS_DIVISION_RANKING"
   description="COM_SPORTSMANAGEMENT_TABS_DIVISION_RANKING_DESC">
-
-<field
-			name="rankingparams"
-			type="jsmcolorsranking"
-			label="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_RANKING"
-			description="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_RANKING_DESC"
-			class=""/>
       				
 	</fieldset>
 	
