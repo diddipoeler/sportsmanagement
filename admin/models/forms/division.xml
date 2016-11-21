@@ -80,7 +80,7 @@
 			class="inputbox"/>	
 	</fieldset>
 	
-  <fieldset name="params"
+  <fieldset name="paramsranking"
   label="COM_SPORTSMANAGEMENT_TABS_DIVISION_RANKING"
   description="COM_SPORTSMANAGEMENT_TABS_DIVISION_RANKING_DESC">
 
