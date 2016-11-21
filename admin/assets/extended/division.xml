@@ -6,7 +6,7 @@
 			type="jsmcolorsranking"
 			label="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_RANKING"
 			description="COM_SPORTSMANAGEMENT_ADMIN_DIVISION_RANKING_DESC"
-			class=""/>
+			class="">
 		</field>
 	</fieldset>
 </config>
