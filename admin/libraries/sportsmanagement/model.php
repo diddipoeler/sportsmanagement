@@ -170,6 +170,14 @@ if( $this->jsmapp->isSite() )
        {
        $data['project_id'] = $post['pid'];
        }
+       if (isset($post['extended']['rankingparams']) && is_array($post['extended']['rankingparams'])) 
+		{
+			// Convert the extended field to a string.
+			$parameter = new JRegistry;
+			$parameter->loadArray($post['extended']['rankingparams']);
+			$data['rankingparams'] = (string)$parameter;
+		}
+
        break; 
        case 'round':
        if ( $data['round_date_first'] != '00-00-0000' && $data['round_date_first'] != '' )
