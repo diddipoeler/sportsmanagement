@@ -143,6 +143,12 @@ if ( !curl_init( $station->club_picture ) )
 				}                                  
                             echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareerteam'.$station->project_id.'-'.$station->team_id,$station->club_picture,$station->team_name,'20');
                             }
+			if ( $this->config['show_team_picture'] ) 
+                            { 
+echo sportsmanagementHelperHtml::getBootstrapModalImage('playercareerteampicture'.$station->project_id.'-'.$station->team_id,$station->team_picture,$station->team_name,'40');				
+				
+			}	
+			
 							if ( $this->config['show_playercareer_teamlink'] ) 
                             {
 								echo JHtml::link($link2,$station->team_name);
