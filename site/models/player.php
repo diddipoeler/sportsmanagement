@@ -111,7 +111,7 @@ class sportsmanagementModelPlayer extends JModelLegacy
         
         // Select some fields
         $query->select('tp.*');
-        $query->select('pt.project_id,pt.team_id,pt.id as projectteam_id');
+        $query->select('pt.project_id,pt.team_id,pt.id as projectteam_id,pt.picture as team_picture');
         $query->select('pos.name AS position_name');
         $query->select('ppos.position_id');
         $query->select('rinjuryfrom.round_date_first as injury_date,rinjuryfrom.name as rinjury_from');
@@ -191,7 +191,7 @@ class sportsmanagementModelPlayer extends JModelLegacy
        
        // Select some fields
         $query->select('tp.*');
-        $query->select('pt.project_id,pt.team_id,pt.notes AS ptnotes');
+        $query->select('pt.project_id,pt.team_id,pt.notes AS ptnotes,pt.picture as team_picture');
         $query->select('pos.name AS position_name');
         $query->select('ppos.position_id');
         
@@ -257,7 +257,7 @@ class sportsmanagementModelPlayer extends JModelLegacy
        
         // Select some fields
         $query->select('tp.*');
-        $query->select('pt.project_id,pt.team_id,pt.notes AS ptnotes');
+        $query->select('pt.project_id,pt.team_id,pt.notes AS ptnotes,pt.picture as team_picture');
         $query->select('pos.name AS position_name');
         $query->select('ppos.position_id');
        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ');
@@ -315,7 +315,7 @@ class sportsmanagementModelPlayer extends JModelLegacy
     $query->select('s.name AS season_name,s.id AS season_id');
     $query->select('t.name AS team_name,t.id AS team_id,CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
     $query->select('pos.name AS position_name,pos.id AS posID');
-    $query->select('pt.id AS ptid,pt.project_id');
+    $query->select('pt.id AS ptid,pt.project_id,pt.picture as team_picture');
     $query->select('ppos.position_id');
     $query->select('tp.picture as season_picture');
     $query->select('p.picture as project_picture');
@@ -577,7 +577,7 @@ class sportsmanagementModelPlayer extends JModelLegacy
     $result += ( $cameautresult->totalout ) - ( $cameautresult->totalmatch * $game_regular_time );
     }
     
-    // jetzt muss man noch die karten berücksichtigen, die zu einer hinausstellung führen
+    // jetzt muss man noch die karten berÃ¼cksichtigen, die zu einer hinausstellung fÃ¼hren
     if ( $cards )
     {
     $query = $db->getQuery(true);    
