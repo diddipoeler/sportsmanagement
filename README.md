@@ -27,4 +27,4 @@ Extensions ?
 
 Änderungen
 ---------------------
-*   21-11-2016: **1.0.57** In den Gruppen eines Projektes können jetzt auch die Tabellenplätze dargestellt werden. in der Spielerhistorie kann jetzt das Teambild eingeblendet werden.
+*   21-11-2016: **1.0.57** In den Gruppen eines Projektes können jetzt auch die Tabellenplätze dargestellt werden. In der Spielerhistorie kann jetzt das Teambild eingeblendet werden.
