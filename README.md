@@ -24,3 +24,7 @@ Import functions ?
 Extensions ?
 ---------------------
 * ISHD XML-Import
+
+Änderungen
+---------------------
+*   21-11-2016: **1.0.57** In den Gruppen eines Projektes können jetzt auch die Tabellenplätze dargestellt werden.
