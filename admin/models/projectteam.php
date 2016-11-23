@@ -71,7 +71,18 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
         // Get the input
         $pks = JRequest::getVar('cid', null, 'post', 'array');
         $post = JRequest::get('post');
-        
+
+$project_id = $post['pid'];
+//$app->enqueueMessage('project_id<br><pre>'.print_r($project_id, true).'</pre><br>','Notice');
+$this->jsmquery->clear();
+$this->jsmquery->select('l.associations');
+$this->jsmquery->from('#__sportsmanagement_league as l');
+$this->jsmquery->join('INNER', '#__sportsmanagement_project AS p on p.league_id = l.id');
+$this->jsmquery->where('p.id = '.$project_id);
+$this->jsmdb->setQuery($this->jsmquery);
+$associations = $this->jsmdb->loadResult();
+//$app->enqueueMessage('associations <br><pre>'.print_r($associations , true).'</pre><br>','Notice');
+		
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
         $app->enqueueMessage('saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
@@ -118,6 +129,11 @@ $object->id = $post['club_id'.$pks[$x]];
 $object->location = $post['location'.$pks[$x]];
 $object->founded_year = $post['founded_year'.$pks[$x]];
 $object->unique_id = $post['unique_id'.$pks[$x]];
+if ( $associations )
+{
+$object->associations = $associations;
+}
+			
 // Update their details in the users table using id as the primary key.
 $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 'id');
 			
