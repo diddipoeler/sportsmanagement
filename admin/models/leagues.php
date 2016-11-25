@@ -181,7 +181,10 @@ $this->setState('filter.federation', $temp_user_request);
 		{
         $query->where('obj.associations = '.$this->getState('filter.search_association') );
         }
-        
+        if ($this->getState('filter.federation'))
+		{
+        $query->where('obj.associations = '.$this->getState('filter.federation') );
+        }
         if ($this->getState('filter.search_agegroup'))
 		{
         $query->where('obj.agegroup_id = ' . $this->getState('filter.search_agegroup'));
