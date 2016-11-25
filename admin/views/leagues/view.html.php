@@ -89,7 +89,7 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 		if ( $res = JSMCountries::getCountryOptions() )
         {
             $nation = array_merge($nation,$res);
-            $this->search_nation	= $res;
+            $this->search_nation = $res;
         }
 		
         $lists['nation'] = $nation;
@@ -103,10 +103,10 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 		unset($nation);
         $nation[] = JHtml::_('select.option', '0' ,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
         $mdlassociation = JModelLegacy::getInstance('jlextassociations', 'sportsmanagementModel');
-        if ( $res = $mdlassociation->getAssociations() )
+        if ( $res = $mdlassociation->getAssociations($this->state->get('filter.federation')) )
         {
             $nation = array_merge($nation, $res);
-            $this->search_association	= $res;
+            $this->search_association = $res;
         }
         
         $lists['association'] = array();
