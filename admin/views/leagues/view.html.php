@@ -93,12 +93,12 @@ class sportsmanagementViewLeagues extends sportsmanagementView
         }
 		
         $lists['nation'] = $nation;
-        $lists['nation2'] = JHtmlSelect::genericlist(	$nation,
-																'filter_search_nation',
-																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-																'value',
-																'text',
-																$this->state->get('filter.search_nation'));
+        $lists['nation2'] = JHtmlSelect::genericlist($nation,
+					'filter_search_nation',
+					$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+					'value',
+					'text',
+					$this->state->get('filter.search_nation'));
 
 		unset($nation);
         $nation[] = JHtml::_('select.option', '0' ,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
@@ -130,12 +130,12 @@ class sportsmanagementViewLeagues extends sportsmanagementView
         //$lists['association'] = $nation;
         
         
-        $lists['association2'] = JHtmlSelect::genericlist(	$nation,
-																'filter_search_association',
-																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-																'value',
-																'text',
-																$this->state->get('filter.search_association'));
+        $lists['association2'] = JHtmlSelect::genericlist($nation,
+					'filter_search_association',
+					$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+					'value',
+					'text',
+					$this->state->get('filter.search_association'));
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' association<br><pre>'.print_r($lists['association'],true).'</pre>'),'');
         
@@ -149,14 +149,22 @@ class sportsmanagementViewLeagues extends sportsmanagementView
             $this->search_agegroup	= $res;
         }
         $lists['agegroup'] = $myoptions;
-        $lists['agegroup2'] = JHtmlSelect::genericlist(	$myoptions,
-																'filter_search_agegroup',
-																'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-																'value',
-																'text',
-																$this->state->get('filter.search_agegroup'));
+        $lists['agegroup2'] = JHtmlSelect::genericlist($myoptions,
+					'filter_search_agegroup',
+					'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+					'value',
+					'text',
+					$this->state->get('filter.search_agegroup'));
         unset($myoptions);
-        
+
+$mdlassociation = JModelLegacy::getInstance('jlextassociations', 'sportsmanagementModel');
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r($mdlassociation->getAssociations(),true).'</pre>'),'Notice');        
+        if ( $res = $mdlassociation->getAssociations() )
+        {
+            $nation = array_merge($nation, $res);
+            $this->federation = $res;
+        }
+		
 
 		$this->lists	= $lists;
 		
