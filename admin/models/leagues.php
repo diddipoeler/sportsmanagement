@@ -112,7 +112,10 @@ class sportsmanagementModelLeagues extends JModelList
 		$this->setState('filter.search_agegroup', $temp_user_request);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_association', 'filter_search_association', '');
 		$this->setState('filter.search_association', $temp_user_request);
-        
+
+$temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.federation', 'filter_federation', '');
+$this->setState('filter.federation', $temp_user_request);  
+		
         $value = JRequest::getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
 
