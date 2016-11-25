@@ -83,14 +83,20 @@ $starttime = microtime();
             }
 		
         $lists['nation'] = $nation;
-        $lists['nation2'] = JHtmlSelect::genericlist(	$nation,
-																'filter_search_nation',
-																'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-																'value',
-																'text',
-																$this->state->get('filter.search_nation'));
+        $lists['nation2'] = JHtmlSelect::genericlist($nation,
+						'filter_search_nation',
+						'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+						'value',
+						'text',
+						$this->state->get('filter.search_nation'));
 
-
+$mdlassociation = JModelLegacy::getInstance('jlextassociations', 'sportsmanagementModel');
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r($mdlassociation->getAssociations(),true).'</pre>'),'Notice');        
+        if ( $res = $mdlassociation->getAssociations() )
+        {
+            $nation = array_merge($nation, $res);
+            $this->federation	= $res;
+        }
 
 		$this->lists	= $lists;
   
