@@ -157,6 +157,10 @@ $this->setState('filter.federation', $temp_user_request);
 		{
         $query->where("objassoc.country LIKE '".$this->getState('filter.search_nation')."'");
         }
+if ($this->getState('filter.federation') )
+		{
+        $query->where("objassoc.parent_id = ".$this->getState('filter.federation') );
+        }
 
         
         $query->order($db->escape($this->getState('list.ordering', 'objassoc.name')).' '.
