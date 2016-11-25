@@ -201,7 +201,7 @@ if ($this->getState('filter.federation') )
         $query->from('#__sportsmanagement_associations');
         if ($federation)
 		{
-        $query->where('parent_id = '.$federation);
+        $query->where('parent_id = '.$federation.' OR id = '.$federation);
         }
         if ($search_nation)
 		{
