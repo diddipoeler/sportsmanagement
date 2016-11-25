@@ -159,7 +159,7 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 
 $mdlassociation = JModelLegacy::getInstance('jlextassociations', 'sportsmanagementModel');
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r($mdlassociation->getAssociations(),true).'</pre>'),'Notice');        
-        if ( $res = $mdlassociation->getAssociations($this->state->get('filter.federation')) )
+        if ( $res = $mdlassociation->getAssociations() )
         {
             $nation = array_merge($nation, $res);
             $this->federation = $res;
