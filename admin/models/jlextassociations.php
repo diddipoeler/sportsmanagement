@@ -181,7 +181,7 @@ if ($this->getState('filter.federation') )
      * 
      * @return
      */
-    function getAssociations()
+    function getAssociations($federation=0)
     {
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
@@ -198,8 +198,11 @@ if ($this->getState('filter.federation') )
         // Create a new query object.
         $query = $db->getQuery(true);
         $query->select('id,name,id as value,name as text,country');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations');
-        
+        $query->from('#__sportsmanagement_associations');
+        if ($federation)
+		{
+        $query->where('parent_id = '.$federation);
+        }
         if ($search_nation)
 		{
         $query->where('country LIKE '.$db->Quote(''.$search_nation.''));
