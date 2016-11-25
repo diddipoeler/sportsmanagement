@@ -294,16 +294,6 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
         break;
         }
         
-        
-        if ( isset($this->federation) )
-        {
-        JHtmlSidebar::addFilter(
-			JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FEDERATION'),
-			'filter_federation',
-			JHtml::_('select.options', $this->federation, 'value', 'text', $this->state->get('filter.federation'), true)
-		);
-        }
-                
         if ( isset($this->search_nation) )
         {
         JHtmlSidebar::addFilter(
@@ -312,6 +302,17 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
 			JHtml::_('select.options', $this->search_nation, 'value', 'text', $this->state->get('filter.search_nation'), true)
 		);
         }
+		
+        if ( isset($this->federation) )
+        {
+        JHtmlSidebar::addFilter(
+			JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FEDERATION'),
+			'filter_federation',
+			JHtml::_('select.options', $this->federation, 'value', 'text', $this->state->get('filter.federation'), true)
+		);
+        }
+              
+        
         
         if ( isset($this->userfields) )
         {
