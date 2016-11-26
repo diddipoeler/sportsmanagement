@@ -110,8 +110,8 @@ $filename = $file['name'];
 }
 else
 {
-    //sanitize the image filename
-		$filename = ImageSelectSM::sanitize( $base_Dir, $file['name'] );
+//sanitize the image filename
+$filename = ImageSelectSM::sanitize( $base_Dir, $file['name'] );
 }
 
 		

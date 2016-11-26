@@ -100,6 +100,18 @@ $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))
 						<?php
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_COUNTRY','obj.country',$this->sortDirection,$this->sortColumn);
 						?>
+                        <br />
+                        <?php 
+                        echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CITY'); 
+                        ?>
+                        <br />
+                        <?php 
+                        echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_FOUNDED_YEAR'); 
+                        ?>
+                        <br />
+                        <?php 
+                        echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_UNIQUE_ID'); 
+                        ?>
 					</th>
 						<th colspan="2"><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_MANAGE_PERSONNEL'); ?></th>
 						<th >
