@@ -80,6 +80,7 @@ class sportsmanagementModelClubs extends JSMModelList
                         'a.longitude',
                         'a.id',
                         'a.unique_id',
+                        'a.new_club_id',
                         'a.ordering',
                         'a.checked_out',
                         'a.checked_out_time'
