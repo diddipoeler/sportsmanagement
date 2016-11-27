@@ -64,6 +64,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     
                     <th>
 						<?php echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_CLUB_UNIQUE_ID','a.unique_id',$this->sortDirection,$this->sortColumn); ?>
+                        <br />
+                        <?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_NEW_CLIB_ID'); ?></th>
 					</th>
                     
 					<th width="20">
@@ -187,7 +189,21 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							if ($row->website != ''){echo '</a>';}
 							?>
 						</td>
-                        <td><?php echo $row->unique_id; ?></td>
+                        <td>
+                        <?php 
+                        // echo $row->unique_id; 
+                        ?>
+                        <input<?php echo $inputappend; ?>	type="text" size="10" class="form-control form-control-inline"
+																	name="unique_id<?php echo $row->id; ?>"
+																	value="<?php echo $row->unique_id; ?>"
+																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
+                        
+                        <br />
+                        <input<?php echo $inputappend; ?>	type="text" size="10" class="form-control form-control-inline"
+																	name="new_club_id<?php echo $row->id; ?>"
+																	value="<?php echo $row->new_club_id; ?>"
+																	onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
+                        </td>
 						<td class="center">
 							<?php
 							if ($row->logo_big == '')
