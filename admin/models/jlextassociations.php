@@ -44,7 +44,7 @@ defined('_JEXEC') or die('Restricted access');
 //require_once (JPATH_COMPONENT.DS.'models'.DS.'list.php');
 
 // import the Joomla modellist library
-jimport('joomla.application.component.modellist');
+//jimport('joomla.application.component.modellist');
 
 
 /**
@@ -56,7 +56,7 @@ jimport('joomla.application.component.modellist');
  * @version 2014
  * @access public
  */
-class sportsmanagementModeljlextassociations extends JModelList
+class sportsmanagementModeljlextassociations extends JSMModelList
 {
 	var $_identifier = "jlextassociations";
 	
@@ -81,8 +81,8 @@ class sportsmanagementModeljlextassociations extends JModelList
                         'objassoc.picture'
                         );
                 parent::__construct($config);
-                $getDBConnection = sportsmanagementHelper::getDBConnection();
-                parent::setDbo($getDBConnection);
+                //$getDBConnection = sportsmanagementHelper::getDBConnection();
+//                parent::setDbo($getDBConnection);
         }
         
     /**
@@ -94,10 +94,10 @@ class sportsmanagementModeljlextassociations extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		//$app = JFactory::getApplication();
+//        $option = JRequest::getCmd('option');
+//        // Initialise variables.
+//		$app = JFactory::getApplication('administrator');
         
         //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
 
@@ -135,44 +135,44 @@ $this->setState('filter.federation', $temp_user_request);
    */
   protected function getListQuery()
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-
-        // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+	//	$app = JFactory::getApplication();
+//        $option = JRequest::getCmd('option');
+//
+//        // Create a new query object.		
+//		$db = sportsmanagementHelper::getDBConnection();
+		$this->jsmquery->clear();
 		// Select some fields
-		$query->select(implode(",",$this->filter_fields));
+		$this->jsmquery->select(implode(",",$this->filter_fields));
 		// From the _associations table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations as objassoc');
+		$this->jsmquery->from('#__sportsmanagement_associations as objassoc');
         // Join over the users for the checked out user.
-		$query->select('uc.name AS editor');
-		$query->join('LEFT', '#__users AS uc ON uc.id = objassoc.checked_out');
+		$this->jsmquery->select('uc.name AS editor');
+		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = objassoc.checked_out');
 
         if ($this->getState('filter.search') )
 		{
-        $query->where('LOWER(objassoc.name) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%'));
+        $this->jsmquery->where('LOWER(objassoc.name) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%'));
         }
         if ( $this->getState('filter.search_nation') )
 		{
-        $query->where("objassoc.country LIKE '".$this->getState('filter.search_nation')."'");
+        $this->jsmquery->where("objassoc.country LIKE '".$this->getState('filter.search_nation')."'");
         }
 if ($this->getState('filter.federation') )
 		{
-        $query->where("objassoc.parent_id = ".$this->getState('filter.federation') );
+        $this->jsmquery->where("objassoc.parent_id = ".$this->getState('filter.federation') );
         }
 
         
-        $query->order($db->escape($this->getState('list.ordering', 'objassoc.name')).' '.
+        $this->jsmquery->order($db->escape($this->getState('list.ordering', 'objassoc.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));
  
 		if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $my_text .= ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        $my_text .= ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
         
-        return $query;
+        return $this->jsmquery;
 	}
 	
     
@@ -183,37 +183,37 @@ if ($this->getState('filter.federation') )
      */
     function getAssociations($federation=0)
     {
-        $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        //$app = JFactory::getApplication();
+        //$option = JRequest::getCmd('option');
         $search_nation = '';
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($app,true).'</pre>'),'Notice');
         
-        if ( $app->isAdmin() )
+        if ( $this->jsmapp->isAdmin() )
         {
         $search_nation	= $this->getState('filter.search_nation');
         }
         // Get a db connection.
-        $db = sportsmanagementHelper::getDBConnection();
+        //$db = sportsmanagementHelper::getDBConnection();
         // Create a new query object.
-        $query = $db->getQuery(true);
-        $query->select('id,name,id as value,name as text,country');
-        $query->from('#__sportsmanagement_associations');
+        $this->jsmquery->clear();
+        $this->jsmquery->select('id,name,id as value,name as text,country');
+        $this->jsmquery->from('#__sportsmanagement_associations');
         if ($federation)
 		{
-        $query->where('parent_id = '.$federation.' OR id = '.$federation);
+        $this->jsmquery->where('parent_id = '.$federation.' OR id = '.$federation);
         }
         if ($search_nation)
 		{
-        $query->where('country LIKE '.$db->Quote(''.$search_nation.''));
+        $this->jsmquery->where('country LIKE '.$this->jsmdb->Quote(''.$search_nation.''));
         }
         
-        $query->order('name ASC');
+        $this->jsmquery->order('name ASC');
 
-        $db->setQuery($query);
-        if (!$result = $db->loadObjectList())
+        $this->jsmdb->setQuery($this->jsmquery);
+        if (!$result = $this->jsmdb->loadObjectList())
         {
-            sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+            sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__);
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
             return array();
         }
