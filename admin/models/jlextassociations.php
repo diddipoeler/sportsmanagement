@@ -151,7 +151,7 @@ $this->setState('filter.federation', $temp_user_request);
 
         if ($this->getState('filter.search') )
 		{
-        $this->jsmquery->where('LOWER(objassoc.name) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%'));
+        $this->jsmquery->where('LOWER(objassoc.name) LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search').'%'));
         }
         if ( $this->getState('filter.search_nation') )
 		{
@@ -163,8 +163,8 @@ if ($this->getState('filter.federation') )
         }
 
         
-        $this->jsmquery->order($db->escape($this->getState('list.ordering', 'objassoc.name')).' '.
-                $db->escape($this->getState('list.direction', 'ASC')));
+        $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'objassoc.name')).' '.
+                $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
  
 		if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
