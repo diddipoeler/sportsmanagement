@@ -171,10 +171,37 @@ $this->setState('filter.unique_id', $temp_user_request);
         $subQuery = $db->getQuery(true);
         $subQuery2 = $db->getQuery(true);
         
+//        $subQuery->select('count(pt.id)');
+//        $subQuery->from('#__sportsmanagement_project_team AS pt');
+//        $subQuery->where('pt.project_id = p.id');
+
+switch ( $this->getState('filter.unique_id') )
+        {
+        case 0:
         $subQuery->select('count(pt.id)');
         $subQuery->from('#__sportsmanagement_project_team AS pt');
         $subQuery->where('pt.project_id = p.id');
-        
+        break;
+        case 1:
+        $subQuery->select('count(pt.id)');
+        $subQuery->from('#__sportsmanagement_project_team AS pt');
+        $subQuery->join('INNER','#__sportsmanagement_season_team_id as st ON st.id = pt.team_id');
+        $subQuery->join('INNER','#__sportsmanagement_team as t ON t.id = st.team_id');
+        $subQuery->join('INNER','#__sportsmanagement_club as c ON c.id = t.club_id');
+        $subQuery->where('pt.project_id = p.id');
+        $subQuery->where('( c.unique_id IS NULL OR c.unique_id LIKE '.$db->Quote(''.'').' )');
+        break;
+        case 2:
+        $subQuery->select('count(pt.id)');
+        $subQuery->from('#__sportsmanagement_project_team AS pt');
+        $subQuery->join('INNER','#__sportsmanagement_season_team_id as st ON st.id = pt.team_id');
+        $subQuery->join('INNER','#__sportsmanagement_team as t ON t.id = st.team_id');
+        $subQuery->join('INNER','#__sportsmanagement_club as c ON c.id = t.club_id');
+        $subQuery->where('pt.project_id = p.id');
+        $subQuery->where('( c.unique_id NOT LIKE '.$db->Quote(''.'').' )');
+        break;
+        }		
+		
         $subQuery2->select('ef.name');
         $subQuery2->from('#__sportsmanagement_user_extra_fields_values as ev ');
         $subQuery2->join('INNER','#__sportsmanagement_user_extra_fields as ef ON ef.id = ev.field_id');
