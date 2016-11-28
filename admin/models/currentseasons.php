@@ -42,7 +42,7 @@ defined('_JEXEC') or die('Restricted access');
 
 //jimport('joomla.application.component.model');
 //require_once (JPATH_COMPONENT.DS.'models'.DS.'list.php');
-jimport('joomla.application.component.modellist');
+//jimport('joomla.application.component.modellist');
 
 /**
  * sportsmanagementModelcurrentseasons
@@ -53,72 +53,73 @@ jimport('joomla.application.component.modellist');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelcurrentseasons extends JModelList
+class sportsmanagementModelcurrentseasons extends JSMModelList
 {
 	var $_identifier = "currentseasons";
     
+    
+    
+    /**
+     * sportsmanagementModelLeagues::__construct()
+     * 
+     * @param mixed $config
+     * @return void
+     */
+    public function __construct($config = array())
+        {   
+                $config['filter_fields'] = array(
+                        'p.name'
+                        );
+                //$config['dbo'] = sportsmanagementHelper::getDBConnection();  
+                parent::__construct($config);
+//                $getDBConnection = sportsmanagementHelper::getDBConnection();
+                parent::setDbo($this->jsmdb);
+        }
+    
+    /**
+	 * Method to auto-populate the model state.
+	 *
+	 * Note. Calling getState in this method will result in recursion.
+	 *
+	 * @since	1.6
+	 */
+	protected function populateState($ordering = null, $direction = null)
+	{
+	   
+       
+    parent::populateState('p.name', 'asc');   
+    }
+    
+    
+    /**
+     * sportsmanagementModelcurrentseasons::getListQuery()
+     * 
+     * @return void
+     */
     protected function getListQuery()
 	{
-		// Get the WHERE and ORDER BY clauses for the query
-		$where      = $this->_buildContentWhere();
-		$orderby    = $this->_buildContentOrderBy();
-
-		$query = '	SELECT	p.*,
-							st.name AS sportstype,
-							s.name AS season,
-							l.name AS league,
-                            l.country AS country,
-							u.name AS editor
-					FROM	#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id = p.season_id
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON l.id = p.league_id
-					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = p.sports_type_id
-					LEFT JOIN #__users AS u ON u.id = p.checked_out ' .
-					$where .
-					$orderby;
-
-		return $query;
-	}
+	$filter_season = JComponentHelper::getParams($this->jsmoption)->get('current_season',0);
+    // Select some fields
+    $this->jsmquery->clear();
+	$this->jsmquery->select('p.name,st.name AS sportstype,s.name AS season,l.name AS league,l.country AS country,u.name AS editor');   
+    // From table
+	$this->jsmquery->from('#__sportsmanagement_project AS p');
+    $this->jsmquery->join('LEFT', '#__sportsmanagement_season AS s ON s.id = p.season_id');   
+    $this->jsmquery->join('LEFT', '#__sportsmanagement_league AS l ON l.id = p.league_id');
+    $this->jsmquery->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = p.sports_type_id');
+    $this->jsmquery->join('LEFT', '#__users AS u ON u.id = p.checked_out ');
     
-    function _buildContentOrderBy()
-	{
-		$option = JRequest::getCmd('option');
-		$app	= JFactory::getApplication();
-
-        $orderby 	= ' ORDER BY p.name ';
-
-		return $orderby;
-	}
+    if ( $filter_season )
+    {
+    $filter_season = implode(",",$filter_season);   
+    $this->jsmquery->where('p.season_id IN (' . $filter_season .')' );     
+    }      
+    $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'p.name')).' '.
+                $this->jsmdb->escape($this->getState('list.direction', 'ASC')));  
+    return $this->jsmquery;
+    }
     
-    function _buildContentWhere()
-	{
-		$option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
-        
-        $where = array();
-		$filter_season = JComponentHelper::getParams($option)->get('current_season',0);
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filter_season,true).'</pre>'),'');
-		}
-        
-        if ( $filter_season )
-        {
-        $filter_season = implode(",",$filter_season);
-		
-		if($filter_season > 0) {
-			$where[] = 'p.season_id IN (' . $filter_season .')';
-		}
 
-		$where = ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
-        
-        }
-
-		return $where;
-	}
-    
-    
 }
 
 ?>    
