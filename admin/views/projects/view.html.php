@@ -104,12 +104,12 @@ class sportsmanagementViewProjects extends sportsmanagementView
         $this->userfields	= $alluserfields;
         
 		$lists['userfields'] = JHtml::_( 'select.genericList', 
-									$userfields, 
-									'filter_userfields', 
-									'class="inputbox" onChange="this.form.submit();" style="width:120px"', 
-									'id', 
-									'name', 
-									$this->state->get('filter.userfields'));
+						$userfields, 
+						'filter_userfields', 
+						'class="inputbox" onChange="this.form.submit();" style="width:120px"', 
+						'id', 
+						'name', 
+						$this->state->get('filter.userfields'));
 		unset($userfields);
         
 		foreach ( $items as $row )
@@ -126,12 +126,12 @@ class sportsmanagementViewProjects extends sportsmanagementView
         $this->league	= $allLeagues;
         
 		$lists['leagues'] = JHtml::_( 'select.genericList', 
-									$leagues, 
-									'filter_league', 
-									'class="inputbox" onChange="this.form.submit();" style="width:120px"', 
-									'id', 
-									'name', 
-									$this->state->get('filter.league'));
+						$leagues, 
+						'filter_league', 
+						'class="inputbox" onChange="this.form.submit();" style="width:120px"', 
+						'id', 
+						'name', 
+						$this->state->get('filter.league'));
 		unset($leagues);
 		
 		
@@ -145,12 +145,12 @@ class sportsmanagementViewProjects extends sportsmanagementView
         
         $lists['sportstype'] = $sportstypes;
 		$lists['sportstypes'] = JHtml::_( 'select.genericList', 
-										$sportstypes, 
-										'filter_sports_type', 
-										'class="inputbox" onChange="this.form.submit();" style="width:120px"', 
-										'id', 
-										'name', 
-										$this->state->get('filter.sports_type'));
+						$sportstypes, 
+						'filter_sports_type', 
+						'class="inputbox" onChange="this.form.submit();" style="width:120px"', 
+						'id', 
+						'name', 
+						$this->state->get('filter.sports_type'));
 		unset($sportstypes);
 		
 		
@@ -163,12 +163,12 @@ class sportsmanagementViewProjects extends sportsmanagementView
         $this->season	= $allSeasons;
         
 		$lists['seasons'] = JHtml::_( 'select.genericList', 
-									$seasons, 
-									'filter_season', 
-									'class="inputbox" onChange="this.form.submit();" style="width:120px"', 
-									'id', 
-									'name', 
-									$this->state->get('filter.season'));
+					$seasons, 
+					'filter_season', 
+					'class="inputbox" onChange="this.form.submit();" style="width:120px"', 
+					'id', 
+					'name', 
+					$this->state->get('filter.season'));
 
 		unset($seasons);
         
@@ -182,11 +182,11 @@ class sportsmanagementViewProjects extends sportsmanagementView
         
 		$lists['nation'] = $nation;
 		$lists['nation2'] = JHtmlSelect::genericlist(	$nation, 
-																'filter_search_nation', 
-																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 
-																'value', 
-																'text', 
-																$this->state->get('filter.search_nation'));
+						'filter_search_nation', 
+						$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 
+						'value', 
+						'text', 
+						$this->state->get('filter.search_nation'));
 		$myoptions = array();
 		$myoptions[] = JHtml::_( 'select.option', '', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_PROJECTTYPE_FILTER' ) );
 		$myoptions[] = JHtml::_( 'select.option', 'SIMPLE_LEAGUE', JText::_( 'COM_SPORTSMANAGEMENT_SIMPLE_LEAGUE' ) );
@@ -196,12 +196,12 @@ class sportsmanagementViewProjects extends sportsmanagementView
 		$lists['project_type'] = $myoptions;	
         
 		$lists['project_types'] = JHtml::_( 'select.genericList', 
-									$myoptions, 
-									'filter_project_type', 
-									'class="inputbox" onChange="this.form.submit();" style="width:120px"', 
-									'value', 
-									'text',
-									$this->state->get('filter.project_type'));
+						$myoptions, 
+						'filter_project_type', 
+						'class="inputbox" onChange="this.form.submit();" style="width:120px"', 
+						'value', 
+						'text',
+						$this->state->get('filter.project_type'));
 		unset($myoptions);
         
 		$myoptions[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
