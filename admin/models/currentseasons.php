@@ -101,7 +101,7 @@ class sportsmanagementModelcurrentseasons extends JSMModelList
 	$filter_season = JComponentHelper::getParams($this->jsmoption)->get('current_season',0);
     // Select some fields
     $this->jsmquery->clear();
-	$this->jsmquery->select('p.name,st.name AS sportstype,s.name AS season,l.name AS league,l.country AS country,u.name AS editor');   
+	$this->jsmquery->select('p.id,p.name,st.name AS sportstype,s.name AS season,l.name AS league,l.country AS country,u.name AS editor');   
     // From table
 	$this->jsmquery->from('#__sportsmanagement_project AS p');
     $this->jsmquery->join('LEFT', '#__sportsmanagement_season AS s ON s.id = p.season_id');   
