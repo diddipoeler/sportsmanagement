@@ -311,7 +311,16 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
 			JHtml::_('select.options', $this->federation, 'value', 'text', $this->state->get('filter.federation'), true)
 		);
         }
-              
+        
+	if ( isset($this->unique_id) )
+        {
+        JHtmlSidebar::addFilter(
+			JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_UNIQUE_ID'),
+			'filter_unique_id',
+			JHtml::_('select.options', $this->unique_id, 'value', 'text', $this->state->get('filter.unique_id'), true)
+		);
+        }
+	
         
         
         if ( isset($this->userfields) )
