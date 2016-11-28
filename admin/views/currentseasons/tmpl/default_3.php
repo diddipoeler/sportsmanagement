@@ -48,6 +48,8 @@ $count = 0;
 ?>
 
 <?PHP
+if ( $this->items )
+{
 foreach ($this->items as $item)
 {
     
@@ -67,7 +69,7 @@ if ( !$count )
 <?PHP
 $count++;	   
 }   
-        
+}        
 ?>
 
        
@@ -92,7 +94,8 @@ $count++;
 <?php echo JHtml::_('bootstrap.startAccordion', 'slide-group-id', $slidesOptions); ?>
 
 <?PHP
-
+if ( $this->items )
+{
 foreach ($this->items as $item)
 {            
 // Open the first slide
@@ -173,7 +176,7 @@ echo JHtml::_('bootstrap.endSlide');
 
 
 }            
-
+}
             
             
 ?>            

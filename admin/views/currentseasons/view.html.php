@@ -62,16 +62,11 @@ class sportsmanagementViewCurrentseasons extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app	= JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$uri	= JFactory::getUri();
         
-        $items = $this->get('Items');
-        $this->items	= $items;
+        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->items,true).'</pre>'),'Notice');
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->items,true).'</pre>'),'Notice');
-        
+        if ( $this->items )
+        {
         foreach ($this->items as $item)
 	{
 	   $item->count_projectdivisions = 0;
@@ -94,6 +89,7 @@ class sportsmanagementViewCurrentseasons extends sportsmanagementView
 		$mdlRounds = JModelLegacy::getInstance("Rounds", "sportsmanagementModel");
 		$item->count_matchdays = $mdlRounds->getRoundsCount($item->id);
 	   
+       }
        }
  
 	}
