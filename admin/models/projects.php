@@ -126,6 +126,8 @@ class sportsmanagementModelProjects extends JModelList
         
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_agegroup', 'filter_search_agegroup', '');
 		$this->setState('filter.search_agegroup', $temp_user_request);
+$temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.unique_id', 'filter_unique_id', '');
+$this->setState('filter.unique_id', $temp_user_request);
         
         $value = JRequest::getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
