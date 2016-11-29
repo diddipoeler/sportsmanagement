@@ -121,7 +121,15 @@ $associations = $this->jsmdb->loadResult();
 
 /**
  * hier werden noch die vereine aktualisiert 
+ * wenn schon ein verband/kreis vorhanden ist, kein update
  */
+$clubrow = JTable::getInstance('club', 'sportsmanagementTable', array()); 
+$clubrow->load($post['club_id'.$pks[$x]]);
+if ( $clubrow->associations )
+{
+$associations = '';
+}
+			
 // Create an object for the record we are going to update.
 $object = new stdClass();
 // Must be a valid primary key value.
