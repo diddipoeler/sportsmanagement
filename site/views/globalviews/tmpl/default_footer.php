@@ -47,8 +47,7 @@ $cfg_help_server = JComponentHelper::getParams($option)->get('cfg_help_server','
 $modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width',0) ;
 $modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height',0) ;
 $cfg_bugtracker_server = JComponentHelper::getParams($option)->get('cfg_bugtracker_server','') ;	
-//if (JComponentHelper::getParams('com_sportsmanagement')->get('show_footer',0))
-//{
+
 ?>
 
 <style>
@@ -97,7 +96,7 @@ SqueezeBox.open(url, {
 	<br />
 	<?php echo JText::_( "COM_SPORTSMANAGEMENT_DESC" ); ?>
 	<br />      
-	<?php echo JText::_( "COM_SPORTSMANAGEMENT_COPYRIGHT" ); ?> 
+	<?php echo JText::_( "COM_SPORTSMANAGEMENT_COPYRIGHT" ); ?> : &copy;
 	<a href="http://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>
 	<br />      
 	<?php echo JText::_( "COM_SPORTSMANAGEMENT_VERSION" ); ?> :       
