@@ -223,6 +223,12 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 	$config['highlight_fav'] = $isFavTeam;
 	//echo sportsmanagementHelper::formatTeamName( $team->team, 'tr' . $team->team->id, $config, $isFavTeam );
     echo sportsmanagementHelper::formatTeamName( $team->team, $this->teamrow . $team->team->id, $config, $isFavTeam, NULL,JRequest::getInt('cfg_which_database',0) );
+	
+	if ( $config['show_unique_id'] )
+	{
+	echo ' ('.$team->team->unique_id.')';
+	}
+	
 	echo '</td>';
 	echo "\n";
 
