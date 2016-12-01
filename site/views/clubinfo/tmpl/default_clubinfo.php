@@ -338,7 +338,9 @@ if ( $this->clubhistorysorttree )
 </legend>
 
 <div class="tree">
-<?php echo $this->clubhistoryhtml; ?>
+<?php 
+echo $this->clubhistoryhtml; 
+?>
 </div>
 
 <div class="span4">

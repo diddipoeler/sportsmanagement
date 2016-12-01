@@ -126,6 +126,9 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 		// clubhistory
         $this->clubhistory = sportsmanagementModelClubInfo::getClubHistory($this->club->id);
 		$this->clubhistoryhtml = sportsmanagementModelClubInfo::getClubHistoryHTML($this->club->id);
+        
+//        $this->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubhistoryhtml<br><pre>'.print_r($this->clubhistoryhtml,true).'</pre>'),'');
+        
     // clubhistorytree
 		$this->clubhistorytree = sportsmanagementModelClubInfo::getClubHistoryTree($this->club->id,$this->club->new_club_id);
 		$this->clubhistorysorttree = sportsmanagementModelClubInfo::getSortClubHistoryTree($this->clubhistorytree,$this->club->id,$this->club->name);
