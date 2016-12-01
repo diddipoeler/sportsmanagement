@@ -337,6 +337,10 @@ if ( $this->clubhistorysorttree )
 </strong>
 </legend>
 
+<div class="tree">
+<?php echo $this->clubhistoryhtml; ?>
+</div>
+
 <div class="span4">
 <div class="dtree">
       <a href="javascript: d<?PHP echo $this->modid; ?>.openAll();">

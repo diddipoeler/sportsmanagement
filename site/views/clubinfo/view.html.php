@@ -140,6 +140,8 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
         $this->document->addScript( JURI::base().'components/'.$this->option.'/assets/js/dtree.js' );        
         $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/dtree.css');  
     
+        $this->document->addScript( JURI::base().'components/'.$this->option.'/assets/js/bootstrap-tree.js' ); 
+        
         $this->document->setTitle( $pageTitle );
         
 /**
