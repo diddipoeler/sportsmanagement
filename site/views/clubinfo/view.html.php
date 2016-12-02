@@ -128,7 +128,10 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 		$this->clubhistoryhtml = sportsmanagementModelClubInfo::getClubHistoryHTML($this->club->id);
         
 //        $this->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubhistoryhtml<br><pre>'.print_r($this->clubhistoryhtml,true).'</pre>'),'');
-        
+$this->clubhistoryfamilytree = sportsmanagementModelClubInfo::fbTreeRecurse($this->club->id, '', array (),sportsmanagementModelClubInfo::$tree_fusion, 10, 0, 1);
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubhistoryfamilytree<br><pre>'.print_r($this->clubhistoryfamilytree,true).'</pre>'),'');        
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tree<br><pre>'.print_r(sportsmanagementModelClubInfo::$tree_fusion,true).'</pre>'),'');        
+//        $this->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubhistoryhtml<br><pre>'.print_r($this->clubhistoryhtml,true).'</pre>'),'');        
     // clubhistorytree
 		$this->clubhistorytree = sportsmanagementModelClubInfo::getClubHistoryTree($this->club->id,$this->club->new_club_id);
 		$this->clubhistorysorttree = sportsmanagementModelClubInfo::getSortClubHistoryTree($this->clubhistorytree,$this->club->id,$this->club->name);
@@ -150,7 +153,7 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
         $this->document->setTitle( $pageTitle );
         
 /**
- *         da wir komplett mit bootstrap arbeiten benötigen wir das nicht mehr 
+ *         da wir komplett mit bootstrap arbeiten benÃ¶tigen wir das nicht mehr 
  *         $view = $jinput->getVar( "view") ;
  *         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
  *         $document->addCustomTag($stylelink);
