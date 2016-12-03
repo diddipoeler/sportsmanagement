@@ -68,7 +68,11 @@ class sportsmanagementModelClubInfo extends JModelLegacy
 	static $treedepthold = 0;
     
     static $cfg_which_database = 0;	
+
 static $tree_fusion = Array();
+static $arrPCat = Array();
+static $historyhtmltree = '';
+
 	/**
 	 * sportsmanagementModelClubInfo::__construct()
 	 * 
@@ -90,6 +94,50 @@ static $tree_fusion = Array();
         parent::__construct( );
 	}
 
+
+
+
+/**
+ * sportsmanagementModelClubInfo::generateTree()
+ * 
+ * @param mixed $parent
+ * @return void
+ */
+static function generateTree ($parent) 
+{
+//    global $arrPCat, $arrCat;
+    if (array_key_exists($parent, self::$arrPCat)) {
+        //echo '<ul' . ($parent == 0 ? ' class="tree"' : '') . '>';
+        self::$historyhtmltree .= '<ul' . ($parent == 0 ? ' class="tree"' : '') . '>';
+        foreach (self::$arrPCat[$parent] as $arrC) {
+        //echo '<li>' . $arrC['name'] ;
+        self::$historyhtmltree .= '<li><a href="#">' . $arrC['name'] .'</a>' ;
+        self::generateTree($arrC['id']);
+        //echo '</li>';
+        self::$historyhtmltree .= '</li>';
+    }
+//        foreach ($arrPCat[$parent] as $arrC) {
+//            echo '<li>' . $arrC['name'] . '</li>';
+//            generateTree($arrC['id']);
+//        }
+        //echo '</ul>';
+        self::$historyhtmltree .= '</ul>';
+    }
+}
+
+
+/**
+ * sportsmanagementModelClubInfo::fbTreeRecurse()
+ * 
+ * @param mixed $id
+ * @param mixed $indent
+ * @param mixed $list
+ * @param mixed $children
+ * @param integer $maxlevel
+ * @param integer $level
+ * @param integer $type
+ * @return
+ */
 static function fbTreeRecurse( $id, $indent, $list, &$children, $maxlevel=9999, $level=0, $type=1 ) 
     {
 $app = JFactory::getApplication();
@@ -515,7 +563,7 @@ $result = $db->execute();
         $query = $db->getQuery(true);
         $query->select('c.id, c.name, c.new_club_id');
         $query->select('CONCAT_WS( \':\', id, alias ) AS slug');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ');
+        $query->from('#__sportsmanagement_club AS c ');
         $query->where('c.new_club_id = '. $clubid );
                             
 				$db->setQuery($query);
@@ -563,9 +611,8 @@ $result = $db->execute();
         $query = $db->getQuery(true);
         $subquery = $db->getQuery(true);
         
-        $query->select('c.id, c.name, c.new_club_id');
+        $query->select('c.id, c.name, c.new_club_id,c.logo_big');
         $query->select('CONCAT_WS( \':\', id, alias ) AS slug');
-        
         $subquery->select('max(pt.project_id)');
         $subquery->from('#__sportsmanagement_project_team AS pt');
         $subquery->join('INNER','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
@@ -589,6 +636,14 @@ $pt = $row->new_club_id;
 $list = isset(self::$tree_fusion[$pt]) ? self::$tree_fusion[$pt] : array ();
 array_push($list, $row);
 self::$tree_fusion[$pt] = $list;
+
+// store parent and its children into the $arrPCat Array
+self::$arrPCat[$pt][] = Array ('id' => $row->id,
+                               'name' => $row->name,
+                               'pid' => $row->pid,
+                               'slug' => $row->slug,
+                               'logo_big' => $row->logo_big
+                               );
 		
   //$temp = '<ul><li>'.$row->name.'</li>';
   //$this->treedepthold = $this->treedepth;
@@ -602,14 +657,13 @@ self::$tree_fusion[$pt] = $list;
   $temp = '<ul><li>';
   }
   
-  
   $link = sportsmanagementHelperRoute::getClubInfoRoute( $row->pid, $row->slug,null,self::$cfg_which_database );	
   $imageTitle = JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_HISTORY_FROM' );
   
-  $temp .= JHTML::_(	'image',
-														'media/com_sportsmanagement/jl_images/club_from.png',
-														$imageTitle,
-														'title= "' . $imageTitle . '"' );
+  $temp .= JHTML::_('image',
+					'media/com_sportsmanagement/jl_images/club_from.png',
+					$imageTitle,
+					'title= "' . $imageTitle . '"' );
 	$temp .= "&nbsp;";								
 	$temp .= JHTML::link( $link, $row->name );
   $temp .= '</li>';													

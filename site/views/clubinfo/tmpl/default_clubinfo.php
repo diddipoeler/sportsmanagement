@@ -47,20 +47,12 @@ if ( !isset ( $this->club ) )
 }
 else
 {
-    if( $this->config['show_club_info'] )
-    {
-        ?>
-        <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
-        <div class="col-md-6">
+
+?>
+<div class="row">
+<div class="col-lg-6">
         <?PHP
-    }
-    else
-    {
-        ?>
-        <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
-        <div style="text-align:center; width:100%;">
-        <?PHP
-    }
+
 	?>
 		<!-- SHOW LOGO - START -->
 		<?php
@@ -108,12 +100,18 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo'.$this->club->
         if( $this->config['show_club_info'] )
         {
         ?>
-	<div class="col-md-6">
+	<div class="col-lg-6">
 		<?php
 		if (  $this->club->address  ||  $this->club->zipcode ||  $this->club->location )
 		{
 
-			$addressString = JSMCountries::convertAddressString(	$this->club->name,
+//echo $this->club->name.'<br />';
+//echo $this->club->address.'<br />';
+//echo $this->club->state.'<br />';
+//echo $this->club->zipcode.'<br />';
+//echo $this->club->location.'<br />';
+//echo $this->club->country.'<br />';
+			$addressString = JSMCountries::convertAddressString($this->club->name,
 																$this->club->address,
 																$this->club->state,
 																$this->club->zipcode,
@@ -196,7 +194,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo'.$this->club->
 			
 				<?php echo JHtml::_( 'link', $this->club->website, $this->club->website, array( "target" => "_blank" ) ); ?>
 			
-            <address>
+            </address>
 			<?php
       
       
@@ -328,50 +326,36 @@ echo JHtml::link($link, $desc);
 
 if ( $this->clubhistorysorttree )
 {
+/*
+echo JHtml::_('select.genericlist',$this->clubhistoryfamilytree,'division_id'.$row->id,
+'class="form-control form-control-inline" size="'.sizeof($this->clubhistoryfamilytree).'"'.$append,'id','treename',$row->division_id);
+*/    
 ?>
-<fieldset>
-<legend>
-<strong>
-<br />
-<?php echo JText::_('Fusionen'); ?>
-</strong>
-</legend>
 
 <div class="tree">
+<strong>
+<?php echo JText::_('Fusionen'); ?>
+</strong>
 <ul>
-
+<li>
+<a href="#"><?PHP echo $this->club->name; ?></a>
 
 <?php 
-//echo $this->clubhistoryhtml; 
+echo $this->familytree; 
 ?>
+      
+</li>
 </ul>
 </div>
 
-<div class="span4">
-<div class="dtree">
-      <a href="javascript: d<?PHP echo $this->modid; ?>.openAll();">
-        <?php echo JText::_('&ouml;ffnen'); ?>&nbsp;&nbsp;</a>
-      <a href="javascript: d<?PHP echo $this->modid; ?>.closeAll();">
-        <?php echo JText::_('schliessen'); ?></a>
-    </div>
-<script type="text/javascript" language="javascript">
-    <!--
-<?php echo $this->clubhistorysorttree; ?>
-    // -->
-    </script>
-</div>
-
-</fieldset>
-
 <?PHP        
 }
-        
-		?>
-	</div>
-    </div> 
+?>
+</div>
+<!-- </div> --> 
 <!--    </div> -->
     
-	<?php
-	}
+<?php
+}
 }
 ?>

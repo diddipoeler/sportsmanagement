@@ -78,14 +78,15 @@ if(count($this->extended->getFieldsets()) > 0)
 			{
 				?>
 				
-                <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
-		<h4>
-			<?php 
-            echo JText::_($fieldset->name); 
-            ?>
-		</h4>
-	</div>
-    
+<div class="row">
+<div class="col-lg-12">
+<h4>
+<?php 
+echo JText::_($fieldset->name); 
+?>
+</h4>
+</div>
+</div>    
     
 				
 				<?php
@@ -95,12 +96,12 @@ if(count($this->extended->getFieldsets()) > 0)
 					if (!empty($value)) // && !$field->backendonly)
 					{
 						?>
-                        <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
-                        <div class="col-xs-6">
+                        <div class="row">
+                        <div class="col-lg-6">
                         
                         <strong><?php echo JText::_( $field->label); ?></strong>
                         </div>
-                        <div class="col-xs-6">
+                        <div class="col-lg-6">
                             <?php
                             if ( is_array($field->value) )
                             {

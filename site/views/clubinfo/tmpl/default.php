@@ -47,56 +47,73 @@ $this->kmlpath = JURI::root().'tmp'.DS.$this->club->id.'-club.kml';
 $this->kmlfile = $this->club->id.'-club.kml';
 
 ?>
-<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>" id="clubinfo">
+<div class="container-fluid" id="clubinfo">
 
-	<?php 
-    if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+<?php 
+if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 echo $this->loadTemplate('debug');
 }
-	echo $this->loadTemplate('projectheading');
+?>
+<div class="row">
+<?PHP
+echo $this->loadTemplate('projectheading');
+?>
+</div>
+<?PHP
 
-	if ( $this->config['show_sectionheader'] )
-	{ 
-		echo $this->loadTemplate('sectionheader');
-	}
+if ( $this->config['show_sectionheader'] )
+{ 
+?>
+<div class="row">
+<?PHP    
+echo $this->loadTemplate('sectionheader');
+?>
+</div>
+<?PHP
+}
 
-	echo $this->loadTemplate('clubinfo');
+?>
+<!-- <div class="row"> -->
+<?PHP
+echo $this->loadTemplate('clubinfo');
+?>
+<!-- </div> -->
+<?PHP
 	
 /**
  * diddipoeler
  * aufbau der templates als array
  */
-  $this->output = array();
+$this->output = array();
   
-  if ( $this->config['show_extra_fields'] )
-	{
-	$this->output['COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS'] = 'extrafields';
-	}
+if ( $this->config['show_extra_fields'] )
+{
+$this->output['COM_SPORTSMANAGEMENT_TABS_EXTRA_FIELDS'] = 'extrafields';
+}
     
-    if ( $this->config['show_extended'] )
-	{
-	$this->output['COM_SPORTSMANAGEMENT_TABS_EXTENDED'] = 'extended';
-	}
+if ( $this->config['show_extended'] )
+{
+$this->output['COM_SPORTSMANAGEMENT_TABS_EXTENDED'] = 'extended';
+}
     
-    //if ( $this->config['show_maps'] && (JPluginHelper::isEnabled('system', 'plugin_googlemap2') || JPluginHelper::isEnabled('system', 'plugin_googlemap3')) )
-    if ( $this->config['show_maps'] )
-	{ 
-        $this->output['COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'] = 'googlemap';
-	}
+if ( $this->config['show_maps'] )
+{ 
+$this->output['COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'] = 'googlemap';
+}
     
-    if ( $this->config['show_teams_of_club'] )
-	{ 
-        $this->output['COM_SPORTSMANAGEMENT_CLUBINFO_TEAMS'] = 'teams';
-	}
+if ( $this->config['show_teams_of_club'] )
+{ 
+$this->output['COM_SPORTSMANAGEMENT_CLUBINFO_TEAMS'] = 'teams';
+}
     
-    if ( $this->config['show_club_rssfeed'] )
-	{
-		if ( $this->rssfeeditems )
-        {
-        $this->output['COM_SPORTSMANAGEMENT_CLUBINFO_RSSFEED'] = 'rssfeed';  
-        }
-	}
+if ( $this->config['show_club_rssfeed'] )
+{
+if ( $this->rssfeeditems )
+{
+$this->output['COM_SPORTSMANAGEMENT_CLUBINFO_RSSFEED'] = 'rssfeed';  
+}
+}
   
 /**
    * je nach einstellung der templates im backend, wird das template

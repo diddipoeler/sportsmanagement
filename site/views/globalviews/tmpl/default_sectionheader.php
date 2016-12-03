@@ -451,7 +451,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
     case 'clubinfo':
 ?>
 
-	<div class="contentpaneopen">
+<!--	<div class="contentpaneopen"> -->
 		<h4>
 			<?php
 				echo JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_TITLE' ) . " " . $this->club->name;
@@ -485,7 +485,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
                 }
 			?>
 		</h4>
-	</div>
+<!--	</div> -->
     <?PHP    
     break;
     default:

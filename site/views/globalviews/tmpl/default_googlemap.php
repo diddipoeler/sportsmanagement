@@ -45,15 +45,11 @@ defined('_JEXEC') or die('Restricted access');
 //$this->kmlfile = 'test-club.kml';
 ?>
 
-
-
-<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
-	
-		<h4>
-			<?php echo JText::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>
-		</h4>
-
-
+<div class="row">
+<div class="col-lg-12">
+<h4>
+<?php echo JText::_('COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'); ?>
+</h4>
 	
 <?php
 
@@ -126,4 +122,5 @@ echo JHtml::_('content.prepare', $params);
             
             
 ?>
+</div>
 </div>

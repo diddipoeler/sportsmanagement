@@ -375,15 +375,23 @@ $query = $db->getQuery(true);
 	 * @param string $addressString
 	 * @return
 	 */
-	public static function convertAddressString(	$name='',
-									$address='',
-									$state='',
-									$zipcode='',
-									$location='',
-									$country='',
-									$addressString='COM_SPORTSMANAGEMENT_ADDRESS_FORM')
+	public static function convertAddressString($name = '',
+									$address = '',
+									$state = '',
+									$zipcode = '',
+									$location = '',
+									$country = '',
+									$addressString = 'COM_SPORTSMANAGEMENT_CLUBINFO_ADDRESS_FORM')
 	{
-		$resultString='';
+		$resultString = '';
+
+//echo __METHOD__.'-'.__LINE__.'- '.$name.'<br />';
+//echo __METHOD__.'-'.__LINE__.'- '.$address.'<br />';
+//echo __METHOD__.'-'.__LINE__.'- '.$state.'<br />';
+//echo __METHOD__.'-'.__LINE__.'- '.$zipcode.'<br />';
+//echo __METHOD__.'-'.__LINE__.'- '.$location.'<br />';
+//echo __METHOD__.'-'.__LINE__.'- '.$country.'<br />';
+//echo __METHOD__.'-'.__LINE__.'- '.$addressString.'<br />';
 
 		if ((!empty($address)) ||
 			 (!empty($state))	||
@@ -393,14 +401,16 @@ $query = $db->getQuery(true);
 		{
 			$countryFlag = self::getCountryFlag($country);
 			$countryName = self::getCountryName($country);
-			$dummy=self::removeEmptyFields($name, $address, $state, $zipcode, $location, $countryFlag, $countryName, JText::_($addressString));
-			$dummy=str_replace('%NAME%',$name,$dummy);
-			$dummy=str_replace('%ADDRESS%',$address,$dummy);
-			$dummy=str_replace('%STATE%',$state,$dummy);
-			$dummy=str_replace('%ZIPCODE%',$zipcode,$dummy);
-			$dummy=str_replace('%LOCATION%',$location,$dummy);
-			$dummy=str_replace('%FLAG%',$countryFlag,$dummy);
-			$dummy=str_replace('%COUNTRY%',$countryName,$dummy);
+			//$dummy = self::removeEmptyFields($name, $address, $state, $zipcode, $location, $countryFlag, $countryName, JText::_($addressString));
+            $dummy = JText::_($addressString);
+//echo __METHOD__.'-'.__LINE__.'- dummy '.$dummy.'<br />';			
+            $dummy = str_replace('%NAME%',$name,$dummy);
+			$dummy = str_replace('%ADDRESS%',$address,$dummy);
+			$dummy = str_replace('%STATE%',$state,$dummy);
+			$dummy = str_replace('%ZIPCODE%',$zipcode,$dummy);
+			$dummy = str_replace('%LOCATION%',$location,$dummy);
+			$dummy = str_replace('%FLAG%',$countryFlag,$dummy);
+			$dummy = str_replace('%COUNTRY%',$countryName,$dummy);
 			$resultString .= $dummy;
 		}
 		$resultString .= '&nbsp;';
@@ -421,15 +431,25 @@ $query = $db->getQuery(true);
 	 * @param mixed $address
 	 * @return
 	 */
-	public static function removeEmptyFields(	$name='',
-									$address='',
-									$state='',
-									$zipcode='',
-									$location='',
-									$flag='',
-									$country='',
-									$addressString='COM_SPORTSMANAGEMENT_ADDRESS_FORM')
+	public static function removeEmptyFields($name = '',
+									$address = '',
+									$state = '',
+									$zipcode = '',
+									$location = '',
+									$flag = '',
+									$country = '',
+									$addressString = 'COM_SPORTSMANAGEMENT_CLUBINFO_ADDRESS_FORM')
 	{
+
+//echo __METHOD__.'-'.__LINE__.'- '.$name.'<br />';
+//echo __METHOD__.'-'.__LINE__.'- '.$address.'<br />';
+//echo __METHOD__.'-'.__LINE__.'- '.$state.'<br />';
+//echo __METHOD__.'-'.__LINE__.'- '.$zipcode.'<br />';
+//echo __METHOD__.'-'.__LINE__.'- '.$location.'<br />';
+//echo __METHOD__.'-'.__LINE__.'- '.$flag.'<br />';
+//echo __METHOD__.'-'.__LINE__.'- '.$country.'<br />';
+//echo __METHOD__.'-'.__LINE__.'- '.$addressString.'<br />';
+	   
 	  if (empty($name)) $address = self::checkAddressString('%NAME%', '', $address);
 	  if (empty($address)) $address = self::checkAddressString('%ADDRESS%', '', $address);
 	  if (empty($state)) $address = self::checkAddressString('%STATE%', '', $address);
