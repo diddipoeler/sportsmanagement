@@ -111,7 +111,7 @@ static function generateTree ($parent)
         self::$historyhtmltree .= '<ul' . ($parent == 0 ? ' class="tree"' : '') . '>';
         foreach (self::$arrPCat[$parent] as $arrC) {
         //echo '<li>' . $arrC['name'] ;
-        self::$historyhtmltree .= '<li><a href="#">' . $arrC['name'] .'</a>' ;
+        self::$historyhtmltree .= '<li><a href="#">' .JHTML::image($arrC['logo_big'], $arrC['name'], 'width="30"'). ' ' . $arrC['name'] .'</a>' ;
         self::generateTree($arrC['id']);
         //echo '</li>';
         self::$historyhtmltree .= '</li>';

@@ -24,7 +24,7 @@
 * SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
 * Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
 * SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
 * OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
@@ -324,21 +324,24 @@ echo JHtml::link($link, $desc);
 <?PHP
 		}
 
-if ( $this->clubhistorysorttree )
-{
+//if ( $this->clubhistorysorttree )
+//{
 /*
 echo JHtml::_('select.genericlist',$this->clubhistoryfamilytree,'division_id'.$row->id,
 'class="form-control form-control-inline" size="'.sizeof($this->clubhistoryfamilytree).'"'.$append,'id','treename',$row->division_id);
 */    
 ?>
-
-<div class="tree">
+<a href="#fusion" class="btn btn-info" data-toggle="collapse">
 <strong>
 <?php echo JText::_('Fusionen'); ?>
 </strong>
+</a>
+<div id="fusion" class="collapse">
+<div class="tree">
+
 <ul>
 <li>
-<a href="#"><?PHP echo $this->club->name; ?></a>
+<a href="#"><?PHP echo JHTML::image($this->club->logo_big, $this->club->name, 'width="30"').' '.$this->club->name; ?></a>
 
 <?php 
 echo $this->familytree; 
@@ -347,9 +350,11 @@ echo $this->familytree;
 </li>
 </ul>
 </div>
-
+</div>
 <?PHP        
-}
+//}
+
+
 ?>
 </div>
 <!-- </div> --> 
