@@ -1184,7 +1184,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
     
     //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'');
      
-    $image_path = '/images/'.$option.'/database/associations/';
+    $image_path = 'images/'.$option.'/database/associations/';
     
     // schleife
     foreach( $xml->$document as $association ) 
