@@ -40,12 +40,14 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>
-<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>" id="no_tabs">
+<div class="row" id="no_tabs">
+<div class="col-lg-12">
 <?php
     
 $view = Jrequest::getCmd('view');
 
-foreach ($this->output as $key => $templ) {
+foreach ($this->output as $key => $templ) 
+{
     switch ($view) {
         case 'player':
             $template = $templ['template'];
@@ -60,4 +62,5 @@ foreach ($this->output as $key => $templ) {
     echo $this->loadTemplate($template);
 }
 ?>
+</div> 
 <!-- </div> -->

@@ -126,7 +126,7 @@ $this->output['COM_SPORTSMANAGEMENT_CLUBINFO_RSSFEED'] = 'rssfeed';
 echo $this->loadTemplate($this->config['show_clubinfo_tabs']);
 
 ?>
-<div id="backbuttonfooter">
+<div class="row" id="backbuttonfooter">
 <?PHP    
 echo $this->loadTemplate('backbutton');
 echo $this->loadTemplate('footer');

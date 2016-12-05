@@ -729,15 +729,15 @@ self::$arrPCat[$pt][] = Array ('id' => $row->id,
         $query->select('CONCAT_WS( \':\', id, alias ) AS slug');
         
         $subquery->select('max(pt.project_id)');
-        $subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt');
-        $subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.id = pt.team_id');
-        $subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st.team_id');
-        $subquery->join('RIGHT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p on pt.project_id = p.id');
+        $subquery->from('#__sportsmanagement_project_team AS pt');
+        $subquery->join('INNER','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id');
+        $subquery->join('INNER','#__sportsmanagement_team AS t ON t.id = st.team_id');
+        $subquery->join('RIGHT','#__sportsmanagement_project AS p on pt.project_id = p.id');
         $subquery->where('t.club_id = c.id ');
         $subquery->where('p.published = 1');
         
         $query->select('('.$subquery.') as pid ');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c');
+        $query->from('#__sportsmanagement_club AS c');
   			            
 				$db->setQuery($query);
                 

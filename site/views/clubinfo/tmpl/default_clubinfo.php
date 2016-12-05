@@ -50,7 +50,7 @@ else
 
 ?>
 <div class="row">
-<div class="col-lg-6">
+<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
         <?PHP
 
 	?>
@@ -100,7 +100,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo'.$this->club->
         if( $this->config['show_club_info'] )
         {
         ?>
-	<div class="col-lg-6">
+	<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
 		<?php
 		if (  $this->club->address  ||  $this->club->zipcode ||  $this->club->location )
 		{
@@ -132,7 +132,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo'.$this->club->
 			<?php 
             if ( isset($this->clubassoc->name) )
             {
-            echo JHtml::image($this->clubassoc->assocflag, $this->clubassoc->name, array('title' => $this->clubassoc->name ) ).substr($this->clubassoc->name,0,30); 
+            echo JHtml::image($this->clubassoc->assocflag, $this->clubassoc->name, array('title' => $this->clubassoc->name ) ); 
+            echo JHtml::image($this->clubassoc->picture, $this->clubassoc->name, array('title' => $this->clubassoc->name ) ).substr($this->clubassoc->name,0,30);
             }
             ?>
       <br />
@@ -331,7 +332,7 @@ echo JHtml::_('select.genericlist',$this->clubhistoryfamilytree,'division_id'.$r
 'class="form-control form-control-inline" size="'.sizeof($this->clubhistoryfamilytree).'"'.$append,'id','treename',$row->division_id);
 */    
 ?>
-<a href="#fusion" class="btn btn-info" data-toggle="collapse">
+<a href="#fusion" class="btn btn-info btn-block" data-toggle="collapse">
 <strong>
 <?php echo JText::_('Fusionen'); ?>
 </strong>
