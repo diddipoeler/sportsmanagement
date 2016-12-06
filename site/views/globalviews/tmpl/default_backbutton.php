@@ -57,7 +57,7 @@ if ( isset( $this->overallconfig['show_back_button'] ) )
 	    	
 	//echo $alignStr;
 	?>
-    <div style="text-align:<?php echo $alignStr; ?>; ">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" style="text-align:<?php echo $alignStr; ?>; ">
     
 		<div class="back_button">
 			<a href='javascript:history.go(-1)'>

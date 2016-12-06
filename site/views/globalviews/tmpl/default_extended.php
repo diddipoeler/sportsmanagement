@@ -79,7 +79,7 @@ if(count($this->extended->getFieldsets()) > 0)
 				?>
 				
 <div class="row">
-<div class="col-lg-12">
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 <h4>
 <?php 
 echo JText::_($fieldset->name); 
@@ -97,11 +97,11 @@ echo JText::_($fieldset->name);
 					{
 						?>
                         <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                         
                         <strong><?php echo JText::_( $field->label); ?></strong>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                             <?php
                             if ( is_array($field->value) )
                             {

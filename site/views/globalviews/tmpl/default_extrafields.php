@@ -60,10 +60,10 @@ if (!empty($value)) // && !$field->backendonly)
 {
 ?>
 <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
-<div class="col-xs-6">
+<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 <strong><?php echo JText::_( $field->name); ?></strong>
 </div>
-<div class="col-xs-6">
+<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 <?php 
 switch (JRequest::getVar('view'))
 {
