@@ -350,13 +350,13 @@
 <associations><assocname country="DEU" icon="fk_wuerttemberg_unterland.gif" flag="" website="" shortname="" main="345" parentmain="19">Kreis Unterland</assocname></associations>
 <associations><assocname country="DEU" icon="fk_wuerttemberg_zollern.gif" flag="" website="" shortname="" main="346" parentmain="19">Kreis Zollen</assocname></associations>
 
-<associations><assocname country="DEU" icon="" flag="" website="" shortname="" main="347" parentmain="24">Kreis Dahme/Fläming</assocname></associations>
-<associations><assocname country="DEU" icon="" flag="" website="" shortname="" main="348" parentmain="24">Kreis Havelland</assocname></associations>
-<associations><assocname country="DEU" icon="" flag="" website="" shortname="" main="349" parentmain="24">Kreis Oberhavel/Barnim</assocname></associations>
-<associations><assocname country="DEU" icon="" flag="" website="" shortname="" main="350" parentmain="24">Kreis Ostbrandenburg</assocname></associations>  
-<associations><assocname country="DEU" icon="" flag="" website="" shortname="" main="351" parentmain="24">Kreis Prignitz/Ruppin</assocname></associations>    
-<associations><assocname country="DEU" icon="" flag="" website="" shortname="" main="352" parentmain="24">Kreis Südbrandenburg</assocname></associations>    
-<associations><assocname country="DEU" icon="" flag="" website="" shortname="" main="353" parentmain="24">Kreis Uckermark</assocname></associations>    
+<associations><assocname country="DEU" icon="fk_brandenburg_dahme_flaeming.gif" flag="" website="" shortname="" main="347" parentmain="24">Kreis Dahme/Fläming</assocname></associations>
+<associations><assocname country="DEU" icon="fk_brandenburg_havelland.gif" flag="" website="" shortname="" main="348" parentmain="24">Kreis Havelland</assocname></associations>
+<associations><assocname country="DEU" icon="fk_brandenburg_oberhavel_barnim.gif" flag="" website="" shortname="" main="349" parentmain="24">Kreis Oberhavel/Barnim</assocname></associations>
+<associations><assocname country="DEU" icon="fk_brandenburg_ostbrandenburg.gif" flag="" website="" shortname="" main="350" parentmain="24">Kreis Ostbrandenburg</assocname></associations>  
+<associations><assocname country="DEU" icon="fk_brandenburg_prignitz_ruppin.gif" flag="" website="" shortname="" main="351" parentmain="24">Kreis Prignitz/Ruppin</assocname></associations>    
+<associations><assocname country="DEU" icon="fk_brandenburg_suedbrandenburg.gif" flag="" website="" shortname="" main="352" parentmain="24">Kreis Südbrandenburg</assocname></associations>    
+<associations><assocname country="DEU" icon="fk_brandenburg_uckermark.gif" flag="" website="" shortname="" main="353" parentmain="24">Kreis Uckermark</assocname></associations>    
 
 <associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="1" parentmain="0">Berlin</assocname></associations>
 <associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="2" parentmain="0">Cottbus</assocname></associations>
