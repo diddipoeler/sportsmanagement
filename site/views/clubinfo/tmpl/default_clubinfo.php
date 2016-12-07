@@ -24,7 +24,7 @@
 * SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
 * Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* verÃ¶ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
 * SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
 * OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
@@ -132,8 +132,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo'.$this->club->
 			<?php 
             if ( isset($this->clubassoc->name) )
             {
-            echo JHtml::image($this->clubassoc->assocflag, $this->clubassoc->name, array('title' => $this->clubassoc->name ) ); 
-            echo JHtml::image($this->clubassoc->picture, $this->clubassoc->name, array('title' => $this->clubassoc->name ) ).substr($this->clubassoc->name,0,30);
+            echo JHtml::image($this->clubassoc->assocflag, $this->clubassoc->name, array('title' => $this->clubassoc->name, 'width' => '50' ) ); 
+            echo JHtml::image($this->clubassoc->picture, $this->clubassoc->name, array('title' => $this->clubassoc->name, 'width' => '50' ) ).substr($this->clubassoc->name,0,30);
             }
             ?>
       <br />
