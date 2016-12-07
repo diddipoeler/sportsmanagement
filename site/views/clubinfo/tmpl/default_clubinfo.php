@@ -33,7 +33,9 @@
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
+* 
+* https://www.spiralscripts.co.uk/Joomla-Tips/modal-windows-in-joomla-3.html
+* 
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
@@ -132,8 +134,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo'.$this->club->
 			<?php 
             if ( isset($this->clubassoc->name) )
             {
-            echo JHtml::image($this->clubassoc->assocflag, $this->clubassoc->name, array('title' => $this->clubassoc->name, 'width' => '50' ) ); 
-            echo JHtml::image($this->clubassoc->picture, $this->clubassoc->name, array('title' => $this->clubassoc->name, 'width' => '50' ) ).substr($this->clubassoc->name,0,30);
+            echo JHtml::image($this->clubassoc->assocflag, $this->clubassoc->name, array('title' => $this->clubassoc->name, 'width' => $this->config['club_assoc_flag_width'] ) ); 
+            echo JHtml::image($this->clubassoc->picture, $this->clubassoc->name, array('title' => $this->clubassoc->name, 'width' => $this->config['club_assoc_logo_width'] ) ).substr($this->clubassoc->name,0,30);
             }
             ?>
       <br />

@@ -182,6 +182,15 @@
 			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_CLUB_PICTURE_WIDTH">
 		</field>
 
+    <field name="club_assoc_flag_width" type="text" default="20"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_ASSOC_FLAG_PICTURE_WIDTH"
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_ASSOC_FLAG_PICTURE_WIDTH">
+		</field>
+    <field name="club_assoc_logo_width" type="text" default="50"
+			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_ASSOC_LOGO_PICTURE_WIDTH"
+			description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_ASSOC_LOGO_PICTURE_WIDTH">
+		</field>
+
 <!--     
 		<field name="team_picture_height" type="text" default="150"
 			label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TEAM_PICTURE_HEIGHT"
