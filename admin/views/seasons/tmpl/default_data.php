@@ -90,8 +90,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
             </tr></tfoot>
 			<tbody>
 				<?php
-				$k=0;
-				for ($i=0,$n=count($this->items); $i < $n; $i++)
+				$k = 0;
+				for ($i = 0,$n = count($this->items); $i < $n; $i++)
 				{
 					$row =& $this->items[$i];
 					$link = JRoute::_('index.php?option=com_sportsmanagement&task=season.edit&id='.$row->id);
@@ -107,12 +107,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         <?php
                         echo $this->pagination->getRowOffset($i);
                         ?>
-                        </td>
-                        <td class="center">
-                        <?php 
+						</td>
+						<td class="center">
+						<?php 
                         echo JHtml::_('grid.id', $i, $row->id);  
-                        ?>
-                        </td>
+						?>
+						</td>
 						<?php
 						if ($this->table->isCheckedOut($this->user->get('id'),$row->checked_out))
 						{
@@ -133,7 +133,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 									 <?php
 									 
 								 	$image = 'teams.png';
-								 	$title=  'COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_TEAM';
+								 	$title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_TEAM');
 								 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
 													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_TEAM'),
 													 'title= "' .$title. '"');
@@ -142,20 +142,20 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 									 									 ?>
 								</a>
                                 
-                                <a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
+								<a	rel="{handler: 'iframe',size: {x: <?php echo $modalwidth; ?>,y: <?php echo $modalheight; ?>}}"
 									href="<?php echo $assignpersons; ?>"
 									 class="modal"
 									 title="<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_PERSON'); ?>">
-									 <?php
+									<?php
 									 
 								 	$image = 'players.png';
-								 	$title=  'COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_PERSON';
-								 echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
+								 	$title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_PERSON');
+									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/'.$image,
 													 JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_ASSIGN_PERSON'),
 													 'title= "' .$title. '"');
 													 
 										
-									 									 ?>
+									?>
 								</a>
                                 
 							</td>
@@ -172,13 +172,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					<?php else : ?>
 							<?php echo $this->escape($row->name); ?>
 					<?php endif; ?>
-                        
-                        
-                        
+
+
                         <?php //echo $checked; ?>
-                        
+
                         <?php //echo $row->name; ?>
-                        <p class="smallsub">
+						<p class="smallsub">
 						<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($row->alias));?></p>
                         </td>
 						<td class="order">
@@ -195,7 +194,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						<td class="center"><?php echo $row->id; ?></td>
 					</tr>
 					<?php
-					$k=1 - $k;
+					$k = 1 - $k;
 				}
 				?>
 			</tbody>
