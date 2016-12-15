@@ -149,20 +149,22 @@
 <associations><assocname country="DEU" icon="fk_mittelrhein_koeln.gif" flag="" website="" shortname="" main="144" parentmain="11">Kreis Köln</assocname></associations>
 <associations><assocname country="DEU" icon="fk_mittelrhein_rhein_erft.gif" flag="" website="" shortname="" main="145" parentmain="11">Kreis Rhein erft</assocname></associations>
 <associations><assocname country="DEU" icon="fk_mittelrhein_sieg.gif" flag="" website="" shortname="" main="146" parentmain="11">Kreis Sieg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k1.gif" flag="" website="" shortname="" main="147" parentmain="10">Kreis 01</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k10.gif" flag="" website="" shortname="" main="148" parentmain="10">Kreis 10</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k11.gif" flag="" website="" shortname="" main="149" parentmain="10">Kreis 11</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k12.gif" flag="" website="" shortname="" main="150" parentmain="10">Kreis 12</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k13.gif" flag="" website="" shortname="" main="151" parentmain="10">Kreis 13</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k14.gif" flag="" website="" shortname="" main="152" parentmain="10">Kreis 14</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k2.gif" flag="" website="" shortname="" main="153" parentmain="10">Kreis 02</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k3.gif" flag="" website="" shortname="" main="154" parentmain="10">Kreis 03</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k4.gif" flag="" website="" shortname="" main="155" parentmain="10">Kreis 04</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k5.gif" flag="" website="" shortname="" main="156" parentmain="10">Kreis 05</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k6.gif" flag="" website="" shortname="" main="157" parentmain="10">Kreis 06</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k7.gif" flag="" website="" shortname="" main="158" parentmain="10">Kreis 07</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k8.gif" flag="" website="" shortname="" main="159" parentmain="10">Kreis 08</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k9.gif" flag="" website="" shortname="" main="160" parentmain="10">Kreis 09</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k1.gif" flag="" website="" shortname="" main="147" parentmain="10">Kreis 01 Düsseldorf</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k10.gif" flag="" website="" shortname="" main="148" parentmain="10">Kreis 10 Oberhausen/Bottrop</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k11.gif" flag="" website="" shortname="" main="149" parentmain="10">Kreis 11 Rees/Bocholt</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k12.gif" flag="" website="" shortname="" main="150" parentmain="10">Kreis 12 Essen Süd/Ost</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k13.gif" flag="" website="" shortname="" main="151" parentmain="10">Kreis 13 Essen Nord/West</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k14.gif" flag="" website="" shortname="" main="152" parentmain="10">Kreis 14 Remscheid</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k2.gif" flag="" website="" shortname="" main="153" parentmain="10">Kreis 02 Solingen</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k3.gif" flag="" website="" shortname="" main="154" parentmain="10">Kreis 03 Wuppertal/Niederberg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k4.gif" flag="" website="" shortname="" main="155" parentmain="10">Kreis 04 Mönchengladbach/
+Viersen</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k5.gif" flag="" website="" shortname="" main="156" parentmain="10">Kreis 05 Grevenbroich/Neuss</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k6.gif" flag="" website="" shortname="" main="157" parentmain="10">Kreis 06 Kempen/Krefeld</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k7.gif" flag="" website="" shortname="" main="158" parentmain="10">Kreis 07 Moers</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k8.gif" flag="" website="" shortname="" main="159" parentmain="10">Kreis 08 Kleve/Geldern</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k9.gif" flag="" website="" shortname="" main="160" parentmain="10">Kreis 09 Duisburg/Mülheim/
+Dinslaken</assocname></associations>
 <associations><assocname country="DEU" icon="fk_niedersachsen_ammerland.gif" flag="" website="" shortname="" main="161" parentmain="9">Kreis Ammerland</assocname></associations>
 <associations><assocname country="DEU" icon="fk_niedersachsen_aurich.gif" flag="" website="" shortname="" main="162" parentmain="9">Kreis Aurich</assocname></associations>
 <associations><assocname country="DEU" icon="fk_niedersachsen_braunschweig.gif" flag="" website="" shortname="" main="163" parentmain="9">Kreis Braunschweig</assocname></associations>
