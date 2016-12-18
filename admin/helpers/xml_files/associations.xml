@@ -125,17 +125,17 @@
 <associations><assocname country="DEU" icon="fk_hessen_hanau.gif" flag="" website="" shortname="Hanau" main="114" parentmain="16">Kreis Hanau</assocname></associations>
 <associations><assocname country="DEU" icon="fk_hessen_hersfeld_rotenburg.gif" flag="" website="" shortname="Hersfeld Rotenburg" main="115" parentmain="16">Kreis Hersfeld Rotenburg</assocname></associations>
 <associations><assocname country="DEU" icon="fk_hessen_hochtaunus.gif" flag="" website="" shortname="Hochtaunus" main="116" parentmain="16">Kreis Hochtaunus</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_hofgeismar_wolfhagen.gif" flag="" website="" shortname="Hofgeismar Wolfhagen" main="117" parentmain="16">Kreis Hofgeismar Wolfhagen</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_hofgeismar_wolfhagen.gif" flag="" website="" shortname="Hofgeismar-Wolfhagen" main="117" parentmain="16">Kreis Hofgeismar Wolfhagen</assocname></associations>
 <associations><assocname country="DEU" icon="fk_hessen_kassel.gif" flag="" website="" shortname="Kassel" main="118" parentmain="16">Kreis Kassel</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_lauterbach_huenfeld.gif" flag="" website="" shortname="Lauterbach Hünfeld" main="119" parentmain="16">Kreis Lauterbach Hünfeld</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_limburg_weilburg.gif" flag="" website="" shortname="Limburg Weilburg" main="120" parentmain="16">Kreis Limburg Weilburg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_lauterbach_huenfeld.gif" flag="" website="" shortname="Lauterbach-Hünfeld" main="119" parentmain="16">Kreis Lauterbach Hünfeld</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_limburg_weilburg.gif" flag="" website="" shortname="Limburg-Weilburg" main="120" parentmain="16">Kreis Limburg Weilburg</assocname></associations>
 <associations><assocname country="DEU" icon="fk_hessen_maintaunus.gif" flag="" website="" shortname="Maintaunus" main="121" parentmain="16">Kreis Maintaunus</assocname></associations>
 <associations><assocname country="DEU" icon="fk_hessen_marburg.gif" flag="" website="" shortname="Marburg" main="122" parentmain="16">Kreis Marburg</assocname></associations>
 <associations><assocname country="DEU" icon="fk_hessen_odenwald.gif" flag="" website="" shortname="Odenwald" main="123" parentmain="16">Kreis Odenwald</assocname></associations>
 <associations><assocname country="DEU" icon="fk_hessen_offenbach.gif" flag="" website="" shortname="Offenbach" main="124" parentmain="16">Kreis Offenbach</assocname></associations>
 <associations><assocname country="DEU" icon="fk_hessen_rheingau_taunus.gif" flag="" website="" shortname="Rheingau Taunus" main="125" parentmain="16">Kreis Rheingau Taunus</assocname></associations>
 <associations><assocname country="DEU" icon="fk_hessen_schluechtern.gif" flag="" website="" shortname="Schlüchtern" main="126" parentmain="16">Kreis Schlüchtern</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_schwalm_eder.gif" flag="" website="" shortname="Schwalm Eder" main="127" parentmain="16">Kreis Schwalm Eder</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_schwalm_eder.gif" flag="" website="" shortname="Schwalm-Eder" main="127" parentmain="16">Kreis Schwalm Eder</assocname></associations>
 <associations><assocname country="DEU" icon="fk_hessen_waldeck.gif" flag="" website="" shortname="Waldeck" main="128" parentmain="16">Kreis Waldeck</assocname></associations>
 <associations><assocname country="DEU" icon="fk_hessen_werra_meissner.gif" flag="" website="" shortname="Wera Meißner" main="129" parentmain="16">Kreis Wera Meißner</assocname></associations>
 <associations><assocname country="DEU" icon="fk_hessen_wetzlar.gif" flag="" website="" shortname="Wetzlar" main="130" parentmain="16">Kreis Wetzlar</assocname></associations>
