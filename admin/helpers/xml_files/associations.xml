@@ -29,189 +29,189 @@
 <associations><assocname country="DEU" icon="lv_d_thueringen.gif" flag="" website="" shortname="TFV" main="25" parentmain="5">Thüringer Fußball-Verband (TFV)</assocname></associations>
 <associations><assocname country="DEU" icon="lv_d_sachsen.gif" flag="" website="" shortname="SFV" main="26" parentmain="5">Sächsischer Fußball-Verband (SFV)</assocname></associations>
 
-<associations><assocname country="DEU" icon="fk_baden_bruchsal.gif" flag="" website="" shortname="" main="27" parentmain="17">Kreis Bruchsal</assocname></associations>
-<associations><assocname country="DEU" icon="fk_baden_buchen.gif" flag="" website="" shortname="" main="28" parentmain="17">Kreis Buchen</assocname></associations>
-<associations><assocname country="DEU" icon="fk_baden_heidelberg.gif" flag="" website="" shortname="" main="29" parentmain="17">Kreis Heidelberg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_baden_karlsruhe.gif" flag="" website="" shortname="" main="30" parentmain="17">Kreis Karlsruhe</assocname></associations>
-<associations><assocname country="DEU" icon="fk_baden_mannheim.gif" flag="" website="" shortname="" main="31" parentmain="17">Kreis Mannheim</assocname></associations>
-<associations><assocname country="DEU" icon="fk_baden_mosbach.gif" flag="" website="" shortname="" main="32" parentmain="17">Kreis Mosbach</assocname></associations>
-<associations><assocname country="DEU" icon="fk_baden_pforzheim.gif" flag="" website="" shortname="" main="33" parentmain="17">Kreis Pforzheim</assocname></associations>
-<associations><assocname country="DEU" icon="fk_baden_sinsheim.gif" flag="" website="" shortname="" main="34" parentmain="17">Kreis Sinsheim</assocname></associations>
-<associations><assocname country="DEU" icon="fk_baden_tauberbischofsheim.gif" flag="" website="" shortname="" main="35" parentmain="17">Kreis Tauberbischofsheim</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_allgaeu.gif" flag="" website="" shortname="" main="36" parentmain="20">Kreis Allgäu</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_amberg_weiden.gif" flag="" website="" shortname="" main="37" parentmain="20">Kreis Amberg Weiden</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_aschaffenburg.gif" flag="" website="" shortname="" main="38" parentmain="20">Kreis Aschaffenburg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_augsburg.gif" flag="" website="" shortname="" main="39" parentmain="20">Kreis Augsburg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_bamberg_bayreuth.gif" flag="" website="" shortname="" main="40" parentmain="20">Kreis Bamberg Bayreuth</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_bayerwald.gif" flag="" website="" shortname="" main="41" parentmain="20">Kreis Bayerwald</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_coburg_kronach.gif" flag="" website="" shortname="" main="42" parentmain="20">Kreis Coburg Kronach</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_donau.gif" flag="" website="" shortname="" main="43" parentmain="20">Kreis Donau</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_donau_isar.gif" flag="" website="" shortname="" main="44" parentmain="20">Kreis Donau Isar</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_erlangen_pegnitzgrund.gif" flag="" website="" shortname="" main="45" parentmain="20">Kreis Erlangen Pegnitzgrund</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_hof_marktredwitz.gif" flag="" website="" shortname="" main="46" parentmain="20">Kreis Hof Marktredwitz</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_inn_salzach.gif" flag="" website="" shortname="" main="47" parentmain="20">Kreis Inn Salzach</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_landshut.gif" flag="" website="" shortname="" main="48" parentmain="20">Kreis Landshut</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_muenchen.gif" flag="" website="" shortname="" main="49" parentmain="20">Kreis München</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_neumarkt_jura.gif" flag="" website="" shortname="" main="50" parentmain="20">Kreis Neumarkt Jura</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_nuernberg_frankenhoehe.gif" flag="" website="" shortname="" main="51" parentmain="20">Kreis Nürnberg Frankenhöhe</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_passau.gif" flag="" website="" shortname="" main="52" parentmain="20">Kreis Passau</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_regensburg.gif" flag="" website="" shortname="" main="53" parentmain="20">Kreis Regensburg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_rhoen.gif" flag="" website="" shortname="" main="54" parentmain="20">Kreis Rhön</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_schwandorf_cham.gif" flag="" website="" shortname="" main="55" parentmain="20">Kreis Schwandorf Cham</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_schweinfurt.gif" flag="" website="" shortname="" main="56" parentmain="20">Kreis Schweinfurt</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_straubing.gif" flag="" website="" shortname="" main="57" parentmain="20">Kreis Straubing</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_wuerzburg.gif" flag="" website="" shortname="" main="58" parentmain="20">Kreis Würzburg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_zugspitze.gif" flag="" website="" shortname="" main="59" parentmain="20">Kreis Zugspitze</assocname></associations>
-<associations><assocname country="DEU" icon="fk_berlin_charlottenburg_wilmersdorf.gif" flag="" website="" shortname="" main="60" parentmain="23">Kreis Charlottenburg Wilmersdorf</assocname></associations>
-<associations><assocname country="DEU" icon="fk_berlin_friedrichshain_kreuzberg.gif" flag="" website="" shortname="" main="61" parentmain="23">Kreis Friedrichshain Kreuzberg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_berlin_lichtenberg.gif" flag="" website="" shortname="" main="62" parentmain="23">Kreis Lichtenberg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_berlin_marzahn_hellersdorf.gif" flag="" website="" shortname="" main="63" parentmain="23">Kreis Marzahn Hellersdorf</assocname></associations>
-<associations><assocname country="DEU" icon="fk_berlin_mitte.gif" flag="" website="" shortname="" main="64" parentmain="23">Kreis Mitte</assocname></associations>
-<associations><assocname country="DEU" icon="fk_berlin_neukoelln.gif" flag="" website="" shortname="" main="65" parentmain="23">Kreis Neukölln</assocname></associations>
-<associations><assocname country="DEU" icon="fk_berlin_pankow.gif" flag="" website="" shortname="" main="66" parentmain="23">Kreis Pankow</assocname></associations>
-<associations><assocname country="DEU" icon="fk_berlin_reinickendorf.gif" flag="" website="" shortname="" main="67" parentmain="23">Kreis Reinickendorf</assocname></associations>
-<associations><assocname country="DEU" icon="fk_berlin_spandau.gif" flag="" website="" shortname="" main="68" parentmain="23">Kreis Spandau</assocname></associations>
-<associations><assocname country="DEU" icon="fk_berlin_steglitz_zehlendorf.gif" flag="" website="" shortname="" main="69" parentmain="23">Kreis Steglitz Zehlendorf</assocname></associations>
-<associations><assocname country="DEU" icon="fk_berlin_tempelhof_schoeneberg.gif" flag="" website="" shortname="" main="70" parentmain="23">Kreis Tempelhof Schöneberg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_berlin_treptow_koepenick.gif" flag="" website="" shortname="" main="71" parentmain="23">Kreis Treptow Köpenick</assocname></associations>
-<associations><assocname country="DEU" icon="fk_brandenburg_barnim.gif" flag="" website="" shortname="" main="72" parentmain="24">Kreis Barnim</assocname></associations>
-<associations><assocname country="DEU" icon="fk_brandenburg_dahmeland.gif" flag="" website="" shortname="" main="73" parentmain="24">Kreis Dahmeland</assocname></associations>
-<associations><assocname country="DEU" icon="fk_brandenburg_elbe_elster.gif" flag="" website="" shortname="" main="74" parentmain="24">Kreis Elbe Elster</assocname></associations>
-<associations><assocname country="DEU" icon="fk_brandenburg_havelland_mitte.gif" flag="" website="" shortname="" main="75" parentmain="24">Kreis Havelland Mitte</assocname></associations>
-<associations><assocname country="DEU" icon="fk_brandenburg_jueterborg_luckenwalde.gif" flag="" website="" shortname="" main="76" parentmain="24">Kreis Jüteborg Luckenwalde</assocname></associations>
-<associations><assocname country="DEU" icon="fk_brandenburg_maerkisch_oderland.gif" flag="" website="" shortname="" main="77" parentmain="24">Kreis Märkisch Oderland</assocname></associations>
-<associations><assocname country="DEU" icon="fk_brandenburg_niederlausitz.gif" flag="" website="" shortname="" main="78" parentmain="24">Kreis Niederlausitz</assocname></associations>
-<associations><assocname country="DEU" icon="fk_brandenburg_oberhavel.gif" flag="" website="" shortname="" main="79" parentmain="24">Kreis Oberhavel</assocname></associations>
-<associations><assocname country="DEU" icon="fk_brandenburg_oder_neisse.gif" flag="" website="" shortname="" main="80" parentmain="24">Kreis Oder Neisse</assocname></associations>
-<associations><assocname country="DEU" icon="fk_brandenburg_ostprignitz_ruppin.gif" flag="" website="" shortname="" main="81" parentmain="24">Kreis Ostprignitz Ruppin</assocname></associations>
-<associations><assocname country="DEU" icon="fk_brandenburg_ostuckermark.gif" flag="" website="" shortname="" main="82" parentmain="24">Kreis Ostuckermark</assocname></associations>
-<associations><assocname country="DEU" icon="fk_brandenburg_prignitz.gif" flag="" website="" shortname="" main="83" parentmain="24">Kreis Prignitz</assocname></associations>
-<associations><assocname country="DEU" icon="fk_brandenburg_senftenberg.gif" flag="" website="" shortname="" main="84" parentmain="24">Kreis Senftenberg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_brandenburg_spree.gif" flag="" website="" shortname="" main="85" parentmain="24">Kreis Spree</assocname></associations>
-<associations><assocname country="DEU" icon="fk_brandenburg_spreewald.gif" flag="" website="" shortname="" main="86" parentmain="24">Kreis Spreewald</assocname></associations>
-<associations><assocname country="DEU" icon="fk_brandenburg_westhavelland.gif" flag="" website="" shortname="" main="87" parentmain="24">Kreis Westhavelland</assocname></associations>
-<associations><assocname country="DEU" icon="fk_brandenburg_westuckermark.gif" flag="" website="" shortname="" main="88" parentmain="24">Kreis Westuckermakr</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bremen_bremerhaven.gif" flag="" website="" shortname="" main="89" parentmain="8">Kreis Bemerhaven</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bremen_nord.gif" flag="" website="" shortname="" main="90" parentmain="8">Kreis Nord</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bremen_stadt.gif" flag="" website="" shortname="" main="91" parentmain="8">Kreis Stadt</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hamburg_alster.gif" flag="" website="" shortname="" main="92" parentmain="7">Kreis Alster</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hamburg_bergedorf.gif" flag="" website="" shortname="" main="93" parentmain="7">Kreis Bergedorf</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hamburg_harburg.gif" flag="" website="" shortname="" main="94" parentmain="7">Kreis Harburg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hamburg_nord.gif" flag="" website="" shortname="" main="95" parentmain="7">Kreis Nord</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hamburg_ost.gif" flag="" website="" shortname="" main="96" parentmain="7">Kreis Ost</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hamburg_pinneberg.gif" flag="" website="" shortname="" main="97" parentmain="7">Kreis Pinneberg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hamburg_unterelbe.gif" flag="" website="" shortname="" main="98" parentmain="7">Kreis Unterelbe</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hamburg_walddoerfer.gif" flag="" website="" shortname="" main="99" parentmain="7">Kreis Walddörfer</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_alsfeld.gif" flag="" website="" shortname="" main="100" parentmain="16">Kreis Alsfeld</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_bergstrasse.gif" flag="" website="" shortname="" main="101" parentmain="16">Kreis Bergstrße</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_biedenkopf.gif" flag="" website="" shortname="" main="102" parentmain="16">Kreis Biedenkopf</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_buedingen.gif" flag="" website="" shortname="" main="103" parentmain="16">Kreis Büdingen</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_darmstadt.gif" flag="" website="" shortname="" main="104" parentmain="16">Kreis Darmstadt</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_dieburg.gif" flag="" website="" shortname="" main="105" parentmain="16">Kreis Dieburg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_dillenburg.gif" flag="" website="" shortname="" main="106" parentmain="16">Kreis Dillenburg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_frankenberg.gif" flag="" website="" shortname="" main="107" parentmain="16">Kreis Frankenberg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_frankfurt.gif" flag="" website="" shortname="" main="108" parentmain="16">Kreis Frankfurt</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_friedberg.gif" flag="" website="" shortname="" main="109" parentmain="16">Kreis Friedberg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_fulda.gif" flag="" website="" shortname="" main="110" parentmain="16">Kreis Fulda</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_gelnhausen.gif" flag="" website="" shortname="" main="111" parentmain="16">Kreis Gelnhausen</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_giessen.gif" flag="" website="" shortname="" main="112" parentmain="16">Kreis Gießen</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_gross_gerau.gif" flag="" website="" shortname="" main="113" parentmain="16">Kreis Groß Gerau</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_hanau.gif" flag="" website="" shortname="" main="114" parentmain="16">Kreis Hanau</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_hersfeld_rotenburg.gif" flag="" website="" shortname="" main="115" parentmain="16">Kreis Hersfeld Rotenburg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_hochtaunus.gif" flag="" website="" shortname="" main="116" parentmain="16">Kreis Hochtaunus</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_hofgeismar_wolfhagen.gif" flag="" website="" shortname="" main="117" parentmain="16">Kreis Hofgeismar Wolfhagen</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_kassel.gif" flag="" website="" shortname="" main="118" parentmain="16">Kreis Kassel</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_lauterbach_huenfeld.gif" flag="" website="" shortname="" main="119" parentmain="16">Kreis Lauterbach Hünfeld</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_limburg_weilburg.gif" flag="" website="" shortname="" main="120" parentmain="16">Kreis Limburg Weilburg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_maintaunus.gif" flag="" website="" shortname="" main="121" parentmain="16">Kreis Maintaunus</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_marburg.gif" flag="" website="" shortname="" main="122" parentmain="16">Kreis Marburg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_odenwald.gif" flag="" website="" shortname="" main="123" parentmain="16">Kreis Odenwald</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_offenbach.gif" flag="" website="" shortname="" main="124" parentmain="16">Kreis Offenbach</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_rheingau_taunus.gif" flag="" website="" shortname="" main="125" parentmain="16">Kreis Rheingau Taunus</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_schluechtern.gif" flag="" website="" shortname="" main="126" parentmain="16">Kreis Schlüchtern</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_schwalm_eder.gif" flag="" website="" shortname="" main="127" parentmain="16">Kreis Schwalm Eder</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_waldeck.gif" flag="" website="" shortname="" main="128" parentmain="16">Kreis Waldeck</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_werra_meissner.gif" flag="" website="" shortname="" main="129" parentmain="16">Kreis Wera Meißner</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_wetzlar.gif" flag="" website="" shortname="" main="130" parentmain="16">Kreis Wetzlar</assocname></associations>
-<associations><assocname country="DEU" icon="fk_hessen_wiesbaden.gif" flag="" website="" shortname="" main="131" parentmain="16">Kreis Wiesbaden</assocname></associations>
-<associations><assocname country="DEU" icon="fk_mecklenburg_vorpommern_mecklenburger_seenplatte_vorpommern.gif" flag="" website="" shortname="" main="132" parentmain="21">Kreis Mecklenburger Seenplatte Vorpommern</assocname></associations>
-<associations><assocname country="DEU" icon="fk_mecklenburg_vorpommern_nordvorpommern_ruegen.gif" flag="" website="" shortname="" main="133" parentmain="21">Kreis Nordvorpommern Rügen</assocname></associations>
-<associations><assocname country="DEU" icon="fk_mecklenburg_vorpommern_schwerin_nordwestmecklenburg.gif" flag="" website="" shortname="" main="134" parentmain="21">Kreis Schwerin Nordwestmecklenburg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_mecklenburg_vorpommern_vorpommern.gif" flag="" website="" shortname="" main="135" parentmain="21">Kreis Vorpommern</assocname></associations>
-<associations><assocname country="DEU" icon="fk_mecklenburg_vorpommern_warnow.gif" flag="" website="" shortname="" main="136" parentmain="21">Kreis Warnow</assocname></associations>
-<associations><assocname country="DEU" icon="fk_mecklenburg_vorpommern_westmecklenburg.gif" flag="" website="" shortname="" main="137" parentmain="21">Kreis Westmecklenburg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_mittelrhein_aachen.gif" flag="" website="" shortname="" main="138" parentmain="11">Kreis Aachen</assocname></associations>
-<associations><assocname country="DEU" icon="fk_mittelrhein_berg.gif" flag="" website="" shortname="" main="139" parentmain="11">Kreis Berg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_mittelrhein_bonn.gif" flag="" website="" shortname="" main="140" parentmain="11">Kreis Bonn</assocname></associations>
-<associations><assocname country="DEU" icon="fk_mittelrhein_dueren.gif" flag="" website="" shortname="" main="141" parentmain="11">Kreis Düren</assocname></associations>
-<associations><assocname country="DEU" icon="fk_mittelrhein_euskirchen.gif" flag="" website="" shortname="" main="142" parentmain="11">Kreis Euskirchen</assocname></associations>
-<associations><assocname country="DEU" icon="fk_mittelrhein_heinsberg.gif" flag="" website="" shortname="" main="143" parentmain="11">Kreis Heinsberg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_mittelrhein_koeln.gif" flag="" website="" shortname="" main="144" parentmain="11">Kreis Köln</assocname></associations>
-<associations><assocname country="DEU" icon="fk_mittelrhein_rhein_erft.gif" flag="" website="" shortname="" main="145" parentmain="11">Kreis Rhein erft</assocname></associations>
-<associations><assocname country="DEU" icon="fk_mittelrhein_sieg.gif" flag="" website="" shortname="" main="146" parentmain="11">Kreis Sieg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k1.gif" flag="" website="" shortname="" main="147" parentmain="10">Kreis 01 Düsseldorf</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k10.gif" flag="" website="" shortname="" main="148" parentmain="10">Kreis 10 Oberhausen/Bottrop</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k11.gif" flag="" website="" shortname="" main="149" parentmain="10">Kreis 11 Rees/Bocholt</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k12.gif" flag="" website="" shortname="" main="150" parentmain="10">Kreis 12 Essen Süd/Ost</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k13.gif" flag="" website="" shortname="" main="151" parentmain="10">Kreis 13 Essen Nord/West</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k14.gif" flag="" website="" shortname="" main="152" parentmain="10">Kreis 14 Remscheid</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k2.gif" flag="" website="" shortname="" main="153" parentmain="10">Kreis 02 Solingen</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k3.gif" flag="" website="" shortname="" main="154" parentmain="10">Kreis 03 Wuppertal/Niederberg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k4.gif" flag="" website="" shortname="" main="155" parentmain="10">Kreis 04 Mönchengladbach/
-Viersen</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k5.gif" flag="" website="" shortname="" main="156" parentmain="10">Kreis 05 Grevenbroich/Neuss</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k6.gif" flag="" website="" shortname="" main="157" parentmain="10">Kreis 06 Kempen/Krefeld</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k7.gif" flag="" website="" shortname="" main="158" parentmain="10">Kreis 07 Moers</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k8.gif" flag="" website="" shortname="" main="159" parentmain="10">Kreis 08 Kleve/Geldern</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niederrhein_k9.gif" flag="" website="" shortname="" main="160" parentmain="10">Kreis 09 Duisburg/Mülheim/
-Dinslaken</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_ammerland.gif" flag="" website="" shortname="" main="161" parentmain="9">Kreis Ammerland</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_aurich.gif" flag="" website="" shortname="" main="162" parentmain="9">Kreis Aurich</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_braunschweig.gif" flag="" website="" shortname="" main="163" parentmain="9">Kreis Braunschweig</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_celle.gif" flag="" website="" shortname="" main="164" parentmain="9">Kreis Celle</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_cloppenburg.gif" flag="" website="" shortname="" main="165" parentmain="9">Kreis Cloppenburg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_cuxhaven.gif" flag="" website="" shortname="" main="166" parentmain="9">Kreis cuxhaven</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_delmenhorst.gif" flag="" website="" shortname="" main="167" parentmain="9">Kreis Delmenhorst</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_diepholz.gif" flag="" website="" shortname="" main="168" parentmain="9">Kreis Diepholz</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_emden.gif" flag="" website="" shortname="" main="169" parentmain="9">Kreis Emden</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_emsland.gif" flag="" website="" shortname="" main="170" parentmain="9">Kreis Emsland</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_friesland.gif" flag="" website="" shortname="" main="171" parentmain="9">Kreis Friesland</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_gifhorn.gif" flag="" website="" shortname="" main="172" parentmain="9">Kreis Gifhorn</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_goettingen.gif" flag="" website="" shortname="" main="173" parentmain="9">Kreis Göttingen</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_goslar.gif" flag="" website="" shortname="" main="174" parentmain="9">Kreis Goslar</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_grafschaft_bentheim.gif" flag="" website="" shortname="" main="175" parentmain="9">Kreis Grafschaft Bentheim</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_hameln_pyrmont.gif" flag="" website="" shortname="" main="176" parentmain="9">Kreis Hameln Pyrmont</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_hannover.gif" flag="" website="" shortname="" main="177" parentmain="9">Kreis Hannover</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_hannover_land.gif" flag="" website="" shortname="" main="178" parentmain="9">Kreis Hannover Land</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_harburg.gif" flag="" website="" shortname="" main="179" parentmain="9">Kreis Harburg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_heidekreis.gif" flag="" website="" shortname="" main="180" parentmain="9">Kreis Heidekreis</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_helmstedt.gif" flag="" website="" shortname="" main="181" parentmain="9">Kreis Helmstedt</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_hildesheim.gif" flag="" website="" shortname="" main="182" parentmain="9">Kreis Hildesheim</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_holzminden.gif" flag="" website="" shortname="" main="183" parentmain="9">Kreis Holzminden</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_leer.gif" flag="" website="" shortname="" main="184" parentmain="9">Kreis Leer</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_luechow_dannenberg.gif" flag="" website="" shortname="" main="185" parentmain="9">Kreis Lüchow Dannenberg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_lueneburg.gif" flag="" website="" shortname="" main="186" parentmain="9">Kreis Lüneburg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_nienburg.gif" flag="" website="" shortname="" main="187" parentmain="9">Kreis Nienburg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_northeim_einbeck.gif" flag="" website="" shortname="" main="188" parentmain="9">Kreis Northeim Einbeck</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_oldenburg_land.gif" flag="" website="" shortname="" main="189" parentmain="9">Kreis Oldenburg Land</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_oldenburg_stadt.gif" flag="" website="" shortname="" main="190" parentmain="9">Kreis Oldenburg Stadt</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_osnabrueck_land.gif" flag="" website="" shortname="" main="191" parentmain="9">Kreis Osnabrück Land</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_osnabrueck_stadt.gif" flag="" website="" shortname="" main="192" parentmain="9">Kreis Osnabrück Stadt</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_osterholz.gif" flag="" website="" shortname="" main="193" parentmain="9">Kreis Osterholz</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_osterode.gif" flag="" website="" shortname="" main="194" parentmain="9">Kreis Osterode</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_peine.gif" flag="" website="" shortname="" main="195" parentmain="9">Kreis Peine</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_rotenburg.gif" flag="" website="" shortname="" main="196" parentmain="9">Kreis Rotenburg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_salzgitter.gif" flag="" website="" shortname="" main="197" parentmain="9">Kreis Salzgitter</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_schaumburg.gif" flag="" website="" shortname="" main="198" parentmain="9">Kreis Schaumburg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_stade.gif" flag="" website="" shortname="" main="199" parentmain="9">Kreis Stade</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_uelzen.gif" flag="" website="" shortname="" main="200" parentmain="9">Kreis Ülzen</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_vechta.gif" flag="" website="" shortname="" main="201" parentmain="9">Kreis Vechta</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_verden.gif" flag="" website="" shortname="" main="202" parentmain="9">Kreis Verden</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_wesermarsch.gif" flag="" website="" shortname="" main="203" parentmain="9">Kreis Wesermarsch</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_wilhelmshaven.gif" flag="" website="" shortname="" main="204" parentmain="9">Kreis Wilhelmshaven</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_wittmund.gif" flag="" website="" shortname="" main="205" parentmain="9">Kreis Wittmund</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_wolfenbuettel.gif" flag="" website="" shortname="" main="206" parentmain="9">Kreis Wolfenbüttel</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_wolfsburg.gif" flag="" website="" shortname="" main="207" parentmain="9">Kreis Wolfsburg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_baden_bruchsal.gif" flag="" website="" shortname="Bruchsal" main="27" parentmain="17">Kreis Bruchsal</assocname></associations>
+<associations><assocname country="DEU" icon="fk_baden_buchen.gif" flag="" website="" shortname="Buchen" main="28" parentmain="17">Kreis Buchen</assocname></associations>
+<associations><assocname country="DEU" icon="fk_baden_heidelberg.gif" flag="" website="" shortname="Heidelberg" main="29" parentmain="17">Kreis Heidelberg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_baden_karlsruhe.gif" flag="" website="" shortname="Karlsruhe" main="30" parentmain="17">Kreis Karlsruhe</assocname></associations>
+<associations><assocname country="DEU" icon="fk_baden_mannheim.gif" flag="" website="" shortname="Mannheim" main="31" parentmain="17">Kreis Mannheim</assocname></associations>
+<associations><assocname country="DEU" icon="fk_baden_mosbach.gif" flag="" website="" shortname="Mosbach" main="32" parentmain="17">Kreis Mosbach</assocname></associations>
+<associations><assocname country="DEU" icon="fk_baden_pforzheim.gif" flag="" website="" shortname="Pforzheim" main="33" parentmain="17">Kreis Pforzheim</assocname></associations>
+<associations><assocname country="DEU" icon="fk_baden_sinsheim.gif" flag="" website="" shortname="Sinsheim" main="34" parentmain="17">Kreis Sinsheim</assocname></associations>
+<associations><assocname country="DEU" icon="fk_baden_tauberbischofsheim.gif" flag="" website="" shortname="Tauberbischofsheim" main="35" parentmain="17">Kreis Tauberbischofsheim</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_allgaeu.gif" flag="" website="" shortname="Allgäu" main="36" parentmain="20">Kreis Allgäu</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_amberg_weiden.gif" flag="" website="" shortname="Amberg Weiden" main="37" parentmain="20">Kreis Amberg Weiden</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_aschaffenburg.gif" flag="" website="" shortname="Aschaffenburg" main="38" parentmain="20">Kreis Aschaffenburg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_augsburg.gif" flag="" website="" shortname="Augsburg" main="39" parentmain="20">Kreis Augsburg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_bamberg_bayreuth.gif" flag="" website="" shortname="Bamberg Bayreuth" main="40" parentmain="20">Kreis Bamberg Bayreuth</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_bayerwald.gif" flag="" website="" shortname="Bayerwald" main="41" parentmain="20">Kreis Bayerwald</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_coburg_kronach.gif" flag="" website="" shortname="Coburg Kronach" main="42" parentmain="20">Kreis Coburg Kronach</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_donau.gif" flag="" website="" shortname="Donau" main="43" parentmain="20">Kreis Donau</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_donau_isar.gif" flag="" website="" shortname="Donau Isar" main="44" parentmain="20">Kreis Donau Isar</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_erlangen_pegnitzgrund.gif" flag="" website="" shortname="Erlangen Pegnitzgrund" main="45" parentmain="20">Kreis Erlangen Pegnitzgrund</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_hof_marktredwitz.gif" flag="" website="" shortname="Hof Marktredwitz" main="46" parentmain="20">Kreis Hof Marktredwitz</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_inn_salzach.gif" flag="" website="" shortname="Inn Salzach" main="47" parentmain="20">Kreis Inn Salzach</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_landshut.gif" flag="" website="" shortname="Landshut" main="48" parentmain="20">Kreis Landshut</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_muenchen.gif" flag="" website="" shortname="München" main="49" parentmain="20">Kreis München</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_neumarkt_jura.gif" flag="" website="" shortname="Neumarkt Jura" main="50" parentmain="20">Kreis Neumarkt Jura</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_nuernberg_frankenhoehe.gif" flag="" website="" shortname="Nürnberg Frankenhöhe" main="51" parentmain="20">Kreis Nürnberg Frankenhöhe</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_passau.gif" flag="" website="" shortname="Passau" main="52" parentmain="20">Kreis Passau</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_regensburg.gif" flag="" website="" shortname="Regensburg" main="53" parentmain="20">Kreis Regensburg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_rhoen.gif" flag="" website="" shortname="Rhön" main="54" parentmain="20">Kreis Rhön</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_schwandorf_cham.gif" flag="" website="" shortname="Schwandorf Cham" main="55" parentmain="20">Kreis Schwandorf Cham</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_schweinfurt.gif" flag="" website="" shortname="Schweinfurt" main="56" parentmain="20">Kreis Schweinfurt</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_straubing.gif" flag="" website="" shortname="Straubing" main="57" parentmain="20">Kreis Straubing</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_wuerzburg.gif" flag="" website="" shortname="Würzburg" main="58" parentmain="20">Kreis Würzburg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_zugspitze.gif" flag="" website="" shortname="Zugspitze" main="59" parentmain="20">Kreis Zugspitze</assocname></associations>
+<associations><assocname country="DEU" icon="fk_berlin_charlottenburg_wilmersdorf.gif" flag="" website="" shortname="Charlottenburg Wilmersdorf" main="60" parentmain="23">Kreis Charlottenburg Wilmersdorf</assocname></associations>
+<associations><assocname country="DEU" icon="fk_berlin_friedrichshain_kreuzberg.gif" flag="" website="" shortname="Friedrichshain Kreuzberg" main="61" parentmain="23">Kreis Friedrichshain Kreuzberg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_berlin_lichtenberg.gif" flag="" website="" shortname="Lichtenberg" main="62" parentmain="23">Kreis Lichtenberg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_berlin_marzahn_hellersdorf.gif" flag="" website="" shortname="Marzahn Hellersdorf" main="63" parentmain="23">Kreis Marzahn Hellersdorf</assocname></associations>
+<associations><assocname country="DEU" icon="fk_berlin_mitte.gif" flag="" website="" shortname="Mitte" main="64" parentmain="23">Kreis Mitte</assocname></associations>
+<associations><assocname country="DEU" icon="fk_berlin_neukoelln.gif" flag="" website="" shortname="Neukölln" main="65" parentmain="23">Kreis Neukölln</assocname></associations>
+<associations><assocname country="DEU" icon="fk_berlin_pankow.gif" flag="" website="" shortname="Pankow" main="66" parentmain="23">Kreis Pankow</assocname></associations>
+<associations><assocname country="DEU" icon="fk_berlin_reinickendorf.gif" flag="" website="" shortname="Reinickendorf" main="67" parentmain="23">Kreis Reinickendorf</assocname></associations>
+<associations><assocname country="DEU" icon="fk_berlin_spandau.gif" flag="" website="" shortname="Spandau" main="68" parentmain="23">Kreis Spandau</assocname></associations>
+<associations><assocname country="DEU" icon="fk_berlin_steglitz_zehlendorf.gif" flag="" website="" shortname="Steglitz Zehlendorf" main="69" parentmain="23">Kreis Steglitz Zehlendorf</assocname></associations>
+<associations><assocname country="DEU" icon="fk_berlin_tempelhof_schoeneberg.gif" flag="" website="" shortname="Tempelhof Schöneberg" main="70" parentmain="23">Kreis Tempelhof Schöneberg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_berlin_treptow_koepenick.gif" flag="" website="" shortname="Treptow Köpenick" main="71" parentmain="23">Kreis Treptow Köpenick</assocname></associations>
+<associations><assocname country="DEU" icon="fk_brandenburg_barnim.gif" flag="" website="" shortname="Barnim" main="72" parentmain="24">Kreis Barnim</assocname></associations>
+<associations><assocname country="DEU" icon="fk_brandenburg_dahmeland.gif" flag="" website="" shortname="Dahmeland" main="73" parentmain="24">Kreis Dahmeland</assocname></associations>
+<associations><assocname country="DEU" icon="fk_brandenburg_elbe_elster.gif" flag="" website="" shortname="Elbe Elster" main="74" parentmain="24">Kreis Elbe Elster</assocname></associations>
+<associations><assocname country="DEU" icon="fk_brandenburg_havelland_mitte.gif" flag="" website="" shortname="Havelland Mitte" main="75" parentmain="24">Kreis Havelland Mitte</assocname></associations>
+<associations><assocname country="DEU" icon="fk_brandenburg_jueterborg_luckenwalde.gif" flag="" website="" shortname="Jüteborg Luckenwalde" main="76" parentmain="24">Kreis Jüteborg Luckenwalde</assocname></associations>
+<associations><assocname country="DEU" icon="fk_brandenburg_maerkisch_oderland.gif" flag="" website="" shortname="Märkisch Oderland" main="77" parentmain="24">Kreis Märkisch Oderland</assocname></associations>
+<associations><assocname country="DEU" icon="fk_brandenburg_niederlausitz.gif" flag="" website="" shortname="Niederlausitz" main="78" parentmain="24">Kreis Niederlausitz</assocname></associations>
+<associations><assocname country="DEU" icon="fk_brandenburg_oberhavel.gif" flag="" website="" shortname="Oberhavel" main="79" parentmain="24">Kreis Oberhavel</assocname></associations>
+<associations><assocname country="DEU" icon="fk_brandenburg_oder_neisse.gif" flag="" website="" shortname="Oder Neisse" main="80" parentmain="24">Kreis Oder Neisse</assocname></associations>
+<associations><assocname country="DEU" icon="fk_brandenburg_ostprignitz_ruppin.gif" flag="" website="" shortname="Ostprignitz Ruppin" main="81" parentmain="24">Kreis Ostprignitz Ruppin</assocname></associations>
+<associations><assocname country="DEU" icon="fk_brandenburg_ostuckermark.gif" flag="" website="" shortname="Ostuckermark" main="82" parentmain="24">Kreis Ostuckermark</assocname></associations>
+<associations><assocname country="DEU" icon="fk_brandenburg_prignitz.gif" flag="" website="" shortname="Prignitz" main="83" parentmain="24">Kreis Prignitz</assocname></associations>
+<associations><assocname country="DEU" icon="fk_brandenburg_senftenberg.gif" flag="" website="" shortname="Senftenberg" main="84" parentmain="24">Kreis Senftenberg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_brandenburg_spree.gif" flag="" website="" shortname="Spree" main="85" parentmain="24">Kreis Spree</assocname></associations>
+<associations><assocname country="DEU" icon="fk_brandenburg_spreewald.gif" flag="" website="" shortname="Spreewald" main="86" parentmain="24">Kreis Spreewald</assocname></associations>
+<associations><assocname country="DEU" icon="fk_brandenburg_westhavelland.gif" flag="" website="" shortname="Westhavelland" main="87" parentmain="24">Kreis Westhavelland</assocname></associations>
+<associations><assocname country="DEU" icon="fk_brandenburg_westuckermark.gif" flag="" website="" shortname="Westuckermark" main="88" parentmain="24">Kreis Westuckermark</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bremen_bremerhaven.gif" flag="" website="" shortname="Bemerhaven" main="89" parentmain="8">Kreis Bemerhaven</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bremen_nord.gif" flag="" website="" shortname="Nord" main="90" parentmain="8">Kreis Nord</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bremen_stadt.gif" flag="" website="" shortname="Stadt" main="91" parentmain="8">Kreis Stadt</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hamburg_alster.gif" flag="" website="" shortname="Alster" main="92" parentmain="7">Kreis Alster</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hamburg_bergedorf.gif" flag="" website="" shortname="Bergedorf" main="93" parentmain="7">Kreis Bergedorf</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hamburg_harburg.gif" flag="" website="" shortname="Harburg" main="94" parentmain="7">Kreis Harburg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hamburg_nord.gif" flag="" website="" shortname="Nord" main="95" parentmain="7">Kreis Nord</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hamburg_ost.gif" flag="" website="" shortname="Ost" main="96" parentmain="7">Kreis Ost</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hamburg_pinneberg.gif" flag="" website="" shortname="Pinneberg" main="97" parentmain="7">Kreis Pinneberg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hamburg_unterelbe.gif" flag="" website="" shortname="Unterelbe" main="98" parentmain="7">Kreis Unterelbe</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hamburg_walddoerfer.gif" flag="" website="" shortname="Walddörfer" main="99" parentmain="7">Kreis Walddörfer</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_alsfeld.gif" flag="" website="" shortname="Alsfeld" main="100" parentmain="16">Kreis Alsfeld</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_bergstrasse.gif" flag="" website="" shortname="Bergstraße" main="101" parentmain="16">Kreis Bergstraße</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_biedenkopf.gif" flag="" website="" shortname="Biedenkopf" main="102" parentmain="16">Kreis Biedenkopf</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_buedingen.gif" flag="" website="" shortname="Büdingen" main="103" parentmain="16">Kreis Büdingen</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_darmstadt.gif" flag="" website="" shortname="Darmstadt" main="104" parentmain="16">Kreis Darmstadt</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_dieburg.gif" flag="" website="" shortname="Dieburg" main="105" parentmain="16">Kreis Dieburg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_dillenburg.gif" flag="" website="" shortname="Dillenburg" main="106" parentmain="16">Kreis Dillenburg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_frankenberg.gif" flag="" website="" shortname="Frankenberg" main="107" parentmain="16">Kreis Frankenberg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_frankfurt.gif" flag="" website="" shortname="Frankfurt" main="108" parentmain="16">Kreis Frankfurt</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_friedberg.gif" flag="" website="" shortname="Friedberg" main="109" parentmain="16">Kreis Friedberg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_fulda.gif" flag="" website="" shortname="Fulda" main="110" parentmain="16">Kreis Fulda</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_gelnhausen.gif" flag="" website="" shortname="Gelnhausen" main="111" parentmain="16">Kreis Gelnhausen</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_giessen.gif" flag="" website="" shortname="Gießen" main="112" parentmain="16">Kreis Gießen</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_gross_gerau.gif" flag="" website="" shortname="Groß Gerau" main="113" parentmain="16">Kreis Groß Gerau</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_hanau.gif" flag="" website="" shortname="Hanau" main="114" parentmain="16">Kreis Hanau</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_hersfeld_rotenburg.gif" flag="" website="" shortname="Hersfeld Rotenburg" main="115" parentmain="16">Kreis Hersfeld Rotenburg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_hochtaunus.gif" flag="" website="" shortname="Hochtaunus" main="116" parentmain="16">Kreis Hochtaunus</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_hofgeismar_wolfhagen.gif" flag="" website="" shortname="Hofgeismar Wolfhagen" main="117" parentmain="16">Kreis Hofgeismar Wolfhagen</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_kassel.gif" flag="" website="" shortname="Kassel" main="118" parentmain="16">Kreis Kassel</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_lauterbach_huenfeld.gif" flag="" website="" shortname="Lauterbach Hünfeld" main="119" parentmain="16">Kreis Lauterbach Hünfeld</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_limburg_weilburg.gif" flag="" website="" shortname="Limburg Weilburg" main="120" parentmain="16">Kreis Limburg Weilburg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_maintaunus.gif" flag="" website="" shortname="Maintaunus" main="121" parentmain="16">Kreis Maintaunus</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_marburg.gif" flag="" website="" shortname="Marburg" main="122" parentmain="16">Kreis Marburg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_odenwald.gif" flag="" website="" shortname="Odenwald" main="123" parentmain="16">Kreis Odenwald</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_offenbach.gif" flag="" website="" shortname="Offenbach" main="124" parentmain="16">Kreis Offenbach</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_rheingau_taunus.gif" flag="" website="" shortname="Rheingau Taunus" main="125" parentmain="16">Kreis Rheingau Taunus</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_schluechtern.gif" flag="" website="" shortname="Schlüchtern" main="126" parentmain="16">Kreis Schlüchtern</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_schwalm_eder.gif" flag="" website="" shortname="Schwalm Eder" main="127" parentmain="16">Kreis Schwalm Eder</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_waldeck.gif" flag="" website="" shortname="Waldeck" main="128" parentmain="16">Kreis Waldeck</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_werra_meissner.gif" flag="" website="" shortname="Wera Meißner" main="129" parentmain="16">Kreis Wera Meißner</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_wetzlar.gif" flag="" website="" shortname="Wetzlar" main="130" parentmain="16">Kreis Wetzlar</assocname></associations>
+<associations><assocname country="DEU" icon="fk_hessen_wiesbaden.gif" flag="" website="" shortname="Wiesbaden" main="131" parentmain="16">Kreis Wiesbaden</assocname></associations>
+<associations><assocname country="DEU" icon="fk_mecklenburg_vorpommern_mecklenburger_seenplatte_vorpommern.gif" flag="" website="" shortname="Mecklenburger Seenplatte Vorpommern" main="132" parentmain="21">Kreis Mecklenburger Seenplatte Vorpommern</assocname></associations>
+<associations><assocname country="DEU" icon="fk_mecklenburg_vorpommern_nordvorpommern_ruegen.gif" flag="" website="" shortname="Nordvorpommern Rügen" main="133" parentmain="21">Kreis Nordvorpommern Rügen</assocname></associations>
+<associations><assocname country="DEU" icon="fk_mecklenburg_vorpommern_schwerin_nordwestmecklenburg.gif" flag="" website="" shortname="Schwerin Nordwestmecklenburg" main="134" parentmain="21">Kreis Schwerin Nordwestmecklenburg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_mecklenburg_vorpommern_vorpommern.gif" flag="" website="" shortname="Vorpommern" main="135" parentmain="21">Kreis Vorpommern</assocname></associations>
+<associations><assocname country="DEU" icon="fk_mecklenburg_vorpommern_warnow.gif" flag="" website="" shortname="Warnow" main="136" parentmain="21">Kreis Warnow</assocname></associations>
+<associations><assocname country="DEU" icon="fk_mecklenburg_vorpommern_westmecklenburg.gif" flag="" website="" shortname="Westmecklenburg" main="137" parentmain="21">Kreis Westmecklenburg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_mittelrhein_aachen.gif" flag="" website="" shortname="Aachen" main="138" parentmain="11">Kreis Aachen</assocname></associations>
+<associations><assocname country="DEU" icon="fk_mittelrhein_berg.gif" flag="" website="" shortname="Berg" main="139" parentmain="11">Kreis Berg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_mittelrhein_bonn.gif" flag="" website="" shortname="Bonn" main="140" parentmain="11">Kreis Bonn</assocname></associations>
+<associations><assocname country="DEU" icon="fk_mittelrhein_dueren.gif" flag="" website="" shortname="Düren" main="141" parentmain="11">Kreis Düren</assocname></associations>
+<associations><assocname country="DEU" icon="fk_mittelrhein_euskirchen.gif" flag="" website="" shortname="Euskirchen" main="142" parentmain="11">Kreis Euskirchen</assocname></associations>
+<associations><assocname country="DEU" icon="fk_mittelrhein_heinsberg.gif" flag="" website="" shortname="Heinsberg" main="143" parentmain="11">Kreis Heinsberg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_mittelrhein_koeln.gif" flag="" website="" shortname="Köln" main="144" parentmain="11">Kreis Köln</assocname></associations>
+<associations><assocname country="DEU" icon="fk_mittelrhein_rhein_erft.gif" flag="" website="" shortname="Kreis Rhein Erft" main="145" parentmain="11">Kreis Rhein Erft</assocname></associations>
+<associations><assocname country="DEU" icon="fk_mittelrhein_sieg.gif" flag="" website="" shortname="Sieg" main="146" parentmain="11">Kreis Sieg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k1.gif" flag="" website="" shortname="Düsseldorf" main="147" parentmain="10">Kreis 01 Düsseldorf</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k10.gif" flag="" website="" shortname="Oberhausen/Bottrop" main="148" parentmain="10">Kreis 10 Oberhausen/Bottrop</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k11.gif" flag="" website="" shortname="Rees/Bocholt" main="149" parentmain="10">Kreis 11 Rees/Bocholt</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k12.gif" flag="" website="" shortname="Essen Süd/Ost" main="150" parentmain="10">Kreis 12 Essen Süd/Ost</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k13.gif" flag="" website="" shortname="Essen Nord/West" main="151" parentmain="10">Kreis 13 Essen Nord/West</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k14.gif" flag="" website="" shortname="Remscheid" main="152" parentmain="10">Kreis 14 Remscheid</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k2.gif" flag="" website="" shortname="Solingen" main="153" parentmain="10">Kreis 02 Solingen</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k3.gif" flag="" website="" shortname="Wuppertal/Niederberg" main="154" parentmain="10">Kreis 03 Wuppertal/Niederberg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k4.gif" flag="" website="" shortname="Mönchengladbach/Viersen" main="155" parentmain="10">Kreis 04 Mönchengladbach/Viersen</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k5.gif" flag="" website="" shortname="Grevenbroich/Neuss" main="156" parentmain="10">Kreis 05 Grevenbroich/Neuss</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k6.gif" flag="" website="" shortname="Kempen/Krefeld" main="157" parentmain="10">Kreis 06 Kempen/Krefeld</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k7.gif" flag="" website="" shortname="Moers" main="158" parentmain="10">Kreis 07 Moers</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k8.gif" flag="" website="" shortname="Kleve/Geldern" main="159" parentmain="10">Kreis 08 Kleve/Geldern</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niederrhein_k9.gif" flag="" website="" shortname="Duisburg/Mülheim/Dinslaken" main="160" parentmain="10">Kreis 09 Duisburg/Mülheim/Dinslaken</assocname></associations>
+
+<associations><assocname country="DEU" icon="fk_niedersachsen_ammerland.gif" flag="" website="" shortname="Ammerland" main="161" parentmain="9">Kreis Ammerland</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_aurich.gif" flag="" website="" shortname="Aurich" main="162" parentmain="9">Kreis Aurich</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_braunschweig.gif" flag="" website="" shortname="Braunschweig" main="163" parentmain="9">Kreis Braunschweig</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_celle.gif" flag="" website="" shortname="Celle" main="164" parentmain="9">Kreis Celle</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_cloppenburg.gif" flag="" website="" shortname="Cloppenburg" main="165" parentmain="9">Kreis Cloppenburg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_cuxhaven.gif" flag="" website="" shortname="Cuxhaven" main="166" parentmain="9">Kreis Cuxhaven</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_delmenhorst.gif" flag="" website="" shortname="Delmenhorst" main="167" parentmain="9">Kreis Delmenhorst</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_diepholz.gif" flag="" website="" shortname="Diepholz" main="168" parentmain="9">Kreis Diepholz</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_emden.gif" flag="" website="" shortname="Emden" main="169" parentmain="9">Kreis Emden</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_emsland.gif" flag="" website="" shortname="Emsland" main="170" parentmain="9">Kreis Emsland</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_friesland.gif" flag="" website="" shortname="Friesland" main="171" parentmain="9">Kreis Friesland</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_gifhorn.gif" flag="" website="" shortname="Gifhorn" main="172" parentmain="9">Kreis Gifhorn</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_goettingen.gif" flag="" website="" shortname="Göttingen" main="173" parentmain="9">Kreis Göttingen</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_goslar.gif" flag="" website="" shortname="Goslar" main="174" parentmain="9">Kreis Goslar</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_grafschaft_bentheim.gif" flag="" website="" shortname="Grafschaft Bentheim" main="175" parentmain="9">Kreis Grafschaft Bentheim</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_hameln_pyrmont.gif" flag="" website="" shortname="Hameln Pyrmont" main="176" parentmain="9">Kreis Hameln Pyrmont</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_hannover.gif" flag="" website="" shortname="Hannover" main="177" parentmain="9">Kreis Hannover</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_hannover_land.gif" flag="" website="" shortname="Hannover Land" main="178" parentmain="9">Kreis Hannover Land</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_harburg.gif" flag="" website="" shortname="Harburg" main="179" parentmain="9">Kreis Harburg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_heidekreis.gif" flag="" website="" shortname="Heidekreis" main="180" parentmain="9">Kreis Heidekreis</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_helmstedt.gif" flag="" website="" shortname="Helmstedt" main="181" parentmain="9">Kreis Helmstedt</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_hildesheim.gif" flag="" website="" shortname="Hildesheim" main="182" parentmain="9">Kreis Hildesheim</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_holzminden.gif" flag="" website="" shortname="Holzminden" main="183" parentmain="9">Kreis Holzminden</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_leer.gif" flag="" website="" shortname="Leer" main="184" parentmain="9">Kreis Leer</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_luechow_dannenberg.gif" flag="" website="" shortname="Lüchow Dannenberg" main="185" parentmain="9">Kreis Lüchow Dannenberg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_lueneburg.gif" flag="" website="" shortname="Lüneburg" main="186" parentmain="9">Kreis Lüneburg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_nienburg.gif" flag="" website="" shortname="Nienburg" main="187" parentmain="9">Kreis Nienburg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_northeim_einbeck.gif" flag="" website="" shortname="Northeim Einbeck" main="188" parentmain="9">Kreis Northeim Einbeck</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_oldenburg_land.gif" flag="" website="" shortname="Oldenburg Land" main="189" parentmain="9">Kreis Oldenburg Land</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_oldenburg_stadt.gif" flag="" website="" shortname="Oldenburg Stadt" main="190" parentmain="9">Kreis Oldenburg Stadt</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_osnabrueck_land.gif" flag="" website="" shortname="Osnabrück Land" main="191" parentmain="9">Kreis Osnabrück Land</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_osnabrueck_stadt.gif" flag="" website="" shortname="Osnabrück Stadt" main="192" parentmain="9">Kreis Osnabrück Stadt</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_osterholz.gif" flag="" website="" shortname="Osterholz" main="193" parentmain="9">Kreis Osterholz</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_osterode.gif" flag="" website="" shortname="Osterode" main="194" parentmain="9">Kreis Osterode</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_peine.gif" flag="" website="" shortname="Peine" main="195" parentmain="9">Kreis Peine</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_rotenburg.gif" flag="" website="" shortname="Rotenburg" main="196" parentmain="9">Kreis Rotenburg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_salzgitter.gif" flag="" website="" shortname="Salzgitter" main="197" parentmain="9">Kreis Salzgitter</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_schaumburg.gif" flag="" website="" shortname="Schaumburg" main="198" parentmain="9">Kreis Schaumburg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_stade.gif" flag="" website="" shortname="Stade" main="199" parentmain="9">Kreis Stade</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_uelzen.gif" flag="" website="" shortname="Ülzen" main="200" parentmain="9">Kreis Ülzen</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_vechta.gif" flag="" website="" shortname="Vechta" main="201" parentmain="9">Kreis Vechta</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_verden.gif" flag="" website="" shortname="Verden" main="202" parentmain="9">Kreis Verden</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_wesermarsch.gif" flag="" website="" shortname="Wesermarsch" main="203" parentmain="9">Kreis Wesermarsch</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_wilhelmshaven.gif" flag="" website="" shortname="Wilhelmshaven" main="204" parentmain="9">Kreis Wilhelmshaven</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_wittmund.gif" flag="" website="" shortname="Wittmund" main="205" parentmain="9">Kreis Wittmund</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_wolfenbuettel.gif" flag="" website="" shortname="Wolfenbüttel" main="206" parentmain="9">Kreis Wolfenbüttel</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_wolfsburg.gif" flag="" website="" shortname="Wolfsburg" main="207" parentmain="9">Kreis Wolfsburg</assocname></associations>
+
 <associations><assocname country="DEU" icon="fk_rheinland_eifel.gif" flag="" website="" shortname="" main="208" parentmain="13">Kreis Eifel</assocname></associations>
 <associations><assocname country="DEU" icon="fk_rheinland_hunsrueck_mosel.gif" flag="" website="" shortname="" main="209" parentmain="13">Kreis Hunsrück Mosel</assocname></associations>
 <associations><assocname country="DEU" icon="fk_rheinland_koblenz.gif" flag="" website="" shortname="" main="210" parentmain="13">Kreis Koblenz</assocname></associations>
