@@ -36,7 +36,6 @@
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
-
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die;
  
@@ -61,6 +60,30 @@ abstract class sportsmanagementHelper
 	static $_jsm_db = '';
     static $_success_text = array();
     
+    
+    
+    /**
+     * sportsmanagementHelper::jsmsernum()
+     * generiert eine seriennummer
+     * das template kann angepasst werden
+     * @return
+     */
+    function jsmsernum()
+{
+    $template   = 'XX99-XX99-99XX-99XX-XXXX-99XX';
+    $k = strlen($template);
+    $sernum = '';
+    for ($i=0; $i<$k; $i++)
+    {
+        switch($template[$i])
+        {
+            case 'X': $sernum .= chr(rand(65,90)); break;
+            case '9': $sernum .= rand(0,9); break;
+            case '-': $sernum .= '-';  break; 
+        }
+    }
+    return $sernum;
+}
     
     /**
      * sportsmanagementHelper::existPicture()
