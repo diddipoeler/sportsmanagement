@@ -1219,7 +1219,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
    // Select some fields
         $query1->select('id');
 		// From the table
-		$query1->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations');
+		$query1->from('#__sportsmanagement_associations');
         $query1->where('country LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($country)).''));
         $query1->where('name LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($assocname)).''));
         
@@ -1242,7 +1242,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
                 $values = array('\''.$country.'\'','\''.$assocname.'\'','\''.$icon.'\'','\''.$flag.'\'','\''.$website.'\'','\''.$shortname.'\'');
                 // Prepare the insert query.
                 $insertquery
-                ->insert(JFactory::getDbo()->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations'))
+                ->insert(JFactory::getDbo()->quoteName('#__sportsmanagement_associations'))
                 ->columns(JFactory::getDbo()->quoteName($columns))
                 ->values(implode(',', $values));
                 // Set the query using our newly populated query object and execute it.
@@ -1273,7 +1273,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
                 $values = array('\''.$country.'\'','\''.$assocname.'\'',$parent_id[0]->id,'\''.$icon.'\'','\''.$flag.'\'','\''.$website.'\'','\''.$shortname.'\'');
                 // Prepare the insert query.
                 $insertquery
-                ->insert(JFactory::getDbo()->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations'))
+                ->insert(JFactory::getDbo()->quoteName('#__sportsmanagement_associations'))
                 ->columns(JFactory::getDbo()->quoteName($columns))
                 ->values(implode(',', $values));
                 // Set the query using our newly populated query object and execute it.
@@ -1305,13 +1305,14 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
    // Fields to update.
                 $query = JFactory::getDbo()->getQuery(true);
                 $fields = array(
-                JFactory::getDbo()->quoteName('picture') . '=' . '\''.$icon.'\''
+                JFactory::getDbo()->quoteName('picture') . '=' . '\''.$icon.'\'',
+                JFactory::getDbo()->quoteName('short_name') . '=' . '\''.$shortname.'\''
                 );
                 // Conditions for which records should be updated.
                 $conditions = array(
                 JFactory::getDbo()->quoteName('id') . '=' . $result
                 );
-                $query->update(JFactory::getDbo()->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations'))->set($fields)->where($conditions);
+                $query->update(JFactory::getDbo()->quoteName('#__sportsmanagement_associations'))->set($fields)->where($conditions);
                 JFactory::getDbo()->setQuery($query);
                 $result = self::runJoomlaQuery(); 
    
