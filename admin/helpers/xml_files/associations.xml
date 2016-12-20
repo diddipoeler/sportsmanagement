@@ -246,9 +246,9 @@
 <associations><assocname country="DEU" icon="fk_sachsen_anhalt_harz.gif" flag="" website="" shortname="Harz" main="228" parentmain="26">Kreis Harz</assocname></associations>
 <associations><assocname country="DEU" icon="fk_sachsen_anhalt_jerichower_land.gif" flag="" website="" shortname="Jerichower Land" main="229" parentmain="26">Kreis Jerichower Land</assocname></associations>
 <associations><assocname country="DEU" icon="fk_sachsen_anhalt_magdeburg.gif" flag="" website="" shortname="Magdeburg" main="230" parentmain="26">Kreis Magdeburg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_sachsen_anhalt_mansfeld_suedharz.gif" flag="" website="" shortname="Mansfeld Südharz" main="231" parentmain="26">Kreis Mansfeld Südharz</assocname></associations>
+<associations><assocname country="DEU" icon="fk_sachsen_anhalt_mansfeld_suedharz.gif" flag="" website="" shortname="Mansfeld-Südharz" main="231" parentmain="26">Kreis Mansfeld Südharz</assocname></associations>
 <associations><assocname country="DEU" icon="fk_sachsen_anhalt_saalekreis.gif" flag="" website="" shortname="Saalekreis" main="232" parentmain="26">Kreis Saalekreis</assocname></associations>
-<associations><assocname country="DEU" icon="fk_sachsen_anhalt_salzlandkreis.gif" flag="" website="" shortname="Salzlandkreis" main="233" parentmain="26">Kreis Salzlandkreis</assocname></associations>
+<associations><assocname country="DEU" icon="fk_sachsen_anhalt_salzlandkreis.gif" flag="" website="" shortname="Salzland" main="233" parentmain="26">Kreis Salzlandkreis</assocname></associations>
 <associations><assocname country="DEU" icon="fk_sachsen_anhalt_wittenberg.gif" flag="" website="" shortname="Wittenberg" main="234" parentmain="26">Kreis Wittenberg</assocname></associations>
 
 <associations><assocname country="DEU" icon="fk_sachsen_chemnitz.gif" flag="" website="" shortname="Chemnitz" main="235" parentmain="26">Kreis Chemnitz</assocname></associations>
