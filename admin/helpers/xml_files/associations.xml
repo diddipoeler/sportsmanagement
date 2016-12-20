@@ -189,8 +189,8 @@
 <associations><assocname country="DEU" icon="fk_niedersachsen_goslar.gif" flag="" website="" shortname="Goslar" main="174" parentmain="9">Kreis Goslar</assocname></associations>
 <associations><assocname country="DEU" icon="fk_niedersachsen_grafschaft_bentheim.gif" flag="" website="" shortname="Grafschaft Bentheim" main="175" parentmain="9">Kreis Grafschaft Bentheim</assocname></associations>
 <associations><assocname country="DEU" icon="fk_niedersachsen_hameln_pyrmont.gif" flag="" website="" shortname="Hameln Pyrmont" main="176" parentmain="9">Kreis Hameln Pyrmont</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_hannover.gif" flag="" website="" shortname="Hannover" main="177" parentmain="9">Kreis Hannover</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_hannover_land.gif" flag="" website="" shortname="Hannover Land" main="178" parentmain="9">Kreis Hannover Land</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_hannover.gif" flag="" website="" shortname="Hannover-Stadt" main="177" parentmain="9">Kreis Hannover</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_hannover_land.gif" flag="" website="" shortname="Hannover-Land" main="178" parentmain="9">Kreis Hannover Land</assocname></associations>
 <associations><assocname country="DEU" icon="fk_niedersachsen_harburg.gif" flag="" website="" shortname="Harburg" main="179" parentmain="9">Kreis Harburg</assocname></associations>
 <associations><assocname country="DEU" icon="fk_niedersachsen_heidekreis.gif" flag="" website="" shortname="Heidekreis" main="180" parentmain="9">Kreis Heidekreis</assocname></associations>
 <associations><assocname country="DEU" icon="fk_niedersachsen_helmstedt.gif" flag="" website="" shortname="Helmstedt" main="181" parentmain="9">Kreis Helmstedt</assocname></associations>
@@ -200,11 +200,11 @@
 <associations><assocname country="DEU" icon="fk_niedersachsen_luechow_dannenberg.gif" flag="" website="" shortname="Lüchow Dannenberg" main="185" parentmain="9">Kreis Lüchow Dannenberg</assocname></associations>
 <associations><assocname country="DEU" icon="fk_niedersachsen_lueneburg.gif" flag="" website="" shortname="Lüneburg" main="186" parentmain="9">Kreis Lüneburg</assocname></associations>
 <associations><assocname country="DEU" icon="fk_niedersachsen_nienburg.gif" flag="" website="" shortname="Nienburg" main="187" parentmain="9">Kreis Nienburg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_northeim_einbeck.gif" flag="" website="" shortname="Northeim Einbeck" main="188" parentmain="9">Kreis Northeim Einbeck</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_oldenburg_land.gif" flag="" website="" shortname="Oldenburg Land" main="189" parentmain="9">Kreis Oldenburg Land</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_oldenburg_stadt.gif" flag="" website="" shortname="Oldenburg Stadt" main="190" parentmain="9">Kreis Oldenburg Stadt</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_osnabrueck_land.gif" flag="" website="" shortname="Osnabrück Land" main="191" parentmain="9">Kreis Osnabrück Land</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_osnabrueck_stadt.gif" flag="" website="" shortname="Osnabrück Stadt" main="192" parentmain="9">Kreis Osnabrück Stadt</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_northeim_einbeck.gif" flag="" website="" shortname="Einbeck/Northeim" main="188" parentmain="9">Kreis Northeim Einbeck</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_oldenburg_land.gif" flag="" website="" shortname="Oldenburg-Land" main="189" parentmain="9">Kreis Oldenburg Land</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_oldenburg_stadt.gif" flag="" website="" shortname="Oldenburg-Stadt" main="190" parentmain="9">Kreis Oldenburg Stadt</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_osnabrueck_land.gif" flag="" website="" shortname="Osnabrück-Land" main="191" parentmain="9">Kreis Osnabrück Land</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_osnabrueck_stadt.gif" flag="" website="" shortname="Osnabrück-Stadt" main="192" parentmain="9">Kreis Osnabrück Stadt</assocname></associations>
 <associations><assocname country="DEU" icon="fk_niedersachsen_osterholz.gif" flag="" website="" shortname="Osterholz" main="193" parentmain="9">Kreis Osterholz</assocname></associations>
 <associations><assocname country="DEU" icon="fk_niedersachsen_osterode.gif" flag="" website="" shortname="Osterode" main="194" parentmain="9">Kreis Osterode</assocname></associations>
 <associations><assocname country="DEU" icon="fk_niedersachsen_peine.gif" flag="" website="" shortname="Peine" main="195" parentmain="9">Kreis Peine</assocname></associations>
