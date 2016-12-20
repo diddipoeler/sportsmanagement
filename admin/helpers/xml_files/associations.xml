@@ -239,7 +239,7 @@
 <associations><assocname country="DEU" icon="fk_sachsen_anhalt_altmark_ost.gif" flag="" website="" shortname="Altmark Ost" main="221" parentmain="26">Kreis Altmark Ost</assocname></associations>
 <associations><assocname country="DEU" icon="fk_sachsen_anhalt_altmark_west.gif" flag="" website="" shortname="Altmark West" main="222" parentmain="26">Kreis Altmark West</assocname></associations>
 <associations><assocname country="DEU" icon="fk_sachsen_anhalt_anhalt.gif" flag="" website="" shortname="Anhalt" main="223" parentmain="26">Kreis Anhalt</assocname></associations>
-<associations><assocname country="DEU" icon="fk_sachsen_anhalt_anhalt_bitterfeld.gif" flag="" website="" shortname="Anhalt Bitterfeld" main="224" parentmain="26">Kreis Anhalt Bitterfeld</assocname></associations>
+<associations><assocname country="DEU" icon="fk_sachsen_anhalt_anhalt_bitterfeld.gif" flag="" website="" shortname="Anhalt-Bitterfeld" main="224" parentmain="26">Kreis Anhalt Bitterfeld</assocname></associations>
 <associations><assocname country="DEU" icon="fk_sachsen_anhalt_boerde.gif" flag="" website="" shortname="Börde" main="225" parentmain="26">Kreis Börde</assocname></associations>
 <associations><assocname country="DEU" icon="fk_sachsen_anhalt_burgenland.gif" flag="" website="" shortname="Burgenland" main="226" parentmain="26">Kreis Burgenland</assocname></associations>
 <associations><assocname country="DEU" icon="fk_sachsen_anhalt_halle.gif" flag="" website="" shortname="Halle" main="227" parentmain="26">Kreis Halle</assocname></associations>
