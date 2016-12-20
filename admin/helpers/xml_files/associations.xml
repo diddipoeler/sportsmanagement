@@ -40,25 +40,25 @@
 <associations><assocname country="DEU" icon="fk_baden_tauberbischofsheim.gif" flag="" website="" shortname="Tauberbischofsheim" main="35" parentmain="17">Kreis Tauberbischofsheim</assocname></associations>
 
 <associations><assocname country="DEU" icon="fk_bayern_allgaeu.gif" flag="" website="" shortname="Allgäu" main="36" parentmain="20">Kreis Allgäu</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_amberg_weiden.gif" flag="" website="" shortname="Amberg Weiden" main="37" parentmain="20">Kreis Amberg Weiden</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_amberg_weiden.gif" flag="" website="" shortname="Amberg/Weiden" main="37" parentmain="20">Kreis Amberg Weiden</assocname></associations>
 <associations><assocname country="DEU" icon="fk_bayern_aschaffenburg.gif" flag="" website="" shortname="Aschaffenburg" main="38" parentmain="20">Kreis Aschaffenburg</assocname></associations>
 <associations><assocname country="DEU" icon="fk_bayern_augsburg.gif" flag="" website="" shortname="Augsburg" main="39" parentmain="20">Kreis Augsburg</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_bamberg_bayreuth.gif" flag="" website="" shortname="Bamberg Bayreuth" main="40" parentmain="20">Kreis Bamberg Bayreuth</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_bamberg_bayreuth.gif" flag="" website="" shortname="Bamberg/Bayreuth" main="40" parentmain="20">Kreis Bamberg Bayreuth</assocname></associations>
 <associations><assocname country="DEU" icon="fk_bayern_bayerwald.gif" flag="" website="" shortname="Bayerwald" main="41" parentmain="20">Kreis Bayerwald</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_coburg_kronach.gif" flag="" website="" shortname="Coburg Kronach" main="42" parentmain="20">Kreis Coburg Kronach</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_donau.gif" flag="" website="" shortname="Donau" main="43" parentmain="20">Kreis Donau</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_donau_isar.gif" flag="" website="" shortname="Donau Isar" main="44" parentmain="20">Kreis Donau Isar</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_erlangen_pegnitzgrund.gif" flag="" website="" shortname="Erlangen Pegnitzgrund" main="45" parentmain="20">Kreis Erlangen Pegnitzgrund</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_hof_marktredwitz.gif" flag="" website="" shortname="Hof Marktredwitz" main="46" parentmain="20">Kreis Hof Marktredwitz</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_inn_salzach.gif" flag="" website="" shortname="Inn Salzach" main="47" parentmain="20">Kreis Inn Salzach</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_coburg_kronach.gif" flag="" website="" shortname="Coburg/Kronach" main="42" parentmain="20">Kreis Coburg Kronach</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_donau.gif" flag="" website="" shortname="Donau (Schwaben)" main="43" parentmain="20">Kreis Donau</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_donau_isar.gif" flag="" website="" shortname="Donau/Isar" main="44" parentmain="20">Kreis Donau Isar</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_erlangen_pegnitzgrund.gif" flag="" website="" shortname="Erlangen/Pegnitzgrund" main="45" parentmain="20">Kreis Erlangen Pegnitzgrund</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_hof_marktredwitz.gif" flag="" website="" shortname="Hof/Marktredwitz" main="46" parentmain="20">Kreis Hof Marktredwitz</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_inn_salzach.gif" flag="" website="" shortname="Inn/Salzach" main="47" parentmain="20">Kreis Inn Salzach</assocname></associations>
 <associations><assocname country="DEU" icon="fk_bayern_landshut.gif" flag="" website="" shortname="Landshut" main="48" parentmain="20">Kreis Landshut</assocname></associations>
 <associations><assocname country="DEU" icon="fk_bayern_muenchen.gif" flag="" website="" shortname="München" main="49" parentmain="20">Kreis München</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_neumarkt_jura.gif" flag="" website="" shortname="Neumarkt Jura" main="50" parentmain="20">Kreis Neumarkt Jura</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_nuernberg_frankenhoehe.gif" flag="" website="" shortname="Nürnberg Frankenhöhe" main="51" parentmain="20">Kreis Nürnberg Frankenhöhe</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_neumarkt_jura.gif" flag="" website="" shortname="Neumarkt/Jura" main="50" parentmain="20">Kreis Neumarkt Jura</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_nuernberg_frankenhoehe.gif" flag="" website="" shortname="Nürnberg/Frankenhöhe" main="51" parentmain="20">Kreis Nürnberg Frankenhöhe</assocname></associations>
 <associations><assocname country="DEU" icon="fk_bayern_passau.gif" flag="" website="" shortname="Passau" main="52" parentmain="20">Kreis Passau</assocname></associations>
 <associations><assocname country="DEU" icon="fk_bayern_regensburg.gif" flag="" website="" shortname="Regensburg" main="53" parentmain="20">Kreis Regensburg</assocname></associations>
 <associations><assocname country="DEU" icon="fk_bayern_rhoen.gif" flag="" website="" shortname="Rhön" main="54" parentmain="20">Kreis Rhön</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bayern_schwandorf_cham.gif" flag="" website="" shortname="Schwandorf Cham" main="55" parentmain="20">Kreis Schwandorf Cham</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bayern_schwandorf_cham.gif" flag="" website="" shortname="Cham/Schwandorf" main="55" parentmain="20">Kreis Schwandorf Cham</assocname></associations>
 <associations><assocname country="DEU" icon="fk_bayern_schweinfurt.gif" flag="" website="" shortname="Schweinfurt" main="56" parentmain="20">Kreis Schweinfurt</assocname></associations>
 <associations><assocname country="DEU" icon="fk_bayern_straubing.gif" flag="" website="" shortname="Straubing" main="57" parentmain="20">Kreis Straubing</assocname></associations>
 <associations><assocname country="DEU" icon="fk_bayern_wuerzburg.gif" flag="" website="" shortname="Würzburg" main="58" parentmain="20">Kreis Würzburg</assocname></associations>
