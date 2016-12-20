@@ -197,7 +197,7 @@
 <associations><assocname country="DEU" icon="fk_niedersachsen_hildesheim.gif" flag="" website="" shortname="Hildesheim" main="182" parentmain="9">Kreis Hildesheim</assocname></associations>
 <associations><assocname country="DEU" icon="fk_niedersachsen_holzminden.gif" flag="" website="" shortname="Holzminden" main="183" parentmain="9">Kreis Holzminden</assocname></associations>
 <associations><assocname country="DEU" icon="fk_niedersachsen_leer.gif" flag="" website="" shortname="Leer" main="184" parentmain="9">Kreis Leer</assocname></associations>
-<associations><assocname country="DEU" icon="fk_niedersachsen_luechow_dannenberg.gif" flag="" website="" shortname="Lüchow Dannenberg" main="185" parentmain="9">Kreis Lüchow Dannenberg</assocname></associations>
+<associations><assocname country="DEU" icon="fk_niedersachsen_luechow_dannenberg.gif" flag="" website="" shortname="Lüchow-Dannenberg" main="185" parentmain="9">Kreis Lüchow Dannenberg</assocname></associations>
 <associations><assocname country="DEU" icon="fk_niedersachsen_lueneburg.gif" flag="" website="" shortname="Lüneburg" main="186" parentmain="9">Kreis Lüneburg</assocname></associations>
 <associations><assocname country="DEU" icon="fk_niedersachsen_nienburg.gif" flag="" website="" shortname="Nienburg" main="187" parentmain="9">Kreis Nienburg</assocname></associations>
 <associations><assocname country="DEU" icon="fk_niedersachsen_northeim_einbeck.gif" flag="" website="" shortname="Einbeck/Northeim" main="188" parentmain="9">Kreis Northeim Einbeck</assocname></associations>
