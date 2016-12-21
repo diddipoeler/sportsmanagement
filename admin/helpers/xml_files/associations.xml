@@ -96,8 +96,8 @@
 <associations><assocname country="DEU" icon="fk_brandenburg_westuckermark.gif" flag="" website="" shortname="Westuckermark" main="88" parentmain="24">Kreis Westuckermark</assocname></associations>
 
 <associations><assocname country="DEU" icon="fk_bremen_bremerhaven.gif" flag="" website="" shortname="Bemerhaven" main="89" parentmain="8">Kreis Bemerhaven</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bremen_nord.gif" flag="" website="" shortname="Nord" main="90" parentmain="8">Kreis Nord</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bremen_stadt.gif" flag="" website="" shortname="Stadt" main="91" parentmain="8">Kreis Stadt</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bremen_nord.gif" flag="" website="" shortname="Bremen-Nord" main="90" parentmain="8">Kreis Nord</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bremen_stadt.gif" flag="" website="" shortname="Bremen-Stadt" main="91" parentmain="8">Kreis Stadt</assocname></associations>
 
 <associations><assocname country="DEU" icon="fk_hamburg_alster.gif" flag="" website="" shortname="Alster" main="92" parentmain="7">Kreis Alster</assocname></associations>
 <associations><assocname country="DEU" icon="fk_hamburg_bergedorf.gif" flag="" website="" shortname="Bergedorf" main="93" parentmain="7">Kreis Bergedorf</assocname></associations>
