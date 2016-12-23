@@ -95,9 +95,9 @@
 <associations><assocname country="DEU" icon="fk_brandenburg_westhavelland.gif" flag="" website="" shortname="Westhavelland" main="87" parentmain="24">Kreis Westhavelland</assocname></associations>
 <associations><assocname country="DEU" icon="fk_brandenburg_westuckermark.gif" flag="" website="" shortname="Westuckermark" main="88" parentmain="24">Kreis Westuckermark</assocname></associations>
 
-<associations><assocname country="DEU" icon="fk_bremen_bremerhaven.gif" flag="" website="" shortname="Bemerhaven" main="89" parentmain="8">Kreis Bemerhaven</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bremen_nord.gif" flag="" website="" shortname="Bremen-Nord" main="90" parentmain="8">Kreis Nord</assocname></associations>
-<associations><assocname country="DEU" icon="fk_bremen_stadt.gif" flag="" website="" shortname="Bremen-Stadt" main="91" parentmain="8">Kreis Stadt</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bremen_bremerhaven.gif" flag="" website="" shortname="Bremerhaven" main="89" parentmain="8">Kreis Bremerhaven</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bremen_nord.gif" flag="" website="" shortname="Bremen-Nord" main="90" parentmain="8">Kreis Bremen-Nord</assocname></associations>
+<associations><assocname country="DEU" icon="fk_bremen_stadt.gif" flag="" website="" shortname="Bremen-Stadt" main="91" parentmain="8">Kreis Bremen-Stadt</assocname></associations>
 
 <associations><assocname country="DEU" icon="fk_hamburg_alster.gif" flag="" website="" shortname="Alster" main="92" parentmain="7">Kreis Alster</assocname></associations>
 <associations><assocname country="DEU" icon="fk_hamburg_bergedorf.gif" flag="" website="" shortname="Bergedorf" main="93" parentmain="7">Kreis Bergedorf</assocname></associations>
@@ -517,15 +517,15 @@
 <associations><assocname country="CHE" icon="" flag="" website="" shortname="" main="12" parentmain="0">Association Valaisanne de Football</assocname></associations>
 <associations><assocname country="CHE" icon="" flag="" website="" shortname="" main="13" parentmain="0">Association Vaudoise de Football</assocname></associations>
 
-<associations><assocname country="AUT" icon="lv_aut_burgenland.gif" flag="" website="" shortname="" main="1" parentmain="0">Burgenland</assocname></associations>
-<associations><assocname country="AUT" icon="lv_aut_kaernten.gif" flag="" website="" shortname="" main="2" parentmain="0">Kärnten</assocname></associations>
-<associations><assocname country="AUT" icon="lv_aut_niederoesterreich.gif" flag="" website="" shortname="" main="3" parentmain="0">Niederösterreich</assocname></associations>
-<associations><assocname country="AUT" icon="lv_aut_oberoesterreich.gif" flag="" website="" shortname="" main="4" parentmain="0">Oberösterreich</assocname></associations>
-<associations><assocname country="AUT" icon="lv_aut_salzburg.gif" flag="" website="" shortname="" main="5" parentmain="0">Salzburg</assocname></associations>
-<associations><assocname country="AUT" icon="lv_aut_steiermark.gif" flag="" website="" shortname="" main="6" parentmain="0">Steiermark</assocname></associations>
-<associations><assocname country="AUT" icon="lv_aut_tirol.gif" flag="" website="" shortname="" main="7" parentmain="0">Tirol</assocname></associations>
-<associations><assocname country="AUT" icon="lv_aut_vorarlberg.gif" flag="" website="" shortname="" main="8" parentmain="0">Vorarlberg</assocname></associations>
-<associations><assocname country="AUT" icon="lv_aut_wien.gif" flag="" website="" shortname="" main="9" parentmain="0">Wien</assocname></associations>
+<associations><assocname country="AUT" icon="lv_aut_burgenland.gif" flag="" website="" shortname="BFV" main="1" parentmain="0">Burgenländischer Fußballverband</assocname></associations>
+<associations><assocname country="AUT" icon="lv_aut_kaernten.gif" flag="" website="" shortname="KFV" main="2" parentmain="0">Kärntner Fußballverband</assocname></associations>
+<associations><assocname country="AUT" icon="lv_aut_niederoesterreich.gif" flag="" website="" shortname="NÖFV" main="3" parentmain="0">Niederösterreichischer Fußballverband</assocname></associations>
+<associations><assocname country="AUT" icon="lv_aut_oberoesterreich.gif" flag="" website="" shortname="OÖFV" main="4" parentmain="0">Oberösterreichischer Fußballverband</assocname></associations>
+<associations><assocname country="AUT" icon="lv_aut_salzburg.gif" flag="" website="" shortname="SFV" main="5" parentmain="0">Salzburger Fußballverband</assocname></associations>
+<associations><assocname country="AUT" icon="lv_aut_steiermark.gif" flag="" website="" shortname="STFV" main="6" parentmain="0">Steirischer Fußballverband</assocname></associations>
+<associations><assocname country="AUT" icon="lv_aut_tirol.gif" flag="" website="" shortname="TFV" main="7" parentmain="0">Tiroler Fußballverband</assocname></associations>
+<associations><assocname country="AUT" icon="lv_aut_vorarlberg.gif" flag="" website="" shortname="VFV" main="8" parentmain="0">Vorarlberger Fußballverband</assocname></associations>
+<associations><assocname country="AUT" icon="lv_aut_wien.gif" flag="" website="" shortname="WFV" main="9" parentmain="0">Wiener Fußballverband</assocname></associations>
 
 <associations><assocname country="ESP" icon="" flag="" website="" shortname="" main="1" parentmain="0">Andalucía</assocname></associations>
 <associations><assocname country="ESP" icon="" flag="" website="" shortname="" main="2" parentmain="0">Aragón</assocname></associations>

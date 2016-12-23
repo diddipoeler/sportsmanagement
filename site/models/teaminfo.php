@@ -522,41 +522,41 @@ $query->order('s.ordering '.$season_ordering);
    * @param mixed $merge_clubs
    * @return
    */
-  function getMergeClubs( $merge_clubs )
-  {
+	function getMergeClubs( $merge_clubs )
+	{
     // Reference global application object
-        $app = JFactory::getApplication();
+	$app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-    $option = $jinput->getCmd('option');
+	$jinput = $app->input;
+	$option = $jinput->getCmd('option');
         // Create a new query object.		
-	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
-	   $query = $db->getQuery(true);
-       $query->select('*, CONCAT_WS( \':\', id, alias ) AS slug');
-	$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club'); 
-    $query->where('id IN ( '. $merge_clubs .' )');
-				
-                $db->setQuery($query);
-				$result  = $db->loadObjectList();
+	$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
+	$query = $db->getQuery(true);
+	$query->select('*, CONCAT_WS( \':\', id, alias ) AS slug');
+	$query->from('#__sportsmanagement_club'); 
+	$query->where('id IN ( '. $merge_clubs .' )');
+
+	$db->setQuery($query);
+	$result  = $db->loadObjectList();
 			
-            if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text = 'dump -><pre>'.print_r($query->dump(),true).'</pre>';
-            $my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
-          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+	if ( !$result && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+	{
+		$my_text = 'dump -><pre>'.print_r($query->dump(),true).'</pre>';
+		$my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
+		sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-        } 
-        elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
-        {
-            $my_text = 'dump -><pre>'.print_r($query->dump(),true).'</pre>';
+	} 
+	elseif ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+	{
+		$my_text = 'dump -><pre>'.print_r($query->dump(),true).'</pre>';
             //$my_text .= 'getErrorMsg -><pre>'.print_r($db->getErrorMsg(),true).'</pre>'; 
-          sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
+		sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-        }
+	}
         
-		return $result;
-  }
+	return $result;
+	}
   
 	/**
 	 * gets name of league associated to project
