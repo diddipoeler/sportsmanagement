@@ -67,7 +67,7 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 		$this->club = sportsmanagementModelClubInfo::getClub(1);
         if ( $this->checkextrafields )
         {
-            $this->extrafields = sportsmanagementHelper::getUserExtraFields($club->id,'frontend',sportsmanagementModelClubInfo::$cfg_which_database);
+            $this->extrafields = sportsmanagementHelper::getUserExtraFields($this->club->id,'frontend',sportsmanagementModelClubInfo::$cfg_which_database);
         }
         
 		$lat ='';
