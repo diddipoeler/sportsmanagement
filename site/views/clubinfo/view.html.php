@@ -64,16 +64,16 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
         $this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend',sportsmanagementModelClubInfo::$cfg_which_database);
                         
         //$app->enqueueMessage(JText::_('clubinfo checkextrafields -> '.'<pre>'.print_r($this->checkextrafields,true).'</pre>' ),'');
-		
+		$this->club = sportsmanagementModelClubInfo::getClub(1);
         if ( $this->checkextrafields )
         {
-            $this->extrafields = sportsmanagementHelper::getUserExtraFields($club->id,'frontend',sportsmanagementModelClubInfo::$cfg_which_database);
+            $this->extrafields = sportsmanagementHelper::getUserExtraFields($this->club->id,'frontend',sportsmanagementModelClubInfo::$cfg_which_database);
         }
         
 		$lat ='';
-    $lng ='';
+		$lng ='';
+
 		
-		$this->club = sportsmanagementModelClubInfo::getClub(1);
 		$this->clubassoc = sportsmanagementModelClubInfo::getClubAssociation($this->club->associations);
 		$this->extended = sportsmanagementHelper::getExtended($this->club->extended, 'club');
 		$this->teams = sportsmanagementModelClubInfo::getTeamsByClubId();

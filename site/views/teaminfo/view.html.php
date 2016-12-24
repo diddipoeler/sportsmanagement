@@ -89,19 +89,20 @@ class sportsmanagementViewTeamInfo extends sportsmanagementView
 			$this->assignRef( 'daysOfWeek', $daysOfWeek );
             
       
-      if ( $this->team->merge_clubs )
-      {
-      $merge_clubs = $model->getMergeClubs( $this->team->merge_clubs );
-			$this->merge_clubs = $merge_clubs;
-      }
-      
-            
-            if ( $this->config['show_history_leagues'] )
+	if ( $this->team->merge_clubs )
 	{
-			$this->seasons = sportsmanagementModelTeamInfo::getSeasons( $this->config,1 );
-            $this->leaguerankoverview = sportsmanagementModelTeamInfo::getLeagueRankOverview( $this->seasons );
-			$this->leaguerankoverviewdetail = sportsmanagementModelTeamInfo::getLeagueRankOverviewDetail( $this->seasons );
-}
+		//$merge_clubs = $model->getMergeClubs( $this->team->merge_clubs );
+		//$this->merge_clubs = $merge_clubs;
+		$this->merge_clubs = sportsmanagementModelTeamInfo::getMergeClubs( $this->team->merge_clubs );
+	}
+
+     
+	if ( $this->config['show_history_leagues'] )
+	{
+		$this->seasons = sportsmanagementModelTeamInfo::getSeasons( $this->config,1 );
+		$this->leaguerankoverview = sportsmanagementModelTeamInfo::getLeagueRankOverview( $this->seasons );
+		$this->leaguerankoverviewdetail = sportsmanagementModelTeamInfo::getLeagueRankOverviewDetail( $this->seasons );
+	}
 
 		}
         
