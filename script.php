@@ -81,6 +81,12 @@ jimport('joomla.html.html.bootstrap');
  */
 class com_sportsmanagementInstallerScript
 {
+    
+public function __construct(JAdapterInstance $adapter)
+{
+    $this->release = $adapter->get( "manifest" )->version;
+}
+
 	/*
      * The release value would ideally be extracted from <version> in the manifest file,
      * but at preflight, the manifest file exists only in the uploaded temp folder.
@@ -139,6 +145,35 @@ class com_sportsmanagementInstallerScript
     break;
     }
     */
+    
+    if ( $type == 'update' ) 
+    {
+        $this->oldRelease = $this->getParam('version');
+        if (version_compare($this->oldRelease, $this->release, 'lt'))
+        {
+            //Repair table #__schema which was not used before
+            //Just create a dataset with extension id and old version (before update).
+            $db = JFactory::getDbo();
+            $query = $db->getQuery(true);
+            $query->select($db->quoteName('extension_id'))
+                ->from('#__extensions')
+                ->where($db->quoteName('type') . ' = ' . $db->quote('component') . ' AND ' . $db->quoteName('element') . ' = ' . $db->quote('com_sportsmanagement') . ' AND ' . $db->quoteName('name') . ' = ' . $db->quote('myComponent'));
+            $db->setQuery($query);
+            if ($eid = $db->loadResult())
+            {
+                $query->clear();
+                $query->insert($db->quoteName('#__schemas'));
+                $query->columns(array($db->quoteName('extension_id'), $db->quoteName('version_id')));
+                $query->values($eid . ', ' . $db->quote($this->oldRelease));
+                $db->setQuery($query);
+                $db->execute();
+            }
+        }
+    }
+    
+    
+    
+    
        
        if(version_compare(JVERSION,'3.0.0','ge')) 
         {
