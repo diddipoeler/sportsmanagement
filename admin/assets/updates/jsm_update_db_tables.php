@@ -361,11 +361,13 @@ $slide_id = 1;
 					if($add) {
 					   if ( $query )
                        {
+						try {    
 						$db->setQuery($query);
-						$db->query();
-						echo "$query - <span style='color:";
-						if ($db->query()){echo "green'>".JText::_('Success');}else{echo "red'>".JText::_('Failed');} //fehlgeschlagen
-						echo '</span>';
+                        $db->query();
+                        echo "$query - <span style='color:green'".JText::_('Success').'</span>';
+                        } catch (Exception $e) {
+                        echo "$query - <span style='color:red'".JText::_('Failed').'</span>';
+                        }
                         }
 					} else {
 						if(array_key_exists($fieldName, $columns)) {
