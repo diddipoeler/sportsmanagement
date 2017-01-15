@@ -53,6 +53,9 @@
  * 
  * Retrieving request data using JInput
  * https://docs.joomla.org/Retrieving_request_data_using_JInput
+ * 
+ * https://docs.joomla.org/J2.5:Managing_Component_Updates_(Script.php)
+ * 
  */
 
 // No direct access to this file
@@ -251,6 +254,19 @@ public function __construct(JAdapterInstance $adapter)
         
 	}
  
+
+	/**
+	 * com_sportsmanagementInstallerScript::getParam()
+	 * get a variable from the manifest file (actually, from the manifest cache).
+	 * @param mixed $name
+	 * @return
+	 */
+	function getParam( $name ) {
+		$db = JFactory::getDbo();
+		$db->setQuery('SELECT manifest_cache FROM #__extensions WHERE name = "com_sportsmanagement" ');
+		$manifest = json_decode( $db->loadResult(), true );
+		return $manifest[ $name ];
+	}
 
 	/**
 	 * com_sportsmanagementInstallerScript::postflight()
