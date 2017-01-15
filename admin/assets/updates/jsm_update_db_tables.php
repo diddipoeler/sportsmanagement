@@ -48,8 +48,8 @@ jimport('joomla.html.html.bootstrap');
 //jimport('joomla.application.component.view');
 //jimport('joomla.html.html.bootstrap');
   
-$version			= '1.0.53';
-$updateFileDate		= '2016-02-01';
+$version			= '1.0.58';
+$updateFileDate		= '2017-01-15';
 $updateFileTime		= '00:05';
 $updateDescription	='<span style="color:orange">Update all tables using the current install sql-file.</span>';
 $excludeFile		='false';
@@ -309,23 +309,16 @@ $slide_id = 1;
                         }
                         
 						if($skip) continue;
-                        //echo 'anzahl keys <pre>'.print_r(sizeof($keys),true).'</pre><br>';
-                        //echo 'queryDelete <pre>'.print_r($queryDelete,true).'</pre>'; 
-                        
-//                        if ( $tableName === '#__sportsmanagement_person_project_position' )
-//                        {
-//                        echo 'anzahl keys <pre>'.print_r(sizeof($keys),true).'</pre><br>';
-//                        echo 'keys <pre>'.print_r($keys,true).'</pre><br>';
-//                        echo 'queryDelete <pre>'.print_r($queryDelete,true).'</pre><br>';    
-//                        exit;
-//                        }
-                        
+                                                
                         if ( !empty($queryDelete) )
                         {
+                        try {    
 						$db->setQuery($queryDelete);
-						echo "$queryDelete - <span style='color:";
-						if ($db->query()){echo "green'>".JText::_('Success');}else{echo "red'>".JText::_('Failed');}
-						echo '</span>';
+                        $db->query();
+                        echo "$queryDelete - <span style='color:green'".JText::_('Success').'</span>';
+                        } catch (Exception $e) {
+                        echo "$queryDelete - <span style='color:red'".JText::_('Failed').'</span>';
+                        }    
                         }
 					}
 					else
@@ -380,10 +373,13 @@ $slide_id = 1;
 						}
                         if ( $query )
                         {
+                        try {    
 						$db->setQuery($query);
-						echo "$query - <span style='color:";
-						if ($db->query()){echo "green'>".JText::_('Success');}else{echo "red'>".JText::_('Failed');} //fehlgeschlagen
-						echo '</span>';
+                        $db->query();
+                        echo "$query - <span style='color:green'".JText::_('Success').'</span>';
+                        } catch (Exception $e) {
+                        echo "$query - <span style='color:red'".JText::_('Failed').'</span>';
+                        }
                         }
 					}
 					echo '&nbsp;</td></tr>';
@@ -432,10 +428,13 @@ $slide_id = 1;
 						if($skip) continue;
                         if ( $queryAdd )
                         {
+                        try {    
 						$db->setQuery($queryAdd);
-						echo "$queryAdd - <span style='color:";
-						if ($db->query()){echo "green'>".JText::_('Success');}else{echo "red'>".JText::_('Failed');}
-						echo '</span>';
+                        $db->query();
+                        echo "$queryAdd - <span style='color:green'".JText::_('Success').'</span>';
+                        } catch (Exception $e) {
+                        echo "$queryAdd - <span style='color:red'".JText::_('Failed').'</span>';
+                        }
                         }
 					}
 					else
