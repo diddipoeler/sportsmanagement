@@ -66,12 +66,12 @@ class sportsmanagementModelSeasons extends JSMModelList
      */
     public function __construct($config = array())
         {   
-//        // Reference global application object
-//        $this->app = JFactory::getApplication();
-//        // JInput object
-//        $this->jinput = $this->app->input;
+        // Reference global application object
+        $this->app = JFactory::getApplication();
+        // JInput object
+        $this->jinput = $this->app->input;
                 
-                $layout = $this->jsmjinput->getVar('layout');
+                $layout = $this->jinput->getVar('layout');
                 
                 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($layout,true).'</pre>'),'Notice');
                 
