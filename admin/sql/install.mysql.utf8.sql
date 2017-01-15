@@ -19,6 +19,10 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_associations` (
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
   `cr_picture` varchar(255) DEFAULT NULL,
+  `address` VARCHAR(100) NOT NULL DEFAULT '' ,
+  `zipcode` VARCHAR(10) NOT NULL DEFAULT '' ,
+  `location` VARCHAR(50) NOT NULL DEFAULT '' ,
+  `state` VARCHAR(50) NOT NULL DEFAULT '' ,
   PRIMARY KEY (`id`),
   KEY `country` (`country`),
   KEY `parent_id` (`parent_id`),
@@ -46,6 +50,11 @@ CREATE TABLE IF NOT EXISTS `#__sportsmanagement_federations` (
   `modified` DATETIME NULL ,
   `modified_by` INT NULL ,
   `cr_picture` varchar(255) DEFAULT NULL,
+  `country` varchar(3) DEFAULT NULL, 
+  `address` VARCHAR(100) NOT NULL DEFAULT '' ,
+  `zipcode` VARCHAR(10) NOT NULL DEFAULT '' ,
+  `location` VARCHAR(50) NOT NULL DEFAULT '' ,
+  `state` VARCHAR(50) NOT NULL DEFAULT '' ,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 ;
@@ -1173,6 +1182,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_team` (
   `cr_picture` varchar(255) DEFAULT NULL,
   `hits` INT(11) NOT NULL DEFAULT '0' ,
   `modified_hits` INT(11) NOT NULL DEFAULT '0' ,
+  `team_number` INT(11) NOT NULL DEFAULT '0' ,
   PRIMARY KEY (`id`) ,
   KEY `club_id` (`club_id`),
   KEY `sports_type_id` (`sports_type_id`)

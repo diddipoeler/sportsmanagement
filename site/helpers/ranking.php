@@ -745,7 +745,7 @@ class JSMRanking
         $query->from('#__sportsmanagement_project_team AS pt ');
         $query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt.team_id'); 
         $query->join('INNER','#__sportsmanagement_team AS t ON st1.team_id = t.id ');
-        $query->where('pt.project_id = ' . $db->Quote($pid));
+        $query->where('pt.project_id = ' . $pid );
         $query->where('pt.is_in_score = 1');
         
     if ( $division )
@@ -789,6 +789,26 @@ class JSMRanking
         //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($res,true).'</pre>'),'');
 
+/**
+ * es kann aber auch vorkommen, dass nur abschlusstabellen zu den gruppen vorhanden sind.
+ * deshalb muss die komponente auch in der lage das darzustellen.
+ */
+if ( !$res && $division )
+        {
+$query->clear();            
+$query->select('pt.id AS ptid, pt.is_in_score, pt.start_points, pt.division_id');
+$query->select('t.name, t.id as teamid, pt.neg_points_finally');
+$query->select('pt.use_finally, pt.points_finally,pt.matches_finally,pt.won_finally,pt.draws_finally,pt.lost_finally');
+$query->select('pt.homegoals_finally, pt.guestgoals_finally,pt.diffgoals_finally,pt.penalty_points');
+$query->select('CONCAT_WS(\':\',pt.id,t.alias) AS ptid_slug');
+$query->from('#__sportsmanagement_project_team AS pt ');
+$query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt.team_id'); 
+$query->join('INNER','#__sportsmanagement_team AS t ON st1.team_id = t.id ');
+$query->where('pt.project_id = ' . $pid );
+$query->where('pt.is_in_score = 1');
+$db->setQuery($query);
+$res = $db->loadObjectList();        
+        } 
 
 		$teams = array();
 		foreach ((array) $res as $r)
@@ -832,14 +852,6 @@ class JSMRanking
 				$t->sum_team2_result = $r->guestgoals_finally;
 				$t->diff_team_results = $r->diffgoals_finally;
 
-//       		if ( empty($t->diff_team_results) )
-//       		{
-//       			$t->diff_team_results = $r->homegoals_finally - $r->guestgoals_finally;
-//       		}
-//       		if ( empty($t->cnt_matches) )
-//       		{
-//       			$t->cnt_matches = $r->won_finally + $r->draws_finally + $r->lost_finally;
-//       		}
 			}
       			
 			$teams[$r->ptid] = $t;

@@ -81,8 +81,7 @@ class sportsmanagementModeljlextassociations extends JSMModelList
                         'objassoc.picture'
                         );
                 parent::__construct($config);
-                //$getDBConnection = sportsmanagementHelper::getDBConnection();
-//                parent::setDbo($getDBConnection);
+
         }
         
     /**
@@ -94,13 +93,6 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		//$app = JFactory::getApplication();
-//        $option = JRequest::getCmd('option');
-//        // Initialise variables.
-//		$app = JFactory::getApplication('administrator');
-        
-        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
-
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
@@ -109,20 +101,10 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 		$this->setState('filter.state', $published);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
-$temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.federation', 'filter_federation', '');
-$this->setState('filter.federation', $temp_user_request);        
+        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.federation', 'filter_federation', '');
+        $this->setState('filter.federation', $temp_user_request);        
         $value = JRequest::getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
-
-//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
-//		$this->setState('filter.image_folder', $image_folder);
-        
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
-
-
-//		// Load the parameters.
-//		$params = JComponentHelper::getParams('com_sportsmanagement');
-//		$this->setState('params', $params);
 
 		// List state information.
 		parent::populateState('objassoc.name', 'asc');
@@ -135,11 +117,7 @@ $this->setState('filter.federation', $temp_user_request);
    */
   protected function getListQuery()
 	{
-	//	$app = JFactory::getApplication();
-//        $option = JRequest::getCmd('option');
-//
-//        // Create a new query object.		
-//		$db = sportsmanagementHelper::getDBConnection();
+        // Create a new query object.		
 		$this->jsmquery->clear();
 		// Select some fields
 		$this->jsmquery->select(implode(",",$this->filter_fields));
@@ -157,7 +135,7 @@ $this->setState('filter.federation', $temp_user_request);
 		{
         $this->jsmquery->where("objassoc.country LIKE '".$this->getState('filter.search_nation')."'");
         }
-if ($this->getState('filter.federation') )
+        if ($this->getState('filter.federation') )
 		{
         $this->jsmquery->where("objassoc.parent_id = ".$this->getState('filter.federation') );
         }
@@ -183,18 +161,12 @@ if ($this->getState('filter.federation') )
      */
     function getAssociations($federation=0)
     {
-        //$app = JFactory::getApplication();
-        //$option = JRequest::getCmd('option');
         $search_nation = '';
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($app,true).'</pre>'),'Notice');
         
         if ( $this->jsmapp->isAdmin() )
         {
         $search_nation	= $this->getState('filter.search_nation');
         }
-        // Get a db connection.
-        //$db = sportsmanagementHelper::getDBConnection();
         // Create a new query object.
         $this->jsmquery->clear();
         $this->jsmquery->select('id,name,id as value,name as text,country');
@@ -214,7 +186,6 @@ if ($this->getState('filter.federation') )
         if (!$result = $this->jsmdb->loadObjectList())
         {
             sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__);
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
             return array();
         }
         foreach ($result as $association)

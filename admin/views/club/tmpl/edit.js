@@ -1,7 +1,7 @@
 var dpjQuery = jQuery.noConflict();
 
 dpjQuery(document).ready(function(){
-	dpjQuery('#jform_address,  #jform_zipcode, #jform_location, #jform_country, #jform_state').bind('change', function(e) {
+	dpjQuery('#jform_address,  #jform_zipcode, #jform_location,  #jform_state').bind('change', function(e) {
 		dpjQuery("#jform_geocomplete").val(getAddresString());
 		dpjQuery("#jform_geocomplete").trigger("geocode");
 	});
@@ -72,9 +72,9 @@ function getAddresString()
 //		country = dpjQuery("#jform_country").val() + ', ';
 //	}
   
-  if(dpjQuery("#jform_country").val()){
-		country = dpjQuery("#jform_country :selected").text() + ', ';
-	}
+//  if(dpjQuery("#jform_country").val()){
+//		country = dpjQuery("#jform_country :selected").text() + ', ';
+//	}
   
 	return street + city + province + country;
 }

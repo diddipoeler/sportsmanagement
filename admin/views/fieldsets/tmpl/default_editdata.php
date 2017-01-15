@@ -153,7 +153,7 @@ switch ($fieldset->name)
              <div class="span6">
 						<div class="control-group">
 							<style type="text/css">.map_canvas{width:100%;height:400px;}</style>
-							<div id=""  class="map_canvas"></div>
+							<div id="map_canvas"  class="map_canvas"></div>
 						</div>
 					</div>
             </div>
@@ -183,7 +183,7 @@ else
 	
 <div class="control-group">
 <style type="text/css">.map_canvas{width:100%;height:400px;}</style>
-<div id=""  class="map_canvas"></div>
+<div id="map_canvas"  class="map_canvas"></div>
 </div>
 
 		<?php
