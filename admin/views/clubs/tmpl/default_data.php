@@ -51,11 +51,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	<div class="table-responsive" id="editcell">
 		<table class="<?php echo $this->table_data_class; ?>">
 			<thead>
-            <tr><td colspan="10"><?php echo $this->pagination->getListFooter(); ?></td>
-            <td colspan='8'>
-            <?php echo $this->pagination->getResultsCounter();?>
-            </td>
-            </tr>
+           
 				<tr>
 					<th width="5"><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NUM'); ?></th>
 					<th width="20"><input type="checkbox" name="toggle" value="" onclick="Joomla.checkAll(this);" /></th>
