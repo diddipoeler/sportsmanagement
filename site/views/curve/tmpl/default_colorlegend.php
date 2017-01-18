@@ -47,7 +47,7 @@ if ($this->config['show_colorlegend'])
 	<table class="table">
 		<tr>
 			<?php
-			sportsmanagementHelper::showColorsLegend($this->colors);
+			sportsmanagementHelper::showColorsLegend($this->colors,$this->divisions);
 			?>
 		</tr>
 	</table>

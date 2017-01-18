@@ -322,13 +322,13 @@ $result = $db->execute();
         {
                     $query->where('pt.id = '. self::$projectteamid );
 				} 
-                else 
+                else
                 {
                     $query->where('t.id = '. self::$teamid );
 				}
-         }       
+         }
 
-$query->order('s.ordering '.$season_ordering);
+$query->order('s.name '.$season_ordering);
 
 	    $db->setQuery( $query );
         
