@@ -84,6 +84,19 @@ public function __construct($config = array())
         $this->jsmuser = JFactory::getUser(); 
         $this->jsmdate = JFactory::getDate();
 
+$this->project_id = $this->jsmjinput->getint('pid');
+if ( !$this->project_id )
+{
+$post = $this->jsmjinput->post->getArray();
+$this->project_id = $post['pid'];
+if ( !$this->project_id )
+{
+$this->project_id = $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' );
+}
+}
+$this->jsmjinput->set('pid', $this->project_id);
+$this->jsmapp->setUserState( "$this->jsmoption.pid", $this->project_id );
+	
 /**
  * abfrage nach backend und frontend  
  */ 
@@ -168,7 +181,8 @@ if( $this->jsmapp->isSite() )
        case 'division': 
        if ( !$data['id'] )
        {
-       $data['project_id'] = $post['pid'];
+       //$data['project_id'] = $post['pid'];
+       $data['project_id'] = $this->project_id;       
        }
        if (isset($post['extended']) && is_array($post['extended'])) 
 		{
