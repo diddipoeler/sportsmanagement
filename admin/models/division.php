@@ -65,6 +65,7 @@ class sportsmanagementModeldivision extends JSMModelAdmin
 function count_teams_division($division_id = 0)
 {
 $division_teams = array();
+try {	
 $this->jsmquery->clear();
 $this->jsmquery->select('m.projectteam1_id');
 $this->jsmquery->from('#__sportsmanagement_match as m');
@@ -73,12 +74,18 @@ $this->jsmquery->where('projectteam1_id != 0');
 $this->jsmquery->group('projectteam1_id');
 $this->jsmdb->setQuery($this->jsmquery);
 $results = $this->jsmdb->loadObjectList('projectteam1_id');
+} catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    //JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}
+	
 foreach ( $results as $key => $value )
 {
 $division_teams[$key] = $key;
 }
 //$this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($results, true).'</pre><br>','Notice');
-
+try {
 $this->jsmquery->clear();
 $this->jsmquery->select('m.projectteam2_id');
 $this->jsmquery->from('#__sportsmanagement_match as m');
@@ -87,6 +94,12 @@ $this->jsmquery->where('projectteam2_id != 0');
 $this->jsmquery->group('projectteam2_id');
 $this->jsmdb->setQuery($this->jsmquery);
 $results = $this->jsmdb->loadObjectList('projectteam2_id');
+} catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    //JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}
+	
 foreach ( $results as $key => $value )
 {
 $division_teams[$key] = $key;
