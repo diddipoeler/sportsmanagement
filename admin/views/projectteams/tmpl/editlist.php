@@ -118,10 +118,10 @@ $uri = JFactory::getURI();
 					</td>
 					<td style="text-align:center; ">
                     
-<input id="moveright" type="button" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_ASSIGN_TEAM_TO_PROJEKT'); ?>" onclick="move_list_items('teamslist','project_teamslist');" />
-<input id="moverightall" type="button" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_ASSIGN_TEAM_ALL_TO_PROJEKT'); ?>" onclick="move_list_items_all('teamslist','project_teamslist');" />
-<input id="moveleft" type="button" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_UNASSIGN_TEAM_TO_PROJEKT'); ?>" onclick="move_list_items('project_teamslist','teamslist');" />
-<input id="moveleftall" type="button" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_UNASSIGN_TEAM_ALL_TO_PROJEKT'); ?>" onclick="move_list_items_all('project_teamslist','teamslist');" />                    
+<input id="moveright" type="button" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_ASSIGN_TEAM_TO_PROJECT'); ?>" onclick="move_list_items('teamslist','project_teamslist');" />
+<input id="moverightall" type="button" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_ASSIGN_TEAM_ALL_TO_PROJECT'); ?>" onclick="move_list_items_all('teamslist','project_teamslist');" />
+<input id="moveleft" type="button" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_UNASSIGN_TEAM_TO_PROJECT'); ?>" onclick="move_list_items('project_teamslist','teamslist');" />
+<input id="moveleftall" type="button" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_UNASSIGN_TEAM_ALL_TO_PROJECT'); ?>" onclick="move_list_items_all('project_teamslist','teamslist');" />                    
 						
 					</td>
 					<td>
