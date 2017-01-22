@@ -127,11 +127,11 @@ class SMStatistic extends JObject
     $query_num = JFactory::getDbo()->getQuery(true);
     
     $query_num->select('SUM(ms.value) AS num, pt.id');
-    $query_num->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp');
-    $query_num->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-    $query_num->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-    $query_num->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ('. implode(',', $sids) .')');
-    $query_num->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = ms.match_id AND m.published = 1 ');
+    $query_num->from('#__sportsmanagement_season_team_person_id AS tp');
+    $query_num->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+    $query_num->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+    $query_num->join('INNER','#__sportsmanagement_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ('. implode(',', $sids) .')');
+    $query_num->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1 ');
     $query_num->where('pt.project_id = ' . $project_id);
     
     $query_num->group('pt.id');
@@ -155,11 +155,11 @@ class SMStatistic extends JObject
     $query_den = JFactory::getDbo()->getQuery(true);
     
     $query_den->select('SUM(ms.value) AS den, pt.id');
-    $query_den->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp');
-    $query_den->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-    $query_den->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-    $query_den->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ('. implode(',', $sids) .')');
-    $query_den->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = ms.match_id AND m.published = 1 ');
+    $query_den->from('#__sportsmanagement_season_team_person_id AS tp');
+    $query_den->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+    $query_den->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+    $query_den->join('INNER','#__sportsmanagement_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ('. implode(',', $sids) .')');
+    $query_den->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1 ');
     $query_den->where('pt.project_id = ' . $project_id);
     $query_den->where('value > 0');
     $query_den->group('pt.id');
@@ -185,11 +185,11 @@ class SMStatistic extends JObject
     $query_core = JFactory::getDbo()->getQuery(true);
     
     $query_core->select('(n.num / d.den) AS total, pt.team_id');
-    $query_core->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt');
+    $query_core->from('#__sportsmanagement_project_team AS pt');
     $query_core->join('INNER','('.$query_num.') AS n ON n.id = pt.id');
     $query_core->join('INNER','('.$query_den.') AS d ON d.id = pt.id');
-    $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.id = pt.team_id ');
-    $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON st.team_id = t.id ');
+    $query_core->join('INNER','#__sportsmanagement_season_team_id AS st ON st.id = pt.team_id ');
+    $query_core->join('INNER','#__sportsmanagement_team AS t ON st.team_id = t.id ');
     $query_core->where('pt.project_id = ' . $project_id);
     $query_core->group('total');
     return $query_core;
@@ -214,14 +214,12 @@ class SMStatistic extends JObject
     $query_core = JFactory::getDbo()->getQuery(true);
     
 	$query_core->select($select);
-    $query_core->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp');
-    $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-    $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-    
-    $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id');
-    
-    $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ('. $sids .')');
-    $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = ms.match_id AND m.published = 1 ');
+    $query_core->from('#__sportsmanagement_season_team_person_id AS tp');
+    $query_core->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+    $query_core->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+    $query_core->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
+    $query_core->join('INNER','#__sportsmanagement_match_staff_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ('. $sids .')');
+    $query_core->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1 ');
     $query_core->where('p.published = 1');
     $query_core->where('tp.person_id = '. $person_id);
     
@@ -255,22 +253,22 @@ class SMStatistic extends JObject
     $query_num = JFactory::getDbo()->getQuery(true);
     
     $query_num->select($select);
-    $query_num->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp');
-    $query_num->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-    $query_num->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON p.id = tp.person_id ');
-    $query_num->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON st.team_id = t.id');
-    $query_num->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+    $query_num->from('#__sportsmanagement_season_team_person_id AS tp');
+    $query_num->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+    $query_num->join('INNER','#__sportsmanagement_person AS p ON p.id = tp.person_id ');
+    $query_num->join('INNER','#__sportsmanagement_team AS t ON st.team_id = t.id');
+    $query_num->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
     switch ($which)
     {
         case 'statistic':
-        $query_num->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ('. implode(',', $sids) .')');
+        $query_num->join('INNER','#__sportsmanagement_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ('. implode(',', $sids) .')');
         break;
         case 'event':
-        $query_num->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS ms ON ms.teamplayer_id = tp.id AND ms.event_type_id IN ('. implode(',', $sids) .')');
+        $query_num->join('INNER','#__sportsmanagement_match_event AS ms ON ms.teamplayer_id = tp.id AND ms.event_type_id IN ('. implode(',', $sids) .')');
         break;
     }
     
-    $query_num->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = ms.match_id AND m.published = 1 ');
+    $query_num->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1 ');
     $query_num->where('pt.project_id = ' . $project_id);
     if ($division_id != 0)
 	{
@@ -304,11 +302,11 @@ class SMStatistic extends JObject
     $query_num = JFactory::getDbo()->getQuery(true);
     
     $query_num->select('SUM(ms.value) AS num, tp.id AS tpid, tp.person_id');
-    $query_num->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp');
-    $query_num->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-    $query_num->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-    $query_num->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ('. implode(',', $sids) .')');
-    $query_num->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = ms.match_id AND m.published = 1 ');
+    $query_num->from('#__sportsmanagement_season_team_person_id AS tp');
+    $query_num->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+    $query_num->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+    $query_num->join('INNER','#__sportsmanagement_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ('. implode(',', $sids) .')');
+    $query_num->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1 ');
     $query_num->where('pt.project_id = ' . $project_id);
     if ($division_id != 0)
 	{
@@ -343,13 +341,13 @@ class SMStatistic extends JObject
     $query_core = JFactory::getDbo()->getQuery(true);
     
     $query_core->select('COUNT(DISTINCT tp.id) as count');
-    $query_core->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp');
+    $query_core->from('#__sportsmanagement_season_team_person_id AS tp');
     $query_core->join('INNER','('.$query_num.') AS n ON n.tpid = tp.id');
     $query_core->join('INNER','('.$query_den.') AS d ON d.tpid = tp.id');
-    $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON p.id = tp.person_id ');
-    $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-    $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-    $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON st.team_id = t.id');
+    $query_core->join('INNER','#__sportsmanagement_person AS p ON p.id = tp.person_id ');
+    $query_core->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+    $query_core->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+    $query_core->join('INNER','#__sportsmanagement_team AS t ON st.team_id = t.id');
     $query_core->where('pt.project_id = ' . $project_id);
     $query_core->where('p.published = 1');
 
@@ -874,17 +872,15 @@ class SMStatistic extends JObject
             $query->select('SUM(ms.value) AS value, ms.match_id');
 		}
         
-        
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic AS ms');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = ms.match_id AND m.published = 1');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = ms.teamplayer_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = tp.project_position_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id = pos.id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ON ps.position_id = pos.id AND ps.statistic_id = ms.statistic_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON pt.project_id = p.id AND p.id=' . $db->Quote($project_id));
-        
+        $query->from('#__sportsmanagement_match_statistic AS ms');
+        $query->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1');
+        $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = ms.teamplayer_id ');
+        $query->join('INNER','#__sportsmanagement_project_position AS ppos ON ppos.id = tp.project_position_id ');
+        $query->join('INNER','#__sportsmanagement_position AS pos ON ppos.position_id = pos.id ');
+        $query->join('INNER','#__sportsmanagement_position_statistic AS ps ON ps.position_id = pos.id AND ps.statistic_id = ms.statistic_id ');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+        $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+        $query->join('INNER','#__sportsmanagement_project AS p ON pt.project_id = p.id AND p.id=' . $db->Quote($project_id));
         $query->where('ms.teamplayer_id IN (' . implode(',', $quoted_tpids) .')');
         $query->where('p.published = 1');
         $query->where('ms.statistic_id IN ('. implode(',', $quoted_sids) .')');
@@ -897,7 +893,13 @@ class SMStatistic extends JObject
         if (isset($factors))
 		{
 			$db->setQuery($query);
+try{
 			$stats = $db->loadObjectList();
+            } catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}
 			// Apply weighting using factors
 			$res = array();
 			foreach ($stats as $stat)
@@ -918,7 +920,13 @@ class SMStatistic extends JObject
 		{
 			$query->group('ms.match_id');
             $db->setQuery($query);
+try{
 			$res = $db->loadObjectList('match_id');
+            } catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}
 		}
 
 		if (is_array($res) && count($res) > 0)
@@ -968,16 +976,15 @@ class SMStatistic extends JObject
             $query->select('SUM(ms.value) AS value');
 		}
         
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic AS ms');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = ms.match_id AND m.published = 1');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = ms.teamplayer_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = tp.project_position_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id = pos.id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ON ps.position_id = pos.id AND ps.statistic_id = ms.statistic_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON pt.project_id = p.id');
-        
+        $query->from('#__sportsmanagement_match_statistic AS ms');
+        $query->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1');
+        $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = ms.teamplayer_id ');
+        $query->join('INNER','#__sportsmanagement_project_position AS ppos ON ppos.id = tp.project_position_id ');
+        $query->join('INNER','#__sportsmanagement_position AS pos ON ppos.position_id = pos.id ');
+        $query->join('INNER','#__sportsmanagement_position_statistic AS ps ON ps.position_id = pos.id AND ps.statistic_id = ms.statistic_id ');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+        $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+        $query->join('INNER','#__sportsmanagement_project AS p ON pt.project_id = p.id');
         $query->where('tp.person_id = ' . $person_id);
         $query->where('ms.statistic_id IN ('. implode(',', $quoted_sids) .')');
 
@@ -1079,14 +1086,13 @@ class SMStatistic extends JObject
 		// All of them have a match_id and teamplayer_id.
        
         $query_mp->select('m.id AS mid, tp.person_id');
-        $query_mp->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS md');
-        $query_mp->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = md.match_id');
-        $query_mp->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
-        $query_mp->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query_mp->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-        $query_mp->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id');
+        $query_mp->from('#__sportsmanagement_match_player AS md');
+        $query_mp->join('INNER','#__sportsmanagement_match AS m ON m.id = md.match_id');
+        $query_mp->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
+        $query_mp->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+        $query_mp->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+        $query_mp->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
         $query_mp->where('tp.person_id = '.$person_id);
-
         $query_mp->where('(md.came_in = 0 OR md.came_in = 1)');
         $query_mp->group('m.id');
         
@@ -1096,27 +1102,27 @@ class SMStatistic extends JObject
  }       
  
         $query_ms->select('m.id AS mid, tp.person_id');
-        $query_ms->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic AS md');
-        $query_ms->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = md.match_id');
-        $query_ms->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
-        $query_ms->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query_ms->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-        $query_ms->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id');
+        $query_ms->from('#__sportsmanagement_match_statistic AS md');
+        $query_ms->join('INNER','#__sportsmanagement_match AS m ON m.id = md.match_id');
+        $query_ms->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
+        $query_ms->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+        $query_ms->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+        $query_ms->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
         $query_ms->where('tp.person_id = '.$person_id);
         $query_ms->group('m.id');
 
 		$query_me->select('m.id AS mid, tp.person_id');
-        $query_me->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS md');
-        $query_me->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = md.match_id');
-        $query_me->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
-        $query_me->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query_me->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-        $query_me->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id');
+        $query_me->from('#__sportsmanagement_match_event AS md');
+        $query_me->join('INNER','#__sportsmanagement_match AS m ON m.id = md.match_id');
+        $query_me->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
+        $query_me->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+        $query_me->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+        $query_me->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
         $query_me->where('tp.person_id = '.$person_id);
         $query_me->group('m.id');
 		
         $query->select('COUNT(m.id)');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
+        $query->from('#__sportsmanagement_match AS m');
         $query->join('LEFT','('.$query_mp.') AS mp ON mp.mid = m.id');
         $query->join('LEFT','('.$query_ms.') AS ms ON mp.mid = m.id');
         $query->join('LEFT','('.$query_me.') AS me ON mp.mid = m.id');
@@ -1168,19 +1174,17 @@ class SMStatistic extends JObject
 		}
         
         $query->select('SUM(me.event_sum) AS value, tp.person_id');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp');
-        //$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON p.id = tp.person_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+        $query->from('#__sportsmanagement_season_team_person_id AS tp');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+        $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
               
 		if ($sports_type_id)
 		{
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id AND p.sports_type_id = '. $sports_type_id);        
+            $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id AND p.sports_type_id = '. $sports_type_id);        
 		}
         
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me ON me.teamplayer_id = tp.id AND me.event_type_id IN ('. implode(',', $quoted_sids) .')');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = me.match_id AND m.published = 1');
-
+        $query->join('INNER','#__sportsmanagement_match_event AS me ON me.teamplayer_id = tp.id AND me.event_type_id IN ('. implode(',', $quoted_sids) .')');
+        $query->join('INNER','#__sportsmanagement_match AS m ON m.id = me.match_id AND m.published = 1');
 		$query->where('tp.person_id = '. $person_id);
         
         if ($projectteam_id)
@@ -1196,7 +1200,14 @@ class SMStatistic extends JObject
         $query->group('tp.person_id');
 
 		$db->setQuery($query);
-		$res = $db->loadResult();
+
+try{		
+$res = $db->loadResult();
+} catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}        
         }
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -1236,7 +1247,6 @@ class SMStatistic extends JObject
 
 		if (isset($factors))
 		{
-			//$query = ' SELECT ms.value AS value, tp.person_id, ms.statistic_id ';
             $query->select('ms.value AS value, tp.person_id, ms.statistic_id');
 		}
 		else
@@ -1245,17 +1255,14 @@ class SMStatistic extends JObject
             $query->clear('select');
 		}
         
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS prs ON prs.id = tp.person_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ('. implode(',', $quoted_sids) .')');
-        
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = tp.project_position_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id ');
-        
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = ms.match_id AND m.published = 1 ');
-        
+        $query->from('#__sportsmanagement_season_team_person_id AS tp');
+        $query->join('INNER','#__sportsmanagement_person AS prs ON prs.id = tp.person_id ');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+        $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+        $query->join('INNER','#__sportsmanagement_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ('. implode(',', $quoted_sids) .')');
+        $query->join('INNER','#__sportsmanagement_project_position AS ppos ON ppos.id = tp.project_position_id ');
+        $query->join('INNER','#__sportsmanagement_position AS pos ON pos.id = ppos.position_id ');
+        $query->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1 ');
         $query->where('st.team_id = '. $team_id);
         $query->where('pt.project_id = ' . $project_id);
         $query->where('ppos.position_id = '. $position_id);
@@ -1270,7 +1277,14 @@ class SMStatistic extends JObject
             $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             }
             
-			$stats = $db->loadObjectList();
+try {
+$stats = $db->loadObjectList();
+} catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}
+            
 			// Apply weighting using factors
 			$res = array();
 			$res['totals'] = new stdclass;
@@ -1299,7 +1313,6 @@ class SMStatistic extends JObject
             $query->clear('group');
             $query->select('SUM(ms.value) AS value, tp.person_id');
             $query->group('tp.person_id');
-			//$db->setQuery(' SELECT SUM(ms.value) AS value, tp.person_id ' . $query . ' GROUP BY tp.person_id ');
             $db->setQuery($query);
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -1309,13 +1322,17 @@ class SMStatistic extends JObject
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             }
             
+try{
 			$res = $db->loadObjectList('person_id');
-
+} catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}
 			// Determine the total statistics for the position_id of the project team
             $query->clear('select');
             $query->clear('group');
             $query->select('SUM(ms.value) AS value');
-			//$db->setQuery(' SELECT SUM(ms.value) AS value ' . $query);
             $db->setQuery($query);
             
             if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -1324,9 +1341,16 @@ class SMStatistic extends JObject
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             }
-            
+
+try{            
 			$res['totals'] = new stdclass;
 			$res['totals']->value = $db->loadResult();
+} catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}            
+            
 			if (!isset($res['totals']->value))
 			{
 				$res['totals']->value = 0;
@@ -1369,12 +1393,11 @@ class SMStatistic extends JObject
 		// Use md (stands for match detail, where the detail can be a match_player, match_statistic or match_event)
 		// All of them have a match_id and teamplayer_id.
         $query_mp->select('DISTINCT m.id AS mid, tp.id AS tpid');
-        
-        $query_mp->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS md');
-        $query_mp->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = md.match_id');
-        $query_mp->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
-        $query_mp->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query_mp->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+        $query_mp->from('#__sportsmanagement_match_player AS md');
+        $query_mp->join('INNER','#__sportsmanagement_match AS m ON m.id = md.match_id');
+        $query_mp->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
+        $query_mp->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+        $query_mp->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         $query_mp->where('pt.project_id = ' . $project_id);
         $query_mp->where('st.team_id = ' . $team_id);
         $query_mp->where('(md.came_in = 0 OR md.came_in = 1)');
@@ -1385,12 +1408,11 @@ class SMStatistic extends JObject
  }
 
 		$query_ms->select('DISTINCT m.id AS mid, tp.id AS tpid');
-        
-        $query_ms->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic AS md');
-        $query_ms->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = md.match_id');
-        $query_ms->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
-        $query_ms->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query_ms->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+        $query_ms->from('#__sportsmanagement_match_statistic AS md');
+        $query_ms->join('INNER','#__sportsmanagement_match AS m ON m.id = md.match_id');
+        $query_ms->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
+        $query_ms->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+        $query_ms->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         $query_ms->where('pt.project_id = ' . $project_id);
         $query_ms->where('st.team_id = ' . $team_id);
  
@@ -1400,12 +1422,11 @@ class SMStatistic extends JObject
  }
         
 		$query_me->select('DISTINCT m.id AS mid, tp.id AS tpid');
-        
-        $query_me->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS md');
-        $query_me->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = md.match_id');
-        $query_me->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
-        $query_me->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query_me->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+        $query_me->from('#__sportsmanagement_match_event AS md');
+        $query_me->join('INNER','#__sportsmanagement_match AS m ON m.id = md.match_id');
+        $query_me->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
+        $query_me->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+        $query_me->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         $query_me->where('pt.project_id = ' . $project_id);
         $query_me->where('st.team_id = ' . $team_id);
         
@@ -1416,16 +1437,15 @@ class SMStatistic extends JObject
         
 
         $subquery->select('DISTINCT m.id as mid, tp.id as tpid, tp.person_id');
-        $subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');
-        $subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round as r ON m.round_id=r.id ');
-        $subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id=r.project_id ');
+        $subquery->from('#__sportsmanagement_match AS m');
+        $subquery->join('INNER','#__sportsmanagement_round as r ON m.round_id=r.id ');
+        $subquery->join('INNER','#__sportsmanagement_project AS p ON p.id=r.project_id ');
         $subquery->join('LEFT','( '.$query_mp.' ) AS mp ON mp.mid = m.id ');
         $subquery->join('LEFT','( '.$query_ms.' ) AS ms ON ms.mid = m.id ');
         $subquery->join('LEFT','( '.$query_me.' ) AS me ON me.mid = m.id ');
-        $subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON (tp.id = mp.tpid OR tp.id = ms.tpid OR tp.id = me.tpid) ');
-        $subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-        $subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-        
+        $subquery->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON (tp.id = mp.tpid OR tp.id = ms.tpid OR tp.id = me.tpid) ');
+        $subquery->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+        $subquery->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         $subquery->where('st.team_id = '.$team_id);
         $subquery->where('p.id = ' . $project_id);
         $subquery->where('p.published = 1');
@@ -1481,15 +1501,15 @@ class SMStatistic extends JObject
 
 		// Determine the events for each project team player
         $query->select('SUM(es.event_sum) AS value, tp.person_id');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS prs ON prs.id = tp.person_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+        $query->from('#__sportsmanagement_season_team_person_id AS tp');
+        $query->join('INNER','#__sportsmanagement_person AS prs ON prs.id = tp.person_id ');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+        $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = tp.project_position_id');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id=ppos.position_id');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS es ON es.teamplayer_id = tp.id AND es.event_type_id IN ('. implode(',', $quoted_sids) .')');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = es.event_type_id AND m.published = 1');
+        $query->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id = tp.project_position_id');
+        $query->join('LEFT','#__sportsmanagement_position AS pos ON pos.id=ppos.position_id');
+        $query->join('LEFT','#__sportsmanagement_match_event AS es ON es.teamplayer_id = tp.id AND es.event_type_id IN ('. implode(',', $quoted_sids) .')');
+        $query->join('LEFT','#__sportsmanagement_match AS m ON m.id = es.event_type_id AND m.published = 1');
         $query->where('st.team_id = '. $team_id);
         $query->where('pt.project_id = '. $project_id);
         $query->where('ppos.position_id = '. $position_id);
@@ -1563,11 +1583,11 @@ class SMStatistic extends JObject
 		// Use md (stands for match detail, where the detail can be a match_player, match_statistic or match_event)
 		// All of them have a match_id and teamplayer_id.
 		$query_mp->select('m.id AS mid, tp.id AS tpid');
-        $query_mp->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS md');
-        $query_mp->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = md.match_id');
-        $query_mp->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
-        $query_mp->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query_mp->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+        $query_mp->from('#__sportsmanagement_match_player AS md');
+        $query_mp->join('INNER','#__sportsmanagement_match AS m ON m.id = md.match_id');
+        $query_mp->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
+        $query_mp->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+        $query_mp->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         $query_mp->where('pt.project_id = ' . $project_id);
         if ($division_id)
 		{
@@ -1581,11 +1601,11 @@ class SMStatistic extends JObject
         $query_mp->group('m.id, tp.id'); 
 
 		$query_ms->select('m.id AS mid, tp.id AS tpid');
-        $query_ms->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic AS md');
-        $query_ms->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = md.match_id');
-        $query_ms->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
-        $query_ms->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query_ms->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+        $query_ms->from('#__sportsmanagement_match_statistic AS md');
+        $query_ms->join('INNER','#__sportsmanagement_match AS m ON m.id = md.match_id');
+        $query_ms->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
+        $query_ms->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+        $query_ms->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         $query_ms->where('pt.project_id = ' . $project_id);
         
         if ($division_id)
@@ -1599,11 +1619,11 @@ class SMStatistic extends JObject
         //$query_ms->where('(md.came_in = 0 OR md.came_in = 1)');
         $query_ms->group('m.id, tp.id');
 		$query_me->select('m.id AS mid, tp.id AS tpid');
-        $query_me->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS md');
-        $query_me->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = md.match_id');
-        $query_me->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
-        $query_me->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query_me->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+        $query_me->from('#__sportsmanagement_match_event AS md');
+        $query_me->join('INNER','#__sportsmanagement_match AS m ON m.id = md.match_id');
+        $query_me->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.id = md.teamplayer_id ');
+        $query_me->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+        $query_me->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
         $query_me->where('pt.project_id = ' . $project_id);
 
         if ($division_id)
@@ -1619,11 +1639,11 @@ class SMStatistic extends JObject
         
 
         $subquery->select('m.id AS mid, tp.person_id, tp.id AS tpid');
-        $subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p');
-        $subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.person_id = p.id ');
-        $subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-        $subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-        $subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.projectteam1_id = pt.id OR m.projectteam2_id = pt.id');
+        $subquery->from('#__sportsmanagement_person AS p');
+        $subquery->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = p.id ');
+        $subquery->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+        $subquery->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+        $subquery->join('INNER','#__sportsmanagement_match AS m ON m.projectteam1_id = pt.id OR m.projectteam2_id = pt.id');
         
         $subquery->join('LEFT','( '.$query_mp.' ) AS mp ON mp.mid = m.id AND mp.tpid = tp.id ');
         $subquery->join('LEFT','( '.$query_ms.' ) AS ms ON ms.mid = m.id AND ms.tpid = tp.id ');
