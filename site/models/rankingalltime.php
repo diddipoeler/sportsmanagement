@@ -845,7 +845,7 @@ $query->clear();
         foreach ($this->teams as $key) 
         {
 //            $new = new stdclass(0);
-            $new = new JSMRankingTeam(0);
+            $new = new JSMRankingTeamClass(0);
             $new->cnt_matches = $key->cnt_matches;
             $new->sum_points = $key->sum_points;
             $new->neg_points = $key->neg_points;
