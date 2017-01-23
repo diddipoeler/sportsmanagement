@@ -81,23 +81,23 @@ class sportsmanagementViewRankingAllTime extends JViewLegacy
 
          $model = $this->getModel();
 
-         $this->assignRef('projectids', $model->getAllProject());
+         $this->projectids = $model->getAllProject();
          $project_ids = implode(",", $this->projectids);
          
          //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_ids<br><pre>'.print_r($project_ids,true).'</pre>'),'');
          
-         $this->assignRef('project_ids', $project_ids);
-         $this->assignRef('teams', $model->getAllTeamsIndexedByPtid($project_ids));
+         $this->project_ids = $project_ids;
+         $this->teams = $model->getAllTeamsIndexedByPtid($project_ids);
          
-         $this->assignRef('matches', $model->getAllMatches($project_ids));
-         $this->assignRef('ranking', $model->getAllTimeRanking());
-        $this->assignRef('tableconfig', $model->getAllTimeParams());
-        $this->assignRef('config', $model->getAllTimeParams());
+         $this->matches = $model->getAllMatches($project_ids);
+         $this->ranking = $model->getAllTimeRanking();
+        $this->tableconfig = $model->getAllTimeParams();
+        $this->config = $model->getAllTimeParams();
         
-        $this->assignRef('currentRanking', $model->getCurrentRanking());
+        $this->currentRanking = $model->getCurrentRanking();
 
-        $this->assign('action', $uri->toString());
-        $this->assignRef('colors', $model->getColors($this->config['colors']));
+        $this->action = $uri->toString();
+        $this->colors = $model->getColors($this->config['colors']);
         
         
 
