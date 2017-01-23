@@ -969,7 +969,7 @@ $query->clear();
                 //$ranking2[$key] = JArrayHelper::toObject($row, 'JSMRankingalltimeTeam');
                 //$ranking[$key] = JArrayHelper::toObject($row, 'JSMRankingalltimeTeam');
                 //$ranking2[$key] = JArrayHelper::toObject($row, 'JSMRankingTeam');
-                $ranking[$key] = JArrayHelper::toObject($row, 'JSMRankingTeam');
+                $ranking[$key] = JArrayHelper::toObject($row, 'JSMRankingTeamClass');
             }
 
         } else //     if ( !$order_dir)
