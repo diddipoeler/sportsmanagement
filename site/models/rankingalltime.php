@@ -99,7 +99,7 @@ class sportsmanagementModelRankingAllTime extends JModelLegacy
         $app = JFactory::getApplication();
         $jinput = $app->input;
         $this->alltimepoints = $jinput->request->get('points', '3,1,0', 'STR');
-        
+        /*
         if (!class_exists(self::$classname))
         {
         $file = JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'ranking.php';
@@ -108,8 +108,9 @@ class sportsmanagementModelRankingAllTime extends JModelLegacy
         require_once($file);
         }
         }
-        
-        
+        */
+        $file = JPATH_SITE.DS.JSM_PATH.DS.'helpers'.DS.'ranking.php';
+        require_once($file);
         
         $menu = JMenu::getInstance('site');
         $item = $menu->getActive();
