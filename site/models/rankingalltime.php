@@ -277,13 +277,13 @@ if ( $project_ids )
         $query->select('CONCAT_WS( \':\', d.id, d.alias ) AS division_slug');
         $query->select('CONCAT_WS( \':\', c.id, c.alias ) AS club_slug');
 
-$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team tl' );
-$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.id = tl.team_id'); 
-$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team t ON st.team_id = t.id' );
-$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club c ON t.club_id = c.id' );
-$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division d ON d.id = tl.division_id' );
-$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground plg ON plg.id = tl.standard_playground' );
-$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = tl.project_id' );
+$query->from('#__sportsmanagement_project_team as tl' );
+$query->join('LEFT','#__sportsmanagement_season_team_id AS st ON st.id = tl.team_id'); 
+$query->join('LEFT','#__sportsmanagement_team as t ON st.team_id = t.id' );
+$query->join('LEFT','#__sportsmanagement_club as c ON t.club_id = c.id' );
+$query->join('LEFT','#__sportsmanagement_division as d ON d.id = tl.division_id' );
+$query->join('LEFT','#__sportsmanagement_playground as plg ON plg.id = tl.standard_playground' );
+$query->join('LEFT','#__sportsmanagement_project AS p ON p.id = tl.project_id' );
             
 $query->where('tl.project_id IN (' . $project_ids . ')' );
 //$query->group('tl.team_id' );
@@ -336,14 +336,14 @@ JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEME
 		$query->select('r.id as roundid, m.team_won, r.roundcode');
         
         
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match m');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st1 ON st1.id = pt1.team_id'); 
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team t1 ON st1.team_id = t1.id '); 
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st2 ON st2.id = pt2.team_id'); 
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team t2 ON st2.team_id = t2.id '); 
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON m.round_id = r.id ');
+        $query->from('#__sportsmanagement_match m');
+		$query->join('INNER','#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id'); 
+		$query->join('INNER','#__sportsmanagement_team t1 ON st1.team_id = t1.id '); 
+		$query->join('INNER','#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id'); 
+		$query->join('INNER','#__sportsmanagement_team t2 ON st2.team_id = t2.id '); 
+		$query->join('INNER','#__sportsmanagement_round AS r ON m.round_id = r.id ');
         
         $query->where('((m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL) OR (m.alt_decision=1))');
         $query->where('m.published = 1');
@@ -645,7 +645,7 @@ JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEME
 				}
 			}
 			/*winpoints*/
-			$home->winpoints=$win_points;
+			$home->winpoints = $win_points;
 			
 			/* bonus points */
 			$home->sum_points += $match->home_bonus;
@@ -1080,7 +1080,7 @@ $query->clear();
                 //$ranking2[$key] = JArrayHelper::toObject($row, 'JSMRankingalltimeTeam');
                 //$ranking[$key] = JArrayHelper::toObject($row, 'JSMRankingalltimeTeam');
                 //$ranking2[$key] = JArrayHelper::toObject($row, 'JSMRankingTeam');
-                $ranking[$key] = JArrayHelper::toObject($row, 'JSMRankingTeam');
+                $ranking[$key] = JArrayHelper::toObject($row, 'JSMRankingTeamClass');
             }
             
 //            if ($order_dir == 'DESC') {
