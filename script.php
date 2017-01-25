@@ -304,14 +304,15 @@ $jRegistry->loadString($params->toString('ini'), 'ini');
 ////$form =& JForm::getInstance('com_sportsmanagement', $xmlfile, array('control'=> 'params'), false, "/config");
 $newparams = array();
 
-/*
+
 $form = JForm::getInstance('com_sportsmanagement', $xmlfile,array('control'=> ''), false, "/config");
 $form->bind($jRegistry);
-foreach($form->getFieldset($fieldset->name) as $field)
+//foreach($form->getFieldset($fieldset->name) as $field)
+foreach($form->getFieldset() as $field)
         {
         $newparams[$field->name] = $field->value;
         }
-*/
+//$mainframe->enqueueMessage(JText::_('postflight newparams<br><pre>'.print_r($newparams,true).'</pre>'   ),'');
 
 
     switch ($type)        
@@ -402,7 +403,7 @@ $jRegistry->loadString($params->toString('ini'), 'ini');
 $form = JForm::getInstance('com_sportsmanagement', $xmlfile,array('control'=> ''), false, "/config");
 $form->bind($jRegistry);
 $newparams = array();
-foreach($form->getFieldset($fieldset->name) as $field)
+foreach($form->getFieldset() as $field)
         {
         $newparams[$field->name] = $field->value;
         }
