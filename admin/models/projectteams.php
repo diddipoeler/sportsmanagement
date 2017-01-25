@@ -337,6 +337,58 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	}
 
 	
+/**
+ * sportsmanagementModelProjectteams::getCountryTeams()
+ * 
+ * @return
+ */
+function getCountryTeams()
+	{
+		// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        //$db	= JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(); 
+		$query = $db->getQuery(true);
+        self::$_project_id = $app->getUserState( "$option.pid", '0' );
+        $this->_season_id = $app->getUserState( "$option.season_id", '0' );
+        $this->project_art_id = $app->getUserState( "$option.project_art_id", '0' );
+        $this->sports_type_id = $app->getUserState( "$option.sports_type_id", '0' );
+        
+        // noch das land der liga
+        $query->clear();
+        $query->select('l.country,p.season_id,p.project_type');
+        $query->from('#__sportsmanagement_league as l');
+        $query->join('INNER','#__sportsmanagement_project as p on p.league_id = l.id');
+        $query->where('p.id = '.self::$_project_id);
+
+        $db->setQuery( $query );
+        $result = $db->loadObject();
+		
+		$query->clear();
+        // Select some fields
+		$query->select('t.id AS value,t.name AS text,t.info');
+        // From table
+		$query->from('#__sportsmanagement_team AS t');
+        $query->join('INNER', '#__sportsmanagement_club AS c ON c.id = t.club_id');
+        //$query->where('t.sports_type_id = ' . $this->sports_type_id);
+        
+        if ( $result->country )
+        {
+        $query->where('c.country LIKE '.$db->Quote(''.$result->country.''));
+        }
+        
+        $query->order('t.name ASC');
+        
+
+		$db->setQuery( $query );
+		
+		return $db->loadObjectList();
+	}
+
+
 
 	/**
 	 * Method to return the teams array (id, name)
