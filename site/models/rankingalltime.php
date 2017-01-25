@@ -217,8 +217,8 @@ $this->_params[(string)$param->attributes()->name[0]] = (string)$param->attribut
             foreach ($result as $r) {
                 $this->teams[$r->team_id] = $r;
                 $this->teams[$r->team_id]->cnt_matches = 0;
-                $this->teams[$r->team_id]->sum_points = $r->points_finally;
-                $this->teams[$r->team_id]->neg_points = $r->neg_points_finally;
+                $this->teams[$r->team_id]->sum_points = 0;
+                $this->teams[$r->team_id]->neg_points = 0;
 
                 $this->teams[$r->team_id]->cnt_won_home = 0;
                 $this->teams[$r->team_id]->cnt_draw_home = 0;
@@ -1408,6 +1408,8 @@ $app = JFactory::getApplication();
             $this->dump_header("models function _getRankingCriteria");
             $this->dump_variable("this->_criteria", $this->_criteria);
         }
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _criteria<br><pre>'.print_r($this->_criteria,true).'</pre>'),'');
 
         return $this->_criteria;
     }
