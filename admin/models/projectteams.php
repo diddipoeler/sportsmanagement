@@ -73,6 +73,16 @@ class sportsmanagementModelProjectteams extends JModelList
             $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
             self::$_project_id	= JRequest::getInt('pid',0);
+            $post = JRequest::get( 'post' );
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+
+if ( $post['addteam'] )
+{
+if ( $post['team_id'] )
+{	
+$this->addNewProjectTeam($post['team_id'],self::$_project_id);    
+}    
+}
             if ( !self::$_project_id )
                 {
                 self::$_project_id	= $app->getUserState( "$option.pid", '0' );    
@@ -250,7 +260,77 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	}
 
 
-	/**
+	
+    
+    /**
+     * sportsmanagementModelProjectteams::addNewProjectTeam()
+     * 
+     * @param mixed $team_id
+     * @param mixed $_project_id
+     * @return void
+     */
+    function addNewProjectTeam($team_id,$project_id)
+    {
+	$db = JFactory::getDBO();
+    $query = $db->getQuery(true);	
+    $app = JFactory::getApplication();    
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($team_id,true).'</pre>'),'Notice');    
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($project_id,true).'</pre>'),'Notice');    
+
+// holen wir uns das land der liga
+$query->clear();
+$query->select('l.country,p.season_id,p.project_type,p.master_template,p.extendeduser,p.points_after_regular_time');
+$query->from('#__sportsmanagement_league as l');
+$query->join('INNER','#__sportsmanagement_project as p on p.league_id = l.id');
+$query->where('p.id = '.$project_id);
+$db->setQuery( $query );
+$pro_result = $db->loadObject();
+
+$query->clear();
+$query->select('id');
+$query->from('#__sportsmanagement_season_team_id');
+$query->where('team_id = '.$team_id);
+$query->where('season_id = '.$pro_result->season_id );
+$db->setQuery( $query );
+$season_team_id = $db->loadResult();
+
+// team ist der saison nicht zugeordnet
+if ( !$season_team_id )
+{
+try {	
+// Create and populate an object.
+$temp_season_team_id = new stdClass();
+$temp_season_team_id->team_id = $team_id;
+$temp_season_team_id->season_id = $pro_result->season_id;
+// Insert the object into the table.
+$result_season_team_id = JFactory::getDbo()->insertObject('#__sportsmanagement_season_team_id', $temp_season_team_id);
+} catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}
+if ( $result_season_team_id )
+{
+$season_team_id = $db->insertid();
+}
+}
+
+try {
+// und dem projekt hinzufügen
+$temp_project_team = new stdClass();
+$temp_project_team->team_id = $season_team_id;
+$temp_project_team->project_id = $project_id;
+// Insert the object into the table.
+$result_project_team = JFactory::getDbo()->insertObject('#__sportsmanagement_project_team', $temp_project_team);
+} catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}
+	
+    }
+    
+    /**
 	 * Method to update project teams list
 	 *
 	 * @access	public
@@ -336,6 +416,57 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 		return $result;
 	}
 
+/**
+ * sportsmanagementModelProjectteams::getCountryTeamsPicture()
+ * 
+ * @return
+ */
+function getCountryTeamsPicture()
+	{
+// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        //$db	= JFactory::getDbo();
+        $db = sportsmanagementHelper::getDBConnection(); 
+		$query = $db->getQuery(true);
+        self::$_project_id = $app->getUserState( "$option.pid", '0' );
+        $this->_season_id = $app->getUserState( "$option.season_id", '0' );
+        $this->project_art_id = $app->getUserState( "$option.project_art_id", '0' );
+        $this->sports_type_id = $app->getUserState( "$option.sports_type_id", '0' );
+        
+        // noch das land der liga
+        $query->clear();
+        $query->select('l.country,p.season_id,p.project_type');
+        $query->from('#__sportsmanagement_league as l');
+        $query->join('INNER','#__sportsmanagement_project as p on p.league_id = l.id');
+        $query->where('p.id = '.self::$_project_id);
+
+        $db->setQuery( $query );
+        $result = $db->loadObject();
+		
+		$query->clear();
+        // Select some fields
+		$query->select('t.id,c.logo_big as picture');
+        // From table
+		$query->from('#__sportsmanagement_team AS t');
+        $query->join('INNER', '#__sportsmanagement_club AS c ON c.id = t.club_id');
+        //$query->where('t.sports_type_id = ' . $this->sports_type_id);
+        
+        if ( $result->country )
+        {
+        $query->where('c.country LIKE '.$db->Quote(''.$result->country.''));
+        }
+        
+        $query->order('t.name ASC');
+        
+
+		$db->setQuery( $query );
+		//$result = $db->loadObjectList();
+		$result = $db->loadAssocList('id', 'picture');
+return $result;
+	}
 	
 /**
  * sportsmanagementModelProjectteams::getCountryTeams()
@@ -369,7 +500,7 @@ function getCountryTeams()
 		
 		$query->clear();
         // Select some fields
-		$query->select('t.id AS value,t.name AS text,t.info');
+		$query->select('t.id AS value,t.name AS text,t.info,c.logo_big as picture');
         // From table
 		$query->from('#__sportsmanagement_team AS t');
         $query->join('INNER', '#__sportsmanagement_club AS c ON c.id = t.club_id');
@@ -384,8 +515,16 @@ function getCountryTeams()
         
 
 		$db->setQuery( $query );
+		$result = $db->loadObjectList();
 		
-		return $db->loadObjectList();
+		/*
+foreach ($result as $teams)
+		{
+			$teams->text = JText::_($teams->text);
+		}		
+		*/
+		
+		return $result;
 	}
 
 
