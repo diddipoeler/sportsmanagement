@@ -69,6 +69,10 @@ var teampicture = new Array;
 <?php
 foreach ($this->lists['country_teams_picture'] as $key => $value)
 {
+if ( !$value )
+{
+$value = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");    
+}    
 echo 'teampicture['.($key).']=\''.$value."';\n";
 }
 ?>
