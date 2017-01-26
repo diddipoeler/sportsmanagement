@@ -60,8 +60,9 @@ else
 echo $this->loadTemplate('joomla2');    
 }
 ?>
+<div>
 <?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_QUICKADD_DESCR'); ?> 
-
+</div>
 <div>
 <script type="text/javascript">
 var teampicture = new Array;
