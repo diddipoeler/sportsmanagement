@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fï¿½e Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: ï¿½ 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie kï¿½n es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spï¿½ren
+* verï¿½ntlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nï¿½h sein wird, aber
+* OHNE JEDE GEWï¿½RLEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewï¿½leistung der MARKTFï¿½IGKEIT oder EIGNUNG Fï¿½ EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fï¿½tere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -44,7 +44,10 @@ $app = JFactory::getApplication();
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
+
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
+
+
 <?PHP
 
 // welche joomla version
@@ -56,7 +59,58 @@ else
 {
 echo $this->loadTemplate('joomla2');    
 }
+?>
+<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_QUICKADD_DESCR'); ?> 
 
+<div>
+<script type="text/javascript">
+var teampicture = new Array;
+<?php
+foreach ($this->lists['country_teams_picture'] as $key => $value)
+{
+echo 'teampicture['.($key).']=\''.$value."';\n";
+}
+?>
+</script>
+<?PHP
+// some CSS
+$this->document->addStyleDeclaration('
+img.item {
+    padding-right: 10px;
+    vertical-align: middle;
+}
+img.car {
+    height: 25px;
+}');
+// string $opt - second parameter of formbehavior2::select2
+// for details http://ivaynberg.github.io/select2/
+$opt = ' allowClear: true,
+   width: "50%",
+
+   formatResult: function format(state) 
+   {  
+   var originalOption = state.element;
+   var picture;
+   picture = teampicture[state.id];
+   if (!state.id) 
+   return state.text; 
+
+
+   return "<img class=\'item car\' src=\''. JURI::root() .'" + picture + "\' />" + state.text; 
+
+   },
+   
+   escapeMarkup: function(m) { return m; }
+';
+
+JHtml::_('formbehavior2.select2', '.test1', $opt);
+echo JHtml::_('select.genericlist',$this->lists['country_teams'],'team_id',
+'style="width:225px;" class="test1" size="6"'.$append,'value','text',0);
+
+?>
+<input class="btn" type="submit" name="addteam" id="addteam" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_ADD');?>" /> 
+</div>
+<?PHP
 if ( $this->project_art_id != 3 )
 {
 

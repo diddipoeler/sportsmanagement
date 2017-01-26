@@ -53,6 +53,7 @@ $modal_popup_height = JComponentHelper::getParams(JRequest::getCmd('option'))->g
 $cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))->get('cfg_bugtracker_server','') ;
 
 ?>
+
 	<div  class="table-responsive" id="editcell">
 	<!--	<fieldset class="adminform"> -->
 			<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_LEGEND','<i>'.$this->project->name.'</i>'); ?></legend>

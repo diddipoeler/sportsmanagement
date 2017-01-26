@@ -242,8 +242,10 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 																'value',
 																'text',
 																$this->state->get('filter.search_nation'));
-        
         $lists['country_teams'] = $model->getCountryTeams();
+        $lists['country_teams_picture'] = $model->getCountryTeamsPicture();
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture<br><pre>'.print_r($lists['country_teams_picture'],true).'</pre>'   ),'');
         
         //build the html select list for all teams
 		$allTeams = array();
