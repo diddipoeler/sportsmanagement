@@ -217,6 +217,11 @@ $this->_params[(string)$param->attributes()->name[0]] = (string)$param->attribut
             foreach ($result as $r) {
                 $this->teams[$r->team_id] = $r;
                 $this->teams[$r->team_id]->cnt_matches = 0;
+/**
+ * das ist hier nicht richtig
+ * $this->teams[$r->team_id]->sum_points = $r->points_finally;
+ * $this->teams[$r->team_id]->neg_points = $r->neg_points_finally;
+ */
                 $this->teams[$r->team_id]->sum_points = 0;
                 $this->teams[$r->team_id]->neg_points = 0;
 
@@ -420,8 +425,8 @@ JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEME
 		$away->cnt_matches++;
     
     $win_points  = (isset($arr[0])) ? $arr[0] : 3;
-			$draw_points = (isset($arr[1])) ? $arr[1] : 1;
-			$loss_points = (isset($arr[2])) ? $arr[2] : 0;
+	$draw_points = (isset($arr[1])) ? $arr[1] : 1;
+	$loss_points = (isset($arr[2])) ? $arr[2] : 0;
     
     if ( $loss_points )
     {
@@ -676,11 +681,24 @@ JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEME
     
     
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _teams<br><pre>'.print_r($this->_teams,true).'</pre>'),'');
+
+/**
+ * hier werden die werte aus dem projekt dem team dazu addiert
+ * wenn die werte des projektteams auch genutzt werden sollen
+ * dazu müssen die endpunkte neu berechnet werden, da die punkteverteilung
+ * über den request anders übergeben werden. z.b. 2 punkte oder 3 punkte für
+ * einen sieg
+ * $win_points $draw_points $loss_points
+ * 
+ * 
+ */
     
     foreach ( $this->_teams as $team )
     {
     if ( $team->use_finally ) 
 			{
+			 $team->points_finally = ( $win_points * $team->won_finally ) + ( $draw_points * $team->draws_finally );
+             $team->neg_points_finally = ( $loss_points * $team->lost_finally ) + ( $draw_points * $team->draws_finally );
 				$this->teams[$team->team_id]->sum_points += $team->points_finally;
 				$this->teams[$team->team_id]->neg_points += $team->neg_points_finally;
 				$this->teams[$team->team_id]->cnt_matches += $team->matches_finally;
@@ -1722,322 +1740,7 @@ $app = JFactory::getApplication();
     
 }
 
-///**
-// * Ranking team class
-// * Support class for ranking helper
-// */
-//class JSMRankingalltimeTeam
-//{
-//
-//    // new for use_finally
-//    var $_use_finally = 0;
-//    var $_points_finally = 0;
-//    var $_neg_points_finally = 0;
-//    var $_matches_finally = 0;
-//    var $_won_finally = 0;
-//    var $_draws_finally = 0;
-//    var $_lost_finally = 0;
-//    var $_homegoals_finally = 0;
-//    var $_guestgoals_finally = 0;
-//    var $_diffgoals_finally = 0;
-//
-//    // new for is_in_score
-//    var $_is_in_score = 0;
-//
-//    /**
-//     * project team id
-//     * @var int
-//     */
-//    var $_ptid = 0;
-//    /**
-//     * team id
-//     * @var int
-//     */
-//    var $_teamid = 0;
-//    /**
-//     * division id
-//     * @var int
-//     */
-//    var $_divisionid = 0;
-//    /**
-//     * start point / penalty
-//     * @var int
-//     */
-//    var $_startpoints = 0;
-//    /**
-//     * team name
-//     * @var string
-//     */
-//    var $_name = null;
-//
-//    var $cnt_matches = 0;
-//    var $cnt_won = 0;
-//    var $cnt_draw = 0;
-//    var $cnt_lost = 0;
-//    var $cnt_won_home = 0;
-//    var $cnt_draw_home = 0;
-//    var $cnt_lost_home = 0;
-//    var $sum_points = 0;
-//    var $neg_points = 0;
-//    var $bonus_points = 0;
-//    var $sum_team1_result = 0;
-//    var $sum_team2_result = 0;
-//    var $sum_away_for = 0;
-//    var $sum_team1_legs = 0;
-//    var $sum_team2_legs = 0;
-//    var $diff_team_results = 0;
-//    var $diff_team_legs = 0;
-//    var $round = 0;
-//    var $rank = 0;
-//
-//    /**
-//     * contructor requires ptid
-//     * @param int $ptid
-//     */
-//    function JSMRankingalltimeTeam($ptid)
-//    {
-//        $this->setPtid($ptid);
-//    }
-//
-//    // new for is_in_score
-//    function setis_in_score($val)
-//    {
-//        $this->_is_in_score = (int)$val;
-//    }
-//
-//    // new for use finally
-//    function setuse_finally($val)
-//    {
-//        $this->_use_finally = (int)$val;
-//    }
-//    function setpoints_finally($val)
-//    {
-//        $this->_points_finally = (int)$val;
-//    }
-//    function setneg_points_finally($val)
-//    {
-//        $this->_neg_points_finally = (int)$val;
-//    }
-//    function setmatches_finally($val)
-//    {
-//        $this->_matches_finally = (int)$val;
-//    }
-//    function setwon_finally($val)
-//    {
-//        $this->_won_finally = (int)$val;
-//    }
-//    function setdraws_finally($val)
-//    {
-//        $this->_draws_finally = (int)$val;
-//    }
-//    function setlost_finally($val)
-//    {
-//        $this->_lost_finally = (int)$val;
-//    }
-//    function sethomegoals_finally($val)
-//    {
-//        $this->_homegoals_finally = (int)$val;
-//    }
-//    function setguestgoals_finally($val)
-//    {
-//        $this->_guestgoals_finally = (int)$val;
-//    }
-//    function setdiffgoals_finally($val)
-//    {
-//        $this->_diffgoals_finally = (int)$val;
-//    }
-//
-//    /**
-//     * set project team id
-//     * @param int ptid
-//     */
-//    function setPtid($ptid)
-//    {
-//        $this->_ptid = (int)$ptid;
-//    }
-//
-//    /**
-//     * set team id
-//     * @param int id
-//     */
-//    function setTeamid($id)
-//    {
-//        $this->_teamid = (int)$id;
-//    }
-//
-//    /**
-//     * returns project team id
-//     * @return int id
-//     */
-//    function getPtid()
-//    {
-//        return $this->_ptid;
-//    }
-//
-//    /**
-//     * returns team id
-//     * @return int id
-//     */
-//    function getTeamid()
-//    {
-//        return $this->_teamid;
-//    }
-//
-//    /**
-//     * set team division id
-//     * @param int val
-//     */
-//    function setDivisionid($val)
-//    {
-//        $this->_divisionid = (int)$val;
-//    }
-//
-//    /**
-//     * return team division id
-//     * @return int id
-//     */
-//    function getDivisionid()
-//    {
-//        return $this->_divisionid;
-//    }
-//
-//    /**
-//     * set team start points
-//     * @param int val
-//     */
-//    function setStartpoints($val)
-//    {
-//        $this->_startpoints = $val;
-//    }
-//
-//    /**
-//     * set team neg points
-//     * @param int val
-//     */
-//    function setNegpoints($val)
-//    {
-//        $this->neg_points = $val;
-//    }
-//
-//    /**
-//     * set team name
-//     * @param string val
-//     */
-//    function setName($val)
-//    {
-//        $this->_name = $val;
-//    }
-//
-//    /**
-//     * return winning percentage
-//     *
-//     * @return float
-//     */
-//    function winPct()
-//    {
-//        if ($this->cnt_won + $this->cnt_lost + $this->cnt_draw == 0) {
-//            return 0;
-//        } else {
-//            return ($this->cnt_won / ($this->cnt_won + $this->cnt_lost + $this->cnt_draw)) *
-//                100;
-//        }
-//    }
-//
-//
-//    /**
-//     * return scoring average
-//     *
-//     * @return float
-//     */
-//    function goalAvg()
-//    {
-//        if ($this->sum_team2_result == 0) {
-//            return $this->sum_team1_result / 1;
-//        } else {
-//            return $this->sum_team1_result / $this->sum_team2_result;
-//        }
-//    }
-//
-//    /**
-//     * return scoring percentage
-//     *
-//     * @return float
-//     */
-//    function goalPct()
-//    {
-//        $result = $this->goalAvg() * 100;
-//        return $result;
-//    }
-//
-//
-//    /**
-//     * return leg ratio
-//     *
-//     * @return float
-//     */
-//    function legsRatio()
-//    {
-//        if ($this->sum_team2_legs == 0) {
-//            return $this->sum_team1_legs / 1;
-//        } else {
-//            return $this->sum_team1_legs / $this->sum_team2_legs;
-//        }
-//    }
-//
-//    /**
-//     * return points ratio
-//     *
-//     * @return float
-//     */
-//    function pointsRatio()
-//    {
-//        if ($this->neg_points == 0) {
-//            // we do not include start points
-//            return $this->getPoints(false) / 1;
-//        } else {
-//            // we do not include start points
-//            return $this->getPoints(false) / $this->neg_points;
-//        }
-//    }
-//
-//    /**
-//     * return points quot
-//     *
-//     * @return float
-//     */
-//    function pointsQuot()
-//    {
-//        if ($this->cnt_matches == 0) {
-//            // we do not include start points
-//            return $this->getPoints(false) / 1;
-//        } else {
-//            // we do not include start points
-//            return $this->getPoints(false) / $this->cnt_matches;
-//        }
-//    }
-//
-//
-//    function getName()
-//    {
-//        return $this->_name;
-//    }
-//
-//    /**
-//     * return points total
-//     *
-//     * @param boolean include start points, default true
-//     */
-//    function getPoints($include_start = true)
-//    {
-//        if ($include_start) {
-//            return $this->sum_points + $this->_startpoints;
-//        } else {
-//            return $this->sum_points;
-//        }
-//    }
-//
-//
-//}
+
 
 
 ?>
