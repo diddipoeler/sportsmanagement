@@ -1,5 +1,41 @@
 <?php
-
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 
 
 // Check to ensure this file is included in Joomla!
@@ -66,6 +102,14 @@ require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'l
         }
 
 
+/**
+ * sportsmanagementModeljsminlinehockey::checkProjectTeam()
+ * 
+ * @param mixed $team_id
+ * @param mixed $project_id
+ * @param mixed $season_id
+ * @return
+ */
 function checkProjectTeam($team_id,$project_id,$season_id)
 {
 $option = JRequest::getCmd('option');
@@ -161,6 +205,11 @@ return 0;
 
 }
 
+/**
+ * sportsmanagementModeljsminlinehockey::getmatches()
+ * 
+ * @return void
+ */
 function getmatches()
 {
 $app = JFactory::getApplication ();
@@ -272,8 +321,54 @@ $temp->team_name_home = $value_match->home_team->full_name;
 $temp->team_id_home = $value_match->home_team->team_id;
 $temp->team_info_home = $value_match->home_team->alternate_team_name;
 
+// Select some fields 
+$query->clear(); 
+$query->select('id'); 
+// From the table 
+$query->from('#__sportsmanagement_club'); 
+$query->where('id = '.$temp->club_id_home ); 
+$db->setQuery($query); 
+if ( !$db->loadResult() ) 
+{
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name nicht vorhanden -> '.$club_name.''),'');
+// Create and populate an object.
+$profile = new stdClass();
+$profile->id = $temp->club_id_home;
+$profile->name = $temp->club_name_home;
+$profile->country = 'DEU';
+$profile->website = $temp->club_website_home;
+$profile->alias = JFilterOutput::stringURLSafe( $temp->club_name_home );;
+// Insert the object into the user profile table.
+$result = JFactory::getDbo()->insertObject('#__sportsmanagement_club', $profile);
+}
+
+
 if ( $temp->team_id_home )
 {
+// Select some fields 
+$query->clear(); 
+$query->select('id'); 
+// From the table 
+$query->from('#__sportsmanagement_team'); 
+$query->where('id = '.$temp->team_id_home ); 
+$db->setQuery($query); 
+if ( !$db->loadResult() ) 
+{
+// Create and populate an object.
+$profile = new stdClass();
+$profile->id = $temp->team_id_home;
+$profile->club_id = $temp->club_id_home;
+$profile->name = $temp->team_name_home;
+$profile->short_name = $temp->team_name_home;
+$profile->middle_name = $temp->team_name_home;
+$profile->info = $temp->team_info_home;
+$profile->sports_type_id = $sports_type_id;
+$profile->alias = JFilterOutput::stringURLSafe( $temp->team_name_home );;
+ 
+// Insert the object into the user profile table.
+$result = JFactory::getDbo()->insertObject('#__sportsmanagement_team', $profile);
+}
+
 $teams[$temp->team_name_home] = $temp->team_id_home;
 }
 else
@@ -305,8 +400,54 @@ $temp->team_name_away = $value_match->away_team->full_name;
 $temp->team_id_away = $value_match->away_team->team_id;
 $temp->team_info_away = $value_match->away_team->alternate_team_name;
 
+// Select some fields 
+$query->clear(); 
+$query->select('id'); 
+// From the table 
+$query->from('#__sportsmanagement_club'); 
+$query->where('id = '.$temp->club_id_away ); 
+$db->setQuery($query); 
+if ( !$db->loadResult() ) 
+{
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name nicht vorhanden -> '.$club_name.''),'');
+// Create and populate an object.
+$profile = new stdClass();
+$profile->id = $temp->club_id_away;
+$profile->name = $temp->club_name_away;
+$profile->country = 'DEU';
+$profile->website = $temp->club_website_away;
+$profile->alias = JFilterOutput::stringURLSafe( $temp->club_name_away );;
+// Insert the object into the user profile table.
+$result = JFactory::getDbo()->insertObject('#__sportsmanagement_club', $profile);
+}
+
+
 if ( $temp->team_id_away)
 {
+// Select some fields 
+$query->clear(); 
+$query->select('id'); 
+// From the table 
+$query->from('#__sportsmanagement_team'); 
+$query->where('id = '.$temp->team_id_away ); 
+$db->setQuery($query); 
+if ( !$db->loadResult() ) 
+{
+// Create and populate an object.
+$profile = new stdClass();
+$profile->id = $temp->team_id_away;
+$profile->club_id = $temp->club_id_away;
+$profile->name = $temp->team_name_away;
+$profile->short_name = $temp->team_name_away;
+$profile->middle_name = $temp->team_name_away;
+$profile->info = $temp->team_info_away;
+$profile->sports_type_id = $sports_type_id;
+$profile->alias = JFilterOutput::stringURLSafe( $temp->team_name_away );;
+ 
+// Insert the object into the user profile table.
+$result = JFactory::getDbo()->insertObject('#__sportsmanagement_team', $profile);
+}
+
 $teams[$temp->team_name_away] = $temp->team_id_away;
 }
 else
@@ -337,8 +478,8 @@ $exportmatches[] = $temp;
 
 }
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' exportmatches<br><pre>'.print_r($exportmatches,true).'</pre>'),'');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' exportmatches<br><pre>'.print_r($exportmatches,true).'</pre>'),'');
 
 
 /**
@@ -548,8 +689,8 @@ $derlink  = $db->loadResult();
     
 if($app ->isAdmin()) 
 {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');    
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' link -> '.$derlink.''),'Notice');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');    
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' link -> '.$derlink.''),'Notice');
 }    
 
 return $derlink;
