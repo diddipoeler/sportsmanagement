@@ -205,29 +205,45 @@ return 0;
 
 }
 
+
 /**
  * sportsmanagementModeljsminlinehockey::getmatches()
  * 
+ * @param integer $projectid
  * @return void
  */
-function getmatches()
+function getmatches($projectid=0)
 {
 $app = JFactory::getApplication ();
 $jinput = $app->input;
 $option = $jinput->getCmd('option');
 $db = JFactory::getDbo();
 $query = $db->getQuery(true);
-
+//set the target directory
+$base_Dir = JPATH_SITE . DS . 'images' . DS . $option . DS .'database'.DS. 'clubs/large' . DS;
 $post = $jinput->post->getArray();
 //$app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid -> '.$post['projectid'].''),'');
+
+$matchlink = $post['matchlink'];
+
+if ( !$projectid )
+{
+    $projectid = $post['projectid'];
+}
+
+if ( !$matchlink )
+{
+    $matchlink = $this->getMatchLink($projectid);
+}
+
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid -> '.$projectid.''),'');
 
 $teams = array();
 
 $query->clear();
 $query->select('season_id');
 $query->from('#__sportsmanagement_project');
-$query->where('id = '.$post['projectid']);
+$query->where('id = '.$projectid);
 $db->setQuery( $query );
 $season_id = $db->loadResult();
 
@@ -236,7 +252,7 @@ $query->clear();
 $query->select('id');
 $query->from('#__sportsmanagement_round');
 $query->where('roundcode LIKE '.$db->Quote(''.$spieltag.''));
-$query->where('project_id = '.$post['projectid']);
+$query->where('project_id = '.$projectid);
 $db->setQuery( $query );
 $round_id = $db->loadResult();
 
@@ -248,7 +264,7 @@ if ( empty($round_id) )
 $newround = new stdClass();
 $newround->roundcode = $spieltag;
 $newround->name = $spieltag.'.Spieltag';
-$newround->project_id = $post['projectid'];
+$newround->project_id = $projectid;
 
 // Insert the object
 $result = JFactory::getDbo()->insertObject('#__sportsmanagement_round', $newround);
@@ -260,7 +276,7 @@ $round_id = $db->insertid();
 
 }
 
-$url_clubs = $post['matchlink'];
+$url_clubs = $matchlink;
 $curl = curl_init($url_clubs);
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
@@ -280,7 +296,7 @@ $pages = $json_object_matches->pages;
 
 for( $page =1; $page <= $pages ; $page++  )
 {
-$url_clubs = $post['matchlink'].'?page='.$page;
+$url_clubs = $matchlink.'?page='.$page;
 $curl = curl_init($url_clubs);
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
@@ -317,10 +333,14 @@ $temp->club_name_home = $value_match->home_team->club->name;
 $temp->club_id_home = $value_match->home_team->club->id;
 $temp->club_website_home = $value_match->home_team->club->website->url;
 $temp->club_infosite_home = $value_match->home_team->club->_links->self->href;
+$temp->club_logo_home = $value_match->home_team->club->_links->logo->href;
 $temp->team_name_home = $value_match->home_team->full_name;
 $temp->team_id_home = $value_match->home_team->team_id;
 $temp->team_info_home = $value_match->home_team->alternate_team_name;
 
+/**
+ * hier überprüfen wir den heimverein
+ */
 // Select some fields 
 $query->clear(); 
 $query->select('id'); 
@@ -330,7 +350,17 @@ $query->where('id = '.$temp->club_id_home );
 $db->setQuery($query); 
 if ( !$db->loadResult() ) 
 {
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name nicht vorhanden -> '.$club_name.''),'');
+$filepath = $base_Dir . $temp->club_id_home.'_'.basename($temp->club_logo_home);
+$linkaddress = 'https://www.ishd.de'.$temp->club_logo_home;
+if ( !copy($linkaddress,$filepath) )
+{
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' fehler beim kopieren<br><pre>'.print_r($linkaddress,true).'</pre>'),'Error');    
+}
+else
+{
+}
+    
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' filepath -> '.$filepath.''),'');
 // Create and populate an object.
 $profile = new stdClass();
 $profile->id = $temp->club_id_home;
@@ -345,6 +375,9 @@ $result = JFactory::getDbo()->insertObject('#__sportsmanagement_club', $profile)
 
 if ( $temp->team_id_home )
 {
+/**
+ * hier überprüfen wir die heimmannschaft
+ */     
 // Select some fields 
 $query->clear(); 
 $query->select('id'); 
@@ -388,7 +421,7 @@ $teams[$temp->team_name_home] = $temp->team_id_home;
 
 if ( $temp->team_id_home )
 {
-$temp->projectteam1_id = $this->checkProjectTeam($temp->team_id_home,$post['projectid'],$season_id);
+$temp->projectteam1_id = $this->checkProjectTeam($temp->team_id_home,$projectid,$season_id);
 }
 
 
@@ -396,10 +429,14 @@ $temp->club_name_away = $value_match->away_team->club->name;
 $temp->club_id_away = $value_match->away_team->club->id;
 $temp->club_website_away = $value_match->away_team->club->website->url;
 $temp->club_infosite_away = $value_match->away_team->club->_links->self->href;
+$temp->club_logo_away = $value_match->away_team->club->_links->logo->href;
 $temp->team_name_away = $value_match->away_team->full_name;
 $temp->team_id_away = $value_match->away_team->team_id;
 $temp->team_info_away = $value_match->away_team->alternate_team_name;
 
+/**
+ * hier überprüfen wir den auswärtsverein
+ */
 // Select some fields 
 $query->clear(); 
 $query->select('id'); 
@@ -409,6 +446,7 @@ $query->where('id = '.$temp->club_id_away );
 $db->setQuery($query); 
 if ( !$db->loadResult() ) 
 {
+$filepath = $base_Dir . $temp->club_id_home.'_'.basename($temp->club_logo_away);    
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name nicht vorhanden -> '.$club_name.''),'');
 // Create and populate an object.
 $profile = new stdClass();
@@ -424,6 +462,9 @@ $result = JFactory::getDbo()->insertObject('#__sportsmanagement_club', $profile)
 
 if ( $temp->team_id_away)
 {
+/**
+ * hier überprüfen wir die auswärtsmannschaft
+ */    
 // Select some fields 
 $query->clear(); 
 $query->select('id'); 
@@ -466,7 +507,7 @@ $teams[$temp->team_name_away] = $temp->team_id_away;
 }
 if ( $temp->team_id_away)
 {
-$temp->projectteam2_id = $this->checkProjectTeam($temp->team_id_away,$post['projectid'],$season_id);
+$temp->projectteam2_id = $this->checkProjectTeam($temp->team_id_away,$projectid,$season_id);
 }
 
 $temp->team1_result = $value_match->home_goals;
@@ -478,8 +519,8 @@ $exportmatches[] = $temp;
 
 }
 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' exportmatches<br><pre>'.print_r($exportmatches,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($teams,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' exportmatches<br><pre>'.print_r($exportmatches,true).'</pre>'),'');
 
 
 /**
@@ -599,7 +640,9 @@ $match->color = $this->storeSuccessColor;
 
 }
 
-// sportanlagen 
+/**
+ * sportanlagen
+ */
 foreach ( $exportmatches as $i => $match)
 {
 
@@ -659,15 +702,63 @@ $result = JFactory::getDbo()->insertObject('#__sportsmanagement_playground', $pr
 
 }
 
-
-}
-
-
 }
 
 }
 
+/**
+ * datum in den runden
+ */
+$query->clear();
+$query->select('*');
+$query->from('#__sportsmanagement_round');
+$query->where('project_id = '.$projectid);
+$db->setQuery( $query );
+$rounds = $db->loadObjectList(); 
+foreach( $rounds as $round )
+{
+$query->clear();
+$query->select('min(match_date)');
+$query->from('#__sportsmanagement_match ');   
+$query->where('round_id = '.$round->id);
+$db->setQuery( $query );
+$von = $db->loadResult();
+$teile = explode(" ",$von);
+$von = $teile[0];
 
+$query->clear();
+$query->select('max(match_date)');
+$query->from('#__sportsmanagement_match ');   
+$query->where('round_id = '.$round->id);
+$db->setQuery( $query );
+$bis = $db->loadResult();
+$teile = explode(" ",$bis);
+$bis = $teile[0];
+
+// Create an object for the record we are going to update.
+$object = new stdClass();
+ 
+// Must be a valid primary key value.
+$object->id = $round->id;
+$object->round_date_first = $von;
+$object->round_date_last = $bis;
+ 
+// Update their details in the users table using id as the primary key.
+$result = JFactory::getDbo()->updateObject('#__sportsmanagement_round', $object, 'id');     
+
+} 
+
+
+
+}
+
+
+/**
+ * sportsmanagementModeljsminlinehockey::getMatchLink()
+ * 
+ * @param mixed $projectid
+ * @return
+ */
 function getMatchLink($projectid)
 {
 $option = JRequest::getCmd('option');
@@ -747,7 +838,8 @@ $sports_type_id = $db->insertid();
 switch ( $post['check'] )
 {
 case 'clubs':
-$url_clubs = 'https://www.ishd.de/api/licenses/clubs.json';
+//$url_clubs = 'https://www.ishd.de/api/licenses/clubs.json';
+$url_clubs = 'https://www.ishd.de/vereine.json';
 $curl = curl_init($url_clubs);
 curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
