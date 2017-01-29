@@ -104,7 +104,7 @@ static $linkresult = '';
         $app = JFactory::getApplication();
     
     //self::$projectid = $app->input->getInt('p');
-    self::$projectid = JRequest::getInt('p',0);
+    //self::$projectid = JRequest::getInt('p',0);
     
     $date = time();    // aktuelles Datum 
     //echo date('d.m.Y h:i:s', $date) . ""; 
@@ -145,11 +145,11 @@ static $linkresult = '';
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'Notice');
         }
-        //sportsmanagementModeljsminlinehockey::getmatches(self::$projectid);
+        
         if ( self::$projectid )
         {
-        $actionsModel = JModelLegacy::getInstance('jsminlinehockey', 'sportsmanagementModel');    
-        $actionsModel->getmatches(self::$projectid);
+//        $actionsModel = JModelLegacy::getInstance('jsminlinehockey', 'sportsmanagementModel');    
+//        $actionsModel->getmatches(self::$projectid);
         $this->getmatchestoupdate(2);
         }
         
@@ -180,10 +180,19 @@ static $linkresult = '';
     public function onAfterRoute()
     {
         $app = JFactory::getApplication();
+        self::$projectid = JRequest::getInt('p',0);
         if ( $this->params->get('load_debug', 1) )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'Notice');
         }
+        
+        if ( self::$projectid )
+        {
+       $this->getmatchestoupdate(1);
+       $actionsModel = JModelLegacy::getInstance('jsminlinehockey', 'sportsmanagementModel');    
+        $actionsModel->getmatches(self::$projectid);
+        }
+        
     }
 
     
@@ -215,10 +224,7 @@ static $linkresult = '';
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'Notice');
         }
-        if ( self::$projectid )
-        {
-       $this->getmatchestoupdate(1);
-        }
+        
         
     }
     
