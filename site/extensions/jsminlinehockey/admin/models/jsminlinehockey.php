@@ -212,7 +212,7 @@ return 0;
  * @param integer $projectid
  * @return void
  */
-function getmatches($projectid=0)
+function getmatches($projectid=0,$username='',$password='')
 {
 $app = JFactory::getApplication ();
 $jinput = $app->input;
@@ -223,8 +223,12 @@ $query = $db->getQuery(true);
 $base_Dir = JPATH_SITE . DS . 'images' . DS . $option . DS .'database'.DS. 'clubs/large' . DS;
 $post = $jinput->post->getArray();
 //$app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
+$matchlink = '';
 
+if ( $post )
+{
 $matchlink = $post['matchlink'];
+}
 
 if ( !$projectid )
 {
@@ -237,6 +241,7 @@ if ( !$matchlink )
 }
 
 $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid -> '.$projectid.''),'');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' matchlink -> '.$matchlink.''),'');
 
 $teams = array();
 
@@ -282,7 +287,10 @@ curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
 //curl_setopt($curl, CURLOPT_HEADER, 1);
 curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+if ( $username && $password )
+{
 curl_setopt($curl, CURLOPT_USERPWD, $username.':'.$password );
+}
 $result = curl_exec($curl);
 $code = curl_getinfo ($curl, CURLINFO_HTTP_CODE);
 
@@ -302,7 +310,10 @@ curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
 //curl_setopt($curl, CURLOPT_HEADER, 1);
 curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+if ( $username && $password )
+{
 curl_setopt($curl, CURLOPT_USERPWD, $username.':'.$password );
+}
 $result = curl_exec($curl);
 $code = curl_getinfo ($curl, CURLINFO_HTTP_CODE);
 
@@ -485,7 +496,7 @@ $profile->info = $temp->team_info_away;
 $profile->sports_type_id = $sports_type_id;
 $profile->alias = JFilterOutput::stringURLSafe( $temp->team_name_away );;
  
-// Insert the object into the user profile table.
+// Insert the object into the table.
 $result = JFactory::getDbo()->insertObject('#__sportsmanagement_team', $profile);
 }
 
@@ -546,8 +557,9 @@ if ( $match_id )
 
 if ( is_numeric($match->team1_result) && is_numeric($match->team2_result) )
 {    
-$row = JTable::getInstance('match','sportsmanagementTable');
-$row->load((int) $match_id);    
+$row = new stdClass();    
+//$row = JTable::getInstance('match','sportsmanagementTable');
+$row->id = $match_id;    
 $row->team1_result = $match->team1_result;
 $row->team2_result = $match->team2_result;
 $row->team1_result_split = $match->team1_result_split;
@@ -559,39 +571,46 @@ $row->import_match_id = $match->match_id;
 $row->match_timestamp = sportsmanagementHelper::getTimestamp($match->match_date);
 $row->published = 1;
 
-if (!$row->store())
-{
-$match->info = 'Error Update';
-$match->color = $this->storeFailedColor;  
-}
-else
-{
-$match->info = 'Update';
-$match->color = $this->storeSuccessColor;      
-}   
+// update the object into the table.
+$result = JFactory::getDbo()->updateObject('#__sportsmanagement_match', $row, 'id');
+
+//if (!$row->store())
+//{
+//$match->info = 'Error Update';
+//$match->color = $this->storeFailedColor;  
+//}
+//else
+//{
+//$match->info = 'Update';
+//$match->color = $this->storeSuccessColor;      
+//}   
 
 }
 else
 {
 // aber das datum updaten
-$row = JTable::getInstance('match','sportsmanagementTable');
-$row->load((int) $match_id);    
+$row = new stdClass(); 
+//$row = JTable::getInstance('match','sportsmanagementTable');
+$row->id = $match_id;     
 $row->match_date = $match->match_date;
 $row->match_timestamp = sportsmanagementHelper::getTimestamp($match->match_date);
 $row->division_id = $match->division_id;
 $row->published = 1;
 $row->import_match_id = $match->match_id;
 
-if (!$row->store())
-{
-$match->info = 'No Result - Error Update';
-$match->color = $this->storeFailedColor;  
-}
-else
-{
-$match->info = 'No Result - Update';
-$match->color = $this->storeSuccessColor;      
-}
+// update the object into the table.
+$result = JFactory::getDbo()->updateObject('#__sportsmanagement_match', $row, 'id');
+
+//if (!$row->store())
+//{
+//$match->info = 'No Result - Error Update';
+//$match->color = $this->storeFailedColor;  
+//}
+//else
+//{
+//$match->info = 'No Result - Update';
+//$match->color = $this->storeSuccessColor;      
+//}
     
 }
     
@@ -602,7 +621,8 @@ else
 // kann das spiel angelegt werden
 if ( $match->round_id && $match->projectteam1_id && $match->projectteam2_id )
 {    
-$rowInsert = JTable::getInstance('match','sportsmanagementTable');
+$rowInsert = new stdClass();    
+//$rowInsert = JTable::getInstance('match','sportsmanagementTable');
 $rowInsert->import_match_id = $match->match_id;
 $rowInsert->round_id = $match->round_id;
 $rowInsert->projectteam1_id = $match->projectteam1_id;
@@ -618,17 +638,19 @@ $rowInsert->match_date = $match->match_date;
 $rowInsert->match_timestamp = sportsmanagementHelper::getTimestamp($match->match_date);
 $rowInsert->published = 1;
 
+// update the object into the table.
+$result = JFactory::getDbo()->insertObject('#__sportsmanagement_match', $rowInsert);
 
-if (!$rowInsert->store())
-{
-$match->info = 'Error Insert';
-$match->color = $this->storeFailedColor;  
-}
-else
-{
-$match->info = 'Insert';
-$match->color = $this->storeSuccessColor;      
-}     
+//if (!$rowInsert->store())
+//{
+//$match->info = 'Error Insert';
+//$match->color = $this->storeFailedColor;  
+//}
+//else
+//{
+//$match->info = 'Insert';
+//$match->color = $this->storeSuccessColor;      
+//}     
     
 }    
     
@@ -764,6 +786,15 @@ function getMatchLink($projectid)
 $option = JRequest::getCmd('option');
 $app = JFactory::getApplication();
 $post = JRequest::get('post');
+
+if ( $app->isAdmin() )
+{ 
+$view = JRequest::getVar('view');
+}
+else
+{
+$view = 'jsminlinehockey';    
+}
 //$project_id = $mainframe->getUserState( "$option.pid", '0' );
 $db = JFactory::getDBO();
 $query = $db->getQuery(true);    
@@ -772,7 +803,7 @@ $query->select('ev.fieldvalue');
 $query->from('#__sportsmanagement_user_extra_fields_values as ev ');
 $query->join('INNER','#__sportsmanagement_user_extra_fields as ef ON ef.id = ev.field_id');
 $query->where('ev.jl_id = '.$projectid);
-$query->where('ef.name LIKE '.$db->Quote(''.JRequest::getVar('view').''));
+$query->where('ef.name LIKE '.$db->Quote(''.$view.''));
 $query->where('ef.template_backend LIKE '.$db->Quote(''.'project'.''));
 $query->where('ef.field_type LIKE '.$db->Quote(''.'link'.''));
 $db->setQuery( $query );
