@@ -359,7 +359,18 @@ $query->select('id');
 $query->from('#__sportsmanagement_club'); 
 $query->where('id = '.$temp->club_id_home ); 
 $db->setQuery($query); 
-if ( !$db->loadResult() ) 
+
+try {
+$club_id_heim = $db->loadResult();
+} catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$temp->club_name_home, 'error');
+}
+
+
+if ( !$club_id_heim ) 
 {
 $filepath = $base_Dir . $temp->club_id_home.'_'.basename($temp->club_logo_home);
 $linkaddress = 'https://www.ishd.de'.$temp->club_logo_home;
@@ -455,7 +466,18 @@ $query->select('id');
 $query->from('#__sportsmanagement_club'); 
 $query->where('id = '.$temp->club_id_away ); 
 $db->setQuery($query); 
-if ( !$db->loadResult() ) 
+
+try {
+$club_id_away = $db->loadResult();
+} catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+
+JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$temp->club_name_away, 'error');
+}
+
+if ( !$club_id_away ) 
 {
 $filepath = $base_Dir . $temp->club_id_home.'_'.basename($temp->club_logo_away);    
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name nicht vorhanden -> '.$club_name.''),'');
@@ -690,10 +712,19 @@ $playground_id = $json_object_club->venue->venue->id;
 $playground_short_name = $json_object_club->venue->venue->name;
 $playground_name = $json_object_club->venue->venue->full_name;
 $playground_club_id = $json_object_club->id;
-
 $playground_street = $json_object_club->venue->venue->address->street ;
 $playground_postal_code = $json_object_club->venue->venue->address->postal_code;
 $playground_city = $json_object_club->venue->venue->address->city ;
+
+/**
+ * verein mit dem spielort updaten
+ */
+// Create and populate an object. 
+$profile = new stdClass(); 
+$profile->id = $playground_club_id;
+$profile->standard_playground = $playground_id;
+// update the object into the table. 
+$result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $profile,'id');
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($playground_id,true).'</pre>'),'');
 
@@ -718,11 +749,11 @@ $profile->zipcode = $playground_postal_code;
 $profile->city = $playground_city; 
 $profile->country = 'DEU';
 $profile->alias = JFilterOutput::stringURLSafe( $playground_name );; 
-   
-// Insert the object into the user profile table. 
+// Insert the object into the table. 
 $result = JFactory::getDbo()->insertObject('#__sportsmanagement_playground', $profile); 
-
 }
+
+
 
 }
 
@@ -883,14 +914,34 @@ $code = curl_getinfo ($curl, CURLINFO_HTTP_CODE);
 // Will dump a beauty json :3
 $json_object_clubs = json_decode($result);
 $json_array = json_decode($result,true);
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($result,true).'</pre>'),'');
-foreach( $json_object_clubs->clubs as $key_club => $value_club )
-{
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($value_club->club_id,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name<br><pre>'.print_r($value_club->club_name,true).'</pre>'),'');
 
-$club_id = $value_club->club_id;
-$club_name = $value_club->club_name;
+$seiten = $json_object_clubs->pages;
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' result object<br><pre>'.print_r($json_object_clubs,true).'</pre>'),'');
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' seiten <br><pre>'.print_r($seiten ,true).'</pre>'),'');
+
+for ($seite=1;$seite <= $seiten;$seite++)
+{
+$url_clubs = 'https://www.ishd.de/vereine.json?page='.$seite;
+$curl = curl_init($url_clubs);
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+//curl_setopt($curl, CURLOPT_HEADER, 1);
+curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+curl_setopt($curl, CURLOPT_USERPWD, $username.':'.$password );
+$result = curl_exec($curl);
+$code = curl_getinfo ($curl, CURLINFO_HTTP_CODE);
+
+// Will dump a beauty json :3
+$json_object_clubs = json_decode($result);
+//$json_array = json_decode($result,true);
+foreach( $json_object_clubs->_embedded->clubs as $key_club => $value_club )
+{
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($value_club->id,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name<br><pre>'.print_r($value_club->name,true).'</pre>'),'');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' value<br><pre>'.print_r($value_club,true).'</pre>'),'');
+
+$club_id = $value_club->id;
+$club_name = $value_club->name;
 
 // Select some fields 
 $query->clear(); 
@@ -899,7 +950,20 @@ $query->select('id');
 $query->from('#__sportsmanagement_club'); 
 $query->where('id = '.$club_id ); 
 $db->setQuery($query); 
-if ( !$db->loadResult() ) 
+
+try {
+$club_id_db = $db->loadResult();
+} catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+
+JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$temp->club_name_away, 'error');
+}
+
+
+
+if ( !$club_id_db ) 
 {
 $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name nicht vorhanden -> '.$club_name.''),'');
 // Create and populate an object.
@@ -910,12 +974,13 @@ $profile->country = 'DEU';
 $profile->alias = JFilterOutput::stringURLSafe( $club_name );;
  
 // Insert the object into the user profile table.
-$result = JFactory::getDbo()->insertObject('#__sportsmanagement_club', $profile);
+//$result = JFactory::getDbo()->insertObject('#__sportsmanagement_club', $profile);
 $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name angelegt -> '.$club_name.''),'');
 }
 else
 {
 $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_name vorhanden -> '.$club_name.'-'.$club_id),'Notice');
+}
 }
 }
 break;
