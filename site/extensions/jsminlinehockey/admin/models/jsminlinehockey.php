@@ -580,7 +580,6 @@ if ( $match_id )
 if ( is_numeric($match->team1_result) && is_numeric($match->team2_result) )
 {    
 $row = new stdClass();    
-//$row = JTable::getInstance('match','sportsmanagementTable');
 $row->id = $match_id;    
 $row->team1_result = $match->team1_result;
 $row->team2_result = $match->team2_result;
@@ -589,50 +588,28 @@ $row->team2_result_split = $match->team2_result_split;
 $row->match_date = $match->match_date;
 $row->division_id = $match->division_id;
 $row->import_match_id = $match->match_id;
-
+$row->match_number = $match->match_id;
 $row->match_timestamp = sportsmanagementHelper::getTimestamp($match->match_date);
 $row->published = 1;
 
 // update the object into the table.
 $result = JFactory::getDbo()->updateObject('#__sportsmanagement_match', $row, 'id');
 
-//if (!$row->store())
-//{
-//$match->info = 'Error Update';
-//$match->color = $this->storeFailedColor;  
-//}
-//else
-//{
-//$match->info = 'Update';
-//$match->color = $this->storeSuccessColor;      
-//}   
 
 }
 else
 {
 // aber das datum updaten
 $row = new stdClass(); 
-//$row = JTable::getInstance('match','sportsmanagementTable');
 $row->id = $match_id;     
 $row->match_date = $match->match_date;
 $row->match_timestamp = sportsmanagementHelper::getTimestamp($match->match_date);
 $row->division_id = $match->division_id;
 $row->published = 1;
 $row->import_match_id = $match->match_id;
-
+$row->match_number = $match->match_id;
 // update the object into the table.
 $result = JFactory::getDbo()->updateObject('#__sportsmanagement_match', $row, 'id');
-
-//if (!$row->store())
-//{
-//$match->info = 'No Result - Error Update';
-//$match->color = $this->storeFailedColor;  
-//}
-//else
-//{
-//$match->info = 'No Result - Update';
-//$match->color = $this->storeSuccessColor;      
-//}
     
 }
     
@@ -644,8 +621,8 @@ else
 if ( $match->round_id && $match->projectteam1_id && $match->projectteam2_id )
 {    
 $rowInsert = new stdClass();    
-//$rowInsert = JTable::getInstance('match','sportsmanagementTable');
 $rowInsert->import_match_id = $match->match_id;
+$rowInsert->match_number = $match->match_id;
 $rowInsert->round_id = $match->round_id;
 $rowInsert->projectteam1_id = $match->projectteam1_id;
 $rowInsert->projectteam2_id = $match->projectteam2_id;
@@ -662,17 +639,7 @@ $rowInsert->published = 1;
 
 // update the object into the table.
 $result = JFactory::getDbo()->insertObject('#__sportsmanagement_match', $rowInsert);
-
-//if (!$rowInsert->store())
-//{
-//$match->info = 'Error Insert';
-//$match->color = $this->storeFailedColor;  
-//}
-//else
-//{
-//$match->info = 'Insert';
-//$match->color = $this->storeSuccessColor;      
-//}     
+   
     
 }    
     
@@ -689,6 +656,9 @@ $result = JFactory::getDbo()->insertObject('#__sportsmanagement_match', $rowInse
  */
 foreach ( $exportmatches as $i => $match)
 {
+
+
+
 
 if ( $match->club_id_home )
 {
