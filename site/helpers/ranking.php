@@ -817,8 +817,14 @@ $res = $db->loadObjectList();
 			$t->setTeamid($r->teamid);
 			// diddipoeler
             $t->ptid_slug = $r->ptid_slug;
-			//$t->setDivisionid($division);
+			if ( $division )
+			{	
+			$t->setDivisionid($division);
+			}
+			else
+			{	
 			$t->setDivisionid($r->division_id);
+			}	
 			$t->setStartpoints($r->start_points);
 			$t->setNegpoints($r->neg_points_finally);
 			$t->setName($r->name);
