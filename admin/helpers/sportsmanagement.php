@@ -61,7 +61,101 @@ abstract class sportsmanagementHelper
     static $_success_text = array();
     
     
-    
+    /**
+     * sportsmanagementHelper::date_diff()
+     * 
+     * @param mixed $d1
+     * @param mixed $d2
+     * @return
+     */
+    function date_diff($d1, $d2){
+/* This is correctly working time differentiating function. It's resistant to problems with 
+   leap year and different days of month. Inputs are two timestamps and function returns array 
+   with differences in year, month, day, hour, minute a nd second.
+ 
+   Compares two timestamps and returns array with differencies (year, month, day, hour, minute, second)
+ 
+   More infos at http://de2.php.net/manual/de/function.date-diff.php#93915
+   
+   beispiele
+define(BIRTHDAY, strtotime('1980-08-26 15:25:00')); // geburtsdatum
+$now  = time(); // aktuelles datum
+ 
+// geburtsdatum dieses jahr:
+$birthdayThisYear = mktime(date('H',BIRTHDAY),date('i',BIRTHDAY),date('s',BIRTHDAY),date('n',BIRTHDAY),date('j',BIRTHDAY),date('Y',$now));
+ 
+// geburtsdatum nächstes jahr:
+$birthdayNextYear = mktime(date('H',BIRTHDAY),date('i',BIRTHDAY),date('s',BIRTHDAY),date('n',BIRTHDAY),date('j',BIRTHDAY),date('Y',$now)+1);
+ 
+// geburtsdatum letztes jahr:
+$birthdayLastYear = mktime(date('H',BIRTHDAY),date('i',BIRTHDAY),date('s',BIRTHDAY),date('n',BIRTHDAY),date('j',BIRTHDAY),date('Y',$now)-1);                                                                                                                              
+ 
+// der nächste geburtstag:
+$nextBirthday     = ($now<$birthdayThisYear)?$birthdayThisYear:$birthdayNextYear;                           
+ 
+// der letzte geburtstag:
+$lastBirthday     = ($now<=$birthdayThisYear)?$birthdayLastYear:$birthdayThisYear;
+ 
+// wie viel prozent des jahres bis zum nächsten geburtstag sind schon um? 
+$percent          = ($now-$lastBirthday) / ($nextBirthday-$lastBirthday) * 100;
+ 
+// wie viele tage sind es noch bis zum nächsten geburtstag?
+$days2Birthday    = floor(($nextBirthday - $now) / 86400);
+ 
+// alter als array  (jahre, monate, tage, stunden, minuten, sekunden - schaltjahre werde berücksichtigt!)
+$age              = date_diff(BIRTHDAY, $now);
+   
+*/
+        //check higher timestamp and switch if neccessary
+        if ($d1 < $d2) {
+                $temp = $d2;
+                $d2 = $d1;
+                $d1 = $temp;
+        } else {
+                $temp = $d1; //temp can be used for day count if required
+        }
+        $d1 = date_parse(date("Y-m-d H:i:s",$d1));
+        $d2 = date_parse(date("Y-m-d H:i:s",$d2));
+        //seconds
+        if ($d1['second'] >= $d2['second']){
+                $diff['second'] = $d1['second'] - $d2['second'];
+        } else {
+                $d1['minute']--;
+                $diff['second'] = 60-$d2['second']+$d1['second'];
+        }
+        //minutes
+        if ($d1['minute'] >= $d2['minute']){
+                $diff['minute'] = $d1['minute'] - $d2['minute'];
+        } else {
+                $d1['hour']--;
+                $diff['minute'] = 60-$d2['minute']+$d1['minute'];
+        }
+        //hours
+        if ($d1['hour'] >= $d2['hour']){
+                $diff['hour'] = $d1['hour'] - $d2['hour'];
+        } else {
+                $d1['day']--;
+                $diff['hour'] = 24-$d2['hour']+$d1['hour'];
+        }
+        //days
+        if ($d1['day'] >= $d2['day']){
+                $diff['day'] = $d1['day'] - $d2['day'];
+        } else {
+                $d1['month']--;
+                $diff['day'] = date("t",$temp)-$d2['day']+$d1['day'];
+        }
+        //months
+        if ($d1['month'] >= $d2['month']){
+                $diff['month'] = $d1['month'] - $d2['month'];
+        } else {
+                $d1['year']--;
+                $diff['month'] = 12-$d2['month']+$d1['month'];
+        }
+        //years
+        $diff['year'] = $d1['year'] - $d2['year'];
+        return $diff;   
+}
+
     /**
      * sportsmanagementHelper::jsmsernum()
      * generiert eine seriennummer
