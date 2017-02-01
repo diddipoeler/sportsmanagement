@@ -274,8 +274,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	$db = JFactory::getDBO();
     $query = $db->getQuery(true);	
     $app = JFactory::getApplication();    
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($team_id,true).'</pre>'),'Notice');    
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($project_id,true).'</pre>'),'Notice');    
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($team_id,true).'</pre>'),'Notice');    
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($project_id,true).'</pre>'),'Notice');    
 
 // holen wir uns das land der liga
 $query->clear();
