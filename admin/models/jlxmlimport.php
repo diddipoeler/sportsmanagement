@@ -4376,23 +4376,20 @@ $t_params = json_encode( $ini );
             
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__FUNCTION__.' teamtraining<br><pre>'.print_r($import_teamtraining,true).'</pre>'),'');
 
-			//This has to be fixed after we changed the field name into projectteam_id
 			$p_teamtraining->set('project_team_id',$this->_convertProjectTeamID[$this->_getDataFromObject($import_teamtraining,'project_team_id')]);
 			$p_teamtraining->set('project_id',$this->_project_id);
-			// This has to be fixed if we really should use this field. Normally it should be deleted in the table
-            // die team_is selektieren
+            // die team_id selektieren
             // Select some fields
             $query->clear();
         $query->select('st.team_id');
 		// From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt on pt.team_id = st.id');  
+		$query->from('#__sportsmanagement_season_team_id AS st');
+        $query->join('INNER', '#__sportsmanagement_project_team AS pt on pt.team_id = st.id');  
         $query->where('pt.id = '.(int)$p_teamtraining->project_team_id);    
 		JFactory::getDbo()->setQuery($query);
         sportsmanagementModeldatabasetool::runJoomlaQuery();
         $team_id = JFactory::getDbo()->loadResult();
-        
-			//$p_teamtraining->set('team_id',$this->_getDataFromObject($import_teamtraining,'team_id'));
+       
             $p_teamtraining->set('team_id',$team_id);
 			$p_teamtraining->set('dayofweek',$this->_getDataFromObject($import_teamtraining,'dayofweek'));
 			$p_teamtraining->set('time_start',$this->_getDataFromObject($import_teamtraining,'time_start'));
@@ -4400,12 +4397,29 @@ $t_params = json_encode( $ini );
 			$p_teamtraining->set('place',$this->_getDataFromObject($import_teamtraining,'place'));
 			$p_teamtraining->set('notes',$this->_getDataFromObject($import_teamtraining,'notes'));
 
-			if ($p_teamtraining->store()===false)
+/**
+ * nur wenn keine trainingsdaten vorhanden sind sollen auch welche angelegt werden
+ */
+            $query->clear();
+            $query->select('id');
+            $query->from('#__sportsmanagement_team_trainingdata');
+            $query->where('project_id = '.(int)$p_teamtraining->project_id);  
+            $query->where('team_id = '.(int)$p_teamtraining->team_id);  
+            $query->where('project_team_id = '.(int)$p_teamtraining->project_team_id);  
+            $query->where('dayofweek = '.(int)$p_teamtraining->dayofweek);  
+            $query->where('time_start = '.(int)$p_teamtraining->time_start);  
+            $query->where('time_end = '.(int)$p_teamtraining->time_end);  
+            JFactory::getDbo()->setQuery($query);
+            sportsmanagementModeldatabasetool::runJoomlaQuery();
+//            $team_tr_id = JFactory::getDbo()->loadResult();
+            if ( !JFactory::getDbo()->loadResult() )
+            {
+            if ($p_teamtraining->store()===false)
 			{
 				$my_text .= 'error on teamtraining import: ';
 				$my_text .= $oldID;
 				//$my_text .= "<br />Error: _importTeamTraining<br />#$my_text#<br />#<pre>".print_r($p_teamtraining,true).'</pre>#';
-				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML_IMPORT_TEAMTRAINING_0')]=$my_text;
+				$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML_IMPORT_TEAMTRAINING_0')] = $my_text;
 				//return false;
                 sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			}
@@ -4416,8 +4430,9 @@ $t_params = json_encode( $ini );
 								'</span><strong>'.$this-> _getTeamName($p_teamtraining->project_team_id).'</strong>');
 				$my_text .= '<br />';
 			}
+            }
 		}
-		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')]=$my_text;
+		$this->_success_text[JText::_('COM_SPORTSMANAGEMENT_XML'.strtoupper(__FUNCTION__).'_0')] = $my_text;
 		return true;
 	}
 
