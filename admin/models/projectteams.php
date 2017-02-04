@@ -76,7 +76,7 @@ class sportsmanagementModelProjectteams extends JModelList
             $post = JRequest::get( 'post' );
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($post,true).'</pre>'),'Notice');
 
-if ( $post['addteam'] )
+if ( isset($post['addteam']) )
 {
 if ( $post['team_id'] )
 {	
