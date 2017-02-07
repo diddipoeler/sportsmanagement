@@ -362,8 +362,9 @@ JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEME
     
     if ( !$res )
         {
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
+	    $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_NO_RANKINGALL_MATCHES'),'Error');
         }
               
     $this->_matches = $res;
