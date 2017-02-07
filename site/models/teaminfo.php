@@ -292,9 +292,10 @@ $result = $db->execute();
 	    	$season_ordering = "ASC";
 	    }
         
-        $query->select('pt.id as ptid, pt.team_id, pt.picture, pt.info, pt.project_id AS projectid');
+        $query->select('pt.id as ptid, pt.team_id as season_team_id, pt.picture, pt.info, pt.project_id AS projectid');
 		$query->select('p.name as projectname,p.season_id,p.current_round, pt.division_id');
 		$query->select('s.name as season');
+		$query->select('t.id as team_id');
         $query->select('st.picture as season_picture');
 		$query->select('l.name as league, t.extended as teamextended');
 		$query->select('CONCAT_WS( \':\', p.id, p.alias ) AS project_slug');
@@ -480,16 +481,16 @@ $query->order('s.name '.$season_ordering);
 		$temp_ranking = $ranking->getRanking(0,sportsmanagementModelProject::getCurrentRound(null,self::$cfg_which_database),$division_id,self::$cfg_which_database);
 		foreach ($temp_ranking as $ptid => $value)
 		{
-			if ($value->getPtid() == self::$projectteamid)
-			{
-				$rank['rank']   = $value->rank;
-				$rank['games']  = $value->cnt_matches;
-				$rank['points'] = $value->getPoints();
-				$rank['series'] = $value->cnt_won . "/" . $value->cnt_draw . "/" . $value->cnt_lost;
-				$rank['goals']  = $value->sum_team1_result . ":" . $value->sum_team2_result;
-				break;
-			} 
-			else if ($value->getTeamId() == self::$teamid)
+//			if ($value->getPtid() == self::$projectteamid)
+//			{
+//				$rank['rank']   = $value->rank;
+//				$rank['games']  = $value->cnt_matches;
+//				$rank['points'] = $value->getPoints();
+//				$rank['series'] = $value->cnt_won . "/" . $value->cnt_draw . "/" . $value->cnt_lost;
+//				$rank['goals']  = $value->sum_team1_result . ":" . $value->sum_team2_result;
+//				break;
+//			} 
+			if ($value->getTeamId() == self::$teamid)
 			{
 				$rank['rank']   = $value->rank;
 				$rank['games']  = $value->cnt_matches;
