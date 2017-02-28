@@ -273,7 +273,7 @@ if ( $project_ids )
         $query->select('tl.is_in_score,tl.info,st.team_id,tl.checked_out,tl.checked_out_time');
         $query->select('tl.picture,tl.project_id');
         $query->select('t.id,t.name,t.short_name,t.middle_name,t.notes,t.club_id');
-        $query->select('c.email as club_email,c.logo_small,c.logo_middle,c.logo_big,c.country, c.website');
+        $query->select('c.unique_id,c.email as club_email,c.logo_small,c.logo_middle,c.logo_big,c.country, c.website');
         $query->select('d.name AS division_name,d.shortname AS division_shortname,d.parent_id AS parent_division_id');
         $query->select('plg.name AS playground_name,plg.short_name AS playground_short_name');
         
