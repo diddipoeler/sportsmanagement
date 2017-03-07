@@ -105,8 +105,8 @@
 				</field>
 
 
-				<field 	name="@spacer" type="spacer" default="" 
-						label=""
+				<field 	name="spacer1" type="spacer" default="" 
+						label="MOD_SPORTSMANAGEMENT_RANKING_SPACER1"
 						description="" />
 
 				<field 	name="showRankColumn" type="radio" default="1"  class="radio btn-group btn-group-yesno"
@@ -126,8 +126,8 @@
 						description="MOD_SPORTSMANAGEMENT_RANKING_COLUMN_NAMES_DESCR" 
 						size="50"/>
 		
-				<field 	name="@spacer" type="spacer" default="" 
-						label=""
+				<field 	name="spacer2" type="spacer" default="" 
+						label="MOD_SPORTSMANAGEMENT_RANKING_SPACER2"
 						description="" />
 
 				<field 	name="nametype" type="list" default="short_name" 
@@ -183,7 +183,20 @@
 
 			<fieldset name="advanced">
 			
-
+     <field 	name="spacer4" type="spacer" default="" 
+						label="MOD_SPORTSMANAGEMENT_RANKING_SPACER3"
+						description="" />
+     <field 	name="ishd_update" type="radio" default="0"  class="radio btn-group btn-group-yesno"
+						label="MOD_SPORTSMANAGEMENT_ISHD_UPDATE_LABEL"
+						description="MOD_SPORTSMANAGEMENT_ISHD_UPDATE_DESCR">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>       
+            
+     <field name="spacer3" type="spacer" default="" 
+						label="MOD_SPORTSMANAGEMENT_RANKING_SPACER4"
+						description="" />
+                   
       <field 	name="table_class" type="list" default="table" 
 		class=""
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 

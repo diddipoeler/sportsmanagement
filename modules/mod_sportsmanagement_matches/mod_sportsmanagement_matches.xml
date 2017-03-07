@@ -670,6 +670,21 @@ depends="p"
 
 			<fieldset name="advanced">
 
+      <field 	name="spacer4" type="spacer" default="" 
+						label="MOD_SPORTSMANAGEMENT_MATCHES_SPACER3"
+						description="" />
+     <field 	name="ishd_update" type="radio" default="0"  class="radio btn-group btn-group-yesno"
+						label="MOD_SPORTSMANAGEMENT_ISHD_UPDATE_LABEL"
+						description="MOD_SPORTSMANAGEMENT_ISHD_UPDATE_DESCR">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>       
+            
+     <field name="spacer3" type="spacer" default="" 
+						label="MOD_SPORTSMANAGEMENT_MATCHES_SPACER4"
+						description="" />
+
+
       <field 	name="table_class" type="list" default="table" 
 		class=""
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
