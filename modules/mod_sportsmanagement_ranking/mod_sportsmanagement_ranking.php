@@ -81,12 +81,6 @@ $app = JFactory::getApplication();
 $jinput = $app->input;
 $option = $jinput->getCmd('option');
 
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' app<br><pre>'.print_r($app,true).'</pre>'),'');
-
-// Sitename aus der globalen Konfiguration ausgeben
-//echo 'sitename -> '.$app->getCfg('sitename');
-//echo '<br> option -> '.$option;
-
 switch ($option)
 {
     case 'com_dmod':
@@ -95,19 +89,21 @@ switch ($option)
     break;
 }
 
-//echo 'sitename -> '.$app->_name();
-        
-// welche tabelle soll genutzt werden
-//$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
-//$database_table	= $paramscomponent->get( 'cfg_which_database_table' );
-//$show_debug_info = $paramscomponent->get( 'show_debug_info' );  
-//$show_query_debug_info = $paramscomponent->get( 'show_query_debug_info' ); 
-
-
 //get helper
 require_once (dirname(__FILE__).DS.'helper.php');
 
-
+/**
+ * besonderheit für das inlinehockey update, wenn sich das 
+ * modul in einem artikel befindet
+ * 
+ */
+if ($params->get('ishd_update'))
+{
+$projectid = $params->get('p');
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'extensions'.DS.'jsminlinehockey'.DS.'admin'.DS.'models'.DS.'jsminlinehockey.php');
+$actionsModel = JModelLegacy::getInstance('jsminlinehockey', 'sportsmanagementModel');    
+$actionsModel->getmatches($projectid);
+}
 
 $list = modJSMRankingHelper::getData($params);
 
