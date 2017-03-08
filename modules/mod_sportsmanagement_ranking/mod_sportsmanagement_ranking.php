@@ -99,7 +99,7 @@ require_once (dirname(__FILE__).DS.'helper.php');
  */
 if ($params->get('ishd_update'))
 {
-$projectid = $params->get('p');
+$projectid = (int)$params->get('p');
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'extensions'.DS.'jsminlinehockey'.DS.'admin'.DS.'models'.DS.'jsminlinehockey.php');
 $actionsModel = JModelLegacy::getInstance('jsminlinehockey', 'sportsmanagementModel');    
 $actionsModel->getmatches($projectid);

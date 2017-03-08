@@ -81,8 +81,13 @@ $app = JFactory::getApplication();
 $projectid = $params->get('p');
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'extensions'.DS.'jsminlinehockey'.DS.'admin'.DS.'models'.DS.'jsminlinehockey.php');
 $actionsModel = JModelLegacy::getInstance('jsminlinehockey', 'sportsmanagementModel'); 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'projectid<br><pre>'.print_r($projectid,true).'</pre>'),'Notice');   
-//$actionsModel->getmatches($projectid);
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'projectid<br><pre>'.print_r($projectid,true).'</pre>'),'Notice');  
+for($a=0; $a < sizeof($projectid); $a++ )
+{
+$project_id = (int)$projectid[$a];
+$actionsModel->getmatches($project_id);    
+}    
+
 }
 
 
