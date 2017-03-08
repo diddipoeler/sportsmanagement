@@ -70,6 +70,21 @@ if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
 }
 
+/**
+ * besonderheit für das inlinehockey update, wenn sich das 
+ * modul in einem artikel befindet
+ * 
+ */
+if ($params->get('ishd_update'))
+{
+$app = JFactory::getApplication();    
+$projectid = $params->get('p');
+require_once(JPATH_SITE.DS.JSM_PATH.DS.'extensions'.DS.'jsminlinehockey'.DS.'admin'.DS.'models'.DS.'jsminlinehockey.php');
+$actionsModel = JModelLegacy::getInstance('jsminlinehockey', 'sportsmanagementModel'); 
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'projectid<br><pre>'.print_r($projectid,true).'</pre>'),'Notice');   
+//$actionsModel->getmatches($projectid);
+}
+
 
 if (!defined('_JSMMATCHLISTMODPATH')) 
 { 
