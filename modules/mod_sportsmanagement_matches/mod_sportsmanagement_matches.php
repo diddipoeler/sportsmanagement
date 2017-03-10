@@ -70,6 +70,19 @@ if (! defined('COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE'))
 DEFINE( 'COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE',JComponentHelper::getParams('com_sportsmanagement')->get( 'cfg_which_database' ) );
 }
 
+if (!defined('_JSMMATCHLISTMODPATH')) 
+{ 
+    define('_JSMMATCHLISTMODPATH', dirname( __FILE__ ));
+}
+if (!defined('_JSMMATCHLISTMODURL')) 
+{ 
+    define('_JSMMATCHLISTMODURL', JURI::base().'modules/'.$module->module.'/');
+}
+
+require_once (_JSMMATCHLISTMODPATH.DS.'helper.php');
+require_once (_JSMMATCHLISTMODPATH.DS.'connectors'.DS.'sportsmanagement.php');
+
+
 /**
  * besonderheit für das inlinehockey update, wenn sich das 
  * modul in einem artikel befindet
@@ -85,23 +98,16 @@ $actionsModel = JModelLegacy::getInstance('jsminlinehockey', 'sportsmanagementMo
 for($a=0; $a < sizeof($projectid); $a++ )
 {
 $project_id = (int)$projectid[$a];
+$count_games = MatchesSportsmanagementConnector::getCountGames($project_id,(int)$params->get('ishd_update_hour'));
+if ( $count_games )
+{
 $actionsModel->getmatches($project_id);    
+}
+
 }    
 
 }
 
-
-if (!defined('_JSMMATCHLISTMODPATH')) 
-{ 
-    define('_JSMMATCHLISTMODPATH', dirname( __FILE__ ));
-}
-if (!defined('_JSMMATCHLISTMODURL')) 
-{ 
-    define('_JSMMATCHLISTMODURL', JURI::base().'modules/'.$module->module.'/');
-}
-
-require_once (_JSMMATCHLISTMODPATH.DS.'helper.php');
-require_once (_JSMMATCHLISTMODPATH.DS.'connectors'.DS.'sportsmanagement.php');
 
 $ajax= JRequest::getVar('ajaxMListMod',0,'default','POST');
 $match_id = JRequest::getVar('match_id',0,'default','POST');

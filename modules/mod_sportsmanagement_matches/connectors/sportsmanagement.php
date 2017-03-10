@@ -105,6 +105,37 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		}
 		return $linktext;
 	}
+    
+    /**
+     * MatchesSportsmanagementConnector::getCountGames()
+     * 
+     * @param mixed $projectid
+     * @param mixed $ishd_update_hour
+     * @return
+     */
+    static function getCountGames($projectid,$ishd_update_hour)
+    {
+    $db = JFactory::getDBO();
+    $app = JFactory::getApplication();
+    $query = $db->getQuery(true);      
+    $date = time();    // aktuelles Datum     
+    $enddatum = $date - ($ishd_update_hour * 60 * 60);  // Ein Tag später (stunden * minuten * sekunden) 
+    $match_timestamp = sportsmanagementHelper::getTimestamp($enddatum);
+    $query->clear(); 
+    $query->select('count(*) AS count');
+    $query->from('#__sportsmanagement_match AS m ');
+    $query->join('INNER','#__sportsmanagement_round AS r on r.id = m.round_id ');
+    $query->join('INNER','#__sportsmanagement_project AS p on p.id = r.project_id ');
+    $query->where('p.id = '. $projectid);
+	$query->where('m.team1_result IS NULL ');
+    $query->where('m.match_timestamp < '. $match_timestamp );
+    $db->setQuery($query);
+    $matchestoupdate = $db->loadResult();
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' matchestoupdate<br><pre>'.print_r($matchestoupdate,true).'</pre>'),'Notice');
+    return $matchestoupdate;
+            
+    }
+    
 	/**
 	 * 
 	 * TODO: fix for timezone

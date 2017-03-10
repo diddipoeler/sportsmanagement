@@ -142,7 +142,7 @@ class modJSMRankingHelper
     $query->where('m.match_timestamp < '. $match_timestamp );
     $db->setQuery($query);
     $matchestoupdate = $db->loadResult();
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' matchestoupdate<br><pre>'.print_r($matchestoupdate,true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' matchestoupdate<br><pre>'.print_r($matchestoupdate,true).'</pre>'),'Notice');
     return $matchestoupdate;
             
     }
