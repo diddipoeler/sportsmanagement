@@ -98,7 +98,7 @@ $actionsModel = JModelLegacy::getInstance('jsminlinehockey', 'sportsmanagementMo
 for($a=0; $a < sizeof($projectid); $a++ )
 {
 $project_id = (int)$projectid[$a];
-$count_games = MatchesSportsmanagementConnector::getCountGames($project_id,(int)$params->get('ishd_update_hour'));
+$count_games = MatchesSportsmanagementConnector::getCountGames($project_id,(int)$params->get('ishd_update_hour',4));
 if ( $count_games )
 {
 $actionsModel->getmatches($project_id);    
