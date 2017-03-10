@@ -678,8 +678,11 @@ depends="p"
 						description="MOD_SPORTSMANAGEMENT_ISHD_UPDATE_DESCR">
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
-				</field>       
-            
+				</field>  
+             
+     <field 	name="ishd_update_hour" type="text" default="4" 
+						label="MOD_SPORTSMANAGEMENT_ISHD_UPDATE_HOUR_LABEL"
+						description="MOD_SPORTSMANAGEMENT_ISHD_UPDATE_HOUR_DESCR" />       
      <field name="spacer3" type="spacer" default="" 
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SPACER4"
 						description="" />

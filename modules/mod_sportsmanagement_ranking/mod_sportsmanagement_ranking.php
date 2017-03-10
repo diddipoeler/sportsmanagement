@@ -101,8 +101,14 @@ if ($params->get('ishd_update'))
 {
 $projectid = (int)$params->get('p');
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'extensions'.DS.'jsminlinehockey'.DS.'admin'.DS.'models'.DS.'jsminlinehockey.php');
-$actionsModel = JModelLegacy::getInstance('jsminlinehockey', 'sportsmanagementModel');    
+$actionsModel = JModelLegacy::getInstance('jsminlinehockey', 'sportsmanagementModel');   
+
+$count_games = modJSMRankingHelper::getCountGames($projectid,(int)$params->get('ishd_update_hour')); 
+if ( $count_games )
+{
 $actionsModel->getmatches($projectid);
+}
+
 }
 
 $list = modJSMRankingHelper::getData($params);
