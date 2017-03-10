@@ -200,9 +200,10 @@ depends="p"
 					<option value="MINUTE">MOD_SPORTSMANAGEMENT_MATCHES_MINUTES</option>
 					<option value="HOUR">MOD_SPORTSMANAGEMENT_MATCHES_HOURS</option>
 					<option value="DAY">MOD_SPORTSMANAGEMENT_MATCHES_DAYS</option>
-					<option value="WEEK">MOD_SPORTSMANAGEMENT_MATCHES_WEEKS</option>
+<!--			<option value="WEEK">MOD_SPORTSMANAGEMENT_MATCHES_WEEKS</option>
 					<option value="MONTH">MOD_SPORTSMANAGEMENT_MATCHES_MONTHS</option>
 					<option value="YEAR">MOD_SPORTSMANAGEMENT_MATCHES_YEARS</option>
+-->          
 				</field>
 
 				<field 	name="upcoming_first" type="radio" default="1"
@@ -228,6 +229,14 @@ depends="p"
 						description="MOD_SPORTSMANAGEMENT_NEXTMATCHES_DESC"
 						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
 
+        <field 	name="show_nextmatches" type="radio" default="0"
+				class="radio btn-group btn-group-yesno"
+						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_NEXTMATCHES_TITLE"
+						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_NEXTMATCHES_DESCR">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+        
 				<field 	name="period_int" type="text" default="0"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_PERIOD_FOR_NEXT_MATCHES_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_PERIOD_FOR_NEXT_MATCHES_DESCR" />
@@ -239,9 +248,10 @@ depends="p"
 					<option value="MINUTE">MOD_SPORTSMANAGEMENT_MATCHES_MINUTES</option>
 					<option value="HOUR">MOD_SPORTSMANAGEMENT_MATCHES_HOURS</option>
 					<option value="DAY">MOD_SPORTSMANAGEMENT_MATCHES_DAYS</option>
-					<option value="WEEK">MOD_SPORTSMANAGEMENT_MATCHES_WEEKS</option>
+<!--			<option value="WEEK">MOD_SPORTSMANAGEMENT_MATCHES_WEEKS</option>
 					<option value="MONTH">MOD_SPORTSMANAGEMENT_MATCHES_MONTHS</option>
 					<option value="YEAR">MOD_SPORTSMANAGEMENT_MATCHES_YEARS</option>
+-->          
 				</field>
 
 				<field 	name="team_separator" type="text" default=":"
