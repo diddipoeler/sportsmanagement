@@ -191,7 +191,6 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 /**
  * laut modulparameter wird der timestamp für die zukünftige paarungen berechnet
  */        
-        
         if ( $this->params->get('show_nextmatches',0) )
         {
         $startdatum_next_matches = time();    // aktuelles Datum      
@@ -305,24 +304,31 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
         $query->where('m.published = 1');
 
 /**
- * gespielte paarungen
+ * gespielte und keine zukünftigen paarungen
  */
-        if ( $this->params->get('show_played',0) )
+        if ( $this->params->get('show_played',0) && !$this->params->get('show_nextmatches',0) )
         {
         $query->select('m.match_date AS alreadyplayed');    
         $query->where('m.team1_result IS NOT NULL ');
         $query->where('( m.match_timestamp >= '. $startdatum_played_matches .' AND m.match_timestamp <= '.$enddatum_played_matches.' )'  );    
         }
 /**
- * zukünftige paarungen
+ * zukünftige und keine gespielten paarungen
  */
-        if ( $this->params->get('show_nextmatches',0) )
+        if ( !$this->params->get('show_played',0) && $this->params->get('show_nextmatches',0) )
         {
         $query->select('m.match_date AS upcoming');    
         $query->where('m.team1_result IS NULL ');
         $query->where('( m.match_timestamp >= '. $startdatum_next_matches .' AND m.match_timestamp <= '.$enddatum_next_matches.' )'  );    
         }
-            
+/**
+ * zukünftige und gespielten paarungen
+ */
+        if ( $this->params->get('show_played',0) && $this->params->get('show_nextmatches',0) )
+        {
+        $query->where('( m.match_timestamp >= '. $startdatum_played_matches .' AND m.match_timestamp <= '.$enddatum_next_matches.' )'  );    
+        }
+                    
         if ($this->id > 0) 
         {
 		$query->where('m.id = ' . $this->id );
@@ -363,7 +369,8 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
         
         $db->setQuery($query,0,$limit);
         
-//        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' modul id<br><pre>'.print_r($module->id,true).'</pre>'),'');
+//        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' query dump <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         
         $matches = $db->loadObjectList();
         
