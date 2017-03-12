@@ -213,16 +213,16 @@ $html = JHtml::_('links.linksgroups', $groupedButtons);
 ?>
 <?php if (!empty( $this->sidebar)) : ?>
 
-    <div id="j-sidebar-container" class="span2">
+<div id="j-sidebar-container" class="span2">
 <div class="sidebar-nav quick-icons">
-		<?php echo $html;?>
+<?php echo $html;?>
 </div>
-        <?php echo $this->sidebar; ?>
+<?php echo $this->sidebar; ?>
 
-	</div>
-	<div id="j-main-container" class="span10">
+</div>
+<div id="j-main-container" class="span10">
 <?php else : ?>
-	<div id="j-main-container">
+<div id="j-main-container">
 <?php endif;?>
 
 <?PHP

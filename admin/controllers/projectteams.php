@@ -55,7 +55,19 @@ jimport('joomla.application.component.controlleradmin');
  */
 class sportsmanagementControllerprojectteams extends JControllerAdmin
 {
-	
+
+    /**
+     * sportsmanagementControllermatches::__construct()
+     * 
+     * @return void
+     */
+    function __construct()
+	{
+	     
+		parent::__construct();
+
+	}
+    	
   /**
 	 * Method to assign persons or teams
 	 *

@@ -59,9 +59,11 @@ class JFormFieldTextarea2 extends JFormFieldTextarea
 	 * 
 	 * @return
 	 */
-	public function getInput(){
+	public function getInput()
+    {
 		$buffer = parent::getInput();
-		if(isset($this->element->description)){
+		if(isset($this->element->description))
+        {
 			$buffer .= '<label></label>';
 			$buffer .= '<div style="float:left;">'.JText::_($this->element->description).'</div>';
 		}
@@ -76,8 +78,10 @@ class JFormFieldTextarea2 extends JFormFieldTextarea
 	 * @param mixed $group
 	 * @return
 	 */
-	public function setup(& $element, $value, $group = null){
-		if(isset($element->content) && empty($value)){
+	public function setup(SimpleXMLElement $element, $value, $group = null)
+    {
+		if(isset($element->content) && empty($value))
+        {
 			$value = $element->content;
 		}
 		return parent::setup($element,$value,$group);

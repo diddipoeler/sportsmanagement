@@ -356,28 +356,49 @@ class SMStatisticComplexsum extends SMStatistic
 		return $res;
 	}
 
+
+	/**
+	 * SMStatisticComplexsum::getTeamsRanking()
+	 * 
+	 * @param mixed $project_id
+	 * @param integer $limit
+	 * @param integer $limitstart
+	 * @param mixed $order
+	 * @return
+	 */
 	function getTeamsRanking($project_id, $limit = 20, $limitstart = 0, $order=null)
 	{
 		$sids = SMStatistic::getSids($this->_ids);
 		$sqids = SMStatistic::getQuotedSids($this->_ids);
 		$factors  = SMStatistic::getFactors();
 		
-		$db = &sportsmanagementHelper::getDBConnection();
+		$db = sportsmanagementHelper::getDBConnection();
+        
+        $select = 'ms.value, ms.statistic_id, st.team_id ';
+        $statistic_id = implode(',', $sqids);
+        $query = SMStatistic::getTeamsRanking($project_id, $limit, $limitstart, $order, $select,$statistic_id) ;
+
 		
-		// get all stats
-		$query = ' SELECT ms.value, ms.statistic_id, pt.team_id '
-		       . ' FROM #__joomleague_match_statistic AS ms '
-		       . ' INNER JOIN #__joomleague_team_player AS tp ON ms.teamplayer_id = tp.id '
-		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
-		       . ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id '
-		       . ' WHERE pt.project_id = '. $db->Quote($project_id)
-		       . '   AND ms.statistic_id IN ('. implode(',', $sqids) .')'
-		       . '   AND tp.published = 1 '
-		       . '   AND m.published = 1 '
-		       ;
+//		// get all stats
+//		$query = ' SELECT ms.value, ms.statistic_id, pt.team_id '
+//		       . ' FROM #__joomleague_match_statistic AS ms '
+//		       . ' INNER JOIN #__joomleague_team_player AS tp ON ms.teamplayer_id = tp.id '
+//		       . ' INNER JOIN #__joomleague_project_team AS pt ON pt.id = tp.projectteam_id '
+//		       . ' INNER JOIN #__joomleague_match AS m ON m.id = ms.match_id '
+//		       . ' WHERE pt.project_id = '. $db->Quote($project_id)
+//		       . '   AND ms.statistic_id IN ('. implode(',', $sqids) .')'
+//		       . '   AND tp.published = 1 '
+//		       . '   AND m.published = 1 '
+//		       ;
 		$db->setQuery($query);
-		$stats = $db->loadObjectList();
-		
+ 
+try{       
+$stats = $db->loadObjectList();
+} catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}		
 		// now calculate per player
 		$teams = array();
 		foreach ($stats as $stat)

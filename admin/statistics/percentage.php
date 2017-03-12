@@ -477,8 +477,14 @@ class SMStatisticPercentage extends SMStatistic
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
-        
+
+try{        
 		$res = $db->loadObjectList();
+} catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}
 
 		if (!empty($res))
 		{

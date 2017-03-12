@@ -110,10 +110,10 @@ class SMStatistic extends JObject
 		
 	}
     
-    // damit die einzelnen statistik dateien nicht zu gross werden,
-    // habe ich die queries hierher verlegt.
     /**
      * SMStatistic::getTeamsRankingStatisticNumQuery()
+     * damit die einzelnen statistik dateien nicht zu gross werden,
+     * habe ich die queries hierher verlegt.
      * 
      * @param mixed $project_id
      * @param mixed $sids
@@ -231,7 +231,7 @@ class SMStatistic extends JObject
   
     $query_core->group('tp.id');
         
-        return $query_core;
+    return $query_core;
 	}
     
     
@@ -796,10 +796,34 @@ class SMStatistic extends JObject
 	 * @param in limitstart
 	 * @return array
 	 */
-	function getTeamsRanking($project_id, $limit = 20, $limitstart = 0, $order = null)
+	function getTeamsRanking($project_id, $limit = 20, $limitstart = 0, $order = null, $select = '', $statistic_id = 0)
 	{
-		JError::raiseWarning(0, $this->_name .': '. JText::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
-		return array();
+        $app = JFactory::getApplication();
+		$db = sportsmanagementHelper::getDBConnection();
+		$query_core = JFactory::getDbo()->getQuery(true);
+		
+        switch ($this->_name)
+        {
+            case 'basic':
+            $query_core->select('SUM(ms.value) AS total, st.team_id');
+            $query_core->from('#__sportsmanagement_season_team_person_id AS tp');
+            $query_core->join('INNER','#__sportsmanagement_person AS p ON p.id = tp.person_id ');
+            $query_core->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+            $query_core->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+            $query_core->join('INNER','#__sportsmanagement_team AS t ON st.team_id = t.id');
+            $query_core->join('INNER','#__sportsmanagement_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id IN ( '. $statistic_id );
+            $query_core->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1');
+            $query_core->where('pt.project_id = ' . $project_id);
+            return $query_core;
+            break;
+            default:
+            JError::raiseWarning(0, $this->_name .': '. JText::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+            return array();
+            break;
+        }
+        
+//        JError::raiseWarning(0, $this->_name .': '. JText::_('METHOD NOT IMPLEMENTED IN THIS STATISTIC INSTANCE'));
+//		return $query_core;
 	}
 	
 	/**

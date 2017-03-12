@@ -107,15 +107,6 @@ class sportsmanagementModelStatistics extends JModelList
         $value = JRequest::getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
 
-
-        
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
-
-
-//		// Load the parameters.
-//		$params = JComponentHelper::getParams('com_sportsmanagement');
-//		$this->setState('params', $params);
-
 		// List state information.
 		parent::populateState('obj.name', 'asc');
 	}
@@ -141,10 +132,10 @@ class sportsmanagementModelStatistics extends JModelList
         // Select some fields
 		$query->select('obj.*');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic AS obj');
+		$query->from('#__sportsmanagement_statistic AS obj');
         // Join over the sportstype
 		$query->select('st.name AS sportstype');
-		$query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = obj.sports_type_id	');
+		$query->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = obj.sports_type_id	');
         // Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
@@ -199,21 +190,11 @@ class sportsmanagementModelStatistics extends JModelList
 		$query	= $db->getQuery(true);
         
         $query->select('s.id AS value, concat(s.name, " (" , st.name, ")") AS text');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic AS s');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ON ps.statistic_id = s.id ');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = s.sports_type_id  ');
+        $query->from('#__sportsmanagement_statistic AS s');
+        $query->join('INNER','#__sportsmanagement_position_statistic AS ps ON ps.statistic_id = s.id ');
+        $query->join('LEFT','#__sportsmanagement_sports_type AS st ON st.id = s.sports_type_id  ');
         $query->where('ps.position_id = '.(int) $id);
         $query->order('ps.ordering ASC');
-        
-//		$query=' SELECT	s.id AS value,
-//				concat(s.name, " (" , st.name, ")") AS text
-//				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic AS s 
-//				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps 
-//                ON ps.statistic_id=s.id 
-//				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st 
-//                ON st.id = s.sports_type_id 
-//				WHERE ps.position_id='.(int) $id . '
-//				ORDER BY ps.ordering ASC ';
 
 		$db->setQuery($query);
         
@@ -239,22 +220,11 @@ class sportsmanagementModelStatistics extends JModelList
 		$query	= $db->getQuery(true);
         
         $query->select('s.id AS value, concat(s.name, " (" , st.name, ")") AS text');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic AS s');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ON ps.statistic_id = s.id AND ps.position_id = '.(int) $id );
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st ON st.id = s.sports_type_id  ');
+        $query->from('#__sportsmanagement_statistic AS s');
+        $query->join('LEFT','#__sportsmanagement_position_statistic AS ps ON ps.statistic_id = s.id AND ps.position_id = '.(int) $id );
+        $query->join('LEFT','#__sportsmanagement_sports_type AS st ON st.id = s.sports_type_id  ');
         $query->where('ps.id IS NULL');
         $query->order('s.ordering ASC');
-        
-//		$query=' SELECT	s.id AS value, 
-//				concat(s.name, " (" , st.name, ")") AS text 
-//				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic AS s 
-//				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps 
-//                ON ps.statistic_id = s.id 
-//				AND ps.position_id !='.(int) $id . '
-//				LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS st 
-//                ON st.id = s.sports_type_id 
-//				WHERE ps.id IS NULL 
-//				ORDER BY s.ordering ASC ';
 
 		$db->setQuery($query);
         
@@ -279,10 +249,8 @@ class sportsmanagementModelStatistics extends JModelList
 		$query	= $db->getQuery(true);
         
         $query->select('id,name,id AS value,name AS text,short,class,note');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic');
+        $query->from('#__sportsmanagement_statistic');
         $query->order('name');
-        
-//		$query='SELECT id,name,id AS value,name AS text,short,class,note FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic ORDER BY name';
                 
 		$db->setQuery($query);
         

@@ -69,10 +69,14 @@
 						directory="/modules/mod_sportsmanagement_matches/tmpl"
 						hide_default="1" hide_none="1"/>
 
-				<field 	name="use_icons" type="folderlist" default="-1" 
+				<field 	name="use_icons" type="folderlist" default="-1"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SELECT_ICONS_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SELECT_ICONS_DESCR"
+<<<<<<< HEAD
 						directory="modules/mod_sportsmanagement_matches/assets/images" 
+=======
+						directory="modules/mod_sportsmanagement_matches/assets/images"
+>>>>>>> 679e4434c07de09d73c3fd7942257892c199916f
 						hide_default="1" hide_none="0" />
 
         <field 	name="p" 
@@ -141,16 +145,18 @@
 						description="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_DESCR" />
 -->
 <field name="teams" 
-type="dependsql" 
-default="0" 
-depends="p"
-					task="projectteamoptions" 
-					key_field="project_id"
-			value_field="p"
-      slug="true"
-      required="false"
-					label="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_TITLE" 
-					description="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_DESCR" />
+		type="dependsql" 
+		default="0" 
+		depends="p"
+		task="projectteamoptions" 
+		key_field="project_id"
+		value_field="p"
+		slug="true"
+		required="false"
+		size="10"
+		multiple="multiple"
+		label="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_TITLE"
+		description="MOD_SPORTSMANAGEMENT_MATCHES_USE_THESE_TEAMS_DESCR" />
 					
 				<field 	name="limit" type="text" default="1"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_MAX_MATCHES_TO_SHOW_TITLE" 

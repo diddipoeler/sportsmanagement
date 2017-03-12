@@ -275,18 +275,23 @@ class SMStatisticBasic extends SMStatistic
 	{		
 		$app = JFactory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
-		$query_core = JFactory::getDbo()->getQuery(true);
+		//$query_core = JFactory::getDbo()->getQuery(true);
 		
-        $query_core->select('SUM(ms.value) AS total, st.team_id');
-        $query_core->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp');
-        $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON p.id = tp.person_id ');
-        $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id ');
-        $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-        $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON st.team_id = t.id');
-        $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id = '. $db->Quote($this->id));
-        $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = ms.match_id AND m.published = 1');
-        $query_core->where('pt.project_id = ' . $project_id);
-        $query_core->where('st.team_id');
+        $select = 'SUM(ms.value) AS total, st.team_id ';
+        $statistic_id = $this->id;
+        $query = SMStatistic::getTeamsRanking($project_id, $limit, $limitstart, $order, $select,$statistic_id) ;
+        
+//        $query_core->select('SUM(ms.value) AS total, st.team_id');
+//        $query_core->from('#__sportsmanagement_season_team_person_id AS tp');
+//        $query_core->join('INNER','#__sportsmanagement_person AS p ON p.id = tp.person_id ');
+//        $query_core->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id ');
+//        $query_core->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+//        $query_core->join('INNER','#__sportsmanagement_team AS t ON st.team_id = t.id');
+//        $query_core->join('INNER','#__sportsmanagement_match_statistic AS ms ON ms.teamplayer_id = tp.id AND ms.statistic_id = '. $db->Quote($this->id) );
+//        $query_core->join('INNER','#__sportsmanagement_match AS m ON m.id = ms.match_id AND m.published = 1');
+//        $query_core->where('pt.project_id = ' . $project_id);
+        
+//        $query_core->where('st.team_id');
         
 //		$query = ' SELECT SUM(ms.value) AS total, '
 //		       . ' pt.team_id ' 
@@ -302,13 +307,19 @@ class SMStatisticBasic extends SMStatistic
 //		       . ' ORDER BY total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).', tp.id'
 //		       ;
 		
-        $query_core->order('total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).', tp.id ');
+        $query->order('total '.(!empty($order) ? $order : $this->getParam('ranking_order', 'DESC')).', tp.id ');
         
-        $db->setQuery($query_core, $limitstart, $limit);
+        $db->setQuery($query, $limitstart, $limit);
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query_core->dump(),true).'</pre>'),'');
-        
+//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query_core<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+
+try{        
 		$res = $db->loadObjectList();
+} catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}
 		
 		if ($res)
 		{

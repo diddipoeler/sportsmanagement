@@ -56,26 +56,6 @@ defined('_JEXEC') or die('Restricted access');
 class sportsmanagementControllerprojectteam extends JSMControllerForm
 {
 
-
-/**
- * sportsmanagementControllerprojectteam::addteam()
- * 
- * @return void
- */
-function addteam()
-{
-$option = JRequest::getCmd('option');
-$app = JFactory::getApplication ();
-$post = JRequest::get( 'post' );
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($post,true).'</pre>'),'Notice');        
-$model = $this->getModel ('projectteams');
-//$model->setNewProjectteam($post['project_id'],$post['team_id']);
-$msg = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_2' );
-$link = 'index.php?option='.$option.'&view=projectteams&pid='.$post['project_id'];
-$this->setRedirect( $link, $msg );
-}
-
-
 /**
  * sportsmanagementControllerprojectteam::storechangeteams()
  * 
