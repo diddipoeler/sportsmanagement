@@ -72,7 +72,7 @@
 				<field 	name="use_icons" type="folderlist" default="-1" 
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SELECT_ICONS_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SELECT_ICONS_DESCR"
-						directory="/modules/mod_sportsmanagement_matches/assets/images" 
+						directory="modules/mod_sportsmanagement_matches/assets/images" 
 						hide_default="1" hide_none="0" />
 
         <field 	name="p" 
@@ -356,7 +356,7 @@ depends="p"
 			
 			<fieldset	name="Teamsandpicturesettings1"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_TEAM_AND_PICTURE_SETTINGS_TITLE"
-						description="MOD_SPORTSMANAGEMENT_TEAMSANDPICTURESETTINGS1_DESC"
+						description="MOD_SPORTSMANAGEMENT_MATCHES_TEAM_AND_PICTURE_SETTINGS_DESCR"
 						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
 
 				<field 	name="show_picture" type="radio" default="1"
@@ -505,7 +505,7 @@ depends="p"
 
 			<fieldset	name="Teamsandpicturesettings2"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_MATCH_INFO_SETTINGS_TITLE"
-						description="MOD_SPORTSMANAGEMENT_TEAMSANDPICTURESETTINGS2_DESC"
+						description="MOD_SPORTSMANAGEMENT_MATCHES_MATCH_INFO_SETTINGS_DESCR"
 						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >
 
 				<field 	name="use_offset_matches" type="radio" default="0"
