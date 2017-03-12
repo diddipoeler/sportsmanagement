@@ -483,7 +483,13 @@ class modMatchesSportsmanagementHelper {
 	 * @param mixed $matches
 	 * @return
 	 */
-	public function formatMatches(& $matches) {
+	public function formatMatches(& $matches) 
+    {
+        // Reference global application object
+        $app = JFactory::getApplication();
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' iconpath<br><pre>'.print_r($this->iconpath,true).'</pre>'),'Notice');
+        
+        
 		if ($this->params->get('lastsortorder') == 'desc') {
 			$matches = $this->sortObject($matches, 'desc', 'alreadyplayed');
 		}
