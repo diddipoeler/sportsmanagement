@@ -364,9 +364,10 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		}
 		else 
         {
-            $query->order('match_date_notime, p.ordering ASC');
+            $query->order('match_date, p.ordering ASC');
 		}
         
+        try {
         $db->setQuery($query,0,$limit);
         
 //        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' modul id<br><pre>'.print_r($module->id,true).'</pre>'),'');
@@ -375,6 +376,12 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
         $matches = $db->loadObjectList();
         
 //        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($matches,true).'</pre>'),'');
+}
+catch (Exception $e) {
+    // catch any database errors.
+ //   $db->transactionRollback();
+    JErrorPage::render($e);
+}
         
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         
