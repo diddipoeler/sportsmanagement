@@ -72,11 +72,7 @@
 				<field 	name="use_icons" type="folderlist" default="-1"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SELECT_ICONS_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_SELECT_ICONS_DESCR"
-<<<<<<< HEAD
 						directory="modules/mod_sportsmanagement_matches/assets/images" 
-=======
-						directory="modules/mod_sportsmanagement_matches/assets/images"
->>>>>>> 679e4434c07de09d73c3fd7942257892c199916f
 						hide_default="1" hide_none="0" />
 
         <field 	name="p" 
