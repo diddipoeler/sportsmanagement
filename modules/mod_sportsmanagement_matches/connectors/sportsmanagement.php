@@ -364,7 +364,7 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		}
 		else 
         {
-            $query->order('match_date_notime, p.ordering ASC');
+            $query->order('match_date, p.ordering ASC');
 		}
         
         $db->setQuery($query,0,$limit);
