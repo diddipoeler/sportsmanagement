@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <form>
+<!-- reiter 1 -->
 	<fieldset name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS" 
 	group= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PAGE_ELEMENTS"
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PAGE_ELEMENTS"
@@ -111,6 +112,7 @@
 
 	</fieldset>
 
+<!-- reiter 2 -->
 	<fieldset name= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONOPTIONS" 
 	label= "COM_SPORTSMANAGEMENT_FES_PARAMS_GROUP_PERSONOPTIONS" 
 			description="COM_SPORTSMANAGEMENT_FES_PARAMS_DESCR_PERSONOPTIONS"
@@ -131,6 +133,13 @@
 			<option value="4">COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_OPTION4_SHOW_BIRTHDAY</option>
 		</field>
 		
+    <field 	name="show_deathday" type="radio" default="1" class="radio btn-group btn-group-yesno"
+				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_DEATHDAY" 
+				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_DEATHDAY">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+    
 		<field 	name="show_player_icon" type="radio" default="1" class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_LABEL_SHOW_PLAYER_ICON" 
 				description="COM_SPORTSMANAGEMENT_FES_ROSTER_PARAM_DESCR_SHOW_PLAYER_ICON">
