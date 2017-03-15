@@ -39,7 +39,7 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 
-<div class="row">
+<div class="row-fluid">
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">	
 <h4>
 <?php echo JText::_('COM_SPORTSMANAGEMENT_CLUBINFO_TEAMS'); ?>

@@ -40,7 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>
-<div class="row" id="no_tabs">
+<div class="row-fluid" id="no_tabs">
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 <?php
     

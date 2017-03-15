@@ -66,8 +66,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
  * diddipoeler
  * aufbau der templates
  */
-  $this->output = array();
- if ( $this->config['show_teaminfo'] )
+$this->output = array();
+    if ( $this->config['show_teaminfo'] )
 	{
 		echo $this->loadTemplate('teaminfo');
 	}
@@ -103,7 +103,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 	}
     
 
-echo $this->loadTemplate($this->config['show_teaminfo_tabs']);
+    echo $this->loadTemplate($this->config['show_teaminfo_tabs']);
     ?>
     <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>" id="backbuttonfooter">
     <?PHP
