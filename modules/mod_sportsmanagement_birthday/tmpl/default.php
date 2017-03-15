@@ -330,7 +330,7 @@ $person_link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$
 else {
 ?>
 <tr>
-	<td class="birthday"><?php echo''.str_replace('%DAYS%', $params->get('maxdays'), htmlentities(trim($params->get('not_found_text')))).''; ?></td>
+	<td class="birthday"><?php echo ''.str_replace('%DAYS%', $params->get('maxdays'), htmlentities(trim(JText::_($params->get('not_found_text'))))).''; ?></td>
 </tr>
 <?php } ?>
 </table>
