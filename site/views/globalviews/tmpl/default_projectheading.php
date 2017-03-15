@@ -57,7 +57,7 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
 	?>
 <!--	<div class="componentheading"> -->
 <!--		<div class="container"> -->
-        <table class="table">
+		<table class="table">
 <!--				<tbody> -->
 				<?php
 				if ( $this->overallconfig['show_project_country'] )
@@ -80,12 +80,12 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
 					?>
 					</td>
 				</tr>
-				<?php	
-			   	}
+				<?php
+				}
 				?>
 				<tr class="contentheading">
 					<?php
-          if ( $this->overallconfig['show_project_sporttype_picture'] )
+		if ( $this->overallconfig['show_project_sporttype_picture'] )
 					{
 						?>
 						<td>
@@ -93,7 +93,7 @@ if ( $this->overallconfig['show_project_heading'] == 1 && $this->project)
 <?PHP
 if ( !sportsmanagementHelper::existPicture( $this->project->sport_type_picture ) )
 {
-$this->project->sport_type_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");    
+$this->project->sport_type_picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");
 }
 
 echo sportsmanagementHelperHtml::getBootstrapModalImage('sporttype_picture',$this->project->sport_type_picture,$this->project->sport_type_name,$this->overallconfig['picture_width']);
@@ -101,26 +101,26 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('sporttype_picture',$thi
           
 
 						</td>
-					<?php	
-			    	}	
-			    	if ( $this->overallconfig['show_project_picture'] )
-					{
-						$picture = $this->project->picture;
-                        $copyright = $this->project->cr_picture;
-                        if ( $picture == 'images/com_sportsmanagement/database/placeholders/placeholder_150.png' || empty($picture) )
-                        {
-                            $picture = $this->project->leaguepicture;
-                            $copyright = $this->project->cr_leaguepicture;
-                        }
-                        
-                        ?>
+					<?php
+			    	}
+			    if ( $this->overallconfig['show_project_picture'] )
+				{
+				$picture = $this->project->picture;
+				$copyright = $this->project->cr_picture;
+                if ( $picture == 'images/com_sportsmanagement/database/placeholders/placeholder_150.png' || empty($picture) )
+				{
+				$picture = $this->project->leaguepicture;
+				$copyright = $this->project->cr_leaguepicture;
+				}
+
+					?>
 						<td>
 
 
-<?php 
+<?php
 if ( !sportsmanagementHelper::existPicture( $picture ) )
 {
-$picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig");    
+$picture = sportsmanagementHelper::getDefaultPlaceholder("clublogobig"); 
 }
 echo sportsmanagementHelperHtml::getBootstrapModalImage('project_picture',$picture,$this->project->name,$this->overallconfig['picture_width']);
 if ( $copyright )
@@ -133,7 +133,7 @@ echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>
 					<?php	
 			    	}
 			    	?>
-					<?php	
+					<?php
 			    	if ( $this->overallconfig['show_project_text'] )
 					{
 						?>
@@ -160,7 +160,7 @@ echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>
 						</td>
 					<?php	
 			    	}
-			    	
+
 			    	?>
 					<td class="buttonheading" align="right">
 					<?php
@@ -176,7 +176,7 @@ echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>
 					<?php
 					if ( $this->overallconfig['show_project_kunena_link'] == 1 && $this->project->sb_catid )
                     {
-                    $link = sportsmanagementHelperRoute::getKunenaRoute( $this->project->sb_catid );
+						$link = sportsmanagementHelperRoute::getKunenaRoute( $this->project->sb_catid );
 						$imgTitle = JText::_($this->project->name.' Forum');
 						$desc = JHtml::image('media/com_sportsmanagement/jl_images/kunena.logo.png', $imgTitle, array('title' => $imgTitle,'width' => '100' ));
 						echo '&nbsp;';
@@ -191,18 +191,21 @@ echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>
 		</table>
 <!--	</div> -->
 <?php 
-} else {
-	if ( $this->overallconfig['show_print_button'] ) 
-    {
-	?>
+}
+else
+	{
+	if ( $this->overallconfig['show_print_button'] )
+	{
+?>
 		<div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
 			<table class="table">
 	<!--				<tbody> -->
 					<tr class="contentheading">
 						<td class="buttonheading" align="right">
 						<?php 
-							if(JRequest::getVar('print') != 1) {
-							  echo sportsmanagementHelper::printbutton(null, $this->overallconfig);
+							if(JRequest::getVar('print') != 1)
+							{
+								echo sportsmanagementHelper::printbutton(null, $this->overallconfig);
 							}
 						?>
 						&nbsp;
@@ -211,7 +214,7 @@ echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$copyright.'</i>
 		<!--			</tbody> -->
 			</table>
 		</div>
-	<?php 
+<?php
 	}
 }
 ?>

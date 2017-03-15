@@ -42,7 +42,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 //echo 'output <pre>'.print_r($this->output,true).'</pre>';
 
 ?>
-<div class="row" id="show_tabs">
+<div class="row-fluid" id="show_tabs">
 <?php
 
 if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -144,10 +144,10 @@ $active = ($count==0) ? 'active' : '';
 
 switch ($view)
 {
-    case 'player':
- $template = $templ['template'];
+case 'player':
+$template = $templ['template'];
 $text = $templ['text'];   
-    break;
+break;
 default:
 $template = $templ;
 $text = $key;
@@ -172,10 +172,10 @@ foreach ($this->output as $key => $templ)
 $active = ($count==0) ? 'in active' : '';
 switch ($view)
 {
-    case 'player':
- $template = $templ['template'];
+case 'player':
+$template = $templ['template'];
 $text = $templ['text'];      
-    break;
+break;
 default:
 $template = $templ;
 $text = $key;
@@ -186,15 +186,15 @@ break;
 <?PHP   
 switch ($template)
 {
-    case 'previousx':
-    $this->currentteam = $this->match->projectteam1_id;
+case 'previousx':
+$this->currentteam = $this->match->projectteam1_id;
 echo $this->loadTemplate($template);
 $this->currentteam = $this->match->projectteam2_id;
 echo $this->loadTemplate($template);
-    break;
-    default:
-    echo $this->loadTemplate($template);
-    break;
+break;
+default:
+echo $this->loadTemplate($template);
+break;
 }  
 ?>
 </div>
