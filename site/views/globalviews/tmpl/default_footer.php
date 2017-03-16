@@ -47,7 +47,7 @@ $cfg_help_server = JComponentHelper::getParams($option)->get('cfg_help_server','
 $modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width',0) ;
 $modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height',0) ;
 $cfg_bugtracker_server = JComponentHelper::getParams($option)->get('cfg_bugtracker_server','') ;	
-
+$logo_width = JComponentHelper::getParams($option)->get('logo_picture_width',100) ;
 ?>
 
 <style>
@@ -92,7 +92,7 @@ SqueezeBox.open(url, {
 <br />      
       
 <a title= "<?php echo JText::_('COM_SPORTSMANAGEMENT_SITE_LINK')?>" target="_blank" href="http://www.fussballineuropa.de">
-<img src= "<?php echo  JURI::root( true );?>/components/com_sportsmanagement/assets/images/logo_transparent.png" width="180" height="auto"></a>            
+<img src= "<?php echo  JURI::root( true );?>/components/com_sportsmanagement/assets/images/logo_transparent.png" width="<?PHP echo $logo_width; ?>" height="auto"></a>            
 	<br />
 	<?php echo JText::_( "COM_SPORTSMANAGEMENT_DESC" ); ?>
 	<br />      
