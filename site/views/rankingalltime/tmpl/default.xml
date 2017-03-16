@@ -142,7 +142,7 @@ class="radio btn-group btn-group-yesno"
 				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_STYLE_EVEN">
 		</field>
 
-		<field 	name="colors" type="textarea" default="1,1,#bdd8be,Champions;2,2,#cee0ce,Champions League;3,3,#dce7dc,Qualification Champions League;4,5,#f7f6d0,Europa League;6,6,#fcfbed,UI Cup;16,18,#f6dfdb,Relegation;" 
+		<field 	name="colors" type="textarea" default="1,5,#97cb38,Top 5;6,10,#c0ec70,Top 6-10;" 
 				label="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_LABEL_TABLE_COLORS" 
 				description="COM_SPORTSMANAGEMENT_FES_RANKING_PARAM_DESCR_TABLE_COLORS" 
 				rows="10" cols="50">
