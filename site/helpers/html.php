@@ -814,6 +814,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$rout
 		{
 		  $params = array("option" => "com_sportsmanagement",
 				"view" => "rankingalltime" );  
+          $params["cfg_which_database"] = $jinput->request->get('cfg_which_database', 0, 'INT');      
           $params["l"] = $jinput->request->get('l', 0, 'INT');
           $params["points"] = $jinput->request->get('points', '3,1,0', 'STR');
           $params["type"] = JRequest::getInt( "type", 0 );
