@@ -951,7 +951,8 @@ $query->clear();
         //$order = JRequest::getVar('order', '');
         //$order_dir = JRequest::getVar('dir', 'DESC');
 
-        if (!$order) {
+        if (!$order) 
+        {
             $order_dir = 'DESC';
             $sortarray = array();
             
@@ -1063,7 +1064,8 @@ $query->clear();
                     $sortarray['diff_team_legs'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
                     break;
                 case 'points':
-                    uasort($ranking, array(self::$classname, "_pointsCmp"));
+                    //uasort($ranking, array(self::$classname, "_pointsCmp"));
+                    $sortarray['sum_points'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
                     //$sortarray['_name'] = ( $order_dir == 'DESC' ) ? SORT_DESC : SORT_ASC;
                     break;
                 case 'start':
