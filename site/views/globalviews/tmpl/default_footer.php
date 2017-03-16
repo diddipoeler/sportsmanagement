@@ -99,6 +99,10 @@ SqueezeBox.open(url, {
 <img src= "<?php echo  JURI::root( true );?>/components/com_sportsmanagement/assets/images/fussballineuropa.png" width="<?PHP echo $logo_width; ?>" height="auto"></a>            		
 	<?php echo JText::_( "COM_SPORTSMANAGEMENT_COPYRIGHT" ); ?> : &copy;
 	<a href="http://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>
+<br />  
+<img src= "<?php echo  JURI::root( true );?>/components/com_sportsmanagement/assets/images/facebook.png" width="<?PHP echo $logo_width; ?>" height="auto"></a>            		
+<a href="https://www.facebook.com/joomlasportsmanagement/" target="_blank">JSM auf Facebook</a>	
+
 	<br />      
 	<?php echo JText::_( "COM_SPORTSMANAGEMENT_VERSION" ); ?> :       
 	<?php 
