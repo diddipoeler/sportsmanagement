@@ -44,22 +44,23 @@ defined('_JEXEC') or die('Restricted access');
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 <?php
     
-$view = Jrequest::getCmd('view');
+$view = JRequest::getCmd('view');
 
-foreach ($this->output as $key => $templ) 
+foreach ($this->output as $key => $templ)
 {
-    switch ($view) {
-        case 'player':
-            $template = $templ['template'];
-            $text = $templ['text'];
-            break;
-        default:
-            $template = $templ;
-            $text = $key;
-            break;
+	switch ($view)
+	{
+		case 'player':
+			$template = $templ['template'];
+			$text = $templ['text'];
+			break;
+		default:
+			$template = $templ;
+			$text = $key;
+		break;
     }
 
-    echo $this->loadTemplate($template);
+echo $this->loadTemplate($template);
 }
 ?>
 </div> 

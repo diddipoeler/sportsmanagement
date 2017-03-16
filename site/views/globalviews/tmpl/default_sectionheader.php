@@ -63,9 +63,9 @@ $modalwidth = JComponentHelper::getParams($jinput->getCmd('option'))->get('modal
 switch ( $view )
 {
     
-    case 'matchreport':
-    ?>
-    <table class="table">
+	case 'matchreport':
+	?>
+	<table class="table">
 	<tr>
 		<td class="contentheading"><?php
 		$pageTitle = 'COM_SPORTSMANAGEMENT_MATCHREPORT_TITLE';
@@ -257,18 +257,18 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 		?>
 		</td>
 			<?php if ( $this->config['show_matchday_dropdown'] == 1 ) 
-            { 
-                ?>
-            <form name='resultsRoundSelector' method='post'>
+			{ 
+			?>
+		<form name='resultsRoundSelector' method='post'>
 		<input type='hidden' name='option' value='com_sportsmanagement' />
-        <td>
+		<td>
         <?php
 		//echo JHtml::image(	'images/com_sportsmanagement/database/jl_images/arrow_left_small.png',$imgtitle, 'title= "' . $imgtitle . '"' );
         $imgtitle = JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_PREV' );
-        echo JHtml::link(sportsmanagementModelPagination::$prevlink,JHtml::image(	'images/com_sportsmanagement/database/jl_images/arrow_left_small.png',$imgtitle, 'title= "' . $imgtitle . '"' ));
+		echo JHtml::link(sportsmanagementModelPagination::$prevlink,JHtml::image(	'images/com_sportsmanagement/database/jl_images/arrow_left_small.png',$imgtitle, 'title= "' . $imgtitle . '"' ));
         //echo sportsmanagementModelPagination::$prevlink;
 		?>
-        </td>
+		</td>
 	            <td class="contentheading" style="text-align:right; font-size: 100%;">
 			<?php echo sportsmanagementHelperHtml::getRoundSelectNavigation(FALSE,JRequest::getInt('cfg_which_database',0)); ?>
 				</td>
@@ -319,9 +319,9 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 				<?php
 				if (!is_null($this->ptid))
 				{
-				$link=sportsmanagementHelperRoute::getIcalRoute($this->project->id,$this->teams[$this->ptid]->team_id,null,null);
-				$text=JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/calendar.png', JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_ICAL_EXPORT'));
-				$attribs	= array('title' => JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_ICAL_EXPORT'));
+				$link = sportsmanagementHelperRoute::getIcalRoute($this->project->id,$this->teams[$this->ptid]->team_id,null,null);
+				$text = JHtml::_('image','administrator/components/com_sportsmanagement/assets/images/calendar.png', JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_ICAL_EXPORT'));
+				$attribs = array('title' => JText::_('COM_SPORTSMANAGEMENT_TEAMPLAN_ICAL_EXPORT'));
 				echo JHtml::_('link',$link,$text,$attribs);
 				}
 				?>

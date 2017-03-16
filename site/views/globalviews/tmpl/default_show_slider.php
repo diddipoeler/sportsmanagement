@@ -40,7 +40,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 ?>
-<div class="row" id="show_slider">
+<div class="row-fluid" id="show_slider">
 <?php
 
 if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -85,39 +85,39 @@ foreach ( $this->output as $key => $templ )
 
 switch ($templ)
 {
-    case 'previousx':
-    $this->currentteam = $this->match->projectteam1_id;
+case 'previousx':
+$this->currentteam = $this->match->projectteam1_id;
 echo $this->loadTemplate($templ);
 $this->currentteam = $this->match->projectteam2_id;
 echo $this->loadTemplate($templ);
-    break;
-    default:
-    echo $this->loadTemplate($templ);
-    break;
+break;
+default:
+echo $this->loadTemplate($templ);
+break;
 }  
- 
+
 ?>
 </div>
 </div>
 </div>
 
 <?PHP	    
-    }         
-        
-    ?>
-    </div>
+	}       
+
+?>
+</div>
 <?PHP
-} 
+}
 elseif(version_compare(JVERSION,'1.7.0','ge')) 
 {
 // Joomla! 1.7 code here
-} 
+}
 elseif(version_compare(JVERSION,'1.6.0','ge')) 
 {
 // Joomla! 1.6 code here
-} 
+}
 else 
 {
 // Joomla! 1.5 code here
 }
-?>    
+?>
