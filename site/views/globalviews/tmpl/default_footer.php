@@ -96,6 +96,7 @@ SqueezeBox.open(url, {
 	<br />
 	<?php echo JText::_( "COM_SPORTSMANAGEMENT_DESC" ); ?>
 	<br />      
+<img src= "<?php echo  JURI::root( true );?>/components/com_sportsmanagement/assets/images/fussballineuropa.png" width="<?PHP echo $logo_width; ?>" height="auto"></a>            		
 	<?php echo JText::_( "COM_SPORTSMANAGEMENT_COPYRIGHT" ); ?> : &copy;
 	<a href="http://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>
 	<br />      
