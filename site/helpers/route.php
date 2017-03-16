@@ -575,7 +575,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routepa
    * @param mixed $projectid
    * @return
    */
-  public static function getRankingAllTimeRoute( $leagueid, $points, $projectid,$cfg_which_database = 0,$s=0,$type='',$order='',$dir='')
+  public static function getRankingAllTimeRoute( $leagueid, $points, $projectid,$cfg_which_database = 0,$s=0,$type=0,$order='points',$dir='DESC')
 	{
 		$params = array(	"option" => "com_sportsmanagement",
 					"view" => "rankingalltime" );
