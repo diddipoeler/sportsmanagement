@@ -832,39 +832,9 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$rout
 				$params["order"] = $paramName;
 				$params["dir"] = $default;
 			}          
-                
-//		  $params = array(
-//					"option" => "com_sportsmanagement",
-//					"view"   => JRequest::getVar("view", "rankingalltime"),
-//                    "l" => JRequest::getInt( "l", 0 ),
-//                    "points" => JRequest::getVar( "points", "" ),
-//					"type" => JRequest::getVar( "type", "" ) );
-
-//			$params = array(
-//					"option" => "com_sportsmanagement",
-//					"view"   => JRequest::getVar("view", "rankingalltime"),
-//					"p" => JRequest::getInt( "p", 0 ),
-//                    "l" => JRequest::getInt( "l", 0 ),
-//					"r" => JRequest::getInt( "r", 0 ),
-//                    "points" => JRequest::getVar( "points", "" ),
-//					"type" => JRequest::getVar( "type", "" ) );
-	
-//			if ( JRequest::getVar( 'order', '' ) == $paramName )
-//			{
-//				$params["order"] = $paramName;
-//				$params["dir"] = ( JRequest::getVar( 'dir', '') == 'ASC' ) ? 'DESC' : 'ASC';
-//				$imgname = 'sort'.(JRequest::getVar( 'dir', '') == 'ASC' ? "02" :"01" ).'.gif';
-//				$img = JHtml::image(
-//										'media/com_sportsmanagement/jl_images/' . $imgname,
-//				$params["dir"] );
-//			}
-//			else
-//			{
-//				$params["order"] = $paramName;
-//				$params["dir"] = $default;
-//			}
-            
-            //$params["cfg_which_database"] = $cfg_which_database;
+            $params["s"] = $jinput->request->get('s');
+            $params["p"] = $jinput->request->get('p');
+               
             
 			$query = JURI::buildQuery( $params );
 			echo JHtml::link(

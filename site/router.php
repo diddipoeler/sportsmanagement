@@ -158,6 +158,15 @@ function sportsmanagementBuildRoute(&$query)
                 $segments[] = $query['dir'];
                 unset($query['dir']);
             }
+            if (isset($query['s'])) {
+                $segments[] = $query['s'];
+                unset($query['s']);
+            }
+
+            if (isset($query['p'])) {
+                $segments[] = $query['p'];
+                unset($query['p']);
+            }
         
         break;
         case 'event':
@@ -630,6 +639,13 @@ function sportsmanagementParseRoute($segments)
             if (isset($segments[6])) {
                 $vars['dir'] = $segments[6];
             }    
+            if (isset($segments[7])) {
+                $vars['s'] = $segments[7];
+            }
+
+            if (isset($segments[8])) {
+                $vars['p'] = $segments[8];
+            }
         break;    
         case 'event':
             $vars['gcid'] = $segments[1];

@@ -48,8 +48,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 	<table class="table">
 	
 	<?php
-	$params=array();
-	$params['width']="30";
+	$params = array();
+	$params['width'] = "30";
 	
 		foreach ( $this->teams as $team )
 		{
