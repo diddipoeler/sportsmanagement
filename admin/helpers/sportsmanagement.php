@@ -2656,7 +2656,8 @@ $colors = sportsmanagementModelProject::getColors($configvalues,sportsmanagement
         {
 		$sef = JFactory::getConfig()->getValue('config.sef', false);
         }
-		$print_urlparams = ($sef ? "/component/1" : "&tmpl=component&print=1");
+		//$print_urlparams = ($sef ? "/component/1" : "&tmpl=component&print=1");
+        $print_urlparams = ($sef ? "?tmpl=component&print=1" : "&tmpl=component&print=1");
 
 				if(is_null($print_link)) {
 				    $output	= '<a href="javascript: void(0)" class="editlinktip hasTip" onclick="window.open(window.location.href + \''.$print_urlparams.'\',\'win2\',\''.$status.'\'); return false;" rel="nofollow" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
