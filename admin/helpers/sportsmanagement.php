@@ -2627,7 +2627,11 @@ $colors = sportsmanagementModelProject::getColors($configvalues,sportsmanagement
 	 */
 	public static function printbutton($print_link, &$config)
 	{
-		if ($config['show_print_button'] == 1) {
+		
+$app = JFactory::getApplication();        
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'Notice');
+
+        if ($config['show_print_button'] == 1) {
 			JHtml::_('behavior.tooltip');
 			$status = 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=800,height=600,directories=no,location=no';
 			// checks template image directory for image, if non found default are loaded
