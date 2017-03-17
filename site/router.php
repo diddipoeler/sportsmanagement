@@ -423,6 +423,17 @@ function sportsmanagementBuildRoute(&$query)
                 $segments[] = $query['dir'];
                 unset($query['dir']);
             }
+/**
+ * beim printbutton wird ein popup geöffnet
+ */
+            if (isset($query['tmpl'])) {
+                $segments[] = $query['tmpl'];
+                unset($query['tmpl']);
+            }
+            if (isset($query['print'])) {
+                $segments[] = $query['print'];
+                unset($query['print']);
+            }
             
             break;
         case 'roster':
@@ -847,6 +858,16 @@ function sportsmanagementParseRoute($segments)
             if (isset($segments[10])) {
                 $vars['dir'] = $segments[10];
             }
+/**
+ * beim printbutton wird ein popup geöffnet
+ */            
+            if (isset($segments[11])) {
+                $vars['tmpl'] = $segments[11];
+            }
+            if (isset($segments[12])) {
+                $vars['print'] = $segments[12];
+            }
+            
             break;
 
         case 'teamplan':
