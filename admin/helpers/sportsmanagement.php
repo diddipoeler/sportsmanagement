@@ -2643,16 +2643,20 @@ $colors = sportsmanagementModelProject::getColors($configvalues,sportsmanagement
 				//button in view
 				$overlib = JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_PRINT_TIP' );
 				$text = JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_PRINT' );
-                // welche joomla version
-                if(version_compare(JVERSION,'3.0.0','ge')) 
+
+/**
+ * welche joomla version 
+ * und ist seo eingestellt
+ */
+        if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-            $sef = JFactory::getConfig()->get('config.sef', false);
-            }
-            else
-            {
-				$sef = JFactory::getConfig()->getValue('config.sef', false);
-                }
-				$print_urlparams = ($sef ? "?tmpl=component&print=1" : "&tmpl=component&print=1");
+        $sef = JFactory::getConfig()->get('sef', false);
+        }
+        else
+        {
+		$sef = JFactory::getConfig()->getValue('config.sef', false);
+        }
+		$print_urlparams = ($sef ? "/component/1" : "&tmpl=component&print=1");
 
 				if(is_null($print_link)) {
 				    $output	= '<a href="javascript: void(0)" class="editlinktip hasTip" onclick="window.open(window.location.href + \''.$print_urlparams.'\',\'win2\',\''.$status.'\'); return false;" rel="nofollow" title="'.$text.'::'.$overlib.'">'.$image.'</a>';
