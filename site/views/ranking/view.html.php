@@ -110,7 +110,7 @@ class sportsmanagementViewRanking extends sportsmanagementView
        
 	if ( $this->config['show_half_of_season'] )
 	{
-		if ( $this->config['show_table_4'] )
+	if ( $this->config['show_table_4'] )
 	{
        sportsmanagementModelRanking::$part = 1;
        sportsmanagementModelRanking::$from = 0;
@@ -124,7 +124,7 @@ class sportsmanagementViewRanking extends sportsmanagementView
        
 	}
      
-        if ( $this->config['show_table_5'] )
+    if ( $this->config['show_table_5'] )
 	{  
 		sportsmanagementModelRanking::$part = 2;
 		sportsmanagementModelRanking::$from = 0;
@@ -182,8 +182,18 @@ class sportsmanagementViewRanking extends sportsmanagementView
 	{
 		$this->awayRank = sportsmanagementModelRanking::$awayRank;
 	}
-        
-        
+
+/**
+ * wenn keine reiter ausgewählt wurden, dann nur die standardtabelle übergeben 
+ */        
+if ( !$this->config['show_table_1'] ||   
+!$this->config['show_table_2'] || 
+!$this->config['show_table_3'] || 
+!$this->config['show_table_4'] || 
+!$this->config['show_table_5'] )
+{
+$this->currentRanking = sportsmanagementModelRanking::$currentRanking;    
+}    
        
 		//$this->assignRef('current_round', $model->current_round);
  	$this->current_round = sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.$this->jinput->getVar("view"),sportsmanagementModelProject::$cfg_which_database);
