@@ -796,7 +796,69 @@ multiple="true"
           		
 	</fieldset>
   
-<!-- register 6 -->  
+  
+<!-- register 7 -->    
+<fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_BACKENDOPTIONS"
+	label="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_BACKENDOPTIONS"
+	addrulepath="/administrator/components/com_sportsmanagement/models/rules"
+	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+  
+<field name="show_option_federation" 
+    type="radio" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_FEDERATION" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_FEDERATION_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>  
+<field name="show_option_association" 
+    type="radio" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_ASSOCIATION" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_ASSOCIATION_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+<field name="show_option_position" 
+    type="radio" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_POSITION" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_POSITION_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>    
+<field name="show_option_eventtypes" 
+    type="radio" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_EVENTTYPES" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_EVENTTYPES_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+<field name="show_option_agegroup" 
+    type="radio" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_AGEGROUP" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_AGEGROUP_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>    
+
+
+
+
+
+
+
+  
+</fieldset>
+    
+<!-- register 8 -->  
 	<fieldset
 		name="googleapi"
 		label="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API"
