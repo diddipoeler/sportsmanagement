@@ -56,38 +56,50 @@ defined('_JEXEC') or die('Restricted access');
 if ( !JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' )  )
 {
 // JError::raiseWarning(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_GOOGLEMAP_NOT_ENABLED'));
+//$this->document->addScript('http://maps.google.com/maps/api/js?language=de');
+//$this->document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
 $this->document->addScript('http://maps.google.com/maps/api/js?language=de');
-$this->document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
+$this->document->addScript('https://cdn.jsdelivr.net/gmap3/7.2.0/gmap3.min.js');
         
 ?>
-<script type="text/javascript">
 
-jQuery(document).ready(function() {
-   
-jQuery("#jsm_map").gmap3({ 
-  map:{
-    options:{ 
-      //center:{lat: 40.65,lng: -73.95}, 
-      MapTypeId: google.maps.MapTypeId.HYBRID,
-      zoom: 9
-    }
-  },
-  kmllayer:{
-    options:{
-      url: "<?PHP echo JURI::root().'tmp/'.$this->kmlfile; ?>",
-      opts:{
-        suppressInfoWindows: true
-      }
-    },
-    events:{
-      click: function(kml, event){
-        alert(event.featureData.description);
-      }
-    }
-  }
-});   
-   
-});
+<div id="jsm_map" class="gmap"></div>
+<script type="text/javascript">
+jQuery(function () {
+    jQuery('#jsm_map')
+      .gmap3({
+        center:[41.876, -87.624],
+        zoom: 3
+      })
+      .kmllayer({url: '<?PHP echo JURI::root().'tmp/'.$this->kmlfile; ?>'})
+    ;
+  });
+//jQuery(document).ready(function() {
+//   
+//jQuery("#jsm_map").gmap3({ 
+//  map:{
+//    options:{ 
+//      //center:{lat: 40.65,lng: -73.95}, 
+//      MapTypeId: google.maps.MapTypeId.HYBRID,
+//      zoom: 9
+//    }
+//  },
+//  kmllayer:{
+//    options:{
+//      url: "<?PHP echo JURI::root().'tmp/'.$this->kmlfile; ?>",
+//      opts:{
+//        suppressInfoWindows: true
+//      }
+//    },
+//    events:{
+//      click: function(kml, event){
+//        alert(event.featureData.description);
+//      }
+//    }
+//  }
+//});   
+//   
+//});
 
 </script>
 <style>
@@ -96,7 +108,7 @@ width: 100%;
 height: 570px;
 }
 </style>
-<div id="jsm_map" class="gmap"></div>
+
 
 <?PHP                
 }
