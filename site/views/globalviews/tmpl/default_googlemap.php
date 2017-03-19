@@ -65,7 +65,7 @@ defined('_JEXEC') or die('Restricted access');
 		$sef = JFactory::getConfig()->getValue('config.sef', false);
         }
         
-if ( !JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' ) && $sef  )
+if ( ( !JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' ) ) || ( JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' ) && $sef ) )
 {
 // JError::raiseWarning(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_GOOGLEMAP_NOT_ENABLED'));
 //$this->document->addScript('http://maps.google.com/maps/api/js?language=de');
