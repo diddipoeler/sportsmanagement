@@ -54,8 +54,8 @@ defined('_JEXEC') or die('Restricted access');
 <?php
 
 if ( !JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' )  )
-            {
-//                JError::raiseWarning(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_GOOGLEMAP_NOT_ENABLED'));
+{
+// JError::raiseWarning(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_GOOGLEMAP_NOT_ENABLED'));
 $this->document->addScript('http://maps.google.com/maps/api/js?language=de');
 $this->document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
         
@@ -89,9 +89,6 @@ jQuery("#jsm_map").gmap3({
    
 });
 
-
-
-
 </script>
 <style>
 .gmap{
@@ -102,23 +99,19 @@ height: 570px;
 <div id="jsm_map" class="gmap"></div>
 
 <?PHP                
-            }
-            else
-            {
-                //JError::raiseNotice(100,JText::_('COM_SPORTSMANAGEMENT_ADMIN_GOOGLEMAP_AVAILABLE'));
-                //JError::raiseNotice(100,JText::_($this->kmlpath));
-                //JError::raiseNotice(100,JText::_($this->kmlfile));
-                $plugin = JPluginHelper::getPlugin('system', 'plugin_googlemap3');
-                $paramsPlugin = new JRegistry($plugin->params);
+}
+else
+{
+$plugin = JPluginHelper::getPlugin('system', 'plugin_googlemap3');
+$paramsPlugin = new JRegistry($plugin->params);
 
 //echo 'kml<br><pre>'.print_r($this->kmlpath,true).'</pre>';
 //echo 'plugin_googlemap3<br><pre>'.print_r($paramsPlugin,true).'</pre>';
-    
 
 $params  = "{mosmap kml[0]='".'tmp'.DS.$this->kmlfile."'}";
 echo JHtml::_('content.prepare', $params);
   
-            }
+}
             
             
 ?>
