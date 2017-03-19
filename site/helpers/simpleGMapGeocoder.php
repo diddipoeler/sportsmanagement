@@ -108,48 +108,23 @@ $result = json_decode($file_content, true);
 }
 
 
+/**
+ * JSMsimpleGMapGeocoder::genkml3file()
+ * 
+ * @param mixed $id
+ * @param mixed $address_string
+ * @param mixed $type
+ * @param mixed $picture
+ * @param mixed $name
+ * @param integer $latitude
+ * @param integer $longitude
+ * @return void
+ */
 function genkml3file($id, $address_string, $type, $picture, $name,$latitude = 255,$longitude = 255)
 {
-$params		 	=	JComponentHelper::getParams('com_sportsmanagement');
-$ph_logo_big	=	$params->get('ph_logo_big',0);
+$params	= JComponentHelper::getParams('com_sportsmanagement');
+$ph_logo_big = $params->get('ph_logo_big',0);
     
-
-//$lat = '';
-//$lng = '';
-//
-//if ( $latitude == 255 )
-//{ 
-//$coords = $this->JLgetGeoCoords($address_string);
-//		
-//        if ( $coords["status"] == 'OK')
-//		{
-//    $lat = $coords["results"][0]["geometry"]["location"]["lat"];
-//    $lng = $coords["results"][0]["geometry"]["location"]["lng"];
-//    }
-//	  else
-//	  {
-//	  $osm = $this->getOSMGeoCoords($address_string);
-//    
-//    if ( $osm )
-//    {
-//    $lat = $osm['lat'];
-//    $lng = $osm['lng'];
-//    }
-//    else
-//    {
-//    $mapquest = $this->getGeoCoordsMapQuest($address_string);    
-//    $lat = '';
-//    $lng = '';
-//    }
-//    
-//    }
-//}
-//else
-//{
-//$lat = $latitude;
-//$lng = $longitude;
-//}
-
 $lat = $latitude;
 $lng = $longitude;
 
@@ -170,18 +145,6 @@ default:
 $kml[] = ' <href>' . JURI::root().$picture . '</href>';
 break;  
 }
-
-//$picturepath = JURI::root().$row->logo_big;
-//$picturepath = JPATH_SITE.DS.$picture;
-//if ( !file_exists($picturepath) || !$picture  )
-//{
-//$kml[] = ' <href>' . JURI::root().$ph_logo_big . '</href>';    
-//}
-//else
-//{
-//$kml[] = ' <href>' . JURI::root().$picture . '</href>';    
-//}
-
 
 $kml[] = ' </Icon>';
 $kml[] = ' </IconStyle>';
@@ -348,64 +311,18 @@ $address_parts = array();
 		{
 			$address_parts[] = JSMCountries::getShortCountryName($row->club_country);
 		}
-        
-        
+                
 		$row->address_string = implode(', ', $address_parts);
 		$row->type = 'bar';
-		
-        
- //       if ( $row->latitude == 255 )
-//		{
-/*		  
-        $coords = $this->JLgetGeoCoords($row->address_string);
-		if ( $coords["status"] == 'OK')
-		{
-    $row->lat = $coords["results"][0]["geometry"]["location"]["lat"];
-    $row->lng = $coords["results"][0]["geometry"]["location"]["lng"];
-    }
-	  else
-	  {
-	  $osm = $this->getOSMGeoCoords($row->address_string);
-    
-    if ( $osm )
-    {
-    $row->lat = $osm['lat'];
-    $row->lng = $osm['lng'];
-    }
-    else
-    {
-    $row->lat = '';
-    $row->lng = '';
-    }
-    
-    
-    }
-*/
-//}
-//else
-//{
-//    $row->lat = $row->latitude;
-//    $row->lng = $row->longitude;    
-    
-//}
 
  $row->lat = $row->latitude;
  $row->lng = $row->longitude;  
     
-/*
-echo 'genkml3 allteams<br><pre>';
-    print_r($coords);
-    echo '</pre><br>';		
-*/
+
 
 
 }
 
-/*
-echo 'genkml3 allteams<br><pre>';
-    print_r($allteams);
-    echo '</pre><br>';
-*/
 
 $this->writekml3($allteams,$project_id,$type);
     
@@ -542,6 +459,14 @@ $result = json_decode($file_content, true);
 }
 
 
+/**
+ * JSMsimpleGMapGeocoder::writekml3prediction()
+ * 
+ * @param mixed $allmembers
+ * @param mixed $project_id
+ * @param mixed $type
+ * @return void
+ */
 function writekml3prediction($allmembers,$project_id,$type)
 {
 $params		 	=	JComponentHelper::getParams('com_sportsmanagement');
@@ -643,32 +568,25 @@ JFile::write($file, $xmlfile);
 
 }
 
+
+/**
+ * JSMsimpleGMapGeocoder::writekml3()
+ * 
+ * @param mixed $allteams
+ * @param mixed $project_id
+ * @param mixed $type
+ * @return void
+ */
 function writekml3($allteams,$project_id,$type)
 {
-$params		 	=	JComponentHelper::getParams('com_sportsmanagement');
-$ph_logo_big	=	$params->get('ph_logo_big',0);
+$params = JComponentHelper::getParams('com_sportsmanagement');
+$ph_logo_big = $params->get('ph_logo_big',0);
     
 // Creates an array of strings to hold the lines of the KML file.
 $kml = array('<?xml version="1.0" encoding="UTF-8"?>');
 $kml[] = '<kml xmlns="http://earth.google.com/kml/2.1">';
 $kml[] = ' <Document>';
 
-/*
-$kml[] = ' <Style id="restaurantStyle">';
-$kml[] = ' <IconStyle id="restuarantIcon">';
-$kml[] = ' <Icon>';
-$kml[] = ' <href>http://maps.google.com/mapfiles/kml/pal2/icon49.png</href>';
-$kml[] = ' </Icon>';
-$kml[] = ' </IconStyle>';
-$kml[] = ' </Style>';
-$kml[] = ' <Style id="barStyle">';
-$kml[] = ' <IconStyle id="barIcon">';
-$kml[] = ' <Icon>';
-$kml[] = ' <href>http://maps.google.com/mapfiles/kml/pal2/icon49.png</href>';
-$kml[] = ' </Icon>';
-$kml[] = ' </IconStyle>';
-$kml[] = ' </Style>';
-*/
 
 foreach ( $allteams as $row )
 {

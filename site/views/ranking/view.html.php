@@ -308,7 +308,7 @@ $this->currentRanking = sportsmanagementModelRanking::$currentRanking;
         
         }
         
-		if ( $this->config['show_ranking_maps'] )
+	if ( $this->config['show_ranking_maps'] )
 	{
 	$this->geo = new JSMsimpleGMapGeocoder();
 	$this->geo->genkml3($this->project->id,$this->allteams);
