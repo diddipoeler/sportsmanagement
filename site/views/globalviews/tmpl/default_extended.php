@@ -88,7 +88,9 @@ echo JText::_($fieldset->name);
 </div>
 </div>    
     
-				
+<div class="row-fluid">	
+<div class="table-responsive">
+<table class="table">			
 				<?php
 				foreach ($fields as $field)
 				{
@@ -96,12 +98,11 @@ echo JText::_($fieldset->name);
 					if (!empty($value)) // && !$field->backendonly)
 					{
 						?>
-                        <div class="row-fluid">
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                        
+                        <tr>
+                        <td>
                         <strong><?php echo JText::_( $field->label); ?></strong>
-                        </div>
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                        </td>
+                        <td>
                             <?php
                             if ( is_array($field->value) )
                             {
@@ -117,15 +118,15 @@ echo JText::_($fieldset->name);
                             echo JText::_( $field->value );
                             }
                             ?>
-                        
-                        
-						</div>
-                        </div>
+                        </td>
+                        </tr>
 						<?php
 					}
 				}
 				?>
-
+</table>
+</div>
+</div>
                 
                 
 				<br/>
