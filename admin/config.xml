@@ -849,11 +849,80 @@ multiple="true"
 			<option value="1">JYES</option>
 		</field>    
 
+<field name="show_option_person" 
+    type="radio" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_PERSON" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_PERSON_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+<field name="show_option_playground" 
+    type="radio" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_PLAYGROUND" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_PLAYGROUND_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+<field name="show_option_rosterposition" 
+    type="radio" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_ROSTERPOSITION" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_ROSTERPOSITION_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>        
 
+<field name="show_option_extrafields" 
+    type="radio" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_EXTRAFIELDS" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_EXTRAFIELDS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+<field name="show_option_statistics" 
+    type="radio" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_STATISTICS" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_STATISTICS_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+<field name="show_option_clubnames" 
+    type="radio" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_CLUBNAMES" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_CLUBNAMES_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+<field name="show_option_github" 
+    type="radio" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_GITHUB" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_GITHUB_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>            
 
-
-
-
+<field name="show_option_smquotes" 
+    type="radio" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_SMQUOTES" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_SMQUOTES_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 
   
 </fieldset>
