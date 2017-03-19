@@ -117,127 +117,137 @@ jQuery(window).load(function() {
 
 	if ( $this->config['show_ranking'] )
 	{
-
-   
-        
+/**
+ * sollen überhaup reiter angezeigt werden ?
+ */
+if ( $this->config['show_table_1'] ||   
+$this->config['show_table_2'] || 
+$this->config['show_table_3'] || 
+$this->config['show_table_4'] || 
+$this->config['show_table_5'] )
+{
+ 
     ?>
-
 <!-- This is a list with tabs names. -->
-            <div class="panel with-nav-tabs panel-default">
-                <div class="panel-heading">
-    	<!-- Tabs-Navs -->
-  <ul class="nav nav-tabs" role="tablist">
-    <?PHP
-    if ( $this->config['show_table_1'] )
-	{
-	?>
-    <li role="presentation" class="active"><a href="#<?PHP echo JText::_($this->config['table_text_1']); ?>" role="tab" data-toggle="tab"><?PHP echo JText::_($this->config['table_text_1']); ?></a>
-    </li>
-    <?PHP
-    }
+<div class="panel with-nav-tabs panel-default">
+<div class="panel-heading">
+<!-- Tabs-Navs -->
+<ul class="nav nav-tabs" role="tablist">
+<?PHP
+if ( $this->config['show_table_1'] )
+{
+?>
+<li role="presentation" class="active"><a href="#<?PHP echo JText::_($this->config['table_text_1']); ?>" role="tab" data-toggle="tab"><?PHP echo JText::_($this->config['table_text_1']); ?></a>
+</li>
+<?PHP
+}
     
-    if ( $this->config['show_table_2'] )
-	{
-	?>
-    <li role="presentation" class=""><a href="#<?PHP echo JText::_($this->config['table_text_2']); ?>" role="tab" data-toggle="tab"><?PHP echo JText::_($this->config['table_text_2']); ?></a>
-    </li>
-    <?PHP
-    }
+if ( $this->config['show_table_2'] )
+{
+?>
+<li role="presentation" class=""><a href="#<?PHP echo JText::_($this->config['table_text_2']); ?>" role="tab" data-toggle="tab"><?PHP echo JText::_($this->config['table_text_2']); ?></a>
+</li>
+<?PHP
+}
     
-    if ( $this->config['show_table_3'] )
-	{
-	?>
-    <li role="presentation" class=""><a href="#<?PHP echo JText::_($this->config['table_text_3']); ?>" role="tab" data-toggle="tab"><?PHP echo JText::_($this->config['table_text_3']); ?></a>
-    </li>
-    <?PHP
-    }
+if ( $this->config['show_table_3'] )
+{
+?>
+<li role="presentation" class=""><a href="#<?PHP echo JText::_($this->config['table_text_3']); ?>" role="tab" data-toggle="tab"><?PHP echo JText::_($this->config['table_text_3']); ?></a>
+</li>
+<?PHP
+}
     
-    if ( $this->config['show_table_4'] )
-	{
-	?>
-    <li role="presentation" class=""><a href="#<?PHP echo JText::_($this->config['table_text_4']); ?>" role="tab" data-toggle="tab"><?PHP echo JText::_($this->config['table_text_4']); ?></a>
-    </li>
-    <?PHP
-    }
+if ( $this->config['show_table_4'] )
+{
+?>
+<li role="presentation" class=""><a href="#<?PHP echo JText::_($this->config['table_text_4']); ?>" role="tab" data-toggle="tab"><?PHP echo JText::_($this->config['table_text_4']); ?></a>
+</li>
+<?PHP
+}
     
-    if ( $this->config['show_table_5'] )
-	{
-	?>
-    <li role="presentation" class=""><a href="#<?PHP echo JText::_($this->config['table_text_5']); ?>" role="tab" data-toggle="tab"><?PHP echo JText::_($this->config['table_text_5']); ?></a>
-    </li>
-    <?PHP
-    }
-    ?>
-  </ul>
+if ( $this->config['show_table_5'] )
+{
+?>
+<li role="presentation" class=""><a href="#<?PHP echo JText::_($this->config['table_text_5']); ?>" role="tab" data-toggle="tab"><?PHP echo JText::_($this->config['table_text_5']); ?></a>
+</li>
+<?PHP
+}
+?>
+</ul>
 </div>
-  <!-- Tab-Inhalte -->
-  <div class="panel-body">
-  <div class="tab-content">
+<!-- Tab-Inhalte -->
+<div class="panel-body">
+<div class="tab-content">
     
-    <?PHP
-    if ( $this->config['show_table_1'] )
-	{
-	?>
-    <div role="tabpanel" class="tab-pane fade in active" id="<?PHP echo JText::_($this->config['table_text_1']); ?>">
-    <?PHP   
-    echo $this->loadTemplate('ranking');
-    ?>
-    </div>
-    <?PHP
-    }
+<?PHP
+if ( $this->config['show_table_1'] )
+{
+?>
+<div role="tabpanel" class="tab-pane fade in active" id="<?PHP echo JText::_($this->config['table_text_1']); ?>">
+<?PHP   
+echo $this->loadTemplate('ranking');
+?>
+</div>
+<?PHP
+}
     
-    if ( $this->config['show_table_2'] )
-	{
-	?>
-    <div role="tabpanel" class="tab-pane fade" id="<?PHP echo JText::_($this->config['table_text_2']); ?>">
-    <?PHP   
-    echo $this->loadTemplate('ranking_home');
-    ?>
-    </div>
-    <?PHP
-    }
+if ( $this->config['show_table_2'] )
+{
+?>
+<div role="tabpanel" class="tab-pane fade" id="<?PHP echo JText::_($this->config['table_text_2']); ?>">
+<?PHP   
+echo $this->loadTemplate('ranking_home');
+?>
+</div>
+<?PHP
+}
     
-    if ( $this->config['show_table_3'] )
-	{
-	?>
-    <div role="tabpanel" class="tab-pane fade" id="<?PHP echo JText::_($this->config['table_text_3']); ?>">
-    <?PHP   
-    echo $this->loadTemplate('ranking_away');
-    ?>
-    </div>
-    <?PHP
-    }
+if ( $this->config['show_table_3'] )
+{
+?>
+<div role="tabpanel" class="tab-pane fade" id="<?PHP echo JText::_($this->config['table_text_3']); ?>">
+<?PHP   
+echo $this->loadTemplate('ranking_away');
+?>
+</div>
+<?PHP
+}
     
-    if ( $this->config['show_table_4'] )
-	{
-	?>
-    <div role="tabpanel" class="tab-pane fade" id="<?PHP echo JText::_($this->config['table_text_4']); ?>">
-    <?PHP   
-    echo $this->loadTemplate('ranking_first');
-    ?>
-    </div>
-    <?PHP
-    }
+if ( $this->config['show_table_4'] )
+{
+?>
+<div role="tabpanel" class="tab-pane fade" id="<?PHP echo JText::_($this->config['table_text_4']); ?>">
+<?PHP   
+echo $this->loadTemplate('ranking_first');
+?>
+</div>
+<?PHP
+}
     
-    if ( $this->config['show_table_5'] )
-	{
-	?>
-    <div role="tabpanel" class="tab-pane fade" id="<?PHP echo JText::_($this->config['table_text_5']); ?>">
-    <?PHP   
-    echo $this->loadTemplate('ranking_second');
-    ?>
-    </div>
-    <?PHP
-    }
-    ?>
-    </div>
+if ( $this->config['show_table_5'] )
+{
+?>
+<div role="tabpanel" class="tab-pane fade" id="<?PHP echo JText::_($this->config['table_text_5']); ?>">
+<?PHP   
+echo $this->loadTemplate('ranking_second');
+?>
+</div>
+<?PHP
+}
+?>
+</div>
     
-  </div>
-        
+</div>
         
 </div>
 
 <?PHP        
+}
+else
+{
+echo $this->loadTemplate('ranking');    
+}    
     
     }
 

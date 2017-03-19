@@ -39,10 +39,10 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-?>
 
-<!-- content -->
-<?php
+/**
+ * es wird als erstes die farblegende der divisionen/gruppen gelesen 
+ */
 foreach ( $this->currentRanking as $division => $cu_rk )
 {
 	if ($division)
