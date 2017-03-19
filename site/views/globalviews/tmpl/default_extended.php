@@ -85,11 +85,8 @@ if(count($this->extended->getFieldsets()) > 0)
 echo JText::_($fieldset->name); 
 ?>
 </h4>
-</div>
-</div>    
-    
-<div class="row-fluid">	
-<div class="table-responsive">
+
+<div class="table-responsive">    
 <table class="table">			
 				<?php
 				foreach ($fields as $field)
@@ -127,7 +124,7 @@ echo JText::_($fieldset->name);
 </table>
 </div>
 </div>
-                
+</div>                
                 
 				<br/>
 				<?php
