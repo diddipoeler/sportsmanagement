@@ -55,7 +55,6 @@ defined('_JEXEC') or die('Restricted access');
  * @version 2013
  * @access public
  */
-//class sportsmanagementViewcpanel extends JView
 class sportsmanagementViewcpanel extends sportsmanagementView
 {
 	/**
@@ -278,7 +277,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 		// Assign data to the view
 		$this->items = $items;
 		$this->pagination = $pagination;
-        
+        $this->params = $params;
         
  
 

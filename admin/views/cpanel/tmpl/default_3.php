@@ -71,34 +71,48 @@ jimport('joomla.html.html.bootstrap');
 <img src="components/com_sportsmanagement/assets/icons/sportarten.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_SPORTSTYPES') ?>" /><br />
 <span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_SPORTSTYPES') ?></span>
 </a>
+
 <a class="btn" href="index.php?option=com_sportsmanagement&view=seasons">
 <img src="components/com_sportsmanagement/assets/icons/saisons.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_SEASONS') ?>" /><br />
 <span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_SEASONS') ?></span>
 </a>
+
 <a class="btn" href="index.php?option=com_sportsmanagement&view=leagues">
 <img src="components/com_sportsmanagement/assets/icons/ligen.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_LEAGUES') ?>" /><br />
 <span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_LEAGUES') ?></span>
 </a>
+<?PHP
+if ( $this->params->get( 'show_option_federation',1 )  )
+{
+?>
 <a class="btn" href="index.php?option=com_sportsmanagement&view=jlextfederations">
 <img src="components/com_sportsmanagement/assets/icons/federation.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_FEDERATIONS') ?>" /><br />
 <span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_FEDERATIONS') ?></span>
 </a>
+<?PHP
+}
+
+?>
 <a class="btn" href="index.php?option=com_sportsmanagement&view=jlextcountries">
 <img src="components/com_sportsmanagement/assets/icons/laender.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_COUNTRIES') ?>" /><br />
 <span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_COUNTRIES') ?></span>
 </a>
+
 <a class="btn" href="index.php?option=com_sportsmanagement&view=jlextassociations">
 <img src="components/com_sportsmanagement/assets/icons/landesverbaende.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_ASSOCIATIONS') ?>" /><br />
 <span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_ASSOCIATIONS') ?></span>
 </a>
+
 <a class="btn" href="index.php?option=com_sportsmanagement&view=positions">
 <img src="components/com_sportsmanagement/assets/icons/positionen.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_POSITIONS') ?>" /><br />
 <span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_POSITIONS') ?></span>
 </a>
+
 <a class="btn" href="index.php?option=com_sportsmanagement&view=eventtypes">
 <img src="components/com_sportsmanagement/assets/icons/ereignisse.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_EVENTS') ?>" /><br />
 <span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_EVENTS') ?></span>
 </a>
+
 <a class="btn" href="index.php?option=com_sportsmanagement&view=agegroups">
 <img src="components/com_sportsmanagement/assets/icons/altersklassen.png" alt="<?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_AGEGROUPS') ?>" /><br />
 <span><?php echo JText::_('COM_SPORTSMANAGEMENT_D_MENU_AGEGROUPS') ?></span>
