@@ -52,8 +52,20 @@ defined('_JEXEC') or die('Restricted access');
 </h4>
 	
 <?php
-
-if ( !JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' )  )
+/**
+ * welche joomla version 
+ * und ist seo eingestellt
+ */
+        if(version_compare(JVERSION,'3.0.0','ge')) 
+        {
+        $sef = JFactory::getConfig()->get('sef', false);
+        }
+        else
+        {
+		$sef = JFactory::getConfig()->getValue('config.sef', false);
+        }
+        
+if ( !JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' ) && $sef  )
 {
 // JError::raiseWarning(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_GOOGLEMAP_NOT_ENABLED'));
 //$this->document->addScript('http://maps.google.com/maps/api/js?language=de');
@@ -68,8 +80,12 @@ $this->document->addScript('https://cdn.jsdelivr.net/gmap3/7.2.0/gmap3.min.js');
 jQuery(function () {
     jQuery('#jsm_map')
       .gmap3({
-        center:[41.876, -87.624],
-        zoom: 3
+        zoom: 3,
+          mapTypeId: google.maps.MapTypeId.HYBRID,
+        mapTypeControl: true,
+navigationControl: true,
+        scrollwheel: true,
+        streetViewControl: true
       })
       .kmllayer({url: '<?PHP echo JURI::root().'tmp/'.$this->kmlfile; ?>'})
     ;
