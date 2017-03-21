@@ -71,7 +71,8 @@ if ( ( !JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' ) ) || ( JPlugin
 //$this->document->addScript('http://maps.google.com/maps/api/js?language=de');
 //$this->document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
 //$this->document->addScript('http://maps.google.com/maps/api/js?language=de');
-$this->document->addScript('https://maps.googleapis.com/maps/api/js?v=3.21&sensor=false&language=de');	
+//$this->document->addScript('https://maps.googleapis.com/maps/api/js?v=3.21&sensor=false&language=de');	
+$this->document->addScript('https://maps.googleapis.com/maps/api/js?v=3.21&language=de');		
 $this->document->addScript('https://cdn.jsdelivr.net/gmap3/7.2.0/gmap3.min.js');
         
 ?>
