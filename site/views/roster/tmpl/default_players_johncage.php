@@ -38,16 +38,16 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-$totalEvents=array();
-if (count($this->rows>0)) 
+$totalEvents = array();
+if (count( $this->rows>0 ))
 { 
 ?>
 <div id="jl_rosterholder">
 <?php
 	$position = "";
-	foreach ($this->rows as $position_id => $rows)
+	foreach ( $this->rows as $position_id => $rows )
 	{
-		$position = $rows[0]->position;
+		$position = JText::_( $rows[0]->position );
 ?>
 	<div class="jl_rosterposition sectiontableheader">
 		<?php 
@@ -55,7 +55,7 @@ if (count($this->rows>0))
 		?>
 	</div>
 <?php
-		for ($i=0, $n=count( $rows ); $i < $n; $i++) 
+		for ($i=0, $n=count( $rows ); $i < $n; $i++)
 		{
 			$k = $i % 2;
 			if ($k == 0)

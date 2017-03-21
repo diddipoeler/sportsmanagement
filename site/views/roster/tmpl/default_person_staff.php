@@ -45,7 +45,7 @@ defined('_JEXEC') or die('Restricted access');
 		<div class="jl_rosterperson jl_rp<?php echo $this->k;?>">
 <?php 
 $personName = sportsmanagementHelper::formatName(null ,$this->row->firstname, $this->row->nickname, $this->row->lastname, $this->config["name_format_staff"]);
-if ($this->config['show_staff_icon']==1) 
+if ($this->config['show_staff_icon'] == 1)
 {
 	$imgTitle = JText::sprintf( $personName );
 	$picture = $this->row->picture;
@@ -57,15 +57,13 @@ if ($this->config['show_staff_icon']==1)
 	{
 		$picture = 'images/com_sportsmanagement/database/placeholders/placeholder_150_2.png';
 	}
-	
+
 ?>
 			<div class="jl_rosterperson_staffpicture_column">
 				<div class="jl_roster_staffperson_pic">
 <?php
-echo sportsmanagementHelperHtml::getBootstrapModalImage('st'.$this->row->person_id,$picture,$personName,$this->config['staff_picture_width']);	
-     
-      	
-    
+echo sportsmanagementHelperHtml::getBootstrapModalImage('st'.$this->row->person_id,$picture,$personName,$this->config['staff_picture_width']);
+
 ?>
 				</div><!-- /.jl_roster_staffperson_pic -->
 			</div><!-- /.jl_rosterperson_staffpicture_column -->
@@ -77,18 +75,18 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('st'.$this->row->person_
 				<span class="jl_rosterperson_name">
 				<?php
 				$routeparameter = array();
-       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-       $routeparameter['s'] = JRequest::getInt('s',0);
-       $routeparameter['p'] = $this->project->slug;
-       $routeparameter['tid'] = $this->team->slug;
-       $routeparameter['pid'] = $this->row->person_slug;
+	$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+	$routeparameter['s'] = JRequest::getInt('s',0);
+	$routeparameter['p'] = $this->project->slug;
+	$routeparameter['tid'] = $this->team->slug;
+	$routeparameter['pid'] = $this->row->person_slug;
 										
 		echo ($this->config['link_staff']==1) ? 
 			JHtml::link(sportsmanagementHelperRoute::getSportsmanagementRoute('staff',$routeparameter),$personName)
 			: $personName;
 ?>
 					<br />&nbsp;
-				</span>	
+				</span>
 			</h3>
 			<div class="jl_roster_persondetails">
 					<div>
@@ -99,15 +97,16 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('st'.$this->row->person_
 						</span><!-- /.jl_roster_persondetails_label -->
 						<span class="jl_roster_persondetails_data">
 <?php
-						if (!empty($this->row->parentname)) {
+						if (!empty($this->row->parentname))
+						{
 						echo JText::sprintf('COM_SPORTSMANAGEMENT_ROSTER_MEMBER_OF',JText::_($this->row->parentname));
 						}
-						echo $this->row->position;
+						echo '&nbsp;' . JText::_( $this->row->position );
 						?>
 						</span><!-- /.jl_roster_persondetails_data -->
 					</div>
 <?php 
-	if ($this->config['show_birthday_staff'] > 0 AND $this->row->birthday !="0000-00-00") 
+	if ($this->config['show_birthday_staff'] > 0 AND $this->row->birthday !="0000-00-00")
 	{
 		switch ($this->config['show_birthday_staff'])
 		{
