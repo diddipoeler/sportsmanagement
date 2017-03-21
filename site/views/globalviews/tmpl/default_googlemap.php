@@ -90,34 +90,9 @@ navigationControl: true,
         streetViewControl: true
       })
       .kmllayer({url: '<?PHP echo JURI::root().'tmp/'.$this->kmlfile; ?>'})
+.wait(3000)
     ;
   });
-//jQuery(document).ready(function() {
-//   
-//jQuery("#jsm_map").gmap3({ 
-//  map:{
-//    options:{ 
-//      //center:{lat: 40.65,lng: -73.95}, 
-//      MapTypeId: google.maps.MapTypeId.HYBRID,
-//      zoom: 9
-//    }
-//  },
-//  kmllayer:{
-//    options:{
-//      url: "<?PHP echo JURI::root().'tmp/'.$this->kmlfile; ?>",
-//      opts:{
-//        suppressInfoWindows: true
-//      }
-//    },
-//    events:{
-//      click: function(kml, event){
-//        alert(event.featureData.description);
-//      }
-//    }
-//  }
-//});   
-//   
-//});
 
 </script>
 <style>
