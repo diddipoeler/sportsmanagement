@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie kÃ¶nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spÃ¤teren
+* verÃ¶ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nÃ¼tzlich sein wird, aber
+* OHNE JEDE GEWÃ„HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* GewÃ¤hrleistung der MARKTFÃ„HIGKEIT oder EIGNUNG FÃœR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fÃ¼r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -179,15 +179,21 @@ $app = JFactory::getApplication();
 		$query = $db->getQuery(true);
         
         $query->select('ef.name');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields_values as ev ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields as ef ON ef.id = ev.field_id');
+        $query->from('#__sportsmanagement_user_extra_fields_values as ev ');
+        $query->join('INNER','#__sportsmanagement_user_extra_fields as ef ON ef.id = ev.field_id');
         $query->where('ev.jl_id = '.$project_id);
         $query->where('ef.template_backend LIKE '.$db->Quote(''.'project'.''));
         $query->where('ev.fieldvalue != '.$db->Quote(''.'')); 
-        
+        try {
         $db->setQuery($query);
         //$result = $db->loadObjectList();
         $column = $db->loadColumn(0);
+}
+catch (Exception $e) {
+    // catch any database errors.
+    //$db->transactionRollback();
+    JErrorPage::render($e);
+}
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($result,true).'</pre>'),'Notice');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($column,true).'</pre>'),'Notice');
@@ -217,7 +223,7 @@ function getExtraFields($template_backend = '', $template_frontend = '')
         // Select some fields
 		$query->select('id,name');
 		// From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_user_extra_fields');
+		$query->from('#__sportsmanagement_user_extra_fields');
         if ($template_backend)
 		{
         $query->where('template_backend LIKE '.$db->Quote(''.$template_backend.''));
