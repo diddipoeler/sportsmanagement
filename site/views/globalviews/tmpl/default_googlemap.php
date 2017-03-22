@@ -154,7 +154,7 @@ navigationControl: true,
         streetViewControl: true
       })
       .kmllayer({url: '<?PHP echo JURI::root().'tmp/'.$this->kmlfile; ?>'})
-.wait(3000)
+.wait(1000)
     ;
   });
 <?PHP
