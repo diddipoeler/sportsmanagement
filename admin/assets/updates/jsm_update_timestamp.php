@@ -141,6 +141,7 @@ break;
 echo '<form method="post" id="adminForm" action="'.$link.'" >';
 echo '<br><input type="button" onclick="document.body.innerHTML=\'please wait...\';sendData(\'project\')" value="Projekte" />';
 echo '<input type="button" onclick="document.body.innerHTML=\'please wait...\';sendData(\'match\')" value="Match" />';
+echo '<input type="button" onclick="document.body.innerHTML=\'please wait...\';sendData(\'person\')" value="Personen" />';
 echo '</form>';
 
 
