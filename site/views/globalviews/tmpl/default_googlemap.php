@@ -38,11 +38,46 @@
 */ 
 
 defined('_JEXEC') or die('Restricted access');
-
+$this->view = JFactory::getApplication()->input->getCmd('view');
 //echo $this->kmlfile.'<br>';
 //echo JURI::root(true).'<br>';
 //echo JURI::root().'<br>';
 //$this->kmlfile = 'test-club.kml';
+
+switch ($this->view)
+{
+case 'ranking':
+//echo '<pre>'.print_r($this->allteams,true).'</pre><br>';
+foreach ( $this->allteams as $row )
+{
+// team_name
+$values[][latLng] = '['.$row->latitude.','.$row->longitude.'], data:'.$row->team_name;
+//$values[][data] = '['.$row->team_name.']';
+$latitude = $row->latitude;
+$longitude = $row->longitude;
+//echo 'latitude  -> '.$latitude .'<br>';
+//echo 'longitude -> '.$longitude .'<br>';
+}
+$icon = 'http://maps.google.com/mapfiles/marker_green.png';
+//echo json_encode($values);
+
+break;
+case 'clubinfo':
+$latitude = $this->club->latitude;
+$longitude = $this->club->longitude;
+$icon = 'http://maps.google.com/mapfiles/kml/pal2/icon49.png';
+break;
+case 'playground':
+$latitude = $this->playground->latitude;
+$longitude = $this->playground->longitude;
+$icon = 'http://maps.google.com/mapfiles/kml/pal2/icon39.png';
+break;
+
+}
+
+
+
+
 ?>
 
 <div class="row-fluid">
@@ -79,6 +114,35 @@ $this->document->addScript('https://cdn.jsdelivr.net/gmap3/7.2.0/gmap3.min.js');
 
 <div id="jsm_map" class="gmap3"></div>
 <script type="text/javascript">
+<?PHP
+switch ($this->view)
+{
+case 'clubinfo':
+case 'playground':
+?>
+var center = [<?PHP echo $latitude; ?>, <?PHP echo $longitude; ?>];
+jQuery(document).ready(function()  {
+    jQuery('#jsm_map')
+      .gmap3({
+center: center,
+  zoom: 15,
+          mapTypeId: google.maps.MapTypeId.HYBRID,
+        mapTypeControl: true,
+navigationControl: true,
+        scrollwheel: true,
+        streetViewControl: true
+      })
+      .marker({
+        position: center,
+        icon: '<?PHP echo $icon; ?>'
+      })
+    ;
+  });
+
+<?PHP
+break;
+default:
+?>
 jQuery(document).ready(function() {
     jQuery('#jsm_map')
       .gmap3({
@@ -93,6 +157,12 @@ navigationControl: true,
 .wait(3000)
     ;
   });
+<?PHP
+
+break;
+
+}
+?>
 
 </script>
 <style>
