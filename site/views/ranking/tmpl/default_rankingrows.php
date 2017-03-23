@@ -232,7 +232,10 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 	
 	if ( $config['show_unique_id'] )
 	{
+		if ( $team->team->unique_id )
+		{
 	echo ' ('.$team->team->unique_id.')';
+		}
 	}
 	
 	echo '</td>';
