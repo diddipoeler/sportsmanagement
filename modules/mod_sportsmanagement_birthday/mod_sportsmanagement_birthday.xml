@@ -80,17 +80,20 @@
 					<option value="0">JNO</option>
 					<option value="1">JYES</option>
 				</field>
-<!--
-				<field 	name="teams" type="teams" default=""
-						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_TEAM_IDS_LABEL"
-						description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_TEAM_IDS_DESCR" />
--->
+
         <field name="teams" type="dependsql" default="0" depends="projects"
 					task="projectteamoptions" 
 					key_field="project_id"
 			value_field="projects"
 					label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_TEAM_IDS_LABEL" 
 					description="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_TEAM_IDS_DESCR" />
+
+				<field name="agegrouplist" type="dependsql" default="0" 
+ task="personagegroupoptions"
+					label="MOD_SPORTSMANAGEMENT_AGEGROUP_LABEL"
+					description="MOD_SPORTSMANAGEMENT_AGEGROUP_DESC">
+
+				</field>
 					
 				<field 	name="limit" type="text" default="1"
 						label="MOD_SPORTSMANAGEMENT_BIRTHDAY_SELECT_MAX_BIRTHDAYS_LABEL" 
