@@ -155,7 +155,10 @@ if ($params->get('use_which') <= 1)
     $query->where('p.published = 1 AND p.birthday != \'0000-00-00\'');
     $query->where('stp.persontype = 1');
 
-    		
+    if ( $params->get('agegrouplist') ) 
+    {
+	$query->where('p.agegroup_id = '.$params->get('agegrouplist') );    
+    }
 	if ( $usedteams != '' ) 
     $query->where('st.team_id IN ('.$usedteams.')');
 
@@ -221,7 +224,10 @@ if ($params->get('use_which') == 2 || $params->get('use_which') == 0)
     
     $query->where('p.published = 1 AND p.birthday != \'0000-00-00\'');
     $query->where('stp.persontype = 2');
-    
+    if ( $params->get('agegrouplist') ) 
+    {
+	$query->where('p.agegroup_id = '.$params->get('agegrouplist') );    
+    }
     // Exclude players from the staff query to avoid duplicate persons (if a person is both player and staff)
 	if(count($players) > 0)
 	{
