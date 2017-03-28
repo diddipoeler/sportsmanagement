@@ -73,10 +73,10 @@ class sportsmanagementViewReferee extends JViewLegacy
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 		$person = sportsmanagementModelPerson::getPerson(0,$model::$cfg_which_database);
 
-		$this->assign('project',sportsmanagementModelProject::getProject($model::$cfg_which_database));
-		$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database));
-		$this->assignRef('config',$config);
-		$this->assignRef('person',$person);
+		$this->project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
+		$this->overallconfig = sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
+		$this->config = $config;
+		$this->person = $person;
 
 		$ref = sportsmanagementModelPerson::getReferee();
 		if ($ref)

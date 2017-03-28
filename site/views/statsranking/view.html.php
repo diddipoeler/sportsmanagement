@@ -91,17 +91,15 @@ class sportsmanagementViewStatsRanking extends JViewLegacy
 			}
 		}
 
-		$this->assignRef('teams', $teams );
-        
-        
-		$this->assign('overallconfig', sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database) );
-		$this->assignRef('config', $config );
-		$this->assign('favteams', sportsmanagementModelProject::getFavTeams($model::$cfg_which_database) );
-		$this->assign('stats', $model->getProjectUniqueStats() );
-		$this->assign('playersstats', $model->getPlayersStats() );
-		$this->assign('limit', $model->getLimit() );
-		$this->assign('limitstart', $model->getLimitStart() );
-		$this->assign('multiple_stats', count($this->stats) > 1 );
+		$this->teams = $teams;
+		$this->overallconfig = sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
+		$this->config = $config;
+		$this->favteams = sportsmanagementModelProject::getFavTeams($model::$cfg_which_database);
+		$this->stats = $model->getProjectUniqueStats();
+		$this->playersstats = $model->getPlayersStats();
+		$this->limit = $model->getLimit();
+		$this->limitstart = $model->getLimitStart();
+		$this->multiple_stats = count($this->stats) > 1 ;
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
@@ -133,7 +131,7 @@ class sportsmanagementViewStatsRanking extends JViewLegacy
 		{
 			$titleInfo->divisionName = $this->division->name;
 		}
-		$this->assign('pagetitle', sportsmanagementHelper::formatTitle($titleInfo, $this->config["page_title_format"]));
+		$this->pagetitle = sportsmanagementHelper::formatTitle($titleInfo, $this->config["page_title_format"]);
 		$document->setTitle($this->pagetitle);
 		
         $this->headertitle = $this->pagetitle;

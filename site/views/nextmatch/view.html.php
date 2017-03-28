@@ -75,14 +75,14 @@ class sportsmanagementViewNextMatch extends JViewLegacy
 		$tableconfig = sportsmanagementModelProject::getTemplateConfig( "ranking",$model::$cfg_which_database );
 
 		$this->assign('project',sportsmanagementModelProject::getProject($model::$cfg_which_database) );
-		$this->assignRef('config',$config );
-		$this->assignRef('tableconfig',$tableconfig );
-		$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database) );
+		$this->config = $config;
+		$this->tableconfig = $tableconfig;
+		$this->overallconfig = sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
 		if ( !isset( $this->overallconfig['seperator'] ) )
 		{
 			$this->overallconfig['seperator'] = ":";
 		}
-		$this->assignRef('match',$match);
+		$this->match = $match;
 
 		if ($match)
 		{
@@ -94,7 +94,7 @@ class sportsmanagementViewNextMatch extends JViewLegacy
 				$matchDate = JHtml::date($ret->match_date,JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_GAMES_DATE' ));
 				$newmatchtext = $matchDate . " " . $matchTime . ", " . $ret->t1name . " - " . $ret->t2name;
 			}
-			$this->assignRef('newmatchtext',$newmatchtext);
+			$this->newmatchtext = $newmatchtext;
 			$prevmatchtext = "";
 			if($match->old_match_id > 0)
 			{
@@ -104,42 +104,40 @@ class sportsmanagementViewNextMatch extends JViewLegacy
 				$prevmatchtext = $matchDate . " " . $matchTime . ", " . $ret->t1name . " - " . $ret->t2name;
 			}
             
-			$this->assignRef('oldmatchtext',$prevmatchtext);
-			$this->assign('teams',$model->getMatchTeams() );
-			$this->assign('referees',$model->getReferees() );
-			$this->assign('playground',sportsmanagementModelPlayground::getPlayground( $this->match->playground_id ) );
-			$this->assign('homeranked',$model->getHomeRanked() );		
-			$this->assign('awayranked',$model->getAwayRanked() );
-			$this->assign('chances',$model->getChances() );		
-			$this->assign('home_highest_home_win',$model->getHomeHighestHomeWin() );
-			$this->assign('away_highest_home_win',$model->getAwayHighestHomeWin() );
-			$this->assign('home_highest_home_def',$model->getHomeHighestHomeDef() );
-			$this->assign('away_highest_home_def',$model->getAwayHighestHomeDef() );
-			$this->assign('home_highest_away_win',$model->getHomeHighestAwayWin() );
-			$this->assign('away_highest_away_win',$model->getAwayHighestAwayWin() );
-			$this->assign('home_highest_away_def',$model->getHomeHighestAwayDef() );
-			$this->assign('away_highest_away_def',$model->getAwayHighestAwayDef() );
+			$this->oldmatchtext = $prevmatchtext;
+			$this->teams = $model->getMatchTeams();
+			$this->referees = $model->getReferees();
+			$this->playground = sportsmanagementModelPlayground::getPlayground( $this->match->playground_id );
+			$this->homeranked = $model->getHomeRanked();		
+			$this->awayranked = $model->getAwayRanked();
+			$this->chances = $model->getChances();		
+			$this->home_highest_home_win = $model->getHomeHighestHomeWin();
+			$this->away_highest_home_win = $model->getAwayHighestHomeWin();
+			$this->home_highest_home_def = $model->getHomeHighestHomeDef();
+			$this->away_highest_home_def = $model->getAwayHighestHomeDef();
+			$this->home_highest_away_win = $model->getHomeHighestAwayWin();
+			$this->away_highest_away_win = $model->getAwayHighestAwayWin();
+			$this->home_highest_away_def = $model->getHomeHighestAwayDef();
+			$this->away_highest_away_def = $model->getAwayHighestAwayDef();
 
 			$games = $model->getGames();
 			$gamesteams = $model->getTeamsFromMatches( $games,$config );
-			$this->assignRef('games',$games );
-			$this->assignRef('gamesteams',$gamesteams );
+			$this->games = $games;
+			$this->gamesteams = $gamesteams;
 			
 			
 			$previousx = $model->getpreviousx($config);
 			$teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$model::$cfg_which_database);
 			
-			$this->assignRef('previousx',$previousx);
-			$this->assignRef('allteams',$teams);
-            $this->assign('matchcommentary',sportsmanagementModelMatch::getMatchCommentary($this->match->id));
+			$this->previousx = $previousx;
+			$this->allteams = $teams;
+            $this->matchcommentary = sportsmanagementModelMatch::getMatchCommentary($this->match->id);
             
             
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' homeranked <br><pre>'.print_r($this->homeranked,true).'</pre>'),'');
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' awayranked <br><pre>'.print_r($this->awayranked,true).'</pre>'),'');
             
 		}
-        
-        //$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
 
 		// Set page title
 		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_PAGE_TITLE' );

@@ -150,15 +150,10 @@ class sportsmanagementViewRanking extends sportsmanagementView
 		$this->round = sportsmanagementModelRanking::$round;
 		$this->part = sportsmanagementModelRanking::$part;
 		$this->rounds = $rounds;
-		//$this->assign('divisions',$mdlDivisions->getDivisions($project->id));
         $this->divisions = sportsmanagementModelProject::getDivisions(0,sportsmanagementModelProject::$cfg_which_database);
 		$this->type = sportsmanagementModelRanking::$type;
-		//$this->assignRef('from',$model->from);
-		//$this->assignRef('to',$model->to);
-        
         $this->from = sportsmanagementModelProject::$_round_from;
 		$this->to = sportsmanagementModelProject::$_round_to;
-        
 		$this->divLevel = sportsmanagementModelRanking::$divLevel;
         
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');

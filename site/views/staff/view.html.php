@@ -89,28 +89,26 @@ class sportsmanagementViewStaff extends JViewLegacy
 //        $app->enqueueMessage(JText::_('sportsmanagementViewStaff person<br><pre>'.print_r($person,true).'</pre>'),'');
 //        $app->enqueueMessage(JText::_('sportsmanagementViewStaff personid<br><pre>'.print_r($model->personid,true).'</pre>'),'');
 
-		$this->assign('project',sportsmanagementModelProject::getProject($model::$cfg_which_database));
-		$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database));
-		$this->assignRef('config',$config);
-		$this->assignRef('person',$person);
-		$this->assign('showediticon',sportsmanagementModelPerson::getAllowed($config['edit_own_player']));
+		$this->project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
+		$this->overallconfig = sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
+		$this->config = $config;
+		$this->person = $person;
+		$this->showediticon = sportsmanagementModelPerson::getAllowed($config['edit_own_player']);
 		
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' showediticon<br><pre>'.print_r($this->showediticon,true).'</pre>'),'Notice');
         
 		$staff = $model->getTeamStaff();
 		$titleStr = JText::sprintf('COM_SPORTSMANAGEMENT_STAFF_ABOUT_AS_A_STAFF', sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname, $this->person->lastname, $this->config["name_format"]));		
 		
-		$this->assignRef('inprojectinfo',$staff);
-        
-		$this->assign('history',$model->getStaffHistory('ASC'));
-
-		$this->assign('stats',$model->getStats());
-		$this->assign('staffstats',$model->getStaffStats());
-		$this->assign('historystats',$model->getHistoryStaffStats());
-		$this->assign('title',$titleStr);
+		$this->inprojectinfo = $staff;
+		$this->history = $model->getStaffHistory('ASC');
+		$this->stats = $model->getStats();
+		$this->staffstats = $model->getStaffStats();
+		$this->historystats = $model->getHistoryStaffStats();
+		$this->title = $titleStr;
 
 		$extended = sportsmanagementHelper::getExtended($person->extended, 'staff');
-		$this->assignRef( 'extended', $extended);
+		$this->extended = $extended;
 		$document->setTitle($titleStr);
         
         $view = $jinput->getVar( "view") ;

@@ -65,19 +65,10 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 	 */
 	function init()
 	{
-//		// Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
-//    $option = JRequest::getCmd('option');
-////    $optiontext = strtoupper(JRequest::getCmd('option').'_');
-////    $this->assignRef( 'optiontext',			$optiontext );
-////    $this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
-//
-//		$app = JFactory::getApplication();
 		
 		$this->document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/json2.js');
 		$this->document->addScript(JURI::root().'components/com_sportsmanagement/assets/js/swfobject.js');
 		
-		//$model		= $this->getModel();
     $mdlPredUsers = JModelLegacy::getInstance("predictionusers", "sportsmanagementModel");
     
 		$this->predictionGame = sportsmanagementModelPrediction::getPredictionGame();
@@ -92,10 +83,6 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 			$flashconfig 		= sportsmanagementModelPrediction::getPredictionTemplateConfig( "predictionflash" );
 			
 			$configavatar			= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
-						
-			//$rankingconfig	= $model->getPredictionTemplateConfig('ranking');
-
-//      $this->assignRef('debuginfo',	$model->getDebugInfo());
       
 			$this->model = $mdlPredUsers;
 			$this->roundID = sportsmanagementModelPrediction::$roundID;
@@ -356,7 +343,7 @@ echo '<br />predictionuser view.html edit -> this->predictionProjectS <pre>~' . 
 		$y_legend->set_style( '{font-size: 15px; color: #778877}' );
 		$chart->set_y_legend( $y_legend );
 		
-		$this->assignRef( 'pointschartdata',  $chart);
+		$this->pointschartdata = $chart;
 	}
 
 	/**

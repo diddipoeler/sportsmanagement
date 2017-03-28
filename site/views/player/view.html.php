@@ -83,12 +83,12 @@ $jinput = $app->input;
 		if(!empty($nickname)){$nickname="'".$nickname."'";}
 		$this->assign('isContactDataVisible',sportsmanagementModelPerson::isContactDataVisible($config['show_contact_team_member_only']));
 		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
-		$this->assignRef('project', $project);
-		$this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database));
-		$this->assignRef('config',$config);
-		$this->assignRef('person',$person);
-		$this->assignRef('nickname',$nickname);
-		$this->assign('teamPlayers',$model->getTeamPlayers($model::$cfg_which_database));
+		$this->project = $project;
+		$this->overallconfig = sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
+		$this->config = $config;
+		$this->person = $person;
+		$this->nickname = $nickname;
+		$this->teamPlayers = $model->getTeamPlayers($model::$cfg_which_database);
         
         if ( !isset($this->config['show_players_layout']) )
         {
@@ -145,7 +145,7 @@ $jinput = $app->input;
 		//$this->assign('historyPlayerStaff',$model->getPlayerHistoryStaff($sportstype, 'ASC'));
         $this->assign('historyPlayerStaff',$model->getPlayerHistory($sportstype, 'ASC',2,$model::$cfg_which_database));
         
-		$this->assign('AllEvents',$model->getAllEvents($sportstype));
+		$this->AllEvents = $model->getAllEvents($sportstype);
 		$this->assign('showediticon',sportsmanagementModelPerson::getAllowed($config['edit_own_player']));
 		$this->assign('stats',sportsmanagementModelProject::getProjectStats(0,0,$model::$cfg_which_database));
         
@@ -249,9 +249,8 @@ $jinput = $app->input;
         }    
         //$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_PERSON_NO_POSITION'),'Error');
         }
-        $this->assignRef ('person_position', $form_value );
-        
-        $this->assignRef( 'hasDescription',$this->teamPlayer->notes);
+        $this->person_position = $form_value;
+        $this->hasDescription = $this->teamPlayer->notes;
         
         foreach ($this->extended->getFieldsets() as $fieldset)
 	{
@@ -269,7 +268,7 @@ $jinput = $app->input;
 				}
 			}   
 	}
-    $this->assignRef( 'hasExtendedData',$hasData);
+    $this->hasExtendedData = $hasData;
     
     $hasStatus = false;
     if (	( isset($this->teamPlayer->injury) && $this->teamPlayer->injury > 0 ) ||
@@ -278,7 +277,7 @@ $jinput = $app->input;
     {
     $hasStatus = true;
     }
-    $this->assignRef( 'hasStatus',$hasStatus);
+    $this->hasStatus = $hasStatus;
     	
     //$this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
     //$this->assign('use_joomlaworks', JComponentHelper::getParams($option)->get('use_joomlaworks',0) );
@@ -287,7 +286,7 @@ $jinput = $app->input;
 		{
 			$name = sportsmanagementHelper::formatName(null, $this->person->firstname, $this->person->nickname,  $this->person->lastname,  $this->config["name_format"]);
 		}
-		$this->assignRef('playername', $name);
+		$this->playername = $name;
 		$document->setTitle(JText::sprintf('COM_SPORTSMANAGEMENT_PLAYER_INFORMATION', $name));
         
           $view = $jinput->getVar( "view") ;

@@ -72,14 +72,14 @@ class sportsmanagementViewEditClub extends JViewLegacy
 		//$document->addStyleSheet($css);
         
 		$model	= $this->getModel();
-        $this->assignRef('club',$model->getClub() );
+        $this->club = $model->getClub();
 
 		$lists = array();
 
     $this->club->merge_teams = explode(",", $this->club->merge_teams);
     
 
-		$this->assignRef('form',$this->get('Form'));	
+		$this->form = $this->get('Form');	
 
 /*        
         // extended club data
@@ -92,13 +92,12 @@ class sportsmanagementViewEditClub extends JViewLegacy
 */        
 
 		$extended = sportsmanagementHelper::getExtended($this->club->extended, 'club');
-		$this->assignRef( 'extended', $extended );
+		$this->extended = $extended;
         
-        $this->assignRef('lists',$lists);
+        $this->lists = $lists;
 
 
-        $this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0) );
-//        $this->assign('cfg_be_show_merge_teams', JComponentHelper::getParams('com_joomleague')->get('cfg_be_show_merge_teams',0) );
+        $this->cfg_which_media_tool = JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0);
 
 		
 		parent::display($tpl);	

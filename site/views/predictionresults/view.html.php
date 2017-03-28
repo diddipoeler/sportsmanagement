@@ -61,15 +61,6 @@ class sportsmanagementViewPredictionResults extends sportsmanagementView
 	
 	function init()
 	{
-		//// Get a refrence of the page instance in joomla
-//		$document = JFactory::getDocument();
-//		$model = $this->getModel();
-//    $option = JRequest::getCmd('option');
-//    //$optiontext = strtoupper(JRequest::getCmd('option').'_');
-//    //$this->assignRef( 'optiontext',			$optiontext );
-//    
-//		$app = JFactory::getApplication();
-
 		$this->predictionGame = sportsmanagementModelPrediction::getPredictionGame();
         $this->allowedAdmin = sportsmanagementModelPrediction::getAllowed();
 
@@ -81,9 +72,6 @@ class sportsmanagementViewPredictionResults extends sportsmanagementView
 			$config = array_merge($configentry,$config);
 			$overallConfig	= sportsmanagementModelPrediction::getPredictionOverallConfig();
 
-      //$this->assignRef('debuginfo',	$model->getDebugInfo());
-      
-			//$this->model = $model;
 			$this->roundID = sportsmanagementModelPredictionResults::$roundID;
 			$this->config = array_merge($overallConfig,$config);
             $this->model->config = $this->config;
@@ -91,11 +79,8 @@ class sportsmanagementViewPredictionResults extends sportsmanagementView
             $this->model->configavatar = $this->configavatar;
 
 			$this->predictionMember = sportsmanagementModelPrediction::getPredictionMember($configavatar);
-			//$this->assignRef('predictionMember',	$model->getPredictionMemberAvatar($this->predictionMember, $configavatar ));
 			$this->predictionProjectS = sportsmanagementModelPrediction::getPredictionProjectS();
 			$this->actJoomlaUser = JFactory::getUser();
-			//$this->assignRef('rounds',				$model->getRounds());
-			//echo '<br /><pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';
 
       $predictionRounds[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_SELECT_ROUNDS'),'value','text');
       if ( $res = sportsmanagementModelPrediction::getRoundNames($this->predictionGame->id) )
@@ -111,10 +96,6 @@ class sportsmanagementViewPredictionResults extends sportsmanagementView
 			// Set page title
 			$pageTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_TITLE');
         
-        // Get data from the model
- 	//$items = $model->getPredictionMembersList($this->config,$this->configavatar,false);
-     //$items = $this->get('Data');	
- 	//$pagination = $this->get('Pagination');
             $this->memberList = $this->get('Data');
             $this->pagination = $this->get('Pagination');
 
@@ -128,7 +109,6 @@ $this->config['table_class'] = 'table';
 
 			$this->document->setTitle($pageTitle);
 
-			//parent::display($tpl);
 		}
 		else
 		{

@@ -240,7 +240,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		}
 		$this->lists['projectpositions'] = JHtml::_('select.genericlist',$selectpositions,'project_position_id','class="inputbox" size="1"','value','text');
         
-        $this->assignRef('positions',$projectpositions);            
+        $this->positions = $projectpositions;            
             break;
         }
         

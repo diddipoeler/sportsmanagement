@@ -66,29 +66,25 @@ class sportsmanagementViewPredictionRules extends JViewLegacy
 		$document	= JFactory::getDocument();
 		$model		= $this->getModel();
     $option = JRequest::getCmd('option');
-    //$optiontext = strtoupper(JRequest::getCmd('option').'_');
-//    $this->assignRef( 'optiontext',			$optiontext );
     
 		$app = JFactory::getApplication();
 
-		$this->assign('predictionGame',sportsmanagementModelPrediction::getPredictionGame());
-        $this->assign('allowedAdmin',sportsmanagementModelPrediction::getAllowed());
-        $this->assign('headertitle', JText::_('COM_SPORTSMANAGEMENT_PRED_RULES_SECTION_TITLE'));
+		$this->predictionGame = sportsmanagementModelPrediction::getPredictionGame();
+        $this->allowedAdmin = sportsmanagementModelPrediction::getAllowed();
+        $this->headertitle = JText::_('COM_SPORTSMANAGEMENT_PRED_RULES_SECTION_TITLE');
 
 		if (isset($this->predictionGame))
 		{
 			$config			= sportsmanagementModelPrediction::getPredictionTemplateConfig($this->getName());
 			$overallConfig	= sportsmanagementModelPrediction::getPredictionOverallConfig();
 
-			$this->assignRef('model',				$model);
-			$this->assign('config',				array_merge($overallConfig,$config));
-      $configavatar			= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
-      $this->assignRef('configavatar',				$configavatar );
-			$this->assign('predictionMember',	sportsmanagementModelPrediction::getPredictionMember($configavatar));
-			$this->assign('predictionProjectS',	sportsmanagementModelPrediction::getPredictionProjectS());
-			$this->assign('actJoomlaUser',		JFactory::getUser());
-			//echo '<br /><pre>~'.print_r($this,true).'~</pre><br />';
-      //$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
+			$this->model = $model;
+			$this->config = array_merge($overallConfig,$config);
+      $configavatar	= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
+      $this->configavatar = $configavatar;
+			$this->predictionMember = sportsmanagementModelPrediction::getPredictionMember($configavatar);
+			$this->predictionProjectS = sportsmanagementModelPrediction::getPredictionProjectS();
+			$this->actJoomlaUser = JFactory::getUser();
 			// Set page title
 			$pageTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_TITLE'); // 'Tippspiel Regeln'
 

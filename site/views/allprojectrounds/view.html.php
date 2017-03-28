@@ -39,8 +39,6 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-//require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'pagination.php');
-
 jimport( 'joomla.application.component.view');
 
 /**
@@ -76,34 +74,25 @@ class sportsmanagementViewallprojectrounds extends JViewLegacy
         $this->tableclass = $jinput->request->get('table_class', 'table', 'STR');
         $option = $jinput->getCmd('option');
         $starttime = microtime(); 	
-				
-		
-		//$config	= sportsmanagementModelProject::getTemplateConfig($this->getName());
-		//$config	= $model->getAllRoundsParams();
+
     $project = sportsmanagementModelProject::getProject();
+
+		$this->project = $project;
 		
-		$this->assignRef('project',$project);
-		
-//     $mdlProject = JModelLegacy::getInstance("Project", "JoomleagueModel");
-		
-    $this->assignRef('projectid',$this->project->id );
-    
-    $this->assign('projectmatches',$model->getProjectMatches() );
-    
-    $this->assign('rounds',sportsmanagementModelProject::getRounds());
-    
-    $this->assign('overallconfig',sportsmanagementModelProject::getOverallConfig());
- 		$this->assign('config',array_merge($this->overallconfig, $model->_params));
-		//$this->assignRef('config', $model->_params);
+    $this->projectid = $this->project->id;
+    $this->projectmatches = $model->getProjectMatches();
+    $this->rounds = sportsmanagementModelProject::getRounds();
+    $this->overallconfig = sportsmanagementModelProject::getOverallConfig();
+ 		$this->config = array_merge($this->overallconfig, $model->_params);
     	
 //     echo '<br />getRounds<pre>~'.print_r($this->rounds,true).'~</pre><br />';
     
-    $this->assign('favteams',sportsmanagementModelProject::getFavTeams($this->projectid));
+    $this->favteams = sportsmanagementModelProject::getFavTeams($this->projectid);
 //     echo '<br />getFavTeams<pre>~'.print_r($this->favteams,true).'~</pre><br />';
     
-		$this->assign('projectteamid',$model->getProjectTeamID($this->favteams));
+		$this->projectteamid = $model->getProjectTeamID($this->favteams);
 		
-    $this->assign('content',$model->getRoundsColumn($this->rounds,$this->config));
+    $this->content = $model->getRoundsColumn($this->rounds,$this->config);
         
 		//$this->assign('show_debug_info', JComponentHelper::getParams('com_joomleague')->get('show_debug_info', 0));
         

@@ -76,19 +76,19 @@ class sportsmanagementViewRosteralltime extends JViewLegacy
         
         $pagination	= $this->get('Pagination');
 
-		$this->assignRef('config',$config);
-        $this->assign('team',$model->getTeam());
+		$this->config = $config;
+        $this->team = $model->getTeam();
     
-    $this->assign('playerposition',$model->getPlayerPosition() );
-    $this->assign('project',sportsmanagementModelProject::getProject($model::$cfg_which_database,__METHOD__));
-    $this->assign('positioneventtypes',$model->getPositionEventTypes());
+    $this->playerposition = $model->getPlayerPosition();
+    $this->project = sportsmanagementModelProject::getProject($model::$cfg_which_database,__METHOD__);
+    $this->positioneventtypes = $model->getPositionEventTypes();
 
-	$this->assign('rows',$model->getTeamPlayers(1,$this->positioneventtypes,$items) );
+	$this->rows = $model->getTeamPlayers(1,$this->positioneventtypes,$items);
     	
-        $this->assignRef('items', $items);
-		$this->assignRef('state', $state);
-		$this->assignRef('user', $user);
-		$this->assignRef('pagination', $pagination);
+        $this->items = $items;
+		$this->state = $state;
+		$this->user = $user;
+		$this->pagination = $pagination;
         
 		parent::display($tpl);
 	}

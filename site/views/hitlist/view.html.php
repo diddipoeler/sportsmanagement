@@ -104,7 +104,7 @@ class sportsmanagementViewhitlist extends JViewLegacy
         
         //$teams = $model->getTeamHits($config);
         
-        $this->assignRef('model_hits',$model::$_success_text );
+        $this->model_hits  = $model::$_success_text;
 	
 		parent::display( $tpl );
 	}

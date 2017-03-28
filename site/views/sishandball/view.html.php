@@ -95,28 +95,24 @@ class sportsmanagementViewsishandball extends JViewLegacy
 		$sis_getxmldatei = $params->get( 'sis_getxmldatei');
 		//$sis_getschiedsrichter = $params->get( 'sis_getschiedsrichter');
 		//$sis_getspielort = $params->get( 'sis_getspielort');
-		
-		
+
 		$linkresults = $model->getLink($vereinsnummer,$vereinspasswort,$liganummer,$sis_art,$sis_xmllink);
-				
-		//echo $linkresults.'<br>';
-		
-		$this->assignRef( 'sis_getxmldatei',	$sis_getxmldatei );
-		$this->assignRef( 'sis_getschiedsrichter',	$sis_getschiedsrichter );
-		$this->assignRef( 'sis_getspielort',	$sis_getspielort );		
-		$this->assignRef( 'linkresults',	$linkresults );
-		$this->assignRef('params',		$params);
-        $this->assignRef('paramscomponent',		$paramscomponent);
-		
-		$this->assignRef('sis_art',		$sis_art);
-		$this->assignRef('vereinsnummer',		$vereinsnummer);
-		$this->assignRef('liganummer',		$liganummer);
+
+		$this->sis_getxmldatei = $sis_getxmldatei;
+		$this->sis_getschiedsrichter = $sis_getschiedsrichter;
+		$this->sis_getspielort = $sis_getspielort;		
+		$this->linkresults = $linkresults;
+		$this->params = $params;
+        $this->paramscomponent = $paramscomponent;
+		$this->sis_art = $sis_art;
+		$this->vereinsnummer = $vereinsnummer;
+		$this->liganummer = $liganummer;
 		
 		// tabellenanzeige ist gewünscht		
 		if ( $sis_art == 4 || $sis_art == 6 || $sis_art == 7 ) 
         {
 			$tabelle = $model->getTabelle($linkresults,$liganummer,$sis_art);
-			$this->assignRef('tabelle',		$tabelle);
+			$this->tabelle = $tabelle;
 		}
 
 		// spielplan ist gewünscht

@@ -65,24 +65,10 @@ class sportsmanagementViewpredictionranking extends sportsmanagementView
 	 */
 	function init()
 	{
-	//	// Get a refrence of the page instance in joomla
-//    $app = JFactory::getApplication();
-//		$document	= JFactory::getDocument();
-//		$uri = JFactory :: getURI();
-////		$js ="registerhome('".JURI::base()."','Prediction Game Extension','".$app->getCfg('sitename')."','0');". "\n";
-////    $document->addScriptDeclaration( $js );	
-//		$model		= $this->getModel();
-//    $option = JRequest::getCmd('option');
-    //$optiontext = strtoupper(JRequest::getCmd('option').'_');
-
 
 		$this->predictionGame = sportsmanagementModelPrediction::getPredictionGame();
         $this->allowedAdmin = sportsmanagementModelPrediction::getAllowed();
 
-    //// Get data from the model
-// 	$items = $this->get('Data');	
-// 	$pagination = $this->get('Pagination');
- 
 	// push data into the template
 	$this->items = $this->get('Data');	
 	$this->pagination =$this->get('Pagination');
@@ -98,21 +84,15 @@ class sportsmanagementViewpredictionranking extends sportsmanagementView
       $configavatar	= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
       $configentries = sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionentry');
       
-      //$this->assignRef('debuginfo',	$model->getDebugInfo());
-      
-			//$this->assignRef('model', $model);
 			$this->roundID = sportsmanagementModelPrediction::$roundID;
-			//$this->assignRef('config',				array_merge($overallConfig,$config));
       $this->configavatar = $configavatar;
       $this->configentries = $configentries;
-      //array_merge($configentries,$config);
       $this->config = array_merge($overallConfig,$config);
       
 			$this->predictionMember = sportsmanagementModelPrediction::getPredictionMember($configavatar);
 			$this->predictionProjectS = sportsmanagementModelPrediction::getPredictionProjectS();
 			$this->actJoomlaUser = JFactory::getUser();
 			
-			//echo '<br /><pre>~' . print_r( $this->config, true ) . '~</pre><br />';
             
             $ranking_array = array();
 			$ranking_array[] = JHTML ::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_SINGLE_RANK'));
@@ -128,7 +108,6 @@ class sportsmanagementViewpredictionranking extends sportsmanagementView
 			unset($type_array);
 
 			$this->lists = $lists;
-      //$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
 			// Set page title
 			$pageTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_RANK_TITLE');
 			
@@ -148,7 +127,6 @@ class sportsmanagementViewpredictionranking extends sportsmanagementView
 	  
 			$this->document->setTitle($pageTitle);
 
-			//parent::display($tpl);
 		}
 		else
 		{

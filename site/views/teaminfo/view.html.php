@@ -86,7 +86,7 @@ class sportsmanagementViewTeamInfo extends sportsmanagementView
 				6 => JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SATURDAY'),
 				7 => JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SUNDAY')
 			);
-			$this->assignRef( 'daysOfWeek', $daysOfWeek );
+			$this->daysOfWeek = $daysOfWeek;
             
       
 	if ( $this->team->merge_clubs )
