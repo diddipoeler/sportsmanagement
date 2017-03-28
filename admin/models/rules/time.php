@@ -19,11 +19,11 @@ class JFormRuleTime extends JFormRule
 	 */
 	protected $regex = '^[0-9]{1,2}:[0-9]{1,2}$';
 	
-	public function test(&$element, $value, $group = null, &$input = null, &$form = null)
+	public function test(SimpleXMLElement &$element, $value, $group = null, &$input = null, &$form = null)
 	{
 		if ($value == null or $value == '') {
 			return true;
 		}
-		return parent::test($element, $value, $group, $input, $form);
+		return parent::test(SimpleXMLElement $element, $value, $group, $input, $form);
 	}
 }
