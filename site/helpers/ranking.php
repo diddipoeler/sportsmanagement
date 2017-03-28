@@ -815,6 +815,7 @@ $res = $db->loadObjectList();
 		{
 			$t = new JSMRankingTeamClass($r->ptid);
 			$t->setTeamid($r->teamid);
+			$t->setPtid($r->ptid);
 			// diddipoeler
             $t->ptid_slug = $r->ptid_slug;
 			if ( $division )
