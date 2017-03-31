@@ -67,9 +67,6 @@ class sportsmanagementViewPredictionUsers extends JViewLegacy
 		// Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
     $option = JRequest::getCmd('option');
-    //$optiontext = strtoupper(JRequest::getCmd('option').'_');
-//    $this->assignRef( 'optiontext',			$optiontext );
-//    $this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
 
 		$app = JFactory::getApplication();
 		
@@ -78,8 +75,8 @@ class sportsmanagementViewPredictionUsers extends JViewLegacy
 		
 		$model		= $this->getModel();
 
-		$this->assign('predictionGame',sportsmanagementModelPrediction::getPredictionGame());
-        $this->assign('headertitle', JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_SECTION_TITLE'));
+		$this->predictionGame = sportsmanagementModelPrediction::getPredictionGame();
+        $this->headertitle = JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_SECTION_TITLE');
 
 		if (isset($this->predictionGame))
 		{
@@ -89,34 +86,28 @@ class sportsmanagementViewPredictionUsers extends JViewLegacy
 			$flashconfig 		= sportsmanagementModelPrediction::getPredictionTemplateConfig( "predictionflash" );
 			
 			$configavatar			= sportsmanagementModelPrediction::getPredictionTemplateConfig('predictionusers');
-						
-			//$rankingconfig	= $model->getPredictionTemplateConfig('ranking');
-
-//      $this->assignRef('debuginfo',	$model->getDebugInfo());
-      
-			$this->assignRef('model',				$model);
-			$this->assignRef('roundID',				$this->model->roundID);
-			$this->assign('config',				array_merge($overallConfig,$tipprankingconfig,$config));
+			$this->model = $model;
+			$this->oundID = $this->model->roundID;
+			$this->config = array_merge($overallConfig,$tipprankingconfig,$config);
 			$model::$config = $this->config;
             
-            $this->assignRef('configavatar',				$configavatar );
+            $this->configavatar = $configavatar;
 			
-			$this->assign('predictionMember',	sportsmanagementModelPrediction::getPredictionMember($configavatar));
+			$this->predictionMember = sportsmanagementModelPrediction::getPredictionMember($configavatar);
 			if (!isset($this->predictionMember->id))
 			{
 				$this->predictionMember->id=0;
 				$this->predictionMember->pmID=0;
 			}
-			$this->assign('predictionProjectS',	sportsmanagementModelPrediction::getPredictionProjectS());
-
-			$this->assign('actJoomlaUser',		JFactory::getUser());
-			$this->assign('isPredictionMember',	sportsmanagementModelPrediction::checkPredictionMembership());
-			$this->assign('memberData',			$model->memberPredictionData());
-			$this->assign('allowedAdmin',		sportsmanagementModelPrediction::getAllowed());
+			$this->predictionProjectS = sportsmanagementModelPrediction::getPredictionProjectS();
+			$this->actJoomlaUser = JFactory::getUser();
+			$this->isPredictionMember = sportsmanagementModelPrediction::checkPredictionMembership();
+			$this->memberData = $model->memberPredictionData();
+			$this->allowedAdmin = sportsmanagementModelPrediction::getAllowed();
 			
 			if (!empty($this->predictionMember->user_id)) 
             {
-				$this->assign('showediticon',sportsmanagementModelPrediction::getAllowed($this->predictionMember->user_id));
+				$this->showediticon = sportsmanagementModelPrediction::getAllowed($this->predictionMember->user_id);
 			}
 			
 			$this->_setPointsChartdata(array_merge($flashconfig, $config));
@@ -231,11 +222,11 @@ echo '<br />predictionuser view.html edit -> this->predictionProjectS <pre>~' . 
 			}
 			else
 			{
-				$this->assignRef('favTeams',	$favTeamsList);
-				$this->assignRef('champTeams',	$champTeamsList);
+				$this->favTeams = $favTeamsList;
+				$this->champTeams = $champTeamsList;
 			}
 
-			$this->assignRef('lists',$lists);
+			$this->lists = $lists;
       
 			// Set page title
 			$pageTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_TITLE');
@@ -311,7 +302,7 @@ echo '<br />predictionuser view.html edit -> this->predictionProjectS <pre>~' . 
 		$y_legend->set_style( '{font-size: 15px; color: #778877}' );
 		$chart->set_y_legend( $y_legend );
 		
-		$this->assignRef( 'pointschartdata',  $chart);
+		$this->pointschartdata = $chart;
 	}
 
 	/**

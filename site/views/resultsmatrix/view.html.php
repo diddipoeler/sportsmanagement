@@ -179,7 +179,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsmatrix',$r
 	function getRoundSelectNavigation(&$rounds)
 	{
 	   // Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
+		$document = JFactory::getDocument();
         
         // Reference global application object
         $app = JFactory::getApplication();

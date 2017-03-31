@@ -73,11 +73,10 @@ class sportsmanagementViewjltournamenttree extends JViewLegacy
     $model = $this->getModel();
     //$model->checkStartExtension();
     $bracket_request = JRequest::get();
-    $this->assignRef( 'logo', $bracket_request['tree_logo'] );
-    
-    $this->assign( 'color_from', $model->getColorFrom() );
-    $this->assign( 'color_to', $model->getColorTo() );
-    $this->assign( 'font_size', $model->getFontSize() );
+    $this->logo = $bracket_request['tree_logo'];
+    $this->color_from = $model->getColorFrom();
+    $this->color_to = $model->getColorTo();
+    $this->font_size = $model->getFontSize();
     
     if ( !$this->font_size )
     {

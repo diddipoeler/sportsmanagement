@@ -117,7 +117,7 @@ $jinput = $app->input;
 //        $app->enqueueMessage(JText::_('player checkextrafields -> '.'<pre>'.print_r($this->checkextrafields,true).'</pre>' ),'');
         if ( $this->checkextrafields )
         {
-            $this->assignRef('extrafields', sportsmanagementHelper::getUserExtraFields($person->id,'frontend',$model::$cfg_which_database) );
+            $this->extrafields = sportsmanagementHelper::getUserExtraFields($person->id,'frontend',$model::$cfg_which_database);
         }
 
 		// Select the teamplayer that is currently published (in case the player played in multiple teams in the project)
@@ -139,15 +139,13 @@ $jinput = $app->input;
 			}
 		}
 		$sportstype = $config['show_plcareer_sportstype'] ? sportsmanagementModelProject::getSportsType($model::$cfg_which_database) : 0;
-		$this->assignRef('teamPlayer',$teamPlayer);
-		
-        $this->assign('historyPlayer',$model->getPlayerHistory($sportstype, 'ASC',1,$model::$cfg_which_database));
-		//$this->assign('historyPlayerStaff',$model->getPlayerHistoryStaff($sportstype, 'ASC'));
-        $this->assign('historyPlayerStaff',$model->getPlayerHistory($sportstype, 'ASC',2,$model::$cfg_which_database));
-        
+
+		$this->teamPlayer = $teamPlayer;
+        $this->historyPlayer = $model->getPlayerHistory($sportstype, 'ASC',1,$model::$cfg_which_database);
+        $this->historyPlayerStaff = $model->getPlayerHistory($sportstype, 'ASC',2,$model::$cfg_which_database);
 		$this->AllEvents = $model->getAllEvents($sportstype);
-		$this->assign('showediticon',sportsmanagementModelPerson::getAllowed($config['edit_own_player']));
-		$this->assign('stats',sportsmanagementModelProject::getProjectStats(0,0,$model::$cfg_which_database));
+		$this->showediticon = sportsmanagementModelPerson::getAllowed($config['edit_own_player']);
+		$this->stats = sportsmanagementModelProject::getProjectStats(0,0,$model::$cfg_which_database);
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' stats<br><pre>'.print_r($this->stats,true).'</pre>'),'Notice');
         

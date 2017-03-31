@@ -119,14 +119,14 @@ class sportsmanagementViewsishandball extends JViewLegacy
 		if ( $sis_art == 1 || $sis_art == "1a" || $sis_art == 2 || $sis_art == 3 || $sis_art == 10 || $sis_art == 11 || $sis_art == "x") 
         {
 			$spielplan = $model->getSpielplan($linkresults,$liganummer,$sis_art);
-			$this->assignRef('spielplan', $spielplan);
+			$this->spielplan = $spielplan;
 		}
 	
 		// statistikanzeige ist gewünscht		
 		if ( $sis_art == 12 || $sis_art == "12a" ) 
         {
 			$statistik = $model->getStatistik($linkresults,$liganummer);
-			$this->assignRef('statistik', $statistik);
+			$this->statistik = $statistik;
 		}
 
 		parent::display($tpl);

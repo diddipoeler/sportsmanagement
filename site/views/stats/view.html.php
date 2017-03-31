@@ -76,39 +76,33 @@ class sportsmanagementViewStats extends JViewLegacy
 		$eventsconfig = sportsmanagementModelProject::getTemplateConfig( "eventsranking",$jinput->getint( "cfg_which_database", 0 ) );
 		$flashconfig = sportsmanagementModelProject::getTemplateConfig( "flash",$jinput->getint( "cfg_which_database", 0 ) );
 
-		$this->assign( 'project', sportsmanagementModelProject::getProject($jinput->getint( "cfg_which_database", 0 )) );
+		$this->project = sportsmanagementModelProject::getProject($jinput->getint( "cfg_which_database", 0 ));
 		if ( isset( $this->project ) )
 		{
-			$this->assign( 'division', sportsmanagementModelProject::getDivision($model::$divisionid,$jinput->getint( "cfg_which_database", 0 )));
-			$this->assign( 'overallconfig', sportsmanagementModelProject::getOverallConfig($jinput->getint( "cfg_which_database", 0 )) );
+			$this->division = sportsmanagementModelProject::getDivision($model::$divisionid,$jinput->getint( "cfg_which_database", 0 ));
+			$this->overallconfig = sportsmanagementModelProject::getOverallConfig($jinput->getint( "cfg_which_database", 0 ));
 			if ( !isset( $this->overallconfig['seperator'] ) )
 			{
 				$this->overallconfig['seperator'] = ":";
 			}
-			$this->assignRef( 'config', $config );
-			$this->assignRef( 'model', $model);
-				
-			$this->assignRef( 'tableconfig', $tableconfig );
-			$this->assignRef( 'eventsconfig', $eventsconfig );
-			$this->assign( 'actualround', sportsmanagementModelProject::getCurrentRoundNumber($jinput->getint( "cfg_which_database", 0 )) );
-
-//			$this->assign( 'highest_home', 		$model->getHighestHome());
-//			$this->assign( 'highest_away', 		$model->getHighestAway());
-			
-            $this->assign( 'highest_home', 		$model->getHighest('HOME'));
-			$this->assign( 'highest_away', 		$model->getHighest('AWAY'));
-            
-            $this->assign( 'totals', 			$model->getSeasonTotals());
-			$this->assign( 'totalrounds', 		$model->getTotalRounds());
-			$this->assign( 'attendanceranking', 	$model->getAttendanceRanking());
-			$this->assign( 'bestavg', 			$model->getBestAvg());
-			$this->assign( 'bestavgteam', 		$model->getBestAvgTeam());
-			$this->assign( 'worstavg', 			$model->getWorstAvg());
-			$this->assign( 'worstavgteam', 		$model->getWorstAvgTeam());
+			$this->config = $config;
+			$this->model = $model;
+			$this->tableconfig = $tableconfig;
+			$this->eventsconfig = $eventsconfig;
+			$this->actualround = sportsmanagementModelProject::getCurrentRoundNumber($jinput->getint( "cfg_which_database", 0 ));
+            $this->highest_home = $model->getHighest('HOME');
+			$this->highest_away = $model->getHighest('AWAY');
+            $this->totals = $model->getSeasonTotals();
+			$this->totalrounds = $model->getTotalRounds();
+			$this->attendanceranking = $model->getAttendanceRanking();
+			$this->bestavg = $model->getBestAvg();
+			$this->bestavgteam = $model->getBestAvgTeam();
+			$this->worstavg = $model->getWorstAvg();
+			$this->worstavgteam = $model->getWorstAvgTeam();
 
 			$limit = 3;
 
-			$this->assignRef( 'limit', $limit );
+			$this->limit = $limit;
 			$this->_setChartdata(array_merge($flashconfig, $config));
 		}
 		// Set page title
@@ -227,7 +221,7 @@ class sportsmanagementViewStats extends JViewLegacy
 		$y_legend->set_style( '{font-size: 15px; color: #778877}' );
 		$chart->set_y_legend( $y_legend );
 
-		$this->assignRef( 'chartdata',  $chart);
+		$this->chartdata = $chart;
 	}
 }
 ?>

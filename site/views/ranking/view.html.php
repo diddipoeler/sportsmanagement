@@ -190,7 +190,6 @@ if ( !$this->config['show_table_1'] ||
 $this->currentRanking = sportsmanagementModelRanking::$currentRanking;    
 }    
        
-		//$this->assignRef('current_round', $model->current_round);
  	$this->current_round = sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.$this->jinput->getVar("view"),sportsmanagementModelProject::$cfg_which_database);
         
         // mannschaften holen
@@ -277,9 +276,6 @@ $this->currentRanking = sportsmanagementModelRanking::$currentRanking;
 		}
 
 		$this->colors = sportsmanagementModelProject::getColors($this->config['colors'],sportsmanagementModelProject::$cfg_which_database);
-		//$this->assignRef('result', $model->getTeamInfo());
-		//		$this->assignRef( 'pageNav', $model->pagenav( "ranking", count( $rounds ), $sr->to ) );
-		//		$this->assignRef( 'pageNav2', $model->pagenav2( "ranking", count( $rounds ), $sr->to ) );
 
     // diddipoeler
 		$this->allteams = $mdlProjectteams->getAllProjectTeams($this->project->id,0,NULL,sportsmanagementModelProject::$cfg_which_database);
@@ -363,11 +359,7 @@ $this->currentRanking = sportsmanagementModelRanking::$currentRanking;
 	{
 	$this->config['table_class'] = 'table';
 	}
-        
-        //$this->assignRef('paramconfig', $model::$paramconfig);
 
-        
-		//parent :: display($tpl);
 	}
 		
 }

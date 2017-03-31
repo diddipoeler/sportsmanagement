@@ -425,7 +425,7 @@ echo '<br />predictionuser view.html edit -> this->predictionProjectS <pre>~' . 
 		$y_legend->set_style( '{font-size: 15px; color: #778877}' );
 		$chart->set_y_legend( $y_legend );
 		
-		$this->assignRef( 'rankingchartdata',  $chart);
+		$this->rankingchartdata = $chart;
 	}
 }
 ?>

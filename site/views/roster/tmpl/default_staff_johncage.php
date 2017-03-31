@@ -68,8 +68,8 @@ if (count($this->stafflist) > 0)
 <?php
 			}
 			$row = &$this->stafflist[$i];
-			$this->assignRef('row',$row);
-			$this->assign('k',$k);
+			$this->row = $row;
+			$this->k = $k;
 			echo $this->loadTemplate('person_staff');
 			if ($k == 1 OR !isset($this->stafflist[$i+1]))
 			{

@@ -19,11 +19,11 @@ class sportsmanagementViewResults extends JViewLegacy
 		$config	= sportsmanagementModelProject::getTemplateConfig($this->getName());
 		$project = sportsmanagementModelProject::getProject();
 		
-		$this->assignRef( 'config', 		$config);
-		$this->assignRef( 'overallconfig',	sportsmanagementModelProject::getOverallConfig());
-		$this->assignRef( 'matches',		$matches);
-		$this->assignRef( 'project',		$project);
-		$this->assignRef( 'teams',			sportsmanagementModelProject::getTeamsIndexedByPtid());
+		$this->config = $config;
+		$this->overallconfig = sportsmanagementModelProject::getOverallConfig();
+		$this->matches = $matches;
+		$this->project = $project;
+		$this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid();
 		$dates = $this->sortByDate($this->matches);
 		foreach( $dates as $date => $games )
 		{

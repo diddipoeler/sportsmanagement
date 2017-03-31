@@ -86,14 +86,14 @@ class sportsmanagementViewRanking extends JViewLegacy
 			
 		sportsmanagementModelProject::setProjectId($project->id);
 		
-		$this->assignRef('model',$model);
-		$this->assignRef('project', $project);
+		$this->model = $model;
+		$this->project = $project;
         $extended = sportsmanagementHelper::getExtended($this->project->extended, 'project');
-        $this->assignRef( 'extended', $extended );
+        $this->extended = $extended;
         
-		$this->assign('overallconfig', sportsmanagementModelProject::getOverallConfig());
-		$this->assignRef('tableconfig', $config);
-		$this->assignRef('config', $config);
+		$this->overallconfig = sportsmanagementModelProject::getOverallConfig();
+		$this->tableconfig = $config;
+		$this->config = $config;
         
         
 
@@ -146,39 +146,39 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
        
 		$model->computeRanking($model::$cfg_which_database);
 
-		$this->assignRef('round',$model->round);
-		$this->assignRef('part',$model->part);
-		$this->assignRef('rounds',$rounds);
-		$this->assign('divisions',$mdlDivisions->getDivisions($project->id));
-		$this->assignRef('type',$model->type);
-		$this->assignRef('from',$model->from);
-		$this->assignRef('to',$model->to);
-		$this->assignRef('divLevel',$model->divLevel);
+		$this->round = $model->round;
+		$this->part = $model->part;
+		$this->rounds = $rounds;
+		$this->divisions = $mdlDivisions->getDivisions($project->id);
+		$this->type = $model->type;
+		$this->from = $model->from;
+		$this->to = $model->to;
+		$this->divLevel = $model->divLevel;
         
         if ($this->config['show_table_1']==1)
 	{
-		$this->assignRef('currentRanking',$model->currentRanking);
+		$this->currentRanking = $model->currentRanking;
         }
         
-		$this->assignRef('previousRanking',$model->previousRanking);
+		$this->previousRanking = $model->previousRanking;
         
         if ($this->config['show_table_2']==1)
 	{
-		$this->assignRef('homeRank',$model->homeRank);
+		$this->homeRank = $model->homeRank;
         }
         
         if ($this->config['show_table_3']==1)
 	{
-		$this->assignRef('awayRank',$model->awayRank);
+		$this->awayRank = $model->awayRank;
         }
         
         
        
 		//$this->assignRef('current_round', $model->current_round);
-        $this->assign('current_round', sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.JRequest::getVar("view")));
+        $this->current_round = sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.JRequest::getVar("view"));
         
         // mannschaften holen
-		$this->assign('teams',sportsmanagementModelProject::getTeamsIndexedByPtid());
+		$this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid();
 		
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
        {
@@ -215,11 +215,11 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		
 		if ( sizeof($ranking_reason) > 0 )
 		{
-		$this->assign('ranking_notes', implode(", ",$ranking_reason) );
+		$this->ranking_notes = implode(", ",$ranking_reason);
 		}
 		else
 		{
-    $this->assign('ranking_notes', $no_ranking_reason );
+    $this->ranking_notes = $no_ranking_reason;
     }
 		
 		

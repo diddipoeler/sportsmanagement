@@ -86,21 +86,20 @@ class sportsmanagementViewImagehandler extends JViewLegacy  {
         $this->assign('request_url',$uri->toString());
 
 		if (count($images) > 0 || $search) {
-			$this->assignRef('images', 	$images);
-			$this->assignRef('type',  $type);
-			$this->assignRef('folder', 	$folder);
-			$this->assignRef('search', 	$search);
-			$this->assign('state', 	$this->get('state'));
-			$this->assignRef('pageNav', $pageNav);
-			$this->assignRef('field',   $field);
-			$this->assignRef('fieldid',   $fieldid);
-			//$this->assign('form'      	, $this->get('form'));
+			$this->images = $images;
+			$this->type = $type;
+			$this->folder = $folder;
+			$this->search = $search;
+			$this->state = $this->get('state');
+			$this->pageNav = $pageNav;
+			$this->field = $field;
+			$this->fieldid = $fieldid;
 			parent::display($tpl);
 		} else {
 			//no images in the folder, redirect to uploadscreen and raise notice
 			JError::raiseNotice('SOME_ERROR_CODE', JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGEHANDLER_NO_IMAGES'));
 			$this->setLayout('upload');
-			$this->assign('form'      	, $this->get('form'));
+			$this->form = $this->get('form');
 			$this->_displayupload($tpl);
 			return;
 		}
@@ -143,13 +142,13 @@ class sportsmanagementViewImagehandler extends JViewLegacy  {
 		$ftp = JClientHelper::setCredentialsFromRequest('ftp');
 
 		//assign data to template
-		$this->assignRef('params'  	, $params);
-		$this->assign('request_url'	, $uri->toString());
-		$this->assignRef('ftp'			, $ftp);
-		$this->assignRef('folder'      , $folder);
-		$this->assignRef('field',   $field);
-		$this->assignRef('fieldid',   $fieldid);
-		$this->assignRef('menu',   $menu);
+		$this->params = $params;
+		$this->request_url = $uri->toString();
+		$this->ftp = $ftp;
+		$this->folder = $folder;
+		$this->field = $field;
+		$this->fieldid = $fieldid;
+		$this->menu = $menu;
 		parent::display($tpl);
 	}
 }

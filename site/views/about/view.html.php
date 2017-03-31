@@ -67,7 +67,6 @@ class sportsmanagementViewAbout extends sportsmanagementView
 		// Set page title
 		$this->document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ABOUT_PAGE_TITLE'));
 
-	//	parent::display($tpl);
 	}
 
 }

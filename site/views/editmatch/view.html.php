@@ -74,8 +74,8 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         $app->setUserState( "$option.pid", $projectws->id );
         $app->setUserState( "$option.season_id", $projectws->season_id );
         
-        $this->assignRef('projectws',$projectws);
-        $this->assignRef('eventsprojecttime',$projectws->game_regular_time);
+        $this->projectws = $projectws;
+        $this->eventsprojecttime = $projectws->game_regular_time;
         
 //        $params         = $app->getParams();
 //        $dispatcher = JDispatcher::getInstance();
@@ -84,8 +84,8 @@ class sportsmanagementViewEditMatch extends JViewLegacy
 //        $state          = $this->get('State');
         $match = $this->get('Data');
         $extended = sportsmanagementHelper::getExtended($match->extended, 'match');
-		$this->assignRef('extended', $extended );
-        $this->assignRef('match',$match);
+		$this->extended =  $extended;
+        $this->match = $match;
         $this->form = $this->get('Form');
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' match<br><pre>'.print_r($this->match,true).'</pre>'),'');
@@ -143,7 +143,6 @@ class sportsmanagementViewEditMatch extends JViewLegacy
         }
 
 
-		//$this->assignRef('lists',$lists);
 		parent::display($tpl);
 	}
 
@@ -156,10 +155,10 @@ function initEditLineup()
 $default_name_format = '';
     
         $tid = JRequest::getVar('team','0');
-        $this->assignRef('tid',$tid);
+        $this->tid = $tid;
         $match = sportsmanagementModelMatch::getMatchTeams($this->match->id);
         $teamname = ($tid == $match->projectteam1_id) ? $match->team1 : $match->team2;
-        $this->assignRef('teamname',$teamname);
+        $this->teamname = $teamname;
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tid'.'<pre>'.print_r($tid,true).'</pre>' ),'');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teamname'.'<pre>'.print_r($teamname,true).'</pre>' ),'');
@@ -183,8 +182,8 @@ $default_name_format = '';
         
 		if (!$not_assigned && !$starters_id)
 		{
-		  $this->assignRef('playersoptionsout',$playersoptionsout);
-          $this->assignRef('playersoptionsin',$playersoptionsin);
+		  $this->playersoptionsout = $playersoptionsout;
+          $this->playersoptionsin = $playersoptionsin;
 			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_PLAYERS_MATCH').'<br /><br />');
 			return;
 		}
@@ -195,8 +194,8 @@ $default_name_format = '';
         		
         if (!$projectpositions)
 		{
-		  $this->assignRef('playersoptionsout',$playersoptionsout);
-          $this->assignRef('playersoptionsin',$playersoptionsin);
+		  $this->playersoptionsout = $playersoptionsout;
+          $this->playersoptionsin = $playersoptionsin;
 			JError::raiseWarning(440,'<br />'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_NO_POS').'<br /><br />');
 			return;
 		}
@@ -232,7 +231,7 @@ $default_name_format = '';
 			$playersoptionsout[] = JHtml::_('select.option',$player->value,
 			  sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format).' - ('.JText::_($player->positionname).')');
 		}
-        $this->assignRef('playersoptionsout',$playersoptionsout);
+        $this->playersoptionsout = $playersoptionsout;
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playersoptionsout'.'<pre>'.print_r($playersoptionsout,true).'</pre>' ),'');
         
@@ -246,7 +245,7 @@ $default_name_format = '';
 			$playersoptionsin[] = JHtml::_('select.option',$player->value,
 			  sportsmanagementHelper::formatName(null, $player->firstname, $player->nickname, $player->lastname, $default_name_format).' - ('.JText::_($player->positionname).')');
 		}
-        $this->assignRef('playersoptionsin',$playersoptionsin);
+        $this->playersoptionsin = $playersoptionsin;
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playersoptionsin'.'<pre>'.print_r($playersoptionsin,true).'</pre>' ),'');
 
@@ -340,17 +339,11 @@ $default_name_format = '';
         $lists['captain'] = $myoptions;
 
 
-        $this->assignRef('positions',$projectpositions);
-		$this->assignRef('staffpositions',$staffpositions);
-		$this->assignRef('substitutions',$substitutions[$tid]);
-//		$this->assignRef('playersoptionsin',$playersoptionsin);
-//        $this->assignRef('playersoptionsout',$playersoptionsout);
-//        $this->assignRef('tid',$tid);
-//        $this->tid = $tid;
-//		$this->assignRef('teamname',$teamname);
-//        $this->teamname = $teamname;
-        $this->assignRef('starters',$starters);
-        $this->assignRef('lists',$lists);
+        $this->positions = $projectpositions;
+		$this->staffpositions = $staffpositions;
+		$this->substitutions = $substitutions[$tid];
+        $this->starters = $starters;
+        $this->lists = $lists;
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this teamname'.'<pre>'.print_r($this->teamname,true).'</pre>' ),'');
         

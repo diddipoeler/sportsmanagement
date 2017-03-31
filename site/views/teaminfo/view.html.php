@@ -91,8 +91,6 @@ class sportsmanagementViewTeamInfo extends sportsmanagementView
       
 	if ( $this->team->merge_clubs )
 	{
-		//$merge_clubs = $model->getMergeClubs( $this->team->merge_clubs );
-		//$this->merge_clubs = $merge_clubs;
 		$this->merge_clubs = sportsmanagementModelTeamInfo::getMergeClubs( $this->team->merge_clubs );
 	}
 

@@ -178,7 +178,7 @@ else
 		
         //echo 'game <pre>'.print_r($game, true).'</pre><br>';
         
-        $this->assignRef('game', $game);
+        $this->game = $game;
 		if ($game->published)
 		{
 			if (isset($game->team1_result))

@@ -176,8 +176,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 
 					if ((isset($match->allowed)) && ($match->allowed))
 					{
-						$this->assignRef('game', $match);
-						$this->assignRef('i', $i);
+						$this->game = $match;
+						$this->i = $i;
 
 /**
 * 

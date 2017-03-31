@@ -81,17 +81,17 @@ class sportsmanagementViewallpersons extends sportsmanagementView
 
         $inputappend = '';
         $this->tableclass = $this->jinput->getVar('table_class', 'table','request','string');
-		$user		= JFactory::getUser();
+		$user = JFactory::getUser();
         $starttime = microtime(); 
-        $this->state 		= $this->get('State');
-        $this->items 		= $this->get('Items');
+        $this->state = $this->get('State');
+        $this->items = $this->get('Items');
 
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		$this->pagination	= $this->get('Pagination');
+		$this->pagination = $this->get('Pagination');
         $this->columns = $this->model->columns;
         //build the html options for nation
 		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));

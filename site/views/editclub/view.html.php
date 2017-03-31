@@ -80,22 +80,9 @@ class sportsmanagementViewEditClub extends JViewLegacy
     
 
 		$this->form = $this->get('Form');	
-
-/*        
-        // extended club data
-		$xmlfile = JLG_PATH_ADMIN . DS . 'assets' . DS . 'extended' . DS . 'club.xml';
-		$jRegistry = new JRegistry;
-		$jRegistry->loadString($this->club->extended, 'ini');
-		$extended =& JForm::getInstance('extended', $xmlfile, array('control'=> 'extended'), false, '/config');
-		$extended->bind($jRegistry);
-		$this->assignRef( 'extended', $extended );
-*/        
-
 		$extended = sportsmanagementHelper::getExtended($this->club->extended, 'club');
 		$this->extended = $extended;
-        
         $this->lists = $lists;
-
 
         $this->cfg_which_media_tool = JComponentHelper::getParams('com_sportsmanagement')->get('cfg_which_media_tool',0);
 

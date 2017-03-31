@@ -124,29 +124,6 @@ $this->setRedirect ( $link, $msg );
         
         }
         
-    //function getteams()
-//    {
-//        $option = JRequest::getCmd('option');
-//		$mainframe = JFactory::getApplication();
-//        $post = JRequest::get('post');
-//        $model = $this->getModel('jsminlinehockey');
-//       //$teams  = $model->getTeams();
-//       
-//    sportsmanagementHelper::addSubmenu('');
-//        $view = $this->getView('jsminlinehockey', 'html'); // get the view
-//
-////$view->assignRef('not_assign_teams',$model->getNotAssignTeams() );
-////$view->assignRef('all_teams',$model->getAllTeams() );
-//$view->setModel($model,true);            
-////$view->assignRef('success_text', $success_teams); // set the data to the view
-//$view->display();   
-//    }
-//       
-//    public function display($cachable = false, $urlparams = false) 
-//    {
-//     
-//     parent::display ( $cachable = false, $urlparams = false );   
-//    }    
     
     
 

@@ -136,7 +136,7 @@ if ($this->config['show_comments_count'] > 0){
 
 	foreach( $games as $game )
 	{
-		$this->assignRef('game', $game);
+		$this->game = $game;
 		if ($game->published)
 		{
 			if (isset($game->team1_result))

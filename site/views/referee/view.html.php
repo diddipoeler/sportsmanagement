@@ -88,21 +88,20 @@ class sportsmanagementViewReferee extends JViewLegacy
 			$titleStr = JText::_('COM_SPORTSMANAGEMENT_REFEREE_UNKNOWN_PROJECT');
 		}
 
-		$this->assignRef('referee',$ref);
-		$this->assign('history',$model->getHistory('ASC'));
-
-		$this->assign('title',$titleStr);
+		$this->referee = $ref;
+		$this->history = $model->getHistory('ASC');
+		$this->title = $titleStr;
 
 		if ($config['show_gameshistory'])
 		{
-			$this->assign('games',$model->getGames());
-			$this->assign('teams',sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$model::$cfg_which_database));
+			$this->games = $model->getGames();
+			$this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$model::$cfg_which_database);
 		}
 
 		if ($person)
 		{
 			$extended = sportsmanagementHelper::getExtended($person->extended, 'referee');
-			$this->assignRef( 'extended', $extended );
+			$this->extended = $extended;
 		}
 
 

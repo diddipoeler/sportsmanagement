@@ -54,6 +54,7 @@ jimport('joomla.application.component.view');
  */
 class sportsmanagementViewEditPerson extends JViewLegacy
 {
+    
 	/**
 	 * sportsmanagementViewEditPerson::display()
 	 * 
@@ -86,9 +87,9 @@ class sportsmanagementViewEditPerson extends JViewLegacy
         $this->form->setValue('person_id2', 'request', $this->item->person_id2);
         
         $extended = sportsmanagementHelper::getExtended($this->item->extended, 'person');
-		$this->assignRef( 'extended', $extended ); 
+		$this->extended = $extended; 
         
-        $this->assign( 'checkextrafields', sportsmanagementHelper::checkUserExtraFields('frontend',$model::$cfg_which_database) );
+        $this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend',$model::$cfg_which_database);
         if ( $this->checkextrafields )
         {
             $lists['ext_fields'] = sportsmanagementHelper::getUserExtraFields($this->item->id,'frontend',$model::$cfg_which_database);
@@ -102,119 +103,9 @@ class sportsmanagementViewEditPerson extends JViewLegacy
                         return false;
                 }
 
-
-/*                
-		//$model = $this->getModel();
-		//$edit = JRequest::getVar('edit',true);
 		
-		//$this->assign('cfg_which_media_tool', JComponentHelper::getParams('com_joomleague')->get('cfg_which_media_tool',0) );
-            
-		$lists = array();
-
-		//get the person
-		$person = $this->get('Data');
-		$isNew = ($person->id < 1);
-
-//    // fail if checked out not by 'me'
-//		if ($model->isCheckedOut($user->get('id')))
-//		{
-//			$msg=JText::sprintf('DESCBEINGEDITTED',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSON_THEPERSON'),$person->name);
-//			$app->redirect('index.php?option='.$option,$msg);
-//		}
-
-		// Edit or Create?
-		if (!$isNew)
-		{
-			$model->checkout($user->get('id'));
-		}
-		else
-		{
-			$person->ordering = 0;
-		}
-
-
-		$this->assignRef('form'	, $this->get('form'));	
-		$this->assignRef('edit',$edit);
-		$extended = sportsmanagementHelper::getExtended($person->extended, 'person');		
-		$this->assignRef( 'extended', $extended );
-		//$this->assignRef('lists',$lists);
-		$this->assignRef('person',$person);
-*/
-
-		//$this->addToolbar();			
 		parent::display($tpl);
 	}
-
-//	function _displayModal($tpl)
-//	{
-//		$app	= JFactory::getApplication();
-//
-//		// Do not allow cache
-//		JResponse::allowCache(false);
-//
-//		$document = JFactory::getDocument();
-//		$prjid=array();
-//		$prjid=JRequest::getVar('prjid',array(0),'post','array');
-//		$proj_id=(int) $prjid[0];
-//
-//		//build the html select list for projects
-//		$projects[]=JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PROJECT'),'id','name');
-//
-//		if ($res=JoomleagueHelper::getProjects()){$projects=array_merge($projects,$res);}
-//		$lists['projects']=JHTMLSelect::genericlist(	$projects,
-//														'prjid[]',
-//														'class="inputbox" onChange="this.form.submit();" style="width:170px"',
-//														'id',
-//														'name',
-//														$proj_id);
-//		unset($projects);
-//
-//		$projectteams[]=JHTMLSelect::option('0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM'),'value','text');
-//
-//		// if a project is active we show the teams select list
-//		if ($proj_id > 0)
-//		{
-//			if ($res=JoomleagueHelper::getProjectteams($proj_id)){$projectteams=array_merge($projectteams,$res);}
-//			$lists['projectteams']=JHTMLSelect::genericlist($projectteams,'xtid[]','class="inputbox" style="width:170px"','value','text');
-//			unset($projectteams);
-//		}
-//
-//		$this->assignRef('lists',$lists);
-//		$this->assignRef('project_id',$proj_id);
-//
-//		parent::display($tpl);
-//	}
-    
-//	/**
-//	* Add the page title and toolbar.
-//	*
-//	* @since	1.7
-//	*/
-//	protected function addToolbar()
-//	{	
-//		// Set toolbar items for the page
-//		$text = !$this->edit ? JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NEW') : JText::_('COM_SPORTSMANAGEMENT_GLOBAL_EDIT');
-//
-//		JLToolBarHelper::save('person.save');
-//
-//		if (!$this->edit)
-//		{
-//			JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSON_TITLE'));
-//			JToolBarHelper::divider();
-//			JLToolBarHelper::cancel('person.cancel');
-//		}
-//		else
-//		{
-//			// for existing items the button is renamed `close` and the apply button is showed
-//			JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSON_TITLE2'));
-//			JLToolBarHelper::apply('person.apply');
-//			JToolBarHelper::divider();
-//			JLToolBarHelper::cancel('person.cancel',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CLOSE'));
-//		}
-//		JToolBarHelper::divider();
-//		JToolBarHelper::back();
-//		JLToolBarHelper::onlinehelp();
-//	}		
 
 }
 ?>

@@ -120,7 +120,7 @@ $routeparameter['pid'] = $this->row->person_slug;
 						<span class="jl_roster_persondetails_data">
 <?php 
 		$model =& $this->getModel();
-		$this->assignRef('playertool',$model->getTeamPlayer($this->project->current_round,$this->row->playerid));
+		$this->playertool = $model->getTeamPlayer($this->project->current_round,$this->row->playerid);
 		if (!empty($this->playertool[0]->injury))
 		{
 			$imageTitle=JText::_('COM_SPORTSMANAGEMENT_PERSON_INJURED');

@@ -73,9 +73,9 @@ class sportsmanagementViewStatsRanking extends JViewLegacy
         sportsmanagementModelProject::setProjectID($jinput->getInt('p',0),$model::$cfg_which_database);
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database,__METHOD__);
 		
-		$this->assign('project', sportsmanagementModelProject::getProject($model::$cfg_which_database,__METHOD__) );
-		$this->assign('division', sportsmanagementModelProject::getDivision(0,$model::$cfg_which_database) );
-		$this->assign('teamid', $model->getTeamId() );
+		$this->project = sportsmanagementModelProject::getProject($model::$cfg_which_database,__METHOD__);
+		$this->division = sportsmanagementModelProject::getDivision(0,$model::$cfg_which_database);
+		$this->teamid = $model->getTeamId();
 		
         $teams = sportsmanagementModelProject::getTeamsIndexedById(0,'name',$model::$cfg_which_database);
         //$teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$model::$cfg_which_database);
