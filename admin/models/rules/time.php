@@ -24,6 +24,6 @@ class JFormRuleTime extends JFormRule
 		if ($value == null or $value == '') {
 			return true;
 		}
-		return parent::test(SimpleXMLElement $element, $value, $group, $input, $form);
+		return parent::test($element, $value, $group, $input, $form);
 	}
 }
