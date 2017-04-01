@@ -184,16 +184,82 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
         $object->id = $proTeam->team_id;
         $object->season_id = $season_id;
         // Update their details in the table using id as the primary key.
-        $result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id', $object, 'id');
+        $result = JFactory::getDbo()->updateObject('#__sportsmanagement_season_team_id', $object, 'id');
         
         if ( !$result )
 		{
-            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
 		}
         
         }
         
     }
+    
+    
+    /**
+     * sportsmanagementModelprojectteam::setusetable()
+     * 
+     * @param integer $setzer
+     * @return void
+     */
+    function setusetable($setzer=0)
+    {
+    $pks = JRequest::getVar('cid', null, 'post', 'array');
+    
+    for ($x=0; $x < count($pks); $x++)
+		{
+		$projectteam_id	= $pks[$x];
+                       
+        // Create and populate an object.
+        $object = new stdClass();
+        $object->id = $projectteam_id;
+        $object->is_in_score = $setzer;
+        // Update their details in the table using id as the primary key.
+        $result = JFactory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id');
+        
+        if ( !$result )
+		{
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
+		}
+        
+        }    
+        
+    }
+    
+    
+    /**
+     * sportsmanagementModelprojectteam::setusetablepoints()
+     * 
+     * @param integer $setzer
+     * @return void
+     */
+    function setusetablepoints($setzer=0)
+    {
+    $pks = JRequest::getVar('cid', null, 'post', 'array');
+    
+    for ($x=0; $x < count($pks); $x++)
+		{
+		$projectteam_id	= $pks[$x];
+                       
+        // Create and populate an object.
+        $object = new stdClass();
+        $object->id = $projectteam_id;
+        $object->use_finally = $setzer;
+        // Update their details in the table using id as the primary key.
+        $result = JFactory::getDbo()->updateObject('#__sportsmanagement_project_team', $object, 'id');
+        
+        if ( !$result )
+		{
+            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
+		}
+        
+        }        
+        
+        
+    }
+    
+    
+    
         
     /**
      * sportsmanagementModelprojectteam::matchgroups()
@@ -229,7 +295,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
         $conditions = array(
         $db->quoteName('projectteam1_id') . '=' . $projectteam_id
         );
-        $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match'))->set($fields)->where($conditions);
+        $query->update($db->quoteName('#__sportsmanagement_match'))->set($fields)->where($conditions);
         $db->setQuery($query);
         $result = $db->query();  
         if ( !$result )
@@ -245,7 +311,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
         $conditions = array(
         $db->quoteName('projectteam2_id') . '=' . $projectteam_id
         );
-        $query->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match'))->set($fields)->where($conditions);
+        $query->update($db->quoteName('#__sportsmanagement_match'))->set($fields)->where($conditions);
         $db->setQuery($query);
         $result = $db->query();  
         if ( !$result )

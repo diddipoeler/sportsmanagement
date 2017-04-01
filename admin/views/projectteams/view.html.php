@@ -341,6 +341,9 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         
         JToolBarHelper::publish('projectteams.use_table_yes', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_USE_TABLE_YES', true);
         JToolBarHelper::unpublish('projectteams.use_table_no', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_USE_TABLE_NO', true);
+        
+        JToolBarHelper::publish('projectteams.use_table_points_yes', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_USE_TABLE_POINTS_YES', true);
+        JToolBarHelper::unpublish('projectteams.use_table_points_no', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_USE_TABLE_POINTS_NO', true);
             
         parent::addToolbar();  
 

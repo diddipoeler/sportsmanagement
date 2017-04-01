@@ -112,6 +112,55 @@ class sportsmanagementControllerprojectteams extends JControllerAdmin
        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
     } 
     
+    
+    /**
+     * sportsmanagementControllerprojectteams::use_table_yes()
+     * 
+     * @return void
+     */
+    function use_table_yes()
+    {
+       $model = $this->getModel();
+       $model->setusetable(1);
+       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+    }
+    
+    /**
+     * sportsmanagementControllerprojectteams::use_table_no()
+     * 
+     * @return void
+     */
+    function use_table_no()
+    {
+       $model = $this->getModel();
+       $model->setusetable(0);
+       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+    }
+    
+    /**
+     * sportsmanagementControllerprojectteams::use_table_points_yes()
+     * 
+     * @return void
+     */
+    function use_table_points_yes()
+    {
+       $model = $this->getModel();
+       $model->setusetablepoints(1);
+       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+    }
+    
+    /**
+     * sportsmanagementControllerprojectteams::use_table_points_no()
+     * 
+     * @return void
+     */
+    function use_table_points_no()
+    {
+       $model = $this->getModel();
+       $model->setusetablepoints(0);
+       $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
+    }
+    
   /**
 	 * Method to update checked projectteams
 	 *
