@@ -74,7 +74,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		$this->sortDirection = $this->state->get('list.direction');
 		$this->sortColumn = $this->state->get('list.ordering');
         
-        
+        $this->division = $jinput->request->get('division', 0, 'INT');
 		$this->project_id = $jinput->request->get('pid', 0, 'INT');
 		if ( !$this->project_id )
 		{
