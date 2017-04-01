@@ -57,6 +57,7 @@ class sportsmanagementModelProjectteams extends JModelList
 {
 	var $_identifier = "pteams";
     static $_project_id = 0;
+    static $_division_id = 0;
     var $_season_id = 0;
     static $_pro_teams_in_used = array();
     var $project_art_id  = 0;
@@ -73,6 +74,7 @@ class sportsmanagementModelProjectteams extends JModelList
             $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
             self::$_project_id	= JRequest::getInt('pid',0);
+            self::$_division_id	= JRequest::getInt('division',0);
             $post = JRequest::get( 'post' );
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($post,true).'</pre>'),'Notice');
 
@@ -166,6 +168,7 @@ $this->addNewProjectTeam($post['team_id'],self::$_project_id);
         $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
         
         self::$_project_id = JRequest::getVar('pid');
+        self::$_division_id	= JRequest::getInt('division',0);
         if ( !self::$_project_id )
         {
         self::$_project_id = $app->getUserState( "$option.pid", '0' );
@@ -237,6 +240,11 @@ $this->addNewProjectTeam($post['team_id'],self::$_project_id);
 		$query->join('LEFT', '#__users AS u on tl.admin = u.id');
         
         $query->where('tl.project_id = ' . self::$_project_id);
+        
+        if ( self::$_division_id )
+        {
+        $query->where('tl.division_id = ' . self::$_division_id);    
+        }	
         
         if ($this->getState('filter.search_nation'))
 		{
