@@ -40,6 +40,9 @@ defined('_JEXEC') or die('Restricted access');
 
 switch($this->fieldset)
 {
+/**
+ * für die spielfeldpositionen
+ */    
 case 'playground_jquery':
 $backgroundimage = JURI::root().'media/com_sportsmanagement/rosterground/'.$this->item->picture;
 list($width, $height, $type, $attr) = getimagesize($backgroundimage);
@@ -76,6 +79,9 @@ $testlauf++;
 echo "</div>";
 
 break;	
+/**
+ * für die trainingsdaten
+ */
 case 'training':
 $view = JRequest::getCmd('view', 'cpanel');
 ?>                
@@ -134,7 +140,9 @@ $view = JRequest::getCmd('view', 'cpanel');
                         </fieldset>
 <?PHP
 break;
-
+/**
+ * für die hilfe
+ */
 case 'help':
 ?>
 <fieldset class='adminform'>
@@ -145,7 +153,9 @@ case 'help':
 						</fieldset>
 <?php                        
 break;
-// für mannschaften des vereines
+/**
+ * für mannschaften des vereines
+ */
 case 'teamsofclub':
 if ( isset($this->teamsofclub) )
 {
@@ -173,9 +183,9 @@ foreach ( $this->teamsofclub as $team )
 <?PHP
 } 
 break;
-
-
-// für extra felder
+/**
+ * für extra felder
+ */
 case 'extra_fields':
 ?>
 	<fieldset class="adminform">
@@ -207,9 +217,9 @@ case 'extra_fields':
 
 break;
 
-
-
-// für die extended daten
+/**
+ * für die extended daten
+ */
 case 'extended':
 if ( isset($this->extended) )
 {
@@ -256,8 +266,9 @@ else
     echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_NO_PARAMS');
 }
 break;
-
-// für die extended daten
+/**
+ * für die extendeduser daten
+ */
 case 'extendeduser':
 if ( isset($this->extendeduser) )
 {

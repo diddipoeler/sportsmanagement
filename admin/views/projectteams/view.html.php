@@ -54,7 +54,6 @@ defined('_JEXEC') or die('Restricted access');
  */
 class sportsmanagementViewprojectteams extends sportsmanagementView
 {
-
 	
 	/**
 	 * sportsmanagementViewprojectteams::init()
@@ -267,7 +266,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		$lists['is_in_score'] = $myoptions;
         $lists['use_finally'] = $myoptions;
 
-		$this->user = JFactory::getUser();
+		//$this->user = JFactory::getUser();
 		$this->config	= JFactory::getConfig();
 		$this->lists	= $lists;
         $this->divisions	= $projectdivisions;
@@ -339,6 +338,10 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		sportsmanagementHelper::ToolbarButton('editlist', 'upload', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_ASSIGN'));
         JToolBarHelper::custom('projectteam.copy', 'copy', 'copy', JText::_('JTOOLBAR_DUPLICATE'), true);
 		JToolbarHelper::checkin('projectteams.checkin');
+        
+        JToolBarHelper::publish('projectteams.use_table_yes', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_USE_TABLE_YES', true);
+        JToolBarHelper::unpublish('projectteams.use_table_no', 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_BUTTON_SET_USE_TABLE_NO', true);
+            
         parent::addToolbar();  
 
 	}
