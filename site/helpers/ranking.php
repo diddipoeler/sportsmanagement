@@ -818,7 +818,7 @@ $res = $db->loadObjectList();
 			$t->setPtid($r->ptid);
 			// diddipoeler
             $t->ptid_slug = $r->ptid_slug;
-			if ( $division )
+			if ( $division && !$r->division_id )
 			{	
 			$t->setDivisionid($division);
 			}
