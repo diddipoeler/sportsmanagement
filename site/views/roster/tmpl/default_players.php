@@ -56,18 +56,19 @@ foreach ($players as $row): ?>
 <tr	class="">
 <div class="mini-player_links">
 			<table class="table">
-			  <tbody><tr>
-			    <td>	       
-			         <div class="player-trikot">
+				<tbody>
+				<tr>
+			    <td style="width:2%;padding: 0px;">
+					<div class="player-trikot">
 					<?php
 					if ( ! empty( $row->position_number ) )
 					{
 						echo $row->position_number;
 					} 
 					?>
-					</div>       
-			     </td>
-			    <td style="width: 55px;padding:0px;">	      
+					</div>
+				</td>
+				<td  style="width: 55px;padding: 0px;">
 				<?php
 				$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, $this->config["name_format"]);
 				$imgTitle = JText::sprintf( $playerName );
@@ -80,10 +81,10 @@ foreach ($players as $row): ?>
 				{
 					$picture = sportsmanagementHelper::getDefaultPlaceholder("player");
 				}
-				
-echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplayer'.$row->person_id,$picture,$playerName,$this->config['player_picture_width']);				
 
-				?>			  
+echo sportsmanagementHelperHtml::getBootstrapModalImage('rosterplayer'.$row->person_id,$picture,$playerName,$this->config['player_picture_width']);
+
+				?>
 				</td>
 		<td style="padding-left: 9px;">
 		<div class="player-position"><?php	echo JText::_( $row->position );	?></div>
@@ -104,15 +105,15 @@ echo JHtml::link($link,'<i>'.$playerName.'</i>');
 else
 {
 	echo '<i>'.$playerName.'</i>';
-}		  
-		?></b></a></div>
-				  
-				</td>
-			  </tr>
+}
+		?></div>
+
+			</td>
+			</tr>
 			</tbody></table>
 			</div>
 			</tr>
-			
+	
 			<?php	$k = 1 - $k; ?>
 	<?php endforeach; ?>
 <div class="clear">

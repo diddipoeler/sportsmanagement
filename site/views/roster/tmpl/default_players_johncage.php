@@ -65,10 +65,10 @@ if (count( $this->rows>0 ))
 <?php
 			}
 			$row = &$rows[$i];
-			$this->assignRef('row',$row);
-			$this->assign('k',$k);
+			$this->row = $row;
+			$this->k = $k;
 			echo $this->loadTemplate('person_player');
-			if ($k == 1 OR !isset($rows[$i+1]))
+			if ($k == 1 OR !isset($rows[$i + 1]))
 			{
 ?>
 			</div><!-- /.jl_rosterpersonrow -->
