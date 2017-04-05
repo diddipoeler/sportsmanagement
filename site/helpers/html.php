@@ -211,7 +211,7 @@ return $modaltext;
 						$styletext=' style="text-decoration:blink"';
 					}
 					$output = '<b><i><acronym title="'.$title.'"'.$styletext.'>';
-					$output .= $config['mark_now_playing_text'];
+					$output .= JText::_( $config['mark_now_playing_text'] );
 					$output .= '</acronym></i></b>';
 				}
 			}
