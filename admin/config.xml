@@ -522,6 +522,7 @@ class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS_FRONTEND" description="COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS_FRONTEND_DESC">
 			<option value="">JNO</option>
 			<option value="row">row</option>
+	<option value="row-fluid">row-fluid</option>
 		</field>
 
 	<field name="logo_picture_width" type="text" default="100"
