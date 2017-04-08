@@ -438,7 +438,7 @@ $javascript .= "}". "\n";
         
         // mannschaften der paarung
        	$teams = sportsmanagementModelMatch::getMatchTeams($this->match->id);
-        $this->assignRef('teams',$teams);
+        $this->teams = $teams;
         
         //$app->enqueueMessage(JText::_('sportsmanagementViewMatch editevents teams<br><pre>'.print_r($teams,true).'</pre>'   ),'');
         
@@ -479,13 +479,12 @@ $javascript .= "}". "\n";
         $matchevents = sportsmanagementModelMatch::getMatchEvents($this->match->id);
         //$document->addScriptDeclaration( $javascript );
         
-        $this->assignRef('matchevents',$matchevents);
-        $this->assignRef('matchcommentary',$matchCommentary);
-//        $this->assignRef('teams',$teams);
-        $this->assignRef('rosters',$rosters);
-        $this->assignRef('lists',$lists);
-        $this->assignRef('default_name_format', $default_name_format );
-        $this->assignRef('default_name_dropdown_list_order', $default_name_dropdown_list_order );    
+        $this->matchevents = $matchevents;
+        $this->matchcommentary = $matchCommentary;
+        $this->rosters = $rosters;
+        $this->lists = $lists;
+        $this->default_name_format = $default_name_format;
+        $this->default_name_dropdown_list_order = $default_name_dropdown_list_order;    
     
 }
     
@@ -533,16 +532,16 @@ $teams = sportsmanagementModelMatch::getMatchTeams($this->match->id);
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' homeStaff<br><pre>'.print_r($homeStaff,true).'</pre>'),'');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' awayStaff<br><pre>'.print_r($awayStaff,true).'</pre>'),'');
         
-        $this->assignRef('playerstats', $playerstats );
-		$this->assignRef('staffstats', $staffstats );
-        $this->assignRef('stats',$stats);
-        $this->assignRef('homeStaff',$homeStaff);
-		$this->assignRef('awayStaff',$awayStaff);
-        $this->assignRef('positions',$positions);
-		$this->assignRef('staffpositions',$staffpositions);
-        $this->assignRef('homeRoster',$homeRoster);
-		$this->assignRef('awayRoster',$awayRoster);
-        $this->assignRef('teams',$teams);    
+        $this->playerstats = $playerstats;
+		$this->staffstats = $staffstats;
+        $this->stats = $stats;
+        $this->homeStaff = $homeStaff;
+		$this->awayStaff = $awayStaff;
+        $this->positions = $positions;
+		$this->staffpositions = $staffpositions;
+        $this->homeRoster = $homeRoster;
+		$this->awayRoster = $awayRoster;
+        $this->teams = $teams;   
     
     
 }
@@ -590,7 +589,7 @@ function initEditMatch()
         $myoptions[] = JHtml::_('select.option','4',JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_WON_BOTH_TEAMS'));
         $lists['team_won'] = JHtml::_('select.genericlist',$myoptions,'team_won','class="inputbox" size="1"','value','text',$this->match->team_won);    
         
-        $this->assignRef('lists',$lists);
+        $this->lists = $lists;
 }
     
 function initEditReferees()
@@ -673,7 +672,7 @@ function initEditReferees()
                                                         
 			}
 		}  
-        $this->assignRef('positions',$projectpositions);    
+        $this->positions = $projectpositions;    
     
 }
     

@@ -93,9 +93,7 @@ class sportsmanagementViewallprojectrounds extends JViewLegacy
 		$this->projectteamid = $model->getProjectTeamID($this->favteams);
 		
     $this->content = $model->getRoundsColumn($this->rounds,$this->config);
-        
-		//$this->assign('show_debug_info', JComponentHelper::getParams('com_joomleague')->get('show_debug_info', 0));
-        
+       
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');

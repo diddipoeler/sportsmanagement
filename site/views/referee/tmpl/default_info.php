@@ -176,7 +176,6 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('referee'.$this->referee
 
 						
 							<?php
-							#$this->assignRef( 'playerage', $model->getAge( $this->player->birthday, $this->project->start_date ) );
 							switch ( $this->config['show_birthday'] )
 							{
 								case 1:	 // show Birthday and Age

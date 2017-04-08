@@ -81,7 +81,7 @@ $jinput = $app->input;
 		$person = sportsmanagementModelPerson::getPerson(0,$model::$cfg_which_database,1);
 		$nickname = isset($person->nickname) ? $person->nickname : "";
 		if(!empty($nickname)){$nickname="'".$nickname."'";}
-		$this->assign('isContactDataVisible',sportsmanagementModelPerson::isContactDataVisible($config['show_contact_team_member_only']));
+		$this->isContactDataVisible = sportsmanagementModelPerson::isContactDataVisible($config['show_contact_team_member_only']);
 		$project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
 		$this->project = $project;
 		$this->overallconfig = sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
@@ -113,7 +113,7 @@ $jinput = $app->input;
         
         //$app->enqueueMessage(JText::_('sportsmanagementViewPlayer teamPlayers<br><pre>'.print_r($this->teamPlayers,true).'</pre>'),'');
         
-        $this->assign('checkextrafields', sportsmanagementHelper::checkUserExtraFields('frontend',$model::$cfg_which_database) );
+        $this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend',$model::$cfg_which_database);
 //        $app->enqueueMessage(JText::_('player checkextrafields -> '.'<pre>'.print_r($this->checkextrafields,true).'</pre>' ),'');
         if ( $this->checkextrafields )
         {
@@ -161,10 +161,10 @@ $jinput = $app->input;
 		// Get events and stats for current project
 		if ($config['show_gameshistory'])
 		{
-			$this->assign('games',$model->getGames());
-			$this->assign('teams',sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$model::$cfg_which_database));
-			$this->assign('gamesevents',$model->getGamesEvents());
-			$this->assign('gamesstats',$model->getPlayerStatsByGame());
+			$this->games = $model->getGames();
+			$this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid(0,'name',$model::$cfg_which_database);
+			$this->gamesevents = $model->getGamesEvents();
+			$this->gamesstats = $model->getPlayerStatsByGame();
 		}
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -179,8 +179,8 @@ $jinput = $app->input;
 		// Get events and stats for all projects where player played in (possibly restricted to sports type of current project)
 		if ($config['show_career_stats'])
 		{
-			$this->assign('stats',$model->getStats());
-			$this->assign('projectstats',$model->getPlayerStatsByProject($sportstype));
+			$this->stats = $model->getStats();
+			$this->projectstats = $model->getPlayerStatsByProject($sportstype);
 		}
 
 		$extended = '';
@@ -188,7 +188,7 @@ $jinput = $app->input;
         //{
         $extended = sportsmanagementHelper::getExtended($person->extended, 'person');
         //}
-		$this->assignRef( 'extended', $extended );
+		$this->extended = $extended;
         unset($form_value);
         $form_value = $this->extended->getValue('COM_SPORTSMANAGEMENT_EXT_PERSON_PARENT_POSITIONS');
         
@@ -276,9 +276,6 @@ $jinput = $app->input;
     $hasStatus = true;
     }
     $this->hasStatus = $hasStatus;
-    	
-    //$this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
-    //$this->assign('use_joomlaworks', JComponentHelper::getParams($option)->get('use_joomlaworks',0) );
         
 		if (isset($person))
 		{

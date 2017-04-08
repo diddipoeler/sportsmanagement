@@ -125,19 +125,13 @@ class sportsmanagementViewMatchReport extends sportsmanagementView
 		$this->team2 = sportsmanagementModelProject::getTeaminfo($this->match->projectteam2_id,sportsmanagementModelProject::$cfg_which_database);
 		$this->team1_club = $this->model->getClubinfo($this->team1->club_id);
 		$this->team2_club = $this->model->getClubinfo($this->team2->club_id);
-        //$this->assign('matchplayerpositions',$model->getMatchPlayerPositions());
         $this->matchplayerpositions = $this->model->getMatchPositions('player');
-		//$this->assign('matchplayers',$model->getMatchPlayers());
         $this->matchplayers = $this->model->getMatchPersons('player');
-		//$this->assign('matchstaffpositions',$model->getMatchStaffPositions());
         $this->matchstaffpositions = $this->model->getMatchPositions('staff');
-		//$this->assign('matchstaffs',$model->getMatchStaff());
         $this->matchstaffs = $this->model->getMatchPersons('staff');
-		//$this->assign('matchrefereepositions',$model->getMatchRefereePositions());
         $this->matchrefereepositions = $this->model->getMatchPositions('referee');
 		$this->matchreferees = $this->model->getMatchReferees();
         $this->matchcommentary = sportsmanagementModelMatch::getMatchCommentary($this->match->id);
-		//$this->assign('substitutes',$model->getMatchSubstitutions());
         $this->substitutes = sportsmanagementModelProject::getMatchSubstitutions($this->model->matchid,sportsmanagementModelProject::$cfg_which_database);
 		$this->eventtypes = $this->model->getEventTypes();
 		$sortEventsDesc = isset($this->config['sort_events_desc']) ? $this->config['sort_events_desc'] : '1';
@@ -191,17 +185,9 @@ $xmlfile=JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.'match.xml';
     {
         $this->formation2 = '4231';
     }
-    
-//    $schemahome = $this->assign('schemahome',$model->getSchemaHome($this->formation1));
-//    $schemaaway = $this->assign('schemaaway',$model->getSchemaAway($this->formation2));
-    
-    $schemahome = $this->assign('schemahome',$this->model->getPlaygroundSchema($this->formation1,'heim'));
-    $schemaaway = $this->assign('schemaaway',$this->model->getPlaygroundSchema($this->formation2,'gast'));
-    
-
-
-//    $this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
-//    $this->assign('use_joomlaworks', JComponentHelper::getParams($option)->get('use_joomlaworks',0) );
+   
+    $schemahome = $this->schemahome = $this->model->getPlaygroundSchema($this->formation1,'heim');
+    $schemaaway = $this->schemaaway = $this->model->getPlaygroundSchema($this->formation2,'gast');
     
 if ( $this->config['show_pictures'] )
 	  {

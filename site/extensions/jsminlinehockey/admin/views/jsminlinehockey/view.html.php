@@ -138,14 +138,6 @@ class sportsmanagementViewjsminlinehockey extends sportsmanagementView
    JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_JSMINLINEHOCKEY_TITLE'),'install');
 		
         $this->request_url = $uri->toString();
-        //$this->assign('lists',$lists);
-     
-        
-//        // Set the toolbar
-//		$this->addToolBar();
-//        
-//        parent::display( $tpl );
-        
 		
 	}
     

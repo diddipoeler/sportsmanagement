@@ -93,19 +93,16 @@ class sportsmanagementViewjltournamenttree extends JViewLegacy
     }
     
     
-    $this->assign( 'rounds',		$model->getTournamentRounds() );
-    $this->assign( 'projectname',		$model->getTournamentName() );
-    
-    $this->assign( 'bracket_rounds',		$model->getTournamentBracketRounds($this->rounds) );
-    $this->assign( 'bracket_teams',		$model->getTournamentMatches($this->rounds) );
-    $this->assign( 'bracket_results',		$model->getTournamentResults($this->rounds) );
-    
-    $this->assign( 'which_first_round',		$model->getWhichShowFirstRound() );
-    $this->assign( 'jl_tree_bracket_round_width', $model->getTreeBracketRoundWidth() );	
-    $this->assign( 'jl_tree_bracket_teamb_width', $model->getTreeBracketTeambWidth() );
-    $this->assign( 'jl_tree_bracket_width', $model->getTreeBracketWidth() );
+    $this->rounds = $model->getTournamentRounds();
+    $this->projectname = $model->getTournamentName();
+    $this->bracket_rounds = $model->getTournamentBracketRounds($this->rounds);
+    $this->bracket_teams = $model->getTournamentMatches($this->rounds);
+    $this->bracket_results = $model->getTournamentResults($this->rounds);
+    $this->which_first_round = $model->getWhichShowFirstRound();
+    $this->jl_tree_bracket_round_width = $model->getTreeBracketRoundWidth();	
+    $this->jl_tree_bracket_teamb_width = $model->getTreeBracketTeambWidth();
+    $this->jl_tree_bracket_width = $model->getTreeBracketWidth();
    
-   //$this->assign( 'jl_tree_jquery_version',		$model->getWhichJQuery() );
    
 // Add Script
 //$document->addScript(JURI::base().'components/com_sportsmanagement/extensions/jltournamenttree/assets/js/jquery-1.7.2.min.js');

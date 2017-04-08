@@ -198,7 +198,7 @@ $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
 				foreach ($this->historyPlayer as $player_hist)
 				{
 					$model = $this->getModel();
-					$this->assign('inoutstat',$model->getInOutStats($player_hist->project_id, $player_hist->ptid, $player_hist->tpid));
+					$this->inoutstat = $model->getInOutStats($player_hist->project_id, $player_hist->ptid, $player_hist->tpid);
 
 //echo __FILE__.' '.__LINE__.' project->id <br><pre>'.print_r($player_hist->project_id,true).'</pre><br>';
 //echo __FILE__.' '.__LINE__.' projectteam->id <br><pre>'.print_r($player_hist->ptid,true).'</pre><br>';
@@ -209,9 +209,7 @@ $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
 //echo __FILE__.' '.__LINE__.' player_hist<br><pre>'.print_r($player_hist,true).'</pre><br>';
 //            }
             
-                    //$this->assign('inoutstat',sportsmanagementModelRoster::_getTeamInOutStats($player_hist->project_id, $player_hist->ptid, $player_hist->tpid));
 					
-                    //$this->assign('inoutstat',$player->getInOutStats($player_hist->project_id, $player_hist->ptid, $player_hist->tpid));
                     
                     // gespielte zeit
                     if ( !isset($this->overallconfig['person_events']) )
@@ -220,9 +218,6 @@ $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
                     }
                     
                     $timePlayed = $model->getTimePlayed($player_hist->tpid,$this->project->game_regular_time,NULL,$this->overallconfig['person_events'],$player_hist->project_id);
-                    //$timePlayed = 0;
-                    //$this->assign('timePlayed',$model->getTimePlayed($player_hist->tpid,$this->project->game_regular_time,NULL,$this->overallconfig['person_events']));
-                    //$timePlayed  = $this->timePlayed;
 
 //echo __FILE__.' '.__LINE__.' Player->id<br><pre>'.print_r($player_hist->tpid,true).'</pre><br>';
 //echo __FILE__.' '.__LINE__.' game->id<br><pre>'.print_r($game->id,true).'</pre><br>';

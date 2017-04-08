@@ -40,34 +40,30 @@ JHtml::_( 'behavior.mootools' );
 		
 		$config	= sportsmanagementModelProject::getTemplateConfig($this->getName());
 		$project = sportsmanagementModelProject::getProject();
-		//$mdlRound = JModelLegacy::getInstance("Round", "JoomleagueModel");
-		//$roundcode = $mdlRound->getRoundcode($model->roundid);
-		//$mdlRounds = JModelLegacy::getInstance("Rounds", "JoomleagueModel");
-		//$rounds = $mdlRounds->getRoundsOptions($project->id);
 		$roundcode = sportsmanagementModelRound::getRoundcode((int)$model::$roundid);
 		$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true);
 			
-		$this->assignRef('project', $project);
+		$this->project = $project;
 		$lists=array();
 		
 		if (isset($this->project))
 		{
-			$this->assign('overallconfig',	sportsmanagementModelProject::getOverallConfig());
-			$this->assign('config',			array_merge($this->overallconfig, $config));
-			$this->assign('teams',			sportsmanagementModelProject::getTeamsIndexedByPtid());
-			$this->assign('showediticon',	$model->getShowEditIcon());
-			$this->assign('division',		$model->getDivision());
-			$this->assignRef('matches',			$matches);
-			$this->assignRef('roundid',			$model::$roundid);
-			$this->assignRef('roundcode',		$roundcode);
-			$this->assign('rounds',			sportsmanagementModelProject::getRounds());
-			$this->assign('favteams',		sportsmanagementModelProject::getFavTeams($project));
-			$this->assign('projectevents',	sportsmanagementModelProject::getProjectEvents());
-			$this->assignRef('model',			$model);
-			$this->assign('isAllowed',		$model->isAllowed());
+			$this->overallconfig = sportsmanagementModelProject::getOverallConfig();
+			$this->config = array_merge($this->overallconfig, $config);
+			$this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid();
+			$this->showediticon = $model->getShowEditIcon();
+			$this->division = $model->getDivision();
+			$this->matches = $matches;
+			$this->roundid = $model::$roundid;
+			$this->roundcode = $roundcode;
+			$this->rounds = sportsmanagementModelProject::getRounds();
+			$this->favteams = sportsmanagementModelProject::getFavTeams($project);
+			$this->projectevents = sportsmanagementModelProject::getProjectEvents();
+			$this->model = $model;
+			$this->isAllowed = $model->isAllowed();
 
 			$lists['rounds'] = JHtml::_('select.genericlist',$rounds,'current_round','class="inputbox" size="1" onchange="joomleague_changedoc(this);','value','text',$project->current_round);
-			$this->assignRef('lists',$lists);
+			$this->lists = $lists;
 		
 			if (!isset($this->config['switch_home_guest'])){$this->config['switch_home_guest']=0;}
 			if (!isset($this->config['show_dnp_teams_icons'])){$this->config['show_dnp_teams_icons']=0;}

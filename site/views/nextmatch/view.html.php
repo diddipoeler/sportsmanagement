@@ -74,7 +74,7 @@ class sportsmanagementViewNextMatch extends JViewLegacy
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 		$tableconfig = sportsmanagementModelProject::getTemplateConfig( "ranking",$model::$cfg_which_database );
 
-		$this->assign('project',sportsmanagementModelProject::getProject($model::$cfg_which_database) );
+		$this->project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
 		$this->config = $config;
 		$this->tableconfig = $tableconfig;
 		$this->overallconfig = sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);

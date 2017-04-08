@@ -187,9 +187,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 			if (!isset($this->config['show_dnp_teams_icons'])){$this->config['show_dnp_teams_icons']=0;}
 			if (!isset($this->config['show_results_ranking'])){$this->config['show_results_ranking']=0;}
 		}
-        
-        //$this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
-		
+	
 		// Set page title
 		$pageTitle = JText::_('COM_SPORTSMANAGEMENT_RESULTS_PAGE_TITLE');
 		if ( isset( $this->project->name ) )

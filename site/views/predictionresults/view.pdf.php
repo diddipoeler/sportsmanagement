@@ -33,33 +33,27 @@ class JoomleagueViewPredictionResults extends JViewLegacy
 		$model		=& $this->getModel();
     $option = JRequest::getCmd('option');
     $optiontext = strtoupper(JRequest::getCmd('option').'_');
-    $this->assignRef( 'optiontext',			$optiontext );
+    $this->optiontext = $optiontext;
     
 		$app = JFactory::getApplication();
 
-		$this->assignRef('predictionGame',$model->getPredictionGame());
+		$this->predictionGame = $model->getPredictionGame();
 
 		if (isset($this->predictionGame))
 		{
-			$config			= $model->getPredictionTemplateConfig($this->getName());
-			$configavatar			= $model->getPredictionTemplateConfig('predictionusers');
-			$configentry			= $model->getPredictionTemplateConfig('predictionentry');
+			$config	= $model->getPredictionTemplateConfig($this->getName());
+			$configavatar = $model->getPredictionTemplateConfig('predictionusers');
+			$configentry = $model->getPredictionTemplateConfig('predictionentry');
 			$config = array_merge($configentry,$config);
-			$overallConfig	= $model->getPredictionOverallConfig();
-
-      //$this->assignRef('debuginfo',	$model->getDebugInfo());
-      
-			$this->assignRef('model',				$model);
-			$this->assignRef('roundID',				$this->model->roundID);
-			$this->assignRef('config',				array_merge($overallConfig,$config) );
-			$this->assignRef('configavatar',				$configavatar );
-
-			$this->assignRef('predictionMember',	$model->getPredictionMember($configavatar));
-			//$this->assignRef('predictionMember',	$model->getPredictionMemberAvatar($this->predictionMember, $configavatar ));
-			$this->assignRef('predictionProjectS',	$model->getPredictionProjectS());
-			$this->assignRef('actJoomlaUser',		JFactory::getUser());
-			//$this->assignRef('rounds',				$model->getRounds());
-			//echo '<br /><pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';
+			$overallConfig = $model->getPredictionOverallConfig();
+     
+			$this->model = $model;
+			$this->roundID = $this->model->roundID;
+			$this->config = array_merge($overallConfig,$config);
+			$this->configavatar = $configavatar;
+			$this->predictionMember = $model->getPredictionMember($configavatar);
+			$this->predictionProjectS = $model->getPredictionProjectS();
+			$this->actJoomlaUser = JFactory::getUser();
 
       $predictionRounds[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_SELECT_ROUNDS'),'value','text');
       if ( $res = &$model->getRoundNames($this->predictionGame->id) ){$predictionRounds = array_merge($predictionRounds,$res);}
@@ -67,8 +61,8 @@ class JoomleagueViewPredictionResults extends JViewLegacy
 			unset($res);
 			unset($predictionRounds);
 			
-			$this->assignRef('lists',$lists);
-			$this->assign('show_debug_info', JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0) );
+			$this->lists = $lists;
+			$this->show_debug_info = JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info',0);
 			// Set page title
 			$pageTitle = JText::_('COM_SPORTSMANAGEMENT_PRED_RESULTS_TITLE');
 

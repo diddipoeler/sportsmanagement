@@ -105,11 +105,11 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
     $rssfeedlink = $this->extended->getValue('COM_SPORTSMANAGEMENT_PROJECT_RSS_FEED');
     if ( $rssfeedlink )
     {
-    $this->assignRef( 'rssfeeditems', $model->getRssFeeds($rssfeedlink,$this->overallconfig['rssitems']) );
+    $this->rssfeeditems = $model->getRssFeeds($rssfeedlink,$this->overallconfig['rssitems']);
     }
     else
     {
-    $this->assignRef( 'rssfeeditems', $rssfeeditems );
+    $this->rssfeeditems = $rssfeeditems;
     }
     
         
@@ -125,7 +125,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
        unset ($model->currentRanking);
 	   unset ($model->previousRanking);
        $model->computeRanking($model::$cfg_which_database);
-       $this->assignRef('firstRank',$model->currentRanking  );
+       $this->firstRank = $model->currentRanking;
      }
      
      if ($this->config['show_table_5']==1)
@@ -136,7 +136,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
        unset ($model->currentRanking);
 	   unset ($model->previousRanking);
        $model->computeRanking($model::$cfg_which_database);
-       $this->assignRef('secondRank',$model->currentRanking );
+       $this->secondRank = $model->currentRanking;
      }  
        
        $model->part = 0;
@@ -172,9 +172,6 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		$this->awayRank = $model->awayRank;
         }
         
-        
-       
-		//$this->assignRef('current_round', $model->current_round);
         $this->current_round = sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.JRequest::getVar("view"));
         
         // mannschaften holen
@@ -225,8 +222,8 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		
 		
 		
-		$this->assign('previousgames', $model->getPreviousGames());
-		$this->assign('action', $uri->toString());
+		$this->previousgames = $model->getPreviousGames();
+		$this->action = $uri->toString();
 
 		$frommatchday[] = JHTML :: _('select.option', '0', JText :: _('COM_SPORTSMANAGEMENT_RANKING_FROM_MATCHDAY'));
 		$frommatchday = array_merge($frommatchday, $rounds);
@@ -241,19 +238,16 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		$opp_arr[] = JHTML :: _('select.option', "2", JText :: _('COM_SPORTSMANAGEMENT_RANKING_AWAY_RANKING'));
 
 		$lists['type'] = $opp_arr;
-		$this->assignRef('lists', $lists);
+		$this->lists = $lists;
 
 		if (!isset ($config['colors'])) {
 			$config['colors'] = "";
 		}
 
-		$this->assign('colors', sportsmanagementModelProject::getColors($config['colors']));
-		//$this->assignRef('result', $model->getTeamInfo());
-		//		$this->assignRef( 'pageNav', $model->pagenav( "ranking", count( $rounds ), $sr->to ) );
-		//		$this->assignRef( 'pageNav2', $model->pagenav2( "ranking", count( $rounds ), $sr->to ) );
+		$this->colors = sportsmanagementModelProject::getColors($config['colors']);
 
     // diddipoeler
-		$this->assign( 'allteams', $mdlProjectteams->getAllProjectTeams($project->id) );
+		$this->allteams = $mdlProjectteams->getAllProjectTeams($project->id);
 		
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
@@ -363,8 +357,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 //   $document->addScriptDeclaration($this->map->JLshowMap(false));
   
 	}
-	  //$this->assign('show_debug_info', JComponentHelper::getParams($option)->get('show_debug_info',0) );
-	  
+
 		// Set page title
 		$pageTitle = JText::_( 'COM_SPORTSMANAGEMENT_RANKING_PAGE_TITLE' );
 		if ( isset( $this->project->name ) )

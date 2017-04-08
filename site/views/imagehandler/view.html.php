@@ -83,7 +83,7 @@ class sportsmanagementViewImagehandler extends JViewLegacy  {
 		$images 	= $this->get('Images');
 		$pageNav 	= $this->get('Pagination');
         
-        $this->assign('request_url',$uri->toString());
+        $this->request_url = $uri->toString();
 
 		if (count($images) > 0 || $search) {
 			$this->images = $images;

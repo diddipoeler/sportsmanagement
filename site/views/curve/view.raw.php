@@ -79,22 +79,21 @@ class sportsmanagementViewCurve extends JViewLegacy
 		$flashconfig = sportsmanagementModelProject::getTemplateConfig( "flash",$model::$cfg_which_database );
 		$config = sportsmanagementModelProject::getTemplateConfig($this->getName(),$model::$cfg_which_database);
 
-		$this->assignRef('project', sportsmanagementModelProject::getProject($model::$cfg_which_database) );
+		$this->project = sportsmanagementModelProject::getProject($model::$cfg_which_database);
 
 		if ( isset( $this->project ) )
 		{
-			$this->assignRef('overallconfig',sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database) );
+			$this->overallconfig = sportsmanagementModelProject::getOverallConfig($model::$cfg_which_database);
 			if ( !isset( $this->overallconfig['seperator'] ) )
 			{
 				$this->overallconfig['seperator'] = ":";
 			}
-			$this->assignRef('config',$config );
-			$this->assignRef('model',$model);
-			
-			$this->assignRef('colors',sportsmanagementModelProject::getColors($rankingconfig['colors'],$model::$cfg_which_database) );
-			$this->assignRef('division',$model->getDivision($division));
-			$this->assignRef('team1',$model->getTeam1($division) );
-			$this->assignRef('team2',$model->getTeam2($division) );
+			$this->config = $config;
+			$this->model = $model;
+			$this->colors = sportsmanagementModelProject::getColors($rankingconfig['colors'],$model::$cfg_which_database);
+			$this->division = $model->getDivision($division);
+			$this->team1 = $model->getTeam1($division);
+			$this->team2 = $model->getTeam2($division);
 			
 			$this->_setChartdata(array_merge($flashconfig, $rankingconfig));
 		}

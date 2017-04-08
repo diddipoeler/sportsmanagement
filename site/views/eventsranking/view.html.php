@@ -102,7 +102,7 @@ $this->document->addScript ( JUri::root(true).'/components/'.$this->option.'/ass
 		{
 			$titleInfo->divisionName = $this->division->name;
 		}
-		$this->assign('pagetitle', sportsmanagementHelper::formatTitle($titleInfo, $this->config["page_title_format"]));
+		$this->pagetitle = sportsmanagementHelper::formatTitle($titleInfo, $this->config["page_title_format"]);
 		$this->document->setTitle($this->pagetitle);
         
         $this->headertitle = $this->pagetitle;

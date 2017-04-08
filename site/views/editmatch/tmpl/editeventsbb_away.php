@@ -96,7 +96,7 @@ defined('_JEXEC') or die('Restricted access');
 						foreach ( $this->events as $ev)
 						{
 							$teap++;	
-							$this->assign( 'evbb', $model->getPlayerEventsbb( $row->value, $ev->value, $this->item->id ) );
+							$this->evbb = $model->getPlayerEventsbb( $row->value, $ev->value, $this->item->id );
 							?>
 							<td style="text-align: center; ">
 							<input type="hidden" name="event_type_id_a_<?php echo $i.'_'.$teap;?>" value="<?php echo $ev->value;?>" />
