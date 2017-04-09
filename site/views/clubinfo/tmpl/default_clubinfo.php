@@ -357,7 +357,6 @@ echo $this->familytree;
 <?PHP        
 //}
 
-
 ?>
 </div>
 <!-- </div> --> 

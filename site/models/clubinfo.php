@@ -105,22 +105,25 @@ static $historyhtmltree = '';
  */
 static function generateTree ($parent) 
 {
-//    global $arrPCat, $arrCat;
-    if (array_key_exists($parent, self::$arrPCat)) {
+$app = JFactory::getApplication();
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' arrPCat<br><pre>'.print_r(self::$arrPCat,true).'</pre>'),'Notice');
+
+    if (array_key_exists($parent, self::$arrPCat)) 
+    {
         //echo '<ul' . ($parent == 0 ? ' class="tree"' : '') . '>';
         self::$historyhtmltree .= '<ul' . ($parent == 0 ? ' class="tree"' : '') . '>';
-        foreach (self::$arrPCat[$parent] as $arrC) {
+        foreach (self::$arrPCat[$parent] as $arrC) 
+        {
         //echo '<li>' . $arrC['name'] ;
-        self::$historyhtmltree .= '<li><a href="#">' .JHTML::image($arrC['logo_big'], $arrC['name'], 'width="30"'). ' ' . $arrC['name'] .'</a>' ;
+        //JHtml::link( $link, $item->name )
+        // 
+        //self::$historyhtmltree .= '<li><a href="#">' .JHTML::image($arrC['logo_big'], $arrC['name'], 'width="30"'). ' ' . $arrC['name'] .'</a>' ;
+        self::$historyhtmltree .= '<li><a href="'.JHtml::link( $arrC['clublink'], $arrC['name'] ).'">' .JHTML::image($arrC['logo_big'], $arrC['name'], 'width="30"'). ' ' . $arrC['name'] .'</a>' ;
         self::generateTree($arrC['id']);
         //echo '</li>';
         self::$historyhtmltree .= '</li>';
     }
-//        foreach ($arrPCat[$parent] as $arrC) {
-//            echo '<li>' . $arrC['name'] . '</li>';
-//            generateTree($arrC['id']);
-//        }
-        //echo '</ul>';
+
         self::$historyhtmltree .= '</ul>';
     }
 }
@@ -289,7 +292,7 @@ else
         // Select some fields
              $query->select('asoc.*');
              // From 
-		     $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_associations AS asoc');
+		     $query->from('#__sportsmanagement_associations AS asoc');
              // Where
              $query->where('asoc.id = '. $db->Quote($associations) );
 
@@ -353,7 +356,7 @@ $result = $db->execute();
 			 // Select some fields
              $query->select('c.*');
              // From 
-		     $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c');
+		     $query->from('#__sportsmanagement_club AS c');
              // Where
              $query->where('c.id = '. $db->Quote(self::$clubid) );
 
@@ -389,23 +392,23 @@ $result = $db->execute();
           $query->select('t.id,prot.trikot_home,prot.trikot_away,prot.picture as project_team_picture');
           $query->select('CONCAT_WS( \':\', t.id, t.alias ) AS team_slug');
           $query->select('t.name as team_name,t.short_name as team_shortcut,t.info as team_description');
-          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team as t ');
-          $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = t.id');
-          $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team as prot ON prot.team_id = st.id ');
+          $query->from('#__sportsmanagement_team as t ');
+          $query->join('LEFT','#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');
+          $query->join('LEFT','#__sportsmanagement_project_team as prot ON prot.team_id = st.id ');
           
           // Select some fields
           $subquery1->select('CONCAT_WS( \':\', MAX(pt.project_id) , p.alias )');
           // From 
-          $subquery1->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt');
-          $subquery1->join('RIGHT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project p ON pt.project_id = p.id ');
+          $subquery1->from('#__sportsmanagement_project_team AS pt');
+          $subquery1->join('RIGHT','#__sportsmanagement_project p ON pt.project_id = p.id ');
           $subquery1->where('pt.team_id = st.id');
           $subquery1->where('p.published = 1');
           
           // Select some fields
           $subquery2->select('pt.id');
           // From 
-          $subquery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt');
-          $subquery2->join('RIGHT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project p ON pt.project_id = p.id ');
+          $subquery2->from('#__sportsmanagement_project_team AS pt');
+          $subquery2->join('RIGHT','#__sportsmanagement_project p ON pt.project_id = p.id ');
           $subquery2->where('pt.team_id = st.id');
           $subquery2->where('p.published = 1');
           $subquery2->where('pt.project_id = pid');
@@ -642,7 +645,8 @@ self::$arrPCat[$pt][] = Array ('id' => $row->id,
                                'name' => $row->name,
                                'pid' => $row->pid,
                                'slug' => $row->slug,
-                               'logo_big' => $row->logo_big
+                               'logo_big' => $row->logo_big,
+                               'clublink' => sportsmanagementHelperRoute::getClubInfoRoute( $row->pid, $row->slug )
                                );
 		
   //$temp = '<ul><li>'.$row->name.'</li>';

@@ -52,7 +52,6 @@ jimport( 'joomla.application.component.view' );
  */
 class sportsmanagementViewClubInfo extends sportsmanagementView
 {
-
 	
 	/**
 	 * sportsmanagementViewClubInfo::init()
