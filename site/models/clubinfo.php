@@ -118,7 +118,7 @@ $app = JFactory::getApplication();
         //JHtml::link( $link, $item->name )
         // 
         //self::$historyhtmltree .= '<li><a href="#">' .JHTML::image($arrC['logo_big'], $arrC['name'], 'width="30"'). ' ' . $arrC['name'] .'</a>' ;
-        self::$historyhtmltree .= '<li><a href="'.JHtml::link( $arrC['clublink'], $arrC['name'] ).'">' .JHTML::image($arrC['logo_big'], $arrC['name'], 'width="30"'). ' ' . $arrC['name'] .'</a>' ;
+        self::$historyhtmltree .= '<li><a href="'.$arrC['clublink'].'">' .JHTML::image($arrC['logo_big'], $arrC['name'], 'width="30"'). ' ' . $arrC['name'] .'</a>' ;
         self::generateTree($arrC['id']);
         //echo '</li>';
         self::$historyhtmltree .= '</li>';
@@ -640,6 +640,10 @@ $list = isset(self::$tree_fusion[$pt]) ? self::$tree_fusion[$pt] : array ();
 array_push($list, $row);
 self::$tree_fusion[$pt] = $list;
 
+if ( !$row->pid )
+{
+    $row->pid = 0;
+}
 // store parent and its children into the $arrPCat Array
 self::$arrPCat[$pt][] = Array ('id' => $row->id,
                                'name' => $row->name,
