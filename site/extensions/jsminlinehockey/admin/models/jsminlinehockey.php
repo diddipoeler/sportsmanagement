@@ -555,13 +555,13 @@ $temp->projectteam2_id = $this->checkProjectTeam($temp->team_id_away,$projectid,
  * is_after_penalty_shoot_out
  */
 
-$temp->match_result_type = 0;
-if ( $value_match->is_regular_result )
-{
+//$temp->match_result_type = 0;
+//if ( $value_match->is_regular_result )
+//{
 $temp->team1_result = $value_match->home_goals;
 $temp->team2_result = $value_match->away_goals;
 $temp->match_result_type = 0;
-}
+//}
 if ( $value_match->is_after_overtime )
 {
 $temp->team1_result_ot = $value_match->home_goals;
@@ -574,6 +574,12 @@ $temp->team1_result_so = $value_match->home_goals;
 $temp->team2_result_so = $value_match->away_goals;
 $temp->match_result_type = 2;
 }
+
+if ( $value_match->id == 1324 )
+{
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' temp<br><pre>'.print_r($temp,true).'</pre>'),'');    
+}
+
 
 $exportmatches[] = $temp;
 }
