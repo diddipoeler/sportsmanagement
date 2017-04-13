@@ -60,13 +60,13 @@ function tableOrdering( order, dir, task )
 }
 function searchPerson(val)
 	{
-        var s= document.getElementById("filter_search");
+        var s = document.getElementById("filter_search");
         s.value = val;
         Joomla.submitform('', this.form)
 	}
 </script>
 <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>">
-<form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars(JFactory::getURI()->toString());?>" method="post">
+<form name="adminForm" id="adminForm" action="<?php echo htmlspecialchars(JUri::getInstance()->toString());?>" method="post">
 	<fieldset class="filters">
 	<legend class="hidelabeltxt"><?php echo JText::_('JGLOBAL_FILTER_LABEL'); ?></legend>
 	<div class="filter-search">
@@ -87,8 +87,8 @@ function searchPerson(val)
         
         
 				<?php
-                $startRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_start_hex', '0');
-		$endRange = JComponentHelper::getParams(JRequest::getCmd('option'))->get('character_filter_end_hex', '0');
+                $startRange = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('character_filter_start_hex', '0');
+		$endRange = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('character_filter_end_hex', '0');
 		for ($i=$startRange; $i <= $endRange; $i++)
 		{
 			
@@ -109,7 +109,7 @@ function searchPerson(val)
     <div class="display-limit">
 			<?php echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
 			<?php echo $this->pagination->getLimitBox(); ?>
-		</div>
+	</div>
         
 	</fieldset>
 
@@ -121,7 +121,7 @@ function searchPerson(val)
 		echo $this->loadTemplate('backbutton');
 		echo $this->loadTemplate('footer');
         ?>
-</div>
+	</div>
 
 </form>
 </div>

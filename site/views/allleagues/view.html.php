@@ -78,7 +78,9 @@ class sportsmanagementViewallleagues extends sportsmanagementView
 	 */
 	function init()
 	{
-
+		$app = JFactory::getApplication();
+		// JInput object
+		$this->jinput = $app->input;
         $inputappend = '';
         $this->tableclass = $this->jinput->getVar('table_class', 'table','request','string');
 		$user = JFactory::getUser();
