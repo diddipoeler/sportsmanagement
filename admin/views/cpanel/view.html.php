@@ -192,6 +192,13 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         {
         $model->_success_text['Sportart ('.$type.')  :'] .= $databasetool->my_text;
         }
+
+/**
+ * nur wenn in den optionen ja eingestellt ist, werden die altersgruppen installiert
+ */
+        $install_agegroup = JComponentHelper::getParams($this->option)->get('install_agegroup',0);
+        if ( $install_agegroup )
+        {
         if ( $country )
         {
         foreach ( $country as $keyc => $typec )
@@ -206,7 +213,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         //$databasetool->_success_text['Altersgruppen:'] .= $databasetool->_success_text; 
         //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($databasetool->my_text,true).'</pre>'),'');
         }
-           
+        }   
         
         }
         
