@@ -1605,17 +1605,20 @@ foreach( $xml->events as $event )
        $query = "SELECT id FROM #__sportsmanagement_sports_type"." WHERE name='"."COM_SPORTSMANAGEMENT_ST_".strtoupper($type)."' ";
        $db->setQuery($query);
        $result = $db->loadResult();
-/**
- * nur wenn in den optionen ja eingestellt ist, werden die positionen installiert
- */       
-       if ( $result && $install_standard_position )
+      
+       if ( $result )
        {
        //$app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_AVAILABLE',strtoupper($type)),'Notice');
      // $app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool insertSportType result<br><pre>'.print_r($result,true).'</pre>'),'Notice'); 
+/**
+ * nur wenn in den optionen ja eingestellt ist, werden die positionen installiert
+ */ 
+     if ( $install_standard_position )
+     {
       $sports_type_id = $result;
         $sports_type_name = 'COM_SPORTSMANAGEMENT_ST_'.strtoupper($type);
       self::addStandardForSportType($sports_type_name, $sports_type_id, $type,$update=1);
-      
+      }
        }
        else
        { 
