@@ -38,13 +38,14 @@ JHtml::_( 'behavior.mootools' );
 				
 		$matches = $model->getMatches();
 		
+		
 		$config	= sportsmanagementModelProject::getTemplateConfig($this->getName());
 		$project = sportsmanagementModelProject::getProject();
 		$roundcode = sportsmanagementModelRound::getRoundcode((int)$model::$roundid);
 		$rounds = sportsmanagementHelper::getRoundsOptions($project->id, 'ASC', true);
 			
 		$this->project = $project;
-		$lists=array();
+		$lists = array();
 		
 		if (isset($this->project))
 		{
