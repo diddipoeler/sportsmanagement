@@ -37,19 +37,17 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 define('EOL',(PHP_SAPI == 'cli') ? PHP_EOL : '<br />');
 jimport( 'joomla.application.component.model' );
 
 
-$maxImportTime=480;
+$maxImportTime = 480;
 
 if ((int)ini_get('max_execution_time') < $maxImportTime){@set_time_limit($maxImportTime);}
 
-
-$maxImportMemory='350M';
+$maxImportMemory = '350M';
 if ((int)ini_get('memory_limit') < (int)$maxImportMemory){@ini_set('memory_limit',$maxImportMemory);}
 
 /**
@@ -206,10 +204,13 @@ return 0;
 }
 
 
+
 /**
  * sportsmanagementModeljsminlinehockey::getmatches()
  * 
  * @param integer $projectid
+ * @param string $username
+ * @param string $password
  * @return void
  */
 function getmatches($projectid=0,$username='',$password='')
@@ -546,8 +547,38 @@ if ( $temp->team_id_away)
 $temp->projectteam2_id = $this->checkProjectTeam($temp->team_id_away,$projectid,$season_id);
 }
 
+/**
+ * hier gibt es einen status, der uns sagt, welche art
+ * das ergebnis hat
+ * is_regular_result
+ * is_after_overtime
+ * is_after_penalty_shoot_out
+ */
+
+//$temp->match_result_type = 0;
+//if ( $value_match->is_regular_result )
+//{
 $temp->team1_result = $value_match->home_goals;
 $temp->team2_result = $value_match->away_goals;
+$temp->match_result_type = 0;
+//}
+if ( $value_match->is_after_overtime )
+{
+$temp->team1_result_ot = $value_match->home_goals;
+$temp->team2_result_ot = $value_match->away_goals;
+$temp->match_result_type = 1;
+}
+if ( $value_match->is_after_penalty_shoot_out )
+{
+$temp->team1_result_so = $value_match->home_goals;
+$temp->team2_result_so = $value_match->away_goals;
+$temp->match_result_type = 2;
+}
+
+if ( $value_match->id == 1324 )
+{
+$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' temp<br><pre>'.print_r($temp,true).'</pre>'),'');    
+}
 
 
 $exportmatches[] = $temp;
@@ -588,6 +619,13 @@ $row->team1_result = $match->team1_result;
 $row->team2_result = $match->team2_result;
 $row->team1_result_split = $match->team1_result_split;
 $row->team2_result_split = $match->team2_result_split;
+
+$row->team1_result_ot = $match->team1_result_ot;
+$row->team2_result_ot = $match->team2_result_ot;
+$row->team1_result_so = $match->team1_result_so;
+$row->team2_result_so = $match->team2_result_so;
+$row->match_result_type = $match->match_result_type;
+
 $row->match_date = $match->match_date;
 $row->division_id = $match->division_id;
 $row->import_match_id = $match->match_id;
@@ -634,6 +672,11 @@ if ( is_numeric($match->team1_result) && is_numeric($match->team2_result) )
 { 
 $rowInsert->team1_result = $match->team1_result;
 $rowInsert->team2_result = $match->team2_result;
+$rowInsert->team1_result_ot = $match->team1_result_ot;
+$rowInsert->team2_result_ot = $match->team2_result_ot;
+$rowInsert->team1_result_so = $match->team1_result_so;
+$rowInsert->team2_result_so = $match->team2_result_so;
+$rowInsert->match_result_type = $match->match_result_type;
 }
 
 $rowInsert->match_date = $match->match_date;

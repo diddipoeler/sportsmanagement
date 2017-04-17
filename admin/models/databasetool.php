@@ -80,9 +80,9 @@ class sportsmanagementModeldatabasetool extends JModelAdmin
     public function __construct($config = array())
         {   
 
-                parent::__construct($config);
-                $getDBConnection = sportsmanagementHelper::getDBConnection();
-                parent::setDbo($getDBConnection);
+        parent::__construct($config);
+        $getDBConnection = sportsmanagementHelper::getDBConnection();
+        parent::setDbo($getDBConnection);
         // Reference global application object
         $this->app = JFactory::getApplication();
         $this->user	= JFactory::getUser();     
@@ -1592,6 +1592,8 @@ foreach( $xml->events as $event )
         //self::createSportTypeArray();
         $available = self::checkSportTypeStructur($type);
         
+        $install_standard_position = JComponentHelper::getParams($option)->get('install_standard_position',0);
+        
         if ( !$available )
         {
             //$app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT_XML_ERROR',strtoupper($type)),'Error');
@@ -1600,17 +1602,23 @@ foreach( $xml->events as $event )
             return false;
         }
         
-       $query = "SELECT id FROM #__".COM_SPORTSMANAGEMENT_TABLE."_sports_type"." WHERE name='"."COM_SPORTSMANAGEMENT_ST_".strtoupper($type)."' ";
+       $query = "SELECT id FROM #__sportsmanagement_sports_type"." WHERE name='"."COM_SPORTSMANAGEMENT_ST_".strtoupper($type)."' ";
        $db->setQuery($query);
        $result = $db->loadResult();
+      
        if ( $result )
        {
        //$app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_AVAILABLE',strtoupper($type)),'Notice');
      // $app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool insertSportType result<br><pre>'.print_r($result,true).'</pre>'),'Notice'); 
+/**
+ * nur wenn in den optionen ja eingestellt ist, werden die positionen installiert
+ */ 
+     if ( $install_standard_position )
+     {
       $sports_type_id = $result;
         $sports_type_name = 'COM_SPORTSMANAGEMENT_ST_'.strtoupper($type);
       self::addStandardForSportType($sports_type_name, $sports_type_id, $type,$update=1);
-      
+      }
        }
        else
        { 
@@ -1624,7 +1632,7 @@ foreach( $xml->events as $event )
         $values = array('\''.'COM_SPORTSMANAGEMENT_ST_'.strtoupper($type).'\'','\''.'images/com_sportsmanagement/database/placeholders/placeholder_21.png'.'\'');
         // Prepare the insert query.
         $query
-            ->insert($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type'))
+            ->insert($db->quoteName('#__sportsmanagement_sports_type'))
             ->columns($db->quoteName($columns))
             ->values(implode(',', $values));
         // Set the query using our newly populated query object and execute it.
@@ -1644,7 +1652,13 @@ foreach( $xml->events as $event )
         
         $sports_type_id = $db->insertid();
         $sports_type_name = 'COM_SPORTSMANAGEMENT_ST_'.strtoupper($type);
+/**
+ * nur wenn in den optionen ja eingestellt ist, werden die positionen installiert
+ */        
+        if ( $install_standard_position )
+        {
         self::addStandardForSportType($sports_type_name, $sports_type_id, $type,$update=0);
+        }
         }
         }
         
