@@ -72,10 +72,12 @@ class sportsmanagementViewjltournamenttree extends JViewLegacy
 	$this->jinput = $this->app->input;
     //$this->projectid = JRequest::getInt( "p", 0 );
     sportsmanagementModelProject::setProjectID($this->jinput->getInt('p',0),sportsmanagementModelProject::$cfg_which_database);
-    	
+    $this->project = sportsmanagementModelProject::getProject();	
         
 //    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($this->project,true).'</pre>'),'');
-    
+
+if ( $this->project->project_type == 'TOURNAMENT_MODE' )
+{    
 //	$js ="registerhome('".JURI::base()."','Tournament Tree Extension','".$app->getCfg('sitename')."','0');". "\n";
 //  $document->addScriptDeclaration( $js );	
     
@@ -147,7 +149,7 @@ $style = 'div.jQBracket {'
       
 $document->addStyleDeclaration( $style );
 */
-
+}
 
 
 		parent::display( $tpl );
