@@ -195,11 +195,8 @@ else
 {
 return 0;                   
 }    
-                  
     
 }
-
-
 
 }
 
@@ -580,6 +577,9 @@ if ( $value_match->id == 1324 )
 $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' temp<br><pre>'.print_r($temp,true).'</pre>'),'');    
 }
 
+/**
+ * hier steht der link zum spiel: $value_match->_links->self->href
+ */
 
 $exportmatches[] = $temp;
 }

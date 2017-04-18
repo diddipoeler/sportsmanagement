@@ -308,7 +308,7 @@ $query = $db->getQuery(true);
 //$subQuery2 = $db->getQuery(true);
 
 $query->select("name,project_art_id");
-$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project');
+$query->from('#__sportsmanagement_project');
 $query->where('id = '.$this->projectid);
     
 $db->setQuery($query);
@@ -355,8 +355,8 @@ if ( !array_key_exists('tree_logo', $this->request) )
 }
 
 $query->select("ro.*");
-$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round as ro');
-$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match as ma on ma.round_id = ro.id');
+$query->from('#__sportsmanagement_round as ro');
+$query->join('INNER','#__sportsmanagement_match as ma on ma.round_id = ro.id');
 $query->where('ro.project_id = '.$this->projectid);
 
 // von bis runde gesetzt
@@ -442,6 +442,12 @@ return '['.implode(",",$temp_rounds).']';
 }
 
 
+/**
+ * sportsmanagementModeljltournamenttree::getTournamentMatches()
+ * 
+ * @param mixed $rounds
+ * @return
+ */
 function getTournamentMatches($rounds)
 {
 $option = JRequest::getCmd('option');
@@ -1287,19 +1293,19 @@ $query->select("concat(c1.lastname,' - ',c1.firstname,'' ) AS firstname,c1.count
 $query->select("concat(c2.lastname,' - ',c2.firstname,'' ) AS secondname,c2.country as secondcountry,c2.picture as secondlogo");
 
 // From the table
-$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');        
-$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON m.round_id = r.id');  
+$query->from('#__sportsmanagement_match AS m');        
+$query->join('INNER','#__sportsmanagement_round AS r ON m.round_id = r.id');  
 
 $subQuery->select("tt1.id as team_id,c1.lastname,c1.firstname,c1.country,c1.picture");
-$subQuery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS c1');
-$subQuery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS tp1 ON c1.id = tp1.person_id');
-$subQuery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt1 ON tt1.team_id = tp1.id');  
+$subQuery->from('#__sportsmanagement_person AS c1');
+$subQuery->join('INNER','#__sportsmanagement_season_person_id AS tp1 ON c1.id = tp1.person_id');
+$subQuery->join('INNER','#__sportsmanagement_project_team AS tt1 ON tt1.team_id = tp1.id');  
 $query->join('LEFT','(' . $subQuery . ') AS c1 on m.projectteam1_id = c1.team_id ');
 
 $subQuery2->select("tt2.id as team_id,c2.lastname,c2.firstname,c2.country,c2.picture");
-$subQuery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS c2');
-$subQuery2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS tp2 ON c2.id = tp2.person_id');
-$subQuery2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt2 ON tt2.team_id = tp2.id');  
+$subQuery2->from('#__sportsmanagement_person AS c2');
+$subQuery2->join('INNER','#__sportsmanagement_season_person_id AS tp2 ON c2.id = tp2.person_id');
+$subQuery2->join('INNER','#__sportsmanagement_project_team AS tt2 ON tt2.team_id = tp2.id');  
 $query->join('LEFT','(' . $subQuery2 . ') AS c2 on m.projectteam2_id = c2.team_id ');
 
 //$query = $query2;        
@@ -1312,21 +1318,21 @@ $query->select("c1.teamname AS firstname,c1.country as firstcountry,c1.logo_big 
 $query->select("c2.teamname AS secondname,c2.country as secondcountry,c2.logo_big as secondlogo");
 
 // From the table
-$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m');        
-$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON m.round_id = r.id');  
+$query->from('#__sportsmanagement_match AS m');        
+$query->join('INNER','#__sportsmanagement_round AS r ON m.round_id = r.id');  
 
 $subQuery->select("tt1.id as team_id,t1.".$this->request['tree_name']." as teamname,c1.country,c1.logo_big");
-$subQuery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1');
-$subQuery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c1 ON c1.id = t1.club_id');
-$subQuery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS tp1 ON t1.id = tp1.team_id');
-$subQuery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt1 ON tt1.team_id = tp1.id');  
+$subQuery->from('#__sportsmanagement_team AS t1');
+$subQuery->join('INNER','#__sportsmanagement_club AS c1 ON c1.id = t1.club_id');
+$subQuery->join('INNER','#__sportsmanagement_season_team_id AS tp1 ON t1.id = tp1.team_id');
+$subQuery->join('INNER','#__sportsmanagement_project_team AS tt1 ON tt1.team_id = tp1.id');  
 $query->join('LEFT','(' . $subQuery . ') AS c1 on m.projectteam1_id = c1.team_id ');
 
 $subQuery2->select("tt2.id as team_id,t2.".$this->request['tree_name']." as teamname,c2.country,c2.logo_big");
-$subQuery2->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2');
-$subQuery2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c2 ON c2.id = t2.club_id');
-$subQuery2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS tp2 ON t2.id = tp2.team_id');
-$subQuery2->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt2 ON tt2.team_id = tp2.id');  
+$subQuery2->from('#__sportsmanagement_team AS t2');
+$subQuery2->join('INNER','#__sportsmanagement_club AS c2 ON c2.id = t2.club_id');
+$subQuery2->join('INNER','#__sportsmanagement_season_team_id AS tp2 ON t2.id = tp2.team_id');
+$subQuery2->join('INNER','#__sportsmanagement_project_team AS tt2 ON tt2.team_id = tp2.id');  
 $query->join('LEFT','(' . $subQuery2 . ') AS c2 on m.projectteam2_id = c2.team_id ');
 
 //$query = $query2;
@@ -1412,6 +1418,11 @@ return implode(",",$varresults);
 
 }
 
+/**
+ * sportsmanagementModeljltournamenttree::checkStartExtension()
+ * 
+ * @return void
+ */
 function checkStartExtension()
 {
 $application = JFactory::getApplication();

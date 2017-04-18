@@ -53,6 +53,7 @@ jimport( 'joomla.application.component.view');
  */
 class sportsmanagementViewjltournamenttree extends JViewLegacy
 {
+    
 	/**
 	 * sportsmanagementViewjltournamenttree::display()
 	 * 
@@ -65,7 +66,16 @@ class sportsmanagementViewjltournamenttree extends JViewLegacy
     // Get a refrence of the page instance in joomla
 	$document = JFactory::getDocument();
 	$uri = JFactory::getURI();		
-	$app = JFactory::getApplication();		
+	$app = JFactory::getApplication();	
+    
+    $this->app = JFactory::getApplication();
+	$this->jinput = $this->app->input;
+    //$this->projectid = JRequest::getInt( "p", 0 );
+    sportsmanagementModelProject::setProjectID($this->jinput->getInt('p',0),sportsmanagementModelProject::$cfg_which_database);
+    	
+        
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project<br><pre>'.print_r($this->project,true).'</pre>'),'');
+    
 //	$js ="registerhome('".JURI::base()."','Tournament Tree Extension','".$app->getCfg('sitename')."','0');". "\n";
 //  $document->addScriptDeclaration( $js );	
     
