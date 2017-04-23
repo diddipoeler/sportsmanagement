@@ -1037,7 +1037,6 @@ catch (Exception $e){
         return $result;
         
 	}
-
 	
 	/**
 	 * sportsmanagementModelProject::_getTeams()
