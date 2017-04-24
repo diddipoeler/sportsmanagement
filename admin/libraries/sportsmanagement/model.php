@@ -449,6 +449,7 @@ if( $this->jsmapp->isSite() )
             break;  
             case 'project':
             $data['current_round'] = 0;
+	$project_old = (int) $this->jsmjinput->getInt('id');		    
             break;  
             default:
             break; 
@@ -476,7 +477,45 @@ if( $this->jsmapp->isSite() )
  * Here you can do other tasks with your newly saved record...
  */                
                 $this->jsmapp->enqueueMessage(JText::plural(strtoupper($this->jsmoption) . '_N_ITEMS_CREATED', $id),'');
+
+if ($this->jsmjinput->get('task') == 'save2copy') 
+ 		{
+/**
+ * differenzierung zwischen den views
+ */       
+            switch ( $this->jsmview )
+            {
+            case 'project':
+$this->jsmquery->clear(); 
+$this->jsmquery->select('*');
+$this->jsmquery->from('#__sportsmanagement_division');
+$this->jsmquery->where('project_id ='. $project_old );
+$this->jsmdb->setQuery($this->jsmquery);
+$result = $this->jsmdb->loadObjectList();
+foreach($result as $field )
+{
+// Create and populate an object.
+$profile = new stdClass();
+$profile->project_id = $id;
+$profile->name = $field->name;
+$profile->alias = $field->alias;
+$profile->shortname = $field->shortname;
+$profile->published = $field->published;
+$profile->ordering = $field->ordering;
+// Insert the object into the user profile table.
+$insertresult = $this->jsmdb->insertObject('#__sportsmanagement_division', $profile);
+
+
+}
+
+            break;  
+            default:
+            break; 
             }
+		}		    
+	    
+	    
+	    }
 
 /**
  * differenzierung zwischen den views
