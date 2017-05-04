@@ -383,7 +383,11 @@ $nbcols = 0;
 		?>
 	<tr class="<?php echo $highlight; ?>"<?php echo $favStyle; ?>>
                 <?php
-		// start events
+
+/**
+ * start events
+ */
+
 		if ($this->config['show_events'])
 		{
 			?>
@@ -395,7 +399,10 @@ $nbcols = 0;
 			if ($this->config['use_tabs_events']) {
 			    $hasEvents = (count($events) + count($subs) > 0 && $this->config['show_events']);
 			} else {
-			    //no subs are shown when not using tabs for displaying events so don't check for that
+			 
+/**
+ * no subs are shown when not using tabs for displaying events so don't check for that
+ */             
 			    $hasEvents = (count($events) > 0 && $this->config['show_events']);
 			}
 
@@ -511,12 +518,19 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 		?>
 
 		<?php
-		// Define some variables which will be used
+
+/**
+ * Define some variables which will be used
+ */
+ 
 		$teamA	= '';
 		$teamB	= '';
 		$score	= "";
 
-		// Check if the home and guest team should be switched arround
+/**
+ * Check if the home and guest team should be switched arround
+ */
+
 		if ($this->config['switch_home_guest']) {
 			$class1 = 'left';
 			$class2 = 'right';
@@ -550,17 +564,20 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 
 		$teamA .= '<td class="'.$class1.'">'.$home.'</td>';
 
-		// Check if the user wants to show the club logo or country flag
+/**
+ * Check if the user wants to show the club logo or country flag
+ */
+ 
 		switch ($this->config['show_logo_small'])
 		{
 			case 1 :
 				{
 					$teamA .= '<td class="'.$class1.'">';
-					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1,0,'logo_small',JRequest::getInt('cfg_which_database',0),$match->roundcode );
+					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1,0,'logo_small',JRequest::getInt('cfg_which_database',0),$match->id );
 					$teamA .= '</td>';
 
 					$teamB .= '<td class="'.$class2.'">';
-					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1,0,'logo_small',JRequest::getInt('cfg_which_database',0),$match->roundcode).' ';
+					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1,0,'logo_small',JRequest::getInt('cfg_which_database',0),$match->id).' ';
 					$teamB .= '</td>';
 				}
 				break;
@@ -568,11 +585,11 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
             case 5 :
             {
 					$teamA .= '<td class="'.$class1.'">';
-					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1,0,'logo_middle',JRequest::getInt('cfg_which_database',0),$match->roundcode);
+					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1,0,'logo_middle',JRequest::getInt('cfg_which_database',0),$match->id);
 					$teamA .= '</td>';
 
 					$teamB .= '<td class="'.$class2.'">';
-					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1,0,'logo_middle',JRequest::getInt('cfg_which_database',0),$match->roundcode).' ';
+					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1,0,'logo_middle',JRequest::getInt('cfg_which_database',0),$match->id).' ';
 					$teamB .= '</td>';
 				}
             break;
@@ -580,11 +597,11 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
             case 6 :
             {
 					$teamA .= '<td class="'.$class1.'">';
-					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1,0,'logo_big',JRequest::getInt('cfg_which_database',0),$match->roundcode);
+					$teamA .= ' '.sportsmanagementModelProject::getClubIconHtml($hometeam,1,0,'logo_big',JRequest::getInt('cfg_which_database',0),$match->id);
 					$teamA .= '</td>';
 
 					$teamB .= '<td class="'.$class2.'">';
-					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1,0,'logo_big',JRequest::getInt('cfg_which_database',0),$match->roundcode).' ';
+					$teamB .= sportsmanagementModelProject::getClubIconHtml($guestteam,1,0,'logo_big',JRequest::getInt('cfg_which_database',0),$match->id).' ';
 					$teamB .= '</td>';
 				}
             break;
@@ -631,9 +648,12 @@ $awaylink = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$ro
 		if (!$match->cancel)
 		{
 
-            // In case show_part_results is true, then first check if the part results are available;
-            // 'No part results available' occurs when teamX_result_split ONLY consists of zero or more ";"
-            // (zero for projects with a single playing period, one or more for projects with two or more playing periods)
+/**
+ * In case show_part_results is true, then first check if the part results are available;
+ * 'No part results available' occurs when teamX_result_split ONLY consists of zero or more ";"
+ * (zero for projects with a single playing period, one or more for projects with two or more playing periods)
+ */
+            
             $team1_result_split_present = preg_match('/^;*$/', $match->team1_result_split) == 0;
             $team2_result_split_present = preg_match('/^;*$/', $match->team2_result_split) == 0;
 
