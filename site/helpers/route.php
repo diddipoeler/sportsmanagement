@@ -1,41 +1,41 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
-* @version         1.0.05
-* @file                agegroup.php
-* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: ? 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
-* @license                This file is part of SportsManagement.
-*
-* SportsManagement is free software: you can redistribute it and/or modify
-* it under the terms of the GNU General Public License as published by
-* the Free Software Foundation, either version 3 of the License, or
-* (at your option) any later version.
-*
-* SportsManagement is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-* GNU General Public License for more details.
-*
-* You should have received a copy of the GNU General Public License
-* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
-*
-* Diese Datei ist Teil von SportsManagement.
-*
-* SportsManagement ist Freie Software: Sie k?nnen es unter den Bedingungen
-* der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder sp?teren
-* ver?ffentlichten Version, weiterverbreiten und/oder modifizieren.
-*
-* SportsManagement wird in der Hoffnung, dass es n?tzlich sein wird, aber
-* OHNE JEDE GEW?HELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gew?hrleistung der MARKTF?HIGKEIT oder EIGNUNG F?R EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License f?r weitere Details.
-*
-* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
-* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
-*
-* Note : All ini files need to be saved as UTF-8 without BOM
-*/
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+ * @version         1.0.05
+ * @file                agegroup.php
+ * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+ * @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+ * @license                This file is part of SportsManagement.
+ *
+ * SportsManagement is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SportsManagement is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Diese Datei ist Teil von SportsManagement.
+ *
+ * SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+ * der GNU General Public License, wie von der Free Software Foundation,
+ * Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+ * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+ *
+ * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+ * OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
+ * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+ * Siehe die GNU General Public License für weitere Details.
+ *
+ * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+ * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+ *
+ * Note : All ini files need to be saved as UTF-8 without BOM
+ */
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
@@ -1033,7 +1033,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 	 * @param mixed $projectid
 	 * @return
 	 */
-	public static function getFavPlayersRoute( $projectid ,$cfg_which_database = 0,$s=0)
+	public static function getFavPlayersRoute( $projectid ,$cfg_which_database = 0,$s = 0)
 	{
 		$params = array(	"option" => "com_sportsmanagement",
 					"view" => "players",
@@ -1136,14 +1136,17 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 //		return $link;
 //	}
 
-	/**
-	 * sportsmanagementHelperRoute::getStatsChartDataRoute()
-	 * 
-	 * @param mixed $projectid
-	 * @param integer $division
-	 * @return
-	 */
-	public static function getStatsChartDataRoute( $projectid, $division=0 ,$cfg_which_database = 0,$s=0)
+    /**
+     * sportsmanagementHelperRoute::getStatsChartDataRoute()
+     *
+     * @param mixed   $projectid
+     * @param integer $division
+     * @param int     $cfg_which_database
+     * @param int     $s
+     *
+     * @return string
+     */
+	public static function getStatsChartDataRoute( $projectid, $division=0 ,$cfg_which_database = 0,$s = 0)
 	{
 		$params = array(	"option" => "com_sportsmanagement",
 					"view" => "stats",
@@ -1158,14 +1161,17 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 		return $link;
 	}
 
-	/**
-	 * sportsmanagementHelperRoute::getTeamStatsChartDataRoute()
-	 * 
-	 * @param mixed $projectid
-	 * @param mixed $teamid
-	 * @return
-	 */
-	public static function getTeamStatsChartDataRoute( $projectid, $teamid ,$cfg_which_database = 0,$s=0)
+    /**
+     * sportsmanagementHelperRoute::getTeamStatsChartDataRoute()
+     *
+     * @param mixed $projectid
+     * @param mixed $teamid
+     * @param int   $cfg_which_database
+     * @param int   $s
+     *
+     * @return string
+     */
+	public static function getTeamStatsChartDataRoute( $projectid, $teamid ,$cfg_which_database = 0,$s = 0)
 	{
 		$params = array(	"option" => "com_sportsmanagement",
 					"view" => "teamstats",
@@ -1202,13 +1208,16 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 //		return $link;
 //	}
 
-	/**
-	 * sportsmanagementHelperRoute::getBracketsRoute()
-	 * 
-	 * @param mixed $projectid
-	 * @return
-	 */
-	public static function getBracketsRoute( $projectid ,$cfg_which_database = 0,$s=0)
+    /**
+     * sportsmanagementHelperRoute::getBracketsRoute()
+     *
+     * @param mixed $projectid
+     * @param int   $cfg_which_database
+     * @param int   $s
+     *
+     * @return string
+     */
+	public static function getBracketsRoute( $projectid ,$cfg_which_database = 0,$s = 0)
 	{
 		$params = array(	"option" => "com_sportsmanagement",
 					"view" => "treetonode",
@@ -1247,14 +1256,17 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 //		return $link;
 //	}
 
-	/**
-	 * sportsmanagementHelperRoute::getClubsRoute()
-	 * 
-	 * @param mixed $projectid
-	 * @param mixed $divisionid
-	 * @return
-	 */
-	public static function getClubsRoute( $projectid, $divisionid = null ,$cfg_which_database = 0,$s=0)
+    /**
+     * sportsmanagementHelperRoute::getClubsRoute()
+     *
+     * @param mixed $projectid
+     * @param mixed $divisionid
+     * @param int   $cfg_which_database
+     * @param int   $s
+     *
+     * @return string
+     */
+	public static function getClubsRoute( $projectid, $divisionid = null ,$cfg_which_database = 0,$s = 0 )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
 					"view" => "clubs",
@@ -1268,14 +1280,17 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 		return $link;
 	}
 
-	/**
-	 * sportsmanagementHelperRoute::getTeamsRoute()
-	 * 
-	 * @param mixed $projectid
-	 * @param mixed $divisionid
-	 * @return
-	 */
-	public static function getTeamsRoute( $projectid, $divisionid = null ,$cfg_which_database = 0,$s=0)
+    /**
+     * sportsmanagementHelperRoute::getTeamsRoute()
+     *
+     * @param mixed $projectid
+     * @param mixed $divisionid
+     * @param int   $cfg_which_database
+     * @param int   $s
+     *
+     * @return string
+     */
+	public static function getTeamsRoute( $projectid, $divisionid = null ,$cfg_which_database = 0,$s = 0 )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
 					"view" => "teams",
@@ -1310,15 +1325,18 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 //		return $link;
 //	}
 
-	/**
-	 * sportsmanagementHelperRoute::getTeamStaffRoute()
-	 * 
-	 * @param mixed $projectid
-	 * @param mixed $playerid
-	 * @param mixed $showType
-	 * @return
-	 */
-	public static function getTeamStaffRoute( $projectid, $playerid, $showType ,$cfg_which_database = 0,$s=0)
+    /**
+     * sportsmanagementHelperRoute::getTeamStaffRoute()
+     *
+     * @param mixed $projectid
+     * @param mixed $playerid
+     * @param mixed $showType
+     * @param int   $cfg_which_database
+     * @param int   $s
+     *
+     * @return string
+     */
+	public static function getTeamStaffRoute( $projectid, $playerid, $showType ,$cfg_which_database = 0,$s = 0 )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
 					"view" => "person",
@@ -1353,19 +1371,25 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 //
 //		return $link;
 //	}
-    
+
     /**
      * sportsmanagementHelperRoute::getEditLineupRoute()
-     * 
-     * @param mixed $projectid
-     * @param mixed $matchid
-     * @param mixed $task
-     * @param mixed $team
-     * @param mixed $projectTeam
-     * @param mixed $match_date
-     * @return
+     *
+     * @param mixed  $projectid
+     * @param mixed  $matchid
+     * @param mixed  $task
+     * @param mixed  $team
+     * @param mixed  $projectTeam
+     * @param mixed  $match_date
+     * @param int    $cfg_which_database
+     * @param int    $s
+     * @param int    $r
+     * @param int    $division
+     * @param string $oldlayout
+     *
+     * @return string
      */
-    public static function getEditLineupRoute($projectid, $matchid, $task = null, $team = null, $projectTeam = null, $match_date = null,$cfg_which_database = 0,$s=0,$r=0,$division=0,$oldlayout='')
+    public static function getEditLineupRoute($projectid, $matchid, $task = null, $team = null, $projectTeam = null, $match_date = null,$cfg_which_database = 0,$s = 0,$r = 0,$division = 0,$oldlayout = '' )
 	{
 //	   $params = array(	"option" => "com_sportsmanagement",
 //					"view" => "results",
@@ -1406,19 +1430,26 @@ $params = array(	"option" => "com_sportsmanagement",
         $link = JRoute::_( 'index2.php?' . $query , false );
 
 		return $link;
-    }   
+    }
 
-	/**
-	 * sportsmanagementHelperRoute::getEditEventsRoute()
-	 * 
-	 * @param mixed $projectid
-	 * @param mixed $matchid
-	 * @param mixed $task
-	 * @param mixed $team
-	 * @param mixed $projectTeam
-	 * @return
-	 */
-	public static function getEditEventsRoute( $projectid, $matchid, $task = null, $team = null, $projectTeam = null, $match_date = null,$cfg_which_database = 0,$s=0,$r=0,$division=0,$oldlayout='' )
+    /**
+     * sportsmanagementHelperRoute::getEditEventsRoute()
+     *
+     * @param mixed  $projectid
+     * @param mixed  $matchid
+     * @param mixed  $task
+     * @param mixed  $team
+     * @param mixed  $projectTeam
+     * @param null   $match_date
+     * @param int    $cfg_which_database
+     * @param int    $s
+     * @param int    $r
+     * @param int    $division
+     * @param string $oldlayout
+     *
+     * @return string
+     */
+	public static function getEditEventsRoute( $projectid, $matchid, $task = null, $team = null, $projectTeam = null, $match_date = null,$cfg_which_database = 0,$s = 0,$r = 0,$division = 0,$oldlayout = '' )
 	{
 //		$params = array(	"option" => "com_sportsmanagement",
 //					"view" => "results",
@@ -1458,18 +1489,21 @@ $params = array(	"option" => "com_sportsmanagement",
 		return $link;
 	}
 
-	/**
-	 * sportsmanagementHelperRoute::getEditEventsRouteNew()
-	 * 
-	 * @param mixed $projectid
-	 * @param mixed $matchid
-	 * @param mixed $team1
-	 * @param mixed $projectTeam1
-	 * @param mixed $team2
-	 * @param mixed $projectTeam2
-	 * @return
-	 */
-	public static function getEditEventsRouteNew( $projectid, $matchid, $team1 = null, $projectTeam1 = null, $team2 = null, $projectTeam2 = null ,$cfg_which_database = 0,$s=0)
+    /**
+     * sportsmanagementHelperRoute::getEditEventsRouteNew()
+     *
+     * @param mixed $projectid
+     * @param mixed $matchid
+     * @param mixed $team1
+     * @param mixed $projectTeam1
+     * @param mixed $team2
+     * @param mixed $projectTeam2
+     * @param int   $cfg_which_database
+     * @param int   $s
+     *
+     * @return string
+     */
+	public static function getEditEventsRouteNew( $projectid, $matchid, $team1 = null, $projectTeam1 = null, $team2 = null, $projectTeam2 = null ,$cfg_which_database = 0,$s = 0 )
 	{
 		$params = array(	"option" => "com_sportsmanagement",
 					"view" => "editevents",
@@ -1487,14 +1521,20 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 		return $link;
 	}
 
-	/**
-	 * sportsmanagementHelperRoute::getEditMatchRoute()
-	 * 
-	 * @param mixed $projectid
-	 * @param mixed $matchid
-	 * @return
-	 */
-	public static function getEditMatchRoute($projectid, $matchid,$cfg_which_database = 0,$s=0,$r=0,$division=0,$oldlayout='')
+    /**
+     * sportsmanagementHelperRoute::getEditMatchRoute()
+     *
+     * @param mixed  $projectid
+     * @param mixed  $matchid
+     * @param int    $cfg_which_database
+     * @param int    $s
+     * @param int    $r
+     * @param int    $division
+     * @param string $oldlayout
+     *
+     * @return string
+     */
+	public static function getEditMatchRoute($projectid, $matchid,$cfg_which_database = 0,$s = 0,$r = 0,$division = 0,$oldlayout = '' )
 	{
 // option=com_sportsmanagement&view=results&cfg_which_database=0&s=1&p=1:1-bundesliga-2015-16&r=15:15-spieltag&division=0&mode=0&order=0&layout=form&Itemid=150		
 /*
@@ -1533,17 +1573,22 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 
 		return $link;
 	}
-    
-    
+
+
     /**
      * sportsmanagementHelperRoute::getEditStatisticsRoute()
-     * 
-     * @param mixed $projectid
-     * @param mixed $matchid
+     *
+     * @param mixed   $projectid
+     * @param mixed   $matchid
      * @param integer $cfg_which_database
-     * @return
+     * @param int     $s
+     * @param int     $r
+     * @param int     $division
+     * @param string  $oldlayout
+     *
+     * @return string
      */
-    public static function getEditStatisticsRoute($projectid, $matchid,$cfg_which_database = 0,$s=0,$r=0,$division=0,$oldlayout='')
+    public static function getEditStatisticsRoute($projectid, $matchid,$cfg_which_database = 0,$s = 0,$r = 0,$division = 0,$oldlayout = '')
 	{
 //		$params = array(	"option" => "com_sportsmanagement",
 //					"view" => "match",
@@ -1589,16 +1634,21 @@ $params = array(	"option" => "com_sportsmanagement",
         
 		return $link;
 	}
-    
+
     /**
      * sportsmanagementHelperRoute::getEditRefereesRoute()
-     * 
-     * @param mixed $projectid
-     * @param mixed $matchid
+     *
+     * @param mixed   $projectid
+     * @param mixed   $matchid
      * @param integer $cfg_which_database
-     * @return
+     * @param int     $s
+     * @param int     $r
+     * @param int     $division
+     * @param string  $oldlayout
+     *
+     * @return string
      */
-    public static function getEditRefereesRoute($projectid, $matchid,$cfg_which_database = 0,$s=0,$r=0,$division=0,$oldlayout='')
+    public static function getEditRefereesRoute($projectid, $matchid,$cfg_which_database = 0,$s = 0,$r = 0,$division = 0,$oldlayout = '')
 	{
 //		$params = array(	"option" => "com_sportsmanagement",
 //					"view" => "match",
@@ -1644,15 +1694,18 @@ $params = array(	"option" => "com_sportsmanagement",
 
 		return $link;
 	}
-   
 
-	/**
-	 * sportsmanagementHelperRoute::getContactRoute()
-	 * 
-	 * @param mixed $contactid
-	 * @return
-	 */
-	public static function getContactRoute( $contactid ,$cfg_which_database = 0,$s=0)
+
+    /**
+     * sportsmanagementHelperRoute::getContactRoute()
+     *
+     * @param mixed $contactid
+     * @param int   $cfg_which_database
+     * @param int   $s
+     *
+     * @return string
+     */
+	public static function getContactRoute( $contactid ,$cfg_which_database = 0,$s = 0)
 	{
 		/* Old Route to JOOMLA built in contact id
 		 $query = self::buildQuery(
@@ -1672,15 +1725,18 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 		return $link;
 	}
 
-	/**
-	 * sportsmanagementHelperRoute::getUserProfileRouteCBE()
-	 * 
-	 * @param mixed $u_id
-	 * @param mixed $p_id
-	 * @param mixed $pl_id
-	 * @return
-	 */
-	public static function getUserProfileRouteCBE( $u_id, $p_id, $pl_id ,$cfg_which_database = 0,$s=0)
+    /**
+     * sportsmanagementHelperRoute::getUserProfileRouteCBE()
+     *
+     * @param mixed $u_id
+     * @param mixed $p_id
+     * @param mixed $pl_id
+     * @param int   $cfg_which_database
+     * @param int   $s
+     *
+     * @return string
+     */
+	public static function getUserProfileRouteCBE( $u_id, $p_id, $pl_id ,$cfg_which_database = 0,$s = 0)
 	{
 
 		$params = array(	"option" => "com_cbe",
@@ -1695,13 +1751,16 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 		return $link;
 	}
 
-	/**
-	 * sportsmanagementHelperRoute::getUserProfileRoute()
-	 * 
-	 * @param mixed $userid
-	 * @return
-	 */
-	public static function getUserProfileRoute( $userid ,$cfg_which_database = 0,$s=0)
+    /**
+     * sportsmanagementHelperRoute::getUserProfileRoute()
+     *
+     * @param mixed $userid
+     * @param int   $cfg_which_database
+     * @param int   $s
+     *
+     * @return string
+     */
+	public static function getUserProfileRoute( $userid ,$cfg_which_database = 0,$s = 0)
 	{
 		$params = array(	"option" => "com_comprofiler",
 					"task" => "userProfile",
@@ -1713,15 +1772,18 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 		return $link;
 	}
 
-	/**
-	 * sportsmanagementHelperRoute::getIcalRoute()
-	 * 
-	 * @param mixed $projectid
-	 * @param mixed $teamid
-	 * @param mixed $pgid
-	 * @return
-	 */
-	public static function getIcalRoute( $projectid, $teamid=null, $pgid=null ,$cfg_which_database = 0,$s=0)
+    /**
+     * sportsmanagementHelperRoute::getIcalRoute()
+     *
+     * @param mixed $projectid
+     * @param mixed $teamid
+     * @param mixed $pgid
+     * @param int   $cfg_which_database
+     * @param int   $s
+     *
+     * @return string
+     */
+	public static function getIcalRoute( $projectid, $teamid=null, $pgid=null ,$cfg_which_database = 0,$s = 0)
 	{
 		$params = array(	"option" => "com_sportsmanagement",
 					"view" => "ical",
@@ -1735,13 +1797,14 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 
 		return $link;
 	}
-	
-	/**
-	 * sportsmanagementHelperRoute::buildQuery()
-	 * 
-	 * @param mixed $parts
-	 * @return
-	 */
+
+    /**
+     * sportsmanagementHelperRoute::buildQuery()
+     *
+     * @param mixed $parts
+     *
+     * @return string
+     */
 	public static function buildQuery($parts)
 	{
 		if ($item = self::_findItem($parts))
