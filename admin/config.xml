@@ -329,6 +329,7 @@
 	</fieldset>
   
 <!-- register 2 -->
+<!-- sis parameter -->
 	<fieldset name="sis-konfiguration"
 	label="COM_SPORTSMANAGEMENT_CONFIG_SIS_SETTINGS_LABEL"
 		description="COM_SPORTSMANAGEMENT_CONFIG_SIS_SETTINGS_DESC"
@@ -824,6 +825,17 @@ multiple="true"
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>		
+
+
+<field name="show_option_projectteams_quickadd" 
+    type="radio" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_PROJECTTEAMS_QUICKADD" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_PROJECTTEAMS_QUICKADD_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 		
 <field name="show_option_federation" 
     type="radio" 

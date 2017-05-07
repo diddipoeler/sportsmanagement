@@ -67,7 +67,7 @@ echo $this->loadTemplate('joomla2');
 <script type="text/javascript">
 var teampicture = new Array;
 <?php
-foreach ($this->lists['country_teams_picture'] as $key => $value)
+foreach ( $this->lists['country_teams_picture'] as $key => $value )
 {
 if ( !$value )
 {

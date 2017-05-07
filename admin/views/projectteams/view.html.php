@@ -238,8 +238,12 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 																'value',
 																'text',
 																$this->state->get('filter.search_nation'));
+        
+        if ( JComponentHelper::getParams($this->option)->get('show_option_projectteams_quickadd',0) )
+        {
         $lists['country_teams'] = $model->getCountryTeams();
         $lists['country_teams_picture'] = $model->getCountryTeamsPicture();
+        }
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture<br><pre>'.print_r($lists['country_teams_picture'],true).'</pre>'   ),'');
         
@@ -264,16 +268,15 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         $lists['use_finally'] = $myoptions;
 
 		//$this->user = JFactory::getUser();
-		$this->config	= JFactory::getConfig();
-		$this->lists	= $lists;
-        $this->divisions	= $projectdivisions;
-        //$this->division	= $division;
-		$this->projectteam	= $items;
-		$this->pagination	= $pagination;
-		$this->request_url	= $uri->toString();
-        $this->project	= $project;
-        $this->project_art_id	= $this->project_art_id;
-        $this->lists	= $lists;
+		$this->config = JFactory::getConfig();
+		$this->lists = $lists;
+        $this->divisions = $projectdivisions;
+		$this->projectteam = $items;
+		$this->pagination = $pagination;
+		$this->request_url = $uri->toString();
+        $this->project = $project;
+        $this->project_art_id = $this->project_art_id;
+        $this->lists = $lists;
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'   ),'');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectteam<br><pre>'.print_r($this->projectteam,true).'</pre>'   ),'');
