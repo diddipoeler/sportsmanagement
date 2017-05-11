@@ -269,7 +269,7 @@ $app = JFactory::getApplication();
 		}
 
 		//create out of the seperated parts the new filename
-		if ( $this->_foldertype == 'flags' )
+		if ( self::$_foldertype == 'flags' )
 		{
     $filename = $beforedot . '.' . $afterdot;
     }
