@@ -166,7 +166,7 @@ static $_foldertype = '';
 	 * @param mixed $file
 	 * @return
 	 */
-	function check( $file )
+	public static function check( $file )
 	{
 		jimport( 'joomla.filesystem.file' );
 $app = JFactory::getApplication();
@@ -239,7 +239,7 @@ $app = JFactory::getApplication();
 	 *
 	 * @return string $filename the sanitized and unique image file name
 	 */
-	function sanitize( $base_Dir, $filename )
+	public static function sanitize( $base_Dir, $filename )
 	{
 		jimport( 'joomla.filesystem.file' );
     
