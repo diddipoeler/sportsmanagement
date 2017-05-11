@@ -85,7 +85,40 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch'.$this->teams
 	}
 	if( $this->config['show_team_picture'] )
 	{
-		
+?>
+	<tr class="nextmatch">
+		<td class="teampicture">
+			<?php
+        
+        $picture = $this->teams[0]->projectteam_picture;
+        //echo $picture.'<br>';
+        if ( !sportsmanagementHelper::existPicture($picture) )
+        {
+        $picture = sportsmanagementHelper::getDefaultPlaceholder('projectteam_picture');
+        }   
+        
+echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch_team'.$this->teams[0]->id,$picture,$this->teams[0]->name,$this->config['team_picture_width'])
+                             
+		?>
+
+        </td>
+		<td class="vs">&nbsp;</td>
+		<td class="teampicture"><?php
+
+        $picture = $this->teams[1]->projectteam_picture;
+        //echo $picture.'<br>';
+        if ( !sportsmanagementHelper::existPicture($picture) )
+        {
+        $picture = sportsmanagementHelper::getDefaultPlaceholder('projectteam_picture');
+        }                         
+
+echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch_team'.$this->teams[1]->id,$picture,$this->teams[1]->name,$this->config['team_picture_width'])
+        
+		?>
+        
+        </td>
+	</tr>
+	<?php		
 	}
 	?>
 	<tr class="nextmatch">
