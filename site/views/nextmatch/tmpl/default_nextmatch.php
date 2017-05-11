@@ -83,6 +83,10 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch'.$this->teams
 	</tr>
 	<?php
 	}
+	if( $this->config['show_team_picture'] )
+	{
+		
+	}
 	?>
 	<tr class="nextmatch">
 		<td class="team"><?php
