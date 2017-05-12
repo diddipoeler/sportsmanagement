@@ -465,33 +465,40 @@ class JSMRanking
 					case 0: 
 						$home->cnt_won++; 
 						$home->cnt_won_home++; 
-						
 						$away->cnt_lost++; 
 						$away->cnt_lost_away++;	
 						break;
 					case 1: 
 						$home->cnt_wot++; 
 						$home->cnt_wot_home++; 
-						$home->cnt_won++; 
-						$home->cnt_won_home++; 
-						
+/**
+ * keine summierung für hockey
+ */
+//						$home->cnt_won++; 
+//						$home->cnt_won_home++; 
 						$away->cnt_lot++; 
-						$away->cnt_lot_away++; 
-						//When LOT, LOT=1 but No LOSS Count(Hockey)
+						$away->cnt_lot_away++;
+/**
+ * keine summierung für hockey
+ */
 						//$away->cnt_lost++; 
 						//$away->cnt_lost_home++; 						
 						break;
 					case 2: 
 						$home->cnt_wso++; 
 						$home->cnt_wso_home++;
-						$home->cnt_won++; 
-						$home->cnt_won_home++; 
-						
+/**
+ * keine summierung für hockey
+ */                        
+//						$home->cnt_won++; 
+//						$home->cnt_won_home++; 
 						$away->cnt_lso++; 
 						$away->cnt_lso_away++; 
 						$away->cnt_lot++; 
 						$away->cnt_lot_away++; 		
-						//When LSO ,LSO=1 and LOT=1 but No LOSS Count (Hockey)
+/**
+ * keine summierung für hockey
+ */
 						//$away->cnt_lost++; 
 						//$away->cnt_lost_home++; 							
 						break;
@@ -522,25 +529,35 @@ class JSMRanking
 					case 1: 	
 						if ( $home_ot > $away_ot)
 						{
-							$home->cnt_won++;
-							$home->cnt_won_home++;
+/**
+ * keine summierung für hockey
+ */						  
+//							$home->cnt_won++;
+//							$home->cnt_won_home++;
 							$home->cnt_wot++; 
 							$home->cnt_wot_home++;							
-
-							$away->cnt_lost++;
-							$away->cnt_lost_away++;
+/**
+ * keine summierung für hockey
+ */
+//							$away->cnt_lost++;
+//							$away->cnt_lost_away++;
 							$away->cnt_lot++; 
 							$away->cnt_lot_away++;							
 						}
 						if ( $home_ot < $away_ot)
 						{
-							$away->cnt_won++;
-							$away->cnt_won_home++;
+/**
+ * keine summierung für hockey
+ */						  
+//							$away->cnt_won++;
+//							$away->cnt_won_home++;
 							$away->cnt_wot++; 
 							$away->cnt_wot_home++;							
-
-							$home->cnt_lost++;
-							$home->cnt_lost_away++;
+/**
+ * keine summierung für hockey
+ */
+//							$home->cnt_lost++;
+//							$home->cnt_lost_away++;
 							$home->cnt_lot++; 
 							$home->cnt_lot_away++;							
 						}						
@@ -548,25 +565,35 @@ class JSMRanking
 					case 2: 	
 						if ( $home_so > $away_so)
 						{
-							$home->cnt_won++;
-							$home->cnt_won_home++;
+/**
+ * keine summierung für hockey
+ */
+//							$home->cnt_won++;
+//							$home->cnt_won_home++;
 							$home->cnt_wso++; 
 							$home->cnt_wso_home++;							
-
-							$away->cnt_lost++;
-							$away->cnt_lost_away++;
+/**
+ * keine summierung für hockey
+ */
+//							$away->cnt_lost++;
+//							$away->cnt_lost_away++;
 							$away->cnt_lso++; 
 							$away->cnt_lso_away++;							
 						}
 						if ( $home_so < $away_so)
 						{
-							$away->cnt_won++;
-							$away->cnt_won_home++;
+/**
+ * keine summierung für hockey
+ */						  
+//							$away->cnt_won++;
+//							$away->cnt_won_home++;
 							$away->cnt_wso++; 
 							$away->cnt_wso_home++;							
-
-							$home->cnt_lost++;
-							$home->cnt_lost_away++;
+/**
+ * keine summierung für hockey
+ */
+//							$home->cnt_lost++;
+//							$home->cnt_lost_away++;
 							$home->cnt_lso++; 
 							$home->cnt_lso_away++;							
 						}						
@@ -574,8 +601,6 @@ class JSMRanking
 					}
 					$home->sum_points += ( $decision == 0 || isset($home_score) ? $draw_points : 0);
 					$away->sum_points += ( $decision == 0 || isset($away_score) ? $draw_points : 0);
-                    //$home::$sum_points += ( $decision == 0 || isset($home_score) ? $draw_points : 0);
-					//$away::$sum_points += ( $decision == 0 || isset($away_score) ? $draw_points : 0);
 
 					if ($shownegpoints==1)
 					{
@@ -596,28 +621,36 @@ class JSMRanking
 					case 1:   
 						$home->cnt_lot++; 
 						$home->cnt_lot_home++; 
-						//When LOT, LOT=1 but No LOSS Count(Hockey)
+/**
+ * keine summierung für hockey
+ */                        
 						//$home->cnt_lost++; 
 						//$home->cnt_lost_home++; 
-						
 						$away->cnt_wot++; 
-						$away->cnt_wot_away++; 
-						$away->cnt_won++; 
-						$away->cnt_won_away++; 						
+						$away->cnt_wot_away++;
+/**
+ * keine summierung für hockey
+ */                         
+//						$away->cnt_won++; 
+//						$away->cnt_won_away++; 						
 						break;
 					case 2:   
 						$home->cnt_lso++; 
 						$home->cnt_lso_home++; 
 						$home->cnt_lot++; 
-						$home->cnt_lot_home++; 
-						//When LSO ,LSO=1 and LOT=1 but No LOSS Count (Hockey)
+						$home->cnt_lot_home++;
+/**
+ * keine summierung für hockey
+ */                         
 						//$home->cnt_lost++; 
 						//$home->cnt_lost_home++; 	
-						
 						$away->cnt_wso++; 
 						$away->cnt_wso_away++;
-						$away->cnt_won++; 
-						$away->cnt_won_away++; 						
+/**
+ * keine summierung für hockey
+ */                        
+//						$away->cnt_won++; 
+//						$away->cnt_won_away++; 						
 						break;
 					}					
 									
