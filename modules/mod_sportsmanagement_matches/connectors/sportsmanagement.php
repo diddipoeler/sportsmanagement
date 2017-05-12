@@ -265,6 +265,7 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
 		$query->clear();
         $query->select('m.id,m.id as match_id,m.projectteam1_id,m.projectteam2_id,m.round_id,m.team1_result,m.team2_result');
         $query->select('m.team1_result_split,m.team2_result_split,m.match_result_detail,m.match_result_type,m.crowd,m.show_report,m.playground_id ');
+        $query->select('m.team1_result_ot,m.team2_result_ot,m.team1_result_so,m.team2_result_so');
         $query->select('r.name');
         $query->select('m.match_date AS match_date,m.match_timestamp');
         $query->select('UTC_TIMESTAMP() AS currenttime');
@@ -322,7 +323,7 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
         $query->where('( m.match_timestamp >= '. $startdatum_next_matches .' AND m.match_timestamp <= '.$enddatum_next_matches.' )'  );    
         }
 /**
- * zukünftige und gespielten paarungen
+ * zukünftige und gespielte paarungen
  */
         if ( $this->params->get('show_played',0) && $this->params->get('show_nextmatches',0) )
         {

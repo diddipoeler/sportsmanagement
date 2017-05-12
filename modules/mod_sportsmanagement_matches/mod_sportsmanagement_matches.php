@@ -164,7 +164,9 @@ $oldround_id  = 0;
 if($ajax == 0) { echo '<div id="modJLML'.$module->id.'holder" class="modJLMLholder">';}
 $matches = $mod->getMatches();
 
-$cnt=($nr >= 0) ? $nr : 0;
+//echo 'matches <pre>'.print_r($matches,true).'</pre>';
+
+$cnt = ($nr >= 0) ? $nr : 0;
 if (count($matches) > 0){
 	//$user = JFactory::getUser();
 	foreach ($matches AS $key => $match) {

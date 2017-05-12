@@ -178,6 +178,7 @@
 
 			</fieldset>
 
+<!-- Einstellung der Anzeige für die letzten Ergebnisse der Mannschaften -->			
 			<fieldset	name="Lastresults"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SETTINGS_FOR_LAST_RESULTS_TITLE"
 						description="MOD_SPORTSMANAGEMENT_LASTRESULTS_DESC"
@@ -224,8 +225,26 @@
 					<option value="desc">MOD_SPORTSMANAGEMENT_MATCHES_DESC</option>
 				</field>
 
+				<field 	name="show_text_overtime" type="radio" default="1"
+				class="radio btn-group btn-group-yesno"
+						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_TEXT_OVERTIME" 
+						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_TEXT_OVERTIME_DESCR">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>				
+				
+				<field 	name="show_text_penalty" type="radio" default="1"
+				class="radio btn-group btn-group-yesno"
+						label="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_TEXT_PENALTY" 
+						description="MOD_SPORTSMANAGEMENT_MATCHES_SHOW_TEXT_PENALTY_DESCR">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				
+				
 			</fieldset>
 
+<!-- Zeitraum für zukünftig anstehende Spiele -->			
 			<fieldset	name="Nextmatches"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_TIME_IN_FUTURE_NEXT_MATCH_TITLE"
 						description="MOD_SPORTSMANAGEMENT_NEXTMATCHES_DESC"
