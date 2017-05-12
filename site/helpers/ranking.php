@@ -925,7 +925,10 @@ $res = $db->loadObjectList();
         $query->where('m.published = 1');
         $query->where('r.published = 1');
         $query->where('pt1.project_id = '.$db->Quote($pid));
-        $query->where('m.division_id = '.$division);
+        if ( $division )
+	{
+		$query->where('m.division_id = '.$division);
+	}	
         $query->where('(m.cancel IS NULL OR m.cancel = 0)');
         $query->where('m.projectteam1_id > 0 AND m.projectteam2_id > 0');
 
