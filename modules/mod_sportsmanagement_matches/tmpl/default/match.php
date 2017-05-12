@@ -82,7 +82,20 @@ if ($heading != $lastheading) {
       <td class="jlmlResults">
         <span class="jlmlResults">
     <?php
-      echo $match['result']; 
+    
+    if ( $match['resultpenalty'] )
+    {
+    echo $match['resultpenalty'];    
+    }
+    elseif ( $match['resultovertime'] )
+    {
+    echo $match['resultovertime'];    
+    }
+    else
+    {
+    echo $match['result']; 
+    }
+    
     ?>
       </span>
     <?php

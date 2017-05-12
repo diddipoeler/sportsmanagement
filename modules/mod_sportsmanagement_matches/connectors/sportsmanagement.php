@@ -257,15 +257,16 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
            
         foreach ($fav AS $key => $team)
         {
-//        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'team <br><pre>'.print_r($team,true).'</pre>'),'');   
         $favteams[] = $team->fav_team;  
-        }    
+        }
+            
         }
  
 		$query->clear();
         $query->select('m.id,m.id as match_id,m.projectteam1_id,m.projectteam2_id,m.round_id,m.team1_result,m.team2_result');
         $query->select('m.team1_result_split,m.team2_result_split,m.match_result_detail,m.match_result_type,m.crowd,m.show_report,m.playground_id ');
         $query->select('m.team1_result_ot,m.team2_result_ot,m.team1_result_so,m.team2_result_so');
+        $query->select('m.match_result_type');
         $query->select('r.name');
         $query->select('m.match_date AS match_date,m.match_timestamp');
         $query->select('UTC_TIMESTAMP() AS currenttime');

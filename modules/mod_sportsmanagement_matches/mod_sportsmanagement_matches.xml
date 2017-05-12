@@ -281,6 +281,7 @@
 
 			</fieldset>
 
+<!-- Einstellung für Kopfzeilen -->			
 			<fieldset	name="Headingsettings"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_SETTINGS_FOR_HEADINGS_TITLE"
 						addfieldpath="/modules/mod_sportsmanagement_matches/elements/" >

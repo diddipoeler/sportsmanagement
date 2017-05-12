@@ -386,7 +386,8 @@ class modMatchesSportsmanagementHelper {
 		)
 		);
 		$partresults = '';
-		if ($this->params->get('part_result') == 1 AND trim(str_replace(';', '', $match->team1_result_split)) != '') {
+		if ( $this->params->get('part_result') == 1 AND trim(str_replace(';', '', $match->team1_result_split)) != '' ) 
+        {
 			$homepartresults = $this->array_trim(explode(";", $match->team1_result_split));
 			$guestpartresults = $this->array_trim(explode(";", $match->team2_result_split));
 			$cntmp = ($match->game_parts + $this->params->get('part_result_count'));
@@ -394,8 +395,8 @@ class modMatchesSportsmanagementHelper {
 				$highlight_parts = false;
 				if ($x == ($match->game_parts + $this->params->get('part_result_count')))
 				break;
-				if (isset ($homepartresults[$x]) && isset ($guestpartresults[$x])) {
-
+				if (isset ($homepartresults[$x]) && isset ($guestpartresults[$x])) 
+                {
 					if (is_null($match->team1_result) AND ($x +1) <= $cntmp AND (!isset ($homepartresults[$x +1]) OR $homepartresults[$x +1] == '-') AND $homepartresults[$x] != '-' AND $match->match_result_type == 0) {
 						$highlight_parts = true;
 					}
@@ -409,11 +410,13 @@ class modMatchesSportsmanagementHelper {
 					if ($live != 'z' AND $highlight_parts)
 					$partresults .= '</span>';
 
-				} else
+				} 
+                else
 				break;
 			}
 
-			if (!is_null($match->team1_result_ot)) {
+			if (!is_null($match->team1_result_ot)) 
+            {
 				array_push($homepartresults, $match->team1_result_ot);
 				array_push($guestpartresults, $match->team2_result_ot);
 				$partresults .= ' - ';
@@ -439,7 +442,23 @@ class modMatchesSportsmanagementHelper {
 		$row['partresults'] = $partresults;
 
 		$row['result'] = $row['homescore'] . $this->params->get('team_separator') . $row['awayscore'];
-		if ($live == 0)
+
+/**
+ * verlängerung
+ */
+        if ( $this->params->get('show_text_overtime') ) 
+        {
+        $row['resultovertime'] = JText :: _('IET') . ' ' .$match->team1_result_ot . $this->params->get('team_separator') . $match->team2_result_ot;
+        }
+/**
+ * elfmeter/penalty
+ */
+        if ( $this->params->get('show_text_penalty') ) 
+        {
+        $row['resultpenalty'] = JText :: _('INP') . ' ' .$match->team1_result_so . $this->params->get('team_separator') . $match->team1_result_so;
+        }
+        
+        if ($live == 0)
 		$row['result'] .= $mrt[$match->match_result_type][$live];
 	}
 	

@@ -110,7 +110,18 @@ if ($heading != $lastheading) {
     <span class="jlmlResults">
     <?php
     if (!empty($match['awayteam']['logo']) AND $params->get('new_line_after_logo') == 1) { echo '<br />'; }
-      echo $match['result']; 
+    if ( $match['resultpenalty'] )
+    {
+    echo $match['resultpenalty'];    
+    }
+    elseif ( $match['resultovertime'] )
+    {
+    echo $match['resultovertime'];    
+    }
+    else
+    {
+    echo $match['result']; 
+    }
     ?>
     <?php
       if (!empty($match['partresults'])) { ?>
