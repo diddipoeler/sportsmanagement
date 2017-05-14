@@ -100,7 +100,7 @@ class JSMControllerForm extends JControllerForm
 				$tpost['id'] = 0;
 				$tpost['name'] = $team_name;
 				$tpost['short_name'] = $team_short_name ;
-				$tpost['club_id'] = $id;
+				$tpost['club_id'] = $this->club_id;
 				$mdlTeam->save($tpost);
         }
         break;
