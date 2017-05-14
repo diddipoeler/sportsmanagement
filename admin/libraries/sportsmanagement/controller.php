@@ -38,7 +38,7 @@ class JSMControllerForm extends JControllerForm
         $this->jsmuser = JFactory::getUser();
         $this->jsmdate = JFactory::getDate();
 //        $this->option = $this->jsmjinput->getCmd('option');
-        $this->club_id = $this->jsmapp->getUserState( "$this->jsmoption.club_id", '0' );
+        //$this->club_id = $this->jsmapp->getUserState( "$this->jsmoption.club_id", '0' );
         
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
         
@@ -69,6 +69,7 @@ class JSMControllerForm extends JControllerForm
         //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
         $createTeam = $this->jsmjinput->getVar('createTeam');
         $return = $model->save($data);
+	$this->club_id = $this->jsmapp->getUserState( "$this->jsmoption.club_id", '0' ); 
         $id = $this->jsmdb->insertid();
         if ( empty($id) )
         {
