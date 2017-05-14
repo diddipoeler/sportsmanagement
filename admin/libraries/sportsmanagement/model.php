@@ -601,6 +601,7 @@ catch (Exception $e) {
 		break;
 		case 'club':
 		sportsmanagementHelper::saveExtraFields($post,$data['id']);
+		$this->jsmapp->setUserState( "$this->jsmoption.club_id", $data['id'] );		
 		break;
 		case 'project':
 		sportsmanagementHelper::saveExtraFields($post,$data['id']);
