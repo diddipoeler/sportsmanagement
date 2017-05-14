@@ -53,7 +53,7 @@ defined('_JEXEC') or die('Restricted access');
  * @version $Id$
  * @access public
  */
-class sportsmanagementControllerclub extends JControllerForm
+class sportsmanagementControllerclub extends JSMControllerForm
 {
 
     /**
