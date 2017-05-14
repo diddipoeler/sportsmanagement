@@ -33,12 +33,12 @@ class JSMControllerForm extends JControllerForm
         $this->jsmapp = JFactory::getApplication();
         // JInput object
         $this->jsmjinput = $this->jsmapp->input;
-        //$this->jsmoption = $this->jsmjinput->getCmd('option');
+        $this->jsmoption = $this->jsmjinput->getCmd('option');
         $this->jsmdocument = JFactory::getDocument();
         $this->jsmuser = JFactory::getUser();
         $this->jsmdate = JFactory::getDate();
 //        $this->option = $this->jsmjinput->getCmd('option');
-        $this->club_id = $this->jsmapp->getUserState( "$this->option.club_id", '0' );
+        $this->club_id = $this->jsmapp->getUserState( "$this->jsmoption.club_id", '0' );
         
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
         
