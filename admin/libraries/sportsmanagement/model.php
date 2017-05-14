@@ -470,7 +470,7 @@ if( $this->jsmapp->isSite() )
 			$id =  (int) $this->getState($this->getName().'.id');
             $isNew = $this->getState($this->getName() . '.new');
             $data['id'] = $id;
-            
+            $this->jsmapp->setUserState( "$this->jsmoption.club_id", $id );
             if ( $isNew )
             {
 /**
