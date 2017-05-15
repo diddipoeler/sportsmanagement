@@ -249,11 +249,11 @@ class modMatchesSportsmanagementHelper {
 		$usedp = $this->params->get('p');
 		if (is_array($usedp)) {
 			foreach ($usedp AS $p) {
-				$this->usedteams[$p] = array ();
+				$this->usedteams[(int)$p] = array ();
 			}
 		}
 		elseif (!empty ($usedp)) {
-			$this->usedteams[$usedp] = array ();
+			$this->usedteams[(int)$usedp] = array ();
 		}
 	}
 	
