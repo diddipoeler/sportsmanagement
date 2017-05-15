@@ -765,7 +765,7 @@ catch (Exception $e) {
         $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt1.project_id');
         
         $query->where("m.match_timestamp < " . $match->match_timestamp );
-        $query->where('(t1.id  = ' . $match->team1_id . '	OR t2.id = ' . $match->team1_id .' )');
+        $query->where('(t1.id  = ' . $match->team1_id . ' OR t2.id = ' . $match->team1_id .' )');
         $query->where('p.id IN (' . $projectstring .')');
         $query->order('m.match_date DESC');
         
@@ -777,7 +777,7 @@ catch (Exception $e) {
         $query->clear('where');
         $query->clear('order');
         $query->where("m.match_timestamp > " . $match->match_timestamp );
-        $query->where('(t1.id  = ' . $match->team1_id . '	OR t2.id = ' . $match->team1_id .' )');
+        $query->where('(t1.id  = ' . $match->team1_id . ' OR t2.id = ' . $match->team1_id .' )');
         $query->where('p.id IN (' . $projectstring .')');
         $query->order('m.match_date ASC');
         
@@ -789,7 +789,7 @@ catch (Exception $e) {
         $query->clear('where');
         $query->clear('order');
         $query->where("m.match_timestamp < " . $match->match_timestamp );
-        $query->where('(t1.id  = ' . $match->team1_id . '	OR t2.id = ' . $match->team1_id .' )');
+        $query->where('(t1.id  = ' . $match->team2_id . ' OR t2.id = ' . $match->team2_id .' )');
         $query->where('p.id IN (' . $projectstring .')');
         $query->order('m.match_date DESC');
 		
@@ -801,7 +801,7 @@ catch (Exception $e) {
         $query->clear('where');
         $query->clear('order');
         $query->where("m.match_timestamp > " . $match->match_timestamp );
-        $query->where('(t1.id  = ' . $match->team1_id . '	OR t2.id = ' . $match->team1_id .' )');
+        $query->where('(t1.id  = ' . $match->team2_id . ' OR t2.id = ' . $match->team2_id .' )');
         $query->where('p.id IN (' . $projectstring .')');
         $query->order('m.match_date ASC');
         
