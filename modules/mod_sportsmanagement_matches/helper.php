@@ -455,7 +455,7 @@ class modMatchesSportsmanagementHelper {
  */
         if ( $this->params->get('show_text_penalty') ) 
         {
-        $row['resultpenalty'] = JText :: _('INP') . ' ' .$match->team1_result_so . $this->params->get('team_separator') . $match->team1_result_so;
+        $row['resultpenalty'] = JText :: _('INP') . ' ' .$match->team1_result_so . $this->params->get('team_separator') . $match->team2_result_so;
         }
         
         if ($live == 0)
