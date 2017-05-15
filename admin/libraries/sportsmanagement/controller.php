@@ -70,6 +70,7 @@ class JSMControllerForm extends JControllerForm
         $createTeam = $this->jsmjinput->getVar('createTeam');
         $return = $model->save($data);
 	$this->club_id = $this->jsmapp->getUserState( "$this->jsmoption.club_id", '0' ); 
+	//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->club_id<br><pre>'.print_r($this->club_id,true).'</pre>'),'');
         $id = $this->jsmdb->insertid();
         if ( empty($id) )
         {
@@ -117,14 +118,31 @@ class JSMControllerForm extends JControllerForm
 				$message = JText::_('JLIB_APPLICATION_SAVE_SUCCESS');
                 if ( $tmpl )
                 {
-				$this->setRedirect('index.php?option=com_sportsmanagement&view='.$this->view_item.'&layout=edit&tmpl=component&id='.$id, $message);
+
+switch ($this->view_item)
+		{
+		case 'club':  
+		$this->setRedirect('index.php?option=com_sportsmanagement&view='.$this->view_item.'&layout=edit&tmpl=component&id='.$this->club_id, $message);
+		break;
+		default:
+		$this->setRedirect('index.php?option=com_sportsmanagement&view='.$this->view_item.'&layout=edit&tmpl=component&id='.$id, $message);
+		break;
+		}
                 }
                 else
                 {
-                //$this->setRedirect('index.php?option=com_sportsmanagement&view=club&layout=edit&id='.$id, $message);   
+ switch ($this->view_item)
+		{
+		case 'club': 
+		$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend($this->club_id).$setRedirect, false), $message); 
+		break;
+		default:
                 $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend($id).$setRedirect, false), $message); 
+break;
+}
+
                 }
-				break;
+		break;
 case 'save2copy':
 $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend($id).$setRedirect, false));
 break;
