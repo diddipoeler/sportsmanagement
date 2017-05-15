@@ -676,7 +676,7 @@ catch (Exception $e) {
         $query->join('LEFT','#__sportsmanagement_project AS p ON p.id = pt1.project_id');
         
         $query->where("m.match_timestamp < " . $match->match_timestamp  );
-        $query->where('(m.projectteam1_id = ' . $match->projectteam1_id . '	OR m.projectteam2_id = ' . $match->projectteam1_id .' )');
+        $query->where('(m.projectteam1_id = ' . $match->projectteam1_id . ' OR m.projectteam2_id = ' . $match->projectteam1_id .' )');
         $query->where('p.id = ' . $match->project_id);
         $query->order('m.match_date DESC');
          
@@ -690,7 +690,7 @@ catch (Exception $e) {
         $query->clear('order');
         
         $query->where("m.match_timestamp > " . $match->match_timestamp  );
-        $query->where('(m.projectteam1_id = ' . $match->projectteam1_id . '	OR m.projectteam2_id = ' . $match->projectteam1_id .' )');
+        $query->where('(m.projectteam1_id = ' . $match->projectteam1_id . ' OR m.projectteam2_id = ' . $match->projectteam1_id .' )');
         $query->where('p.id = ' . $match->project_id);
         $query->order('m.match_date ASC');
 		
@@ -704,7 +704,7 @@ catch (Exception $e) {
         $query->clear('order');
         
         $query->where("m.match_timestamp < " . $match->match_timestamp );
-        $query->where('(m.projectteam1_id = ' . $match->projectteam1_id . '	OR m.projectteam2_id = ' . $match->projectteam1_id .' )');
+        $query->where('(m.projectteam1_id = ' . $match->projectteam2_id . ' OR m.projectteam2_id = ' . $match->projectteam2_id .' )');
         $query->where('p.id = ' . $match->project_id);
         $query->order('m.match_date DESC');
 		
@@ -718,7 +718,7 @@ catch (Exception $e) {
         $query->clear('order');
         
         $query->where("m.match_timestamp > " . $match->match_timestamp );
-        $query->where('(m.projectteam1_id = ' . $match->projectteam1_id . '	OR m.projectteam2_id = ' . $match->projectteam1_id .' )');
+        $query->where('(m.projectteam1_id = ' . $match->projectteam2_id . ' OR m.projectteam2_id = ' . $match->projectteam2_id .' )');
         $query->where('p.id = ' . $match->project_id);
         $query->order('m.match_date ASC');
 		
