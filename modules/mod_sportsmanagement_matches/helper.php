@@ -450,14 +450,14 @@ class modMatchesSportsmanagementHelper {
 /**
  * verlängerung
  */
-        if ( $this->params->get('show_text_overtime') ) 
+        if ( $this->params->get('show_text_overtime') && $match->team1_result_ot ) 
         {
         $row['resultovertime'] = JText :: _('IET') . ' ' .$match->team1_result_ot . $this->params->get('team_separator') . $match->team2_result_ot;
         }
 /**
  * elfmeter/penalty
  */
-        if ( $this->params->get('show_text_penalty') ) 
+        if ( $this->params->get('show_text_penalty') && $match->team1_result_so ) 
         {
         $row['resultpenalty'] = JText :: _('INP') . ' ' .$match->team1_result_so . $this->params->get('team_separator') . $match->team2_result_so;
         }
