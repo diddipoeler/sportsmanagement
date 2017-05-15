@@ -355,6 +355,10 @@ class modMatchesSportsmanagementHelper {
 				$appendimage .= $whichparam . '="' . $this->params->get('xsize') . '"';
 				elseif ($this->params->get('ysize') > 0) $appendimage .= $whichparam . '="' . $this->params->get('ysize') . '"';
 			}
+		else
+		{
+		$appendimage .= 'width="' . $this->params->get('xsize') . '"';	
+		}
 			$pic['src'] = (trim($matchpart_pic) != "" && curl_init(trim($matchpart_pic))) ? $matchpart_pic : $defaultlogos[$pt];
 			$pic['alt'] = $this->jl_utf8_convert($team->name, 'iso-8859-1', 'utf-8');
 		}
