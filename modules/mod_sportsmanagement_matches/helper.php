@@ -246,7 +246,7 @@ class modMatchesSportsmanagementHelper {
 	 * @return
 	 */
 	private function addusedprojects() {
-		$usedp = $this->params->get('project');
+		$usedp = $this->params->get('p');
 		if (is_array($usedp)) {
 			foreach ($usedp AS $p) {
 				$this->usedteams[$p] = array ();
