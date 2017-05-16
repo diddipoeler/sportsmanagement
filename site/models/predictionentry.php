@@ -582,6 +582,8 @@ $dTipp = $tipps[$pids[$x]][$cids[$pids[$x]][$y]];
                         $temp->tipp_home = $dHome;
                         $temp->tipp_away = $dAway;
                         $temp->joker = $dJoker;
+$temp->modified_by = $joomlaUserID;
+                        $temp->modified = JFactory::getDate()->toSql();						
                         // Update the object
                         try{
                         $resultquery = JFactory::getDbo()->updateObject('#__sportsmanagement_prediction_result', $temp, 'id',true);
@@ -629,6 +631,8 @@ catch (Exception $e) {
                         $temp->tipp_home = $dHome;
                         $temp->tipp_away = $dAway;
                         $temp->joker = $dJoker;
+$temp->modified_by = $joomlaUserID;
+                        $temp->modified = JFactory::getDate()->toSql();						
                         // Insert the object
 try{
                         $resultquery = JFactory::getDbo()->insertObject('#__sportsmanagement_prediction_result', $temp);
