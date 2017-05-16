@@ -584,7 +584,7 @@ $dTipp = $tipps[$pids[$x]][$cids[$pids[$x]][$y]];
                         $temp->joker = $dJoker;
                         // Update the object
                         try{
-                        $resultquery = JFactory::getDbo()->updateObject('#__sportsmanagement_prediction_result', $temp, 'id');
+                        $resultquery = JFactory::getDbo()->updateObject('#__sportsmanagement_prediction_result', $temp, 'id',true);
                         }
 catch (Exception $e) {
 //    // catch any database errors.
