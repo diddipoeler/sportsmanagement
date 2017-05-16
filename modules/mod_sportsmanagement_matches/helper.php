@@ -656,7 +656,11 @@ class modMatchesSportsmanagementHelper {
 			// start ajaxifying
 			$showhome = (($this->params->get('next_last') + $this->usedteamscheck($row->team1_id, $row->project_id)) >= 2);
 			$showaway = (($this->params->get('next_last') + $this->usedteamscheck($row->team2_id, $row->project_id)) >= 2);
-			$temp = '<div class="jlmlext_ajaxmenu" style="text-align:center;width:100%;display:block;clear:both;margin-top:10px;">';
+			
+//echo __METHOD__.' '.__LINE__.' showhome <pre>'.print_r($showhome,true).'</pre>';			
+//echo __METHOD__.' '.__LINE__.' showaway <pre>'.print_r($showaway,true).'</pre>';			
+		
+		$temp = '<div class="jlmlext_ajaxmenu" style="text-align:center;width:100%;display:block;clear:both;margin-top:10px;">';
 			if ($showhome AND ($row->lasthome OR $row->nexthome)) {
 				$temp .= '<span style="float:left">';
 				if ($row->lasthome) {
