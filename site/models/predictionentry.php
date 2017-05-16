@@ -457,7 +457,7 @@ public $_predictionGame	= null;
 		$tipps = $jinput->getVar('tipps',array(),'post','array');
 		$jokers	= $jinput->getVar('jokers',array(),'post','array');
 		$mID = $jinput->get('memberID',0,'int');
-		
+		$ptippmode = $jinput->getVar('ptippmode',array(),'post','array');
     $RoundID = $jinput->get('r',0,'int');
     $ProjectID = $jinput->get('pjID',0,'int');
 
@@ -482,6 +482,7 @@ public $_predictionGame	= null;
 		{
 			for ($y=0; $y < count($cids[$pids[$x]]); $y++)
 			{
+$tippmode = $ptippmode[$pids[$x]];				
 				//echo 'PredictionGameID:~'.$predictionGameID.'~ ';
 
 				$dProjectID = $pids[$x];
@@ -563,6 +564,14 @@ public $_predictionGame	= null;
                                     }
 					//}
 
+if ( $tippmode )
+{
+$dHome = NULL;
+$dAway = NULL;
+$dTipp = $tipps[$pids[$x]][$cids[$pids[$x]][$y]]; 
+}
+					
+					
 					if (!empty($dprID))
 					{
 					   // Create and populate an object.
