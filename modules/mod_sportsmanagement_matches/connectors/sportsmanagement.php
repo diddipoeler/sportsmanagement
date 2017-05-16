@@ -743,11 +743,12 @@ catch (Exception $e) {
         $query = $db->getQuery(true);
         
 		$match->lasthome = $match->nexthome = $match->lastaway = $match->nextaway = false;
-		$p = $this->params->get('project');
+		$p = $this->params->get('p');
 //		if (!empty ($p)) {
 //			$projectstring = (is_array($p)) ? implode(",", $p) : $p;
 //		}
         $projectstring = (is_array($p)) ? implode(",", array_map('intval', $p) ) : (int)$p;
+//echo __METHOD__.' '.__LINE__.' projectstring <pre>'.print_r($projectstring,true).'</pre>';
 		
         // select some fields
         $query->select('m.id');
@@ -809,7 +810,9 @@ catch (Exception $e) {
 		if ($temp = $db->loadObjectList() ) {
 			$match->nextaway = $temp[0]->id;
 		}
-        
+
+//echo __METHOD__.' '.__LINE__.' dump <pre>'.print_r($query->dump(),true).'</pre>';
+		
         $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	}
 }
