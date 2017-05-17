@@ -102,9 +102,13 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 			<input type='hidden' name='task' value='predictionresults.selectprojectround' />
 			
 			<?php echo JHTML::_('form.token'); ?>
-
+<!--
+Responsive tables
+Create responsive tables by adding .table-responsive to any .table to make them scroll horizontally on small devices (under 768px). 
+When viewing on anything larger than 768px wide, you will not see any difference in these tables.
+-->
 <div class="table-responsive">
-			<table class="table" >
+			<table class="table table-responsive" >
 				<tr>
 					<td >
 						<?php
@@ -170,9 +174,13 @@ echo $this->pagination->getListFooter();
             </div>
             <br />
 		</form>
-        
+<!--
+Responsive tables
+Create responsive tables by adding .table-responsive to any .table to make them scroll horizontally on small devices (under 768px). 
+When viewing on anything larger than 768px wide, you will not see any difference in these tables.
+-->
         <div class="table-responsive">        
-		<table class="<?PHP echo $this->config['table_class']; ?>">
+		<table class="<?PHP echo $this->config['table_class']; ?> table-responsive">
         <thead>
 			<tr>
 				<?php 

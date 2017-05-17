@@ -169,9 +169,13 @@ echo '<br />roundResults<pre>~' . print_r($roundResults,true) . '~</pre><br />';
 				<input type='hidden' name='memberID' value='<?php echo $this->predictionMember->pmID; ?>' />
 				<input type='hidden' name='pjID' value='<?php echo sportsmanagementModelPrediction::$pjID; ?>' />
 				<?php echo JHTML::_('form.token'); ?>
-
+<!--
+Responsive tables
+Create responsive tables by adding .table-responsive to any .table to make them scroll horizontally on small devices (under 768px). 
+When viewing on anything larger than 768px wide, you will not see any difference in these tables.
+--> 
 <div class="table-responsive">
-				<table class="table" >
+				<table class="table table-responsive" >
 					<tr>
 						<td class=""><b><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_SUBTITLE_01'); ?></b></td>
 					<!--	<td class="" style='text-align:right; ' width='20%'  > -->
@@ -243,8 +247,13 @@ echo '<br />memberID<pre>~' . print_r($this->predictionMember->pmID,true) . '~</
 						}
 					}
 				</script>
+<!--
+Responsive tables
+Create responsive tables by adding .table-responsive to any .table to make them scroll horizontally on small devices (under 768px). 
+When viewing on anything larger than 768px wide, you will not see any difference in these tables.
+-->                 
                 <div class="table-responsive">
-				<table class="<?PHP echo $this->config['table_class']; ?>" >
+				<table class="<?PHP echo $this->config['table_class']; ?> table-responsive" >
 					<tr>
 						<th class="" style='text-align:center; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_DATE_TIME'); ?></th>
 						<th class='sectiontableheader' style='text-align:center; ' colspan="5" ><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MATCH'); ?></th>

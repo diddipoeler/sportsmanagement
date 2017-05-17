@@ -84,8 +84,13 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 			<input type='hidden' name='option' value='com_sportsmanagement' />
 			<input type='hidden' name='pggroup' value='<?php echo sportsmanagementModelPrediction::$pggroup; ?>' />
             <input type='hidden' name='pggrouprank' value='<?php echo sportsmanagementModelPrediction::$pggrouprank; ?>' />
+<!--
+Responsive tables
+Create responsive tables by adding .table-responsive to any .table to make them scroll horizontally on small devices (under 768px). 
+When viewing on anything larger than 768px wide, you will not see any difference in these tables.
+-->            
 <div class="table-responsive">
-			<table class="table" >
+			<table class="table table-responsive" >
 				<tr>
 					<td>
 						<?php
@@ -173,8 +178,13 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
 			<input type='hidden' name='option' value='com_sportsmanagement' />
 			<input type='hidden' name='pggroup' value='<?php echo sportsmanagementModelPrediction::$pggroup; ?>' />
             <input type='hidden' name='pggrouprank' value='<?php echo sportsmanagementModelPrediction::$pggrouprank; ?>' />
+<!--
+Responsive tables
+Create responsive tables by adding .table-responsive to any .table to make them scroll horizontally on small devices (under 768px). 
+When viewing on anything larger than 768px wide, you will not see any difference in these tables.
+-->             
             <div class="table-responsive">
-				<table class="table">
+				<table class="table table-responsive">
 					<tr>
 						<td><?php echo JHTML::_('select.genericlist',$this->lists['type'],'type','class="inputbox" size="1"','value','text',sportsmanagementModelPrediction::$type); ?></td>
 						<td><?php echo JHTML::_('select.genericlist',$from_matchday,'from','class="inputbox" size="1"','value','text',sportsmanagementModelPrediction::$from); ?></td>
@@ -199,9 +209,13 @@ echo $this->pagination->getListFooter();
 		
 		}
 		?>
-<!--        <div style="overflow-y:auto;"> -->
+<!--
+Responsive tables
+Create responsive tables by adding .table-responsive to any .table to make them scroll horizontally on small devices (under 768px). 
+When viewing on anything larger than 768px wide, you will not see any difference in these tables.
+-->   
         <div class="table-responsive">
-		<table class="<?PHP echo $this->config['table_class'];?>" >
+		<table class="<?PHP echo $this->config['table_class'];?> table-responsive" >
         <thead>
 			<tr>
 				<th style='text-align:center; vertical-align:top; '><?php echo JText::_('COM_SPORTSMANAGEMENT_PRED_RANK'); ?></th>
@@ -765,8 +779,6 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
                 // schleife über die sortierte tabelle ende
 			?>
             </tbody>
-    
-    
 		</table>
         </div>
 		<?php
