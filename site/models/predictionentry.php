@@ -364,8 +364,10 @@ public $_predictionGame	= null;
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     // Create a new query object.		
-		$db = JFactory::getDBO();
-		$query = $db->getQuery(true);
+	$db = JFactory::getDBO();
+	$query = $db->getQuery(true);
+		
+try{		
         $query->select('m.id,m.round_id,m.match_date,m.projectteam1_id,m.projectteam2_id,m.team1_result,m.team2_result,m.team1_result_decision,m.team2_result_decision');
         $query->select('r.id AS roundcode');
         $query->select('pr.tipp,pr.tipp_home,pr.tipp_away,pr.joker,pr.id AS prid');
@@ -376,7 +378,7 @@ public $_predictionGame	= null;
                      AND pr.prediction_id = '.(int)$predictionGameID.' AND pr.user_id = '.$userID.' AND pr.project_id = '.(int)$predictionProjectID);
         $query->join('LEFT', '#__sportsmanagement_prediction_game AS pg ON pg.id = '.(int)$predictionGameID);
 
-		$query->where('r.project_id = '.(int)$predictionProjectID);
+	$query->where('r.project_id = '.(int)$predictionProjectID);
         $query->where('r.id = '.(int)$projectRoundID);
        
         $query->where('m.published = 1');
@@ -395,20 +397,20 @@ public $_predictionGame	= null;
     $query->where('( m.projectteam1_id IN (' . implode(',', $proteams_ids) . ')'.' OR '.'m.projectteam2_id IN (' . implode(',', $proteams_ids) . ') )' );    
     }
 
-//    if ( $round_ids )
-//    {
-//    $query->where('r.id IN (' . implode(',', $round_ids) . ')');   
-//    }
-//    else
-//    {
-//        $query->where('r.id = '.$projectRoundID);
-//    }
+
     
     $query->order('m.match_date ASC');
     				
 		$db->setQuery($query);
 		$results = $db->loadObjectList();
-        
+} catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+JFactory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'error');
+}
+		
+		
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
         if (!$results)
