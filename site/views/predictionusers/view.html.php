@@ -94,10 +94,10 @@ class sportsmanagementViewPredictionUsers extends JViewLegacy
             $this->configavatar = $configavatar;
 			
 			$this->predictionMember = sportsmanagementModelPrediction::getPredictionMember($configavatar);
-			if (!isset($this->predictionMember->id))
+			if ( !isset($this->predictionMember->id) )
 			{
-				$this->predictionMember->id=0;
-				$this->predictionMember->pmID=0;
+				$this->predictionMember->id = 0;
+				$this->predictionMember->pmID = 0;
 			}
 			$this->predictionProjectS = sportsmanagementModelPrediction::getPredictionProjectS();
 			$this->actJoomlaUser = JFactory::getUser();
@@ -118,7 +118,7 @@ class sportsmanagementViewPredictionUsers extends JViewLegacy
 
 			if ( $this->predictionMember->pmID > 0 )
 			{
-				$dMemberID = $this->predictionMember->pmID;
+				$dMemberID = (int)$this->predictionMember->pmID;
 			}
 			else
 			{
@@ -126,7 +126,7 @@ class sportsmanagementViewPredictionUsers extends JViewLegacy
 			}
 			if ( !$this->allowedAdmin )
 			{
-				$userID = $this->actJoomlaUser->id;
+				$userID = (int)$this->actJoomlaUser->id;
 			}
 			else
 			{
