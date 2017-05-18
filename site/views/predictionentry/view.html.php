@@ -95,12 +95,12 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 			$this->websiteName = JFactory::getConfig()->getValue('config.sitename');
             }
 
-			if ($this->allowedAdmin)
+			if ( $this->allowedAdmin )
 			{
 				$lists = array();
-				if ($this->predictionMember->pmID > 0)
+				if ( $this->predictionMember->pmID > 0 )
                 {
-                    $dMemberID = $this->predictionMember->pmID;
+                    $dMemberID = (int)$this->predictionMember->pmID;
                     }
                     else
                     {
@@ -108,12 +108,12 @@ if(version_compare(JVERSION,'3.0.0','ge'))
                         }
                         
 				$predictionMembers[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_SELECT_MEMBER'),'value','text');
-				if ($res = sportsmanagementModelPrediction::getPredictionMemberList($this->config))
+				if ( $res = sportsmanagementModelPrediction::getPredictionMemberList($this->config) )
                 {
                     $predictionMembers = array_merge($predictionMembers,$res);
                     }
                     
-				$lists['predictionMembers']=JHTML::_('select.genericList',$predictionMembers,'uid','class="inputbox" onchange="this.form.submit(); "','value','text',$dMemberID);
+				$lists['predictionMembers'] = JHTML::_('select.genericList',$predictionMembers,'uid','class="inputbox" onchange="this.form.submit(); "','value','text',$dMemberID);
 				unset($res);
 				unset($predictionMembers);
 				$this->lists = $lists;
