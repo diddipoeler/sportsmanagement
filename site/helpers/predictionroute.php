@@ -87,7 +87,7 @@ public static function getPredictionResultsRoute($predictionID,$roundID=0,$proje
        //$params['p'] = $projectID;
         $params['pggroup'] = $groupID;
         $params['pj'] = $projectID;
-        $params['r'] = $roundID;
+        $params['r'] =  ( $roundID != '' ) ? $roundID  : 0;
         $params['uid'] = $userID;
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params<br><pre>'.print_r($params,true).'</pre>'   ),'');
@@ -131,7 +131,7 @@ public static function getPredictionRankingRoute($predictionID,$projectID=0,$rou
         //$params['p'] = $projectID;
         $params['pggroup'] = $groupID;
         $params['pj'] = $projectID;
-        $params['r'] = $roundID;
+        $params['r'] =  ( $roundID != '' ) ? $roundID  : 0;
         $params['pggrouprank'] = $groupRank;
         
         $params['type'] = $type;
@@ -194,7 +194,7 @@ public static function getPredictionTippEntryRoute($predictionID,$userID=0,$roun
         //$params['p'] = $projectID;
         $params['pggroup'] = $groupID;
         $params['pj'] = $projectID;
-        $params['r'] = $roundID;
+        $params['r'] =  ( $roundID != '' ) ? $roundID  : 0;
         $params['uid'] = $userID;
         
 		$query = JSMPredictionHelperRoute::buildQuery($params);
@@ -244,7 +244,7 @@ public static function getPredictionMemberRoute($predictionID,$userID=0,$task=0,
         //$params['p'] = $projectID;
         $params['pggroup'] = $groupID;
         $params['pj'] = $projectID;
-        $params['r'] = $roundID;
+        $params['r'] =  ( $roundID != '' ) ? $roundID  : 0;
         $params['uid'] = $userID;
         
               switch ($task)
