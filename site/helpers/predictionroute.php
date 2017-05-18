@@ -35,6 +35,9 @@
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
+* 
+* https://docs.joomla.org/Supporting_SEF_URLs_in_your_component
+* 
 */
 
 // no direct access
