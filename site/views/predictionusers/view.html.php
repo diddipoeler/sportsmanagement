@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie kÃ¶nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spÃ¤teren
+* verÃ¶ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nÃ¼tzlich sein wird, aber
+* OHNE JEDE GEWÃ„HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* GewÃ¤hrleistung der MARKTFÃ„HIGKEIT oder EIGNUNG FÃœR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fÃ¼r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -116,36 +116,73 @@ class sportsmanagementViewPredictionUsers extends JViewLegacy
 
 			$lists = array();
 
-			if ($this->predictionMember->pmID > 0){$dMemberID=$this->predictionMember->pmID;}else{$dMemberID=0;}
-			if (!$this->allowedAdmin){$userID=$this->actJoomlaUser->id;}else{$userID=null;}
+			if ( $this->predictionMember->pmID > 0 )
+			{
+				$dMemberID = $this->predictionMember->pmID;
+			}
+			else
+			{
+				$dMemberID = 0;
+			}
+			if ( !$this->allowedAdmin )
+			{
+				$userID = $this->actJoomlaUser->id;
+			}
+			else
+			{
+				$userID = null;
+			}
 			$predictionMembers[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_SELECT_MEMBER'),'value','text');
 
-			if ($res = sportsmanagementModelPrediction::getPredictionMemberList($this->config,$userID)){$predictionMembers=array_merge($predictionMembers,$res);}
-			$lists['predictionMembers']=JHTML::_('select.genericList',$predictionMembers,'uid','class="inputbox" onchange="this.form.submit(); "','value','text',$dMemberID);
+			if ( $res = sportsmanagementModelPrediction::getPredictionMemberList($this->config,$userID) )
+			{
+				$predictionMembers = array_merge($predictionMembers,$res);
+			}
+			$lists['predictionMembers'] = JHTML::_('select.genericList',$predictionMembers,'uid','class="inputbox" onchange="this.form.submit(); "','value','text',$dMemberID);
 			unset($res);
 			unset($predictionMembers);
 
-			if (empty($this->predictionMember->fav_team)){$this->predictionMember->fav_team='0,0';}
-			$sFavTeamsList=explode(';',$this->predictionMember->fav_team);
-			foreach ($sFavTeamsList AS $key => $value){$dFavTeamsList[]=explode(',',$value);}
-			foreach ($dFavTeamsList AS $key => $value){$favTeamsList[$value[0]]=$value[1];}
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dMemberID<br><pre>'.print_r($dMemberID,true).'</pre>'),'Notice');
+			
+			if ( empty($this->predictionMember->fav_team) )
+			{
+				$this->predictionMember->fav_team = '0,0';
+			}
+			$sFavTeamsList = explode(';',$this->predictionMember->fav_team);
+			foreach ( $sFavTeamsList AS $key => $value )
+			{
+				$dFavTeamsList[] = explode(',',$value);
+			}
+			foreach ( $dFavTeamsList AS $key => $value )
+			{
+				$favTeamsList[$value[0]] = $value[1];
+			}
 
 			//echo '<br /><pre>~' . print_r($this->predictionMember->champ_tipp,true) . '~</pre><br />';
-			if (empty($this->predictionMember->champ_tipp)){$this->predictionMember->champ_tipp='0,0';}
-			$sChampTeamsList=explode(';',$this->predictionMember->champ_tipp);
-			foreach ($sChampTeamsList AS $key => $value){$dChampTeamsList[]=explode(',',$value);}
-			foreach ($dChampTeamsList AS $key => $value){$champTeamsList[$value[0]]=$value[1];}
+			if ( empty($this->predictionMember->champ_tipp) )
+			{
+				$this->predictionMember->champ_tipp = '0,0';
+			}
+			$sChampTeamsList = explode(';',$this->predictionMember->champ_tipp);
+			foreach ( $sChampTeamsList AS $key => $value )
+			{
+				$dChampTeamsList[] = explode(',',$value);
+			}
+			foreach ( $dChampTeamsList AS $key => $value )
+			{
+				$champTeamsList[$value[0]] = $value[1];
+			}
 
 			if ($this->getLayout()=='edit')
 			{
 				$dArray[] = JHTML::_('select.option',0,JText::_('JNO'));
 				$dArray[] = JHTML::_('select.option',1,JText::_('JYES'));
 
-				$lists['show_profile']		= JHTML::_('select.radiolist',$dArray,'show_profile',	'class="inputbox" size="1"','value','text',$this->predictionMember->show_profile);
-				$lists['reminder']			= JHTML::_('select.radiolist',$dArray,'reminder',		'class="inputbox" size="1"','value','text',$this->predictionMember->reminder);
-				$lists['receipt']			= JHTML::_('select.radiolist',$dArray,'receipt',		'class="inputbox" size="1"','value','text',$this->predictionMember->receipt);
-				$lists['admintipp']			= JHTML::_('select.radiolist',$dArray,'admintipp',		'class="inputbox" size="1"','value','text',$this->predictionMember->admintipp);
-				$lists['approvedForGame']	= JHTML::_('select.radiolist',$dArray,'approved',		'class="inputbox" size="1" disabled="disabled"','value','text',$this->predictionMember->approved);
+				$lists['show_profile'] = JHTML::_('select.radiolist',$dArray,'show_profile','class="inputbox" size="1"','value','text',$this->predictionMember->show_profile);
+				$lists['reminder'] = JHTML::_('select.radiolist',$dArray,'reminder','class="inputbox" size="1"','value','text',$this->predictionMember->reminder);
+				$lists['receipt'] = JHTML::_('select.radiolist',$dArray,'receipt','class="inputbox" size="1"','value','text',$this->predictionMember->receipt);
+				$lists['admintipp'] = JHTML::_('select.radiolist',$dArray,'admintipp','class="inputbox" size="1"','value','text',$this->predictionMember->admintipp);
+				$lists['approvedForGame'] = JHTML::_('select.radiolist',$dArray,'approved','class="inputbox" size="1" disabled="disabled"','value','text',$this->predictionMember->approved);
 				unset($dArray);
 
 				foreach ($this->predictionProjectS AS $predictionProject)
@@ -157,7 +194,7 @@ class sportsmanagementViewPredictionUsers extends JViewLegacy
           }
           
 					$projectteams[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_PRED_USERS_SELECT_TEAM'),'value','text');
-					if ($res = $model->getPredictionProjectTeams($predictionProject->project_id))
+					if ( $res = $model->getPredictionProjectTeams($predictionProject->project_id) )
 					{
 						$projectteams = array_merge($projectteams,$res);
 					}
@@ -172,7 +209,7 @@ class sportsmanagementViewPredictionUsers extends JViewLegacy
 					if ( $predictionProject->champ )
           {
           $disabled='';
-          // ist überhaupt das startdatum gesetzt ?
+          // ist Ã¼berhaupt das startdatum gesetzt ?
           if ( $predictionProject->start_date == '0000-00-00' )
           {
           $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING_STARTDATE'),'Error');  
