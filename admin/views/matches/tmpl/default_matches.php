@@ -73,6 +73,10 @@ fieldset button {
         	 
 		<!-- Start games list -->
 		<form action="<?php echo $this->request_url; ?>" method="post" id='adminForm' name='adminForm'>
+<div class="btn-group pull-right hidden-phone">
+				<label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>
+				<?php echo $this->pagination->getLimitBox(); ?>
+</div>
 			<?php
 			$colspan = ($this->projectws->allow_add_time) ? 20 : 19;
 			?>
