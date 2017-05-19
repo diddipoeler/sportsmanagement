@@ -836,7 +836,17 @@ multiple="true"
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		
+
+<field name="show_edit_matches_matrix" 
+    type="radio" 
+    default="0"
+    class="radio btn-group btn-group-yesno"
+	label="COM_SPORTSMANAGEMENT_SETTINGS_EDIT_MATCHES_MATRIX" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_EDIT_MATCHES_MATRIX_DESC">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+	
 <field name="show_option_federation" 
     type="radio" 
     default="0"
