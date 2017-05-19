@@ -64,10 +64,7 @@ fieldset button {
 <div id="editcell">
 <!--	<fieldset class="adminform"> -->
 		<legend><?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TITLE2','<i>'.$this->roundws->name.'</i>','<i>'.$this->projectws->name.'</i>'); ?></legend>
-<div class="btn-group pull-right hidden-phone">
-				<label for="limit" class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC');?></label>
-				<?php echo $this->pagination->getLimitBox(); ?>
-</div>
+
 		
 	<?php echo $this->loadTemplate('roundselect'); ?>
         	 
