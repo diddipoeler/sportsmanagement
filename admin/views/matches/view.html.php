@@ -272,7 +272,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
         $this->lists	= $lists;
         $this->selectlist	= $selectlist;
 		$this->option	= $option;
-		$this->matches	= $items;
+		$this->matches	= $this->items;
 		$this->ress	= $ress;
 		$this->projectws	= $projectws;
 		$this->roundws	= $roundws;
