@@ -108,7 +108,8 @@ class sportsmanagementModelMatches extends JModelList
 
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
-        
+        $value = JRequest::getUInt('limitstart', 0);
+		$this->setState('list.start', $value);
         //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
 
 
