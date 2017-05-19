@@ -61,7 +61,10 @@ echo $this->loadTemplate('massadd');
 echo $this->loadTemplate('matches'); 
 ?>	
 <?php 
+if ( JComponentHelper::getParams($this->option)->get('show_edit_matches_matrix') )
+{
 echo $this->loadTemplate('matrix'); 
+}
 ?>
 <?PHP
 echo "<div>";
