@@ -1,3 +1,6 @@
+<?php
+defined( '_JEXEC' ) or die( 'Restricted access' );
+?>
 		<!-- round selector START -->
 		<div style="width: 75%; margin-bottom: 14px;">
 		<form name="roundForm" id="roundForm" method="post">

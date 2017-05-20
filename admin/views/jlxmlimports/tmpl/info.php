@@ -1,3 +1,6 @@
+<?php
+defined( '_JEXEC' ) or die( 'Restricted access' );
+?>
 <div id='editcell'>
 	<a name='page_top'></a>
 	<table class='adminlist'>
