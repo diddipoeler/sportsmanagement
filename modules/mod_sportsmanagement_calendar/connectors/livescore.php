@@ -1,4 +1,6 @@
 <?php
+defined('_JEXEC') or die('Restricted access');
+
 class LivescoreConnector extends JLCalendar{
   //var $database = JFactory::getDbo();
   var $xparams;

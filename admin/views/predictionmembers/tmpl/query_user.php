@@ -1,6 +1,8 @@
 <?php
 // Set flag that this is a parent file
-define( '_JEXEC', 1 );
+
+defined('_JEXEC') or die('Restricted access');
+
 
 $_REQUEST['tmpl'] = '';
 include('../../../../../../../../index.php');

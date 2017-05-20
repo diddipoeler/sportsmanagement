@@ -19,6 +19,7 @@
 // URL:   http://www.cascade.org.uk/software/php/calendar/
 // Email: davidw@cascade.org.uk
 
+defined( '_JEXEC' ) or die( 'Restricted access' );
 
 class PHPCalendar
 {

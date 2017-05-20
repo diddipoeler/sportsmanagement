@@ -1,5 +1,5 @@
 <?php
-
+defined('_JEXEC') or die('Restricted access');
 
 class JEventsConnector extends JLCalendar{
   var $xparams;

@@ -1,4 +1,4 @@
-<?php defined( '_VALID_MOS' ) or die( 'Direct Access to this location is not allowed.' );
+<?php
 
 /* JoomLeague League Management and Prediction Game for Joomla!
 * Copyright (C) 2007 Robert Moss
@@ -30,17 +30,17 @@
 * The "GNU General Public License" (GPL) is available at
 * http://www.gnu.org/copyleft/gpl.html.
 */
-
+defined( '_JEXEC' ) or die( 'Restricted access' );
 DEFINE('_COM_SPORTSMANAGEMENT_ADMIN_EDIT_LIST_DFBKEY_HINT1','Nachdem die Mannschaften dem Projekt zugeordnet wurden, k�nnen die Schl�sselzahlen vergeben werden. Im Augenblick d�rfen noch keine Spielpaarungen pro Spieltag vorhanden sein, sonst kommt es zu doppelten
 Eintr�gen !');
 
-DEFINE('_COM_SPORTSMANAGEMENT_ADMIN_EDIT_LIST_DFBKEY_HINT11','1-L hei�t der neue Spielschl�ssel, der seit dem 15.Mai 2003 in der Spielansetzungssoftware des DFBnet hinterlegt ist und dort f�r die Spielplanung bereit steht. Der Ansetzungsschl�ssel ist so aufgebaut, dass alle Staffelgr��en harmonisch zueinander passen.
-Der neue Ansetzungsschl�ssel ber�cksichtigt ebenfalls die Anforderung, dass unterschiedliche Staffelgr��en den letzten Spieltag gemeinsam haben. Die Synchronisation erfolgt �ber den Rahmenplan wobei der Synchronisationspunkt der 1. Schl�sseltag ist, der den Letzen Spieltag bildet (1-L ). Im Folgenden k�nnen Sie sich den Spielschl�ssel und eine detaillierte Beschreibung �ber dessen Eigenschaften ansehen. ');
+DEFINE('_COM_SPORTSMANAGEMENT_ADMIN_EDIT_LIST_DFBKEY_HINT11','1-L heißt der neue Spielschlüssel, der seit dem 15.Mai 2003 in der Spielansetzungssoftware des DFBnet hinterlegt ist und dort für die Spielplanung bereit steht. Der Ansetzungsschlüssel ist so aufgebaut, dass alle Staffelgrößen harmonisch zueinander passen.
+Der neue Ansetzungsschlüssel berücksichtigt ebenfalls die Anforderung, dass unterschiedliche Staffelgrößen den letzten Spieltag gemeinsam haben. Die Synchronisation erfolgt über den Rahmenplan wobei der Synchronisationspunkt der 1. Schlüsseltag ist, der den Letzen Spieltag bildet (1-L ). Im Folgenden können Sie sich den Spielschlüssel und eine detaillierte Beschreibung über dessen Eigenschaften ansehen. ');
 
-DEFINE('_COM_SPORTSMANAGEMENT_ADMIN_EDIT_LIST_DFBKEY_HINT2','Hier werden die Datumseingaben f�r die Spieltage verarbeitet.');
+DEFINE('_COM_SPORTSMANAGEMENT_ADMIN_EDIT_LIST_DFBKEY_HINT2','Hier werden die Datumseingaben für die Spieltage verarbeitet.');
 
 DEFINE('_COM_SPORTSMANAGEMENT_ADMIN_EDIT_LIST_DFBKEY_HINT3','Hier werden die Spielpaarungen des ersten Spieltages zugeordnet.');
-DEFINE('_COM_SPORTSMANAGEMENT_ADMIN_EDIT_LIST_DFBKEY_HINT4','<b>Bitte hier im Augenblick keine �nderungen vornehmen!</b>.');
+DEFINE('_COM_SPORTSMANAGEMENT_ADMIN_EDIT_LIST_DFBKEY_HINT4','<b>Bitte hier im Augenblick keine Änderungen vornehmen!</b>.');
 
 ?>
 <link rel="stylesheet" type="text/css" media="all" href="<?php echo $mosConfig_live_site;?>/includes/js/calendar/calendar-mos.css" title="green" />
