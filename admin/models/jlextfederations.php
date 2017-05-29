@@ -44,7 +44,7 @@ defined('_JEXEC') or die('Restricted access');
 //require_once (JPATH_COMPONENT.DS.'models'.DS.'list.php');
 
 // import the Joomla modellist library
-jimport('joomla.application.component.modellist');
+//jimport('joomla.application.component.modellist');
 
 
 /**
@@ -56,7 +56,7 @@ jimport('joomla.application.component.modellist');
  * @version 2014
  * @access public
  */
-class sportsmanagementModeljlextfederations extends JModelList
+class sportsmanagementModeljlextfederations extends JSMModelList
 {
 	var $_identifier = "jlextfederations";
 	
@@ -77,6 +77,8 @@ class sportsmanagementModeljlextfederations extends JModelList
                         'objassoc.picture',
                         'objassoc.assocflag',
                         'objassoc.published',
+                        'objassoc.modified',
+                        'objassoc.modified_by',
                         'objassoc.checked_out',
                         'objassoc.checked_out_time'
                         );
@@ -94,35 +96,18 @@ class sportsmanagementModeljlextfederations extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Initialise variables.
-		$app = JFactory::getApplication('administrator');
-        
         //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
 
-		// Load the filter state.
+		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        // Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.state', $published);
         
-        $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $app->get('list_limit'), 'int');
+        $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);	
-        
-//        $value = JRequest::getUInt('limitstart', 0);
-//		$this->setState('list.start', $value);
-
-//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
-//		$this->setState('filter.image_folder', $image_folder);
-        
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
-
-
-//		// Load the parameters.
-//		$params = JComponentHelper::getParams('com_sportsmanagement');
-//		$this->setState('params', $params);
 
 		// List state information.
 		parent::populateState('objassoc.name', 'asc');
@@ -137,9 +122,6 @@ class sportsmanagementModeljlextfederations extends JModelList
    */
   protected function getListQuery()
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
