@@ -56,11 +56,9 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
 	
 	protected $_params;
 	protected $_db;
+    protected $_query;
+    protected $_app;
 
-// 	protected $_project_id;
-// 	protected $_team_id;
-// 	protected $_division_id = 0;
-// 	protected $_round_id = null;
     var $_project_slug = '';
     var $_league_slug = '';
     var $_round_slug = '';
@@ -1441,7 +1439,13 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsranking',$
 				break;
                 
             case "teams":
-				$link = sportsmanagementHelperRoute::getTeamsRoute( $this->_project_slug,$this->_division_id );
+$routeparameter = array();
+$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
+$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['p'] = $this->_project_slug;
+$routeparameter['division'] = $this->_division_id;
+$link = sportsmanagementHelperRoute::getSportsmanagementRoute('teams',$routeparameter);            
+				//$link = sportsmanagementHelperRoute::getTeamsRoute( $this->_project_slug,$this->_division_id );
 				break;    
 				
 			case "treetonode":

@@ -375,7 +375,8 @@
 				</field>
 
 			</fieldset>
-			
+
+<!-- Mannschafts- und Bildeinstellungen -->			
 			<fieldset	name="Teamsandpicturesettings1"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_TEAM_AND_PICTURE_SETTINGS_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_TEAM_AND_PICTURE_SETTINGS_DESCR"
@@ -525,6 +526,7 @@
 
 			</fieldset>
 
+<!-- Spezielle Einstellungen für die Spielinformationen -->			
 			<fieldset	name="Teamsandpicturesettings2"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_MATCH_INFO_SETTINGS_TITLE"
 						description="MOD_SPORTSMANAGEMENT_MATCHES_MATCH_INFO_SETTINGS_DESCR"
@@ -562,6 +564,7 @@
 				</field>
 
 				<field 	name="part_result_count" type="radio" default="0"
+				class="radio btn-group btn-group-yesno"
 						label="MOD_SPORTSMANAGEMENT_MATCHES_NUMBER_OF_PARTS_RESULTS_TITLE" 
 						description="MOD_SPORTSMANAGEMENT_MATCHES_NUMBER_OF_PARTS_RESULTS_DESCR">
 					<option value="0">MOD_SPORTSMANAGEMENT_MATCHES_ALL_MATCH_PARTS</option>
