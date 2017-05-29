@@ -130,6 +130,7 @@ $starttime = microtime();
         }
         else
         {
+        JToolbarHelper::trash('jlextfederations.trash');
         JToolBarHelper::deleteList('', 'jlextfederations.delete', 'JTOOLBAR_DELETE');    
         }
         parent::addToolbar();

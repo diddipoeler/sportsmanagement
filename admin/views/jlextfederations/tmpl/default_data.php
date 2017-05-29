@@ -73,6 +73,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
           <th width="5" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_FLAG'); ?></th>
 		  <th width="5" style="vertical-align: top; "><?php echo JText::_('COM_SPORTSMANAGEMENT_GLOBAL_ICON'); ?></th>
           
+          	<th width="" class="title">
+						<?php
+						echo JHtml::_('grid.sort','JSTATUS','objassoc.published',$this->sortDirection,$this->sortColumn);
+						?>
+					</th>
+                    
 					<th width="85" nowrap="nowrap" style="vertical-align: top; ">
 						<?php
 						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','objassoc.ordering',$this->sortDirection,$this->sortColumn);
@@ -105,6 +111,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					$canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                     $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
                     $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'jlextfederations.', $canCheckin);
+                    $published = JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','jlextfederations.');
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center">
@@ -190,6 +197,8 @@ else
 }
             ?>
             </td>
+            
+            <td class="center"><?php echo $published; ?></td>
             <td class="order">
 							<span>
 								<?php echo $this->pagination->orderUpIcon($i,$i > 0,'jlextfederations.orderup','JLIB_HTML_MOVE_UP',$ordering); ?>
