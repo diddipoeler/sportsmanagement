@@ -107,8 +107,11 @@ class sportsmanagementModeljlextfederations extends JModelList
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.state', $published);
         
-        $value = JRequest::getUInt('limitstart', 0);
-		$this->setState('list.start', $value);
+        $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $app->get('list_limit'), 'int');
+		$this->setState('list.limit', $value);	
+        
+//        $value = JRequest::getUInt('limitstart', 0);
+//		$this->setState('list.start', $value);
 
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
@@ -122,6 +125,8 @@ class sportsmanagementModeljlextfederations extends JModelList
 
 		// List state information.
 		parent::populateState('objassoc.name', 'asc');
+        $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
+		$this->setState('list.start', $value);
 	}
     
   /**
@@ -140,7 +145,7 @@ class sportsmanagementModeljlextfederations extends JModelList
 		// Select some fields
 		$query->select(implode(",",$this->filter_fields));
 		// From the _associations table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_federations as objassoc');
+		$query->from('#__sportsmanagement_federations as objassoc');
         // Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
 		$query->join('LEFT', '#__users AS uc ON uc.id = objassoc.checked_out');
