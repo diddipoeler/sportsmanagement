@@ -87,10 +87,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 			</thead>
 			<tfoot>
             <tr>
-            <td colspan="6">
+            <td colspan="4">
             <?php echo $this->pagination->getListFooter(); ?>
             </td>
-            <td colspan="3">
+            <td colspan="5">
             <?php echo $this->pagination->getResultsCounter();?>
             </td>
             </tr>

@@ -126,11 +126,11 @@ $starttime = microtime();
 		//JToolBarHelper::deleteList('', 'jlextfederation.delete', 'JTOOLBAR_DELETE');
 		if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
         {
-		JToolbarHelper::trash('jlextfederation.trash');
+		JToolbarHelper::trash('jlextfederations.trash');
         }
         else
         {
-        JToolBarHelper::deleteList('', 'jlextfederation.delete', 'JTOOLBAR_DELETE');    
+        JToolBarHelper::deleteList('', 'jlextfederations.delete', 'JTOOLBAR_DELETE');    
         }
         parent::addToolbar();
 	}
