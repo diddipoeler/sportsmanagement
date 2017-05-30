@@ -157,13 +157,20 @@ class sportsmanagementModelLeagues extends JSMModelList
 		{
         $this->jsmquery->where('obj.associations = '.$this->getState('filter.search_association') );
         }
+        
         if ($this->getState('filter.federation'))
 		{
         $this->jsmquery->where('obj.associations = '.$this->getState('filter.federation') );
         }
+        
         if ($this->getState('filter.search_agegroup'))
 		{
         $this->jsmquery->where('obj.agegroup_id = ' . $this->getState('filter.search_agegroup'));
+        }
+        
+        if (is_numeric($this->getState('filter.state')))
+		{
+        $this->jsmquery->where('obj.published = '.$this->getState('filter.state'));
         }
 
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'obj.name')).' '.

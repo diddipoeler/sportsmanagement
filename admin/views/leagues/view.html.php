@@ -166,7 +166,7 @@ $mdlassociation = JModelLegacy::getInstance('jlextassociations', 'sportsmanageme
         }
 		
 
-		$this->lists	= $lists;
+		$this->lists = $lists;
 		
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
@@ -185,15 +185,7 @@ $mdlassociation = JModelLegacy::getInstance('jlextassociations', 'sportsmanageme
 	*/
 	protected function addToolbar()
 	{
-		$jinput = JFactory::getApplication()->input;
-        $option = $jinput->getCmd('option');
-       
-		//// Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
-        
+	        
         // Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_TITLE');
         JToolBarHelper::apply('leagues.saveshort');
@@ -209,6 +201,7 @@ $mdlassociation = JModelLegacy::getInstance('jlextassociations', 'sportsmanageme
         }
         else
         {
+        JToolbarHelper::trash('leagues.trash');
         JToolBarHelper::deleteList('', 'leagues.delete', 'JTOOLBAR_DELETE');    
         }
         
