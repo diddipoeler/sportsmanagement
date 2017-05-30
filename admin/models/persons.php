@@ -177,7 +177,7 @@ class sportsmanagementModelPersons extends JSMModelList
         
         if (is_numeric($this->getState('filter.state')) )
 		{
-		$query->where('pl.published = '.$this->getState('filter.state'));	
+		$this->jsmquery->where('pl.published = '.$this->getState('filter.state'));	
 		}
         
         if ( JRequest::getVar('layout') == 'assignplayers')
