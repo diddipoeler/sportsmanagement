@@ -130,12 +130,12 @@ class sportsmanagementModelPersons extends JSMModelList
 	function getListQuery()
 	{
 	
-        $this->_type = $app->getUserState( "$this->jsmoption.persontype", '0' );
+        $this->_type = $this->jsmapp->getUserState( "$this->jsmoption.persontype", '0' );
          
-        $this->_project_id = $app->getUserState( "$this->jsmoption.pid", '0' );
-        $this->_team_id = $app->getUserState( "$this->jsmoption.team_id", '0' );
-        $this->_season_id = $app->getUserState( "$this->jsmoption.season_id", '0' );
-        $this->_project_team_id = $app->getUserState( "$this->jsmoption.project_team_id", '0' );
+        $this->_project_id = $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' );
+        $this->_team_id = $this->jsmapp->getUserState( "$this->jsmoption.team_id", '0' );
+        $this->_season_id = $this->jsmapp->getUserState( "$this->jsmoption.season_id", '0' );
+        $this->_project_team_id = $this->jsmapp->getUserState( "$this->jsmoption.project_team_id", '0' );
 
 //        // Create a new query object.
 //		$db	= $this->getDbo();
