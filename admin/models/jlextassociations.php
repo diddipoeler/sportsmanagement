@@ -131,14 +131,17 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 		{
         $this->jsmquery->where('LOWER(objassoc.name) LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search').'%'));
         }
+        
         if ( $this->getState('filter.search_nation') )
 		{
         $this->jsmquery->where("objassoc.country LIKE '".$this->getState('filter.search_nation')."'");
         }
+        
         if ($this->getState('filter.federation') )
 		{
         $this->jsmquery->where("objassoc.parent_id = ".$this->getState('filter.federation') );
         }
+        
         if (is_numeric($this->getState('filter.state')) )
 		{
 		$query->where('objassoc.published = '.$this->getState('filter.state'));	

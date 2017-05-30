@@ -143,7 +143,6 @@ class sportsmanagementModelEventtypes extends JSMModelList
         $this->jsmquery->where('obj.sports_type_id = '.$this->getState('filter.sports_type') );
         }
         
-        
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'obj.name')).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
         

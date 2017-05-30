@@ -123,14 +123,17 @@ class sportsmanagementModeljlextfederations extends JSMModelList
         // Join over the users for the checked out user.
 		$this->jsmquery->select('uc.name AS editor');
 		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = objassoc.checked_out');
+        
         if ($this->getState('filter.search') )
 		{
         $this->jsmquery->where('LOWER(objassoc.name) LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search').'%'));
         }
+        
         if ( $this->getState('filter.search_nation') )
 		{
         $this->jsmquery->where("objassoc.country = '".$this->getState('filter.search_nation')."'");
         }
+        
         if (is_numeric($this->getState('filter.state')) )
 		{
 		$query->where('objassoc.published = '.$this->getState('filter.state'));	

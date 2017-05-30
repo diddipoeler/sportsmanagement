@@ -131,23 +131,15 @@ class sportsmanagementModelPersons extends JSMModelList
 	{
 	
         $this->_type = $this->jsmapp->getUserState( "$this->jsmoption.persontype", '0' );
-         
         $this->_project_id = $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' );
         $this->_team_id = $this->jsmapp->getUserState( "$this->jsmoption.team_id", '0' );
         $this->_season_id = $this->jsmapp->getUserState( "$this->jsmoption.season_id", '0' );
         $this->_project_team_id = $this->jsmapp->getUserState( "$this->jsmoption.project_team_id", '0' );
-
-//        // Create a new query object.
-//		$db	= $this->getDbo();
-//		$query = $db->getQuery(true);
-//        $Subquery = $db->getQuery(true);
-//		$user = JFactory::getUser(); 
-		
+	
         // Create a new query object.		
 		$this->jsmquery->clear();
         $this->jsmsubquery1->clear();
         // Select some fields
-		//$query->select(implode(",",$this->filter_fields));
         $this->jsmquery->select('pl.*');
         $this->jsmquery->select('pl.id as id2');
         // From table
@@ -172,6 +164,7 @@ class sportsmanagementModelPersons extends JSMModelList
                            'OR LOWER(pl.info) LIKE ' . $this->jsmdb->Quote( '%' . $this->getState('filter.search') . '%' ) .
                             ')');
         }
+        
         if ($this->getState('filter.search_nation'))
 		{
         $this->jsmquery->where('pl.country LIKE '.$this->jsmdb->Quote(''.$this->getState('filter.search_nation').''));
@@ -181,6 +174,11 @@ class sportsmanagementModelPersons extends JSMModelList
 		{
         $this->jsmquery->where('pl.agegroup_id = ' . $this->getState('filter.search_agegroup'));
         }
+        
+        if (is_numeric($this->getState('filter.state')) )
+		{
+		$query->where('pl.published = '.$this->getState('filter.state'));	
+		}
         
         if ( JRequest::getVar('layout') == 'assignplayers')
         {

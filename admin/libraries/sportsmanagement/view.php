@@ -174,7 +174,7 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
             $this->request_url	= $this->uri->toString();
         }
         
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' joomla version -> <br><pre>'.print_r($this->state,true).'</pre>'),'');
+//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' state -> <br><pre>'.print_r($this->state,true).'</pre>'),'');
         
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {

@@ -143,14 +143,17 @@ class sportsmanagementModelagegroups extends JSMModelList
 		{
         $this->jsmquery->where('LOWER(obj.name) LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search').'%') );
         }
+        
         if ($this->getState('filter.search_nation'))
 		{
         $this->jsmquery->where('obj.country LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search_nation').'%') );
         }
+        
         if ($this->getState('filter.sports_type'))
 		{
         $this->jsmquery->where('obj.sportstype_id = '.$this->getState('filter.sports_type'));
         }
+        
         if (is_numeric($this->getState('filter.state')) )
 		{
 		$query->where('obj.published = '.$this->getState('filter.state'));	
