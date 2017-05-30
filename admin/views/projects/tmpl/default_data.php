@@ -176,7 +176,7 @@ JHtml::_('behavior.modal');
                     $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
 
 					$checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'projects.', $canCheckin);
-					$published = JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','projects.');
+					$canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.project.' . $row->id) && $canCheckin;
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
@@ -344,7 +344,22 @@ onchange="document.getElementById('cb<?php echo $i; ?>').checked=true" />
                         ?>
                         </td>
                         
-                        <td class="center"><?php echo $published; ?></td>
+                        <td class="center">
+                        
+                        <div class="btn-group">
+            <?php echo JHtml::_('jgrid.published', $row->published, $i, 'projects.', $canChange, 'cb'); ?>
+            <?php 
+            // Create dropdown items and render the dropdown list.
+								if ($canChange)
+								{
+									JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'projects');
+									JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'projects');
+									echo JHtml::_('actionsdropdown.render', $this->escape($row->name));
+								}
+								?>
+            </div>
+                        
+                        </td>
 						<td class="order">
 							<span><?php echo $this->pagination->orderUpIcon($i,$i > 0 ,'projects.orderup','JLIB_HTML_MOVE_UP',true); ?></span>
 							<span><?php echo $this->pagination->orderDownIcon($i,$n,$i < $n,'projects.orderdown','JLIB_HTML_MOVE_DOWN',true); ?></span>

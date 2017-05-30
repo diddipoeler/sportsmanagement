@@ -171,12 +171,13 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
             }    
             $this->user	= JFactory::getUser();
 		    $this->config = JFactory::getConfig();
-            $this->request_url	= $this->uri->toString();
+            $this->request_url = $this->uri->toString();
         }
         
 //        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' state -> <br><pre>'.print_r($this->state,true).'</pre>'),'');
 //        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sortDirection -> <br><pre>'.print_r($this->sortDirection,true).'</pre>'),'');
 //        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sortColumn -> <br><pre>'.print_r($this->sortColumn,true).'</pre>'),'');
+//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' request_url -> <br><pre>'.print_r($this->request_url,true).'</pre>'),'');
         
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
