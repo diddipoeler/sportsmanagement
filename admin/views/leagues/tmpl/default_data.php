@@ -96,7 +96,11 @@ JHtml::_('behavior.modal');
                     
                     <th><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_IMAGE'); ?>
 					</th>
-                    
+                    <th width="" class="nowrap center">
+						<?php
+						echo JHtml::_('grid.sort','JSTATUS','objassoc.published',$this->sortDirection,$this->sortColumn);
+						?>
+					</th>
 					<th width="10%">
 						<?php
 						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','obj.ordering',$this->sortDirection,$this->sortColumn);
@@ -110,7 +114,7 @@ JHtml::_('behavior.modal');
 			</thead>
 			<tfoot>
             <tr>
-            <td colspan="8">
+            <td colspan="9">
             <?php echo $this->pagination->getListFooter(); ?>
             </td>
             <td colspan="4">
@@ -126,9 +130,9 @@ JHtml::_('behavior.modal');
 					$row =& $this->items[$i];
 					$link = JRoute::_('index.php?option=com_sportsmanagement&task=league.edit&id='.$row->id);
                     $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
-					//$checked = JHtml::_('grid.checkedout',$row,$i);
                     $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
                     $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'leagues.', $canCheckin);
+                    $canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.league.' . $row->id) && $canCheckin;
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center">
@@ -203,7 +207,6 @@ JHtml::_('behavior.modal');
                         </td>
                         <td class="center">
 								<?php
-								//if (empty($row->picture) || !JFile::exists(COM_SPORTSMANAGEMENT_PICTURE_SERVER.DS.$row->picture))
                                 if (empty($row->picture) )
 								{
 									$imageTitle = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_NO_IMAGE').COM_SPORTSMANAGEMENT_PICTURE_SERVER.$row->picture;
@@ -218,8 +221,7 @@ JHtml::_('behavior.modal');
 								}
 								else
 								{
-									//$playerName = sportsmanagementHelper::formatName(null ,$row->firstname, $row->nickname, $row->lastname, 0);
-									//echo sportsmanagementHelper::getPictureThumb($row->picture, $playerName, 0, 21, 4);
+
 ?>                                    
 <a href="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$row->picture;?>" title="<?php echo $row->name;?>" class="modal">
 <img src="<?php echo COM_SPORTSMANAGEMENT_PICTURE_SERVER.$row->picture;?>" alt="<?php echo $row->name;?>" width="20" />
@@ -228,7 +230,20 @@ JHtml::_('behavior.modal');
 								}
 								?>
 							</td>
-                            
+                         <td class="center">
+            <div class="btn-group">
+            <?php echo JHtml::_('jgrid.published', $row->published, $i, 'leagues.', $canChange, 'cb'); ?>
+            <?php 
+            // Create dropdown items and render the dropdown list.
+								if ($canChange)
+								{
+									JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'leagues');
+									JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'leagues');
+									echo JHtml::_('actionsdropdown.render', $this->escape($row->name));
+								}
+								?>
+            </div>
+            </td>    
 						<td class="order">
 							<span>
 								<?php echo $this->pagination->orderUpIcon($i,$i > 0,'leagues.orderup','JLIB_HTML_MOVE_UP',$ordering); ?>

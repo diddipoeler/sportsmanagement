@@ -175,6 +175,8 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
         }
         
 //        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' state -> <br><pre>'.print_r($this->state,true).'</pre>'),'');
+//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sortDirection -> <br><pre>'.print_r($this->sortDirection,true).'</pre>'),'');
+//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sortColumn -> <br><pre>'.print_r($this->sortColumn,true).'</pre>'),'');
         
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
@@ -268,6 +270,7 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
         case 'jlextassociations':
         case 'agegroups':
         case 'eventtypes':
+        case 'leagues':
         JHtmlSidebar::addFilter(
 			JText::_('JOPTION_SELECT_PUBLISHED'),
 			'filter_state',
@@ -358,16 +361,7 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
 			JHtml::_('select.options', $this->prediction_ids, 'value', 'text', $this->state->get('filter.prediction_id'), true)
 		);
         }
-        
-//        if ( isset($this->prediction_id_select) )
-//        {
-//        JHtmlSidebar::addFilter(
-//			JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME'),
-//			'filter_prediction_id_select',
-//			JHtml::_('select.options', $this->prediction_id_select, 'value', 'text', $this->state->get('filter.prediction_id_select'), true)
-//		);
-//        }
-        
+       
         if ( isset($this->project_position_id) )
         {
         JHtmlSidebar::addFilter(

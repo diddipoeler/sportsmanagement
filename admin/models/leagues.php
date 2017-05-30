@@ -72,6 +72,9 @@ class sportsmanagementModelLeagues extends JSMModelList
                         'st.name',
                         'obj.id',
                         'obj.ordering',
+                        'obj.published',
+                        'obj.modified',
+                        'obj.modified_by',
                         'ag.name',
                         'fed.name'
                         );
@@ -90,19 +93,11 @@ class sportsmanagementModelLeagues extends JSMModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-//		// Reference global application object
-//        $app = JFactory::getApplication();
-//        // JInput object
-//        $jinput = $app->input;
-//        $option = $jinput->getCmd('option');
-        // Initialise variables.
-        
         $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
-
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
-
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
 		$this->setState('filter.state', $published);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
@@ -111,25 +106,15 @@ class sportsmanagementModelLeagues extends JSMModelList
 		$this->setState('filter.search_agegroup', $temp_user_request);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_association', 'filter_search_association', '');
 		$this->setState('filter.search_association', $temp_user_request);
-
-$temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.federation', 'filter_federation', '');
-$this->setState('filter.federation', $temp_user_request);  
-		
-        $value = JRequest::getUInt('limitstart', 0);
-		$this->setState('list.start', $value);
-
-//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
-//		$this->setState('filter.image_folder', $image_folder);
-        
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
-
-
-//		// Load the parameters.
-//		$params = JComponentHelper::getParams('com_sportsmanagement');
-//		$this->setState('params', $params);
+        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.federation', 'filter_federation', '');
+        $this->setState('filter.federation', $temp_user_request);  
+        $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
+		$this->setState('list.limit', $value);
 
 		// List state information.
 		parent::populateState('obj.name', 'asc');
+        $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
+		$this->setState('list.start', $value);
 	}
     
 	/**
@@ -139,19 +124,10 @@ $this->setState('filter.federation', $temp_user_request);
 	 */
 	protected function getListQuery()
 	{
-//		// Reference global application object
-//        $app = JFactory::getApplication();
-//        // JInput object
-//        $jinput = $app->input;
-//        $option = $jinput->getCmd('option');
-//        
-//        // Create a new query object.		
-//		$db = JFactory::getDbo();
-//		$query = $db->getQuery(true);
+        // Create a new query object.		
 		$this->jsmquery->clear();
         // Select some fields
 		$this->jsmquery->select('obj.name,obj.short_name,obj.alias,obj.associations,obj.country,obj.ordering,obj.id,obj.picture,obj.checked_out,obj.checked_out_time,obj.agegroup_id');
-        
         $this->jsmquery->select('obj.modified,obj.modified_by');
         $this->jsmquery->select('st.name AS sportstype');
 		// From table
@@ -192,16 +168,13 @@ $this->setState('filter.federation', $temp_user_request);
 
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'obj.name')).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
-                
-                
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');        
  
 		if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
         $my_text = ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
-        
+        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
         return $this->jsmquery;
 	}
 

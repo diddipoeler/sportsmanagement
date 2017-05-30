@@ -40,7 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 //Ordering allowed ?
-$ordering=($this->sortColumn == 'obj.ordering');
+//$ordering=($this->sortColumn == 'obj.ordering');
 
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
@@ -81,11 +81,11 @@ echo '</div>';
 }
 
 ?>
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="" />
-	<?php echo JHtml::_('form.token')."\n"; ?>
+<input type="hidden" name="task" value="" />
+<input type="hidden" name="boxchecked" value="0" />
+<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
+<input type="hidden" name="filter_order_Dir" value="" />
+<?php echo JHtml::_('form.token')."\n"; ?>
 </form>
 <?PHP
 echo "<div>";

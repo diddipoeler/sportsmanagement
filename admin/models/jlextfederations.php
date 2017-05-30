@@ -94,10 +94,8 @@ class sportsmanagementModeljlextfederations extends JSMModelList
         // Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
-
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.state', $published);
-        
         $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);	
 
