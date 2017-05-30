@@ -111,20 +111,13 @@ $starttime = microtime();
             }
 		
         $lists['nation'] = $nation;
-        $lists['nation2'] = JHtmlSelect::genericlist(	$nation, 
-																'filter_search_nation', 
-																'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 
-																'value', 
-																'text', 
-																$this->state->get('filter.search_nation'));
-        /*$lists['nation2']=JHtml::_( 'select.genericList',
-										$nation,
-										'filter_nation',
-										'class="inputbox" onChange="this.form.submit();" style="width:120px"',
-										'id',
-										'name',
-										$filter_nation);
-		*/
+        $lists['nation2'] = JHtmlSelect::genericlist($nation, 
+						'filter_search_nation', 
+						'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 
+						'value', 
+						'text', 
+						$this->state->get('filter.search_nation'));
+        
         unset($nation);
         
         $myoptions = array();
@@ -136,17 +129,15 @@ $starttime = microtime();
             $this->search_agegroup	= $res;
         }
         $lists['agegroup'] = $myoptions;
-        $lists['agegroup2']= JHtmlSelect::genericlist(	$myoptions, 
-																'filter_search_agegroup', 
-																'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 
-																'value', 
-																'text', 
-																$this->state->get('filter.search_agegroup'));
+        $lists['agegroup2'] = JHtmlSelect::genericlist($myoptions, 
+						'filter_search_agegroup', 
+						'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 
+						'value', 
+						'text', 
+						$this->state->get('filter.search_agegroup'));
         unset($myoptions);
-        
-
 		
-		$this->lists	= $lists;
+		$this->lists = $lists;
 		
         
         

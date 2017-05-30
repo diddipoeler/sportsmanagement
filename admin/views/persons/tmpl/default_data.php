@@ -122,8 +122,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						$canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                         $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
                         $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'persons.', $canCheckin);
-						//$is_checked = $this->table->isCheckedOut($this->user->get('id'),$row->checked_out);
-                        $published  = JHtml::_('grid.published',$row,$i, 'tick.png','publish_x.png','persons.');
+                        $canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.person.' . $row->id) && $canCheckin;
+
 						?>
 						<tr class="<?php echo "row$k"; ?>">
 							<td class="center">
@@ -218,26 +218,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 								{
 									$append=' style="background-color:#FFCCCC;" ';
 								}
-								//if ($row->birthday == '0000-00-00')
-//								{
-//									$append=' style="background-color:#FFCCCC;"';
-//								}
-//								if ($is_checked)
-//								{
-//									echo $row->birthday;
-//								}
-//								else
-//								{
-									/*
-                                    echo $this->calendar(	sportsmanagementHelper::convertDate($row->birthday),
-															'birthday'.$row->id,
-															'birthday'.$row->id,
-															'%d-%m-%Y',
-															'size="10" '.$append.' cb="cb'.$i.'"',
-															'onupdatebirthday',
-															$i);
-                                   */
-                                   //$date1 = sportsmanagementHelper::convertDate($row->birthday, 1);                         
+                        
                                    echo JHtml::calendar(	$date1,
 														'birthday'.$row->id,
 														'birthday'.$row->id,
@@ -292,7 +273,22 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 //								echo 'position_id -> '.$row->position_id;
                                 ?>
 							</td>
-							<td class="center"><?php echo $published; ?></td>
+							<td class="center">
+                            <div class="btn-group">
+            <?php echo JHtml::_('jgrid.published', $row->published, $i, 'persons.', $canChange, 'cb'); ?>
+            <?php // Create dropdown items and render the dropdown list.
+								if ($canChange)
+								{
+									JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'persons');
+									JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'persons');
+									echo JHtml::_('actionsdropdown.render', $this->escape($row->name));
+								}
+								?>
+            </div>	
+                            
+                            
+                            
+                            </td>
 							<td class="center"><?php echo $row->id; ?></td>
 						</tr>
 						<?php

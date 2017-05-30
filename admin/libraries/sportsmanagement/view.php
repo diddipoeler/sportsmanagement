@@ -174,6 +174,8 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
             $this->request_url	= $this->uri->toString();
         }
         
+//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' joomla version -> <br><pre>'.print_r($this->state,true).'</pre>'),'');
+        
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
             $this->setLayout($this->getLayout() . '_3');
@@ -193,23 +195,11 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
         
         $this->app->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
 
-//		if (sportsmanagementHelper::isJoomlaVersion('2.5'))
-//		{
-//			// wir lassen das layout so wie es ist, dann müssen
-//            // nicht so viele dateien umbenannt werden
-//            //$this->setLayout($this->getLayout() . '_25');
-//            $this->setLayout($this->getLayout() );
-//		}
-//		if (sportsmanagementHelper::isJoomlaVersion('3'))
-//		{
-//			$this->setLayout($this->getLayout() . '_3');
-//		}
-
 		$this->init();
 
 		$this->addToolbar();
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' joomla version -> <br><pre>'.print_r(COM_SPORTSMANAGEMENT_JOOMLAVERSION,true).'</pre>'),'');
+        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' joomla version -> <br><pre>'.print_r(COM_SPORTSMANAGEMENT_JOOMLAVERSION,true).'</pre>'),'');
         
         // hier wird gesteuert, welcher menüeintrag aktiv ist.
         if(version_compare(JVERSION,'3.0.0','ge')) 

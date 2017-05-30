@@ -41,7 +41,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.modellist');
+//jimport('joomla.application.component.modellist');
 
 
 /**
@@ -113,7 +113,6 @@ class sportsmanagementModelagegroups extends JSMModelList
 		$this->setState('filter.search_nation', $temp_user_request);
         $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);	
-
 
 		// List state information.
 		parent::populateState('obj.name', 'asc');

@@ -66,6 +66,8 @@ class sportsmanagementModelEventtypes extends JSMModelList
                         'obj.icon',
                         'obj.sports_type_id',
                         'obj.published',
+                        'obj.modified',
+                        'obj.modified_by',
                         'obj.id',
                         'obj.ordering'
                         );

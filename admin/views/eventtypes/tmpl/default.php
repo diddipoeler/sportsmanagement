@@ -40,7 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 //Ordering allowed ?
-$ordering=($this->sortColumn == 'obj.ordering');
+//$ordering=($this->sortColumn == 'obj.ordering');
 
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
