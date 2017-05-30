@@ -62,31 +62,18 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app	= JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$uri	= JFactory::getURI();
-        $model	= $this->getModel();
-        
-        $this->state = $this->get('State'); 
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
+//	   $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' state<br><pre>'.print_r($this->state,true).'</pre>'),'Notice');
         
         $starttime	= microtime(); 
-        $items		= $this->get('Items');
+
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
-        
-		$total		= $this->get('Total');
-		$pagination = $this->get('Pagination');
-        
+
         $table = JTable::getInstance('eventtype', 'sportsmanagementTable');
-		$this->table	= $table;
-
-
+		$this->table = $table;
 
 		//build the html select list for sportstypes
 		$sportstypes[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_SPORTSTYPE_FILTER'), 'id', 'name');
@@ -97,21 +84,16 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 		$this->sports_type	= $allSportstypes;
         
 		$lists['sportstypes'] = JHtml::_( 'select.genericList',
-										$sportstypes,
-										'filter_sports_type',
-										'class="inputbox" onChange="this.form.submit();" style="width:120px"',
-										'id',
-										'name',
-										$this->state->get('filter.sports_type')	);
+							$sportstypes,
+							'filter_sports_type',
+							'class="inputbox" onChange="this.form.submit();" style="width:120px"',
+							'id',
+							'name',
+							$this->state->get('filter.sports_type')	);
 		unset($sportstypes);
 
-		$this->user	= JFactory::getUser();
-		$this->config	= JFactory::getConfig();
 		$this->lists	= $lists;
-		$this->items	= $items;
-		$this->pagination	= $pagination;
-		$this->request_url	= $uri->toString();
-        
+       
         
 		
 	}
@@ -123,18 +105,9 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-  		$option = JRequest::getCmd('option');
-//          // Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
-//        
-//		// Set toolbar items for the page
+		// Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_TITLE');
 
-// 		JToolBarHelper::publishList('eventtype.publish');
-// 		JToolBarHelper::unpublishList('eventtype.unpublish');
 		JToolBarHelper::publish('eventtypes.publish', 'JTOOLBAR_PUBLISH', true);
 		JToolBarHelper::unpublish('eventtypes.unpublish', 'JTOOLBAR_UNPUBLISH', true);
 		JToolBarHelper::divider();
@@ -151,6 +124,7 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
         }
         else
         {
+        JToolbarHelper::trash('eventtypes.trash');    
         JToolBarHelper::deleteList('', 'eventtypes.delete', 'JTOOLBAR_DELETE');    
         }
 		

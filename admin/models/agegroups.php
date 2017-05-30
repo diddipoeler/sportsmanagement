@@ -76,6 +76,9 @@ class sportsmanagementModelagegroups extends JSMModelList
                         'obj.id',
                         'obj.picture',
                         'obj.ordering',
+                        'obj.published',
+                        'obj.modified',
+                        'obj.modified_by',
                         'obj.checked_out',
                         'obj.checked_out_time'
                         );
@@ -95,6 +98,7 @@ class sportsmanagementModelagegroups extends JSMModelList
 	protected function populateState($ordering = null, $direction = null)
 	{
         $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -162,7 +166,7 @@ class sportsmanagementModelagegroups extends JSMModelList
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
         
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
+        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
         
 		return $this->jsmquery;
         

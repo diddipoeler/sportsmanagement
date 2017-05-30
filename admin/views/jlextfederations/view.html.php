@@ -60,7 +60,7 @@ class sportsmanagementViewjlextfederations extends sportsmanagementView
 	 */
 	public function init ()
 	{
-
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' state<br><pre>'.print_r($this->state,true).'</pre>'),'Notice');	
 $starttime = microtime(); 
 		
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )

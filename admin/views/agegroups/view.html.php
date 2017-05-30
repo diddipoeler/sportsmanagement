@@ -60,7 +60,9 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		
+
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' state<br><pre>'.print_r($this->state,true).'</pre>'),'Notice');		
+
         $starttime = microtime(); 
         $mdlSportsType = JModelLegacy::getInstance('SportsType', 'sportsmanagementModel');
        

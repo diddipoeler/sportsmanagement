@@ -277,6 +277,7 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
         case 'jlextfederations':
         case 'jlextassociations':
         case 'agegroups':
+        case 'eventtypes':
         JHtmlSidebar::addFilter(
 			JText::_('JOPTION_SELECT_PUBLISHED'),
 			'filter_state',

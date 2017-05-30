@@ -49,7 +49,7 @@ jimport('joomla.application.component.modellist');
  * @package	Sportsmanagement
  * @since	1.5.0a
  */
-class sportsmanagementModelEventtypes extends JModelList
+class sportsmanagementModelEventtypes extends JSMModelList
 {
 	var $_identifier = "eventtypes";
 	
@@ -83,12 +83,8 @@ class sportsmanagementModelEventtypes extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Initialise variables.
-		$app = JFactory::getApplication('administrator');
-        
-        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+	    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -100,21 +96,13 @@ class sportsmanagementModelEventtypes extends JModelList
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.sports_type', 'filter_sports_type', '');
 		$this->setState('filter.sports_type', $temp_user_request);
         
-        $value = JRequest::getUInt('limitstart', 0);
-		$this->setState('list.start', $value);
-
-//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
-//		$this->setState('filter.image_folder', $image_folder);
-        
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
-
-
-//		// Load the parameters.
-//		$params = JComponentHelper::getParams('com_sportsmanagement');
-//		$this->setState('params', $params);
+        $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
+		$this->setState('list.limit', $value);	
 
 		// List state information.
 		parent::populateState('obj.name', 'asc');
+        $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
+		$this->setState('list.start', $value);
 	}
     
 	/**
@@ -124,53 +112,46 @@ class sportsmanagementModelEventtypes extends JModelList
 	 */
 	function getListQuery()
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        
-        //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
-        // Create a new query object.
-		//$db		= $this->getDbo();
-        $db = sportsmanagementHelper::getDBConnection();
-		$query	= $db->getQuery(true);
-		$user	= JFactory::getUser(); 
+		// Create a new query object.		
+		$this->jsmquery->clear();
 		
         // Select some fields
-		$query->select('obj.*');
+		$this->jsmquery->select('obj.*');
         // From table
-		$query->from('#__sportsmanagement_eventtype as obj');
+		$this->jsmquery->from('#__sportsmanagement_eventtype as obj');
         // Join over the sportstype
-		$query->select('st.name AS sportstype');
-		$query->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = obj.sports_type_id');
+		$this->jsmquery->select('st.name AS sportstype');
+		$this->jsmquery->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = obj.sports_type_id');
         // Join over the users for the checked out user.
-		$query->select('uc.name AS editor');
-		$query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
+		$this->jsmquery->select('uc.name AS editor');
+		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
                 
         if ($this->getState('filter.search'))
 		{
-        $query->where('LOWER(obj.name) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%'));
+        $this->jsmquery->where('LOWER(obj.name) LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search').'%'));
         }
 		
         if (is_numeric($this->getState('filter.state')))
 		{
-        $query->where('obj.published = '.$this->getState('filter.state'));
+        $this->jsmquery->where('obj.published = '.$this->getState('filter.state'));
         }
         
         if ($this->getState('filter.sports_type'))
 		{
-        $query->where('obj.sports_type_id = '.$this->getState('filter.sports_type') );
+        $this->jsmquery->where('obj.sports_type_id = '.$this->getState('filter.sports_type') );
         }
         
         
-        $query->order($db->escape($this->getState('list.ordering', 'obj.name')).' '.
-                $db->escape($this->getState('list.direction', 'ASC')));
+        $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'obj.name')).' '.
+                $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $my_text = ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        $my_text = ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
-        
-		return $query;
+        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
+		return $this->jsmquery;
         
 	}
     

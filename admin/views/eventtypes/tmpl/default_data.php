@@ -106,9 +106,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 					$link = JRoute::_('index.php?option=com_sportsmanagement&task=eventtype.edit&id='.$row->id);
 					$canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
-					$published = JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','eventtype.');
                     $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
                     $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'eventtypes.', $canCheckin);
+                    $canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.eventtype.' . $row->id) && $canCheckin;
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center">
@@ -172,9 +172,17 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							?>
 						</td>
 						<td class="center">
-							<?php
-							echo $published;
-							?>
+						<div class="btn-group">
+            <?php echo JHtml::_('jgrid.published', $row->published, $i, 'eventtypes.', $canChange, 'cb'); ?>
+            <?php // Create dropdown items and render the dropdown list.
+								if ($canChange)
+								{
+									JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'eventtypes');
+									JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'eventtypes');
+									echo JHtml::_('actionsdropdown.render', $this->escape($row->name));
+								}
+								?>
+            </div>	
 						</td>
 						<td class="order">
 							<span>
