@@ -59,15 +59,12 @@ class sportsmanagementViewjlextassociations extends sportsmanagementView
 	 */
 	public function init ()
 	{
-			
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->state,true).'</pre>'),'');
    
 $starttime = microtime(); 
 		
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
 		
         
@@ -79,7 +76,7 @@ $starttime = microtime();
 		if ($res = JSMCountries::getCountryOptions())
         {
             $nation = array_merge($nation, $res);
-            $this->search_nation	= $res;
+            $this->search_nation = $res;
             }
 		
         $lists['nation'] = $nation;
@@ -91,14 +88,14 @@ $starttime = microtime();
 						$this->state->get('filter.search_nation'));
 
 $mdlassociation = JModelLegacy::getInstance('jlextassociations', 'sportsmanagementModel');
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r($mdlassociation->getAssociations(),true).'</pre>'),'Notice');        
+        
         if ( $res = $mdlassociation->getAssociations() )
         {
             $nation = array_merge($nation, $res);
-            $this->federation	= $res;
+            $this->federation = $res;
         }
 
-		$this->lists	= $lists;
+		$this->lists = $lists;
   
 
 	}
@@ -110,30 +107,22 @@ $mdlassociation = JModelLegacy::getInstance('jlextassociations', 'sportsmanageme
 	*/
 	protected function addToolbar()
 	{
-  		//// Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
-//        $option = JRequest::getCmd('option');
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
-        
 	// Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_TITLE');
-// 		JToolBarHelper::addNewX();
-// 		JToolBarHelper::editListX();
+
 		JToolBarHelper::addNew('jlextassociation.add');
 		JToolBarHelper::editList('jlextassociation.edit');
 		JToolBarHelper::custom('jlextassociation.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
 		JToolBarHelper::archiveList('jlextassociation.export', JText::_('JTOOLBAR_EXPORT'));
         JToolbarHelper::checkin('jlextassociations.checkin');
-		//JToolBarHelper::deleteList();
-		//JToolBarHelper::deleteList('', 'jlextassociations.delete', 'JTOOLBAR_DELETE');
+
         if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
         {
 		JToolbarHelper::trash('jlextassociations.trash');
         }
         else
         {
+        JToolbarHelper::trash('jlextfederations.trash');    
         JToolBarHelper::deleteList('', 'jlextassociations.delete', 'JTOOLBAR_DELETE');    
         }
 		

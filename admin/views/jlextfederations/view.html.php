@@ -60,38 +60,33 @@ class sportsmanagementViewjlextfederations extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		
-		
-   
 
 $starttime = microtime(); 
-		$items = $this->get('Items');
+		
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		$this->table	= JTable::getInstance('jlextfederation', 'sportsmanagementTable');
+		$this->table = JTable::getInstance('jlextfederation', 'sportsmanagementTable');
         
         //build the html options for nation
 		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions())
         {
             $nation = array_merge($nation,$res);
-            $this->search_nation	= $res;
+            $this->search_nation = $res;
             }
 		
         $lists['nation'] = $nation;
-        $lists['nation2'] = JHtmlSelect::genericlist(	$nation,
-																'filter_search_nation',
-																'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-																'value',
-																'text',
-																$this->state->get('filter.search_nation'));
+        $lists['nation2'] = JHtmlSelect::genericlist($nation,
+						'filter_search_nation',
+						'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+						'value',
+						'text',
+						$this->state->get('filter.search_nation'));
 
-
-
-		$this->lists	= $lists;
+		$this->lists = $lists;
         
         
         

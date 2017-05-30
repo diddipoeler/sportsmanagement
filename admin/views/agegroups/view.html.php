@@ -63,9 +63,7 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 		
         $starttime = microtime(); 
         $mdlSportsType = JModelLegacy::getInstance('SportsType', 'sportsmanagementModel');
-              
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' state<br><pre>'.print_r($this->state,true).'</pre>'),'');
-        
+       
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
@@ -81,12 +79,12 @@ class sportsmanagementViewagegroups extends sportsmanagementView
         $this->sports_type = $allSportstypes;
 		
 		$lists['sportstypes'] = JHtml::_( 'select.genericList',
-										$sportstypes,
-										'filter_sports_type',
-										'class="inputbox" onChange="this.form.submit();" style="width:120px"',
-										'id',
-										'name',
-										$this->state->get('filter.sports_type'));
+							$sportstypes,
+							'filter_sports_type',
+							'class="inputbox" onChange="this.form.submit();" style="width:120px"',
+							'id',
+							'name',
+							$this->state->get('filter.sports_type'));
 		unset($sportstypes);
         
         //build the html options for nation
@@ -97,15 +95,13 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 			$this->search_nation = $res;
 		}
 		
-        $lists['nation']	= $nation;
-        $lists['nation2']	= JHtmlSelect::genericlist(	$nation,
-																'filter_search_nation',
-																'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-																'value',
-																'text',
-																$this->state->get('filter.search_nation'));
-
-		//$app->enqueueMessage(JText::_('items<br><pre>'.print_r($this->items,true).'</pre>'),'');
+        $lists['nation'] = $nation;
+        $lists['nation2'] = JHtmlSelect::genericlist(	$nation,
+						'filter_search_nation',
+						'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+						'value',
+						'text',
+						$this->state->get('filter.search_nation'));
         
         foreach ( $this->items as $item )
         {
@@ -126,14 +122,8 @@ class sportsmanagementViewagegroups extends sportsmanagementView
             $insert_agegroup = $databasetool->insertAgegroup($this->state->get('filter.search_nation'),$this->state->get('filter.sports_type'));
         $this->app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_NO_RESULT'),'Error');
         }
-        
-
-
 
 		$this->lists = $lists;
-
-        
-       
 		
 	}
 	
@@ -144,8 +134,6 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-	
-        
         // Set toolbar items for the page
 $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_TITLE');
 		JToolBarHelper::addNew('agegroup.add');

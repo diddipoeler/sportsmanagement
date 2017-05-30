@@ -59,41 +59,20 @@ class sportsmanagementViewProjects extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$uri = JFactory::getUri();
-        $model = $this->getModel();
         $inputappend = '';
-        $this->state = $this->get('State');
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->state,true).'</pre>'),'');
-
 
 		$starttime = microtime(); 
-		// Get data from the model
-		$items = $this->get('Items');
                         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
 		
         JTable::addIncludePath(JPATH_COMPONENT.DS.'tables');
         $table = JTable::getInstance('project', 'sportsmanagementTable');
-		$this->table	= $table;
+		$this->table = $table;
         
-        $total = $this->get('Total');
-		$pagination = $this->get('Pagination');
 		$javascript = "onchange=\"$('adminForm').submit();\"";
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' total<br><pre>'.print_r($total,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' state<br><pre>'.print_r($this->state,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' items<br><pre>'.print_r($items,true).'</pre>'),'Notice');
-
-
 
 		//build the html select list for userfields
 		$userfields[] = JHtml::_('select.option', '0' ,JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_USERFIELD_FILTER'), 'id', 'name');
@@ -112,7 +91,7 @@ class sportsmanagementViewProjects extends sportsmanagementView
 						$this->state->get('filter.userfields'));
 		unset($userfields);
         
-		foreach ( $items as $row )
+		foreach ( $this->items as $row )
 		{
 			$row->user_field = $mdluserfields->getExtraFieldsProject($row->id);
 		}
@@ -218,12 +197,12 @@ unset($myoptions);
 			$this->assignRef('search_agegroup',$res);
 		}
 		$lists['agegroup'] = $myoptions;
-		$lists['agegroup2']= JHtmlSelect::genericlist(	$myoptions,
-																'filter_search_agegroup',
-																'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-																'value', 
-																'text', 
-																$this->state->get('filter.search_agegroup'));
+		$lists['agegroup2'] = JHtmlSelect::genericlist($myoptions,
+						'filter_search_agegroup',
+						'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+						'value', 
+						'text', 
+						$this->state->get('filter.search_agegroup'));
 		unset($myoptions);
         
 		unset($nation);
@@ -268,18 +247,10 @@ unset($myoptions);
 		$mdlRounds = JModelLegacy::getInstance('Rounds', 'sportsmanagementModel');
       $mdlMatches = JModelLegacy::getInstance('Matches', 'sportsmanagementModel');
       
-		$user = JFactory::getUser();
         $this->modeldivision	= $mdlProjectDivisions;
         $this->modelround	= $mdlRounds;
         $this->modelmatches	= $mdlMatches;
-		$this->user	= $user;
 		$this->lists	= $lists;
-		$this->items	= $items;
-		$this->pagination	= $pagination;
-		$url = $uri->toString();
-		$this->request_url	= $url;
-        
-
 
 	}
 
@@ -290,12 +261,7 @@ unset($myoptions);
 	*/
 	protected function addToolbar()
 	{
-	//// Get a refrence of the page instance in joomla
-//        $document = JFactory::getDocument();
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
-//		// Set toolbar items for the page
+		// Set toolbar items for the page
 $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_TITLE');
 $this->icon = 'projects';
 

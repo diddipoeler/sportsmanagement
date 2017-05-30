@@ -53,7 +53,7 @@ jimport('joomla.application.component.modellist');
  * @version 2013
  * @access public
  */
-class sportsmanagementModelagegroups extends JModelList
+class sportsmanagementModelagegroups extends JSMModelList
 {
 	var $_identifier = "agegroups";
 	
@@ -83,20 +83,6 @@ class sportsmanagementModelagegroups extends JModelList
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
                 parent::setDbo($getDBConnection);
         
-        // Reference global application object
-        $this->app = JFactory::getApplication();
-        $this->user	= JFactory::getUser(); 
-        $this->db = $this->getDbo();
-		$this->query = $this->db->getQuery(true);
-        // JInput object
-        $this->jinput = $this->app->input;
-        $this->option = $this->jinput->getCmd('option');
-        $this->pks = $this->jinput->get('cid',array(),'array');
-        $this->post = $this->jinput->post->getArray(array());
-
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _db <br><pre>'.print_r($this->_db,true).'</pre>'),'Notice');
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' db <br><pre>'.print_r($this->db,true).'</pre>'),'Notice');
-        
         }
         
     /**
@@ -108,8 +94,7 @@ class sportsmanagementModelagegroups extends JModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->db,true).'</pre>'),'Notice');
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -122,18 +107,16 @@ class sportsmanagementModelagegroups extends JModelList
 		$this->setState('filter.sports_type', $temp_user_request);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
-        
-        $value = JRequest::getUInt('limitstart', 0);
-		$this->setState('list.start', $value);
+        $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
+		$this->setState('list.limit', $value);	
 
-
-
-//		// Load the parameters.
-//		$params = JComponentHelper::getParams('com_sportsmanagement');
-//		$this->setState('params', $params);
 
 		// List state information.
 		parent::populateState('obj.name', 'asc');
+        $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
+		$this->setState('list.start', $value);
+
+
 	}
 	
 	/**
@@ -143,39 +126,45 @@ class sportsmanagementModelagegroups extends JModelList
 	 */
 	function getListQuery()
 	{
+        // Create a new query object.		
+		$this->jsmquery->clear();
         // Select some fields
-		$this->query->select(implode(",",$this->filter_fields));
-        $this->query->select('uc.name AS editor');
+		$this->jsmquery->select(implode(",",$this->filter_fields));
+        $this->jsmquery->select('uc.name AS editor');
         // From table
-		$this->query->from('#__sportsmanagement_agegroup as obj');
-        $this->query->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = obj.sportstype_id');
-        $this->query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
+		$this->jsmquery->from('#__sportsmanagement_agegroup as obj');
+        $this->jsmquery->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = obj.sportstype_id');
+        $this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
   
         if ($this->getState('filter.search') )
 		{
-        $this->query->where('LOWER(obj.name) LIKE '.$this->db->Quote('%'.$this->getState('filter.search').'%') );
+        $this->jsmquery->where('LOWER(obj.name) LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search').'%') );
         }
         if ($this->getState('filter.search_nation'))
 		{
-        $this->query->where('obj.country LIKE '.$this->db->Quote('%'.$this->getState('filter.search_nation').'%') );
+        $this->jsmquery->where('obj.country LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search_nation').'%') );
         }
         if ($this->getState('filter.sports_type'))
 		{
-        $this->query->where('obj.sportstype_id = '.$this->getState('filter.sports_type'));
+        $this->jsmquery->where('obj.sportstype_id = '.$this->getState('filter.sports_type'));
         }
+        if (is_numeric($this->getState('filter.state')) )
+		{
+		$query->where('obj.published = '.$this->getState('filter.state'));	
+		}
 
-        $this->query->order($this->db->escape($this->getState('list.ordering', 'obj.name')).' '.
-                $this->db->escape($this->getState('list.direction', 'ASC')));
+        $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'obj.name')).' '.
+                $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $my_text = ' <br><pre>'.print_r($this->query->dump(),true).'</pre>';    
+        $my_text = ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
         
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->query->dump(),true).'</pre>'),'Notice');
+        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
         
-		return $this->query;
+		return $this->jsmquery;
         
 	}
     
@@ -186,15 +175,15 @@ class sportsmanagementModelagegroups extends JModelList
      */
     function getAgeGroups()
     {
-         $this->query->select('a.id AS value, concat(a.name, \' von: \',a.age_from,\' bis: \',a.age_to,\' Stichtag: \',a.deadline_day) AS text');
-			$this->query->from('#__sportsmanagement_agegroup as a');
+         $this->jsmquery->select('a.id AS value, concat(a.name, \' von: \',a.age_from,\' bis: \',a.age_to,\' Stichtag: \',a.deadline_day) AS text');
+			$this->jsmquery->from('#__sportsmanagement_agegroup as a');
                        
-        $this->query->order('a.name ASC');
+        $this->jsmquery->order('a.name ASC');
 
-        $this->db->setQuery($this->query);
-        if (!$result = $this->db->loadObjectList())
+        $this->jsmdb->setQuery($this->jsmquery);
+        if (!$result = $this->jsmdb->loadObjectList())
         {
-            sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->db->getErrorMsg(), __LINE__);
+            sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__);
             return array();
         }
 

@@ -92,7 +92,11 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_AGEGROUP_SPORTSTYPE','obj.sportstype_id',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
-                    
+                    <th width="" class="nowrap center">
+						<?php
+						echo JHtml::_('grid.sort','JSTATUS','obj.published',$this->sortDirection,$this->sortColumn);
+						?>
+					</th>
 					<th width="10%">
 						<?php
 						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','obj.ordering',$this->sortDirection,$this->sortColumn);
@@ -104,9 +108,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					</th>
 				</tr>
 			</thead>
-			<tfoot><tr><td colspan="9"><?php echo $this->pagination->getListFooter(); ?></td>
-            <td colspan="4"><?php echo $this->pagination->getResultsCounter(); ?>
-            
+			<tfoot>
+            <tr>
+            <td colspan="10">
+            <?php echo $this->pagination->getListFooter(); ?>
+            </td>
+            <td colspan="4">
+            <?php echo $this->pagination->getResultsCounter(); ?>
             </td>
             </tr></tfoot>
 			<tbody>
@@ -119,6 +127,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					$canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                     $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
                     $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'agegroups.', $canCheckin);
+                    $canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.agegroup.' . $row->id) && $canCheckin;
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center">
@@ -193,7 +202,19 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 							</td>
                             
                         <td class=""><?php echo JText::_($row->sportstype); ?></td>
-                        
+                        <td class="center">
+            <div class="btn-group">
+            <?php echo JHtml::_('jgrid.published', $row->published, $i, 'agegroups.', $canChange, 'cb'); ?>
+            <?php // Create dropdown items and render the dropdown list.
+								if ($canChange)
+								{
+									JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'agegroups');
+									JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'agegroups');
+									echo JHtml::_('actionsdropdown.render', $this->escape($row->name));
+								}
+								?>
+            </div>
+            </td>
 						<td class="order">
 							<span>
 								<?php echo $this->pagination->orderUpIcon($i,$i > 0,'agegroup.orderup','JLIB_HTML_MOVE_UP',$ordering); ?>
