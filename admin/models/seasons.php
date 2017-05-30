@@ -94,6 +94,9 @@ class sportsmanagementModelSeasons extends JSMModelList
                         's.alias',
                         's.id',
                         's.ordering',
+                        's.published',
+                        's.modified',
+                        's.modified_by',
                         's.checked_out',
                         's.checked_out_time'
                         );
@@ -123,24 +126,23 @@ class sportsmanagementModelSeasons extends JSMModelList
 		//$app = JFactory::getApplication('administrator');
         $order = '';
         
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context ->'.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
-
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
 		$this->setState('filter.state', $published);
-        
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
-        
-        $value = $this->jsmjinput->getUInt('limitstart', 0);
-		$this->setState('list.start', $value);
+        $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
+		$this->setState('list.limit', $value);
         
         // List state information.
 		parent::populateState($this->_order, 'asc');
-        
+        $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
+		$this->setState('list.start', $value);
 	}
     
 	/**
@@ -236,6 +238,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         $my_text = ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
+        
+        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
 
         return $this->jsmquery;
 	}

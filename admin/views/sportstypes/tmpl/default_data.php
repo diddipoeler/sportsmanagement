@@ -40,7 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 //Ordering allowed ?
-$ordering=($this->sortColumn == 's.ordering');
+//$ordering=($this->sortColumn == 's.ordering');
 
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
@@ -71,6 +71,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     <th width="10%" class="title">
 						<?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_SPORTSART'); ?>
 					</th>
+                    
+                    <th width="" class="nowrap center">
+						<?php
+						echo JHtml::_('grid.sort','JSTATUS','s.published',$this->sortDirection,$this->sortColumn);
+						?>
+					</th>
+                    
 					<th width="10%">
 						<?php
 						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','s.ordering',$this->sortDirection,$this->sortColumn);
@@ -82,7 +89,16 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					</th>
 				</tr>
 			</thead>
-			<tfoot><tr><td colspan="8"><?php echo $this->pagination->getListFooter(); ?></td></tr></tfoot>
+			<tfoot>
+            <tr>
+            <td colspan="4">
+            <?php echo $this->pagination->getListFooter(); ?>
+            </td>
+            <td colspan="4">
+            <?php echo $this->pagination->getResultsCounter(); ?>
+            </td>
+            </tr>
+            </tfoot>
 			<tbody>
 				<?php
 				$k=0;
@@ -151,13 +167,28 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         //echo $row->sportsart; 
                         ?>
                         </td>
+                        <td class="center">
+            <div class="btn-group">
+            <?php echo JHtml::_('jgrid.published', $row->published, $i, 'sportstypes.', $canChange, 'cb'); ?>
+            <?php 
+            // Create dropdown items and render the dropdown list.
+								if ($canChange)
+								{
+									JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'sportstypes');
+									JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'sportstypes');
+									echo JHtml::_('actionsdropdown.render', $this->escape($row->name));
+								}
+								?>
+            </div>
+            </td>    
+                        
 						<td class="order">
 							<span>
-								<?php echo $this->pagination->orderUpIcon($i,$i > 0,'sportstype.orderup','JLIB_HTML_MOVE_UP',$ordering); ?>
+								<?php echo $this->pagination->orderUpIcon($i,$i > 0,'sportstype.orderup','JLIB_HTML_MOVE_UP','s.ordering'); ?>
 							</span>
 							<span>
 								<?php
-								echo $this->pagination->orderDownIcon($i,$n,$i < $n,'sportstype.orderdown','JLIB_HTML_MOVE_DOWN',$ordering);
+								echo $this->pagination->orderDownIcon($i,$n,$i < $n,'sportstype.orderdown','JLIB_HTML_MOVE_DOWN','s.ordering');
 								?>
 								<?php $disabled=true ? '' : 'disabled="disabled"'; ?>
 							</span>

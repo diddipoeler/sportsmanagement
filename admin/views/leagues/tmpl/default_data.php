@@ -40,7 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 //Ordering allowed ?
-$ordering=($this->sortColumn == 'obj.ordering');
+//$ordering=($this->sortColumn == 'obj.ordering');
 
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
@@ -246,10 +246,10 @@ JHtml::_('behavior.modal');
             </td>    
 						<td class="order">
 							<span>
-								<?php echo $this->pagination->orderUpIcon($i,$i > 0,'leagues.orderup','JLIB_HTML_MOVE_UP',$ordering); ?>
+								<?php echo $this->pagination->orderUpIcon($i,$i > 0,'leagues.orderup','JLIB_HTML_MOVE_UP','obj.ordering'); ?>
 							</span>
 							<span>
-								<?php echo $this->pagination->orderDownIcon($i,$n,$i < $n,'leagues.orderdown','JLIB_HTML_MOVE_DOWN',$ordering); ?>
+								<?php echo $this->pagination->orderDownIcon($i,$n,$i < $n,'leagues.orderdown','JLIB_HTML_MOVE_DOWN','obj.ordering'); ?>
 								<?php $disabled=true ?	'' : 'disabled="disabled"'; ?>
 							</span>
 							<input	type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" <?php echo $disabled; ?>

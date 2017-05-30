@@ -174,11 +174,13 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
             $this->request_url = $this->uri->toString();
         }
         
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' state -> <br><pre>'.print_r($this->state,true).'</pre>'),'');
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sortDirection -> <br><pre>'.print_r($this->sortDirection,true).'</pre>'),'');
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sortColumn -> <br><pre>'.print_r($this->sortColumn,true).'</pre>'),'');
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' request_url -> <br><pre>'.print_r($this->request_url,true).'</pre>'),'');
-        
+        if ( JComponentHelper::getParams($this->option)->get('show_debug_info') )
+        {
+        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' state -> <br><pre>'.print_r($this->state,true).'</pre>'),'');
+        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sortDirection -> <br><pre>'.print_r($this->sortDirection,true).'</pre>'),'');
+        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sortColumn -> <br><pre>'.print_r($this->sortColumn,true).'</pre>'),'');
+        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' request_url -> <br><pre>'.print_r($this->request_url,true).'</pre>'),'');
+        }
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
             $this->setLayout($this->getLayout() . '_3');
@@ -272,6 +274,9 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
         case 'agegroups':
         case 'eventtypes':
         case 'leagues':
+        case 'seasons':
+        case 'sportstypes':
+        case 'positions':
         JHtmlSidebar::addFilter(
 			JText::_('JOPTION_SELECT_PUBLISHED'),
 			'filter_state',

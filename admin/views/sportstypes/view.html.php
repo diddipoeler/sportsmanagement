@@ -73,8 +73,8 @@ class sportsmanagementViewSportsTypes extends sportsmanagementView
 
         
 		$myoptions = array();
-		$myoptions[]		= JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_TEAM' ) );
-		$myoptions[]		= JHtml::_( 'select.option', '1', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_SINGLE' ) );
+		$myoptions[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_TEAM' ) );
+		$myoptions[] = JHtml::_( 'select.option', '1', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_SINGLE' ) );
 
 
 		$this->table = JTable::getInstance('sportstype', 'sportsmanagementTable');
@@ -95,15 +95,7 @@ class sportsmanagementViewSportsTypes extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		//// Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
-        
+		        
         // Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_TITLE');
 		JToolBarHelper::addNew('sportstype.add');
@@ -118,6 +110,7 @@ class sportsmanagementViewSportsTypes extends sportsmanagementView
 		}
 		else
 		{
+        JToolbarHelper::trash('sportstypes.trash');
 		JToolBarHelper::deleteList('', 'sportstypes.delete', 'JTOOLBAR_DELETE');    
 		}
 		

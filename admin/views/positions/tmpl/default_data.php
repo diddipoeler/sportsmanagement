@@ -40,7 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 //Ordering allowed ?
-$ordering=($this->sortColumn == 'po.ordering');
+//$ordering=($this->sortColumn == 'po.ordering');
 
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
@@ -116,9 +116,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 				$row =& $this->items[$i];
 				$link = JRoute::_('index.php?option=com_sportsmanagement&task=position.edit&id='.$row->id);
 				$canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
-				$published = JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','positions.');
                 $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
                 $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'positions.', $canCheckin);
+                $canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.position.' . $row->id) && $canCheckin;
 				?>
 				<tr class="<?php echo 'row'.$k; ?>">
 					<td class="center">
@@ -244,7 +244,22 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 						}
 						?>
 					</td>
-					<td class="center"><?php echo $published; ?></td>
+					<td class="center">
+                     <div class="btn-group">
+            <?php echo JHtml::_('jgrid.published', $row->published, $i, 'positions.', $canChange, 'cb'); ?>
+            <?php 
+            // Create dropdown items and render the dropdown list.
+								if ($canChange)
+								{
+									JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'positions');
+									JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'positions');
+									echo JHtml::_('actionsdropdown.render', $this->escape($row->name));
+								}
+								?>
+            </div>
+
+                    
+                    </td>
 					<td class="order">
 						<span>
 							<?php echo $this->pagination->orderUpIcon($i,$i > 0 ,'positions.orderup','JLIB_HTML_MOVE_UP',true); ?>
