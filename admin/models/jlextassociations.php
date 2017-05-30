@@ -40,13 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-//jimport('joomla.application.component.model');
-//require_once (JPATH_COMPONENT.DS.'models'.DS.'list.php');
-
-// import the Joomla modellist library
-//jimport('joomla.application.component.modellist');
-
-
 /**
  * sportsmanagementModeljlextassociations
  * 
@@ -103,11 +96,13 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 		$this->setState('filter.search_nation', $temp_user_request);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.federation', 'filter_federation', '');
         $this->setState('filter.federation', $temp_user_request);        
-        $value = JRequest::getUInt('limitstart', 0);
-		$this->setState('list.start', $value);
+        $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
+		$this->setState('list.limit', $value);	
 
 		// List state information.
 		parent::populateState('objassoc.name', 'asc');
+        $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
+		$this->setState('list.start', $value);
 	}
     
   /**
