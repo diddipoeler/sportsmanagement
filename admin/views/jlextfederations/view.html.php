@@ -105,25 +105,16 @@ $starttime = microtime();
 	*/
 	protected function addToolbar()
 	{
-  	//	// Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
-//        $option = JRequest::getCmd('option');
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
-        
 	// Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_FEDERATIONS_TITLE');
         $this->icon = 'federations';
-// 		JToolBarHelper::addNewX();
-// 		JToolBarHelper::editListX();
+
 		JToolBarHelper::addNew('jlextfederation.add');
 		JToolBarHelper::editList('jlextfederation.edit');
 		JToolBarHelper::custom('jlextfederation.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('jlextfederation.export',JText::_('JTOOLBAR_EXPORT'));
         JToolbarHelper::checkin('jlextfederations.checkin');
-		//JToolBarHelper::deleteList();
-		//JToolBarHelper::deleteList('', 'jlextfederation.delete', 'JTOOLBAR_DELETE');
+
 		if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
         {
 		JToolbarHelper::trash('jlextfederations.trash');

@@ -89,9 +89,8 @@ class sportsmanagementModeljlextfederations extends JSMModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
-
 		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
         // Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
@@ -116,35 +115,38 @@ class sportsmanagementModeljlextfederations extends JSMModelList
   protected function getListQuery()
 	{
         // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		$this->jsmquery->clear();
 		// Select some fields
-		$query->select(implode(",",$this->filter_fields));
+		$this->jsmquery->select(implode(",",$this->filter_fields));
 		// From the _associations table
-		$query->from('#__sportsmanagement_federations as objassoc');
+		$this->jsmquery->from('#__sportsmanagement_federations as objassoc');
         // Join over the users for the checked out user.
-		$query->select('uc.name AS editor');
-		$query->join('LEFT', '#__users AS uc ON uc.id = objassoc.checked_out');
+		$this->jsmquery->select('uc.name AS editor');
+		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = objassoc.checked_out');
         if ($this->getState('filter.search') )
 		{
-        $query->where('LOWER(objassoc.name) LIKE '.$this->_db->Quote('%'.$this->getState('filter.search').'%'));
+        $this->jsmquery->where('LOWER(objassoc.name) LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search').'%'));
         }
         if ( $this->getState('filter.search_nation') )
 		{
-        $query->where("objassoc.country = '".$this->getState('filter.search_nation')."'");
+        $this->jsmquery->where("objassoc.country = '".$this->getState('filter.search_nation')."'");
         }
+        if (is_numeric($this->getState('filter.state')) )
+		{
+		$query->where('objassoc.published = '.$this->getState('filter.state'));	
+		}
 
         
-        $query->order($db->escape($this->getState('list.ordering', 'objassoc.name')).' '.
-                $db->escape($this->getState('list.direction', 'ASC')));
+        $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'objassoc.name')).' '.
+                $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
  
 		if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $my_text = ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        $my_text = ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
         
-        return $query;
+        return $this->jsmquery;
 	}
 	
   

@@ -68,6 +68,9 @@ class sportsmanagementModeljlextassociations extends JSMModelList
                         'objassoc.country',
                         'objassoc.id',
                         'objassoc.ordering',
+                        'objassoc.published',
+                        'objassoc.modified',
+                        'objassoc.modified_by',
                         'objassoc.checked_out',
                         'objassoc.checked_out_time',
                         'objassoc.assocflag',
@@ -86,7 +89,9 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
-		// Load the filter state.
+		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+        // Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 
@@ -134,6 +139,10 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 		{
         $this->jsmquery->where("objassoc.parent_id = ".$this->getState('filter.federation') );
         }
+        if (is_numeric($this->getState('filter.state')) )
+		{
+		$query->where('objassoc.published = '.$this->getState('filter.state'));	
+		}
 
         
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'objassoc.name')).' '.
