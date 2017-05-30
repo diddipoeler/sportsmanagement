@@ -84,19 +84,18 @@ $starttime = microtime();
 		}
 		
         $lists['nation'] = $nation;
-        $lists['nation2']= JHtmlSelect::genericlist(	$nation, 
-																'filter_search_nation', 
-																'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 
-																'value', 
-																'text', 
-																$this->state->get('filter.search_nation'));
+        $lists['nation2'] = JHtmlSelect::genericlist($nation, 
+						'filter_search_nation', 
+						'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 
+						'value', 
+						'text', 
+						$this->state->get('filter.search_nation'));
 
 
 
 		
-		$this->lists	= $lists;
-        
-        $this->season_id	= $season_id;
+		$this->lists = $lists;
+        $this->season_id = $season_id;
         
         if ( $this->getLayout() == 'assignteams' || $this->getLayout() == 'assignteams_3' )
 		{
@@ -146,6 +145,7 @@ $starttime = microtime();
             }
             else
             {
+            JToolbarHelper::trash('seasons.trash');
             JToolBarHelper::deleteList('', 'seasons.delete', 'JTOOLBAR_DELETE');    
             }
             

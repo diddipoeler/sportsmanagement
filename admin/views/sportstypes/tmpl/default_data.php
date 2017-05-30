@@ -107,9 +107,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					$row =& $this->items[$i];
 					$link = JRoute::_('index.php?option=com_sportsmanagement&task=sportstype.edit&id='.$row->id);
                     $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
-					//$checked = JHtml::_('grid.checkedout',$row,$i);
                     $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
                     $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'sportstypes.', $canCheckin);
+                    $canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.sportstype.' . $row->id) && $canCheckin;
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center">
