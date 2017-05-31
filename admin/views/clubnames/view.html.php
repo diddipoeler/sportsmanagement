@@ -40,8 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-
-
 /**
  * sportsmanagementViewClubnames
  * 
@@ -53,8 +51,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  */
 class sportsmanagementViewClubnames extends sportsmanagementView
 {
-
-	
 	
 	/**
 	 * sportsmanagementViewClubnames::init()
@@ -63,21 +59,21 @@ class sportsmanagementViewClubnames extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$db	= sportsmanagementHelper::getDBConnection();
-		$uri = JFactory::getURI();
-        $model = $this->getModel();
+//		$app = JFactory::getApplication();
+//		$jinput = $app->input;
+//		$option = $jinput->getCmd('option');
+//		$db	= sportsmanagementHelper::getDBConnection();
+//		$uri = JFactory::getURI();
+//        $model = $this->getModel();
         $lists = array();
         
-        $this->state = $this->get('State'); 
-        $this->sortDirection = $this->state->get('list.direction');
-        $this->sortColumn = $this->state->get('list.ordering');
+//        $this->state = $this->get('State'); 
+//        $this->sortDirection = $this->state->get('list.direction');
+//        $this->sortColumn = $this->state->get('list.ordering');
                 
 
         $starttime = microtime(); 
-        $this->items = $this->get('Items');
+//        $this->items = $this->get('Items');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
@@ -94,8 +90,8 @@ class sportsmanagementViewClubnames extends sportsmanagementView
 		
         $lists['nation'] = $nation;
         
-		$total = $this->get('Total');
-		$this->pagination = $this->get('Pagination');
+//		$total = $this->get('Total');
+//		$this->pagination = $this->get('Pagination');
         
         $this->table = JTable::getInstance('clubname', 'sportsmanagementTable');
         
@@ -104,12 +100,12 @@ class sportsmanagementViewClubnames extends sportsmanagementView
 
 
 
-		$this->user	= JFactory::getUser();
+//		$this->user	= JFactory::getUser();
         //$this->projectws	= $project;
 		$this->lists	= $lists;
 
 //		$this->pagination	= $pagination;
-		$this->request_url	= $uri->toString();
+//		$this->request_url	= $uri->toString();
         
         
 		
@@ -122,9 +118,9 @@ class sportsmanagementViewClubnames extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
+//		$app = JFactory::getApplication();
+//		$jinput = $app->input;
+//		$option = $jinput->getCmd('option');
        
 		//$option = JRequest::getCmd('option');
 //        // Get a refrence of the page instance in joomla
@@ -153,6 +149,7 @@ class sportsmanagementViewClubnames extends sportsmanagementView
         }
         else
         {
+        JToolbarHelper::trash('clubnames.trash');
         JToolBarHelper::deleteList('', 'clubnames.delete', 'JTOOLBAR_DELETE');    
         }
 		JToolbarHelper::checkin('clubnames.checkin');

@@ -64,11 +64,11 @@ echo JHtml::_('bootstrap.addSlide', 'slide-group-id2', JText::_($array_schluesse
 foreach (sportsmanagementHelper::$_success_text[$array_schluessel[$a] ] as $row)
 {
 ?>
-			<fieldset>
-				<legend><?php echo JText::_($row->methode); ?></legend>
-				<table class='adminlist' width="100%"><tr><td><?php echo $row->line; ?></td><td><?php echo $row->text; ?></td></tr></table>
-			</fieldset>
-			<?php
+<fieldset>
+<legend><?php echo JText::_($row->methode); ?></legend>
+<table class='adminlist' width="100%"><tr><td><?php echo $row->line; ?></td><td><?php echo $row->text; ?></td></tr></table>
+</fieldset>
+<?php
 }
 echo JHtml::_('bootstrap.endSlide');		  
 }

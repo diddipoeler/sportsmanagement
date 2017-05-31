@@ -139,7 +139,6 @@ class sportsmanagementModeljlextfederations extends JSMModelList
 		{
 		$this->jsmquery->where('objassoc.published = '.$this->getState('filter.state'));	
 		}
-
         
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'objassoc.name')).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));

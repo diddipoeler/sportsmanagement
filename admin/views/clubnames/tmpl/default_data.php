@@ -42,7 +42,7 @@ $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 JHtml::_( 'behavior.tooltip' );
 //Ordering allowed ?
-$ordering=($this->sortColumn == 'dv.ordering');
+//$ordering=($this->sortColumn == 'dv.ordering');
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
@@ -126,11 +126,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 					{
 						$row =& $this->items[$i];
 						$link = JRoute::_( 'index.php?option=com_sportsmanagement&task=clubname.edit&id=' . $row->id );
-						//$checked = JHtml::_( 'grid.checkedout',   $row, $i );
-                        $published = JHtml::_('grid.published',$row,$i, 'tick.png','publish_x.png','clubnames.');
                         $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                         $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
                         $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'clubnames.', $canCheckin);
+                        $canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.clubname.' . $row->id) && $canCheckin;
 						?>
 						<tr class="<?php echo "row$k"; ?>">
 							<td style="text-align:center; ">
@@ -182,7 +181,21 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         </td>
                            
                             
-                            <td class="center"><?php echo $published; ?></td>
+                            <td class="center">
+                             <div class="btn-group">
+            <?php echo JHtml::_('jgrid.published', $row->published, $i, 'clubnames.', $canChange, 'cb'); ?>
+            <?php 
+            // Create dropdown items and render the dropdown list.
+								if ($canChange)
+								{
+									JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'clubnames');
+									JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'clubnames');
+									echo JHtml::_('actionsdropdown.render', $this->escape($row->name));
+								}
+								?>
+            </div>
+                            
+                            </td>
 							<td class="order">
 								<span>
 									<?php
