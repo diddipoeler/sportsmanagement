@@ -40,10 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// import the Joomla modellist library
-//jimport('joomla.application.component.modellist');
-
-
 /**
  * sportsmanagementModelSeasons
  * 
@@ -101,13 +97,7 @@ class sportsmanagementModelSeasons extends JSMModelList
                         's.checked_out_time'
                         );
                 parent::__construct($config);
-                //$getDBConnection = sportsmanagementHelper::getDBConnection();
                 parent::setDbo($this->jsmdb);
-                
-//        $this->user	= JFactory::getUser();     
-//        $this->option = $this->jinput->getCmd('option');
-//        $this->jsmdb = $this->getDbo();
-//        $this->query = $this->jsmdb->getQuery(true);
                 
         }
         
@@ -118,7 +108,7 @@ class sportsmanagementModelSeasons extends JSMModelList
 	 *
 	 * @since	1.6
 	 */
-	protected function populateState($ordering = null, $direction = null)
+	protected function populateState($ordering = 's.name', $direction = 'asc')
 	{
 		
         $layout = $this->jsmjinput->getVar('layout');
@@ -126,13 +116,16 @@ class sportsmanagementModelSeasons extends JSMModelList
 		//$app = JFactory::getApplication('administrator');
         $order = '';
         
+        if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
+        {
         $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
         $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+        }
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
-		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
 		$this->setState('filter.state', $published);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
@@ -140,7 +133,7 @@ class sportsmanagementModelSeasons extends JSMModelList
 		$this->setState('list.limit', $value);
         
         // List state information.
-		parent::populateState($this->_order, 'asc');
+		parent::populateState($ordering, $direction);
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
 	}
@@ -217,11 +210,16 @@ class sportsmanagementModelSeasons extends JSMModelList
 		    // From the seasons table
 		    $this->jsmquery->from('#__sportsmanagement_season as s');
             $this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = s.checked_out');
+            
             if ($this->getState('filter.search'))
 		    {
             $this->jsmquery->where(' LOWER(s.name) LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search').'%'));
             }
-		    //$order = 's.name';
+            
+            if (is_numeric($this->getState('filter.state')) )
+		    {
+		    $this->jsmquery->where('s.published = '.$this->getState('filter.state'));	
+		    }
             break;
         }
 		

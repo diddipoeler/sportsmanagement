@@ -1587,6 +1587,7 @@ foreach( $xml->events as $event )
         $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
         $db = sportsmanagementHelper::getDBConnection(FALSE,FALSE);
+        $sports_type_id = 0;
         //$app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT',strtoupper($type)),'Notice');
         
         //self::createSportTypeArray();

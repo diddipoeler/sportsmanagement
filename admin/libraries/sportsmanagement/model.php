@@ -88,7 +88,10 @@ $this->project_id = $this->jsmjinput->getint('pid');
 if ( !$this->project_id )
 {
 $post = $this->jsmjinput->post->getArray();
+if ( isset($post['pid']) )
+{
 $this->project_id = $post['pid'];
+}
 if ( !$this->project_id )
 {
 $this->project_id = $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' );

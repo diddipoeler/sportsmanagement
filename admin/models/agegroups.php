@@ -115,7 +115,6 @@ class sportsmanagementModelagegroups extends JSMModelList
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
 
-
 	}
 	
 	/**
@@ -152,7 +151,7 @@ class sportsmanagementModelagegroups extends JSMModelList
         
         if (is_numeric($this->getState('filter.state')) )
 		{
-		$query->where('obj.published = '.$this->getState('filter.state'));	
+		$this->jsmquery->where('obj.published = '.$this->getState('filter.state'));	
 		}
 
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'obj.name')).' '.

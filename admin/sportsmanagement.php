@@ -154,13 +154,16 @@ DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );
 }
 }
 
-if ( $params->get( 'cfg_which_database_table' ) )
+if ( $params->get( 'cfg_which_database_table' ) && !defined('COM_SPORTSMANAGEMENT_TABLE') )
 {
 DEFINE( 'COM_SPORTSMANAGEMENT_TABLE',$params->get( 'cfg_which_database_table' ) );
 }
 else
 {
-DEFINE( 'COM_SPORTSMANAGEMENT_TABLE','sportsmanagement' );    
+if ( !defined('COM_SPORTSMANAGEMENT_TABLE') )
+{    
+DEFINE( 'COM_SPORTSMANAGEMENT_TABLE','sportsmanagement' );
+}    
 }
 
 DEFINE( 'COM_SPORTSMANAGEMENT_FIELDSETS_TEMPLATE',dirname(__FILE__).DS.'helpers'.DS.'tmpl'.DS.'edit_fieldsets.php' );
