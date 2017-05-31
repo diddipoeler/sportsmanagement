@@ -42,21 +42,17 @@ defined('_JEXEC') or die('Restricted access');
 require_once (JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'countries.php');
 require_once (JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'helpers'.DS.'route.php');
 
-
-
 /**
  * modJSMActSeasonHelper
  * 
  * @package 
- * @author Dieter Pl?ger
+ * @author Dieter Plöger
  * @copyright 2016
  * @version $Id$
  * @access public
  */
 class modJSMActSeasonHelper
 {
-
-	
 	
 	/**
 	 * modJSMActSeasonHelper::getData()
@@ -74,11 +70,6 @@ class modJSMActSeasonHelper
     $query = $db->getQuery(true);
         $result = array();
     
-//$heutestart = date("Y-m-d");		
-//$heuteende = date("Y-m-d");
-//		
-//$heutestart .= ' 00:00:00';		
-//$heuteende .= ' 23:59:00';
 $seasons = implode(",",$season_ids); 
 $query->select('pro.id,pro.name,pro.current_round as roundcode,CONCAT_WS(\':\',pro.id,pro.alias) AS project_slug,le.name as liganame,le.country');
 $query->select('le.picture as league_picture,pro.picture as project_picture');
@@ -90,10 +81,7 @@ $query->order('le.country');
 
 $db->setQuery( $query );
 $result = $db->loadObjectList();
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($season_ids,true).'</pre>'),'Error');
-
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 		
 	}
