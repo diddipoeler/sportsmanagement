@@ -137,7 +137,7 @@ class sportsmanagementModeljlextfederations extends JSMModelList
         
         if (is_numeric($this->getState('filter.state')) )
 		{
-		$query->where('objassoc.published = '.$this->getState('filter.state'));	
+		$this->jsmquery->where('objassoc.published = '.$this->getState('filter.state'));	
 		}
 
         
