@@ -181,6 +181,7 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
         $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sortColumn -> <br><pre>'.print_r($this->sortColumn,true).'</pre>'),'');
         $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' request_url -> <br><pre>'.print_r($this->request_url,true).'</pre>'),'');
         }
+        
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
             $this->setLayout($this->getLayout() . '_3');

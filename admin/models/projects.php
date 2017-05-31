@@ -40,10 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// import the Joomla modellist library
-//jimport('joomla.application.component.modellist');
-
-
 /**
  * sportsmanagementModelProjects
  * 
@@ -92,11 +88,13 @@ class sportsmanagementModelProjects extends JSMModelList
 	 *
 	 * @since	1.6
 	 */
-	protected function populateState($ordering = null, $direction = null)
+	protected function populateState($ordering = 'p.name', $direction = 'asc')
 	{
+	   if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
+        {
 		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
         $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
-
+        }
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
@@ -129,7 +127,7 @@ $this->setState('filter.unique_id', $temp_user_request);
 		$this->setState('list.limit', $value);
 
 		// List state information.
-		parent::populateState('p.name', 'asc');
+		parent::populateState($ordering, $direction);
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
         

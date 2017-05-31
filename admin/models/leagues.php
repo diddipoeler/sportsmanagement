@@ -39,9 +39,6 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-//jimport('joomla.application.component.modellist');
-
-
 
 /**
  * sportsmanagementModelLeagues
@@ -78,9 +75,7 @@ class sportsmanagementModelLeagues extends JSMModelList
                         'ag.name',
                         'fed.name'
                         );
-                //$config['dbo'] = sportsmanagementHelper::getDBConnection();  
                 parent::__construct($config);
-                //$getDBConnection = sportsmanagementHelper::getDBConnection();
                 parent::setDbo($this->jsmdb);
         }
         
@@ -91,10 +86,13 @@ class sportsmanagementModelLeagues extends JSMModelList
 	 *
 	 * @since	1.6
 	 */
-	protected function populateState($ordering = null, $direction = null)
+	protected function populateState($ordering = 'obj.name', $direction = 'asc')
 	{
+	   if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
+        {
         $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
         $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+        }
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
@@ -112,7 +110,7 @@ class sportsmanagementModelLeagues extends JSMModelList
 		$this->setState('list.limit', $value);
 
 		// List state information.
-		parent::populateState('obj.name', 'asc');
+		parent::populateState($ordering, $direction);
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
 	}
