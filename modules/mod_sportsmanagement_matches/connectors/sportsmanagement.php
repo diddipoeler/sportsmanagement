@@ -132,6 +132,7 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
     $query->where('m.match_timestamp < '. $match_timestamp );
     $db->setQuery($query);
     $matchestoupdate = $db->loadResult();
+	    $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' matchestoupdate<br><pre>'.print_r($matchestoupdate,true).'</pre>'),'Notice');
     return $matchestoupdate;
             
@@ -150,12 +151,12 @@ class MatchesSportsmanagementConnector extends modMatchesSportsmanagementHelper
         // JInput object
         $jinput = $app->input;
         // Get a refrence of the page instance in joomla
-		$document = JFactory::getDocument();
+	$document = JFactory::getDocument();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         
-		$limit = ($this->params->get('limit', 0) > 0) ? $this->params->get('limit', 0) : 1;
+	$limit = ($this->params->get('limit', 0) > 0) ? $this->params->get('limit', 0) : 1;
         
         $p = $this->params->get('p');
 
