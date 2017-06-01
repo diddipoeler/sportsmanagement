@@ -144,6 +144,7 @@ class modSportsmanagementAjaxTopNavigationMenuHelper
         
         $query->select('name,id');
         $query->from('#__sportsmanagement_federations');
+        $query->where('published = 1');
         $db->setQuery($query);
         
         self::$query_getFederations = $query->dump();
@@ -171,6 +172,7 @@ $app = JFactory::getApplication();
         $query->select('s.id AS value, s.name AS text');
 $query->from('#__sportsmanagement_associations AS s');
 $query->where('s.parent_id = '.$assoc_id);
+$query->where('s.published = 1');
 $query->order('s.name');
 
                 
@@ -877,6 +879,7 @@ return $user->username ;
         
         $query->select('s.id AS value, s.name AS text');
             $query->from('#__sportsmanagement_season AS s');
+            $query->where('s.published = 1');
             $query->order('s.name DESC');
 
                 
@@ -1016,6 +1019,8 @@ order by l.name
             $query->join('INNER','#__sportsmanagement_project AS p on l.id = p.league_id');
             $query->join('INNER','#__sportsmanagement_season AS s on s.id = p.season_id ');
             $query->where('s.id = ' . $season );
+            $query->where('s.published = 1');
+            $query->where('l.published = 1');
             $query->group('l.name');
             $query->order('l.name');
               
