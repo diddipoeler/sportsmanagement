@@ -129,15 +129,10 @@ $seasons = implode(",",$season_ids);
 
     $query->order('days_to_birthday ASC');
 
-	//$database->setQuery($query." LIMIT " . $limit);
     $database->setQuery($query,0,$limit);
 
-    //echo ' <br><pre>'.print_r($query->dump(),true).'</pre>';
-    //$app->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-    
-	//echo("<hr>".$database->getQuery($query));
-	//$clubs = $database->loadAssocList();
     $result = $database->loadObjectList();
+	 $database->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	return $result;
 }
 
