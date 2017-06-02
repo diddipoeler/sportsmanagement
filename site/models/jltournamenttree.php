@@ -333,7 +333,7 @@ return $result->name;
 function getTournamentRounds()
 {
 $option = JRequest::getCmd('option');
-$app	= JFactory::getApplication();
+$app = JFactory::getApplication();
 $user = JFactory::getUser();
 $db = JFactory::getDBO();
 $query = $db->getQuery(true);
@@ -358,11 +358,32 @@ if ( !array_key_exists('tree_logo', $this->request) )
     $this->request['tree_logo'] = '1';
 }
 
+/**
+ * als erstes lesen wir den roundcode der runde,
+ * damit wir danach alle runden selektieren, die zum turnier gehören
+ */
+$query->clear();
+$query->select("ro.roundcode");
+$query->from('#__sportsmanagement_round as ro');
+$query->join('INNER','#__sportsmanagement_match as ma on ma.round_id = ro.id');
+$query->where('ro.project_id = '.$this->projectid);
+$db->setQuery($query);
+$result_roundcode = $db->loadResult();
+
+if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
+{
+echo 'Roundcode -> <br /><pre>~'.print_r($db->loadResult(),true).'~</pre><br />';
+echo 'Roundcode query-> <br /><pre>~'.print_r($query->dump(),true).'~</pre><br />';
+}
+
+$query->clear();
 $query->select("ro.*");
 $query->from('#__sportsmanagement_round as ro');
 $query->join('INNER','#__sportsmanagement_match as ma on ma.round_id = ro.id');
 $query->where('ro.project_id = '.$this->projectid);
+$query->where("ro.roundcode <= ".$result_roundcode);
 
+/*
 // von bis runde gesetzt
 if ( array_key_exists('from', $this->request) 
 && array_key_exists('to', $this->request) 
@@ -371,7 +392,9 @@ if ( array_key_exists('from', $this->request)
 {
 $query->where("( ro.id between ".$this->request['from']." and ".$this->request['to']." )");
 }
+*/
 
+/*
 // nur von runde gesetzt
 if ( array_key_exists('from', $this->request) 
 && !array_key_exists('to', $this->request) 
@@ -379,7 +402,9 @@ if ( array_key_exists('from', $this->request)
 {
 $query->where("( ro.id between ".$this->request['from']." and ".$this->request['from']." )");
 }
+*/
 
+/*
 // nur bis runde gesetzt
 if ( !array_key_exists('from', $this->request) 
 && array_key_exists('to', $this->request) 
@@ -387,6 +412,7 @@ if ( !array_key_exists('from', $this->request)
 {
 $query->where("( ro.id between ".$this->request['to']." and ".$this->request['from']." )");
 }
+*/
 
 // array an runden gesetzt
 if ( array_key_exists('r', $this->request) && !empty($this->request['r'] ) )
@@ -419,8 +445,9 @@ echo 'Runden query-> <br /><pre>~'.print_r($query->dump(),true).'~</pre><br />';
 }
 
 $this->count_tournament_round = count($db->loadObjectList());	
+$result = $db->loadObjectList();
 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
-return $db->loadObjectList();
+return $result;
 		
 
 }
