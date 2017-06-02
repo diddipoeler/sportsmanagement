@@ -149,7 +149,7 @@ static function getRandomRquote($category,$num_of_random, &$params)
 //echo get_class($this).' '.__FUNCTION__.' row<pre>'.print_r($row,true).'</pre><br>';
 		
 }
-
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $row;
 		
 	}
@@ -242,7 +242,7 @@ if ( $rows )
             
 //echo get_class($this).' '.__FUNCTION__.' category<pre>'.print_r($category,true).'</pre><br>';		
 //echo get_class($this).' '.__FUNCTION__.' qrows<pre>'.print_r($qrows,true).'</pre><br>';
-            
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect            
 		return $qrows;
 		}
 //-----------------------------------------------
@@ -344,7 +344,7 @@ $query = $db->getQuery(true);
 		$row = array( $rows[$i] );
 	}
 }
- 
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect 
 	return $row;
 
 }
@@ -460,8 +460,8 @@ $xx= count($category);
 	// we get the quote with 'catid = $number_reached' from the database
 	$getQuoteQuery = "SELECT * FROM #__sportsmanagement_rquote WHERE published='1' AND catid = '$catid' AND daily_number = '$number_reached'";
 	$db->setQuery($getQuoteQuery,0);
-	$row=$db->loadObjectList();
-	
+	$row = $db->loadObjectList();
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	return $row;
 }
 //------------------------------------------------------------------------------------------------	
@@ -525,8 +525,8 @@ $xx= count($category);
 	// we get the quote with 'catid = $number_reached' from the database
 	$getQuoteQuery = "SELECT * FROM #__sportsmanagement_rquote WHERE published='1' AND catid = '$catid' AND daily_number = '$number_reached'";
 	$db->setQuery($getQuoteQuery,0);
-	$row=$db->loadObjectList();
-	
+	$row = $db->loadObjectList();
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	return $row;
 }
 //------------------------------------------------------------------------------------------------	
@@ -558,7 +558,7 @@ $xx= count($category);
 	$no_of_quotes=$db->loadResult();
 	$query="SELECT * FROM #__rquote_meta where ID='3'";
 	$db->setQuery($query,0);
-	$row=$db->loadRow();
+	$row = $db->loadRow();
 	
 	$number_reached = $row[1];
 	$date_modified= $row[2];
@@ -590,8 +590,8 @@ $xx= count($category);
 	// we get the quote with 'catid = $number_reached' from the database
 	$getQuoteQuery = "SELECT * FROM #__sportsmanagement_rquote WHERE published='1' AND catid = '$catid' AND daily_number = '$number_reached'";
 	$db->setQuery($getQuoteQuery,0);
-	$row=$db->loadObjectList();
-	
+	$row = $db->loadObjectList();
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	return $row;
 }
 //------------------------------------------------------------------------------------------------	
@@ -655,8 +655,8 @@ $xx= count($category);
 	// we get the quote with 'catid = $number_reached' from the database
 	$getQuoteQuery = "SELECT * FROM #__sportsmanagement_rquote WHERE published='1' AND catid = '$catid' AND daily_number = '$number_reached'";
 	$db->setQuery($getQuoteQuery,0);
-	$row=$db->loadObjectList();
-	
+	$row = $db->loadObjectList();
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	return $row;
 }
 //------------------------------------------------------------------------------------------------	
@@ -688,6 +688,7 @@ function getTodayRquote($category,$x, &$params)
 
 		$row = array( $rows[$i] );
 	}
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	return $row;
 }
 
