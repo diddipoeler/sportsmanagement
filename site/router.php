@@ -486,6 +486,12 @@ function sportsmanagementBuildRoute(&$query)
             }
 
             break;
+        case 'jltournamenttree':
+            if (isset($query['r'])) {
+                $segments[] = $query['r'];
+                unset($query['r']);
+            }
+            break;
         case 'results':
         case 'resultsmatrix':
         case 'resultsranking':
@@ -916,6 +922,11 @@ function sportsmanagementParseRoute($segments)
             }
             break;
 
+        case 'jltournamenttree':
+        if (isset($segments[4])) {
+                $vars['r'] = $segments[4];
+            }
+        break;
         case 'results':
         case 'resultsmatrix':
         case 'resultsranking':
