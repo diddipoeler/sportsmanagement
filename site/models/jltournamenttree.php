@@ -525,6 +525,7 @@ $subQuery->from('#__sportsmanagement_team AS t1');
 $subQuery->join('INNER','#__sportsmanagement_club AS c1 ON c1.id = t1.club_id');
 $subQuery->join('INNER','#__sportsmanagement_season_team_id AS tp1 ON t1.id = tp1.team_id');
 $subQuery->join('INNER','#__sportsmanagement_project_team AS tt1 ON tt1.team_id = tp1.id');  
+$subQuery->where('tt1.project_id = '.$this->projectid);
 $query->join('LEFT','(' . $subQuery . ') AS c1 on m.projectteam1_id = c1.team_id ');
 
 $subQuery2->select("tt2.id as team_id,t2.".$this->request['tree_name']." as teamname,c2.country,c2.logo_big");
@@ -532,7 +533,8 @@ $subQuery2->select("tt2.project_id as tt2_project_id");
 $subQuery2->from('#__sportsmanagement_team AS t2');
 $subQuery2->join('INNER','#__sportsmanagement_club AS c2 ON c2.id = t2.club_id');
 $subQuery2->join('INNER','#__sportsmanagement_season_team_id AS tp2 ON t2.id = tp2.team_id');
-$subQuery2->join('INNER','#__sportsmanagement_project_team AS tt2 ON tt2.team_id = tp2.id');  
+$subQuery2->join('INNER','#__sportsmanagement_project_team AS tt2 ON tt2.team_id = tp2.id');
+$subQuery->where('tt2.project_id = '.$this->projectid);  
 $query->join('LEFT','(' . $subQuery2 . ') AS c2 on m.projectteam2_id = c2.team_id  ');
 //$query2 = $query;
 }
@@ -556,8 +558,8 @@ $query->clear('where');
 $query->where('m.published = 1 ');  
 $query->where('r.id = '.$round->id);
 $query->where('r.project_id = '.$this->projectid);
-$query->where('c2.tt2_project_id = '.$this->projectid);
-$query->where('c1.tt1_project_id = '.$this->projectid);
+//$query->where('c2.tt2_project_id = '.$this->projectid);
+//$query->where('c1.tt1_project_id = '.$this->projectid);
 $db->setQuery($query);
 $result = $db->loadObjectList();
 
