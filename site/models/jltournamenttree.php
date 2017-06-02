@@ -1,5 +1,5 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung f?r alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
@@ -174,6 +174,11 @@ function __construct( )
   $this->debug_info = false;
   }
  
+ // Reference global application object
+        $this->jsmapp = JFactory::getApplication();
+        // JInput object
+        $this->jsmjinput = $this->jsmapp->input;
+        $this->jsmoption = $this->jsmjinput->getCmd('option');
 
 
 		parent::__construct( );
@@ -314,8 +319,8 @@ $query->where('id = '.$this->projectid);
 $db->setQuery($query);
 $result = $db->loadObject();
 $this->project_art_id = $result->project_art_id;
-
-    return $result->name;
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+return $result->name;
 		
 }
 
@@ -334,8 +339,7 @@ $db = JFactory::getDBO();
 $query = $db->getQuery(true);
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' request<br><pre>'.print_r($this->request,true).'</pre>'),'');
-
-if ( $this->debug_info )
+if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
 {
 echo '0.) projekt -> <br /><pre>~'.print_r($this->projectid,true).'~</pre><br />';
 echo '0.) request -> <br /><pre>~'.print_r($this->request,true).'~</pre><br />';
@@ -408,13 +412,14 @@ $db->setQuery($query);
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 
-if ( $this->debug_info )
+if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
 {
 echo 'Runden -> <br /><pre>~'.print_r($db->loadObjectList(),true).'~</pre><br />';
 echo 'Runden query-> <br /><pre>~'.print_r($query->dump(),true).'~</pre><br />';
 }
 
-$this->count_tournament_round = count($db->loadObjectList());		
+$this->count_tournament_round = count($db->loadObjectList());	
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	
 return $db->loadObjectList();
 		
 
