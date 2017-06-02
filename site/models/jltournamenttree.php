@@ -367,6 +367,7 @@ $query->select("ro.roundcode");
 $query->from('#__sportsmanagement_round as ro');
 $query->join('INNER','#__sportsmanagement_match as ma on ma.round_id = ro.id');
 $query->where('ro.project_id = '.$this->projectid);
+$query->where('ro.id = '. (int)$this->round);
 $db->setQuery($query);
 $result_roundcode = $db->loadResult();
 
