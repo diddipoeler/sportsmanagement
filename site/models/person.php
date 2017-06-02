@@ -119,6 +119,7 @@ class sportsmanagementModelPerson extends JModelLegacy
 $db->setQuery($query);
  
 $result = $db->execute();
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	 
 }  
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');     
     }
@@ -165,6 +166,7 @@ $result = $db->execute();
         }
                 
 		self::$person = $db->loadObject();
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		//}
 		return self::$person;
 	}
@@ -204,7 +206,7 @@ $result = $db->execute();
 		self::$_inproject = $db->loadObject();  
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
-
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return self::$_inproject;
 	}
 
@@ -269,7 +271,7 @@ $result = $db->execute();
         
 		$db->setQuery( $query );
 		$contact_id = $db->loadResult();
-
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $contact_id;
 	}
 
@@ -313,6 +315,7 @@ $result = $db->execute();
                 }
                 
 				$info = $db->loadObjectList();
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $info;
 	}
 
@@ -369,7 +372,7 @@ $result = $db->execute();
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
             //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
-        
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 				return $result;
 	}
 
@@ -409,6 +412,7 @@ $result = $db->execute();
         // Joomla! 2.5 code here
         $res = $db->loadResultArray();
         } 
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $res;
 	}
 
@@ -605,6 +609,7 @@ $result = $db->execute();
         } 
             
 		$projectTeamIds = array_merge($projectTeamIds,$res);
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $projectTeamIds;
 	}
 
