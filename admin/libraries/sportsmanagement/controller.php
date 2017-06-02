@@ -71,22 +71,29 @@ class JSMControllerForm extends JControllerForm
         $return = $model->save($data);
 	$this->club_id = $this->jsmapp->getUserState( "$this->jsmoption.club_id", '0' );
     $this->team_id = $this->jsmapp->getUserState( "$this->jsmoption.team_id", '0' );  
-	//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->club_id<br><pre>'.print_r($this->club_id,true).'</pre>'),'');
+
         $id = $this->jsmdb->insertid();
         if ( empty($id) )
         {
              $id = $this->jsmjinput->getInt('id');
         }
+
+if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+{        
+$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->club_id<br><pre>'.print_r($this->club_id,true).'</pre>'),'');        
+$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->team_id<br><pre>'.print_r($this->team_id,true).'</pre>'),'');
+$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->view_item <br><pre>'.print_r($this->view_item ,true).'</pre>'),'');
+$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->view_list<br><pre>'.print_r($this->view_list,true).'</pre>'),'');
+
         
-        
+}        
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' return<br><pre>'.print_r($return,true).'</pre>'),'');
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' id<br><pre>'.print_r($id,true).'</pre>'),'');
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' key<br><pre>'.print_r($key,true).'</pre>'),'');
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' urlVar<br><pre>'.print_r($urlVar,true).'</pre>'),'');
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->option <br><pre>'.print_r($this->option ,true).'</pre>'),'');
-//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->view_item <br><pre>'.print_r($this->view_item ,true).'</pre>'),'');
-//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->view_list<br><pre>'.print_r($this->view_list,true).'</pre>'),'');
+
         
         if ( $return )
         {
@@ -136,6 +143,7 @@ switch ($this->view_item)
 		{
 		case 'club': 
 		$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend($this->club_id).$setRedirect, false), $message); 
+        break;
         case 'team': 
 		$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend($this->team_id).$setRedirect, false), $message);
 		break;
