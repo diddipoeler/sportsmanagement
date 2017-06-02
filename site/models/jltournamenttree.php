@@ -804,8 +804,8 @@ $query->where('m.published = 1 ');
 $query->where('r.id = '.$round->id);    
 $query->where('(m.projectteam1_id = '.$key->projectteam1_id.' or m.projectteam2_id = '.$key->projectteam1_id.' )');
 $query->where('r.project_id = '.$this->projectid);
-$query->where('c2.tt2_project_id = '.$this->projectid);
-$query->where('c1.tt1_project_id = '.$this->projectid);
+//$query->where('c2.tt2_project_id = '.$this->projectid);
+//$query->where('c1.tt1_project_id = '.$this->projectid);
 
 //$query_WHERE = ' WHERE m.published = 1 
 //			  AND r.id = '.$round->id.'
@@ -1001,8 +1001,8 @@ $query->where('m.published = 1 ');
 $query->where('(m.projectteam1_id = '.$key->projectteam2_id.' or m.projectteam2_id = '.$key->projectteam2_id.' )');
 $query->where('r.id = '.$round->id);
 $query->where('r.project_id = '.$this->projectid);
-$query->where('c2.tt2_project_id = '.$this->projectid);
-$query->where('c1.tt1_project_id = '.$this->projectid);
+//$query->where('c2.tt2_project_id = '.$this->projectid);
+//$query->where('c1.tt1_project_id = '.$this->projectid);
 
 $db->setQuery($query);
 $result = $db->loadObjectList();
