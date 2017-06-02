@@ -303,7 +303,7 @@ $query->group('st.team_id' );
             $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
             $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
         }
-
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $this->_teams;
 }
 else
@@ -335,20 +335,20 @@ JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEME
    if ( $projects )
    {     
         $query->select('m.id,m.projectteam1_id,m.projectteam2_id,m.team1_result AS home_score,m.team2_result AS away_score,m.team1_bonus AS home_bonus,m.team2_bonus AS away_bonus');
-		$query->select('m.team1_legs AS l1,m.team2_legs AS l2,m.match_result_type AS match_result_type,m.alt_decision as decision,m.team1_result_decision AS home_score_decision');
-		$query->select('m.team2_result_decision AS away_score_decision,m.team1_result_ot AS home_score_ot,m.team2_result_ot AS away_score_ot,m.team1_result_so AS home_score_so,m.team2_result_so AS away_score_so');
+	$query->select('m.team1_legs AS l1,m.team2_legs AS l2,m.match_result_type AS match_result_type,m.alt_decision as decision,m.team1_result_decision AS home_score_decision');
+	$query->select('m.team2_result_decision AS away_score_decision,m.team1_result_ot AS home_score_ot,m.team2_result_ot AS away_score_ot,m.team1_result_so AS home_score_so,m.team2_result_so AS away_score_so');
         $query->select('t1.id AS team1_id,t2.id AS team2_id');
-		$query->select('r.id as roundid, m.team_won, r.roundcode');
+	$query->select('r.id as roundid, m.team_won, r.roundcode');
         
         
         $query->from('#__sportsmanagement_match m');
-		$query->join('INNER','#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
+	$query->join('INNER','#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
         $query->join('INNER','#__sportsmanagement_season_team_id AS st1 ON st1.id = pt1.team_id'); 
-		$query->join('INNER','#__sportsmanagement_team t1 ON st1.team_id = t1.id '); 
-		$query->join('INNER','#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
+	$query->join('INNER','#__sportsmanagement_team t1 ON st1.team_id = t1.id '); 
+	$query->join('INNER','#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
         $query->join('INNER','#__sportsmanagement_season_team_id AS st2 ON st2.id = pt2.team_id'); 
-		$query->join('INNER','#__sportsmanagement_team t2 ON st2.team_id = t2.id '); 
-		$query->join('INNER','#__sportsmanagement_round AS r ON m.round_id = r.id ');
+	$query->join('INNER','#__sportsmanagement_team t2 ON st2.team_id = t2.id '); 
+	$query->join('INNER','#__sportsmanagement_round AS r ON m.round_id = r.id ');
         
         $query->where('((m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL) OR (m.alt_decision=1))');
         $query->where('m.published = 1');
@@ -377,7 +377,7 @@ JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEME
     JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEMENT_NO_RANKING_PROJECTINFO') );
 			return false;    
     }  
-         
+    $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect     
     return $res;
         
     }
@@ -838,7 +838,7 @@ $query->clear();
         
         $count_project = count($result);
     $app->enqueueMessage(JText::_('Wir verarbeiten '.$count_project.' Projekte/Saisons !'),'');
-    
+    $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         return $result;
 
     }
