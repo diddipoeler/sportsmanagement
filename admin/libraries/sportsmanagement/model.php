@@ -701,6 +701,7 @@ catch (Exception $e) {
 		}
         }
 		sportsmanagementHelper::saveExtraFields($post,$data['id']);
+        $this->jsmapp->setUserState( "$this->jsmoption.team_id", $data['id'] );	
 		break;
 		default:
 		break;

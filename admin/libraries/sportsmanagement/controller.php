@@ -69,7 +69,8 @@ class JSMControllerForm extends JControllerForm
         //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
         $createTeam = $this->jsmjinput->getVar('createTeam');
         $return = $model->save($data);
-	$this->club_id = $this->jsmapp->getUserState( "$this->jsmoption.club_id", '0' ); 
+	$this->club_id = $this->jsmapp->getUserState( "$this->jsmoption.club_id", '0' );
+    $this->team_id = $this->jsmapp->getUserState( "$this->jsmoption.team_id", '0' );  
 	//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->club_id<br><pre>'.print_r($this->club_id,true).'</pre>'),'');
         $id = $this->jsmdb->insertid();
         if ( empty($id) )
@@ -135,9 +136,11 @@ switch ($this->view_item)
 		{
 		case 'club': 
 		$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend($this->club_id).$setRedirect, false), $message); 
+        case 'team': 
+		$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend($this->team_id).$setRedirect, false), $message);
 		break;
 		default:
-                $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend($id).$setRedirect, false), $message); 
+        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend($id).$setRedirect, false), $message); 
 break;
 }
 
@@ -164,11 +167,14 @@ break;
 		{
 		case 'club':  
         $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&club_id='.$this->club_id.$this->getRedirectToListAppend(), false), $message);
-                                break;
-                                default:
-                                $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list. $this->getRedirectToListAppend().$setRedirect, false), $message);
-                                break;
-                                }   
+        break;
+        case 'team':  
+        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&team_id='.$this->team_id.$this->getRedirectToListAppend(), false), $message);
+        break;
+        default:
+        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list. $this->getRedirectToListAppend().$setRedirect, false), $message);
+        break;
+        }   
                 }
 				break;
 		}
