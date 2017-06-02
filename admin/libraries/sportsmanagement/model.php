@@ -135,9 +135,11 @@ if( $this->jsmapp->isSite() )
 //       $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view_item<br><pre>'.print_r($this->view_item,true).'</pre>'),'Notice');
 //       $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' view<br><pre>'.print_r($view,true).'</pre>'),'Notice');
 
-
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+{
+$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
+$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
+}
 
 ///**
 // * differenzierung zwischen den views
@@ -181,6 +183,9 @@ if( $this->jsmapp->isSite() )
  */       
        switch ( $this->jsmview )
        {
+/**
+ * gruppen 
+ */        
        case 'division': 
        if ( !$data['id'] )
        {
@@ -195,7 +200,10 @@ if( $this->jsmapp->isSite() )
 			$data['rankingparams'] = (string)$parameter;
 		}
 
-       break; 
+       break;
+/**
+ * runde 
+ */        
        case 'round':
        if ( $data['round_date_first'] != '00-00-0000' && $data['round_date_first'] != '' )
        {
@@ -206,6 +214,9 @@ if( $this->jsmapp->isSite() )
        $data['round_date_last'] = sportsmanagementHelper::convertDate($data['round_date_last'],0);
        }
        break;
+/**
+ * runden 
+ */       
        case 'rounds':
        $data['round_date_first'] = sportsmanagementHelper::convertDate($data['round_date_first'],0);
        $data['round_date_last']	= sportsmanagementHelper::convertDate($data['round_date_last'],0);
@@ -215,7 +226,10 @@ if( $this->jsmapp->isSite() )
         $data['project_id'] = $post['pid'];
         $data['roundcode'] = $post['next_roundcode'];
        }
-       break; 
+       break;
+/**
+ * projektteam 
+ */        
        case 'projectteam':
        if ( $post['delete'] )
         {
@@ -252,10 +266,16 @@ if( $this->jsmapp->isSite() )
         $result = JFactory::getDbo()->updateObject('#__sportsmanagement_season_team_id', $object, 'id'); 
 
        break;  
+/**
+ * liga 
+ */       
        case 'league': 
        $data['sports_type_id'] = $data['request']['sports_type_id'];
        $data['agegroup_id'] = $data['request']['agegroup_id'];
        break; 
+/**
+ * person 
+ */       
        case 'person': 
        $data['person_art'] = $data['request']['person_art'];
        $data['person_id1'] = $data['request']['person_id1'];
@@ -301,6 +321,9 @@ if( $this->jsmapp->isSite() )
        $data['away_date_start'] = sportsmanagementHelper::convertDate($data['away_date_start'],0);
        $data['away_date_end'] = sportsmanagementHelper::convertDate($data['away_date_end'],0);
        break;
+/**
+ * template 
+ */       
        case 'template': 
        if (isset($post['params']['colors_ranking']) && is_array($post['params']['colors_ranking'])) 
 	   {
@@ -315,6 +338,9 @@ if( $this->jsmapp->isSite() )
        $post['params']['colors'] = implode(";",$colors); 
        }       
        break; 
+/**
+ * verein 
+ */       
        case 'club':
        // gibt es vereinsnamen zum ändern ?
        if (isset($post['team_id']) && is_array($post['team_id'])) 
@@ -393,6 +419,9 @@ if( $this->jsmapp->isSite() )
         $data['dissolved_year'] = $data['dissolved_year'];
         }
        break;
+/**
+ * mannschaft 
+ */       
        case 'team':
        if ( $post['delete'] )
         {
@@ -408,7 +437,10 @@ if( $this->jsmapp->isSite() )
         {
             sportsmanagementModelteam::addNewTrainigData($data[id]);
         }
-       break;   
+       break;  
+/**
+ * projekt 
+ */        
        case 'project':
        $data['start_date']	= sportsmanagementHelper::convertDate($data['start_date'],0);
        $data['sports_type_id'] = $data['request']['sports_type_id'];
@@ -445,11 +477,17 @@ if( $this->jsmapp->isSite() )
  */       
             switch ( $this->jsmview )
             {
+/**
+ * template 
+ */                
             case 'template': 
             $data['project_id'] = $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' );
             $data['title'] = $post['title'];      
             $data['template'] = $post['template'];
-            break;  
+            break;
+/**
+ * projekt 
+ */              
             case 'project':
             $data['current_round'] = 0;
 	$project_old = (int) $this->jsmjinput->getInt('id');		    
@@ -525,6 +563,9 @@ $insertresult = $this->jsmdb->insertObject('#__sportsmanagement_division', $prof
  */       
 		switch ( $this->jsmview )
 		{
+/**
+ * person 
+ */		  
 		case 'person':
         if (isset($data['season_ids']) && is_array($data['season_ids'])) 
 		{
@@ -581,6 +622,9 @@ catch (Exception $e) {
         sportsmanagementHelper::saveExtraFields($post,$data['id']);
         
         break;
+/**
+ * position 
+ */        
         case 'position':
 		if (isset($post['position_eventslist']) && is_array($post['position_eventslist']))
 		{
@@ -602,13 +646,22 @@ catch (Exception $e) {
 		}
 		}
 		break;
+/**
+ * verein 
+ */        
 		case 'club':
 		sportsmanagementHelper::saveExtraFields($post,$data['id']);
 		$this->jsmapp->setUserState( "$this->jsmoption.club_id", $data['id'] );		
 		break;
+/**
+ * projekt 
+ */        
 		case 'project':
 		sportsmanagementHelper::saveExtraFields($post,$data['id']);
 		break;
+/**
+ * mannschaft 
+ */        
 		case 'team':
 		if (isset($data['season_ids']) && is_array($data['season_ids'])) 
 		{

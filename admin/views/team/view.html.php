@@ -63,51 +63,28 @@ class sportsmanagementViewTeam extends sportsmanagementView
 		
 		$starttime = microtime();
         $lists = array();
-        //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
-        
 
 		$this->change_training_date	= $this->app->getUserState( "$this->option.change_training_date", '0' );
-        //$this->club_id = $this->jinput->get('club_id');
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($this->club_id,true).'</pre>'),'');
-        //$this->app->enqueueMessage(__METHOD__.' '.__LINE__.'jinput <br><pre>'.print_r($this->jinput, true).'</pre><br>','Notice');
-        
-//        $post = $this->jinput->post->getArray();
-//        $this->app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
-
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' change_training_date<br><pre>'.print_r($this->change_training_date,true).'</pre>'),'');
-        
-        
         
 		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		{
 		$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
 		}
-        
-	
- 
+
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
 		{
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-	
-        
-        //$this->item->club_id = $this->app->getUserState( "$option.club_id", '0' );
         
 		if ( empty($this->item->id) )
 		{
-			//$foo = $this->jinput->get->get('club_id');
-            //$this->form->setValue('club_id', null, $this->jinput->get->get('club_id'));
             $this->form->setValue('club_id', null, $this->app->getUserState( "$this->option.club_id", '0' ));
             $this->item->club_id = $this->app->getUserState( "$this->option.club_id", '0' );
 		}
         
-        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' item club_id<br><pre>'.print_r($this->item->club_id,true).'</pre>'),'');
-        
-		//$this->item->season_ids = explode(",", $this->item->season_ids);
-        //$this->app->enqueueMessage(JText::_('sportsmanagementViewTeam display season_ids<br><pre>'.print_r($this->item->season_ids,true).'</pre>'),'Notice');
-        
+
 		$extended = sportsmanagementHelper::getExtended($this->item->extended, 'team');
 		$this->extended = $extended;
         $extendeduser = sportsmanagementHelper::getExtendedUser($this->item->extendeduser, 'team');		
@@ -153,9 +130,6 @@ class sportsmanagementViewTeam extends sportsmanagementView
         $this->trainingData = $trainingData;
         $this->lists = $lists;
         
-
- 
-
 	}
  
 	/**
