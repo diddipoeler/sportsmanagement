@@ -100,6 +100,7 @@ class sportsmanagementModelTeamInfo extends JModelLegacy
 $db->setQuery($query);
  
 $result = $db->execute();
+$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect	 
 }  
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');     
     }
@@ -144,6 +145,7 @@ $result = $db->execute();
         
         $db->setQuery($query);
 		$trainingData = $db->loadObjectList();
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $trainingData;
 	}
     
@@ -218,6 +220,7 @@ $result = $db->execute();
 //            $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.'<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
             
 		}
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return self::$team;
 	}
 
@@ -257,6 +260,7 @@ $result = $db->execute();
 				self::$club  = $db->loadObject();
 			}
 		}
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return self::$club;
 	}
 
@@ -366,8 +370,8 @@ $query->order('s.name '.$season_ordering);
 	    	$ranking = self::getTeamRanking($season->projectid, $season->division_id);
 			if(!empty($ranking)) 
             {
-		    	$seasons[$k]->rank       = $ranking['rank'];
-		    	$seasons[$k]->leaguename = self::getLeague($season->projectid);
+			$seasons[$k]->rank       = $ranking['rank'];
+		   	$seasons[$k]->leaguename = self::getLeague($season->projectid);
                 $seasons[$k]->season_picture       = $season->season_picture;
                 $seasons[$k]->ptid       = $season->ptid;
 		    	$seasons[$k]->games      = $ranking['games'];
@@ -393,6 +397,7 @@ $query->order('s.name '.$season_ordering);
                 $seasons[$k]->market_value  = 0;
 	    	}
 		}
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
     	return $seasons;
 	}
 
@@ -437,6 +442,7 @@ $query->order('s.name '.$season_ordering);
         }
         
 		$player = $db->loadResult();
+	    $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $player;    
         
     }
@@ -511,7 +517,7 @@ $query->order('s.name '.$season_ordering);
           sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
             //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' rank<br><pre>'.print_r($rank,true).'</pre>'),'');
         }
-        
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         
 		return $rank;
 	}
@@ -555,7 +561,7 @@ $query->order('s.name '.$season_ordering);
 		sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
 	}
-        
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	return $result;
 	}
   
@@ -599,7 +605,7 @@ $query->order('s.name '.$season_ordering);
           sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
-        
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         
         
 		return $league;
@@ -786,7 +792,7 @@ $query->order('s.name '.$season_ordering);
     {
     $meanage = round( $age / $countplayer , 2);
     }
-    
+    $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $meanage;
 	}
   
@@ -838,7 +844,7 @@ $query->order('s.name '.$season_ordering);
           sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
         }
-        
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
         
 		return $player;
 	}
