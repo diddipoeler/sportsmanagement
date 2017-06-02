@@ -298,7 +298,7 @@ else
 
 				$db->setQuery($query);
 				$result = $db->loadObject();
-	
+	$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $result;
 	}
 	
@@ -323,6 +323,7 @@ else
 $db->setQuery($query);
  
 $result = $db->execute();
+	 $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 }  
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');     
     }
@@ -364,6 +365,7 @@ $result = $db->execute();
 				self::$club = $db->loadObject();
 			}
 		}
+	    $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return self::$club;
 	}
 
@@ -443,6 +445,7 @@ $result = $db->execute();
             
 
 		}
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $teams;
 	}
 
@@ -504,6 +507,7 @@ $result = $db->execute();
 				}
 			}
 		}
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $stadiums;
 	}
 
@@ -545,6 +549,7 @@ $result = $db->execute();
 			$db->setQuery($query, 0, 1);
 			$playgrounds[] = $db->loadObject();
 		}
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 		return $playgrounds;
 	}
     
@@ -571,7 +576,7 @@ $result = $db->execute();
                             
 				$db->setQuery($query);
 				$result = $db->loadObjectList();
-			
+			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	foreach ( $result as $row )
 	{
   $temp = new stdClass();
@@ -631,7 +636,7 @@ $result = $db->execute();
 			            
 				$db->setQuery($query);
 				$result = $db->loadObjectList();
-			
+			$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	foreach ( $result as $row )
 	{
 		
@@ -752,6 +757,7 @@ self::$arrPCat[$pt][] = Array ('id' => $row->id,
 //                $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
                 
 				$result = $db->loadObjectList();
+		$db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
    foreach ( $result as $row )
 	 {
    $row->link = sportsmanagementHelperRoute::getClubInfoRoute( $row->pid, $row->slug );
