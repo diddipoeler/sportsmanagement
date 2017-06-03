@@ -174,7 +174,7 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
             $this->request_url = $this->uri->toString();
         }
         
-        if ( JComponentHelper::getParams($this->option)->get('show_debug_info') )
+        if ( JComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
         {
         $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' state -> <br><pre>'.print_r($this->state,true).'</pre>'),'');
         $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sortDirection -> <br><pre>'.print_r($this->sortDirection,true).'</pre>'),'');
