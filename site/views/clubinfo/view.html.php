@@ -83,7 +83,7 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 
     if ( $this->config['show_club_rssfeed'] )
 	  {
-    $mod_name               = "mod_jw_srfr";
+    $mod_name = "mod_jw_srfr";
     $rssfeeditems = '';
     $rssfeedlink = $this->extended->getValue('COM_SPORTSMANAGEMENT_CLUB_RSS_FEED');
     
@@ -96,12 +96,9 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
     {
     $this->rssfeeditems = $rssfeeditems;
     }
-    
-    
+        
     }
     
-
-	
         if ( $this->config['show_maps'] )
 	  {
             // diddipoeler
@@ -117,24 +114,15 @@ class sportsmanagementViewClubInfo extends sportsmanagementView
 			$pageTitle .= ': ' . $this->club->name;
 		}
 		
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' overallconfig<br><pre>'.print_r($this->overallconfig,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($this->config,true).'</pre>'),'');
-        
         $this->modid = $this->club->id;
 		// clubhistory
         $this->clubhistory = sportsmanagementModelClubInfo::getClubHistory($this->club->id);
 		$this->clubhistoryhtml = sportsmanagementModelClubInfo::getClubHistoryHTML($this->club->id);
         
-//        $this->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubhistoryhtml<br><pre>'.print_r($this->clubhistoryhtml,true).'</pre>'),'');
 $this->clubhistoryfamilytree = sportsmanagementModelClubInfo::fbTreeRecurse($this->club->id, '', array (),sportsmanagementModelClubInfo::$tree_fusion, 10, 0, 1);
-
 $this->genfamilytree = sportsmanagementModelClubInfo::generateTree($this->club->id);
 $this->familytree = sportsmanagementModelClubInfo::$historyhtmltree;
-
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' familytree<br><pre>'.print_r($this->familytree,true).'</pre>'),'');
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubhistoryfamilytree<br><pre>'.print_r($this->clubhistoryfamilytree,true).'</pre>'),'');        
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tree<br><pre>'.print_r(sportsmanagementModelClubInfo::$tree_fusion,true).'</pre>'),'');        
-//        $this->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' clubhistoryhtml<br><pre>'.print_r($this->clubhistoryhtml,true).'</pre>'),'');        
+       
     // clubhistorytree
 		$this->clubhistorytree = sportsmanagementModelClubInfo::getClubHistoryTree($this->club->id,$this->club->new_club_id);
 		$this->clubhistorysorttree = sportsmanagementModelClubInfo::getSortClubHistoryTree($this->clubhistorytree,$this->club->id,$this->club->name);
@@ -145,14 +133,7 @@ $this->familytree = sportsmanagementModelClubInfo::$historyhtmltree;
         {
         $this->clubhistorysorttree = '';    
         }
-        
-//        $this->document->addScript( JURI::base().'components/'.$this->option.'/assets/js/dtree.js' );        
-//        $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/dtree.css');  
-    
-//        $this->document->addScript( JURI::base().'components/'.$this->option.'/assets/js/bootstrap-tree.js' ); 
-//        $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/bootstrap-combined.min.css');
-//        $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/bootstrap-tree.css');  
-        
+
         $this->document->addStyleSheet(JURI::base().'components/'.$this->option.'/assets/css/bootstrap-familytree.css');
         
         $this->document->setTitle( $pageTitle );
