@@ -89,8 +89,11 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 	 */
 	protected function populateState($ordering = 'objassoc.name', $direction = 'asc')
 	{
-		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+        {
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
         $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+        }
         // Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);

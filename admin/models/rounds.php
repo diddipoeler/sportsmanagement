@@ -40,10 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-// import the Joomla modellist library
-jimport('joomla.application.component.modellist');
-
-
 /**
  * sportsmanagementModelRounds
  * 
@@ -53,7 +49,7 @@ jimport('joomla.application.component.modellist');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelRounds extends JModelList
+class sportsmanagementModelRounds extends JSMModelList
 {
 	var $_identifier = "rounds";
     static $_project_id = 0;
@@ -99,37 +95,24 @@ class sportsmanagementModelRounds extends JModelList
 	 *
 	 * @since	1.6
 	 */
-	protected function populateState($ordering = null, $direction = null)
+	protected function populateState($ordering = 'r.roundcode', $direction = 'asc')
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Initialise variables.
-		$app = JFactory::getApplication('administrator');
-        
-        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
-
-		// Load the filter state.
+		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+        {
+		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+        }
+        // Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
-
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
 		$this->setState('filter.state', $published);
-        
-        $value = JRequest::getUInt('limitstart', 0);
-		$this->setState('list.start', $value);
-
-//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
-//		$this->setState('filter.image_folder', $image_folder);
-        
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
-
-
-//		// Load the parameters.
-//		$params = JComponentHelper::getParams('com_sportsmanagement');
-//		$this->setState('params', $params);
-
+        $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
+		$this->setState('list.limit', $value);	
 		// List state information.
-		parent::populateState('r.roundcode', 'asc');
+		parent::populateState($ordering, $direction);
+        $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
+		$this->setState('list.start', $value);
 	}
     
 	/**
@@ -139,56 +122,57 @@ class sportsmanagementModelRounds extends JModelList
 	 */
 	protected function getListQuery()
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        
-        // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = JFactory::getDbo()->getQuery(true);
-        $subQuery1= JFactory::getDbo()->getQuery(true);
-        $subQuery2= JFactory::getDbo()->getQuery(true);
-        $subQuery3= JFactory::getDbo()->getQuery(true);
+		// Create a new query object.		
+		$this->jsmquery->clear();
+        $this->jsmsubquery1->clear();
+        $this->jsmsubquery2->clear();
+        $this->jsmsubquery3->clear();
         
 		// Select some fields
-		$query->select('r.*');
+		$this->jsmquery->select('r.*');
 		// From the rounds table
-		$query->from('#__sportsmanagement_round as r');
+		$this->jsmquery->from('#__sportsmanagement_round as r');
         // join match
-        $subQuery1->select('count(published)');
-        $subQuery1->from('#__sportsmanagement_match ');
-        $subQuery1->where('round_id=r.id and published=0');
+        $this->jsmsubquery1->select('count(published)');
+        $this->jsmsubquery1->from('#__sportsmanagement_match ');
+        $this->jsmsubquery1->where('round_id=r.id and published=0');
         // join match
-        $subQuery2->select('count(*)');
-        $subQuery2->from('#__sportsmanagement_match ');
-        $subQuery2->where('round_id=r.id AND cancel=0 AND (team1_result is null OR team2_result is null)');
+        $this->jsmsubquery2->select('count(*)');
+        $this->jsmsubquery2->from('#__sportsmanagement_match ');
+        $this->jsmsubquery2->where('round_id=r.id AND cancel=0 AND (team1_result is null OR team2_result is null)');
         // join match
-        $subQuery3->select('count(*)');
-        $subQuery3->from('#__sportsmanagement_match ');
-        $subQuery3->where('round_id=r.id');
+        $this->jsmsubquery3->select('count(*)');
+        $this->jsmsubquery3->from('#__sportsmanagement_match ');
+        $this->jsmsubquery3->where('round_id=r.id');
         
-        $query->select('('.$subQuery1.') AS countUnPublished');
-        $query->select('('.$subQuery2.') AS countNoResults');
-        $query->select('('.$subQuery3.') AS countMatches');
+        $this->jsmquery->select('('.$this->jsmsubquery1.') AS countUnPublished');
+        $this->jsmquery->select('('.$this->jsmsubquery2.') AS countNoResults');
+        $this->jsmquery->select('('.$this->jsmsubquery3.') AS countMatches');
         
         
        //$query->where(' r.project_id = '.$this->_project_id);
-       $query->where(' r.project_id = '.self::$_project_id);
+       $this->jsmquery->where(' r.project_id = '.self::$_project_id);
         
        if ($this->getState('filter.search'))
 		{
-        $query->where(' LOWER(r.name) LIKE '.JFactory::getDbo()->Quote('%'.$this->getState('filter.search').'%'));
+        $this->jsmquery->where(' LOWER(r.name) LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search').'%'));
 		}
        
-        $query->order(JFactory::getDbo()->escape($this->getState('list.ordering', 'r.roundcode')).' '.
-                JFactory::getDbo()->escape($this->getState('list.direction', 'ASC')));
+       if (is_numeric($this->getState('filter.state')) )
+		{
+		$this->jsmquery->where('r.published = '.$this->getState('filter.state'));	
+		}
+        
+        $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'r.roundcode')).' '.
+                $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
 
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $my_text = ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        $my_text = ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
         
-        return $query;
+        return $this->jsmquery;
 	}
 	
   

@@ -281,7 +281,9 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
 	case 'clubnames':
 	case 'clubs':
 	case 'teams':
-	case 'playgrounds':		
+	case 'playgrounds':
+    case 'rounds':	
+    case 'divisions':			
         JHtmlSidebar::addFilter(
 			JText::_('JOPTION_SELECT_PUBLISHED'),
 			'filter_state',

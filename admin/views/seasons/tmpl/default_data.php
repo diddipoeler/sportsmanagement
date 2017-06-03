@@ -108,10 +108,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                     
                     $assignteams = JRoute::_('index.php?option=com_sportsmanagement&tmpl=component&view=seasons&layout=assignteams&id='.$row->id);
                     $assignpersons = JRoute::_('index.php?option=com_sportsmanagement&tmpl=component&view=seasons&layout=assignpersons&id='.$row->id);
-                    $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
+                    $canEdit = $this->user->authorise('core.edit','com_sportsmanagement');
                     $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
 					$checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'seasons.', $canCheckin);
-                    $canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.season.' . $row->id) && $canCheckin;
+                    $canChange = $this->user->authorise('core.edit.state', 'com_sportsmanagement.season.' . $row->id) && $canCheckin;
 					?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center">

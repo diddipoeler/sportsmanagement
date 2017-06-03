@@ -90,19 +90,16 @@ class sportsmanagementModelProjects extends JSMModelList
 	 */
 	protected function populateState($ordering = 'p.name', $direction = 'asc')
 	{
-	   if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
+	   if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
 		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
         $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
         }
-        
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
-
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
 		$this->setState('filter.state', $published);
-        
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.league', 'filter_league', '');
 		$this->setState('filter.league', $temp_user_request);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.sports_type', 'filter_sports_type', '');
@@ -115,18 +112,14 @@ class sportsmanagementModelProjects extends JSMModelList
 		$this->setState('filter.search_association', $temp_user_request);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.project_type', 'filter_project_type', '');
 		$this->setState('filter.project_type', $temp_user_request);
-        
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.userfields', 'filter_userfields', '');
 		$this->setState('filter.userfields', $temp_user_request);
-        
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_agegroup', 'filter_search_agegroup', '');
 		$this->setState('filter.search_agegroup', $temp_user_request);
-$temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.unique_id', 'filter_unique_id', '');
-$this->setState('filter.unique_id', $temp_user_request);
-        
+        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.unique_id', 'filter_unique_id', '');
+        $this->setState('filter.unique_id', $temp_user_request);
         $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);
-
 		// List state information.
 		parent::populateState($ordering, $direction);
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');

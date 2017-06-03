@@ -89,7 +89,7 @@ class sportsmanagementModeljlextfederations extends JSMModelList
 	 */
 	protected function populateState($ordering = 'objassoc.name', $direction = 'asc')
 	{
-	    if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info') )
+	    if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
 		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
         $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
@@ -101,7 +101,6 @@ class sportsmanagementModeljlextfederations extends JSMModelList
 		$this->setState('filter.state', $published);
         $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);	
-
 		// List state information.
 		parent::populateState($ordering, $direction);
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
