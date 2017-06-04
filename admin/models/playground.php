@@ -199,15 +199,15 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $my_text = 'playground <br><pre>'.print_r(self::$playground,true).'</pre>'; 
-            //$my_text .= 'settings <br><pre>'.print_r($settings,true).'</pre>';    
-//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['class'] = __CLASS__;
-//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['zeile'] = __LINE__;
-//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['text'] = $my_text;
         
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playground<br><pre>'.print_r(self::$playground,true).'</pre>'),'');
         }
-        
+        /*
+        if ( JComponentHelper::getParams($option)->get('show_debug_info_frontend') )
+        {
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' playground<br><pre>'.print_r(self::$playground,true).'</pre>'),'');    
+        }
+        */
         self::updateHits($pgid,$inserthits); 
         
         if ( is_null( self::$playground ) )
@@ -227,18 +227,11 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
                 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $my_text = 'query <br><pre>'.print_r($query->dump(),true).'</pre>'; 
-            //$my_text .= 'settings <br><pre>'.print_r($settings,true).'</pre>';    
-//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['class'] = __CLASS__;
-//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['zeile'] = __LINE__;
-//        sportsmanagementHelper::$_success_text[__METHOD__][__FUNCTION__]['text'] = $my_text;
-        
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text);
-                //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'');
                 }
                 
                 self::$playground = $db->loadObject();
-                //self::$playground = self::getTable();
-                //self::$playground->load( $pgid );
+
             }
         }
         return self::$playground;

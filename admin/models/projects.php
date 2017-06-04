@@ -120,6 +120,11 @@ class sportsmanagementModelProjects extends JSMModelList
         $this->setState('filter.unique_id', $temp_user_request);
         $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);
+        
+        $value = $this->getUserStateFromRequest($this->context . '.list.ordering', 'ordering', $ordering, 'string');
+		$this->setState('list.ordering', $value);
+		$value = $this->getUserStateFromRequest($this->context . '.list.direction', 'direction', $direction, 'string');
+		$this->setState('list.direction', $value);
 		// List state information.
 		parent::populateState($ordering, $direction);
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');

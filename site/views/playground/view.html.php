@@ -63,7 +63,7 @@ class sportsmanagementViewPlayground extends sportsmanagementView
 	
         sportsmanagementModelProject::setProjectID($this->jinput->getInt( "p", 0 ),$this->jinput->getInt('cfg_which_database',0));
         $mdlJSMTeams = JModelLegacy::getInstance("teams", "sportsmanagementModel");
-    	$this->playground = $this->model->getPlayground($this->jinput->getInt( "pgid", 1 ));
+    	$this->playground = sportsmanagementModelPlayground::getPlayground($this->jinput->getInt( "pgid", 0 ),1);
         $this->address_string = $this->model->getAddressString();
 	$this->teams = $mdlJSMTeams->getTeams($this->playground->id);
 	$this->games = $this->model->getNextGames($this->jinput->getInt( "p", 0 ),$this->jinput->getInt( "pgid", 0 ));
