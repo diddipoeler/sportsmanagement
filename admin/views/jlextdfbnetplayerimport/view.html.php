@@ -62,7 +62,6 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
      */
     function init()
     {
-		//global $app;
 		
 		if ($this->getLayout () == 'default') {
 			$this->_displayDefault ( $tpl );
@@ -82,7 +81,10 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		$seasons[]	= JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'id', 'name');
         $mdlSeasons = JModelLegacy::getInstance('Seasons', 'sportsmanagementModel');
         
+        if ( JComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
+        {
         $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' seasons<br><pre>'.print_r($seasons,true).'</pre>'),'Notice');
+        }
         
 		$allSeasons = $mdlSeasons->getSeasons();
 		$seasons = array_merge($seasons, $allSeasons);
