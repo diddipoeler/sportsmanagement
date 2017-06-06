@@ -55,8 +55,12 @@ jimport ( 'joomla.application.component.view' );
 class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView 
 {
 	
+    /**
+     * sportsmanagementViewjlextdfbnetplayerimport::init()
+     * 
+     * @return
+     */
     function init()
-    //function display($tpl = null) 
     {
 		//global $app;
 		
@@ -65,76 +69,44 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 			return;
 		}
 		
-        /*
-		if ($this->getLayout () == 'default_edit') {
-			$this->_displayDefaultEdit ( $tpl );
-			return;
-		}
-		
-		if ($this->getLayout () == 'default_update') {
-			$this->_displayDefaultUpdate ( $tpl );
-			return;
-		}
-		
-		if ($this->getLayout () == 'info') {
-			$this->_displayInfo ( $tpl );
-			return;
-		}
-		
-		if ($this->getLayout () == 'selectpage') {
-			$this->_displaySelectpage ( $tpl );
-			return;
-		}
-		*/
-        
-		// Set toolbar items for the page
-		//JToolBarHelper::title ( JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_TITLE_1_3' ), 'generic.png' );
-		//JToolBarHelper::help ( 'screen.joomleague', true );
-		//$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-//		$uri = JFactory::getURI ();
+
 		$config = JComponentHelper::getParams ( 'com_media' );
 		$post = $this->jinput->post;
 		$files = $this->jinput->get('files');
 		
-		//$this->request_url	= $uri->toString ();
 		$this->config	= $config;
 		
 		$revisionDate = '2011-04-28 - 12:00';
 		$this->revisionDate	= $revisionDate ;
-		
-		//parent::display ( $tpl );
+		//build the html select list for seasons
+		$seasons[]	= JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SEASON_FILTER'), 'id', 'name');
+        $mdlSeasons = JModelLegacy::getInstance('Seasons', 'sportsmanagementModel');
+        
+        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' seasons<br><pre>'.print_r($seasons,true).'</pre>'),'Notice');
+        
+		$allSeasons = $mdlSeasons->getSeasons();
+		$seasons = array_merge($seasons, $allSeasons);
+        //$this->season = $allSeasons;
+		$lists['seasons'] = JHtml::_( 'select.genericList',
+									$seasons,
+									'filter_season',
+									'class="inputbox" style="width:220px"',
+									'id',
+									'name',
+									0);
+
+		unset($seasons);
+		$this->lists		= $lists;
 	}
 	
-    /*
-    private function _displayInfo($tpl) {
-		$mtime = microtime ();
-		$mtime = explode ( " ", $mtime );
-		$mtime = $mtime [1] + $mtime [0];
-		$starttime = $mtime;
-		$app = JFactory::getApplication ();
-		$db = JFactory::getDBO ();
-		$post = JRequest::get ( 'post' );
-		
-		$model = $this->getModel ( 'jlextdfbnetplayerimport' );
-		
-		// Set toolbar items for the page
-		// JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_TITLE_3_3'),'generic.png');
-		// JToolBarHelper::back();
-		// JToolBarHelper::help('screen.joomleague',true);
-		
-		$this->assignRef ( 'starttime', $starttime );
-		$this->assignRef ( 'importData', $model->importData ( $post ) );
-		$this->assignRef ( 'postData', $post );
-		$revisionDate = '2011-04-28 - 12:00';
-		$this->assignRef ( 'revisionDate', $revisionDate );
-		
-		
-		parent::display ( $tpl );
-	}
-    */
+   
     
+	/**
+	 * sportsmanagementViewjlextdfbnetplayerimport::_displayDefault()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function _displayDefault($tpl) 
     {
 		//global $option;
@@ -167,6 +139,12 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 	}
     
     
+	/**
+	 * sportsmanagementViewjlextdfbnetplayerimport::_displayDefaultUpdate()
+	 * 
+	 * @param mixed $tpl
+	 * @return void
+	 */
 	function _displayDefaultUpdate($tpl) 
     {
 		// global $app, $option;

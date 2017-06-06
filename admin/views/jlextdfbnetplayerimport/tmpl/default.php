@@ -103,28 +103,15 @@ echo '</pre>';
 				echo '<b>'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_EXTENTION_INFO').'</b><br />';
 				echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_HINT1').'<br />';
 				echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_HINT2',$this->revisionDate);
-				/*
-				$linkParams=array();
-				$linkParams['target']='_blank';
-				$linkURL='http://forum.joomleague.net/viewtopic.php?f=13&t=10985#p51461';
-				$link=JRoute::_($linkURL);
-				$linkParams['title']=JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_TOPIC_FORUM');
-				$forumLink=JHtml::link($link,$linkURL,$linkParams);
-				$linkURL='http://bugtracker.joomleague.net/issues/226';
-				$link=JRoute::_($linkURL);
-				$linkParams['title']=JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_TOPIC_BUGTRACKER');
-				$bugtrackerLink=JHtml::link($link,$linkURL,$linkParams);
-				echo '<p>'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_HINT3').'</p>';
-				echo "<p>$forumLink</p>";
-				echo "<p>$bugtrackerLink</p>";
-				*/
 				?>
 			    </td>
 			  </tr>
 			</tfoot>
 			<tbody>
       <?php
-      // TODO: Check update functionality in later version of that extension. For now, disabled
+/**
+ * TODO: Check update functionality in later version of that extension. For now, disabled
+ */
       if ( 0 )
       {
       ?>
@@ -157,9 +144,24 @@ echo '</pre>';
       </fieldset>
       </td>
       </tr>
-
+<tr>
+      <td>
+      <fieldset>
+      <legend>
+				<?php
+				echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_WHICH_SEASON');
+				?>
+			</legend>
+     <?PHP
+      echo $this->lists['seasons'];
+      ?>       
+</fieldset>
+      </td>
+      </tr>            
       <?php
-      // TODO: Disabled, set delimiter hardcoded to tab in the model (because DFBNet uses only that delimiter since 2013)
+/**
+ * TODO: Check update functionality in later version of that extension. For now, disabled
+ */
       if ( 0 )
       {
       ?>
