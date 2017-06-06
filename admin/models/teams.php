@@ -40,10 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-jimport('joomla.application.component.modellist');
-
-
-
 /**
  * sportsmanagementModelTeams
  * 
@@ -56,7 +52,6 @@ jimport('joomla.application.component.modellist');
 class sportsmanagementModelTeams extends JSMModelList
 {
 	var $_identifier = "teams";
-    //static $cfg_which_database = 0;
 	
     /**
      * sportsmanagementModelTeams::__construct()
@@ -113,27 +108,33 @@ class sportsmanagementModelTeams extends JSMModelList
 	 *
 	 * @since	1.6
 	 */
-	protected function populateState($ordering = null, $direction = null)
+	protected function populateState($ordering = 't.name', $direction = 'asc')
 	{
        
-        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context ->'.$this->context.''),'');
+        if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+        {
+		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+        }
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
-
-		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
 		$this->setState('filter.state', $published);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.sports_type', 'filter_sports_type', '');
 		$this->setState('filter.sports_type', $temp_user_request);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
-        
         $value = JRequest::getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
 
+        $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
+		$this->setState('list.limit', $value);	
 		// List state information.
-		parent::populateState('t.name', 'asc');
+		parent::populateState($ordering, $direction);
+        $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
+		$this->setState('list.start', $value);
 	}
     
 	/**
@@ -171,7 +172,11 @@ class sportsmanagementModelTeams extends JSMModelList
         if ($this->getState('filter.sports_type'))
 		{
         $this->query->where('t.sports_type_id = ' . $this->getState('filter.sports_type') );
-        }        
+        } 
+        if (is_numeric($this->getState('filter.state')) )
+		{
+		$this->jsmquery->where('t.published = '.$this->getState('filter.state'));	
+		}       
         if ( $this->club_id ) 
                 {
                     $this->app->setUserState( "$this->option.club_id", $this->club_id); 

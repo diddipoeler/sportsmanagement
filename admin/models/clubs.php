@@ -79,6 +79,7 @@ class sportsmanagementModelClubs extends JSMModelList
                         'a.latitude',
                         'a.longitude',
                         'a.id',
+                        'a.published',
                         'a.unique_id',
                         'a.new_club_id',
                         'a.ordering',
@@ -108,32 +109,33 @@ class sportsmanagementModelClubs extends JSMModelList
 	 *
 	 * @since	1.6
 	 */
-	protected function populateState($ordering = null, $direction = null)
+	protected function populateState($ordering = 'a.name', $direction = 'asc')
 	{
 		
         
-        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context ->'.$this->context.''),'');
+        if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+        {
+		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+        }
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 
-		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
 		$this->setState('filter.state', $published);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.season', 'filter_season', '');
 		$this->setState('filter.season', $temp_user_request);
         
-        $value = JRequest::getUInt('limitstart', 0);
-		$this->setState('list.start', $value);
-
-//		// Load the parameters.
-//		$params = JComponentHelper::getParams('com_sportsmanagement');
-//		$this->setState('params', $params);
-
+        $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
+		$this->setState('list.limit', $value);	
 		// List state information.
-		parent::populateState('a.name', 'asc');
+		parent::populateState($ordering, $direction);
+        $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
+		$this->setState('list.start', $value);
 	}
     
     /**
@@ -171,6 +173,10 @@ class sportsmanagementModelClubs extends JSMModelList
         $this->jsmquery->where('st.season_id = '.$this->getState('filter.season'));
         }
         
+        if (is_numeric($this->getState('filter.state')) )
+		{
+		$this->jsmquery->where('a.published = '.$this->getState('filter.state'));	
+		}
         
         $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'a.name')).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
