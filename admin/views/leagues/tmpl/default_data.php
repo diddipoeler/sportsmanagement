@@ -39,15 +39,8 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-//Ordering allowed ?
-//$ordering=($this->sortColumn == 'obj.ordering');
-
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
-//$templatesToLoad = array('footer','listheader');
-//sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-
-//$this->table_data_class = 'table table-striped';
 
 ?>
 
@@ -198,11 +191,18 @@ JHtml::_('behavior.modal');
                         //echo JText::_($row->fedname); 
                         
                          
-                        $append =' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
+                        $append = ' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
+                        if ( isset($this->lists['association'][$row->country]) )
+                        {
                         echo JHtml::_(	'select.genericlist',$this->lists['association'][$row->country],'association'.$row->id,
 												'class="form-control form-control-inline" size="1"'.$append,'value','text',$row->associations); 
                         
-                        
+                        }
+                        else
+                        {
+                        echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
+													$imageTitle,'title= "'.$imageTitle.'"');    
+                        }
                         ?>
                         </td>
                         <td class="center">
