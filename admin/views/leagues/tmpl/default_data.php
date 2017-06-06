@@ -190,7 +190,7 @@ JHtml::_('behavior.modal');
                         <?php 
                         //echo JText::_($row->fedname); 
                         
-                         
+                        $imageTitle = ''; 
                         $append = ' onchange="document.getElementById(\'cb'.$i.'\').checked=true" ';
                         if ( isset($this->lists['association'][$row->country]) )
                         {
