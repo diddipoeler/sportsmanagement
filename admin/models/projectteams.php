@@ -114,7 +114,7 @@ $this->addNewProjectTeam($post['team_id'],self::$_project_id);
 	 *
 	 * @since	1.6
 	 */
-	protected function populateState($ordering = null, $direction = null)
+	protected function populateState($ordering = 't.name', $direction = 'asc')
 	{
 		// Reference global application object
         $app = JFactory::getApplication();
@@ -129,28 +129,17 @@ $this->addNewProjectTeam($post['team_id'],self::$_project_id);
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
-        
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
-
-		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
 		$this->setState('filter.state', $published);
-        
-        $value = JRequest::getUInt('limitstart', 0);
-		$this->setState('list.start', $value);
-
-//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
-//		$this->setState('filter.image_folder', $image_folder);
-        
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
-
-
-//		// Load the parameters.
-//		$params = JComponentHelper::getParams('com_sportsmanagement');
-//		$this->setState('params', $params);
+        $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
+		$this->setState('list.limit', $value);	
 
 		// List state information.
-		parent::populateState('t.name', 'asc');
+		parent::populateState($ordering, $direction);
+        $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
+		$this->setState('list.start', $value);
 	}
 
 	/**
@@ -250,6 +239,11 @@ $this->addNewProjectTeam($post['team_id'],self::$_project_id);
 		{
         $query->where('c.country LIKE '.$db->Quote('%'.$this->getState('filter.search_nation').'%') );
         }
+        
+        if (is_numeric($this->getState('filter.state')) )
+		{
+		$query->where('tl.published = '.$this->getState('filter.state'));	
+		}
 
         $query->order($db->escape($this->getState('list.ordering', 't.name')).' '.
                 $db->escape($this->getState('list.direction', 'ASC')));

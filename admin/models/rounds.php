@@ -64,8 +64,6 @@ class sportsmanagementModelRounds extends JSMModelList
         {
             $app = JFactory::getApplication();
         $option = JRequest::getCmd('option');
-                //$this->_project_id	= $app->getUserState( "$option.pid", '0' );
-                //self::$_project_id	= $app->getUserState( "$option.pid", '0' );
                 self::$_project_id	= JRequest::getInt('pid',0);
                 
                 if ( !self::$_project_id )
