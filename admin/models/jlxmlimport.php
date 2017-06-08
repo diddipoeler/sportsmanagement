@@ -247,7 +247,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 		$app = JFactory::getApplication();
        $query = JFactory::getDbo()->getQuery(true);
         $post = JRequest::get('post');
-        
+        $this->_season_id = $post['filter_season'];
         $result = NULL;
         
         $this->_import_project_id = $app->getUserState($option.'projectidimport'); ;
@@ -3119,6 +3119,20 @@ $this->dump_variable("import_team", $import_team);
 					}
 					else
 					{
+if ( $this->_season_id )
+{
+try{
+// wenn nichts gefunden wurde neu anlegen
+$newseasonperson = new stdClass();
+$newseasonperson->person_id = $id;
+$newseasonperson->season_id = $this->_season_id;
+$newseasonperson->persontype = 1;
+// Insert the object
+$resultperson = JFactory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $newseasonperson);	
+} catch (Exception $e) {
+$app->enqueueMessage(JText::_($e->getMessage()), 'error');
+}
+}						
 					}
 			}
 		}
@@ -3280,6 +3294,21 @@ $this->dump_variable("import_team", $import_team);
 						$my_text .= '<span style="color:'.$this->storeSuccessColor.'">';
 						$my_text .= JText::sprintf('Created new person data: %1$s',"</span><strong>$dNameStr</strong>" );
 						$my_text .= '<br />';
+
+if ( $this->_season_id )
+{	
+try {
+// wenn nichts gefunden wurde neu anlegen
+$newseasonperson = new stdClass();
+$newseasonperson->person_id = $insertID;
+$newseasonperson->season_id = $this->_season_id;
+$newseasonperson->persontype = 1;
+// Insert the object
+$resultperson = JFactory::getDbo()->insertObject('#__sportsmanagement_season_person_id', $newseasonperson);												
+} catch (Exception $e) {
+$app->enqueueMessage(JText::_($e->getMessage()), 'error');
+}	
+}						
 					}
 				}
 			}
