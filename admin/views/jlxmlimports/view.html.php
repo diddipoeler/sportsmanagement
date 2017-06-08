@@ -67,6 +67,9 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		$app = JFactory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
+		$filter_season = $jinput->getInt('filter_season', 0);
+		$this->filter_season = $filter_season;
+
         // Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
         $model = JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel');
