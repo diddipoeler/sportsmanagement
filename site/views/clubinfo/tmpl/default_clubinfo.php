@@ -74,11 +74,12 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo'.$this->club->
 
         if ( $this->config['show_club_logo_copyright'] )
 		{
-		echo JText::_( "COM_SPORTSMANAGEMENT_COPYRIGHT" );
+		//echo JText::_( "COM_SPORTSMANAGEMENT_PAINTER_INFO" );
+        echo JText::sprintf('COM_SPORTSMANAGEMENT_PAINTER_INFO','<i>'.$this->club->cr_logo_big.'</i>');
         ?> 
-        : &copy;	
+<!--        : &copy; -->	
         <?PHP 
-        echo $this->club->cr_logo_big;  			
+        //echo $this->club->cr_logo_big;  			
 		}        
         
         ?>
