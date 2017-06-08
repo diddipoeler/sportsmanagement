@@ -58,7 +58,7 @@ else
 	?>
 		<!-- SHOW LOGO - START -->
 		<?php
-		if (( $this->config['show_club_logo']) && ( $this->club->logo_big != '' ))
+		if ( $this->config['show_club_logo'] && $this->club->logo_big != '' )
 		{
 			$club_emblem_title = str_replace( "%CLUBNAME%", $this->club->name, JText::_( 'COM_SPORTSMANAGEMENT_CLUBINFO_EMBLEM_TITLE' ) );
 			$picture = $this->club->logo_big;
@@ -71,9 +71,18 @@ else
     }
     
 echo sportsmanagementHelperHtml::getBootstrapModalImage('clubinfo'.$this->club->id,$picture,$club_emblem_title,$this->config['club_logo_width']);        
+
+        if ( $this->config['show_club_logo_copyright'] )
+		{
+		echo JText::_( "COM_SPORTSMANAGEMENT_COPYRIGHT" );
+        ?> 
+        : &copy;	
+        <?PHP 
+        echo $this->club->cr_logo_big;  			
+		}        
         
         ?>
-
+<br />
         
 		<!-- SHOW LOGO - END -->
 		<!-- SHOW SMALL LOGO - START -->
