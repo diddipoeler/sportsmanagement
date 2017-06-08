@@ -105,6 +105,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 		</table>
 		<input type='hidden' name='sent' value='1' />
 		<input type='hidden' name='MAX_FILE_SIZE' value='<?php echo $this->config->get('upload_maxsize'); ?>' />
+		<input type='hidden' name='filter_season' value='<?php echo $this->filter_season; ?>' />
 		<input type='hidden' name='task' value='jlxmlimport.save' />
 		<?php echo JHtml::_('form.token')."\n"; ?>
 	</form>
