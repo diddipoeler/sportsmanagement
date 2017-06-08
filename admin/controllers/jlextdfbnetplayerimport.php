@@ -178,7 +178,7 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends JControllerLegac
 				// $link = 'index.php?option=com_joomleague&view=jlxmlimports&task=jlxmlimport.edit';
 			} else {
 				$xml_file = $model->getData ();
-				$link = 'index.php?option='.$option.'&view=jlxmlimports&task=jlxmlimport.edit';
+				$link = 'index.php?option='.$option.'&view=jlxmlimports&task=jlxmlimport.edit&filter_season='.$post['filter_season'];
 				//$link = 'index.php?option=com_joomleague&view=jlextdfbnetplayerimport&task=jlextdfbnetplayerimport.edit';
 			}
 		}
