@@ -79,6 +79,17 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends JControllerLegac
 		//$delimiter = JRequest::getVar ( 'delimiter', null );
 		$whichfile = JRequest::getVar ( 'whichfile', null );
 		
+		if ( !$post['filter_season'] && $whichfile == 'playerfile' )
+		{
+		$link = 'index.php?option='.$option.'&view=jlextdfbnetplayerimport';
+		$msg = JText::_ ('COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT_PLAYERFILE_NO_SEASON');
+		//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' link <br><pre>'.print_r($link ,true).'</pre>'),'Notice');
+		//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' msg <br><pre>'.print_r($msg ,true).'</pre>'),'Notice');
+		$app->Redirect ( $link, $msg, 'ERROR' );
+		}
+
+		
+		
 		//$app->enqueueMessage ( JText::_ ( 'delimiter ' . $delimiter . '' ), '' );
 		//$app->enqueueMessage ( JText::_ ( 'whichfile ' . $whichfile . '' ), '' );
 		
