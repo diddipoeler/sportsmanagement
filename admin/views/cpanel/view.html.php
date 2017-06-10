@@ -340,14 +340,9 @@ class sportsmanagementViewcpanel extends sportsmanagementView
             sportsmanagementHelper::ToolbarButton('default','upload',JText::_('COM_SPORTSMANAGEMENT_INSTALL_GOOGLEMAP'),'githubinstall',1);
             //JToolBarHelper::custom('cpanel.jqueryinstall','upload','upload',JText::_('COM_SPORTSMANAGEMENT_INSTALL_JQUERY'),false);
             }
-            
-            //if ( $this->aktversion )
-            //{
-            //sportsmanagementHelper::ToolbarButton('default','upload',JText::_('JTOOLBAR_INSTALL'),'githubinstall',1);
-
 
 $bar = JToolBar::getInstance('toolbar');
-$bar->appendButton( 'Link', 'upload', JText::_('JTOOLBAR_INSTALL'), 'index.php?option=com_sportsmanagement&&view=githubinstall' );            
+$bar->appendButton( 'Link', 'upload', JText::_('COM_SPORTSMANAGEMENT_GITHUB_UPDATE'), 'index.php?option=com_sportsmanagement&&view=githubinstall' );            
             //}
             
             if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION != '2.5' )
@@ -357,18 +352,7 @@ $bar->appendButton( 'Link', 'upload', JText::_('JTOOLBAR_INSTALL'), 'index.php?o
             parent::addToolbar();
 		}
 	}
-    
-//	/**
-//	 * Method to set up the document properties
-//	 *
-//	 * @return void
-//	 */
-//	protected function setDocument() 
-//	{
-//		$document = JFactory::getDocument();
-//		$document->setTitle(JText::_('COM_SPORTSMANAGEMENT_ADMINISTRATION'));
-//	}
-	
+
 	/**
 	 * sportsmanagementViewcpanel::addIcon()
 	 * 
