@@ -40,7 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-
 /**
  * sportsmanagementViewLeagues
  * 
@@ -63,24 +62,12 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 	
         $inputappend = '';
         $startmemory = memory_get_usage();
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' bilderpfad<br><pre>'.print_r(COM_SPORTSMANAGEMENT_PICTURE_SERVER,true).'</pre>'),'');
-        
-    
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' state<br><pre>'.print_r($this->state,true).'</pre>'),'');
-
-
         $starttime = microtime(); 
-	
         
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+        if ( JComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
-        
-
-        
 
 		$this->table = JTable::getInstance('league', 'sportsmanagementTable');
         
@@ -115,20 +102,13 @@ class sportsmanagementViewLeagues extends sportsmanagementView
             if (array_key_exists($row->country, $lists['association'] )) 
             {
             $lists['association'][$row->country][] = $row;
-            //echo "Das Element 'erstes' ist in dem Array vorhanden";
             }
             else
             {
             $lists['association'][$row->country][] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_ASSOCIATION'));
             $lists['association'][$row->country][] = $row;    
             }
-            
-            
-            
-            //$lists['association'] = $nation;
         }
-        //$lists['association'] = $nation;
-        
         
         $lists['association2'] = JHtmlSelect::genericlist($nation,
 					'filter_search_association',
@@ -136,8 +116,6 @@ class sportsmanagementViewLeagues extends sportsmanagementView
 					'value',
 					'text',
 					$this->state->get('filter.search_association'));
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' association<br><pre>'.print_r($lists['association'],true).'</pre>'),'');
         
         unset($myoptions);
         
@@ -158,20 +136,18 @@ class sportsmanagementViewLeagues extends sportsmanagementView
         unset($myoptions);
 
 $mdlassociation = JModelLegacy::getInstance('jlextassociations', 'sportsmanagementModel');
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r($mdlassociation->getAssociations(),true).'</pre>'),'Notice');        
+        
         if ( $res = $mdlassociation->getAssociations() )
         {
             $nation = array_merge($nation, $res);
             $this->federation = $res;
         }
 		
-
 		$this->lists = $lists;
-		
-        
-        if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
+		        
+        if ( JComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' speicherbelegung<br><pre>'.print_r(sportsmanagementModeldatabasetool::getMemory($startmemory, memory_get_usage()),true).'</pre>'),'Notice');
+        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' speicherbelegung<br><pre>'.print_r(sportsmanagementModeldatabasetool::getMemory($startmemory, memory_get_usage()),true).'</pre>'),'Notice');
         }
         
         
@@ -185,26 +161,14 @@ $mdlassociation = JModelLegacy::getInstance('jlextassociations', 'sportsmanageme
 	*/
 	protected function addToolbar()
 	{
-	        
         // Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUES_TITLE');
         JToolBarHelper::apply('leagues.saveshort');
-        
 		JToolBarHelper::addNew('league.add');
 		JToolBarHelper::editList('league.edit');
 		JToolBarHelper::custom('league.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
 		JToolBarHelper::archiveList('league.export', JText::_('JTOOLBAR_EXPORT'));
-        JToolbarHelper::checkin('leagues.checkin');
-        if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
-        {
-		JToolbarHelper::trash('leagues.trash');
-        }
-        else
-        {
-        JToolbarHelper::trash('leagues.trash');
-        JToolBarHelper::deleteList('', 'leagues.delete', 'JTOOLBAR_DELETE');    
-        }
-        
+                
         parent::addToolbar();
 	}
 }

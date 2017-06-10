@@ -54,7 +54,7 @@ else
 //	{
 	?>
         <div class="<?php echo COM_SPORTSMANAGEMENT_BOOTSTRAP_DIV_CLASS; ?>" id="default_teaminfo">
-        <div class="col-md-6" id="default_teaminfo-left">
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" id="default_teaminfo-left">
         <?PHP
 //	}
 //	else
@@ -82,7 +82,7 @@ echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$this->team->cr_
  
   ?>
 </div>
-<div class="col-md-6" id="default_teaminfo_right">
+<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" id="default_teaminfo_right">
 	<?php
 	if($this->config['show_club_info'] || $this->config['show_team_info'])
 	{

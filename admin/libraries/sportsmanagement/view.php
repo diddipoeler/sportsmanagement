@@ -436,9 +436,6 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
 			JToolBarHelper::cancel($this->view.'.cancel', 'JTOOLBAR_CLOSE');
 		}    
             
-            
-            
-            
         }
         else
         {
@@ -501,6 +498,8 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
             {
             JToolBarHelper::title(JText::_($this->title), $this->icon);
             }    
+        JToolbarHelper::trash($this->view.'.trash');
+        JToolbarHelper::checkin($this->view.'.checkin');  
         }
         
         sportsmanagementHelper::ToolbarButton('addissue','jsm-issue',JText::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE'),'github',0,$this->view,$this->layout);

@@ -40,7 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-
 /**
  * sportsmanagementViewagegroups
  * 
@@ -143,8 +142,6 @@ $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_TITLE');
         JToolBarHelper::apply('agegroups.saveshort');
 		JToolBarHelper::custom('agegroup.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('agegroup.export',JText::_('JTOOLBAR_EXPORT'));
-        JToolbarHelper::checkin('agegroups.checkin');
-		JToolBarHelper::deleteList('', 'agegroups.delete', 'JTOOLBAR_DELETE');
 		
         parent::addToolbar();
 	}
