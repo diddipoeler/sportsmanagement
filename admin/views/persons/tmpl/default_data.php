@@ -218,15 +218,28 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 								{
 									$append=' style="background-color:#FFCCCC;" ';
 								}
-                        
-                                   echo JHtml::calendar(	$date1,
+/**
+ * das wurde beim kalender geändert
+  $attribs = array(
+			'onChange' => "alert('it works')",
+			"showTime" => 'false',
+			"todayBtn" => 'true',
+			"weekNumbers" => 'false',
+			"fillTable" => 'true',
+			"singleHeader" => 'false',
+		);
+	echo JHtml::_('calendar', JFactory::getDate()->format('Y-m-d'), 'date', 'date', '%Y-%m-%d', $attribs); ?>
+ */
+
+                                
+                                $attribs = array(
+			'onChange' => "document.getElementById('cb".$i."').checked=true",
+		);                          
+                                   echo JHtml::calendar($date1,
 														'birthday'.$row->id,
 														'birthday'.$row->id,
 														'%d-%m-%Y',
-														'size="10" '.$append .
-														'tabindex="3" '.
-														'class="form-control form-control-inline" '.
-														'onchange="document.getElementById(\'cb'.$i.'\').checked=true"');                         
+														$attribs);                         
 //								}
 								?>
 							</td>
@@ -236,12 +249,12 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         //echo JText::_($row->agegroup); 
                         $inputappend = '';
                         $append = ' style="background-color:#bbffff"';
-									echo JHtml::_(	'select.genericlist',
-													$this->lists['agegroup'],
-													'agegroup'.$row->id,
-													$inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
-													$i.'\').checked=true"'.$append,
-													'value','text',$row->agegroup_id);
+									echo JHtml::_('select.genericlist',
+												$this->lists['agegroup'],
+												'agegroup'.$row->id,
+												$inputappend.'class="form-control form-control-inline" size="1" onchange="document.getElementById(\'cb' .
+												$i.'\').checked=true"'.$append,
+												'value','text',$row->agegroup_id);
                         ?>
                         </td>
                         
@@ -252,25 +265,24 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                                 {
                                     $append=' background-color:#FFCCCC;';
                                     }
-								echo JHtmlSelect::genericlist(	$this->lists['nation'],
-																'country'.$row->id,
-																$inputappend.' class="form-control form-control-inline" style="width:140px; '.$append.'" onchange="document.getElementById(\'cb'.$i.'\').checked=true"',
-																'value',
-																'text',
-																$row->country);
+								echo JHtmlSelect::genericlist($this->lists['nation'],
+															'country'.$row->id,
+															$inputappend.' class="form-control form-control-inline" style="width:140px; '.$append.'" onchange="document.getElementById(\'cb'.$i.'\').checked=true"',
+															'value',
+															'text',
+															$row->country);
 								?>
 							</td>
 							<td class="nowrap" class="center">
 								<?php
 								$append='';
 								if (empty($row->position_id)){$append=' background-color:#FFCCCC;';}
-								echo JHtmlSelect::genericlist(	$this->lists['positions'],
-																'position'.$row->id,
-																$inputappend.'class="form-control form-control-inline" style="width:140px; '.$append.'" onchange="document.getElementById(\'cb'.$i.'\').checked=true"',
-																'value',
-																'text',
-																$row->position_id);
-//								echo 'position_id -> '.$row->position_id;
+								echo JHtmlSelect::genericlist($this->lists['positions'],
+															'position'.$row->id,
+															$inputappend.'class="form-control form-control-inline" style="width:140px; '.$append.'" onchange="document.getElementById(\'cb'.$i.'\').checked=true"',
+															'value',
+															'text',
+															$row->position_id);
                                 ?>
 							</td>
 							<td class="center">
