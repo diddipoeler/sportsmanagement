@@ -515,7 +515,10 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
             {
             JToolBarHelper::title(JText::_($this->title), $this->icon);
             }
-            
+
+/**
+ * zwischen den views unterscheiden 
+ */            
             switch ($this->view)
             { 
             case '':
