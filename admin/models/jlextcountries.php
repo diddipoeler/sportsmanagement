@@ -40,10 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.modellist');
-//require_once (JPATH_COMPONENT.DS.'models'.DS.'list.php');
-
-
 /**
  * sportsmanagementModeljlextcountries
  * 
@@ -53,7 +49,7 @@ jimport('joomla.application.component.modellist');
  * @version 2014
  * @access public
  */
-class sportsmanagementModeljlextcountries extends JModelList
+class sportsmanagementModeljlextcountries extends JSMModelList
 {
 	var $_identifier = "jlextcountries";
 	
@@ -79,6 +75,7 @@ class sportsmanagementModeljlextcountries extends JModelList
                         'objcountry.wmo',
                         'objcountry.ordering',
                         'objcountry.checked_out',
+                        'objcountry.published',
                         'objcountry.checked_out_time'
                         );
                 parent::__construct($config);
@@ -93,39 +90,31 @@ class sportsmanagementModeljlextcountries extends JModelList
 	 *
 	 * @since	1.6
 	 */
-	protected function populateState($ordering = null, $direction = null)
+	protected function populateState($ordering = 'objcountry.name', $direction = 'asc')
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Initialise variables.
-		$app = JFactory::getApplication('administrator');
+		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+        {
+		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+        }
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' request<br><pre>'.print_r($_REQUEST,true).'</pre>'),'');
-        
-
-
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
-
-		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
 		$this->setState('filter.state', $published);
-
 		$federation = $this->getUserStateFromRequest($this->context.'.filter.federation', 'filter_federation', '');
 		$this->setState('filter.federation', $federation);
-        
-        $value = JRequest::getUInt('limitstart', 0);
-		$this->setState('list.start', $value);
-        
-        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
-
-
-//		// Load the parameters.
-//		$params = JComponentHelper::getParams('com_sportsmanagement');
-//		$this->setState('params', $params);
-
+        $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
+		$this->setState('list.limit', $value);
+        $value = $this->getUserStateFromRequest($this->context . '.list.ordering', 'ordering', $ordering, 'string');
+		$this->setState('list.ordering', $value);
+		$value = $this->getUserStateFromRequest($this->context . '.list.direction', 'direction', $direction, 'string');
+		$this->setState('list.direction', $value);
 		// List state information.
-		parent::populateState('objcountry.name', 'asc');
+		parent::populateState($ordering, $direction);
+        $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
+		$this->setState('list.start', $value);
 	}
     
 	/**
@@ -135,44 +124,47 @@ class sportsmanagementModeljlextcountries extends JModelList
 	 */
 	function getListQuery()
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-
-        // Create a new query object.
-		$db		= $this->getDbo();
-		$query	= $db->getQuery(true);
-		$user	= JFactory::getUser(); 
+	// Create a new query object.		
+		$this->jsmquery->clear();
+        $this->jsmsubquery1->clear();
+        $this->jsmsubquery2->clear(); 
 		
         // Select some fields
-		$query->select(implode(",",$this->filter_fields));
-        $query->select('f.name as federation_name');
+		$this->jsmquery->select(implode(",",$this->filter_fields));
+        $this->jsmquery->select('f.name as federation_name');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries AS objcountry');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_federations AS f ON f.id = objcountry.federation');
+		$this->jsmquery->from('#__sportsmanagement_countries AS objcountry');
+        $this->jsmquery->join('LEFT', '#__sportsmanagement_federations AS f ON f.id = objcountry.federation');
         // Join over the users for the checked out user.
-		$query->select('uc.name AS editor');
-		$query->join('LEFT', '#__users AS uc ON uc.id = objcountry.checked_out');
+		$this->jsmquery->select('uc.name AS editor');
+		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = objcountry.checked_out');
         
         if ($this->getState('filter.search'))
 		{
-        $query->where('LOWER(objcountry.name) LIKE '.$db->Quote('%'.$this->getState('filter.search').'%'));
+        $this->jsmquery->where('LOWER(objcountry.name) LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search').'%'));
         }
+        
         if ($this->getState('filter.federation'))
 		{
-        $query->where('objcountry.federation = '.$this->getState('filter.federation'));
+        $this->jsmquery->where('objcountry.federation = '.$this->getState('filter.federation'));
         }
+        
+        if (is_numeric($this->getState('filter.state')) )
+		{
+		$this->jsmquery->where('objcountry.published = '.$this->getState('filter.state'));	
+		}
 
         
-        $query->order($db->escape($this->getState('list.ordering', 'objcountry.name')).' '.
-                $db->escape($this->getState('list.direction', 'ASC')));
+        $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'objcountry.name')).' '.
+                $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $my_text = ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        $my_text = ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
         
-		return $query;
+		return $this->jsmquery;
         
         
         
@@ -197,7 +189,7 @@ class sportsmanagementModeljlextcountries extends JModelList
 		// Select some fields
 		$query->select('id as value,name as text');
 		// From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_federations as objassoc');
+		$query->from('#__sportsmanagement_federations as objassoc');
         $db->setQuery($query);
 		$results = $db->loadObjectList();
         

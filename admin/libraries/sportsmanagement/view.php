@@ -288,6 +288,7 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
         case 'predictiongames':
         case 'jlextfederations':
         case 'jlextassociations':
+        case 'jlextcountries':
         case 'agegroups':
         case 'eventtypes':
         case 'leagues':
