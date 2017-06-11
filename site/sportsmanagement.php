@@ -329,19 +329,19 @@ DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_HELP_SERVER',JComponentHelper::getParams($opt
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_BUGTRACKER_SERVER',JComponentHelper::getParams($option)->get('cfg_bugtracker_server','') );
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_VIEW',$view );
 
-if ( $app->isAdmin() )
-{
-if($task == '' && $option == 'com_sportsmanagement') 
-{
-$js ="registerhome('".JURI::base()."','JSM Sports Management','".$app->getCfg('sitename')."','1');". "\n";
-$document->addScriptDeclaration( $js );
-}
-}
-else
-{
-$js ="registerhome('".JURI::base()."','JSM Sports Management','".$app->getCfg('sitename')."','0');". "\n";
-$document->addScriptDeclaration( $js );    
-}
+//if ( $app->isAdmin() )
+//{
+//if($task == '' && $option == 'com_sportsmanagement') 
+//{
+//$js ="registerhome('".JURI::base()."','JSM Sports Management','".$app->getCfg('sitename')."','1');". "\n";
+//$document->addScriptDeclaration( $js );
+//}
+//}
+//else
+//{
+//$js ="registerhome('".JURI::base()."','JSM Sports Management','".$app->getCfg('sitename')."','0');". "\n";
+//$document->addScriptDeclaration( $js );    
+//}
 
 
 require_once( JPATH_SITE.DS.JSM_PATH.DS. 'controller.php' );

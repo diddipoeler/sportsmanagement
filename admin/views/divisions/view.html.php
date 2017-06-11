@@ -40,7 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
-
 /**
  * sportsmanagementViewDivisions
  * 
@@ -52,7 +51,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
  */
 class sportsmanagementViewDivisions extends sportsmanagementView
 {
-
 	
 	/**
 	 * sportsmanagementViewDivisions::init()
@@ -61,32 +59,22 @@ class sportsmanagementViewDivisions extends sportsmanagementView
 	 */
 	public function init ()
 	{
-	
 
         $lists = array();
-        $this->project_id	= $this->app->getUserState( "$this->option.pid", '0' );
+        $this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
-        
-
         $starttime = microtime(); 
     
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
-		
-        
-        $this->table = JTable::getInstance('division', 'sportsmanagementTable');
-		
 
-		
-        $this->projectws	= $project;
-		$this->lists	= $lists;
-		
-        
-        
-		
+        $this->table = JTable::getInstance('division', 'sportsmanagementTable');
+        $this->projectws = $project;
+		$this->lists = $lists;
+
 	}
 	
 	/**
@@ -96,17 +84,6 @@ class sportsmanagementViewDivisions extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-	//	$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-       
-		//$option = JRequest::getCmd('option');
-//        // Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
-        
         // Set toolbar items for the page
 		$this->title =  JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_TITLE' );
         
@@ -115,18 +92,9 @@ class sportsmanagementViewDivisions extends sportsmanagementView
         JToolBarHelper::checkin('divisions.checkin');
         JToolBarHelper::apply('divisions.saveshort');
 		JToolBarHelper::divider();
-		
 		JToolBarHelper::addNew('division.add');
 		JToolBarHelper::editList('division.edit');
-        if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
-        {
-		JToolbarHelper::trash('divisions.trash');
-        }
-        else
-        {
-        JToolBarHelper::deleteList('', 'divisions.delete', 'JTOOLBAR_DELETE');    
-        }
-		JToolbarHelper::checkin('divisions.checkin');
+
         parent::addToolbar();
 	}
 }

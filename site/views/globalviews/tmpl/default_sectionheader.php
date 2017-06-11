@@ -39,18 +39,6 @@
 
 defined( '_JEXEC' ) or die( 'Restricted access' ); 
 
-/*
-// welche joomla version
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-JHtml::_('behavior.framework', true);
-}
-else
-{
-JHtml::_( 'behavior.mootools' );    
-}
-*/
-
 // Reference global application object
 $app = JFactory::getApplication();
 // JInput object

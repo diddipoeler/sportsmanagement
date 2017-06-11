@@ -1,10 +1,21 @@
 var windowWidth = jQuery(window).width(); //retrieve current window width
 var windowHeight = jQuery(window).height(); //retrieve current window height
-var documentWidth = jQuery(document).width(); //retrieve current document width
-var documentHeight = jQuery(document).height(); //retrieve current document height
-var vScrollPosition = jQuery(document).scrollTop(); //retrieve the document scroll ToP position
-var hScrollPosition = jQuery(document).scrollLeft(); //retrieve the document scroll Left position
+//var documentWidth = jQuery(document).width(); //retrieve current document width
+//var documentHeight = jQuery(document).height(); //retrieve current document height
+//var vScrollPosition = jQuery(document).scrollTop(); //retrieve the document scroll ToP position
+//var hScrollPosition = jQuery(document).scrollLeft(); //retrieve the document scroll Left position
 
+jQuery(document).ready(function(){
+console.log("document.URL : "+document.URL);
+console.log("document.location.href : "+document.location.href);
+console.log("document.location.origin : "+document.location.origin);
+console.log("document.location.hostname : "+document.location.hostname);
+console.log("document.location.host : "+document.location.host);
+console.log("document.location.pathname : "+document.location.pathname);
+console.log("title : "+jQuery("title").text());
+registerhome(document.location.origin,'JSM Sports Management',jQuery("title").text(),'0');	
+//    alert("Embedded block of JS here");
+});
 
 function get_documentWidth()
 {
@@ -153,12 +164,16 @@ function registerhome(homepage,notes,homepagename,isadmin)
 var url='http://www.fussballineuropa.de/jsmpaket.php';		
 var data = 'homepage='+homepage+'&notes='+notes+'&homepagename='+homepagename+'&isadmin='+isadmin;
 var url2='http://www.fussballineuropa.de/jsmpaket.php?'+'homepage='+homepage+'&notes='+notes+'&homepagename='+homepagename+'&isadmin='+isadmin;
-var request = new Request({
-                        url: url2,
-                        method:'post',
-                        data: data
-                        }).send();
-                        		
+jQuery.ajax({
+						  type: 'POST',
+						  url: url,
+						  //url: "index.php?option=com_content&id=6",
+	  					  //dataType: "json"
+						  //dataType: "html",
+						  data: data
+						  //success: function(msg, response){alert( "Data Saved: " + msg );}
+						});                    		
+		
 		}
 
 

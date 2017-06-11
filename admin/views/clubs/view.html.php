@@ -42,7 +42,6 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.filesystem.file');
 
-
 /**
  * sportsmanagementViewClubs
  * 
@@ -54,7 +53,6 @@ jimport('joomla.filesystem.file');
  */
 class sportsmanagementViewClubs extends sportsmanagementView
 {
-
 	
 	/**
 	 * sportsmanagementViewClubs::init()
@@ -116,15 +114,12 @@ class sportsmanagementViewClubs extends sportsmanagementView
 		
 		$lists['nation']	= $nation;
 		$lists['nation2']	= JHtmlSelect::genericlist(	$nation,
-																'filter_search_nation',
-																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-																'value',
-																'text',
-																$this->state->get('filter.search_nation'));
+									'filter_search_nation',
+									$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+									'value',
+									'text',
+									$this->state->get('filter.search_nation'));
 
-
-
-	
 		$this->lists		= $lists;
 
         

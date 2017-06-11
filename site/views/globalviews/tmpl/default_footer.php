@@ -38,7 +38,6 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-JHtml::_( 'behavior.modal' );
 
 $option = JRequest::getCmd('option');
 $view = JRequest::getVar( "view") ;
@@ -71,7 +70,7 @@ $logo_width = JComponentHelper::getParams($option)->get('logo_picture_width',100
 }  
 </style>
 
-<script>
+<script type="text/javascript" >
 
 function openLink(url)
 {
@@ -111,12 +110,26 @@ SqueezeBox.open(url, {
 	?>
 	<br />    
       
-      
+<?PHP
+// welche joomla version ?
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+
+}
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
+?>
 <!-- Button HTML (to Trigger Modal) -->
 <a href="<?php echo $cfg_bugtracker_server; ?>" rel="modaljsm:open">Bug-Tracker</a>
 <br />
 <a href="<?php echo $cfg_help_server; ?>" rel="modaljsm:open">Online-Help</a>
 <br />
+<?PHP
+} 
+
+?>      
+
 
 </div>
 

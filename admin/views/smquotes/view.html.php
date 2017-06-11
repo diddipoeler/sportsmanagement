@@ -59,26 +59,26 @@ class sportsmanagementViewsmquotes extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$uri = JFactory::getURI();
-		$model	= $this->getModel();
+		//$app = JFactory::getApplication();
+//		$jinput = $app->input;
+//		$option = $jinput->getCmd('option');
+//		$uri = JFactory::getURI();
+//		$model	= $this->getModel();
 		$starttime = microtime(); 
         
-		$this->state = $this->get('State'); 
-		$this->sortDirection = $this->state->get('list.direction');
-		$this->sortColumn = $this->state->get('list.ordering');
-
-		$items = $this->get('Items');
+//		$this->state = $this->get('State'); 
+//		$this->sortDirection = $this->state->get('list.direction');
+//		$this->sortColumn = $this->state->get('list.ordering');
+//
+//		$items = $this->get('Items');
         
 		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		{
 			$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
 		}
         
-		$total = $this->get('Total');
-		$pagination = $this->get('Pagination');
+//		$total = $this->get('Total');
+//		$pagination = $this->get('Pagination');
         
         $table = JTable::getInstance('smquote', 'sportsmanagementTable');
 		$this->table = $table;
@@ -90,11 +90,11 @@ class sportsmanagementViewsmquotes extends sportsmanagementView
 //        $app->enqueueMessage(JText::_('sportsmanagementViewsmquotes filter_catid<br><pre>'.print_r($this->filter_catid,true).'</pre>'),'Notice');
         
         
-		$this->user = JFactory::getUser();
-		//$this->lists = $lists;
-		$this->items = $items;
-		$this->pagination = $pagination;
-		$this->request_url = $uri->toString();
+//		$this->user = JFactory::getUser();
+//		//$this->lists = $lists;
+//		$this->items = $items;
+//		$this->pagination = $pagination;
+//		$this->request_url = $uri->toString();
         	
 	}
 	
@@ -105,13 +105,7 @@ class sportsmanagementViewsmquotes extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-	//	// Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
-//        
-//        // Set toolbar items for the page
+        // Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_QUOTES_TITLE');
 		JToolBarHelper::addNew('smquote.add');
 		JToolBarHelper::editList('smquote.edit');
@@ -125,14 +119,6 @@ class sportsmanagementViewsmquotes extends sportsmanagementView
         
 		JToolBarHelper::archiveList('smquote.export', JText::_('JTOOLBAR_EXPORT'));
 		
-		if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
-		{
-			JToolbarHelper::trash('smquotes.trash');
-		}
-		else
-		{
-			JToolBarHelper::deleteList('', 'smquotes.delete', 'JTOOLBAR_DELETE');    
-		}
         
 		parent::addToolbar();
 	}

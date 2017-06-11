@@ -60,29 +60,21 @@ class sportsmanagementViewSportsTypes extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->state,true).'</pre>'),'');
-
-
 		$starttime = microtime();
 		
 		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		{
 			$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
 		}
-
         
 		$myoptions = array();
 		$myoptions[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_TEAM' ) );
 		$myoptions[] = JHtml::_( 'select.option', '1', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SPORTSART_SINGLE' ) );
 
-
 		$this->table = JTable::getInstance('sportstype', 'sportsmanagementTable');
         
         // sportart filter
 		$lists['sportart'] = $myoptions;
-
-
 		$this->lists = $lists;
 
       
@@ -103,18 +95,7 @@ class sportsmanagementViewSportsTypes extends sportsmanagementView
 		JToolBarHelper::custom('sportstype.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
 		JToolBarHelper::archiveList('sportstype.export', JText::_('JTOOLBAR_EXPORT'));
         JToolbarHelper::checkin('sportstypes.checkin');
-		
-		if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
-		{
-		JToolbarHelper::trash('sportstypes.trash');
-		}
-		else
-		{
-        JToolbarHelper::trash('sportstypes.trash');
-		JToolBarHelper::deleteList('', 'sportstypes.delete', 'JTOOLBAR_DELETE');    
-		}
-		
-		
+				
         parent::addToolbar();
 	}
 }

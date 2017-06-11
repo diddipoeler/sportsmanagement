@@ -44,6 +44,25 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 {
 JHtml::_('jquery.framework');
 }
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
+JHtml::_('behavior.modal');
+JHtml::_('behavior.framework');
+} 
+elseif(version_compare(JVERSION,'1.7.0','ge')) 
+{
+// Joomla! 1.7 code here
+} 
+elseif(version_compare(JVERSION,'1.6.0','ge')) 
+{
+// Joomla! 1.6 code here
+} 
+else 
+{
+// Joomla! 1.5 code here
+}
+
         
 /**
  * sportsmanagementView
@@ -86,11 +105,9 @@ class sportsmanagementView extends JViewLegacy
         $this->view = $this->jinput->getVar("view");
         
         $this->model = $this->getModel();
+//        $js ="registerhome('".JURI::base()."','JSM Sports Management','".$this->app->getCfg('sitename')."','0');". "\n";
+//        $this->document->addScriptDeclaration( $js );
         
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout -> '.$this->getLayout().''),'');
-//        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName -> '.$this->getName().''),'');
-
-       
         switch ($this->view)
         {
             case 'resultsranking':

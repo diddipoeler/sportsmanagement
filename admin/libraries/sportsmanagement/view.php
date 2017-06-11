@@ -75,10 +75,6 @@ class sportsmanagementView extends JViewLegacy
 	 */
 	public function display ($tpl = null)
 	{
-//	   $option = JRequest::getCmd('option');
-//		$app = JFactory::getApplication();
-        
-        
         
 		if (count($errors = $this->get('Errors')))
 		{
@@ -101,6 +97,7 @@ class sportsmanagementView extends JViewLegacy
         $this->tmpl = $this->jinput->getCmd('tmpl', '');
 		$this->uri = JFactory::getURI();
         $this->user = JFactory::getUser();
+        $this->request_url	= $this->uri->toString();
         
         switch ( $this->view )
             {
@@ -497,7 +494,12 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
             else
             {
             JToolBarHelper::title(JText::_($this->title), $this->icon);
-            }    
+            }   
+/**
+ * es gibt nur noch die ablage in den papierkorb
+ * dadurch sind wir in der lage, fehlerhaft gelöschte einträge
+ * wieder herzustellen um eine fehlerursache besser zu finden 
+ */
         JToolbarHelper::trash($this->view.'.trash');
         JToolbarHelper::checkin($this->view.'.checkin');  
         }

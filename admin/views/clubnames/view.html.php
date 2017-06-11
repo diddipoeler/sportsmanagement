@@ -59,21 +59,8 @@ class sportsmanagementViewClubnames extends sportsmanagementView
 	 */
 	public function init ()
 	{
-//		$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-//		$db	= sportsmanagementHelper::getDBConnection();
-//		$uri = JFactory::getURI();
-//        $model = $this->getModel();
         $lists = array();
-        
-//        $this->state = $this->get('State'); 
-//        $this->sortDirection = $this->state->get('list.direction');
-//        $this->sortColumn = $this->state->get('list.ordering');
-                
-
         $starttime = microtime(); 
-//        $this->items = $this->get('Items');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
@@ -89,25 +76,8 @@ class sportsmanagementViewClubnames extends sportsmanagementView
         }
 		
         $lists['nation'] = $nation;
-        
-//		$total = $this->get('Total');
-//		$this->pagination = $this->get('Pagination');
-        
         $this->table = JTable::getInstance('clubname', 'sportsmanagementTable');
-        
-//        $table = JTable::getInstance('division', 'sportsmanagementTable');
-//		$this->table	= $table;
-
-
-
-//		$this->user	= JFactory::getUser();
-        //$this->projectws	= $project;
 		$this->lists	= $lists;
-
-//		$this->pagination	= $pagination;
-//		$this->request_url	= $uri->toString();
-        
-        
 		
 	}
 	
@@ -118,17 +88,6 @@ class sportsmanagementViewClubnames extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-//		$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-       
-		//$option = JRequest::getCmd('option');
-//        // Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
-        
         // Set toolbar items for the page
 		$this->title =  JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_CLUBNAMES_TITLE' );
         
@@ -136,23 +95,10 @@ class sportsmanagementViewClubnames extends sportsmanagementView
 		JToolBarHelper::unpublish('clubnames.unpublish', 'JTOOLBAR_UNPUBLISH', true);
         JToolBarHelper::checkin('clubnames.checkin');
         JToolBarHelper::custom('clubnames.import', 'upload', 'upload', JText::_('JTOOLBAR_INSTALL'), false);
-        //JTOOLBAR_INSTALL
-        
-        
 		JToolBarHelper::divider();
-		
 		JToolBarHelper::addNew('clubname.add');
 		JToolBarHelper::editList('clubname.edit');
-        if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
-        {
-		JToolbarHelper::trash('clubnames.trash');
-        }
-        else
-        {
-        JToolbarHelper::trash('clubnames.trash');
-        JToolBarHelper::deleteList('', 'clubnames.delete', 'JTOOLBAR_DELETE');    
-        }
-		JToolbarHelper::checkin('clubnames.checkin');
+
         parent::addToolbar();
 	}
 }

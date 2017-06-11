@@ -328,7 +328,7 @@ $starttime = microtime();
 // 		JToolBarHelper::unpublishList('person.unpublish');
 		JToolBarHelper::publish('persons.publish', 'JTOOLBAR_PUBLISH', true);
 		JToolBarHelper::unpublish('persons.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-        JToolBarHelper::checkin('persons.checkin');
+//        JToolBarHelper::checkin('persons.checkin');
 		JToolBarHelper::divider();
 		
 		JToolBarHelper::apply('persons.saveshort');
@@ -336,15 +336,15 @@ $starttime = microtime();
 		JToolBarHelper::addNew('person.add');
 		JToolBarHelper::custom('person.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
 		JToolBarHelper::archiveList('person.export', JText::_('JTOOLBAR_EXPORT'));
-        JToolbarHelper::checkin('persons.checkin');
-		if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
-            {
-		    JToolbarHelper::trash('persons.trash');
-            }
-            else
-            {
-            JToolBarHelper::deleteList('', 'persons.delete', 'JTOOLBAR_DELETE');    
-            }
+//        JToolbarHelper::checkin('persons.checkin');
+//		if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
+//            {
+//		    JToolbarHelper::trash('persons.trash');
+//            }
+//            else
+//            {
+//            JToolBarHelper::deleteList('', 'persons.delete', 'JTOOLBAR_DELETE');    
+//            }
 		
         parent::addToolbar();
 	}

@@ -42,7 +42,6 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.filesystem.file');
 
-
 /**
  * sportsmanagementViewEventtypes
  * 
@@ -117,17 +116,7 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 		JToolBarHelper::custom('eventtype.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('eventtype.export',JText::_('JTOOLBAR_EXPORT'));
         JToolbarHelper::checkin('eventtypes.checkin');
-		//JToolBarHelper::deleteList('', 'eventtypes.delete', 'JTOOLBAR_DELETE');
-        if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
-        {
-		JToolbarHelper::trash('eventtypes.trash');
-        }
-        else
-        {
-        JToolbarHelper::trash('eventtypes.trash');    
-        JToolBarHelper::deleteList('', 'eventtypes.delete', 'JTOOLBAR_DELETE');    
-        }
-		
+				
         parent::addToolbar();
 	}
 }
