@@ -128,6 +128,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                             </td>
 							<td class="center">
 								<?php
+                                $attribs = array(
+			'onChange' => "document.getElementById('cb".$i."').checked=true",
+		);
 								$date1 = sportsmanagementHelper::convertDate($row->round_date_first, 1);
 								$append = '';
 								if (($date1 == '00-00-0000') || ($date1 == ''))
@@ -138,11 +141,8 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 								echo JHtml::calendar($date1,
 													'round_date_first'.$row->id,
 													'round_date_first'.$row->id,
-													'%d-%m-%Y',
-													'size="10" '.$append .
-													'tabindex="3" '.
-													'class="form-control form-control-inline" '.
-													'onchange="document.getElementById(\'cb'.$i.'\').checked=true"');
+													'%d-%m-%Y', 
+                                                    $attribs);
 								?>
 							</td>
 							<td class="center">&nbsp;-&nbsp;</td>
@@ -159,10 +159,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 													'round_date_last'.$row->id,
 													'round_date_last'.$row->id,
 													'%d-%m-%Y',
-													'size="10" '.$append .
-													'tabindex="3" '.
-													'class="form-control form-control-inline" '.
-													'onchange="document.getElementById(\'cb'.$i.'\').checked=true"');
+                                                    $attribs);
 								?>
                                 </td>
 							<td class="center" class="nowrap">
