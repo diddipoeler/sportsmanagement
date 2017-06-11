@@ -266,11 +266,29 @@ fieldset button {
 							</td>
 							<td class="center" nowrap="nowrap">
 								<?php
-								echo JHtml::calendar(	sportsmanagementHelper::convertDate($date),
-														'match_date'.$row->id,
-														'match_date'.$row->id,
-														'%d-%m-%Y',
-														'size="9"  tabindex="2" class="form-control form-control-inline" ondblclick="copyValue(\'match_date\')" onchange="document.getElementById(\'cb'.$i.'\').checked=true"');
+                                
+/**
+ * das wurde beim kalender geändert
+  $attribs = array(
+			'onChange' => "alert('it works')",
+			"showTime" => 'false',
+			"todayBtn" => 'true',
+			"weekNumbers" => 'false',
+			"fillTable" => 'true',
+			"singleHeader" => 'false',
+		);
+	echo JHtml::_('calendar', JFactory::getDate()->format('Y-m-d'), 'date', 'date', '%Y-%m-%d', $attribs); ?>
+ */
+
+                                
+                                $attribs = array(
+			'onChange' => "document.getElementById('cb".$i."').checked=true",
+		);                                
+								echo JHtml::calendar(sportsmanagementHelper::convertDate($date),
+													'match_date'.$row->id,
+													'match_date'.$row->id,
+													'%d-%m-%Y',
+													$attribs);
 								?>
 							</td>
 							<td class="left"  nowrap="nowrap">
