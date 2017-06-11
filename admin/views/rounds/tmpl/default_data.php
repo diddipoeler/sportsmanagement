@@ -128,6 +128,21 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                             </td>
 							<td class="center">
 								<?php
+
+/**
+ * das wurde beim kalender geändert
+  $attribs = array(
+			'onChange' => "alert('it works')",
+			"showTime" => 'false',
+			"todayBtn" => 'true',
+			"weekNumbers" => 'false',
+			"fillTable" => 'true',
+			"singleHeader" => 'false',
+		);
+	echo JHtml::_('calendar', JFactory::getDate()->format('Y-m-d'), 'date', 'date', '%Y-%m-%d', $attribs); ?>
+ */
+
+                                
                                 $attribs = array(
 			'onChange' => "document.getElementById('cb".$i."').checked=true",
 		);
