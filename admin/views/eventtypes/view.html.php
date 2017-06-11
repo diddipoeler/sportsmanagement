@@ -115,7 +115,6 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 		JToolBarHelper::editList('eventtype.edit');
 		JToolBarHelper::custom('eventtype.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('eventtype.export',JText::_('JTOOLBAR_EXPORT'));
-        JToolbarHelper::checkin('eventtypes.checkin');
 				
         parent::addToolbar();
 	}

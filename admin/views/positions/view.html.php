@@ -99,10 +99,6 @@ $starttime = microtime();
 		unset($sportstypes);
 		
 		$this->lists = $lists;
-
-		
-        
-        
 		
 	}
 	
@@ -127,19 +123,7 @@ $starttime = microtime();
 		JToolBarHelper::addNew('position.add');
 		JToolBarHelper::custom('position.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
 		JToolBarHelper::archiveList('position.export', JText::_('JTOOLBAR_EXPORT'));
-        JToolbarHelper::checkin('positions.checkin');
-		//JToolBarHelper::deleteList('','position.delete');
-        if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
-        {
-		JToolbarHelper::trash('positions.trash');
-        }
-        else
-        {
-        JToolbarHelper::trash('positions.trash');
-        JToolBarHelper::deleteList('', 'positions.delete', 'JTOOLBAR_DELETE');    
-        }
-
-		
+        		
         parent::addToolbar();
 	}
 }

@@ -38,8 +38,7 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-//Ordering allowed ?
-$ordering=($this->sortColumn == 'objcountry.ordering');
+
 ?>
    
 	<div id="editcell">
@@ -102,7 +101,11 @@ $ordering=($this->sortColumn == 'objcountry.ordering');
 						echo JHtml::_('grid.sort','COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_EDIT_WMO','objcountry.wmo',$this->sortDirection,$this->sortColumn);
 						?>
 					</th>
-					
+					<th width="" class="nowrap center">
+						<?php
+						echo JHtml::_('grid.sort','JSTATUS','s.published',$this->sortDirection,$this->sortColumn);
+						?>
+					</th>
 					<th width="10%">
 						<?php
 						echo JHtml::_('grid.sort','JGRID_HEADING_ORDERING','objcountry.ordering',$this->sortDirection,$this->sortColumn);
@@ -130,10 +133,9 @@ $ordering=($this->sortColumn == 'objcountry.ordering');
 					$row =& $this->items[$i];
 					$link = JRoute::_('index.php?option=com_sportsmanagement&task=jlextcountry.edit&id='.$row->id);
                     $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
-					//$checked = JHtml::_('jgrid.checkedout',$row,$i);
-                    //$checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'jlextcountries.', $canCheckin);
                     $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
 					$checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'jlextcountries.', $canCheckin);
+                    $canChange = $this->user->authorise('core.edit.state', 'com_sportsmanagement.jlextcountry.' . $row->id) && $canCheckin;
                     ?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center">
@@ -192,6 +194,21 @@ $ordering=($this->sortColumn == 'objcountry.ordering');
 						<td><?php echo $row->ds; ?></td>
 						<td><?php echo $row->wmo; ?></td>
 						
+                        
+                        <td class="center">
+            <div class="btn-group">
+            <?php echo JHtml::_('jgrid.published', $row->published, $i, 'jlextcountries.', $canChange, 'cb'); ?>
+            <?php 
+            // Create dropdown items and render the dropdown list.
+								if ($canChange)
+								{
+									JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'jlextcountries');
+									JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'jlextcountries');
+									echo JHtml::_('actionsdropdown.render', $this->escape($row->name));
+								}
+								?>
+            </div>
+            </td>    
 						<td class="order">
 							<span>
 								<?php echo $this->pagination->orderUpIcon($i,$i > 0,'jlextcountries.orderup','JLIB_HTML_MOVE_UP',$ordering); ?>

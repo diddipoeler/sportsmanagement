@@ -61,47 +61,34 @@ class sportsmanagementViewjlextcountries extends sportsmanagementView
 	{
 		
         $inputappend = '';
-        
-        //$app->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
-        //$app->enqueueMessage(JText::_('Layout -> ').$this->getLayout(),'');
-        
-        
+
         $starttime = microtime(); 
-		
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
-        
-		
-        
-        $this->table = JTable::getInstance('jlextcountry', 'sportsmanagementTable');
 
+        $this->table = JTable::getInstance('jlextcountry', 'sportsmanagementTable');
         
          //build the html options for nation
 		$nation[] = JHtml::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_FEDERATION'));
 		if ($res = $this->get('Federation') )
         {
             $nation = array_merge($nation,$res);
-            $this->federation	= $res;
+            $this->federation = $res;
         
 
         }
 		
-        $lists['federation'] = JHtmlSelect::genericlist(	$nation,
-																'filter_federation',
-																$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-																'value',
-																'text',
-																$this->state->get('filter.federation'));
-                                                                
+        $lists['federation'] = JHtmlSelect::genericlist($nation,
+							'filter_federation',
+							$inputappend.'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+							'value',
+							'text',
+							$this->state->get('filter.federation'));
 
-	
-		$this->lists	= $lists;
-	
-
-
+		$this->lists = $lists;
 
 	}
 	
@@ -112,26 +99,13 @@ class sportsmanagementViewjlextcountries extends sportsmanagementView
 	*/
 	protected function addToolbar()
 	{
-	
-       
         // Set toolbar items for the page
 		JToolBarHelper::addNew('jlextcountry.add');
 		JToolBarHelper::editList('jlextcountry.edit');
 		JToolBarHelper::custom('jlextcountry.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
         JToolBarHelper::custom('jlextcountries.importplz','upload','upload',JText::_('COM_SPORTSMANAGEMENT_ADMIN_COUNTRY_IMPORT_PLZ'),true);
 		JToolBarHelper::archiveList('jlextcountry.export',JText::_('JTOOLBAR_EXPORT'));
-        JToolbarHelper::checkin('jlextcountries.checkin');
-		//JToolBarHelper::deleteList('', 'jlextcountries.delete', 'JTOOLBAR_DELETE');
-        if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
-        {
-		JToolbarHelper::trash('jlextcountries.trash');
-        }
-        else
-        {
-        JToolBarHelper::deleteList('', 'jlextcountries.delete', 'JTOOLBAR_DELETE');    
-        }
-	
-        
+
         parent::addToolbar();
 	}
 }

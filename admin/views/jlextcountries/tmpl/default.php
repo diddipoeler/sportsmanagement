@@ -39,7 +39,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
 $templatesToLoad = array('footer','listheader');
@@ -67,14 +66,22 @@ else
 echo $this->loadTemplate('joomla2');    
 }
 
+if ( $this->items )
+{
 echo $this->loadTemplate('data');
+}
+else
+{
+echo '<div class="alert alert-no-items">';
+echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
+echo '</div>';    
+}
 ?>   
-
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="" />
-	<?php echo JHtml::_('form.token')."\n"; ?>
+<input type="hidden" name="task" value="" />
+<input type="hidden" name="boxchecked" value="0" />
+<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
+<input type="hidden" name="filter_order_Dir" value="" />
+<?php echo JHtml::_('form.token')."\n"; ?>
 </form>
 <?PHP
 echo "<div>";

@@ -39,9 +39,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-//Ordering allowed ?
-//$ordering = ($this->sortColumn == 'obj.ordering');
-
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
 $templatesToLoad = array('footer','listheader');
