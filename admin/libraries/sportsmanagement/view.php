@@ -514,7 +514,14 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
             else
             {
             JToolBarHelper::title(JText::_($this->title), $this->icon);
-            }   
+            }
+            
+            switch ($this->view)
+            { 
+            case '':
+            case 'githubinstall':
+            break;    
+            default:    
 /**
  * es gibt nur noch die ablage in den papierkorb
  * dadurch sind wir in der lage, fehlerhaft gelöschte einträge
@@ -524,8 +531,9 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
 		{
         JToolbarHelper::trash($this->view.'.trash');
         }
-        
         JToolbarHelper::checkin($this->view.'.checkin');  
+        break;
+        }
         
         }
         
