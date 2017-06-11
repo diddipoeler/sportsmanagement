@@ -59,39 +59,15 @@ class sportsmanagementViewextrafields extends sportsmanagementView
 	 */
 	public function init ()
 	{
-//		$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-//		$uri = JFactory::getURI();
-//        $model	= $this->getModel();
         $starttime = microtime(); 
-        
-//        $this->state = $this->get('State'); 
-//        $this->sortDirection = $this->state->get('list.direction');
-//        $this->sortColumn = $this->state->get('list.ordering');
-
-
-
-//		$items = $this->get('Items');
-        
+       
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
-        
-//		$total = $this->get('Total');
-//		$pagination = $this->get('Pagination');
-        
+       
         $table = JTable::getInstance('club', 'sportsmanagementTable');
 		$this->table	= $table;
-
-//		$this->user	= JFactory::getUser();
-//		//$this->lists	= $lists;
-//		$this->items	= $items;
-//		$this->pagination	= $pagination;
-//		$this->request_url	= $uri->toString();
-        
-
 		
 	}
 	
@@ -108,8 +84,7 @@ class sportsmanagementViewextrafields extends sportsmanagementView
 		JToolBarHelper::editList('extrafield.edit');
 		JToolBarHelper::custom('extrafield.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('extrafield.export',JText::_('JTOOLBAR_EXPORT'));
-
-		
+	
         parent::addToolbar();
 	}
 }

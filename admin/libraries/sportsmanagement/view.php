@@ -44,7 +44,26 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 {
 JHtml::_('jquery.framework');
 }
+elseif(version_compare(JVERSION,'2.5.0','ge')) 
+{
+// Joomla! 2.5 code here
+JHtml::_('behavior.mootools');  
+} 
+elseif(version_compare(JVERSION,'1.7.0','ge')) 
+{
+// Joomla! 1.7 code here
 
+} 
+elseif(version_compare(JVERSION,'1.6.0','ge')) 
+{
+// Joomla! 1.6 code here
+
+} 
+else 
+{
+// Joomla! 1.5 code here
+
+}
 ?>
 
 <?PHP        
