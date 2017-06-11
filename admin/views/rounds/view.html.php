@@ -40,9 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-
-
-
 /**
  * sportsmanagementViewRounds
  * 
@@ -120,15 +117,6 @@ class sportsmanagementViewRounds extends sportsmanagementView
 	 */
 	function _displayDefault($tpl)
 	{
-		//$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-//		$db = sportsmanagementHelper::getDBConnection();
-//		$uri = JFactory::getURI();
-        
-       // $this->state = $this->get('State'); 
-//        $this->sortDirection = $this->state->get('list.direction');
-//        $this->sortColumn = $this->state->get('list.ordering');
         
         $starttime = microtime(); 
 		$matchday = $this->get('Items');
@@ -136,39 +124,24 @@ class sportsmanagementViewRounds extends sportsmanagementView
         {
         $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
-		//$total = $this->get('Total');
-//		$pagination = $this->get('Pagination');
-//        $model = $this->getModel();
         
         $this->table = JTable::getInstance('round', 'sportsmanagementTable');
-		
-        
+       
         //$project_id	= JRequest::getVar('pid');
 		$this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
         
 		$mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
 		$project = $mdlProject->getProject($this->project_id);
-        
-		//$projectws =& $this->get('Data','projectws');
-
-
-
 		//$massadd=JRequest::getVar('massadd');
 	$myoptions = array();
 	$myoptions[] = JHtml::_( 'select.option', '0', JText::_( 'JNO' ) );
 	$myoptions[] = JHtml::_( 'select.option', '1', JText::_( 'JYES' ) );
 	$lists['tournementround'] = $myoptions;				
-				
-		//$this->assignRef('massadd',$massadd);				
+		
 		$this->lists	= $lists;
 		$this->matchday	= $this->items;
 		$this->project	= $project;
-		//$this->pagination	= $pagination;
-//		$this->request_url	= $uri->toString();
-//        $this->user	= JFactory::getUser();
-        
-
-		
+	
 	}
 
 	/**
@@ -251,18 +224,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
 		JToolBarHelper::deleteList('','rounds.deleteroundmatches',JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSDEL_BUTTON'));
             //JToolBarHelper::custom('rounds.deletematches','delete.png','delete.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_MASSDEL_BUTTON'),false);
             
-		JToolbarHelper::checkin('rounds.checkin');
-			//JToolBarHelper::deleteList('','rounds.delete');
-		if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
-		{
-			JToolbarHelper::trash('rounds.trash');
-		}
-		else
-		{
-			JToolBarHelper::deleteList('', 'rounds.delete', 'JTOOLBAR_DELETE');    
-		}
 		
-		JToolBarHelper::divider();
 		
 		parent::addToolbar();
 		}

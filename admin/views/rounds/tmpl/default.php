@@ -99,16 +99,14 @@ echo '</div>';
 }
 }
 ?>
-	<input type="hidden" name="pid" value="<?php echo $this->project->id; ?>" />
-	<input type="hidden" name="next_roundcode" value="<?php echo count($this->matchday) + 1; ?>" />
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="" />
-	<?php echo JHtml::_('form.token')."\n"; ?>
-    
+<input type="hidden" name="pid" value="<?php echo $this->project->id; ?>" />
+<input type="hidden" name="next_roundcode" value="<?php echo count($this->matchday) + 1; ?>" />
+<input type="hidden" name="task" value="" />
+<input type="hidden" name="boxchecked" value="0" />
+<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
+<input type="hidden" name="filter_order_Dir" value="" />
+<?php echo JHtml::_('form.token')."\n"; ?>
 <?php echo $this->table_data_div; ?>
-    
 </form>
 <?PHP
 echo "<div>";

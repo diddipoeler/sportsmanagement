@@ -42,7 +42,6 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport( 'joomla.filesystem.folder' );
 
-
 /**
  * sportsmanagementViewMatches
  * 
@@ -359,7 +358,7 @@ class sportsmanagementViewMatches extends sportsmanagementView
 
 			JToolBarHelper::custom('match.massadd', 'new.png', 'new_f2.png', JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_MATCHES'), false);
 			JToolBarHelper::addNew('match.addmatch', JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_ADD_MATCH'));
-			JToolBarHelper::deleteList(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_WARNING'), 'match.remove');
+//			JToolBarHelper::deleteList(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_WARNING'), 'match.remove');
 			JToolBarHelper::divider();
 
 			JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=rounds');

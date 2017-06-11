@@ -263,8 +263,8 @@ unset($myoptions);
 	protected function addToolbar()
 	{
 		// Set toolbar items for the page
-$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_TITLE');
-$this->icon = 'projects';
+        $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_TITLE');
+        $this->icon = 'projects';
 
 		JToolBarHelper::publishList('project.publish');
 		JToolBarHelper::unpublishList('project.unpublish');
@@ -277,8 +277,7 @@ $this->icon = 'projects';
 		JToolBarHelper::custom('project.import','upload','upload',Jtext::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'),false);
 		JToolBarHelper::archiveList('project.export',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
 		JToolBarHelper::custom('project.copy','copy.png','copy_f2.png',JText::_('JTOOLBAR_DUPLICATE'),false);
-		JToolBarHelper::deleteList('', 'projects.delete');
-		JToolbarHelper::checkin('projects.checkin');
+
         parent::addToolbar();
 	}
 }

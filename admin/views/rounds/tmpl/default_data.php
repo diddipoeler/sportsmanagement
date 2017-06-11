@@ -135,18 +135,19 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 									$append = ' style="background-color:#FFCCCC;" ';
                                     $date1 = '';
 								}
-								echo JHtml::calendar(	$date1,
-														'round_date_first'.$row->id,
-														'round_date_first'.$row->id,
-														'%d-%m-%Y',
-														'size="10" '.$append .
-														'tabindex="3" '.
-														'class="form-control form-control-inline" '.
-														'onchange="document.getElementById(\'cb'.$i.'\').checked=true"');
+								echo JHtml::calendar($date1,
+													'round_date_first'.$row->id,
+													'round_date_first'.$row->id,
+													'%d-%m-%Y',
+													'size="10" '.$append .
+													'tabindex="3" '.
+													'class="form-control form-control-inline" '.
+													'onchange="document.getElementById(\'cb'.$i.'\').checked=true"');
 								?>
 							</td>
 							<td class="center">&nbsp;-&nbsp;</td>
-							<td class="center"><?php
+							<td class="center">
+                            <?php
 								$date2 = sportsmanagementHelper::convertDate($row->round_date_last, 1);
 								$append = '';
 								if (($date2 == '00-00-0000') || ($date2 == ''))
@@ -154,21 +155,25 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 									$append = ' style="background-color:#FFCCCC;"';
                                     $date2 = '';
 								}
-								echo JHtml::calendar(	$date2,
-														'round_date_last'.$row->id,
-														'round_date_last'.$row->id,
-														'%d-%m-%Y',
-														'size="10" '.$append .
-														'tabindex="3" '.
-														'class="form-control form-control-inline" '.
-														'onchange="document.getElementById(\'cb'.$i.'\').checked=true"');
-								?></td>
-							<td class="center" class="nowrap"><?php
+								echo JHtml::calendar($date2,
+													'round_date_last'.$row->id,
+													'round_date_last'.$row->id,
+													'%d-%m-%Y',
+													'size="10" '.$append .
+													'tabindex="3" '.
+													'class="form-control form-control-inline" '.
+													'onchange="document.getElementById(\'cb'.$i.'\').checked=true"');
+								?>
+                                </td>
+							<td class="center" class="nowrap">
+                            <?php
 								$link2Title=JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_EDIT_MATCHES_LINK');
 								$link2Params="title='$link2Title'";
 								echo JHtml::link($link2,$link2Title,$link2Params);
-					  			?></td>
-							<td class="center" class="nowrap"><?php
+					  			?>
+                                  </td>
+							<td class="center" class="nowrap">
+                            <?php
 								if (($row->countUnPublished == 0) && ($row->countMatches > 0))
 								{
 									$imageTitle=JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ALL_PUBLISHED',$row->countMatches);
@@ -190,8 +195,10 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 									$imageParams="title='$imageTitle'";
 									echo JHtml::image($imageFile,$imageTitle,$imageParams);
 								}
-								?></td>
-					  		<td class="center" class="nowrap"><?php
+								?>
+                                </td>
+					  		<td class="center" class="nowrap">
+                              <?php
 								if (($row->countNoResults == 0) && ($row->countMatches > 0))
 								{
 									$imageTitle=JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_ALL_RESULTS',$row->countMatches);
@@ -213,9 +220,9 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 									$imageParams="title='$imageTitle'";
 									echo JHtml::image($imageFile,$imageTitle,$imageParams);
 								}
-								?></td>
-                                
-                                
+								?>
+                                </td>
+                                                                
                                 <td class="center">
 									<?php
                                     $append=' style="background-color:#bbffff"';

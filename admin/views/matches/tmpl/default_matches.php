@@ -38,15 +38,15 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-// welche joomla version
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-JHtml::_('behavior.framework', true);
-}
-else
-{
-JHtml::_( 'behavior.mootools' );    
-}
+//// welche joomla version
+//if(version_compare(JVERSION,'3.0.0','ge')) 
+//{
+//JHtml::_('behavior.framework', true);
+//}
+//else
+//{
+//JHtml::_( 'behavior.mootools' );    
+//}
 $modalheight = JComponentHelper::getParams($this->option)->get('modal_popup_height', 600);
 $modalwidth = JComponentHelper::getParams($this->option)->get('modal_popup_width', 900);
 ?>
@@ -161,11 +161,12 @@ fieldset button {
 					{
 						$row		=& $this->matches[$i];
 						//$checked	= JHtml::_('grid.checkedout',$row,$i,'id');
-						$published	= JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','matches.');
+						//$published	= JHtml::_('grid.published',$row,$i,'tick.png','publish_x.png','matches.');
                         
                         $canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
                         $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
                         $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'matches.', $canCheckin);
+                        $canChange  = $this->user->authorise('core.edit.state', 'com_sportsmanagement.match.' . $row->id) && $canCheckin;
 
 						list($date,$time) = explode(" ",$row->match_date);
 						$time = strftime("%H:%M",strtotime($time));
@@ -658,9 +659,20 @@ fieldset button {
 							</td>
                             
                             <td class="center">
-								<?php
-								echo $published;
+<div class="btn-group">
+            <?php echo JHtml::_('jgrid.published', $row->published, $i, 'matches.', $canChange, 'cb'); ?>
+            <?php 
+            // Create dropdown items and render the dropdown list.
+								if ($canChange)
+								{
+									JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'matches');
+									JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'matches');
+									echo JHtml::_('actionsdropdown.render', $this->escape($row->name));
+								}
 								?>
+            </div>
+                                        
+
 							</td>
 							<td class="center">
 								<?php

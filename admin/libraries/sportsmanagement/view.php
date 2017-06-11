@@ -43,6 +43,7 @@ defined('_JEXEC') or die();
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
 JHtml::_('jquery.framework');
+JHtml::_('behavior.framework', true);
 }
 elseif(version_compare(JVERSION,'2.5.0','ge')) 
 {
@@ -524,6 +525,7 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
             { 
             case '':
             case 'githubinstall':
+//            case 'matches':
             break;    
             default:    
 /**
