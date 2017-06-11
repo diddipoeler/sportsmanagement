@@ -40,7 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 //Ordering allowed ?
-$ordering=($this->sortColumn == 'obj.ordering');
+//$ordering=($this->sortColumn == 'obj.ordering');
 
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
@@ -103,9 +103,9 @@ JHtml::_('behavior.modal');
 					$row =& $this->items[$i];
 					$link = JRoute::_('index.php?option=com_sportsmanagement&task=smquote.edit&id='.$row->id);
 					$canEdit	= $this->user->authorise('core.edit','com_sportsmanagement');
-					$published = JHtml::_('grid.published',$row,$i, 'tick.png','publish_x.png','smquotes.');
                     $canCheckin = $this->user->authorise('core.manage','com_checkin') || $row->checked_out == $this->user->get ('id') || $row->checked_out == 0;
                     $checked = JHtml::_('jgrid.checkedout', $i, $this->user->get ('id'), $row->checked_out_time, 'smquotes.', $canCheckin);
+                    $canChange = $this->user->authorise('core.edit.state', 'com_sportsmanagement.smquote.' . $row->id) && $canCheckin;
                     ?>
 					<tr class="<?php echo "row$k"; ?>">
 						<td class="center"><?php echo $this->pagination->getRowOffset($i); ?></td>
@@ -182,7 +182,22 @@ JHtml::_('behavior.modal');
 							<input	type="text" name="order[]" size="5" value="<?php echo $row->ordering;?>" <?php echo $disabled; ?>
 									class="form-control form-control-inline" style="text-align: center" />
 						</td>
-						<td class="center"><?php echo $published; ?></td>
+						<td class="center">
+<div class="btn-group">
+            <?php echo JHtml::_('jgrid.published', $row->published, $i, 'smquotes.', $canChange, 'cb'); ?>
+            <?php 
+            // Create dropdown items and render the dropdown list.
+								if ($canChange)
+								{
+									JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'smquotes');
+									JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'smquotes');
+									echo JHtml::_('actionsdropdown.render', $this->escape($row->name));
+								}
+								?>
+            </div>                        
+
+                        
+                        </td>
                         <td class="center"><?php echo $row->id; ?></td>
 					</tr>
 					<?php

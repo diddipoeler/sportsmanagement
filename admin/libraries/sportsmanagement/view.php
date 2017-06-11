@@ -299,7 +299,8 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
 	case 'teams':
 	case 'playgrounds':
     case 'rounds':	
-    case 'divisions':			
+    case 'divisions':
+    case 'extrafields':				
         JHtmlSidebar::addFilter(
 			JText::_('JOPTION_SELECT_PUBLISHED'),
 			'filter_state',
@@ -519,8 +520,13 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
  * dadurch sind wir in der lage, fehlerhaft gelöschte einträge
  * wieder herzustellen um eine fehlerursache besser zu finden 
  */
+        if ($canDo->get('core.delete')) 
+		{
         JToolbarHelper::trash($this->view.'.trash');
+        }
+        
         JToolbarHelper::checkin($this->view.'.checkin');  
+        
         }
         
         sportsmanagementHelper::ToolbarButton('addissue','jsm-issue',JText::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE'),'github',0,$this->view,$this->layout);

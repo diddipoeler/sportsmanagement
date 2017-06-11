@@ -40,7 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-
 /**
  * sportsmanagementViewjlextfederations
  * 
@@ -108,17 +107,7 @@ $starttime = microtime();
 		JToolBarHelper::editList('jlextfederation.edit');
 		JToolBarHelper::custom('jlextfederation.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 		JToolBarHelper::archiveList('jlextfederation.export',JText::_('JTOOLBAR_EXPORT'));
-        JToolbarHelper::checkin('jlextfederations.checkin');
-
-		if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
-        {
-		JToolbarHelper::trash('jlextfederations.trash');
-        }
-        else
-        {
-        JToolbarHelper::trash('jlextfederations.trash');
-        JToolBarHelper::deleteList('', 'jlextfederations.delete', 'JTOOLBAR_DELETE');    
-        }
+        
         parent::addToolbar();
 	}
     

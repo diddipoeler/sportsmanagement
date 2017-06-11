@@ -94,8 +94,7 @@ class sportsmanagementViewSportsTypes extends sportsmanagementView
 		JToolBarHelper::editList('sportstype.edit');
 		JToolBarHelper::custom('sportstype.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
 		JToolBarHelper::archiveList('sportstype.export', JText::_('JTOOLBAR_EXPORT'));
-        JToolbarHelper::checkin('sportstypes.checkin');
-				
+        				
         parent::addToolbar();
 	}
 }

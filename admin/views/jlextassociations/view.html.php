@@ -114,18 +114,7 @@ $mdlassociation = JModelLegacy::getInstance('jlextassociations', 'sportsmanageme
 		JToolBarHelper::editList('jlextassociation.edit');
 		JToolBarHelper::custom('jlextassociation.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
 		JToolBarHelper::archiveList('jlextassociation.export', JText::_('JTOOLBAR_EXPORT'));
-        JToolbarHelper::checkin('jlextassociations.checkin');
-
-        if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
-        {
-		JToolbarHelper::trash('jlextassociations.trash');
-        }
-        else
-        {
-        JToolbarHelper::trash('jlextfederations.trash');    
-        JToolBarHelper::deleteList('', 'jlextassociations.delete', 'JTOOLBAR_DELETE');    
-        }
-		
+        		
         parent::addToolbar();
 	}
     

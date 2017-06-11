@@ -59,42 +59,15 @@ class sportsmanagementViewsmquotes extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		//$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-//		$uri = JFactory::getURI();
-//		$model	= $this->getModel();
 		$starttime = microtime(); 
-        
-//		$this->state = $this->get('State'); 
-//		$this->sortDirection = $this->state->get('list.direction');
-//		$this->sortColumn = $this->state->get('list.ordering');
-//
-//		$items = $this->get('Items');
         
 		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		{
 			$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
 		}
-        
-//		$total = $this->get('Total');
-//		$pagination = $this->get('Pagination');
-        
+
         $table = JTable::getInstance('smquote', 'sportsmanagementTable');
 		$this->table = $table;
-        
-        
-        //$this->state		= $app->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state','filter_state','','word');;
-//        $app->enqueueMessage(JText::_('sportsmanagementViewsmquotes state<br><pre>'.print_r($this->state,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_('sportsmanagementViewsmquotes filter_state<br><pre>'.print_r($this->filter_state,true).'</pre>'),'Notice');
-//        $app->enqueueMessage(JText::_('sportsmanagementViewsmquotes filter_catid<br><pre>'.print_r($this->filter_catid,true).'</pre>'),'Notice');
-        
-        
-//		$this->user = JFactory::getUser();
-//		//$this->lists = $lists;
-//		$this->items = $items;
-//		$this->pagination = $pagination;
-//		$this->request_url = $uri->toString();
         	
 	}
 	

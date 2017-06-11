@@ -40,9 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-
 jimport('joomla.filesystem.file');
-
 
 /**
  * sportsmanagementViewTeams
@@ -55,7 +53,6 @@ jimport('joomla.filesystem.file');
  */
 class sportsmanagementViewTeams extends sportsmanagementView
 {
-
 
 	/**
 	 * sportsmanagementViewTeams::init()
@@ -84,12 +81,12 @@ class sportsmanagementViewTeams extends sportsmanagementView
 		$this->sports_type = $allSportstypes;
         $lists['sportstype'] = $sportstypes;
 		$lists['sportstypes'] = JHtml::_( 'select.genericList', 
-										$sportstypes, 
-										'filter_sports_type', 
-										'class="inputbox" onChange="this.form.submit();" style="width:120px"', 
-										'id', 
-										'name', 
-										$this->state->get('filter.sports_type') );
+							$sportstypes, 
+							'filter_sports_type', 
+							'class="inputbox" onChange="this.form.submit();" style="width:120px"', 
+							'id', 
+							'name', 
+							$this->state->get('filter.sports_type') );
 		unset($sportstypes);
         
         //build the html options for nation
@@ -102,12 +99,12 @@ class sportsmanagementViewTeams extends sportsmanagementView
         }
 		
 		$lists['nation'] = $nation;
-		$lists['nation2'] = JHtmlSelect::genericlist(	$nation, 
-																'filter_search_nation', 
-																'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 
-																'value', 
-																'text', 
-															$this->state->get('filter.search_nation') );
+		$lists['nation2'] = JHtmlSelect::genericlist($nation, 
+							'filter_search_nation', 
+							'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 
+							'value', 
+							'text', 
+							$this->state->get('filter.search_nation') );
 
 		$myoptions = array();
 		$myoptions[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
@@ -125,9 +122,6 @@ class sportsmanagementViewTeams extends sportsmanagementView
        //$this->jinput->set('club_id', $this->club_id);
        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_id<br><pre>'.print_r($this->club_id,true).'</pre>'),'');
 	   $this->lists = $lists;
-
-	
-		
         
 	
 	}
@@ -149,15 +143,7 @@ class sportsmanagementViewTeams extends sportsmanagementView
 		JToolBarHelper::custom('team.copysave', 'copy.png', 'copy_f2.png', JText::_('JTOOLBAR_DUPLICATE'), true);
 		JToolBarHelper::custom('team.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
 		JToolBarHelper::archiveList('team.export', JText::_('JTOOLBAR_EXPORT'));
-		JToolbarHelper::checkin('teams.checkin');
-		if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
-		{
-		JToolbarHelper::trash('teams.trash');
-		}
-		else
-		{
-		JToolBarHelper::deleteList('', 'teams.delete', 'JTOOLBAR_DELETE');    
-		}
+		
 		
 		if ( $this->jinput->get->get('club_id') )
 		{

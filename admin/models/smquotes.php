@@ -40,10 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.modellist');
-
-
-
 /**
  * sportsmanagementModelsmquotes
  * 
@@ -53,7 +49,7 @@ jimport('joomla.application.component.modellist');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelsmquotes extends JModelList
+class sportsmanagementModelsmquotes extends JSMModelList
 {
 	var $_identifier = "smquotes";
 	
@@ -82,32 +78,31 @@ class sportsmanagementModelsmquotes extends JModelList
 	 *
 	 * @since	1.6
 	 */
-	protected function populateState($ordering = null, $direction = null)
+	protected function populateState($ordering = 'obj.quote', $direction = 'asc')
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Initialise variables.
-		$app = JFactory::getApplication('administrator');
-        
-        //$app->enqueueMessage(JText::_('sportsmanagementModelsmquotes populateState context<br><pre>'.print_r($this->context,true).'</pre>'   ),'');
+		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+        {
+		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context -> '.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' identifier -> '.$this->_identifier.''),'');
+        }
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
-
-		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
 		$this->setState('filter.state', $published);
-
 		$categoryId = $this->getUserStateFromRequest($this->context.'.filter.category_id', 'filter_category_id', '');
 		$this->setState('filter.category_id', $categoryId);
-
-
-//		// Load the parameters.
-//		$params = JComponentHelper::getParams('com_sportsmanagement');
-//		$this->setState('params', $params);
-
+        $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
+		$this->setState('list.limit', $value);
+        $value = $this->getUserStateFromRequest($this->context . '.list.ordering', 'ordering', $ordering, 'string');
+		$this->setState('list.ordering', $value);
+		$value = $this->getUserStateFromRequest($this->context . '.list.direction', 'direction', $direction, 'string');
+		$this->setState('list.direction', $value);
 		// List state information.
-		parent::populateState('obj.quote', 'asc');
+		parent::populateState($ordering, $direction);
+        $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
+		$this->setState('list.start', $value);
 	}
     
     
@@ -120,50 +115,49 @@ class sportsmanagementModelsmquotes extends JModelList
      */
     protected function getListQuery()
 	{
-		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        
-		$query = JFactory::getDBO()->getQuery(true);
+		// Create a new query object.		
+		$this->jsmquery->clear();
+        $this->jsmsubquery1->clear();
+        $this->jsmsubquery2->clear();
 		// Select some fields
-		$query->select('obj.*,obj.author as name');
+		$this->jsmquery->select('obj.*,obj.author as name');
 		// From the hello table
-		$query->from('#__sportsmanagement_rquote as obj');
+		$this->jsmquery->from('#__sportsmanagement_rquote as obj');
         // Join over the users for the checked out user.
-		$query->select('uc.name AS editor');
-		$query->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
+		$this->jsmquery->select('uc.name AS editor');
+		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = obj.checked_out');
         
         // Join over the categories.
-		$query->select('c.title AS category_title');
-		$query->join('LEFT', '#__categories AS c ON c.id = obj.catid');
+		$this->jsmquery->select('c.title AS category_title');
+		$this->jsmquery->join('LEFT', '#__categories AS c ON c.id = obj.catid');
         
         
 
         if ( $this->getState('filter.search')  )
 		{
-        $query->where('LOWER(obj.author) LIKE '.JFactory::getDBO()->Quote('%'.$this->getState('filter.search').'%'));
+        $this->jsmquery->where('LOWER(obj.author) LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search').'%'));
         }
         if ( $this->getState('filter.state') )
 		{
-        $query->where('obj.published = '.$this->getState('filter.state'));
+        $this->jsmquery->where('obj.published = '.$this->getState('filter.state'));
         }
         if ( $this->getState('filter.category_id') )
 		{
-        $query->where('obj.catid = '.$this->getState('filter.category_id'));
+        $this->jsmquery->where('obj.catid = '.$this->getState('filter.category_id'));
         }
         
 
         
-        $query->order(JFactory::getDBO()->escape($this->getState('list.ordering', 'obj.quote')).' '.
-                JFactory::getDBO()->escape($this->getState('list.direction', 'ASC')));
+        $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'obj.quote')).' '.
+                $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
  
 		if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-        $my_text .= ' <br><pre>'.print_r($query->dump(),true).'</pre>';    
+        $my_text .= ' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>';    
         sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LINE__,$my_text); 
         }
         
-        //$app->enqueueMessage(JText::_('leagues query<br><pre>'.print_r($query,true).'</pre>'   ),'');
-        return $query;
+        return $this->jsmquery;
 	}
 
 	

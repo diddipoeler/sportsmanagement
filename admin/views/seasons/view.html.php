@@ -40,7 +40,6 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-
 /**
  * sportsmanagementViewSeasons
  * 
@@ -52,6 +51,7 @@ defined('_JEXEC') or die('Restricted access');
  */
 class sportsmanagementViewSeasons extends sportsmanagementView
 {
+
 	/**
 	 * sportsmanagementViewSeasons::init()
 	 * 
@@ -137,20 +137,20 @@ $starttime = microtime();
 		{
 			JToolBarHelper::editList('season.edit', 'JTOOLBAR_EDIT');
 		}
-		if ($canDo->get('core.delete')) 
-		{
-			if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
-            {
-		    JToolbarHelper::trash('seasons.trash');
-            }
-            else
-            {
-            JToolbarHelper::trash('seasons.trash');
-            JToolBarHelper::deleteList('', 'seasons.delete', 'JTOOLBAR_DELETE');    
-            }
-            
-		}
-        JToolbarHelper::checkin('seasons.checkin');
+//		if ($canDo->get('core.delete')) 
+//		{
+//			if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
+//            {
+//		    JToolbarHelper::trash('seasons.trash');
+//            }
+//            else
+//            {
+//            JToolbarHelper::trash('seasons.trash');
+//            JToolBarHelper::deleteList('', 'seasons.delete', 'JTOOLBAR_DELETE');    
+//            }
+//            
+//		}
+
         parent::addToolbar();
         
 		

@@ -76,16 +76,16 @@ $starttime = microtime();
 		if ($res = JSMCountries::getCountryOptions())
         {
             $nation = array_merge($nation, $res);
-            $this->search_nation	= $res;
+            $this->search_nation = $res;
             }
 		
         $lists['nation'] = $nation;
-        $lists['nation2'] = JHtmlSelect::genericlist(	$nation, 
-																'filter_search_nation', 
-																'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 
-																'value', 
-																'text', 
-																$this->state->get('filter.search_nation'));
+        $lists['nation2'] = JHtmlSelect::genericlist($nation, 
+							'filter_search_nation', 
+							'class="inputbox" style="width:140px; " onchange="this.form.submit();"', 
+							'value', 
+							'text', 
+							$this->state->get('filter.search_nation'));
 
 
 	
@@ -111,17 +111,7 @@ $starttime = microtime();
 		JToolBarHelper::addNew('playground.add');
 		JToolBarHelper::custom('playground.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
 		JToolBarHelper::archiveList('playground.export', JText::_('JTOOLBAR_EXPORT'));
-		JToolbarHelper::checkin('playgrounds.checkin');
-        
-        if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
-        {
-		JToolbarHelper::trash('playgrounds.trash');
-        }
-        else
-        {
-        JToolBarHelper::deleteList('', 'playgrounds.delete', 'JTOOLBAR_DELETE');    
-        }
-		JToolBarHelper::divider();
+		
 
         parent::addToolbar();
 	}
