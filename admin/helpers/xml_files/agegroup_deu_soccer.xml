@@ -4,19 +4,21 @@
 <agegroups><agegroup country="DEU" info="Alt-Senioren" picture="" >Alt-Senioren</agegroup></agegroups>
 <agegroups><agegroup country="DEU" info="Altherren" picture="m-alte-herren.png" >Altherren</agegroup></agegroups>
 <agegroups><agegroup country="DEU" info="Herren" picture="" >Herren</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="A-Junioren" picture="n-a-junioren.png" >A-Junioren</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="B-Junioren" picture="n-b-junioren.png" >B-Junioren</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="C-Junioren" picture="n-c-junioren.png" >C-Junioren</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="D-Junioren" picture="n-d-junioren.png" >D-Junioren</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="E-Junioren" picture="n-e-junioren.png" >E-Junioren</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="F-Junioren" picture="n-f-junioren.png" >F-Junioren</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="G-Junioren" picture="n-g-junioren.png" >G-Junioren</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="A-Junioren (U18/U19)" picture="n-a-junioren.png" >A-Junioren (U18/U19)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="B-Junioren (U16/U17)" picture="n-b-junioren.png" >B-Junioren (U16/U17)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="C-Junioren (U14/U15)" picture="n-c-junioren.png" >C-Junioren (U14/U15)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="D-Junioren (U12/U13)" picture="n-d-junioren.png" >D-Junioren (U12/U13)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="E-Junioren (U10/U11)" picture="n-e-junioren.png" >E-Junioren (U10/U11)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="F-Junioren (U8/U9)" picture="n-f-junioren.png" >F-Junioren (U8/U9)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="G-Junioren (Bambini/U7)" picture="n-g-junioren.png" >G-Junioren (Bambini/U7)</agegroup></agegroups>
 <agegroups><agegroup country="DEU" info="Frauen" picture="" >Frauen</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="A-Juniorinnen" picture="" >A-Juniorinnen</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="B-Juniorinnen" picture="w-b-juniorinnen.png" >B-Juniorinnen</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="C-Juniorinnen" picture="w-c-juniorinnen.png" >C-Juniorinnen</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="D-Juniorinnen" picture="w-d-juniorinnen.png" >D-Juniorinnen</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="E-Juniorinnen" picture="" >E-Juniorinnen</agegroup></agegroups>
-<agegroups><agegroup country="DEU" info="F-Juniorinnen" picture="" >F-Juniorinnen</agegroup></agegroups>
-
+<agegroups><agegroup country="DEU" info="A-Juniorinnen (U18/U19)" picture="" >A-Juniorinnen (U18/U19)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="B-Juniorinnen (U16/U17)" picture="w-b-juniorinnen.png" >B-Juniorinnen (U16/U17)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="C-Juniorinnen (U14/U15)" picture="w-c-juniorinnen.png" >C-Juniorinnen (U14/U15)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="D-Juniorinnen (U12/U13)" picture="w-d-juniorinnen.png" >D-Juniorinnen (U12/U13)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="E-Juniorinnen (U10/U11)" picture="" >E-Juniorinnen (U10/U11)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="F-Juniorinnen (U8/U9)" picture="" >F-Juniorinnen (U8/U9)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="G-Juniorinnen (Bambini/U7)" picture="" >G-Juniorinnen (Bambini/U7)</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="Senioren" picture="" >Senioren</agegroup></agegroups>
+<agegroups><agegroup country="DEU" info="Seniorinnen" picture="" >Seniorinnen</agegroup></agegroups>
 </structur>

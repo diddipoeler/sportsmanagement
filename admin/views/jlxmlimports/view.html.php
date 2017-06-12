@@ -253,7 +253,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 
  $myoptions[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
         $mdlagegroup = JModelLegacy::getInstance('agegroups', 'sportsmanagementModel');
-        if ( $res = $mdlagegroup->getAgeGroups() )
+        if ( $res = $mdlagegroup->getAgeGroups('',0) )
         {
             $myoptions = array_merge($myoptions, $res);
             $this->search_agegroup = $res;

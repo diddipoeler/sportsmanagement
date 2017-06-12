@@ -2000,11 +2000,20 @@ if (isset($this->xml) && is_array($this->xml))
 												</td>
 <td>
 											<?PHP
+                                            $agegroup = 0;
+                                            
+                                            foreach( $this->search_agegroup as $agegroups )
+                                            {
+                                            if ( $agegroups == $person->info )
+                                            {
+                                                $agegroup = $agegroups->value;
+                                            }    
+                                            }
 									echo JHtml::_(	'select.genericlist',
 													$this->lists['agegroup'],
 													'personAgeGroup_'.$key,
 													'class="form-control form-control-inline"',
-													'value','text',0);
+													'value','text',$agegroup);
                         											
 											?>
 											</td>

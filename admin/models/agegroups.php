@@ -174,10 +174,24 @@ class sportsmanagementModelagegroups extends JSMModelList
      * 
      * @return
      */
-    function getAgeGroups()
+    function getAgeGroups($country = '', $infotext = 0)
     {
-         $this->jsmquery->select('a.id AS value, concat(a.name, \' von: \',a.age_from,\' bis: \',a.age_to,\' Stichtag: \',a.deadline_day) AS text');
-			$this->jsmquery->from('#__sportsmanagement_agegroup as a');
+        $this->jsmquery->select('a.id AS value');
+	
+    if ( $infotext )
+    {
+    $this->jsmquery->select('concat(a.name, \' von: \',a.age_from,\' bis: \',a.age_to,\' Stichtag: \',a.deadline_day) AS text');
+    }
+    else
+    {
+    $this->jsmquery->select('a.name AS text');    
+    }
+    if ( $country )
+		{
+        $this->jsmquery->where('a.country LIKE '.$this->jsmdb->Quote('%'.$country.'%') );
+        }
+        
+        $this->jsmquery->from('#__sportsmanagement_agegroup as a');
                        
         $this->jsmquery->order('a.name ASC');
 
