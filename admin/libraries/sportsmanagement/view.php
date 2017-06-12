@@ -526,6 +526,7 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
             case '':
             case 'githubinstall':
             case 'extensions':
+		case 'cpanel':	    
             break;    
             default:    
 /**
