@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 
-<div class="">
+<div class="row-fluid">
 <h4>
 <?php echo JText::_('COM_SPORTSMANAGEMENT_EXTRA_FIELDS'); ?>
 </h4>
