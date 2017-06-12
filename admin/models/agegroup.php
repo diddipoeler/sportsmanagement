@@ -83,6 +83,7 @@ class sportsmanagementModelagegroup extends JSMModelAdmin
     public function importAgeGroupFile()
     {
     $databasetool = JModelLegacy::getInstance("databasetool", "sportsmanagementModel");    
+    $cpaneltool = JModelLegacy::getInstance("cpanel", "sportsmanagementModel");
     $params = JComponentHelper::getParams( $this->jsmoption );
     $sporttypes = $params->get( 'cfg_sport_types' );
     $country = $params->get( 'cfg_country_associations' );    
@@ -92,6 +93,16 @@ class sportsmanagementModelagegroup extends JSMModelAdmin
 		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sporttypes<br><pre>'.print_r($sporttypes,true).'</pre>'),'Notice');
         $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' country<br><pre>'.print_r($country,true).'</pre>'),'Notice');
 
+        }
+    
+    foreach ( $sporttypes as $key => $type )
+        {
+        $checksporttype = $cpaneltool->checksporttype($type);   
+        $insert_sport_type = $databasetool->insertSportType($type);  
+        foreach ( $country as $keyc => $typec )
+        {    
+        $insert_agegroup = $databasetool->insertAgegroup($typec,$insert_sport_type);  
+        }
         }
     
         
