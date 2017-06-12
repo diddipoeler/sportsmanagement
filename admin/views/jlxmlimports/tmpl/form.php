@@ -1998,6 +1998,17 @@ if (isset($this->xml) && is_array($this->xml))
                                                 <td><?php echo '<b>'.JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_KNVBNR').'</b>'; ?><br />
 													<input type='text' name='personKnvbnr_<?php echo $key; ?>' maxlength='10' size='10' value="<?php echo $person->knvbnr; ?>" <?php echo $disabled; ?> />
 												</td>
+<td>
+											<?PHP
+									echo JHtml::_(	'select.genericlist',
+													$this->lists['agegroup'],
+													'personAgeGroup_'.$key,
+													'class="form-control form-control-inline"',
+													'value','text',0);
+                        											
+											?>
+											</td>
+												
 											</tr>
 										</table>
 									</td>
