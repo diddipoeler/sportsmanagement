@@ -69,7 +69,19 @@ function saveshort()
        $this->setRedirect('index.php?option=com_sportsmanagement&view=agegroups',$msg);
     } 
     
-  
+
+/**
+ * sportsmanagementControlleragegroups::import()
+ * 
+ * @return void
+ */
+function import()
+{
+       $model = $this->getModel();
+//       $msg = $model->saveshort();
+       $this->setRedirect('index.php?option=com_sportsmanagement&view=agegroups',$msg);
+    
+}  
     
 	/**
 	 * Proxy for getModel.
