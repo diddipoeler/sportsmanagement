@@ -5961,6 +5961,11 @@ $query->clear();
 					$temppersons=explode("_",$key);
 					$this->_dbpersonsid[$temppersons[1]]=$element;
 				}
+				elseif ( substr($key,0,14) == 'personAgeGroup' )
+				{
+					$temppersons = explode("_",$key);
+					$this->_dbpersonsagegroup[$temppersons[1]] = $element;
+				}
 			}
 
 			$this->_success_text='';
