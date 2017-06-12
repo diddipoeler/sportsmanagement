@@ -88,25 +88,7 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		$this->upload_maxsize	= $upload_maxsize;
         $this->config	= $config;
         $this->projektfussballineuropa	= $model->getDataUpdateImportID();
-
-        $myoptions[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
-        $mdlagegroup = JModelLegacy::getInstance('agegroups', 'sportsmanagementModel');
-        if ( $res = $mdlagegroup->getAgeGroups() )
-        {
-            $myoptions = array_merge($myoptions, $res);
-            $this->search_agegroup = $res;
-        }
-        $lists['agegroup'] = $myoptions;
-        $lists['agegroup2'] = JHtmlSelect::genericlist($myoptions,
-					'filter_search_agegroup',
-					'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
-					'value',
-					'text',
-					$this->state->get('filter.search_agegroup'));
-        unset($myoptions);
-		
-		$this->lists = $lists;
-		
+       		
 		if ( $this->getLayout() == 'form' || $this->getLayout() == 'form_3' )
 		{
 			$this->_displayForm($tpl);
@@ -268,7 +250,25 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		$this->lists	= $lists;
 		
 		$this->show_debug_info	= JComponentHelper::getParams($option)->get('show_debug_info', 0);
-    
+
+ $myoptions[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
+        $mdlagegroup = JModelLegacy::getInstance('agegroups', 'sportsmanagementModel');
+        if ( $res = $mdlagegroup->getAgeGroups() )
+        {
+            $myoptions = array_merge($myoptions, $res);
+            $this->search_agegroup = $res;
+        }
+        $lists['agegroup'] = $myoptions;
+        $lists['agegroup2'] = JHtmlSelect::genericlist($myoptions,
+					'filter_search_agegroup',
+					'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+					'value',
+					'text',
+					$this->state->get('filter.search_agegroup'));
+        unset($myoptions);
+		
+		$this->lists = $lists;
+	    
 	//	// Get a refrence of the page instance in joomla
 //		$document	= JFactory::getDocument();
 //        // Set toolbar items for the page
