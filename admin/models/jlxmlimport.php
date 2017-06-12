@@ -3114,6 +3114,7 @@ $this->dump_variable("import_team", $import_team);
                 
                 $update_person->load($id);
                 $update_person->info = $this->_getDataFromObject($this->_datas['person'][$key],'info');
+		$update_person->agegroup_id = $this->_dbpersonsagegroup[$key];		
                 if ($update_person->store() === false)
 					{
 					}
@@ -3150,6 +3151,7 @@ $app->enqueueMessage(JText::_($e->getMessage()), 'error');
 				$p_person->set('firstname',trim($this->_newperson_firstname[$key]));
 				$p_person->set('nickname',trim($this->_newperson_nickname[$key]));
 				$p_person->set('birthday',$this->_newperson_birthday[$key]);
+				$p_person->set('agegroup_id',$this->_dbpersonsagegroup[$key]);
 				$p_person->set('country',$this->_getDataFromObject($import_person,'country'));
 				$p_person->set('knvbnr',$this->_getDataFromObject($import_person,'knvbnr'));
 				$p_person->set('height',$this->_getDataFromObject($import_person,'height'));
