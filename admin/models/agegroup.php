@@ -72,6 +72,30 @@ class sportsmanagementModelagegroup extends JSMModelAdmin
 //    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
     
 	}
+    
+    
+    
+    /**
+     * sportsmanagementModelagegroup::importAgeGroupFile()
+     * 
+     * @return void
+     */
+    public function importAgeGroupFile()
+    {
+    $databasetool = JModelLegacy::getInstance("databasetool", "sportsmanagementModel");    
+    $params = JComponentHelper::getParams( $this->jsmoption );
+    $sporttypes = $params->get( 'cfg_sport_types' );
+    $country = $params->get( 'cfg_country_associations' );    
+    
+    if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+        {
+		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sporttypes<br><pre>'.print_r($sporttypes,true).'</pre>'),'Notice');
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' country<br><pre>'.print_r($country,true).'</pre>'),'Notice');
+
+        }
+    
+        
+    }
         
     	/**
     	 * sportsmanagementModelagegroup::saveshort()

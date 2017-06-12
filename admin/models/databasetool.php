@@ -1142,7 +1142,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
         $values = array('\''.$agegroup.'\'','\''.$picture.'\'' ,'\''.$info.'\'' ,'\''.$filter_sports_type.'\'' ,'\''.$search_nation.'\''  );
         // Prepare the insert query.
         $query
-            ->insert(JFactory::getDbo()->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup'))
+            ->insert(JFactory::getDbo()->quoteName('#__sportsmanagement_agegroup'))
             ->columns(JFactory::getDbo()->quoteName($columns))
             ->values(implode(',', $values));
         // Set the query using our newly populated query object and execute it.

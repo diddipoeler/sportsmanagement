@@ -78,7 +78,7 @@ function saveshort()
 function import()
 {
        $model = $this->getModel();
-//       $msg = $model->saveshort();
+       $msg = $model->importAgeGroupFile();
        $this->setRedirect('index.php?option=com_sportsmanagement&view=agegroups',$msg);
     
 }  
