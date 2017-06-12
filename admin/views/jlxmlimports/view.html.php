@@ -89,6 +89,24 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
         $this->config	= $config;
         $this->projektfussballineuropa	= $model->getDataUpdateImportID();
 
+        $myoptions[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_AGEGROUP'));
+        $mdlagegroup = JModelLegacy::getInstance('agegroups', 'sportsmanagementModel');
+        if ( $res = $mdlagegroup->getAgeGroups() )
+        {
+            $myoptions = array_merge($myoptions, $res);
+            $this->search_agegroup = $res;
+        }
+        $lists['agegroup'] = $myoptions;
+        $lists['agegroup2'] = JHtmlSelect::genericlist($myoptions,
+					'filter_search_agegroup',
+					'class="inputbox" style="width:140px; " onchange="this.form.submit();"',
+					'value',
+					'text',
+					$this->state->get('filter.search_agegroup'));
+        unset($myoptions);
+		
+		$this->lists = $lists;
+		
 		if ( $this->getLayout() == 'form' || $this->getLayout() == 'form_3' )
 		{
 			$this->_displayForm($tpl);
@@ -112,30 +130,8 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 			$this->_displaySelectpage($tpl);
 			return;
 		}
-
-		
-        //// Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
-        // Set toolbar items for the page
-        
-//		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_TITLE_1_3'),'xmlimports');
-//		
-//
-//		$uri = JFactory::getURI();
-//		$config = JComponentHelper::getParams('com_media');
-//        $upload_maxsize = JComponentHelper::getParams('com_media')->get('upload_maxsize','200');
-//		$post = JRequest::get('post');
-//		$files = JRequest::get('files');
-//
-//		$this->assign('request_url',$uri->toString());
-//		$this->assignRef('upload_maxsize',$upload_maxsize);
-//        $this->assignRef('config',$config);
-//        $this->assign('projektfussballineuropa',$model->getDataUpdateImportID() );
-        
-        //parent::addToolbar();
-
-		//parent::display($tpl);
+	
+       
 	}
 
 	
