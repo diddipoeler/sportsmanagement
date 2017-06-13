@@ -182,9 +182,9 @@ class sportsmanagementModelTeamPersons extends JModelList
 		        
         $this->_project_id	= $app->getUserState( "$option.pid", '0' );
             
-        $query->select('ppl.id,ppl.firstname,ppl.lastname,ppl.nickname,ppl.picture,ppl.id as person_id,ppl.injury,ppl.suspension,ppl.away,ppl.ordering,ppl.published,ppl.checked_out,ppl.checked_out_time  ');
+        $query->select('ppl.id,ppl.firstname,ppl.lastname,ppl.nickname,ppl.picture,ppl.id as person_id,ppl.injury,ppl.suspension,ppl.away,ppl.ordering,ppl.checked_out,ppl.checked_out_time  ');
 		$query->select('ppl.position_id as person_position_id');
-        $query->select('tp.id as tpid, tp.market_value, tp.jerseynumber,tp.picture as season_picture');
+        $query->select('tp.id as tpid, tp.market_value, tp.jerseynumber,tp.picture as season_picture,tp.published');
 		$query->select('u.name AS editor');
         $query->select('st.season_id AS season_id,st.id as projectteam_id');
         $query->select('ppos.id as project_position_id');
