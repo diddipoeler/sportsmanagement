@@ -105,6 +105,8 @@ class sportsmanagementModelagegroup extends JSMModelAdmin
 	    if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
         {
 	$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' insert_sport_type<br><pre>'.print_r($insert_sport_type,true).'</pre>'),'Notice');	    
+	    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' type<br><pre>'.print_r($type ,true).'</pre>'),'Notice');	    
+	$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' checksporttype <br><pre>'.print_r($checksporttype ,true).'</pre>'),'Notice');
 	    }
         foreach ( $country as $keyc => $typec )
         {    
