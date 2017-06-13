@@ -248,8 +248,8 @@ class sportsmanagementViewteampersons extends sportsmanagementView
 		$this->title = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_TITLE' );
         }
 
-		JToolBarHelper::publishList('teampersons.publish');
-		JToolBarHelper::unpublishList('teampersons.unpublish');
+		//JToolBarHelper::publishList('teampersons.publish');
+		//JToolBarHelper::unpublishList('teampersons.unpublish');
 		JToolBarHelper::apply('teampersons.saveshort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_APPLY' ) );
 		JToolBarHelper::divider();
 
