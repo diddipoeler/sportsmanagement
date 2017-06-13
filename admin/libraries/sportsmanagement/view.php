@@ -303,6 +303,7 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
     case 'rounds':	
     case 'divisions':
     case 'extrafields':				
+case 'teampersons':				
         JHtmlSidebar::addFilter(
 			JText::_('JOPTION_SELECT_PUBLISHED'),
 			'filter_state',
