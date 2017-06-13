@@ -2004,7 +2004,7 @@ if (isset($this->xml) && is_array($this->xml))
                                             
                                             foreach( $this->search_agegroup as $agegroups )
                                             {
-                                            if ( $agegroups == $person->info )
+                                            if ( $agegroups->text == $person->info )
                                             {
                                                 $agegroup = $agegroups->value;
                                             }    
