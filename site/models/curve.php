@@ -77,6 +77,7 @@ class sportsmanagementModelCurve extends JModelLegacy
 	var $teamcount = array();
     
     static $cfg_which_database = 0;
+	static $season_id = 0;
 	
 	/**
 	 * sportsmanagementModelCurve::__construct()
@@ -97,6 +98,7 @@ class sportsmanagementModelCurve extends JModelLegacy
 		$this->both = JRequest::getInt('both', 0);
         sportsmanagementModelProject::$projectid = self::$projectid;
         self::$cfg_which_database = $jinput->get('cfg_which_database', 0, 'INT');
+	self::$season_id = $jinput->get('s', 0, 'INT');	
         
 		$this->determineTeam1And2();
 	}
