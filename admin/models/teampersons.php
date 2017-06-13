@@ -95,7 +95,7 @@ class sportsmanagementModelTeamPersons extends JModelList
 	 *
 	 * @since	1.6
 	 */
-	protected function populateState($ordering = null, $direction = null)
+	protected function populateState($ordering = 'ppl.lastname', $direction = 'asc')
 	{
 		// Reference global application object
         $app = JFactory::getApplication();
@@ -113,9 +113,6 @@ class sportsmanagementModelTeamPersons extends JModelList
 
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
 		$this->setState('filter.state', $published);
-        
-        $value = JRequest::getUInt('limitstart', 0);
-		$this->setState('list.start', $value);
         
         //$temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
         
@@ -149,18 +146,12 @@ class sportsmanagementModelTeamPersons extends JModelList
         $this->setState('filter.pid', $app->getUserState( "$option.pid", '0' ) );
         $this->setState('filter.season_id', $app->getUserState( "$option.season_id", '0' ) );
 
-//		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
-//		$this->setState('filter.image_folder', $image_folder);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' image_folder<br><pre>'.print_r($image_folder,true).'</pre>'),'');
-
-
-//		// Load the parameters.
-//		$params = JComponentHelper::getParams('com_sportsmanagement');
-//		$this->setState('params', $params);
-
+        $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
+		$this->setState('list.limit', $value);	
 		// List state information.
-		parent::populateState('ppl.lastname', 'asc');
+		parent::populateState($ordering, $direction);
+        $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
+		$this->setState('list.start', $value);
 	}
     
     
