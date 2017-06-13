@@ -300,7 +300,7 @@ JHtml::_('behavior.modal');
                                 ?>
                                 <input type="hidden" name="position_id<?php echo $row->id; ?>"	value="<?php echo $row->position_id; ?>" />
                                 <input type="hidden" name="person_id<?php echo $row->id; ?>"	value="<?php echo $row->tpid; ?>" />
-                                
+                                <input type="hidden" name="tpid[<?php echo $row->id; ?>]"	value="<?php echo $row->tpid; ?>" />
                                 
 							</td>
 							<td class="nowrap" class="center">
