@@ -82,7 +82,7 @@ $post = JRequest::get( 'post' );
 $ids    = $this->input->get('cid', array(), 'array');
 $tpids    = $this->input->get('tpid', array(), 'array');
 $model = $this->getModel();
-$model->set_state($ids,$tpids,1)
+$model->set_state($ids,$tpids,1);
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask <br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');   
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ids    <br><pre>'.print_r($ids,true).'</pre>'),'Notice');            
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpids    <br><pre>'.print_r($tpids,true).'</pre>'),'Notice');   
@@ -95,7 +95,7 @@ $post = JRequest::get( 'post' );
 $ids    = $this->input->get('cid', array(), 'array');
 $tpids    = $this->input->get('tpid', array(), 'array');
 $model = $this->getModel();
-$model->set_state($ids,$tpids,0)	
+$model->set_state($ids,$tpids,0);	
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask <br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');   
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ids    <br><pre>'.print_r($ids,true).'</pre>'),'Notice');            
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpids    <br><pre>'.print_r($tpids,true).'</pre>'),'Notice');   
@@ -108,7 +108,7 @@ $post = JRequest::get( 'post' );
 $ids    = $this->input->get('cid', array(), 'array');
 $tpids    = $this->input->get('tpid', array(), 'array');
 $model = $this->getModel();
-$model->set_state($ids,$tpids,2)	
+$model->set_state($ids,$tpids,2);	
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask <br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');   
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ids    <br><pre>'.print_r($ids,true).'</pre>'),'Notice');            
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpids    <br><pre>'.print_r($tpids,true).'</pre>'),'Notice');   
@@ -121,7 +121,7 @@ $post = JRequest::get( 'post' );
 $ids    = $this->input->get('cid', array(), 'array');
 $tpids    = $this->input->get('tpid', array(), 'array');
 $model = $this->getModel();	
-$model->set_state($ids,$tpids,-2)	
+$model->set_state($ids,$tpids,-2);	
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask <br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');   
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ids    <br><pre>'.print_r($ids,true).'</pre>'),'Notice');            
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpids    <br><pre>'.print_r($tpids,true).'</pre>'),'Notice');   
