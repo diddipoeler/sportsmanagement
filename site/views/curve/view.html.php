@@ -71,6 +71,9 @@ class sportsmanagementViewCurve extends sportsmanagementView
 		$rankingconfig = sportsmanagementModelProject::getTemplateConfig( "ranking",sportsmanagementModelCurve::$cfg_which_database );
 		$flashconfig = sportsmanagementModelProject::getTemplateConfig( "flash",sportsmanagementModelCurve::$cfg_which_database );
 
+		$this->season_id = sportsmanagementModelCurve::$season_id;
+		$this->cfg_which_database = sportsmanagementModelCurve::$cfg_which_database;
+		
 		if ( isset( $this->project ) )
 		{
 			$teamid1 = sportsmanagementModelCurve::$teamid1;
