@@ -46,6 +46,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 	{
 		?>
 		<br />
+<div class="table-responsive">
 		<table class="table">
 			<tr>
 				<?php
@@ -53,6 +54,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 				?>
 			</tr>
 		</table>
+</div>
 		<?php
 	}
 ?>
