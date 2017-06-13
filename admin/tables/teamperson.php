@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie kÃ¶nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spÃ¤teren
+* verÃ¶ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nÃ¼tzlich sein wird, aber
+* OHNE JEDE GEWÃ„HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* GewÃ¤hrleistung der MARKTFÃ„HIGKEIT oder EIGNUNG FÃœR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fÃ¼r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -56,6 +56,7 @@ jimport( 'joomla.filter.input' );
  */
 class sportsmanagementTableTeamPerson extends JTable
 {
+	
 	/**
 	 * Constructor
 	 *
@@ -65,77 +66,9 @@ class sportsmanagementTableTeamPerson extends JTable
 	function __construct(& $db)
 	{
 	   $db = sportsmanagementHelper::getDBConnection();
-		parent::__construct( '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id', 'id', $db );
+		parent::__construct( '#__sportsmanagement_season_team_person_id', 'id', $db );
 	}
 
-	
-/**
- * 	function delete( $oid=null )
- * 	{
- * 		//TODO: check that there are no events and and matches associated to this player
 
- * 		$k = $this->_tbl_key;
- * 		if ($oid) {
- * 			$this->$k = intval( $oid );
- * 		}
-
- * 		$query = 'DELETE FROM '.$this->getDbo()->nameQuote( $this->_tbl ).
- * 				' WHERE '.$this->_tbl_key.' = '. $this->getDbo()->Quote($this->$k);
- * 		$this->getDbo()->setQuery( $query );
-
- * 		if ($this->getDbo()->query())
- * 		{
- * 			return true;
- * 		}
- * 		else
- * 		{
- * 			$this->setError($this->getDbo()->getErrorMsg());
- * 			return false;
- * 		}
- * 	}
- */
-
-/**
- * 	function canDelete($id)
- * 	{
- * 		// cannot be deleted if assigned to games
- * 		$query = ' SELECT COUNT(id) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player '
- * 		       . ' WHERE teamplayer_id = '. $this->getDbo()->Quote($id)
- * 		       . ' GROUP BY teamplayer_id ';
- * 		$this->getDbo()->setQuery($query, 0, 1);
- * 		$res = $this->getDbo()->loadResult();
- * 		
- * 		if ($res) {
- * 			$this->setError(Jtext::sprintf('PLAYER ASSIGNED TO %d GAMES', $res));
- * 			return false;
- * 		}
- * 		
- * 		// cannot be deleted if has events
- * 		$query = ' SELECT COUNT(id) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event '
- * 		       . ' WHERE teamplayer_id = '. $this->getDbo()->Quote($id)
- * 		       . ' GROUP BY teamplayer_id ';
- * 		$this->getDbo()->setQuery($query, 0, 1);
- * 		$res = $this->getDbo()->loadResult();
- * 		
- * 		if ($res) {
- * 			$this->setError(JText::sprintf('%d EVENTS ASSIGNED TO PLAYER', $res));
- * 			return false;
- * 		}
- * 		
- * 		// cannot be deleted if has stats
- * 		$query = ' SELECT COUNT(id) FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic '
- * 		       . ' WHERE teamplayer_id = '. $this->getDbo()->Quote($id)
- * 		       . ' GROUP BY teamplayer_id ';
- * 		$this->getDbo()->setQuery($query, 0, 1);
- * 		$res = $this->getDbo()->loadResult();
- * 		
- * 		if ($res) {
- * 			$this->setError(JText::sprintf('%d STATS ASSIGNED TO PLAYER', $res));
- * 			return false;
- * 		}
- * 		
- * 		return true;
- * 	}
- */
 }
 ?>
