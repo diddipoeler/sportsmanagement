@@ -265,7 +265,8 @@ class sportsmanagementModelperson extends JSMModelAdmin
                 $mdlTable->picture = $mdlPersonTable->picture;
                 $mdlTable->active = 1;
                 $mdlTable->published = 1;
-                $mdlTable->person_id = $cid[$x];   
+                $mdlTable->person_id = $cid[$x]; 
+			try{
                 if ( $mdlTable->store() === false )
 				{
 				    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
@@ -273,6 +274,11 @@ class sportsmanagementModelperson extends JSMModelAdmin
 				else
 				{
 				}
+} catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}				
                 // projekt position eintragen
                 // zuerst die positions id zum projekt ermitteln.
                 $this->jsmquery->clear();  
@@ -325,7 +331,8 @@ class sportsmanagementModelperson extends JSMModelAdmin
                 $mdlTable->picture = $mdlPersonTable->picture;
                 $mdlTable->active = 1;
                 $mdlTable->published = 1;
-                $mdlTable->person_id = $cid[$x];   
+                $mdlTable->person_id = $cid[$x];  
+			try{
                 if ( $mdlTable->store() === false )
 				{
 				    sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
@@ -333,6 +340,11 @@ class sportsmanagementModelperson extends JSMModelAdmin
 				else
 				{
 				}
+} catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}			
                 // projekt position eintragen
                 // zuerst die positions id zum projekt ermitteln.
                 $this->jsmquery->clear();  
