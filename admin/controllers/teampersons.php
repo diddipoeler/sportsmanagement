@@ -81,7 +81,7 @@ function publish()
 $post = JRequest::get( 'post' );
 $ids    = $this->input->get('cid', array(), 'array');
 $tpids    = $this->input->get('tpid', array(), 'array');
-
+$model = $this->getModel();
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask <br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');   
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ids    <br><pre>'.print_r($ids,true).'</pre>'),'Notice');            
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpids    <br><pre>'.print_r($tpids,true).'</pre>'),'Notice');   
@@ -93,7 +93,7 @@ function unpublish()
 $post = JRequest::get( 'post' );
 $ids    = $this->input->get('cid', array(), 'array');
 $tpids    = $this->input->get('tpid', array(), 'array');
-
+$model = $this->getModel();
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask <br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');   
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ids    <br><pre>'.print_r($ids,true).'</pre>'),'Notice');            
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpids    <br><pre>'.print_r($tpids,true).'</pre>'),'Notice');   
@@ -105,7 +105,7 @@ function archive()
 $post = JRequest::get( 'post' );
 $ids    = $this->input->get('cid', array(), 'array');
 $tpids    = $this->input->get('tpid', array(), 'array');
-
+$model = $this->getModel();
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask <br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');   
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ids    <br><pre>'.print_r($ids,true).'</pre>'),'Notice');            
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpids    <br><pre>'.print_r($tpids,true).'</pre>'),'Notice');   
@@ -117,6 +117,7 @@ function trash()
 $post = JRequest::get( 'post' );
 $ids    = $this->input->get('cid', array(), 'array');
 $tpids    = $this->input->get('tpid', array(), 'array');
+$model = $this->getModel();	
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask <br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');   
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ids    <br><pre>'.print_r($ids,true).'</pre>'),'Notice');            
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpids    <br><pre>'.print_r($tpids,true).'</pre>'),'Notice');   
