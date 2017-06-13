@@ -930,23 +930,8 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml
             //$xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$option.'/helpers/xml_files/quote_'.$temp[0].'.xml');
             
             $quote_version = (string)$xml->$document;
-            
-//            // joomla versionen
-//            if(version_compare(JVERSION,'3.0.0','ge')) 
-//        {
-//    $quote_version = (string)$xml->$document;
-//            }
-//            else
-//            {
-//            foreach( $xml->$document as $version ) 
-//            {
-//            $quote_version = $version->data();
-//            //$app->enqueueMessage(JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' wird installiert !'),'');
-////            $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
-////		    $this->my_text .= JText::_('Installiere Zitate').'</strong></span><br />';
-////			$this->my_text .= JText::_('Zitate '.$temp[0].' Version : '.$quote_version.' wird installiert !').'<br />';
-//            }
-//            }
+           
+
             
             $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
 		    $this->my_text .= JText::_('Installiere Zitate').'</strong></span><br />';
@@ -1606,7 +1591,7 @@ foreach( $xml->events as $event )
        $query = "SELECT id FROM #__sportsmanagement_sports_type"." WHERE name='"."COM_SPORTSMANAGEMENT_ST_".strtoupper($type)."' ";
        $db->setQuery($query);
        $result = $db->loadResult();
-      
+      $sports_type_id = $result;
        if ( $result )
        {
        //$app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_AVAILABLE',strtoupper($type)),'Notice');
