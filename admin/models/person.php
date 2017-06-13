@@ -225,9 +225,9 @@ class sportsmanagementModelperson extends JSMModelAdmin
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $db = JFactory::getDbo();
-        $date = JFactory::getDate();
+        //$date = JFactory::getDate();
 	   $user = JFactory::getUser();
-       $modified = $date->toSql();
+       $modified = JFactory::getDate();
 	   $modified_by = $user->get('id');
        
     $this->_project_id	= $app->getUserState( "$option.pid", '0' );
