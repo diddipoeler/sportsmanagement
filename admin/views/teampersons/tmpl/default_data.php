@@ -123,7 +123,7 @@ JHtml::_('behavior.modal');
 							<?php
 							//echo JHtml::_( 'grid.sort', 'COM_SPORTSMANAGEMENT_GLOBAL_ORDER', 'ppl.ordering', $this->sortDirection, $this->sortColumn );
                             echo JHtml::_( 'grid.sort', 'JGRID_HEADING_ORDERING', 'ppl.ordering', $this->sortDirection, $this->sortColumn );
-							echo JHtml::_( 'grid.order', $this->items, 'filesave.png', 'teamplayers.saveorder' );
+							echo JHtml::_( 'grid.order', $this->items, 'filesave.png', 'teampersons.saveorder' );
 							?>
 						</th>
 						<th width="">
