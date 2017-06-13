@@ -294,7 +294,12 @@ class sportsmanagementModelperson extends JSMModelAdmin
     $code = $e->getCode(); // Returns '500';
     JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
 }
-                // Create a new query object.
+                 if ( !$res )
+                {
+                $res = 0;
+                }
+
+			// Create a new query object.
                 $insertquery = $db->getQuery(true);
                 // Insert columns.
                 $columns = array('person_id','project_id','project_position_id','persontype','modified','modified_by');
@@ -368,6 +373,12 @@ class sportsmanagementModelperson extends JSMModelAdmin
     $code = $e->getCode(); // Returns '500';
     JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error   
                 }
+			
+		 if ( !$res )
+                {
+                $res = 0;
+                }
+
                 // Create a new query object.
                 $insertquery = $db->getQuery(true);
                 // Insert columns.
