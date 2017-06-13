@@ -1,9 +1,9 @@
 <?php
-/** Joomla Sports Management ein Programm zur Verwaltung für alle Sportarten
+/** Joomla Sports Management ein Programm zur Verwaltung fÃ¼r alle Sportarten
 * @version 1.0.26
 * @file		components/sportsmanagement/models/cpanel.php
 * @author diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license This file is part of Joomla Sports Management.
 *
 * Joomla Sports Management is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von Joomla Sports Management.
 *
-* Joomla Sports Management ist Freie Software: Sie können es unter den Bedingungen
+* Joomla Sports Management ist Freie Software: Sie kÃ¶nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spÃ¤teren
+* verÃ¶ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* Joomla Sports Management wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* Joomla Sports Management wird in der Hoffnung, dass es nÃ¼tzlich sein wird, aber
+* OHNE JEDE GEWÃ„HRLEISTUNG, bereitgestellt; sogar ohne die implizite
+* GewÃ¤hrleistung der MARKTFÃ„HIGKEIT oder EIGNUNG FÃœR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fÃ¼r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -231,42 +231,18 @@ else
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
         $xml = JFactory::getXML(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');   
-        //$xml = JFactory::getFeedParser(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');
-        //if (function_exists('simplexml_load_file'))
-//			{
-//				$xml =  @simplexml_load_file(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml','SimpleXMLElement',LIBXML_NOCDATA);
-//			}  
         }
         else
         {
-//        $xml = JFactory::getXMLParser( 'Simple' );
-//        $xml->loadFile(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');    
         $xml = JFactory::getXML(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');
         }    
-
-//        if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION == '2.5' )
-//        {
-//        }
-//        else
-//        {
-//        }
-        
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml <br><pre>'.print_r($xml,true).'</pre>'),'');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' xml version<br><pre>'.print_r((string)$xml->version,true).'</pre>'),'');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' version<br><pre>'.print_r((string)$version,true).'</pre>'),'');
         
         $github_version = (string)$xml->version;
-        
-//        foreach( $xml->document->version as $version ) 
-//            {
-//            $github_version = $version->data();
-//            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($github_version,true).'</pre>'),'');
-//            }
-                     
-            //$temp2 = explode(".",$github_version);  
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' temp2<br><pre>'.print_r($temp2,true).'</pre>'),'');
-        
+
         if(version_compare($github_version,$version,'gt')) 
         {
         $return =  false;    
@@ -275,34 +251,7 @@ else
         {
         $return =  true;    
         }    
-//            if ( $github_version !== $version )
-//            {
-//                $return =  false;
-//            }
-//            else
-//            {
-//                $return =  true;
-//            }
-            
-//            foreach( $temp as $key => $value )
-//            {
-//            if ( (int)$temp[$key] !== (int)$temp2[$key] )
-//            {
-//                $return = $temp[$key];
-//                //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' temp key<br><pre>'.print_r($temp[$key],true).'</pre>'),'');
-//                break;
-//            }    
-//            }
-            
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' return<br><pre>'.print_r($return,true).'</pre>'),'');
-            
-            //$anzahl = strcspn($github_version,$version);
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' anzahl<br><pre>'.print_r($anzahl,true).'</pre>'),'');
-            
-            //$return = strcmp (trim($github_version), trim($version));
-            //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' return<br><pre>'.print_r($return,true).'</pre>'),'');
-            
-//            return $return;
+
                     
     }
     
@@ -357,9 +306,6 @@ else
 		$query = $db->getQuery(true);
         
         $type = strtoupper($type);
-        
-//        $query="SELECT count(*) AS count
-//		FROM #__".COM_SPORTSMANAGEMENT_TABLE."_sports_type where name LIKE '%".$type."%' ";
 		
         // Select some fields
 		$query->select('count(*) AS count');
@@ -436,11 +382,7 @@ else
 		//$uname		= $params->get('cfg_github_username', '');
 		//$repo		= $params->get('cfg_github_repository', '');
 		$count		= 15;
-        
-//        if ($i <= $count)
-//			{
-//			$github[]	= new stdClass; 
-//            } 
+
 
 		// Convert the list name to a useable string for the JSON
 		if ($repo)
