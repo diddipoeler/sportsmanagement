@@ -62,9 +62,34 @@ class sportsmanagementModelteamperson extends JSMModelAdmin
     static $db_num_rows = 0;
 
 	
+/**
+ * sportsmanagementModelteamperson::set_state()
+ * 
+ * @param mixed $ids
+ * @param mixed $tpids
+ * @param mixed $state
+ * @return void
+ */
 function set_state($ids,$tpids,$state)
 {	
-	
+$this->jsmuser = JFactory::getUser(); 
+$this->jsmdate = JFactory::getDate();
+
+for ($x=0; $x < count($ids); $x++)
+		{
+$person_id = $ids[$x];		  
+$season_team_person_id = $tpids[$person_id];          
+// Create an object for the record we are going to update.
+$object = new stdClass();
+// Must be a valid primary key value.
+$object->id = $season_team_person_id;
+$object->published = $state;
+$object->modified = $this->jsmdate->toSql();
+$object->modified_by = $this->jsmuser->get('id');
+// Update their details in the table using id as the primary key.
+$result = JFactory::getDbo()->updateObject('#__sportsmanagement_season_team_person_id', $object, 'id'); 
+          
+        }  
 }
 	
     /**

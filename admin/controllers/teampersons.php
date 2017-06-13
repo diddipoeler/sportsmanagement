@@ -69,66 +69,35 @@ class sportsmanagementControllerteampersons extends JControllerAdmin
         $this->app = JFactory::getApplication();
 		$this->jinput = $this->app->input;
 		$this->option = $this->jinput->getCmd('option');
-$this->registerTask('unpublish', 'unpublish');
-$this->registerTask('publish', 'publish');
-$this->registerTask('trash', 'trash');
-$this->registerTask('archive', 'archive');
+$this->registerTask('unpublish', 'set_season_team_state');
+$this->registerTask('publish', 'set_season_team_state');
+$this->registerTask('trash', 'set_season_team_state');
+$this->registerTask('archive', 'set_season_team_state');
 	}
 
 
-function publish()
-{
-$post = JRequest::get( 'post' );
-$ids    = $this->input->get('cid', array(), 'array');
-$tpids    = $this->input->get('tpid', array(), 'array');
-$model = $this->getModel();
-$model->set_state($ids,$tpids,1);
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask <br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');   
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ids    <br><pre>'.print_r($ids,true).'</pre>'),'Notice');            
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpids    <br><pre>'.print_r($tpids,true).'</pre>'),'Notice');   
-$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));
-}
 
-function unpublish()
+/**
+ * sportsmanagementControllerteampersons::set_season_team_state()
+ * 
+ * @return void
+ */
+function set_season_team_state()
 {
 $post = JRequest::get( 'post' );
-$ids    = $this->input->get('cid', array(), 'array');
-$tpids    = $this->input->get('tpid', array(), 'array');
-$model = $this->getModel();
-$model->set_state($ids,$tpids,0);	
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask <br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');   
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ids    <br><pre>'.print_r($ids,true).'</pre>'),'Notice');            
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpids    <br><pre>'.print_r($tpids,true).'</pre>'),'Notice');   
-$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));
-}
+$ids = $this->input->get('cid', array(), 'array');
+$tpids = $this->input->get('tpid', array(), 'array');
+$values = array('publish' => 1, 'unpublish' => 0, 'archive' => 2, 'trash' => -2);
+$task = $this->getTask();
+$value = ArrayHelper::getValue($values, $task, 0, 'int');    
 
-function archive()
-{
-$post = JRequest::get( 'post' );
-$ids    = $this->input->get('cid', array(), 'array');
-$tpids    = $this->input->get('tpid', array(), 'array');
-$model = $this->getModel();
-$model->set_state($ids,$tpids,2);	
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask <br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');   
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ids    <br><pre>'.print_r($ids,true).'</pre>'),'Notice');            
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpids    <br><pre>'.print_r($tpids,true).'</pre>'),'Notice');   
-$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));
-}
 
-function trash()
-{
-$post = JRequest::get( 'post' );
-$ids    = $this->input->get('cid', array(), 'array');
-$tpids    = $this->input->get('tpid', array(), 'array');
-$model = $this->getModel();	
-$model->set_state($ids,$tpids,-2);	
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask <br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');   
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ids    <br><pre>'.print_r($ids,true).'</pre>'),'Notice');            
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpids    <br><pre>'.print_r($tpids,true).'</pre>'),'Notice');   
-$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));
+$model->set_state($ids,$tpids,$value);    
+$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));    
 }
-	
-	
 	
   /**
 	 * Method to update checked teamplayers
