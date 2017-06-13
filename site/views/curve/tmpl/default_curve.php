@@ -75,9 +75,11 @@ foreach ($this->divisions as $division)
 		<form name="curveform<?php echo $division->id; ?>" method="get"	id="curveform<?php echo $division->id; ?>">
 			<input type="hidden" name="option" value="com_sportsmanagement" />
 			<input type="hidden" name="view" value="curve" />
-			<input type="hidden" name="p" value="<?php echo $this->project->id; ?>" />  
-			<input type="hidden" name="s" value="<?php echo $this->season_id; ?>" />  
 			<input type="hidden" name="cfg_which_database" value="<?php echo $this->cfg_which_database; ?>" />  
+			<input type="hidden" name="s" value="<?php echo $this->season_id; ?>" />  
+			<input type="hidden" name="p" value="<?php echo $this->project->id; ?>" />  
+			
+			
 			<input type="hidden" name="tid1" value="" /> 
 			<input type="hidden" name="tid2" value="" />  
 			<input type="hidden" name="division" value="<?php echo $division->id; ?>" /> 
