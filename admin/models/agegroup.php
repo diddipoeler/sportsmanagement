@@ -68,9 +68,12 @@ class sportsmanagementModelagegroup extends JSMModelAdmin
 	{
 		parent::__construct($config);
 	
-//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
-//    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
-    
+		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+        {
+    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'');
+    $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getName<br><pre>'.print_r($this->getName(),true).'</pre>'),'');
+	}
+		
 	}
     
     
@@ -99,9 +102,17 @@ class sportsmanagementModelagegroup extends JSMModelAdmin
         {
         $checksporttype = $cpaneltool->checksporttype($type);   
         $insert_sport_type = $databasetool->insertSportType($type);  
+	    if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+        {
+	$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' insert_sport_type<br><pre>'.print_r($insert_sport_type,true).'</pre>'),'Notice');	    
+	    }
         foreach ( $country as $keyc => $typec )
         {    
         $insert_agegroup = $databasetool->insertAgegroup($typec,$insert_sport_type);  
+		if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+        {
+	$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' insert_agegroup<br><pre>'.print_r($insert_agegroup,true).'</pre>'),'Notice');		
+		}
         }
         }
     
