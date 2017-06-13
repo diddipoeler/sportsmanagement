@@ -204,7 +204,7 @@ class sportsmanagementModelTeamPersons extends JModelList
         $query->where('ppp.persontype = '.$this->getState('filter.persontype') );
         $query->where('ppp.project_id = '.$this->_project_id );
         
-        $query->where("ppos.id IS NOT NULL");
+        //$query->where("ppos.id IS NOT NULL");
         
         if ($this->getState('filter.search'))
 		{
