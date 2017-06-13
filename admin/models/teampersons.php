@@ -111,7 +111,7 @@ class sportsmanagementModelTeamPersons extends JModelList
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 
-		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_published', '', 'string');
+		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
 		$this->setState('filter.state', $published);
         
         $value = JRequest::getUInt('limitstart', 0);
@@ -205,7 +205,11 @@ class sportsmanagementModelTeamPersons extends JModelList
         $query->where('ppp.project_id = '.$this->_project_id );
         
         //$query->where("ppos.id IS NOT NULL");
-        
+        if ($this->getState('filter.state'))
+		{
+		$query->where('tp.published = '.$this->getState('filter.state') );
+	}
+		
         if ($this->getState('filter.search'))
 		{
         $query->where('(LOWER(ppl.lastname) LIKE ' . $db->Quote( '%' . $this->getState('filter.search') . '%' ).
