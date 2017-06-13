@@ -40,7 +40,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.application.component.modellist');
+//jimport('joomla.application.component.modellist');
 
 
 /**
@@ -52,7 +52,7 @@ jimport('joomla.application.component.modellist');
  * @version 2013
  * @access public
  */
-class sportsmanagementModelTeamPersons extends JModelList
+class sportsmanagementModelTeamPersons extends JSMModelList
 {
 	var $_identifier = "teampersons";
     var $_project_id = 0;
