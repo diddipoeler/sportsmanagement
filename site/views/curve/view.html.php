@@ -305,7 +305,7 @@ class sportsmanagementViewCurve extends sportsmanagementView
 			}
 			else
 			{
-			$this->chartdata_.0 = $chart;
+			$this->chartdata_0 = $chart;
 			}
 			unset($chart);
 		}
