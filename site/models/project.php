@@ -688,8 +688,8 @@ catch (Exception $e){
 	 */
 	public static function getColors($configcolors='',$cfg_which_database = 0)
 	{
-		$s=substr($configcolors,0,-1);
-
+		//$s=substr($configcolors,0,-1);
+$s = $configcolors;
 		$arr1=array();
 		if(trim($s) != "")
 		{
