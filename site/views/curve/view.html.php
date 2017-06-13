@@ -299,7 +299,14 @@ class sportsmanagementViewCurve extends sportsmanagementView
 			$y_legend->set_style( '{font-size: 15px; color: #778877}' );
 			$chart->set_y_legend( $y_legend );
 
+			if ( $division->id )
+			{
 			$this->chartdata_.$division->id = $chart;
+			}
+			else
+			{
+			$this->chartdata_.0 = $chart;
+			}
 			unset($chart);
 		}
 	}
