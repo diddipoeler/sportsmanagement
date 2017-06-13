@@ -287,8 +287,13 @@ class sportsmanagementModelperson extends JSMModelAdmin
                 $this->jsmquery->where('project_id = '. $this->_project_id );
                 $this->jsmquery->where('position_id ='. $mdlPersonTable->position_id );
                 $this->jsmdb->setQuery($this->jsmquery);
+			try{
 		        $res = $this->jsmdb->loadResult();
-                
+                } catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+}
                 // Create a new query object.
                 $insertquery = $db->getQuery(true);
                 // Insert columns.
@@ -306,7 +311,9 @@ class sportsmanagementModelperson extends JSMModelAdmin
                 sportsmanagementModeldatabasetool::runJoomlaQuery();
                 }
                 catch (Exception $e){
-                   
+                $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error   
                 }
                  
 		        }
@@ -353,7 +360,14 @@ class sportsmanagementModelperson extends JSMModelAdmin
                 $this->jsmquery->where('project_id = '. $this->_project_id );
                 $this->jsmquery->where('position_id ='. $mdlPersonTable->position_id );
                 $this->jsmdb->setQuery($this->jsmquery);
-		        $res = $this->jsmdb->loadResult();
+		 try{
+			$res = $this->jsmdb->loadResult();
+			}
+                catch (Exception $e){
+                $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error   
+                }
                 // Create a new query object.
                 $insertquery = $db->getQuery(true);
                 // Insert columns.
@@ -371,7 +385,9 @@ class sportsmanagementModelperson extends JSMModelAdmin
                 sportsmanagementModeldatabasetool::runJoomlaQuery();
                 }
                 catch (Exception $e){
-                   
+                $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns '500';
+    JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error   
                 }
                  
 		        }
@@ -436,8 +452,13 @@ catch (Exception $e){
                 $profile->published = 1;
                 $profile->modified = $db->Quote(''.$modified.'');
                 $profile->modified_by = $modified_by;
-                // Insert the object into the user profile table.
+ try{
+			// Insert the object into the user profile table.
                 $result = JFactory::getDbo()->insertObject('#__sportsmanagement_project_referee', $profile);
+			}
+catch (Exception $e){
+    $result = $db->updateObject('#__sportsmanagement_season_person_id', $mdlTable, 'id');
+}
                // }
                 
                 }
