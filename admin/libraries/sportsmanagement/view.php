@@ -529,6 +529,7 @@ case 'teampersons':
             case 'extensions':
 		case 'cpanel':	    
 	case 'jlxmlimports':	
+		    case 'projectpositions':
             break;    
             default:    
 /**
