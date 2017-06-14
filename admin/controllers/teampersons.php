@@ -97,7 +97,26 @@ $value = ArrayHelper::getValue($values, $task, 0, 'int');
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ids    <br><pre>'.print_r($ids,true).'</pre>'),'Notice');            
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' tpids    <br><pre>'.print_r($tpids,true).'</pre>'),'Notice');   
 $model = $this->getModel();
-$model->set_state($ids,$tpids,$value);    
+$model->set_state($ids,$tpids,$value);  
+
+switch ($value)
+{
+case 0:
+$ntext = 'COM_SPORTSMANAGEMENT_N_ITEMS_UNPUBLISHED';
+break;
+case 1:
+$ntext = 'COM_SPORTSMANAGEMENT_N_ITEMS_PUBLISHED';		
+break;
+case 2:
+$ntext = 'COM_SPORTSMANAGEMENT_N_ITEMS_ARCHIVED';		
+break;
+case -2:
+$ntext = 'COM_SPORTSMANAGEMENT_N_ITEMS_TRASHED';		
+break;		
+}		
+
+$this->setMessage(JText::plural($ntext, count($ids)));	
+	
 $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));    
 }
 	
