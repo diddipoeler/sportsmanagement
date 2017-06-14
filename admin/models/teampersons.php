@@ -113,7 +113,7 @@ class sportsmanagementModelTeamPersons extends JSMModelList
         }
         else
         {
-		$this->setState('filter.team_id', $app->getUserState( "$this->jsmoption.team_id", '0' ) );
+		$this->setState('filter.team_id', $this->jsmapp->getUserState( "$this->jsmoption.team_id", '0' ) );
         }
         
         if ( JRequest::getVar('persontype') )
@@ -122,7 +122,7 @@ class sportsmanagementModelTeamPersons extends JSMModelList
         }
         else
         {
-        $this->setState('filter.persontype', $app->getUserState( "$this->jsmoption.persontype", '0' ) );
+        $this->setState('filter.persontype', $this->jsmapp->getUserState( "$this->jsmoption.persontype", '0' ) );
         }
         
         if ( JRequest::getVar('project_team_id') )
@@ -131,11 +131,11 @@ class sportsmanagementModelTeamPersons extends JSMModelList
         }
         else
         {
-        $this->setState('filter.project_team_id', $app->getUserState( "$this->jsmoption.project_team_id", '0' ) );
+        $this->setState('filter.project_team_id', $this->jsmapp->getUserState( "$this->jsmoption.project_team_id", '0' ) );
         }
         
-        $this->setState('filter.pid', $app->getUserState( "$this->jsmoption.pid", '0' ) );
-        $this->setState('filter.season_id', $app->getUserState( "$this->jsmoption.season_id", '0' ) );
+        $this->setState('filter.pid', $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' ) );
+        $this->setState('filter.season_id', $this->jsmapp->getUserState( "$this->jsmoption.season_id", '0' ) );
 
         $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);	
