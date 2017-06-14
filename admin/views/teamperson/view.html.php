@@ -60,19 +60,19 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$uri		= JFactory::getURI();
-		$user		= JFactory::getUser();
-		$model		= $this->getModel();
-		$lists		= array();
-		$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0);
-        
-        // get the Data
-		$form = $this->get('Form');
-		$item = $this->get('Item');
-		$script = $this->get('Script');
+//		$app = JFactory::getApplication();
+//		$jinput = $app->input;
+//		$option = $jinput->getCmd('option');
+//		$uri		= JFactory::getURI();
+//		$user		= JFactory::getUser();
+//		$model		= $this->getModel();
+//		$lists		= array();
+//		$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0);
+//        
+//        // get the Data
+//		$form = $this->get('Form');
+//		$item = $this->get('Item');
+//		$script = $this->get('Script');
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -81,18 +81,18 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 			return false;
 		}
         
-        // Assign the Data
-		$this->form = $form;
-		$this->item = $item;
-		$this->script = $script;
+//        // Assign the Data
+//		$this->form = $form;
+//		$this->item = $item;
+//		$this->script = $script;
 
-        $this->team_id	= $app->getUserState( "$option.team_id", '0' );
-        $this->_persontype = $app->getUserState( "$option.persontype", '0' );
-        $this->project_team_id	= $app->getUserState( "$option.project_team_id", '0' );
+        $this->team_id	= $this->app->getUserState( "$this->option.team_id", '0' );
+        $this->_persontype = $this->app->getUserState( "$this->option.persontype", '0' );
+        $this->project_team_id	= $this->app->getUserState( "$this->option.project_team_id", '0' );
         
         //$this->project_id	= sportsmanagementHelper::getTeamplayerProject($this->item->projectteam_id);
-		$this->project_id	= $app->getUserState( "$option.pid", '0' );
-		$this->season_id	= $app->getUserState( "$option.season_id", '0' );
+		$this->project_id	= $this->app->getUserState( "$this->option.pid", '0' );
+		$this->season_id	= $this->app->getUserState( "$this->option.season_id", '0' );
                
         
 		$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
@@ -141,7 +141,7 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 		$projectpositions = array();
 		$projectpositions[] = JHtml::_('select.option',	'0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
 		$mdlPositions = JModelLegacy::getInstance("Positions", "sportsmanagementModel");
-	    //$project_ref_positions = $mdlPositions->getPlayerPositions($this->project_id);
+
 		$project_ref_positions = $mdlPositions->getProjectPositions($this->project_id,	$this->_persontype);
 		
 		if ( $project_ref_positions )
@@ -162,15 +162,15 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 		$extended = sportsmanagementHelper::getExtended($item->extended, 'teamplayer');
 		$this->extended = $extended;
 		$this->lists = $lists;
-        //$this->assign('cfg_which_media_tool', JComponentHelper::getParams($option)->get('cfg_which_media_tool',0) );
         
-		if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+		if ( JComponentHelper::getParams($this->option)->get('show_debug_info_backend') )
 		{
-		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($this->project_id,true).'</pre>'),'');
-		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _persontype<br><pre>'.print_r($this->_persontype,true).'</pre>'),'');
-		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_team_id<br><pre>'.print_r($this->project_team_id,true).'</pre>'),'');
-		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($this->team_id,true).'</pre>'),'');
-		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' season_id<br><pre>'.print_r($this->season_id,true).'</pre>'),'');
+		$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($this->project_id,true).'</pre>'),'');
+		$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _persontype<br><pre>'.print_r($this->_persontype,true).'</pre>'),'');
+		$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_team_id<br><pre>'.print_r($this->project_team_id,true).'</pre>'),'');
+		$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team_id<br><pre>'.print_r($this->team_id,true).'</pre>'),'');
+		$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' season_id<br><pre>'.print_r($this->season_id,true).'</pre>'),'');
+        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_ref_positions<br><pre>'.print_r($project_ref_positions,true).'</pre>'),'');
 		}
  
   
@@ -187,12 +187,6 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 		$app = JFactory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
-       
-//	   // Get a refrence of the page instance in joomla
-//        $document = JFactory::getDocument();
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
 	   
 		$jinput->set('hidemainmenu', true);
         
@@ -218,66 +212,9 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
         {
         JToolBarHelper::title($isNew ? JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_NEW') : JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMSTAFF_EDIT'), 'teamstaff');
 		}
-        
-        //$app->enqueueMessage(get_class($this).' '.__FUNCTION__.' _persontype<br><pre>'.print_r($this->_persontype, true).'</pre><br>','Notice');
-//        
-//        // Built the actions for new and existing records.
-//		if ($isNew) 
-//		{
-//			// For new records, check the create permission.
-//			if ($canDo->get('core.create')) 
-//			{
-//				JToolBarHelper::apply('teamperson.apply', 'JTOOLBAR_APPLY');
-//				JToolBarHelper::save('teamperson.save', 'JTOOLBAR_SAVE');
-//				JToolBarHelper::custom('teamperson.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-//			}
-//			JToolBarHelper::cancel('teamperson.cancel', 'JTOOLBAR_CANCEL');
-//		}
-//		else
-//		{
-//			if ($canDo->get('core.edit'))
-//			{
-//				// We can save the new record
-//				JToolBarHelper::apply('teamperson.apply', 'JTOOLBAR_APPLY');
-//				JToolBarHelper::save('teamperson.save', 'JTOOLBAR_SAVE');
-// 
-//				// We can save this record, but check the create permission to see if we can return to make a new one.
-//				if ($canDo->get('core.create')) 
-//				{
-//					JToolBarHelper::custom('teamperson.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-//				}
-//			}
-//			if ($canDo->get('core.create')) 
-//			{
-//				JToolBarHelper::custom('teamperson.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
-//			}
-//			JToolBarHelper::cancel('teamperson.cancel', 'JTOOLBAR_CLOSE');
-//		}
-//        
-//        JToolBarHelper::divider();
-//		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//		JToolBarHelper::preferences(JRequest::getCmd('option'));
 
 parent::addToolbar();
 	}
-    
-    
-    
-//    /**
-//	 * Method to set up the document properties
-//	 *
-//	 * @return void
-//	 */
-//	protected function setDocument() 
-//	{
-//		$isNew = $this->item->id == 0;
-//		$document = JFactory::getDocument();
-//		$document->setTitle($isNew ? JText::_('COM_HELLOWORLD_HELLOWORLD_CREATING') : JText::_('COM_HELLOWORLD_HELLOWORLD_EDITING'));
-//		$document->addScript(JURI::root() . $this->script);
-//		$document->addScript(JURI::root() . "/administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
-//		JText::script('COM_HELLOWORLD_HELLOWORLD_ERROR_UNACCEPTABLE');
-//	}
-    
 
 }
 ?>
