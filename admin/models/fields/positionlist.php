@@ -71,7 +71,12 @@ class JFormFieldpositionlist extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		// Initialize variables.
+		// Reference global application object
+        $this->jsmapp = JFactory::getApplication();
+        // JInput object
+        $this->jsmjinput = $this->jsmapp->input;
+        $this->jsmoption = $this->jsmjinput->getCmd('option');
+        // Initialize variables.
 		$options = array();
     $vartable = (string) $this->element['targettable'];
 		$select_id = JRequest::getVar('id');
@@ -84,10 +89,23 @@ class JFormFieldpositionlist extends JFormFieldList
       //$query->join('INNER','#__sportsmanagement_'.$vartable.' AS t on t.sports_type_id = pos.sports_type_id');
             
 			$query->where('pos.published = 1');
-            $query->where('pos.id = '.$select_id);
+            //$query->where('pos.id = '.$select_id);
 			$query->order('pos.ordering,pos.name');
 			$db->setQuery($query);
+            if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+        {
+		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        }
+		
+        	try { 
 			$options = $db->loadObjectList();
+            }
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+JFactory::getApplication()->enqueueMessage($db->getErrorMsg());
+}
             
             foreach ( $options as $row )
             {

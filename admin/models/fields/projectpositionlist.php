@@ -97,7 +97,7 @@ class JFormFieldprojectpositionlist extends JFormFieldList
 			$query->join('INNER', '#__sportsmanagement_sports_type AS s ON s.id = pos.sports_type_id');
             $query->join('INNER', '#__sportsmanagement_person_project_position AS ppp ON pp.id = ppp.project_id');
             
-            $query->where('ppp.project_position_id = '.$select_id);
+            //$query->where('ppp.project_position_id = '.$select_id);
             $query->where('ppp.project_id = '.$pid);
 			$query->order('pos.ordering,pos.name');
 			$db->setQuery($query);
