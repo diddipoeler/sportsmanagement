@@ -108,21 +108,17 @@ echo JHtml::_('bootstrap.endTab');
 <?php echo JHtml::_('bootstrap.endTabSet'); ?>
 </fieldset>
 </div> 
-    
-    
 	
- <div class="clr"></div>   
+<div class="clr"></div>   
 <div>
-		<input type="hidden" name="eventschanges_check"	id="eventschanges_check" value="0" />
-		
-        <input type="hidden" name="project_team_id"		value="<?php echo $this->item->projectteam_id; ?>" />
-    <input type="hidden" name="team_id"		value="<?php echo $this->team_id; ?>" />
-    <input type="hidden" name="pid"		value="<?php echo $this->project_id; ?>" />
-	<input type="hidden" name="persontype"		value="<?php echo $this->_persontype; ?>" />	
-		<input type="hidden" name="task"				value="teamperson.edit" />
-
-	<?php echo JHtml::_( 'form.token' ); ?>
-    </div> 
+<input type="hidden" name="eventschanges_check" id="eventschanges_check" value="0" />
+<input type="hidden" name="project_team_id" value="<?php echo $this->item->projectteam_id; ?>" />
+<input type="hidden" name="team_id" value="<?php echo $this->team_id; ?>" />
+<input type="hidden" name="pid" value="<?php echo $this->project_id; ?>" />
+<input type="hidden" name="persontype" value="<?php echo $this->_persontype; ?>" />	
+<input type="hidden" name="task" value="teamperson.edit" />
+<?php echo JHtml::_( 'form.token' ); ?>
+</div> 
 </form>
 <?PHP
 echo "<div>";

@@ -31,7 +31,22 @@
 			<option
 				value="0">
 				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION</option>
-		</field>			
+		</field>
+
+		<field
+			name="project_position_id"
+			type="projectpositionlist"
+			class="inputbox"
+			default="0"
+			size="1"
+			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_PROJECT_POS"
+			description="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_PROJECT_POS_DESC" >
+			
+			<option
+				value="0">
+				COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION</option>
+		</field>
+		
 		<field
 			name="jerseynumber"
 			type="text"

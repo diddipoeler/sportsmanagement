@@ -44,23 +44,24 @@ jimport('joomla.filesystem.folder');
 JFormHelper::loadFieldClass('list');
 
 
+
 /**
- * JFormFieldpositionlist
+ * JFormFieldprojectpositionlist
  * 
- * @package   
- * @author 
- * @copyright diddi
- * @version 2014
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2017
+ * @version $Id$
  * @access public
  */
-class JFormFieldpositionlist extends JFormFieldList
+class JFormFieldprojectpositionlist extends JFormFieldList
 {
     
 	/**
 	 * field type
 	 * @var string
 	 */
-	public $type = 'positionlist';
+	public $type = 'projectpositionlist';
 
 	/**
 	 * Method to get the field options.
@@ -71,9 +72,20 @@ class JFormFieldpositionlist extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		// Initialize variables.
+		// Reference global application object
+        $this->jsmapp = JFactory::getApplication();
+        // JInput object
+        $this->jsmjinput = $this->jsmapp->input;
+        $this->jsmoption = $this->jsmjinput->getCmd('option');
+        
+        $team_id = $this->jsmapp->getUserState( "$this->jsmoption.team_id", '0' );
+        $persontype = $this->jsmapp->getUserState( "$this->jsmoption.persontype", '0' );
+        $project_team_id = $this->jsmapp->getUserState( "$this->jsmoption.project_team_id", '0' );
+        $pid = $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' );
+        
+        // Initialize variables.
 		$options = array();
-    $vartable = (string) $this->element['targettable'];
+//    $vartable = (string) $this->element['targettable'];
 		$select_id = JRequest::getVar('id');
     $db = JFactory::getDbo();
 			$query = $db->getQuery(true);
