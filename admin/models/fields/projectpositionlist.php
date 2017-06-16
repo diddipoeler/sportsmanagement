@@ -101,6 +101,12 @@ class JFormFieldprojectpositionlist extends JFormFieldList
             $query->where('ppp.project_id = '.$pid);
 			$query->order('pos.ordering,pos.name');
 			$db->setQuery($query);
+            
+        if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
+        {
+		$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
+        }
+            
             try { 
 			$options = $db->loadObjectList();
             }
@@ -108,6 +114,7 @@ catch (Exception $e) {
 //    // catch any database errors.
 //    $db->transactionRollback();
 //    JErrorPage::render($e);
+JFactory::getApplication()->enqueueMessage($db->getErrorMsg());
 }
             foreach ( $options as $row )
             {

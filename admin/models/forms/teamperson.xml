@@ -19,7 +19,7 @@
 		/>
 		
 		<field
-			name="project_position_id"
+			name="position_id"
 			type="positionlist"
 			targettable="person"
 			class="inputbox"
