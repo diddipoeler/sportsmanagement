@@ -86,13 +86,13 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 //		$this->item = $item;
 //		$this->script = $script;
 
-        $this->team_id	= $this->app->getUserState( "$this->option.team_id", '0' );
+        $this->team_id = $this->app->getUserState( "$this->option.team_id", '0' );
         $this->_persontype = $this->app->getUserState( "$this->option.persontype", '0' );
-        $this->project_team_id	= $this->app->getUserState( "$this->option.project_team_id", '0' );
+        $this->project_team_id = $this->app->getUserState( "$this->option.project_team_id", '0' );
         
         //$this->project_id	= sportsmanagementHelper::getTeamplayerProject($this->item->projectteam_id);
-		$this->project_id	= $this->app->getUserState( "$this->option.pid", '0' );
-		$this->season_id	= $this->app->getUserState( "$this->option.season_id", '0' );
+		$this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
+		$this->season_id = $this->app->getUserState( "$this->option.season_id", '0' );
                
         
 		$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
@@ -105,7 +105,7 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 		$this->assignRef('project_team',$project_team);
 		}
         
-		$person_id	= $this->item->person_id;
+		$person_id = $this->item->person_id;
 		$mdlPerson = JModelLegacy::getInstance("Person", "sportsmanagementModel");
 		$project_person = $mdlPerson->getPerson($person_id);
         
@@ -115,6 +115,7 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
         $this->project_person = $project_person;
         
         // personendaten setzen
+        $this->form->setValue('position_id', null, $project_person->position_id);
 		$this->form->setValue('injury', null, $project_person->injury);
 		$this->form->setValue('injury_date', null, $project_person->injury_date);
 		$this->form->setValue('injury_end', null, $project_person->injury_end);
@@ -138,6 +139,7 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
         
         //$matchdays = sportsmanagementHelper::getRoundsOptions($this->project_id, 'ASC', false);
         
+        /*
 		$projectpositions = array();
 		$projectpositions[] = JHtml::_('select.option',	'0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION' ) );
 		$mdlPositions = JModelLegacy::getInstance("Positions", "sportsmanagementModel");
@@ -155,7 +157,7 @@ class sportsmanagementViewTeamPerson extends sportsmanagementView
 												'value', 
 												'text', $this->item->project_position_id );
 		unset($projectpositions);
-        
+        */
 
 
 
