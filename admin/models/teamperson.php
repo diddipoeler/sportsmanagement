@@ -449,8 +449,30 @@ sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 		{
 		    $app->enqueueMessage(JText::_('sportsmanagementModelteamplayer save person season <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		}
-                
         
+        // alten eintrag löschen
+        // Create a new query object.
+        $query = $db->getQuery(true);
+        // delete all
+        $conditions = array(
+        $db->quoteName('person_id') . '='.$data['person_id'],
+        $db->quoteName('project_id') . '='.$post['pid'],
+        $db->quoteName('persontype') . '='.$post['persontype']
+        );
+ 
+$query->delete($db->quoteName('#__sportsmanagement_person_project_position'));
+$query->where($conditions);
+$db->setQuery($query); 
+sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);        
+// Create and populate an object.
+$profile = new stdClass();
+//$profile->person_id = $post['person_id'.$pks[$x]];
+$profile->person_id = $data['person_id'];
+$profile->project_id = $post['pid'];
+$profile->project_position_id = $data['project_position_id'];
+$profile->persontype = $post['persontype'];
+// Insert the object into table.
+$result = JFactory::getDbo()->insertObject('#__sportsmanagement_person_project_position', $profile);        
  
         
        if (isset($post['extended']) && is_array($post['extended'])) 

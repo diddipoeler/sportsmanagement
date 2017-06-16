@@ -87,7 +87,7 @@ class JFormFieldprojectpositionlist extends JFormFieldList
 		$options = array();
 //    $vartable = (string) $this->element['targettable'];
 		$select_id = JRequest::getVar('id');
-    $db = JFactory::getDbo();
+        $db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 			
 			$query->select('pp.id AS value, pos.name AS text');
