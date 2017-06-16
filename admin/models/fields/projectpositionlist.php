@@ -91,16 +91,24 @@ class JFormFieldprojectpositionlist extends JFormFieldList
 			$query = $db->getQuery(true);
 			
 			$query->select('pos.id AS value, pos.name AS text');
-			$query->from('#__sportsmanagement_position as pos');
-			$query->join('INNER', '#__sportsmanagement_sports_type AS s ON s.id = pos.sports_type_id');
-      //$query->join('INNER','#__sportsmanagement_'.$vartable.' AS t on t.sports_type_id = pos.sports_type_id');
+            $query->from('#__sportsmanagement_position as pos');
+            $query->join('INNER', '#__sportsmanagement_project_position AS pp ON pp.position_id = pos.id');
             
-			$query->where('pos.published = 1');
-            $query->where('t.id = '.$select_id);
+			$query->join('INNER', '#__sportsmanagement_sports_type AS s ON s.id = pos.sports_type_id');
+            $query->join('INNER', '#__sportsmanagement_person_project_position AS ppp ON pp.id = ppp.project_id');
+            
+            $query->where('ppp.project_position_id = '.$select_id);
+            $query->where('ppp.project_id = '.$pid);
 			$query->order('pos.ordering,pos.name');
 			$db->setQuery($query);
+            try { 
 			$options = $db->loadObjectList();
-            
+            }
+catch (Exception $e) {
+//    // catch any database errors.
+//    $db->transactionRollback();
+//    JErrorPage::render($e);
+}
             foreach ( $options as $row )
             {
                 $row->text = JText::_($row->text);
