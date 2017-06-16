@@ -90,7 +90,7 @@ class JFormFieldprojectpositionlist extends JFormFieldList
     $db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 			
-			$query->select('pos.id AS value, pos.name AS text');
+			$query->select('pp.id AS value, pos.name AS text');
             $query->from('#__sportsmanagement_position as pos');
             $query->join('INNER', '#__sportsmanagement_project_position AS pp ON pp.position_id = pos.id');
             
