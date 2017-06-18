@@ -836,7 +836,10 @@ else
             // Update their details in the table using id as the primary key.
             $result_update = $db->updateObject('#__sportsmanagement_match', $object, 'id', true);
             
+            if ( JComponentHelper::getParams($option)->get('show_debug_info_frontend') )
+        {
             $app->enqueueMessage(__METHOD__.' '.__LINE__.' object<br><pre>'.print_r($object, true).'</pre><br>','Notice');
+         }
             
             if(!$result_update) 
             {
