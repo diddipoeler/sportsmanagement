@@ -277,15 +277,7 @@ else
         
         //echo sportsmanagementHelperHtml::getBootstrapModalImage('home_lineup'.$team1->projectteamid,$desc,$imgTitle,'20',$url);
 ?>
-				<!--
-                <a rel="{handler: \'iframe\',size: {x:900,y:500}}"
-				   href="<?php echo $url; ?>" class='modal'>
-					<?php
-					$imgTitle = JText::_('COM_JOOMLEAGUE_RESULTS_ENTER_EDIT_RESULTS');
-					echo $desc.'hallo';
-					?>
-				</a>
-                -->
+			
 				<?php
                         
         ?>
@@ -293,7 +285,7 @@ else
  <a href="#" data-toggle="modal" data-target-color="lightblue" data-target="#bannerformmodal<?php echo $team1->projectteamid; ?>">Load me <?php echo $team1->projectteamid; ?></a>
 -->
 
-<a href="#home_lineup<?php echo $thismatch->id; ?>" data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png'; ?>" >home_lineup<?php echo $thismatch->id; ?></a>
+<a href="#home_lineup<?php echo $thismatch->id; ?>" data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png'; ?>" ></a>
 
 <div class="modal fade home_lineup<?php echo $thismatch->id; ?>" 
 data-modal-color="" 
@@ -376,7 +368,7 @@ id="home_lineup<?php echo $thismatch->id; ?>">
 <a href="<?php echo $url; ?>" rel="modaljsm:open"><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png'; ?>" > </a>
 -->
 
-<a href="#away_lineup<?php echo $thismatch->id; ?>" data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png'; ?>" >away_lineup<?php echo $thismatch->id; ?></a>
+<a href="#away_lineup<?php echo $thismatch->id; ?>" data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png'; ?>" ></a>
 
 <div class="modal fade away_lineup<?php echo $thismatch->id; ?>" 
 data-modal-color="" 
@@ -536,7 +528,7 @@ id="away_lineup<?php echo $thismatch->id; ?>">
 <a href="<?php echo $url; ?>" rel="modaljsm:open"><img src="<?php echo JURI::root().'media/com_sportsmanagement/jl_images/events.png'; ?>" > </a>
 -->
 
-<a href="#edit_events<?php echo $thismatch->id; ?>" data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'media/com_sportsmanagement/jl_images/events.png'; ?>" >edit_events<?php echo $thismatch->id; ?></a>
+<a href="#edit_events<?php echo $thismatch->id; ?>" data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'media/com_sportsmanagement/jl_images/events.png'; ?>" ></a>
 
 <div class="modal fade edit_events<?php echo $thismatch->id; ?>" 
 data-modal-color="" 
@@ -593,7 +585,7 @@ id="edit_events<?php echo $thismatch->id; ?>">
 <a href="<?php echo $url; ?>" rel="modaljsm:open"><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/calc16.png'; ?>" > </a>
 -->
 
-<a href="#edit_statistics<?php echo $thismatch->id; ?>" data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/calc16.png'; ?>" >edit_statistics<?php echo $thismatch->id; ?></a>
+<a href="#edit_statistics<?php echo $thismatch->id; ?>" data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/calc16.png'; ?>" ></a>
 
 <div class="modal fade edit_statistics<?php echo $thismatch->id; ?>" 
 data-modal-color="" 
@@ -650,7 +642,7 @@ echo $this->loadTemplate('editstats');
 <a href="<?php echo $url; ?>" rel="modaljsm:open"><img src="<?php echo JURI::root().'media/com_sportsmanagement/jl_images/players_add.png'; ?>" ></a>
 -->
 
-<a href="#edit_referees<?php echo $thismatch->id; ?>" data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'media/com_sportsmanagement/jl_images/players_add.png'; ?>" >edit referees<?php echo $thismatch->id; ?></a>
+<a href="#edit_referees<?php echo $thismatch->id; ?>" data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'media/com_sportsmanagement/jl_images/players_add.png'; ?>" ></a>
 
 <div class="modal fade edit_referees<?php echo $thismatch->id; ?>" 
 data-modal-color="" 

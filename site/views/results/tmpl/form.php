@@ -69,13 +69,13 @@ $document = JFactory::getDocument();
 // welche joomla version
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-JHtml::_('behavior.framework', true);
+//JHtml::_('behavior.framework', true);
 //load data for editor
 //require ( JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'editor.php' );
 }
 else
 {
-JHtml::_( 'behavior.mootools' );  
+//JHtml::_( 'behavior.mootools' );  
 //load data for editor
 require ( JPATH_SITE . DS . 'libraries' . DS . 'joomla' . DS . 'html' . DS . 'editor.php' );    
   
