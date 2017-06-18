@@ -68,17 +68,26 @@ class sportsmanagementControllerResults extends JControllerLegacy
     $this->app = JFactory::getApplication();
     // JInput object
     $this->jinput = $this->app->input;
+    $this->jsmoption = $this->jinput->getCmd('option');
     $this->model = $this->getModel('results');
     // Get the input
     $this->pks = $this->jinput->getVar('cid', null, 'post', 'array');
     $this->post = $this->jinput->post->getArray();
+    
+    if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
+        {
     $this->app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($this->post, true).'</pre><br>','Notice');
-
+}
 
 	}
     
     
     
+    /**
+     * sportsmanagementControllerResults::saveReferees()
+     * 
+     * @return void
+     */
     public function saveReferees()
 	{
 	$this->setRedirect('index.php?option=com_sportsmanagement&view=results&cfg_which_database='.$this->post['cfg_which_database'].'&s='.$this->post['s'].'&p='.$this->post['p'].'&r='.$this->post['r'].'&division='.$this->post['division'].'&mode='.$this->post['mode'].'&order='.$this->post['order'].'&layout='.$this->post['layout'] );   
@@ -117,8 +126,11 @@ class sportsmanagementControllerResults extends JControllerLegacy
     $post = $jinput->post->getArray();
     $layout = $jinput->getCmd('layout', 'form');
     
-//    $app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
-//    $app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+    if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_frontend') )
+        {
+    $app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
+    $app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
+}
 
     $model->saveshort();
    
