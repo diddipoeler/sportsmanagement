@@ -24,16 +24,7 @@ class sportsmanagementViewResults extends JViewLegacy
 //		$css		= 'components/com_sportsmanagement/assets/css/results.css';
 //		$document->addStyleSheet($css);
 		
-		//add js file
-		// welche joomla version
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-JHtml::_('behavior.framework', true);
-}
-else
-{
-JHtml::_( 'behavior.mootools' );    
-}
+		
 		$model	= $this->getModel();
 				
 		$matches = $model->getMatches();
