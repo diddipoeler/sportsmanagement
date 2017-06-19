@@ -107,7 +107,18 @@ class sportsmanagementView extends JViewLegacy
         $this->model = $this->getModel();
 //        $js ="registerhome('".JURI::base()."','JSM Sports Management','".$this->app->getCfg('sitename')."','0');". "\n";
 //        $this->document->addScriptDeclaration( $js );
-        
+
+$headData = $this->document->getHeadData();
+$scripts = $headData['scripts'];
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r($scripts,true).'</pre>'),'');
+unset($scripts[JUri::root(true) . '/media/jui/js/jquery.min.js']);
+unset($scripts[JUri::root(true) . '/media/jui/js/jquery-noconflict.js']);
+unset($scripts[JUri::root(true) . '/media/jui/js/jquery-migrate.min.js']);
+unset($scripts[JUri::root(true) . '/media/jui/js/bootstrap.min.js']);
+
+$headData['scripts'] = $scripts;
+$this->document->setHeadData($headData);
+		
         switch ($this->view)
         {
             case 'resultsranking':
