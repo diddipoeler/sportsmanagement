@@ -63,7 +63,8 @@ else
 // Joomla! 1.5 code here
 }
 
-        
+JHtml::_('bootstrap.framework', false);
+
 /**
  * sportsmanagementView
  * 
