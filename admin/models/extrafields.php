@@ -144,8 +144,8 @@ class sportsmanagementModelextrafields extends JSMModelList
 		$this->jsmquery->where('objcountry.published = '.$this->getState('filter.state'));	
 		}
         
-        $this->jsmquery->order($db->escape($this->getState('list.ordering', 'objcountry.name')).' '.
-                $db->escape($this->getState('list.direction', 'ASC')));
+        $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'objcountry.name')).' '.
+                $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
