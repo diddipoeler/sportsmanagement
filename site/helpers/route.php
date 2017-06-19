@@ -722,7 +722,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
      *
      * @return string
      */
-    public static function getEditLineupRoute($projectid, $matchid, $task = null, $team = null, $projectTeam = null, $match_date = null,$cfg_which_database = 0,$s = 0,$r = 0,$division = 0,$oldlayout = '' )
+    public static function getEditLineupRoute($projectid, $matchid, $task = null, $team = 0, $projectTeam = 0, $match_date = '0000-00-00',$cfg_which_database = 0,$s = 0,$r = 0,$division = 0,$oldlayout = '' )
 	{
 //	   $params = array(	"option" => "com_sportsmanagement",
 //					"view" => "results",
@@ -738,22 +738,22 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 //		if ( ! is_null( $projectTeam ) ) { $params['pteam'] = $projectTeam; }
 //if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 
-$params = array(	"option" => "com_sportsmanagement",
-					"view" => "results",
-                    "cfg_which_database" => $cfg_which_database,
-                    "s" => $s,
-                    "p" => $projectid,
-                    "r" => $r,
-                    "division" => $division,
-                    "mode" => '',
-                    "order" => '',
-                    "layout" => "editlineup",
-					"matchid" => $matchid,
-                    "tmpl" => "component",
-                    "oldlayout" => $oldlayout,
-                    "match_date" => $match_date,
-                    "team" => $team,
-                    "pteam" => $projectTeam
+$params = array("option" => "com_sportsmanagement",
+		"view" => "results",
+                "cfg_which_database" => $cfg_which_database,
+                "s" => $s,
+                "p" => $projectid,
+                "r" => $r,
+                "division" => $division,
+                "mode" => 0,
+                "order" => ,
+                "layout" => "editlineup",
+		"matchid" => $matchid,
+                "tmpl" => "component",
+                "oldlayout" => $oldlayout,
+                "match_date" => $match_date,
+                "team" => $team,
+                "pteam" => $projectTeam
                     );                    
 
 
