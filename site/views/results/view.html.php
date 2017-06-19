@@ -59,7 +59,8 @@ jimport( 'joomla.filesystem.file' );
  * @version 2014
  * @access public
  */
-class sportsmanagementViewResults extends JViewLegacy
+//class sportsmanagementViewResults extends JViewLegacy
+class sportsmanagementViewResults extends sportsmanagementView
 {
 
 	/**
@@ -68,7 +69,8 @@ class sportsmanagementViewResults extends JViewLegacy
 	 * @param mixed $tpl
 	 * @return void
 	 */
-	public function display($tpl = null)
+	//public function display($tpl = null)
+	function init()
 	{
 		// Get a refrence of the page instance in joomla
 		$document	= JFactory::getDocument();
@@ -242,7 +244,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
         }
         
         
-        parent::display($tpl);
+        //parent::display($tpl);
 	}
 
 	/**
