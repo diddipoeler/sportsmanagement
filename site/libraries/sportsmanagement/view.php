@@ -42,13 +42,13 @@ defined('_JEXEC') or die();
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
-JHtml::_('jquery.framework');
+//JHtml::_('jquery.framework');
 }
 elseif(version_compare(JVERSION,'2.5.0','ge')) 
 {
 // Joomla! 2.5 code here
-JHtml::_('behavior.modal');
-JHtml::_('behavior.framework');
+//JHtml::_('behavior.modal');
+//JHtml::_('behavior.framework');
 } 
 elseif(version_compare(JVERSION,'1.7.0','ge')) 
 {
