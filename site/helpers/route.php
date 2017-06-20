@@ -739,7 +739,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 //if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
 
 $params = array("option" => "com_sportsmanagement",
-		"view" => "results",
+		"view" => "editmatch",
                 "cfg_which_database" => $cfg_which_database,
                 "s" => $s,
                 "p" => $projectid,
