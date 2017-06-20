@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie kÃ¶nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spÃ¤teren
+* verÃ¶ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nÃ¼tzlich sein wird, aber
+* OHNE JEDE GEWÃ„HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* GewÃ¤hrleistung der MARKTFÃ„HIGKEIT oder EIGNUNG FÃœR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fÃ¼r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -177,7 +177,7 @@ function fillContainer(site)
 	<td valign="">
 		<?php
         
-        // über das backend/administrator bearbeiten
+        // Ã¼ber das backend/administrator bearbeiten
 		//JHtml::_('behavior.modal','a.mymodal');
 		$url = sportsmanagementHelperRoute::getEditMatchRoute(sportsmanagementModelResults::$projectid,$thismatch->id,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,sportsmanagementModelResults::$divisionid,'form');
 		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_MATCH_DETAILS_BACKEND');
@@ -268,7 +268,7 @@ else
 		<!-- Edit home line-up -->
 		<?php
         
-        // über das backend/administrator bearbeiten
+        // Ã¼ber das backend/administrator bearbeiten
 //$url = sportsmanagementHelperRoute::getEditMatchRoute(sportsmanagementModelResults::$projectid,$thismatch->id,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,sportsmanagementModelResults::$divisionid,'form');        
 		$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,null,$team1->projectteamid,null,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,sportsmanagementModelResults::$divisionid,'form');
 		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_HOME');
@@ -284,9 +284,12 @@ else
 <!--
  <a href="#" data-toggle="modal" data-target-color="lightblue" data-target="#bannerformmodal<?php echo $team1->projectteamid; ?>">Load me <?php echo $team1->projectteamid; ?></a>
 -->
-
+<a href="<?php echo $url; ?>" rel="modaljsm:open">
+<img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png'; ?>" >
+</a>
+<!--		
 <a href="#home_lineup<?php echo $thismatch->id; ?>" data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png'; ?>" ></a>
-
+-->
 <div class="modal fade home_lineup<?php echo $thismatch->id; ?>" 
 data-modal-color="" 
 data-backdrop="static" 
@@ -354,7 +357,7 @@ id="home_lineup<?php echo $thismatch->id; ?>">
 		<!-- Edit away line-up -->
 		<?php
         
-        // über das backend/administrator bearbeiten
+        // Ã¼ber das backend/administrator bearbeiten
 		$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,null,$team2->projectteamid,null,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,sportsmanagementModelResults::$divisionid,'form');
 		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_AWAY');
 		//$desc = JHtml::image(	JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
@@ -513,7 +516,7 @@ id="away_lineup<?php echo $thismatch->id; ?>">
 	<td valign="top">
 		<?php
         
-        // über das backend/administrator bearbeiten
+        // Ã¼ber das backend/administrator bearbeiten
 		$url = sportsmanagementHelperRoute::getEditEventsRoute(sportsmanagementModelResults::$projectid,$thismatch->id,null,null,null,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,sportsmanagementModelResults::$divisionid,'form');
 		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EVENTS_BACKEND');
 		//$desc = JHtml::image(JURI::root().'media/com_sportsmanagement/jl_images/events.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
@@ -571,7 +574,7 @@ id="edit_events<?php echo $thismatch->id; ?>">
 	<td valign="top">
 		<?php
         
-        // über das backend/administrator bearbeiten
+        // Ã¼ber das backend/administrator bearbeiten
 		$url = sportsmanagementHelperRoute::getEditStatisticsRoute(sportsmanagementModelResults::$projectid,$thismatch->id,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,sportsmanagementModelResults::$divisionid,'form');
 		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_STATISTICS_BACKEND');
 		//$desc = JHtml::image(JURI::root().'administrator/components/com_sportsmanagement/assets/images/calc16.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
@@ -628,7 +631,7 @@ echo $this->loadTemplate('editstats');
 	<td valign="top">
 		<?php
         
-        // über das backend/administrator bearbeiten
+        // Ã¼ber das backend/administrator bearbeiten
 		$url = sportsmanagementHelperRoute::getEditRefereesRoute($this->project->id,$thismatch->id);
 		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_REFEREE_BACKEND');
 		//$desc = JHtml::image(	JURI::root().'/administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
