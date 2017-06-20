@@ -445,12 +445,17 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
        $data['start_date']	= sportsmanagementHelper::convertDate($data['start_date'],0);
        $data['sports_type_id'] = $data['request']['sports_type_id'];
        $data['agegroup_id'] = $data['request']['agegroup_id'];
-       $data['fav_team'] = implode(',',$post['jform']['fav_team']);
+       //$data['fav_team'] = implode(',',$post['jform']['fav_team']);
        $data['modified_timestamp'] = sportsmanagementHelper::getTimestamp($data['modified']);
-       if ( !isset($post['fav_team']) )
+       if ( !$post['jform']['fav_team'] )
        {
        $data['fav_team'] = '';
        }
+       else
+       {
+       $data['fav_team'] = implode(',',$post['jform']['fav_team']);
+       }
+
 
        break; 
        default:
