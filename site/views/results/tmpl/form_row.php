@@ -284,16 +284,17 @@ else
 <!--
  <a href="#" data-toggle="modal" data-target-color="lightblue" data-target="#bannerformmodal<?php echo $team1->projectteamid; ?>">Load me <?php echo $team1->projectteamid; ?></a>
 -->
+<!--		
 <a href="<?php echo $url; ?>" rel="modaljsm:open">
 <img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png'; ?>" >
 </a>
+-->		
 <!--		
 <a href="#home_lineup<?php echo $thismatch->id; ?>" data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png'; ?>" ></a>
 -->
-<div class="modal fade home_lineup<?php echo $thismatch->id; ?>" 
-data-modal-color="" 
-data-backdrop="static" 
-data-keyboard="false"
+<a data-target="#home_lineup<?php echo $thismatch->id; ?>"  data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png'; ?>" ></a>		
+<div class="modal fade" 
+
 tabindex="-1" 
 role="dialog" 
 aria-labelledby="home_lineup" 
@@ -307,13 +308,8 @@ id="home_lineup<?php echo $thismatch->id; ?>">
           <h4 class="modal-title" id="myModalLabel">Contact Form</h4>
         </div>
         <div class="modal-body">
+<iframe scrolling="no" allowtransparency="true" src="<?php echo $url; ?>" height="500" frameborder="0" width="99.6%"></iframe>                       
           
-          <form id="requestacallform" method="POST" name="requestacallform">
-
-<?PHP
-//echo $this->loadTemplate('editlineup');
-?>
-          </form>
           
         </div>
         <div class="modal-footer">
