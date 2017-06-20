@@ -270,7 +270,7 @@ else
         
         // über das backend/administrator bearbeiten
 //$url = sportsmanagementHelperRoute::getEditMatchRoute(sportsmanagementModelResults::$projectid,$thismatch->id,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,sportsmanagementModelResults::$divisionid,'form');        
-		$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,null,$team1->projectteamid,null,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,sportsmanagementModelResults::$divisionid,'form');
+		$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,null,$team1->projectteamid,$datum,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,0,'form');
 		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_HOME');
 		//$desc = JHtml::image(	JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
 		$desc = JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png';
@@ -354,7 +354,7 @@ id="home_lineup<?php echo $thismatch->id; ?>">
 		<?php
         
         // über das backend/administrator bearbeiten
-		$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,null,$team2->projectteamid,null,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,sportsmanagementModelResults::$divisionid,'form');
+		$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,null,$team2->projectteamid,$datum,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,0,'form');
 		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_EDIT_LINEUP_AWAY');
 		//$desc = JHtml::image(	JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
         $desc = JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png';
@@ -367,18 +367,16 @@ id="home_lineup<?php echo $thismatch->id; ?>">
 <a href="<?php echo $url; ?>" rel="modaljsm:open"><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png'; ?>" > </a>
 -->
 
-<a href="#away_lineup<?php echo $thismatch->id; ?>" data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png'; ?>" ></a>
 
-<div class="modal fade away_lineup<?php echo $thismatch->id; ?>" 
-data-modal-color="" 
-data-backdrop="static" 
-data-keyboard="false"
+<a data-target="#away_lineup<?php echo $thismatch->id; ?>"  data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'administrator/components/com_sportsmanagement/assets/images/players_add.png'; ?>" ></a>		
+<div class="modal fade" 
+
 tabindex="-1" 
 role="dialog" 
 aria-labelledby="away_lineup" 
 aria-hidden="true"  
 id="away_lineup<?php echo $thismatch->id; ?>">
-  <div class="modal-dialog modal-sm">
+  <div class="modal-dialog">
     <div class="modal-content">
      <!-- <div class="modal-content"> -->
         <div class="modal-header">
@@ -386,13 +384,8 @@ id="away_lineup<?php echo $thismatch->id; ?>">
           <h4 class="modal-title" id="myModalLabel">Contact Form</h4>
         </div>
         <div class="modal-body">
+<iframe scrolling="no" allowtransparency="true" src="<?php echo $url; ?>" height="500" frameborder="0" width="99.6%"></iframe>                                 
           
-          <form id="requestacallform" method="POST" name="requestacallform">
-
-<?PHP
-//echo $this->loadTemplate('editlineup');
-?>
-          </form>
           
         </div>
         <div class="modal-footer">
