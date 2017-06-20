@@ -353,7 +353,7 @@ function sportsmanagementBuildRoute(&$query)
                 unset($query['mid']);
             }
             break;
-        case 'editmatch':
+        
         case 'editevents':
             if (isset($query['mid'])) {
                 $segments[] = $query['mid'];
@@ -493,6 +493,7 @@ function sportsmanagementBuildRoute(&$query)
             }
             break;
         case 'results':
+            case 'editmatch':
             if (isset($query['r'])) {
                 $segments[] = $query['r'];
                 unset($query['r']);
@@ -864,7 +865,7 @@ function sportsmanagementParseRoute($segments)
                 $vars['mid'] = $segments[7];
             }
             break;
-        case 'editmatch':
+        
         case 'editevents':
 
             if (isset($segments[4])) {
@@ -974,6 +975,7 @@ function sportsmanagementParseRoute($segments)
             }
         break;
         case 'results':
+            case 'editmatch':
           if (isset($segments[4])) {
                 $vars['r'] = $segments[4];
             }
