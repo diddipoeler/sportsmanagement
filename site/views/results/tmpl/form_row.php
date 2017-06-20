@@ -308,12 +308,12 @@ id="home_lineup<?php echo $thismatch->id; ?>">
           <h4 class="modal-title" id="myModalLabel">Contact Form</h4>
         </div>
         <div class="modal-body">
-<iframe scrolling="no" allowtransparency="true" src="<?php echo $url; ?>" height="500" frameborder="0" width="99.6%"></iframe>                       
+<iframe scrolling="yes" allowtransparency="true" src="<?php echo $url; ?>" height="500" frameborder="0" width="99.6%"></iframe>                       
           
           
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-blue">Submit</button>
+
           <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
         </div>        
      <!-- </div> -->
@@ -384,12 +384,12 @@ id="away_lineup<?php echo $thismatch->id; ?>">
           <h4 class="modal-title" id="myModalLabel">Contact Form</h4>
         </div>
         <div class="modal-body">
-<iframe scrolling="no" allowtransparency="true" src="<?php echo $url; ?>" height="500" frameborder="0" width="99.6%"></iframe>                                 
+<iframe scrolling="yes" allowtransparency="true" src="<?php echo $url; ?>" height="500" frameborder="0" width="99.6%"></iframe>                                 
           
           
         </div>
         <div class="modal-footer">
-          <button type="submit" class="btn btn-blue">Submit</button>
+
           <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
         </div>        
      <!-- </div> -->
