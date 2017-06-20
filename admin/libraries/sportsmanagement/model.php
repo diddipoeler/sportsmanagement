@@ -447,6 +447,11 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
        $data['agegroup_id'] = $data['request']['agegroup_id'];
        $data['fav_team'] = implode(',',$post['jform']['fav_team']);
        $data['modified_timestamp'] = sportsmanagementHelper::getTimestamp($data['modified']);
+       if ( !isset($post['fav_team']) )
+       {
+       $data['fav_team'] = '';
+       }
+
        break; 
        default:
        break; 
