@@ -722,7 +722,7 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
      *
      * @return string
      */
-    public static function getEditLineupRoute($projectid, $matchid, $task = null, $team = 0, $projectTeam = 0, $match_date = '0000-00-00',$cfg_which_database = 0,$s = 0,$r = 0,$division = 0,$oldlayout = '' )
+    public static function getEditLineupRoute($projectid, $matchid, $layout = 'editlineup', $team = 0, $projectTeam = 0, $match_date = '0000-00-00',$cfg_which_database = 0,$s = 0,$r = 0,$division = 0,$oldlayout = '' )
 	{
 //	   $params = array(	"option" => "com_sportsmanagement",
 //					"view" => "results",
@@ -747,7 +747,7 @@ $params = array("option" => "com_sportsmanagement",
                 "division" => $division,
                 "mode" => 0,
                 "order" => 0,
-                "layout" => "editlineup",
+                "layout" => $layout,
 		"matchid" => $matchid,
                 "tmpl" => "component",
                 "oldlayout" => $oldlayout,
