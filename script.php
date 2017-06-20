@@ -748,6 +748,10 @@ echo self::getFxInitJSCode('steps');
         break;
         }
         
+/**
+ * das ein- und ausschalten den anwendern überlassen
+ */
+        /*
         // auf alle faelle erst mal nicht einschalten        
         // Create an object for the record we are going to update.
         $object = new stdClass();
@@ -756,7 +760,7 @@ echo self::getFxInitJSCode('steps');
         $object->enabled = 0;
         // Update their details in the users table using id as the primary key.
         $result = JFactory::getDbo()->updateObject('#__extensions', $object, 'extension_id');  
-        
+        */
         }
   }
   else
@@ -809,7 +813,11 @@ echo self::getFxInitJSCode('steps');
         $result = $installer->install($path);
         break;
         }
-        
+
+/**
+ * das ein- und ausschalten den anwendern überlassen
+ */
+        /*
         // auf alle faelle erst mal nicht einschalten        
         // Create an object for the record we are going to update.
         $object = new stdClass();
@@ -818,7 +826,7 @@ echo self::getFxInitJSCode('steps');
         $object->enabled = 0;
         // Update their details in the users table using id as the primary key.
         $result = JFactory::getDbo()->updateObject('#__extensions', $object, 'extension_id');  
-        
+        */
         }
         
         }
