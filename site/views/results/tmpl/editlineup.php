@@ -68,8 +68,8 @@ if($close == 1) {
 	<?php 
 }
 ?>
-<div class="modaljsm">
-<div id="exTab1" class="container">
+<div class="">
+<div id="exTab1" class="">
 <form  action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" id='adminForm' method='post' style='display:inline' name='adminform' >
 	
 		<div class="fltrt">
