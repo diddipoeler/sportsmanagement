@@ -529,6 +529,10 @@ function sportsmanagementBuildRoute(&$query)
                 $segments[] = $query['team'];
                 unset($query['team']);
             }
+            if (isset($query['pteam'])) {
+                $segments[] = $query['pteam'];
+                unset($query['pteam']);
+            }
             
             break;
         case 'resultsmatrix':
@@ -992,6 +996,9 @@ function sportsmanagementParseRoute($segments)
             }
             if (isset($segments[12])) {
                 $vars['team'] = $segments[12];
+            }
+            if (isset($segments[13])) {
+                $vars['pteam'] = $segments[13];
             }
             break;
         case 'resultsmatrix':
