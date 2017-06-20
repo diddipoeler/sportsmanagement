@@ -493,6 +493,44 @@ function sportsmanagementBuildRoute(&$query)
             }
             break;
         case 'results':
+            if (isset($query['r'])) {
+                $segments[] = $query['r'];
+                unset($query['r']);
+            }
+            if (isset($query['division'])) {
+                $segments[] = $query['division'];
+                unset($query['division']);
+            }
+            if (isset($query['mode'])) {
+                $segments[] = $query['mode'];
+                unset($query['mode']);
+            }
+            if (isset($query['order'])) {
+                $segments[] = $query['order'];
+                unset($query['order']);
+            }
+            if (isset($query['layout'])) {
+                $segments[] = $query['layout'];
+                unset($query['layout']);
+            }
+            if (isset($query['matchid'])) {
+                $segments[] = $query['matchid'];
+                unset($query['matchid']);
+            }
+            if (isset($query['tmpl'])) {
+                $segments[] = $query['tmpl'];
+                unset($query['tmpl']);
+            }
+            if (isset($query['oldlayout'])) {
+                $segments[] = $query['oldlayout'];
+                unset($query['oldlayout']);
+            }
+            if (isset($query['team'])) {
+                $segments[] = $query['team'];
+                unset($query['team']);
+            }
+            
+            break;
         case 'resultsmatrix':
         case 'resultsranking':
             if (isset($query['r'])) {
@@ -928,6 +966,34 @@ function sportsmanagementParseRoute($segments)
             }
         break;
         case 'results':
+          if (isset($segments[4])) {
+                $vars['r'] = $segments[4];
+            }
+            if (isset($segments[5])) {
+                $vars['division'] = $segments[5];
+            }
+            if (isset($segments[6])) {
+                $vars['mode'] = $segments[6];
+            }
+            if (isset($segments[7])) {
+                $vars['order'] = $segments[7];
+            }
+            if (isset($segments[8])) {
+                $vars['layout'] = $segments[8];
+            }
+            if (isset($segments[9])) {
+                $vars['matchid'] = $segments[9];
+            }
+            if (isset($segments[10])) {
+                $vars['tmpl'] = $segments[10];
+            }
+            if (isset($segments[11])) {
+                $vars['oldlayout'] = $segments[11];
+            }
+            if (isset($segments[12])) {
+                $vars['team'] = $segments[12];
+            }
+            break;
         case 'resultsmatrix':
         case 'resultsranking':
 
