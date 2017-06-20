@@ -38,37 +38,44 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-/*
-// welche joomla version ?
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-JHtml::_('jquery.framework');
-}
 
-JHtml::_('behavior.tooltip');
-JHtml::_('behavior.formvalidation');
-*/
-$params = $this->form->getFieldsets('params');
 
 ?>
+
+<style>
+ 
+
+
+.modaljsm {
+    width: 80%;
+    height: 60%;
+  }  
+
+
+
+</style>
+
+
 <?php
 //save and close 
 $close = JRequest::getInt('close',0);
 if($close == 1) {
 	?><script>
 	window.addEvent('domready', function() {
-		$('cancel').onclick();	
+		jQuery('cancel').onclick();	
 	});
 	</script>
 	<?php 
 }
 ?>
+<div class="modaljsm">
+<div id="exTab1" class="container">
 <form  action="<?php echo JRoute::_('index.php?option=com_sportsmanagement');?>" id='adminForm' method='post' style='display:inline' name='adminform' >
-	<fieldset>
+	
 		<div class="fltrt">
 			<button type="button" onclick="jQuery('select.position-starters option').prop('selected', 'selected');jQuery('select.position-staff option').prop('selected', 'selected');Joomla.submitform('matches.saveroster', this.form);">
 				<?php echo JText::_('JAPPLY');?></button>
-			<button type="button" onclick="$('close').value=1; jQuery('select.position-starters option').prop('selected', 'selected');jQuery('select.position-staff option').prop('selected', 'selected');Joomla.submitform('matches.saveroster', this.form);">
+			<button type="button" onclick="jQuery('close').value=1; jQuery('select.position-starters option').prop('selected', 'selected');jQuery('select.position-staff option').prop('selected', 'selected');Joomla.submitform('matches.saveroster', this.form);">
 				<?php echo JText::_('JSAVE');?></button>
 			<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
 				<?php echo JText::_('JCANCEL');?></button>
@@ -76,52 +83,72 @@ if($close == 1) {
 		<div class="configuration" >
 			<?php echo JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_MATCH_ELU_TITLE',$this->teamname); ?>
 		</div>
-	</fieldset>
+	
 	<div class="clear"></div>
-	<div id="lineup">
-		<?php
-        // welche joomla version
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-// Define tabs options for version of Joomla! 3.1
-$tabsOptionsJ31 = array(
-            "active" => "panel1" // It is the ID of the active tab.
-        );
 
-echo JHtml::_('bootstrap.startTabSet', 'ID-Tabs-J31-Group', $tabsOptionsJ31);
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel1', JText::_('COM_SPORTSMANAGEMENT_TABS_SUBST'));
+<ul  class="nav nav-pills">
+<li class="active">
+<a  href="#1a" data-toggle="tab">
+<?PHP
+echo JText::_('COM_SPORTSMANAGEMENT_TABS_SUBST');
+?>
+</a>
+</li>
+<li>
+<a href="#2a" data-toggle="tab">
+<?PHP
+echo JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS');
+?>
+</a>
+</li>
+<li>
+<a href="#3a" data-toggle="tab">
+<?PHP
+echo JText::_('COM_SPORTSMANAGEMENT_TABS_STAFF');
+?>
+</a>
+</li>
+<li>
+<a href="#4a" data-toggle="tab">
+<?PHP
+echo JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS');
+?>
+</a>
+</li>
+</ul>
+
+
+<div class="tab-content clearfix">
+<div class="tab-pane active" id="1a">
+<?php
 echo $this->loadTemplate('substitutions');
-echo JHtml::_('bootstrap.endTab');
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel2', JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS'));
+?>
+</div>
+<div class="tab-pane" id="2a">
+<?php
 echo $this->loadTemplate('players');
-echo JHtml::_('bootstrap.endTab');
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel3', JText::_('COM_SPORTSMANAGEMENT_TABS_STAFF'));
+?>
+</div>
+<div class="tab-pane" id="3a">
+<?php
 echo $this->loadTemplate('staff');
-echo JHtml::_('bootstrap.endTab');
-echo JHtml::_('bootstrap.addTab', 'ID-Tabs-J31-Group', 'panel4', JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS'));
+?>
+</div>
+<div class="tab-pane" id="4a">				
+<?php
 echo $this->loadTemplate('players_trikot_numbers');
-echo JHtml::_('bootstrap.endTab');
-echo JHtml::_('bootstrap.endTabSet');    
-    }
-        else
-    {
-		// focus on players tab 
-		$startOffset = 1;
-		echo JHtml::_('tabs.start','tabs', array('startOffset'=>$startOffset));
-		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_SUBST'), 'panel1');
-		echo $this->loadTemplate('substitutions');
+?>
+</div>				
+</div>
+
+
+
 		
-		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYERS'), 'panel2');
-		echo $this->loadTemplate('players');
-		
-		echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_STAFF'), 'panel3');
-		echo $this->loadTemplate('staff');
-		
-        echo JHtml::_('tabs.panel',JText::_('COM_SPORTSMANAGEMENT_TABS_PLAYER_TRIKOT_NUMBERS'), 'panel4');
-		echo $this->loadTemplate('players_trikot_numbers');
+		<?php
+       // echo 'hallo';
         
-		echo JHtml::_('tabs.end');
-        }
+		
+
 		?>
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="view" value="" />
@@ -135,5 +162,7 @@ echo JHtml::_('bootstrap.endTabSet');
         
         
 		<?php echo JHtml::_('form.token')."\n"; ?>
-	</div>
+
 </form>
+</div>
+</div>
