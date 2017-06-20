@@ -66,7 +66,10 @@ defined('_JEXEC') or die('Restricted access');
     /* 95% of window height */
     height: 95%;
 }  
-
+.modal-body {
+    /* 90% of window height */
+    height: 90%;
+}  
 
 </style>
 
@@ -308,7 +311,7 @@ id="home_lineup<?php echo $thismatch->id; ?>">
           <h4 class="modal-title" id="myModalLabel">Contact Form</h4>
         </div>
         <div class="modal-body">
-<iframe scrolling="yes" allowtransparency="true" src="<?php echo $url; ?>" height="500" frameborder="0" width="99.6%"></iframe>                       
+<iframe scrolling="yes" allowtransparency="true" src="<?php echo $url; ?>" height="90%" frameborder="0" width="99.6%"></iframe>                       
           
           
         </div>
@@ -384,7 +387,7 @@ id="away_lineup<?php echo $thismatch->id; ?>">
           <h4 class="modal-title" id="myModalLabel">Contact Form</h4>
         </div>
         <div class="modal-body">
-<iframe scrolling="yes" allowtransparency="true" src="<?php echo $url; ?>" height="500" frameborder="0" width="99.6%"></iframe>                                 
+<iframe scrolling="yes" allowtransparency="true" src="<?php echo $url; ?>" height="90%" frameborder="0" width="99.6%"></iframe>                                 
           
           
         </div>
