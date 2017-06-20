@@ -751,9 +751,9 @@ $params = array("option" => "com_sportsmanagement",
 		"matchid" => $matchid,
                 "tmpl" => "component",
                 "oldlayout" => $oldlayout,
-                "match_date" => $match_date,
                 "team" => $team,
-                "pteam" => $projectTeam
+                "pteam" => $projectTeam,
+		"match_date" => $match_date
                     );                    
 
 
