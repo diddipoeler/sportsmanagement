@@ -564,7 +564,7 @@ function initEditMatch()
 		}
 		$lists ['old_match'] = JHtml::_ ( 'select.genericlist', $oldmatches, 'old_match_id', 'class="inputbox" size="1"', 'value', 'text', $this->match->old_match_id );
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' oldmatches<br><pre>'.print_r($oldmatches,true).'</pre>'),'');
+       // $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' oldmatches<br><pre>'.print_r($oldmatches,true).'</pre>'),'');
 
 		$newmatches [] = JHtml::_ ( 'select.option', '0', JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_NEW_MATCH' ) );
 		$res = array ();
