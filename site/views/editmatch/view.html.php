@@ -577,7 +577,7 @@ function initEditMatch()
 		}
 		$lists ['new_match'] = JHtml::_ ( 'select.genericlist', $newmatches, 'new_match_id', 'class="inputbox" size="1"', 'value', 'text', $this->match->new_match_id );
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' newmatches<br><pre>'.print_r($newmatches,true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' newmatches<br><pre>'.print_r($newmatches,true).'</pre>'),'');
         
         $lists['count_result'] = JHtml::_('select.booleanlist','count_result','class="btn btn-primary"',$this->match->count_result);
         // build the html select booleanlist which team got the won
