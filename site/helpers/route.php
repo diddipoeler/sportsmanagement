@@ -855,60 +855,6 @@ if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_wh
 	}
 
     /**
-     * sportsmanagementHelperRoute::getEditMatchRoute()
-     *
-     * @param mixed  $projectid
-     * @param mixed  $matchid
-     * @param int    $cfg_which_database
-     * @param int    $s
-     * @param int    $r
-     * @param int    $division
-     * @param string $oldlayout
-     *
-     * @return string
-     */
-	public static function getEditMatchRoute($projectid, $matchid,$cfg_which_database = 0,$s = 0,$r = 0,$division = 0,$oldlayout = '' )
-	{
-// option=com_sportsmanagement&view=results&cfg_which_database=0&s=1&p=1:1-bundesliga-2015-16&r=15:15-spieltag&division=0&mode=0&order=0&layout=form&Itemid=150		
-/*
-        $params = array(	"option" => "com_sportsmanagement",
-					"view" => "editmatch",
-                    "cfg_which_database" => $cfg_which_database,
-                    "s" => $s,
-                    "p" => $projectid,
-                    "r" => '',
-                    "division" => '',
-                    "mode" => '',
-                    "order" => '',
-                    "layout" => "edit",
-					"matchid" => $matchid,
-                    "tmpl" => "component",
-                    "format" => "raw" );
-*/
-        $params = array(	"option" => "com_sportsmanagement",
-					"view" => "editmatch",
-                    "cfg_which_database" => $cfg_which_database,
-                    "s" => $s,
-                    "p" => $projectid,
-                    "r" => $r,
-                    "division" => $division,
-                    "mode" => '',
-                    "order" => '',
-                    "layout" => "edit",
-					"matchid" => $matchid,
-                    "tmpl" => "component",
-                    "oldlayout" => $oldlayout
-                    );                    
-//if ( ! is_null( $cfg_which_database) ) { $params["cfg_which_database"] = $cfg_which_database; }
-		$query = self::buildQuery( $params );
-		//$link = JRoute::_( 'administrator/index.php?' . $query . '&tmpl=component', false );
-        $link = JRoute::_( 'index.php?' . $query );
-
-		return $link;
-	}
-
-
-    /**
      * sportsmanagementHelperRoute::getEditStatisticsRoute()
      *
      * @param mixed   $projectid
