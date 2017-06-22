@@ -147,22 +147,11 @@ class PlgSystemjsm_bootstrap extends JPlugin
     public function onAfterRoute()
     {
         $app = JFactory::getApplication();
-    }
-
-    /**
-     * PlgSystemjsm_bootstrap::onAfterDispatch()
-     * 
-     * @return void
-     */
-    public function onAfterDispatch()
-    {
-        $app = JFactory::getApplication();
-// Get a refrence of the page instance in joomla
+	    // Get a refrence of the page instance in joomla
         $document = JFactory::getDocument();
         // JInput object
         $this->jinput = $app->input;
         $this->option = $this->jinput->getCmd('option');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'isEnabled <br><pre>'.print_r(JComponentHelper::isEnabled('com_k2', true),true).'</pre>'),'');
 $dontInclude = array(
 '/media/jui/js/jquery.js',
 '/media/jui/js/jquery.min.js',
@@ -186,7 +175,20 @@ foreach($document->_scripts as $key => $script){
     }
 }
 JFactory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/2.2.1/jquery.min.js');
-}	    
+}		    
+    }
+
+    /**
+     * PlgSystemjsm_bootstrap::onAfterDispatch()
+     * 
+     * @return void
+     */
+    public function onAfterDispatch()
+    {
+        $app = JFactory::getApplication();
+
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'isEnabled <br><pre>'.print_r(JComponentHelper::isEnabled('com_k2', true),true).'</pre>'),'');
+    
 	    
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'isEnabled <br><pre>'.print_r(JComponentHelper::isEnabled('com_k2', true),true).'</pre>'),'');
 
