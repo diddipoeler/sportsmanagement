@@ -223,6 +223,13 @@ JFactory::getDocument()->addScript('http://ajax.googleapis.com/ajax/libs/jquery/
                 }
             }
             
+	if ($this->params->def('load_bootstrap_tab', 1)) {
+                if (!$app->isAdmin()) {
+                    //CBootstrap::load();
+                    JFactory::getDocument()->addScript('https://netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap-tab.js');
+                }
+            }
+		
             if ($load_bootstrap_css) {
                 if (!$app->isAdmin()) {
                     //CBootstrap::load();
