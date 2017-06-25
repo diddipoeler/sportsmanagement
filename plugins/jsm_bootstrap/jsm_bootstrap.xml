@@ -47,6 +47,12 @@
 		</fieldset>
 		
 			<fieldset name="basic_front" label="PLUGIN_JSM_BOOTSTRAP_FIELD_BASICFRONT_LABEL">
+
+<field type="sywonlinehelp" url="" class="alert alert-info"
+					description="PLUGIN_JSM_BOOTSTRAP_FIELD_BASICFRONT_DESC" />
+
+<field type="title" title="PLUGIN_JSM_BOOTSTRAP_JQUERY_FIELD_JQUERY_LABEL" imagesrc="../administrator/components/com_sportsmanagement/assets/images/jquery.png" color="#26a69a" />
+<field type="title" title="PLUGIN_JSM_BOOTSTRAP_JQUERY_FIELD_JQUERYUI_LABEL" imagesrc="../administrator/components/com_sportsmanagement/assets/images/jqueryui.png" color="#26a69a" />
 			
 				<field name="load_bootstrap" 
         type="radio" 
