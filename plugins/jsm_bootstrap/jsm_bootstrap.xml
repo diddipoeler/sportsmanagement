@@ -28,7 +28,14 @@
 
 	<config>
 		<fields name="params" addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
-			<fieldset name="basic">
+		<fieldset name="basic">
+<field type="extensionversion" version="1.0.0" />
+<field type="extensionauthor" />
+<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
+<field type="extensionlink" linktype="translate" link="https://www.transifex.com/opentranslators/" />		
+		</fieldset>
+		
+			<fieldset name="basic_front">
 			
 				<field name="load_bootstrap" 
         type="radio" 

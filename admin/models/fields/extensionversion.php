@@ -41,9 +41,7 @@ class JFormFieldExtensionVersion extends JFormField {
         $reload = true;
         $lang->load($extension, $base_dir, $language_tag, $reload);
 		$html = '';
-		
 		$html .= '<div style="clear: both;">'.JText::_('COM_SPORTSMANAGEMENT_VERSION_LABEL').'</div>';
-		
 		return $html;
 	}
 
@@ -55,11 +53,8 @@ class JFormFieldExtensionVersion extends JFormField {
 	protected function getInput() 
 	{
 		$html = '<div style="padding-top: 5px; overflow: inherit">';
-		
 		$html .= '<span class="label">'.$this->version.'</span>';
-		
 		$html .= '</div>';
-		
 		return $html;
 	}
 	
