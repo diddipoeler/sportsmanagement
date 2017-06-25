@@ -35,7 +35,7 @@
 <field type="extensionlink" linktype="translate" link="https://www.transifex.com/opentranslators/" />		
 		</fieldset>
 		
-			<fieldset name="basic_front">
+			<fieldset name="basic_front" label="PLUGIN_JSM_BOOTSTRAP_FIELD_BASICFRONT_LABEL">
 			
 				<field name="load_bootstrap" 
         type="radio" 
