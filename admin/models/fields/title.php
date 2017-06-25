@@ -37,7 +37,8 @@ class JFormFieldTitle extends JFormField
 		$icon = $this->element['icon'];
 
 		$color = $this->element['color'];
-		if (empty($color)) {
+		if (empty($color)) 
+        {
 			$color = '#e65100';
 		}
 
@@ -57,14 +58,18 @@ class JFormFieldTitle extends JFormField
 
 		$html .= '<div style=\''.$inline_style.'\'>';
 
-		if ($image_src) {
+		if ($image_src) 
+        {
 			$html .= '<img style="margin: -1px 4px 0 0; float: left; padding: 0px; width: 16px; height: 16px" src="'.$image_src.'">';
-		} else if ($icon) {
+		} 
+        else if ($icon) 
+        {
 			JHtml::_('stylesheet', 'syw/fonts-min.css', false, true);
 			$html .= '<i style="font-size: inherit; vertical-align: baseline" class="SYWicon-'.$icon.'">&nbsp;</i>';
 		}
 
-		if ($value) {
+		if ($value) 
+        {
 			$html .= JText::_($value);
 		}
 

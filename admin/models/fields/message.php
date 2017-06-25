@@ -37,11 +37,16 @@ class JFormFieldMessage extends JFormField
 		$lang = JFactory::getLanguage();
 		$lang->load('lib_syw.sys', JPATH_SITE);
 
-		if ($this->message_type == 'example') {
+		if ($this->message_type == 'example') 
+        {
 			$html .= '<label style="visibility: hidden; margin: 0">'.JText::_('LIB_SYW_MESSAGE_EXAMPLE').'</label>';
-		} else if ($this->message_type == 'fieldwarning' || $this->message_type == 'fielderror' || $this->message_type == 'fieldinfo') {
+		} 
+        else if ($this->message_type == 'fieldwarning' || $this->message_type == 'fielderror' || $this->message_type == 'fieldinfo') 
+        {
 			return parent::getLabel();
-		} else {
+		} 
+        else 
+        {
 			$html .= '<div style="clear: both;"></div>';
 		}
 
@@ -65,23 +70,31 @@ class JFormFieldMessage extends JFormField
 			$message_label = $this->translateLabel ? JText::_(trim($this->element['label'])) : trim($this->element['label']);
 		}
 			
-		if ($this->message_type == 'example') {
+		if ($this->message_type == 'example') 
+        {
 				
-			if ($message_label) {
+			if ($message_label) 
+            {
 				$html .= '<span class="label">'.$message_label.'</span>&nbsp;';
-			} else {
+			} 
+            else 
+            {
 				$html .= '<span class="label">'.JText::_('LIB_SYW_MESSAGE_EXAMPLE').'</span>&nbsp;';
 			}
 			$html .= '<span class="muted" style="font-size: 0.8em;">';
 				
-			if ($this->message) {
+			if ($this->message) 
+            {
 				$html .= JText::_($this->message);
 			}
 			$html .= '</span>';
 				
-		} else {
+		} 
+        else 
+        {
 			$style = '';
-			switch ($this->message_type) {
+			switch ($this->message_type) 
+            {
 				case 'warning': case 'fieldwarning': $style = 'warning'; break;
 				case 'error': case 'fielderror': $style = 'error'; break;
 				case 'info': case 'fieldinfo': $style = 'info'; break;
@@ -94,7 +107,8 @@ class JFormFieldMessage extends JFormField
 			}
 				
 			$html .= '<span>';
-			if ($this->message) {
+			if ($this->message) 
+            {
 				$html .= JText::_($this->message);
 			}
 			$html .= '</span>';
@@ -116,7 +130,8 @@ class JFormFieldMessage extends JFormField
 	{
 		$return = parent::setup($element, $value, $group);
 
-		if ($return) {
+		if ($return) 
+        {
 			$this->message_type = isset($this->element['style']) ? trim($this->element['style']) : 'info';
 			$this->message = isset($this->element['text']) ? trim($this->element['text']) : '';
 		}

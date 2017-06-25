@@ -35,7 +35,8 @@ class JFormFieldSubtitle extends JFormField
 		$value = trim($this->element['title']);
 
 		$color = $this->element['color'];
-		if (empty($color)) {
+		if (empty($color)) 
+        {
 			$color = '#e65100';
 		}
 
@@ -51,7 +52,8 @@ class JFormFieldSubtitle extends JFormField
 
 		$html .= '<div style="'.implode($style).'">';
 
-		if ($value) {
+		if ($value) 
+        {
 				
 			$style = array();
 
