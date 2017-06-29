@@ -63,7 +63,7 @@ class sportsmanagementViewTeamInfo extends sportsmanagementView
 
         $this->checkextrafields = sportsmanagementHelper::checkUserExtraFields('frontend',sportsmanagementModelTeamInfo::$cfg_which_database);
 
-		if ( isset($this->project->id) )
+		if ( $this->project->id )
 		{
 			$this->team = sportsmanagementModelTeamInfo::getTeamByProject(1);
 			$this->club = sportsmanagementModelTeamInfo::getClub();
@@ -125,7 +125,7 @@ class sportsmanagementViewTeamInfo extends sportsmanagementView
 		$this->document->setTitle( $pageTitle );
 
 /**
- * da wir komplett mit bootstrap arbeiten benötigen wir das nicht mehr        
+ * da wir komplett mit bootstrap arbeiten benÃ¶tigen wir das nicht mehr        
  * $view = $jinput->getVar( "view") ;
  * $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
  * $document->addCustomTag($stylelink);
