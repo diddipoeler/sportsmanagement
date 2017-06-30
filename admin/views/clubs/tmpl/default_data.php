@@ -364,13 +364,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
                         <td class="center"><?php echo JSMCountries::getCountryFlag($row->country); ?></td>
                         <td class="center">
             <div class="btn-group">
-            <?php echo JHtml::_('jgrid.published', $row->published, $i, 'seasons.', $canChange, 'cb'); ?>
+            <?php echo JHtml::_('jgrid.published', $row->published, $i, 'clubs.', $canChange, 'cb'); ?>
             <?php 
             // Create dropdown items and render the dropdown list.
 								if ($canChange)
 								{
-									JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'seasons');
-									JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'seasons');
+									JHtml::_('actionsdropdown.' . ((int) $row->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'clubs');
+									JHtml::_('actionsdropdown.' . ((int) $row->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'clubs');
 									echo JHtml::_('actionsdropdown.render', $this->escape($row->name));
 								}
 								?>
