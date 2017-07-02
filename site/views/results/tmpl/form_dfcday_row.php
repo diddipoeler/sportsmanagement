@@ -39,8 +39,7 @@
 
 defined('_JEXEC') or die('Restricted access'); 
 
-//FIXME not functional ? 
-// this code was copied from results model, editablerow function
+
 ?>
 
 <?php 
@@ -49,24 +48,33 @@ defined('_JEXEC') or die('Restricted access');
 		$thismatch = JTable::getInstance('Match','sportsmanagementTable');
 		$thismatch->bind(get_object_vars($match));
 
-		list($datum,$uhrzeit)=explode(' ',$thismatch->match_date);
+		list($datum,$uhrzeit) = explode(' ',$thismatch->match_date);
 
-		if (isset($this->teams[$thismatch->projectteam1_id])){$team1=$this->teams[$thismatch->projectteam1_id];}
-		if (isset($this->teams[$thismatch->projectteam2_id])){$team2=$this->teams[$thismatch->projectteam2_id];}
-		//echo '<br /><pre>~'.print_r($team1,true).'~</pre><br />';
+		if ( isset($this->teams[$thismatch->projectteam1_id]) )
+        {
+            $team1 = $this->teams[$thismatch->projectteam1_id];
+            }
+		if ( isset($this->teams[$thismatch->projectteam2_id]) )
+        {
+            $team2 = $this->teams[$thismatch->projectteam2_id];
+            }
+		
 		$user = JFactory::getUser();
 
 		if (isset($team1) && isset($team2))
 		{
-			$userIsTeamAdmin=($user->id==$team1->admin || $user->id==$team2->admin);
+			$userIsTeamAdmin = ( $user->id == $team1->admin || $user->id == $team2->admin );
 		}
 		else
 		{
-			$userIsTeamAdmin=$this->isAllowed;
+			$userIsTeamAdmin = $this->isAllowed;
 		}
-		$teams=$this->teams;
-		$teamsoptions[]=JHtml::_('select.option','0','- '.JText::_('Select Team').' -');
-		foreach ($teams AS $team){$teamsoptions[]=JHtml::_('select.option',$team->projectteamid,$team->name,'value','text');}
+		$teams = $this->teams;
+		$teamsoptions[] = JHtml::_('select.option','0','- '.JText::_('Select Team').' -');
+		foreach ($teams AS $team)
+        {
+            $teamsoptions[] = JHtml::_('select.option',$team->projectteamid,$team->name,'value','text');
+            }
 		
         $user = JFactory::getUser();
         $canEdit = $user->authorise('core.edit','com_sportsmanagement');
@@ -76,8 +84,8 @@ defined('_JEXEC') or die('Restricted access');
         //$checked	= JHtml::_('grid.checkedout',$match,$i,'id');
 		$published	= JHtml::_('grid.published',$match,$i);
 
-		list($date,$time)=explode(" ",$match->match_date);
-		$time=strftime("%H:%M",strtotime($time));
+		list($date,$time) = explode(" ",$match->match_date);
+		$time = strftime("%H:%M",strtotime($time));
 		?>
 <tr id="result-<?php echo $match->id; ?>" class="">
 	<td valign="top"><?php
@@ -103,11 +111,45 @@ defined('_JEXEC') or die('Restricted access');
 	<td valign="top">
 		<?php
 		JHtml::_('behavior.modal','a.mymodal');
-		$url = sportsmanagementHelperRoute::getEditMatchRoute($this->project->id,$thismatch->id);
+//		$url = sportsmanagementHelperRoute::getEditMatchRoute($this->project->id,$thismatch->id);
+$url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,'edit',$team1->projectteamid,$datum,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,0,'form');        
 		$imgTitle = JText::_('Edit match details');
 		$desc = JHtml::image(JURI::root().'media/com_sportsmanagement/jl_images/edit.png',$imgTitle, array('id' => 'edit'.$thismatch->id,'border' => 0,'title' => $imgTitle));
 		?>
+<!--
 		<a class="mymodal" title="example" href="<?php echo $url; ?>" rel="{handler: 'iframe',size: {x: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_width', 900); ?>,y: <?php echo JComponentHelper::getParams('com_sportsmanagement')->get('modal_popup_height', 600); ?>}}"> <?php echo $desc; ?></a>
+-->
+
+<a data-target="#match_lineup<?php echo $thismatch->id; ?>"  data-toggle="modal" data-target-color="lightblue" ><img src="<?php echo JURI::root().'media/com_sportsmanagement/jl_images/edit.png'; ?>" ></a>		
+<div class="modal fade" 
+
+tabindex="-1" 
+role="dialog" 
+aria-labelledby="match_lineup" 
+aria-hidden="true"  
+id="match_lineup<?php echo $thismatch->id; ?>">
+  <div class="modal-dialog">
+    <div class="modal-content">
+     <!-- <div class="modal-content"> -->
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title" id="myModalLabel">Contact Form</h4>
+        </div>
+        <div class="modal-body">
+<iframe scrolling="yes" allowtransparency="true" src="<?php echo $url; ?>" height="90%" frameborder="0" width="99.6%"></iframe>                       
+          
+          
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-link" data-dismiss="modal">Close</button>
+        </div>        
+     <!-- </div> -->
+    </div>
+  </div>
+</div>
+
+
 	</td>
 		<?php 
 		if($this->project->project_type=='DIVISIONS_LEAGUE') {

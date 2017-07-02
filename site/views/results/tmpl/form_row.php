@@ -40,9 +40,6 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access'); 
 
-//FIXME not functional ? 
-// this code was copied from results model, editablerow function
-
 //JHTML::_('behavior.modal', 'a.user-modal');
 
 ?>
@@ -124,16 +121,22 @@ function fillContainer(site)
 
 //echo ' thismatch<br><pre>'.print_r($thismatch,true).'</pre>';
 
-		list($datum,$uhrzeit)=explode(' ',$thismatch->match_date);
+		list($datum,$uhrzeit) = explode(' ',$thismatch->match_date);
 
-		if (isset($this->teams[$thismatch->projectteam1_id])){$team1=$this->teams[$thismatch->projectteam1_id];}
-		if (isset($this->teams[$thismatch->projectteam2_id])){$team2=$this->teams[$thismatch->projectteam2_id];}
-		//echo '<br /><pre>~'.print_r($team1,true).'~</pre><br />';
+		if ( isset($this->teams[$thismatch->projectteam1_id]) )
+        {
+            $team1 = $this->teams[$thismatch->projectteam1_id];
+            }
+		if ( isset($this->teams[$thismatch->projectteam2_id]) )
+        {
+            $team2 = $this->teams[$thismatch->projectteam2_id];
+            }
+		
 		$user = JFactory::getUser();
 
 		if (isset($team1) && isset($team2))
 		{
-			$userIsTeamAdmin = ($user->id==$team1->admin || $user->id==$team2->admin);
+			$userIsTeamAdmin = ( $user->id == $team1->admin || $user->id == $team2->admin );
 		}
 		else
 		{
