@@ -210,7 +210,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
 		JToolBarHelper::publishList('rounds.publish');
 		JToolBarHelper::unpublishList('rounds.unpublish');
 		JToolBarHelper::divider();
-		JToolBarHelper::custom('round.populate', 'purge.png', 'purge_f2.png', JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_BUTTON'), false);
+		JToolBarHelper::custom('rounds.populate', 'purge.png', 'purge_f2.png', JText::_('COM_SPORTSMANAGEMENT_ADMIN_ROUNDS_POPULATE_BUTTON'), false);
 		JToolBarHelper::divider();
 		JToolBarHelper::apply('rounds.saveshort');
 		JToolBarHelper::divider();
