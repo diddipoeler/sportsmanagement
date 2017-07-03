@@ -27,7 +27,7 @@
 * veröffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
 * SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
 * Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
 * Siehe die GNU General Public License für weitere Details.
 *
@@ -97,7 +97,7 @@ if ($heading != $lastheading) {
     {
     echo $match['resultpenalty'];    
     }
-    elseif isset( $match['resultovertime'] ) )
+    elseif ( isset( $match['resultovertime'] ) )
     {
     echo $match['resultovertime'];    
     }
@@ -154,4 +154,4 @@ if($limit>1) {
 <!--jlml-mod<?php echo $module->id.'nr'.$cnt;?> end-->
 </div>
 <?php
- if($ajax && $ajaxmod==$module->id){ exit(); } ?>
+ if($ajax && $ajaxmod == $module->id){ exit(); } ?>
