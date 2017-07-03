@@ -129,7 +129,19 @@ class sportsmanagementControllerrounds extends JControllerAdmin
        $this->setRedirect('index.php?option=com_sportsmanagement&view=rounds&pid='.$this->project_id,$msg);
     } 
   
-  
+  /**
+	 * display the populate form
+	 */
+	public function populate()
+	{
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		$division_id = $jinput->getInt('division_id',0);
+		
+		$this->setRedirect('index.php?option='.$this->option.'&view=rounds&layout=populate&division_id='.$division_id);
+	}
+
+	
   /**
 	 * Proxy for getModel.
 	 * @since	1.6
