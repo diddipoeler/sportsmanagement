@@ -111,7 +111,8 @@ $uri = JFactory::getURI();
                             echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ASSIGN_AVAIL_PERSONS' );
                             }
 							?>
-						</b><br />
+						</b>
+                        <br />
 						<?php
 						echo $this->lists['teams'];
 						?>
@@ -119,10 +120,13 @@ $uri = JFactory::getURI();
 					<td style="text-align:center; ">
                     
 <input id="moveright" type="button" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_ASSIGN_TEAM_TO_PROJECT'); ?>" onclick="move_list_items('teamslist','project_teamslist');" />
+<br />
 <input id="moverightall" type="button" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_ASSIGN_TEAM_ALL_TO_PROJECT'); ?>" onclick="move_list_items_all('teamslist','project_teamslist');" />
+<br />
 <input id="moveleft" type="button" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_UNASSIGN_TEAM_TO_PROJECT'); ?>" onclick="move_list_items('project_teamslist','teamslist');" />
+<br />
 <input id="moveleftall" type="button" value="<?php echo JText::_('COM_SPORTSMANAGEMENT_UNASSIGN_TEAM_ALL_TO_PROJECT'); ?>" onclick="move_list_items_all('project_teamslist','teamslist');" />                    
-						
+<br />						
 					</td>
 					<td>
 						<b>
@@ -136,7 +140,8 @@ $uri = JFactory::getURI();
                             echo JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_ASSIGN_PROJ_PERSONS' );
                             }
 							?>
-						</b><br />
+						</b>
+                        <br />
 						<?php
 						echo $this->lists['project_teams'];
 						?>
