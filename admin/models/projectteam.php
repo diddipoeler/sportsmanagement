@@ -335,12 +335,17 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
     {
         $option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
-        $post = JRequest::get('post');
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        //$post = JRequest::get('post');
+        $post = $jinput->post->getArray();
         $_pro_teams_to_delete = array();
         $query = JFactory::getDbo()->getQuery(true);
-        
-        //$app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
-        
+        if ( JComponentHelper::getParams($option)->get('show_debug_info_backend') )
+        {
+        $app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
+        }
         $project_id = $post['project_id'];
         $assign_id = $post['project_teamslist'];
         $delete_team = $post['teamslist'];
@@ -362,7 +367,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
         {
             $query->clear();
             $query->select('id');		
-		    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team');
+		    $query->from('#__sportsmanagement_project_team');
 		    $query->where('team_id = '.$value);
             $query->where('project_id = '.$project_id);
 		    JFactory::getDbo()->setQuery($query);
@@ -410,7 +415,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
 			$cids = implode(',',$pks);
             /* Ein JDatabaseQuery Objekt beziehen */
             $query = $db->getQuery(true);
-            $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match')->where('projectteam1_id IN ('.$cids.')'  );
+            $query->delete()->from('#__sportsmanagement_match')->where('projectteam1_id IN ('.$cids.')'  );
             $db->setQuery($query);
             $result = sportsmanagementModeldatabasetool::runJoomlaQuery();
             if ( $result )
@@ -428,7 +433,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
 			$cids = implode(',',$pks);
             /* Ein JDatabaseQuery Objekt beziehen */
             $query = $db->getQuery(true);
-            $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match')->where('projectteam2_id IN ('.$cids.')'  );
+            $query->delete()->from('#__sportsmanagement_match')->where('projectteam2_id IN ('.$cids.')'  );
             $db->setQuery($query);
             $result = sportsmanagementModeldatabasetool::runJoomlaQuery();
             if ( $result )

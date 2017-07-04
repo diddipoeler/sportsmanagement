@@ -77,7 +77,12 @@ class sportsmanagementControllerprojectteams extends JControllerAdmin
 	 */
   function assign()
 	{
-		$post = JRequest::get('post');
+	   $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
+		//$post = JRequest::get('post');
+        $post = $jinput->post->getArray();
+        $option = $jinput->getCmd('option');
         // Check for request forgeries
 		//JRequest::checkToken() or die('JINVALID_TOKEN');
 
