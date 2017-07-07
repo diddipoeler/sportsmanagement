@@ -61,6 +61,7 @@ class modMatchesSportsmanagementHelper {
 	public function __construct(& $params, $id, $match_id = 0) {
 		$this->module_id = $id;
 		$this->params = $params;
+        $this->app = JFactory::getApplication();
 		$itemid = $this->params->get('Itemid');
 		$this->itemid = (!empty ($itemid)) ? '&amp;Itemid=' . $itemid : '';
 		$this->id = $match_id;
@@ -247,14 +248,30 @@ class modMatchesSportsmanagementHelper {
 	 */
 	private function addusedprojects() {
 		$usedp = $this->params->get('p');
-		if (is_array($usedp)) {
-			foreach ($usedp AS $p) {
+		if (is_array($usedp)) 
+        {
+			foreach ($usedp AS $p) 
+            {
+                if (is_array($this->params->get('teams')))
+                {
 				$this->usedteams[(int)$p] = array_map('intval',$this->params->get('teams'));
+                }
 			}
 		}
-		elseif (!empty ($usedp)) {
+		elseif (!empty ($usedp)) 
+        {
+            if (is_array($this->params->get('teams')))
+            {
 			$this->usedteams[(int)$usedp] = array_map('intval',$this->params->get('teams'));
+            }
 		}
+        
+        if ( JComponentHelper::getParams('com_sportsmanagement')->get('show_debug_info_frontend') )
+        {
+        //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->params->get('teams'),true).'</pre>'),'Notice');    
+        echo __METHOD__.' '.__LINE__.' projekte<br><pre>'.print_r($this->params->get('p'),true).'</pre>'; 
+        echo __METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->params->get('teams'),true).'</pre>';      
+        }    
 	}
 	
 	/**
