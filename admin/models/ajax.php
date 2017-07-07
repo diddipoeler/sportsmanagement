@@ -964,6 +964,7 @@ class sportsmanagementModelAjax extends JModelLegacy
         {
             $query->where('pt.project_id = 0' );
         }
+        $query->group('t.id');
         // order
         $query->order('t.name');
                        
