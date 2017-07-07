@@ -276,7 +276,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
   // select champion from project
   // Select some fields
         $query->select('league_champ,points_tipp_champ');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_project');
+        $query->from('#__sportsmanagement_prediction_project');
         $query->where('prediction_id = ' . (int)self::$predictionGameID);
         $query->where('project_id = ' . (int)self::$pjID);
         $query->where('champ = 1');
@@ -353,7 +353,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
                 $query->clear();
         $query->select('*');
         $query->select("CONCAT_WS(':',id,alias) AS slug");
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_game');
+        $query->from('#__sportsmanagement_prediction_game');
         $query->where('id = '.(int)self::$predictionGameID);
         $query->where('published = 1');
         
@@ -403,7 +403,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
     $query->clear('select');
     $query->clear('where');
     $query->select('picture');
-    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member');  
+    $query->from('#__sportsmanagement_prediction_member');  
     $query->where('user_id = ' . (int)$members);
     $query->where('prediction_id = '.(int)self::$predictionGameID);
     break;
@@ -855,9 +855,9 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
     // Select some fields
     $query->clear();
         $query->select('t.'.$teamName.' as name');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt on pt.team_id = st.id');
+        $query->from('#__sportsmanagement_team AS t');
+        $query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
+        $query->join('INNER', '#__sportsmanagement_project_team AS pt on pt.team_id = st.id');
         $query->where('pt.id = '.(int)$teamID);
 
 		$db->setQuery($query);
@@ -893,10 +893,10 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
         }
          // Select some fields
         $query->select('c.'.$which_logo);
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t on t.club_id = c.id');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt on pt.team_id = st.id');
+        $query->from('#__sportsmanagement_club AS c');
+        $query->join('INNER', '#__sportsmanagement_team AS t on t.club_id = c.id');
+        $query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
+        $query->join('INNER', '#__sportsmanagement_project_team AS pt on pt.team_id = st.id');
         $query->where('pt.id = '.(int)$teamID);
                     
 		$db->setQuery($query);
@@ -933,10 +933,10 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
         
          // Select some fields
         $query->select('c.country');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t on t.club_id = c.id');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st on st.team_id = t.id');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt on pt.team_id = st.id');
+        $query->from('#__sportsmanagement_club AS c');
+        $query->join('INNER', '#__sportsmanagement_team AS t on t.club_id = c.id');
+        $query->join('INNER', '#__sportsmanagement_season_team_id AS st on st.team_id = t.id');
+        $query->join('INNER', '#__sportsmanagement_project_team AS pt on pt.team_id = st.id');
         $query->where('pt.id = '.(int)$teamID);
                     
 		$db->setQuery($query);
@@ -1285,7 +1285,7 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
 		$query = $db->getQuery(true);
         // Select some fields
         $query->select('user_id');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_admin');
+        $query->from('#__sportsmanagement_prediction_admin');
         $query->where('prediction_id = '.(int)$predictionID);
 
 		$db->setQuery($query);
@@ -1842,7 +1842,7 @@ $body .= sportsmanagementModelPredictionEntry::createHelptText($predictionProjec
 		$query = $db->getQuery(true);
         // Select some fields
         $query->select('id AS value, name AS text');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_groups ');
+        $query->from('#__sportsmanagement_prediction_groups ');
         $query->order('name ASC');
 
 	$db->setQuery($query);
@@ -1881,9 +1881,9 @@ $body .= sportsmanagementModelPredictionEntry::createHelptText($predictionProjec
         $query->select('pm.id AS value');
         $query->select('u.'.$nameType.' AS text');
         $query->select('pg.id as pg_group_id,pg.name as pg_group_name');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member AS pm ');
+        $query->from('#__sportsmanagement_prediction_member AS pm ');
         $query->join('LEFT', '#__users AS u ON u.id = pm.user_id');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_groups as pg ON pg.id = pm.group_id');
+        $query->join('LEFT', '#__sportsmanagement_prediction_groups as pg ON pg.id = pm.group_id');
         $query->where('prediction_id = '.(int)self::$predictionGameID );
 
 		if(isset($actUserId))
@@ -1916,7 +1916,7 @@ $body .= sportsmanagementModelPredictionEntry::createHelptText($predictionProjec
         
         // Select some fields
         $query->select('count(*)');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_result AS pr');
+        $query->from('#__sportsmanagement_prediction_result AS pr');
         $query->where('prediction_id = '.(int)self::$predictionGameID);
         $query->where('user_id = '.(int)$user_id);
 
@@ -2720,9 +2720,9 @@ $output .= '>'.JText::_('COM_SPORTSMANAGEMENT_ALL_PROJECTS').'</option>';
     $query->select('pm.id AS pmID,pm.user_id AS user_id,pm.picture AS avatar,pm.show_profile AS show_profile,pm.champ_tipp AS champ_tipp,pm.aliasName as aliasName');
     $query->select('u.'.$nameType.' AS name');
     $query->select('pg.id as pg_group_id,pg.name as pg_group_name');
-    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member AS pm');
+    $query->from('#__sportsmanagement_prediction_member AS pm');
     $query->join('INNER', '#__users AS u ON u.id = pm.user_id');
-    $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_groups as pg on pg.id = pm.group_id');
+    $query->join('LEFT', '#__sportsmanagement_prediction_groups as pg on pg.id = pm.group_id');
     $query->where('pm.prediction_id = '.(int)self::$predictionGameID);
    
 		switch ( $configavatar['show_image_from'] )
