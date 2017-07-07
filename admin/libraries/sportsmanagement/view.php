@@ -539,6 +539,7 @@ case 'teampersons':
  */
         if ($canDo->get('core.delete')) 
 		{
+        JToolBarHelper::deleteList('', $this->view.'.delete');
         JToolbarHelper::trash($this->view.'.trash');
         }
         JToolbarHelper::checkin($this->view.'.checkin');  
