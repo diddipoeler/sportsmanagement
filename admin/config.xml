@@ -285,6 +285,13 @@
       description="COM_SPORTSMANAGEMENT_SETTINGS_MAX_IMPORT_MEMORY_DESC">
 		</field>
 
+		<field name="image_max_size" 
+    type="text" 
+    default="256"
+			label="COM_SPORTSMANAGEMENT_SETTINGS_MAX_IMPORT_IMAGE_SIZE" 
+      description="COM_SPORTSMANAGEMENT_SETTINGS_MAX_IMPORT_IMAGE_SIZE_DESC">
+		</field>
+		
 		<field name="modal_popup_width" 
     type="text" 
     default="900"
