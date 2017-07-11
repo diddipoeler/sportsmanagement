@@ -32,10 +32,16 @@ echo '<div style="float: left;margin: 0px 0px;"><img src="'. $this->escape($resu
 		<?php echo $this->pagination->limitstart + $result->count . '. ';?>
 		<?php if ($result->href) :?>
 			<a href="<?php echo JRoute::_($result->href); ?>"<?php if ($result->browsernav == 1) :?> target="_blank"<?php endif;?>>
-				<?php echo $this->escape($result->title);?>
+				<?php 
+                //echo $this->escape($result->title);
+                echo $this->escape($result->title);
+                ?>
 			</a>
 		<?php else:?>
-			<?php echo $this->escape($result->title);?>
+			<?php 
+            //echo $this->escape($result->title);
+            echo $this->escape($result->title);
+            ?>
 		<?php endif; ?>
 	</dt>
 	<?php if ($result->section) : ?>
