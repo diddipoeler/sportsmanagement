@@ -34,13 +34,13 @@ echo '<div style="float: left;margin: 0px 0px;"><img src="'. $this->escape($resu
 			<a href="<?php echo JRoute::_($result->href); ?>"<?php if ($result->browsernav == 1) :?> target="_blank"<?php endif;?>>
 				<?php 
                 //echo $this->escape($result->title);
-                echo $this->escape($result->title);
+                echo $result->title;
                 ?>
 			</a>
 		<?php else:?>
 			<?php 
             //echo $this->escape($result->title);
-            echo $this->escape($result->title);
+            echo $result->title;
             ?>
 		<?php endif; ?>
 	</dt>
