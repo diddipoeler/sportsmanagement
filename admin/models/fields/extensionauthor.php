@@ -52,7 +52,7 @@ class JFormFieldExtensionAuthor extends JFormField {
 	protected function getInput() 
 	{
 		$html = '<div style="padding-top: 5px; overflow: inherit">';
-		$html .= 'Dieter Plöger @ <a href="http://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>';
+		$html .= 'Dieter Pl&ouml;ger @ <a href="http://www.fussballineuropa.de" target="_blank">Fussball in Europa</a>';
 		$html .= '</div>';
 		return $html;
 	}
