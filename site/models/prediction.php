@@ -737,39 +737,6 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
 		return $configvalues;
 	}
 
-
-	/**
-	 * sportsmanagementModelPrediction::getTimestamp()
-	 * 
-	 * @param mixed $date
-	 * @param integer $offset
-	 * @return
-	 */
-/*
-	function getTimestamp($date,$offset=0)
-	{
-		if ($date <> '')
-		{
-			$datum = split("-| |:",$date);
-		}
-		else
-		{
-			$datum = preg_split("/-| |:/",JHTML::_('date',date('Y-m-d H:i:s',time()),"%Y-%m-%d %H:%M:%S"));
-		}
-		if ($offset)
-		{
-			$serveroffset = explode(':',$offset);
-			$timestampoffset = ($serveroffset[0] * 3600) + ($serveroffset[1] * 60);
-		}
-		else
-		{
-			$timestampoffset = 0;
-		}
-		$result = mktime($datum[3],$datum[4],$datum[5],$datum[1],$datum[2],$datum[0]) + $timestampoffset;
-		return $result;
-	}
-*/
-
 	/**
 	 * sportsmanagementModelPrediction::getPredictionProject()
 	 * 
@@ -813,15 +780,6 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
           $db->setQuery($query);
           $result->start_date = $db->loadResult();    
             }
-
-/*            
-            // timezone in serveroffset umwandeln
-            $date = JFactory::getDate();
-            $date->setTimezone(new DateTimeZone($result->timezone));
-            //$app->enqueueMessage(JText::_(__METHOD__.'date<br><pre>'.print_r($date,true).'</pre>'),'');
-            $result->serveroffset = $date->getOffsetFromGMT(true);
-            //$app->enqueueMessage(JText::_(__METHOD__.'serveroffset<br><pre>'.print_r($result->serveroffset,true).'</pre>'),'');
-*/
    
             return $result;
 		}
@@ -2640,34 +2598,18 @@ $output .= '>'.JText::_('COM_SPORTSMANAGEMENT_ALL_PROJECTS').'</option>';
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     
-		//$this->table_config = $config;
         self::$table_config = $config;
 		$dummy = $membersResultsArray;
 
-		//uasort($dummy,array($this,'compare'));
         uasort($dummy,array('self','compare'));
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this<br><pre>'.print_r($this,true).'</pre>'),'');
 
 		$i = 1;
 		$lfdnumber = 1;
 		foreach ($dummy AS $key => $value)
 		{
-		  
-		  //echo '<br />i ~' . $i . '~<br />';
-		  //echo '<br />lfdnumber ~' . $lfdnumber . '~<br />';
-		  //echo '<br />array_pos ~' . $array_pos . '~<br />';
-		  //echo '<br />key ~' . $key . '~<br />';
-		  //echo '<br />value<pre>~' . print_r($value,true) . '~</pre><br />';
-		  //echo '<br />dummy[array_pos][totalPoints] ~' . $dummy[$array_pos]['totalPoints'] . '~<br />';
-		  //echo '<br />dummy[key][totalPoints] ~' . $dummy[$key]['totalPoints'] . '~<br />';
-		  
-			//$dummy[$key]['rank'] = $i;
-			
+		
 			if ( $lfdnumber > 1 && ( $dummy[$array_pos]['totalPoints'] == $dummy[$key]['totalPoints'] ) )
 			{
-			// $i--;
-      // $dummy[$key]['rank'] = $i;
       
       // gleiche punkte 
       $dummy[$key]['rank'] = '-';
