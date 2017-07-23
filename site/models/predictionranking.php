@@ -48,8 +48,6 @@ jimport('joomla.utilities.array');
 jimport('joomla.utilities.arrayhelper') ;
 jimport( 'joomla.utilities.utility' );
 
-
-
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'project.php' );
 require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'prediction.php' );
 

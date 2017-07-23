@@ -152,7 +152,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 		// Select some fields
 		$query->select('p.*');
         $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS slug ');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ');
+        $query->from('#__sportsmanagement_person AS p ');
         $query->where('p.id = '.$db->Quote(self::$personid));
         
 
@@ -191,13 +191,13 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         $query->select('pr.id,pr.notes AS prnotes,pr.picture');
         $query->select('pos.name AS position_name');
         
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr ');
+        $query->from('#__sportsmanagement_project_referee AS pr ');
         
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS o ON o.id = pr.person_id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON p.id = o.person_id');
+        $query->join('INNER','#__sportsmanagement_season_person_id AS o ON o.id = pr.person_id');
+        $query->join('INNER','#__sportsmanagement_person AS p ON p.id = o.person_id');
         
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = pr.project_position_id');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');
+        $query->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id = pr.project_position_id');
+        $query->join('LEFT','#__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
         
         $query->where('pr.project_id = '.self::$projectid);
         $query->where('p.published = 1 ');
@@ -231,14 +231,14 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 				. ' s.name AS sname, '
 				. ' pos.name AS position, '
 				. ' COUNT(mr.id) AS matchesCount '
-				. ' FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr '
-				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON m.id = mr.match_id '
-				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON p.id = mr.project_referee_id '
-				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt ON tt.id = m.projectteam1_id '
-				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS pj ON pj.id = tt.project_id '
-				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id = pj.season_id '
-				. ' INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON l.id = pj.league_id '
-				. ' LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = mr.project_position_id '
+				. ' FROM #__sportsmanagement_match_referee AS mr '
+				. ' INNER JOIN #__sportsmanagement_match AS m ON m.id = mr.match_id '
+				. ' INNER JOIN #__sportsmanagement_person AS p ON p.id = mr.project_referee_id '
+				. ' INNER JOIN #__sportsmanagement_project_team AS tt ON tt.id = m.projectteam1_id '
+				. ' INNER JOIN #__sportsmanagement_project AS pj ON pj.id = tt.project_id '
+				. ' INNER JOIN #__sportsmanagement_season AS s ON s.id = pj.season_id '
+				. ' INNER JOIN #__sportsmanagement_league AS l ON l.id = pj.league_id '
+				. ' LEFT JOIN #__sportsmanagement_position AS pos ON pos.id = mr.project_position_id '
 				. ' WHERE p.id = ' . (int)$personid
 				. ' GROUP BY (tt.project_id) '
 				. ' ORDER BY s.ordering ASC, l.ordering ASC, pj.name ASC ';
@@ -301,8 +301,8 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 		}
         
         $query->select('et.*');
-       $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et'); 
-       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet ON pet.eventtype_id = et.id');
+       $query->from('#__sportsmanagement_eventtype AS et'); 
+       $query->join('INNER','#__sportsmanagement_position_eventtype AS pet ON pet.eventtype_id = et.id');
        $query->where('published = 1');
        $query->where('pet.position_id IN ('. implode(',', $positionhistory) .')');
        $query->order('et.ordering');
@@ -554,8 +554,8 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
        
        // team_player
        $query->select('tp.projectteam_id');
-       $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pr'); 
-       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.person_id = pr.id');
+       $query->from('#__sportsmanagement_person AS pr'); 
+       $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = pr.id');
        $query->where('pr.user_id = '.$userId);
        $query->where('pr.published = 1');
        $query->where('tp.persontype = 1');
@@ -584,8 +584,8 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         
 		// team_staff
         $query->select('tp.projectteam_id');
-       $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pr'); 
-       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.person_id = pr.id');
+       $query->from('#__sportsmanagement_person AS pr'); 
+       $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = pr.id');
        $query->where('pr.user_id = '.$userId);
        $query->where('pr.published = 1');
        $query->where('tp.persontype = 2');

@@ -92,44 +92,9 @@ public $_predictionGame	= null;
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-    
-   // $this->predictionGameID	= $jinput->getInt('prediction_id',0);
-//		$this->predictionMemberID = $jinput->getInt('uid',0);
-//		$this->joomlaUserID	= $jinput->getInt('juid',0);
-//		//$this->roundID = JRequest::getInt('r',0);
-//        self::$roundID = $jinput->getInt('r',0);
-//        $this->roundIDslug = $jinput->getVar('r',0);
-//        $this->pggroup = $jinput->getInt('pggroup',0);
-//        $this->pggrouprank = $jinput->getInt('pggrouprank',0);
-//		$this->pjID	= $jinput->getInt('pj',0);
-//		$this->isNewMember = $jinput->getInt('s',0);
-//		$this->tippEntryDone = $jinput->getInt('eok',0);
-//
-//		$this->from	= $jinput->getInt('from',self::$roundID);
-//		$this->to = $jinput->getInt('to',self::$roundID);
-//		$this->type	= $jinput->getInt('type',0);
-//
-//		$this->page	= $jinput->getInt('page',1);
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' roundID<br><pre>'.print_r(self::$roundID,true).'</pre>'),'');
 
         $prediction = new sportsmanagementModelPrediction();  
-
-//        sportsmanagementModelPrediction::$predictionGameID = $this->predictionGameID;
-//        sportsmanagementModelPrediction::$predictionMemberID = $this->predictionMemberID;
-//        sportsmanagementModelPrediction::$joomlaUserID = $this->joomlaUserID;
-//        sportsmanagementModelPrediction::$roundID = self::$roundID;
-//        sportsmanagementModelPrediction::$pggroup = $this->pggroup;
-//        sportsmanagementModelPrediction::$pggrouprank = $this->pggrouprank;
-//        sportsmanagementModelPrediction::$pjID = $this->pjID;
-//        sportsmanagementModelPrediction::$isNewMember = $this->isNewMember;
-//        sportsmanagementModelPrediction::$tippEntryDone = $this->tippEntryDone;
-//        sportsmanagementModelPrediction::$from = $this->from;
-//        sportsmanagementModelPrediction::$to = $this->to;
-//        sportsmanagementModelPrediction::$type = $this->type;
-//        sportsmanagementModelPrediction::$page = $this->page;
-
-        
+       
         $post = $jinput->post->getArray(array());
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
        

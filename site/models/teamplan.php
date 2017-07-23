@@ -626,9 +626,9 @@ if (!$matches && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         // Select some fields
         $query->select('et.id as etid,me.event_type_id as id,et.*');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype as et');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event as me ON et.id = me.event_type_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_match as m ON m.id = me.match_id ');
+		$query->from('#__sportsmanagement_eventtype as et');
+        $query->join('INNER',' #__sportsmanagement_match_event as me ON et.id = me.event_type_id ');
+        $query->join('INNER',' #__sportsmanagement_match as m ON m.id = me.match_id ');
         // Where
         $query->where('me.match_id = '.$match_id);
         // Order

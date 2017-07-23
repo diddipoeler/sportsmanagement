@@ -83,26 +83,20 @@ $pg_id = $params->get('pg');
 $config['limit']                      = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_LIMIT');
 $config['show_project_name']          = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_PROJECT_NAME');
 $config['show_project_name_selector'] = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_PROJECT_NAME_SELECTOR');
-
 $config['show_rankingnav'] = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_RANKING_NAV');
 $config['show_all_user']   = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_ALL_USER');
 $config['show_user_icon']  = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_USER_ICON');
-
 $config['show_user_link'] = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_USER_LINK');
-
 $config['show_tip_details'] = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_DETAILS');
 $config['show_tip_ranking'] = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING');
-
 $config['show_tip_ranking_round']      = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_ROUNDID');
 $config['show_tip_link_ranking_round'] = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_LINK_RANKING_ROUNDID');
-
 $config['show_average_points']  = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_AVERAGE_POINTS');
 $config['show_count_tips']      = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TIPS');
 $config['show_count_joker']     = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_JOKER');
 $config['show_count_topptips']  = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TOPP_TIPS');
 $config['show_count_difftips']  = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_DIFF_TIPS');
 $config['show_count_tendtipps'] = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TEND_TIPS');
-
 $config['show_debug_modus'] = $params->get('show_debug_modus');
 
 
@@ -113,7 +107,7 @@ $modelpg = JModelLegacy::getInstance('PredictionRanking', 'sportsmanagementModel
 
 sportsmanagementModelPrediction::$predictionGameID = $pg_id;
 /**
- * jetzt nach das overall template nachladen
+ * jetzt noch das overall template nachladen
  * dadurch erhalten wir die sortierung aus dem backend
  */
 $overallConfig        = sportsmanagementModelPrediction::getPredictionOverallConfig();

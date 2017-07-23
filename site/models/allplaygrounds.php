@@ -222,14 +222,14 @@ public function getStart()
         $query->select('CONCAT_WS( \':\', v.id, v.alias ) AS slug');
         $query->select('CONCAT_WS( \':\', p.id, p.alias ) AS projectslug');
         // From table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground as v');
+		$query->from('#__sportsmanagement_playground as v');
         // Join over the clubs
 		$query->select('c.name As club');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON c.id = v.club_id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.club_id = c.id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = t.id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id');
+		$query->join('INNER','#__sportsmanagement_club AS c ON c.id = v.club_id');
+        $query->join('INNER','#__sportsmanagement_team AS t ON t.club_id = c.id');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');
+        $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+        $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
         
 //        // Join over the users for the checked out user.
 //		$query->select('uc.name AS editor');

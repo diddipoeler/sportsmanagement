@@ -197,14 +197,14 @@ class sportsmanagementModelPlayer extends JModelLegacy
         
         $query->select('ps.firstname, ps.lastname');
         
-       $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ');
-       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = tp.project_position_id');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id');
-		$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');
+       $query->from('#__sportsmanagement_season_team_person_id AS tp ');
+       $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id');
+		$query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+		$query->join('INNER','#__sportsmanagement_project_position AS ppos ON ppos.id = tp.project_position_id');
+		$query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
+		$query->join('LEFT','#__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
         
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ps ON ps.id = tp.person_id');
+        $query->join('INNER','#__sportsmanagement_person AS ps ON ps.id = tp.person_id');
               
        $query->where('pt.project_id = '.self::$projectid);
        if ( self::$personid )
@@ -260,12 +260,12 @@ class sportsmanagementModelPlayer extends JModelLegacy
         $query->select('pt.project_id,pt.team_id,pt.notes AS ptnotes,pt.picture as team_picture');
         $query->select('pos.name AS position_name');
         $query->select('ppos.position_id');
-       $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ');
-       $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = tp.project_position_id');
-		$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id');
-		$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');      
+       $query->from('#__sportsmanagement_season_team_person_id AS tp ');
+       $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id');
+		$query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+		$query->join('INNER','#__sportsmanagement_project_position AS ppos ON ppos.id = tp.project_position_id');
+		$query->join('INNER','#__sportsmanagement_project AS p ON p.id = pt.project_id');
+		$query->join('LEFT','#__sportsmanagement_position AS pos ON pos.id = ppos.position_id');      
        $query->where('pt.project_id = '.self::$projectid);
         $query->where('tp.person_id = '.self::$personid);
         $query->where('p.published = 1');
@@ -415,9 +415,9 @@ class sportsmanagementModelPlayer extends JModelLegacy
 		}
         
         $query->select('DISTINCT et.*');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet ON pet.eventtype_id = et.id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.position_id = pet.position_id');
+        $query->from('#__sportsmanagement_eventtype AS et');
+        $query->join('INNER','#__sportsmanagement_position_eventtype AS pet ON pet.eventtype_id = et.id');
+        $query->join('INNER','#__sportsmanagement_project_position AS ppos ON ppos.position_id = pet.position_id');
         $query->where('pet.position_id IN ('. implode(',',$positionhistory) .')');
         $query->where('et.published = 1');
         $query->order('pet.ordering ');
@@ -806,12 +806,12 @@ catch (Exception $e) {
 		if (empty($this->_careerStats))
 		{
 		  $query_core->select('s.id,s.name,s.short,s.class,s.icon,s.calculated,ppos.id AS pposid,ppos.position_id AS position_id,s.params,s.baseparams');
-          $query_core->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p');
-          $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON p.id = tp.person_id ');
-          $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON tp.project_position_id = ppos.id ');
-          $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id = pos.id ');
-          $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_statistic AS ps ON ps.position_id = pos.id ');
-          $query_core->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_statistic AS s ON ps.statistic_id = s.id ');
+          $query_core->from('#__sportsmanagement_person AS p');
+          $query_core->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON p.id = tp.person_id ');
+          $query_core->join('INNER','#__sportsmanagement_project_position AS ppos ON tp.project_position_id = ppos.id ');
+          $query_core->join('INNER','#__sportsmanagement_position AS pos ON ppos.position_id = pos.id ');
+          $query_core->join('INNER','#__sportsmanagement_position_statistic AS ps ON ps.position_id = pos.id ');
+          $query_core->join('INNER','#__sportsmanagement_statistic AS s ON ps.statistic_id = s.id ');
           $query_core->where('p.id = '.$person_id);
           
 			if ($sports_type_id > 0)
@@ -1117,7 +1117,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 			}
             
             $query->select('SUM(me.event_sum) as value,me.*');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me ');
+            $query->from('#__sportsmanagement_match_event AS me ');
             $query->where('me.teamplayer_id IN ('. implode(',', $quoted_tpids) .')');
             $query->group('me.match_id, me.event_type_id');
 

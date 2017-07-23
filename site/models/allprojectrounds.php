@@ -179,20 +179,20 @@ $this->_params['option'] = $jinput->request->get('option', 'com_sportsmanagement
   $query->select('t2.name as away_name,t2.short_name as away_short_name,t2.middle_name as away_middle_name');
   $query->select('tt1.project_id, d1.name as divhome, d2.name as divaway');
   $query->select('CASE WHEN CHAR_LENGTH(t1.alias) AND CHAR_LENGTH(t2.alias) THEN CONCAT_WS(\':\',m.id,CONCAT_WS("_",t1.alias,t2.alias)) ELSE m.id END AS slug ');
-  $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
-  $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS r ON m.round_id = r.id ');
+  $query->from('#__sportsmanagement_match AS m ');
+  $query->join('INNER',' #__sportsmanagement_round AS r ON m.round_id = r.id ');
   
-  $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt1 ON m.projectteam1_id = tt1.id');
-  $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt2 ON m.projectteam2_id = tt2.id ');
+  $query->join('LEFT',' #__sportsmanagement_project_team AS tt1 ON m.projectteam1_id = tt1.id');
+  $query->join('LEFT',' #__sportsmanagement_project_team AS tt2 ON m.projectteam2_id = tt2.id ');
   
-  $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.id = tt1.team_id ');
-  $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = tt2.team_id ');
+  $query->join('LEFT',' #__sportsmanagement_season_team_id as st1 ON st1.id = tt1.team_id ');
+  $query->join('LEFT',' #__sportsmanagement_season_team_id as st2 ON st2.id = tt2.team_id ');
   
-  $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON t1.id = st1.team_id');
-  $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON t2.id = st2.team_id');
-  $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d1 ON m.division_id = d1.id');
-  $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d2 ON m.division_id = d2.id');
-  $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS playground ON playground.id = m.playground_id');
+  $query->join('LEFT',' #__sportsmanagement_team AS t1 ON t1.id = st1.team_id');
+  $query->join('LEFT',' #__sportsmanagement_team AS t2 ON t2.id = st2.team_id');
+  $query->join('LEFT',' #__sportsmanagement_division AS d1 ON m.division_id = d1.id');
+  $query->join('LEFT',' #__sportsmanagement_division AS d2 ON m.division_id = d2.id');
+  $query->join('LEFT',' #__sportsmanagement_playground AS playground ON playground.id = m.playground_id');
   
   $query->where('m.published = 1');
   $query->where('r.project_id ='. (int)$this->projectid);
@@ -228,7 +228,7 @@ $this->_params['option'] = $jinput->request->get('option', 'com_sportsmanagement
   {
     $query->clear();
     $query->select('id');
-    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team ');
+    $query->from('#__sportsmanagement_project_team ');
     $query->where('project_id ='. $this->projectid);
     $query->where('team_id ='. $value);
 
@@ -269,23 +269,23 @@ $this->ProjectTeams[$value] = $db->loadResult();
     $query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
     $query->select('CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
     
-    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp ');
-    $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id as stp1 ON stp1.id = mp.teamplayer_id');
-    $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.team_id = stp1.team_id ');
-    $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st1.id ');
-    $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON stp1.person_id = p.id AND p.published = 1 ');
+    $query->from('#__sportsmanagement_match_player AS mp ');
+    $query->join('LEFT',' #__sportsmanagement_season_team_person_id as stp1 ON stp1.id = mp.teamplayer_id');
+    $query->join('LEFT',' #__sportsmanagement_season_team_id as st1 ON st1.team_id = stp1.team_id ');
+    $query->join('LEFT',' #__sportsmanagement_project_team AS pt ON pt.team_id = st1.id ');
+    $query->join('LEFT',' #__sportsmanagement_person AS p ON stp1.person_id = p.id AND p.published = 1 ');
     
-    $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id as stp2 ON stp2.id = mp.in_for');
-    $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.team_id = stp2.team_id ');
-    $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p2 ON stp2.person_id = p2.id AND p2.published = 1 ');
+    $query->join('LEFT',' #__sportsmanagement_season_team_person_id as stp2 ON stp2.id = mp.in_for');
+    $query->join('LEFT',' #__sportsmanagement_season_team_id as st2 ON st2.team_id = stp2.team_id ');
+    $query->join('LEFT',' #__sportsmanagement_person AS p2 ON stp2.person_id = p2.id AND p2.published = 1 ');
     
-    $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = mp.project_position_id');
-    $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id = pos.id');
-    $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp2 ON mp.match_id = mp2.match_id and mp.in_for = mp2.teamplayer_id');
-    $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos2 ON ppos2.id = mp2.project_position_id');
-    $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos2 ON ppos2.position_id = pos2.id');
+    $query->join('LEFT',' #__sportsmanagement_project_position AS ppos ON ppos.id = mp.project_position_id');
+    $query->join('LEFT',' #__sportsmanagement_position AS pos ON ppos.position_id = pos.id');
+    $query->join('LEFT',' #__sportsmanagement_match_player AS mp2 ON mp.match_id = mp2.match_id and mp.in_for = mp2.teamplayer_id');
+    $query->join('LEFT',' #__sportsmanagement_project_position AS ppos2 ON ppos2.id = mp2.project_position_id');
+    $query->join('LEFT',' #__sportsmanagement_position AS pos2 ON ppos2.position_id = pos2.id');
     
-    $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st1.team_id');
+    $query->join('INNER',' #__sportsmanagement_team AS t ON t.id = st1.team_id');
     
     $query->where('mp.match_id = '.(int)$this->matchid);
     $query->where('pt.id = '.$this->projectteam_id );
@@ -333,12 +333,12 @@ $this->ProjectTeams[$value] = $db->loadResult();
     $query->select('ev.*');
     $query->select('p.firstname,p.nickname,p.lastname');
     $query->select('et.name as etname,et.icon as eticon');
-    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event as ev  ');
-    $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et ON et.id = ev.event_type_id ');
-    $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id as stp1 ON stp1.id = ev.teamplayer_id');
-    $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.team_id = stp1.team_id ');
-    $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st1.id ');
-    $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON stp1.person_id = p.id AND p.published = 1 ');
+    $query->from('#__sportsmanagement_match_event as ev  ');
+    $query->join('INNER',' #__sportsmanagement_eventtype AS et ON et.id = ev.event_type_id ');
+    $query->join('INNER',' #__sportsmanagement_season_team_person_id as stp1 ON stp1.id = ev.teamplayer_id');
+    $query->join('INNER',' #__sportsmanagement_season_team_id as st1 ON st1.team_id = stp1.team_id ');
+    $query->join('INNER',' #__sportsmanagement_project_team AS pt ON pt.team_id = st1.id ');
+    $query->join('INNER',' #__sportsmanagement_person AS p ON stp1.person_id = p.id AND p.published = 1 ');
     
    	$query->where('ev.match_id = ' . (int)$this->matchid);
     $query->where('ev.projectteam_id = ' . $this->projectteam_id);
@@ -388,16 +388,16 @@ if ( !$res )
     $query->select('CONCAT_WS(\':\',t.id,t.alias) AS team_slug');
     $query->select('CONCAT_WS(\':\',p.id,p.alias) AS person_slug');
     
-    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player AS mp ');
-    $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id as stp1 ON stp1.id = mp.teamplayer_id');
-    $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.team_id = stp1.team_id ');
-    $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st1.id ');
-    $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON stp1.person_id = p.id AND p.published = 1 ');
+    $query->from('#__sportsmanagement_match_player AS mp ');
+    $query->join('INNER',' #__sportsmanagement_season_team_person_id as stp1 ON stp1.id = mp.teamplayer_id');
+    $query->join('INNER',' #__sportsmanagement_season_team_id as st1 ON st1.team_id = stp1.team_id ');
+    $query->join('INNER',' #__sportsmanagement_project_team AS pt ON pt.team_id = st1.id ');
+    $query->join('INNER',' #__sportsmanagement_person AS p ON stp1.person_id = p.id AND p.published = 1 ');
     
-    $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = mp.project_position_id');
-    $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id = pos.id');
+    $query->join('LEFT',' #__sportsmanagement_project_position AS ppos ON ppos.id = mp.project_position_id');
+    $query->join('LEFT',' #__sportsmanagement_position AS pos ON ppos.position_id = pos.id');
     
-    $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st1.team_id');
+    $query->join('INNER',' #__sportsmanagement_team AS t ON t.id = st1.team_id');
 
     $query->where('mp.match_id = '.(int)$this->matchid );
     $query->where('mp.came_in = 0');
@@ -425,7 +425,7 @@ if ( !$res )
 		{
         $query->clear();
         $query->select('in_out_time');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_player');
+        $query->from('#__sportsmanagement_match_player');
         $query->where('match_id = ' . (int)$this->matchid);
         $query->where('in_for = ' . (int)$row->teamplayer_id);
 		$db->setQuery( $query );

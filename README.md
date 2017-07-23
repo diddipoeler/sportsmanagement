@@ -24,6 +24,7 @@ Import functions ?
 Extensions ?
 ---------------------
 * ISHD XML-Import
+* integriertes Tippspiel
 
 Änderungen
 ---------------------

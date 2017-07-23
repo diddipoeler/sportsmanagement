@@ -132,8 +132,8 @@ class sportsmanagementModelCurve extends JModelLegacy
 		{
 			
             $query->select('t1.id AS teamid1, t2.id AS teamid2');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
+            $query->from('#__sportsmanagement_match AS m ');
+            $query->join('INNER','#__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
             $query->where('pt1.project_id = '.self::$projectid);
 
 			if (self::$division)
@@ -142,9 +142,9 @@ class sportsmanagementModelCurve extends JModelLegacy
 			}
             
             
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.id = pt1.team_id ');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON st1.team_id = t1.id ');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
+            $query->join('INNER','#__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
+            $query->join('INNER','#__sportsmanagement_team AS t1 ON st1.team_id = t1.id ');
+            $query->join('INNER','#__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
             $query->where('pt2.project_id = '.self::$projectid);
                 
 			if (self::$division)
@@ -153,9 +153,9 @@ class sportsmanagementModelCurve extends JModelLegacy
 			}
             
             
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = pt2.team_id ');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON st2.team_id = t2.id ');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON pt1.project_id = p.id AND pt2.project_id = p.id ');
+            $query->join('INNER','#__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id ');
+            $query->join('INNER','#__sportsmanagement_team AS t2 ON st2.team_id = t2.id ');
+            $query->join('INNER','#__sportsmanagement_project AS p ON pt1.project_id = p.id AND pt2.project_id = p.id ');
             
             $query->where('m.published = 1 AND m.cancel = 0');
             

@@ -112,7 +112,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 			if ( self::$teamid > 0 )
 			{
 			 $query->select('*');
-             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team');
+             $query->from('#__sportsmanagement_team');
              $query->where('id = '. self::$teamid );
              $db->setQuery($query);
              self::$team = $db->loadObject();
@@ -157,16 +157,16 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $query->select('st1.id AS st1_id');
         $query->select('st2.id AS st2_id');
         $query->select('CONCAT_WS(\':\',matches.id,CONCAT_WS("_",t1.alias,t2.alias)) AS match_slug ');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match as matches ');
+        $query->from('#__sportsmanagement_match as matches ');
         
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id = matches.projectteam1_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON pt2.id = matches.projectteam2_id  ');
+        $query->join('INNER',' #__sportsmanagement_project_team AS pt1 ON pt1.id = matches.projectteam1_id ');
+        $query->join('INNER',' #__sportsmanagement_project_team AS pt2 ON pt2.id = matches.projectteam2_id  ');
            
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.id = pt1.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON st1.team_id = t1.id ');
+        $query->join('INNER',' #__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
+        $query->join('INNER',' #__sportsmanagement_team AS t1 ON st1.team_id = t1.id ');
            
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = pt2.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON st2.team_id = t2.id ');
+        $query->join('INNER',' #__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id ');
+        $query->join('INNER',' #__sportsmanagement_team AS t2 ON st2.team_id = t2.id ');
         
         $query->where('pt1.project_id = '.self::$projectid);
         
@@ -265,14 +265,14 @@ class sportsmanagementModelTeamStats extends JModelLegacy
            $query->select('COUNT( round_id ) AS totalzero ');
 	       $query->select('SUM( t1.id = '.self::$team->id.' AND team2_result=0 ) AS homezero ');
            $query->select('SUM( t2.id = '.self::$team->id.' AND team1_result=0 ) AS awayzero ');
-           $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS matches');
-           $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt1 ON pt1.id = matches.projectteam1_id ');
-           $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.id = pt1.team_id ');
-           $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON st1.team_id = t1.id ');
+           $query->from('#__sportsmanagement_match AS matches');
+           $query->join('INNER',' #__sportsmanagement_project_team pt1 ON pt1.id = matches.projectteam1_id ');
+           $query->join('INNER',' #__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
+           $query->join('INNER',' #__sportsmanagement_team AS t1 ON st1.team_id = t1.id ');
            
-           $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt2 ON pt2.id = matches.projectteam2_id ');
-           $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = pt2.team_id ');
-           $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON st2.team_id = t2.id ');
+           $query->join('INNER',' #__sportsmanagement_project_team pt2 ON pt2.id = matches.projectteam2_id ');
+           $query->join('INNER',' #__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id ');
+           $query->join('INNER',' #__sportsmanagement_team AS t2 ON st2.team_id = t2.id ');
         
            $query->where('pt1.project_id = '.self::$projectid);
            $query->where('matches.published = 1 ');
@@ -313,22 +313,22 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 //	    $query->select('IFNULL(SUM(team1_result),0) AS goalsfor,IFNULL(SUM(team2_result),0) AS goalsagainst,IFNULL(SUM(team1_result + team2_result),0) AS totalgoals,IFNULL(SUM(IF(team1_result=team2_result,1,0)),0) AS totaldraw,IFNULL(SUM(IF(team1_result<team2_result,1,0)),0) AS totalloss,IFNULL(SUM(IF(team1_result>team2_result,1,0)),0) AS totalwin  ');
 		$query->select('COUNT(crowd) AS attendedmatches ');
 		$query->select('SUM(crowd) AS sumspectators ');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS matches');
+        $query->from('#__sportsmanagement_match AS matches');
         
         switch ($which)
         {
             case 'HOME':
             $query->select('IFNULL(SUM(team1_result),0) AS goalsfor,IFNULL(SUM(team2_result),0) AS goalsagainst,IFNULL(SUM(team1_result + team2_result),0) AS totalgoals,IFNULL(SUM(IF(team1_result=team2_result,1,0)),0) AS totaldraw,IFNULL(SUM(IF(team1_result<team2_result,1,0)),0) AS totalloss,IFNULL(SUM(IF(team1_result>team2_result,1,0)),0) AS totalwin  ');
-            $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt1 ON pt1.id = matches.projectteam1_id ');
+            $query->join('INNER',' #__sportsmanagement_project_team pt1 ON pt1.id = matches.projectteam1_id ');
             break;
             case 'AWAY':
             $query->select('IFNULL(SUM(team2_result),0) AS goalsfor,IFNULL(SUM(team1_result),0) AS goalsagainst,IFNULL(SUM(team2_result + team1_result),0) AS totalgoals,IFNULL(SUM(IF(team2_result=team1_result,1,0)),0) AS totaldraw,IFNULL(SUM(IF(team2_result<team1_result,1,0)),0) AS totalloss,IFNULL(SUM(IF(team2_result>team1_result,1,0)),0) AS totalwin  ');
-            $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt1 ON pt1.id = matches.projectteam2_id ');
+            $query->join('INNER',' #__sportsmanagement_project_team pt1 ON pt1.id = matches.projectteam2_id ');
             break;
         }
         
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt1.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON st.team_id = t.id ');
+        $query->join('INNER',' #__sportsmanagement_season_team_id as st ON st.id = pt1.team_id ');
+        $query->join('INNER',' #__sportsmanagement_team AS t ON st.team_id = t.id ');
         
         $query->where('pt1.project_id = '.self::$projectid);
         $query->where('matches.published = 1');
@@ -396,17 +396,17 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $query->select('SUM(CASE WHEN st1.team_id ='.self::$teamid.' THEN matches.team2_result ELSE matches.team1_result END) AS goalsagainst');
         $query->select('rounds.roundcode');
         
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS rounds ');
+        $query->from('#__sportsmanagement_round AS rounds ');
         
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS matches ON rounds.id = matches.round_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id = matches.projectteam1_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON pt2.id = matches.projectteam2_id  ');
+        $query->join('INNER',' #__sportsmanagement_match AS matches ON rounds.id = matches.round_id ');
+        $query->join('INNER',' #__sportsmanagement_project_team AS pt1 ON pt1.id = matches.projectteam1_id ');
+        $query->join('INNER',' #__sportsmanagement_project_team AS pt2 ON pt2.id = matches.projectteam2_id  ');
            
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.id = pt1.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON st1.team_id = t1.id ');
+        $query->join('INNER',' #__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
+        $query->join('INNER',' #__sportsmanagement_team AS t1 ON st1.team_id = t1.id ');
            
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = pt2.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON st2.team_id = t2.id ');
+        $query->join('INNER',' #__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id ');
+        $query->join('INNER',' #__sportsmanagement_team AS t2 ON st2.team_id = t2.id ');
         
         $query->where('rounds.project_id = '.self::$projectid);
         $query->where('( (st1.team_id ='.self::$teamid.' ) OR (st2.team_id ='.self::$teamid.' ) )' );
@@ -458,16 +458,16 @@ class sportsmanagementModelTeamStats extends JModelLegacy
            $query->select('SUM(matches.team2_result) AS guestgoalspd');
            $query->select('rounds.roundcode');
 
-           $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS rounds ');
-           $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS matches ON rounds.id = matches.round_id ');
-           $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id = matches.projectteam1_id ');
-           $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON pt2.id = matches.projectteam2_id  ');
+           $query->from('#__sportsmanagement_round AS rounds ');
+           $query->join('INNER',' #__sportsmanagement_match AS matches ON rounds.id = matches.round_id ');
+           $query->join('INNER',' #__sportsmanagement_project_team AS pt1 ON pt1.id = matches.projectteam1_id ');
+           $query->join('INNER',' #__sportsmanagement_project_team AS pt2 ON pt2.id = matches.projectteam2_id  ');
            
-           $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.id = pt1.team_id ');
-           $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON st1.team_id = t1.id ');
+           $query->join('INNER',' #__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
+           $query->join('INNER',' #__sportsmanagement_team AS t1 ON st1.team_id = t1.id ');
            
-           $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = pt2.team_id ');
-           $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON st2.team_id = t2.id ');
+           $query->join('INNER',' #__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id ');
+           $query->join('INNER',' #__sportsmanagement_team AS t2 ON st2.team_id = t2.id ');
            
            $query->where('rounds.project_id = '.self::$projectid);
            $query->where('( (st1.team_id ='.self::$teamid.' ) OR (st2.team_id ='.self::$teamid.' ) )' );
@@ -514,7 +514,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         if ( is_null( self::$totalrounds ) )
         {
             $query->select('COUNT(id)');
-           $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round ');
+           $query->from('#__sportsmanagement_round ');
            $query->where('project_id = '.self::$projectid);
                     
             $db->setQuery($query);
@@ -561,11 +561,11 @@ class sportsmanagementModelTeamStats extends JModelLegacy
     	{
     	   $query->select('matches.crowd');
 
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS matches ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id = matches.projectteam1_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.id = pt1.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON st1.team_id = t1.id ');
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS playground ON pt1.standard_playground = playground.id ');
+        $query->from('#__sportsmanagement_match AS matches ');
+        $query->join('INNER',' #__sportsmanagement_project_team AS pt1 ON pt1.id = matches.projectteam1_id ');
+        $query->join('INNER',' #__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
+        $query->join('INNER',' #__sportsmanagement_team AS t1 ON st1.team_id = t1.id ');
+        $query->join('LEFT',' #__sportsmanagement_playground AS playground ON pt1.standard_playground = playground.id ');
         
         $query->where('st1.team_id = '.self::$teamid);
         $query->where('matches.crowd > 0 ');
@@ -678,8 +678,8 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $query = $db->getQuery(true);
         
 		$query->select('logo_big');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS clubs ');
-        $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS teams ON clubs.id = teams.club_id ');
+        $query->from('#__sportsmanagement_club AS clubs ');
+        $query->join('LEFT',' #__sportsmanagement_team AS teams ON clubs.id = teams.club_id ');
         $query->where('teams.id = '.self::$teamid);
     	$db->setQuery( $query );
     	$logo = JURI::root().$db->loadResult();
@@ -706,15 +706,15 @@ class sportsmanagementModelTeamStats extends JModelLegacy
         $query->select('m.alt_decision, m.team1_result_decision, m.team2_result_decision');
         $query->select('t1.id AS team1_id, t2.id AS team2_id');
 
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id = m.projectteam1_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON pt2.id = m.projectteam2_id  ');
+        $query->from('#__sportsmanagement_match AS m ');
+        $query->join('INNER',' #__sportsmanagement_project_team AS pt1 ON pt1.id = m.projectteam1_id ');
+        $query->join('INNER',' #__sportsmanagement_project_team AS pt2 ON pt2.id = m.projectteam2_id  ');
            
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.id = pt1.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON st1.team_id = t1.id ');
+        $query->join('INNER',' #__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
+        $query->join('INNER',' #__sportsmanagement_team AS t1 ON st1.team_id = t1.id ');
          
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = pt2.team_id ');
-        $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON st2.team_id = t2.id ');
+        $query->join('INNER',' #__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id ');
+        $query->join('INNER',' #__sportsmanagement_team AS t2 ON st2.team_id = t2.id ');
            
         $query->where('pt1.project_id = '.self::$projectid);
         $query->where('( (st1.team_id = '.self::$teamid.' ) OR (st2.team_id = '.self::$teamid.' ) )' );

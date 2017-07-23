@@ -283,7 +283,7 @@ public function getStart()
 		$query->from('#__sportsmanagement_person as v');
         // Join over the clubs
 //		$query->select('c.name As club');
-//		$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club AS c ON c.id = v.club_id');
+//		$query->join('LEFT','#__sportsmanagement_club AS c ON c.id = v.club_id');
         $query->join('INNER','#__sportsmanagement_season_team_person_id AS stp ON stp.person_id = v.id');
         $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = stp.team_id');
         $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');

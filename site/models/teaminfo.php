@@ -135,7 +135,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         }
         
         $query->select('*');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_trainingdata'); 
+        $query->from('#__sportsmanagement_team_trainingdata'); 
         //$query->where('project_id = '. $projectid);  
         //$query->where('project_team_id = '. $projectTeamID);
         $query->where('team_id = '. self::$teamid);
@@ -175,10 +175,10 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 		  $query->select('t.*,t.name AS tname, t.website AS team_website, pt.*, pt.notes AS notes, pt.info AS info');
           $query->select('t.extended AS teamextended, t.picture AS team_picture, pt.picture AS projectteam_picture,pt.cr_picture AS cr_projectteam_picture, c.*');
           $query->select('CONCAT_WS( \':\', t.id, t.alias ) AS slug ');
-          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team t '); 
-	      $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_club c ON t.club_id = c.id '); 
-          $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = t.id');
-          $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt ON pt.team_id = st.id ');
+          $query->from('#__sportsmanagement_team t '); 
+	      $query->join('LEFT','#__sportsmanagement_club c ON t.club_id = c.id '); 
+          $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = t.id');
+          $query->join('INNER','#__sportsmanagement_project_team pt ON pt.team_id = st.id ');
                 
             $query->where('pt.project_id = '. self::$projectid );            
                         
@@ -247,7 +247,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 			{
 			 $query->select('*');
              $query->select('CONCAT_WS( \':\', id, alias ) AS slug');
-             $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_club'); 
+             $query->from('#__sportsmanagement_club'); 
              $query->where('id = '. $team->club_id );  
 
 				$db->setQuery($query);
@@ -425,9 +425,9 @@ $query->order('s.name '.$season_ordering);
        
     $player = array();
     $query->select('SUM(stp.market_value) AS market_value');
-    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS stp'); 
-    $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = stp.team_id');
-    $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
+    $query->from('#__sportsmanagement_season_team_person_id AS stp'); 
+    $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = stp.team_id');
+    $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
     
     $query->where('pt.project_id = ' . $projectid);
     $query->where('pt.id = ' . $projectteamid);
@@ -581,11 +581,11 @@ $query->order('s.name '.$season_ordering);
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
        $query->select('l.name AS league');
-	$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p'); 
-    $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON l.id = p.league_id');
+	$query->from('#__sportsmanagement_project AS p'); 
+    $query->join('INNER','#__sportsmanagement_league AS l ON l.id = p.league_id');
     $query->where('p.id =' . $projectid);
     
-//		$query = 'SELECT l.name AS league FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p, #__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l WHERE p.id=' . $projectid . ' AND l.id=p.league_id ';
+//		$query = 'SELECT l.name AS league FROM #__sportsmanagement_project AS p, #__sportsmanagement_league AS l WHERE p.id=' . $projectid . ' AND l.id=p.league_id ';
 
 	    $db->setQuery($query, 0, 1);
     	$league = $db->loadResult();
@@ -746,10 +746,10 @@ $query->order('s.name '.$season_ordering);
     $age = 0;
     
     $query->select('ps.*');
-    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ps'); 
-    $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.person_id = ps.id');
-    $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id AND st.season_id = tp.season_id');
-    $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON st.id = pt.team_id');
+    $query->from('#__sportsmanagement_person AS ps'); 
+    $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = ps.id');
+    $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id AND st.season_id = tp.season_id');
+    $query->join('INNER','#__sportsmanagement_project_team AS pt ON st.id = pt.team_id');
         
     $query->where('pt.project_id =' . $projectid);
     $query->where('pt.id =' . $projectteamid);
@@ -815,10 +815,10 @@ $query->order('s.name '.$season_ordering);
        
 		$player = array();
         $query->select('COUNT(*) AS playercnt');
-	    $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS ps'); 
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS tp ON tp.person_id = ps.id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = tp.team_id AND st.season_id = tp.season_id');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON st.id = pt.team_id');
+	    $query->from('#__sportsmanagement_person AS ps'); 
+        $query->join('INNER','#__sportsmanagement_season_team_person_id AS tp ON tp.person_id = ps.id');
+        $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = tp.team_id AND st.season_id = tp.season_id');
+        $query->join('INNER','#__sportsmanagement_project_team AS pt ON st.id = pt.team_id');
         
         $query->where('pt.project_id =' . $projectid);
         $query->where('pt.id =' . $projectteamid);

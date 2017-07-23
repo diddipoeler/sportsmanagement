@@ -102,12 +102,12 @@ class sportsmanagementModelStaff extends JModelLegacy
 		  $query->select('ts.*,ts.picture as picture,ts.picture as season_picture');
           $query->select('pos.name AS position_name');
           $query->select('ppos.id AS pPosID, ppos.position_id');
-          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS ts'); 
-          $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = ts.team_id AND st.season_id = ts.season_id');
-          $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON st.id = pt.team_id');
+          $query->from('#__sportsmanagement_season_team_person_id AS ts'); 
+          $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = ts.team_id AND st.season_id = ts.season_id');
+          $query->join('INNER','#__sportsmanagement_project_team AS pt ON st.id = pt.team_id');
           
-          $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = ts.project_position_id');
-          $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id');
+          $query->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id = ts.project_position_id');
+          $query->join('LEFT','#__sportsmanagement_position AS pos ON pos.id = ppos.position_id');
         
           $query->where('pt.project_id = '.self::$projectid );
           $query->where('ts.person_id = '.self::$personid );
@@ -150,18 +150,18 @@ class sportsmanagementModelStaff extends JModelLegacy
             $query->select('s.name AS season_name');
             $query->select('ppos.position_id');
             $query->select('pos.name AS position_name,pos.id AS posID');
-            //$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pr ');
-            //$query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS o ON o.person_id = pr.id');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_person_id AS o');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id AS st ON st.team_id = o.team_id AND st.season_id = o.season_id');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS pr ON o.person_id = pr.id');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS tt ON tt.team_id = st.id');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = o.team_id');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = tt.project_id');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id = p.season_id');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON l.id = p.league_id');
-            $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = o.project_position_id');
-            $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.id = ppos.position_id ');
+            //$query->from('#__sportsmanagement_person AS pr ');
+            //$query->join('INNER','#__sportsmanagement_season_team_person_id AS o ON o.person_id = pr.id');
+            $query->from('#__sportsmanagement_season_team_person_id AS o');
+            $query->join('INNER','#__sportsmanagement_season_team_id AS st ON st.team_id = o.team_id AND st.season_id = o.season_id');
+            $query->join('INNER','#__sportsmanagement_person AS pr ON o.person_id = pr.id');
+            $query->join('INNER','#__sportsmanagement_project_team AS tt ON tt.team_id = st.id');
+            $query->join('INNER','#__sportsmanagement_team AS t ON t.id = o.team_id');
+            $query->join('INNER','#__sportsmanagement_project AS p ON p.id = tt.project_id');
+            $query->join('INNER','#__sportsmanagement_season AS s ON s.id = p.season_id');
+            $query->join('INNER','#__sportsmanagement_league AS l ON l.id = p.league_id');
+            $query->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id = o.project_position_id');
+            $query->join('LEFT','#__sportsmanagement_position AS pos ON pos.id = ppos.position_id ');
             //$query->where('pr.id = '.self::$personid );
             $query->where('o.person_id = '.self::$personid );
             $query->where('pr.published = 1');
@@ -198,10 +198,10 @@ class sportsmanagementModelStaff extends JModelLegacy
 	   $query = $db->getQuery(true);
        
 		$query='	SELECT	count(mp.id) AS present
-					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff AS mp
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ON mp.match_id=m.id
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_team_staff AS tp ON tp.id=mp.team_staff_id
-					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON m.projectteam1_id=pt.id
+					FROM #__sportsmanagement_match_staff AS mp
+					INNER JOIN #__sportsmanagement_match AS m ON mp.match_id=m.id
+					INNER JOIN #__sportsmanagement_team_staff AS tp ON tp.id=mp.team_staff_id
+					INNER JOIN #__sportsmanagement_project_team AS pt ON m.projectteam1_id=pt.id
 					WHERE tp.person_id='.$this->_db->Quote((int)$person_id).' 
 					  AND pt.project_id='.$this->_db->Quote((int)$project_id) . '
 					  AND tp.published = 1';

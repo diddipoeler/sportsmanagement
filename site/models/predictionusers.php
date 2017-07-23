@@ -186,7 +186,7 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 		$object->picture = $picture;
 
         // Update their details in the table using id as the primary key.
-        $resultquery = sportsmanagementHelper::getDBConnection()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member', $object, 'id');
+        $resultquery = sportsmanagementHelper::getDBConnection()->updateObject('#__sportsmanagement_prediction_member', $object, 'id');
         
 		if (!$resultquery)
 		{
@@ -416,9 +416,9 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 		$query = $db->getQuery(true);
         // Select some fields
         $query->select('pt.id AS value,t.name AS text');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt.team_id ');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st.team_id');
+        $query->from('#__sportsmanagement_project_team AS pt');
+        $query->join('INNER','#__sportsmanagement_season_team_id as st ON st.id = pt.team_id ');
+        $query->join('INNER', '#__sportsmanagement_team AS t ON t.id = st.team_id');
         $query->where('pt.project_id = ' . (int)$project_id );
         $query->order('text');
 
@@ -453,10 +453,10 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 // Select some fields
         $query->select('rounds.id,rounds.roundcode AS roundcode,rounds.name');
         $query->select('SUM(pr.points) AS points');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS rounds');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS matches ON rounds.id = matches.round_id');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_result AS pr ON pr.match_id = matches.id');
-        $query->join('LEFT', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member AS prmem ON prmem.user_id = pr.user_id');
+        $query->from('#__sportsmanagement_round AS rounds');
+        $query->join('INNER', '#__sportsmanagement_match AS matches ON rounds.id = matches.round_id');
+        $query->join('LEFT', '#__sportsmanagement_prediction_result AS pr ON pr.match_id = matches.id');
+        $query->join('LEFT', '#__sportsmanagement_prediction_member AS prmem ON prmem.user_id = pr.user_id');
         
         $query->where('pr.prediction_id = '.$pgid);
         $query->where('(matches.cancel IS NULL OR matches.cancel = 0)');

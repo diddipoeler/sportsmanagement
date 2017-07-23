@@ -97,7 +97,7 @@ class sportsmanagementModelMatrix extends JModelLegacy
 		if ( self::$divisionid > 0 )
 		{
 		  $query->select('*');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_division');
+            $query->from('#__sportsmanagement_division');
             $query->where('id = '.self::$divisionid);
             $db->setQuery($query);
             $division = $db->loadObject();
@@ -125,7 +125,7 @@ class sportsmanagementModelMatrix extends JModelLegacy
 		if ( self::$roundid > 0 )
 		{
 		  $query->select('*');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+            $query->from('#__sportsmanagement_round');
             $query->where('id = '.self::$roundid);
             $db->setQuery($query);
             $round = $db->loadObject();

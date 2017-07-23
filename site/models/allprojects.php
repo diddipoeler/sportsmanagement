@@ -248,8 +248,8 @@ public function getStart()
 		$query->from('#__sportsmanagement_project AS v');
         $query->join('INNER','#__sportsmanagement_league AS l ON l.id = v.league_id');
         $query->join('INNER','#__sportsmanagement_season AS s ON s.id = v.season_id');
-//        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id = st.id');
-//        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pt.project_id');
+//        $query->join('LEFT','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id');
+//        $query->join('LEFT','#__sportsmanagement_project AS p ON p.id = pt.project_id');
         
 //        // Join over the users for the checked out user.
 //		$query->select('uc.name AS editor');

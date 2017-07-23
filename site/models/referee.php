@@ -117,14 +117,14 @@ class sportsmanagementModelReferee extends JModelLegacy
             $query->select('pos.name AS position_name');
             $query->select('p.name AS project_name,CONCAT_WS(\':\',p.id,p.alias) AS project_slug');
             $query->select('s.name AS season_name');
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS per ');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS o ON per.id = o.person_id');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pr ON pr.person_id = o.id');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project AS p ON p.id = pr.project_id');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season AS s ON s.id = p.season_id');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_league AS l ON l.id = p.league_id');
-            $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON pr.project_position_id = ppos.id');
-            $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id = pos.id');
+            $query->from('#__sportsmanagement_person AS per ');
+            $query->join('INNER','#__sportsmanagement_season_person_id AS o ON per.id = o.person_id');
+            $query->join('INNER','#__sportsmanagement_project_referee AS pr ON pr.person_id = o.id');
+            $query->join('INNER','#__sportsmanagement_project AS p ON p.id = pr.project_id');
+            $query->join('INNER','#__sportsmanagement_season AS s ON s.id = p.season_id');
+            $query->join('INNER','#__sportsmanagement_league AS l ON l.id = p.league_id');
+            $query->join('LEFT','#__sportsmanagement_project_position AS ppos ON pr.project_position_id = ppos.id');
+            $query->join('LEFT','#__sportsmanagement_position AS pos ON ppos.position_id = pos.id');
             $query->where('per.id = '.self::$personid);
             $query->where('per.published = 1');
             

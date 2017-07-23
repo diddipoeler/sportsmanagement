@@ -110,14 +110,14 @@ class sportsmanagementModelStats extends JModelLegacy
             $query->select('t2.id AS awayteam_id');
             $query->select('pt2.id AS project_awayteam_id');
             
-            $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS matches');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id = matches.projectteam1_id');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st1 ON st1.id = pt1.team_id ');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t1 ON st1.team_id = t1.id ');
+            $query->from('#__sportsmanagement_match AS matches');
+            $query->join('INNER','#__sportsmanagement_project_team AS pt1 ON pt1.id = matches.projectteam1_id');
+            $query->join('INNER','#__sportsmanagement_season_team_id as st1 ON st1.id = pt1.team_id ');
+            $query->join('INNER','#__sportsmanagement_team AS t1 ON st1.team_id = t1.id ');
         
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON pt2.id = matches.projectteam2_id');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st2 ON st2.id = pt2.team_id ');
-            $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t2 ON st2.team_id = t2.id ');
+            $query->join('INNER','#__sportsmanagement_project_team AS pt2 ON pt2.id = matches.projectteam2_id');
+            $query->join('INNER','#__sportsmanagement_season_team_id as st2 ON st2.id = pt2.team_id ');
+            $query->join('INNER','#__sportsmanagement_team AS t2 ON st2.team_id = t2.id ');
             
             $query->where('pt1.project_id = '.self::$projectid);
             
@@ -324,8 +324,8 @@ class sportsmanagementModelStats extends JModelLegacy
           $query->select('SUM(crowd) AS sumspectators');
           
           $Subquery->select('COUNT(crowd)');
-          $Subquery->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS sub1');
-          $Subquery->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS sub2 ON sub2.id = sub1.projectteam1_id');
+          $Subquery->from('#__sportsmanagement_match AS sub1');
+          $Subquery->join('INNER','#__sportsmanagement_project_team AS sub2 ON sub2.id = sub1.projectteam1_id');
           $Subquery->where('sub1.crowd > 0');
           $Subquery->where('sub1.published = 1');
           $Subquery->where('(sub1.cancel IS NULL OR sub1.cancel = 0)');
@@ -333,8 +333,8 @@ class sportsmanagementModelStats extends JModelLegacy
           
           $query->select('('.$Subquery.') AS attendedmatches');
           
-          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS matches');
-          $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON pt1.id = matches.projectteam1_id');
+          $query->from('#__sportsmanagement_match AS matches');
+          $query->join('INNER','#__sportsmanagement_project_team AS pt1 ON pt1.id = matches.projectteam1_id');
             
           $query->where('pt1.project_id = '.self::$projectid);
             
@@ -408,8 +408,8 @@ class sportsmanagementModelStats extends JModelLegacy
           $query->select('SUM(matches.team2_result) AS guestgoalspd');
           $query->select('rounds.roundcode');
           
-          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round AS rounds');
-          $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS matches ON rounds.id = matches.round_id');
+          $query->from('#__sportsmanagement_round AS rounds');
+          $query->join('LEFT','#__sportsmanagement_match AS matches ON rounds.id = matches.round_id');
           
 //			$query  = ' SELECT rounds.id,'
 //				. ' COUNT(matches.id) AS totalmatchespd,'
@@ -422,7 +422,7 @@ class sportsmanagementModelStats extends JModelLegacy
 //			;
 			if (self::$divisionid != 0)
 			{
-			 $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS division ON division.project_id = rounds.project_id');
+			 $query->join('INNER','#__sportsmanagement_division AS division ON division.project_id = rounds.project_id');
              $query->where('rounds.project_id = '.self::$projectid);
              $query->where('division.id = '.self::$divisionid);
              
@@ -472,7 +472,7 @@ class sportsmanagementModelStats extends JModelLegacy
 		if ( is_null( $this->totalrounds ) )
 		{
 		  $query->select('COUNT(id)');
-          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+          $query->from('#__sportsmanagement_round');
           $query->where('project_id = '.self::$projectid);
           
 //			$query  = ' SELECT COUNT(id)'
@@ -513,11 +513,11 @@ class sportsmanagementModelStats extends JModelLegacy
           $query->select('t1.id AS teamid');
           $query->select('playground.max_visitors AS capacity');
           
-          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS matches ');
-          $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team pt1 ON pt1.id = matches.projectteam1_id ');
-          $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id as st ON st.id = pt1.team_id ');
-          $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_team t1 ON t1.id = st.team_id');
-          $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_playground AS playground ON pt1.standard_playground = playground.id');
+          $query->from('#__sportsmanagement_match AS matches ');
+          $query->join('INNER','#__sportsmanagement_project_team pt1 ON pt1.id = matches.projectteam1_id ');
+          $query->join('INNER','#__sportsmanagement_season_team_id as st ON st.id = pt1.team_id ');
+          $query->join('INNER','#__sportsmanagement_team t1 ON t1.id = st.team_id');
+          $query->join('LEFT','#__sportsmanagement_playground AS playground ON pt1.standard_playground = playground.id');
           
           $query->where('pt1.project_id = '.self::$projectid);
           

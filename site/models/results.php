@@ -373,8 +373,8 @@ else
         $query->join('LEFT','#__sportsmanagement_team AS t2 ON t2.id = st2.team_id');
         $query->join('LEFT','#__sportsmanagement_club AS c2 ON c2.id = t2.club_id');
         
-        //$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d1 ON pt1.division_id = d1.id');
-        //$query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_division AS d2 ON pt2.division_id = d2.id');
+        //$query->join('LEFT','#__sportsmanagement_division AS d1 ON pt1.division_id = d1.id');
+        //$query->join('LEFT','#__sportsmanagement_division AS d2 ON pt2.division_id = d2.id');
         $query->join('LEFT','#__sportsmanagement_division AS d1 ON m.division_id = d1.id');
         $query->join('LEFT','#__sportsmanagement_division AS d2 ON m.division_id = d2.id');
         
@@ -486,11 +486,11 @@ else
         $query->select('mr.project_referee_id AS value');
         $query->select('t.name AS teamname');
         $query->select('pos.name AS position_name');
-          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr ');
-          $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.id = mr.project_referee_id');
-          $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_season_team_id st ON st.id = pt.team_id ');
-          $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t ON t.id = st.team_id');
-          $query->join('LEFT',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON mr.project_position_id = pos.id');
+          $query->from('#__sportsmanagement_match_referee AS mr ');
+          $query->join('LEFT',' #__sportsmanagement_project_team AS pt ON pt.id = mr.project_referee_id');
+          $query->join('LEFT',' #__sportsmanagement_season_team_id st ON st.id = pt.team_id ');
+          $query->join('LEFT',' #__sportsmanagement_team AS t ON t.id = st.team_id');
+          $query->join('LEFT',' #__sportsmanagement_position AS pos ON mr.project_position_id = pos.id');
           
           $query->where('mr.match_id = '.(int) $match_id);
           $query->order('pos.name,mr.ordering ASC');
@@ -568,9 +568,9 @@ else
         $starttime = microtime(); 
         
         $query->select('COUNT(*)');
-          $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match AS m ');
-          $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
-          $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
+          $query->from('#__sportsmanagement_match AS m ');
+          $query->join('INNER',' #__sportsmanagement_project_team AS pt1 ON m.projectteam1_id = pt1.id ');
+          $query->join('INNER',' #__sportsmanagement_project_team AS pt2 ON m.projectteam2_id = pt2.id ');
           $query->where('m.id = '.$matchid);
           $query->where('(pt1.admin = '.(int)$userid.' OR pt2.admin = '.(int)$userid.')');
 

@@ -637,7 +637,7 @@ catch (Exception $e){
         
         // Select some fields
 		$query->select('id');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+        $query->from('#__sportsmanagement_round');
         $query->where('project_id = ' . self::$projectid);
         $query->order('roundcode ASC');
 

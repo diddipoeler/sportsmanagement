@@ -370,8 +370,8 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	   $query->join('INNER','#__sportsmanagement_project_team AS pt ON pt.team_id = st.id ');
 	   $query->join('INNER','#__sportsmanagement_team AS t ON t.id = st.team_id ');
 	   $query->join('INNER','#__sportsmanagement_person AS p ON tp.person_id = p.id ');
-//	   $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id = mp.project_position_id ');
-//	   $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id = pos.id ');
+//	   $query->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id = mp.project_position_id ');
+//	   $query->join('LEFT','#__sportsmanagement_position AS pos ON ppos.position_id = pos.id ');
        
        $query->join('LEFT','#__sportsmanagement_person_project_position AS ppp on ppp.person_id = tp.person_id and ppp.persontype = tp.persontype');
        $query->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id = ppp.project_position_id ');
@@ -439,13 +439,13 @@ class sportsmanagementModelMatchReport extends JModelLegacy
         $query->select('p.id,p.firstname,p.nickname,p.lastname,CONCAT_WS(\':\',p.id,p.alias) AS person_slug,p.picture');
         $query->select('ppos.position_id,ppos.id AS pposid');
         $query->select('pos.name AS position_name');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_referee AS mr');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee AS pref ON mr.project_referee_id=pref.id ');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id AS tp on tp.id = pref.person_id');
+        $query->from('#__sportsmanagement_match_referee AS mr');
+        $query->join('INNER','#__sportsmanagement_project_referee AS pref ON mr.project_referee_id=pref.id ');
+        $query->join('INNER','#__sportsmanagement_season_person_id AS tp on tp.id = pref.person_id');
         
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_person AS p ON tp.person_id=p.id');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON ppos.id=mr.project_position_id');
-        $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON ppos.position_id=pos.id');
+        $query->join('INNER','#__sportsmanagement_person AS p ON tp.person_id=p.id');
+        $query->join('LEFT','#__sportsmanagement_project_position AS ppos ON ppos.id=mr.project_position_id');
+        $query->join('LEFT','#__sportsmanagement_position AS pos ON ppos.position_id=pos.id');
         $query->where('mr.match_id='.(int)$this->matchid);
         $query->where('p.published = 1');
         $query->where('tp.persontype = 3');
@@ -473,9 +473,9 @@ class sportsmanagementModelMatchReport extends JModelLegacy
         $query = $db->getQuery(true);
         
         $query->select('et.id,et.name,et.icon');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_eventtype AS et');
-        $query->join('INNER','#__'.COM_SPORTSMANAGEMENT_TABLE.'_position_eventtype AS pet ON pet.eventtype_id = et.id ');
-	    $query->join('LEFT','#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event AS me ON et.id = me.event_type_id ');
+        $query->from('#__sportsmanagement_eventtype AS et');
+        $query->join('INNER','#__sportsmanagement_position_eventtype AS pet ON pet.eventtype_id = et.id ');
+	    $query->join('LEFT','#__sportsmanagement_match_event AS me ON et.id = me.event_type_id ');
         $query->where('me.match_id = '.(int)$this->matchid);
         $query->group('et.id');
         $query->order('pet.ordering');
@@ -537,11 +537,11 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 		$match = sportsmanagementModelMatch::getMatchData($this->matchid,sportsmanagementModelProject::$cfg_which_database);
         
          $query->select('*');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic');
+        $query->from('#__sportsmanagement_match_statistic');
         $query->where('match_id = '.$match->id );
         
         
-//		$query=' SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic '
+//		$query=' SELECT * FROM #__sportsmanagement_match_statistic '
 //		      .' WHERE match_id='. $this->_db->Quote($match->id);
               
 		$db->setQuery($query);
@@ -585,10 +585,10 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 			$match = sportsmanagementModelProject::getMatch();
             
             $query->select('*');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic');
+        $query->from('#__sportsmanagement_match_statistic');
         $query->where('match_id = '.$match->id );
 
-//			$query=' SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_statistic '
+//			$query=' SELECT * FROM #__sportsmanagement_match_statistic '
 //			      .' WHERE match_id='. $this->_db->Quote($match->id);
                   
                   
@@ -637,7 +637,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
             // Select some fields
         $query->select('*');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_event');
+		$query->from('#__sportsmanagement_match_event');
         // Where
         $query->where('match_id = '. $match->id );
 			
@@ -687,11 +687,11 @@ class sportsmanagementModelMatchReport extends JModelLegacy
             // Select some fields
         $query->select('*');
         // From 
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic');
+		$query->from('#__sportsmanagement_match_staff_statistic');
         // Where
         $query->where('match_id = '. $match->id );
 
-//			$query=' SELECT * FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_match_staff_statistic '
+//			$query=' SELECT * FROM #__sportsmanagement_match_staff_statistic '
 //			      .' WHERE match_id='. $this->_db->Quote($match->id);
 			
             $db->setQuery($query);
