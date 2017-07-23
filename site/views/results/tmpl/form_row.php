@@ -644,10 +644,10 @@ id="match_statistics<?php echo $thismatch->id; ?>">
 		<?php
         
         // über das backend/administrator bearbeiten
-		$url = sportsmanagementHelperRoute::getEditRefereesRoute($this->project->id,$thismatch->id);
-		$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_REFEREE_BACKEND');
+		//$url = sportsmanagementHelperRoute::getEditRefereesRoute($this->project->id,$thismatch->id);
+		//$imgTitle = JText::_('COM_SPORTSMANAGEMENT_EDIT_RESULTS_REFEREE_BACKEND');
 		//$desc = JHtml::image(	JURI::root().'/administrator/components/com_sportsmanagement/assets/images/players_add.png', $imgTitle,array(' title' => $imgTitle,' border' => 0));
-        $desc = JURI::root().'/administrator/components/com_sportsmanagement/assets/images/players_add.png';
+        //$desc = JURI::root().'/administrator/components/com_sportsmanagement/assets/images/players_add.png';
         //echo $url; 
          
 $url = sportsmanagementHelperRoute::getEditLineupRoute(sportsmanagementModelResults::$projectid,$thismatch->id,'editreferees',$team1->projectteamid,$datum,null,sportsmanagementModelResults::$cfg_which_database,sportsmanagementModelProject::$seasonid,sportsmanagementModelProject::$roundslug,0,'form');		
