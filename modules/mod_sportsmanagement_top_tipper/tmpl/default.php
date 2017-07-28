@@ -315,7 +315,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                                 if ( $newPoints != $points )
                                 {
                                     // this check also should be done if the result is not displayed
-                                    $memberPredictionPoint = $modelpg->savePredictionPoints($memberPredictionPoint,
+                                    $memberPredictionPoint = sportsmanagementModelPrediction::savePredictionPoints($memberPredictionPoint,
                                         $predictionProject,
                                         true);
                                     $points                = $newPoints;
