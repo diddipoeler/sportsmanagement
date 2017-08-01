@@ -215,6 +215,7 @@ $ende_if = true;
  
 }
 
+/*
 //if ( $_POST && !isset($_POST['reload_View']) )
 if ( $_POST  )
 {
@@ -258,7 +259,8 @@ $team_id = $jinput->post->get('jlamtopteam', 0, 'INT');
 
 $helper->setProject( $project_id, $team_id, $division_id  );
 }
-
+*/
+	
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
