@@ -52,6 +52,11 @@ echo "<td>".JHtml::_('select.genericlist', $this->lists['tomatchday'], 'to' , 'c
 <td>
 <input type="submit" class="<?PHP echo $this->config['button_style']; ?>" name="reload View"
 			value="<?php echo JText::_('COM_SPORTSMANAGEMENT_RANKING_FILTER'); ?>">
+
+<input type="hidden" name="p" value="<?php echo sportsmanagementModelRanking::$projectid  ; ?>" />
+<input type="hidden" name="r" value="<?php echo sportsmanagementModelRanking::$round  ; ?>" />
+<input type="hidden" name="s" value="<?php echo sportsmanagementModelRanking::$season ; ?>" />
+<input type="hidden" name="cfg_which_database" value="<?php echo sportsmanagementModelProject::$cfg_which_database ; ?>" />	
 </td>
 </tr>
 </table>
