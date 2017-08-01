@@ -215,7 +215,7 @@ $ende_if = true;
  
 }
 
-/*
+
 //if ( $_POST && !isset($_POST['reload_View']) )
 if ( $_POST  )
 {
@@ -259,7 +259,19 @@ $team_id = $jinput->post->get('jlamtopteam', 0, 'INT');
 
 $helper->setProject( $project_id, $team_id, $division_id  );
 }
-*/
+
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' country_id<br><pre>'.print_r($country_id,true).'</pre>'),'');
+if ( !$country_id )
+{
+$country_id  = $helper->getProjectCountry($project_id);
+$league_id  = $helper->getLeagueId();
+$league_assoc_id  = $helper->getLeagueAssocId();
+$sub_assoc_parent_id  = $helper->getAssocParentId($league_assoc_id);
+$sub_sub_assoc_parent_id  = $helper->getAssocParentId($sub_assoc_parent_id);
+
+}
+
 	
 // welche joomla version ?
 if(version_compare(JVERSION,'3.0.0','ge')) 
