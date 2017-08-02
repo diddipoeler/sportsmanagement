@@ -151,7 +151,7 @@ $country_id  = '';
 $lightbox = '';
 
 //if ( $queryvalues && ( isset($_POST['reload_View']) || !$_POST )  )
-if ( $queryvalues )
+if ( $queryvalues && !$_POST )
 {
     
 $ende_if = false;
