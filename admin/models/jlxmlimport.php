@@ -886,6 +886,12 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 	
 	
 
+	/**
+	 * sportsmanagementModelJLXMLImport::getUserList()
+	 * 
+	 * @param bool $is_admin
+	 * @return
+	 */
 	public function getUserList($is_admin=false)
 	{
 	   $app = JFactory::getApplication();
@@ -901,6 +907,11 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 		return JFactory::getDbo()->loadObjectList();
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::getTemplateList()
+	 * 
+	 * @return
+	 */
 	public function getTemplateList()
 	{
 	   $app = JFactory::getApplication();
@@ -912,6 +923,11 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 	}
 
 
+	/**
+	 * sportsmanagementModelJLXMLImport::getNewClubList()
+	 * 
+	 * @return
+	 */
 	public function getNewClubList()
 	{
 	   $app = JFactory::getApplication();
@@ -922,6 +938,11 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 		return JFactory::getDbo()->loadObjectList();
 	}
 
+	/**
+	 * sportsmanagementModelJLXMLImport::getNewClubListSelect()
+	 * 
+	 * @return
+	 */
 	public function getNewClubListSelect()
 	{
 	   $app = JFactory::getApplication();
@@ -5789,156 +5810,156 @@ $query->clear();
 		{
 			foreach($post as $key => $element)
 			{
-				if (substr($key,0,8)=='teamName')
+				if ( substr($key,0,8)=='teamName')
 				{
 					$tempteams=explode("_",$key);
 					$this->_newteams[$tempteams[1]]=$element;
 				}
-				elseif (substr($key,0,13)=='teamShortname')
+				elseif ( substr($key,0,13)=='teamShortname')
 				{
 					$tempteams=explode("_",$key);
 					$this->_newteamsshort[$tempteams[1]]=$element;
 				}
-				elseif (substr($key,0,8)=='teamInfo')
+				elseif ( substr($key,0,8)=='teamInfo')
 				{
 					$tempteams=explode("_",$key);
 					$this->_newteamsinfo[$tempteams[1]]=$element;
 				}
-				elseif (substr($key,0,14)=='teamMiddleName')
+				elseif ( substr($key,0,14)=='teamMiddleName')
 				{
 					$tempteams=explode("_",$key);
 					$this->_newteamsmiddle[$tempteams[1]]=$element;
 				}
-				elseif (substr($key,0,6)=='teamID')
+				elseif ( substr($key,0,6)=='teamID')
 				{
 					$tempteams=explode("_",$key);
 					$this->_newteamsid[$tempteams[1]]=$element;
 				}
-				elseif (substr($key,0,8)=='dbTeamID')
+				elseif ( substr($key,0,8)=='dbTeamID')
 				{
 					$tempteams=explode("_",$key);
 					$this->_dbteamsid[$tempteams[1]]=$element;
 				}
-				elseif (substr($key,0,8)=='clubName')
+				elseif ( substr($key,0,8)=='clubName')
 				{
 					$tempclubs=explode("_",$key);
 					$this->_newclubs[$tempclubs[1]]=$element;
 				}
-				elseif (substr($key,0,11)=='clubCountry')
+				elseif ( substr($key,0,11)=='clubCountry')
 				{
 					$tempclubs=explode("_",$key);
 					$this->_newclubscountry[$tempclubs[1]]=$element;
 				}
 				/**/
-				elseif (substr($key,0,6)=='clubID')
+				elseif ( substr($key,0,6)=='clubID')
 				{
 					$tempclubs=explode("_",$key);
 					$this->_newclubsid[$tempclubs[1]]=$element;
 				}
 				/**/
-				elseif (substr($key,0,10)=='createClub')
+				elseif ( substr($key,0,10)=='createClub')
 				{
 					$tempclubs=explode("_",$key);
 					$this->_createclubsid[$tempclubs[1]]=$element;
 				}
-				elseif (substr($key,0,8)=='dbClubID')
+				elseif ( substr($key,0,8)=='dbClubID')
 				{
 					$tempclubs=explode("_",$key);
 					$this->_dbclubsid[$tempclubs[1]]=$element;
 				}
-				elseif (substr($key,0,9)=='eventName')
+				elseif ( substr($key,0,9)=='eventName')
 				{
 					$tempevent=explode("_",$key);
 					$this->_neweventsname[$tempevent[1]]=$element;
 				}
-				elseif (substr($key,0,7)=='eventID')
+				elseif ( substr($key,0,7)=='eventID')
 				{
 					$tempevent=explode("_",$key);
 					$this->_neweventsid[$tempevent[1]]=$element;
 				}
-				elseif (substr($key,0,9)=='dbEventID')
+				elseif ( substr($key,0,9)=='dbEventID')
 				{
 					$tempevent=explode("_",$key);
 					$this->_dbeventsid[$tempevent[1]]=$element;
 				}
-				elseif (substr($key,0,12)=='positionName')
+				elseif ( substr($key,0,12)=='positionName')
 				{
 					$tempposition=explode("_",$key);
 					$this->_newpositionsname[$tempposition[1]]=$element;
 				}
-				elseif (substr($key,0,10)=='positionID')
+				elseif ( substr($key,0,10)=='positionID')
 				{
 					$tempposition=explode("_",$key);
 					$this->_newpositionsid[$tempposition[1]]=$element;
 				}
-				elseif (substr($key,0,12)=='dbPositionID')
+				elseif ( substr($key,0,12)=='dbPositionID')
 				{
 					$tempposition=explode("_",$key);
 					$this->_dbpositionsid[$tempposition[1]]=$element;
 				}
-				elseif (substr($key,0,18)=='parentPositionName')
+				elseif ( substr($key,0,18)=='parentPositionName')
 				{
 					$tempposition=explode("_",$key);
 					$this->_newparentpositionsname[$tempposition[1]]=$element;
 				}
-				elseif (substr($key,0,16) =="parentPositionID")
+				elseif ( substr($key,0,16) =="parentPositionID")
 				{
 					$tempposition=explode("_",$key);
 					$this->_newparentpositionsid[$tempposition[1]]=$element;
 				}
-				elseif (substr($key,0,18)=='dbParentPositionID')
+				elseif ( substr($key,0,18)=='dbParentPositionID')
 				{
 					$tempposition=explode("_",$key);
 					$this->_dbparentpositionsid[$tempposition[1]]=$element;
 				}
-				elseif (substr($key,0,14)=='playgroundName')
+				elseif ( substr($key,0,14)=='playgroundName')
 				{
 					$tempplayground=explode("_",$key);
 					$this->_newplaygroundname[$tempplayground[1]]=$element;
 				}
                 
-                elseif (substr($key,0,17)=='playgroundCountry')
+                elseif ( substr($key,0,17)=='playgroundCountry')
 				{
 					$tempplayground=explode("_",$key);
 					$this->_newplaygroundcountry[$tempplayground[1]]=$element;
 				}
                 
-				elseif (substr($key,0,19)=='playgroundShortname')
+				elseif ( substr($key,0,19)=='playgroundShortname')
 				{
 					$tempplayground=explode("_",$key);
 					$this->_newplaygroundshort[$tempplayground[1]]=$element;
 				}
-				elseif (substr($key,0,12)=='playgroundID')
+				elseif ( substr($key,0,12)=='playgroundID')
 				{
 					$tempplayground=explode("_",$key);
 					$this->_newplaygroundid[$tempplayground[1]]=$element;
 				}
-				elseif (substr($key,0,14)=='dbPlaygroundID')
+				elseif ( substr($key,0,14)=='dbPlaygroundID')
 				{
 					$tempplayground=explode("_",$key);
 					$this->_dbplaygroundsid[$tempplayground[1]]=$element;
 				}
-				elseif (substr($key,0,13)=='statisticName')
+				elseif ( substr($key,0,13)=='statisticName')
 				{
 					$tempstatistic=explode("_",$key);
 					$this->_newstatisticsname[$tempstatistic[1]]=$element;
 				}
-				elseif (substr($key,0,11)=='statisticID')
+				elseif ( substr($key,0,11)=='statisticID')
 				{
 					$tempstatistic=explode("_",$key);
 					$this->_newstatisticsid[$tempstatistic[1]]=$element;
 				}
-				elseif (substr($key,0,13)=='dbStatisticID')
+				elseif ( substr($key,0,13)=='dbStatisticID')
 				{
 					$tempstatistic=explode("_",$key);
 					$this->_dbstatisticsid[$tempstatistic[1]]=$element;
 				}
-				elseif (substr($key,0,14)=='personLastname')
+				elseif ( substr($key,0,14)=='personLastname')
 				{
 					$temppersons=explode("_",$key);
 					$this->_newperson_lastname[$temppersons[1]]=$element;
 				}
-				elseif (substr($key,0,15)=='personFirstname')
+				elseif ( substr($key,0,15)=='personFirstname')
 				{
 					$temppersons=explode("_",$key);
 					$this->_newperson_firstname[$temppersons[1]]=$element;
@@ -6104,7 +6125,7 @@ $query->clear();
 				// import sportstype
                 if(version_compare($step,'1','ge')) 
         {
-				if ($this->_importSportsType()===false)
+				if ( $this->_importSportsType() === false)
 				{
 					JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','sports-type'));
 					return $this->_success_text;
@@ -6240,15 +6261,17 @@ $query->clear();
 					return $this->_success_text;
 				}
 }
-				// import template
-                if(version_compare($step,'15','ge')) 
-        {
-				if ($this->_importTemplate()===false)
-				{
-					JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','template'));
-					return $this->_success_text;
-				}
-                }
+
+//				// import template
+//                if(version_compare($step,'15','ge')) 
+//        {
+//				if ($this->_importTemplate()===false)
+//				{
+//					JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','template'));
+//					return $this->_success_text;
+//				}
+//                }
+                
 			}
 // TO BE FIXED: Check correct function
 			// import divisions
@@ -6316,14 +6339,16 @@ $query->clear();
 			}
 }
 			// import rounds
-            if(version_compare($step,'24','ge')) 
+            if( version_compare($step,'24','ge') ) 
         {
-			if ($this->_importRounds()===false)
+			if ( $this->_importRounds() === false )
 			{
 				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','round'));
 				return $this->_success_text;
 			}
 }
+
+
 			// import matches
 			// last to import cause needs a lot of imports and conversions inside the database before match-conversion may be done
 			// after this import only the matchplayers,-staffs,-referees and -events can be imported cause they need existing
