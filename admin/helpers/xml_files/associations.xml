@@ -319,6 +319,18 @@
 <associations><assocname country="DEU" icon="fk_thueringen_weimar.gif" flag="" website="" shortname="Weimar" main="296" parentmain="25">Kreis Weimar</assocname></associations>
 <associations><assocname country="DEU" icon="fk_thueringen_werra_rennsteig.gif" flag="" website="" shortname="Werra Rennsteig" main="297" parentmain="25">Kreis Werra Rennsteig</assocname></associations>
 
+<associations><assocname country="DEU" icon="" flag="" website="http://www.kfa-eic-uh.de/" shortname="Eichsfeld-Unstrut-Hainich" main="1291" parentmain="25">Kreis Eichsfeld-Unstrut-Hainich</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="http://www.kfa-erfurt-sömmerda.de/" shortname="Erfurt-Sömmerda" main="1292" parentmain="25">Kreis Erfurt-Sömmerda</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="http://www.kfa-jena-saale-orla.de/" shortname="Jena-Saale-Orla" main="1293" parentmain="25">Kreis Jena-Saale-Orla</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="http://www.kfa-mittelthueringen.de/" shortname="Mittelthüringen" main="1294" parentmain="25">Kreis Mittelthüringen</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="http://www.ntkfa.org/" shortname="Nordthüringen" main="1295" parentmain="25">Kreis Nordthüringen</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="http://www.kfa-ostthueringen.de/" shortname="Ostthüringen" main="1296" parentmain="25">Kreis Ostthüringen</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="http://www.kfa-werra-rennsteig.de/" shortname="Rhön-Rennsteig" main="1297" parentmain="25">Kreis Rhön-Rennsteig</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="http://www.kfa-suedthueringen.de/" shortname="Südthüringen" main="1298" parentmain="25">Kreis Südthüringen</assocname></associations>
+<associations><assocname country="DEU" icon="" flag="" website="http://www.kfa-westthueringen.de/" shortname="Westthüringen" main="1299" parentmain="25">Kreis Westthüringen</assocname></associations>
+
+
+
 <associations><assocname country="DEU" icon="fk_westfalen_ahaus_coesfeld.gif" flag="" website="" shortname="Ahaus Coesfeld" main="298" parentmain="12">Kreis Ahaus Coesfeld</assocname></associations>
 <associations><assocname country="DEU" icon="fk_westfalen_arnsberg.gif" flag="" website="" shortname="Arnsberg" main="299" parentmain="12">Kreis Arnsberg</assocname></associations>
 <associations><assocname country="DEU" icon="fk_westfalen_beckum.gif" flag="" website="" shortname="Beckum" main="300" parentmain="12">Kreis Beckum</assocname></associations>
