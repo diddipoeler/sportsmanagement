@@ -1734,8 +1734,8 @@ $body .= sportsmanagementModelPredictionEntry::createHelptText($predictionProjec
 					unset($recipientAdmins);
 
 					//Create the mail
-					$mailer->setSubject('Approved Prediction Game Membership');
-					$body="Your request for membership on a prediction game on this website was approved by an admin.\nnBe welcome!";
+					$mailer->setSubject(JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MEMBERSHIP_SUBJECT'));
+					$body = JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_MEMBERSHIP');
 
 					$mailer->setBody($body);
 					
