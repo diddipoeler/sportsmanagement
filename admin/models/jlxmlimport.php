@@ -6070,11 +6070,11 @@ $query->clear();
 						return false;
 					}
 
-				if (isset($post['season']))
+				if ( isset($post['season']))
 				{
 					$this->_season_id=(int)$post['season'];
 				}
-				elseif (isset($post['seasonNew']))
+				elseif ( isset($post['seasonNew']))
 					{
 						$this->_season_new=substr($post['seasonNew'],0,75);
 					}
@@ -6085,7 +6085,7 @@ $query->clear();
 						return false;
 					}
 
-				if (isset($post['editor']))
+				if ( isset($post['editor']))
 				{
 					$this->_joomleague_editor=(int)$post['editor'];
 				}
@@ -6094,7 +6094,7 @@ $query->clear();
 					$this->_joomleague_editor=62;
 				}
 
-				if (isset($post['publish']))
+				if ( isset($post['publish']))
 				{
 					$this->_publish=(int)$post['publish'];
 				}
@@ -6103,7 +6103,7 @@ $query->clear();
 					$this->_publish=0;
 				}
 
-				if (isset($post['copyTemplate'])) // if new template set this value is 0
+				if ( isset($post['copyTemplate'])) // if new template set this value is 0
 				{
 					$this->_template_id=(int)$post['copyTemplate'];
 				}
@@ -6120,10 +6120,10 @@ $query->clear();
 			 */
              $step = JComponentHelper::getParams('com_sportsmanagement')->get('backend_xmlimport_step',1);
              
-			if ($post['importProject'] || $post['importType']=='events' || $post['importType']=='positions')
+			if ( $post['importProject'] || $post['importType']=='events' || $post['importType'] == 'positions' )
 			{
 				// import sportstype
-                if(version_compare($step,'1','ge')) 
+                if( version_compare($step,'1','ge') ) 
         {
 				if ( $this->_importSportsType() === false)
 				{
@@ -6133,21 +6133,21 @@ $query->clear();
                 }
 			}
 
-			if ($post['importProject'])
+			if ( $post['importProject'] )
 			{
 				// import league
-                if(version_compare($step,'2','ge')) 
+                if( version_compare($step,'2','ge')) 
         {
-				if ($this->_importLeague()===false)
+				if ( $this->_importLeague()===false)
 				{
 					JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','league'));
 					return $this->_success_text;
 				}
 }
 				// import season
-                if(version_compare($step,'3','ge')) 
+                if( version_compare($step,'3','ge')) 
         {
-				if ($this->_importSeason()===false)
+				if ( $this->_importSeason()===false)
 				{
 					JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','season'));
 					return $this->_success_text;
@@ -6156,9 +6156,9 @@ $query->clear();
 			}
 
 			// import events / should also work with exported events-XML without problems
-            if(version_compare($step,'4','ge')) 
+            if( version_compare($step,'4','ge') ) 
         {
-			if ($this->_importEvents()===false)
+			if ( $this->_importEvents() === false )
 			{
 				JError::raiseWarning(500,JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_XML_ERROR_DURING','event'));
 				return $this->_success_text;

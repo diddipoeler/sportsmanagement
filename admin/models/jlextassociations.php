@@ -163,9 +163,11 @@ class sportsmanagementModeljlextassociations extends JSMModelList
 	}
 	
     
+    
     /**
      * sportsmanagementModeljlextassociations::getAssociations()
      * 
+     * @param integer $federation
      * @return
      */
     function getAssociations($federation=0)

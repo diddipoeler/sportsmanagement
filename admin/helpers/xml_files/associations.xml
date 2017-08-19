@@ -26,7 +26,7 @@
 <associations><assocname country="DEU" icon="lv_d_sachsenanhalt.gif" flag="" website="" shortname="FSA" main="22" parentmain="5">Fußballverband Sachsen-Anhalt (FSA)</assocname></associations>
 <associations><assocname country="DEU" icon="lv_d_berlin.gif" flag="" website="" shortname="BFV" main="23" parentmain="5">Berliner Fußball-Verband (BFV)</assocname></associations>
 <associations><assocname country="DEU" icon="lv_d_brandenburg.gif" flag="" website="" shortname="FLB" main="24" parentmain="5">Fußball-Landesverband Brandenburg (FLB)</assocname></associations>
-<associations><assocname country="DEU" icon="lv_d_thueringen.gif" flag="" website="" shortname="TFV" main="25" parentmain="5">Thüringer Fußball-Verband (TFV)</assocname></associations>
+<associations><assocname country="DEU" icon="lv_d_thueringen.gif" flag="" website="http://www.tfv-erfurt.de/" shortname="TFV" main="25" parentmain="5">Thüringer Fußball-Verband (TFV)</assocname></associations>
 <associations><assocname country="DEU" icon="lv_d_sachsen.gif" flag="" website="" shortname="SFV" main="26" parentmain="5">Sächsischer Fußball-Verband (SFV)</assocname></associations>
 
 <associations><assocname country="DEU" icon="fk_baden_bruchsal.gif" flag="" website="" shortname="Bruchsal" main="27" parentmain="17">Kreis Bruchsal</assocname></associations>
