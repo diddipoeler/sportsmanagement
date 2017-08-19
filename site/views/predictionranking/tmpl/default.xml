@@ -21,11 +21,40 @@
 			<option value="1">JYES</option>
 		</field>
 
-    	<field	type="predictiongame" 
-      name="prediction_id"
-					label="COM_SPORTSMANAGEMENT_XML_RESULTS_SELECT_PREDICTIONGAME_LABEL" 
-          description="COM_SPORTSMANAGEMENT_XML_RESULTS_SELECT_PREDICTIONGAME_DESCR"
-					 />
+    	<field	name="prediction_id" 
+    task="predictionid" 
+      type="dependsql"
+      depends="cfg_which_database"
+      value_field="cfg_which_database"
+      key_field="prediction_id"
+					label="COM_SPORTSMANAGEMENT_XML_PREDICTIONENTRY_STATE_PARAM_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_PREDICTIONENTRY_STATE_PARAM_DESCRIPTION"
+					required="">
+			</field>
+
+<field	name="pggroup" 
+			task="predictiongroups" 
+      type="dependsql"
+      depends="prediction_id"
+      key_field="pggroup"
+			value_field="prediction_id"
+					label="COM_SPORTSMANAGEMENT_XML_PREDICTIONENTRY_GROUP_PARAM_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_PREDICTIONENTRY_GROUP_PARAM_LABEL_DESCR"
+					required=""
+          size="">
+			</field>			
+		
+    <field	name="pj" 
+			task="predictionpj" 
+      type="dependsql"
+      depends="prediction_id"
+      key_field="pj"
+			value_field="prediction_id"
+					label="COM_SPORTSMANAGEMENT_XML_PREDICTIONENTRY_PROJECT_PARAM_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_PREDICTIONENTRY_PROJECT_PARAM_LABEL_DESCR"
+					required=""
+          size="">
+			</field>	
 		
 		</fieldset>
 	</fields>
