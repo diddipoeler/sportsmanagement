@@ -33,7 +33,7 @@
 			</field>
 	
 <field	name="pggroup" 
-			task="predictiongroup" 
+			task="predictiongroups" 
       type="dependsql"
       depends="predictionid"
       key_field="pggroup"

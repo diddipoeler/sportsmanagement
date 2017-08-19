@@ -100,13 +100,13 @@ public function __construct()
  * 
  * @return void
  */
-public function predictiongroup()
+public function predictiongroups()
         {
             $app = JFactory::getApplication();
        // JInput object
         $jinput = $app->input;
         $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getpredictiongroup($jinput->getVar('predictionid','0'), $jinput->getVar('required','false') ));
+                echo json_encode((array) $model->getpredictiongroups($jinput->getVar('predictionid','0'), $jinput->getVar('required','false') ));
                 JFactory::getApplication()->close();    
         }          
                 

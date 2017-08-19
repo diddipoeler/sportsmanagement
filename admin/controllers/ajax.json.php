@@ -108,13 +108,13 @@ $this->app->enqueueMessage('Projekte gefunden','Message');
   * 
   * @return void
   */
- public function predictiongroup()
+ public function predictiongroups()
         {
 
         try
     {
  
-      $result = $this->getModel('ajax')->getpredictiongroup($this->jinput->get->getString('predictionid'),
+      $result = $this->getModel('ajax')->getpredictiongroups($this->jinput->get->getString('predictionid'),
        $this->jinput->get->getString('required'),
        $this->jinput->get->getString('slug'),
        $this->jinput->get->getString('dbase') );
