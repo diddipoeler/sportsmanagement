@@ -543,7 +543,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
     }
     
 ?>
-<table>
+<table class="table">
 <tr>            
 <?PHP     
 if ( $config['show_tip_ranking_text'] )
