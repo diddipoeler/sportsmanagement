@@ -534,6 +534,18 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 
 <tr>            
 <?PHP            
+  
+            
+            ?>
+</tr>            
+        </table>
+        <?php
+    }
+    
+?>
+<table>
+<tr>            
+<?PHP     
 if ( $config['show_tip_ranking_text'] )
                             {
                                 echo '&nbsp;&nbsp;';
@@ -541,12 +553,11 @@ if ( $config['show_tip_ranking_text'] )
                                $desc = JText::_('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_TEXT');
                                 //$desc     = JHtml::image('media/com_sportsmanagement/jl_images/prediction_ranking.png', $imgTitle, array('border' => 0, 'title' => $imgTitle));
                                 echo JHtml::link($link, $desc, array('target' => ''));
-                            }            
-            
-            ?>
+                            }              
+?>
 </tr>            
-        </table>
-        <?php
-    }
+</table>
+<?php    
+    
 }
 ?>
