@@ -69,7 +69,74 @@ class sportsmanagementControllerAjax extends JControllerLegacy
         }
         
         
+ /**
+  * sportsmanagementControllerAjax::predictionpj()
+  * 
+  * @return void
+  */
+ public function predictionpj()
+        {
+
+        try
+    {
+ 
+      $result = $this->getModel('ajax')->getpredictionpj($this->jinput->get->getString('predictionid'),
+       $this->jinput->get->getString('required'),
+       $this->jinput->get->getString('slug'),
+       $this->jinput->get->getString('dbase') );
+      
+ if ( count($result) == 1 )
+ {
+ $this->app->enqueueMessage('Keine Projekte gefunden','Error');
+ }
+ else
+ {
+$this->app->enqueueMessage('Projekte gefunden','Message');    
+ }
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }
+
+        } 
         
+ /**
+  * sportsmanagementControllerAjax::predictiongroup()
+  * 
+  * @return void
+  */
+ public function predictiongroup()
+        {
+
+        try
+    {
+ 
+      $result = $this->getModel('ajax')->getpredictiongroup($this->jinput->get->getString('predictionid'),
+       $this->jinput->get->getString('required'),
+       $this->jinput->get->getString('slug'),
+       $this->jinput->get->getString('dbase') );
+      
+ if ( count($result) == 1 )
+ {
+ $this->app->enqueueMessage('Keine Gruppen gefunden','Error');
+ }
+ else
+ {
+$this->app->enqueueMessage('Gruppen gefunden','Message');    
+ }
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }
+
+        } 
+                        
 /**
  * sportsmanagementControllerAjax::getpredictionid()
  * 

@@ -95,7 +95,36 @@ public function __construct()
                 JFactory::getApplication()->close();    
         }    
         
+/**
+ * sportsmanagementControllerAjax::predictiongroup()
+ * 
+ * @return void
+ */
+public function predictiongroup()
+        {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
+        $model = $this->getModel('ajax');
+                echo json_encode((array) $model->getpredictiongroup($jinput->getVar('predictionid','0'), $jinput->getVar('required','false') ));
+                JFactory::getApplication()->close();    
+        }          
                 
+/**
+ * sportsmanagementControllerAjax::predictionpj()
+ * 
+ * @return void
+ */
+public function predictionpj()
+        {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
+        $model = $this->getModel('ajax');
+                echo json_encode((array) $model->getpredictionpj($jinput->getVar('predictionid','0'), $jinput->getVar('required','false') ));
+                JFactory::getApplication()->close();    
+        }          
+                        
         /**
          * sportsmanagementControllerAjax::locationzipcodeoptions()
          * 

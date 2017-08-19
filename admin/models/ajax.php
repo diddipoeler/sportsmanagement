@@ -110,7 +110,7 @@ class sportsmanagementModelAjax extends JModelLegacy
  * @param bool $slug
  * @return
  */
-static function getpredictionid($dabse = false, $required = false, $slug = false)
+static function getPredictionId($dabse = false, $required = false, $slug = false)
         {
         // Reference global application object
         $app = JFactory::getApplication();
@@ -150,7 +150,105 @@ static function getpredictionid($dabse = false, $required = false, $slug = false
             
         }
         
-                
+ /**
+  * sportsmanagementModelAjax::getPredictionProjects()
+  * 
+  * @param integer $prediction_id
+  * @param bool $required
+  * @param bool $slug
+  * @param bool $dabse
+  * @return
+  */
+ public static function getPredictionProjects($prediction_id = 0, $required = false, $slug = false, $dabse = false)
+        {
+            $option = JRequest::getCmd('option');
+	   $app = JFactory::getApplication();
+       // Get a db connection.
+        if ( !$dabse )
+        {
+            $db = sportsmanagementHelper::getDBConnection();
+        }
+        else
+        {
+            $db = sportsmanagementHelper::getDBConnection(TRUE,TRUE);
+        }
+
+        $query = $db->getQuery(true);
+        // Select some fields
+        if ( $slug )
+        {
+        $query->select('CONCAT_WS(\':\', p.id, p.alias) AS value,p.name AS text');
+        }
+        else
+        {
+        $query->select('p.id AS value,p.name AS text');    
+        }
+        // From 
+		$query->from('#__sportsmanagement_project as p');
+        $query->join('INNER',' #__sportsmanagement_prediction_project AS prpro ON p.id = prpro.project_id ');
+//        $query->from('#__sportsmanagement_prediction_project as p');
+        // Where
+//        if ( $prediction_id )
+//        {
+        $query->where('prpro.prediction_id = ' . (int)$prediction_id );
+        $query->where('prpro.published = 1');
+//        } 
+//        else
+//        {
+//        $query->where('p.season_id = 0');    
+//        }                       
+        // order
+        $query->order('p.name');
+        
+                $db->setQuery($query);
+                return self::addGlobalSelectElement($db->loadObjectList(), $required);
+        }
+         
+
+/**
+ * sportsmanagementModelAjax::getPredictionGroups()
+ * 
+ * @param integer $prediction_id
+ * @param bool $required
+ * @param bool $slug
+ * @param bool $dabse
+ * @return
+ */
+public static function getPredictionGroups($prediction_id = 0, $required = false, $slug = false, $dabse = false)
+        {
+            $option = JRequest::getCmd('option');
+	   $app = JFactory::getApplication();
+       // Get a db connection.
+        if ( !$dabse )
+        {
+            $db = sportsmanagementHelper::getDBConnection();
+        }
+        else
+        {
+            $db = sportsmanagementHelper::getDBConnection(TRUE,TRUE);
+        }
+
+        $query = $db->getQuery(true);
+        // Select some fields
+        if ( $slug )
+        {
+        $query->select('CONCAT_WS(\':\', p.id, p.alias) AS value,p.name AS text');
+        }
+        else
+        {
+        $query->select('p.id AS value,p.name AS text');    
+        }
+        // From 
+		$query->from('#__sportsmanagement_prediction_groups as p');
+        // Where
+        $query->where('p.published = 1');    
+        // order
+        $query->order('p.name');
+        
+                $db->setQuery($query);
+                return self::addGlobalSelectElement($db->loadObjectList(), $required);
+        }         
+                        
         /**
          * sportsmanagementModelAjax::getpersoncontactid()
          * 
