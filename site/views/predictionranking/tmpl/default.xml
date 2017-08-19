@@ -10,13 +10,7 @@
 		<fieldset	name="request"
 					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
 					>
-		
-    	<field	type="predictiongame" 
-      name="prediction_id"
-					label="COM_SPORTSMANAGEMENT_XML_RESULTS_SELECT_PREDICTIONGAME_LABEL" 
-          description="COM_SPORTSMANAGEMENT_XML_RESULTS_SELECT_PREDICTIONGAME_DESCR"
-					 />
-					
+				
     <field name="cfg_which_database" 
     type="radio" 
     default="0"
@@ -26,7 +20,13 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-    
+
+    	<field	type="predictiongame" 
+      name="prediction_id"
+					label="COM_SPORTSMANAGEMENT_XML_RESULTS_SELECT_PREDICTIONGAME_LABEL" 
+          description="COM_SPORTSMANAGEMENT_XML_RESULTS_SELECT_PREDICTIONGAME_DESCR"
+					 />
+		
 		</fieldset>
 	</fields>
 </metadata>

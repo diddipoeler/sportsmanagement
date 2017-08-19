@@ -10,11 +10,7 @@
 		<fieldset	name="request"
 					label="COM_SPORTSMANAGEMENT_XML_BASIC_FIELDSET_LABEL"
 					>
-	 <field	type="sql" name="prediction_id"
-					label="COM_SPORTSMANAGEMENT_XML_PREDICTIONRESULTS_STATE_PARAM_LABEL"
-					description="COM_SPORTSMANAGEMENT_XML_PREDICTIONRESULTS_STATE_PARAM_DESCRIPTION"
-					query="SELECT CONCAT_WS(':',id,alias) AS value, name AS prediction_id FROM #__sportsmanagement_prediction_game WHERE published='1' ORDER BY name" />
-  
+	  
   <field name="cfg_which_database" 
     type="radio" 
     default="0:intern"
@@ -24,7 +20,43 @@
 			<option value="0:intern">JNO</option>
 			<option value="1:extern">JYES</option>
 		</field>				
+
+<field	name="prediction_id" 
+    task="predictionid" 
+      type="dependsql"
+      depends="cfg_which_database"
+      value_field="cfg_which_database"
+      key_field="prediction_id"
+					label="COM_SPORTSMANAGEMENT_XML_PREDICTIONENTRY_STATE_PARAM_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_PREDICTIONENTRY_STATE_PARAM_DESCRIPTION"
+					required="">
+			</field>
+
+<field	name="pggroup" 
+			task="predictiongroups" 
+      type="dependsql"
+      depends="prediction_id"
+      key_field="pggroup"
+			value_field="prediction_id"
+					label="COM_SPORTSMANAGEMENT_XML_PREDICTIONENTRY_GROUP_PARAM_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_PREDICTIONENTRY_GROUP_PARAM_LABEL_DESCR"
+					required=""
+          size="">
+			</field>			
+		
+    <field	name="pj" 
+			task="predictionpj" 
+      type="dependsql"
+      depends="prediction_id"
+      key_field="pj"
+			value_field="prediction_id"
+					label="COM_SPORTSMANAGEMENT_XML_PREDICTIONENTRY_PROJECT_PARAM_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_PREDICTIONENTRY_PROJECT_PARAM_LABEL_DESCR"
+					required=""
+          size="">
+			</field>				
 			
+		
 		</fieldset>
 	</fields>
 </metadata>
