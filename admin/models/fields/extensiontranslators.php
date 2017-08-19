@@ -61,7 +61,7 @@ class JFormFieldExtensionTranslators extends JFormField {
 		
 		if (!empty($this->translators)) {
 			$html .= '<div style="padding-top: 5px; overflow: inherit">';
-			$html .= $this->translators;
+			$html .= JText::_($this->translators);
 			$html .= '</div>';
 		}
 		
