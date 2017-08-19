@@ -159,7 +159,7 @@ static function getPredictionId($dabse = false, $required = false, $slug = false
   * @param bool $dabse
   * @return
   */
- public static function getPredictionProjects($prediction_id = 0, $required = false, $slug = false, $dabse = false)
+ public static function getPredictionPj($prediction_id = 0, $required = false, $slug = false, $dabse = false)
         {
             $option = JRequest::getCmd('option');
 	   $app = JFactory::getApplication();
