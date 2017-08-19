@@ -186,17 +186,9 @@ static function getPredictionId($dabse = false, $required = false, $slug = false
         // From 
 		$query->from('#__sportsmanagement_project as p');
         $query->join('INNER',' #__sportsmanagement_prediction_project AS prpro ON p.id = prpro.project_id ');
-//        $query->from('#__sportsmanagement_prediction_project as p');
         // Where
-//        if ( $prediction_id )
-//        {
         $query->where('prpro.prediction_id = ' . (int)$prediction_id );
         $query->where('prpro.published = 1');
-//        } 
-//        else
-//        {
-//        $query->where('p.season_id = 0');    
-//        }                       
         // order
         $query->order('p.name');
         
