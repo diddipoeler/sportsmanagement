@@ -80,7 +80,7 @@ class sportsmanagementControllerAjax extends JControllerLegacy
         try
     {
  
-      $result = $this->getModel('ajax')->getpredictionpj($this->jinput->get->getString('predictionid'),
+      $result = $this->getModel('ajax')->getpredictionpj($this->jinput->get->getString('prediction_id'),
        $this->jinput->get->getString('required'),
        $this->jinput->get->getString('slug'),
        $this->jinput->get->getString('dbase') );
@@ -114,7 +114,7 @@ $this->app->enqueueMessage('Projekte gefunden','Message');
         try
     {
  
-      $result = $this->getModel('ajax')->getpredictiongroups($this->jinput->get->getString('predictionid'),
+      $result = $this->getModel('ajax')->getpredictiongroups($this->jinput->get->getString('prediction_id'),
        $this->jinput->get->getString('required'),
        $this->jinput->get->getString('slug'),
        $this->jinput->get->getString('dbase') );

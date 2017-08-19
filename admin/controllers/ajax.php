@@ -106,7 +106,7 @@ public function predictiongroups()
        // JInput object
         $jinput = $app->input;
         $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getpredictiongroups($jinput->getVar('predictionid','0'), $jinput->getVar('required','false') ));
+                echo json_encode((array) $model->getpredictiongroups($jinput->getVar('prediction_id','0'), $jinput->getVar('required','false') ));
                 JFactory::getApplication()->close();    
         }          
                 
@@ -121,7 +121,7 @@ public function predictionpj()
        // JInput object
         $jinput = $app->input;
         $model = $this->getModel('ajax');
-                echo json_encode((array) $model->getpredictionpj($jinput->getVar('predictionid','0'), $jinput->getVar('required','false') ));
+                echo json_encode((array) $model->getpredictionpj($jinput->getVar('prediction_id','0'), $jinput->getVar('required','false') ));
                 JFactory::getApplication()->close();    
         }          
                         
