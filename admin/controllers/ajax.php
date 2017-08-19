@@ -56,6 +56,11 @@ class sportsmanagementControllerAjax extends JControllerLegacy
 //class sportsmanagementControllerAjax extends JControllerForm
 {
 
+/**
+ * sportsmanagementControllerAjax::__construct()
+ * 
+ * @return void
+ */
 public function __construct()
 	{
 		// Get the document object.
@@ -75,6 +80,22 @@ public function __construct()
 //        }
         
         
+ /**
+  * sportsmanagementControllerAjax::predictionid()
+  * 
+  * @return void
+  */
+ public function predictionid()
+        {
+            $app = JFactory::getApplication();
+       // JInput object
+        $jinput = $app->input;
+        $model = $this->getModel('ajax');
+                echo json_encode((array) $model->getpredictionid($jinput->getVar('cfg_which_database','0'), $jinput->getVar('required','false') ));
+                JFactory::getApplication()->close();    
+        }    
+        
+                
         /**
          * sportsmanagementControllerAjax::locationzipcodeoptions()
          * 

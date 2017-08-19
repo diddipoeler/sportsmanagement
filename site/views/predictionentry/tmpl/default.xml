@@ -20,13 +20,22 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>	
-		
+<!--		
 		<field	type="sql" name="prediction_id"
 					label="COM_SPORTSMANAGEMENT_XML_PREDICTIONENTRY_STATE_PARAM_LABEL"
 					description="COM_SPORTSMANAGEMENT_XML_PREDICTIONENTRY_STATE_PARAM_DESCRIPTION"
 					query="SELECT id AS value, name AS prediction_id FROM #__sportsmanagement_prediction_game WHERE published='1' ORDER BY name" />			
-	  
-    
+-->	  
+    <field	name="prediction_id" 
+    task="predictionid" 
+      type="dependsql"
+      depends="cfg_which_database"
+      value_field="cfg_which_database"
+      key_field="prediction_id"
+					label="COM_SPORTSMANAGEMENT_XML_PREDICTIONENTRY_STATE_PARAM_LABEL"
+					description="COM_SPORTSMANAGEMENT_XML_PREDICTIONENTRY_STATE_PARAM_DESCRIPTION"
+					required="">
+			</field>
 	
 			
 		

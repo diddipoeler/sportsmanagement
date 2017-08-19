@@ -102,7 +102,55 @@ class sportsmanagementModelAjax extends JModelLegacy
         }
         
         
+/**
+ * sportsmanagementModelAjax::getpredictionid()
+ * 
+ * @param bool $dabse
+ * @param bool $required
+ * @param bool $slug
+ * @return
+ */
+static function getpredictionid($dabse = false, $required = false, $slug = false)
+        {
+        // Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
+        $option = $jinput->getCmd('option');
+        //$required = 0;
         
+        // Get a db connection.
+        if ( !$dabse )
+        {
+            $db = sportsmanagementHelper::getDBConnection();
+        }
+        else
+        {
+            $db = sportsmanagementHelper::getDBConnection(TRUE,TRUE);
+        }
+        $query = $db->getQuery(true);
+        // Select some fields
+        if ( $slug )
+        {
+        $query->select('CONCAT_WS(\':\', id, alias) AS value,name AS text');
+        }
+        else
+        {
+        $query->select('id AS value,name AS text');
+        }
+        // From 
+		$query->from('#__sportsmanagement_prediction_game');
+        $query->where('published = 1');
+        $query->order('name DESC'); 
+        
+        $db->setQuery($query);
+                //return $db->loadObjectList();
+                return self::addGlobalSelectElement($db->loadObjectList(), $required);    
+            
+            
+        }
+        
+                
         /**
          * sportsmanagementModelAjax::getpersoncontactid()
          * 

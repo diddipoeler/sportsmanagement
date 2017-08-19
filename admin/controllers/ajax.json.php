@@ -69,6 +69,32 @@ class sportsmanagementControllerAjax extends JControllerLegacy
         }
         
         
+        
+/**
+ * sportsmanagementControllerAjax::getpredictionid()
+ * 
+ * @return void
+ */
+public function getpredictionid()
+        {
+               
+try
+    {
+ 
+      $result = $this->getModel('ajax')->getgetpredictionid($this->jinput->get->getString('cfg_which_database'),
+       $this->jinput->get->getString('required'),
+       $this->jinput->get->getString('slug') );
+ 
+      echo new JResponseJson($result);
+    }
+    catch(Exception $e)
+    {
+      echo new JResponseJson($e);
+    }
+                     
+        }   
+        
+                
         /**
          * sportsmanagementControllerAjax::personcontactid()
          * 
