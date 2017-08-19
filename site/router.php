@@ -108,6 +108,7 @@ function sportsmanagementBuildRoute(&$query)
         case 'predictionentry':
         case 'predictionresults':
         case 'predictionusers':
+        case 'predictionuser':
         case 'rankingalltime';
         if (isset($query['cfg_which_database'])) {
                 $segments[] = $query['cfg_which_database'];
@@ -300,6 +301,31 @@ function sportsmanagementBuildRoute(&$query)
             if (isset($query['uid'])) {
                 $segments[] = $query['uid'];
                 unset($query['uid']);
+            }
+        case 'predictionuser':
+            if (isset($query['prediction_id'])) {
+                $segments[] = $query['prediction_id'];
+                unset($query['prediction_id']);
+            }
+            if (isset($query['pggroup'])) {
+                $segments[] = $query['pggroup'];
+                unset($query['pggroup']);
+            }
+            if (isset($query['pj'])) {
+                $segments[] = $query['pj'];
+                unset($query['pj']);
+            }
+            if (isset($query['r'])) {
+                $segments[] = $query['r'];
+                unset($query['r']);
+            }
+            if (isset($query['uid'])) {
+                $segments[] = $query['uid'];
+                unset($query['uid']);
+            }    
+            if (isset($query['layout'])) {
+                $segments[] = $query['layout'];
+                unset($query['layout']);
             }
 
             break;
@@ -661,6 +687,7 @@ function sportsmanagementParseRoute($segments)
         case 'predictionentry':
         case 'predictionresults':
         case 'predictionusers':
+        case 'predictionuser':
         case 'rankingalltime';
         if (isset($segments[1])) 
         {
@@ -811,6 +838,28 @@ function sportsmanagementParseRoute($segments)
             
 
             break;
+            
+         case 'predictionuser':
+            if (isset($segments[2])) {
+                $vars['prediction_id'] = $segments[2];
+            }
+            if (isset($segments[3])) {
+                $vars['pggroup'] = $segments[3];
+            }
+            if (isset($segments[4])) {
+                $vars['pj'] = $segments[4];
+            }
+            if (isset($segments[5])) {
+                $vars['r'] = $segments[5];
+            }
+            if (isset($segments[6])) {
+                $vars['uid'] = $segments[6];
+            }
+            if (isset($segments[6])) {
+                $vars['layout'] = $segments[6];
+            }
+
+            break;    
 
         case 'predictionrules':
             if (isset($segments[2])) {
