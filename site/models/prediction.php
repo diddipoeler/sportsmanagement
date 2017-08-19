@@ -1399,12 +1399,6 @@ if ( $configprediction['send_admin_user_tipentry'] )
   //$mailer->addRecipient($predictionGameMemberMail);				
   $mailer->addRecipient($recipient);
 
-
-
-
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' sender<br><pre>'.print_r($sender,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' recipient<br><pre>'.print_r($recipient,true).'</pre>'),'');
-//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameMemberMail<br><pre>'.print_r($predictionGameMemberMail,true).'</pre>'),'');
 //$mailer->addRecipient($recipient);
 
 	//Create the mail
