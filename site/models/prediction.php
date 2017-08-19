@@ -1356,12 +1356,13 @@ sportsmanagementModelPrediction::$roundID = $roundIDnew;
       $round_ids = $configprediction['predictionroundid'];
       }    
       
-  $roundResults = sportsmanagementModelPredictionEntry::getMatchesDataForPredictionEntry(	(int)$predictionGameID,
+  $roundResults = sportsmanagementModelPredictionEntry::getMatchesDataForPredictionEntry((int)$predictionGameID,
 																			(int)$ProjectID,
 																			(int)$RoundID,
-																			$joomlaUserID,$match_ids,$round_ids);
-  
-                                        
+																			$joomlaUserID,
+                                                                            $match_ids,
+                                                                            $round_ids);
+                                          
   $predictionGameMemberMail = self::getPredictionMemberEMailAdress($predictionMemberID);
 
   //Fetch the mail object

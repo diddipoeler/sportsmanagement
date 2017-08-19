@@ -311,6 +311,7 @@ public $_predictionGame	= null;
 		return $result;
 	}
 
+	
 	/**
 	 * sportsmanagementModelPredictionEntry::getMatchesDataForPredictionEntry()
 	 * 
@@ -319,6 +320,8 @@ public $_predictionGame	= null;
 	 * @param mixed $projectRoundID
 	 * @param mixed $userID
 	 * @param mixed $match_ids
+	 * @param mixed $round_ids
+	 * @param mixed $proteams_ids
 	 * @return
 	 */
 	public static function getMatchesDataForPredictionEntry($predictionGameID,$predictionProjectID,$projectRoundID,$userID,$match_ids=NULL,$round_ids=NULL,$proteams_ids=NULL)
@@ -333,36 +336,34 @@ public $_predictionGame	= null;
 	$query = $db->getQuery(true);
 		
 try{		
-        $query->select('m.id,m.round_id,m.match_date,m.projectteam1_id,m.projectteam2_id,m.team1_result,m.team2_result,m.team1_result_decision,m.team2_result_decision');
-        $query->select('r.id AS roundcode');
-        $query->select('pr.tipp,pr.tipp_home,pr.tipp_away,pr.joker,pr.id AS prid');
-        $query->from('#__sportsmanagement_match AS m');
-        $query->join('INNER', '#__sportsmanagement_round AS r ON r.id = m.round_id');
-        
-        $query->join('LEFT', '#__sportsmanagement_prediction_result AS pr ON pr.match_id = m.id
-                     AND pr.prediction_id = '.(int)$predictionGameID.' AND pr.user_id = '.$userID.' AND pr.project_id = '.(int)$predictionProjectID);
-        $query->join('LEFT', '#__sportsmanagement_prediction_game AS pg ON pg.id = '.(int)$predictionGameID);
-
+    $query->select('m.id,m.round_id,m.match_date,m.projectteam1_id,m.projectteam2_id,m.team1_result,m.team2_result,m.team1_result_decision,m.team2_result_decision');
+    $query->select('r.id AS roundcode');
+    $query->select('pr.tipp,pr.tipp_home,pr.tipp_away,pr.joker,pr.id AS prid');
+    $query->from('#__sportsmanagement_match AS m');
+    $query->join('INNER', '#__sportsmanagement_round AS r ON r.id = m.round_id');
+    $query->join('LEFT', '#__sportsmanagement_prediction_result AS pr ON pr.match_id = m.id
+                  AND pr.prediction_id = '.(int)$predictionGameID.' AND pr.user_id = '.$userID.' AND pr.project_id = '.(int)$predictionProjectID);
+    $query->join('LEFT', '#__sportsmanagement_prediction_game AS pg ON pg.id = '.(int)$predictionGameID);
 	$query->where('r.project_id = '.(int)$predictionProjectID);
-        $query->where('r.id = '.(int)$projectRoundID);
-       
-        $query->where('m.published = 1');
-        $query->where('m.match_date <> \'0000-00-00 00:00:00\'');
-        $query->where('(m.cancel IS NULL OR m.cancel = 0)');   
-		
-        // bestimmte spiele selektieren
-		if ( $match_ids )
+    $query->where('r.id = '.(int)$projectRoundID);
+    $query->where('m.published = 1');
+    $query->where('m.match_date <> \'0000-00-00 00:00:00\'');
+    $query->where('(m.cancel IS NULL OR m.cancel = 0)');   
+
+/**
+ * bestimmte spiele selektieren
+ */		
+	if ( $match_ids )
     {
     $query->where('m.id IN (' . implode(',', $match_ids) . ')');   
     }
-    
-    // bestimmte mannschaften selektieren
+/**
+ * bestimmte mannschaften selektieren
+ */    
     if ( $proteams_ids )
     {
     $query->where('( m.projectteam1_id IN (' . implode(',', $proteams_ids) . ')'.' OR '.'m.projectteam2_id IN (' . implode(',', $proteams_ids) . ') )' );    
     }
-
-
     
     $query->order('m.match_date ASC');
     				
@@ -380,7 +381,7 @@ JFactory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <b
         
         if (!$results)
 		{
-		  $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_NO_PROJECT'),'Error');
+		  $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_NO_PROJECT'),'Notice');
 //		  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 //          $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
 		}  
