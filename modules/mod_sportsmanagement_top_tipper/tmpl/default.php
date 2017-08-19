@@ -122,7 +122,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                                 $routeparameter['layout']             = '';
                                 $link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
                                 //$link = sportsmanagementHelperRoute::getResultsRoute($predictionProject->project_id,$roundID);
-                                $imgTitle = JText::_('JL_PRED_ROUND_RESULTS_TITLE');
+                                $imgTitle = JText::_('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PRED_ROUND_RESULTS_TITLE');
                                 $desc     = JHtml::image('media/com_sportsmanagement/jl_images/icon-16-Matchdays.png', $imgTitle, array('border' => 0, 'title' => $imgTitle));
                                 //echo JHtml::link($link,$desc,array('target' => '_blank'));
                                 echo JHtml::link($link, $desc, array('target' => ''));
@@ -141,7 +141,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                                 }
 
 
-                                $imgTitle = JText::_('JL_PRED_HEAD_RANKING_IMAGE_TITLE');
+                                $imgTitle = JText::_('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PRED_HEAD_RANKING_IMAGE_TITLE');
                                 $desc     = JHtml::image('media/com_sportsmanagement/jl_images/prediction_ranking.png', $imgTitle, array('border' => 0, 'title' => $imgTitle));
                                 echo JHtml::link($link, $desc, array('target' => ''));
                             }
@@ -173,7 +173,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                     </tr>
                     <tr>
                         <td><input type='submit' class='button' name='reload View'
-                                   value='<?php echo JText::_('JL_PRED_RANK_FILTER'); ?>'/></td>
+                                   value='<?php echo JText::_('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PRED_RANK_FILTER'); ?>'/></td>
                     </tr>
                 </table>
                 <?php echo JHtml::_('form.token'); ?>
@@ -185,23 +185,23 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
         <table class="table">
             <tr>
                 <td class='sectiontableheader'
-                    style='text-align:center; vertical-align:top; '><?php echo JText::_('JL_PRED_RANK'); ?></td>
+                    style='text-align:center; vertical-align:top; '><?php echo JText::_('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PRED_RANK'); ?></td>
                 <?php
                 if ( $config['show_user_icon'] )
                 {
                     ?>
                     <td class='sectiontableheader'
-                        style='text-align:center; vertical-align:top; '><?php echo JText::_('JL_PRED_AVATAR'); ?></td><?php
+                        style='text-align:center; vertical-align:top; '><?php echo JText::_('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PRED_AVATAR'); ?></td><?php
                 }
                 ?>
                 <td class='sectiontableheader'
-                    style='text-align:center; vertical-align:top; '><?php echo JText::_('JL_PRED_MEMBER'); ?></td>
+                    style='text-align:center; vertical-align:top; '><?php echo JText::_('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PRED_MEMBER'); ?></td>
                 <?php
                 if ( $config['show_tip_details'] )
                 {
                     ?>
                     <td class='sectiontableheader'
-                        style='text-align:center; vertical-align:top; '><?php echo JText::_('JL_PRED_RANK_DETAILS'); ?></td><?php
+                        style='text-align:center; vertical-align:top; '><?php echo JText::_('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PRED_RANK_DETAILS'); ?></td><?php
                 }
                 ?>
 
@@ -210,13 +210,13 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                 ?>
 
                 <td class='sectiontableheader'
-                    style='text-align:center; vertical-align:top; '><?php echo JText::_('JL_PRED_POINTS'); ?></td>
+                    style='text-align:center; vertical-align:top; '><?php echo JText::_('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PRED_POINTS'); ?></td>
                 <?php
                 if ( $config['show_average_points'] )
                 {
                     ?>
                     <td class='sectiontableheader'
-                        style='text-align:center; vertical-align:top; '><?php echo JText::_('JL_PRED_AVERAGE'); ?></td><?php
+                        style='text-align:center; vertical-align:top; '><?php echo JText::_('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PRED_AVERAGE'); ?></td><?php
                 }
                 ?>
                 <?php
@@ -224,7 +224,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                 {
                     ?>
                     <td class='sectiontableheader'
-                        style='text-align:center; vertical-align:top; '><?php echo JText::_('JL_PRED_RANK_PREDICTIONS'); ?></td><?php
+                        style='text-align:center; vertical-align:top; '><?php echo JText::_('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PRED_RANK_PREDICTIONS'); ?></td><?php
                 }
                 ?>
                 <?php
@@ -232,7 +232,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                 {
                     ?>
                     <td class='sectiontableheader'
-                        style='text-align:center; vertical-align:top; '><?php echo JText::_('JL_PRED_RANK_JOKERS'); ?></td><?php
+                        style='text-align:center; vertical-align:top; '><?php echo JText::_('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PRED_RANK_JOKERS'); ?></td><?php
                 }
                 ?>
                 <?php
@@ -240,7 +240,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                 {
                     ?>
                     <td class='sectiontableheader'
-                        style='text-align:center; vertical-align:top; '><?php echo JText::_('JL_PRED_RANK_TOPS'); ?></td><?php
+                        style='text-align:center; vertical-align:top; '><?php echo JText::_('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PRED_RANK_TOPS'); ?></td><?php
                 }
                 ?>
                 <?php
@@ -248,7 +248,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                 {
                     ?>
                     <td class='sectiontableheader'
-                        style='text-align:center; vertical-align:top; '><?php echo JText::_('JL_PRED_RANK_MARGINS'); ?></td><?php
+                        style='text-align:center; vertical-align:top; '><?php echo JText::_('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PRED_RANK_MARGINS'); ?></td><?php
                 }
                 ?>
                 <?php
@@ -256,7 +256,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                 {
                     ?>
                     <td class='sectiontableheader'
-                        style='text-align:center; vertical-align:top; '><?php echo JText::_('JL_PRED_RANK_TENDENCIES'); ?></td><?php
+                        style='text-align:center; vertical-align:top; '><?php echo JText::_('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PRED_RANK_TENDENCIES'); ?></td><?php
                 }
                 ?>
             </tr>
@@ -380,7 +380,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                 }
                 $membersDataArray[$member->pmID]['name'] = $output;
 
-                $imgTitle = JText::sprintf('JL_PRED_RANK_SHOW_DETAILS_OF', $member->name);
+                $imgTitle = JText::sprintf('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PRED_RANK_SHOW_DETAILS_OF', $member->name);
                 $imgFile  = JHtml::image("media/com_sportsmanagement/jl_images/zoom.png", $imgTitle, array(' title' => $imgTitle));
                 $link     = JSMPredictionHelperRoute::getPredictionResultsRoute($predictionGame[0]->id, $actualProjectCurrentRound, sportsmanagementModelPrediction::$pjID);
                 if ( ( $member->show_profile ) || ( $predictionMember[0]->pmID == $member->pmID ) )
@@ -530,7 +530,21 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                     }
                 }
             }
+?>
+
+<tr>            
+<?PHP            
+if ( $config['show_tip_ranking_text'] )
+                            {
+                                echo '&nbsp;&nbsp;';
+                                $link = JSMPredictionHelperRoute::getPredictionRankingRoute($predictionGame[0]->id, $modelpg->pjID, '');
+                               $desc = JText::_('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_TEXT');
+                                //$desc     = JHtml::image('media/com_sportsmanagement/jl_images/prediction_ranking.png', $imgTitle, array('border' => 0, 'title' => $imgTitle));
+                                echo JHtml::link($link, $desc, array('target' => ''));
+                            }            
+            
             ?>
+</tr>            
         </table>
         <?php
     }
