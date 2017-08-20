@@ -544,7 +544,8 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
     
 ?>
 <table class="table">
-<tr>            
+<tr>    
+<td>        
 <?PHP     
 if ( $config['show_tip_ranking_text'] )
                             {
@@ -555,6 +556,7 @@ if ( $config['show_tip_ranking_text'] )
                                 echo JHtml::link($link, $desc, array('target' => ''));
                             }              
 ?>
+</td>
 </tr>            
 </table>
 <?php    
