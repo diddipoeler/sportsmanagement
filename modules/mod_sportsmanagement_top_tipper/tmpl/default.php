@@ -543,9 +543,9 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
     }
     
 ?>
-<table class="table">
-<tr>    
-<td>        
+<table class="table table-responsive">
+<tr class="bg-info">    
+<td class="text-center">        
 <?PHP     
 if ( $config['show_tip_ranking_text'] )
                             {
