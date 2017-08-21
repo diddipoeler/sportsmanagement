@@ -41,9 +41,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.view');
-//require_once(JPATH_COMPONENT . DS . 'helpers' . DS . 'imageselect.php');
 require_once( JPATH_COMPONENT_SITE . DS . 'models' . DS . 'predictionusers.php' );
-
 
 /**
  * sportsmanagementViewPredictionUser
@@ -56,7 +54,6 @@ require_once( JPATH_COMPONENT_SITE . DS . 'models' . DS . 'predictionusers.php' 
  */
 class sportsmanagementViewPredictionUser extends sportsmanagementView
 {
-
 	
 	/**
 	 * sportsmanagementViewPredictionUser::init()
@@ -111,8 +108,11 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 			
 			$this->_setPointsChartdata(array_merge($flashconfig, $config));
 			$this->_setRankingChartdata(array_merge($flashconfig, $config));
-			//echo '<br /><pre>~' . print_r($this->predictionMember,true) . '~</pre><br />';
-
+            
+             if ( JComponentHelper::getParams($this->option)->get('show_debug_info_frontend') )
+        {
+            $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionMember<br><pre>'.print_r($this->predictionMember,true).'</pre>'),'Notice'); 
+}
 			$lists = array();
 
 			if ($this->predictionMember->pmID > 0){$dMemberID=$this->predictionMember->pmID;}else{$dMemberID=0;}
@@ -127,35 +127,49 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 			$lists['predictionMembers'] = JHTML::_('select.genericList',$predictionMembers,'uid','class="inputbox" onchange="this.form.submit(); "','value','text',$dMemberID);
 			unset($res);
 			unset($predictionMembers);
-        
-        
-        
-            
 
-			if (empty($this->predictionMember->fav_team)){$this->predictionMember->fav_team='0,0';}
-			$sFavTeamsList=explode(';',$this->predictionMember->fav_team);
-			foreach ($sFavTeamsList AS $key => $value){$dFavTeamsList[]=explode(',',$value);}
-			foreach ($dFavTeamsList AS $key => $value){$favTeamsList[$value[0]]=$value[1];}
+			if (empty($this->predictionMember->fav_team))
+            {
+                $this->predictionMember->fav_team='0,0';
+                }
+			$sFavTeamsList = explode(';',$this->predictionMember->fav_team);
+			foreach ($sFavTeamsList AS $key => $value)
+            {
+                $dFavTeamsList[] = explode(',',$value);
+                }
+			foreach ($dFavTeamsList AS $key => $value)
+            {
+                $favTeamsList[$value[0]] = $value[1];
+                }
 
-			//echo '<br /><pre>~' . print_r($this->predictionMember->champ_tipp,true) . '~</pre><br />';
-			if (empty($this->predictionMember->champ_tipp)){$this->predictionMember->champ_tipp='0,0';}
-			$sChampTeamsList=explode(';',$this->predictionMember->champ_tipp);
-			foreach ($sChampTeamsList AS $key => $value){$dChampTeamsList[]=explode(',',$value);}
-			foreach ($dChampTeamsList AS $key => $value){$champTeamsList[$value[0]]=$value[1];}
+			if (empty($this->predictionMember->champ_tipp))
+            {
+                $this->predictionMember->champ_tipp = '0,0';
+                }
+			$sChampTeamsList = explode(';',$this->predictionMember->champ_tipp);
+			foreach ($sChampTeamsList AS $key => $value)
+            {
+                $dChampTeamsList[] = explode(',',$value);
+                }
+			foreach ($dChampTeamsList AS $key => $value)
+            {
+                $champTeamsList[$value[0]] = $value[1];
+                }
 
-			if ($this->getLayout()=='edit')
+			if ( $this->getLayout() == 'edit' )
 			{
 				$dArray[] = JHTML::_('select.option',0,JText::_('JNO'));
 				$dArray[] = JHTML::_('select.option',1,JText::_('JYES'));
 
-				$lists['show_profile']		= JHTML::_('select.radiolist',$dArray,'show_profile',	'class="inputbox" size="1"','value','text',$this->predictionMember->show_profile);
-				$lists['reminder']			= JHTML::_('select.radiolist',$dArray,'reminder',		'class="inputbox" size="1"','value','text',$this->predictionMember->reminder);
-				$lists['receipt']			= JHTML::_('select.radiolist',$dArray,'receipt',		'class="inputbox" size="1"','value','text',$this->predictionMember->receipt);
-				$lists['admintipp']			= JHTML::_('select.radiolist',$dArray,'admintipp',		'class="inputbox" size="1"','value','text',$this->predictionMember->admintipp);
-				$lists['approvedForGame']	= JHTML::_('select.radiolist',$dArray,'approved',		'class="inputbox" size="1" disabled="disabled"','value','text',$this->predictionMember->approved);
+				$lists['show_profile'] = JHTML::_('select.radiolist',$dArray,'show_profile','class="inputbox" size="1"','value','text',$this->predictionMember->show_profile);
+				$lists['reminder'] = JHTML::_('select.radiolist',$dArray,'reminder','class="inputbox" size="1"','value','text',$this->predictionMember->reminder);
+				$lists['receipt'] = JHTML::_('select.radiolist',$dArray,'receipt','class="inputbox" size="1"','value','text',$this->predictionMember->receipt);
+				$lists['admintipp'] = JHTML::_('select.radiolist',$dArray,'admintipp','class="inputbox" size="1"','value','text',$this->predictionMember->admintipp);
+				$lists['approvedForGame'] = JHTML::_('select.radiolist',$dArray,'approved','class="inputbox" size="1" disabled="disabled"','value','text',$this->predictionMember->approved);
 				unset($dArray);
-                
-                // schleife über die projekte
+                /**
+                 * schleife über die projekte
+                 */
 				foreach ($this->predictionProjectS AS $predictionProject)
 				{
 					
@@ -171,17 +185,20 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
 					}
 					if (!isset($favTeamsList[$predictionProject->project_id]))
           {
-          $favTeamsList[$predictionProject->project_id]=0;
+          $favTeamsList[$predictionProject->project_id] = 0;
           }
           
 					$lists['fav_team'][$predictionProject->project_id] = JHTML::_('select.genericList',$projectteams,'fav_team['.$predictionProject->project_id.']','class="inputbox"','value','text',$favTeamsList[$predictionProject->project_id]);
 
-		// kann champion ausgewaehlt werden ?
-        
+		/**
+		 * kann champion ausgewaehlt werden ?
+		 */
 		if ( $predictionProject->champ )
           {
-          $disabled='';
-          // ist überhaupt das startdatum gesetzt ?
+          $disabled = '';
+          /**
+           * ist überhaupt das startdatum gesetzt ?
+           */
           if ( $predictionProject->start_date == '0000-00-00' )
           {
           $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_PRED_PREDICTION_NOT_EXISTING_STARTDATE'),'Error');  
@@ -189,36 +206,26 @@ class sportsmanagementViewPredictionUser extends sportsmanagementView
           }
           else
           {
-          // ist die saison beendet ?
+          /**
+           * ist die saison beendet ?
+           */  
           $predictionProjectSettings = sportsmanagementModelPrediction::getPredictionProject($predictionProject->project_id);
-          $time=strtotime($predictionProject->start_date);
+          $time = strtotime($predictionProject->start_date);
           $time += 86400; // Ein Tag in Sekunden
-          $showDate=date("Y-m-d",$time);
+          $showDate = date("Y-m-d",$time);
           $thisTimeDate = sportsmanagementHelper::getTimestamp(date("Y-m-d H:i:s"),1,$predictionProjectSettings->timezone);
           $competitionStartTimeDate = sportsmanagementHelper::getTimestamp($showDate,1,$predictionProjectSettings->timezone);
           $tippAllowed =	( ( $thisTimeDate < $competitionStartTimeDate ) ) ;
 		if (!$tippAllowed)
         {
-            $disabled=' disabled="disabled" ';
+            $disabled = ' disabled="disabled" ';
             }
             else
             {
-                $disabled=''; 
+                $disabled = ''; 
             }
           }
-          
-          //$predictionMembers[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PREDICTION_MEMBER_GROUP'),'value','text');
-//			if ( $res = sportsmanagementModelPrediction::getPredictionGroupList())
-//            {
-//                $predictionMembers = array_merge($predictionMembers,$res);
-//                }
-//                
-//			$lists['grouplist']=JHTML::_('select.genericList',$predictionMembers,'group_id','class="inputbox" '.$disabled.'onchange=""','value','text',$this->predictionMember->group_id);
-//			unset($res);
-//			unset($predictionMembers);
-          
-          
-          
+
           if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
             {
 echo '<br />predictionuser view.html edit -> time <pre>~' . print_r($time,true) . '~</pre><br />';
@@ -233,7 +240,7 @@ echo '<br />predictionuser view.html edit -> this->predictionProjectS <pre>~' . 
           }
           else
           {
-          $disabled=' disabled="disabled" ';
+          $disabled = ' disabled="disabled" ';
           }
           
           $predictionMembers[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PREDICTION_MEMBER_GROUP'),'value','text');
@@ -242,7 +249,7 @@ echo '<br />predictionuser view.html edit -> this->predictionProjectS <pre>~' . 
                 $predictionMembers = array_merge($predictionMembers,$res);
                 }
                 
-			$lists['grouplist']=JHTML::_('select.genericList',$predictionMembers,'group_id','class="inputbox" '.$disabled.'onchange=""','value','text',$this->predictionMember->group_id);
+			$lists['grouplist'] = JHTML::_('select.genericList',$predictionMembers,'group_id','class="inputbox" '.$disabled.'onchange=""','value','text',$this->predictionMember->group_id);
 			unset($res);
 			unset($predictionMembers);
           

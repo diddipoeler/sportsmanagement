@@ -855,8 +855,8 @@ function sportsmanagementParseRoute($segments)
             if (isset($segments[6])) {
                 $vars['uid'] = $segments[6];
             }
-            if (isset($segments[6])) {
-                $vars['layout'] = $segments[6];
+            if (isset($segments[7])) {
+                $vars['layout'] = $segments[7];
             }
 
             break;    
