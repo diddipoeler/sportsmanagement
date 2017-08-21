@@ -176,10 +176,8 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
         
 		if (!$resultquery)
 		{
-			//$this->setError($this->_db->getErrorMsg());
             $app->enqueueMessage(JText::_(__METHOD__.'<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 			$result = false;
-			//echo '<br />ERROR~' . $query . '~<br />';
 		}
 
 		return $result;
@@ -207,8 +205,10 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 	
 	if (self::$config['show_photo'])
 	{
-	// von welcher komponente soll das bild kommen
-	// und ist die komponente installiert
+	/**
+	 * von welcher komponente soll das bild kommen
+	 * und ist die komponente installiert
+	 */
     
     // Select some fields
     $query->select('element');
