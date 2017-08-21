@@ -63,7 +63,10 @@ else
 // Joomla! 1.5 code here
 }
 
-JHtml::_('bootstrap.framework', false);
+/**
+ * führt zu fehlern
+ */
+//JHtml::_('bootstrap.framework', false);
 
 /**
  * sportsmanagementView
@@ -112,10 +115,14 @@ class sportsmanagementView extends JViewLegacy
 $headData = $this->document->getHeadData();
 $scripts = $headData['scripts'];
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture server <br><pre>'.print_r($scripts,true).'</pre>'),'');
-unset($scripts[JUri::root(true) . '/media/jui/js/jquery.min.js']);
-unset($scripts[JUri::root(true) . '/media/jui/js/jquery-noconflict.js']);
-unset($scripts[JUri::root(true) . '/media/jui/js/jquery-migrate.min.js']);
-unset($scripts[JUri::root(true) . '/media/jui/js/bootstrap.min.js']);
+
+/**
+ * führt zu fehlern
+ */
+//unset($scripts[JUri::root(true) . '/media/jui/js/jquery.min.js']);
+//unset($scripts[JUri::root(true) . '/media/jui/js/jquery-noconflict.js']);
+//unset($scripts[JUri::root(true) . '/media/jui/js/jquery-migrate.min.js']);
+//unset($scripts[JUri::root(true) . '/media/jui/js/bootstrap.min.js']);
 
 $headData['scripts'] = $scripts;
 $this->document->setHeadData($headData);
