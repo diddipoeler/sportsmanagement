@@ -254,7 +254,7 @@ function getPagination()
     $champTeamsList[$value[0]] = $value[1];
     }    
     
-    $projectteamid = $champTeamsList[$ProjectID];  
+    $projectteamid = $champTeamsList[(int)$ProjectID];  
     if ( $projectteamid )
     {
     $teaminfo = sportsmanagementModelProject::getTeaminfo($projectteamid,0);

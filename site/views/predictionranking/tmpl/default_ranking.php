@@ -549,8 +549,8 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
 						$output = '&nbsp;';
 					}
 
-					$membersDataArray[$member->pmID]['show_tip_details']	= $output;
-					$membersDataArray[$member->pmID]['champ_tipp']		= $member->champ_tipp;
+					$membersDataArray[$member->pmID]['show_tip_details'] = $output;
+					$membersDataArray[$member->pmID]['champ_tipp'] = $member->champ_tipp;
                     
                     if ( (int)sportsmanagementModelPrediction::$pggrouprank )
                     {
@@ -558,7 +558,7 @@ echo '<br />memberPredictionPoints<pre>~' . print_r($memberPredictionPoints,true
 					$imgFile = JHTML::image( "media/com_sportsmanagement/jl_images/zoom.png", $imgTitle , array(' title' => $imgTitle));
 					$link = JSMPredictionHelperRoute::getPredictionResultsRoute(sportsmanagementModelPrediction::$predictionGameID ,$actualProjectCurrentRound ,sportsmanagementModelPrediction::$pjID,$member->pmID,'',$member->pg_group_id);
                     $output = JHTML::link( $link, $imgFile);
-                    $groupmembersDataArray[$member->pg_group_id]['show_tip_details']	= $output;    
+                    $groupmembersDataArray[$member->pg_group_id]['show_tip_details'] = $output;    
                     }    
 				
                 
