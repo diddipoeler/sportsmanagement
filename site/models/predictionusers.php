@@ -44,7 +44,6 @@ jimport('joomla.application.component.model');
 
 require_once(JPATH_COMPONENT_SITE.DS.'models'.DS.'prediction.php' );
 
-
 /**
  * sportsmanagementModelPredictionUsers
  * 
@@ -71,40 +70,8 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-    
-//    $this->predictionGameID		= $jinput->getInt('prediction_id',		0);
-//		$this->predictionMemberID	= $jinput->getInt('uid',	0);
-//		$this->joomlaUserID			= $jinput->getInt('juid',	0);
-//		$this->roundID				= $jinput->getInt('r',		0);
-//        $this->pggroup				= $jinput->getInt('pggroup',		0);
-//        $this->pggrouprank			= $jinput->getInt('pggrouprank',		0);
-//		$this->pjID					= $jinput->getInt('pj',		0);
-//		$this->isNewMember			= $jinput->getInt('s',		0);
-//		$this->tippEntryDone		= $jinput->getInt('eok',	0);
-//
-//		$this->from  				= $jinput->getInt('from',	$this->roundID);
-//		$this->to	 				= $jinput->getInt('to',	$this->roundID);
-//		$this->type  				= $jinput->getInt('type',	0);
-//
-//		$this->page  				= $jinput->getInt('page',	1);
-        
-        //$prediction = JModelLegacy::getInstance("Prediction","sportsmanagementModel");
-        $prediction = new sportsmanagementModelPrediction();  
-        //$prediction->predictionGameID = $this->predictionGameID	;
 
-//        sportsmanagementModelPrediction::$predictionGameID = $this->predictionGameID;
-//        sportsmanagementModelPrediction::$predictionMemberID = $this->predictionMemberID;
-//        sportsmanagementModelPrediction::$joomlaUserID = $this->joomlaUserID;
-//        sportsmanagementModelPrediction::$roundID = $this->roundID;
-//        sportsmanagementModelPrediction::$pggroup = $this->pggroup;
-//        sportsmanagementModelPrediction::$pggrouprank = $this->pggrouprank;
-//        sportsmanagementModelPrediction::$pjID = $this->pjID;
-//        sportsmanagementModelPrediction::$isNewMember = $this->isNewMember;
-//        sportsmanagementModelPrediction::$tippEntryDone = $this->tippEntryDone;
-//        sportsmanagementModelPrediction::$from = $this->from;
-//        sportsmanagementModelPrediction::$to = $this->to;
-//        sportsmanagementModelPrediction::$type = $this->type;
-//        sportsmanagementModelPrediction::$page = $this->page;
+        $prediction = new sportsmanagementModelPrediction();  
 
         sportsmanagementModelPrediction::$roundID = $jinput->getVar('r','0');
        sportsmanagementModelPrediction::$pjID = $jinput->getVar('pj','0');
@@ -140,33 +107,47 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 		$document	= JFactory::getDocument();
     $option = JRequest::getCmd('option');    
     $app = JFactory::getApplication();
+    $jinput = $app->input;
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         
         $result	= true;
-		//$post	= JRequest::get('post');
-		//echo '<br /><pre>~'.print_r($post,true).'~</pre><br />';
+        $post = $jinput->post->getArray();
 
-		$predictionGameID	= JRequest::getVar('prediction_id',	'','post','int');
-		$joomlaUserID		= JRequest::getVar('user_id',		'','post','int');
-		$predictionMemberID	= JRequest::getVar('member_id',		'','post','int');
-		$show_profile		= JRequest::getVar('show_profile',	'','post','int');
-		$fav_teams			= JRequest::getVar('fav_team',		'','post','array');
-		$champ_teams		= JRequest::getVar('champ_tipp',	'','post','array');
-		$slogan				= JRequest::getVar('slogan',		'','post','string',JREQUEST_ALLOWRAW);
-		$reminder			= JRequest::getVar('reminder',		'','post','int');
-		$receipt			= JRequest::getVar('receipt',		'','post','int');
-		$admintipp			= JRequest::getVar('admintipp',		'','post','int');
-        $group_id		= JRequest::getVar('group_id',		'','post','int');
-		$picture			= JRequest::getVar('picture',		'','post','string',JREQUEST_ALLOWRAW);
-		$aliasName			= JRequest::getVar('aliasName',		'','post','string',JREQUEST_ALLOWRAW);
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
 
-		$pRegisterDate		= JRequest::getVar('registerDate',	'',	'post',	'date',JREQUEST_ALLOWRAW);
-		$pRegisterTime		= JRequest::getVar('registerTime',	'',	'post',	'time',JREQUEST_ALLOWRAW);
+		$predictionGameID = $post['prediction_id'];
+		$joomlaUserID = $post['user_id'];
+		$predictionMemberID	= $post['member_id'];
+		$show_profile = $post['show_profile'];
+		$fav_teams = $post['fav_team'];
+        if ( isset($post['champ_tipp']) )
+        {
+		$champ_teams = $post['champ_tipp'];
+        }
+		$slogan	= $post['slogan'];
+		$reminder = $post['reminder'];
+		$receipt = $post['receipt'];
+		$admintipp = $post['admintipp'];
+        $group_id = $post['group_id'];
+		$picture = $post['picture'];
+		$aliasName = $post['aliasName'];
+		$pRegisterDate = $post['registerDate'];
+		$pRegisterTime = $post['registerTime'];
 
-		$dFavTeams='';foreach($fav_teams AS $key => $value){$dFavTeams.=$key.','.$value.';';}$dFavTeams=trim($dFavTeams,';');
-		$dChampTeams='';foreach($champ_teams AS $key => $value){$dChampTeams.=$key.','.$value.';';}$dChampTeams=trim($dChampTeams,';');
+		$dFavTeams = '';
+        foreach( $fav_teams AS $key => $value)
+        {
+            $dFavTeams .= $key.','.$value.';';
+            }
+            $dFavTeams = trim($dFavTeams,';');
+		$dChampTeams = '';
+        foreach( $champ_teams AS $key => $value)
+        {
+            $dChampTeams .= $key.','.$value.';';
+            }
+            $dChampTeams = trim($dChampTeams,';');
 
 		$registerDate = sportsmanagementHelper::convertDate($pRegisterDate,0) . ' ' . $pRegisterTime . ':00';
 	
@@ -177,13 +158,18 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 		$object->show_profile = $show_profile;
         $object->group_id = $group_id;
 		$object->fav_team = $dFavTeams;
+        if( $dChampTeams )
+        {
 		$object->champ_tipp = $dChampTeams;
+        }
 		$object->slogan = $slogan;
 		$object->aliasName = $aliasName;
 		$object->reminder = $reminder;
 		$object->receipt = $receipt;
 		$object->admintipp = $admintipp;
 		$object->picture = $picture;
+
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' object<br><pre>'.print_r($object,true).'</pre>'),'');
 
         // Update their details in the table using id as the primary key.
         $resultquery = sportsmanagementHelper::getDBConnection()->updateObject('#__sportsmanagement_prediction_member', $object, 'id');

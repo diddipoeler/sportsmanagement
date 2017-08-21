@@ -78,40 +78,8 @@ class sportsmanagementModelPredictionUser extends JModelForm
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         
-//    $this->predictionGameID		= $jinput->getInt('prediction_id',		0);
-//		$this->predictionMemberID	= $jinput->getInt('uid',	0);
-//		$this->joomlaUserID			= $jinput->getInt('juid',	0);
-//		$this->roundID				= $jinput->getInt('r',		0);
-//        $this->pggroup				= $jinput->getInt('pggroup',		0);
-//        $this->pggrouprank			= $jinput->getInt('pggrouprank',		0);
-//		$this->pjID					= $jinput->getInt('pj',		0);
-//		$this->isNewMember			= $jinput->getInt('s',		0);
-//		$this->tippEntryDone		= $jinput->getInt('eok',	0);
-//
-//		$this->from  				= $jinput->getInt('from',	$this->roundID);
-//		$this->to	 				= $jinput->getInt('to',	$this->roundID);
-//		$this->type  				= $jinput->getInt('type',	0);
-//
-//		$this->page  				= $jinput->getInt('page',	1);
-        
-        //$prediction = JModelLegacy::getInstance("Prediction","sportsmanagementModel");
         $prediction = new sportsmanagementModelPrediction();  
-        //$prediction->predictionGameID = $this->predictionGameID	;
-
-//        sportsmanagementModelPrediction::$predictionGameID = $this->predictionGameID;
-//        sportsmanagementModelPrediction::$predictionMemberID = $this->predictionMemberID;
-//        sportsmanagementModelPrediction::$joomlaUserID = $this->joomlaUserID;
-//        sportsmanagementModelPrediction::$roundID = $this->roundID;
-//        sportsmanagementModelPrediction::$pggroup = $this->pggroup;
-//        sportsmanagementModelPrediction::$pggrouprank = $this->pggrouprank;
-//        sportsmanagementModelPrediction::$pjID = $this->pjID;
-//        sportsmanagementModelPrediction::$isNewMember = $this->isNewMember;
-//        sportsmanagementModelPrediction::$tippEntryDone = $this->tippEntryDone;
-//        sportsmanagementModelPrediction::$from = $this->from;
-//        sportsmanagementModelPrediction::$to = $this->to;
-//        sportsmanagementModelPrediction::$type = $this->type;
-//        sportsmanagementModelPrediction::$page = $this->page;
-        
+      
         sportsmanagementModelPrediction::$roundID = $jinput->getVar('r','0');
        sportsmanagementModelPrediction::$pjID = $jinput->getVar('pj','0');
        sportsmanagementModelPrediction::$from = $jinput->getVar('from',$jinput->getVar('r','0'));

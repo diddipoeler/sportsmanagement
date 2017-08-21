@@ -312,11 +312,11 @@ $document->addScript(JURI::root().'includes/js/joomla.javascript.js');
 			</td>
 		</tr>
 	</table>
-	<input type='hidden' name='p'				value='<?php echo $this->predictionGame->id; ?>' />
-	<input type='hidden' name='prediction_id'	value='<?php echo $this->predictionGame->id; ?>' />
-	<input type='hidden' name='user_id'			value='<?php echo $this->actJoomlaUser->id; ?>' />
-	<input type='hidden' name='member_id'		value='<?php echo $this->predictionMember->pmID; ?>' />
-	<input type='hidden' name='option'			value='com_sportsmanagement' />
-	<input type='hidden' name='task' 			value='predictionusers.savememberdata' />
+	<input type='hidden' name='p' value='<?php echo $this->predictionGame->id; ?>' />
+	<input type='hidden' name='prediction_id' value='<?php echo $this->predictionGame->id; ?>' />
+	<input type='hidden' name='user_id' value='<?php echo $this->actJoomlaUser->id; ?>' />
+	<input type='hidden' name='member_id' value='<?php echo $this->predictionMember->pmID; ?>' />
+	<input type='hidden' name='option' value='com_sportsmanagement' />
+	<input type='hidden' name='task' value='predictionusers.savememberdata' />
 	<?php echo JHTML::_('form.token'); ?>
 </form><br />
