@@ -99,7 +99,10 @@ $this->output['COM_SPORTSMANAGEMENT_TABS_EXTENDED'] = 'extended';
     
 if ( $this->config['show_maps'] )
 { 
+if ( $this->club->latitude != '0.00000000' && $this->club->longitude != '0.00000000' )
+{
 $this->output['COM_SPORTSMANAGEMENT_GMAP_DIRECTIONS'] = 'googlemap';
+}	
 }
     
 if ( $this->config['show_teams_of_club'] )
