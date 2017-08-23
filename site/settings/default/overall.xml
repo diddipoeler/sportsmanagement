@@ -10,7 +10,12 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		
+		<field name="show_club_info_name" type="radio" default="1"   class="radio btn-group btn-group-yesno"
+			label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_CLUB_NAME"
+			description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_SHOW_CLUB_NAME">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 		<field name="show_project_heading" type="radio" default="1"   class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_LABEL_SHOW_PROJECT_NAME"
 			description="COM_SPORTSMANAGEMENT_FES_OVERALL_PARAM_DESCR_SHOW_PROJECT_NAME">
