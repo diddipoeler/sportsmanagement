@@ -40,7 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 ?>    
-<div class="row">
+<div class="container-fluid">
         <div class="row">
            
             <div class="col-md-12">

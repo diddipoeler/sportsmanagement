@@ -64,6 +64,7 @@ $colors = $list['colors'];
 
 ?>
 
+<div class="container-fluid">
 <div class="row">
 
 <?php if ($params->get('show_project_name', 0)):?>
@@ -183,4 +184,5 @@ $routeparameter['division'] = $divisionid;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);    
 	echo JHtml::link($link,JText::_('MOD_SPORTSMANAGEMENT_RANKING_VIEW_FULL_TABLE')); ?></p>
 <?php endif; ?>
+</div>
 </div>
