@@ -207,18 +207,26 @@ echo $this->loadTemplate('debug');
     
 }       
 
+$this->output = $output;
+
 if($this->config['show_result_tabs'] == "show_slider") 
 {
-$this->output = $output;
 echo $this->loadTemplate($this->config['show_result_tabs']);
 }
     
 if( $this->config['show_result_tabs'] == "show_tabs" ) 
 {
-$this->output = $output;
 echo $this->loadTemplate($this->config['show_result_tabs']);    
-    }
-        
+}
+
+if( $this->config['show_result_tabs'] == "no_tabs" ) 
+{
+foreach ( $output as $key => $value )
+{
+echo $this->loadTemplate($value);
+}
+}
+
 
   
 	echo "<div>";
