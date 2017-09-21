@@ -603,7 +603,7 @@ echo self::getFxInitJSCode('steps');
             
             echo '<p>' . JText::_('Imagefolder : ' ) . $folder . ' angelegt!</p>';
             
-            //$mainframe->enqueueMessage(JText::sprintf('Verzeichnis [ %1$s ] angelegt!',$folder),'Notice');
+            $mainframe->enqueueMessage(JText::sprintf('Verzeichnis [ %1$s ] angelegt!',$folder),'Notice');
             
 		}
         
