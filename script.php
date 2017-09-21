@@ -325,12 +325,12 @@ echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab2_id');
 
     self::installModules($parent);
     echo JHtml::_('bootstrap.endPanel'); 
-    
+    /*
     echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab3_id'); 
 
     self::installPlugins($parent);
     echo JHtml::_('bootstrap.endPanel');
-    
+    */
     echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab4_id');  
 
     self::createImagesFolder();
@@ -347,12 +347,12 @@ echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab2_id');
 
     self::installModules($parent);
     echo JHtml::_('bootstrap.endPanel'); 
-    
+    /*
     echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab3_id');  
 
     self::installPlugins($parent);
     echo JHtml::_('bootstrap.endPanel'); 
-    
+    */
     echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab4_id');  
 
     self::createImagesFolder();
