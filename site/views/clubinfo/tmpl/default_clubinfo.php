@@ -342,14 +342,25 @@ echo JHtml::link($link, $desc);
 /*
 echo JHtml::_('select.genericlist',$this->clubhistoryfamilytree,'division_id'.$row->id,
 'class="form-control form-control-inline" size="'.sizeof($this->clubhistoryfamilytree).'"'.$append,'id','treename',$row->division_id);
-*/    
+*/   
+		
+if ( $this->familytree )
+{
+$class_collapse = 'collapse in';
+}
+else
+{
+$class_collapse = 'collapse';
+} 
+
+		
 ?>
 <a href="#fusion" class="btn btn-info btn-block" data-toggle="collapse">
 <strong>
 <?php echo JText::_('Fusionen'); ?>
 </strong>
 </a>
-<div id="fusion" class="collapse">
+<div id="fusion" class="<?PHP echo $class_collapse; ?>">
 <div class="tree">
 
 <ul>
