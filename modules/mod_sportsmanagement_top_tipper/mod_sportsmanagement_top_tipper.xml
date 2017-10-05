@@ -159,7 +159,7 @@
                 </field>
 
 
-                <field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_ROUNDID" 
+                <field name="show_tip_ranking_round" 
 				type="radio"
                        default="0"
 					   class="radio btn-group btn-group-yesno"

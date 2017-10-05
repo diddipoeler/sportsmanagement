@@ -55,7 +55,9 @@ if ( !class_exists('JSMModelList') )
     JLoader::register('JSMModelList', $classpath);
 }
 
-// prüft vor Benutzung ob die gewünschte Klasse definiert ist
+/**
+ * prüft vor Benutzung ob die gewünschte Klasse definiert ist
+ */
 if ( !class_exists('sportsmanagementHelper') )
 {
 //add the classes for handling
@@ -68,14 +70,18 @@ require_once( JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'route.php' );
 require_once( JPATH_SITE . DS . JSM_PATH . DS . 'helpers' . DS . 'predictionroute.php' );
 require_once( JPATH_SITE . DS . JSM_PATH . DS . 'models' . DS . 'predictionranking.php' );
 
-// get helper
+/**
+ * get helper
+ */
 require_once( dirname(__FILE__) . DS . 'helper.php' );
 
 $document = JFactory::getDocument();
 $mainframe = JFactory::getApplication();
 $config    = array();
 
-//add css file
+/**
+ * add css file
+ */
 $document->addStyleSheet(JURI::base() . 'modules' . DS . $module->module . DS . 'css' . DS . $module->module . '.css');
 
 $pg_id = $params->get('pg');
@@ -90,7 +96,7 @@ $config['show_user_link'] = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDIC
 $config['show_tip_details'] = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_DETAILS');
 $config['show_tip_ranking'] = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING');
 $config['show_tip_ranking_text'] = $params->get('show_tip_ranking_text');
-$config['show_tip_ranking_round']      = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_ROUNDID');
+$config['show_tip_ranking_round']      = $params->get('show_tip_ranking_round');
 $config['show_tip_link_ranking_round'] = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_LINK_RANKING_ROUNDID');
 $config['show_average_points']  = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_AVERAGE_POINTS');
 $config['show_count_tips']      = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TIPS');

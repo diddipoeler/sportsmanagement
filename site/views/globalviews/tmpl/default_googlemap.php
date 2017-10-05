@@ -88,16 +88,21 @@ break;
  * welche joomla version 
  * und ist seo eingestellt
  */
-        if(version_compare(JVERSION,'3.0.0','ge')) 
-        {
-        $sef = JFactory::getConfig()->get('sef', false);
-        }
-        else
-        {
-		$sef = JFactory::getConfig()->getValue('config.sef', false);
-        }
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+$sef = JFactory::getConfig()->get('sef', false);
+}
+else
+{
+$sef = JFactory::getConfig()->getValue('config.sef', false);
+}
+
+
+echo 'sef -> '.$sef .'<br>';
+echo 'plugin_googlemap3 -> '.JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' ).'<br>';
         
-if ( ( !JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' ) ) || ( JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' ) && $sef ) )
+//if ( ( !JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' ) ) || ( JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' ) && $sef ) )
+if ( !JPluginHelper::isEnabled( 'system', 'plugin_googlemap3' ) )
 {
 // JError::raiseWarning(500,JText::_('COM_SPORTSMANAGEMENT_ADMIN_GOOGLEMAP_NOT_ENABLED'));
 //$this->document->addScript('http://maps.google.com/maps/api/js?language=de');

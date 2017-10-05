@@ -266,8 +266,8 @@ unset($myoptions);
         $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_TITLE');
         $this->icon = 'projects';
 
-		JToolBarHelper::publishList('project.publish');
-		JToolBarHelper::unpublishList('project.unpublish');
+		JToolBarHelper::publishList('projects.publish');
+		JToolBarHelper::unpublishList('projects.unpublish');
 		JToolBarHelper::divider();
 		
         JToolBarHelper::apply('projects.saveshort');

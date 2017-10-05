@@ -134,9 +134,8 @@ public static function getPredictionRankingRoute($predictionID,$projectID=0,$rou
         //$params['p'] = $projectID;
         $params['pggroup'] = $groupID;
         $params['pj'] = $projectID;
-        $params['r'] =  ( $roundID != '' ) ? $roundID  : 0;
+        $params['r'] =  $roundID ;
         $params['pggrouprank'] = $groupRank;
-        
         $params['type'] = $type;
         $params['from'] = $from;
         $params['to'] = $to;

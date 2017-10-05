@@ -61,6 +61,9 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
         sportsmanagementModelPrediction::$pjID = $predictionProject->project_id;
         $modelpg->predictionProject            = $predictionProject;
         $actualProjectCurrentRound             = sportsmanagementModelPrediction::getProjectSettings($predictionProject->project_id);
+//        echo 'actualProjectCurrentRound <br /><pre>~' . print_r($actualProjectCurrentRound ,true) . '~</pre><br />';
+//echo 'modelpg<br /><pre>~' . print_r($modelpg,true) . '~</pre><br />';
+        $roundID = $actualProjectCurrentRound;
         /*
         if (!isset($this->roundID) || ($this->roundID < 1)){
             $this->roundID=$actualProjectCurrentRound;
@@ -121,7 +124,7 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                                 $routeparameter['order']              = '';
                                 $routeparameter['layout']             = '';
                                 $link                                 = sportsmanagementHelperRoute::getSportsmanagementRoute('results', $routeparameter);
-                                //$link = sportsmanagementHelperRoute::getResultsRoute($predictionProject->project_id,$roundID);
+
                                 $imgTitle = JText::_('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PRED_ROUND_RESULTS_TITLE');
                                 $desc     = JHtml::image('media/com_sportsmanagement/jl_images/icon-16-Matchdays.png', $imgTitle, array('border' => 0, 'title' => $imgTitle));
                                 //echo JHtml::link($link,$desc,array('target' => '_blank'));
@@ -130,14 +133,19 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
                             if ( $config['show_tip_ranking'] )
                             {
                                 echo '&nbsp;&nbsp;';
-
+// predictionresults/0-intern/4-test-2016-17/0/73400-1-bundesliga-2017-18/1813608-7-spieltag/0
                                 if ( !$config['show_tip_ranking_round'] )
                                 {
-                                    $link = JSMPredictionHelperRoute::getPredictionRankingRoute($predictionGame[0]->id, $modelpg->pjID, '');
+                                    $link = JSMPredictionHelperRoute::getPredictionRankingRoute($predictionGame[0]->id, $modelpg->predictionProject->project_slug, '');
                                 }
                                 else
                                 {
-                                    $link = JSMPredictionHelperRoute::getPredictionRankingRoute($predictionGame[0]->id, $modelpg->pjID, $actualProjectCurrentRound);
+                                    $link = JSMPredictionHelperRoute::getPredictionRankingRoute($predictionGame[0]->id,
+                                     $modelpg->predictionProject->project_slug,
+                                     $actualProjectCurrentRound,
+                                     '',
+                                     0,
+                                     0,0,$actualProjectCurrentRound,$actualProjectCurrentRound);
                                 }
 
 
@@ -276,12 +284,26 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
             foreach ($memberList AS $member)
             {
 
-                //echo '<br /><pre>~' . print_r($modelpg->page,true) . '~</pre><br />';
-                $memberPredictionPoints = sportsmanagementModelPrediction::getPredictionMembersResultsList($showProjectID,
-                    sportsmanagementModelPrediction::$from,
-                    sportsmanagementModelPrediction::$to,
-                    $member->user_id,
-                    sportsmanagementModelPrediction::$type);
+/**
+ * wenn in der moduleinstellung der aktuelle spieltag aus dem projekt angezeigt werden soll,
+ * dann soll auch dieser übergeben werden. 
+ */
+if ( $config['show_tip_ranking_round'] )
+{ 
+$memberPredictionPoints = sportsmanagementModelPrediction::getPredictionMembersResultsList($showProjectID,
+$actualProjectCurrentRound,
+$actualProjectCurrentRound,
+$member->user_id,
+sportsmanagementModelPrediction::$type);
+}    
+else
+{
+$memberPredictionPoints = sportsmanagementModelPrediction::getPredictionMembersResultsList($showProjectID,
+sportsmanagementModelPrediction::$from,
+sportsmanagementModelPrediction::$to,
+$member->user_id,
+sportsmanagementModelPrediction::$type);
+}                    
                 //echo '<br /><pre>~' . print_r($memberPredictionPoints,true) . '~</pre><br />';
                 $predictionsCount = 0;
                 $totalPoints      = 0;
@@ -536,11 +558,11 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 <?PHP            
   
             
-            ?>
+?>
 </tr>            
-        </table>
-        <?php
-    }
+</table>
+<?php
+}
     
 ?>
 <table class="table table-responsive">
@@ -548,13 +570,12 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 <td class="text-center">        
 <?PHP     
 if ( $config['show_tip_ranking_text'] )
-                            {
-                                echo '&nbsp;&nbsp;';
-                                $link = JSMPredictionHelperRoute::getPredictionRankingRoute($predictionGame[0]->id, $modelpg->pjID, '');
-                               $desc = JText::_('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_TEXT');
-                                //$desc     = JHtml::image('media/com_sportsmanagement/jl_images/prediction_ranking.png', $imgTitle, array('border' => 0, 'title' => $imgTitle));
-                                echo JHtml::link($link, $desc, array('target' => ''));
-                            }              
+{
+echo '&nbsp;&nbsp;';
+$link = JSMPredictionHelperRoute::getPredictionRankingRoute($predictionGame[0]->id, $modelpg->pjID, '');
+$desc = JText::_('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_TEXT');
+echo JHtml::link($link, $desc, array('target' => ''));
+}              
 ?>
 </td>
 </tr>            
