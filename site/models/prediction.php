@@ -2494,7 +2494,7 @@ $output .= '>'.JText::_('COM_SPORTSMANAGEMENT_ALL_PROJECTS').'</option>';
 		{
 		  // Select some fields
     //$query->select('id AS value, name AS text');
-    $query->select("CONCAT_WS(':',id,name) AS value");
+    $query->select("CONCAT_WS(':',id,alias) AS value");
     $query->select('name AS text');
     $query->from('#__sportsmanagement_round');
     $query->where('project_id = '.(int)$project_id);
