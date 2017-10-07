@@ -273,34 +273,21 @@ function getPagination()
 
 
 	/**
-	 * sportsmanagementModelPredictionRanking::createFromMatchdayList()
+	 * sportsmanagementModelPredictionRanking::createMatchdayList()
 	 * 
 	 * @param mixed $project_id
+	 * @param mixed $round_ids
 	 * @return
 	 */
-	function createFromMatchdayList($project_id, $round_ids = NULL)
+	function createMatchdayList($project_id, $round_ids = NULL)
 	{
 		$from_matchday = array();
 		$from_matchday[]= JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_RANKING_FROM_MATCHDAY'));
 		$from_matchday = array_merge($from_matchday,sportsmanagementModelPrediction::getRoundNames($project_id,'ASC', $round_ids));
 		return $from_matchday;
 	}
-
-	/**
-	 * sportsmanagementModelPredictionRanking::createToMatchdayList()
-	 * 
-	 * @param mixed $project_id
-	 * @return
-	 */
-	function createToMatchdayList($project_id, $round_ids = NULL)
-	{
-		$to_matchday = array();
-		$to_matchday[] = JHTML::_('select.option','0',JText::_('COM_SPORTSMANAGEMENT_RANKING_TO_MATCHDAY'));
-		$to_matchday = array_merge($to_matchday,sportsmanagementModelPrediction::getRoundNames($project_id,'ASC', $round_ids));
-		return $to_matchday;
-	}
-	
-
+    
+    
 
 }
 ?>

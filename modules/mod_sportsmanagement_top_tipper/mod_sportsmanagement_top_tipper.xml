@@ -62,7 +62,7 @@
                 </field>
 
 
-                <field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_PROJECT_NAME"
+                <field name="show_project_name"
                        class="radio btn-group btn-group-yesno"
                        type="radio" 
 					   default="0"
@@ -72,7 +72,7 @@
                     <option value="1">JYES</option>
                 </field>
 
-                <field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_PROJECT_NAME_SELECTOR"
+                <field name="show_project_name_selector"
                        class="radio btn-group btn-group-yesno"
                        type="radio" 
 					   default="0"
@@ -82,13 +82,13 @@
                     <option value="1">JYES</option>
                 </field>
 
-                <field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_LIMIT" 
+                <field name="limit" 
 				type="text" 
 				default="5"
                        label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_LIMIT_LABEL"
                        description="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_LIMIT_DESC"/>
 
-                <field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_RANKING_NAV" 
+                <field name="show_rankingnav" 
 				type="radio"
                        class="radio btn-group btn-group-yesno"
                        default="0" 
@@ -98,7 +98,7 @@
                     <option value="1">JYES</option>
                 </field>
 
-                <field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_ALL_USER" 
+                <field name="show_all_user" 
 				type="radio"
                        class="radio btn-group btn-group-yesno"
                        default="0" 
@@ -108,7 +108,7 @@
                     <option value="1">JYES</option>
                 </field>
 
-                <field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_USER_ICON" 
+                <field name="show_user_icon" 
 				type="radio"
                        class="radio btn-group btn-group-yesno"
                        default="0" 
@@ -118,7 +118,7 @@
                     <option value="1">JYES</option>
                 </field>
 
-                <field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_USER_LINK" 
+                <field name="show_user_link" 
 				type="radio"
                        class="radio btn-group btn-group-yesno"
                        default="0" 
@@ -128,7 +128,7 @@
                     <option value="1">JYES</option>
                 </field>
 
-                <field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_DETAILS" 
+                <field name="show_tip_details" 
 				type="radio"
                        class="radio btn-group btn-group-yesno"
                        default="0" 
@@ -138,7 +138,7 @@
                     <option value="1">JYES</option>
                 </field>
 <!-- tipp tabelle anzeigen -->
-                <field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING" 
+                <field name="show_tip_ranking" 
 				type="radio"
                        class="radio btn-group btn-group-yesno"
                        default="0" 
@@ -171,7 +171,7 @@
                     </option>
                 </field>
 
-                <field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_LINK_RANKING_ROUNDID"
+                <field name="show_tip_link_ranking_round"
                        type="radio"
                        default="0"
                        label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_LINK_RANKING_ROUNDID_LABEL"
@@ -181,7 +181,7 @@
                     <option value="1">JYES</option>
                 </field>
 
-                <field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_AVERAGE_POINTS" 
+                <field name="show_average_points" 
 				type="radio"
                        class="radio btn-group btn-group-yesno"
                        default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_AVERAGE_POINTS_LABEL"
@@ -189,7 +189,7 @@
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>
-                <field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TIPS" 
+                <field name="show_count_tips" 
 				type="radio"
                        class="radio btn-group btn-group-yesno"
                        default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TIPS_LABEL"
@@ -197,7 +197,7 @@
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>
-                <field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_JOKER" 
+                <field name="show_count_joker" 
 				type="radio"
                        class="radio btn-group btn-group-yesno"
                        default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_JOKER_LABEL"
@@ -205,7 +205,7 @@
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>
-                <field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TOPP_TIPS" 
+                <field name="show_count_topptips" 
 				type="radio"
                        class="radio btn-group btn-group-yesno"
                        default="0" label="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TOPP_TIPS_LABEL"
@@ -213,7 +213,7 @@
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>
-                <field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_DIFF_TIPS" 
+                <field name="show_count_difftips" 
 				type="radio"
                        class="radio btn-group btn-group-yesno"
                        default="0" 
@@ -222,7 +222,7 @@
                     <option value="0">JNO</option>
                     <option value="1">JYES</option>
                 </field>
-                <field name="MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TEND_TIPS" 
+                <field name="show_count_tendtipps" 
 				type="radio"
                        class="radio btn-group btn-group-yesno"
                        default="0" 

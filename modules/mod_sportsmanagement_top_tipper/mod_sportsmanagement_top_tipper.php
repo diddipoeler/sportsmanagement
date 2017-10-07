@@ -60,7 +60,9 @@ if ( !class_exists('JSMModelList') )
  */
 if ( !class_exists('sportsmanagementHelper') )
 {
-//add the classes for handling
+/**
+ * add the classes for handling
+ */
     $classpath = JPATH_ADMINISTRATOR . DS . JSM_PATH . DS . 'helpers' . DS . 'sportsmanagement.php';
     JLoader::register('sportsmanagementHelper', $classpath);
     JModelLegacy::getInstance("sportsmanagementHelper", "sportsmanagementModel");
@@ -86,24 +88,24 @@ $document->addStyleSheet(JURI::base() . 'modules' . DS . $module->module . DS . 
 
 $pg_id = $params->get('pg');
 
-$config['limit']                      = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_LIMIT');
-$config['show_project_name']          = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_PROJECT_NAME');
-$config['show_project_name_selector'] = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_PROJECT_NAME_SELECTOR');
-$config['show_rankingnav'] = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_RANKING_NAV');
-$config['show_all_user']   = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_ALL_USER');
-$config['show_user_icon']  = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_USER_ICON');
-$config['show_user_link'] = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_USER_LINK');
-$config['show_tip_details'] = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_DETAILS');
-$config['show_tip_ranking'] = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING');
+$config['limit']                      = $params->get('limit');
+$config['show_project_name']          = $params->get('show_project_name');
+$config['show_project_name_selector'] = $params->get('show_project_name_selector');
+$config['show_rankingnav'] = $params->get('show_rankingnav');
+$config['show_all_user']   = $params->get('show_all_user');
+$config['show_user_icon']  = $params->get('show_user_icon');
+$config['show_user_link'] = $params->get('show_user_link');
+$config['show_tip_details'] = $params->get('show_tip_details');
+$config['show_tip_ranking'] = $params->get('show_tip_ranking');
 $config['show_tip_ranking_text'] = $params->get('show_tip_ranking_text');
 $config['show_tip_ranking_round']      = $params->get('show_tip_ranking_round');
-$config['show_tip_link_ranking_round'] = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_LINK_RANKING_ROUNDID');
-$config['show_average_points']  = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_AVERAGE_POINTS');
-$config['show_count_tips']      = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TIPS');
-$config['show_count_joker']     = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_JOKER');
-$config['show_count_topptips']  = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TOPP_TIPS');
-$config['show_count_difftips']  = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_DIFF_TIPS');
-$config['show_count_tendtipps'] = $params->get('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_COUNT_TEND_TIPS');
+$config['show_tip_link_ranking_round'] = $params->get('show_tip_link_ranking_round');
+$config['show_average_points']  = $params->get('show_average_points');
+$config['show_count_tips']      = $params->get('show_count_tips');
+$config['show_count_joker']     = $params->get('show_count_joker');
+$config['show_count_topptips']  = $params->get('show_count_topptips');
+$config['show_count_difftips']  = $params->get('show_count_difftips');
+$config['show_count_tendtipps'] = $params->get('show_count_tendtipps');
 $config['show_debug_modus'] = $params->get('show_debug_modus');
 
 

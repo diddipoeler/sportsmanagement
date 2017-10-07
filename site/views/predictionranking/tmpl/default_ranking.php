@@ -165,8 +165,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
       $round_ids = $this->configentries['predictionroundid'];
       }
             
-            $from_matchday = $this->model->createFromMatchdayList($predictionProject->project_id,$round_ids);
-			$to_matchday = $this->model->createToMatchdayList($predictionProject->project_id,$round_ids);
+            $from_matchday = $this->model->createMatchdayList($predictionProject->project_id,$round_ids);
+			$to_matchday = $this->model->createMatchdayList($predictionProject->project_id,$round_ids);
 			?>
 			<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement'); ?>" name='adminForm' id='adminForm' method='post'>
             <input type="hidden" name="view" value="predictionranking" />

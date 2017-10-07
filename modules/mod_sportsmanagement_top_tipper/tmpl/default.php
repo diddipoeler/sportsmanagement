@@ -136,7 +136,9 @@ foreach (sportsmanagementModelPrediction::$_predictionProjectS AS $predictionPro
 // predictionresults/0-intern/4-test-2016-17/0/73400-1-bundesliga-2017-18/1813608-7-spieltag/0
                                 if ( !$config['show_tip_ranking_round'] )
                                 {
-                                    $link = JSMPredictionHelperRoute::getPredictionRankingRoute($predictionGame[0]->id, $modelpg->predictionProject->project_slug, '');
+                                    $link = JSMPredictionHelperRoute::getPredictionRankingRoute($predictionGame[0]->id,
+                                    $modelpg->predictionProject->project_slug, 
+                                    '');
                                 }
                                 else
                                 {
@@ -572,7 +574,22 @@ sportsmanagementModelPrediction::$type);
 if ( $config['show_tip_ranking_text'] )
 {
 echo '&nbsp;&nbsp;';
-$link = JSMPredictionHelperRoute::getPredictionRankingRoute($predictionGame[0]->id, $modelpg->pjID, '');
+if ( $config['show_tip_ranking_round'] )
+{ 
+$link = JSMPredictionHelperRoute::getPredictionRankingRoute($predictionGame[0]->id,
+                                     $modelpg->predictionProject->project_slug,
+                                     $actualProjectCurrentRound,
+                                     '',
+                                     0,
+                                     0,0,$actualProjectCurrentRound,$actualProjectCurrentRound);    
+}
+else
+{    
+$link = JSMPredictionHelperRoute::getPredictionRankingRoute($predictionGame[0]->id,
+ $modelpg->predictionProject->project_slug, 
+ '');
+}
+
 $desc = JText::_('MOD_SPORTSMANAGEMENT_TOP_TIPPER_PREDICTION_GAME_SHOW_TIP_RANKING_TEXT');
 echo JHtml::link($link, $desc, array('target' => ''));
 }              
