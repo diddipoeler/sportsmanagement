@@ -64,21 +64,21 @@ class modJSMRandomplayerHelper
 		$mainframe = JFactory::getApplication();
         $usedp = $params->get('projects');
 		$usedtid = $params->get('teams', '0');
-		$projectstring = (is_array($usedp)) ? implode(",", $usedp) : $usedp;
-		$teamstring = (is_array($usedtid)) ? implode(",", $usedtid) : $usedtid;
+		$projectstring = (is_array($usedp)) ? implode(",", $usedp) : (int) $usedp;
+		$teamstring = (is_array($usedtid)) ? implode(",", $usedtid) : (int) $usedtid;
 
-		$db  = sportsmanagementHelper::getDBConnection();
+		$db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         
         $query->select('tt.id');
         $query->from('#__sportsmanagement_project_team tt ');
         $query->where('tt.project_id > 0');
                     
-		if($projectstring!="" && $projectstring > 0) 
+		if( $projectstring != "" && $projectstring > 0 ) 
         {
             $query->where('tt.project_id IN ('.$projectstring.')' );
 		}
-		if($teamstring!="" && $teamstring > 0) 
+		if( $teamstring != "" && $teamstring > 0 ) 
         {
             $query->join('INNER',' #__sportsmanagement_season_team_id as st1 ON st1.id = tt.team_id ');
             $query->where('st1.team_id IN ('.$teamstring.')' );
@@ -89,9 +89,7 @@ class modJSMRandomplayerHelper
         
 		$db->setQuery( $query );
 		$projectteamid = $db->loadResult();
-        
-        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.' projectteamid<pre>'.print_r($projectteamid,true).'</pre>' ),'Error');
-        
+       
         $query = $db->getQuery(true);
         $query->clear();
 
@@ -103,7 +101,6 @@ class modJSMRandomplayerHelper
         $query->where('pt.id = ' . $projectteamid);
         
         $query->order('rand()');
-        //$query->setLimit('1');
         
         $db->setQuery( $query,0,1 );
 		$res = $db->loadRow();
@@ -124,16 +121,11 @@ class modJSMRandomplayerHelper
 		JRequest::setVar( 'pt', $projectteamid);
 
 		if (!class_exists('sportsmanagementModelPlayer')) {
-			//require_once(JLG_PATH_SITE.DS.'models'.DS.'player.php');
             require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'player.php');
 		}
         if (!class_exists('sportsmanagementModelPerson')) {
-			//require_once(JLG_PATH_SITE.DS.'models'.DS.'player.php');
             require_once(JPATH_SITE.DS.JSM_PATH.DS.'models'.DS.'person.php');
 		}
-
-//		$mdlPerson 	= JModel::getInstance('Person', 'sportsmanagementModel');
-//        $mdlPlayer 	= JModel::getInstance('Player', 'sportsmanagementModel');
 
 		$person 	= sportsmanagementModelPerson::getPerson();
 		$project	= sportsmanagementModelProject::getProject();
@@ -144,5 +136,8 @@ class modJSMRandomplayerHelper
 						'player' 		=> $person, 
 						'inprojectinfo'	=> is_array($info) && count($info) ? $info[0] : $info,
 						'infoteam'		=> $infoteam);
+      
+      $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+      
 	}
 }
