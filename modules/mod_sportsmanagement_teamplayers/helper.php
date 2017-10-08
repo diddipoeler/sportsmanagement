@@ -63,12 +63,8 @@ class modSportsmanagementTeamPlayersHelper
 	{
 	   $mainframe = JFactory::getApplication();
        
-		$p = $params->get('p');
-		$p = explode(":", $p);
-		$p = $p[0];
-		$t = $params->get('team');
-		$t = explode(":", $t);
-		$t = $t[0];
+		$p = (int) $params->get('p');
+		$t = (int) $params->get('team');
         
 		$db  = JFactory::getDBO();
         $query = $db->getQuery(true);
@@ -108,6 +104,9 @@ class modSportsmanagementTeamPlayersHelper
 		$project = sportsmanagementModelProject::getProject();
 		$project->team_name = $team_name;
         $model->seasonid = $season_id;
+        
+        $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+        
 		return array('project' => $project, 'roster' => $model->getTeamPlayers());
 	}
 
