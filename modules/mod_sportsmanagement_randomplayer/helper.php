@@ -62,10 +62,17 @@ class modJSMRandomplayerHelper
 	public static function getData(&$params)
 	{
 		$mainframe = JFactory::getApplication();
-        $usedp = $params->get('projects');
+        $usedp = $params->get('p');
 		$usedtid = $params->get('teams', '0');
-		$projectstring = (is_array($usedp)) ? implode(",", $usedp) : (int) $usedp;
+		$season_id = (int) $params->get('s', '0');
+		$usedp = array_map ('intval', $usedp );
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'projectstring <pre>'.print_r($usedp ,true).'</pre>' ),'Error');		
+		$projectstring = (is_array($usedp)) ? implode(",", $usedp)  : (int) $usedp;
 		$teamstring = (is_array($usedtid)) ? implode(",", $usedtid) : (int) $usedtid;
+
+
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'projectstring <pre>'.print_r($projectstring ,true).'</pre>' ),'Error');
+//$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'teamstring <pre>'.print_r($teamstring ,true).'</pre>' ),'Error');
 
 		$db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
@@ -90,7 +97,15 @@ class modJSMRandomplayerHelper
 		$db->setQuery( $query );
 		$projectteamid = $db->loadResult();
        
+       if ( $params['debug_modus'] )
+	{		
+        $mainframe->enqueueMessage(JText::_(__FILE__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'');
+	}
+
+       
         $query = $db->getQuery(true);
+        
+                
         $query->clear();
 
 		$query->select('stp1.person_id');
@@ -100,10 +115,15 @@ class modJSMRandomplayerHelper
         $query->join('INNER',' #__sportsmanagement_project_team AS pt ON pt.team_id = st1.id ');
         $query->where('pt.id = ' . $projectteamid);
         
+        $query->where('stp1.season_id = ' . $season_id);
+        $query->where('st1.season_id = ' . $season_id);
+        
         $query->order('rand()');
         
         $db->setQuery( $query,0,1 );
 		$res = $db->loadRow();
+        
+        //$mainframe->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($params,true).'</pre>' ),'Error');
         
         if ( !$res )
         {
