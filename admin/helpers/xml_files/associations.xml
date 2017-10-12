@@ -573,7 +573,11 @@
 <associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="12" parentmain="0">Level 12</assocname></associations>
 <associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="13" parentmain="0">Level 13</assocname></associations>
 <associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="14" parentmain="0">Aufgelöst</assocname></associations>
-
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="15" parentmain="0">Level 14</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="16" parentmain="0">Level 15</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="17" parentmain="0">Level 16</assocname></associations>
+<associations><assocname country="ENG" icon="" flag="" website="" shortname="" main="18" parentmain="0">Level 17</assocname></associations>
+  
 <associations><assocname country="NOR" icon="" flag="" website="" shortname="" main="1" parentmain="0">Agder</assocname></associations>
 <associations><assocname country="NOR" icon="" flag="" website="" shortname="" main="2" parentmain="0">Akershus</assocname></associations>
 <associations><assocname country="NOR" icon="" flag="" website="" shortname="" main="3" parentmain="0">Buskerud</assocname></associations>
