@@ -117,12 +117,33 @@ $this->document->addScript(JURI::root(true).'/administrator/components/com_sport
 //$this->document->addScript('https://maps.googleapis.com/maps/api/js?v=3.21&sensor=false&language=de');	
 //$this->document->addScript('https://maps.googleapis.com/maps/api/js?v=3.21&language=de');		
 //$this->document->addScript('https://cdn.jsdelivr.net/gmap3/7.2.0/gmap3.min.js');
+
+
+switch ($this->view)
+{
+case 'clubinfo':
+case 'playground':
+?>
+<div id="map" style="width:50%;height:600px;float: left;"></div>
+<div id="pano" style="width:50%;height:600px;float: left;"></div>
+<?php
+break;
+default:
+?>
+<div id="map-canvas" style="width:100%;height:800px;"></div>
+<?php
+break;
+}
+
         
 ?>
 
-<!-- <div id="jsm_map" class="" style=""></div> -->
-<div id="map-canvas" style="width:100%;height:800px;"></div>
-<!-- <div id="panorama" style="width:100%; height: 400px; margin-top:50px"></div> -->
+
+
+
+
+
+    
 <script type="text/javascript">
 <?PHP
 switch ($this->view)
@@ -131,75 +152,61 @@ case 'clubinfo':
 case 'playground':
 ?>
 
-var fenway = new google.maps.LatLng(<?PHP echo $latitude; ?>,<?PHP echo $longitude; ?>);
+//var fenway = new google.maps.LatLng(<?PHP echo $latitude; ?>,<?PHP echo $longitude; ?>);
 
-//jQuery('#map-canvas')
-//      .gmap3({
-//        center:fenway,
-//        zoom: 13
-//      })
-//      .streetviewpanorama(
-//        '#panorama',
-//        {
-//          position: fenway,
-//          pov: {
-//            heading: 34,
-//            pitch: 10,
-//            zoom: 1
-//          }
-//        }
-//      );
 
 /*
 https://developers.google.com/maps/documentation/javascript/3.exp/reference#StreetViewPanoramaOptions
 https://developers.google.com/maps/documentation/javascript/3.exp/reference#StreetViewPov
+https://developers.google.com/maps/documentation/javascript/examples/streetview-embed?hl=de
 */
 jQuery(document).ready(function()  {
-jQuery('#map-canvas').gmap3({
-  map:{
-    options:{
-      zoom: 14, 
-      mapTypeId: google.maps.MapTypeId.HYBRID , 
-      streetViewControl: true, 
-      center: fenway 
-    }
-  },    
-  streetviewpanorama:{
-    options:{
-      container: jQuery(document.createElement("div")).addClass("googlemap").insertAfter( jQuery('#map-canvas') ),
-      opts:{
-        position: fenway,
-        visible: true,
-        pov: {
-          heading: 34,
-          pitch: 10
-//          zoom: 4
-        }
-      }
-    }
-  }
-});
+
+//jQuery('#map-canvas').gmap3({
+//  map:{
+//    options:{
+//      zoom: 14, 
+//      mapTypeId: google.maps.MapTypeId.HYBRID , 
+//      streetViewControl: true, 
+//      center: fenway 
+//    }
+//  },    
+//  streetviewpanorama:{
+//    options:{
+//      container: jQuery(document.createElement("div")).addClass("googlemap").insertAfter( jQuery('#map-canvas') ),
+//      opts:{
+//        position: fenway,
+//        visible: true,
+//        pov: {
+//          heading: 34,
+//          pitch: 10
+//        }
+//      }
+//    }
+//  }
+//});
+
+
+var fenway2 = {lat: <?PHP echo $latitude; ?>, lng: <?PHP echo $longitude; ?>};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          center: fenway2,
+          mapTypeControl: true,
+mapTypeId: 'satellite',
+          zoom: 14
+        });
+        var panorama = new google.maps.StreetViewPanorama(
+            document.getElementById('pano'), {
+              position: fenway2,
+              pov: {
+                heading: 34,
+                pitch: 10
+              }
+            });
+        map.setStreetView(panorama);
+
 
 });
 
-//var center = [<?PHP echo $latitude; ?>, <?PHP echo $longitude; ?>];
-//jQuery(document).ready(function()  {
-//    jQuery('#jsm_map')
-//      .gmap3({
-//center: center,
-//  zoom: 15,
-//          mapTypeId: google.maps.MapTypeId.HYBRID,
-//        mapTypeControl: true,
-//navigationControl: true,
-//        scrollwheel: true,
-//        streetViewControl: true
-//      })
-//      .marker({
-//        position: center,
-//        icon: '<?PHP echo $icon; ?>'
-//      })
-//    ;
-//  });
 
 <?PHP
 break;
@@ -278,45 +285,8 @@ jQuery(document).ready(function() {
           autofit:{}
         });
 });
-//var map;
-//var lat = 6.929537;//Your Location Latitude
-//var lon = 79.866271;//Your Location Longitude
-//var str = '[{ "lat" :"' + lat + '","lng" :"' + lon + '"}]';
-//str = JSON.parse(str);
-
-//jQuery(document).ready(function() {
-//jQuery('#map-canvas').gmap3({
-//            marker: {
-//               values: str,
-//               options: {
-//                 icon:'http://maps.google.com/mapfiles/ms/icons/red-dot.png',
-//                 //icon:new google.maps.MarkerImage("marker.png"),
-//               }
-//            },
-//            map: {
-//               options: {
-//                 zoom: 14,
-//                 scrollwheel: true,//Make It false To Stop Map Zooming By Scroll
-//                 streetViewControl: true
-//               },
-//            },
-//         });
-//});         
+     
          
-//jQuery(document).ready(function() {
-//    jQuery('#jsm_map')
-//      .gmap3({
-//        zoom: 3,
-//          mapTypeId: google.maps.MapTypeId.HYBRID,
-//        mapTypeControl: true,
-//navigationControl: true,
-//        scrollwheel: true,
-//        streetViewControl: true
-//      })
-//      .kmllayer({url: '<?PHP echo JURI::root().'tmp/'.$this->kmlfile; ?>'})
-//.wait(1000)
-//    ;
-//  });
   
   
 <?PHP
