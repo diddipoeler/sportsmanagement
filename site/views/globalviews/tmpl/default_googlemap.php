@@ -142,7 +142,6 @@ break;
 
 
 
-
     
 <script type="text/javascript">
 <?PHP
@@ -187,6 +186,12 @@ jQuery(document).ready(function()  {
 //});
 
 
+// Create a StreetViewService to be able to check
+// if a given LatLng has a corresponding panorama.
+var streetviewService = new google.maps.StreetViewService();
+streetviewService.getPanorama({location: {lat:<?PHP echo $latitude; ?>, lng:<?PHP echo $longitude; ?>}, radius: 50}, processSVData);
+
+
 var fenway2 = {lat: <?PHP echo $latitude; ?>, lng: <?PHP echo $longitude; ?>};
         var map = new google.maps.Map(document.getElementById('map'), {
           center: fenway2,
@@ -194,6 +199,16 @@ var fenway2 = {lat: <?PHP echo $latitude; ?>, lng: <?PHP echo $longitude; ?>};
 mapTypeId: 'satellite',
           zoom: 14
         });
+function processSVData(data, status) {
+  if (status === google.maps.StreetViewStatus.OK) {
+    //alert('ok');
+//var fenway2 = {lat: <?PHP echo $latitude; ?>, lng: <?PHP echo $longitude; ?>};
+//        var map = new google.maps.Map(document.getElementById('map'), {
+//          center: fenway2,
+//          mapTypeControl: true,
+//mapTypeId: 'satellite',
+//          zoom: 14
+//        });
         var panorama = new google.maps.StreetViewPanorama(
             document.getElementById('pano'), {
               position: fenway2,
@@ -202,7 +217,39 @@ mapTypeId: 'satellite',
                 pitch: 10
               }
             });
-        map.setStreetView(panorama);
+        map.setStreetView(panorama);    
+    
+   } else {
+    //alert('Street View data not found for this location.');
+    //jQuery('#pano').hide();
+    jQuery("#pano" ).remove();
+    jQuery("#map").css("width", "100%");
+    //jQuery("#pano").css("width", "");
+    jQuery("#map").css("float", "");
+    //jQuery("#pano").css("height", "");
+   }
+}
+    
+
+//var fenway2 = {lat: <?PHP echo $latitude; ?>, lng: <?PHP echo $longitude; ?>};
+//        var map = new google.maps.Map(document.getElementById('map'), {
+//          center: fenway2,
+//          mapTypeControl: true,
+//mapTypeId: 'satellite',
+//          zoom: 14
+//        });
+//        var panorama = new google.maps.StreetViewPanorama(
+//            document.getElementById('pano'), {
+//              position: fenway2,
+//              pov: {
+//                heading: 34,
+//                pitch: 10
+//              }
+//            });
+//        map.setStreetView(panorama);
+
+        
+
 
 
 });
