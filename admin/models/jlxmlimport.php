@@ -4719,10 +4719,10 @@ $t_params = json_encode( $ini );
 				$p_match->set('extended',$this->_getDataFromObject($match,'extended'));
 				$p_match->set('published',$this->_getDataFromObject($match,'published'));
                 
-                // diddipoeler
+/**
+ * diddipoeler
+ */
                 $p_match->set('import_match_id',$this->_getDataFromObject($match,'id'));
-                // das ist falsch
-                //$p_match->set('division_id',$this->_getDataFromObject($match,'division_id'));
                 
                 if ( isset($this->_convertDivisionID) )
                 {
