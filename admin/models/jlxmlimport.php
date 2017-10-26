@@ -4656,7 +4656,12 @@ $t_params = json_encode( $ini );
 
 				$p_match->set('match_date',$this->_getDataFromObject($match,'match_date'));
 
-				$p_match->set('time_present',$this->_getDataFromObject($match,'time_present'));
+/**
+ * hier muss noch der timestamp übergeben werden, da sonst
+ * die spiele nicht angezeigt weden. 
+ */                
+				$p_match->set('match_timestamp', sportsmanagementHelper::getTimestamp($this->_getDataFromObject($match,'match_date')));
+                $p_match->set('time_present',$this->_getDataFromObject($match,'time_present'));
 
 				$team1_result=$this->_getDataFromObject($match,'team1_result');
 				if (isset($team1_result) && ($team1_result !=NULL)) { $p_match->set('team1_result',$team1_result); }
