@@ -57,7 +57,7 @@ $userId		= $user->get('id');
 
 	
 </script>
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view=persons&layout=assignplayers&tmpl=component&type='.$this->type);?>" method="post" id="component-form" name="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view=persons&layout=assignplayers&tmpl=component&type='.$this->type);?>" method="post" id="adminForm" name="adminForm">
 <!-- <fieldset> -->
 		<div class="fltrt">
 			<button type="button" onclick="Joomla.submitform('persons.assign', this.form)">
