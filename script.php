@@ -56,6 +56,16 @@
  * 
  * https://docs.joomla.org/J2.5:Managing_Component_Updates_(Script.php)
  * 
+ * Joomla developer network
+ * https://developer.joomla.org/coding-standards/php-code.html
+ * 
+ * Google Calendar API nutzen
+ * http://www.codefreaks.net/google-calendar-api-mit-php-nuetzen/
+ * 
+ * 
+ * https://github.com/google/google-api-php-client
+ * https://github.com/google/google-api-php-client-services
+ * 
  */
 
 // No direct access to this file
