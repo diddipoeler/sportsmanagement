@@ -1047,7 +1047,7 @@ else
 		);
         JHtmlSidebar::addEntry(
 			JText::_('COM_SPORTSMANAGEMENT_SUBMENU_GOOGLE_CALENDAR'),
-			'index.php?option=com_sportsmanagement&view=jsmgooglecalendar',
+			'index.php?option=com_sportsmanagement&view=jsmgcalendars',
 			$submenu == 'googlecalendar'
 		);
         JHtmlSidebar::addEntry(
@@ -1083,7 +1083,7 @@ else
         
         JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_CURRENT_SEASONS'), 'index.php?option=com_sportsmanagement&view=currentseasons', $submenu == 'currentseasons');
         
-        JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_GOOGLE_CALENDAR'), 'index.php?option=com_sportsmanagement&view=jsmgooglecalendar', $submenu == 'googlecalendar');
+        JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_GOOGLE_CALENDAR'), 'index.php?option=com_sportsmanagement&view=jsmgcalendars', $submenu == 'googlecalendar');
         
         JSubMenuHelper::addEntry(JText::_('COM_SPORTSMANAGEMENT_SUBMENU_SPECIAL_EXTENSIONS'), 'index.php?option=com_sportsmanagement&view=specialextensions', $submenu == 'specialextensions');
         
