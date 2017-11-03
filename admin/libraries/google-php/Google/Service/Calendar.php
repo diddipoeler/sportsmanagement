@@ -2085,7 +2085,7 @@ class Google_Service_Calendar_CalendarList extends Google_Collection
   public function getItems()
   {
     $app = JFactory::getApplication();
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' items<br><pre>'.print_r($this->items,true).'</pre>'),'Notice');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' items<br><pre>'.print_r($this->items,true).'</pre>'),'Notice');
     return $this->items;
   }
   public function setKind($kind)
