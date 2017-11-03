@@ -63,13 +63,13 @@ class sportsmanagementViewjsmgcalendars extends sportsmanagementView
  */
 public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$uri = JFactory::getUri();
-        
-        $this->items = $this->get('Items');
-		$this->pagination = $this->get('Pagination');
+//		$app = JFactory::getApplication();
+//		$jinput = $app->input;
+//		$option = $jinput->getCmd('option');
+//		$uri = JFactory::getUri();
+//        
+//        $this->items = $this->get('Items');
+//		$this->pagination = $this->get('Pagination');
         
         //$this->addToolbar();
         
@@ -95,12 +95,13 @@ public function init ()
 			JToolBarHelper::addNew('jsmgcalendar.add', 'JTOOLBAR_NEW');
 			JToolBarHelper::custom('jsmgcalendarimport.import', 'upload.png', 'upload.png', 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDARS_BUTTON_IMPORT', false);
 		}
-		if ($canDo->get('core.edit')) {
-			JToolBarHelper::editList('jsmgcalendar.edit', 'JTOOLBAR_EDIT');
-		}
-		if ($canDo->get('core.delete')) {
-			JToolBarHelper::deleteList('', 'jsmgcalendars.delete', 'JTOOLBAR_DELETE');
-		}
+
+//		if ($canDo->get('core.edit')) {
+//			JToolBarHelper::editList('jsmgcalendar.edit', 'JTOOLBAR_EDIT');
+//		}
+//		if ($canDo->get('core.delete')) {
+//			JToolBarHelper::deleteList('', 'jsmgcalendars.delete', 'JTOOLBAR_DELETE');
+//		}
         
         $this->icon = 'google-calendar-48-icon.png';
         

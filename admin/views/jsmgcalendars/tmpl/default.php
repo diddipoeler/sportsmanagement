@@ -1,63 +1,94 @@
-<?php
+<?php 
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file                agegroup.php
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 
+defined('_JEXEC') or die('Restricted access');
 
-defined('_JEXEC') or die();
+//Ordering allowed ?
+//$ordering=($this->sortColumn == 'obj.ordering');
 
 JHtml::_('behavior.tooltip');
+JHtml::_('behavior.modal');
+$templatesToLoad = array('footer','listheader');
+sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement'); ?>" method="post" name="adminForm" id="adminForm">
-	<table class="adminlist">
-		<thead>
-			<tr>
-				<th width="5"><?php echo JText::_( 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_NAME_ID_LABEL' ); ?></th>
-				<th width="20"><input type="checkbox" name="toggle" value=""
-					onclick="checkAll(<?php echo count( $this->items ); ?>);" /></th>
-				<th><?php echo JText::_( 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_NAME_LABEL' ); ?></th>
-				<th><?php echo JText::_( 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_COLOR_LABEL' ); ?></th>
-				<th><?php echo JText::_( 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CALENDAR_ID_LABEL' ); ?></th>
-				<th><?php echo JText::_( 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDARS_COLUMN_AUTHENTICATION' ); ?></th>
-			</tr>
-		</thead>
-		<tbody>
-		<?php foreach($this->items as $i => $item){?>
-			<tr class="row<?php echo $i % 2; ?>">
-				<td><?php echo $item->id; ?></td>
-				<td>
-					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
-				</td>
-				<td>
-					<a href="<?php echo JRoute::_( 'index.php?option=com_sportsmanagement&task=jsmgcalendar.edit&id='. $item->id ); ?>">
-						<?php echo $item->name; ?>
-					</a>
-				</td>
-				<td width="40px"><div style="background-color: <?php echo jsmGCalendarUtil::getFadedColor($item->color);?>;width: 40px;height: 40px;"></div></td>
-				<td style="border: 0;"><?php echo urldecode($item->calendar_id); ?></td>
-				<td style="border: 0;"><?php
-				if(!empty($item->magic_cookie)){
-					echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_MAGIC_COOKIE_LABEL');
-				} else if(!empty($item->username)){
-					echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDARS_COLUMN_AUTHENTICATION_USERNAME');
-				} else {
-					echo JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDARS_COLUMN_AUTHENTICATION_NO');
-				}
-				?></td>
-			</tr>
-		<?php } ?>
-		</tbody>
-		<tfoot>
-			<tr>
-				<td colspan="6">
-					<?php echo $this->pagination->getListFooter(); ?>
-					<br/><br/>
-					
-				</td>
-			</tr>
-		</tfoot>
-	</table>
-	<div>
-		<input type="hidden" name="view" value="jsmgcalendars" />
-		<input type="hidden" name="task" value="" />
-		<input type="hidden" name="boxchecked" value="0" />
-		<?php echo JHtml::_('form.token'); ?>
-	</div>
+<script language="javascript" type="text/javascript">
+
+function searchPerson(val)
+	{
+        var s= document.getElementById("filter_search");
+        s.value = val;
+        Joomla.submitform('', this.form)
+	}
+</script>
+<form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
+	
+
+<?PHP
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+echo $this->loadTemplate('joomla3');
+}
+else
+{
+echo $this->loadTemplate('joomla2');    
+}
+
+if ( $this->items )
+{
+echo $this->loadTemplate('data');
+}
+else
+{
+echo '<div class="alert alert-no-items">';
+echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
+echo '</div>';    
+}
+
+?>
+<input type="hidden" name="task" value="" />
+<input type="hidden" name="boxchecked" value="0" />
+<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
+<input type="hidden" name="filter_order_Dir" value="" />
+<?php echo JHtml::_('form.token')."\n"; ?>
 </form>
+<?PHP
+echo "<div>";
+echo $this->loadTemplate('footer');
+echo "</div>";
+?>   
