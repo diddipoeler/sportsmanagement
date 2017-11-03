@@ -390,6 +390,8 @@
 <associations><assocname country="DEU" icon="fk_brandenburg_suedbrandenburg.gif" flag="" website="" shortname="Südbrandenburg" main="352" parentmain="24">Kreis Südbrandenburg</assocname></associations>    
 <associations><assocname country="DEU" icon="fk_brandenburg_uckermark.gif" flag="" website="" shortname="Uckermark" main="353" parentmain="24">Kreis Uckermark</assocname></associations>    
 
+<associations><assocname country="DEU" icon="" flag="" website="" shortname="Hochsauerland" main="354" parentmain="12">Kreis Hochsauerland</assocname></associations>
+
 <associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="1" parentmain="0">Berlin</assocname></associations>
 <associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="2" parentmain="0">Cottbus</assocname></associations>
 <associations><assocname country="DDR" icon="" flag="" website="" shortname="" main="3" parentmain="0">Dresden</assocname></associations>
