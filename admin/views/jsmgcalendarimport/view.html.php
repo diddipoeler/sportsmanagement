@@ -43,14 +43,14 @@ class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView
      */
     function init( $tpl = null )
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$db	= sportsmanagementHelper::getDBConnection();
-		$uri = JFactory::getURI();
-		$user = JFactory::getUser();
-		$model = $this->getModel();
-        $starttime = microtime(); 
+//		$app = JFactory::getApplication();
+//		$jinput = $app->input;
+//		$option = $jinput->getCmd('option');
+//		$db	= sportsmanagementHelper::getDBConnection();
+//		$uri = JFactory::getURI();
+//		$user = JFactory::getUser();
+//		$model = $this->getModel();
+//        $starttime = microtime(); 
         
         if (strpos($this->getLayout(), 'login') === false) 
         {
@@ -61,11 +61,11 @@ class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' onlineItems<br><pre>'.print_r($this->onlineItems,true).'</pre>'),'Notice');
         }
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'Notice');
+        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'Notice');
         
         $this->setLayout('login');
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'Notice');
+        $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getLayout<br><pre>'.print_r($this->getLayout(),true).'</pre>'),'Notice');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');
         
         //$this->addToolbar();
