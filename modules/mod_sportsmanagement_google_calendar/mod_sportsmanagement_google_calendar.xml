@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="1.0" client="site" method="upgrade">
+	<name>mod_sportsmanagement_google_calendar</name>
+	<creationDate>2015-01-05</creationDate>
+	<author>JSM-TEAM</author>
+	<authorEmail>diddipoeler@arcor.de</authorEmail>
+	<authorUrl>http://www.fussballineuropa.de</authorUrl>
+	<copyright>Copyright (c) 2015 diddipoeler</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	
+	
+	<version>1.0.0</version>
+	<description>MOD_SPORTSMANAGEMENT_GOOGLE_CALENDAR_DESCRIPTION</description>
+	<files>
+		<filename module="mod_sportsmanagement_google_calendar">mod_sportsmanagement_google_calendar.php</filename>
+		<folder>language</folder>
+		<folder>media</folder>
+		<folder>tmpl</folder>
+		<filename>helper.php</filename>
+	</files>
+	<config>
+		<fields name="params"
+		addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
+			<fieldset name="basic">
+			
+<field type="extensionversion" version="1.1.0" />
+<field type="extensionauthor" />
+<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
+<field type="extensionlink" linktype="translate" link="https://www.transifex.com/opentranslators/" />	
+<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Google_Calendar" />
+<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
+<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
+<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
+<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />
+			
+				<field
+						name="api_key"
+						type="GoogleApiKey"
+						label="MOD_SPORTSMANAGEMENT_GOOGLE_CALENDAR_FIELD_API_KEY"
+						description="MOD_SPORTSMANAGEMENT_GOOGLE_CALENDAR_FIELD_API_KEY_DESC"
+						required="true" />
+				<field
+						name="calendar_id"
+						type="gcalendar"
+						label="MOD_SPORTSMANAGEMENT_GOOGLE_CALENDAR_FIELD_CALENDAR_ID"
+						description="MOD_SPORTSMANAGEMENT_GOOGLE_CALENDAR_FIELD_CALENDAR_ID_DESC"
+						required="true" />
+				<field
+						name="max_list_events"
+						type="text"
+						default="5"
+						label="MOD_SPORTSMANAGEMENT_GOOGLE_CALENDAR_FIELD_MAX_LIST_EVENTS"
+						description="MOD_SPORTSMANAGEMENT_GOOGLE_CALENDAR_FIELD_MAX_LIST_EVENTS_DESC"
+						/>
+				<field
+						name="show_link"
+						type="list"
+						default="1"
+						label="MOD_SPORTSMANAGEMENT_GOOGLE_CALENDAR_FIELD_SHOW_LINK"
+						description="MOD_SPORTSMANAGEMENT_GOOGLE_CALENDAR_FIELD_SHOW_LINK_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field
+						name="show_location"
+						type="list"
+						default="0"
+						label="MOD_SPORTSMANAGEMENT_GOOGLE_CALENDAR_FIELD_SHOW_LOCATION"
+						description="MOD_SPORTSMANAGEMENT_GOOGLE_CALENDAR_FIELD_SHOW_LOCATION_DESC">
+					<option value="0">JNO</option>
+					<option value="1">JYES</option>
+				</field>
+				<field
+						name="api_cache_time"
+						type="text"
+						default="60"
+						label="MOD_SPORTSMANAGEMENT_GOOGLE_CALENDAR_FIELD_API_CACHE_TIME_MINUTES"
+						description="MOD_SPORTSMANAGEMENT_GOOGLE_CALENDAR_FIELD_API_CACHE_TIME_MINUTES_DESC"/>
+			</fieldset>
+			<fieldset name="advanced">
+				<field
+						name="layout"
+						type="modulelayout"
+						label="JFIELD_ALT_LAYOUT_LABEL"
+						description="JFIELD_ALT_MODULE_LAYOUT_DESC"/>
+				<field
+						name="moduleclass_sfx"
+						type="textarea" rows="3"
+						label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+						description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC"/>
+				<field
+						name="cache"
+						type="list"
+						default="1"
+						label="COM_MODULES_FIELD_CACHING_LABEL"
+						description="COM_MODULES_FIELD_CACHING_DESC">
+					<option
+							value="1">JGLOBAL_USE_GLOBAL
+					</option>
+					<option
+							value="0">COM_MODULES_FIELD_VALUE_NOCACHING
+					</option>
+				</field>
+				<field
+						name="cache_time"
+						type="text"
+						default="900"
+						label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+						description="COM_MODULES_FIELD_CACHE_TIME_DESC"/>
+				<field
+						name="cachemode"
+						type="hidden"
+						default="static">
+					<option
+							value="static"></option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>
