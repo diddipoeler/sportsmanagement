@@ -39,11 +39,12 @@
 
 defined('_JEXEC') or die();
 
-JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
+//JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINISTRATOR);
 JFormHelper::loadFieldClass('list');
 
+
 /**
- * JFormFieldGCalendar
+ * JFormFieldGoogleApiKey
  * 
  * @package 
  * @author Dieter Plöger
@@ -51,26 +52,21 @@ JFormHelper::loadFieldClass('list');
  * @version $Id$
  * @access public
  */
-class JFormFieldGCalendar extends JFormFieldList
+class JFormFieldGoogleApiKey extends JFormFieldList
 {
     
-	protected $type = 'GCalendar';
+	protected $type = 'GoogleApiKey';
+
 
 	/**
-	 * JFormFieldGCalendar::getOptions()
+	 * JFormFieldGoogleApiKey::getOptions()
 	 * 
 	 * @return
 	 */
 	protected function getOptions()
     {
-		$accounts = jsmGCalendarDBUtil::getAllCalendars();
-		$options = array();
-		foreach($accounts as $account)
-		{
-			$options[] = JHtml::_('select.option', $account->id, $account->name);
-		}
-		$options = array_merge(parent::getOptions(), $options);
-		return $options;
+	$google_api_key = JComponentHelper::getParams('com_sportsmanagement')->get('google_api_developerkey','');	
+		return $google_api_key;
 	}
     
 }
