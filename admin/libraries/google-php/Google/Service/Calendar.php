@@ -1116,7 +1116,7 @@ class Google_Service_Calendar_CalendarList_Resource extends Google_Service_Resou
   public function listCalendarList($optParams = array())
   {
     $app = JFactory::getApplication();
-    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' optParams<br><pre>'.print_r($optParams,true).'</pre>'),'Notice');
+//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' optParams<br><pre>'.print_r($optParams,true).'</pre>'),'Notice');
     $params = array();
     $params = array_merge($params, $optParams);
     return $this->call('list', array($params), "Google_Service_Calendar_CalendarList");

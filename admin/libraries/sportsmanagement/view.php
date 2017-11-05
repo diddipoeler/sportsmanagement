@@ -297,7 +297,7 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
         case 'sportstypes':
         case 'positions':
 	case 'clubnames':
-	case 'clubs':
+	//case 'clubs':
 	case 'teams':
 	case 'playgrounds':
     case 'rounds':	
@@ -309,6 +309,24 @@ case 'teampersons':
 			'filter_state',
 			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
 		);
+        break; 
+         case 'clubs':
+        JHtmlSidebar::addFilter(
+			JText::_('JOPTION_SELECT_PUBLISHED'),
+			'filter_state',
+			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
+		);
+
+//$myoptions[] = JHtml::_( 'select.option', '', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN' ) );
+$myoptions[] = JHtml::_( 'select.option', '1', JText::_( 'JNO' ) );
+$myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) ); 
+
+	JHtmlSidebar::addFilter(
+			JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN'),
+			'filter_geo_daten',
+			JHtml::_('select.options', $myoptions, 'value', 'text', $this->state->get('filter.geo_daten'), true)
+		);
+	
         break;    
         case 'smquotes':
         JHtmlSidebar::addFilter(
