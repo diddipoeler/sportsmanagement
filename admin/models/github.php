@@ -220,7 +220,7 @@ return $github->issues->create($github_user, $github_repo, $this->post['title'],
         //JGithubIssues::$client = $this->client;
         //$GithubList = JGithubPackageIssues->getListByRepository($github_user,$github_repo);
         
-        $params = \JComponentHelper::getParams('com_sportsmanagement');
+        $params = \JComponentHelper::getParams($option);
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' params <br><pre>'.print_r($params ,true).'</pre>'),'');
 
 $gh_options = new JRegistry();

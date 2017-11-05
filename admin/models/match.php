@@ -47,6 +47,11 @@ JLoader::import('components.com_sportsmanagement.libraries.util', JPATH_ADMINIST
 JLoader::import('components.com_sportsmanagement.libraries.GCalendar.GCalendarZendHelper', JPATH_ADMINISTRATOR);
 JLoader::import('joomla.utilities.simplecrypt');
 
+//use Joomla google;
+JLoader::import('libraries.joomla.google.google', JPATH_ADMINISTRATOR);
+JLoader::import('libraries.joomla.google.data.calendar', JPATH_ADMINISTRATOR);
+
+
 /**
  * sportsmanagementModelMatch
  * 
@@ -217,23 +222,124 @@ $query->order('m.match_number');
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         $query->select('id,roundcode,round_date_first');
-        $query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_round');
+        $query->from('#__sportsmanagement_round');
         $query->where('project_id = '.$project_id);
         $query->order('roundcode,round_date_first ASC');
         
-//		$query="SELECT id,roundcode,round_date_first FROM #__joomleague_round
-//				WHERE project_id=".$project_id."
-//				ORDER by roundcode,round_date_first ASC";
 		$db->setQuery($query);
 		return $db->loadObjectList();
 	}
     
+    
+    /**
+     * sportsmanagementModelMatch::insertgooglecalendar()
+     * 
+     * @return void
+     * https://packagist.org/packages/joomla/google
+     */
+    function insertgooglecalendar()
+    {
+    // Reference global application object
+    $app = JFactory::getApplication();
+    // JInput object
+    $jinput = $app->input;
+    $option = $jinput->getCmd('option');
+    //$params = \JComponentHelper::getParams($option);
+    
+    $google_client_id = JComponentHelper::getParams($option)->get('google_api_clientid','');
+    $google_client_secret = JComponentHelper::getParams($option)->get('google_api_clientsecret','');
+        
+    $options = new JRegistry();  
+    $input = new JInput;  
+    
+//$options->set('clientid', $google_client_id.'.apps.googleusercontent.com');
+//$options->set('clientsecret', $google_client_secret);
+$google = new JGoogle($options);
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' google<br><pre>'.print_r($google, true).'</pre><br>','Notice');    
+
+
+$oauth = new JOAuth2Client($options,null,$input);
+$auth = new JGoogleAuthOauth2($options, $oauth);
+
+$options->set('clientid', $google_client_id.'.apps.googleusercontent.com');
+$options->set('clientsecret', $google_client_secret);
+
+$result = $auth->authenticate();
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result, true).'</pre><br>','Notice');
+    
+    //$oauth = new JOAuth2Client($options, $http, $input);
+    //$auth = new JGoogleAuthOauth2($options, $oauth);
+    //$object = new JGoogleDataCalendar($options, $auth);
+    $object = new JGoogleDataCalendar($options);
+
+/*    
+$token['access_token'] = 'accessvalue';
+$token['refresh_token'] = 'refreshvalue';
+$token['created'] = time() - 1800;
+$token['expires_in'] = 3600;
+$this->oauth->setToken($token);
+*/
+            
+// Client ID and Client Secret can be obtained  through the Google API Console (https://code.google.com/apis/console/).
+//$options->set('clientid', 'google_client_id.apps.googleusercontent.com');
+//$options->set('clientsecret', 'google_client_secret');
+$object->setOption('clientid', $google_client_id.'.apps.googleusercontent.com' );
+//$object->setOption('clientid', '329080032937.apps.googleusercontent.com');
+$object->setOption('clientsecret', $google_client_secret );
+$object->setOption('redirecturi', JURI::root() );
+
+// 329080032937-f4b8095v2jb8ecbmpe33tvej2koh3m4b
+// wzbJSgn4-w-6pg_qNLhcw4jT
+
+//$google = new JGoogle($options);
+
+// Get a calendar API object
+//$calendar = $google->data('calendar');
+
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' isAuth<br><pre>'.print_r($calendar->isAuth(), true).'</pre><br>','Notice');
+
+/*
+// If the client hasn't been authenticated via OAuth yet, redirect to the appropriate URL and terminate the program
+if (!$calendar->isAuth())
+{
+	JResponse::sendHeaders();
+	die();
+}
+*/
+
+//$ini_google_calendar = $calendar->listCalendars($options);    
+
+//$url = 'https://www.googleapis.com/calendar/v3/users/me/calendarList?' . http_build_query($options);
+
+$result = $object->listCalendars($options);
+
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' object<br><pre>'.print_r($object, true).'</pre><br>','Notice');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' options<br><pre>'.print_r($options, true).'</pre><br>','Notice');
+
+//$app->enqueueMessage(__METHOD__.' '.__LINE__.' url<br><pre>'.print_r($url, true).'</pre><br>','Notice');
+$app->enqueueMessage(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result, true).'</pre><br>','Notice');
+
+    
+    /*
+    $init_jgoogle = new JGoogle($gh_options,$auth);
+    $app->enqueueMessage(__METHOD__.' '.__LINE__.' $init_jgoogle<br><pre>'.print_r($init_jgoogle, true).'</pre><br>','Notice');
+    
+    $ini_google = new JGoogleDataCalendar($gh_options,$auth);    
+    $ini_google_calendar = $ini_google->listCalendars($gh_options);
+    
+    $app->enqueueMessage(__METHOD__.' '.__LINE__.' ini_google<br><pre>'.print_r($ini_google, true).'</pre><br>','Notice');
+    $app->enqueueMessage(__METHOD__.' '.__LINE__.' ini_google_calendar<br><pre>'.print_r($ini_google_calendar, true).'</pre><br>','Notice');
+    */    
+    }  
+    
+    
+      
     /**
      * sportsmanagementModelMatch::insertgooglecalendar()
      * http://framework.zend.com/manual/1.12/de/zend.gdata.calendar.html
      * @return
      */
-    function insertgooglecalendar()
+    function insertgooglecalendarold()
     {
         // Reference global application object
         $app = JFactory::getApplication();

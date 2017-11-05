@@ -129,7 +129,8 @@ class sportsmanagementModelClubs extends JSMModelList
 		$this->setState('filter.search_nation', $temp_user_request);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.season', 'filter_season', '');
 		$this->setState('filter.season', $temp_user_request);
-        
+        $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.geo_daten', 'filter_geo_daten', '');
+		$this->setState('filter.geo_daten', $temp_user_request);
         $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);	
 		// List state information.
@@ -155,25 +156,39 @@ class sportsmanagementModelClubs extends JSMModelList
         // Join over the users for the checked out user.
 		$this->jsmquery->select('uc.name AS editor');
 		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = a.checked_out');
-        
-        if ($this->getState('filter.search'))
+
+/**
+ * keine geodaten gesetzt
+ */
+        if ( $this->getState('filter.geo_daten') == 1 )
 		{
-        //$this->query->where('LOWER(a.name) LIKE '.$this->jsmdb->Quote('%'.$search.'%'));
+        $this->jsmquery->where(' ( a.latitude IS NULL OR a.latitude = 0.00000000 )' );  
+        }
+/**
+ * geo daten gesetzt
+ */
+        if ( $this->getState('filter.geo_daten') == 2 )
+		{
+		$this->jsmquery->where(' a.latitude > 0.00000000 ' );  
+        }
+        
+        if ( $this->getState('filter.search') )
+		{
         $this->jsmquery->where(' ( LOWER(a.name) LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search').'%') .' OR LOWER(a.unique_id) LIKE '.$this->jsmdb->Quote('%'.$this->getState('filter.search').'%') .')' );
         }
-        if ($this->getState('filter.search_nation'))
+        if ( $this->getState('filter.search_nation') )
 		{
         $this->jsmquery->where('a.country LIKE '.$this->jsmdb->Quote(''.$this->getState('filter.search_nation').'') );
         }
         
-        if ($this->getState('filter.season'))
+        if ( $this->getState('filter.season') )
 		{
         $this->jsmquery->join('LEFT','#__sportsmanagement_team AS t ON a.id = t.club_id');
         $this->jsmquery->join('LEFT','#__sportsmanagement_season_team_id as st ON t.id = st.team_id ');
         $this->jsmquery->where('st.season_id = '.$this->getState('filter.season'));
         }
         
-        if (is_numeric($this->getState('filter.state')) )
+        if ( is_numeric($this->getState('filter.state')) )
 		{
 		$this->jsmquery->where('a.published = '.$this->getState('filter.state'));	
 		}
