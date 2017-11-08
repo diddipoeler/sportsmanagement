@@ -288,7 +288,8 @@ var locations = [<?PHP echo $comma_separated;?>];
 var map;
         var str = '[';
         for (i = 0; i < locations.length; i++) {
-          str += '{ "lat" :"' + locations[i][1] + '","lng" :"' + locations[i][2] + '","data" :"<div class=Your_Class><h4><a href=Your_Link_To_Marker>' + locations[i][3] + '</a></h4></div>"},';
+          str += '{ "lat" :"' + locations[i][1] + '","lng" :"' + locations[i][2] + '","data" :"<div class=Your_Class><h4><a href=Your_Link_To_Marker>' + locations[i][3] + 
+          '</a></h4><img src=/' + locations[i][4] + ' width=50></div>"},';
         }
         str = str.substring(0, str.length - 1);
         str += ']';
