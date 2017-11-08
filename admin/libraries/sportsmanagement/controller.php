@@ -75,7 +75,7 @@ class JSMControllerForm extends JControllerForm
         $id = $this->jsmdb->insertid();
         if ( empty($id) )
         {
-             $id = $this->jsmjinput->getInt('id');
+             $id = $this->jsmjinput->getInt('insert_id');
         }
 
 if ( JComponentHelper::getParams($this->jsmoption)->get('show_debug_info_backend') )
@@ -122,12 +122,12 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->view_list
         // Set the redirect based on the task.
 		switch ($this->getTask())
 		{
-			case 'apply':
-				$message = JText::_('JLIB_APPLICATION_SAVE_SUCCESS');
-                if ( $tmpl )
-                {
+		case 'apply':
+		$message = JText::_('JLIB_APPLICATION_SAVE_SUCCESS');
+        if ( $tmpl )
+        {
 
-switch ($this->view_item)
+        switch ($this->view_item)
 		{
 		case 'club':  
 		$this->setRedirect('index.php?option=com_sportsmanagement&view='.$this->view_item.'&layout=edit&tmpl=component&id='.$this->club_id, $message);
@@ -136,10 +136,10 @@ switch ($this->view_item)
 		$this->setRedirect('index.php?option=com_sportsmanagement&view='.$this->view_item.'&layout=edit&tmpl=component&id='.$id, $message);
 		break;
 		}
-                }
-                else
-                {
- switch ($this->view_item)
+        }
+        else
+        {
+        switch ($this->view_item)
 		{
 		case 'club': 
 		$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend($this->club_id).$setRedirect, false), $message); 
@@ -149,29 +149,29 @@ switch ($this->view_item)
 		break;
 		default:
         $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend($id).$setRedirect, false), $message); 
-break;
-}
+        break;
+        }
 
-                }
+        }
 		break;
-case 'save2copy':
-$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend($id).$setRedirect, false));
-break;
+        case 'save2copy':
+        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_item.$this->getRedirectToItemAppend($id).$setRedirect, false));
+        break;
 
-			case 'save2new':
-            $message = JText::_('JLIB_APPLICATION_SAVE_SUCCESS');
-			$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_item .$this->getRedirectToItemAppend(null, $urlVar).$setRedirect, false), $message);
+		case 'save2new':
+        $message = JText::_('JLIB_APPLICATION_SAVE_SUCCESS');
+		$this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_item .$this->getRedirectToItemAppend(null, $urlVar).$setRedirect, false), $message);
             
-            break;
-			default:
-            $message = JText::_('JLIB_APPLICATION_SAVE_SUCCESS');
-            if ( $tmpl )
-                {
-				$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
-                }
-                else
-                {
-                    switch ($this->view_item)
+        break;
+		default:
+        $message = JText::_('JLIB_APPLICATION_SAVE_SUCCESS');
+        if ( $tmpl )
+        {
+		$this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component');
+        }
+        else
+        {
+        switch ($this->view_item)
 		{
 		case 'club':  
         $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&club_id='.$this->club_id.$this->getRedirectToListAppend(), false), $message);
@@ -183,18 +183,17 @@ break;
         $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list. $this->getRedirectToListAppend().$setRedirect, false), $message);
         break;
         }   
-                }
-				break;
+        }
+		break;
 		}
 
 		return true;
         }   
         else
         {
-            //JError::raiseError( 4711, 'A severe error occurred' );
-            $this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_item .$this->getRedirectToItemAppend($id).$setRedirect, false), $message); 
-            JError::raiseError( 4711, $this->jsmdb->getErrorMsg() );
-            return false;
+        $this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_item .$this->getRedirectToItemAppend($id).$setRedirect, false), $message); 
+        JError::raiseError( 4711, $this->jsmdb->getErrorMsg() );
+        return false;
         }
      }
      

@@ -471,8 +471,6 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
 			//$data['params'] = (string)$parameter;
             $data['params'] = $paramsString;
 		}
-        
-//        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
                
 /**
  * Alter the title for Save as Copy
@@ -500,7 +498,7 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
  */              
             case 'project':
             $data['current_round'] = 0;
-	$project_old = (int) $this->jsmjinput->getInt('id');		    
+	        $project_old = (int) $this->jsmjinput->getInt('id');		    
             break;  
             default:
             break; 
@@ -522,6 +520,7 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
             $isNew = $this->getState($this->getName() . '.new');
             $data['id'] = $id;
             $this->jsmapp->setUserState( "$this->jsmoption.club_id", $id );
+            $this->jsmjinput->set('insert_id', $id);
             if ( $isNew )
             {
 /**
@@ -721,7 +720,7 @@ catch (Exception $e) {
 		}
 		else
 		{
-			return false;
+		return false;
 		}
 	}
     
