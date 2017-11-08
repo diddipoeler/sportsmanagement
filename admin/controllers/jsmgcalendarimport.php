@@ -67,7 +67,7 @@ class sportsmanagementControllerjsmgcalendarImport extends JControllerLegacy
 		$app = JFactory::getApplication();
 		parent::__construct($config);
 
-	$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');
+	//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'Notice');
 	}
     
 	/**

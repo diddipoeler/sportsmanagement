@@ -76,6 +76,8 @@ class sportsmanagementViewMatches extends sportsmanagementView
 
         $starttime = microtime(); 
         
+        $app->enqueueMessage(__METHOD__.' '.__LINE__.' code <br><pre>'.print_r($_GET['code'] , true).'</pre><br>','Notice');
+        
         //$this->state = $this->get('State'); 
         //$this->sortDirection = $this->state->get('list.direction');
         //$this->sortColumn = $this->state->get('list.ordering');

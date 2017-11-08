@@ -113,6 +113,8 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_club` (
   `hits` INT(11) NOT NULL DEFAULT '0' ,
   `modified_hits` INT(11) NOT NULL DEFAULT '0' ,
   `import_id` INT(11) NOT NULL DEFAULT '0' ,
+  `founded_timestamp` INT( 11 ) NOT NULL DEFAULT  '0',
+  `dissolved_timestamp` INT( 11 ) NOT NULL DEFAULT  '0',
   PRIMARY KEY (`id`) ,
   KEY `standard_playground` (`standard_playground`),
   KEY `country` (`country`)
@@ -279,6 +281,9 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_league` (
   `published` TINYINT(1) NOT NULL DEFAULT '1' ,
   `cr_picture` varchar(255) DEFAULT NULL,
   `published_act_season` TINYINT(1) NOT NULL DEFAULT '0' ,
+  `league_level` INT( 11 ) NOT NULL DEFAULT  '0',
+  `league_id_up` INT( 11 ) NOT NULL DEFAULT  '0',
+  `league_id_down` INT( 11 ) NOT NULL DEFAULT  '0',
   PRIMARY KEY (`id`) ,
   KEY `country` (`country`),
   KEY `sports_type_id` (`sports_type_id`)
@@ -1183,6 +1188,7 @@ CREATE  TABLE IF NOT EXISTS `#__sportsmanagement_team` (
   `hits` INT(11) NOT NULL DEFAULT '0' ,
   `modified_hits` INT(11) NOT NULL DEFAULT '0' ,
   `team_number` INT(11) NOT NULL DEFAULT '0' ,
+  `team_stars` INT(11) NOT NULL DEFAULT '0' ,
   PRIMARY KEY (`id`) ,
   KEY `club_id` (`club_id`),
   KEY `sports_type_id` (`sports_type_id`)
