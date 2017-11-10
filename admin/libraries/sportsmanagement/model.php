@@ -40,7 +40,9 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+// import Joomla library
 jimport('joomla.application.component.modeladmin');
+// import Joomla library
 jimport('joomla.application.component.modellist');
 
 /**
@@ -1361,11 +1363,11 @@ catch (Exception $e) {
 				if (!$row->store())
 				{
 					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
-					return false;
+					return JText::_('JGLOBAL_SAVE_SORT_NO');
 				}
 			}
 		}
-		return true;
+		return JText::_('JGLOBAL_SAVE_SORT_YES');
 	}
                 
 }
@@ -1465,14 +1467,14 @@ public function __construct($config = array())
 /**
  * abfrage nach backend und frontend  
  */        
-if ( $this->jsmapp->isAdmin() )
-{
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isAdmin<br><pre>'.print_r($this->jsmapp->isAdmin(),true).'</pre>'),'');    
-}  
-if( $this->jsmapp->isSite() )
-{
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isSite<br><pre>'.print_r($this->jsmapp->isSite(),true).'</pre>'),'');    
-} 
+        if ( $this->jsmapp->isAdmin() )
+        {
+        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isAdmin<br><pre>'.print_r($this->jsmapp->isAdmin(),true).'</pre>'),'');    
+        }  
+        if( $this->jsmapp->isSite() )
+        {
+        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' isSite<br><pre>'.print_r($this->jsmapp->isSite(),true).'</pre>'),'');    
+        } 
         
         }    
     
