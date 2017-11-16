@@ -261,14 +261,17 @@ default:
 $map_markes = array();
 
 $zaehler = 1;
+$find[] = "'";
+$replace[] = " ";
 foreach ( $this->allteams as $row )
 {
 
 $latitude = $row->latitude;
 $longitude = $row->longitude;
+	
 if ( !empty($latitude) )
 {
-//$map_markes[] = "{lat:".$latitude.", lng:".$longitude.", data:'Paris !'}";
+$row->team_name= str_replace($find, $replace, $row->team_name);
 $map_markes[] = "[".$zaehler.",".$latitude.",".$longitude.",'".$row->team_name."']";
 $zaehler++;
 }
