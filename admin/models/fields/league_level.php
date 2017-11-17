@@ -37,46 +37,63 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined('_JEXEC') or die();
+// Check to ensure this file is included in Joomla!
+defined( '_JEXEC' ) or die( 'Restricted access' );
+
+if (! defined('DS'))
+{
+	define('DS', DIRECTORY_SEPARATOR);
+}
+
+
+jimport('joomla.filesystem.folder');
+JFormHelper::loadFieldClass('list');
+
 
 /**
- * JFormFieldColor
+ * JFormFieldLeague_Level
  * 
  * @package 
- * @author diddi
- * @copyright 2014
+ * @author Dieter Plöger
+ * @copyright 2017
  * @version $Id$
  * @access public
  */
-class JFormFieldColor extends JFormFieldText
+class JFormFieldLeague_Level extends JFormFieldList
 {
-	protected $type = 'Color';
+	/**
+	 * field type
+	 * @var string
+	 */
+	public $type = 'league_level';
 
 	/**
-	 * JFormFieldColor::getInput()
-	 * 
-	 * @return
+	 * Method to get the field options.
+	 *
+	 * @return  array  The field option objects.
+	 *
+	 * @since   11.1
 	 */
-	public function getInput()
+	protected function getOptions()
 	{
-		$document = &JFactory::getDocument();
-		$document->addScript(JURI::base(). 'components/com_gcalendar/libraries/jscolor/jscolor.js' );
-		return parent::getInput();
-	}
+		$app = JFactory::getApplication();
+        $option = JRequest::getCmd('option');
+        /**
+         * Initialize variables.
+         */
+		for($a=1; $a < 21; $a++ )
+        {
+            $options[$a] = JText::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL').' - '.$a;
+        }
+	
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($options,true).'</pre>'),'');
+        
+		/**
+         * Merge any additional options in the XML definition.
+         */
+		$options = array_merge(parent::getOptions(), $options);
 
-	/**
-	 * JFormFieldColor::setup()
-	 * 
-	 * @param mixed $element
-	 * @param mixed $value
-	 * @param mixed $group
-	 * @return
-	 */
-	public function setup(& $element, $value, $group = null)
-	{
-		$return= parent::setup($element, $value, $group);
-		$this->element['class'] = $this->element['class'].' color';
-		return $return;
+		return $options;
 	}
+    
 }
-?>

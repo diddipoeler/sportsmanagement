@@ -153,6 +153,35 @@ class sportsmanagementModelclubnames extends JSMModelList
         
 	}
     
+    
+    /**
+     * sportsmanagementModelclubnames::getClubNames()
+     * 
+     * @param string $country
+     * @return void
+     */
+    function getClubNames($country = '')
+    {
+    // Create a new query object.		
+	$this->jsmquery->clear();
+    
+    // Select some fields
+	$this->jsmquery->select('name,name_long');
+    // From table
+	$this->jsmquery->from('#__sportsmanagement_club_names');
+    
+    /**
+     * wenn das land mitegegeben wurde
+     */
+    if ( $country )
+	{
+    $this->jsmquery->where('country LIKE '.$this->jsmdb->Quote('%'.$country.'%') );
+    }
+    
+    $this->jsmdb->setQuery($this->jsmquery);
+    return $this->jsmdb->loadObjectList();
+	        
+    }
 
 
 }
