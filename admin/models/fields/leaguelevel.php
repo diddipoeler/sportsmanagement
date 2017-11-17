@@ -59,13 +59,13 @@ JFormHelper::loadFieldClass('list');
  * @version $Id$
  * @access public
  */
-class JFormFieldLeague_Level extends JFormFieldList
+class JFormFieldLeagueLevel extends JFormFieldList
 {
 	/**
 	 * field type
 	 * @var string
 	 */
-	public $type = 'league_level';
+	public $type = 'leaguelevel';
 
 	/**
 	 * Method to get the field options.

@@ -60,7 +60,7 @@
 	
 	<field
 			name="league_level"
-			type="league_level"
+			type="leaguelevel"
 			label="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL"
 			description="COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL_DESC"
 			class="form-control form-control-inline"
