@@ -83,7 +83,7 @@ class JFormFieldLeague_Level extends JFormFieldList
          */
 		for($a=1; $a < 21; $a++ )
         {
-            $options[$a] = JText::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL').' - '.$a;
+            $options[] = JHtml::_('select.option', $a, JText::_('COM_SPORTSMANAGEMENT_ADMIN_LEAGUE_LEVEL').' - '.$a);   
         }
 	
         //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($options,true).'</pre>'),'');
