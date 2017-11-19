@@ -317,7 +317,6 @@ case 'teampersons':
 			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.state'), true)
 		);
 
-//$myoptions[] = JHtml::_( 'select.option', '', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_GEO_DATEN' ) );
 $myoptions[] = JHtml::_( 'select.option', '1', JText::_( 'JNO' ) );
 $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) ); 
 

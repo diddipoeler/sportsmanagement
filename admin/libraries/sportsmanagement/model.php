@@ -344,7 +344,9 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
  * verein 
  */       
        case 'club':
-       // gibt es vereinsnamen zum ändern ?
+/**
+ * gibt es vereinsnamen zum ändern ?
+ */
        if (isset($post['team_id']) && is_array($post['team_id'])) 
        {
         foreach ( $post['team_id'] as $key => $value )
@@ -358,12 +360,14 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
         $object->name = $team_name;
         $object->alias = JFilterOutput::stringURLSafe( $team_name );
         // Update their details in the table using id as the primary key.
-        $result = JFactory::getDbo()->updateObject('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team', $object, 'id');
+        $result = JFactory::getDbo()->updateObject('#__sportsmanagement_team', $object, 'id');
         }
         
        }
        
-       // hat der user die bildfelder geleert, werden die standards gesichert.
+/**
+ * hat der user die bildfelder geleert, werden die standards gesichert.
+ */
        if ( empty($data['logo_big']) )
        {
        $data['logo_big'] = JComponentHelper::getParams($option)->get('ph_logo_big','');
@@ -377,39 +381,35 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
        $data['logo_small'] = JComponentHelper::getParams($option)->get('ph_logo_small','');
        }
  
-       // wurden jahre mitgegeben ?
-       //$timestamp = strtotime($data['founded']);
+/**
+ * wurden jahre mitgegeben ?
+ */
        if ( $data['founded'] != '0000-00-00' && $data['founded'] != '' )
        {
        $data['founded']	= sportsmanagementHelper::convertDate($data['founded'],0);
        }
-       //$timestamp = strtotime($data['dissolved']);
        if ( $data['dissolved'] != '0000-00-00' && $data['dissolved'] != ''  )
        {
        $data['dissolved'] = sportsmanagementHelper::convertDate($data['dissolved'],0);
        }
        
-       //$timestamp = strtotime($data['founded']); 
        if ( $data['founded'] == '0000-00-00' || $data['founded'] == '' )
         {
         $data['founded'] = '0000-00-00';   
-        //$data['founded_year'] = ''; 
         }
        if ( $data['founded'] != '0000-00-00' && $data['founded'] != ''  )
         {
         $data['founded_year'] = date('Y',strtotime($data['founded']));
+        $data['founded_timestamp'] = sportsmanagementHelper::getTimestamp($data['founded']);
         }
         else
         {
         $data['founded_year'] = $data['founded_year'];
         }
         
-        
-        //$timestamp = strtotime($data['dissolved']); 
         if ( $data['dissolved'] == '0000-00-00' || $data['dissolved'] == '' )
         {
         $data['dissolved'] = '0000-00-00';   
-        //$data['dissolved_year'] = ''; 
         }
         
         if ( $data['dissolved'] != '0000-00-00' && $data['dissolved'] != '' )  
