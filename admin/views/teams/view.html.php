@@ -137,17 +137,17 @@ class sportsmanagementViewTeams extends sportsmanagementView
 		// Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_TITLE');
 		$this->icon = 'teams';
-		JToolBarHelper::apply('teams.saveshort');
-		JToolBarHelper::addNew('team.add');
-		JToolBarHelper::editList('team.edit');
-		JToolBarHelper::custom('team.copysave', 'copy.png', 'copy_f2.png', JText::_('JTOOLBAR_DUPLICATE'), true);
-		JToolBarHelper::custom('team.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
-		JToolBarHelper::archiveList('team.export', JText::_('JTOOLBAR_EXPORT'));
+		JToolbarHelper::apply('teams.saveshort');
+		JToolbarHelper::addNew('team.add');
+		JToolbarHelper::editList('team.edit');
+		JToolbarHelper::custom('team.copysave', 'copy.png', 'copy_f2.png', JText::_('JTOOLBAR_DUPLICATE'), true);
+		JToolbarHelper::custom('team.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
+		JToolbarHelper::archiveList('team.export', JText::_('JTOOLBAR_EXPORT'));
 		
 		
 		if ( $this->jinput->get->get('club_id') )
 		{
-		JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=clubs');
+		JToolbarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=clubs');
 		}
 
 		parent::addToolbar();

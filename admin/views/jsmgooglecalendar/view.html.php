@@ -60,12 +60,12 @@ class sportsmanagementViewjsmgooglecalendar extends sportsmanagementView
 	 */
 	public function init ()
     {
-//		JToolBarHelper::title(JText::_('COM_GCALENDAR'), 'calendar');
+//		JToolbarHelper::title(JText::_('COM_GCALENDAR'), 'calendar');
 //
 //		$canDo = jsmGCalendarUtil::getActions();
 //		if ($canDo->get('core.admin')) {
-//			JToolBarHelper::preferences('com_gcalendar', 550);
-//			JToolBarHelper::divider();
+//			JToolbarHelper::preferences('com_gcalendar', 550);
+//			JToolbarHelper::divider();
 //		}
 //$this->addToolbar();
 //		parent::display($tpl);   
@@ -87,12 +87,12 @@ class sportsmanagementViewjsmgooglecalendar extends sportsmanagementView
 //        $document->addCustomTag($stylelink);  
 //        
 //        // Set toolbar items for the page
-//		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_GCALENDAR_TITLE' ),'gcalendar' );
+//		JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_GCALENDAR_TITLE' ),'gcalendar' );
 //        
 //
-//		JToolBarHelper::divider();
+//		JToolbarHelper::divider();
 //        sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//		JToolBarHelper::preferences($option);
+//		JToolbarHelper::preferences($option);
 
 parent::addToolbar();  	
 

@@ -470,7 +470,7 @@ $slide_id = 1;
 	$mtime=$mtime[1] + $mtime[0];
 	$starttime=$mtime;
 
-	JToolBarHelper::title(JText::_('JSM Sportsmanagement - Database update process'));
+	JToolbarHelper::title(JText::_('JSM Sportsmanagement - Database update process'));
 	echo '<h2>'.JText::sprintf(	'JSM Sportsmanagement v%1$s - %2$s - Filedate: %3$s / %4$s',
 								$version,$updateDescription,$updateFileDate,$updateFileTime).'</h2>';
 	$totalUpdateParts = 2;

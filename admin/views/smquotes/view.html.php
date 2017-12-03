@@ -80,17 +80,17 @@ class sportsmanagementViewsmquotes extends sportsmanagementView
 	{
         // Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_QUOTES_TITLE');
-		JToolBarHelper::addNew('smquote.add');
-		JToolBarHelper::editList('smquote.edit');
-		JToolBarHelper::custom('smquote.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
+		JToolbarHelper::addNew('smquote.add');
+		JToolbarHelper::editList('smquote.edit');
+		JToolbarHelper::custom('smquote.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
         
-        JToolBarHelper::custom('smquotes.edittxt', 'featured.png', 'featured_f2.png', JText::_('JTOOLBAR_EDIT'), false);
+        JToolbarHelper::custom('smquotes.edittxt', 'featured.png', 'featured_f2.png', JText::_('JTOOLBAR_EDIT'), false);
         
 		$bar = JToolBar::getInstance('toolbar');
         //$bar->appendButton('Link', 'info', 'Kategorie', 'index.php?option=com_categories&view=categories&extension=com_sportsmanagement');
 		$bar->appendButton('Link', 'info', 'Kategorie', 'index.php?option=com_categories&extension=com_sportsmanagement');
         
-		JToolBarHelper::archiveList('smquote.export', JText::_('JTOOLBAR_EXPORT'));
+		JToolbarHelper::archiveList('smquote.export', JText::_('JTOOLBAR_EXPORT'));
 		
         
 		parent::addToolbar();

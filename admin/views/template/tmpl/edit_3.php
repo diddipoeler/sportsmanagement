@@ -51,7 +51,7 @@ JHtml::_('behavior.formvalidation');
 $params = $this->form->getFieldsets('params');
 $fieldsets = $this->form->getFieldsets();
 
-JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_NAME'), 'template');
+JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_FES_' . strtoupper($this->form->getName()) . '_NAME'), 'template');
 
 $i    = 1;
 

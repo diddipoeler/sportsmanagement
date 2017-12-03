@@ -70,7 +70,7 @@ class sportsmanagementControllerjlextprofleagimport extends JControllerLegacy
         // Check for request forgeries
 		JRequest::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
 		$msg='';
-		JToolBarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&view=jlextprofleagimport&controller=jlextprofleagimport'));
+		JToolbarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&view=jlextprofleagimport&controller=jlextprofleagimport'));
 		$app = JFactory::getApplication();
 		$post=JRequest::get('post');
     $model=$this->getModel('jlextprofleagimport');

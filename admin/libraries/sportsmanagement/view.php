@@ -104,6 +104,16 @@ class sportsmanagementView extends JViewLegacy
         
         $this->layout = $this->getLayout();
         
+    if(version_compare(JVERSION,'3.0.0','ge')) 
+    {
+    $this->uri = JUri::getInstance();
+    $this->toolbarhelper = 'JToolbarHelper';
+    }
+    else
+    {
+    $this->uri = JFactory::getURI();
+    $this->toolbarhelper = 'JToolbarHelper';    
+    }
 /**
  * alles aufrufen was für die views benötigt wird
  */
@@ -115,7 +125,7 @@ class sportsmanagementView extends JViewLegacy
         $this->format = $this->jinput->getCmd('format');
         $this->view = $this->jinput->getCmd('view', 'cpanel');
         $this->tmpl = $this->jinput->getCmd('tmpl', '');
-		$this->uri = JFactory::getURI();
+		
         $this->user = JFactory::getUser();
         $this->request_url	= $this->uri->toString();
         
@@ -446,31 +456,31 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
 			// For new records, check the create permission.
 			if ($canDo->get('core.create')) 
 			{
-				JToolBarHelper::apply($this->view.'.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save($this->view.'.save', 'JTOOLBAR_SAVE');
-				JToolBarHelper::custom($this->view.'.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+				JToolbarHelper::apply($this->view.'.apply', 'JTOOLBAR_APPLY');
+				JToolbarHelper::save($this->view.'.save', 'JTOOLBAR_SAVE');
+				JToolbarHelper::custom($this->view.'.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 			}
-			JToolBarHelper::cancel($this->view.'.cancel', 'JTOOLBAR_CANCEL');
+			JToolbarHelper::cancel($this->view.'.cancel', 'JTOOLBAR_CANCEL');
 		}
 		else
 		{
 			if ( $canDo->get('core.edit') )
 			{
 				// We can save the new record
-				JToolBarHelper::apply($this->view.'.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save($this->view.'.save', 'JTOOLBAR_SAVE');
+				JToolbarHelper::apply($this->view.'.apply', 'JTOOLBAR_APPLY');
+				JToolbarHelper::save($this->view.'.save', 'JTOOLBAR_SAVE');
  
 				// We can save this record, but check the create permission to see if we can return to make a new one.
 				if ( $canDo->get('core.create') && $this->view != 'treetonode' ) 
 				{
-					JToolBarHelper::custom($this->view.'.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+					JToolbarHelper::custom($this->view.'.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 				}
 			}
 			if ( $canDo->get('core.create')  && $this->view != 'treetonode' ) 
 			{
-				JToolBarHelper::custom($this->view.'.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+				JToolbarHelper::custom($this->view.'.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
 			}
-			JToolBarHelper::cancel($this->view.'.cancel', 'JTOOLBAR_CLOSE');
+			JToolbarHelper::cancel($this->view.'.cancel', 'JTOOLBAR_CLOSE');
 		}    
             
         }
@@ -493,7 +503,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
 		
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' icon -> '.$this->icon.''),'Notice');
         
-        //JToolBarHelper::title(JText::_($this->title), $this->icon);
+        //JToolbarHelper::title(JText::_($this->title), $this->icon);
 		$document = JFactory::getDocument();
         $document->addScript(JURI::root() . "administrator/components/com_sportsmanagement/views/sportsmanagement/submitbutton.js");
         if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -518,22 +528,22 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
         {
         if ($isNew) 
 		{
-        JToolBarHelper::title(JText::_($this->title), $this->icon);
+        JToolbarHelper::title(JText::_($this->title), $this->icon);
         }
         else
         {
-        JToolBarHelper::title( sprintf(JText::_($this->title),$this->item->name), $this->icon);    
+        JToolbarHelper::title( sprintf(JText::_($this->title),$this->item->name), $this->icon);    
         }
         }
         else
         {
             if(version_compare(JVERSION,'3.0.0','ge')) 
             {
-            JToolBarHelper::title(JText::_($this->title) );    
+            JToolbarHelper::title(JText::_($this->title) );    
             }
             else
             {
-            JToolBarHelper::title(JText::_($this->title), $this->icon);
+            JToolbarHelper::title(JText::_($this->title), $this->icon);
             }
 
 /**
@@ -556,7 +566,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
  */
         if ($canDo->get('core.delete')) 
 		{
-        JToolBarHelper::deleteList('', $this->view.'.delete');
+        JToolbarHelper::deleteList('', $this->view.'.delete');
         JToolbarHelper::trash($this->view.'.trash');
         }
         JToolbarHelper::checkin($this->view.'.checkin');  
@@ -569,8 +579,8 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
         sportsmanagementHelper::ToolbarButtonOnlineHelp();
         if ($canDo->get('core.admin'))
 		{
-			JToolBarHelper::preferences('com_sportsmanagement');
-			JToolBarHelper::divider();
+			JToolbarHelper::preferences('com_sportsmanagement');
+			JToolbarHelper::divider();
 		}
         
         

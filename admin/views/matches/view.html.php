@@ -343,31 +343,31 @@ class sportsmanagementViewMatches extends sportsmanagementView
 
 		if (!$massadd)
 		{
-			//JToolBarHelper::publishList('matches.publish');
-			//JToolBarHelper::unpublishList('matches.unpublish');
+			//JToolbarHelper::publishList('matches.publish');
+			//JToolbarHelper::unpublishList('matches.unpublish');
             
-            JToolBarHelper::publish('match.insertgooglecalendar', 'JLIB_HTML_CALENDAR', true);
-            JToolBarHelper::divider();
-            JToolBarHelper::publish('matches.count_result_yes', 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL', true);
-            JToolBarHelper::unpublish('matches.count_result_no', 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL', true);
-            JToolBarHelper::divider();
-            JToolBarHelper::publish('matches.publish', 'JTOOLBAR_PUBLISH', true);
-            JToolBarHelper::unpublish('matches.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-			JToolBarHelper::divider();
+            JToolbarHelper::publish('match.insertgooglecalendar', 'JLIB_HTML_CALENDAR', true);
+            JToolbarHelper::divider();
+            JToolbarHelper::publish('matches.count_result_yes', 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL', true);
+            JToolbarHelper::unpublish('matches.count_result_no', 'COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_AD_INCL', true);
+            JToolbarHelper::divider();
+            JToolbarHelper::publish('matches.publish', 'JTOOLBAR_PUBLISH', true);
+            JToolbarHelper::unpublish('matches.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			JToolbarHelper::divider();
 
-			JToolBarHelper::apply('matches.saveshort');
-			JToolBarHelper::divider();
+			JToolbarHelper::apply('matches.saveshort');
+			JToolbarHelper::divider();
 
-			JToolBarHelper::custom('match.massadd', 'new.png', 'new_f2.png', JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_MATCHES'), false);
-			JToolBarHelper::addNew('match.addmatch', JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_ADD_MATCH'));
-//			JToolBarHelper::deleteList(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_WARNING'), 'match.remove');
-			JToolBarHelper::divider();
+			JToolbarHelper::custom('match.massadd', 'new.png', 'new_f2.png', JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_MATCHES'), false);
+			JToolbarHelper::addNew('match.addmatch', JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_ADD_MATCH'));
+//			JToolbarHelper::deleteList(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_WARNING'), 'match.remove');
+			JToolbarHelper::divider();
 
-			JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=rounds');
+			JToolbarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=rounds');
 		}
 		else
 		{
-			JToolBarHelper::custom('match.cancelmassadd', 'cancel.png', 'cancel_f2.png', JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_CANCEL_MATCHADD'), false);
+			JToolbarHelper::custom('match.cancelmassadd', 'cancel.png', 'cancel_f2.png', JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_MASSADD_CANCEL_MATCHADD'), false);
 		}
         
         parent::addToolbar();  

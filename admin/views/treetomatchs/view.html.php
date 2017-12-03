@@ -197,13 +197,13 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
 protected function addToolBarEditlist()
 	{
 	   $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_ASSIGN');
-	JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_ASSIGN' ) );
+	JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_ASSIGN' ) );
 
-JToolBarHelper::save( 'treetomatch.save_matcheslist' );
+JToolbarHelper::save( 'treetomatch.save_matcheslist' );
 
 // for existing items the button is renamed `close` and the apply button is showed
 //JLToolBarHelper::cancel( 'cancel', 'COM_JOOMLEAGUE_GLOBAL_CLOSE' );
-JToolBarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetonodes&layout=default&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid') );   
+JToolbarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetonodes&layout=default&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid') );   
        
        
        }
@@ -211,11 +211,11 @@ JToolBarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetono
 protected function addToolBarDefault()
 	{
 	   $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_TITLE');
-	JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_TITLE'));
+	JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_TITLE'));
 
 //JLToolBarHelper::save();
-JToolBarHelper::custom('treetomatch.editlist','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_BUTTON_ASSIGN'),false);
-JToolBarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetonodes&layout=default&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid'));   
+JToolbarHelper::custom('treetomatch.editlist','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_BUTTON_ASSIGN'),false);
+JToolbarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetonodes&layout=default&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid'));   
        
        
        }

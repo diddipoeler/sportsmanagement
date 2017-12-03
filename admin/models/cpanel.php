@@ -57,7 +57,7 @@ jimport('joomla.application.component.modeladmin');
  * @version 2013
  * @access public
  */
-class sportsmanagementModelcpanel extends JModelLegacy
+class sportsmanagementModelcpanel extends JSMModelLegacy
 {
 
 var $_success_text = '';
@@ -72,14 +72,14 @@ var $_success_text = '';
  */
 public function getVersion() 
 	{
-	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
-       // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+	   //$app = JFactory::getApplication();
+//       $option = JRequest::getCmd('option');
+//       // Create a new query object.		
+//		$db = sportsmanagementHelper::getDBConnection();
+//		$query = $db->getQuery(true);
         
-	   $this->_db->setQuery('SELECT manifest_cache FROM #__extensions WHERE name = "com_sportsmanagement"');
-       $manifest_cache = json_decode( $this->_db->loadResult(), true );
+	   $this->jsmdb->setQuery('SELECT manifest_cache FROM #__extensions WHERE name = "com_sportsmanagement"');
+       $manifest_cache = json_decode( $this->jsmdb->loadResult(), true );
 	   //$app->enqueueMessage(JText::_('manifest_cache<br><pre>'.print_r($manifest_cache,true).'</pre>'   ),'');
        return $manifest_cache['version'];	
 	}
@@ -139,18 +139,19 @@ $paramsdata = JComponentHelper::getParams($option);
      */
     function getInstalledPlugin($plugin)
     {
-    $app = JFactory::getApplication();
-  $option = JRequest::getCmd('option'); 
-  $db = sportsmanagementHelper::getDBConnection();    
-        $query = $db->getQuery(true);
-    $query->select('a.extension_id');
-  $query->from('#__extensions AS a');
+    //$app = JFactory::getApplication();
+//  $option = JRequest::getCmd('option'); 
+//  $db = sportsmanagementHelper::getDBConnection();    
+//        $query = $db->getQuery(true);
+$this->jsmquery->clear();
+    $this->jsmquery->select('a.extension_id');
+  $this->jsmquery->from('#__extensions AS a');
   //$type = $db->Quote($type);
-	$query->where("a.type LIKE 'plugin' ");
-    $query->where("a.element LIKE '".$plugin."'");
+	$this->jsmquery->where("a.type LIKE 'plugin' ");
+    $this->jsmquery->where("a.element LIKE '".$plugin."'");
 	
-  $db->setQuery($query);
-  return $db->loadResult();    
+  $this->jsmdb->setQuery($this->jsmquery);
+  return $this->jsmdb->loadResult();    
     }
     
     /**
@@ -160,8 +161,8 @@ $paramsdata = JComponentHelper::getParams($option);
      */
     function checkUpdateVersion()
     {
-        $app = JFactory::getApplication(); 
-        $option = JRequest::getCmd('option');  
+        //$app = JFactory::getApplication(); 
+//        $option = JRequest::getCmd('option');  
         //$xml = JFactory::getXMLParser( 'Simple' );
         $return = 0;
         $version = sportsmanagementHelper::getVersion() ;
@@ -230,7 +231,8 @@ else
         
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-        $xml = JFactory::getXML(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');   
+        $xml = simplexml_load_file(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');
+//        $xml = JFactory::getXML(JPATH_SITE.DS.'tmp'.DS.'sportsmanagement.xml');   
         }
         else
         {
@@ -262,32 +264,33 @@ else
      */
     function checkcountry()
     {
-        $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        //$app = JFactory::getApplication();
+//        $option = JRequest::getCmd('option');
         $starttime = microtime(); 
         // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+//		$db = sportsmanagementHelper::getDBConnection();
+//		$query = $db->getQuery(true);
         
         //$cols = $this->_db->getTableColumns('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($cols,true).'</pre>'),'');
 //        $query='SELECT count(*) AS count
 //		FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_countries';
 		
+        $this->jsmquery->clear();
         // Select some fields
-		$query->select('count(*) AS count');
+		$this->jsmquery->select('count(*) AS count');
 		// From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_countries');
+		$this->jsmquery->from('#__sportsmanagement_countries');
         
-        $db->setQuery($query);
+        $this->jsmdb->setQuery($this->jsmquery);
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		return $db->loadResult();
+		return $this->jsmdb->loadResult();
     }
     
     /**

@@ -90,10 +90,10 @@ class sportsmanagementViewSportsTypes extends sportsmanagementView
 		        
         // Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_SPORTSTYPES_TITLE');
-		JToolBarHelper::addNew('sportstype.add');
-		JToolBarHelper::editList('sportstype.edit');
-		JToolBarHelper::custom('sportstype.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
-		JToolBarHelper::archiveList('sportstype.export', JText::_('JTOOLBAR_EXPORT'));
+		JToolbarHelper::addNew('sportstype.add');
+		JToolbarHelper::editList('sportstype.edit');
+		JToolbarHelper::custom('sportstype.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
+		JToolbarHelper::archiveList('sportstype.export', JText::_('JTOOLBAR_EXPORT'));
         				
         parent::addToolbar();
 	}

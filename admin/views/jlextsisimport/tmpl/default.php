@@ -59,12 +59,12 @@ $attribs['align'] = 'left';
 //$style = " .icon-48-fb {components/com_joomleague/extensions/jlextdfbnetplayerimport/admin/assets/images/dfbnet-logo-16.gif); no-repeat; }";
 //$doc->addStyleDeclaration( $style );
 
-//JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT' ), 'generic.png' );
+//JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT' ), 'generic.png' );
 
-//JToolBarHelper::title(   JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT' ), $url16 );
+//JToolbarHelper::title(   JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT' ), $url16 );
 
-//JToolBarHelper::save();
-//JToolBarHelper::apply();
+//JToolbarHelper::save();
+//JToolbarHelper::apply();
 
 
 /*

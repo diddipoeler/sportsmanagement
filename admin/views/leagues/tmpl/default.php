@@ -39,9 +39,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-//Ordering allowed ?
-//$ordering=($this->sortColumn == 'obj.ordering');
-
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
 $templatesToLoad = array('footer','listheader');
@@ -57,12 +54,18 @@ function searchPerson(val)
 	}
 </script>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-	
+
 
 <?PHP
-if(version_compare(JVERSION,'3.0.0','ge')) 
+if( version_compare(JSM_JVERSION,'4','eq') ) 
+{
+echo $this->loadTemplate('joomla4');
+$no_items = 'alert alert-warning alert-no-items';
+}
+elseif( version_compare(JSM_JVERSION,'3','eq') ) 
 {
 echo $this->loadTemplate('joomla3');
+$no_items = 'alert alert-no-items';
 }
 else
 {
@@ -75,7 +78,7 @@ echo $this->loadTemplate('data');
 }
 else
 {
-echo '<div class="alert alert-no-items">';
+echo '<div class="'.$no_items.'">';
 echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
 echo '</div>';    
 }

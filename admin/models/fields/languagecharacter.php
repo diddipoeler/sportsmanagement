@@ -71,7 +71,7 @@ class JFormFieldlanguagecharacter extends JFormFieldList
     protected function getOptions()
     {
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = $app->input->getCmd('option');
         $lang = JFactory::getLanguage();
         $options = array();
         $character = array();

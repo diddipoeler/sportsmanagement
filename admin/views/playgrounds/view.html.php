@@ -107,10 +107,10 @@ $starttime = microtime();
 		
         // Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PLAYGROUNDS_TITLE');
-		JToolBarHelper::editList('playground.edit');
-		JToolBarHelper::addNew('playground.add');
-		JToolBarHelper::custom('playground.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
-		JToolBarHelper::archiveList('playground.export', JText::_('JTOOLBAR_EXPORT'));
+		JToolbarHelper::editList('playground.edit');
+		JToolbarHelper::addNew('playground.add');
+		JToolbarHelper::custom('playground.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
+		JToolbarHelper::archiveList('playground.export', JText::_('JTOOLBAR_EXPORT'));
 		
 
         parent::addToolbar();

@@ -91,13 +91,13 @@ class sportsmanagementViewClubnames extends sportsmanagementView
         // Set toolbar items for the page
 		$this->title =  JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_CLUBNAMES_TITLE' );
         
-        JToolBarHelper::publish('clubnames.publish', 'JTOOLBAR_PUBLISH', true);
-		JToolBarHelper::unpublish('clubnames.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-        JToolBarHelper::checkin('clubnames.checkin');
-        JToolBarHelper::custom('clubnames.import', 'upload', 'upload', JText::_('JTOOLBAR_INSTALL'), false);
-		JToolBarHelper::divider();
-		JToolBarHelper::addNew('clubname.add');
-		JToolBarHelper::editList('clubname.edit');
+        JToolbarHelper::publish('clubnames.publish', 'JTOOLBAR_PUBLISH', true);
+		JToolbarHelper::unpublish('clubnames.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+        JToolbarHelper::checkin('clubnames.checkin');
+        JToolbarHelper::custom('clubnames.import', 'upload', 'upload', JText::_('JTOOLBAR_INSTALL'), false);
+		JToolbarHelper::divider();
+		JToolbarHelper::addNew('clubname.add');
+		JToolbarHelper::editList('clubname.edit');
 
         parent::addToolbar();
 	}

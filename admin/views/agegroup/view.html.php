@@ -51,8 +51,6 @@ defined('_JEXEC') or die('Restricted access');
  */
 class sportsmanagementViewagegroup extends sportsmanagementView
 {
-	
-	
     
 	/**
 	 * sportsmanagementViewagegroup::init()
@@ -68,11 +66,8 @@ class sportsmanagementViewagegroup extends sportsmanagementView
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-		
-		
-        
+
 	}
- 
 	
 	/**
 	 * sportsmanagementViewagegroup::addToolBar()
@@ -81,7 +76,6 @@ class sportsmanagementViewagegroup extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{ 
-		
         
 		JRequest::setVar('hidemainmenu', true);
 		$isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_AGEGROUPE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_AGEGROUPE_NEW');

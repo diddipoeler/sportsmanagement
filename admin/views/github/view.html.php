@@ -168,7 +168,7 @@ class sportsmanagementViewgithub extends sportsmanagementView
 	{
 	   // Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_TITLE');
-//	JToolBarHelper::custom('github.addissue', 'purge.png', 'purge_f2.png', JText::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE'), false);   
+//	JToolbarHelper::custom('github.addissue', 'purge.png', 'purge_f2.png', JText::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE'), false);   
     sportsmanagementHelper::ToolbarButton('addissue','new',JText::_('COM_SPORTSMANAGEMENT_ADMIN_GITHUB_ADD_ISSUE'),'github');
        
     }   

@@ -92,8 +92,8 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 		*/
         
 		// Set toolbar items for the page
-		//JToolBarHelper::title ( JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_TITLE_1_3' ), 'generic.png' );
-		//JToolBarHelper::help ( 'screen.joomleague', true );
+		//JToolbarHelper::title ( JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_TITLE_1_3' ), 'generic.png' );
+		//JToolbarHelper::help ( 'screen.joomleague', true );
 		$app = JFactory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
@@ -211,10 +211,10 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 //        $document->addCustomTag($stylelink);
 //        
 //        // Set toolbar items for the page
-//		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT' ),'sisimport' );
-//        JToolBarHelper::divider();
+//		JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_SIS_IMPORT' ),'sisimport' );
+//        JToolbarHelper::divider();
 //            sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//			JToolBarHelper::preferences($option);
+//			JToolbarHelper::preferences($option);
             
 parent::addToolbar();            
 

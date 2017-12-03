@@ -107,14 +107,14 @@ class sportsmanagementViewEventtypes extends sportsmanagementView
 		// Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_EVENTS_TITLE');
 
-		JToolBarHelper::publish('eventtypes.publish', 'JTOOLBAR_PUBLISH', true);
-		JToolBarHelper::unpublish('eventtypes.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-		JToolBarHelper::divider();
+		JToolbarHelper::publish('eventtypes.publish', 'JTOOLBAR_PUBLISH', true);
+		JToolbarHelper::unpublish('eventtypes.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+		JToolbarHelper::divider();
 		
-		JToolBarHelper::addNew('eventtype.add');
-		JToolBarHelper::editList('eventtype.edit');
-		JToolBarHelper::custom('eventtype.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-		JToolBarHelper::archiveList('eventtype.export',JText::_('JTOOLBAR_EXPORT'));
+		JToolbarHelper::addNew('eventtype.add');
+		JToolbarHelper::editList('eventtype.edit');
+		JToolbarHelper::custom('eventtype.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
+		JToolbarHelper::archiveList('eventtype.export',JText::_('JTOOLBAR_EXPORT'));
 				
         parent::addToolbar();
 	}

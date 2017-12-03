@@ -109,11 +109,11 @@ class sportsmanagementViewpredictiongroups extends sportsmanagementView
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONGROUPS_TITLE');
 		$this->icon = 'predgroups';
 
-		JToolBarHelper::addNew('predictiongroup.add');
-		JToolBarHelper::editList('predictiongroup.edit');
-		JToolBarHelper::custom('predictiongroup.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-		JToolBarHelper::archiveList('predictiongroup.export',JText::_('JTOOLBAR_EXPORT'));
-		JToolBarHelper::deleteList('','predictiongroups.delete', 'JTOOLBAR_DELETE');
+		JToolbarHelper::addNew('predictiongroup.add');
+		JToolbarHelper::editList('predictiongroup.edit');
+		JToolbarHelper::custom('predictiongroup.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
+		JToolbarHelper::archiveList('predictiongroup.export',JText::_('JTOOLBAR_EXPORT'));
+		JToolbarHelper::deleteList('','predictiongroups.delete', 'JTOOLBAR_DELETE');
 		JToolbarHelper::checkin('predictiongroups.checkin');
 	parent::addToolbar();
 	

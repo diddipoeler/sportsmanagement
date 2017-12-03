@@ -105,18 +105,18 @@ class sportsmanagementViewTreeto extends sportsmanagementView
 
 	protected function addToolBar_Gennode()
 	{
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_TITLE_GENERATE'));
-		JToolBarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetos&task=treeto.display');
-		//JToolBarHelper::help('screen.joomleague', true);
+		JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_TITLE_GENERATE'));
+		JToolbarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetos&task=treeto.display');
+		//JToolbarHelper::help('screen.joomleague', true);
 	}
 
 	protected function addToolBar()
 	{
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_TITLE'));
-		JToolBarHelper::save('treeto.save');
-		JToolBarHelper::apply('treeto.apply');
-		JToolBarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetos&task=treeto.display');
-		//JToolBarHelper::help('screen.joomleague', true);
+		JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETO_TITLE'));
+		JToolbarHelper::save('treeto.save');
+		JToolbarHelper::apply('treeto.apply');
+		JToolbarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetos&task=treeto.display');
+		//JToolbarHelper::help('screen.joomleague', true);
 	}
 
 	protected function setDocument()

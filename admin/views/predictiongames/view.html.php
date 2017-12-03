@@ -172,15 +172,15 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         // Set toolbar items for the page
 		$this->title = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PGAMES_TITLE' );
 		$this->icon = 'pred-cpanel';
-		JToolBarHelper::publish('predictiongames.publish', 'JTOOLBAR_PUBLISH', true);
-		JToolBarHelper::unpublish('predictiongames.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-		JToolBarHelper::divider();
+		JToolbarHelper::publish('predictiongames.publish', 'JTOOLBAR_PUBLISH', true);
+		JToolbarHelper::unpublish('predictiongames.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+		JToolbarHelper::divider();
       
-		JToolBarHelper::editList('predictiongame.edit');
-		JToolBarHelper::addNew('predictiongame.add');
-		JToolBarHelper::custom('predictiongame.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-		JToolBarHelper::archiveList('predictiongame.export',JText::_('JTOOLBAR_EXPORT'));
-		JToolBarHelper::deleteList('','predictiongames.delete', 'JTOOLBAR_DELETE');
+		JToolbarHelper::editList('predictiongame.edit');
+		JToolbarHelper::addNew('predictiongame.add');
+		JToolbarHelper::custom('predictiongame.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
+		JToolbarHelper::archiveList('predictiongame.export',JText::_('JTOOLBAR_EXPORT'));
+		JToolbarHelper::deleteList('','predictiongames.delete', 'JTOOLBAR_DELETE');
 		JToolbarHelper::checkin('predictiongroups.checkin');
 		parent::addToolbar();  
         

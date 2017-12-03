@@ -5,13 +5,13 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.tooltip');
 jimport('joomla.html.pane');
 
-//JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_TITLE'));
+//JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_TITLE'));
 //
 ////JLToolBarHelper::save();
-//JToolBarHelper::custom('treetomatch.editlist','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_BUTTON_ASSIGN'),false);
-//JToolBarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetonodes&task=treetonode.display&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid'));
+//JToolbarHelper::custom('treetomatch.editlist','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_TREETOMATCH_BUTTON_ASSIGN'),false);
+//JToolbarHelper::back('Back','index.php?option=com_sportsmanagement&view=treetonodes&task=treetonode.display&tid='.$this->jinput->get('tid').'&pid='.$this->jinput->get('pid'));
 
-//JToolBarHelper::help('screen.joomleague',true);
+//JToolbarHelper::help('screen.joomleague',true);
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 ?>

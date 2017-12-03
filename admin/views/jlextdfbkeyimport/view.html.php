@@ -264,11 +264,11 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
         $document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_1' ),'dfbkey' );
-        JToolBarHelper::save('jlextdfbkeyimport.save', 'JTOOLBAR_SAVE');
-        JToolBarHelper::divider();
+		JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_MATCHDAY_INFO_1' ),'dfbkey' );
+        JToolbarHelper::save('jlextdfbkeyimport.save', 'JTOOLBAR_SAVE');
+        JToolbarHelper::divider();
             sportsmanagementHelper::ToolbarButtonOnlineHelp();
-			JToolBarHelper::preferences($option);
+			JToolbarHelper::preferences($option);
         
 		
 
@@ -323,11 +323,11 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
         $document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_1' ),'dfbkey' );
-        JToolBarHelper::apply('jlextdfbkeyimport.apply', 'JTOOLBAR_APPLY');
-        JToolBarHelper::divider();
+		JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_1' ),'dfbkey' );
+        JToolbarHelper::apply('jlextdfbkeyimport.apply', 'JTOOLBAR_APPLY');
+        JToolbarHelper::divider();
             sportsmanagementHelper::ToolbarButtonOnlineHelp();
-			JToolBarHelper::preferences($option);
+			JToolbarHelper::preferences($option);
         
 		
 	}
@@ -362,11 +362,11 @@ class sportsmanagementViewjlextdfbkeyimport extends sportsmanagementView
         $document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_1' ),'dfbkey' );
-        JToolBarHelper::save('jlextdfbkeyimport.insert', 'JTOOLBAR_SAVE');
-        JToolBarHelper::divider();
+		JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_1' ),'dfbkey' );
+        JToolbarHelper::save('jlextdfbkeyimport.insert', 'JTOOLBAR_SAVE');
+        JToolbarHelper::divider();
             sportsmanagementHelper::ToolbarButtonOnlineHelp();
-			JToolBarHelper::preferences($option);
+			JToolbarHelper::preferences($option);
         	
   	
 	}

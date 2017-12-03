@@ -49,8 +49,8 @@ $attribs['align'] = 'left';
 $logo = JHtml::_('image', $url, $alt, $attribs);
 
 //// Set toolbar items for the page
-//JToolBarHelper::title( JText::_( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_1' ) ) );
-//JToolBarHelper::apply();
+//JToolbarHelper::title( JText::_( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_FIRST_MATCHDAY_INFO_1' ) ) );
+//JToolbarHelper::apply();
 
 /*
 echo '<pre>';

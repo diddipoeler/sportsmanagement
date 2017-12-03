@@ -89,9 +89,9 @@ class sportsmanagementViewsmextxmleditors extends sportsmanagementView
         $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EDITORS');
         $this->icon = 'xml-edits';
         
-//        //JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EDITORS'),'xml-edits');
+//        //JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EDITORS'),'xml-edits');
 //		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//        JToolBarHelper::preferences(JRequest::getCmd('option'));
+//        JToolbarHelper::preferences(JRequest::getCmd('option'));
         
         parent::addToolbar();
         

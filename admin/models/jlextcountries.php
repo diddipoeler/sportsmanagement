@@ -181,23 +181,24 @@ class sportsmanagementModeljlextcountries extends JSMModelList
      */
     function getFederation()
     {
-        $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+        //$app = JFactory::getApplication();
+//        $option = JRequest::getCmd('option');
+//        // Create a new query object.		
+//		$db = sportsmanagementHelper::getDBConnection();
+//		$query = $db->getQuery(true);
 		// Select some fields
-		$query->select('id as value,name as text');
+        $this->jsmquery->clear();
+		$this->jsmquery->select('id as value,name as text');
 		// From the table
-		$query->from('#__sportsmanagement_federations as objassoc');
-        $db->setQuery($query);
-		$results = $db->loadObjectList();
+		$this->jsmquery->from('#__sportsmanagement_federations as objassoc');
+        $this->jsmdb->setQuery($this->jsmquery);
+		$results = $this->jsmdb->loadObjectList();
         
         if (!$results)
 		{
 //		  $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-//          $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-          $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_FEDERATIONS_NULL'),'Error');
+//          $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Error');
+          $this->jsmapp->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_FEDERATIONS_NULL'),'Error');
 		}  
         
 		return $results;

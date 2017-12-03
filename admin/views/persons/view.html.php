@@ -90,9 +90,9 @@ $starttime = microtime();
 
 		$this->app->setUserState($this->option.'task','');
 
-
-
-		//build the html select list for positions
+/**
+ * build the html select list for positions
+ */
 		$positionsList[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_POSITION'));
 		$positions = JModelLegacy::getInstance('positions', 'sportsmanagementmodel')->getAllPositions();
 		if ($positions)
@@ -102,7 +102,9 @@ $starttime = microtime();
 		$lists['positions'] = $positions;
 		unset($positionsList);
 
-		//build the html options for nation
+/**
+ * build the html options for nation
+ */
 		$nation[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY'));
 		if ($res = JSMCountries::getCountryOptions())
         {
@@ -138,9 +140,6 @@ $starttime = microtime();
         unset($myoptions);
 		
 		$this->lists = $lists;
-		
-        
-        
 
 	}
 
@@ -187,29 +186,29 @@ $starttime = microtime();
 		$this->table	= $table;
 
 		//save icon should be replaced by the apply
-		JToolBarHelper::apply('person.saveassigned',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_SAVE_SELECTED'));		
+		JToolbarHelper::apply('person.saveassigned',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_SAVE_SELECTED'));		
 		
 		// Set toolbar items for the page
 		$type = $jinput->getInt('type');
 		if ($type == 0)
 		{
                     //back icon should be replaced by the abort/close icon
-                    JToolBarHelper::back(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'),'index.php?option=com_sportsmanagement&view=teamplayers');
-                    JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_PLAYERS'),'generic.png');
+                    JToolbarHelper::back(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'),'index.php?option=com_sportsmanagement&view=teamplayers');
+                    JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_PLAYERS'),'generic.png');
                     //$items = $model->getNotAssignedPlayers(JString::strtolower($search),$project_team_id);
 		}
 		elseif ($type == 1)
 		{
                     //back icon should be replaced by the abort/close icon
-                    JToolBarHelper::back(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'),'index.php?option=com_sportsmanagement&view=teamstaffs');
-                    JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_STAFF'),'generic.png');
+                    JToolbarHelper::back(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'),'index.php?option=com_sportsmanagement&view=teamstaffs');
+                    JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_STAFF'),'generic.png');
                     //$items = $model->getNotAssignedStaff(JString::strtolower($search),$project_team_id);
 		}
 		elseif ($type == 2)
 		{
                     //back icon should be replaced by the abort/close icon
-                    JToolBarHelper::back(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'),'index.php?option=com_sportsmanagement&view=projectreferees');
-                    JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_REFEREES'),'generic.png');
+                    JToolbarHelper::back(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_BACK'),'index.php?option=com_sportsmanagement&view=projectreferees');
+                    JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_ASSIGN_REFEREES'),'generic.png');
                     //$items = $model->getNotAssignedReferees(JString::strtolower($search),$this->project_id);
 		}
         
@@ -244,17 +243,7 @@ $starttime = microtime();
 																'text', 
 																$this->state->get('filter.search_agegroup'));
         unset($myoptions);
-
-		//JToolBarHelper::onlinehelp();		
 		
-		//$limit = $app->getUserStateFromRequest('global.list.limit','limit',$app->getCfg('list_limit'),'int');
-
-		//jimport('joomla.html.pagination');
-		//$pagination = new JPagination($mdlQuickAdd->_total,JRequest::getVar('limitstart',0,'','int'),$limit);
-		//$mdlQuickAdd->_pagination=$pagination;
-
-
-
 		$this->prjid	= $this->project_id;
 		$this->prj_name	= $project_name;
 		//$this->team_id	= $team_id;
@@ -269,7 +258,7 @@ $starttime = microtime();
         
         $this->setLayout('assignplayers');
 
-		//parent::display($tpl);
+
 	}
 
 	/**
@@ -309,42 +298,17 @@ $starttime = microtime();
 	*/
 	protected function addToolbar()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-  		//// Get a refrence of the page instance in joomla
-//		$document	= JFactory::getDocument();
-//        $option = JRequest::getCmd('option');
-//        // Set toolbar items for the page
-//        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
-//        $document->addCustomTag($stylelink);
-//        
-//		//$user		= JFactory::getUser();
-//        // Set toolbar items for the page
-
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PERSONS_TITLE');
 
-// 		JToolBarHelper::publishList('person.publish');
-// 		JToolBarHelper::unpublishList('person.unpublish');
-		JToolBarHelper::publish('persons.publish', 'JTOOLBAR_PUBLISH', true);
-		JToolBarHelper::unpublish('persons.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-//        JToolBarHelper::checkin('persons.checkin');
-		JToolBarHelper::divider();
+		JToolbarHelper::publish('persons.publish', 'JTOOLBAR_PUBLISH', true);
+		JToolbarHelper::unpublish('persons.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+		JToolbarHelper::divider();
 		
-		JToolBarHelper::apply('persons.saveshort');
-		JToolBarHelper::editList('person.edit');
-		JToolBarHelper::addNew('person.add');
-		JToolBarHelper::custom('person.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
-		JToolBarHelper::archiveList('person.export', JText::_('JTOOLBAR_EXPORT'));
-//        JToolbarHelper::checkin('persons.checkin');
-//		if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE )
-//            {
-//		    JToolbarHelper::trash('persons.trash');
-//            }
-//            else
-//            {
-//            JToolBarHelper::deleteList('', 'persons.delete', 'JTOOLBAR_DELETE');    
-//            }
+		JToolbarHelper::apply('persons.saveshort');
+		JToolbarHelper::editList('person.edit');
+		JToolbarHelper::addNew('person.add');
+		JToolbarHelper::custom('person.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
+		JToolbarHelper::archiveList('person.export', JText::_('JTOOLBAR_EXPORT'));
 		
         parent::addToolbar();
 	}

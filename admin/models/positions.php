@@ -363,29 +363,21 @@ class sportsmanagementModelPositions extends JSMModelList
 	 */
 	function getAllPositions()
 	{
-	   $option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
-        $query = JFactory::getDbo()->getQuery(true);
+	   
+        $this->jsmquery->clear();
         
         // Select some fields
-        $query->select('pos.id AS value, pos.name AS posName,s.name AS sName');
+        $this->jsmquery->select('pos.id AS value, pos.name AS posName,s.name AS sName');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos');
-        $query->join('INNER', '#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS s ON s.id = pos.sports_type_id');
-        $query->where('pos.published = 1');  
-        $query->order('pos.ordering,pos.name');  
-        
-		//$query='	SELECT	pos.id AS value,
-//							pos.name AS posName,
-//							s.name AS sName
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position pos
-//					INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type AS s ON s.id=pos.sports_type_id
-//					WHERE pos.published=1
-//					ORDER BY pos.ordering,pos.name';
-		JFactory::getDbo()->setQuery($query);
-		if (!$result=JFactory::getDbo()->loadObjectList())
+		$this->jsmquery->from('#__sportsmanagement_position AS pos');
+        $this->jsmquery->join('INNER', '#__sportsmanagement_sports_type AS s ON s.id = pos.sports_type_id');
+        $this->jsmquery->where('pos.published = 1');  
+        $this->jsmquery->order('pos.ordering,pos.name');  
+	
+		$this->jsmdb->setQuery($this->jsmquery);
+		if ( !$result = $this->jsmdb->loadObjectList() )
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
+			//sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			return array();
 		}
 		else
@@ -397,40 +389,7 @@ class sportsmanagementModelPositions extends JSMModelList
 			return $result;
 		}
 	}
-    
 
-///**
-//	 * Method to return a positions array of referees (id,position)
-//	 *
-//	 * @access	public
-//	 * @return	array
-//	 *
-//	 */
-//
-//	function getRefereePositions($project_id)
-//	{
-//		$option = JRequest::getCmd('option');
-//		$app = JFactory::getApplication();
-//		//$project_id=$app->getUserState($option.'project');
-//		$query='SELECT	ppos.id AS value,
-//				pos.name AS text
-//				FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos
-//				INNER JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_position AS ppos ON pos.id=ppos.position_id
-//				WHERE ppos.project_id='. JFactory::getDbo()->Quote($project_id).' AND pos.persontype=3';
-//		JFactory::getDbo()->setQuery($query);
-//		if (!$result=JFactory::getDbo()->loadObjectList())
-//		{
-//			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
-//			return false;
-//		}
-//		else
-//		{
-//			foreach ($result as $position) {
-//				$position->text=JText::_($position->text);
-//			}
-//			return $result;
-//		}
-//	}
     
     /**
      * sportsmanagementModelPositions::getPositionListSelect()

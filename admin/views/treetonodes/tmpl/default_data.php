@@ -10,7 +10,7 @@ JHtml::_('behavior.tooltip');
 //$this->addTemplatePath(JPATH_COMPONENT.DS.'views'.DS.'joomleague');
 
 // Set toolbar items for the page
-//JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_TREETONODES_TITLE'));
+//JToolbarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_TREETONODES_TITLE'));
 	//if($isleafed==1)
 //	{
 //	JLToolBarHelper::apply('treetonode.saveshort', JText::_( 'COM_JOOMLEAGUE_ADMIN_TREETONODES_SAVE_APPLY' ), false);
@@ -25,7 +25,7 @@ JHtml::_('behavior.tooltip');
 //	}
 //	JLToolBarHelper::custom( 'treetonode.removenode', 'delete.png', 'delete_f2.png', JText::_( 'COM_JOOMLEAGUE_ADMIN_TREETONODES_DELETE' ), false );
 //	}
-//JToolBarHelper::help('screen.joomleague',true);
+//JToolbarHelper::help('screen.joomleague',true);
 ?>
 
 

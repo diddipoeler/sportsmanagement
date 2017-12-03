@@ -85,7 +85,7 @@ class sportsmanagementViewpredictions extends sportsmanagementView
 //        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
 //		$canDo = sportsmanagementHelper::getActions();
-//		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_MANAGER'), 'pred-cpanel');
+//		JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_MANAGER'), 'pred-cpanel');
 		
 		
         parent::addToolbar();

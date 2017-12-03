@@ -137,11 +137,11 @@ class sportsmanagementViewagegroups extends sportsmanagementView
 	{
         // Set toolbar items for the page
         $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_TITLE');
-		JToolBarHelper::addNew('agegroup.add');
-		JToolBarHelper::editList('agegroup.edit');
-        JToolBarHelper::apply('agegroups.saveshort');
-		JToolBarHelper::custom('agegroups.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-		JToolBarHelper::archiveList('agegroup.export',JText::_('JTOOLBAR_EXPORT'));
+		JToolbarHelper::addNew('agegroup.add');
+		JToolbarHelper::editList('agegroup.edit');
+        JToolbarHelper::apply('agegroups.saveshort');
+		JToolbarHelper::custom('agegroups.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
+		JToolbarHelper::archiveList('agegroup.export',JText::_('JTOOLBAR_EXPORT'));
 		
         parent::addToolbar();
 	}

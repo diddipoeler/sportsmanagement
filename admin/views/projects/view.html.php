@@ -266,17 +266,17 @@ unset($myoptions);
         $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_TITLE');
         $this->icon = 'projects';
 
-		JToolBarHelper::publishList('projects.publish');
-		JToolBarHelper::unpublishList('projects.unpublish');
-		JToolBarHelper::divider();
+		JToolbarHelper::publishList('projects.publish');
+		JToolbarHelper::unpublishList('projects.unpublish');
+		JToolbarHelper::divider();
 		
-        JToolBarHelper::apply('projects.saveshort');
+        JToolbarHelper::apply('projects.saveshort');
         
-		JToolBarHelper::addNew('project.add');
-		JToolBarHelper::editList('project.edit');
-		JToolBarHelper::custom('project.import','upload','upload',Jtext::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'),false);
-		JToolBarHelper::archiveList('project.export',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
-		JToolBarHelper::custom('project.copy','copy.png','copy_f2.png',JText::_('JTOOLBAR_DUPLICATE'),false);
+		JToolbarHelper::addNew('project.add');
+		JToolbarHelper::editList('project.edit');
+		JToolbarHelper::custom('project.import','upload','upload',Jtext::_('COM_SPORTSMANAGEMENT_GLOBAL_CSV_IMPORT'),false);
+		JToolbarHelper::archiveList('project.export',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_XML_EXPORT'));
+		JToolbarHelper::custom('project.copy','copy.png','copy_f2.png',JText::_('JTOOLBAR_DUPLICATE'),false);
 
         parent::addToolbar();
 	}

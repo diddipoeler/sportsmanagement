@@ -114,15 +114,15 @@ $starttime = microtime();
 		// Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_POSITIONS_TITLE');
 
-		JToolBarHelper::publish('positions.publish', 'JTOOLBAR_PUBLISH', true);
-		JToolBarHelper::unpublish('positions.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-		JToolBarHelper::divider();
+		JToolbarHelper::publish('positions.publish', 'JTOOLBAR_PUBLISH', true);
+		JToolbarHelper::unpublish('positions.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+		JToolbarHelper::divider();
 
-		JToolBarHelper::apply('positions.saveshort');
-		JToolBarHelper::editList('position.edit');
-		JToolBarHelper::addNew('position.add');
-		JToolBarHelper::custom('position.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
-		JToolBarHelper::archiveList('position.export', JText::_('JTOOLBAR_EXPORT'));
+		JToolbarHelper::apply('positions.saveshort');
+		JToolbarHelper::editList('position.edit');
+		JToolbarHelper::addNew('position.add');
+		JToolbarHelper::custom('position.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
+		JToolbarHelper::archiveList('position.export', JText::_('JTOOLBAR_EXPORT'));
         		
         parent::addToolbar();
 	}

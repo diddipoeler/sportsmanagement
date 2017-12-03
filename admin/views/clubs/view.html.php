@@ -137,13 +137,13 @@ class sportsmanagementViewClubs extends sportsmanagementView
 		$option = $jinput->getCmd('option');
         // Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_TITLE');
-        JToolBarHelper::apply('clubs.saveshort');
+        JToolbarHelper::apply('clubs.saveshort');
         
-        JToolBarHelper::divider();
-		JToolBarHelper::addNew('club.add');
-		JToolBarHelper::editList('club.edit');
-		JToolBarHelper::custom('club.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
-		JToolBarHelper::archiveList('club.export',JText::_('JTOOLBAR_EXPORT'));
+        JToolbarHelper::divider();
+		JToolbarHelper::addNew('club.add');
+		JToolbarHelper::editList('club.edit');
+		JToolbarHelper::custom('club.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
+		JToolbarHelper::archiveList('club.export',JText::_('JTOOLBAR_EXPORT'));
         parent::addToolbar();
 		
 	}

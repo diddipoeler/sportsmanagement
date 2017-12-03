@@ -262,8 +262,8 @@ class sportsmanagementViewprojectpositions extends sportsmanagementView
 	protected function addToolbar_Editlist()
 	{ 
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_P_POSITION_EDIT_TITLE');
-		JToolBarHelper::save('projectposition.save_positionslist');
-		JToolBarHelper::cancel('projectposition.cancel',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CLOSE'));
+		JToolbarHelper::save('projectposition.save_positionslist');
+		JToolbarHelper::cancel('projectposition.cancel',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_CLOSE'));
 		parent::addToolbar();
 	}
     

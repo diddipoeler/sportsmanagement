@@ -176,6 +176,7 @@ class sportsmanagementModelagegroups extends JSMModelList
      */
     function getAgeGroups($country = '', $infotext = 0)
     {
+        $this->jsmquery->clear();
         $this->jsmquery->select('a.id AS value');
 	
     if ( $infotext )
@@ -196,9 +197,9 @@ class sportsmanagementModelagegroups extends JSMModelList
         $this->jsmquery->order('a.name ASC');
 
         $this->jsmdb->setQuery($this->jsmquery);
-        if (!$result = $this->jsmdb->loadObjectList())
+        if ( !$result = $this->jsmdb->loadObjectList() )
         {
-            sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__);
+            //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__);
             return array();
         }
 

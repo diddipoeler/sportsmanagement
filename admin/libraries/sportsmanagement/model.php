@@ -309,7 +309,9 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
             
         }
         
-       // hat der user die bildfelder geleert, werden die standards gesichert.
+/**
+ * hat der user die bildfelder geleert, werden die standards gesichert.
+ */
        if ( empty($data['picture']) )
        {
        $data['picture'] = JComponentHelper::getParams($this->jsmoption)->get('ph_player','');
@@ -415,6 +417,7 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.
         if ( $data['dissolved'] != '0000-00-00' && $data['dissolved'] != '' )  
         {
         $data['dissolved_year'] = date('Y',strtotime($data['dissolved']));
+        $data['dissolved_timestamp'] = sportsmanagementHelper::getTimestamp($data['dissolved']);
         }
         else
         {

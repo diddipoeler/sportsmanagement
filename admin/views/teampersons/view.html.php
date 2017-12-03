@@ -248,20 +248,20 @@ class sportsmanagementViewteampersons extends sportsmanagementView
 		$this->title = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TSTAFFS_TITLE' );
         }
 
-		//JToolBarHelper::publishList('teampersons.publish');
-		//JToolBarHelper::unpublishList('teampersons.unpublish');
-		JToolBarHelper::apply('teampersons.saveshort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_APPLY' ) );
-		JToolBarHelper::divider();
+		//JToolbarHelper::publishList('teampersons.publish');
+		//JToolbarHelper::unpublishList('teampersons.unpublish');
+		JToolbarHelper::apply('teampersons.saveshort', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_APPLY' ) );
+		JToolbarHelper::divider();
 
-		//JToolBarHelper::custom( 'teamplayer.assign', 'upload.png', 'upload_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN' ), false );
+		//JToolbarHelper::custom( 'teamplayer.assign', 'upload.png', 'upload_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN' ), false );
         sportsmanagementHelper::ToolbarButton('assignplayers', 'upload', JText::_('COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_ASSIGN'), 'persons', 0);
-		//JToolBarHelper::custom( 'teamplayer.remove', 'cancel.png', 'cancel_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_UNASSIGN' ), false );
-        //JToolBarHelper::deleteList('', 'teampersons.delete');
-        //JToolBarHelper::deleteList('', 'teampersons.remove');
-        //JToolBarHelper::deleteList('', 'teamperson.delete');
-		JToolBarHelper::divider();
+		//JToolbarHelper::custom( 'teamplayer.remove', 'cancel.png', 'cancel_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_UNASSIGN' ), false );
+        //JToolbarHelper::deleteList('', 'teampersons.delete');
+        //JToolbarHelper::deleteList('', 'teampersons.remove');
+        //JToolbarHelper::deleteList('', 'teamperson.delete');
+		JToolbarHelper::divider();
 
-		JToolBarHelper::back( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_BACK', 'index.php?option=com_sportsmanagement&view=projectteams' );
+		JToolbarHelper::back( 'COM_SPORTSMANAGEMENT_ADMIN_TPLAYERS_BACK', 'index.php?option=com_sportsmanagement&view=projectteams' );
         
 		parent::addToolbar();  
 	}

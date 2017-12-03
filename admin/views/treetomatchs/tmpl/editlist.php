@@ -7,15 +7,15 @@ JHtml::_( 'behavior.tooltip' );
 // Set toolbar items for the page
 //$edit = JRequest::getVar('edit',true);
 
-//JToolBarHelper::title( JText::_( 'COM_JOOMLEAGUE_ADMIN_TREETOMATCH_ASSIGN' ) );
+//JToolbarHelper::title( JText::_( 'COM_JOOMLEAGUE_ADMIN_TREETOMATCH_ASSIGN' ) );
 //
 //JLToolBarHelper::save( 'treetomatch.save_matcheslist' );
 //
 //// for existing items the button is renamed `close` and the apply button is showed
 ////JLToolBarHelper::cancel( 'cancel', 'COM_JOOMLEAGUE_GLOBAL_CLOSE' );
-//JToolBarHelper::back('Back','index.php?option=com_joomleague&view=treetonodes&task=treetonode.display');
+//JToolbarHelper::back('Back','index.php?option=com_joomleague&view=treetonodes&task=treetonode.display');
 
-//JToolBarHelper::help( 'screen.joomleague', true );
+//JToolbarHelper::help( 'screen.joomleague', true );
 //$uri = JFactory::getURI();
 
 $templatesToLoad = array('footer','listheader');

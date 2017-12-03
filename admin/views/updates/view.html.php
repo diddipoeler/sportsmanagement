@@ -130,7 +130,7 @@ class sportsmanagementViewUpdates extends sportsmanagementView
         $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_UPDATES_TITLE');
         $this->icon = 'updates';
 //		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//        JToolBarHelper::preferences(JRequest::getCmd('option'));
+//        JToolbarHelper::preferences(JRequest::getCmd('option'));
         
         parent::addToolbar();
 

@@ -196,7 +196,7 @@ class sportsmanagementModeljlextassociations extends JSMModelList
         $this->jsmdb->setQuery($this->jsmquery);
         if (!$result = $this->jsmdb->loadObjectList())
         {
-            sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__);
+            //sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->jsmdb->getErrorMsg(), __LINE__);
             return array();
         }
         foreach ($result as $association)

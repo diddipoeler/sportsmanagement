@@ -127,11 +127,11 @@ class sportsmanagementViewprojectreferees extends sportsmanagementView
     
         $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_TITLE');
 		
-		JToolBarHelper::apply('projectreferees.saveshort', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_APPLY'));
-		//JToolBarHelper::custom('projectreferee.assign','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_ASSIGN'),false);
+		JToolbarHelper::apply('projectreferees.saveshort', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_APPLY'));
+		//JToolbarHelper::custom('projectreferee.assign','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_ASSIGN'),false);
         sportsmanagementHelper::ToolbarButton('assignplayers', 'upload', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_ASSIGN'),'persons',3);
-		//JToolBarHelper::custom('projectreferees.remove','cancel.png','cancel_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_UNASSIGN'),false);
-        JToolBarHelper::deleteList('', 'projectreferees.delete');
+		//JToolbarHelper::custom('projectreferees.remove','cancel.png','cancel_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PREF_UNASSIGN'),false);
+        JToolbarHelper::deleteList('', 'projectreferees.delete');
         JToolbarHelper::checkin('projectreferees.checkin');
 		parent::addToolbar();  
         

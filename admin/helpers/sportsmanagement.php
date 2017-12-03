@@ -518,7 +518,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' IPaddress<br><pre>'.prin
      * @param mixed $version
      * @return
      */
-    public static function isJoomlaVersion ($version = '2.5')
+    public static function isJoomlaVersion($version = '2.5')
 	{
 		$app = JFactory::getApplication();
 		$jinput = $app->input;
@@ -1855,7 +1855,8 @@ else
 	 */
 	public static function addTemplatePaths($templatesToLoad, &$view)
 	{
-		$extensions = sportsmanagementHelper::getExtensions(JRequest::getInt('p'));
+		$jinput = JFactory::getApplication()->input;
+        $extensions = sportsmanagementHelper::getExtensions($jinput->getInt('p'));
 		foreach ($templatesToLoad as $template)
 		{
 			$view->addTemplatePath(JPATH_COMPONENT . DS . 'views' . DS . $template . DS . 'tmpl');
@@ -2319,7 +2320,7 @@ else
 	{
 		$jinput = JFactory::getApplication()->input;
 		$favshow = $jinput->getString('func', '');
-		//$favshow = JRequest::getVar('func', '');
+
 		if (($favshow != 'showCurve') && (sportsmanagementModelProject::$_project->fav_team))
 		{
 			$fav = array('color'=>sportsmanagementModelProject::$_project->fav_team_color,'description'=> JText::_('COM_SPORTSMANAGEMENT_RANKING_FAVTEAM'));
@@ -2627,8 +2628,8 @@ $colors = sportsmanagementModelProject::getColors($configvalues,sportsmanagement
 	 */
 	public static function printbutton($print_link, &$config)
 	{
-		
-$app = JFactory::getApplication();        
+		$jinput = JFactory::getApplication()->input;
+        $app = JFactory::getApplication();        
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' config<br><pre>'.print_r($config,true).'</pre>'),'Notice');
 
         if ($config['show_print_button'] == 1) {
@@ -2640,7 +2641,7 @@ $app = JFactory::getApplication();
 			} else {
 				$image = JText::_( 'Print' );
 			}
-			if (JRequest::getInt('pop')) {
+			if ($jinput->getInt('pop')) {
 				//button in popup
 				$output = '<a href="javascript: void(0)" onclick="window.print();return false;">'.$image.'</a>';
 			} else {
@@ -2718,12 +2719,12 @@ if ( $project_id )
     
     if ( !$view )
     {
-    $view = JRequest::getVar( "view") ;
+    $view = $jinput->get('view') ;
     }
     
     $modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width',0) ;
     $modal_popup_height = JComponentHelper::getParams($option)->get('modal_popup_height',0) ;
-    $bar = JToolBar::getInstance('toolbar');
+    $bar = JToolbar::getInstance('toolbar');
     $page_url = JFilterOutput::ampReplace('index.php?option=com_sportsmanagement&view='.$view.'&tmpl=component&layout='.$layout.'&type='.$type.'&issueview='.$issueview.'&issuelayout='.$issuelayout.$zusatz );
     
     $bar->appendButton('Popup', $icon_image, $alt_text, $page_url, $modal_popup_width, $modal_popup_height);
@@ -2993,7 +2994,7 @@ public static function getExtraSelectOptions($view = '', $field = '', $template 
         
         $query->select('ef.id');
 		$query->from('#__sportsmanagement_user_extra_fields as ef ');
-        $query->where('ef.template_'.$template.' LIKE ' . $db->Quote(''.JRequest::getVar('view').'') );
+        $query->where('ef.template_'.$template.' LIKE ' . $db->Quote(''.$jinput->get('view').'') );
     
 			$db->setQuery($query);
 			if ($db->loadResult())
@@ -3018,6 +3019,7 @@ public static function getExtraSelectOptions($view = '', $field = '', $template 
     static function getUserExtraFields($jlid, $template = 'backend', $cfg_which_database = 0)
     {
         $app = JFactory::getApplication();
+        $jinput = $app->input;
     	$db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         
@@ -3027,7 +3029,7 @@ public static function getExtraSelectOptions($view = '', $field = '', $template 
         $query->select('ef.*,ev.fieldvalue as fvalue,ev.id as value_id ');
 		$query->from('#__sportsmanagement_user_extra_fields as ef ');
         $query->join('LEFT', '#__sportsmanagement_user_extra_fields_values as ev ON ( ef.id = ev.field_id AND ev.jl_id = '.$jlid .')' );
-        $query->where('ef.template_'.$template.' LIKE ' . $db->Quote(''.JRequest::getVar('view').'') );
+        $query->where('ef.template_'.$template.' LIKE ' . $db->Quote(''.$jinput->get('view').'') );
         //$query->where('ev.jl_id = '.$jlid );
         $query->order('ef.ordering');
         

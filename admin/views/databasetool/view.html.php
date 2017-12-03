@@ -194,11 +194,11 @@ $document->addScriptDeclaration( $javascript );
         $document->addCustomTag($stylelink);
         
 		// Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TITLE' ), 'database' );
-		JToolBarHelper::back();
-		JToolBarHelper::divider();
+		JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBTOOLS_TITLE' ), 'database' );
+		JToolbarHelper::back();
+		JToolbarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolBarHelper::preferences(JRequest::getCmd('option'));
+        JToolbarHelper::preferences(JRequest::getCmd('option'));
 	}	
 	
 }

@@ -42,10 +42,10 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 JHtml::_( 'behavior.tooltip' );
 
 // Set toolbar items for the page
-//JToolBarHelper::title( JText::_( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_1' ) ) );
-//JToolBarHelper::save();
-//JToolBarHelper::addNewX();
-//JToolBarHelper::apply( 'insert' );
+//JToolbarHelper::title( JText::_( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_SAVE_MATCHDAY_INFO_1' ) ) );
+//JToolbarHelper::save();
+//JToolbarHelper::addNewX();
+//JToolbarHelper::apply( 'insert' );
 
 /*
 echo '<pre>';

@@ -80,10 +80,10 @@ class sportsmanagementViewextrafields extends sportsmanagementView
 	{
         // Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_EXTRAFIELDS_TITLE');
-		JToolBarHelper::addNew('extrafield.add');
-		JToolBarHelper::editList('extrafield.edit');
-		JToolBarHelper::custom('extrafield.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-		JToolBarHelper::archiveList('extrafield.export',JText::_('JTOOLBAR_EXPORT'));
+		JToolbarHelper::addNew('extrafield.add');
+		JToolbarHelper::editList('extrafield.edit');
+		JToolbarHelper::custom('extrafield.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
+		JToolbarHelper::archiveList('extrafield.export',JText::_('JTOOLBAR_EXPORT'));
 	
         parent::addToolbar();
 	}

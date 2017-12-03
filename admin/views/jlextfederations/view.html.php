@@ -103,10 +103,10 @@ $starttime = microtime();
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_FEDERATIONS_TITLE');
         $this->icon = 'federations';
 
-		JToolBarHelper::addNew('jlextfederation.add');
-		JToolBarHelper::editList('jlextfederation.edit');
-		JToolBarHelper::custom('jlextfederation.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-		JToolBarHelper::archiveList('jlextfederation.export',JText::_('JTOOLBAR_EXPORT'));
+		JToolbarHelper::addNew('jlextfederation.add');
+		JToolbarHelper::editList('jlextfederation.edit');
+		JToolbarHelper::custom('jlextfederation.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
+		JToolbarHelper::archiveList('jlextfederation.export',JText::_('JTOOLBAR_EXPORT'));
         
         parent::addToolbar();
 	}

@@ -108,7 +108,7 @@ class sportsmanagementViewjlextlmoimports extends sportsmanagementView
 //        // Set toolbar items for the page
 //        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
-        JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=extensions');
+        JToolbarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=extensions');
         parent::addToolbar();
 
 	}

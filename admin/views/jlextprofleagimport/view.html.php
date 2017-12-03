@@ -108,11 +108,11 @@ class sportsmanagementViewjlextprofleagimport extends sportsmanagementView
         $document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROF_LEAGUE_IMPORT_TITLE_1'),'profleage-cpanel');
-        JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=extensions');
-        JToolBarHelper::divider();
+		JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROF_LEAGUE_IMPORT_TITLE_1'),'profleage-cpanel');
+        JToolbarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=extensions');
+        JToolbarHelper::divider();
 //            sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//			JToolBarHelper::preferences($option);
+//			JToolbarHelper::preferences($option);
             parent::addToolbar();
 
 	}

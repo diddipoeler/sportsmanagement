@@ -76,7 +76,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         $databasetool = JModelLegacy::getInstance("databasetool", "sportsmanagementModel");
         DEFINE( 'COM_SPORTSMANAGEMENT_MODEL_ERRORLOG',$databasetool );
         
-        sportsmanagementHelper::isJoomlaVersion('2.5');
+        //sportsmanagementHelper::isJoomlaVersion('2.5');
         //$app->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
         
         // für den import die jl tabellen lesen
@@ -300,7 +300,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 		$document	= JFactory::getDocument();
         $jinput = $app->input;
 		$option = $jinput->getCmd('option');
-        $task = JRequest::getCmd('task');
+        $task = $jinput->getCmd('task');
 
 //        // Set toolbar items for the page
 //        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
@@ -323,7 +323,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         }
         
 		$canDo = sportsmanagementHelper::getActions();
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_MANAGER'), 'helloworld');
+		JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_MANAGER'), 'helloworld');
 		
 		if ($canDo->get('core.admin')) 
 		{
@@ -331,14 +331,14 @@ class sportsmanagementViewcpanel extends sportsmanagementView
             {
             $app->setUserState( "$option.install", 'jqueryeasy');    
             sportsmanagementHelper::ToolbarButton('default','upload',JText::_('COM_SPORTSMANAGEMENT_INSTALL_JQUERY'),'githubinstall',1);
-            //JToolBarHelper::custom('cpanel.jqueryinstall','upload','upload',JText::_('COM_SPORTSMANAGEMENT_INSTALL_JQUERY'),false);
+            //JToolbarHelper::custom('cpanel.jqueryinstall','upload','upload',JText::_('COM_SPORTSMANAGEMENT_INSTALL_JQUERY'),false);
             }
             
             if ( $this->googlemap )
             {
             $app->setUserState( "$option.install", 'plugin_googlemap3');    
             sportsmanagementHelper::ToolbarButton('default','upload',JText::_('COM_SPORTSMANAGEMENT_INSTALL_GOOGLEMAP'),'githubinstall',1);
-            //JToolBarHelper::custom('cpanel.jqueryinstall','upload','upload',JText::_('COM_SPORTSMANAGEMENT_INSTALL_JQUERY'),false);
+            //JToolbarHelper::custom('cpanel.jqueryinstall','upload','upload',JText::_('COM_SPORTSMANAGEMENT_INSTALL_JQUERY'),false);
             }
 
 $bar = JToolBar::getInstance('toolbar');

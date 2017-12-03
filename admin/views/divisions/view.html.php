@@ -87,13 +87,13 @@ class sportsmanagementViewDivisions extends sportsmanagementView
         // Set toolbar items for the page
 		$this->title =  JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DIVS_TITLE' );
         
-        JToolBarHelper::publish('divisions.publish', 'JTOOLBAR_PUBLISH', true);
-		JToolBarHelper::unpublish('divisions.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-        JToolBarHelper::checkin('divisions.checkin');
-        JToolBarHelper::apply('divisions.saveshort');
-		JToolBarHelper::divider();
-		JToolBarHelper::addNew('division.add');
-		JToolBarHelper::editList('division.edit');
+        JToolbarHelper::publish('divisions.publish', 'JTOOLBAR_PUBLISH', true);
+		JToolbarHelper::unpublish('divisions.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+        JToolbarHelper::checkin('divisions.checkin');
+        JToolbarHelper::apply('divisions.saveshort');
+		JToolbarHelper::divider();
+		JToolbarHelper::addNew('division.add');
+		JToolbarHelper::editList('division.edit');
 
         parent::addToolbar();
 	}

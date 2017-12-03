@@ -88,7 +88,7 @@ class sportsmanagementViewsmquotestxt extends sportsmanagementView
 //        // Set toolbar items for the page
         $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_TXT_EDITORS');
 //		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//        JToolBarHelper::preferences(JRequest::getCmd('option'));
+//        JToolbarHelper::preferences(JRequest::getCmd('option'));
         
         parent::addToolbar();
     }    

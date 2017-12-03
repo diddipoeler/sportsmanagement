@@ -143,7 +143,7 @@ class sportsmanagementControllerJLXMLImport extends JControllerLegacy
 		// Check for request forgeries
 		JRequest::checkToken() or die('JINVALID_TOKEN');
 		$msg='';
-		JToolBarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
+		JToolbarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
 		$app = JFactory::getApplication();
 		$post=JRequest::get('post');
         
@@ -283,7 +283,7 @@ $app->enqueueMessage(JText::_('daten -> '.$europalink.' sind kopiert worden!'),'
 	 */
 	function insert()
 	{
-		JToolBarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement'));
+		JToolbarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement'));
 		$post=JRequest::get('post');
 
 		$link='index.php?option=com_sportsmanagement&task=jlxmlimport.insert';

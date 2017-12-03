@@ -224,18 +224,18 @@ class sportsmanagementViewPredictionMembers extends sportsmanagementView
 
 		$this->title = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_TITLE' );
         
-		JToolBarHelper::custom('predictionmembers.reminder', 'send.png', 'send_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_SEND_REMINDER' ), true );
-		JToolBarHelper::divider();
+		JToolbarHelper::custom('predictionmembers.reminder', 'send.png', 'send_f2.png', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_SEND_REMINDER' ), true );
+		JToolbarHelper::divider();
         
 		if ( $this->prediction_id )
 			{
-          //JToolBarHelper::custom('predictionmembers.editlist','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_BUTTON_ASSIGN'),false);
+          //JToolbarHelper::custom('predictionmembers.editlist','upload.png','upload_f2.png',JText::_('COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_BUTTON_ASSIGN'),false);
           
 				sportsmanagementHelper::ToolbarButton('editlist', 'new', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_BUTTON_ASSIGN') );
           
-				JToolBarHelper::publishList('predictionmembers.publish', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVE' ) );
-				JToolBarHelper::unpublishList('predictionmembers.unpublish', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_REJECT' ) );
-				JToolBarHelper::deleteList( '','predictionmembers.remove' );  
+				JToolbarHelper::publishList('predictionmembers.publish', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_APPROVE' ) );
+				JToolbarHelper::unpublishList('predictionmembers.unpublish', JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBERS_REJECT' ) );
+				JToolbarHelper::deleteList( '','predictionmembers.remove' );  
 			}
 				JToolbarHelper::checkin('predictionmembers.checkin');
 

@@ -57,12 +57,12 @@ if($close == 1) {
 //$edit = JRequest::getVar('edit',true);
 
 //$component_text = 'COM_SPORTSMANAGEMENT_';
-//JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONMEMBERS_ASSIGN' ) );
-#JToolBarHelper::title( $this->projectws->name . ' - ' . JText::_( 'Teams' ) . ' ' );
-//JToolBarHelper::save( 'predictionmember.save_memberlist' );
+//JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONMEMBERS_ASSIGN' ) );
+#JToolbarHelper::title( $this->projectws->name . ' - ' . JText::_( 'Teams' ) . ' ' );
+//JToolbarHelper::save( 'predictionmember.save_memberlist' );
 
 // for existing items the button is renamed `close` and the apply button is showed
-//JToolBarHelper::cancel( 'predictionmember.cancel', 'JL_GLOBAL_CLOSE' );
+//JToolbarHelper::cancel( 'predictionmember.cancel', 'JL_GLOBAL_CLOSE' );
 
 //JLToolBarHelper::onlinehelp();
 

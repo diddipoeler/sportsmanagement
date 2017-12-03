@@ -180,7 +180,7 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_PREDICTIONTEMPLATES');
 		$this->icon = 'templates';
 
-		JToolBarHelper::deleteList('', 'predictiontemplates.delete');
+		JToolbarHelper::deleteList('', 'predictiontemplates.delete');
 		JToolbarHelper::checkin('predictiontemplates.checkin');
 		parent::addToolbar();
        

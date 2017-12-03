@@ -194,11 +194,11 @@ class sportsmanagementViewjlextdfbnetplayerimport extends sportsmanagementView
 		$document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT' ),'dfbnet' );
-        JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=extensions');
-        JToolBarHelper::divider();
+		JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBNET_IMPORT' ),'dfbnet' );
+        JToolbarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=extensions');
+        JToolbarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		JToolBarHelper::preferences($option);
+		JToolbarHelper::preferences($option);
 
 	}
 }

@@ -92,22 +92,22 @@ public function init ()
         $option = $jinput->getCmd('option');
         $canDo = jsmGCalendarUtil::getActions();
 		if ($canDo->get('core.create')) {
-			JToolBarHelper::addNew('jsmgcalendar.add', 'JTOOLBAR_NEW');
-			JToolBarHelper::custom('jsmgcalendarimport.import', 'upload.png', 'upload.png', 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDARS_BUTTON_IMPORT', false);
+			JToolbarHelper::addNew('jsmgcalendar.add', 'JTOOLBAR_NEW');
+			JToolbarHelper::custom('jsmgcalendarimport.import', 'upload.png', 'upload.png', 'COM_SPORTSMANAGEMENT_JSMGCALENDAR_VIEW_GCALENDARS_BUTTON_IMPORT', false);
 		}
 
 //		if ($canDo->get('core.edit')) {
-//			JToolBarHelper::editList('jsmgcalendar.edit', 'JTOOLBAR_EDIT');
+//			JToolbarHelper::editList('jsmgcalendar.edit', 'JTOOLBAR_EDIT');
 //		}
 //		if ($canDo->get('core.delete')) {
-//			JToolBarHelper::deleteList('', 'jsmgcalendars.delete', 'JTOOLBAR_DELETE');
+//			JToolbarHelper::deleteList('', 'jsmgcalendars.delete', 'JTOOLBAR_DELETE');
 //		}
         
         $this->icon = 'google-calendar-48-icon.png';
         
-//        JToolBarHelper::divider();
+//        JToolbarHelper::divider();
 //        sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//		JToolBarHelper::preferences($option);
+//		JToolbarHelper::preferences($option);
 
 		parent::addToolbar();
 	}

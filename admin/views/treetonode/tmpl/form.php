@@ -3,14 +3,14 @@
 JHtml::_('behavior.tooltip');
 jimport('joomla.html.pane');
 
-JToolBarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_TREETONODE_TITLE'));
+JToolbarHelper::title(JText::_('COM_JOOMLEAGUE_ADMIN_TREETONODE_TITLE'));
 
 JLToolBarHelper::save('treetonode.save');
 JLToolBarHelper::apply('treetonode.apply');
-JToolBarHelper::back('Back','index.php?option=com_joomleague&view=treetonodes&task=treetonode.display');
+JToolbarHelper::back('Back','index.php?option=com_joomleague&view=treetonodes&task=treetonode.display');
 JLToolBarHelper::custom('treetonode.unpublishnode', 'delete.png','delete_f2.png', JText::_( 'COM_JOOMLEAGUE_ADMIN_TREETONODES_UNPUBLISH' ), false);
 
-JToolBarHelper::help('screen.joomleague',true);
+JToolbarHelper::help('screen.joomleague',true);
 ?>
 
 <script>

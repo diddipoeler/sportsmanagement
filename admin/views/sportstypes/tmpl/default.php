@@ -39,9 +39,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-//Ordering allowed ?
-//$ordering=($this->sortColumn == 's.ordering');
-
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
 $templatesToLoad = array('footer','listheader');
@@ -50,25 +47,32 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 	
 <?PHP
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-echo $this->loadTemplate('joomla3');
-}
-else
-{
-echo $this->loadTemplate('joomla2');    
-}
-
-if ( $this->items )
-{
-echo $this->loadTemplate('data');
-}
-else
-{
-echo '<div class="alert alert-no-items">';
-echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
-echo '</div>';    
-}
+echo $this->loadTemplate('joomla_version');
+//if( version_compare(JSM_JVERSION,'4','eq') ) 
+//{
+//echo $this->loadTemplate('joomla4');
+//$no_items = 'alert alert-warning alert-no-items';
+//}
+//elseif( version_compare(JSM_JVERSION,'3','eq') ) 
+//{
+//echo $this->loadTemplate('joomla3');
+//$no_items = 'alert alert-no-items';
+//}
+//else
+//{
+//echo $this->loadTemplate('joomla2');    
+//}
+//
+//if ( $this->items )
+//{
+//echo $this->loadTemplate('data');
+//}
+//else
+//{
+//echo '<div class="'.$no_items.'">';
+//echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
+//echo '</div>';    
+//}
 ?>  
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="boxchecked" value="0" />

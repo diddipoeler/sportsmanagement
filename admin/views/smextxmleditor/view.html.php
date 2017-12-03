@@ -92,9 +92,9 @@ class sportsmanagementViewsmextxmleditor extends sportsmanagementView
 		$jinput = JFactory::getApplication()->input;
 				$jinput->set('hidemainmenu', true);
 				parent::addToolbar();
-	JToolBarHelper::apply('smextxmleditor.apply');
-	JToolBarHelper::save('smextxmleditor.save');
-	JToolBarHelper::cancel('smextxmleditor.cancel', 'JTOOLBAR_CANCEL');
+	JToolbarHelper::apply('smextxmleditor.apply');
+	JToolbarHelper::save('smextxmleditor.save');
+	JToolbarHelper::cancel('smextxmleditor.cancel', 'JTOOLBAR_CANCEL');
 
 //        // Get a refrence of the page instance in joomla
 //		$document	= JFactory::getDocument();
@@ -107,16 +107,16 @@ class sportsmanagementViewsmextxmleditor extends sportsmanagementView
 	$this->icon = 'xml-edit';
 
 //        
-//        JToolBarHelper::apply('smextxmleditor.apply');
-//        JToolBarHelper::save('smextxmleditor.save');
-//        JToolBarHelper::cancel('smextxmleditor.cancel', 'JTOOLBAR_CANCEL');
+//        JToolbarHelper::apply('smextxmleditor.apply');
+//        JToolbarHelper::save('smextxmleditor.save');
+//        JToolbarHelper::cancel('smextxmleditor.cancel', 'JTOOLBAR_CANCEL');
 //        
 //        
 //        
 //        
-//        JToolBarHelper::divider();
+//        JToolbarHelper::divider();
 //		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//        JToolBarHelper::preferences(JRequest::getCmd('option'));
+//        JToolbarHelper::preferences(JRequest::getCmd('option'));
         
     }    
     

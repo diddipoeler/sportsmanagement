@@ -96,23 +96,23 @@ class sportsmanagementViewsportsmanagements extends sportsmanagementView
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
 		$canDo = sportsmanagementHelper::getActions();
-		JToolBarHelper::title(JText::_('COM_SPORTSMANAGEMENT_S'), 'helloworld');
+		JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_S'), 'helloworld');
 		if ($canDo->get('core.create')) 
 		{
-			JToolBarHelper::addNew('sportsmanagement.add', 'JTOOLBAR_NEW');
+			JToolbarHelper::addNew('sportsmanagement.add', 'JTOOLBAR_NEW');
 		}
 		if ($canDo->get('core.edit')) 
 		{
-			JToolBarHelper::editList('sportsmanagement.edit', 'JTOOLBAR_EDIT');
+			JToolbarHelper::editList('sportsmanagement.edit', 'JTOOLBAR_EDIT');
 		}
 		if ($canDo->get('core.delete')) 
 		{
-			JToolBarHelper::deleteList('', 'sportsmanagements.delete', 'JTOOLBAR_DELETE');
+			JToolbarHelper::deleteList('', 'sportsmanagements.delete', 'JTOOLBAR_DELETE');
 		}
 		if ($canDo->get('core.admin')) 
 		{
-			JToolBarHelper::divider();
-			JToolBarHelper::preferences('com_sportsmanagement');
+			JToolbarHelper::divider();
+			JToolbarHelper::preferences('com_sportsmanagement');
 		}
 	}
 	/**

@@ -76,18 +76,22 @@ class SportsManagementController extends JControllerLegacy
 	 */
 	function display($cachable = false, $urlparams = false) 
 	{
-		// set default view if not set
-		//JRequest::setVar('view', JRequest::getCmd('view', 'SportsManagements'));
-		//JRequest::setVar('view', JRequest::getCmd('view', 'cpanel'));
-        $view = JRequest::setVar('view', JRequest::getCmd('view', 'cpanel'));
+		$jinput = JFactory::getApplication()->input;
         
-        $layout = JRequest::getCmd('layout', 'default');
- 
-		// call parent behavior
+/**
+ * set default view if not set
+ */
+        $view = $jinput->set('view', $jinput->getCmd('view', 'cpanel'));
+        $layout = $jinput->getCmd('layout', 'default');
+/**
+ * call parent behavior
+ */
 		parent::display($cachable);
         if ($layout != 'edit' )
 		{
-		// Set the submenu
+/**
+ * Set the submenu
+ */
 		sportsmanagementHelper::addSubmenu('messages');
         }
         

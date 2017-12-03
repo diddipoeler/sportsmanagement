@@ -131,11 +131,11 @@ $starttime = microtime();
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_SEASONS_TITLE');
 		if ($canDo->get('core.create')) 
 		{
-			JToolBarHelper::addNew('season.add', 'JTOOLBAR_NEW');
+			JToolbarHelper::addNew('season.add', 'JTOOLBAR_NEW');
 		}
 		if ($canDo->get('core.edit')) 
 		{
-			JToolBarHelper::editList('season.edit', 'JTOOLBAR_EDIT');
+			JToolbarHelper::editList('season.edit', 'JTOOLBAR_EDIT');
 		}
 //		if ($canDo->get('core.delete')) 
 //		{
@@ -146,7 +146,7 @@ $starttime = microtime();
 //            else
 //            {
 //            JToolbarHelper::trash('seasons.trash');
-//            JToolBarHelper::deleteList('', 'seasons.delete', 'JTOOLBAR_DELETE');    
+//            JToolbarHelper::deleteList('', 'seasons.delete', 'JTOOLBAR_DELETE');    
 //            }
 //            
 //		}

@@ -120,8 +120,8 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
 //        // JInput object
 //        $this->jsmjinput = $this->jsmapp->input;
         
-//		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEND_REMINDER_MAIL' ), 'generic.png' );
-//		JToolBarHelper::back( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_BACK', 'index.php?option=com_sportsmanagement&view=predictionmembers' );
+//		JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_SEND_REMINDER_MAIL' ), 'generic.png' );
+//		JToolbarHelper::back( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_BACK', 'index.php?option=com_sportsmanagement&view=predictionmembers' );
 
 //		echo 'This will send an email to all members of the prediction game with reminder option enabled. Are you sure?';
 		//$post = JRequest::get( 'post' );

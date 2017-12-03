@@ -159,17 +159,17 @@ class sportsmanagementViewTemplates extends sportsmanagementView
 		}
 		else
 		{
-			JToolBarHelper::editList('template.edit');
-			JToolBarHelper::save('template.save');
+			JToolbarHelper::editList('template.edit');
+			JToolbarHelper::save('template.save');
 			
 		if ($this->projectws->master_template)
 		{
 
-			 JToolBarHelper::deleteList('', 'template.remove', 'JTOOLBAR_DELETE');
+			 JToolbarHelper::deleteList('', 'template.remove', 'JTOOLBAR_DELETE');
 		}
 		else
 		{
-			JToolBarHelper::custom('template.reset','restore','restore',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_RESET'));
+			JToolbarHelper::custom('template.reset','restore','restore',JText::_('COM_SPORTSMANAGEMENT_GLOBAL_RESET'));
 		}
 		}
 		JToolbarHelper::checkin('templates.checkin');

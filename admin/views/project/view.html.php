@@ -226,9 +226,9 @@ class sportsmanagementViewProject extends sportsmanagementView
     
     //parent::addToolbar();    
     
-//    JToolBarHelper::divider();
+//    JToolbarHelper::divider();
 //	sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//	JToolBarHelper::preferences(JRequest::getCmd('option'));
+//	JToolbarHelper::preferences(JRequest::getCmd('option'));
 //           
 //    parent::display($tpl);   
     }

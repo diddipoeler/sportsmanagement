@@ -110,10 +110,10 @@ $mdlassociation = JModelLegacy::getInstance('jlextassociations', 'sportsmanageme
 	// Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_ASSOCIATIONS_TITLE');
 
-		JToolBarHelper::addNew('jlextassociation.add');
-		JToolBarHelper::editList('jlextassociation.edit');
-		JToolBarHelper::custom('jlextassociation.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
-		JToolBarHelper::archiveList('jlextassociation.export', JText::_('JTOOLBAR_EXPORT'));
+		JToolbarHelper::addNew('jlextassociation.add');
+		JToolbarHelper::editList('jlextassociation.edit');
+		JToolbarHelper::custom('jlextassociation.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
+		JToolbarHelper::archiveList('jlextassociation.export', JText::_('JTOOLBAR_EXPORT'));
         		
         parent::addToolbar();
 	}

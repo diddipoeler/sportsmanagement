@@ -130,13 +130,13 @@ class sportsmanagementViewStatistics extends sportsmanagementView
         // Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_STATISTICS_TITLE');
 		
-		JToolBarHelper::publishList();
-		JToolBarHelper::unpublishList();
-		JToolBarHelper::divider();
-		JToolBarHelper::editList('statistic.edit');
-		JToolBarHelper::addNew('statistic.add');
-		JToolBarHelper::custom('statistic.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-		JToolBarHelper::archiveList('statistic.export',JText::_('JTOOLBAR_EXPORT'));
+		JToolbarHelper::publishList();
+		JToolbarHelper::unpublishList();
+		JToolbarHelper::divider();
+		JToolbarHelper::editList('statistic.edit');
+		JToolbarHelper::addNew('statistic.add');
+		JToolbarHelper::custom('statistic.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
+		JToolbarHelper::archiveList('statistic.export',JText::_('JTOOLBAR_EXPORT'));
 		
         parent::addToolbar();
 	}

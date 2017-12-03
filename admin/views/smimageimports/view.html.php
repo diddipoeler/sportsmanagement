@@ -120,10 +120,10 @@ class sportsmanagementViewsmimageimports extends sportsmanagementView
         // Set toolbar items for the page
 		$this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGES_IMPORT');
 		$this->icon = 'images-import';
-		JToolBarHelper::custom('smimageimports.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
-		JToolBarHelper::divider();
+		JToolbarHelper::custom('smimageimports.import', 'upload', 'upload', JText::_('JTOOLBAR_UPLOAD'), false);
+		JToolbarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-		JToolBarHelper::preferences($jinput->getCmd('option'));
+		JToolbarHelper::preferences($jinput->getCmd('option'));
         
     }    
     

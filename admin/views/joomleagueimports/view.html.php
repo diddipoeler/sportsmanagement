@@ -197,25 +197,25 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
         
 		if ( $this->cfg_jl_import )
 		{
-		//JToolBarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'), false);
+		//JToolbarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'), false);
 		}
         if ( $this->getLayout() == 'default' || $this->getLayout() == 'default_3' )
 		{
-		JToolBarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_START_BUTTON'), false);
+		JToolbarHelper::custom('joomleagueimports.importjoomleaguenew', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_START_BUTTON'), false);
         }
          if ( $this->getLayout() == 'infofield' || $this->getLayout() == 'infofield_3' )
 		{
-		JToolBarHelper::custom('joomleagueimports.joomleaguesetagegroup', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_SETAGEGROUP_START_BUTTON'), false);
+		JToolbarHelper::custom('joomleagueimports.joomleaguesetagegroup', 'edit', 'edit', JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_SETAGEGROUP_START_BUTTON'), false);
         }
-JToolBarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=projects');    
+JToolbarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=projects');    
 
-//        JToolBarHelper::custom('joomleagueimports.positions','edit','edit',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'),false);
+//        JToolbarHelper::custom('joomleagueimports.positions','edit','edit',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_IMPORT_POS_ASSIGNMENT'),false);
 //        
-//        JToolBarHelper::custom('joomleagueimports.checkimport','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
-//        JToolBarHelper::custom('joomleagueimports.import','new','new',JText::_('JTOOLBAR_DUPLICATE'),false);
-		JToolBarHelper::divider();
+//        JToolbarHelper::custom('joomleagueimports.checkimport','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
+//        JToolbarHelper::custom('joomleagueimports.import','new','new',JText::_('JTOOLBAR_DUPLICATE'),false);
+		JToolbarHelper::divider();
 //		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//        JToolBarHelper::preferences(JRequest::getCmd('option'));
+//        JToolbarHelper::preferences(JRequest::getCmd('option'));
 		parent::addToolbar();
 	}
 

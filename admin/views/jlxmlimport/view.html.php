@@ -65,12 +65,12 @@ class sportsmanagementViewJLXMLImport extends sportsmanagementView
 //        $document->addCustomTag($stylelink);
 //        
 //		// Set toolbar items for the page
-//		JToolBarHelper::title( JText::_( 'JoomLeague XML Import' ), 'xmlimport' );
-//		JToolBarHelper::back();
+//		JToolbarHelper::title( JText::_( 'JoomLeague XML Import' ), 'xmlimport' );
+//		JToolbarHelper::back();
 //		
-//        JToolBarHelper::divider();
+//        JToolbarHelper::divider();
 //		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//        JToolBarHelper::preferences(JRequest::getCmd('option'));
+//        JToolbarHelper::preferences(JRequest::getCmd('option'));
 
 		$db		= sportsmanagementHelper::getDBConnection();
 		$uri	= JFactory::getURI();

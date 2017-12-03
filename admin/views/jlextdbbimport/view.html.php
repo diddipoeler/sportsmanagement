@@ -93,8 +93,8 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
 		*/
         
 		// Set toolbar items for the page
-		//JToolBarHelper::title ( JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_TITLE_1_3' ), 'generic.png' );
-		//JToolBarHelper::help ( 'screen.joomleague', true );
+		//JToolbarHelper::title ( JText::_ ( 'COM_SPORTSMANAGEMENT_ADMIN_LMO_IMPORT_TITLE_1_3' ), 'generic.png' );
+		//JToolbarHelper::help ( 'screen.joomleague', true );
 		
 		$input = JFactory::getApplication()->input;
 		
@@ -208,7 +208,7 @@ class sportsmanagementViewjlextdbbimport extends sportsmanagementView
         $document->addCustomTag($stylelink);
         
         // Set toolbar items for the page
-		JToolBarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT' ),'dbb-cpanel' );
+		JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DBB_IMPORT' ),'dbb-cpanel' );
         
         parent::addToolbar();
 
