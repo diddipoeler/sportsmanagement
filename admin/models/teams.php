@@ -126,7 +126,7 @@ class sportsmanagementModelTeams extends JSMModelList
 		$this->setState('filter.sports_type', $temp_user_request);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
-        $value = JRequest::getUInt('limitstart', 0);
+        $value = $this->jsmjinput->getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
 
         $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');

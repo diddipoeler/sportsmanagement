@@ -44,7 +44,7 @@ $templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
-$view = JRequest::getCmd('view', 'cpanel');
+$view = $this->jinput->getCmd('view', 'cpanel');
 
 
 /**
@@ -94,7 +94,7 @@ switch ($fieldset->name)
                     default:
                 ?>
                 <a	rel="{handler: 'iframe',size: {x: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH; ?>,y: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT; ?>}}"
-									href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Felder:'.JRequest::getVar( "view").'-'.$var_onlinehelp; ?>"
+									href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Felder:'.$this->jinput->getVar( "view").'-'.$var_onlinehelp; ?>"
 									 class="modal">
 									<?php
 									echo JHtml::_(	'image','media/com_sportsmanagement/jl_images/help.png',

@@ -267,7 +267,7 @@ $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' this->view_list
         else
         {
         $this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_item .$this->getRedirectToItemAppend($id).$setRedirect, false), $message); 
-        JError::raiseError( 4711, $this->jsmdb->getErrorMsg() );
+        //JError::raiseError( 4711, $this->jsmdb->getErrorMsg() );
         return false;
         }
      }

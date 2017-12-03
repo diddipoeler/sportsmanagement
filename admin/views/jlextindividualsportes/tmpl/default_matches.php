@@ -361,7 +361,7 @@ if($close == 1) {
 			<input type='hidden' name='boxchecked' value='0' />
 			<input type='hidden' name='search_mode' value='<?php echo $this->lists['search_mode']; ?>' />
 			<input type='hidden' name='filter_order' value='<?php echo $this->sortColumn; ?>' />
-			<input type='hidden' name='filter_order_Dir' value='' />
+			<input type='hidden' name='filter_order_Dir' value='<?php echo $this->sortDirection; ?>' />
 			<input type='hidden' name='rid' value='<?php echo $this->roundws->id; ?>' />
 			<input type='hidden' name='project_id' value='<?php echo $this->roundws->project_id; ?>' />
 			<input type="hidden" name="close" id="close" value="0" />

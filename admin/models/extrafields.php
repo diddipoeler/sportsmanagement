@@ -164,28 +164,28 @@ class sportsmanagementModelextrafields extends JSMModelList
  */
 function getExtraFieldsProject($project_id=0)
 {
-$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+//$app = JFactory::getApplication();
+        //$option = JRequest::getCmd('option');
         $result = '';
 
         // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        
-        $query->select('ef.name');
-        $query->from('#__sportsmanagement_user_extra_fields_values as ev ');
-        $query->join('INNER','#__sportsmanagement_user_extra_fields as ef ON ef.id = ev.field_id');
-        $query->where('ev.jl_id = '.$project_id);
-        $query->where('ef.template_backend LIKE '.$db->Quote(''.'project'.''));
-        $query->where('ev.fieldvalue != '.$db->Quote(''.'')); 
+		//$db = sportsmanagementHelper::getDBConnection();
+//		$query = $db->getQuery(true);
+        $this->jsmquery->clear();
+        $this->jsmquery->select('ef.name');
+        $this->jsmquery->from('#__sportsmanagement_user_extra_fields_values as ev ');
+        $this->jsmquery->join('INNER','#__sportsmanagement_user_extra_fields as ef ON ef.id = ev.field_id');
+        $this->jsmquery->where('ev.jl_id = '.$project_id);
+        $this->jsmquery->where('ef.template_backend LIKE '.$this->jsmdb->Quote(''.'project'.''));
+        $this->jsmquery->where('ev.fieldvalue != '.$this->jsmdb->Quote(''.'')); 
         try {
-        $db->setQuery($query);
-        //$result = $db->loadObjectList();
-        $column = $db->loadColumn(0);
+        $this->jsmdb->setQuery($this->jsmquery);
+        //$result = $this->jsmdb->loadObjectList();
+        $column = $this->jsmdb->loadColumn(0);
 }
 catch (Exception $e) {
     // catch any database errors.
-    //$db->transactionRollback();
+    //$this->jsmdb->transactionRollback();
     JErrorPage::render($e);
 }
         
@@ -208,28 +208,29 @@ catch (Exception $e) {
  */
 function getExtraFields($template_backend = '', $template_frontend = '')
     {
-        $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        //$app = JFactory::getApplication();
+        //$option = JRequest::getCmd('option');
         // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+		//$db = sportsmanagementHelper::getDBConnection();
+//		$query = $db->getQuery(true);
         
         // Select some fields
-		$query->select('id,name');
+        $this->jsmquery->clear();
+		$this->jsmquery->select('id,name');
 		// From the table
-		$query->from('#__sportsmanagement_user_extra_fields');
+		$this->jsmquery->from('#__sportsmanagement_user_extra_fields');
         if ($template_backend)
 		{
-        $query->where('template_backend LIKE '.$db->Quote(''.$template_backend.''));
+        $this->jsmquery->where('template_backend LIKE '.$this->jsmdb->Quote(''.$template_backend.''));
         }
         if ($template_frontend)
 		{
-        $query->where('template_frontend LIKE '.$db->Quote(''.$template_frontend.''));
+        $this->jsmquery->where('template_frontend LIKE '.$this->jsmdb->Quote(''.$template_frontend.''));
         }
-        $query->order('name ASC');
+        $this->jsmquery->order('name ASC');
 
-        $db->setQuery($query);
-        $result = $db->loadObjectList();
+        $this->jsmdb->setQuery($this->jsmquery);
+        $result = $this->jsmdb->loadObjectList();
         return $result;
 }        
 

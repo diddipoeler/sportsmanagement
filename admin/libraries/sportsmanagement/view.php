@@ -141,10 +141,14 @@ class sportsmanagementView extends JViewLegacy
             }  
         
 
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' layout<br><pre>'.print_r($this->layout,true).'</pre>'),'Notice');
+
 /**
  * bei der einzelverarbeitung
 */        
-        if ( $this->layout == 'edit' || $this->layout == 'edit_3' )
+        if ( $this->layout == 'edit' 
+        || $this->layout == 'edit_3' 
+        || $this->layout == 'edit_4')
         {
         // get the Data
 		$this->form = $this->get('Form');
@@ -209,24 +213,39 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
         $this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' request_url -> <br><pre>'.print_r($this->request_url,true).'</pre>'),'');
         }
         
-        if(version_compare(JVERSION,'3.0.0','ge')) 
-        {
+        if( version_compare(JSM_JVERSION,'4','eq') ) 
+{
+            
+            if ( $this->layout == 'edit' )
+            {
+            $this->setLayout($this->getLayout() . '_3');
+            }
+            else
+            {
+            $this->setLayout($this->getLayout() . '_4');    
+            }
+            
+            $this->table_data_class = 'table table-striped';
+            $this->table_data_div = '</div>';
+}
+elseif( version_compare(JSM_JVERSION,'3','eq') ) 
+{
             $this->setLayout($this->getLayout() . '_3');
             $this->table_data_class = 'table table-striped';
             $this->table_data_div = '</div>';
-        }
-        else
-        {
-            // wir lassen das layout so wie es ist, dann müssen
+}
+else
+{
+// wir lassen das layout so wie es ist, dann müssen
             // nicht so viele dateien umbenannt werden
-            //$this->setLayout($this->getLayout() . '_25');
             $this->setLayout($this->getLayout() );
             $this->table_data_class = 'adminlist';
-            $this->table_data_div = '';
-        }
+            $this->table_data_div = '';   
+}
+
         
         
-        $this->app->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
+        //$this->app->enqueueMessage(sprintf(JText::_('COM_SPORTSMANAGEMENT_JOOMLA_VERSION'), COM_SPORTSMANAGEMENT_JOOMLAVERSION),'');
 
 		$this->init();
 
@@ -263,7 +282,9 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
                 break;
             }
             
-        if ( $this->layout == 'edit' || $this->layout == 'edit_3' )
+        if ( $this->layout == 'edit' 
+        || $this->layout == 'edit_3' 
+        || $this->layout == 'edit_4' )
         {}
         else
         {    
@@ -433,8 +454,11 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
          
         }    
         
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' layout<br><pre>'.print_r($this->layout,true).'</pre>'),'Notice');
         
-        if ( $this->layout == 'edit'  || $this->layout == 'edit_3' )
+        if ( $this->layout == 'edit' 
+        || $this->layout == 'edit_3' 
+        || $this->layout == 'edit_4' )
         {
         $isNew = $this->item->id == 0;
         $canDo = sportsmanagementHelper::getActions($this->item->id);
@@ -524,7 +548,9 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
 //				'.icon-48-' . $this->icon . ' {background-image: url('.JURI::root().'administrator/components/com_sportsmanagement/assets/images/' . $this->icon .
 //						 '.png);background-repeat: no-repeat;}');
 
-		if ( $this->layout == 'edit' || $this->layout == 'edit_3' )
+		if ( $this->layout == 'edit' 
+        || $this->layout == 'edit_3' 
+        || $this->layout == 'edit_4' )
         {
         if ($isNew) 
 		{

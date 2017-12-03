@@ -52,7 +52,6 @@ defined('_JEXEC') or die('Restricted access');
  */
 class sportsmanagementViewSportsType extends sportsmanagementView
 {
-
 	
 	/**
 	 * sportsmanagementViewSportsType::init()
@@ -69,7 +68,6 @@ class sportsmanagementViewSportsType extends sportsmanagementView
 			return false;
 		}
       
-
 	}
  
 	/**
@@ -78,7 +76,7 @@ class sportsmanagementViewSportsType extends sportsmanagementView
 	protected function addToolBar() 
 	{
 	
-		JFactory::getApplication()->input->set('hidemainmenu', true);
+		$this->jinput->set('hidemainmenu', true);
         
         $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_SPORTSTYPE_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_SPORTSTYPE_NEW');
         $this->icon = 'sportstype';

@@ -57,37 +57,12 @@ function searchPerson(val)
 
 
 <?PHP
-if( version_compare(JSM_JVERSION,'4','eq') ) 
-{
-echo $this->loadTemplate('joomla4');
-$no_items = 'alert alert-warning alert-no-items';
-}
-elseif( version_compare(JSM_JVERSION,'3','eq') ) 
-{
-echo $this->loadTemplate('joomla3');
-$no_items = 'alert alert-no-items';
-}
-else
-{
-echo $this->loadTemplate('joomla2');    
-}
-
-if ( $this->items )
-{
-echo $this->loadTemplate('data');
-}
-else
-{
-echo '<div class="'.$no_items.'">';
-echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
-echo '</div>';    
-}
-
+echo $this->loadTemplate('joomla_version');
 ?>
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="boxchecked" value="0" />
 <input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
-<input type="hidden" name="filter_order_Dir" value="" />
+<input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
 <?php echo JHtml::_('form.token')."\n"; ?>
 </form>
 <?PHP

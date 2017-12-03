@@ -39,9 +39,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-//Ordering allowed ?
-//$ordering=($this->sortColumn == 's.ordering');
-
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
 // welche joomla version
@@ -53,14 +50,13 @@ else
 {
 JHtml::_( 'behavior.mootools' );    
 }
-$modalheight = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_height', 600);
-$modalwidth = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_width', 900);
+$modalheight = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_height', 600);
+$modalwidth = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('modal_popup_width', 900);
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
 ?>
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
-	
 <?PHP
 echo $this->loadTemplate('joomla_version');
 ?>

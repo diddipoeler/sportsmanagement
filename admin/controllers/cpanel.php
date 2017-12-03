@@ -56,6 +56,11 @@ jimport('joomla.application.component.controllerform');
 class sportsmanagementControllercpanel extends JControllerForm
 {
 
+/**
+ * sportsmanagementControllercpanel::jqueryinstall()
+ * 
+ * @return void
+ */
 function jqueryinstall()
 {
     

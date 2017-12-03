@@ -184,7 +184,7 @@ $template_pathes[]	= array();
 
 //JFactory::$database = sportsmanagementHelper::getDBConnection();
 
-$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm joomlaversion<br><pre>'.print_r(JSM_JVERSION,true).'</pre>'),'notice');
+//$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm joomlaversion<br><pre>'.print_r(JSM_JVERSION,true).'</pre>'),'notice');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getDBConnection<br><pre>'.print_r(sportsmanagementHelper::getDBConnection(),true).'</pre>'),'');
 
 

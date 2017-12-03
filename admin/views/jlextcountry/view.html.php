@@ -40,7 +40,6 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-
 /**
  * sportsmanagementViewJlextcountry
  * 
@@ -53,7 +52,6 @@ defined('_JEXEC') or die('Restricted access');
 class sportsmanagementViewJlextcountry extends sportsmanagementView
 {
 
-
     /**
      * sportsmanagementViewJlextcountry::init()
      * 
@@ -61,10 +59,10 @@ class sportsmanagementViewJlextcountry extends sportsmanagementView
      */
     public function init ()
 	{
-		// get the Data
-		$form = $this->get('Form');
-		$item = $this->get('Item');
-		$script = $this->get('Script');
+	//	// get the Data
+//		$form = $this->get('Form');
+//		$item = $this->get('Item');
+//		$script = $this->get('Script');
  
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) 
@@ -72,12 +70,11 @@ class sportsmanagementViewJlextcountry extends sportsmanagementView
 			JError::raiseError(500, implode('<br />', $errors));
 			return false;
 		}
-		// Assign the Data
-		$this->form = $form;
-		$this->item = $item;
-		$this->script = $script;
+		//// Assign the Data
+//		$this->form = $form;
+//		$this->item = $item;
+//		$this->script = $script;
 	
-
 	}
  
 	
@@ -88,8 +85,7 @@ class sportsmanagementViewJlextcountry extends sportsmanagementView
 	 */
 	protected function addToolBar() 
 	{
-    
-		JRequest::setVar('hidemainmenu', true);
+		$this->jinput->setVar('hidemainmenu', true);
         parent::addToolbar();
 	}
     

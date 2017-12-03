@@ -50,7 +50,6 @@ $project_id = $app->getUserState( "$option.pid", '0' );
 
 ?>
 
-
 <div class="row">
 		<div id="j-sidebar-container" class="col-md-2">
 			<?php echo $this->sidebar; ?>

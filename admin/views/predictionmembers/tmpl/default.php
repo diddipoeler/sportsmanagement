@@ -39,8 +39,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-////Ordering allowed ?
-//$ordering = ( $this->sortColumn == 'pre.ordering' );
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
@@ -50,31 +48,13 @@ JHtml::_( 'behavior.tooltip' );
 	
 
 <?PHP
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-echo $this->loadTemplate('joomla3');
-}
-else
-{
-echo $this->loadTemplate('joomla2');    
-}
-
-if ( $this->items )
-{
-echo $this->loadTemplate('data');
-}
-else
-{
-echo '<div class="alert alert-no-items">';
-echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
-echo '</div>';    
-}
+echo $this->loadTemplate('joomla_version');
 ?>		
 	
   <input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked"			value="0" />
     <input type="hidden" name="prediction_id"		value="<?php echo $this->prediction_id; ?>" />
 	<input type="hidden" name="filter_order"		value="<?php echo $this->sortColumn; ?>" />
-	<input type="hidden" name="filter_order_Dir"	value="" />
+	<input type="hidden" name="filter_order_Dir"	value="<?php echo $this->sortDirection; ?>" />
 	<?php echo JHtml::_( 'form.token' ); ?>
 </form>

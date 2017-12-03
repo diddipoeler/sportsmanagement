@@ -156,7 +156,7 @@ echo '</div>';
     <input type="hidden" name="pid" value="<?php echo $this->project_id; ?>" />
     <input type="hidden" name="season_id" value="<?php echo $this->project->season_id; ?>" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order_Dir" value="" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
 	<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
 	<input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode']; ?>" />
 	<?php echo JHtml::_('form.token')."\n"; ?>

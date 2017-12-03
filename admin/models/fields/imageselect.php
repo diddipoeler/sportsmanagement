@@ -39,7 +39,6 @@
 
 defined('_JEXEC') or die('Restricted access');
 
-
 /**
  * JFormFieldImageSelect
  * 
@@ -61,7 +60,7 @@ class JFormFieldImageSelect extends JFormField
 	function getInput() 
     {
         $app	= JFactory::getApplication();
-		$option = JRequest::getCmd('option');
+		$option = $app->input->getCmd('option');
         
 		$default = $this->value;
 		$arrPathes = explode('/', $default);

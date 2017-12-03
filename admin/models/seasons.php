@@ -285,7 +285,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         $this->jsmdb->setQuery($this->jsmquery);
         if (!$result = $this->jsmdb->loadObjectList())
         {
-            $this->setError($this->jsmdb->getErrorMsg());
+            //$this->setError($this->jsmdb->getErrorMsg());
             return array();
         }
         foreach ($result as $season)

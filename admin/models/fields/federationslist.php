@@ -72,7 +72,7 @@ class JFormFieldFederationsList extends JFormFieldList
 	protected function getOptions()
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        //$option = JRequest::getCmd('option');
         $selected = 0;
         //$app->enqueueMessage(JText::_('JFormFieldAssociationsList getOptions<br><pre>'.print_r($this->element,true).'</pre>'),'Notice');
         // Initialize variables.
@@ -80,7 +80,7 @@ class JFormFieldFederationsList extends JFormFieldList
     //echo 'this->element<br /><pre>~' . print_r($this->element,true) . '~</pre><br />';
 		//$varname = (string) $this->element['varname'];
     $vartable = (string) $this->element['targettable'];
-		$select_id = JRequest::getVar('id');
+		$select_id = $app->input->getVar('id');
 //echo 'select_id<br /><pre>~' . print_r($select_id,true) . '~</pre><br />';		
  		if (is_array($select_id)) {
  			$select_id = $select_id;
