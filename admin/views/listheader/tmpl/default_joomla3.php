@@ -43,7 +43,6 @@ $jinput = $app->input;
 $option = $jinput->getCmd('option');
 $view = $jinput->getCmd('view', 'cpanel');
 $document = JFactory::getDocument();
-//$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
 // retrieve the value of the state variable. If no value is specified,
 // the specified default value will be returned.
 // function syntax is getUserState( $key, $default );

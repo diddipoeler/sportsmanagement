@@ -37,29 +37,32 @@
 * Note : All ini files need to be saved as UTF-8 without BOM
 */
 
-defined( '_JEXEC' ) or die( 'Restricted access' );
+defined('_JEXEC') or die('Restricted access');
 
-/**
- * sportsmanagementViewlistheader
- * 
- * @package 
- * @author diddi
- * @copyright 2014
- * @version $Id$
- * @access public
- */
-class sportsmanagementViewlistheader extends sportsmanagementView
+if( version_compare(JSM_JVERSION,'4','eq') ) 
 {
-	
-	/**
-	 * sportsmanagementViewlistheader::init()
-	 * 
-	 * @return void
-	 */
-	public function init ()
-	{
-		
-	}
-
+echo $this->loadTemplate('joomla4');
+$no_items = 'alert alert-warning alert-no-items';
 }
+elseif( version_compare(JSM_JVERSION,'3','eq') ) 
+{
+echo $this->loadTemplate('joomla3');
+$no_items = 'alert alert-no-items';
+}
+else
+{
+echo $this->loadTemplate('joomla2');    
+}
+
+if ( $this->items )
+{
+echo $this->loadTemplate('data');
+}
+else
+{
+echo '<div class="'.$no_items.'">';
+echo JText::_('JGLOBAL_NO_MATCHING_RESULTS');
+echo '</div>';    
+}
+
 ?>
