@@ -38,6 +38,15 @@
 */
 
 
+/**
+ * Joomla 4
+ * https://docs.joomla.org/Potential_backward_compatibility_issues_in_Joomla_4
+ * Class 'JToolBarHelper' not found #14330
+ * https://github.com/joomla/joomla-cms/issues/14330
+ *  
+ */
+
+
 
 /**
  * wichtige links
@@ -65,6 +74,16 @@
  * 
  * https://github.com/google/google-api-php-client
  * https://github.com/google/google-api-php-client-services
+ * 
+ * 
+ * https://vi-solutions.de/de/tips-vom-joomla-spezialist/265-joomla-komponente-mit-sql-update
+ * 
+ * Time difference between php timestamps
+ * https://stackoverflow.com/questions/9732553/time-difference-between-php-timestamps-in-hours
+ * https://stackoverflow.com/questions/40330156/timestampdiff-how-to-use-it-in-php-mysql-to-calculate-difference-between-date
+ * http://php.net/manual/de/datetime.diff.php
+ * 
+ * 
  * 
  */
 
@@ -94,76 +113,96 @@ jimport('joomla.html.html.bootstrap');
  */
 class com_sportsmanagementInstallerScript
 {
-    
-public function __construct(JAdapterInstance $adapter)
-{
-    $this->release = $adapter->get( "manifest" )->version;
-}
 
-	/*
+    /**
      * The release value would ideally be extracted from <version> in the manifest file,
      * but at preflight, the manifest file exists only in the uploaded temp folder.
      */
-    //private $release = '1.0.00';
+    private $release = '1.0.59';
+    
     
     /**
-	 * method to install the component
+	 * Constructor
 	 *
-	 * @return void
+	 * @param   JAdapterInstance  $adapter  The object responsible for running this script
+	 */    
+    public function __construct( $adapter)
+    {
+    // https://api.joomla.org/cms-3/deprecated.html
+if(version_compare( substr(JVERSION,0,5) ,'4.0.0','ge')) 
+{
+$this->startPane = 'startTabSet';
+$this->endPane = 'endTabSet';
+$this->addPanel = 'addTab';
+$this->endPanel = 'endTab';
+//$this->release = (string) $adapter->getManifest()->version;
+}
+else
+{
+$this->startPane = 'startPane';
+$this->endPane = 'endPane';
+$this->addPanel = 'addPanel';
+$this->endPanel = 'endPanel';
+//$this->release = $adapter->get( "manifest" )->version;
+}
+
+    
+    }
+
+	
+    
+    /**
+	 * Called on installation
+	 *
+	 * @param   JAdapterInstance  $adapter  The object responsible for running this script
+	 *
+	 * @return  boolean  True on success
 	 */
-	function install($parent) 
+	function install( $adapter) 
 	{
-		// $parent is the class calling this method
-		//$parent->getParent()->setRedirectURL('index.php?option=com_sportsmanagement');
+
 	}
  
 	/**
-	 * method to uninstall the component
+	 * Called on uninstallation
 	 *
-	 * @return void
+	 * @param   JAdapterInstance  $adapter  The object responsible for running this script
 	 */
-	function uninstall($parent) 
+	function uninstall( $adapter) 
 	{
-		// $parent is the class calling this method
 		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_UNINSTALL_TEXT') . '</p>';
 	}
  
 	/**
-	 * method to update the component
+	 * Called on update
 	 *
-	 * @return void
+	 * @param   JAdapterInstance  $adapter  The object responsible for running this script
+	 *
+	 * @return  boolean  True on success
 	 */
-	function update($parent) 
+	function update( $adapter) 
 	{
-		// $parent is the class calling this method
-		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_UPDATE_TEXT') . $parent->get('manifest')->version . '</p>';
+		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_UPDATE_TEXT') . $this->release . '</p>';
 	}
  
 
 	/**
-	 * com_sportsmanagementInstallerScript::preflight()
-	 * method to run before an install/update/uninstall method
-	 * @param mixed $type
-	 * @param mixed $parent
-	 * @return void
+	 * Called before any type of action
+	 *
+	 * @param   string  $route  Which action is happening (install|uninstall|discover_install|update)
+	 * @param   JAdapterInstance  $adapter  The object responsible for running this script
+	 *
+	 * @return  boolean  True on success
 	 */
-	function preflight($type, $parent) 
+	function preflight($route,  $adapter) 
 	{
-	
-    /*   
-    switch ($type)        
-    {
-    case "update":
-    self::deleteFolders($parent);
-    break;
-    }
-    */
-    
-    if ( $type == 'update' ) 
+	    
+    if ( $route == 'update' ) 
     {
         $this->oldRelease = $this->getParam('version');
         if (version_compare($this->oldRelease, $this->release, 'lt'))
         {
+            try {
             //Repair table #__schema which was not used before
             //Just create a dataset with extension id and old version (before update).
             $db = JFactory::getDbo();
@@ -179,7 +218,19 @@ public function __construct(JAdapterInstance $adapter)
                 $query->columns(array($db->quoteName('extension_id'), $db->quoteName('version_id')));
                 $query->values($eid . ', ' . $db->quote($this->oldRelease));
                 $db->setQuery($query);
-                $db->execute();
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+    $db->execute();        
+}    
+else
+{
+    $db->query();
+}
+            }
+            } catch (Exception $e) {
+            $msg = $e->getMessage(); // Returns "Normally you would have other code...
+            $code = $e->getCode(); // Returns '500';
+            JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
             }
         }
     }
@@ -217,10 +268,10 @@ public function __construct(JAdapterInstance $adapter)
         </ul>
             
             <?PHP
-            echo JHtml::_('bootstrap.startPane', 'ID-Tabs-Group', $tabsOptions);
-            echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab1_id'); 
+            echo JHtml::_('bootstrap.'.$this->startPane, 'ID-Tabs-Group', $tabsOptions);
+            echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab1_id',JText::_(' Component')); 
             echo '<h2>' . JText::_('COM_SPORTSMANAGEMENT_DESCRIPTION') .'</h2>';
-            echo JHtml::_('bootstrap.endPanel');
+            echo JHtml::_('bootstrap.'.$this->endPanel);
  
              
             }
@@ -234,10 +285,6 @@ public function __construct(JAdapterInstance $adapter)
 		echo JHtml::_('sliders.panel', $image.' Component', 'panel-component');
         echo '<h2>' . JText::_('COM_SPORTSMANAGEMENT_DESCRIPTION') .'</h2>';
         }                      
-		// $parent is the class calling this method
-		// $type is the type of change (install, update or discover_install)
-		
-        
         
         ?>
 		
@@ -256,7 +303,7 @@ public function __construct(JAdapterInstance $adapter)
 			alt="JSM Joomla Sports Management" title="JSM Joomla Sports Management" width="auto"/>
         
          <?php       
-        echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_PREFLIGHT_' . $type . '_TEXT' ) . $parent->get('manifest')->version . '</p>';
+        echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_PREFLIGHT_' . $route . '_TEXT' ) . $this->release . '</p>';
         
         
         
@@ -279,13 +326,14 @@ public function __construct(JAdapterInstance $adapter)
 	}
 
 	/**
-	 * com_sportsmanagementInstallerScript::postflight()
-	 * method to run after an install/update/uninstall method
-	 * @param mixed $type
-	 * @param mixed $parent
-	 * @return void
+	 * Called after any type of action
+	 *
+	 * @param   string  $route  Which action is happening (install|uninstall|discover_install|update)
+	 * @param   JAdapterInstance  $adapter  The object responsible for running this script
+	 *
+	 * @return  boolean  True on success
 	 */
-	function postflight($type, $parent) 
+	function postflight($route,  $adapter) 
 	{
 	$mainframe = JFactory::getApplication();
     $db = JFactory::getDbo();
@@ -305,7 +353,7 @@ public function __construct(JAdapterInstance $adapter)
     if(version_compare(JVERSION,'3.0.0','ge')) 
         {
 
-            echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $type . '_TEXT' ) . $parent->get('manifest')->version . '</p>';
+            echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $route . '_TEXT' ) . $this->release . '</p>';
 
 $params = JComponentHelper::getParams('com_sportsmanagement');
 $xmlfile = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml';  
@@ -325,54 +373,39 @@ foreach($form->getFieldset() as $field)
 //$mainframe->enqueueMessage(JText::_('postflight newparams<br><pre>'.print_r($newparams,true).'</pre>'   ),'');
 
 
-    switch ($type)        
+    switch ($route)        
     {
     case "install":
-    self::setParams($newparams);
-//    self::installComponentLanguages();
-
-echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab2_id'); 
-
-    self::installModules($parent);
-    echo JHtml::_('bootstrap.endPanel'); 
-    /*
-    echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab3_id'); 
-
-    self::installPlugins($parent);
-    echo JHtml::_('bootstrap.endPanel');
-    */
-    echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab4_id');  
-
-    self::createImagesFolder();
-    self::installJoomlaExtensions($parent);
-    echo JHtml::_('bootstrap.endPanel'); 
+    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab2_id',JText::_(' Modules')); 
+    self::installModules($adapter);
+    echo JHtml::_('bootstrap.'.$this->endPanel); 
     
-//    self::migratePicturePath();
-//    self::deleteInstallFolders();
-//    self::sendInfoMail();
+    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab3_id',JText::_(' Plugins'));
+    self::installModules($adapter);
+    echo JHtml::_('bootstrap.'.$this->endPanel); 
+
+    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab4_id',JText::_(' Create/Update Images Folders'));  
+    self::createImagesFolder();
+    self::installJoomlaExtensions($adapter);
+    echo JHtml::_('bootstrap.'.$this->endPanel); 
+    
+    self::setParams($newparams);    
     break;
     case "update":
-//    self::installComponentLanguages();
-echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab2_id');
-
-    self::installModules($parent);
-    echo JHtml::_('bootstrap.endPanel'); 
-    /*
-    echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab3_id');  
-
-    self::installPlugins($parent);
-    echo JHtml::_('bootstrap.endPanel'); 
-    */
-    echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab4_id');  
-
-    self::createImagesFolder();
-    self::installJoomlaExtensions($parent);
-    echo JHtml::_('bootstrap.endPanel');
+    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab2_id',JText::_(' Modules'));
+    self::installModules($adapter);
+    echo JHtml::_('bootstrap.'.$this->endPanel); 
     
-//    self::migratePicturePath();
-      self::setParams($newparams);
-//    self::deleteInstallFolders();
-//    self::sendInfoMail();
+    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab3_id',JText::_(' Plugins'));
+    self::installModules($adapter);
+    echo JHtml::_('bootstrap.'.$this->endPanel); 
+
+    echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab4_id',JText::_(' Create/Update Images Folders'));  
+    self::createImagesFolder();
+    self::installJoomlaExtensions($adapter);
+    echo JHtml::_('bootstrap.'.$this->endPanel);
+    
+    self::setParams($newparams);
     break;
     case "discover_install":
     break;
@@ -380,30 +413,12 @@ echo JHtml::_('bootstrap.addPanel', 'ID-Tabs-Group', 'tab2_id');
     }
             
             
-            echo JHtml::_('bootstrap.endPane', 'ID-Tabs-Group');
+            echo JHtml::_('bootstrap.'.$this->endPane, 'ID-Tabs-Group');
             }
             else
             {
-//    echo JHtml::_('sliders.start','steps',array(
-//						'allowAllClose' => true,
-//						'startTransition' => true,
-//						true));
-//       $image = '<img src="../media/com_sportsmanagement/jl_images/ext_com.png">';
-//		echo JHtml::_('sliders.panel', $image.' Component', 'panel-component');
-             
-    //echo JHtml::_('sliders.start','steps',array(
-//						'allowAllClose' => true,
-//						'startTransition' => true,
-//						true));
                    
-        // $parent is the class calling this method
-		// $type is the type of change (install, update or discover_install)
-		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $type . '_TEXT' ) . $parent->get('manifest')->version . '</p>';
-    
-//$db->setQuery('SELECT params FROM #__extensions WHERE name = "com_sportsmanagement" and type ="component"');
-//$paramsdata = json_decode( $db->loadResult(), true );
-
-//$mainframe->enqueueMessage(JText::_('postflight paramsdata<br><pre>'.print_r($paramsdata,true).'</pre>'   ),'');
+		echo '<p>' . JText::_('COM_SPORTSMANAGEMENT_POSTFLIGHT_' . $route . '_TEXT' ) . $this->release . '</p>';
 
 $params = JComponentHelper::getParams('com_sportsmanagement');
 $xmlfile = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'config.xml';  
@@ -418,17 +433,17 @@ foreach($form->getFieldset() as $field)
         $newparams[$field->name] = $field->value;
         }
 
-switch ($type)        
+switch ($route)        
     {
     case "install":
     self::setParams($newparams);
 //    self::installComponentLanguages();
 $image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
 		echo JHtml::_('sliders.panel', $image.' Modules', 'panel-modules');
-    self::installModules($parent);
+    self::installModules($adapter);
     $image = '<img src="../media/com_sportsmanagement/jl_images/ext_plugin.png">';
 		echo JHtml::_('sliders.panel', $image.' Plugins', 'panel-plugins');
-    self::installPlugins($parent);
+    self::installPlugins($adapter);
     $image = '<img src="../media/com_sportsmanagement/jl_images/ext_esp.png">';
 		echo JHtml::_('sliders.panel', $image.' Create/Update Images Folders', 'panel-images');
     self::createImagesFolder();
@@ -440,10 +455,10 @@ $image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
 //    self::installComponentLanguages();
 $image = '<img src="../media/com_sportsmanagement/jl_images/ext_mod.png">';
 		echo JHtml::_('sliders.panel', $image.' Modules', 'panel-modules');
-    self::installModules($parent);
+    self::installModules($adapter);
     $image = '<img src="../media/com_sportsmanagement/jl_images/ext_plugin.png">';
 		echo JHtml::_('sliders.panel', $image.' Plugins', 'panel-plugins');
-    self::installPlugins($parent);
+    self::installPlugins($adapter);
     $image = '<img src="../media/com_sportsmanagement/jl_images/ext_esp.png">';
 		echo JHtml::_('sliders.panel', $image.' Create/Update Images Folders', 'panel-images');
     self::createImagesFolder();
@@ -465,13 +480,14 @@ echo self::getFxInitJSCode('steps');
 	}
     
     
+    
     /**
      * com_sportsmanagementInstallerScript::deleteFolders()
      * 
-     * @param mixed $parent
+     * @param mixed $adapter
      * @return void
      */
-    public function deleteFolders($parent)
+    public function deleteFolders( $adapter)
     {
     $mainframe = JFactory::getApplication();
     $excludeExtension = array();
@@ -633,9 +649,12 @@ echo self::getFxInitJSCode('steps');
 	}
     
     
-    /*
-    * sets parameter values in the component's row of the extension table
-    */
+    /**
+     * com_sportsmanagementInstallerScript::setParams()
+     * sets parameter values in the component's row of the extension table
+     * @param mixed $param_array
+     * @return void
+     */
     function setParams($param_array) 
     {
         
@@ -646,6 +665,7 @@ echo self::getFxInitJSCode('steps');
         
                 if ( count($param_array) > 0 ) 
                 {
+                        try{
                         // read the existing component value(s)
                         $db = JFactory::getDbo();
                         $db->setQuery('SELECT params FROM #__extensions WHERE name = "com_sportsmanagement"');
@@ -666,40 +686,57 @@ echo self::getFxInitJSCode('steps');
                         $db->setQuery('UPDATE #__extensions SET params = ' .
                                 $db->quote( $paramsString ) .
                                 ' WHERE name = "com_sportsmanagement"' );
-                                $db->query();
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+    $db->execute();        
+}    
+else
+{
+    $db->query();
+}
+                
+                        } catch (Exception $e) {
+                        $msg = $e->getMessage(); // Returns "Normally you would have other code...
+                        $code = $e->getCode(); // Returns '500';
+                        JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
+                        }
                 }
                 
         }
         
 
     
+    
     /**
      * com_sportsmanagementInstallerScript::installJoomlaExtensions()
      * 
-     * @param mixed $parent
+     * @param mixed $adapter
      * @return void
      */
-    public function installJoomlaExtensions($parent)
+    public function installJoomlaExtensions( $adapter)
 	{
   $mainframe = JFactory::getApplication();
-  $src = $parent->getParent()->getPath('source');
-  $manifest = $parent->getParent()->manifest;
+  $src = $adapter->getParent()->getPath('source');
+  $manifest = $adapter->getParent()->manifest;
   $db = JFactory::getDBO();
   
   JFolder::copy(JPATH_ROOT.'/administrator/components/com_sportsmanagement/libraries/joomla/', JPATH_ROOT.'/', '', true);
   
   }
+  
+  
+	
 	/**
 	 * com_sportsmanagementInstallerScript::installPlugins()
-	 * method to install the plugins
-	 * @param mixed $parent
+	 * 
+	 * @param mixed $adapter
 	 * @return void
 	 */
-	public function installPlugins($parent)
+	public function installPlugins( $adapter)
 	{
   $mainframe = JFactory::getApplication();
-  $src = $parent->getParent()->getPath('source');
-  $manifest = $parent->getParent()->manifest;
+  $src = $adapter->getParent()->getPath('source');
+  $manifest = $adapter->getParent()->manifest;
   $db = JFactory::getDBO();
   //$j = new JVersion();
 //  $joomla_version = $j->RELEASE;
@@ -848,17 +885,18 @@ echo self::getFxInitJSCode('steps');
     
     
 
+	
 	/**
 	 * com_sportsmanagementInstallerScript::installModules()
-	 * method to install the modules
-	 * @param mixed $parent
+	 * 
+	 * @param mixed $adapter
 	 * @return void
 	 */
-	public function installModules($parent)
+	public function installModules( $adapter)
 	{
   $mainframe = JFactory::getApplication();
-  $src = $parent->getParent()->getPath('source');
-  $manifest = $parent->getParent()->manifest;
+  $src = $adapter->getParent()->getPath('source');
+  $manifest = $adapter->getParent()->manifest;
   $db = JFactory::getDBO();
   
   //$mainframe->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($manifest,true).'</pre>'),'');
@@ -896,9 +934,17 @@ echo self::getFxInitJSCode('steps');
             
             if ( $position )
             {
+                try{
                 $query = "UPDATE #__modules SET position='".$position."', ordering=".$ordering.", published=".$published." WHERE module='".$name."' ";
                 $db->setQuery($query);
-                $db->query();
+if(version_compare(JVERSION,'3.0.0','ge')) 
+{
+    $db->execute();        
+}    
+else
+{
+    $db->query();
+}
                 if ( $client == 'administrator' )
                 {
                 $query		 = $db->getQuery(true);
@@ -924,6 +970,11 @@ echo self::getFxInitJSCode('steps');
 								}
                 
                 
+                }
+                } catch (Exception $e) {
+                $msg = $e->getMessage(); // Returns "Normally you would have other code...
+                $code = $e->getCode(); // Returns '500';
+                JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error'); // commonly to still display that error
                 }   
                 
             }
