@@ -84,7 +84,15 @@ class sportsmanagementViewRanking extends sportsmanagementView
 	$this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
 	$this->tableconfig = $this->config;
 
-	if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
+	/**
+     * sollen die vereinskürzel ersetzt und/oder angezeigt werden ?
+     */
+    if ( $this->config['show_club_short_names'] || $this->config['show_replace_club_short_names'] )
+	{
+    $mdlClubnames = JModelLegacy::getInstance("clubnames", "sportsmanagementModel");
+    }
+    
+    if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 	{
 		$mod_name 	= "mod_jw_srfr";
 		$rssfeeditems	= '';
@@ -105,22 +113,20 @@ class sportsmanagementViewRanking extends sportsmanagementView
 	{
 	if ( $this->config['show_table_4'] )
 	{
-       sportsmanagementModelRanking::$part = 1;
-       sportsmanagementModelRanking::$from = 0;
-       sportsmanagementModelRanking::$to = 0;
-       sportsmanagementModelRanking::computeRanking(sportsmanagementModelProject::$cfg_which_database);
+    sportsmanagementModelRanking::$part = 1;
+    sportsmanagementModelRanking::$from = 0;
+    sportsmanagementModelRanking::$to = 0;
+    sportsmanagementModelRanking::computeRanking(sportsmanagementModelProject::$cfg_which_database);
 	$this->firstRank = sportsmanagementModelRanking::$currentRanking;
-       
 	}
      
     if ( $this->config['show_table_5'] )
 	{  
-		sportsmanagementModelRanking::$part = 2;
-		sportsmanagementModelRanking::$from = 0;
-		sportsmanagementModelRanking::$to = 0;
-		sportsmanagementModelRanking::computeRanking(sportsmanagementModelProject::$cfg_which_database);
-		$this->secondRank = sportsmanagementModelRanking::$currentRanking;
-       
+	sportsmanagementModelRanking::$part = 2;
+	sportsmanagementModelRanking::$from = 0;
+	sportsmanagementModelRanking::$to = 0;
+	sportsmanagementModelRanking::computeRanking(sportsmanagementModelProject::$cfg_which_database);
+	$this->secondRank = sportsmanagementModelRanking::$currentRanking;
 	}  
        
 	sportsmanagementModelRanking::$part = 0;
@@ -202,12 +208,12 @@ $this->currentRanking = sportsmanagementModelRanking::$currentRanking;
 	}
 	}
 		
-		if ( sizeof($ranking_reason) > 0 )
-		{
-		$this->ranking_notes = implode(", ",$ranking_reason);
-		}
-		else
-		{
+	if ( sizeof($ranking_reason) > 0 )
+	{
+	$this->ranking_notes = implode(", ",$ranking_reason);
+	}
+	else
+	{
     $this->ranking_notes = $no_ranking_reason;
     }
 	
@@ -237,11 +243,25 @@ $this->currentRanking = sportsmanagementModelRanking::$currentRanking;
 
 		$this->colors = sportsmanagementModelProject::getColors($this->config['colors'],sportsmanagementModelProject::$cfg_which_database);
 /**
- * diddipoeler
+ * wir holen uns alle mannschaften die dem projekt zugeordnet wurden
  */
 	$this->allteams = $mdlProjectteams->getAllProjectTeams($this->project->id,0,NULL,sportsmanagementModelProject::$cfg_which_database);
+
+
 		
- 	if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
+ 	/**
+     * möchte der anwender die vereinskürzel ausgeschrieben sehen ?
+     */
+    if ( $this->config['show_replace_club_short_names'] )
+	{
+    /**
+     * als erstes holen wir uns die vereinskürzel des landes im projekt
+     */
+    $short_names = $mdlClubnames->getClubNames($this->project->country);
+    
+    }
+    
+    if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	{
 	$my_text .= 'overallconfig <pre>'.print_r($this->overallconfig,true).'</pre>';    
 	$my_text .= 'config <pre>'.print_r($this->config,true).'</pre>';

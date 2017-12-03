@@ -48,16 +48,16 @@ switch ($this->view)
 {
 case 'ranking':
 //echo '<pre>'.print_r($this->allteams,true).'</pre><br>';
-foreach ( $this->allteams as $row )
-{
+//foreach ( $this->allteams as $row )
+//{
 // team_name
 //$values[]['latLng'] = '['.$row->latitude.','.$row->longitude.'], data:'.$row->team_name;
 //$values[][data] = '['.$row->team_name.']';
-$latitude = $row->latitude;
-$longitude = $row->longitude;
+//$latitude = $row->latitude;
+//$longitude = $row->longitude;
 //echo 'latitude  -> '.$latitude .'<br>';
 //echo 'longitude -> '.$longitude .'<br>';
-}
+//}
 $icon = 'http://maps.google.com/mapfiles/marker_green.png';
 //echo json_encode($values);
 
@@ -161,31 +161,6 @@ https://developers.google.com/maps/documentation/javascript/examples/streetview-
 */
 jQuery(document).ready(function()  {
 
-//jQuery('#map-canvas').gmap3({
-//  map:{
-//    options:{
-//      zoom: 14, 
-//      mapTypeId: google.maps.MapTypeId.HYBRID , 
-//      streetViewControl: true, 
-//      center: fenway 
-//    }
-//  },    
-//  streetviewpanorama:{
-//    options:{
-//      container: jQuery(document.createElement("div")).addClass("googlemap").insertAfter( jQuery('#map-canvas') ),
-//      opts:{
-//        position: fenway,
-//        visible: true,
-//        pov: {
-//          heading: 34,
-//          pitch: 10
-//        }
-//      }
-//    }
-//  }
-//});
-
-
 // Create a StreetViewService to be able to check
 // if a given LatLng has a corresponding panorama.
 var streetviewService = new google.maps.StreetViewService();
@@ -202,13 +177,6 @@ mapTypeId: 'satellite',
 function processSVData(data, status) {
   if (status === google.maps.StreetViewStatus.OK) {
     //alert('ok');
-//var fenway2 = {lat: <?PHP echo $latitude; ?>, lng: <?PHP echo $longitude; ?>};
-//        var map = new google.maps.Map(document.getElementById('map'), {
-//          center: fenway2,
-//          mapTypeControl: true,
-//mapTypeId: 'satellite',
-//          zoom: 14
-//        });
         var panorama = new google.maps.StreetViewPanorama(
             document.getElementById('pano'), {
               position: fenway2,
@@ -229,28 +197,6 @@ function processSVData(data, status) {
     //jQuery("#pano").css("height", "");
    }
 }
-    
-
-//var fenway2 = {lat: <?PHP echo $latitude; ?>, lng: <?PHP echo $longitude; ?>};
-//        var map = new google.maps.Map(document.getElementById('map'), {
-//          center: fenway2,
-//          mapTypeControl: true,
-//mapTypeId: 'satellite',
-//          zoom: 14
-//        });
-//        var panorama = new google.maps.StreetViewPanorama(
-//            document.getElementById('pano'), {
-//              position: fenway2,
-//              pov: {
-//                heading: 34,
-//                pitch: 10
-//              }
-//            });
-//        map.setStreetView(panorama);
-
-        
-
-
 
 });
 

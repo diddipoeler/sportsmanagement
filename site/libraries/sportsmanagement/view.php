@@ -136,8 +136,8 @@ $this->document->setHeadData($headData);
             break;	
             default:
             $this->project = sportsmanagementModelProject::getProject(sportsmanagementModelProject::$cfg_which_database);
-	    $this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
-	    $this->config = sportsmanagementModelProject::getTemplateConfig($this->getName(),sportsmanagementModelProject::$cfg_which_database);
+	        $this->overallconfig = sportsmanagementModelProject::getOverallConfig(sportsmanagementModelProject::$cfg_which_database);
+	        $this->config = sportsmanagementModelProject::getTemplateConfig($this->getName(),sportsmanagementModelProject::$cfg_which_database);
             $this->config = array_merge($this->overallconfig,$this->config);
             break;
         }
