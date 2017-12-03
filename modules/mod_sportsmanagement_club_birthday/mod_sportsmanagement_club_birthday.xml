@@ -7,7 +7,7 @@
 	<authorUrl>http://www.fussballineuropa.de</authorUrl>
 	<license>GNU/GPL</license>
 	<copyright>Copyright (c) 2014 diddipoeler</copyright>
-	<version>1.0</version>
+	<version>1.1.0</version>
 	<description>MOD_SPORTSMANAGEMENT_CLUB_BIRTHDAY_XML_DESC</description>
 
 	<files>
@@ -36,8 +36,19 @@
 		<fields name="params"
     addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 
-			<fieldset	name="basic"
+			<fieldset name="basic"
       description="MOD_SPORTSMANAGEMENT_BASIC_DESC">
+	  
+<field type="extensionversion" version="1.1.0" />
+<field type="extensionauthor" />
+<field type="extensiontranslators" translators="COM_SPORTSMANAGEMENT_TRANSLATORS" />
+<field type="extensionlink" linktype="translate" link="https://www.transifex.com/opentranslators/" />	
+<field type="extensionlink" linktype="onlinedoc" link="http://jsm-wiki.diddipoeler.de/index.php?title=SM-Module:Club_Birthday" />
+<field type="extensionlink" linktype="forum" link="http://www.fussballineuropa.de/" />	            	
+<field type="extensionlink" linktype="support" link="http://www.fussballineuropa.de/" />
+<field type="extensionlink" linktype="report" link="https://github.com/diddipoeler/sportsmanagement/issues" />	
+<field type="extensionlink" linktype="donate" link="http://www.fussballineuropa.de/" />	  
+	  
      <field name="cfg_which_database" 
     type="radio" 
     default="0"

@@ -38,7 +38,6 @@
 */
 
 // no direct access
-
 defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.utilities.arrayhelper' );
 
@@ -58,16 +57,16 @@ class modSportsmanagementClubBirthdayHelper
 {
     
 /**
- * modSportsmanagementClubBirthdayHelper::jl_birthday_sort()
+ * modSportsmanagementClubBirthdayHelper::jsm_birthday_sort()
  * 
  * @param mixed $array
  * @param mixed $sort
  * @return
  */
-public static function jl_birthday_sort ($array, $sort) 
+public static function jsm_birthday_sort ($array, $sort) 
 {
 
-/**
+    /**
 	 * Utility function to sort an array of objects on a given field
 	 *
 	 * @param   array  &$a             An array of objects
@@ -96,16 +95,16 @@ public static function jl_birthday_sort ($array, $sort)
 public static function getClubs($limit,$season_ids)
 	{
 	   $app = JFactory::getApplication();
-$birthdaytext='';
+$birthdaytext = '';
 $database = sportsmanagementHelper::getDBConnection();
 // get club info, we have to make a function for this
 $dateformat = "DATE_FORMAT(c.founded,'%Y-%m-%d') AS date_of_birth";
 
 if ( $season_ids )
 {
-foreach ($season_ids as $key=>$val) 
+foreach ( $season_ids as $key => $val ) 
 {
-     $season_ids[$key]  = (int)$val;
+$season_ids[$key] = (int)$val;
 }    
 $seasons = implode(",",$season_ids); 
 }
@@ -132,7 +131,7 @@ $seasons = implode(",",$season_ids);
     $database->setQuery($query,0,$limit);
 
     $result = $database->loadObjectList();
-	 $database->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
+	$database->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.html#method_disconnect
 	return $result;
 }
 
