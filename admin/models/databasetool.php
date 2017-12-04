@@ -392,7 +392,8 @@ $result = $this->jsmdb->loadResultArray();
      */
     function getJoomleagueTables()
     {
-        $this->jsmquery = "SHOW TABLES LIKE '%_joomleague%'";
+        $this->jsmquery = $this->jsmdb->getQuery(true);
+	    $this->jsmquery = "SHOW TABLES LIKE '%_joomleague%'";
 		$this->jsmdb->setQuery($this->jsmquery);
     
 if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -414,7 +415,7 @@ $result = $this->jsmdb->loadResultArray();
         {
         foreach ( $result as $key => $value )
         {
-        $this->jsmquery->clear('');    
+        $this->jsmquery = $this->jsmdb->getQuery(true);   
         $this->jsmquery->select('id');
 		// From table
 		$this->jsmquery->from('#__sportsmanagement_jl_tables');
