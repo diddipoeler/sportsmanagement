@@ -1528,15 +1528,15 @@ foreach( $xml->events as $event )
     function insertSportType($type)
     {
         $app = JFactory::getApplication();
-        $this->option = JRequest::getCmd('option');
-        $db = sportsmanagementHelper::getDBConnection(FALSE,FALSE);
+        //$this->option = JRequest::getCmd('option');
+        //$db = sportsmanagementHelper::getDBConnection(FALSE,FALSE);
         $sports_type_id = 0;
         //$this->app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT',strtoupper($type)),'Notice');
         
         //self::createSportTypeArray();
         $available = self::checkSportTypeStructur($type);
         
-        $install_standard_position = JComponentHelper::getParams($this->option)->get('install_standard_position',0);
+        $install_standard_position = JComponentHelper::getParams($this->jsmoption)->get('install_standard_position',0);
         
         if ( !$available )
         {
