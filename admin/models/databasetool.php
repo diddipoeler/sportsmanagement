@@ -456,7 +456,7 @@ $result = $this->jsmdb->loadResultArray();
      */
     function setParamstoJSON()
     {
-    $this->jsmquery->clear();   
+    $this->jsmquery = $this->jsmdb->getQuery(true);  
     $this->jsmquery->select('template,params');
 // From table
 $this->jsmquery->from('#__sportsmanagement_template_config');
@@ -532,7 +532,7 @@ $t_params = json_encode( $ini );
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' template <br><pre>'.print_r($row->template,true).'</pre>'),'');
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' t_params <br><pre>'.print_r($t_params,true).'</pre>'),'');
 
-$this->jsmquery->clear();
+$this->jsmquery = $this->jsmdb->getQuery(true);
     // Fields to update.
 $fields = array(
     $this->jsmdb->quoteName('params') . ' = '.$this->jsmdb->Quote(''.$t_params.'') 
@@ -541,9 +541,9 @@ $fields = array(
 $conditions = array(
     $this->jsmdb->quoteName('template') . ' LIKE '.$this->jsmdb->Quote(''.$row->template.'')
 );        
-$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_template_config'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->query);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_template_config'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);
     
     
@@ -560,7 +560,7 @@ self::runJoomlaQuery(__CLASS__,$this->jsmdb);
      */
     function setNewComponentName()
     {
-    $this->query->clear();
+    $this->jsmquery = $this->jsmdb->getQuery(true);
     // Fields to update.
 $fields = array(
     $this->jsmdb->quoteName('title') . " = replace(title, 'COM_JOOMLEAGUE', 'COM_SPORTSMANAGEMENT') " 
@@ -569,14 +569,14 @@ $fields = array(
 $conditions = array(
     $this->jsmdb->quoteName('title') . ' LIKE '.$this->jsmdb->Quote('%'.'COM_JOOMLEAGUE'.'%')
 );        
-$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_template_config'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->query);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_template_config'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);    
 $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert (template_config).'),'Notice');    
 
 
-    $this->query->clear();
+    $this->jsmquery = $this->jsmdb->getQuery(true);
     // Fields to update.
 $fields = array(
     $this->jsmdb->quoteName('extended') . " = replace(extended, 'COM_JOOMLEAGUE', 'COM_SPORTSMANAGEMENT') " 
@@ -585,13 +585,13 @@ $fields = array(
 $conditions = array(
     $this->jsmdb->quoteName('extended') . ' LIKE '.$this->jsmdb->Quote('%'.'COM_JOOMLEAGUE'.'%')
 );        
-$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_rosterposition'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->query);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_rosterposition'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);    
 $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert (rosterposition).'),'Notice');        
 
-$this->query->clear();
+$this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
 $fields = array(
     $this->jsmdb->quoteName('extended') . " = replace(extended, 'JL_EXT', 'COM_SPORTSMANAGEMENT_EXT') " 
@@ -600,14 +600,14 @@ $fields = array(
 $conditions = array(
     $this->jsmdb->quoteName('extended') . ' LIKE '.$this->jsmdb->Quote('%'.'JL_EXT'.'%')
 );        
-$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_rosterposition'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->query);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_rosterposition'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);    
 $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert (rosterposition).'),'Notice');
 
 
-$this->query->clear();
+$this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
 $fields = array(
     $this->jsmdb->quoteName('name') . " = replace(name, 'COM_JOOMLEAGUE', 'COM_SPORTSMANAGEMENT') " 
@@ -616,9 +616,9 @@ $fields = array(
 $conditions = array(
     $this->jsmdb->quoteName('name') . ' LIKE '.$this->jsmdb->Quote('%'.'COM_JOOMLEAGUE'.'%')
 );        
-$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_eventtype'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->query);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_eventtype'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);    
 $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert (eventtype).'),'Notice');
 
@@ -632,7 +632,7 @@ $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätz
      */
     function setNewPicturePath()
     {
-    $this->query->clear();
+    $this->jsmquery = $this->jsmdb->getQuery(true);
     // Fields to update.
 $fields = array(
     $this->jsmdb->quoteName('picture') . " = replace(picture, 'com_joomleague', 'com_sportsmanagement') " 
@@ -641,13 +641,13 @@ $fields = array(
 $conditions = array(
     $this->jsmdb->quoteName('picture') . ' LIKE '.$this->jsmdb->Quote('%'.'com_joomleague'.'%')
 );        
-$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_person'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->query);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_person'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);    
 $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
 
-$this->query->clear();
+$this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
 $fields = array(
     $this->jsmdb->quoteName('picture') . " = replace(picture, 'com_joomleague', 'com_sportsmanagement') " 
@@ -656,13 +656,13 @@ $fields = array(
 $conditions = array(
     $this->jsmdb->quoteName('picture') . ' LIKE '.$this->jsmdb->Quote('%'.'com_joomleague'.'%')
 );        
-$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_playground'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->query);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_playground'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);
 $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
 
-$this->query->clear();
+$this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
 $fields = array(
     $this->jsmdb->quoteName('picture') . " = replace(picture, 'com_joomleague', 'com_sportsmanagement') " 
@@ -671,15 +671,15 @@ $fields = array(
 $conditions = array(
     $this->jsmdb->quoteName('picture') . ' LIKE '.$this->jsmdb->Quote('%'.'com_joomleague'.'%')
 );        
-$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_team'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->query);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
-//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_team'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);                
 $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
 
 
-$this->query->clear();
+$this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
 $fields = array(
     $this->jsmdb->quoteName('logo_big') . " = replace(logo_big, 'com_joomleague', 'com_sportsmanagement') " 
@@ -688,14 +688,14 @@ $fields = array(
 $conditions = array(
     $this->jsmdb->quoteName('logo_big') . ' LIKE '.$this->jsmdb->Quote('%'.'com_joomleague'.'%')
 );        
-$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->query);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
-//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);                
 $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
 
-$this->query->clear();
+$this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
 $fields = array(
     $this->jsmdb->quoteName('logo_middle') . " = replace(logo_middle, 'com_joomleague', 'com_sportsmanagement') " 
@@ -704,14 +704,14 @@ $fields = array(
 $conditions = array(
     $this->jsmdb->quoteName('logo_middle') . ' LIKE '.$this->jsmdb->Quote('%'.'com_joomleague'.'%')
 );        
-$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->query);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
-//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);                
 $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
 
-$this->query->clear();
+$this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
 $fields = array(
     $this->jsmdb->quoteName('logo_small') . " = replace(logo_small, 'com_joomleague', 'com_sportsmanagement') " 
@@ -720,15 +720,15 @@ $fields = array(
 $conditions = array(
     $this->jsmdb->quoteName('logo_small') . ' LIKE '.$this->jsmdb->Quote('%'.'com_joomleague'.'%')
 );        
-$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->query);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
-//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_club'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);                
 $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
 
 
-$this->query->clear();
+$this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
 $fields = array(
     $this->jsmdb->quoteName('picture') . " = replace(picture, 'com_joomleague', 'com_sportsmanagement') " 
@@ -737,14 +737,14 @@ $fields = array(
 $conditions = array(
     $this->jsmdb->quoteName('picture') . ' LIKE '.$this->jsmdb->Quote('%'.'com_joomleague'.'%')
 );        
-$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_associations'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->query);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
-//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_associations'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);                
 $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
 
-$this->query->clear();
+$this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
 $fields = array(
     $this->jsmdb->quoteName('assocflag') . " = replace(assocflag, 'com_joomleague', 'com_sportsmanagement') " 
@@ -753,14 +753,14 @@ $fields = array(
 $conditions = array(
     $this->jsmdb->quoteName('assocflag') . ' LIKE '.$this->jsmdb->Quote('%'.'com_joomleague'.'%')
 );        
-$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_associations'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->query);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
-//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_associations'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);                
 $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
 
-$this->query->clear();
+$this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
 $fields = array(
     $this->jsmdb->quoteName('icon') . " = replace(icon, 'com_joomleague', 'com_sportsmanagement') " 
@@ -769,14 +769,14 @@ $fields = array(
 $conditions = array(
     $this->jsmdb->quoteName('icon') . ' LIKE '.$this->jsmdb->Quote('%'.'com_joomleague'.'%')
 );        
-$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_eventtype'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->query);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
-//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_eventtype'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);                
 $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
 
-$this->query->clear();
+$this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
 $fields = array(
     $this->jsmdb->quoteName('picture') . " = replace(picture, 'com_joomleague', 'com_sportsmanagement') " 
@@ -785,14 +785,14 @@ $fields = array(
 $conditions = array(
     $this->jsmdb->quoteName('picture') . ' LIKE '.$this->jsmdb->Quote('%'.'com_joomleague'.'%')
 );        
-$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_project_team'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->query);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
-//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_project_team'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);                
 $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
 
-$this->query->clear();
+$this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
 $fields = array(
     $this->jsmdb->quoteName('trikot_home') . " = replace(trikot_home, 'com_joomleague', 'com_sportsmanagement') " 
@@ -801,14 +801,14 @@ $fields = array(
 $conditions = array(
     $this->jsmdb->quoteName('trikot_home') . ' LIKE '.$this->jsmdb->Quote('%'.'com_joomleague'.'%')
 );        
-$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_project_team'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->query);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
-//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_project_team'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);                
 $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');
 
-$this->query->clear();
+$this->jsmquery = $this->jsmdb->getQuery(true);
 // Fields to update.
 $fields = array(
     $this->jsmdb->quoteName('trikot_away') . " = replace(trikot_away, 'com_joomleague', 'com_sportsmanagement') " 
@@ -817,10 +817,10 @@ $fields = array(
 $conditions = array(
     $this->jsmdb->quoteName('trikot_away') . ' LIKE '.$this->jsmdb->Quote('%'.'com_joomleague'.'%')
 );        
-$this->query->update($this->jsmdb->quoteName('#__sportsmanagement_project_team'))->set($fields)->where($conditions);
-$this->jsmdb->setQuery($this->query);    
-//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');    
-//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->query->dump(),true).'</pre>'),'');
+$this->jsmquery->update($this->jsmdb->quoteName('#__sportsmanagement_project_team'))->set($fields)->where($conditions);
+$this->jsmdb->setQuery($this->jsmquery);    
+//$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');    
+//$this->app->enqueueMessage(JText::_(__CLASS__.' '.__LINE__.' query->dump<br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'');
 self::runJoomlaQuery(__CLASS__,$this->jsmdb);                
 $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätze aktualisiert.'),'Notice');    
     }
@@ -835,8 +835,8 @@ $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätz
     function setSportsManagementTableQuery($table, $command)
     {
         
-        $this->query = strtoupper($command).' TABLE `'.$table.'`'; 
-            $this->jsmdb->setQuery($this->query);
+        $this->jsmquery = strtoupper($command).' TABLE `'.$table.'`'; 
+            $this->jsmdb->setQuery($this->jsmquery);
             if (!self::runJoomlaQuery(__CLASS__,$this->jsmdb))
 		{
 			$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error');
@@ -1057,38 +1057,38 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
    $info = (string)$agegroups->agegroup->attributes()->info;
    $picture = 'images/com_sportsmanagement/database/agegroups/'.(string)$agegroups->agegroup->attributes()->picture;
    
-   $this->query = JFactory::getDbo()->getQuery(true);
+   $this->jsmquery = $this->jsmdb->getQuery(true);
    // Select some fields
-        $this->query->select('id');
+        $this->jsmquery->select('id');
 		// From the table
-		$this->query->from('#__sportsmanagement_agegroup');
-        $this->query->where('name LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($agegroup)).''));
-        $this->query->where('country LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($search_nation)).''));
-        $this->query->where('sportstype_id = '.$filter_sports_type);
+		$this->jsmquery->from('#__sportsmanagement_agegroup');
+        $this->jsmquery->where('name LIKE '.$this->jsmdb->Quote(''.addslashes(stripslashes($agegroup)).''));
+        $this->jsmquery->where('country LIKE '.$this->jsmdb->Quote(''.addslashes(stripslashes($search_nation)).''));
+        $this->jsmquery->where('sportstype_id = '.$filter_sports_type);
         
 //   $this->query="SELECT id
 //            FROM #__".COM_SPORTSMANAGEMENT_TABLE."_agegroup where name like '".$agegroup."' and country like '".$search_nation."' and sportstype_id = ".$filter_sports_type;
 		    
             
-            JFactory::getDbo()->setQuery($this->query);
+            $this->jsmdb->setQuery($this->jsmquery);
 		    // altersgruppe nicht vorhanden ?
-            if ( !JFactory::getDbo()->loadResult() )
+            if ( !$this->jsmdb->loadResult() )
             {
 //   // Get a db connection.
 //        $db = JFactory::getDbo();
         // Create a new query object.
-        $this->query = JFactory::getDbo()->getQuery(true);
+        $this->jsmquery = $this->jsmdb->getQuery(true);
         // Insert columns.
         $columns = array('name','picture','info','sportstype_id','country');
         // Insert values.
         $values = array('\''.$agegroup.'\'','\''.$picture.'\'' ,'\''.$info.'\'' ,'\''.$filter_sports_type.'\'' ,'\''.$search_nation.'\''  );
         // Prepare the insert query.
-        $this->query
-            ->insert(JFactory::getDbo()->quoteName('#__sportsmanagement_agegroup'))
-            ->columns(JFactory::getDbo()->quoteName($columns))
+        $this->jsmquery
+            ->insert($this->jsmdb->quoteName('#__sportsmanagement_agegroup'))
+            ->columns($this->jsmdb->quoteName($columns))
             ->values(implode(',', $values));
         // Set the query using our newly populated query object and execute it.
-        JFactory::getDbo()->setQuery($this->query);
+        $this->jsmdb->setQuery($this->jsmquery);
         
         if (!self::runJoomlaQuery())
 		{
@@ -1546,8 +1546,8 @@ foreach( $xml->events as $event )
             return false;
         }
         
-       $this->query = "SELECT id FROM #__sportsmanagement_sports_type"." WHERE name='"."COM_SPORTSMANAGEMENT_ST_".strtoupper($type)."' ";
-       $this->jsmdb->setQuery($this->query);
+       $this->jsmquery = "SELECT id FROM #__sportsmanagement_sports_type"." WHERE name='"."COM_SPORTSMANAGEMENT_ST_".strtoupper($type)."' ";
+       $this->jsmdb->setQuery($this->jsmquery);
        $result = $this->jsmdb->loadResult();
       $sports_type_id = $result;
        if ( $result )
@@ -1569,18 +1569,18 @@ foreach( $xml->events as $event )
         //// Get a db connection.
 //        $db = JFactory::getDbo();
         // Create a new query object.
-        $this->query = $this->jsmdb->getQuery(true);
+        $this->jsmquery = $this->jsmdb->getQuery(true);
         // Insert columns.
         $columns = array('name','icon');
         // Insert values.
         $values = array('\''.'COM_SPORTSMANAGEMENT_ST_'.strtoupper($type).'\'','\''.'images/com_sportsmanagement/database/placeholders/placeholder_21.png'.'\'');
         // Prepare the insert query.
-        $this->query
+        $this->jsmquery
             ->insert($this->jsmdb->quoteName('#__sportsmanagement_sports_type'))
             ->columns($this->jsmdb->quoteName($columns))
             ->values(implode(',', $values));
         // Set the query using our newly populated query object and execute it.
-        $this->jsmdb->setQuery($this->query);
+        $this->jsmdb->setQuery($this->jsmquery);
         
         if (!$this->jsmdb->execute())
 		{
@@ -1648,19 +1648,19 @@ foreach( $xml->events as $event )
     {
     foreach ( $this->_sport_types_events[$type] as $event )
     {
-        $this->query = self::build_SelectQuery('eventtype',$event->name,$id); 
-        JFactory::getDbo()->setQuery($this->query);
+        $this->jsmquery = self::build_SelectQuery('eventtype',$event->name,$id); 
+        $this->jsmdb->setQuery($this->jsmquery);
         
-        if ( !$object = JFactory::getDbo()->loadObject() )
+        if ( !$object = $this->jsmdb->loadObject() )
 		{
-        $this->query				= self::build_InsertQuery_Event('eventtype',$event->name,$event->icon,$id,2);
-         JFactory::getDbo()->setQuery($this->query);
-			$result				= JFactory::getDbo()->execute();
-			$events_player[$i]	= JFactory::getDbo()->insertid();
-			$events_staff[$i]		= JFactory::getDbo()->insertid();
-			$events_clubstaff[$i]	= JFactory::getDbo()->insertid();
-			$events_referees[$i]	= JFactory::getDbo()->insertid();
-            $event->tableid = JFactory::getDbo()->insertid();
+        $this->jsmquery				= self::build_InsertQuery_Event('eventtype',$event->name,$event->icon,$id,2);
+         $this->jsmdb->setQuery($this->jsmquery);
+			$result				= $this->jsmdb->execute();
+			$events_player[$i]	= $this->jsmdb->insertid();
+			$events_staff[$i]		= $this->jsmdb->insertid();
+			$events_clubstaff[$i]	= $this->jsmdb->insertid();
+			$events_referees[$i]	= $this->jsmdb->insertid();
+            $event->tableid = $this->jsmdb->insertid();
             }
             else
 		{
@@ -1687,15 +1687,15 @@ foreach( $xml->events as $event )
     {
     foreach ( $this->_sport_types_position[$type] as $position )
     {
-    $this->query = self::build_SelectQuery('position',$position->name,$id); 
-    JFactory::getDbo()->setQuery($this->query);    
-    if (!$dbresult=JFactory::getDbo()->loadObject())
+    $this->jsmquery = self::build_SelectQuery('position',$position->name,$id); 
+    $this->jsmdb->setQuery($this->jsmquery);    
+    if (!$dbresult=$this->jsmdb->loadObject())
 			{
-				$this->query					= self::build_InsertQuery_Position('position',$position->name,$position->switch,$position->parent,$position->content,$id,1); 
-                JFactory::getDbo()->setQuery($this->query);
-				$result					= JFactory::getDbo()->execute();
-				$ParentID				= JFactory::getDbo()->insertid();
-				$PlayersPositions[$i]	= JFactory::getDbo()->insertid();
+				$this->jsmquery					= self::build_InsertQuery_Position('position',$position->name,$position->switch,$position->parent,$position->content,$id,1); 
+                $this->jsmdb->setQuery($this->jsmquery);
+				$result					= $this->jsmdb->execute();
+				$ParentID				= $this->jsmdb->insertid();
+				$PlayersPositions[$i]	= $this->jsmdb->insertid();
 			}
 			else
 			{
@@ -1715,15 +1715,15 @@ foreach( $xml->events as $event )
     {
         foreach ( $this->_sport_types_position_parent[$position->name] as $parent )
         {
-            $this->query = self::build_SelectQuery('position',$parent->name,$id); 
-            JFactory::getDbo()->setQuery($this->query);
-            if (!$object=JFactory::getDbo()->loadObject())
+            $this->jsmquery = self::build_SelectQuery('position',$parent->name,$id); 
+            $this->jsmdb->setQuery($this->jsmquery);
+            if (!$object=$this->jsmdb->loadObject())
 				{
-					$this->query					= self::build_InsertQuery_Position('position',$parent->name,$parent->switch,$ParentID,$parent->content,$id,2); 
-                    JFactory::getDbo()->setQuery($this->query);
+					$this->jsmquery					= self::build_InsertQuery_Position('position',$parent->name,$parent->switch,$ParentID,$parent->content,$id,2); 
+                    $this->jsmdb->setQuery($this->jsmquery);
 					$result					= self::runJoomlaQuery();
-					$PlayersPositions[$j]	= JFactory::getDbo()->insertid();
-                    $parent->tableid = JFactory::getDbo()->insertid();
+					$PlayersPositions[$j]	= $this->jsmdb->insertid();
+                    $parent->tableid = $this->jsmdb->insertid();
 				}
 				else
 				{
@@ -1793,8 +1793,8 @@ foreach( $xml->events as $event )
      */
     function build_SelectQuery($tablename,$param1,$st_id = 0)
 {
-	$this->query = "SELECT * FROM #__sportsmanagement_".$tablename." WHERE name='".$param1."' and sports_type_id = ".$st_id." ";
-	return $this->query;
+	$this->jsmquery = "SELECT * FROM #__sportsmanagement_".$tablename." WHERE name='".$param1."' and sports_type_id = ".$st_id." ";
+	return $this->jsmquery;
 }
 
 /**
@@ -1825,10 +1825,9 @@ function build_InsertQuery_Position($tablename,$param1,$param2,$param3,$param4,$
  * feld import_id einfügen
  */
 try { 
-$this->query = $this->jsmdb->getQuery(true);
-$this->query->clear();
-$this->query = "ALTER TABLE `#__sportsmanagement_".$tablename."` ADD `import_id` INT(11) NOT NULL DEFAULT '0' "   ;
-$this->jsmdb->setQuery($this->query);
+$this->jsmquery = $this->jsmdb->getQuery(true);
+$this->jsmquery = "ALTER TABLE `#__sportsmanagement_".$tablename."` ADD `import_id` INT(11) NOT NULL DEFAULT '0' "   ;
+$this->jsmdb->setQuery($this->jsmquery);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 //$result = $this->jsmdb->execute();
 }
@@ -1841,8 +1840,8 @@ catch (Exception $e) {
     $count_id = 0;
         
 	$alias = JFilterOutput::stringURLSafe($param1);
-	$this->query = "INSERT INTO #__sportsmanagement_".$tablename." (`name`,`alias`,`".$param2."`,`parent_id`,`sports_type_id`,`published`,`ordering`,`import_id`) VALUES ('".$param1."','".$alias."','".$param4."','".$param3."','".$sports_type_id."','1','".$order_count."','".$count_id."')";
-	return $this->query;
+	$this->jsmquery = "INSERT INTO #__sportsmanagement_".$tablename." (`name`,`alias`,`".$param2."`,`parent_id`,`sports_type_id`,`published`,`ordering`,`import_id`) VALUES ('".$param1."','".$alias."','".$param4."','".$param3."','".$sports_type_id."','1','".$order_count."','".$count_id."')";
+	return $this->jsmquery;
 }
 
 /**
@@ -1871,10 +1870,9 @@ function build_InsertQuery_Event($tablename,$param1,$param2,$sports_type_id,$ord
  * feld import_id einfügen
  */
 try { 
-$this->query = $this->jsmdb->getQuery(true);
-$this->query->clear();
-$this->query = "ALTER TABLE `#__sportsmanagement_".$tablename."` ADD `import_id` INT(11) NOT NULL DEFAULT '0' "   ;
-$this->jsmdb->setQuery($this->query);
+$this->jsmquery = $this->jsmdb->getQuery(true);
+$this->jsmquery = "ALTER TABLE `#__sportsmanagement_".$tablename."` ADD `import_id` INT(11) NOT NULL DEFAULT '0' "   ;
+$this->jsmdb->setQuery($this->jsmquery);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 //$result = $this->jsmdb->execute();
 }
@@ -1886,8 +1884,8 @@ catch (Exception $e) {
 
     $count_id = 0;
     $alias = JFilterOutput::stringURLSafe($param1);
-	$this->query = "INSERT INTO #__sportsmanagement_".$tablename." (`name`,`alias`,`icon`,`sports_type_id`,`published`,`ordering`,`import_id`) VALUES ('".$param1."','".$alias."','".$param2."','".$sports_type_id."','1','".$order_count."','".$count_id."')";
-	return $this->query;
+	$this->jsmquery = "INSERT INTO #__sportsmanagement_".$tablename." (`name`,`alias`,`icon`,`sports_type_id`,`published`,`ordering`,`import_id`) VALUES ('".$param1."','".$alias."','".$param2."','".$sports_type_id."','1','".$order_count."','".$count_id."')";
+	return $this->jsmquery;
 }
 
 /**
@@ -1913,10 +1911,9 @@ function build_InsertQuery_PositionEventType($param1,$param2)
  * feld import_id einfügen
  */
 try { 
-$this->query = $this->jsmdb->getQuery(true);
-$this->query->clear();
-$this->query = "ALTER TABLE `#__sportsmanagement_position_eventtype` ADD `import_id` INT(11) NOT NULL DEFAULT '0' "   ;
-$this->jsmdb->setQuery($this->query);
+$this->jsmquery = $this->jsmdb->getQuery(true);
+$this->jsmquery = "ALTER TABLE `#__sportsmanagement_position_eventtype` ADD `import_id` INT(11) NOT NULL DEFAULT '0' "   ;
+$this->jsmdb->setQuery($this->jsmquery);
 sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 //$result = $this->jsmdb->execute();
 }
@@ -1927,8 +1924,8 @@ catch (Exception $e) {
 }
 
     $count_id = 0;
-	$this->query = "INSERT INTO	#__sportsmanagement_position_eventtype (`position_id`,`eventtype_id`,`import_id`) VALUES ('".$param1."','".$param2."','".$count_id."')";
-	return $this->query;
+	$this->jsmquery = "INSERT INTO	#__sportsmanagement_position_eventtype (`position_id`,`eventtype_id`,`import_id`) VALUES ('".$param1."','".$param2."','".$count_id."')";
+	return $this->jsmquery;
 }
 
 
