@@ -8,6 +8,7 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 	<field
 			name="id"
 			type="hidden"
+			default="0"
 		/>
 		<field
 			name="name"

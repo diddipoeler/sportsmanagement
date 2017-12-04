@@ -5,6 +5,7 @@
 	<field
 			name="id"
 			type="hidden"
+			default="0"
 		/>
 		
 	<fieldset name="matchpreview">
