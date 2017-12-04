@@ -684,7 +684,14 @@ $debug 		= $config->get('config.debug');
 $options	= array ( 'driver' => $driver, 'host' => $host, 'user' => $user, 'password' => $password, 'database' => $database, 'prefix' => $prefix );
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' database<br><pre>'.print_r($options,true).'</pre>'),'');   
 
+try{
 $db = JDatabase::getInstance( $options );
+}
+catch (Exception $e) {
+    // catch any database errors.
+    //$db->transactionRollback();
+    JErrorPage::render($e);
+}
 
 if ( JError::isError($db) ) {
 			header('HTTP/1.1 500 Internal Server Error');
@@ -738,10 +745,19 @@ else
         $option['database'] = $params->get( 'jsm_db' );      // Database name
         $option['prefix']   = $params->get( 'jsm_dbprefix' );             // Database prefix (may be empty)
  
+        
+        try {
         // zuerst noch überprüfen, ob der user
         // überhaupt den zugriff auf die datenbank hat.
         self::$_jsm_db = JDatabase::getInstance( $option );
         $user_id = $params->get( 'jsm_server_user' );
+        }
+        catch (Exception $e) {
+    // catch any database errors.
+ //   $db->transactionRollback();
+    JErrorPage::render($e);
+}
+        
         //$user_password = $params->get( 'jsm_server_password' );
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsm_server_password<br><pre>'.print_r($user_password,true).'</pre>'),'');
