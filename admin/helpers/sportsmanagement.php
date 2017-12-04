@@ -749,7 +749,14 @@ else
         try {
         // zuerst noch überprüfen, ob der user
         // überhaupt den zugriff auf die datenbank hat.
+        if( version_compare(JSM_JVERSION,'4','eq') ) 
+{
+    self::$_jsm_db = JDatabaseDriver::getInstance( $option );
+    }
+    else
+    {
         self::$_jsm_db = JDatabase::getInstance( $option );
+        }
         $user_id = $params->get( 'jsm_server_user' );
         }
         catch (Exception $e) {

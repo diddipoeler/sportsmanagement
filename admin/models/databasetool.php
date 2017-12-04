@@ -147,7 +147,7 @@ class sportsmanagementModeldatabasetool extends JSMModelLegacy
 	 */
 	public function getForm($data = array(), $loadData = true) 
 	{
-        $cfg_which_media_tool = JComponentHelper::getParams($this->option)->get('cfg_which_media_tool',0);
+        $cfg_which_media_tool = JComponentHelper::getParams($this->jsmoption)->get('cfg_which_media_tool',0);
         //$this->app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.databasetool', 'databasetool', array('control' => 'jform', 'load_data' => $loadData));
@@ -966,7 +966,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
             if(version_compare(JVERSION,'3.0.0','ge')) 
         {
     $xml = simplexml_load_file(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/xml_files/quote_'.$temp[0].'.xml');
-    //$xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->option.'/helpers/xml_files/quote_'.$temp[0].'.xml'); 
+    //$xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/xml_files/quote_'.$temp[0].'.xml'); 
     $document = 'version';         
             }
             else
@@ -996,8 +996,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
     function insertAgegroup($search_nation,$filter_sports_type)
     {
     $app = JFactory::getApplication();
-    //$this->option = JRequest::getCmd('option'); 
-    
+        
     //$this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($search_nation,true).'</pre>'),'Notice');
     //$this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filter_sports_type,true).'</pre>'),'Notice');
     
@@ -1329,12 +1328,12 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
     {
     $app = JFactory::getApplication();
     //$this->option = JRequest::getCmd('option');    
-    //$db_table = JPATH_ADMINISTRATOR.'/components/'.$this->option.'/helpers/sp_structur/'.$type.'.txt';    
+    //$db_table = JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/sp_structur/'.$type.'.txt';    
     //$fileContent = JFile::read($db_table);    
     //$this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur fileContent<br><pre>'.print_r($fileContent,true).'</pre>'),'Notice');
     
 //    $xml = JFactory::getXMLParser( 'Simple' );
-//    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$this->option.'/helpers/sp_structur/'.$type.'.xml');
+//    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/sp_structur/'.$type.'.xml');
     
     if(version_compare(JVERSION,'3.0.0','ge')) 
         {
@@ -1351,7 +1350,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
     {
         return false;
     }    
-    //$xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->option.'/helpers/sp_structur/'.$type.'.xml');
+    //$xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/sp_structur/'.$type.'.xml');
     //$this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml<br><pre>'.print_r($xml,true).'</pre>'),'Notice');
     
     
@@ -1474,10 +1473,10 @@ foreach( $xml->events as $event )
     function insertCountries()
     {
     $app = JFactory::getApplication();
-    $this->option = JRequest::getCmd('option');
-    require_once( JPATH_ADMINISTRATOR.'/components/'.$this->option.'/'. 'helpers' . DS . 'jinstallationhelper.php' );    
+    //$this->option = JRequest::getCmd('option');
+    require_once( JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/'. 'helpers' . DS . 'jinstallationhelper.php' );    
     $db = sportsmanagementHelper::getDBConnection();
-    $db_table = JPATH_ADMINISTRATOR.'/components/'.$this->option.'/sql/countries.sql';
+    $db_table = JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/sql/countries.sql';
 // echo '<br>'.$db_table.'<br>';
 // $fileContent = JFile::read($db_table);
 // $sql_teil = explode(";",$fileContent);
