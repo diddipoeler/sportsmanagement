@@ -301,30 +301,31 @@ else
      */
     function checksporttype($type)
     {
-        $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        //$app = JFactory::getApplication();
+        //$option = JRequest::getCmd('option');
         $starttime = microtime(); 
         // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
+	//	$db = sportsmanagementHelper::getDBConnection();
+	//	$query = $db->getQuery(true);
         
         $type = strtoupper($type);
 		
         // Select some fields
-		$query->select('count(*) AS count');
+	    $this->jsmquery->clear();
+		$this->jsmquery->select('count(*) AS count');
 		// From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_sports_type');
-        $query->where('name LIKE '.$db->Quote('%'.$type.'%'));
+		$this->jsmquery->from('#__sportsmanagement_sports_type');
+        $this->jsmquery->where('name LIKE '.$db->Quote('%'.$type.'%'));
         
-        $db->setQuery($query);
+        $this->jsmdb->setQuery($this->jsmquery);
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
         $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		return $db->loadResult();
+		return $this->jsmdb->loadResult();
         
         
     }
