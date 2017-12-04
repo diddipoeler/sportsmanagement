@@ -1,7 +1,9 @@
 Sports-Management
 ================
 
-Die neue Sports-Management Komponente für Joomla 2.5 / 3
+Die neue Sports-Management Komponente für Joomla 2.5 / 3 ![Joomla 2.5](https://github.com/diddipoeler/sportsmanagement/blob/master/media/com_sportsmanagement/jl_images/compat_25.png)
+
+
 
 Das Team
 ================
