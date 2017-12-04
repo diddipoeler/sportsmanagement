@@ -995,7 +995,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->option.'/helpe
     function insertAgegroup($search_nation,$filter_sports_type)
     {
     $app = JFactory::getApplication();
-    $this->option = JRequest::getCmd('option'); 
+    //$this->option = JRequest::getCmd('option'); 
     
     //$this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($search_nation,true).'</pre>'),'Notice');
     //$this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($filter_sports_type,true).'</pre>'),'Notice');
@@ -1007,7 +1007,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->option.'/helpe
     $sport_type_name = strtolower(array_pop($temp));
     
     //$this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($sport_type_name,true).'</pre>'),'Notice');
-    $filename = JPATH_ADMINISTRATOR.'/components/'.$this->option.'/helpers/xml_files/'.'agegroup_'.strtolower($search_nation).'_'.$sport_type_name.'.xml';
+    $filename = JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/xml_files/'.'agegroup_'.strtolower($search_nation).'_'.$sport_type_name.'.xml';
     
     if (!JFile::exists($filename)) 
     {
@@ -1028,7 +1028,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->option.'/helpe
                     
                     if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-    $xml = JFactory::getXML($filename);        
+    $xml = simplexml_load_file($filename);        
             }
             else
             {
@@ -1061,7 +1061,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->option.'/helpe
    // Select some fields
         $this->query->select('id');
 		// From the table
-		$this->query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_agegroup');
+		$this->query->from('#__sportsmanagement_agegroup');
         $this->query->where('name LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($agegroup)).''));
         $this->query->where('country LIKE '.JFactory::getDbo()->Quote(''.addslashes(stripslashes($search_nation)).''));
         $this->query->where('sportstype_id = '.$filter_sports_type);
