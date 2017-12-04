@@ -42,7 +42,7 @@
 defined('_JEXEC') or die('Restricted access');
  
 // import Joomla modelform library
-jimport('joomla.application.component.model');
+//jimport('joomla.application.component.model');
 
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
@@ -57,7 +57,7 @@ jimport('joomla.filesystem.archive');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelgithubinstall extends JModelLegacy
+class sportsmanagementModelgithubinstall extends JSMModelLegacy
 {
 
     var $storeFailedColor = 'red';
@@ -65,10 +65,16 @@ class sportsmanagementModelgithubinstall extends JModelLegacy
 	var $existingInDbColor = 'orange';
     var $_success_text = '';
     
+/**
+ * sportsmanagementModelgithubinstall::CopyGithubLink()
+ * 
+ * @param mixed $link
+ * @return
+ */
 function CopyGithubLink($link)
 {
-    $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+    //$app = JFactory::getApplication();
+        //$option = JRequest::getCmd('option');
         
         $gitinstall = '';
         //$gitinstall = $app->getUserState( "$option.install");
