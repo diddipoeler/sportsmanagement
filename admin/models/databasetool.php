@@ -1582,7 +1582,7 @@ foreach( $xml->events as $event )
         // Set the query using our newly populated query object and execute it.
         $this->jsmdb->setQuery($this->query);
         
-        if (!$this->jsmdb->query())
+        if (!$this->jsmdb->execute())
 		{
 			
             $this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool insertSportType<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error');
@@ -1655,7 +1655,7 @@ foreach( $xml->events as $event )
 		{
         $this->query				= self::build_InsertQuery_Event('eventtype',$event->name,$event->icon,$id,2);
          JFactory::getDbo()->setQuery($this->query);
-			$result				= JFactory::getDbo()->query();
+			$result				= JFactory::getDbo()->execute();
 			$events_player[$i]	= JFactory::getDbo()->insertid();
 			$events_staff[$i]		= JFactory::getDbo()->insertid();
 			$events_clubstaff[$i]	= JFactory::getDbo()->insertid();
@@ -1693,7 +1693,7 @@ foreach( $xml->events as $event )
 			{
 				$this->query					= self::build_InsertQuery_Position('position',$position->name,$position->switch,$position->parent,$position->content,$id,1); 
                 JFactory::getDbo()->setQuery($this->query);
-				$result					= JFactory::getDbo()->query();
+				$result					= JFactory::getDbo()->execute();
 				$ParentID				= JFactory::getDbo()->insertid();
 				$PlayersPositions[$i]	= JFactory::getDbo()->insertid();
 			}
@@ -1965,7 +1965,7 @@ $insertquery = $this->jsmdb->getQuery(true);
                 //$this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($file,true).'</pre>'),'');
                 //$this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($insertquery,true).'</pre>'),'');
                 
-	            if (!$this->jsmdb->query())
+	            if (!$this->jsmdb->execute())
 			    {
 			    $this->app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($this->jsmdb->getErrorMsg(),true).'</pre>'),'Error'); 
 			    }
