@@ -315,7 +315,7 @@ else
 		$this->jsmquery->select('count(*) AS count');
 		// From the table
 		$this->jsmquery->from('#__sportsmanagement_sports_type');
-        $this->jsmquery->where('name LIKE '.$db->Quote('%'.$type.'%'));
+        $this->jsmquery->where('name LIKE '.$this->jsmdb->Quote('%'.$type.'%'));
         
         $this->jsmdb->setQuery($this->jsmquery);
         
