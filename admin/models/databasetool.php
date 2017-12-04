@@ -1944,6 +1944,7 @@ catch (Exception $e) {
  */
 public static function writeErrorLog($class, $function, $file, $text, $line)
 {
+/*	
         $date = date("Y-m-d");
         $time = date("H:i:s");
         
@@ -1972,7 +1973,8 @@ $insertquery = $this->jsmdb->getQuery(true);
 			    else
 			    {
 			     
-			    }     
+			    }  
+*/	
 }   
 
  
