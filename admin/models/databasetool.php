@@ -289,8 +289,8 @@ $prefix.'joomleague_' => ''
         foreach ( $tables as $key => $value )
         {
             $jsmtable = str_replace(array_keys($convert), array_values($convert), $value->name  );
-            $this->query = "SHOW TABLES LIKE '%".$jsmtable."%'";
-		    $this->jsmdb->setQuery($this->query);
+            $this->jsmquery = "SHOW TABLES LIKE '%".$jsmtable."%'";
+		    $this->jsmdb->setQuery($this->jsmquery);
         
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
@@ -374,9 +374,9 @@ $result = $this->jsmdb->loadResultArray();
      */
     function getJoomleagueImportTables()
     {
-        $this->query->select('*');
-        $this->query->from('#__sportsmanagement_jl_tables');
-        $this->jsmdb->setQuery($this->query);
+        $this->jsmquery->select('*');
+        $this->jsmquery->from('#__sportsmanagement_jl_tables');
+        $this->jsmdb->setQuery($this->jsmquery);
         $result = $this->jsmdb->loadObjectList();
         
         //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($result,true).'</pre>'),'');
@@ -392,8 +392,8 @@ $result = $this->jsmdb->loadResultArray();
      */
     function getJoomleagueTables()
     {
-        $this->query = "SHOW TABLES LIKE '%_joomleague%'";
-		$this->jsmdb->setQuery($this->query);
+        $this->jsmquery = "SHOW TABLES LIKE '%_joomleague%'";
+		$this->jsmdb->setQuery($this->jsmquery);
     
 if(version_compare(JVERSION,'3.0.0','ge')) 
 {
@@ -414,12 +414,12 @@ $result = $this->jsmdb->loadResultArray();
         {
         foreach ( $result as $key => $value )
         {
-        $this->query->clear('');    
-        $this->query->select('id');
+        $this->jsmquery->clear('');    
+        $this->jsmquery->select('id');
 		// From table
-		$this->query->from('#__sportsmanagement_jl_tables');
-        $this->query->where('name LIKE '.$this->jsmdb->Quote(''.$value.'') );
-        $this->jsmdb->setQuery( $this->query );
+		$this->jsmquery->from('#__sportsmanagement_jl_tables');
+        $this->jsmquery->where('name LIKE '.$this->jsmdb->Quote(''.$value.'') );
+        $this->jsmdb->setQuery( $this->jsmquery );
         $record_jl = $this->jsmdb->loadResult();
         
         if ( $record_jl )
@@ -455,14 +455,14 @@ $result = $this->jsmdb->loadResultArray();
      */
     function setParamstoJSON()
     {
-    $this->query->clear();   
-    $this->query->select('template,params');
+    $this->jsmquery->clear();   
+    $this->jsmquery->select('template,params');
 // From table
-$this->query->from('#__sportsmanagement_template_config');
-$this->query->where('params not LIKE '.$this->jsmdb->Quote(''.'') );
-$this->query->where('import_id != 0');
-$this->query->group('template');
-$this->jsmdb->setQuery( $this->query );
+$this->jsmquery->from('#__sportsmanagement_template_config');
+$this->jsmquery->where('params not LIKE '.$this->jsmdb->Quote(''.'') );
+$this->jsmquery->where('import_id != 0');
+$this->jsmquery->group('template');
+$this->jsmdb->setQuery( $this->jsmquery );
 $record_jl = $this->jsmdb->loadObjectList();
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' params <br><pre>'.print_r($record_jl,true).'</pre>'),'');        
 
@@ -531,7 +531,7 @@ $t_params = json_encode( $ini );
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' template <br><pre>'.print_r($row->template,true).'</pre>'),'');
 //$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' t_params <br><pre>'.print_r($t_params,true).'</pre>'),'');
 
-$this->query->clear();
+$this->jsmquery->clear();
     // Fields to update.
 $fields = array(
     $this->jsmdb->quoteName('params') . ' = '.$this->jsmdb->Quote(''.$t_params.'') 
