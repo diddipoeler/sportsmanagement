@@ -1327,7 +1327,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->option.'/helpe
     function checkSportTypeStructur($type)
     {
     $app = JFactory::getApplication();
-    $this->option = JRequest::getCmd('option');    
+    //$this->option = JRequest::getCmd('option');    
     //$db_table = JPATH_ADMINISTRATOR.'/components/'.$this->option.'/helpers/sp_structur/'.$type.'.txt';    
     //$fileContent = JFile::read($db_table);    
     //$this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur fileContent<br><pre>'.print_r($fileContent,true).'</pre>'),'Notice');
@@ -1337,16 +1337,16 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->option.'/helpe
     
     if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-    $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->option.'/helpers/sp_structur/'.$type.'.xml');        
+    $xml = simplexml_load_file(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/sp_structur/'.$type.'.xml');        
             }
             else
             {
 //                $xml = JFactory::getXMLParser( 'Simple' );
 //    $xml->loadFile(JPATH_ADMINISTRATOR.'/components/'.$this->option.'/helpers/sp_structur/'.$type.'.xml');
-    $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->option.'/helpers/sp_structur/'.$type.'.xml');
+    $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/sp_structur/'.$type.'.xml');
             }
             
-    if (!JFile::exists(JPATH_ADMINISTRATOR.'/components/'.$this->option.'/helpers/sp_structur/'.$type.'.xml')) 
+    if (!JFile::exists(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/sp_structur/'.$type.'.xml')) 
     {
         return false;
     }    
@@ -1369,8 +1369,8 @@ foreach( $xml->events as $event )
    //$this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur xml icon<br><pre>'.print_r($icon->data(),true).'</pre>'),'Notice');
    
    $temp = new stdClass();
-   $temp->name = strtoupper($this->option).'_'.strtoupper($type).'_E_'.strtoupper((string)$event->name);
-    $temp->icon = 'images/'.$this->option.'/database/events/'.$type.'/'.strtolower((string)$event->name->attributes()->icon );
+   $temp->name = strtoupper($this->jsmoption).'_'.strtoupper($type).'_E_'.strtoupper((string)$event->name);
+    $temp->icon = 'images/'.$this->jsmoption.'/database/events/'.$type.'/'.strtolower((string)$event->name->attributes()->icon );
     $export[] = $temp;
     $this->_sport_types_events[$type] = array_merge($export);
    }
@@ -1398,7 +1398,7 @@ foreach( $xml->events as $event )
    
    
         $temp = new stdClass();
-        $temp->name = strtoupper($this->option).'_'.strtoupper($type).'_F_'.strtoupper((string)$position->mainname);
+        $temp->name = strtoupper($this->jsmoption).'_'.strtoupper($type).'_F_'.strtoupper((string)$position->mainname);
         $temp->switch = strtolower((string)$position->mainname->attributes()->switch);
         $temp->parent = (string)$position->mainname->attributes()->parent ;
         $temp->content = (string)$position->mainname->attributes()->content;
@@ -1442,14 +1442,14 @@ foreach( $xml->events as $event )
    
   
         $temp = new stdClass();
-        $temp->name = strtoupper($this->option).'_'.strtoupper($type).'_'.strtoupper((string)$parent->parentname->attributes()->art).'_'.strtoupper((string)$parent->parentname);
+        $temp->name = strtoupper($this->jsmoption).'_'.strtoupper($type).'_'.strtoupper((string)$parent->parentname->attributes()->art).'_'.strtoupper((string)$parent->parentname);
         $temp->switch = strtolower((string)$parent->parentname->attributes()->switch);
         $temp->parent = (string)$parent->parentname->attributes()->parent;
         $temp->content = (string)$parent->parentname->attributes()->content;
         $temp->events = (string)$parent->parentname->attributes()->events;
         //$export = array();
         $export[] = $temp;
-        $this->_sport_types_position_parent[strtoupper($this->option).'_'.strtoupper($type).'_F_'.strtoupper((string)$parent->parentname->attributes()->main)] = array_merge($export);
+        $this->_sport_types_position_parent[strtoupper($this->jsmoption).'_'.strtoupper($type).'_F_'.strtoupper((string)$parent->parentname->attributes()->main)] = array_merge($export);
         
    }
     
