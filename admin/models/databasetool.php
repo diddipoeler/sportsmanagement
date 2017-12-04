@@ -879,13 +879,13 @@ $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätz
             // joomla versionen
             if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-    $xml = simplexml_load_file(JPATH_ADMINISTRATOR.'/components/'.$this->option.'/helpers/xml_files/quote_'.$temp[0].'.xml',true); 
+    $xml = simplexml_load_file(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/xml_files/quote_'.$temp[0].'.xml',true); 
     $document = 'version';   
     $quotes = 'children()';     
             }
             else
             {
-$xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->option.'/helpers/xml_files/quote_'.$temp[0].'.xml',true);
+$xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/xml_files/quote_'.$temp[0].'.xml',true);
     $document = 'version';
     $quotes = 'children()'; 
             }
@@ -965,13 +965,13 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->option.'/helpe
             // joomla versionen
             if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-    $xml = simplexml_load_file(JPATH_ADMINISTRATOR.'/components/'.$this->option.'/helpers/xml_files/quote_'.$temp[0].'.xml');
+    $xml = simplexml_load_file(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/xml_files/quote_'.$temp[0].'.xml');
     //$xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->option.'/helpers/xml_files/quote_'.$temp[0].'.xml'); 
     $document = 'version';         
             }
             else
             {
-$xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->option.'/helpers/xml_files/quote_'.$temp[0].'.xml');
+$xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/xml_files/quote_'.$temp[0].'.xml');
     $document = 'version';
             }
             
