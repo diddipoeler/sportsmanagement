@@ -859,7 +859,7 @@ $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätz
         foreach ( $sm_quotes as $key => $type )
         {
             $temp = explode(",",$type);
-            $this->jsmquery->clear();
+            $this->jsmquery = $this->jsmdb->getQuery(true);
             // Select some fields
         $this->jsmquery->select('count(*) AS count');
         // From the table
@@ -871,7 +871,7 @@ $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätz
             if ( !$this->jsmdb->loadResult() )
             {
             /* Ein JDatabaseQuery Objekt beziehen */
-            $this->jsmquery->clear();
+            $this->jsmquery = $this->jsmdb->getQuery(true);
             $this->jsmquery->delete()->from('#__sportsmanagement_rquote')->where('daily_number = '.$temp[1].''  );
             $this->jsmdb->setQuery($this->jsmquery);
             $result = self::runJoomlaQuery(__CLASS__,$this->jsmdb);
@@ -879,7 +879,7 @@ $this->app->enqueueMessage(JText::_('Wir haben '.self::$db_num_rows.' Datensätz
             // joomla versionen
             if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-    $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->option.'/helpers/xml_files/quote_'.$temp[0].'.xml',true); 
+    $xml = simplexml_load_file(JPATH_ADMINISTRATOR.'/components/'.$this->option.'/helpers/xml_files/quote_'.$temp[0].'.xml',true); 
     $document = 'version';   
     $quotes = 'children()';     
             }
