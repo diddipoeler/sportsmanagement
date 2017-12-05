@@ -43,6 +43,9 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * https://docs.joomla.org/J3.x:Supporting_SEF_URLs_in_your_component
+ */
 
 if (!defined('DS')) {
     define('DS', DIRECTORY_SEPARATOR);
@@ -82,6 +85,10 @@ defined('JSM_JVERSION') or define('JSM_JVERSION', 2);
 } 
 
 
+if ( class_exists( 'JComponentRouterBase' ) ) {
+	abstract class SportsmanagementRouterBase extends JComponentRouterBase {}
+}
+
 /**
  * SportsmanagementRouter3
  * 
@@ -91,7 +98,7 @@ defined('JSM_JVERSION') or define('JSM_JVERSION', 2);
  * @version $Id$
  * @access public
  */
-class SportsmanagementRouter3 extends JComponentRouterBase
+class SportsmanagementRouter3 extends SportsmanagementRouterBase
 {
 
 /**
