@@ -246,8 +246,8 @@ class sportsmanagementModelProject extends JModelLegacy
 	 */
 	public static function updateHits($projectid=0,$inserthits=0)
     {
-        $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
     $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
  $query = $db->getQuery(true);
  
@@ -274,8 +274,8 @@ $result = $db->execute();
 	 */
 	public static function getProject($cfg_which_database = 0,$call_function = '',$inserthits=0)
 	{
-		$option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         // Get a db connection.
         //$db = JFactory::getDbo();
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
