@@ -73,6 +73,21 @@ class sportsmanagementModelProjectteams extends JSMModelList
         {
             //$app = JFactory::getApplication();
         //$option = JRequest::getCmd('option');
+	    $config['filter_fields'] = array(
+                        't.name',
+                        't.lastname',
+                        'tl.admin',
+                        'd.name',
+                        'tl.picture',
+                        'st.team_id',
+                        'st.id',
+                        'tl.id',
+                        't.ordering'
+                        );
+                parent::__construct($config);
+                $getDBConnection = sportsmanagementHelper::getDBConnection();
+                parent::setDbo($getDBConnection);
+	    
             self::$_project_id	= $this->jsmjinput->getInt('pid',0);
             self::$_division_id	= $this->jsmjinput->getInt('division',0);
             //$post = JRequest::get( 'post' );
@@ -90,20 +105,7 @@ $this->addNewProjectTeam($post['team_id'],self::$_project_id);
                 }
                 $this->jsmapp->setUserState( "$this->jsmoption.pid", self::$_project_id ); 
                 
-                $config['filter_fields'] = array(
-                        't.name',
-                        't.lastname',
-                        'tl.admin',
-                        'd.name',
-                        'tl.picture',
-                        'st.team_id',
-                        'st.id',
-                        'tl.id',
-                        't.ordering'
-                        );
-                parent::__construct($config);
-                $getDBConnection = sportsmanagementHelper::getDBConnection();
-                parent::setDbo($getDBConnection);
+                
         }
         
     /**
