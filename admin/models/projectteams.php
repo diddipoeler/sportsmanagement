@@ -53,7 +53,7 @@ jimport('joomla.application.component.modellist');
  * @version 2014
  * @access public
  */
-class sportsmanagementModelProjectteams extends JModelList
+class sportsmanagementModelProjectteams extends JSMModelList 
 {
 	var $_identifier = "pteams";
     static $_project_id = 0;
@@ -71,24 +71,24 @@ class sportsmanagementModelProjectteams extends JModelList
      */
     public function __construct($config = array())
         {
-            $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-            self::$_project_id	= JRequest::getInt('pid',0);
-            self::$_division_id	= JRequest::getInt('division',0);
-            $post = JRequest::get( 'post' );
+            //$app = JFactory::getApplication();
+        //$option = JRequest::getCmd('option');
+            self::$_project_id	= $this->jsmjinput->getInt('pid',0);
+            self::$_division_id	= $this->jsmjinput->getInt('division',0);
+            //$post = JRequest::get( 'post' );
 
-if ( isset($post['addteam']) )
+if ( isset($this->jsmpost['addteam']) )
 {
-if ( $post['team_id'] )
+if ( $this->jsmpost['team_id'] )
 {	
 $this->addNewProjectTeam($post['team_id'],self::$_project_id);    
 }    
 }
             if ( !self::$_project_id )
                 {
-                self::$_project_id	= $app->getUserState( "$option.pid", '0' );    
+                self::$_project_id	= $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' );    
                 }
-                $app->setUserState( "$option.pid", self::$_project_id ); 
+                $this->jsmapp->setUserState( "$this->jsmoption.pid", self::$_project_id ); 
                 
                 $config['filter_fields'] = array(
                         't.name',
@@ -116,14 +116,14 @@ $this->addNewProjectTeam($post['team_id'],self::$_project_id);
 	protected function populateState($ordering = 't.name', $direction = 'asc')
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        //$app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+        //$jinput = $app->input;
+        //$option = $jinput->getCmd('option');
         // Initialise variables.
 		//$app = JFactory::getApplication('administrator');
         
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context ->'.$this->context.''),'');
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' context ->'.$this->context.''),'');
 
 		// Load the filter state.
 		$search = $this->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -149,20 +149,20 @@ $this->addNewProjectTeam($post['team_id'],self::$_project_id);
 	protected function getListQuery()
 	{
 	   // Reference global application object
-        $app = JFactory::getApplication();
+        //$app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
+        //$jinput = $app->input;
+        //$option = $jinput->getCmd('option');
+        $this->_season_id	= $app->getUserState( "$this->jsmoption.season_id", '0' );
         
-        self::$_project_id = JRequest::getVar('pid');
-        self::$_division_id	= JRequest::getInt('division',0);
+        self::$_project_id = $this->jsmjinput->getVar('pid');
+        self::$_division_id	= $this->jsmjinput->getInt('division',0);
         if ( !self::$_project_id )
         {
-        self::$_project_id = $app->getUserState( "$option.pid", '0' );
+        self::$_project_id = $app->getUserState( "$this->jsmoption.pid", '0' );
         }
-        $this->project_art_id = $app->getUserState( "$option.project_art_id", '0' );
-        $this->sports_type_id = $app->getUserState( "$option.sports_type_id", '0' );
+        $this->project_art_id = $app->getUserState( "$this->jsmoption.project_art_id", '0' );
+        $this->sports_type_id = $app->getUserState( "$this->jsmoption.sports_type_id", '0' );
         
         //$db	= $this->getDbo();
         $db = sportsmanagementHelper::getDBConnection();
