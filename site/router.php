@@ -62,6 +62,26 @@ if (!class_exists('sportsmanagementHelper')) {
         'sportsmanagement.php');
 }
 
+// Get the base version
+$baseVersion = substr(JVERSION, 0, 3);
+        
+if(version_compare( $baseVersion,'4.0','ge')) 
+{
+// Joomla! 4.0 code here
+defined('JSM_JVERSION') or define('JSM_JVERSION', 4);
+}
+if(version_compare($baseVersion,'3.0','ge')) 
+{
+// Joomla! 3.0 code here
+defined('JSM_JVERSION') or define('JSM_JVERSION', 3);
+}
+if(version_compare($baseVersion,'2.5','ge')) 
+{
+// Joomla! 2.5 code here
+defined('JSM_JVERSION') or define('JSM_JVERSION', 2);
+} 
+
+
 /**
  * sportsmanagementBuildRoute()
  * 
