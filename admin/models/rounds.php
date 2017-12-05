@@ -189,9 +189,9 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	 */
 	function getRoundsCount($project_id)
 	{
-	   $option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
-        $db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
+	   //$option = JRequest::getCmd('option');
+		//$app = JFactory::getApplication();
+        $db = sportsmanagementHelper::getDBConnection(TRUE, $this->jsmapp->getUserState( "$this->jsmoption.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
 	  // Select some fields
         $query->select('count(*) AS count');
@@ -233,7 +233,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         
 		if ( !$result = $db->loadAssocList() )
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(__CLASS__, __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+			//sportsmanagementModeldatabasetool::writeErrorLog(__CLASS__, __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		return $result[0];
