@@ -121,11 +121,11 @@ class sportsmanagementModelPredictionRanking extends JModelLegacy
         sportsmanagementModelPrediction::$type = $jinput->getInt('type',0);
         sportsmanagementModelPrediction::$page = $jinput->getInt('page',1);
 
-if ( JRequest::getVar( "view") == 'predictionranking' )
+if ( $jinput->getVar( "view") == 'predictionranking' )
 {
 	// Get pagination request variables
 	$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');
-	$limitstart = JRequest::getVar('limitstart', 0, '', 'int');
+	$limitstart = $jinput->getVar('limitstart', 0, '', 'int');
 
 	// In case limit has been changed, adjust it
 	$limitstart = ($limit != 0 ? (floor($limitstart / $limit) * $limit) : 0);
