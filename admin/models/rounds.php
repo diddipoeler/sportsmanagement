@@ -233,6 +233,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 		if ( !$result = $db->loadAssocList() )
 		{
 			//sportsmanagementModeldatabasetool::writeErrorLog(__CLASS__, __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+			$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
 			return false;
 		}
 		return $result[0];
