@@ -64,24 +64,14 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 <form action="<?php echo $this->request_url; ?>" method="post" id="adminForm" name="adminForm">
 	
 <?PHP
-if(version_compare(JVERSION,'3.0.0','ge')) 
-{
-echo $this->loadTemplate('joomla3');
-}
-else
-{
-echo $this->loadTemplate('joomla2');    
-}
-
-echo $this->loadTemplate('data');
+echo $this->loadTemplate('joomla_version');
 ?>	
-
-	<input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode']; ?>" />
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
-	<?php echo JHtml::_('form.token')."\n"; ?>
+<input type="hidden" name="search_mode" value="<?php echo $this->lists['search_mode']; ?>" />
+<input type="hidden" name="task" value="" />
+<input type="hidden" name="boxchecked" value="0" />
+<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
+<input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
+<?php echo JHtml::_('form.token')."\n"; ?>
 </form>
 <?PHP
 echo "<div>";
