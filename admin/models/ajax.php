@@ -115,8 +115,7 @@ static function getPredictionId($dabse = false, $required = false, $slug = false
         // Reference global application object
         $app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+        $option = $app->input->getCmd('option');
         //$required = 0;
         
         // Get a db connection.
@@ -161,8 +160,8 @@ static function getPredictionId($dabse = false, $required = false, $slug = false
   */
  public static function getPredictionPj($prediction_id = 0, $required = false, $slug = false, $dabse = false)
         {
-            $option = JRequest::getCmd('option');
 	   $app = JFactory::getApplication();
+	         $option = $app->input->getCmd('option');
        // Get a db connection.
         if ( !$dabse )
         {
@@ -208,8 +207,8 @@ static function getPredictionId($dabse = false, $required = false, $slug = false
  */
 public static function getPredictionGroups($prediction_id = 0, $required = false, $slug = false, $dabse = false)
         {
-            $option = JRequest::getCmd('option');
 	   $app = JFactory::getApplication();
+	   $option = $app->input->getCmd('option');
        // Get a db connection.
         if ( !$dabse )
         {
@@ -296,8 +295,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
             // Reference global application object
         $app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+        $option = $app->input->getCmd('option');
        
        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' sports_type_id<br><pre>'.print_r($sports_type_id,true).'</pre>'),'');
        
@@ -393,8 +391,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         // Reference global application object
         $app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+        $option = $app->input->getCmd('option');
         //$required = 0;
         
         // Get a db connection.
@@ -442,8 +439,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
             // Reference global application object
         $app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+        $option = $app->input->getCmd('option');
         
         $result = array();
 
@@ -504,8 +500,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
             // Reference global application object
         $app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+        $option = $app->input->getCmd('option');
         
         $result = array();
 
@@ -550,8 +545,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
             // Reference global application object
         $app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+        $option = $app->input->getCmd('option');
        
        // Get a db connection.
         if ( !$dabse )
@@ -612,9 +606,9 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
          */
         public static function getpersonpositionoptions($sports_type_id, $required = false, $slug = false, $dbase = false)
         {
-            $option = JRequest::getCmd('option');
+            
 	   $app = JFactory::getApplication();
-
+$option = $app->input->getCmd('option');
         // Get a db connection.
         if ( !$dbase )
         {
@@ -659,8 +653,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
             // Reference global application object
         $app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+        $option = $app->input->getCmd('option');
         
        $result = array();
 
@@ -727,8 +720,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         // Reference global application object
         $app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+        $option = $app->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection(); 
 		$query = $db->getQuery(true);
         
@@ -750,8 +742,9 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
          */
         static function getpersonlistoptions($person_art, $required = false, $slug = false, $dbase = false)
         {
-            $option = JRequest::getCmd('option');
+            
 	   $app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
        // Get a db connection.
         if ( !$dbase )
         {
@@ -783,8 +776,9 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
          */
         function getProjectsBySportsTypesOptions($sports_type_id, $required = false, $slug = false, $dbase = false)
         {
-            $option = JRequest::getCmd('option');
+            
 	   $app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
        // Get a db connection.
         if ( !$dbase )
         {
@@ -822,8 +816,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
             // Reference global application object
         $app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+        $option = $app->input->getCmd('option');
        
        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' sports_type_id<br><pre>'.print_r($sports_type_id,true).'</pre>'),'');
        
@@ -864,8 +857,9 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
          */
         public static function getProjectDivisionsOptions($project_id, $required = false, $slug = false, $dabse = false)
         {
-            $option = JRequest::getCmd('option');
+          
 	   $app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         // Get a db connection.
         if ( !$dabse )
         {
@@ -892,7 +886,7 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
         // Where
         $query->where('d.project_id = ' . $db->Quote($project_id) );
         // group
-        $query->group('d.id');
+        //$query->group('d.id');
         // order
         $query->order('d.name');
 
@@ -912,8 +906,9 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
          */
         public static function getProjectTeamsByDivisionOptions($project_id, $division_id=0, $required=false, $slug = false, $dbase = false)
         {
-            $option = JRequest::getCmd('option');
+            
 	   $app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
        // Get a db connection.
         if ( !$dbase )
         {
@@ -958,8 +953,9 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
          */
         public static function getProjectsByClubOptions($club_id, $required=false, $slug = false, $dbase = false)
         {
-            $option = JRequest::getCmd('option');
+            
 	   $app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
         {
@@ -1005,8 +1001,9 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
          */
         public static function getProjects($season_id = 0, $required = false, $slug = false, $dabse = false)
         {
-            $option = JRequest::getCmd('option');
+            
 	   $app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
        // Get a db connection.
         if ( !$dabse )
         {
@@ -1054,8 +1051,9 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
          */
         public static function getProjectTeamOptions($project_id, $required = false, $slug = false, $dabse = false)
         {
-            $option = JRequest::getCmd('option');
+            
 	   $app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
        // Get a db connection.
         if ( !$dabse )
         {
@@ -1120,8 +1118,9 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
          */
         function getProjectTeamPtidOptions($project_id, $required = false, $slug = false, $dbase = false)
         {
-            $option = JRequest::getCmd('option');
+            
 	   $app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
         {
@@ -1166,8 +1165,9 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
          */
         public static function getProjectPlayerOptions($project_id, $required = false, $slug = false, $dbase = false)
         {
-            $option = JRequest::getCmd('option');
+            
 	   $app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
         {
@@ -1212,8 +1212,9 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
          */
         public static function getProjectStaffOptions($project_id, $required = false, $slug = false, $dbase = false)
         {
-            $option = JRequest::getCmd('option');
+            
 	   $app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
         {
@@ -1257,8 +1258,9 @@ public static function getPredictionGroups($prediction_id = 0, $required = false
          */
         public static function getProjectClubOptions($project_id, $required = false, $slug = false, $dbase = false)
         {
-            $option = JRequest::getCmd('option');
+            
 	   $app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
         {
@@ -1325,8 +1327,9 @@ $db->setQuery($query);
          */
         public static function getProjectEventsOptions($project_id, $required = false, $slug = false, $dbase = false)
         {
-            $option = JRequest::getCmd('option');
+            
 	   $app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
         {
@@ -1366,8 +1369,9 @@ $db->setQuery($query);
          */
         public static function getProjectStatOptions($project_id, $required=false, $slug = false, $dbase = false)
         {
-            $option = JRequest::getCmd('option');
+            
 	   $app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
         {
@@ -1407,8 +1411,9 @@ $db->setQuery($query);
          */
         public static function getMatchesOptions($project_id, $required=false, $slug = false, $dbase = false)
         {
-            $option = JRequest::getCmd('option');
+            
 	   $app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
         {
@@ -1454,8 +1459,9 @@ $db->setQuery($query);
          */
         function getRefereesOptions($project_id, $required = false, $slug = false, $dbase = false)
         {
-            $option = JRequest::getCmd('option');
+            
 	   $app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
         {
@@ -1492,8 +1498,9 @@ $db->setQuery($query);
          */
         public static function getProjectTreenodeOptions($project_id, $required = false, $slug = false, $dbase = false)
         {
-            $option = JRequest::getCmd('option');
+            
 	   $app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
       // Get a db connection.
         if ( !$dbase )
         {
