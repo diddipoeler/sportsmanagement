@@ -168,9 +168,8 @@ class JSMRanking
 	 */
 	function setProjectId($id,$cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
-    
+$option = $app->input->getCmd('option');    
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
     
 		$this->_projectid = (int) $id;
@@ -212,9 +211,8 @@ class JSMRanking
 	 */
 	function getRanking($from = null, $to = null, $division = null,$cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
         $app = JFactory::getApplication();
-        
+        $option = $app->input->getCmd('option');    
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
         
 		$this->_from     = $from;
@@ -246,9 +244,8 @@ class JSMRanking
 	 */
 	function getRankingHome($from = null, $to = null, $division = null,$cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
         $app = JFactory::getApplication();
-        
+        $option = $app->input->getCmd('option');    
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
         
 		$this->_from     = $from;
@@ -276,9 +273,8 @@ class JSMRanking
 	 */
 	function getRankingAway($from = null, $to = null, $division = null,$cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
         $app = JFactory::getApplication();
-        
+        $option = $app->input->getCmd('option');    
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
         
 		$this->_from     = $from;
@@ -303,9 +299,8 @@ class JSMRanking
 	 */
 	function _initData($cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
 	   $app = JFactory::getApplication();
-       
+       $option = $app->input->getCmd('option');
        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
        
 		if (!$this->_projectid) {
@@ -349,9 +344,8 @@ class JSMRanking
 	 */
 	function _collect($ptids = null,$cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
 	   $app = JFactory::getApplication();
-       
+       $option = $app->input->getCmd('option');    
        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
     
 		$mode     	= $this->_mode;
@@ -764,7 +758,7 @@ class JSMRanking
 	public static function _initTeams($pid,$division,$cfg_which_database = 0)
 	{
 	   $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = $app->input->getCmd('option');    
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -911,13 +905,13 @@ $res = $db->loadObjectList();
 	 */
 	public static function _getMatches($pid,$division,$cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
+$option = $app->input->getCmd('option');    		
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
             $query = $db->getQuery(true);
             $starttime = microtime(); 
     
-    $viewName = JRequest::getVar( "view");
+    $viewName = $app->input->getVar( "view");
 
 //		$query = 
         $query->select('m.id');
@@ -999,8 +993,8 @@ $res = $db->loadObjectList();
 	 */
 	function _getSubDivisions($cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');  
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
             $query = $db->getQuery(true);
             
@@ -1053,9 +1047,8 @@ $res = $db->loadObjectList();
 	 */
 	function _countGame($game, $from = null, $to = null, $ptids = null,$cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
-    
+    $option = $app->input->getCmd('option');  
     if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
             $my_text = 'game -><pre>'.print_r($game,true).'</pre>';
@@ -1114,8 +1107,8 @@ $res = $db->loadObjectList();
 	 */
 	function _getRoundcode($round_id,$cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');  
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
             $query = $db->getQuery(true);
             $starttime = microtime(); 
@@ -1214,9 +1207,8 @@ $res = $db->loadObjectList();
 	 */
 	function _buildRanking($teams,$cfg_which_database = 0)
 	{
-		$option = JRequest::getCmd('option');
 	    $app = JFactory::getApplication();
-        
+        $option = $app->input->getCmd('option');  
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
         
         // division filtering
