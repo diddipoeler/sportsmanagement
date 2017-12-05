@@ -88,6 +88,39 @@ defined('JSM_JVERSION') or define('JSM_JVERSION', 2);
 if ( class_exists( 'JComponentRouterBase' ) ) {
 	abstract class SportsmanagementRouterBase extends JComponentRouterBase {}
 }
+else
+{
+class SportsmanagementRouterBase
+	{
+
+		/** @var JApplicationCms  */
+		public $app;
+
+		/** @var JMenu|null  */
+		public $menu;
+
+		/**
+		 * SportsmanagementRouterBase constructor.
+		 *
+		 * @param JApplicationCms $app
+		 * @param JMenu           $menu
+		 */
+		public function __construct( $app = null, $menu = null )
+		{
+			if ( $app ) {
+				$this->app		=	$app;
+			} else {
+				$this->app		=	JFactory::getApplication( 'site' );
+			}
+
+			if ( $menu ) {
+				$this->menu		=	$menu;
+			} else {
+				$this->menu		=	$this->app->getMenu();
+			}
+		}
+	}    
+}
 
 /**
  * SportsmanagementRouter3
