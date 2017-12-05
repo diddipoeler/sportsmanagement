@@ -64,18 +64,7 @@ class sportsmanagementModelRounds extends JSMModelList
         {
             //$app = JFactory::getApplication();
         //$option = JRequest::getCmd('option');
-	    parent::__construct($config);
-                $getDBConnection = sportsmanagementHelper::getDBConnection();
-                parent::setDbo($getDBConnection);
-                self::$_project_id	= $this->jsmjinput->getInt('pid',0);
-                
-                if ( !self::$_project_id )
-                {
-                self::$_project_id	= $app->getUserState( "$this->jsmoption.pid", '0' );    
-                }
-                
-                $app->setUserState( "$this->jsmoption.pid", self::$_project_id ); 
-                $config['filter_fields'] = array(
+	    $config['filter_fields'] = array(
                         'r.name',
                         'r.alias',
                         'r.roundcode',
@@ -84,6 +73,18 @@ class sportsmanagementModelRounds extends JSMModelList
                         'r.id',
                         'r.ordering'
                         );
+	    parent::__construct($config);
+                $getDBConnection = sportsmanagementHelper::getDBConnection();
+                parent::setDbo($getDBConnection);
+                self::$_project_id	= $this->jsmjinput->getInt('pid',0);
+                
+                if ( !self::$_project_id )
+                {
+                self::$_project_id	= $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' );    
+                }
+                
+                $this->jsmapp->setUserState( "$this->jsmoption.pid", self::$_project_id ); 
+                
                 
         }
         
