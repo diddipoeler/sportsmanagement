@@ -202,8 +202,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	 */
 	function getProjectDivisionsCount($project_id)
 	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+	   //$app = JFactory::getApplication();
+        //$option = JRequest::getCmd('option');
         $starttime = microtime(); 
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
@@ -218,7 +218,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         }
         
 		return $db->loadResult();
