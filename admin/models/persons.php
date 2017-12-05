@@ -148,7 +148,7 @@ class sportsmanagementModelPersons extends JSMModelList
 		$this->jsmquery->join('LEFT', '#__users AS uc ON uc.id = pl.checked_out');
         
         // neue struktur wird genutzt
-        if ( COM_SPORTSMANAGEMENT_USE_NEW_TABLE && JRequest::getVar('layout') == 'assignplayers' )
+        if ( COM_SPORTSMANAGEMENT_USE_NEW_TABLE && $this->jsmjinput->getVar('layout') == 'assignplayers' )
         {
             $this->jsmquery->join('INNER', '#__sportsmanagement_season_person_id AS sp ON sp.person_id = pl.id');
             $this->jsmquery->where('sp.season_id = '.$this->_season_id);
