@@ -1419,6 +1419,8 @@ public function __construct($config = array())
         $this->jsmoption = $this->jsmjinput->getCmd('option');
         $this->jsmdocument = JFactory::getDocument();
         $this->jsmuser = JFactory::getUser(); 
+	$this->jsmpks = $this->jsmjinput->get('cid',array(),'array');
+        $this->jsmpost = $this->jsmjinput->post->getArray(array());  
 
 /**
  * abfrage nach backend und frontend  
