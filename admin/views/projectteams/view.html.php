@@ -136,7 +136,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		$res1 = array();
 		$notusedteams = array();
 
-		if ($ress = $model->getProjectTeams($this->project_id, FALSE))
+		if ($ress = $this->model->getProjectTeams($this->project_id, FALSE))
 		{
 			$teamslist = array();
 			foreach($ress as $res)
@@ -161,9 +161,9 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 			$lists['project_teams'] = '<select name="project_teamslist[]" id="project_teamslist" style="width:250px; height:300px;" class="inputbox" multiple="true" size="10"></select>';
 		}
 
-		if ($ress1 = $model->getTeams())
+		if ($ress1 = $this->model->getTeams())
 		{
-			if ($ress = $model->getProjectTeams($this->project_id,FALSE))
+			if ($ress = $this->model->getProjectTeams($this->project_id,FALSE))
 			{
 				foreach ($ress1 as $res1)
 				{
@@ -228,7 +228,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		if ($res = JSMCountries::getCountryOptions())
 		{
 			$nation = array_merge($nation, $res);
-			$this->assignRef('search_nation', $res);
+			$this->search_nation = $res;
 		}
 		
 		$lists['nation'] = $nation;
@@ -241,8 +241,8 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         
         if ( JComponentHelper::getParams($this->option)->get('show_option_projectteams_quickadd',0) )
         {
-        $lists['country_teams'] = $model->getCountryTeams();
-        $lists['country_teams_picture'] = $model->getCountryTeamsPicture();
+        $lists['country_teams'] = $this->model->getCountryTeams();
+        $lists['country_teams_picture'] = $this->model->getCountryTeamsPicture();
         }
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' picture<br><pre>'.print_r($lists['country_teams_picture'],true).'</pre>'   ),'');
@@ -250,7 +250,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         //build the html select list for all teams
 		$allTeams = array();
 		$all_teams[] = JHTML::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TEAM' ) );
-		if( $allTeams = $model->getAllTeams($this->project_id) ) 
+		if( $allTeams = $this->model->getAllTeams($this->project_id) ) 
     {
 			$all_teams=array_merge($all_teams,$allTeams);
 		}
