@@ -54,10 +54,10 @@ jimport('joomla.utilities.arrayhelper');
 
 if (!class_exists('sportsmanagementModeldatabasetool')) 
 {
+require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'libraries'.DS.'sportsmanagement'.DS.'model.php');	
 require_once(JPATH_ADMINISTRATOR.DS.JSM_PATH.DS.'models'.DS.'databasetool.php');
 // sprachdatei aus dem backend laden
 $langtag = JFactory::getLanguage();
-
 $document = JFactory::getDocument();
 $app = JFactory::getApplication();
 $config = JFactory::getConfig();
@@ -1048,7 +1048,7 @@ $s = $configcolors;
 	 */
 	public static function & _getTeams($teamname='name',$cfg_which_database = 0,$call_function = '')
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = $jinput->getCmd('option');
 	$app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
