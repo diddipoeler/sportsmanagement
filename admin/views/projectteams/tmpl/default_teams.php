@@ -42,15 +42,15 @@ JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
 $app = JFactory::getApplication();
 
-$modalheight = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_height', 600);
-$modalwidth = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_width', 900);
+$modalheight = JComponentHelper::getParams($this->jsmjinput->getCmd('option'))->get('modal_popup_height', 600);
+$modalwidth = JComponentHelper::getParams($this->jsmjinput->getCmd('option'))->get('modal_popup_width', 900);
 
-$view = JRequest::getVar( "view") ;
+$view = $this->jsmjinput->getVar( "view") ;
 $view = ucfirst(strtolower($view));
-$cfg_help_server = JComponentHelper::getParams(JRequest::getCmd('option'))->get('cfg_help_server','') ;
-$modal_popup_width = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_width',0) ;
-$modal_popup_height = JComponentHelper::getParams(JRequest::getCmd('option'))->get('modal_popup_height',0) ;
-$cfg_bugtracker_server = JComponentHelper::getParams(JRequest::getCmd('option'))->get('cfg_bugtracker_server','') ;
+$cfg_help_server = JComponentHelper::getParams($this->jsmjinput->getCmd('option'))->get('cfg_help_server','') ;
+$modal_popup_width = JComponentHelper::getParams($this->jsmjinput->getCmd('option'))->get('modal_popup_width',0) ;
+$modal_popup_height = JComponentHelper::getParams($this->jsmjinput->getCmd('option'))->get('modal_popup_height',0) ;
+$cfg_bugtracker_server = JComponentHelper::getParams($this->jsmjinput->getCmd('option'))->get('cfg_bugtracker_server','') ;
 
 ?>
 
