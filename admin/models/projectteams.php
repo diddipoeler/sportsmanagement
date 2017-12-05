@@ -161,10 +161,10 @@ $this->addNewProjectTeam($post['team_id'],self::$_project_id);
         self::$_division_id	= $this->jsmjinput->getInt('division',0);
         if ( !self::$_project_id )
         {
-        self::$_project_id = $app->getUserState( "$this->jsmoption.pid", '0' );
+        self::$_project_id = $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' );
         }
-        $this->project_art_id = $app->getUserState( "$this->jsmoption.project_art_id", '0' );
-        $this->sports_type_id = $app->getUserState( "$this->jsmoption.sports_type_id", '0' );
+        $this->project_art_id = $this->jsmapp->getUserState( "$this->jsmoption.project_art_id", '0' );
+        $this->sports_type_id = $this->jsmapp->getUserState( "$this->jsmoption.sports_type_id", '0' );
         
         //$db	= $this->getDbo();
         $db = sportsmanagementHelper::getDBConnection();
