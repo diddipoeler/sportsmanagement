@@ -439,7 +439,7 @@ catch (Exception $e){
 	public static function computeRanking($cfg_which_database = 0,$s=0)
 	{
 		$app	= JFactory::getApplication();
-        
+        $input = $app->input;
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
         
         //$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
@@ -487,8 +487,8 @@ catch (Exception $e){
 		}
 		else
 		{
-			self::$from = JRequest::getInt( 'from', $firstRound['id'] );
-			self::$to   = JRequest::getInt( 'to', self::$round, $lastRound['id'] );
+			self::$from = $input->getInt( 'from', $firstRound['id'] );
+			self::$to   = $input->getInt( 'to', self::$round, $lastRound['id'] );
 		}
 		if( self::$part > 0 )
 		{
@@ -498,7 +498,7 @@ catch (Exception $e){
 		{
 			$url.='&amp;from='.self::$from.'&amp;to='.self::$to;
 		}
-		self::$type = JRequest::getInt( 'type', 0 );
+		self::$type = $input->getInt( 'type', 0 );
 		if ( self::$type > 0 )
 		{
 			$url.='&amp;type='.self::$type;
@@ -518,8 +518,8 @@ catch (Exception $e){
 		//for sub division ranking tables
 		if ( $project->project_type=='DIVISIONS_LEAGUE' )
 		{
-			$selDivision = JRequest::getInt( 'division', 0 );
-			self::$divLevel = JRequest::getInt( 'divLevel', $tableconfig['default_division_view'] );
+			$selDivision = $input->getInt( 'division', 0 );
+			self::$divLevel = $input->getInt( 'divLevel', $tableconfig['default_division_view'] );
 
 			if ( $selDivision > 0 )
 			{
@@ -553,12 +553,12 @@ catch (Exception $e){
 		}
 		$selectedvalue = 0;
 
-		$last = JRequest::getInt( 'last', 0 );
+		$last = $input->getInt( 'last', 0 );
 		if ($last > 0)
 		{
 			$url .= '&amp;last='.$last;
 		}
-		if ( JRequest::getInt( 'sef', 0) == 1 )
+		if ( $input->getInt( 'sef', 0) == 1 )
 		{
 			$app->redirect( JRoute::_( $url ) );
 		}
@@ -629,7 +629,7 @@ catch (Exception $e){
 	public static function _getPreviousRoundId($round_id,$cfg_which_database = 0)
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = $app->input->getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
 		$query = $db->getQuery(true);
