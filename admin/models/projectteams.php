@@ -134,7 +134,7 @@ $this->addNewProjectTeam($post['team_id'],self::$_project_id);
 		$this->setState('filter.search_nation', $temp_user_request);
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
 		$this->setState('filter.state', $published);
-        $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $app->get('list_limit'), 'int');
+        $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);	
 
 		// List state information.
