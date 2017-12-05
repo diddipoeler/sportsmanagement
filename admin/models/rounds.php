@@ -210,9 +210,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	 */
 	public static function getFirstRound($projectid,$cfg_which_database = 0) 
     {
-         $option = JRequest::getCmd('option');
-		$app = JFactory::getApplication();
-        
+         $app = JFactory::getApplication();
+        $option = $app->input->getCmd('option');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
         
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -246,9 +245,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	 */
 	public static function getLastRound($projectid,$cfg_which_database = 0) 
     {
-         $option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
-        
+$option = $app->input->getCmd('option');        
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
         
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -283,8 +281,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	 */
 	public static function getPreviousRound($roundid, $projectid,$cfg_which_database = 0) 
     {
-         $option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         
@@ -320,8 +318,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	 */
 	public static function getNextRound($roundid, $projectid,$cfg_which_database = 0) 
     {
-         $option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         
@@ -358,8 +356,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	 */
 	function getNextRoundByToday($projectid)
 	{
-	    $option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
         
@@ -389,8 +387,8 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	 */
 	public static function getRoundsOptions($project_id, $ordering='ASC',$cfg_which_database = 0)
 	{
-	    $option = JRequest::getCmd('option');
 		$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
         
