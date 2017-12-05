@@ -99,7 +99,15 @@ class sportsmanagementView extends JViewLegacy
         $this->app = JFactory::getApplication();
         // JInput object
         $this->jinput = $this->app->input;
-        $this->uri = JFactory :: getURI();
+        if( version_compare(JSM_JVERSION,'4','eq') ) 
+    {
+    $this->uri = JUri::getInstance();
+    }
+    else
+    {
+    $this->uri = JFactory::getURI();
+    }
+		
         $this->action = $this->uri->toString();
         $this->params = $this->app->getParams();
         // Get a refrence of the page instance in joomla
