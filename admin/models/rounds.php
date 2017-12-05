@@ -64,6 +64,9 @@ class sportsmanagementModelRounds extends JSMModelList
         {
             //$app = JFactory::getApplication();
         //$option = JRequest::getCmd('option');
+	    parent::__construct($config);
+                $getDBConnection = sportsmanagementHelper::getDBConnection();
+                parent::setDbo($getDBConnection);
                 self::$_project_id	= $this->jsmjinput->getInt('pid',0);
                 
                 if ( !self::$_project_id )
@@ -81,9 +84,7 @@ class sportsmanagementModelRounds extends JSMModelList
                         'r.id',
                         'r.ordering'
                         );
-                parent::__construct($config);
-                $getDBConnection = sportsmanagementHelper::getDBConnection();
-                parent::setDbo($getDBConnection);
+                
         }
         
     /**
