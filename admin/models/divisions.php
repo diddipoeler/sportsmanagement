@@ -72,15 +72,15 @@ class sportsmanagementModelDivisions extends JSMModelList
                 parent::__construct($config);
                 $getDBConnection = sportsmanagementHelper::getDBConnection();
                 parent::setDbo($getDBConnection);
-                $app = JFactory::getApplication();
-                $this->jinput = $app->input;
-                $option = JRequest::getCmd('option');
-                self::$_project_id	= JRequest::getInt('pid',0);
+                //$app = JFactory::getApplication();
+                //$this->jinput = $app->input;
+                //$option = JRequest::getCmd('option');
+                self::$_project_id	= $this->jsmjinput->getInt('pid',0);
                 if ( !self::$_project_id )
                 {
-                self::$_project_id	= $app->getUserState( "$option.pid", '0' );    
+                self::$_project_id	= $this->jsmapp->getUserState( "$this->jsmoption.pid", '0' );    
                 }
-                $app->setUserState( "$option.pid", self::$_project_id ); 
+                $this->jsmapp->setUserState( "$this->jsmoption.pid", self::$_project_id ); 
                 
         }
         
