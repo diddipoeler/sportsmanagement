@@ -85,6 +85,8 @@ public function __construct($config = array())
         $this->jsmdocument = JFactory::getDocument();
         $this->jsmuser = JFactory::getUser(); 
         $this->jsmdate = JFactory::getDate();
+	$this->jsmmessage = '';
+	$this->jsmmessagetype = 'notice';
 
 $this->project_id = $this->jsmjinput->getint('pid');
 if ( !$this->project_id )
@@ -1421,6 +1423,8 @@ public function __construct($config = array())
         $this->jsmuser = JFactory::getUser(); 
 	$this->jsmpks = $this->jsmjinput->get('cid',array(),'array');
         $this->jsmpost = $this->jsmjinput->post->getArray(array());  
+	$this->jsmmessage = '';
+	$this->jsmmessagetype = 'notice';
 
 /**
  * abfrage nach backend und frontend  
@@ -1476,7 +1480,9 @@ public function __construct($config = array())
         $this->jsmdocument = JFactory::getDocument();
         $this->jsmuser = JFactory::getUser(); 
 	$this->jsmpks = $this->jsmjinput->get('cid',array(),'array');
-        $this->jsmpost = $this->jsmjinput->post->getArray(array());   
+        $this->jsmpost = $this->jsmjinput->post->getArray(array()); 
+	$this->jsmmessage = '';
+	$this->jsmmessagetype = 'notice';
         
 /**
  * abfrage nach backend und frontend  
