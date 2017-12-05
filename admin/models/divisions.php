@@ -163,28 +163,28 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	*/
 	function getDivisions($project_id)
 	{
-	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+	   //$app = JFactory::getApplication();
+        //$option = JRequest::getCmd('option');
         $starttime = microtime(); 
         // Create a new query object.		
-		$db = sportsmanagementHelper::getDBConnection();
-		$query = $db->getQuery(true);
-        $query->select('id AS value,name AS text');
-        $query->from('#__sportsmanagement_division');
-        $query->where('project_id = ' . $project_id);
-        $query->order('name ASC');
+	//	$db = sportsmanagementHelper::getDBConnection();
+	//	$query = $db->getQuery(true);
+        $this->jsmquery->select('id AS value,name AS text');
+        $this->jsmquery->from('#__sportsmanagement_division');
+        $this->jsmquery->where('project_id = ' . $project_id);
+        $this->jsmquery->order('name ASC');
         
-		$db->setQuery( $query );
+		$this->jsmdb->setQuery( $this->jsmquery );
         
         if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         {
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
-        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->jsmquery->dump(),true).'</pre>'),'Notice');
+        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
         }
         
-		if ( !$result = $db->loadObjectList("value") )
+		if ( !$result = $this->jsmdb->loadObjectList("value") )
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+			//sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return array();
 		}
 		else
