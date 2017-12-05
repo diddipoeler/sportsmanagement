@@ -257,9 +257,9 @@ else
 	 */
 	function getMatches($cfg_which_database = 0,$editorgroup=0)
 	{
-	   $option = JRequest::getCmd('option');
+	  
 	$app = JFactory::getApplication();
-    
+     $option = $app->input->getCmd('option');
 		if (is_null($this->matches))
 		{
 			$this->matches = self::getResultsRows((int)self::$roundid,(int)self::$divisionid,$this->config,NULL,$cfg_which_database);
@@ -295,8 +295,8 @@ else
 	 */
 	public static function getResultsRows($round,$division,&$config,$params = NULL,$cfg_which_database = 0)
 	{
-		$option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -429,8 +429,8 @@ else
 	 */
 	public static function getMatchReferees($match_id,$cfg_which_database = 0)
 	{
-		$option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -476,8 +476,8 @@ else
 	 */
 	function getMatchRefereeTeams($match_id,$cfg_which_database = 0)
 	{
-		$option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -522,8 +522,8 @@ else
 	 */
 	function isTeamEditor($userid,$cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -560,8 +560,8 @@ else
 	 */
 	function isMatchAdmin($matchid,$userid,$cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -596,8 +596,8 @@ else
 	 */
 	function isAllowed($cfg_which_database = 0,$editorgroup=0)
 	{
-	   $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
     // JInput object
         $jinput = $app->input;
         
@@ -654,8 +654,8 @@ else
 	 */
 	function getShowEditIcon($editorgroup=0)
 	{
-	   $option = JRequest::getCmd('option');
         $app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
 		$user = JFactory::getUser();
         
 		$allowed = self::isAllowed();
@@ -706,8 +706,7 @@ else
 	{
 		$app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
+        $option = $app->input->getCmd('option');
         
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
