@@ -383,7 +383,7 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
 	public static function setProjectID($id=0,$cfg_which_database = 0)
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = $app->input->getCmd('option');
         
 		self::$projectid = (int)$id;
 		self::$_project = null;
@@ -474,8 +474,9 @@ sportsmanagementHelper::setDebugInfoText(__METHOD__,__FUNCTION__,__CLASS__,__LIN
 	 */
 	public static function increaseRound($cfg_which_database = 0)
 	{
-		$option = JRequest::getCmd('option');
+		
 	$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -727,8 +728,8 @@ $s = $configcolors;
 	 */
 	function getDivisionsId($divLevel=0,$cfg_which_database = 0)
 	{
-		$option = JRequest::getCmd('option');
 	   $app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -815,8 +816,8 @@ $s = $configcolors;
 	 */
 	public static function getDivisions($divLevel=0,$cfg_which_database = 0)
 	{
-		$option = JRequest::getCmd('option');
 	   $app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -861,8 +862,8 @@ $s = $configcolors;
 	 */
 	public static function getRounds($ordering='ASC',$cfg_which_database = 0,$slug = TRUE)
 	{
-		$option = JRequest::getCmd('option');
 	   $app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -930,8 +931,8 @@ $s = $configcolors;
 	 */
 	public static function getRoundOptions($ordering='ASC',$cfg_which_database = 0,$slug = TRUE)
 	{
-		$option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -981,8 +982,8 @@ $s = $configcolors;
 	 */
 	public static function getTeaminfo($projectteamid,$cfg_which_database = 0)
 	{
-		$option = JRequest::getCmd('option');
 	   $app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -1234,8 +1235,8 @@ $s = $configcolors;
 	 */
 	public static function getEventTypes($evid=0,$cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -1271,9 +1272,8 @@ $s = $configcolors;
 	 */
 	public static function getprojectteamID($teamid,$cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
-    
+    $option = $app->input->getCmd('option');
     if ( !self::$projectid )
         {
             self::$projectid = JRequest::getInt('p',0);
@@ -1302,8 +1302,8 @@ $s = $configcolors;
 	 */
 	function getPlaygrounds($cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -1332,8 +1332,8 @@ $s = $configcolors;
 	 */
 	function getProjectGameRegularTime($project_id,$cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -1361,8 +1361,8 @@ $s = $configcolors;
 	 */
 	function getReferees($cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -1401,8 +1401,8 @@ $s = $configcolors;
 	 */
 	public static function getTemplateConfig($template,$cfg_which_database = 0,$call_function = '')
 	{
-		$option = JRequest::getCmd('option');
         $app	= JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' call_function<br><pre>'.print_r($call_function,true).'</pre>'),'');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' template<br><pre>'.print_r($template,true).'</pre>'),'');
@@ -1613,8 +1613,8 @@ $starttime = microtime();
    	*/
    	function getProjectCountry($cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
-	$app = JFactory::getApplication();
+$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -1636,8 +1636,8 @@ $starttime = microtime();
 	 */
 	public static function getProjectEvents($position_id=0,$cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -1666,8 +1666,8 @@ $starttime = microtime();
 	 */
 	public static function getProjectStats($statid=0,$positionid=0,$cfg_which_database = 0)
 	{
-	  $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -1756,8 +1756,8 @@ $starttime = microtime();
 	 */
 	public static function getProjectPositions($cfg_which_database = 0)
 	{
-	   $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -1790,9 +1790,8 @@ $starttime = microtime();
 	 */
 	public static function getClubIconHtml(&$team,$type=1,$with_space=0,$club_icon='logo_small',$cfg_which_database = 0,$roundcode = 0)
 	{
-	   $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
-    
+$option = $app->input->getCmd('option');    
 //    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' team<br><pre>'.print_r($team,true).'</pre>'),'');
 //    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' club_icon<br><pre>'.print_r($club_icon,true).'</pre>'),'');
     
@@ -1891,8 +1890,8 @@ $image = sportsmanagementHelperHtml::getBootstrapModalImage($roundcode.'team'.$t
 	 */
 	public static function getMatchSubstitutions($match_id,$cfg_which_database = 0)
 	{
-	  $option = JRequest::getCmd('option');
 	$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
@@ -2135,8 +2134,8 @@ $image = sportsmanagementHelperHtml::getBootstrapModalImage($roundcode.'team'.$t
 	 */
 	public static function hasEditPermission($task=null,$cfg_which_database = 0)
 	{
-		$option = JRequest::getCmd('option');
         $app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         $allowed = false;
 		$user = JFactory::getUser();
         
