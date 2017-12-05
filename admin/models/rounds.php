@@ -267,7 +267,7 @@ $option = $app->input->getCmd('option');
         
 		if (!$result=$db->loadAssocList())
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(__CLASS__, __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+			//sportsmanagementModeldatabasetool::writeErrorLog(__CLASS__, __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		return $result[0];
@@ -298,7 +298,7 @@ $option = $app->input->getCmd('option');
 		$db->setQuery($query);
 		if (!$result=$db->loadAssocList())
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(__CLASS__, __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+			//sportsmanagementModeldatabasetool::writeErrorLog(__CLASS__, __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		for ($i=0,$n=count($result); $i < $n; $i++) {
@@ -335,7 +335,7 @@ $option = $app->input->getCmd('option');
 		$db->setQuery($query);
 		if (!$result=$db->loadAssocList())
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(__CLASS__, __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+			//sportsmanagementModeldatabasetool::writeErrorLog(__CLASS__, __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		for ($i=0,$n=count($result); $i < $n; $i++) {
@@ -373,7 +373,7 @@ $option = $app->input->getCmd('option');
 		$db->setQuery($query);
 		if (!$result=$db->loadAssocList())
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(__CLASS__, __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
+			//sportsmanagementModeldatabasetool::writeErrorLog(__CLASS__, __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 			return false;
 		}
 		return $result;		
