@@ -259,7 +259,7 @@ else
 $meta_keys[] = $config->getValue( 'config.MetaKeys' );    
 }
 
-$project_id = JRequest::getInt( "p") ;
+$project_id = $input->getInt( "p") ;
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' project_id <br><pre>'.print_r($project_id,true).'</pre>'),'');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' MetaKeys <br><pre>'.print_r($meta_keys,true).'</pre>'),'');
