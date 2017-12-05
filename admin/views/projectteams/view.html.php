@@ -273,7 +273,7 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         $this->divisions = $projectdivisions;
 		$this->projectteam = $items;
 		$this->pagination = $pagination;
-		$this->request_url = $uri->toString();
+		//$this->request_url = $uri->toString();
         $this->project = $project;
         $this->project_art_id = $this->project_art_id;
         $this->lists = $lists;
