@@ -86,7 +86,8 @@ defined('JSM_JVERSION') or define('JSM_JVERSION', 2);
 
 
 if ( class_exists( 'JComponentRouterBase' ) ) {
-	abstract class SportsmanagementRouterBase extends JComponentRouterBase {}
+	//abstract class SportsmanagementRouterBase extends JComponentRouterBase {}
+    class SportsmanagementRouterBase {}
 }
 else
 {
