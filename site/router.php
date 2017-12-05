@@ -83,14 +83,29 @@ defined('JSM_JVERSION') or define('JSM_JVERSION', 2);
 
 
 /**
- * sportsmanagementBuildRoute()
+ * SportsmanagementRouter3
  * 
- * @param mixed $query
- * @return
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2017
+ * @version $Id$
+ * @access public
  */
-function sportsmanagementBuildRoute(&$query)
+class SportsmanagementRouter3 extends JComponentRouterBase
 {
-    $app = JFactory::getApplication();
+
+/**
+	 * Build the route for the com_banners component
+	 *
+	 * @param   array  &$query  An array of URL arguments
+	 *
+	 * @return  array  The URL arguments to use to assemble the subsequent URL.
+	 *
+	 * @since   3.3
+	 */
+public function build3(&$query)
+{
+$app = JFactory::getApplication();
     //$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
     //    $show_debug_info = $paramscomponent->get( 'show_debug_info' );
     //    DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
@@ -663,20 +678,22 @@ function sportsmanagementBuildRoute(&$query)
             'sportsmanagementRoute', __line__, $my_text);
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' segments<br><pre>'.print_r($segments,true).'</pre>'   ),'');
     }
-
-
+    
     return $segments;
 }
 
 /**
- * sportsmanagementParseRoute()
- * 
- * @param mixed $segments
- * @return
- */
-function sportsmanagementParseRoute($segments)
+	 * Parse the segments of a URL.
+	 *
+	 * @param   array  &$segments  The segments of the URL to parse.
+	 *
+	 * @return  array  The URL attributes to be used by the application.
+	 *
+	 * @since   3.3
+	 */
+public function parse3(&$segments)
 {
-    $app = JFactory::getApplication();
+$app = JFactory::getApplication();
     //$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
     //    $show_debug_info = $paramscomponent->get( 'show_debug_info' );
     //    DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO',$show_debug_info );
@@ -1173,4 +1190,36 @@ function sportsmanagementParseRoute($segments)
 
     return $vars;
 }
+
+}
+
+
+/**
+ * sportsmanagementBuildRoute()
+ * 
+ * @param mixed $query
+ * @return
+ */
+function sportsmanagementBuildRoute(&$query)
+{
+
+$router = new SportsmanagementRouter3;
+return $router->build3($query);    
+
+}
+
+/**
+ * sportsmanagementParseRoute()
+ * 
+ * @param mixed $segments
+ * @return
+ */
+function sportsmanagementParseRoute($segments)
+{
+$router = new SportsmanagementRouter3;
+return $router->parse3($segments);    
+}
+
+
+
 ?>
