@@ -44,6 +44,27 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 jimport('joomla.html.toolbar');            
 }            
 
+// Get the base version
+$baseVersion = substr(JVERSION, 0, 3);
+        
+if(version_compare( $baseVersion,'4.0','ge')) 
+{
+// Joomla! 4.0 code here
+defined('JSM_JVERSION') or define('JSM_JVERSION', 4);
+}
+if(version_compare($baseVersion,'3.0','ge')) 
+{
+// Joomla! 3.0 code here
+defined('JSM_JVERSION') or define('JSM_JVERSION', 3);
+}
+if(version_compare($baseVersion,'2.5','ge')) 
+{
+// Joomla! 2.5 code here
+defined('JSM_JVERSION') or define('JSM_JVERSION', 2);
+} 
+
+
+
 /**
  * sportsmanagementHelper
  * 
@@ -798,7 +819,16 @@ else
         
         if ( $results && $results2 )
         {
-        return JDatabase::getInstance( $option );
+		
+	if( version_compare(JSM_JVERSION,'4','eq') ) 
+	{	
+        return JDatabaseDriver::getInstance( $option );
+	}
+	else
+	{
+	return JDatabase::getInstance( $option );	
+	}
+		
         }
         else
         {
