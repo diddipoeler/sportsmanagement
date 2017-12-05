@@ -155,7 +155,7 @@ $this->addNewProjectTeam($post['team_id'],self::$_project_id);
         // JInput object
         //$jinput = $app->input;
         //$option = $jinput->getCmd('option');
-        $this->_season_id	= $app->getUserState( "$this->jsmoption.season_id", '0' );
+        $this->_season_id	= $this->jsmapp->getUserState( "$this->jsmoption.season_id", '0' );
         
         self::$_project_id = $this->jsmjinput->getVar('pid');
         self::$_division_id	= $this->jsmjinput->getInt('division',0);
