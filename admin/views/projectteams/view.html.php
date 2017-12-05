@@ -60,22 +60,22 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 	public function init ()
 	{
 		// Reference global application object
-		$app = JFactory::getApplication();
+		//$app = JFactory::getApplication();
         // JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$uri = JFactory::getURI();
-		$model	= $this->getModel();
+		//$jinput = $app->input;
+		//$option = $jinput->getCmd('option');
+		//$uri = JFactory::getURI();
+		//$model	= $this->getModel();
 
 		$this->state = $this->get('State'); 
 		$this->sortDirection = $this->state->get('list.direction');
 		$this->sortColumn = $this->state->get('list.ordering');
         
-        $this->division = $jinput->request->get('division', 0, 'INT');
-		$this->project_id = $jinput->request->get('pid', 0, 'INT');
+        $this->division = $this->jinput->request->get('division', 0, 'INT');
+		$this->project_id = $this->jinput->request->get('pid', 0, 'INT');
 		if ( !$this->project_id )
 		{
-			$this->project_id = $app->getUserState( "$option.pid", '0' );
+			$this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
 		}
        
 		$mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
@@ -88,17 +88,17 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
 		$this->season_id = $project->season_id;
 		$this->sports_type_id = $project->sports_type_id;
 		
-		$app->setUserState( "$option.pid", $project->id );
-		$app->setUserState( "$option.season_id", $project->season_id );
-		$app->setUserState( "$option.project_art_id", $project->project_art_id );
-		$app->setUserState( "$option.sports_type_id", $project->sports_type_id );
+		$this->app->setUserState( "$this->option.pid", $project->id );
+		$this->app->setUserState( "$this->option.season_id", $project->season_id );
+		$this->app->setUserState( "$this->option.project_art_id", $project->project_art_id );
+		$this->app->setUserState( "$this->option.sports_type_id", $project->sports_type_id );
         
 		$starttime = microtime(); 
 		$items = $this->get('Items');
         
 		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		{
-			$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
+			$this->app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
 		}
         
 		$total = $this->get('Total');
@@ -109,11 +109,11 @@ class sportsmanagementViewprojectteams extends sportsmanagementView
         
 		if ( $this->project_art_id == 3 )
 		{
-			$filter_order = $app->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order', 'filter_order', 't.lastname', 'cmd');
+			$filter_order = $this->app->getUserStateFromRequest($this->option.'.'.$this->model->_identifier.'.tl_filter_order', 'filter_order', 't.lastname', 'cmd');
 		} 
 		else
 		{
-			$filter_order = $app->getUserStateFromRequest($option.'.'.$model->_identifier.'.tl_filter_order', 'filter_order', 't.name', 'cmd');
+			$filter_order = $this->app->getUserStateFromRequest($this->option.'.'.$this->model->_identifier.'.tl_filter_order', 'filter_order', 't.name', 'cmd');
 		}
 		
 		
