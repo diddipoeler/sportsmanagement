@@ -154,7 +154,7 @@ class sportsmanagementModelPlaygrounds extends JSMModelList
         }
 
         
-        $query->order($this->jsmdb->escape($this->getState('list.ordering', 'v.name')).' '.
+        $this->jsmquery->order($this->jsmdb->escape($this->getState('list.ordering', 'v.name')).' '.
                 $this->jsmdb->escape($this->getState('list.direction', 'ASC')));
         
         
