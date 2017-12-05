@@ -1048,8 +1048,8 @@ $s = $configcolors;
 	 */
 	public static function & _getTeams($teamname='name',$cfg_which_database = 0,$call_function = '')
 	{
-	   $option = $jinput->getCmd('option');
-	$app = JFactory::getApplication();
+	   	$app = JFactory::getApplication();
+		$option = $app->input->getCmd('option');
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);
