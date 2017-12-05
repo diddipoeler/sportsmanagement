@@ -355,7 +355,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
             //JToolbarHelper::custom('cpanel.jqueryinstall','upload','upload',JText::_('COM_SPORTSMANAGEMENT_INSTALL_JQUERY'),false);
             }
 
-$bar = JToolBar::getInstance('toolbar');
+$bar = JToolbar::getInstance('toolbar');
 $bar->appendButton( 'Link', 'upload', JText::_('COM_SPORTSMANAGEMENT_GITHUB_UPDATE'), 'index.php?option=com_sportsmanagement&&view=githubinstall' );            
             //}
             
