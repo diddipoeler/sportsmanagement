@@ -44,26 +44,24 @@ defined('_JEXEC') or die('Restricted access');
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.view', JPATH_SITE);
 JLoader::import('components.com_sportsmanagement.libraries.sportsmanagement.model', JPATH_ADMINISTRATOR);
 
-if(version_compare(JVERSION,'3.0.0','ge')) 
+// Get the base version
+$baseVersion = substr(JVERSION, 0, 3);
+        
+if(version_compare( $baseVersion,'4.0','ge')) 
+{
+// Joomla! 4.0 code here
+defined('JSM_JVERSION') or define('JSM_JVERSION', 4);
+}
+if(version_compare($baseVersion,'3.0','ge')) 
 {
 // Joomla! 3.0 code here
+defined('JSM_JVERSION') or define('JSM_JVERSION', 3);
 }
-elseif(version_compare(JVERSION,'2.5.0','ge')) 
+if(version_compare($baseVersion,'2.5','ge')) 
 {
 // Joomla! 2.5 code here
+defined('JSM_JVERSION') or define('JSM_JVERSION', 2);
 } 
-elseif(version_compare(JVERSION,'1.7.0','ge')) 
-{
-// Joomla! 1.7 code here
-} 
-elseif(version_compare(JVERSION,'1.6.0','ge')) 
-{
-// Joomla! 1.6 code here
-} 
-else 
-{
-// Joomla! 1.5 code here
-}
 
 if (! defined('DS'))
 {
@@ -78,6 +76,7 @@ DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 $document = JFactory::getDocument();
 $app = JFactory::getApplication();
 $config = JFactory::getConfig();
+$input = $app->input;
 
 /*
 // zur unterscheidung von joomla 2.5 und 3
@@ -145,13 +144,13 @@ $paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
 
 // update plugins
 // Check if plugin has been enabled
-$plugin_enabled = JPluginHelper::isEnabled('system', 'jsm_kickerde');
+//$plugin_enabled = JPluginHelper::isEnabled('system', 'jsm_kickerde');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' plugin isEnabled jsm_kickerde <br><pre>'.print_r($plugin_enabled,true).'</pre>'),'');
 
-$plugin_enabled = JPluginHelper::importPlugin('system', 'jsm_kickerde');
+//$plugin_enabled = JPluginHelper::importPlugin('system', 'jsm_kickerde');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' plugin importPlugin jsm_kickerde <br><pre>'.print_r($plugin_enabled,true).'</pre>'),'');
 
-$plugin_enabled = JPluginHelper::getPlugin('system', 'jsm_kickerde');
+//$plugin_enabled = JPluginHelper::getPlugin('system', 'jsm_kickerde');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' plugin getPlugin jsm_kickerde <br><pre>'.print_r($plugin_enabled,true).'</pre>'),'');
 
     
@@ -295,10 +294,9 @@ $document->setMetaData( 'robots', 'index,follow' );
 $document->setMetaData( 'keywords', implode(",",$meta_keys) );
 $document->setMetaData( 'generator', "JSM - Joomla Sports Management" );
  
-$task = JRequest::getCmd('task');
-$option = JRequest::getCmd('option');
-
-$view = JRequest::getVar( "view") ;
+$task = $input->getCmd('task');
+$option = $input->getCmd('option');
+$view = $input->getVar( "view") ;
 $view = ucfirst(strtolower($view));
 //$cfg_help_server = JComponentHelper::getParams($option)->get('cfg_help_server','') ;
 $modal_popup_width = JComponentHelper::getParams($option)->get('modal_popup_width',0) ;
@@ -333,7 +331,7 @@ if(is_null($controller) && !($controller instanceof JControllerLegacy)) {
 	$controller	= JControllerLegacy::getInstance('sportsmanagement');
 }
 
-$task = JFactory::getApplication()->input->getCmd('task');
+$task = $input->getCmd('task');
 // Den 'task' der im Request übergeben wurde ausführen
 $controller->execute($task);
 //$controller->execute(JRequest::getCmd('task'));
