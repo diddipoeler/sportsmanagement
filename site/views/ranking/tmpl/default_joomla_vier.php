@@ -47,4 +47,13 @@ JHtml::_('behavior.modal');
 $templatesToLoad = array('globalviews');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 
+echo $this->loadTemplate('projectheading');
+
+
+echo $this->loadTemplate('ranking');
+
+
+
+echo $this->loadTemplate('backbutton');
+echo $this->loadTemplate('footer');
 ?>
