@@ -99,7 +99,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	 */
 	public static function getTeam( )
 	{
-	   $option = $this->jinput->getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 	    $app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -137,7 +137,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	 */
 	public static function getHighest($homeaway, $which)
 	{
-	   $option = $this->jinput->getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 	    $app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -256,7 +256,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
      */
     public static function getNoGoalsAgainst( )
     {
-        $option = $this->jinput->getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 	    $app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -304,7 +304,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
      */
     public static function getSeasonTotals($which)
     {
-        $option = $this->jinput->getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 	    $app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -388,7 +388,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 		 */
 		function getChartData( )
 		{
-		  $option = $this->jinput->getCmd('option');
+		  $option = JFactory::getApplication()->input->getCmd('option');
 	    $app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -446,7 +446,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
      */
     public static function getMatchDayTotals( )
     {
-        $option = $this->jinput->getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 	    $app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -507,7 +507,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
      */
     public static function getTotalRounds( )
     {
-        $option = $this->jinput->getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 	    $app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -553,7 +553,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
      */
     public static function _getAttendance( )
     {
-        $option = $this->jinput->getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 	    $app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -674,7 +674,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	 */
 	public static function getLogo( )
 	{
-	   $option = $this->jinput->getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 	    $app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -697,7 +697,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	 */
 	public static function getResults()
 	{
-	   $option = $this->jinput->getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 	    $app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
