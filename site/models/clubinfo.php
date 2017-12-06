@@ -311,7 +311,7 @@ else
      */
     public static function updateHits($clubid=0,$inserthits=0)
     {
-        $option = JFactory::getApplication()->jinput->getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     $db = JFactory::getDbo();
  $query = $db->getQuery(true);
