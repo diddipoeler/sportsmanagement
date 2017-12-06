@@ -563,20 +563,28 @@ catch (Exception $e)
         // Order
         $query->order('m.match_date '.$orderBy);
 
+		try{
         $db->setQuery($query);
 		$this->allmatches = $db->loadObjectList();
+	
+}
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_($e->getMessage()), 'error');
+}		
         }
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
         
         if ( !$this->allmatches )
        {
-        if ( $db->getErrorNum() )
+  /*      
+		if ( $db->getErrorNum() )
         {
             $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorNum(),true).'</pre>' ),'Error');
             $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
         }
-
+*/
         $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_CLUBPLAN_NO_MATCHES'),'Error');
         }
         
