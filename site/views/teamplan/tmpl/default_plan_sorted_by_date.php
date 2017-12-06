@@ -44,7 +44,7 @@ if (!isset($this->config['show_matchreport_column'])){$this->config['show_matchr
 <?php
 if (!empty($this->matches))
 {
-$teamid=JRequest::getInt('tid');
+$teamid=JFactory::getApplication()->input->getInt('tid');
 ?>
 <!--	<thead> -->
 	<?php
