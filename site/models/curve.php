@@ -95,7 +95,7 @@ class sportsmanagementModelCurve extends JModelLegacy
 		self::$division = $jinput->get('division', 0, 'INT');
 		self::$teamid1 = $jinput->get('tid1', 0, 'INT');
 		self::$teamid2 = $jinput->get('tid2', 0, 'INT');
-		$this->both = JRequest::getInt('both', 0);
+		$this->both = $jinput->getInt('both', 0);
         sportsmanagementModelProject::$projectid = self::$projectid;
         self::$cfg_which_database = $jinput->get('cfg_which_database', 0, 'INT');
 	self::$season_id = $jinput->get('s', 0, 'INT');	
@@ -110,7 +110,7 @@ class sportsmanagementModelCurve extends JModelLegacy
 	 */
 	function determineTeam1And2()
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = $this->jinput->getCmd('option');
 	$app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -311,7 +311,7 @@ class sportsmanagementModelCurve extends JModelLegacy
 	function getDataByDivision($division=0)
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = $this->jinput->getCmd('option');
         
 		$project = sportsmanagementModelProject::getProject(self::$cfg_which_database);
 		$rounds  = sportsmanagementModelProject::getRounds('ASC',self::$cfg_which_database,FALSE);
