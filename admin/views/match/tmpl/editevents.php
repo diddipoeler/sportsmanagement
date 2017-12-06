@@ -119,7 +119,7 @@ var rosters = Array(homeroster, awayroster);
 <div id="ajaxresponse" ></div>
 	<fieldset>
 		<div class="fltrt">
-			<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
+			<button id="cancel" type="button" onclick="<?php echo JFactory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
 				<?php echo JText::_('JCANCEL');?></button>
 		</div>
 		<div class="configuration" >

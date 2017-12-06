@@ -206,7 +206,7 @@ return $github->issues->create($github_user, $github_repo, $this->post['title'],
      */
     function getGithubList()
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         
         //$this->client = JApplicationHelper::getClientInfo($this->getState('filter.client_id', 0));

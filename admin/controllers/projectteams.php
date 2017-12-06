@@ -80,11 +80,11 @@ class sportsmanagementControllerprojectteams extends JControllerAdmin
 	   $app = JFactory::getApplication();
        // JInput object
         $jinput = $app->input;
-		//$post = JRequest::get('post');
+		//$post = JFactory::getApplication()->input->get('post');
         $post = $jinput->post->getArray();
         $option = $jinput->getCmd('option');
         // Check for request forgeries
-		//JRequest::checkToken() or die('JINVALID_TOKEN');
+		//JFactory::getApplication()->input->checkToken() or die('JINVALID_TOKEN');
 
         $model = $this->getModel();
        $msg = $model->storeAssign($post);

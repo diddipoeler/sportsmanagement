@@ -5,7 +5,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 JHtml::_( 'behavior.tooltip' );
 
 // Set toolbar items for the page
-//$edit = JRequest::getVar('edit',true);
+//$edit = JFactory::getApplication()->input->getVar('edit',true);
 
 //JToolbarHelper::title( JText::_( 'COM_JOOMLEAGUE_ADMIN_TREETOMATCH_ASSIGN' ) );
 //

@@ -70,7 +70,7 @@ class JFormFieldCurrentround extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
 		// JInput object 
          $jinput = $app->input; 
@@ -82,7 +82,7 @@ class JFormFieldCurrentround extends JFormFieldList
         //$project_id = $app->getUserState( "$option.pid", '0' );
          $project_id = $jinput->get->get('id');
 		/*
-        $project_id = JRequest::getVar($varname);
+        $project_id = JFactory::getApplication()->input->getVar($varname);
 		if (is_array($project_id)) {
 			$project_id = $project_id[0];
 		}

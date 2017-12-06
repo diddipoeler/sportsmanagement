@@ -197,7 +197,7 @@ class sportsmanagementModelclubname extends JSMModelAdmin
 	$db = sportsmanagementHelper::getDBConnection(); 
 $query = $db->getQuery(true);
 
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // JInput object
         $jinput = $app->input;    
 

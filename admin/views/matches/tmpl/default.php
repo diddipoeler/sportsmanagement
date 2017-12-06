@@ -40,7 +40,7 @@
 defined('_JEXEC') or die('Restricted access');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.modal');
-$massadd=JRequest::getInt('massadd',0);
+$massadd=JFactory::getApplication()->input->getInt('massadd',0);
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 

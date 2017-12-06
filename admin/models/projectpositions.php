@@ -88,7 +88,7 @@ class sportsmanagementModelProjectpositions extends JSMModelList
 	protected function populateState($ordering = null, $direction = null)
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
                 $pid = $this->jsmjinput->get('pid');
@@ -125,7 +125,7 @@ class sportsmanagementModelProjectpositions extends JSMModelList
 	 */
 	protected function getListQuery()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
 //        $this->_project_id	= $app->getUserState( "$option.pid", '0' );
         
@@ -229,7 +229,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
 
 //	function _buildContentOrderBy()
 //	{
-//		$option = JRequest::getCmd('option');
+//		$option = JFactory::getApplication()->input->getCmd('option');
 //		$app = JFactory::getApplication();
 //		$filter_order		= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.po_filter_order','filter_order','po.name','cmd');
 //		$filter_order_Dir	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.po_filter_order_Dir','filter_order_Dir','','word');
@@ -247,7 +247,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
 
 //	function _buildContentWhere()
 //	{
-//		$option = JRequest::getCmd('option');
+//		$option = JFactory::getApplication()->input->getCmd('option');
 //		$app = JFactory::getApplication();
 //		$where =' pt.project_id='.$this->_project_id;
 //		return $where;

@@ -216,7 +216,7 @@ class sportsmanagementModelPositions extends JSMModelList
      */
     function getProjectPositions($project_id,$persontype=1)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         $query = JFactory::getDbo()->getQuery(true);
         
@@ -261,7 +261,7 @@ class sportsmanagementModelPositions extends JSMModelList
 //		*/
 //	function getStaffPositions($project_id)
 //	{
-//		$option = JRequest::getCmd('option');
+//		$option = JFactory::getApplication()->input->getCmd('option');
 //		$app = JFactory::getApplication();
 //		//$project_id=$app->getUserState($option.'project');
 //		$query="	SELECT ppos.id AS value, pos.name AS text
@@ -290,7 +290,7 @@ class sportsmanagementModelPositions extends JSMModelList
 //		*/
 //	function getPlayerPositions($project_id)
 //	{
-//		$option = JRequest::getCmd('option');
+//		$option = JFactory::getApplication()->input->getCmd('option');
 //		$app = JFactory::getApplication();
 //		//$project_id=$app->getUserState($option.'project');
 //
@@ -319,7 +319,7 @@ class sportsmanagementModelPositions extends JSMModelList
 		*/
 	function getPositions($project_id)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         $query = JFactory::getDbo()->getQuery(true);
         
@@ -398,7 +398,7 @@ class sportsmanagementModelPositions extends JSMModelList
      */
     public function getPositionListSelect()
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         $query = JFactory::getDbo()->getQuery(true);
         // Select some fields

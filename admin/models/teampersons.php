@@ -107,27 +107,27 @@ class sportsmanagementModelTeamPersons extends JSMModelList
 		$published = $this->getUserStateFromRequest($this->context.'.filter.state', 'filter_state', '', 'string');
 		$this->setState('filter.state', $published);
         
-        if ( JRequest::getVar('team_id') )
+        if ( JFactory::getApplication()->input->getVar('team_id') )
         {
-        $this->setState('filter.team_id', JRequest::getVar('team_id') );    
+        $this->setState('filter.team_id', JFactory::getApplication()->input->getVar('team_id') );    
         }
         else
         {
 		$this->setState('filter.team_id', $this->jsmapp->getUserState( "$this->jsmoption.team_id", '0' ) );
         }
         
-        if ( JRequest::getVar('persontype') )
+        if ( JFactory::getApplication()->input->getVar('persontype') )
         {
-        $this->setState('filter.persontype', JRequest::getVar('persontype') );    
+        $this->setState('filter.persontype', JFactory::getApplication()->input->getVar('persontype') );    
         }
         else
         {
         $this->setState('filter.persontype', $this->jsmapp->getUserState( "$this->jsmoption.persontype", '0' ) );
         }
         
-        if ( JRequest::getVar('project_team_id') )
+        if ( JFactory::getApplication()->input->getVar('project_team_id') )
         {
-        $this->setState('filter.project_team_id', JRequest::getVar('project_team_id') );    
+        $this->setState('filter.project_team_id', JFactory::getApplication()->input->getVar('project_team_id') );    
         }
         else
         {

@@ -407,7 +407,7 @@ $resultupdate = $this->jsmdb->updateObject('#__sportsmanagement_treeto', $object
 //		$jinput = $app->input;
 //		$option = $jinput->getCmd('option');
 //		$result = true;
-//		$post = JRequest::get('post');
+//		$post = JFactory::getApplication()->input->get('post');
 //		$db = JFactory::getDbo();
 
 		for($x = 0;$x < count($cid);$x ++)

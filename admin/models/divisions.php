@@ -74,7 +74,7 @@ class sportsmanagementModelDivisions extends JSMModelList
                 parent::setDbo($getDBConnection);
                 //$app = JFactory::getApplication();
                 //$this->jinput = $app->input;
-                //$option = JRequest::getCmd('option');
+                //$option = JFactory::getApplication()->input->getCmd('option');
                 self::$_project_id	= $this->jsmjinput->getInt('pid',0);
                 if ( !self::$_project_id )
                 {
@@ -164,7 +164,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	function getDivisions($project_id)
 	{
 	   //$app = JFactory::getApplication();
-        //$option = JRequest::getCmd('option');
+        //$option = JFactory::getApplication()->input->getCmd('option');
         $starttime = microtime(); 
         // Create a new query object.		
 	//	$db = sportsmanagementHelper::getDBConnection();
@@ -203,7 +203,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	function getProjectDivisionsCount($project_id)
 	{
 	   //$app = JFactory::getApplication();
-        //$option = JRequest::getCmd('option');
+        //$option = JFactory::getApplication()->input->getCmd('option');
         $starttime = microtime(); 
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();

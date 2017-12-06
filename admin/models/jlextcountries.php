@@ -182,7 +182,7 @@ class sportsmanagementModeljlextcountries extends JSMModelList
     function getFederation()
     {
         //$app = JFactory::getApplication();
-//        $option = JRequest::getCmd('option');
+//        $option = JFactory::getApplication()->input->getCmd('option');
 //        // Create a new query object.		
 //		$db = sportsmanagementHelper::getDBConnection();
 //		$query = $db->getQuery(true);

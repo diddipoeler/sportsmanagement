@@ -64,23 +64,23 @@ class sportsmanagementControllerjlextlmoimports extends JControllerLegacy
 	 */
 	function save()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         // Check for request forgeries
-		JRequest::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
+		JFactory::getApplication()->input->checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
 		$msg='';
 		JToolbarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&view=jllmoimport&controller=jllmoimport'));
 		$app =& JFactory::getApplication();
-		$post=JRequest::get('post');
+		$post=JFactory::getApplication()->input->get('post');
     $model=$this->getModel('jlextlmoimports');
     
 		// first step - upload
 		if (isset($post['sent']) && $post['sent']==1)
 		{
-			$upload=JRequest::getVar('import_package',null,'files','array');
+			$upload=JFactory::getApplication()->input->getVar('import_package',null,'files','array');
 
 
-			$lmoimportuseteams=JRequest::getVar('lmoimportuseteams',null);
+			$lmoimportuseteams=JFactory::getApplication()->input->getVar('lmoimportuseteams',null);
 			$app->setUserState($option.'lmoimportuseteams',$lmoimportuseteams);
 			
 			$tempFilePath=$upload['tmp_name'];

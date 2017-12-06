@@ -70,7 +70,7 @@ class sportsmanagementModeljoomleagueimport extends JModelList
 //{
 //    $app = JFactory::getApplication();
 //    $db = JFactory::getDbo(); 
-//    $option = JRequest::getCmd('option');
+//    $option = JFactory::getApplication()->input->getCmd('option');
 //    
 //    // Select some fields
 //            $query = $db->getQuery(true);
@@ -111,7 +111,7 @@ function newstructurjlimport($season_id,$jl_table,$jsm_table,$project_id)
 {
     $app = JFactory::getApplication();
     $db = JFactory::getDbo(); 
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
     $starttime = microtime(); 
     $query = $db->getQuery(true);
         

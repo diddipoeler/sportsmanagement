@@ -39,7 +39,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-$option = JRequest::getCmd('option');
+$option = JFactory::getApplication()->input->getCmd('option');
 $maxImportTime=JComponentHelper::getParams($option)->get('max_import_time',0);
 if (empty($maxImportTime))
 {
@@ -95,7 +95,7 @@ class sportsmanagementModeljlextprofleagimport extends JModelLegacy
  */
 function __construct( )
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 	$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0);
   if ( $show_debug_info )
   {
@@ -279,7 +279,7 @@ Function DumpStructure(&$structure,&$positions,$path)
  */
 function getData()
 	{
-$option = JRequest::getCmd('option');
+$option = JFactory::getApplication()->input->getCmd('option');
 
   $app = JFactory::getApplication();
   $document	= JFactory::getDocument();
@@ -287,13 +287,13 @@ $option = JRequest::getCmd('option');
   $lang = JFactory::getLanguage();
   $teile = explode("-",$lang->getTag());
   
-  $post = JRequest::get('post');
+  $post = JFactory::getApplication()->input->get('post');
   $country = $post['country'];
   //$country = JSMCountries::convertIso2to3($teile[1]);
   
   $app->enqueueMessage(JText::_('land '.$country.''),'');
   
-  $option = JRequest::getCmd('option');
+  $option = JFactory::getApplication()->input->getCmd('option');
 	$project = $app->getUserState( $option . 'project', 0 );
 	
 		

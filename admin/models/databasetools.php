@@ -70,10 +70,10 @@ class sportsmanagementModelDatabaseTools extends JModelLegacy
 	protected function populateState($ordering = null, $direction = null)
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
-        $value = JRequest::getUInt('limitstart', 0);
+        $value = JFactory::getApplication()->input->getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
     }    	
 

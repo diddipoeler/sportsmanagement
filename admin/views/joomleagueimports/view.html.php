@@ -98,7 +98,7 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 		
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' stateVar <br><pre>'.print_r($stateVar,true).'</pre>'),'');
         
-        //$post = JRequest::get('post');
+        //$post = JFactory::getApplication()->input->get('post');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' _success <br><pre>'.print_r(sportsmanagementModeljoomleagueimports::$_success,true).'</pre>'),'');
         
         
@@ -215,7 +215,7 @@ JToolbarHelper::back('JPREV','index.php?option=com_sportsmanagement&view=project
 //        JToolbarHelper::custom('joomleagueimports.import','new','new',JText::_('JTOOLBAR_DUPLICATE'),false);
 		JToolbarHelper::divider();
 //		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//        JToolbarHelper::preferences(JRequest::getCmd('option'));
+//        JToolbarHelper::preferences(JFactory::getApplication()->input->getCmd('option'));
 		parent::addToolbar();
 	}
 

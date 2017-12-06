@@ -26,7 +26,7 @@ class sportsmanagementViewTreetonodes extends sportsmanagementView
 
 	function _displayDefault()
 	{
-		//$option = JRequest::getCmd('option');
+		//$option = JFactory::getApplication()->input->getCmd('option');
 //		$app = JFactory::getApplication();
 //		$db = JFactory::getDbo();
 //		$uri = JFactory::getURI();

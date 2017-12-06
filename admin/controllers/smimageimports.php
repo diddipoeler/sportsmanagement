@@ -64,7 +64,7 @@ class sportsmanagementControllersmimageimports extends JControllerAdmin
   function import()
     {
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $model	= $this->getModel();
         $result = $model->import();
         

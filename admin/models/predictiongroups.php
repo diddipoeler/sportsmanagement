@@ -87,7 +87,7 @@ class sportsmanagementModelpredictiongroups extends JModelList
 	protected function populateState($ordering = null, $direction = null)
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
         
@@ -125,7 +125,7 @@ class sportsmanagementModelpredictiongroups extends JModelList
 	function getListQuery()
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);

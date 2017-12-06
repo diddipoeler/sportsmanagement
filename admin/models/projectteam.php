@@ -66,11 +66,11 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
 	function saveshort()
 	{
 		$app =& JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // Get the input
-        $pks = JRequest::getVar('cid', null, 'post', 'array');
-        $post = JRequest::get('post');
+        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $post = JFactory::getApplication()->input->get('post');
 
 $project_id = $post['pid'];
 //$app->enqueueMessage('project_id<br><pre>'.print_r($project_id, true).'</pre><br>','Notice');
@@ -159,12 +159,12 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
      */
     function setseasonid()
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
-        $post = JRequest::get('post');
-        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        $post = JFactory::getApplication()->input->get('post');
+        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $project_id = $post['pid'];
         $season_id = $post['season_id'];
         
@@ -204,7 +204,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
      */
     function setusetable($setzer=0)
     {
-    $pks = JRequest::getVar('cid', null, 'post', 'array');
+    $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
     
     for ($x=0; $x < count($pks); $x++)
 		{
@@ -235,7 +235,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
      */
     function setusetablepoints($setzer=0)
     {
-    $pks = JRequest::getVar('cid', null, 'post', 'array');
+    $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
     
     for ($x=0; $x < count($pks); $x++)
 		{
@@ -268,12 +268,12 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
      */
     function matchgroups()
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
-        $post = JRequest::get('post');
-        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        $post = JFactory::getApplication()->input->get('post');
+        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
         
         //$app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
         
@@ -333,12 +333,12 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
      */
     function storeAssign($post)
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        //$post = JRequest::get('post');
+        //$post = JFactory::getApplication()->input->get('post');
         $post = $jinput->post->getArray();
         $_pro_teams_to_delete = array();
         $query = JFactory::getDbo()->getQuery(true);
@@ -402,10 +402,10 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
     public function delete(&$pks)
     {
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$db		= JFactory::getDbo();
 		//$query	= $db->getQuery(true);
-        //$pks = JRequest::getVar('cid', null, 'post', 'array');
+        //$pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
         
         //$app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
         
@@ -459,7 +459,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
 	function getProjectTeam($team_id)
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$db	= JFactory::getDbo();
 		$query	= $db->getQuery(true);
         // Select some fields

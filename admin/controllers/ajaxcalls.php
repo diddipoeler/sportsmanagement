@@ -61,12 +61,12 @@ function removeCommentary()
         //$result = $response;
         
         // Check for request forgeries
-        //JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
+        //JFactory::getApplication()->input->checkToken('get') or jexit('JINVALID_TOKEN');
 		//JSession::checkToken() or die('JINVALID_TOKEN');
-        JRequest::checkToken() or jexit('JINVALID_TOKEN');
+        JFactory::getApplication()->input->checkToken() or jexit('JINVALID_TOKEN');
         
         // Check for request forgeries
-        //JRequest::checkToken( 'get' ) or jexit( 'JINVALID_TOKEN' );
+        //JFactory::getApplication()->input->checkToken( 'get' ) or jexit( 'JINVALID_TOKEN' );
         
  //       if (!JSession::checkToken('post')) 
 //        {
@@ -75,7 +75,7 @@ function removeCommentary()
         //}
 //else
 //{
-		$event_id = JRequest::getInt('event_id');
+		$event_id = JFactory::getApplication()->input->getInt('event_id');
 		$model = $this->getModel();
 		if (!$result = $model->deletecommentary($event_id))
 		{

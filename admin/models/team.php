@@ -88,7 +88,7 @@ class sportsmanagementModelteam extends JSMModelAdmin
     public static function getTeamLogo($team_id)
     {
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$db		= JFactory::getDbo();
 		$query	= $db->getQuery(true);
         
@@ -115,7 +115,7 @@ class sportsmanagementModelteam extends JSMModelAdmin
 	function getTeam($team_id=0,$pro_team_id=0)
 	{
 //	   $app = JFactory::getApplication();
-//        $option = JRequest::getCmd('option');
+//        $option = JFactory::getApplication()->input->getCmd('option');
 //		$db		= JFactory::getDbo();
 //		$query	= $db->getQuery(true);
         $this->jsmquery->clear();
@@ -149,7 +149,7 @@ class sportsmanagementModelteam extends JSMModelAdmin
 	*/
     function DeleteTrainigData($id)
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$app	= JFactory::getApplication();
         
     $db = JFactory::getDbo();
@@ -189,7 +189,7 @@ if (!$db->query())
 	*/
     function UpdateTrainigData($post)
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$app	= JFactory::getApplication();
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
@@ -243,7 +243,7 @@ if (!$db->query())
 	*/
 	function getTrainigData($team_id=0,$pro_team_id=0)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app	= JFactory::getApplication();
         //$db		= $this->getDbo();
 		$query	= JFactory::getDbo()->getQuery(true);
@@ -285,7 +285,7 @@ if (!$db->query())
 	*/
     function addNewTrainigData($team_id)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app	= JFactory::getApplication();
         
         // Get a db connection.
@@ -329,17 +329,17 @@ if (!$db->query())
     public function saveshort()
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         
         // Get the input
-        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
         if ( !$pks )
         {
             return JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_SAVE_NO_SELECT');
         }
-        $post = JRequest::get('post');
+        $post = JFactory::getApplication()->input->get('post');
         
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )

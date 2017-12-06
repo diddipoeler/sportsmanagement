@@ -41,7 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::_( 'behavior.modal' );
 //JHtml::_('behavior.modal', 'a.modal');
 
-//$option = JRequest::getCmd('option');
+//$option = JFactory::getApplication()->input->getCmd('option');
 $view = $this->jinput->getVar( "view") ;
 $view = ucfirst(strtolower($view));
 $cfg_help_server = JComponentHelper::getParams($this->jinput->getCmd('option'))->get('cfg_help_server','') ;

@@ -70,7 +70,7 @@ class JFormFieldprojectpositionreferee extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         // Initialize variables.
 		$options = array();
@@ -78,7 +78,7 @@ class JFormFieldprojectpositionreferee extends JFormFieldList
 		$varname = (string) $this->element['varname'];
         $project_id = $app->getUserState( "$option.pid", '0' );;
         /*
-		$project_id = JRequest::getVar($varname);
+		$project_id = JFactory::getApplication()->input->getVar($varname);
 		if (is_array($project_id)) {
 			$project_id = $project_id[0];
 		}

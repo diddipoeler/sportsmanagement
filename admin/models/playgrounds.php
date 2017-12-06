@@ -85,7 +85,7 @@ class sportsmanagementModelPlaygrounds extends JSMModelList
 	protected function populateState($ordering = null, $direction = null)
 	{
 		//$app = JFactory::getApplication();
-        //$option = JRequest::getCmd('option');
+        //$option = JFactory::getApplication()->input->getCmd('option');
         // Initialise variables.
 	//	$app = JFactory::getApplication('administrator');
         
@@ -125,7 +125,7 @@ class sportsmanagementModelPlaygrounds extends JSMModelList
 	function getListQuery()
 	{
 		//$app = JFactory::getApplication();
-        //$option = JRequest::getCmd('option');
+        //$option = JFactory::getApplication()->input->getCmd('option');
         
         // Create a new query object.
 	//	$db		= $this->getDbo();
@@ -186,7 +186,7 @@ class sportsmanagementModelPlaygrounds extends JSMModelList
 	function getPlaygrounds()
 	{
 	  // $app = JFactory::getApplication();
-        //$option = JRequest::getCmd('option');
+        //$option = JFactory::getApplication()->input->getCmd('option');
 	//	$db		= JFactory::getDbo();
 	//	$query	= $db->getQuery(true);
         $starttime = microtime(); 
@@ -210,7 +210,7 @@ class sportsmanagementModelPlaygrounds extends JSMModelList
     public function getPlaygroundListSelect()
 	{
 	   //$app = JFactory::getApplication();
-        //$option = JRequest::getCmd('option');
+        //$option = JFactory::getApplication()->input->getCmd('option');
 	//	$db		= JFactory::getDbo();
 	//	$query	= $db->getQuery(true);
         $starttime = microtime(); 

@@ -40,7 +40,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 $templatesToLoad = array('footer','listheader');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
-$option = JRequest::getCmd('option');
+$option = JFactory::getApplication()->input->getCmd('option');
 
 JHtml::_( 'behavior.tooltip' );
 JHtml::_( 'behavior.modal' );

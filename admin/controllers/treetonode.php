@@ -55,7 +55,7 @@ $this->setRedirect($link,$msg);
 //public function save($key = NULL, $urlVar = NULL)
 function save($key = NULL, $urlVar = NULL)
 	{
-	   //$data = JRequest::getVar('jform', array(), 'post', 'array');
+	   //$data = JFactory::getApplication()->input->getVar('jform', array(), 'post', 'array');
        $data = $this->jsmjinput->post->getArray();
        
        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'Notice');

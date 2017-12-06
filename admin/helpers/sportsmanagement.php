@@ -1056,13 +1056,13 @@ else
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
-//            $app->enqueueMessage(JText::_('addSubmenu post<br><pre>'.print_r(JRequest::get('post'),true).'</pre>'),'');
+//            $app->enqueueMessage(JText::_('addSubmenu post<br><pre>'.print_r(JFactory::getApplication()->input->get('post'),true).'</pre>'),'');
 //            $app->enqueueMessage(JText::_('addSubmenu project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
 //            $app->enqueueMessage(JText::_('addSubmenu project_team_id<br><pre>'.print_r($project_team_id,true).'</pre>'),'');
 //            $app->enqueueMessage(JText::_('addSubmenu team_id<br><pre>'.print_r($team_id,true).'</pre>'),'');
 //            $app->enqueueMessage(JText::_('addSubmenu club_id<br><pre>'.print_r($club_id,true).'</pre>'),'');
             
-        $my_text = 'post <pre>'.print_r(JRequest::get('post'),true).'</pre>';    
+        $my_text = 'post <pre>'.print_r(JFactory::getApplication()->input->get('post'),true).'</pre>';    
         $my_text .= 'project_id <pre>'.print_r($project_id,true).'</pre>';
         $my_text .= 'project_team_id <pre>'.print_r($project_team_id,true).'</pre>';
         $my_text .= 'team_id <pre>'.print_r($team_id,true).'</pre>';
@@ -1213,7 +1213,7 @@ else
 		
     /*
     //extension management
-		$extensions = sportsmanagementHelper::getExtensions(JRequest::getInt('p'));
+		$extensions = sportsmanagementHelper::getExtensions(JFactory::getApplication()->input->getInt('p'));
 		foreach ($extensions as $e => $extension) {
 			$JLGPATH_EXTENSION = JPATH_COMPONENT_SITE.DS.'extensions'.DS.$extension.DS.'admin';
 			//General extension extended xml 
@@ -1268,7 +1268,7 @@ else
 		
     /*
     //extension management
-		$extensions = sportsmanagementHelper::getExtensions(JRequest::getInt('p'));
+		$extensions = sportsmanagementHelper::getExtensions(JFactory::getApplication()->input->getInt('p'));
 		foreach ($extensions as $e => $extension) {
 			$JLGPATH_EXTENSION = JPATH_COMPONENT_SITE.DS.'extensions'.DS.$extension.DS.'admin';
 			//General extension extended xml 
@@ -2767,7 +2767,7 @@ if ( $project_id )
 {
 	$zusatz = '&pid='.$project_id;
 }
-    //$app->enqueueMessage(JText::_('ToolbarButton layout<br><pre>'.print_r(JRequest::getVar('layout'),true).'</pre>'),'Notice');
+    //$app->enqueueMessage(JText::_('ToolbarButton layout<br><pre>'.print_r(JFactory::getApplication()->input->getVar('layout'),true).'</pre>'),'Notice');
     //$app->enqueueMessage(JText::_('ToolbarButton get<br><pre>'.print_r($_GET,true).'</pre>'),'Notice');
     
     if ( !$view )

@@ -78,7 +78,7 @@ class sportsmanagementControllerjsmgcalendarImport extends JControllerLegacy
 	public function import() 
     {
 
-$option = JRequest::getCmd('option');
+$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         $model = $this->getModel('jsmgcalendarImport');
         $result = $model->import();

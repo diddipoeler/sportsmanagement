@@ -48,7 +48,7 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 
 	//public function display($cachable = false, $urlparams = false)
 //	{
-//		$option = JRequest::getCmd('option');
+//		$option = JFactory::getApplication()->input->getCmd('option');
 //		$app = JFactory::getApplication();
 //		$document = JFactory::getDocument();
 //		$model = $this->getModel('treetos');
@@ -64,10 +64,10 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 //		{
 //			case 'add':
 //			{
-//				JRequest::setVar('hidemainmenu',0);
-//				JRequest::setVar('layout','edit');
-//				JRequest::setVar('view','treeto');
-//				JRequest::setVar('edit',false);
+//				JFactory::getApplication()->input->setVar('hidemainmenu',0);
+//				JFactory::getApplication()->input->setVar('layout','edit');
+//				JFactory::getApplication()->input->setVar('view','treeto');
+//				JFactory::getApplication()->input->setVar('edit',false);
 //
 //				$model=$this->getModel('treeto');
 //				//$model->checkout();
@@ -76,10 +76,10 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 //
 //			case 'edit':
 //			{
-//				JRequest::setVar('hidemainmenu',0);
-//				JRequest::setVar('layout','edit');
-//				JRequest::setVar('view','treeto');
-//				JRequest::setVar('edit',true);
+//				JFactory::getApplication()->input->setVar('hidemainmenu',0);
+//				JFactory::getApplication()->input->setVar('layout','edit');
+//				JFactory::getApplication()->input->setVar('view','treeto');
+//				JFactory::getApplication()->input->setVar('edit',true);
 //
 //				$model=$this->getModel('treeto');
 //				//$model->checkout();
@@ -92,7 +92,7 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 	// save the checked rows inside the treetos list (save division assignment)
 	public function saveshort()
 	{
-//		$option		= JRequest::getCmd('option');
+//		$option		= JFactory::getApplication()->input->getCmd('option');
 //		$app	= JFactory::getApplication();
  		$project_id = $this->jsmjinput->get('pid');
 		
@@ -123,7 +123,7 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 	public function genNode()
 	{
 	   /*
-		//$option = JRequest::getCmd('option');
+		//$option = JFactory::getApplication()->input->getCmd('option');
 //		$app = JFactory::getApplication();
 //		$document = JFactory::getDocument();
 		$proj = $this->jsmapp->getUserState($this->jsmoption.'.pid',0);
@@ -141,10 +141,10 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 		//$projectws->setId($app->getUserState($option.'project',0));
 		$view->setModel($projectws);
 
-		JRequest::setVar('hidemainmenu',0);
-		JRequest::setVar('layout','gennode');
-		JRequest::setVar('view','treeto');
-		JRequest::setVar('edit',true);
+		JFactory::getApplication()->input->setVar('hidemainmenu',0);
+		JFactory::getApplication()->input->setVar('layout','gennode');
+		JFactory::getApplication()->input->setVar('view','treeto');
+		JFactory::getApplication()->input->setVar('edit',true);
 
 		// Checkout the project
 		//$model=$this->getModel('treeto');
@@ -157,7 +157,7 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 	public function generatenode()
 	{
 		JSession::checkToken() or die(JText::_('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN'));
-		//$option = JRequest::getCmd('option');
+		//$option = JFactory::getApplication()->input->getCmd('option');
 //		$app = JFactory::getApplication();
 		$post = $this->jsmjinput->post->getArray(array());
 		$model = $this->getModel('treeto');
@@ -192,8 +192,8 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 //        $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' $cid <pre>'.print_r($cid, true).'</pre><br>',''); 
 //        
 //        /*
-//		$post = JRequest::get('post');
-//		$cid = JRequest::getVar('cid', array(0), 'post', 'array');
+//		$post = JFactory::getApplication()->input->get('post');
+//		$cid = JFactory::getApplication()->input->getVar('cid', array(0), 'post', 'array');
 //		$post['id'] = (int) $cid[0];
 //		$msg='';
 //

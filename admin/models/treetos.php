@@ -17,7 +17,7 @@ class sportsmanagementModelTreetos extends JModelList
     public function __construct($config = array())
         {
             $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
                 self::$_project_id = $app->getUserState( "$option.pid", '0' );
                 //$config['filter_fields'] = array(
 //                        'r.name',
@@ -33,7 +33,7 @@ class sportsmanagementModelTreetos extends JModelList
 	protected function getListQuery()
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $search	= $this->getState('filter.search');
         
 //		// Get the WHERE and ORDER BY clauses for the query
@@ -66,7 +66,7 @@ class sportsmanagementModelTreetos extends JModelList
 
 	//function _buildContentWhere()
 //	{
-//		$option = JRequest::getCmd('option');
+//		$option = JFactory::getApplication()->input->getCmd('option');
 //		$app	= JFactory::getApplication();
 //		$project_id = $app->getUserState( $option . 'project' );
 //		$division = (int) $app->getUserStateFromRequest( $option.'tt_division', 'division', 0 );

@@ -80,12 +80,12 @@ class sportsmanagementViewteampersons extends sportsmanagementView
         
 		$items = $this->get('Items');
 		$this->project_id = $app->getUserState( "$option.pid", '0' );
-		$this->_persontype = JRequest::getVar('persontype');
+		$this->_persontype = JFactory::getApplication()->input->getVar('persontype');
 		if ( empty($this->_persontype) )
 		{
 			$this->_persontype	= $app->getUserState( "$option.persontype", '0' );
 		}
-		$this->project_team_id	= JRequest::getVar('project_team_id');
+		$this->project_team_id	= JFactory::getApplication()->input->getVar('project_team_id');
 		$this->team_id	= $jinput->getInt('team_id');
                 
         if ( !$this->team_id )

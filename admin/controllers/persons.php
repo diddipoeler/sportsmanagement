@@ -65,9 +65,9 @@ class sportsmanagementControllerpersons extends JControllerAdmin
 	 */
   function assign()
 	{
-		$post = JRequest::get('post');
+		$post = JFactory::getApplication()->input->get('post');
         // Check for request forgeries
-		JRequest::checkToken() or die('JINVALID_TOKEN');
+		JFactory::getApplication()->input->checkToken() or die('JINVALID_TOKEN');
 
         $model = $this->getModel();
        $msg = $model->storeAssign($post);
@@ -81,9 +81,9 @@ class sportsmanagementControllerpersons extends JControllerAdmin
      */
     function close()
 	{
-		$post = JRequest::get('post');
+		$post = JFactory::getApplication()->input->get('post');
         // Check for request forgeries
-		JRequest::checkToken() or die('JINVALID_TOKEN');
+		JFactory::getApplication()->input->checkToken() or die('JINVALID_TOKEN');
 
 //        $model = $this->getModel();
 //       $msg = $model->storeAssign($post);

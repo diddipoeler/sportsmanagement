@@ -19,7 +19,7 @@ JHtml::_('behavior.tooltip');
 		<div class="fltrt">
 			<button type="button" onclick="Joomla.submitform('projectpositions.store', this.form)">
 				<?php echo JText::_('JSAVE');?></button>
-			<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
+			<button id="cancel" type="button" onclick="<?php echo JFactory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
 				<?php echo JText::_('JCANCEL');?></button>
 		</div>
 	</fieldset>

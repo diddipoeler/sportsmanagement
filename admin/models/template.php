@@ -67,7 +67,7 @@ class sportsmanagementModeltemplate extends JSMModelAdmin
 	{
 		
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.
 		$db	= $this->getDbo();
 		$query1	= $db->getQuery(true);

@@ -146,8 +146,8 @@ class sportsmanagementModelsmimageimport extends JModelLegacy
 function import()
     {
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $post = JRequest::get('post');
+        $option = JFactory::getApplication()->input->getCmd('option');
+        $post = JFactory::getApplication()->input->get('post');
         
         $server = 'http://sportsmanagement.fussballineuropa.de/jdownloads/';
         

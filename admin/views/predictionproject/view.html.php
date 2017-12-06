@@ -71,10 +71,10 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 		$user 	= JFactory::getUser();
 		$model	= $this->getModel();
         
-//        $project_id = JRequest::getVar('project_id');
+//        $project_id = JFactory::getApplication()->input->getVar('project_id');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__  .' project_id<br><pre>'.print_r($project_id,true).'</pre>'),'');
         
-//        $id = JRequest::getVar('id');
+//        $id = JFactory::getApplication()->input->getVar('id');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__  .' id<br><pre>'.print_r($id,true).'</pre>'),'');
 
         
@@ -126,7 +126,7 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 //	function _displayForm($tpl)
 //	{
 //	  
-//		$option = JRequest::getCmd('option');
+//		$option = JFactory::getApplication()->input->getCmd('option');
 //		$app = JFactory::getApplication();
 //		$uri 	= JFactory::getURI();
 //		$user 	= JFactory::getUser();
@@ -197,7 +197,7 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 
 //	function _displayPredSettings($tpl)
 //	{
-//		$option = JRequest::getCmd('option');
+//		$option = JFactory::getApplication()->input->getCmd('option');
 //		$app =& JFactory::getApplication();
 //		$db =& sportsmanagementHelper::getDBConnection();
 //		$uri =& JFactory::getURI();
@@ -276,7 +276,7 @@ class sportsmanagementViewpredictionproject extends sportsmanagementView
 //        // Set toolbar items for the page
 //        $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
 //        $document->addCustomTag($stylelink);
-//		JRequest::setVar('hidemainmenu', true);
+//		JFactory::getApplication()->input->setVar('hidemainmenu', true);
 //		$user = JFactory::getUser();
 //		$userId = $user->id;
 //		$isNew = $this->item->id == 0;

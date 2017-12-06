@@ -130,12 +130,12 @@ return count($division_teams);
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         
         // Get the input
-        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
         if ( !$pks )
         {
             return JText::_('COM_SPORTSMANAGEMENT_ADMIN_DIVISIONS_SAVE_NO_SELECT');
         }
-        $post = JRequest::get('post');
+        $post = JFactory::getApplication()->input->get('post');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {

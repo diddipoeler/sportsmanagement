@@ -101,7 +101,7 @@ class sportsmanagementViewjsmgcalendarImport extends sportsmanagementView
 //        sportsmanagementHelper::ToolbarButtonOnlineHelp();
 //		JToolbarHelper::preferences($option);
 
-//		JRequest::setVar('hidemainmenu', 0);
+//		JFactory::getApplication()->input->setVar('hidemainmenu', 0);
 
 		parent::addToolbar();
 	}

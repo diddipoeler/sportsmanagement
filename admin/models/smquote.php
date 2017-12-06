@@ -73,7 +73,7 @@ static $db_num_rows  = 0;
 	   $db = JFactory::getDbo();
 $query = $db->getQuery(true);
 
-       $post = JRequest::get('post');
+       $post = JFactory::getApplication()->input->get('post');
        // Set the values
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');

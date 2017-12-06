@@ -63,7 +63,7 @@ class sportsmanagementModelRounds extends JSMModelList
     public function __construct($config = array())
         {
             //$app = JFactory::getApplication();
-        //$option = JRequest::getCmd('option');
+        //$option = JFactory::getApplication()->input->getCmd('option');
 	    $config['filter_fields'] = array(
                         'r.name',
                         'r.alias',
@@ -189,7 +189,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	 */
 	function getRoundsCount($project_id)
 	{
-	   //$option = JRequest::getCmd('option');
+	   //$option = JFactory::getApplication()->input->getCmd('option');
 		//$app = JFactory::getApplication();
         $db = sportsmanagementHelper::getDBConnection(TRUE, $this->jsmapp->getUserState( "$this->jsmoption.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);

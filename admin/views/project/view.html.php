@@ -77,7 +77,7 @@ class sportsmanagementViewProject extends sportsmanagementView
 			return;
 		}
         
-        JRequest::setVar('hidemainmenu', true);
+        JFactory::getApplication()->input->setVar('hidemainmenu', true);
 
 		
         
@@ -228,7 +228,7 @@ class sportsmanagementViewProject extends sportsmanagementView
     
 //    JToolbarHelper::divider();
 //	sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//	JToolbarHelper::preferences(JRequest::getCmd('option'));
+//	JToolbarHelper::preferences(JFactory::getApplication()->input->getCmd('option'));
 //           
 //    parent::display($tpl);   
     }
@@ -248,7 +248,7 @@ class sportsmanagementViewProject extends sportsmanagementView
     $isNew = $this->item->id ? $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_EDIT') : $this->title = JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECT_ADD_NEW');
         $this->icon = 'project';
     
-    //JRequest::setVar('hidemainmenu', true);
+    //JFactory::getApplication()->input->setVar('hidemainmenu', true);
     
         $bar = JToolBar::getInstance('toolbar');
         switch ( JComponentHelper::getParams($option)->get('which_article_component') )

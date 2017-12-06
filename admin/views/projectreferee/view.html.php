@@ -100,7 +100,7 @@ class sportsmanagementViewProjectReferee extends sportsmanagementView
         $this->project	= $project;
         
         $person_id	= $this->item->person_id;
-        //$person_id	= JRequest::getVar('person_id');
+        //$person_id	= JFactory::getApplication()->input->getVar('person_id');
         $mdlPerson = JModelLegacy::getInstance("Person", "sportsmanagementModel");
 	    $project_person = $mdlPerson->getPerson(0,$person_id);
         // name für den titel setzen

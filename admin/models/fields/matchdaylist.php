@@ -74,7 +74,7 @@ class JFormFieldMatchdaylist extends JFormFieldList
 		$options = array();
 		
 		$varname = (string) $this->element['varname'];
-		$project_id = JRequest::getVar($varname);
+		$project_id = JFactory::getApplication()->input->getVar($varname);
 		if (is_array($project_id)) {
 			$project_id = $project_id[0];
 		}		

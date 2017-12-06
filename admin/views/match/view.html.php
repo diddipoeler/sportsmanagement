@@ -97,7 +97,7 @@ $this->request_url	= $uri->toString();
         $this->projectws	= $projectws;
         $this->eventsprojecttime	= $projectws->game_regular_time;
         
-        //JRequest::setVar('hidemainmenu', true);
+        //JFactory::getApplication()->input->setVar('hidemainmenu', true);
         
         // get the Data
 		$form = $this->get('Form');
@@ -591,7 +591,7 @@ $javascript .= "}". "\n";
         $document->addScript(JURI::base().'components/'.$option.'/assets/js/sm_functions.js');  
         $document->addScript(JURI::base().'components/'.$option.'/assets/js/diddioeler.js');
         //$document->addScript(JURI::base().'components/'.$option.'/assets/js/editlineup.js');
-        $tid = JRequest::getVar('team','0');
+        $tid = JFactory::getApplication()->input->getVar('team','0');
         $match = $model->getMatchTeams($this->item->id);
         $teamname = ($tid == $match->projectteam1_id) ? $match->team1 : $match->team2;
         
@@ -1021,7 +1021,7 @@ $this->csvstaff	= $model->csv_staff;
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'administrator/components/com_sportsmanagement/assets/css/jlextusericons.css'.'" type="text/css" />' ."\n";
         $document->addCustomTag($stylelink);
         
-		//JRequest::setVar('hidemainmenu', true);
+		//JFactory::getApplication()->input->setVar('hidemainmenu', true);
 		$jinput = JFactory::getApplication()->input;
         $jinput->set('hidemainmenu', true);
 		$user = JFactory::getUser();

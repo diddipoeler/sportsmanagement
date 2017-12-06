@@ -67,13 +67,13 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 	 */
 	public function save($data)
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 	$app	= JFactory::getApplication();
     // Get a db connection.
         $db = JFactory::getDbo();
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
-       $post = JRequest::get('post');
+       $post = JFactory::getApplication()->input->get('post');
        // Set the values
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');
@@ -111,7 +111,7 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
     function import()
     {
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         
         $app->enqueueMessage(JText::_('sportsmanagementModelPredictionGame import<br><pre>'.print_r($option,true).'</pre>'   ),'');
         
@@ -129,7 +129,7 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 	function getPredictionGame($id=0)
 	{
 //	   $app = JFactory::getApplication();
-//        $option = JRequest::getCmd('option');
+//        $option = JFactory::getApplication()->input->getCmd('option');
 //        // Create a new query object.		
 //		$db = sportsmanagementHelper::getDBConnection();
 //		$query = $db->getQuery(true);
@@ -169,7 +169,7 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
 	function getPredictionProjectIDs($prediction_id=0)
 	{
 	   //$app = JFactory::getApplication();
-//        $option = JRequest::getCmd('option');
+//        $option = JFactory::getApplication()->input->getCmd('option');
 //        // Create a new query object.		
 //		$db = sportsmanagementHelper::getDBConnection();
 //		$query = $db->getQuery(true);
@@ -212,7 +212,7 @@ else
 	 */
 	function storePredictionAdmins($data)
 	{
- 		$option = JRequest::getCmd('option');
+ 		$option = JFactory::getApplication()->input->getCmd('option');
 	$app	= JFactory::getApplication();
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
@@ -263,7 +263,7 @@ else
 	 */
 	function storePredictionProjects($data)
 	{
- 		$option = JRequest::getCmd('option');
+ 		$option = JFactory::getApplication()->input->getCmd('option');
 	$app	= JFactory::getApplication();
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
@@ -318,7 +318,7 @@ else
 	function deletePredictionAdmins($cid=array())
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $db = JFactory::getDbo();  
         $query = $db->getQuery(true);
         
@@ -349,7 +349,7 @@ else
 	function deletePredictionProjects($cid=array())
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $db = JFactory::getDbo();  
         $query = $db->getQuery(true);
         
@@ -381,7 +381,7 @@ else
 	function deletePredictionMembers($cid=array())
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $db = JFactory::getDbo();  
         $query = $db->getQuery(true);
         
@@ -412,7 +412,7 @@ else
 	function deletePredictionResults($cid=array())
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $db = JFactory::getDbo();  
         $query = $db->getQuery(true);
         
@@ -442,7 +442,7 @@ else
 	function savePredictionProjectSettings($data)
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $db = JFactory::getDbo();  
         $query = $db->getQuery(true);
         
@@ -537,7 +537,7 @@ else
 	function rebuildPredictionProjectSPoints($cid)
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $db = JFactory::getDbo();  
         $query = $db->getQuery(true);
         

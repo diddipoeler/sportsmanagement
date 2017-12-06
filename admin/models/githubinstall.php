@@ -74,7 +74,7 @@ class sportsmanagementModelgithubinstall extends JSMModelLegacy
 function CopyGithubLink($link)
 {
     //$app = JFactory::getApplication();
-        //$option = JRequest::getCmd('option');
+        //$option = JFactory::getApplication()->input->getCmd('option');
         
         $gitinstall = '';
         //$gitinstall = $app->getUserState( "$option.install");

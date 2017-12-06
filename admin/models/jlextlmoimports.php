@@ -39,7 +39,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-$option = JRequest::getCmd('option');
+$option = JFactory::getApplication()->input->getCmd('option');
 $maxImportTime=JComponentHelper::getParams($option)->get('max_import_time',0);
 if (empty($maxImportTime))
 {
@@ -84,7 +84,7 @@ class sportsmanagementModeljlextlmoimports extends JModelLegacy
 
 function __construct( )
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 	$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0);
   if ( $show_debug_info )
   {
@@ -112,7 +112,7 @@ private function dump_header($text)
 
 function checkStartExtension()
 {
-$option = JRequest::getCmd('option');
+$option = JFactory::getApplication()->input->getCmd('option');
 $app	=& JFactory::getApplication();
 $user = JFactory::getUser();
 $fileextension = JPATH_SITE.DS.'tmp'.DS.'lmoimport-2-0.txt';
@@ -235,13 +235,13 @@ TRUNCATE TABLE `jos_joomleague_playground`;
   $lang = JFactory::getLanguage();
   $teile = explode("-",$lang->getTag());
   
-  $post = JRequest::get('post');
+  $post = JFactory::getApplication()->input->get('post');
   $country = $post['country'];
   //$country = JSMCountries::convertIso2to3($teile[1]);
   
   $app->enqueueMessage(JText::_('land '.$country.''),'');
   
-  $option = JRequest::getCmd('option');
+  $option = JFactory::getApplication()->input->getCmd('option');
 	$project = $app->getUserState( $option . 'project', 0 );
 	
 	$tempprovorschlag = '';
@@ -913,7 +913,7 @@ $app->enqueueMessage(JText::_('Die Anzahl der Teams im Projekt '.$project.' stim
 		
 		//$app->setUserState('com_joomleague'.'lmoimportxml',$this->_datas);
 		
-		//JRequest::setVar('lmoimportxml', $this->_datas, 'post');
+		//JFactory::getApplication()->input->setVar('lmoimportxml', $this->_datas, 'post');
 
 // echo '<pre>';
 // print_r($this->_datas);

@@ -39,7 +39,7 @@
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
-$option = JRequest::getCmd('option');
+$option = JFactory::getApplication()->input->getCmd('option');
 $maxImportTime=JComponentHelper::getParams($option)->get('max_import_time',0);
 if (empty($maxImportTime))
 {
@@ -104,7 +104,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 	private function _getXml()
 	{
 	   $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
     
 		if (JFile::exists(JPATH_SITE.DS.'tmp'.DS.'joomleague_import.jlg'))
 		{
@@ -152,7 +152,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
     public function getDataUpdateImportID()
     {
     $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
     $project_id = $app->getUserState( "$option.pid", '0' ); 
     
     //$app->enqueueMessage(JText::_('_displayUpdate project_id -> '.'<pre>'.print_r($project_id ,true).'</pre>' ),'');
@@ -243,10 +243,10 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 	 */
 	public function getData()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
        $query = JFactory::getDbo()->getQuery(true);
-        $post = JRequest::get('post');
+        $post = JFactory::getApplication()->input->get('post');
         $this->_season_id = $post['filter_season'];
         $result = NULL;
         
@@ -5740,7 +5740,7 @@ $query->clear();
 	   $app = JFactory::getApplication();
 //       $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post <br><pre>'.print_r($post,true).'</pre>'),'');
        
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
         $this->show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         $this->_datas=$this->getData();
 
@@ -7167,7 +7167,7 @@ $mdl->setNewPicturePath();
     function setNewRoundDates()
     {
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // Get a db connection.
         $db = JFactory::getDbo();
         

@@ -76,8 +76,8 @@ class JFormFieldjsmcolorsranking extends JFormField
 	public function getInput()
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        $select_id = JRequest::getVar('id');
+        $option = JFactory::getApplication()->input->getCmd('option');
+        $select_id = JFactory::getApplication()->input->getVar('id');
         //$this->value = explode(",", $this->value);
         $rankingteams = $this->element['rankingteams'];
         $templatename = $this->element['templatename'];

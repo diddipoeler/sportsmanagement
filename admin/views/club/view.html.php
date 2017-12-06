@@ -66,7 +66,7 @@ class sportsmanagementViewClub extends sportsmanagementView
         
         //$this->option = $option;
         
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JRequest::getVar('tmpl'),true).'</pre>'),'Notice');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r(JFactory::getApplication()->input->getVar('tmpl'),true).'</pre>'),'Notice');
         $this->tmpl	= $this->jinput->get('tmpl');
         
         

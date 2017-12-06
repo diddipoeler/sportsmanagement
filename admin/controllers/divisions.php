@@ -83,8 +83,8 @@ class sportsmanagementControllerdivisions extends JControllerAdmin
 	$this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
 
 	$model = $this->getModel();
-    //$pks = JRequest::getInt( 'cid', array() );	//is sanitized
-//	$order = JRequest::getInt('order', array() );   
+    //$pks = JFactory::getApplication()->input->getInt( 'cid', array() );	//is sanitized
+//	$order = JFactory::getApplication()->input->getInt('order', array() );   
     
     $pks = $this->jinput->get('cid',array(),'array');
     $order = $this->jinput->get('order',array(),'array');

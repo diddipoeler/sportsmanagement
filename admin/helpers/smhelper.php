@@ -554,7 +554,7 @@ class sportsmanagementHelper
 	 */
 	public static function addTemplatePaths($templatesToLoad, &$view)
 	{
-		$extensions = sportsmanagementHelper::getExtensions(JRequest::getInt('p'));
+		$extensions = sportsmanagementHelper::getExtensions(JFactory::getApplication()->input->getInt('p'));
 		foreach ($templatesToLoad as $template)
 		{
 			$view->addTemplatePath(JPATH_COMPONENT . DS . 'views' . DS . $template . DS . 'tmpl');
@@ -862,7 +862,7 @@ class sportsmanagementHelper
 
 	function showColorsLegend($colors)
 	{
-		$favshow=JRequest::getVar('func','');
+		$favshow=JFactory::getApplication()->input->getVar('func','');
 		if (($favshow!='showCurve') && ($this->project->fav_team))
 		{
 			$fav=array('color'=>$this->project->fav_team_color,'description'=> JText::_('COM_SPORTSMANAGEMENT_RANKING_FAVTEAM'));
@@ -1121,7 +1121,7 @@ class sportsmanagementHelper
 			} else {
 				$image = JText::_( 'Print' );
 			}
-			if (JRequest::getInt('pop')) {
+			if (JFactory::getApplication()->input->getInt('pop')) {
 				//button in popup
 				$output = '<a href="javascript: void(0)" onclick="window.print();return false;">'.$image.'</a>';
 			} else {

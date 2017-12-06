@@ -49,7 +49,7 @@ class JoomleagueModelQuickAdd extends JoomleagueModelList
             $query .= " AND pl.info LIKE '".$searchinfo . "' ";
         }
         
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$app	= JFactory::getApplication();
 
 		$filter_order		= $app->getUserStateFromRequest( $option . 'pl_filter_order', 'filter_order', 'pl.lastname', 'cmd' );
@@ -97,7 +97,7 @@ class JoomleagueModelQuickAdd extends JoomleagueModelList
             $query .= " AND pl.info LIKE '".$searchinfo . "' ";
         }
         
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$app	= JFactory::getApplication();
 
 		$filter_order		= $app->getUserStateFromRequest( $option . 'pl_filter_order', 'filter_order', 'pl.lastname', 'cmd' );
@@ -147,7 +147,7 @@ class JoomleagueModelQuickAdd extends JoomleagueModelList
             $query .= " AND pl.info LIKE '".$searchinfo . "' ";
         }
         
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$app	= JFactory::getApplication();
 
 		$filter_order		= $app->getUserStateFromRequest( $option . 'pl_filter_order', 'filter_order', 'pl.lastname', 'cmd' );

@@ -77,10 +77,10 @@ class sportsmanagementViewImagehandler extends sportsmanagementView
 		}
 
 		//get vars
-		$type     	= JRequest::getVar( 'type' );
+		$type     	= JFactory::getApplication()->input->getVar( 'type' );
 		$folder 	= ImageSelectSM::getfolder($type);
-		$field 		= JRequest::getVar( 'field' );
-		$fieldid 	= JRequest::getVar( 'fieldid' );
+		$field 		= JFactory::getApplication()->input->getVar( 'field' );
+		$fieldid 	= JFactory::getApplication()->input->getVar( 'fieldid' );
 		$search 	= $app->getUserStateFromRequest( 'com_sportsmanagement.imageselect', 'search', '', 'string' );
 		$search 	= trim(JString::strtolower( $search ) );
         

@@ -161,7 +161,7 @@ class sportsmanagementModelEventtypes extends JSMModelList
 	 */
 	public static function getEvents($sports_type_id  = 0)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
@@ -201,7 +201,7 @@ class sportsmanagementModelEventtypes extends JSMModelList
 	*/
 	function getEventsPosition($id=0)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         //$db		= $this->getDbo();
         $db = sportsmanagementHelper::getDBConnection();

@@ -65,19 +65,19 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends JControllerLegac
 	 * @return
 	 */
 	function save() {
-	   $option = JRequest::getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication ();
 		$document = JFactory::getDocument ();
 		// Check for request forgeries
-		JRequest::checkToken () or die ( 'COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN' );
+		JFactory::getApplication()->input->checkToken () or die ( 'COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN' );
 		$msg = '';
 		//JToolbarHelper::back ( JText::_ ( 'COM_SPORTSMANAGEMENT_GLOBAL_BACK' ), JRoute::_ ( 'index.php?option='.$option.'&view=jldfbnetimport' ) );
 		// $app = JFactory::getApplication();
 		$model = $this->getModel ( 'jlextdfbnetplayerimport' );
-		$post = JRequest::get ( 'post' );
+		$post = JFactory::getApplication()->input->get ( 'post' );
 		
-		//$delimiter = JRequest::getVar ( 'delimiter', null );
-		$whichfile = JRequest::getVar ( 'whichfile', null );
+		//$delimiter = JFactory::getApplication()->input->getVar ( 'delimiter', null );
+		$whichfile = JFactory::getApplication()->input->getVar ( 'whichfile', null );
 		
 		if ( !$post['filter_season'] && $whichfile == 'playerfile' )
 		{
@@ -105,9 +105,9 @@ class sportsmanagementControllerjlextdfbnetplayerimport extends JControllerLegac
 		
 		// first step - upload
 		if (isset ( $post ['sent'] ) && $post ['sent'] == 1) {
-			$upload = JRequest::getVar ( 'import_package', null, 'files', 'array' );
+			$upload = JFactory::getApplication()->input->getVar ( 'import_package', null, 'files', 'array' );
 			
-			$lmoimportuseteams = JRequest::getVar ( 'lmoimportuseteams', null );
+			$lmoimportuseteams = JFactory::getApplication()->input->getVar ( 'lmoimportuseteams', null );
 			
 			$app->setUserState ( $option . 'lmoimportuseteams', $lmoimportuseteams );
 			$app->setUserState ( $option . 'whichfile', $whichfile );

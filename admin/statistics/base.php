@@ -121,7 +121,7 @@ class SMStatistic extends JObject
      */
     function getTeamsRankingStatisticNumQuery($project_id, $sids)
     {
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
     $query_num = JFactory::getDbo()->getQuery(true);
@@ -149,7 +149,7 @@ class SMStatistic extends JObject
      */
     function getTeamsRankingStatisticDenQuery($project_id, $sids)
     {
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
     $query_den = JFactory::getDbo()->getQuery(true);
@@ -179,7 +179,7 @@ class SMStatistic extends JObject
      */
     function getTeamsRankingStatisticCoreQuery($project_id, $query_num,$query_den)
     {
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
     $query_core = JFactory::getDbo()->getQuery(true);
@@ -208,7 +208,7 @@ class SMStatistic extends JObject
      */
     function getStaffStatsQuery($person_id, $team_id, $project_id, $sids, $select,$history = false)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
     $query_core = JFactory::getDbo()->getQuery(true);
@@ -247,7 +247,7 @@ class SMStatistic extends JObject
      */
     function getPlayersRankingStatisticQuery($project_id, $division_id, $team_id, $sids, $select,$which='statistic')
     {
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
     $query_num = JFactory::getDbo()->getQuery(true);
@@ -296,7 +296,7 @@ class SMStatistic extends JObject
      */
     function getPlayersRankingStatisticNumQuery($project_id, $division_id, $team_id, $sids)
     {
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
     $query_num = JFactory::getDbo()->getQuery(true);
@@ -335,7 +335,7 @@ class SMStatistic extends JObject
      */
     function getPlayersRankingStatisticCoreQuery($project_id, $division_id, $team_id,$query_num,$query_den)
     {
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
     $query_core = JFactory::getDbo()->getQuery(true);
@@ -558,7 +558,7 @@ class SMStatistic extends JObject
 	function getParams()
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         
 		if (empty($this->_params))
 		{
@@ -1176,7 +1176,7 @@ try{
 	protected function getPlayerStatsByProjectForEvents($person_id, $projectteam_id, $project_id, $sports_type_id, $sids)
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
         

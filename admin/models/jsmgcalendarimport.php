@@ -73,7 +73,7 @@ class sportsmanagementModeljsmgcalendarImport extends JModelLegacy
     {
 		parent::__construct();
 
-//		$array = JRequest::getVar('cid',  0, '', 'array');
+//		$array = JFactory::getApplication()->input->getVar('cid',  0, '', 'array');
 //		$this->setId((int)$array[0]);
 	}
 
@@ -624,8 +624,8 @@ $result_insert = JFactory::getDbo()->insertObject('#__sportsmanagement_gcalendar
 //	public function getOnlineData() 
 //    {
 //		try {
-//			$user = JRequest::getVar('user', null);
-//			$pass = JRequest::getVar('pass', null);
+//			$user = JFactory::getApplication()->input->getVar('user', null);
+//			$pass = JFactory::getApplication()->input->getVar('pass', null);
 //
 //			$calendars = jsmGCalendarZendHelper::getCalendars($user, $pass);
 //			if ($calendars == null) {
@@ -669,7 +669,7 @@ $result_insert = JFactory::getDbo()->insertObject('#__sportsmanagement_gcalendar
 //		JTable::addIncludePath(JPATH_ADMINISTRATOR.'/components/com_sportsmanagement/tables');
 //		$row = $this->getTable('jsmGCalendar', 'sportsmanagementTable');
 //
-//		$cids = JRequest::getVar('cid', array(0), 'post', 'array');
+//		$cids = JFactory::getApplication()->input->getVar('cid', array(0), 'post', 'array');
 //		foreach ($cids as $index => $cid) {
 //			$data = unserialize(base64_decode($cid));
 //			$row->id = 0;

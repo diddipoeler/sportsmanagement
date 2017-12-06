@@ -15,7 +15,7 @@ JHtml::_('behavior.tooltip');
 
 /*
 // Set toolbar items for the page
-$edit=JRequest::getVar('edit',true);
+$edit=JFactory::getApplication()->input->getVar('edit',true);
 $text=!$edit ? 'Add new settings' : 'Change settings of Prediction-Project';
 JToolbarHelper::title(JText::_($text));
 

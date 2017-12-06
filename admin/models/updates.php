@@ -207,7 +207,7 @@ $result = $this->_db->insertObject('#__sportsmanagement_version', $object);
 	 */
 	function loadUpdateFiles()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
 		//$updateFileList=JFolder::files(JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'updates'.DS,'.php$',false,true,array('',''));
 		$updateFileList=JFolder::files(JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'updates'.DS,'.php$');

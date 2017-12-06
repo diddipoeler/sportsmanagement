@@ -61,7 +61,7 @@ class JFormFieldImageSelect extends JFormField
 	function getInput() 
     {
 		$app	= JFactory::getApplication();
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
         
         $default = $this->value;
 		$arrPathes = explode('/', $default);

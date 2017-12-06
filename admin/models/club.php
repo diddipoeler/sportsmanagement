@@ -86,11 +86,11 @@ class sportsmanagementModelclub extends JSMModelAdmin
 	function saveshort()
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // Get the input
-        $pks = JRequest::getVar('cid', null, 'post', 'array');
-        $post = JRequest::get('post');
+        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $post = JFactory::getApplication()->input->get('post');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {

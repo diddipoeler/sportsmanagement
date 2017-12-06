@@ -62,7 +62,7 @@ class JFormFieldactseason extends JFormField
     {
 		$db = sportsmanagementHelper::getDBConnection();
 		$lang = JFactory::getLanguage();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // welche tabelle soll genutzt werden
         $params = JComponentHelper::getParams( 'COM_SPORTSMANAGEMENT' );
         $database_table	= $params->get( 'cfg_which_database_table' );

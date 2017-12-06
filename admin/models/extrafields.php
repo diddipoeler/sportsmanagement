@@ -165,7 +165,7 @@ class sportsmanagementModelextrafields extends JSMModelList
 function getExtraFieldsProject($project_id=0)
 {
 //$app = JFactory::getApplication();
-        //$option = JRequest::getCmd('option');
+        //$option = JFactory::getApplication()->input->getCmd('option');
         $result = '';
 
         // Create a new query object.		
@@ -209,7 +209,7 @@ catch (Exception $e) {
 function getExtraFields($template_backend = '', $template_frontend = '')
     {
         //$app = JFactory::getApplication();
-        //$option = JRequest::getCmd('option');
+        //$option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 		//$db = sportsmanagementHelper::getDBConnection();
 //		$query = $db->getQuery(true);

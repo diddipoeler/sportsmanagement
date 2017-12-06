@@ -108,7 +108,7 @@ class sportsmanagementModelMatches extends JModelList
 
 //		$image_folder = $this->getUserStateFromRequest($this->context.'.filter.image_folder', 'filter_image_folder', '');
 //		$this->setState('filter.image_folder', $image_folder);
-//        $value = JRequest::getUInt('limitstart', 0);
+//        $value = JFactory::getApplication()->input->getUInt('limitstart', 0);
 //		$this->setState('list.start', $value);
 //        $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 //		$this->setState('list.start', $value);
@@ -142,7 +142,7 @@ class sportsmanagementModelMatches extends JModelList
         $this->_season_id	= $app->getUserState( "$option.season_id", '0' );
         //$search_division	= $this->getState('filter.division');
         
-        $this->_rid = JRequest::getvar('rid', 0);
+        $this->_rid = JFactory::getApplication()->input->getvar('rid', 0);
         
 //        $app->enqueueMessage(JText::_('sportsmanagementViewMatches _season_id<br><pre>'.print_r($this->_season_id,true).'</pre>'),'');
         
@@ -319,7 +319,7 @@ $db->setQuery($query);
 	function getMatchesByRound($roundId)
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');    
+        $option = JFactory::getApplication()->input->getCmd('option');    
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);

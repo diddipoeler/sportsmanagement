@@ -178,7 +178,7 @@ class sportsmanagementModelPersons extends JSMModelList
 		$this->jsmquery->where('pl.published = '.$this->getState('filter.state'));	
 		}
         
-        if ( JRequest::getVar('layout') == 'assignplayers')
+        if ( JFactory::getApplication()->input->getVar('layout') == 'assignplayers')
         {
             switch ($this->_type)
             {
@@ -254,12 +254,12 @@ class sportsmanagementModelPersons extends JSMModelList
 	function getPersonsToAssign()
 	{
 	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+       $option = JFactory::getApplication()->input->getCmd('option');
        // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
         
-		$cid = JRequest::getVar( 'cid' );
+		$cid = JFactory::getApplication()->input->getVar( 'cid' );
 
 		if ( !count( $cid ) )
 		{
@@ -286,7 +286,7 @@ class sportsmanagementModelPersons extends JSMModelList
 	function getProjectTeamList()
 	{
 	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+       $option = JFactory::getApplication()->input->getCmd('option');
        // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
@@ -314,7 +314,7 @@ class sportsmanagementModelPersons extends JSMModelList
 	function getTeamName( $team_id )
 	{
 	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+       $option = JFactory::getApplication()->input->getCmd('option');
        // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
@@ -342,7 +342,7 @@ class sportsmanagementModelPersons extends JSMModelList
 	function getProjectTeamName( $project_team_id )
 	{
 	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+       $option = JFactory::getApplication()->input->getCmd('option');
        // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
@@ -375,7 +375,7 @@ class sportsmanagementModelPersons extends JSMModelList
 	function getPersons()
 	{
 	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+       $option = JFactory::getApplication()->input->getCmd('option');
        // Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
@@ -404,7 +404,7 @@ class sportsmanagementModelPersons extends JSMModelList
     public function getPersonListSelect()
 	{
 	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+       $option = JFactory::getApplication()->input->getCmd('option');
        $results = array();
        // Create a new query object.
 		$db		= $this->getDbo();

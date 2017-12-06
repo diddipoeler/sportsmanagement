@@ -31,7 +31,7 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
 
 	function _displayEditlist()
 	{
-//		$option = JRequest::getCmd('option');
+//		$option = JFactory::getApplication()->input->getCmd('option');
 //		$app = JFactory::getApplication();
 		$project_id = $this->jinput->get('pid');
 		$node_id = $this->jinput->get('nid');
@@ -158,7 +158,7 @@ class sportsmanagementViewTreetomatchs extends sportsmanagementView
 
 	function _displayDefault()
 	{
-//		$option = JRequest::getCmd('option');
+//		$option = JFactory::getApplication()->input->getCmd('option');
 //		$app = JFactory::getApplication();
 //		$uri = JFactory::getURI();
 

@@ -43,7 +43,7 @@ defined('_JEXEC') or die('Restricted access');
 //JHTML::script('JL_matcheventsediting.js','administrator/components/com_joomleague/assets/js/');
 
 /*
-$massadd=JRequest::getVar('massadd');
+$massadd=JFactory::getApplication()->input->getVar('massadd');
 
 // Set toolbar items for the page
 JToolbarHelper::title(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCHES_TITLE'));

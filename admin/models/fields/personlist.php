@@ -71,7 +71,7 @@ class JFormFieldpersonlist extends JFormFieldList
 	protected function getOptions()
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // Initialize variables.
 		$options = array();
     

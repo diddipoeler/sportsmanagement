@@ -85,7 +85,7 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
     {
     	
         // Check for request forgeries
-		JRequest::checkToken() or die('JINVALID_TOKEN');
+		JFactory::getApplication()->input->checkToken() or die('JINVALID_TOKEN');
 
         $model = $this->getModel();
        $msg = $model->save_memberlist();
@@ -124,15 +124,15 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
 //		JToolbarHelper::back( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_CTRL_BACK', 'index.php?option=com_sportsmanagement&view=predictionmembers' );
 
 //		echo 'This will send an email to all members of the prediction game with reminder option enabled. Are you sure?';
-		//$post = JRequest::get( 'post' );
+		//$post = JFactory::getApplication()->input->get( 'post' );
         $post = $this->jsmjinput->post->getArray();
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Notice');
         
-		//$cid = JRequest::getVar( 'cid', array(0), 'post', 'array' );
+		//$cid = JFactory::getApplication()->input->getVar( 'cid', array(0), 'post', 'array' );
         $cid = $this->jsmjinput->getVar('cid', null, 'post', 'array');
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cid<br><pre>'.print_r($cid,true).'</pre>'),'Notice');
         
-		$pgmid = JRequest::getVar( 'prediction_id', 0, 'post', 'INT' );
+		$pgmid = JFactory::getApplication()->input->getVar( 'prediction_id', 0, 'post', 'INT' );
 //        $this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' pgmid<br><pre>'.print_r($pgmid,true).'</pre>'),'Notice');
 //		$post['id'] = (int) $cid[0];
 //		$post['predgameid'] = (int) $pgmid[0];
@@ -163,9 +163,9 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
      */
     function publish()
 	{
-		$cids = JRequest::getVar( 'cid', array(), 'post', 'array' );
+		$cids = JFactory::getApplication()->input->getVar( 'cid', array(), 'post', 'array' );
 		JArrayHelper::toInteger( $cids );
-		$predictionGameID	= JRequest::getVar( 'prediction_id', '', 'post', 'int' );
+		$predictionGameID	= JFactory::getApplication()->input->getVar( 'prediction_id', '', 'post', 'int' );
 
 		if ( count( $cids ) < 1 )
 		{
@@ -189,9 +189,9 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
      */
     function unpublish()
 	{
-		$cids = JRequest::getVar( 'cid', array(), 'post', 'array' );
+		$cids = JFactory::getApplication()->input->getVar( 'cid', array(), 'post', 'array' );
 		JArrayHelper::toInteger( $cids );
-		$predictionGameID	= JRequest::getVar( 'prediction_id', '', 'post', 'int' );
+		$predictionGameID	= JFactory::getApplication()->input->getVar( 'prediction_id', '', 'post', 'int' );
 
 		if ( count( $cids ) < 1 )
 		{
@@ -223,9 +223,9 @@ class sportsmanagementControllerpredictionmembers extends JControllerAdmin
     
 		$d		= ' - ';
 		$msg	= '';
-		$cid	= JRequest::getVar('cid',array(),'post','array');
+		$cid	= JFactory::getApplication()->input->getVar('cid',array(),'post','array');
 		JArrayHelper::toInteger($cid);
-		$prediction_id	= JRequest::getInt('prediction_id',(-1),'post');
+		$prediction_id	= JFactory::getApplication()->input->getInt('prediction_id',(-1),'post');
 		//echo '<pre>'; print_r($cid); echo '</pre>';
 
 		if (count($cid) < 1)

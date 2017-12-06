@@ -44,7 +44,7 @@ JHtml::_( 'behavior.tooltip' );
 //echo 'predictionuser<pre>',print_r($this->predictionuser, true),'</pre>';
 
 // Set toolbar items for the page
-$edit = JRequest::getVar( 'edit', true );
+$edit = JFactory::getApplication()->input->getVar( 'edit', true );
 $text = !$edit ? JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_NEW' ) : JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_EDIT' );
 JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PMEMBER_PGAME' ) . ': <small><small>[ ' . $text . ' ]</small></small>' );
 JToolbarHelper::save('predictionmember.save');

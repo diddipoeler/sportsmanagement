@@ -79,7 +79,7 @@ class sportsmanagementViewjsmgooglecalendar extends sportsmanagementView
 	 */
 	protected function addToolbar()
 	{
-		//$option = JRequest::getCmd('option');
+		//$option = JFactory::getApplication()->input->getCmd('option');
 //        // Get a refrence of the page instance in joomla  
 //		$document	= JFactory::getDocument();  
 //        // Set toolbar items for the page

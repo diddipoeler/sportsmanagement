@@ -41,7 +41,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 JHtml::_( 'behavior.tooltip' );
 
 //save and close 
-$close = JRequest::getInt('close',0);
+$close = JFactory::getApplication()->input->getInt('close',0);
 if($close == 1) {
 	?><script>
 	window.addEvent('domready', function() {
@@ -54,7 +54,7 @@ if($close == 1) {
 
 
 // Set toolbar items for the page
-//$edit = JRequest::getVar('edit',true);
+//$edit = JFactory::getApplication()->input->getVar('edit',true);
 
 //$component_text = 'COM_SPORTSMANAGEMENT_';
 //JToolbarHelper::title( JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_PREDICTIONMEMBERS_ASSIGN' ) );
@@ -81,7 +81,7 @@ if($close == 1) {
 		<div class="fltrt">
 			<button type="button" onclick="Joomla.submitform('predictionmembers.save_memberlist', this.form)">
 				<?php echo JText::_('JSAVE');?></button>
-			<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
+			<button id="cancel" type="button" onclick="<?php echo JFactory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
 				<?php echo JText::_('JCANCEL');?></button>
 		</div>
 		

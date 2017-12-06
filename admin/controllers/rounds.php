@@ -87,7 +87,7 @@ class sportsmanagementControllerrounds extends JControllerAdmin
 	{
 		
         // Check for request forgeries
-		JRequest::checkToken() or die('JINVALID_TOKEN');
+		JFactory::getApplication()->input->checkToken() or die('JINVALID_TOKEN');
 
         $model = $this->getModel();
        $msg = $model->massadd();
@@ -106,7 +106,7 @@ class sportsmanagementControllerrounds extends JControllerAdmin
     function deleteRoundMatches()
 	{
 	   $model = $this->getModel();
-       $pks = JRequest::getVar('cid', null, 'post', 'array');
+       $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
        $msg = $model->deleteRoundMatches($pks);
        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list, false));
        //$this->setRedirect('index.php?option=com_sportsmanagement&view=rounds',$msg);

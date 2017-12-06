@@ -91,7 +91,7 @@ class sportsmanagementControllersmextxmleditor extends JControllerForm
 
 		// Initialise variables.
 		$app		= JFactory::getApplication();
-		$data		= JRequest::getVar('jform', array(), 'post', 'array');
+		$data		= JFactory::getApplication()->input->getVar('jform', array(), 'post', 'array');
 		//$context	= 'com_templates.edit.source';
 		$task		= $this->getTask();
 		$model		= $this->getModel();

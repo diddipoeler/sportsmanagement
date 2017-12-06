@@ -87,7 +87,7 @@ class sportsmanagementModeltrainingdata extends JSMModelAdmin
 	   $app = JFactory::getApplication();
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
-       $post = JRequest::get('post');
+       $post = JFactory::getApplication()->input->get('post');
        // Set the values
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');

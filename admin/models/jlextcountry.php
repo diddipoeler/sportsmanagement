@@ -66,12 +66,12 @@ class sportsmanagementModeljlextcountry extends JSMModelAdmin
     function importplz()
     {
     $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);    
         // Get the input
-        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $base_Dir = JPATH_SITE . DS . 'tmp' . DS ;
         $cfg_plz_server = JComponentHelper::getParams($option)->get('cfg_plz_server','');
         

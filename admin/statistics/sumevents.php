@@ -105,7 +105,7 @@ class SMStatisticSumevents extends SMStatistic
 	function getPlayerStatsByGame($teamplayer_ids, $project_id)
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $sids = SMStatistic::getQuotedSids($this->_ids);
 		$db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
@@ -160,7 +160,7 @@ class SMStatisticSumevents extends SMStatistic
 	function getPlayerStatsByProject($person_id, $projectteam_id = 0, $project_id = 0, $sports_type_id = 0)
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         
 		$sids = SMStatistic::getSids($this->_ids);
 		$res = SMStatistic::getPlayerStatsByProjectForEvents($person_id, $projectteam_id, $project_id, $sports_type_id, $sids);
@@ -271,7 +271,7 @@ class SMStatisticSumevents extends SMStatistic
 	function getTeamsRanking($project_id, $limit = 20, $limitstart = 0, $order=null)
 	{		
 		$sids = SMStatistic::getQuotedSids($this->_ids);
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
 		

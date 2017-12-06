@@ -647,11 +647,11 @@ class JInstallationHelper
 		 */
 		if( $migration )
 		{
-			$sqlFile	= JRequest::getVar('migrationFile', '', 'files', 'array');
+			$sqlFile	= JFactory::getApplication()->input->getVar('migrationFile', '', 'files', 'array');
 		}
 		else
 		{
-			$sqlFile	= JRequest::getVar('sqlFile', '', 'files', 'array');
+			$sqlFile	= JFactory::getApplication()->input->getVar('sqlFile', '', 'files', 'array');
 		}
 
 		/*

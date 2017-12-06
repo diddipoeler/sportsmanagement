@@ -63,13 +63,13 @@ class sportsmanagementModelrosterposition extends JSMModelAdmin
 	 */
 	public function save($data)
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 	$app	= JFactory::getApplication();
     $date = JFactory::getDate();
 	   $user = JFactory::getUser();
     // Get a db connection.
         $db = JFactory::getDbo();
-       $post=JRequest::get('post');
+       $post=JFactory::getApplication()->input->get('post');
     
     
     if (isset($post['extended']) && is_array($post['extended'])) 

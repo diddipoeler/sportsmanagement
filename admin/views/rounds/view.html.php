@@ -127,12 +127,12 @@ class sportsmanagementViewRounds extends sportsmanagementView
         
         $this->table = JTable::getInstance('round', 'sportsmanagementTable');
        
-        //$project_id	= JRequest::getVar('pid');
+        //$project_id	= JFactory::getApplication()->input->getVar('pid');
 		$this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
         
 		$mdlProject = JModelLegacy::getInstance('Project', 'sportsmanagementModel');
 		$project = $mdlProject->getProject($this->project_id);
-		//$massadd=JRequest::getVar('massadd');
+		//$massadd=JFactory::getApplication()->input->getVar('massadd');
 	$myoptions = array();
 	$myoptions[] = JHtml::_( 'select.option', '0', JText::_( 'JNO' ) );
 	$myoptions[] = JHtml::_( 'select.option', '1', JText::_( 'JYES' ) );
@@ -234,7 +234,7 @@ class sportsmanagementViewRounds extends sportsmanagementView
 		}
         //JToolbarHelper::divider();
 //		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//		JToolbarHelper::preferences(JRequest::getCmd('option'));
+//		JToolbarHelper::preferences(JFactory::getApplication()->input->getCmd('option'));
 
 //parent::addToolbar();  
 

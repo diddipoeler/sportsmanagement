@@ -91,7 +91,7 @@ class sportsmanagementModelseason extends JSMModelAdmin
        $modified = $date->toSql();
 	   $modified_by = $user->get('id');
        
-        //$post = JRequest::get('post');
+        //$post = JFactory::getApplication()->input->get('post');
         //$post = $jinput->post;
         $pks = $jinput->getVar('cid', null, 'post', 'array');
         $teams = $jinput->getVar('team_id', null, 'post', 'array');
@@ -160,7 +160,7 @@ class sportsmanagementModelseason extends JSMModelAdmin
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
         $db = sportsmanagementHelper::getDBConnection();
-        //$post = JRequest::get('post');
+        //$post = JFactory::getApplication()->input->get('post');
         //$post = $jinput->post;
         $pks = $jinput->getVar('cid', null, 'post', 'array');
         $season_id = $jinput->getVar('season_id', 0, 'post', 'array');

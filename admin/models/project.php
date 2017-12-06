@@ -405,12 +405,12 @@ class sportsmanagementModelProject extends JSMModelAdmin
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         
         // Get the input
-        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
         if ( !$pks )
         {
             return JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SAVE_NO_SELECT');
         }
-        $post = JRequest::get('post');
+        $post = JFactory::getApplication()->input->get('post');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {
@@ -472,7 +472,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_user_extra_field
        $address_parts = array();
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
-       $post = JRequest::get('post');
+       $post = JFactory::getApplication()->input->get('post');
        // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
@@ -512,10 +512,10 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_user_extra_field
 		}
         
        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' data<br><pre>'.print_r($data,true).'</pre>'),'');
-       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask -> '.JRequest::getVar('task').''),'');
+       //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask -> '.JFactory::getApplication()->input->getVar('task').''),'');
        
        // for save as copy
-		if (JRequest::getVar('task') == 'save2copy')
+		if (JFactory::getApplication()->input->getVar('task') == 'save2copy')
 		{
 			$data['current_round'] = 0;
 		}

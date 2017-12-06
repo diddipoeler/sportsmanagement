@@ -83,8 +83,8 @@ function init( $tpl = null )
         // bei neuanlage user und passwort aus der konfiguration der komponente nehmen
         if ($this->gcalendar->id < 1) 
         {
-            $this->form->setValue('username', null, JComponentHelper::getParams(JRequest::getCmd('option'))->get('google_mail_account',''));
-            $this->form->setValue('password', null, JComponentHelper::getParams(JRequest::getCmd('option'))->get('google_mail_password',''));
+            $this->form->setValue('username', null, JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('google_mail_account',''));
+            $this->form->setValue('password', null, JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('google_mail_password',''));
         }
             
         //$this->addToolbar();
@@ -102,7 +102,7 @@ function init( $tpl = null )
 	*/
     protected function addToolbar() 
     {
-		//JRequest::setVar('hidemainmenu', true);
+		//JFactory::getApplication()->input->setVar('hidemainmenu', true);
         $app = JFactory::getApplication();
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
@@ -115,8 +115,8 @@ function init( $tpl = null )
             {
                 $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_JSMGCALENDAR_INSERT_ON_GOOGLE'),'Notice');
                 
-                $this->gcalendar->username = JComponentHelper::getParams(JRequest::getCmd('option'))->get('google_mail_account','');
-                $this->gcalendar->password = JComponentHelper::getParams(JRequest::getCmd('option'))->get('google_mail_password','');
+                $this->gcalendar->username = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('google_mail_account','');
+                $this->gcalendar->password = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('google_mail_password','');
             
 				JToolbarHelper::apply('jsmgcalendar.apply', 'JTOOLBAR_APPLY');
 				JToolbarHelper::save('jsmgcalendar.save', 'JTOOLBAR_SAVE');

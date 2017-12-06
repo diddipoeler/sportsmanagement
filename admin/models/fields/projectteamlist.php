@@ -70,7 +70,7 @@ class JFormFieldprojectteamlist extends JFormFieldList
 	 */
 	protected function getOptions()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         // Initialize variables.
 		$options = array();

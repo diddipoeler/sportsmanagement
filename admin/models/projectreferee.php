@@ -60,8 +60,8 @@ class sportsmanagementModelprojectreferee extends JSMModelAdmin
 	{
 		$app =& JFactory::getApplication();
         // Get the input
-        $pks = JRequest::getVar('cid', null, 'post', 'array');
-        $post = JRequest::get('post');
+        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $post = JFactory::getApplication()->input->get('post');
         
         //$app->enqueueMessage('sportsmanagementModelprojectreferee saveshort pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
         //$app->enqueueMessage('sportsmanagementModelprojectreferee saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');

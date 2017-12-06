@@ -178,8 +178,8 @@ $query->order('m.match_number');
 	   // Get a db connection.
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
-        $pks = JRequest::getVar('cid', null, 'post', 'array');
-        $post = JRequest::get('post');
+        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $post = JFactory::getApplication()->input->get('post');
         $result=true;
 		for ($x=0; $x < count($pks); $x++)
 		{
@@ -346,7 +346,7 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        $timezone = JComponentHelper::getParams(JRequest::getCmd('option'))->get('timezone','');
+        $timezone = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('timezone','');
         
         $app->enqueueMessage(__METHOD__.' '.__LINE__.' timezone<br><pre>'.print_r($timezone, true).'</pre><br>','Notice');
         
@@ -354,8 +354,8 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         
-        $post = JRequest::get('post');
-        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        $post = JFactory::getApplication()->input->get('post');
+        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $project_id	= $app->getUserState( "$option.pid", '0' );
         
         //$app->enqueueMessage(__METHOD__.' '.__FUNCTION__.' project_id<br><pre>'.print_r($project_id, true).'</pre><br>','Notice');
@@ -753,11 +753,11 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,
 	function saveshort()
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // Get the input
-        $pks = JRequest::getVar('cid', null, 'post', 'array');
-        $post = JRequest::get('post');
+        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $post = JFactory::getApplication()->input->get('post');
         
         
         //$app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
@@ -1010,8 +1010,8 @@ $tournement_round = $this->jsmdb->loadResult();
 	   $app = JFactory::getApplication();
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
-       $post = JRequest::get('post');
-       $option = JRequest::getCmd('option');
+       $post = JFactory::getApplication()->input->get('post');
+       $option = JFactory::getApplication()->input->getCmd('option');
        /* Ein Datenbankobjekt beziehen */
        $db = JFactory::getDbo();
        // Set the values
@@ -1079,7 +1079,7 @@ $tournement_round = $this->jsmdb->loadResult();
      */
     public static function getMatchSingleData($match_id)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 	   $app = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
@@ -1107,7 +1107,7 @@ $tournement_round = $this->jsmdb->loadResult();
      */
     public static function getMatchRelationsOptions($project_id,$excludeMatchId=0)
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 	   $app = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
@@ -1163,7 +1163,7 @@ $tournement_round = $this->jsmdb->loadResult();
 	 */
 	public static function getMatchData($match_id, $cfg_which_database = 0)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 	   $app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
@@ -1220,7 +1220,7 @@ $tournement_round = $this->jsmdb->loadResult();
      */
     public static function getTeamPersons($projectteam_id,$filter=false,$persontype)
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         self::$_season_id	= $app->getUserState( "$option.season_id", '0' );
         self::$_project_id	= $app->getUserState( "$option.pid", '0' );
@@ -1294,7 +1294,7 @@ $tournement_round = $this->jsmdb->loadResult();
 	 */
 	public static function getSubstitutions($tid=0,$match_id)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         self::$_season_id	= $app->getUserState( "$option.season_id", '0' );
         $project_id	= $app->getUserState( "$option.pid", '0' );
@@ -1362,7 +1362,7 @@ $tournement_round = $this->jsmdb->loadResult();
 	 */
 	public static function getRoster($team_id, $project_position_id=0, $match_id,$position_value)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         self::$_season_id	= $app->getUserState( "$option.season_id", '0' );
         self::$_project_id	= $app->getUserState( "$option.pid", '0' );
@@ -1444,7 +1444,7 @@ $tournement_round = $this->jsmdb->loadResult();
     public static function getMatchText($match_id)
 	{
 	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+       $option = JFactory::getApplication()->input->getCmd('option');
        
        $db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
 	   $query = $db->getQuery(true);
@@ -1488,7 +1488,7 @@ $tournement_round = $this->jsmdb->loadResult();
 	public static function getMatchTeams($match_id)
 	{
 	   $app = JFactory::getApplication();
-       $option = JRequest::getCmd('option');
+       $option = JFactory::getApplication()->input->getCmd('option');
        // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
@@ -1621,7 +1621,7 @@ return $result;
 	public static function getMatchPersons($projectteam_id,$project_position_id=0,$match_id, $table)
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         
         $query = JFactory::getDbo()->getQuery(true);
         
@@ -1730,7 +1730,7 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
      */
     public static function getInputStats($project_id)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         
         $query = JFactory::getDbo()->getQuery(true);
@@ -1773,7 +1773,7 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
      */
     public static function getMatchStatsInput($match_id,$projectteam1_id,$projectteam2_id)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         $starttime = microtime(); 
         
@@ -1813,7 +1813,7 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
 	 */
 	public static function getMatchStaffStatsInput($match_id,$projectteam1_id,$projectteam2_id)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         $starttime = microtime(); 
         
@@ -1854,7 +1854,7 @@ $query->join('INNER',' #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos ON pos.
 	 */
 	public static function getProjectPositionsOptions($id=0, $person_type=1,$project_id)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         $starttime = microtime(); 
         // Get a db connection.
@@ -1912,7 +1912,7 @@ return $result;
      */
     public static function getEventsOptions($project_id,$match_id)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         $starttime = microtime(); 
         
@@ -1977,7 +1977,7 @@ return $result;
 	{
 		$app = JFactory::getApplication();
         $config = JFactory::getConfig();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
@@ -2202,7 +2202,7 @@ function getPlayerEventsbb($teamplayer_id=0,$event_type_id=0,$match_id=0)
 	function updateRoster($post)
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $result = true;
 		$positions = $post['positions'];
 		$mid = $post['id'];
@@ -2286,7 +2286,7 @@ function getPlayerEventsbb($teamplayer_id=0,$event_type_id=0,$match_id=0)
 	function updateStaff($post)
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $result = true;
 		$positions = $post['staffpositions'];
 		$mid = $post['id'];
@@ -2678,7 +2678,7 @@ if (!$db->query())
 	 */
 	public static function getMatchCommentary($match_id)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
@@ -2716,7 +2716,7 @@ if (!$db->query())
     function sendEmailtoPlayers()
     {
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $mailer = JFactory::getMailer();
         $user	= JFactory::getUser();
         // get settings from com_issuetracker parameters
@@ -2797,12 +2797,12 @@ else
      */
     function getPressebericht()
     {
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication(); 
-    //$post = JRequest::get('post');
-    //$cid = JRequest::getVar('cid',array(0),'','array');
+    //$post = JFactory::getApplication()->input->get('post');
+    //$cid = JFactory::getApplication()->input->getVar('cid',array(0),'','array');
     //$match_id = $cid[0];
-    $match_id = JRequest::getVar('match_id');
+    $match_id = JFactory::getApplication()->input->getVar('match_id');
     $this->_id = $match_id;
     //$app->enqueueMessage(JText::_('getPressebericht match_id<br><pre>'.print_r($match_id,true).'</pre>'   ),'');
     $file = JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'pressebericht'.DS.$match_id.'.jlg';   
@@ -2852,9 +2852,9 @@ $csv->auto($dcsv['cachefile']);
      */
     function getPresseberichtMatchnumber($csv_file)
     {
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();  
-    $match_id = JRequest::getVar('match_id');  
+    $match_id = JFactory::getApplication()->input->getVar('match_id');  
     $tblmatch = JTable::getInstance("match", "sportsmanagementTable");
     $tblmatch->load($match_id);
     $match_number = $tblmatch->match_number;
@@ -2886,14 +2886,14 @@ $csv->auto($dcsv['cachefile']);
      */
     function getPresseberichtReadPlayers($csv_file)
     {
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication(); 
 	$db = sportsmanagementHelper::getDBConnection();
     $query = $db->getQuery(true);
     
     $csv_player_count = 40;
     $project_id = $app->getUserState( "$option.pid", '0' ); 
-    $match_id = JRequest::getVar('match_id');    
+    $match_id = JFactory::getApplication()->input->getVar('match_id');    
     $tblmatch = JTable::getInstance("match", "sportsmanagementTable");
     $tblmatch->load($match_id);
     $tblproject = JTable::getInstance("project", "sportsmanagementTable");

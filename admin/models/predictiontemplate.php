@@ -129,7 +129,7 @@ class sportsmanagementModelPredictionTemplate extends JModelAdmin
 	public function getForm($data = array(), $loadData = true) 
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
         //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         // Get the form.
@@ -182,7 +182,7 @@ class sportsmanagementModelPredictionTemplate extends JModelAdmin
 	   $app = JFactory::getApplication();
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
-       $post = JRequest::get('post');
+       $post = JFactory::getApplication()->input->get('post');
        // Set the values
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');
@@ -232,7 +232,7 @@ class sportsmanagementModelPredictionTemplate extends JModelAdmin
 	function getPredictionGame( $id )
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);

@@ -66,15 +66,15 @@ class sportsmanagementViewDatabaseTool extends sportsmanagementView
 		$db		= sportsmanagementHelper::getDBConnection();
 		$uri	= JFactory::getURI();
         $model	= $this->getModel();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         $document = JFactory::getDocument();
         //$this->state = $this->get('State'); 
-        $command = JRequest::getCmd('task');
+        $command = JFactory::getApplication()->input->getCmd('task');
         
         $this->assign('request_url',$uri->toString());
         
-        //$command2 = JRequest::getVar('task');
+        //$command2 = JFactory::getApplication()->input->getVar('task');
         
         $this->task = $command;
         // Explode the controller.task command.
@@ -198,7 +198,7 @@ $document->addScriptDeclaration( $javascript );
 		JToolbarHelper::back();
 		JToolbarHelper::divider();
 		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-        JToolbarHelper::preferences(JRequest::getCmd('option'));
+        JToolbarHelper::preferences(JFactory::getApplication()->input->getCmd('option'));
 	}	
 	
 }

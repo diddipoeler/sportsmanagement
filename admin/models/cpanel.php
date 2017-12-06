@@ -73,7 +73,7 @@ var $_success_text = '';
 public function getVersion() 
 	{
 	   //$app = JFactory::getApplication();
-//       $option = JRequest::getCmd('option');
+//       $option = JFactory::getApplication()->input->getCmd('option');
 //       // Create a new query object.		
 //		$db = sportsmanagementHelper::getDBConnection();
 //		$query = $db->getQuery(true);
@@ -92,7 +92,7 @@ public function getVersion()
 public function getGithubRequests()
 {
 $app = JFactory::getApplication(); 
-$option = JRequest::getCmd('option');   
+$option = JFactory::getApplication()->input->getCmd('option');   
 $paramsdata = JComponentHelper::getParams($option);
 //$app->enqueueMessage(JText::_('getGithubRequests paramsdata<br><pre>'.print_r($paramsdata,true).'</pre>'   ),'');
 
@@ -140,7 +140,7 @@ $paramsdata = JComponentHelper::getParams($option);
     function getInstalledPlugin($plugin)
     {
     //$app = JFactory::getApplication();
-//  $option = JRequest::getCmd('option'); 
+//  $option = JFactory::getApplication()->input->getCmd('option'); 
 //  $db = sportsmanagementHelper::getDBConnection();    
 //        $query = $db->getQuery(true);
 $this->jsmquery->clear();
@@ -162,7 +162,7 @@ $this->jsmquery->clear();
     function checkUpdateVersion()
     {
         //$app = JFactory::getApplication(); 
-//        $option = JRequest::getCmd('option');  
+//        $option = JFactory::getApplication()->input->getCmd('option');  
         //$xml = JFactory::getXMLParser( 'Simple' );
         $return = 0;
         $version = sportsmanagementHelper::getVersion() ;
@@ -265,7 +265,7 @@ else
     function checkcountry()
     {
         //$app = JFactory::getApplication();
-//        $option = JRequest::getCmd('option');
+//        $option = JFactory::getApplication()->input->getCmd('option');
         $starttime = microtime(); 
         // Create a new query object.		
 //		$db = sportsmanagementHelper::getDBConnection();
@@ -302,7 +302,7 @@ else
     function checksporttype($type)
     {
         //$app = JFactory::getApplication();
-        //$option = JRequest::getCmd('option');
+        //$option = JFactory::getApplication()->input->getCmd('option');
         $starttime = microtime(); 
         // Create a new query object.		
 	//	$db = sportsmanagementHelper::getDBConnection();

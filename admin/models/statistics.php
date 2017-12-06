@@ -89,7 +89,7 @@ class sportsmanagementModelStatistics extends JModelList
 	protected function populateState($ordering = null, $direction = null)
 	{
 		//$app = JFactory::getApplication();
-        //$option = JRequest::getCmd('option');
+        //$option = JFactory::getApplication()->input->getCmd('option');
         // Initialise variables.
 	//	$app = JFactory::getApplication('administrator');
         
@@ -104,7 +104,7 @@ class sportsmanagementModelStatistics extends JModelList
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.sports_type', 'filter_sports_type', '');
 		$this->setState('filter.sports_type', $temp_user_request);
         
-        $value = JRequest::getUInt('limitstart', 0);
+        $value = JFactory::getApplication()->input->getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
 
 		// List state information.
@@ -119,7 +119,7 @@ class sportsmanagementModelStatistics extends JModelList
 	function getListQuery()
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         //$search	= $this->getState('filter.search');
         //$search_sports_type	= $this->getState('filter.sports_type');
         //$search_state	= $this->getState('filter.state');
@@ -183,7 +183,7 @@ class sportsmanagementModelStatistics extends JModelList
 	function getPositionStatsOptions($id)
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         // Create a new query object.
 		$db = sportsmanagementHelper::getDBConnection();
@@ -213,7 +213,7 @@ class sportsmanagementModelStatistics extends JModelList
 	function getAvailablePositionStatsOptions($id)
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         // Create a new query object.
 		$db = sportsmanagementHelper::getDBConnection();
@@ -242,7 +242,7 @@ class sportsmanagementModelStatistics extends JModelList
     public function getStatisticListSelect()
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         //$search	= $app->getUserStateFromRequest($option.'.'.$this->_identifier.'.search','search','','string');
         // Create a new query object.
 		$db = sportsmanagementHelper::getDBConnection();

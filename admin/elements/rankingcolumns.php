@@ -66,7 +66,7 @@ class JFormFieldrankingcolumns extends JFormField
 		$db = sportsmanagementHelper::getDBConnection();
         $app = JFactory::getApplication();
 		$lang = JFactory::getLanguage();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         
         $selrankingcol = (int) ($this->element['selrankingcol']);
         

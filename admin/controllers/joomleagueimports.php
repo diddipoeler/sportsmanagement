@@ -107,7 +107,7 @@ $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->v
 function importjoomleaguenew()
 {
         //$app = JFactory::getApplication();
-        //$option = JRequest::getCmd('option');
+        //$option = JFactory::getApplication()->input->getCmd('option');
         
         //$jl_table_import_step = $app->getUserState( "$this->option.jl_table_import_step", 0 );
         $jl_table_import_step = $this->jsmjinput->get('jl_table_import_step',0);

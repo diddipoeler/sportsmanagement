@@ -56,7 +56,7 @@ JHtml::_('behavior.keepalive');
 //$params = $this->form->getFieldsets('params');
 //save and close 
 /*
-$close = JRequest::getInt('close',0);
+$close = JFactory::getApplication()->input->getInt('close',0);
 if($close == 1) {
 	?><script>
 	window.addEvent('domready', function() {

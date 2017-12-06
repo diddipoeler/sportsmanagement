@@ -1126,7 +1126,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
     function checkAssociations()
     {
     //$app = JFactory::getApplication();
-//    $this->option = JRequest::getCmd('option');    
+//    $this->option = JFactory::getApplication()->input->getCmd('option');    
     /* Ein Datenbankobjekt beziehen */
     //$db = JFactory::getDbo();  
     
@@ -1327,7 +1327,7 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
     function checkSportTypeStructur($type)
     {
     $app = JFactory::getApplication();
-    //$this->option = JRequest::getCmd('option');    
+    //$this->option = JFactory::getApplication()->input->getCmd('option');    
     //$db_table = JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/helpers/sp_structur/'.$type.'.txt';    
     //$fileContent = JFile::read($db_table);    
     //$this->app->enqueueMessage(JText::_('sportsmanagementModeldatabasetool checkSportTypeStructur fileContent<br><pre>'.print_r($fileContent,true).'</pre>'),'Notice');
@@ -1473,7 +1473,7 @@ foreach( $xml->events as $event )
     function insertCountries()
     {
     $app = JFactory::getApplication();
-    //$this->option = JRequest::getCmd('option');
+    //$this->option = JFactory::getApplication()->input->getCmd('option');
     require_once( JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/'. 'helpers' . DS . 'jinstallationhelper.php' );    
     $db = sportsmanagementHelper::getDBConnection();
     $db_table = JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/sql/countries.sql';
@@ -1528,7 +1528,7 @@ foreach( $xml->events as $event )
     function insertSportType($type)
     {
         $app = JFactory::getApplication();
-        //$this->option = JRequest::getCmd('option');
+        //$this->option = JFactory::getApplication()->input->getCmd('option');
         //$db = sportsmanagementHelper::getDBConnection(FALSE,FALSE);
         $sports_type_id = 0;
         //$this->app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_SPORT_TYPE_INSERT',strtoupper($type)),'Notice');
@@ -1623,7 +1623,7 @@ foreach( $xml->events as $event )
     function addStandardForSportType($name, $id, $type,$update=0)
 {
     $app = JFactory::getApplication();
-        $this->option = JRequest::getCmd('option');
+        $this->option = JFactory::getApplication()->input->getCmd('option');
         // Get a db connection.
         //$db = JFactory::getDbo();
         

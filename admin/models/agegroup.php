@@ -139,12 +139,12 @@ class sportsmanagementModelagegroup extends JSMModelAdmin
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         
         // Get the input
-        $pks = JRequest::getVar('cid', null, 'post', 'array');
+        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
         if ( !$pks )
         {
             return JText::_('COM_SPORTSMANAGEMENT_ADMIN_AGEGROUPS_SAVE_NO_SELECT');
         }
-        $post = JRequest::get('post');
+        $post = JFactory::getApplication()->input->get('post');
         
 //        $app->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
 //        $app->enqueueMessage(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($post, true).'</pre><br>','Notice');

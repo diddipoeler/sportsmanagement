@@ -107,7 +107,7 @@ class sportsmanagementTablePerson extends JTable
 	function bind($array, $ignore = '')
 	{
 	   $app = JFactory::getApplication();
-      $option = JRequest::getCmd('option');
+      $option = JFactory::getApplication()->input->getCmd('option');
 		
 //    if (isset($array['extended']) && is_array($array['extended'])) 
 //		{

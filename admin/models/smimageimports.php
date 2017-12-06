@@ -90,7 +90,7 @@ class sportsmanagementModelsmimageimports extends JModelList
 	protected function populateState($ordering = null, $direction = null)
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
         
@@ -127,7 +127,7 @@ class sportsmanagementModelsmimageimports extends JModelList
 	protected function getListQuery()
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         
         //$search	= $this->getState('filter.search');
         //$filter_state = $this->getState('filter.state');
@@ -177,7 +177,7 @@ class sportsmanagementModelsmimageimports extends JModelList
 function getXMLFolder()
 {
     $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection();
         // Create a new query object.
@@ -209,7 +209,7 @@ function getXMLFolder()
 function getimagesxml()
 {
     $app = JFactory::getApplication(); 
-        $option = JRequest::getCmd('option');  
+        $option = JFactory::getApplication()->input->getCmd('option');  
         // sind neue bilder pakete vorhanden ?
 		//$content = file_get_contents('https://raw2.github.com/diddipoeler/sportsmanagement/master/admin/helpers/xml_files/pictures.xml');
 		
@@ -293,7 +293,7 @@ else
 function getXMLFiles()
     {
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $query = JFactory::getDbo()->getQuery(true);
         $files = array();
         $path = JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'xml_files'.DS.'pictures.xml';

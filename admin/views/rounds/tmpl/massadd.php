@@ -43,7 +43,7 @@ JHtml::_('behavior.tooltip');
 
 //$params = $this->form->getFieldsets('params');
 //save and close 
-$close = JRequest::getInt('close',0);
+$close = JFactory::getApplication()->input->getInt('close',0);
 if($close == 1) {
 	?><script>
 	window.addEvent('domready', function() {
@@ -64,7 +64,7 @@ if($close == 1) {
 		<div class="fltrt">
 			<button type="button" onclick="Joomla.submitform('rounds.massadd', this.form)">
 				<?php echo JText::_('JSAVE');?></button>
-			<button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
+			<button id="cancel" type="button" onclick="<?php echo JFactory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
 				<?php echo JText::_('JCANCEL');?></button>
 		</div>
 		

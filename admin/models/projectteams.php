@@ -72,7 +72,7 @@ class sportsmanagementModelProjectteams extends JSMModelList
     public function __construct($config = array())
         {
             //$app = JFactory::getApplication();
-        //$option = JRequest::getCmd('option');
+        //$option = JFactory::getApplication()->input->getCmd('option');
 	    $config['filter_fields'] = array(
                         't.name',
                         't.lastname',
@@ -90,7 +90,7 @@ class sportsmanagementModelProjectteams extends JSMModelList
 	    
             self::$_project_id	= $this->jsmjinput->getInt('pid',0);
             self::$_division_id	= $this->jsmjinput->getInt('division',0);
-            //$post = JRequest::get( 'post' );
+            //$post = JFactory::getApplication()->input->get( 'post' );
 
 if ( isset($this->jsmpost['addteam']) )
 {
@@ -646,9 +646,9 @@ foreach ($result as $teams)
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
 
-		$post = JRequest::get('post');
-		$oldteamid = JRequest::getVar('oldteamid',array(),'post','array');
-		$newteamid = JRequest::getVar('newteamid',array(),'post','array');
+		$post = JFactory::getApplication()->input->get('post');
+		$oldteamid = JFactory::getApplication()->input->getVar('oldteamid',array(),'post','array');
+		$newteamid = JFactory::getApplication()->input->getVar('newteamid',array(),'post','array');
 
 		for ($a=0; $a < sizeof($oldteamid); $a++ )
 		{

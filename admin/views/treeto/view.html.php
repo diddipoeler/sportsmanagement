@@ -44,7 +44,7 @@ class sportsmanagementViewTreeto extends sportsmanagementView
 
 	function _displayForm()
 	{
-		//$option = JRequest::getCmd('option');
+		//$option = JFactory::getApplication()->input->getCmd('option');
 //		$app = JFactory::getApplication();
 //		$db = JFactory::getDbo();
 //		$uri = JFactory::getURI();
@@ -77,7 +77,7 @@ class sportsmanagementViewTreeto extends sportsmanagementView
 
 	function _displayGennode()
 	{
-		//$option = JRequest::getCmd('option');
+		//$option = JFactory::getApplication()->input->getCmd('option');
 //		$app = JFactory::getApplication();
 //		$db = JFactory::getDbo();
 //		$uri = JFactory::getURI();

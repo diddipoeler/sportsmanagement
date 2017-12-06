@@ -303,9 +303,9 @@ else
 	 */
 	protected function addToolbar ()
 	{
-	   //$option = JRequest::getCmd('option');
+	   //$option = JFactory::getApplication()->input->getCmd('option');
 		//$app = JFactory::getApplication();
-        //$view = JRequest::getCmd('view', 'cpanel');
+        //$view = JFactory::getApplication()->input->getCmd('view', 'cpanel');
 		$canDo = sportsmanagementHelper::getActions();
         
         // in der joomla 3 version kann man die filter setzen
@@ -462,7 +462,7 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
         {
         $isNew = $this->item->id == 0;
         $canDo = sportsmanagementHelper::getActions($this->item->id);
-        //$view = JRequest::getCmd('view', 'edit');
+        //$view = JFactory::getApplication()->input->getCmd('view', 'edit');
             if (empty($this->title))
 		    {
             if ( $isNew )

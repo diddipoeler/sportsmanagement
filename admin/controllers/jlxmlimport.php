@@ -88,24 +88,24 @@ class sportsmanagementControllerJLXMLImport extends JControllerLegacy
 		switch ($this->getTask())
 		{
 			case 'edit':
-				//JRequest::setVar('hidemainmenu',0);
-				JRequest::setVar('layout','form');
-				JRequest::setVar('view','jlxmlimports');
-				JRequest::setVar('edit',true);
+				//JFactory::getApplication()->input->setVar('hidemainmenu',0);
+				JFactory::getApplication()->input->setVar('layout','form');
+				JFactory::getApplication()->input->setVar('view','jlxmlimports');
+				JFactory::getApplication()->input->setVar('edit',true);
 				break;
 
 			case 'insert':
-				//JRequest::setVar('hidemainmenu',0);
-				JRequest::setVar('layout','info');
-				JRequest::setVar('view','jlxmlimports');
-				JRequest::setVar('edit',true);
+				//JFactory::getApplication()->input->setVar('hidemainmenu',0);
+				JFactory::getApplication()->input->setVar('layout','info');
+				JFactory::getApplication()->input->setVar('view','jlxmlimports');
+				JFactory::getApplication()->input->setVar('edit',true);
 				break;
                 
            case 'update':
-				//JRequest::setVar('hidemainmenu',0);
-				JRequest::setVar('layout','update');
-				JRequest::setVar('view','jlxmlimports');
-				JRequest::setVar('edit',true);
+				//JFactory::getApplication()->input->setVar('hidemainmenu',0);
+				JFactory::getApplication()->input->setVar('layout','update');
+				JFactory::getApplication()->input->setVar('view','jlxmlimports');
+				JFactory::getApplication()->input->setVar('edit',true);
 				break;     
 		}
 
@@ -120,15 +120,15 @@ class sportsmanagementControllerJLXMLImport extends JControllerLegacy
 	function select()
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-		$selectType=JRequest::getVar('type',0,'get','int');
-		$recordID=JRequest::getVar('id',0,'get','int');
+        $option = JFactory::getApplication()->input->getCmd('option');
+		$selectType=JFactory::getApplication()->input->getVar('type',0,'get','int');
+		$recordID=JFactory::getApplication()->input->getVar('id',0,'get','int');
 		$app->setUserState($option.'selectType',$selectType);
 		$app->setUserState($option.'recordID',$recordID);
 
-		JRequest::setVar('hidemainmenu',1);
-		JRequest::setVar('layout','selectpage');
-		JRequest::setVar('view','jlxmlimports');
+		JFactory::getApplication()->input->setVar('hidemainmenu',1);
+		JFactory::getApplication()->input->setVar('layout','selectpage');
+		JFactory::getApplication()->input->setVar('view','jlxmlimports');
 
 		parent::display();
 	}
@@ -141,13 +141,13 @@ class sportsmanagementControllerJLXMLImport extends JControllerLegacy
 	function save()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or die('JINVALID_TOKEN');
+		JFactory::getApplication()->input->checkToken() or die('JINVALID_TOKEN');
 		$msg='';
 		JToolbarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
 		$app = JFactory::getApplication();
-		$post=JRequest::get('post');
+		$post=JFactory::getApplication()->input->get('post');
         
-        $projectid = JRequest::getVar('projektfussballineuropa',null);
+        $projectid = JFactory::getApplication()->input->getVar('projektfussballineuropa',null);
 
 		
         if ( $projectid )
@@ -183,7 +183,7 @@ $app->enqueueMessage(JText::_('daten -> '.$europalink.' sind kopiert worden!'),'
         // first step - upload
 		if (isset($post['sent']) && $post['sent']==1)
 		{
-			$upload=JRequest::getVar('import_package',null,'files','array');
+			$upload=JFactory::getApplication()->input->getVar('import_package',null,'files','array');
 			$tempFilePath=$upload['tmp_name'];
 			$app->setUserState('com_sportsmanagement'.'uploadArray',$upload);
 			$filename='';
@@ -284,7 +284,7 @@ $app->enqueueMessage(JText::_('daten -> '.$europalink.' sind kopiert worden!'),'
 	function insert()
 	{
 		JToolbarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement'));
-		$post=JRequest::get('post');
+		$post=JFactory::getApplication()->input->get('post');
 
 		$link='index.php?option=com_sportsmanagement&task=jlxmlimport.insert';
 		//echo $link;

@@ -78,7 +78,7 @@ class sportsmanagementModelround extends JSMModelAdmin
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         
         //// Get the input
-//        $pks = JRequest::getVar('cid', null, 'post', 'array');
+//        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($pks,true).'</pre>'   ),'');
         $pks = $jinput->get('cid',array(),'array');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($pks,true).'</pre>'   ),'');
@@ -90,7 +90,7 @@ class sportsmanagementModelround extends JSMModelAdmin
         //$post = $jinput->post;
         $post = $jinput->post->getArray();
 //        $app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
-//        $post = JRequest::get('post');
+//        $post = JFactory::getApplication()->input->get('post');
 //        $app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -141,12 +141,12 @@ class sportsmanagementModelround extends JSMModelAdmin
      */
     function massadd()
 	{
-	$option = JRequest::getCmd('option');
+	$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     
     //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info_'.$this->_identifier,0) ;
     
-    $post = JRequest::get('post');
+    $post = JFactory::getApplication()->input->get('post');
     $project_id	= $app->getUserState( "$option.pid", '0' );
     $add_round_count = (int)$post['add_round_count'];
     

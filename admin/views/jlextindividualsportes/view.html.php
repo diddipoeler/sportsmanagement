@@ -80,7 +80,7 @@ class sportsmanagementViewjlextindividualsportes extends sportsmanagementView
         $this->sortDirection = $this->state->get('list.direction');
         $this->sortColumn = $this->state->get('list.ordering');
         
-		//$cid = JRequest::getVar('cid', 'request', 'array');
+		//$cid = JFactory::getApplication()->input->getVar('cid', 'request', 'array');
 		$cid = $jinput->request->get('cid', null, ARRAY)
 
 		

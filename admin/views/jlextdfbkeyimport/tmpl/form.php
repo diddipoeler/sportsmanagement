@@ -5,7 +5,7 @@ JHtml::_( 'behavior.tooltip' );
 // Set toolbar items for the page
 JToolbarHelper::title( JText::_( JText::_( 'DFB-Keys Mass-Add' ) ) );
 
-$edit        = JRequest::getVar('edit',true);
+$edit        = JFactory::getApplication()->input->getVar('edit',true);
 $text = !$edit ? JText::_( 'New' ) : JText::_( 'Edit' );
 //    JToolbarHelper::title(   JText::_( 'Division' ).': <small><small>[ ' . $text.' ]</small></small>' );
 JToolbarHelper::save();

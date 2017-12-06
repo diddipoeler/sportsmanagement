@@ -71,9 +71,9 @@ class sportsmanagementControllerseasons extends JControllerAdmin
 	 */
 	function applypersons()
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
-        $post = JRequest::get('post');
+        $post = JFactory::getApplication()->input->get('post');
         $model = $this->getModel();
        $model->saveshortpersons();
        
@@ -89,9 +89,9 @@ class sportsmanagementControllerseasons extends JControllerAdmin
      */
     function savepersons()
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
-        $post = JRequest::get('post');
+        $post = JFactory::getApplication()->input->get('post');
         $model = $this->getModel();
        $model->saveshortpersons();
         
@@ -107,9 +107,9 @@ class sportsmanagementControllerseasons extends JControllerAdmin
      */
     function applyteams()
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
-        $post = JRequest::get('post');
+        $post = JFactory::getApplication()->input->get('post');
         $model = $this->getModel();
        $model->saveshortteams();
        
@@ -125,9 +125,9 @@ class sportsmanagementControllerseasons extends JControllerAdmin
      */
     function saveteams()
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
-        $post = JRequest::get('post');
+        $post = JFactory::getApplication()->input->get('post');
         $model = $this->getModel();
        $model->saveshortteams();
         
@@ -152,8 +152,8 @@ class sportsmanagementControllerseasons extends JControllerAdmin
 //		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 //
 //		// Get the arrays from the Request
-//		$order	= JRequest::getVar('order',	null, 'post', 'array');
-//		$originalOrder = explode(',', JRequest::getString('original_order_values'));
+//		$order	= JFactory::getApplication()->input->getVar('order',	null, 'post', 'array');
+//		$originalOrder = explode(',', JFactory::getApplication()->input->getString('original_order_values'));
 //
 //		// Make sure something has changed
 //		if (!($order === $originalOrder)) {

@@ -27,7 +27,7 @@ class sportsmanagementModelsmquotestxt extends JModel
 function getTXTFiles()
     {
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $path = JPATH_SITE.DS.'modules'.DS.'mod_sportsmanagement_rquotes'.DS.'mod_sportsmanagement_rquotes';
         // Get a list of files in the search path with the given filter.
        //$files = JFolder::files($path, $filter);

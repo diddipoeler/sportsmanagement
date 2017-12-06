@@ -105,7 +105,7 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
      */
     function getNextGames( $project = 0, $pgid = 0 )
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 	    $app = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
@@ -165,7 +165,7 @@ class sportsmanagementModelPlayground extends JSMModelAdmin
      */
     public static function updateHits($pgid=0,$inserthits=0)
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     $db = JFactory::getDbo();
  $query = $db->getQuery(true);
@@ -191,7 +191,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
      */
     public static function getPlayground( $pgid = 0,$inserthits=0 )
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 	    $app = JFactory::getApplication();
         $db = sportsmanagementHelper::getDBConnection(TRUE, $app->getUserState( "com_sportsmanagement.cfg_which_database", FALSE ) );
         $query = $db->getQuery(true);
@@ -214,7 +214,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
         {
             if ( $pgid < 1 )
             {
-            $pgid = JRequest::getInt( "pgid", 0 );
+            $pgid = JFactory::getApplication()->input->getInt( "pgid", 0 );
             }    
             
             if ( $pgid > 0 )

@@ -165,7 +165,7 @@ class sportsmanagementModelsmextxmleditor extends JModelAdmin
 //		}
 
 		//if ($this->_template) {
-			$file_name	= JRequest::getVar('file_name');
+			$file_name	= JFactory::getApplication()->input->getVar('file_name');
 			//$client		= JApplicationHelper::getClientInfo($this->_template->client_id);
 			//$filePath	= JPath::clean($client->path.'/templates/'.$this->_template->element.'/'.$fileName);
             $filePath = JPATH_ADMINISTRATOR.DS.'components'.DS.$option.DS.'assets'.DS.'extended'.DS.$file_name;
@@ -174,7 +174,7 @@ class sportsmanagementModelsmextxmleditor extends JModelAdmin
 				jimport('joomla.filesystem.file');
 
 				//$item->extension_id	= $this->getState('extension.id');
-				$item->filename		= JRequest::getVar('file_name');
+				$item->filename		= JFactory::getApplication()->input->getVar('file_name');
 				$item->source		= JFile::read($filePath);
 			} else {
 				$this->setError(JText::_('COM_TEMPLATES_ERROR_SOURCE_FILE_NOT_FOUND'));

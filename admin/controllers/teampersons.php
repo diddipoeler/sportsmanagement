@@ -86,7 +86,7 @@ $this->registerTask('archive', 'set_season_team_state');
  */
 function set_season_team_state()
 {
-$post = JRequest::get( 'post' );
+$post = JFactory::getApplication()->input->get( 'post' );
 $ids = $this->input->get('cid', array(), 'array');
 $tpids = $this->input->get('tpid', array(), 'array');
 $values = array('publish' => 1, 'unpublish' => 0, 'archive' => 2, 'trash' => -2);
@@ -129,7 +129,7 @@ $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->v
 	 */
     function saveshort()
 	{
-	   $post = JRequest::get( 'post' );
+	   $post = JFactory::getApplication()->input->get( 'post' );
 	   $model = $this->getModel();
        $model->saveshort();
        $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->view_list.'&persontype='.$post['persontype'].'&project_team_id='.$post['project_team_id'].'&team_id='.$post['team_id'].'&pid='.$post['pid']  , false));
@@ -143,7 +143,7 @@ $this->setRedirect(JRoute::_('index.php?option='.$this->option.'&view='.$this->v
   function remove()
 	{
 	$app = JFactory::getApplication();
-    $pks = JRequest::getVar('cid', array(), 'post', 'array');
+    $pks = JFactory::getApplication()->input->getVar('cid', array(), 'post', 'array');
     $model = $this->getModel('teampersons');
     $model->remove($pks);
 	

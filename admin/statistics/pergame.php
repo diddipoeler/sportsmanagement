@@ -168,7 +168,7 @@ class SMStatisticPergame extends SMStatistic
 	{
 		$sids = SMStatistic::getQuotedSids($this->_ids);
 		
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
         

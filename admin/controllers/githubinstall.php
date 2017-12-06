@@ -68,7 +68,7 @@ class sportsmanagementControllergithubinstall extends JControllerForm
   function store()
 	{
         // Check for request forgeries
-		JRequest::checkToken() or die('JINVALID_TOKEN');
+		JFactory::getApplication()->input->checkToken() or die('JINVALID_TOKEN');
 $msg = '';
 
         $this->setRedirect('index.php?option=com_sportsmanagement&view=close&tmpl=component',$msg);

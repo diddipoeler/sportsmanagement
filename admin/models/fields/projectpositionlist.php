@@ -86,7 +86,7 @@ class JFormFieldprojectpositionlist extends JFormFieldList
         // Initialize variables.
 		$options = array();
 //    $vartable = (string) $this->element['targettable'];
-		$select_id = JRequest::getVar('id');
+		$select_id = JFactory::getApplication()->input->getVar('id');
         $db = JFactory::getDbo();
 			$query = $db->getQuery(true);
 			

@@ -305,7 +305,7 @@ class sportsmanagementModelJLXMLExports extends JModelLegacy
 //		$user = JFactory::getUser();
 
 		//$this->_project_id = $app->getUserState($option.'project');
-        //$this->_project_id = JRequest::getInt('p');
+        //$this->_project_id = JFactory::getApplication()->input->getInt('p');
         $this->_project_id = $this->jinput->getVar('pid');
         $this->_update = $this->jinput->getVar('update');
 		//$this->_project_id = $app->getUserState('project');
@@ -322,7 +322,7 @@ class sportsmanagementModelJLXMLExports extends JModelLegacy
 		if(empty($filename)) 
     {
 			//$this->_project_id = $app->getUserState($option.'project');
-            //$this->_project_id = JRequest::getInt('p');
+            //$this->_project_id = JFactory::getApplication()->input->getInt('p');
 			if (empty($this->_project_id) || $this->_project_id == 0)
 			{
 				JError::raiseWarning('ERROR_CODE',JText::_('COM_SPORTSMANAGEMENT_ADMIN_XML_EXPORT_MODEL_SELECT_PROJECT'));

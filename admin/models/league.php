@@ -89,7 +89,7 @@ class sportsmanagementModelleague extends JSMModelAdmin
         $option = $jinput->getCmd('option');
         // Get the input
         $pks = $jinput->getVar('cid', null, 'post', 'array');
-        $post = JRequest::get('post');
+        $post = JFactory::getApplication()->input->get('post');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {

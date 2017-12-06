@@ -79,13 +79,13 @@ class sportsmanagementControllermatch extends JControllerForm
     public function copyfrom()
 	{
 		$app = JFactory::getApplication();
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
         $db = JFactory::getDbo();
 		$msg = '';
-		$post = JRequest::get('post');
+		$post = JFactory::getApplication()->input->get('post');
 		$model = $this->getModel('match');
 		$add_match_count = $post['add_match_count'];
-		$round_id = JRequest::getInt('rid');
+		$round_id = JFactory::getApplication()->input->getInt('rid');
 		$post['project_id'] = $app->getUserState($option.'.pid',0);
 		$post['round_id'] = $round_id;
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
@@ -111,7 +111,7 @@ class sportsmanagementControllermatch extends JControllerForm
 					$post['published'] = 1;
 				}
 
-				$matchNumber = JRequest::getInt('firstMatchNumber',1);
+				$matchNumber = JFactory::getApplication()->input->getInt('firstMatchNumber',1);
 				$roundFound = false;
 				
 				if ($projectRounds = $model->getProjectRoundCodes($post['project_id']))
@@ -223,7 +223,7 @@ class sportsmanagementControllermatch extends JControllerForm
 		}
 		//echo $msg;
 		$link = 'index.php?option=com_sportsmanagement&view=matches';
-		//$link .= '&hidemainmenu='.JRequest::getVar('hidemainmenu',0);
+		//$link .= '&hidemainmenu='.JFactory::getApplication()->input->getVar('hidemainmenu',0);
 		$this->setRedirect($link,$msg);
 	}
     
@@ -234,7 +234,7 @@ class sportsmanagementControllermatch extends JControllerForm
 	 */
 	function insertgooglecalendar()
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         $model = $this->getModel('match');
         $result = $model->insertgooglecalendar();
@@ -284,9 +284,9 @@ class sportsmanagementControllermatch extends JControllerForm
 	 */
     function addmatch()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
-		$post = JRequest::get('post');
+		$post = JFactory::getApplication()->input->get('post');
 		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
 		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
         $post['count_result'] = 1;
@@ -340,11 +340,11 @@ class sportsmanagementControllermatch extends JControllerForm
 		// Initialise variables.
 		$app = JFactory::getApplication();
         $db = sportsmanagementHelper::getDBConnection();
-        $id	= JRequest::getInt('id');
-//        $tmpl = JRequest::getVar('tmpl');
+        $id	= JFactory::getApplication()->input->getInt('id');
+//        $tmpl = JFactory::getApplication()->input->getVar('tmpl');
 		$model = $this->getModel('match');
-        $data = JRequest::getVar('jform', array(), 'post', 'array');
-//        $createTeam = JRequest::getVar('createTeam');
+        $data = JFactory::getApplication()->input->getVar('jform', array(), 'post', 'array');
+//        $createTeam = JFactory::getApplication()->input->getVar('createTeam');
         $return = $model->save($data);   
        
        // Set the redirect based on the task.
@@ -375,7 +375,7 @@ class sportsmanagementControllermatch extends JControllerForm
 	function remove()
 	{
 	$app = JFactory::getApplication();
-    $pks = JRequest::getVar('cid', array(), 'post', 'array');
+    $pks = JFactory::getApplication()->input->getVar('cid', array(), 'post', 'array');
     $model = $this->getModel('match');
     $model->delete($pks);
 	
@@ -391,8 +391,8 @@ class sportsmanagementControllermatch extends JControllerForm
 	 */
 	function picture()
   {
-  //$cid = JRequest::getVar('cid',array(0),'','array');
-	$match_id = JRequest::getInt('id',0);
+  //$cid = JFactory::getApplication()->input->getVar('cid',array(0),'','array');
+	$match_id = JFactory::getApplication()->input->getInt('id',0);
   $dest = JPATH_ROOT.'/images/com_sportsmanagement/database/matchreport/'.$match_id;
   $folder = 'matchreport/'.$match_id;
   //$this->setState('folder', $folder);
@@ -416,10 +416,10 @@ class sportsmanagementControllermatch extends JControllerForm
    */
   function readpressebericht()
     {
-    JRequest::setVar('hidemainmenu',1);
-		JRequest::setVar('layout','readpressebericht');
-		JRequest::setVar('view','match');
-		JRequest::setVar('edit',true);
+    JFactory::getApplication()->input->setVar('hidemainmenu',1);
+		JFactory::getApplication()->input->setVar('layout','readpressebericht');
+		JFactory::getApplication()->input->setVar('view','match');
+		JFactory::getApplication()->input->setVar('edit',true);
 
 		
 		parent::display();    
@@ -435,19 +435,19 @@ class sportsmanagementControllermatch extends JControllerForm
     function savepressebericht()
     {
     	// Check for request forgeries
-		JRequest::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
+		JFactory::getApplication()->input->checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
 		$msg='';
 		JToolbarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
 		$app = JFactory::getApplication();
-		$post=JRequest::get('post');
+		$post=JFactory::getApplication()->input->get('post');
         $model = $this->getModel('match');
 
 		// first step - upload
 		if (isset($post['sent']) && $post['sent']==1)
 		{
-			$upload = JRequest::getVar('import_package',null,'files','array');
-            //$cid = JRequest::getVar('cid',array(0),'','array');
-            $match_id = JRequest::getInt('id',0);
+			$upload = JFactory::getApplication()->input->getVar('import_package',null,'files','array');
+            //$cid = JFactory::getApplication()->input->getVar('cid',array(0),'','array');
+            $match_id = JFactory::getApplication()->input->getInt('id',0);
 			$tempFilePath = $upload['tmp_name'];
 			$app->setUserState('com_sportsmanagement'.'uploadArray',$upload);
 			$filename = '';
@@ -542,10 +542,10 @@ JFolder::create(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'presseberich
    */
   function savecsvpressebericht()
     {
-    JRequest::setVar('hidemainmenu',1);
-	JRequest::setVar('layout','savepressebericht');
-	JRequest::setVar('view','match');
-	JRequest::setVar('edit',true);
+    JFactory::getApplication()->input->setVar('hidemainmenu',1);
+	JFactory::getApplication()->input->setVar('layout','savepressebericht');
+	JFactory::getApplication()->input->setVar('view','match');
+	JFactory::getApplication()->input->setVar('edit',true);
 	
 	parent::display();
     }
@@ -557,10 +557,10 @@ JFolder::create(JPATH_SITE.DS.'media'.DS.'com_sportsmanagement'.DS.'presseberich
      */
     function pressebericht()
     {
-    JRequest::setVar('hidemainmenu',1);
-	JRequest::setVar('layout','pressebericht');
-	JRequest::setVar('view','match');
-	JRequest::setVar('edit',true);
+    JFactory::getApplication()->input->setVar('hidemainmenu',1);
+	JFactory::getApplication()->input->setVar('layout','pressebericht');
+	JFactory::getApplication()->input->setVar('view','match');
+	JFactory::getApplication()->input->setVar('edit',true);
 	
 	parent::display();    
         

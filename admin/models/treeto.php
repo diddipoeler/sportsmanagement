@@ -198,7 +198,7 @@ class sportsmanagementModelTreeto extends JSMModelAdmin
      */
     function setGenerateNode()
 	{
-		//$post	= 			JRequest::get( 'post' );
+		//$post	= 			JFactory::getApplication()->input->get( 'post' );
 		$treeto_id = (int) $this->jsmjinput->post->get('id');
         // Get the form data
         $formData = new JRegistry($this->jsmjinput->get('jform', '', 'array'));

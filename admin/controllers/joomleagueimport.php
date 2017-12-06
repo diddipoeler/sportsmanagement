@@ -66,7 +66,7 @@ class sportsmanagementControllerjoomleagueimport extends JControllerAdmin
 //function newstructur()
 //{
 //    $app = JFactory::getApplication();
-//        $option = JRequest::getCmd('option');
+//        $option = JFactory::getApplication()->input->getCmd('option');
 //        $model	= $this->getModel();
 //        $result = $model->newstructur();
 //        

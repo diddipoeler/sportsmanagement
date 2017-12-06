@@ -61,7 +61,7 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         $model = $this->getModel();
         $uri = JFactory::getURI();
@@ -123,7 +123,7 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
         JToolbarHelper::custom('joomleagueimports.import','new','new',JText::_('JTOOLBAR_DUPLICATE'),false);
         JToolbarHelper::divider();
 //		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//        JToolbarHelper::preferences(JRequest::getCmd('option'));
+//        JToolbarHelper::preferences(JFactory::getApplication()->input->getCmd('option'));
         parent::addToolbar();
     }    
     

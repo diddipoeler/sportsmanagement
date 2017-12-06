@@ -118,7 +118,7 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
 	public function getForm($data = array(), $loadData = true) 
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $cfg_which_media_tool = JComponentHelper::getParams($option)->get('cfg_which_media_tool',0);
         //$app->enqueueMessage(JText::_('sportsmanagementModelagegroup getForm cfg_which_media_tool<br><pre>'.print_r($cfg_which_media_tool,true).'</pre>'),'Notice');
         
@@ -137,8 +137,8 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
 //    function apply($data)
 //    {
 //        $app = JFactory::getApplication();
-//        $option = JRequest::getCmd('option');
-//        $post = JRequest::get('post');
+//        $option = JFactory::getApplication()->input->getCmd('option');
+//        $post = JFactory::getApplication()->input->get('post');
 //        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($post,true).'</pre>'),'Notice');
 //        
 //    }
@@ -146,14 +146,14 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
     function saveshort()
     {
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $query->clear();
         // Get the input
-        $pks = JRequest::getVar('cid', null, 'post', 'array');
-        $post = JRequest::get('post');
+        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $post = JFactory::getApplication()->input->get('post');
         $match_id = $post['match_id'];
         
         $result_tie_break = 0;
@@ -952,8 +952,8 @@ break;
 	{
   $option='com_joomleague';
 	$app	=& JFactory::getApplication();
-	$post=JRequest::get('post');
-  $cid=JRequest::getVar('cid',array(),'post','array');
+	$post=JFactory::getApplication()->input->get('post');
+  $cid=JFactory::getApplication()->input->getVar('cid',array(),'post','array');
 	JArrayHelper::toInteger($cid);
 		
   $sporttype = $app->getUserState( $option . 'sporttype' );
@@ -1015,8 +1015,8 @@ $temp = implode( "\n", $defaultvalues );
 	{
   $option = 'com_joomleague';
 	$app	=& JFactory::getApplication();
-	$post = JRequest::get('post');
-  $cid = JRequest::getVar('cid',array(),'post','array');
+	$post = JFactory::getApplication()->input->get('post');
+  $cid = JFactory::getApplication()->input->getVar('cid',array(),'post','array');
 	JArrayHelper::toInteger($cid);
 		
   $sporttype = $app->getUserState( $option . 'sporttype' );

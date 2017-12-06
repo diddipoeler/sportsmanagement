@@ -84,7 +84,7 @@ function _initData()
 /*
 function getProject()
 {
-  $option = JRequest::getCmd('option');
+  $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication ();
   //echo 'getProject projekt -> '.$app->getUserState( $option . 'project', 0 ).'<br>';
   $result =  $app->getUserState( $option . 'project', 0 );
@@ -115,7 +115,7 @@ return $country;
 	*/
 	function getProjectteams($project_id)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication ();
 
 		//$project_id = $app->getUserState( $option . 'project' );
@@ -161,7 +161,7 @@ echo "Die Zahl $zahl ist gerade";
 
 function getDFBKey($number,$matchdays)
 	{
-	$option = JRequest::getCmd('option');
+	$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication ();
 	$document	= JFactory::getDocument();
   
@@ -222,7 +222,7 @@ $country = $this->_db->loadResult();
 
   function getMatchdays($projectid)
 	{
-	$option = JRequest::getCmd('option');
+	$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication ();
 	
 	$query = 'select *
@@ -245,7 +245,7 @@ $country = $this->_db->loadResult();
 	
 	function getMatches($projectid)
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication ();
     $db = sportsmanagementHelper::getDBConnection();
     
@@ -281,7 +281,7 @@ return $count;
 	
 	function getSchedule( $post, $projectid )
 	{
-	$option = JRequest::getCmd('option');
+	$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication ();
 
 /*	
@@ -377,8 +377,8 @@ $result = array_merge($result);
 }
 
 $this->savedfb = $result ;
-//  JRequest::setVar( 'savedfb', $result,'post' );
-//    JRequest::set( $result,'post' );
+//  JFactory::getApplication()->input->setVar( 'savedfb', $result,'post' );
+//    JFactory::getApplication()->input->set( $result,'post' );
 	return $result;
 	}
 	
@@ -387,7 +387,7 @@ $this->savedfb = $result ;
 	function checkTable()
   {
   $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
     require_once( JPATH_ADMINISTRATOR.'/components/'.$option.'/'. 'helpers' . DS . 'jinstallationhelper.php' );    
     $db = sportsmanagementHelper::getDBConnection();
     $db_table = JPATH_ADMINISTRATOR.'/components/'.$option.'/sql/dfbkeys.sql';

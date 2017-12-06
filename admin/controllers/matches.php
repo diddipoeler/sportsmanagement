@@ -95,11 +95,11 @@ class sportsmanagementControllermatches extends JControllerAdmin
     function removeEvent()
     {
         // Check for request forgeries
-        //JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
+        //JFactory::getApplication()->input->checkToken('get') or jexit('JINVALID_TOKEN');
 		//JSession::checkToken() or die('JINVALID_TOKEN');
-        //JRequest::checkToken() or jexit('JINVALID_TOKEN');
+        //JFactory::getApplication()->input->checkToken() or jexit('JINVALID_TOKEN');
 
-		$event_id=JRequest::getInt('event_id');
+		$event_id=JFactory::getApplication()->input->getInt('event_id');
 		$model=$this->getModel();
 		if (!$result=$model->deleteevent($event_id))
 		{
@@ -126,15 +126,15 @@ class sportsmanagementControllermatches extends JControllerAdmin
         //$result = $response;
         
         // Check for request forgeries
-        //JRequest::checkToken('post') or jexit('JINVALID_TOKEN');
-        //JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
+        //JFactory::getApplication()->input->checkToken('post') or jexit('JINVALID_TOKEN');
+        //JFactory::getApplication()->input->checkToken('get') or jexit('JINVALID_TOKEN');
         
-        //JRequest::checkToken('request') or jexit('JINVALID_TOKEN');
+        //JFactory::getApplication()->input->checkToken('request') or jexit('JINVALID_TOKEN');
 		//JSession::checkToken() or die('JINVALID_TOKEN');
-        //JRequest::checkToken() or jexit('JINVALID_TOKEN');
+        //JFactory::getApplication()->input->checkToken() or jexit('JINVALID_TOKEN');
         
         // Check for request forgeries
-        //JRequest::checkToken( 'get' ) or jexit( 'JINVALID_TOKEN' );
+        //JFactory::getApplication()->input->checkToken( 'get' ) or jexit( 'JINVALID_TOKEN' );
         
  //       if (!JSession::checkToken('post')) 
 //        {
@@ -147,7 +147,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
         //if (JSession::checkToken('post')) 
         //{
         
-        $event_id = JRequest::getInt('event_id');
+        $event_id = JFactory::getApplication()->input->getInt('event_id');
 		$model = $this->getModel();
 		if (!$result = $model->deletecommentary($event_id))
 		{
@@ -176,10 +176,10 @@ class sportsmanagementControllermatches extends JControllerAdmin
     function removeSubst()
 	{
 		//JSession::checkToken() or die('JINVALID_TOKEN');
-        //JRequest::checkToken() or jexit('JINVALID_TOKEN');
-        //JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
+        //JFactory::getApplication()->input->checkToken() or jexit('JINVALID_TOKEN');
+        //JFactory::getApplication()->input->checkToken('get') or jexit('JINVALID_TOKEN');
         
-		$substid = JRequest::getInt('substid',0);
+		$substid = JFactory::getApplication()->input->getInt('substid',0);
 		$model = $this->getModel();
 		if (!$result = $model->removeSubstitution($substid))
 		{
@@ -200,26 +200,26 @@ class sportsmanagementControllermatches extends JControllerAdmin
      */
     function saveevent()
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 
 		// Check for request forgeries
 		//JSession::checkToken() or die('JINVALID_TOKEN');
-        //JRequest::checkToken() or jexit('JINVALID_TOKEN');
-        //JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
+        //JFactory::getApplication()->input->checkToken() or jexit('JINVALID_TOKEN');
+        //JFactory::getApplication()->input->checkToken('get') or jexit('JINVALID_TOKEN');
 
 		//$app = JFactory::getApplication();
 		$data = array();
-		$data['teamplayer_id']	= JRequest::getInt('teamplayer_id');
-		$data['projectteam_id']	= JRequest::getInt('projectteam_id');
-		$data['event_type_id']	= JRequest::getInt('event_type_id');
-		$data['event_time']		= JRequest::getVar('event_time','');
-		$data['match_id']		= JRequest::getInt('matchid');
-		$data['event_sum']		= JRequest::getVar('event_sum', '');
-		$data['notice']			= JRequest::getVar('notice', '');
-		$data['notes']			= JRequest::getVar('notes', '');
+		$data['teamplayer_id']	= JFactory::getApplication()->input->getInt('teamplayer_id');
+		$data['projectteam_id']	= JFactory::getApplication()->input->getInt('projectteam_id');
+		$data['event_type_id']	= JFactory::getApplication()->input->getInt('event_type_id');
+		$data['event_time']		= JFactory::getApplication()->input->getVar('event_time','');
+		$data['match_id']		= JFactory::getApplication()->input->getInt('matchid');
+		$data['event_sum']		= JFactory::getApplication()->input->getVar('event_sum', '');
+		$data['notice']			= JFactory::getApplication()->input->getVar('notice', '');
+		$data['notes']			= JFactory::getApplication()->input->getVar('notes', '');
         
         // diddipoeler
-        $data['projecttime']			= JRequest::getVar('projecttime','');
+        $data['projecttime']			= JFactory::getApplication()->input->getVar('projecttime','');
         
         $model = $this->getModel();
 		//$project_id = $app->getUserState( "$option.pid", '0' );;
@@ -240,9 +240,9 @@ class sportsmanagementControllermatches extends JControllerAdmin
      */
     function savecomment()
     {
-        //$option = JRequest::getCmd('option');
-        //JRequest::checkToken() or jexit('JINVALID_TOKEN');
-        //JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
+        //$option = JFactory::getApplication()->input->getCmd('option');
+        //JFactory::getApplication()->input->checkToken() or jexit('JINVALID_TOKEN');
+        //JFactory::getApplication()->input->checkToken('get') or jexit('JINVALID_TOKEN');
         //$app = JFactory::getApplication();
         
         //$response = self::getAjaxResponse();
@@ -250,18 +250,18 @@ class sportsmanagementControllermatches extends JControllerAdmin
 
 		// Check for request forgeries
 		//JSession::checkToken() or die('JINVALID_TOKEN');
-        //JRequest::checkToken() or jexit('JINVALID_TOKEN');
-        //JRequest::checkToken() or $result = '0&'.JText::_('JINVALID_TOKEN');
+        //JFactory::getApplication()->input->checkToken() or jexit('JINVALID_TOKEN');
+        //JFactory::getApplication()->input->checkToken() or $result = '0&'.JText::_('JINVALID_TOKEN');
 
 		
 		$data = array();
-		$data['event_time']		= JRequest::getVar('event_time','');
-		$data['match_id']		= JRequest::getInt('matchid');
-		$data['type']		= JRequest::getVar('type', '');
-		$data['notes']			= JRequest::getVar('notes', '');
+		$data['event_time']		= JFactory::getApplication()->input->getVar('event_time','');
+		$data['match_id']		= JFactory::getApplication()->input->getInt('matchid');
+		$data['type']		= JFactory::getApplication()->input->getVar('type', '');
+		$data['notes']			= JFactory::getApplication()->input->getVar('notes', '');
         
         // diddipoeler
-        $data['projecttime']			= JRequest::getVar('projecttime','');
+        $data['projecttime']			= JFactory::getApplication()->input->getVar('projecttime','');
         
         $model = $this->getModel();
 		//$project_id = $app->getUserState( "$option.pid", '0' );;
@@ -286,18 +286,18 @@ class sportsmanagementControllermatches extends JControllerAdmin
 	{
 		// Check for request forgeries
 		//JSession::checkToken() or die('JINVALID_TOKEN');
-        //JRequest::checkToken() or jexit('JINVALID_TOKEN');
-        //JRequest::checkToken('get') or jexit('JINVALID_TOKEN');
+        //JFactory::getApplication()->input->checkToken() or jexit('JINVALID_TOKEN');
+        //JFactory::getApplication()->input->checkToken('get') or jexit('JINVALID_TOKEN');
         
 		$data = array();
-		$data['in'] 					= JRequest::getInt('in');
-		$data['out'] 					= JRequest::getInt('out');
-		$data['matchid'] 				= JRequest::getInt('matchid');
-		$data['in_out_time'] 			= JRequest::getVar('in_out_time','');
-		$data['project_position_id'] 	= JRequest::getInt('project_position_id');
+		$data['in'] 					= JFactory::getApplication()->input->getInt('in');
+		$data['out'] 					= JFactory::getApplication()->input->getInt('out');
+		$data['matchid'] 				= JFactory::getApplication()->input->getInt('matchid');
+		$data['in_out_time'] 			= JFactory::getApplication()->input->getVar('in_out_time','');
+		$data['project_position_id'] 	= JFactory::getApplication()->input->getInt('project_position_id');
         
         // diddipoeler
-        $data['projecttime']			= JRequest::getVar('projecttime','');
+        $data['projecttime']			= JFactory::getApplication()->input->getVar('projecttime','');
 		
         $model = $this->getModel();
 		if (!$result = $model->savesubstitution($data)){
@@ -318,8 +318,8 @@ class sportsmanagementControllermatches extends JControllerAdmin
      */
     function savestats()
     {
-        $option = JRequest::getCmd('option');
-        $post = JRequest::get('post');
+        $option = JFactory::getApplication()->input->getCmd('option');
+        $post = JFactory::getApplication()->input->get('post');
         $model = $this->getModel();
         if ($model->savestats($post))
 		{
@@ -330,13 +330,13 @@ class sportsmanagementControllermatches extends JControllerAdmin
 			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_UPDATE_STATS');
 		}
         
-        if ( JRequest::getString('close', 0) == 1 )
+        if ( JFactory::getApplication()->input->getString('close', 0) == 1 )
         {
             $link = 'index.php?option='.$option.'&view=close&tmpl=component';
         }
         else
         {
-            $link = 'index.php?option='.$option.'&close='.JRequest::getString('close', 0).'&tmpl=component&view=match&layout=editstats&id='.$post['id'].'&team='.$post['team'];
+            $link = 'index.php?option='.$option.'&close='.JFactory::getApplication()->input->getString('close', 0).'&tmpl=component&view=match&layout=editstats&id='.$post['id'].'&team='.$post['team'];
         }
         
 		//echo $link.'<br />';
@@ -352,8 +352,8 @@ class sportsmanagementControllermatches extends JControllerAdmin
      */
     function saveroster()
     {
-        $option = JRequest::getCmd('option');
-        $post = JRequest::get('post');
+        $option = JFactory::getApplication()->input->getCmd('option');
+        $post = JFactory::getApplication()->input->get('post');
         $model = $this->getModel();
         
         $positions = $model->getProjectPositionsOptions(0, 1,$post['project_id']);
@@ -390,13 +390,13 @@ class sportsmanagementControllermatches extends JControllerAdmin
 //			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_ERROR_SAVE_MR_PLAYER_TRIKOT').'<br />';
 //		}
         
-        if ( JRequest::getString('close', 0) == 1 )
+        if ( JFactory::getApplication()->input->getString('close', 0) == 1 )
         {
             $link = 'index.php?option='.$option.'&view=close&tmpl=component';
         }
         else
         {
-            $link = 'index.php?option='.$option.'&close='.JRequest::getString('close', 0).'&tmpl=component&view=match&layout=editlineup&id='.$post['id'].'&team='.$post['team'];
+            $link = 'index.php?option='.$option.'&close='.JFactory::getApplication()->input->getString('close', 0).'&tmpl=component&view=match&layout=editlineup&id='.$post['id'].'&team='.$post['team'];
         }
         
 		//echo $link.'<br />';
@@ -411,8 +411,8 @@ class sportsmanagementControllermatches extends JControllerAdmin
      */
     function saveReferees()
     {
-        $option = JRequest::getCmd('option');
-        $post = JRequest::get('post');
+        $option = JFactory::getApplication()->input->getCmd('option');
+        $post = JFactory::getApplication()->input->get('post');
         $model = $this->getModel();
         $positions = $model->getProjectPositionsOptions(0, 3,$post['project_id']);
         $post['positions'] = $positions;
@@ -426,16 +426,16 @@ class sportsmanagementControllermatches extends JControllerAdmin
 			$msg = JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_CTRL_SAVED_MR_REFEREES_ERROR').'<br />';
 		}
         
-        //$link = 'index.php?option='.$option.'&close='.JRequest::getString('close', 0).'&tmpl=component&view=match&layout=editreferees&id='.$post['id'];
+        //$link = 'index.php?option='.$option.'&close='.JFactory::getApplication()->input->getString('close', 0).'&tmpl=component&view=match&layout=editreferees&id='.$post['id'];
 
         
-        if ( JRequest::getString('close', 0) == 1 )
+        if ( JFactory::getApplication()->input->getString('close', 0) == 1 )
         {
             $link = 'index.php?option='.$option.'&view=close&tmpl=component';
         }
         else
         {
-            $link = 'index.php?option='.$option.'&close='.JRequest::getString('close', 0).'&tmpl=component&view=match&layout=editreferees&id='.$post['id'];
+            $link = 'index.php?option='.$option.'&close='.JFactory::getApplication()->input->getString('close', 0).'&tmpl=component&view=match&layout=editreferees&id='.$post['id'];
         }
 
         

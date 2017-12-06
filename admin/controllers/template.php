@@ -64,7 +64,7 @@ class sportsmanagementControllertemplate extends JControllerForm
 function __construct()
 	{
 		$app	= JFactory::getApplication();
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		parent::__construct();
 
 	
@@ -79,9 +79,9 @@ function __construct()
  */
 function remove()
 	{
-		$cid = JRequest::getVar('cid',array(0),'post','array');
+		$cid = JFactory::getApplication()->input->getVar('cid',array(0),'post','array');
 		JArrayHelper::toInteger($cid);
-		$isMaster = JRequest::getVar('isMaster',array(),'post','array');
+		$isMaster = JFactory::getApplication()->input->getVar('isMaster',array(),'post','array');
 		JArrayHelper::toInteger($isMaster);
 		if (count($cid) < 1){
 			JError::raiseError(500,JText::_('COM_SPORTSMANAGEMENT_GLOBAL_SELECT_TO_DELETE'));
@@ -100,7 +100,7 @@ function remove()
 			echo "<script> alert('".$model->getError(true)."'); window.history.go(-1); </script>\n";
 		}
 		$msg = JText::_("COM_SPORTSMANAGEMENT_ADMIN_TEMPLATES_RESET_SUCCESS");
-		$this->setRedirect('index.php?option=com_sportsmanagement&view=templates&pid='.JRequest::getInt( "pid", 0 ), $msg);
+		$this->setRedirect('index.php?option=com_sportsmanagement&view=templates&pid='.JFactory::getApplication()->input->getInt( "pid", 0 ), $msg);
 	}
 	
 	/**
@@ -110,8 +110,8 @@ function remove()
 	 */
 	function masterimport()
 {
-$templateid = JRequest::getVar('templateid',0,'post','int');
-$projectid = JRequest::getVar('pid',0,'post','int');
+$templateid = JFactory::getApplication()->input->getVar('templateid',0,'post','int');
+$projectid = JFactory::getApplication()->input->getVar('pid',0,'post','int');
 $model = $this->getModel('template');
 if ( $templateid )
 {

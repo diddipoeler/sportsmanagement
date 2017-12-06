@@ -482,7 +482,7 @@ $stats = $db->loadObjectList();
 		$sids = SMStatistic::getSids($this->_ids);
 		$sqids = SMStatistic::getQuotedSids($this->_ids);
 		$factors  = self::getFactors();
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
 		
@@ -529,7 +529,7 @@ $stats = $db->loadObjectList();
 		$sids = SMStatistic::getSids($this->_ids);
 		$sqids = SMStatistic::getQuotedSids($this->_ids);
 		$factors  = self::getFactors();
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
 		$db = sportsmanagementHelper::getDBConnection();
 		

@@ -178,7 +178,7 @@ $document->addScriptDeclaration( $javascript );
         $uri = JFactory::getURI();
         
         $inputappend = '';
-        $which_table = JRequest::getVar('filter_which_table','');
+        $which_table = JFactory::getApplication()->input->getVar('filter_which_table','');
         
         $this->joomleague	= $model->getImportPositions('joomleague', $which_table);
         $this->sportsmanagement	= $model->getImportPositions('sportsmanagement');
@@ -229,7 +229,7 @@ $document->addScriptDeclaration( $javascript );
 //        JToolbarHelper::custom('joomleagueimports.import','upload','upload',JText::_('JTOOLBAR_UPLOAD'),false);
 //        JToolbarHelper::divider();
 //		sportsmanagementHelper::ToolbarButtonOnlineHelp();
-//        JToolbarHelper::preferences(JRequest::getCmd('option'));
+//        JToolbarHelper::preferences(JFactory::getApplication()->input->getCmd('option'));
 //        
 //    }    
     

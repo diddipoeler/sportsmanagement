@@ -91,7 +91,7 @@ class sportsmanagementModelTemplates extends JModelList
 	protected function populateState($ordering = null, $direction = null)
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // Initialise variables.
 		$app = JFactory::getApplication('administrator');
         
@@ -126,7 +126,7 @@ class sportsmanagementModelTemplates extends JModelList
 	protected function getListQuery()
 	{
 		$app	= JFactory::getApplication();
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
         //$search	= $this->getState('filter.search');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
@@ -175,13 +175,13 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
 	function checklist($project_id)
 	{
 	   $app	= JFactory::getApplication();
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
         $starttime = microtime(); 
         
-//        $this->_project_id = JRequest::getVar('pid');
+//        $this->_project_id = JFactory::getApplication()->input->getVar('pid');
 //        if ( !$this->_project_id )
 //        {
 //        $this->_project_id = $app->getUserState( "$option.pid", '0' );
@@ -434,7 +434,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 	function getMasterTemplatesList()
 	{
 		$app	= JFactory::getApplication();
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
@@ -529,7 +529,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
 	function getMasterName()
 	{
 	   $app	= JFactory::getApplication();
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);

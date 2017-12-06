@@ -372,7 +372,7 @@ try{
 	 */
 	function getStaffStats($person_id, $team_id, $project_id)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
 	$db = sportsmanagementHelper::getDBConnection();
 		$select = 'SUM(ms.value) AS value ';
@@ -407,7 +407,7 @@ try{
 	 */
 	function getHistoryStaffStats($person_id)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
         $db = sportsmanagementHelper::getDBConnection();
 		

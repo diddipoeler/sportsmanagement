@@ -454,7 +454,7 @@ $jinput->set('filter_sports_type', $sports_type_id);
 $db = JFactory::getDbo(); 
 $query = $db->getQuery(true);
 
-//$post = JRequest::get('post');
+//$post = JFactory::getApplication()->input->get('post');
 $exportfields1 = array();
 $exportfields2 = array();           
 $table_copy = array();        

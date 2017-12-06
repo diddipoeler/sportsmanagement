@@ -84,7 +84,7 @@ function display()
 $document	=& JFactory::getDocument();
 		$app	=& JFactory::getApplication();
     $model = $this->getModel('jlextdfbkeyimport');
-    $post = JRequest::get( 'post' );
+    $post = JFactory::getApplication()->input->get( 'post' );
     
     /*
     echo '<pre>';
@@ -112,10 +112,10 @@ $document	=& JFactory::getDocument();
     
     case 'apply'	 :
 			{
-				//JRequest::setVar( 'hidemainmenu', 1 );
-				JRequest::setVar( 'layout', 'default_savematchdays' );
-				JRequest::setVar( 'view', 'jlextdfbkeyimport' );
-				//JRequest::setVar( 'edit', false );
+				//JFactory::getApplication()->input->setVar( 'hidemainmenu', 1 );
+				JFactory::getApplication()->input->setVar( 'layout', 'default_savematchdays' );
+				JFactory::getApplication()->input->setVar( 'view', 'jlextdfbkeyimport' );
+				//JFactory::getApplication()->input->setVar( 'edit', false );
 				
 				/*
  				$model = $this->getModel ( 'round' );
@@ -148,9 +148,9 @@ $document	=& JFactory::getDocument();
    */
   function save()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication ();
-        $post = JRequest::get( 'post' );
+        $post = JFactory::getApplication()->input->get( 'post' );
 
     /*
     echo '<pre>';
@@ -216,7 +216,7 @@ $document	=& JFactory::getDocument();
     print_r($model);
     echo '</pre>';
     */
-    //JRequest::setVar( 'layout', 'default_savematchdays' );
+    //JFactory::getApplication()->input->setVar( 'layout', 'default_savematchdays' );
     $msg = JText::_( 'COM_SPORTSMANAGEMENT_ADMIN_DFBKEYS_INFO_2' );
     $link = 'index.php?option='.$option.'&view=jlextdfbkeyimport&layout=default_firstmatchday';
 		$this->setRedirect( $link, $msg );
@@ -230,9 +230,9 @@ $document	=& JFactory::getDocument();
    */
   function insert()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication ();
-        $post = JRequest::get( 'post' );
+        $post = JFactory::getApplication()->input->get( 'post' );
       
     /*    
     echo '<pre>';
