@@ -722,7 +722,7 @@ if ( JError::isError($db) ) {
         {
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' database<br><pre> kein verbindungsfehler</pre>'),'');   
         }
-
+/*
 		if ($db->getErrorNum() > 0) {
 			JError::raiseError(500 , 'JDatabase::getInstance: Could not connect to database <br />' . 'joomla.library:'.$db->getErrorNum().' - '.$db->getErrorMsg() );
 		}
@@ -730,7 +730,7 @@ if ( JError::isError($db) ) {
         {
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' database<br><pre> verbindung hergestellt</pre>'),'');   
         }
-
+*/
 		$db->debug( $debug );
 return $db;
 }
