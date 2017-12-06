@@ -345,8 +345,8 @@ $result = $db->execute();
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
         
-        self::$projectid = $this->jinput->getInt( "p", 0 );
-		self::$clubid = $this->jinput->getInt( "cid", 0 );
+        self::$projectid = $jinput->getInt( "p", 0 );
+		self::$clubid = $jinput->getInt( "cid", 0 );
         
         self::updateHits(self::$clubid,$inserthits); 
         
