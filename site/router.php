@@ -819,7 +819,7 @@ $app = JFactory::getApplication();
         case 'event':
             $vars['gcid'] = $segments[1];
             if (count($segments) < 3) {
-                $vars['eventID'] = JRequest::getVar('eventId');
+                $vars['eventID'] = JFactory::getApplication()->input->getVar('eventId');
             } else {
                 $vars['eventID'] = $segments[2];
             }
