@@ -1,9 +1,9 @@
 <?php 
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie kÃ¶nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spÃ¤teren
+* verÃ¶ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nÃ¼tzlich sein wird, aber
+* OHNE JEDE GEWÃ„HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* GewÃ¤hrleistung der MARKTFÃ„HIGKEIT oder EIGNUNG FÃœR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fÃ¼r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -113,7 +113,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 	 */
 	public static function getDivision()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 	   $app = JFactory::getApplication();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -158,7 +158,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 	 */
 	public static function getProjectTeamId()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 	   $app = JFactory::getApplication();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -214,7 +214,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 	public static function getMatchesPerRound($config,$rounds)
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$rm=array();
 
 		$ordering='DESC';
@@ -239,7 +239,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 	public static function getMatches($config)
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         
 		$ordering = 'DESC';
 		if ($config['plan_order'])
@@ -267,7 +267,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 	public static function getMatchesRefering($config)
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$ordering = 'DESC';
 		if ($config['plan_order'])
 		{
@@ -289,7 +289,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 	public static function _getResultsPlan($team=0,$ordering='ASC',$referee=0,$getplayground=0,$getreferee=0)
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -454,7 +454,7 @@ if (!$matches && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	public static function _getResultsRows($roundcode=0,$teamId=0,$ordering='ASC',$unpublished=0,$getplayground=0,$getreferee=0)
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
@@ -543,7 +543,7 @@ if (!$matches && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	 */
 	function _getRefereesByMatch($matches,$projekt)
 	{
-	   	$option = JRequest::getCmd('option');
+	   	$option = JFactory::getApplication()->input->getCmd('option');
 	   $app = JFactory::getApplication();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -618,7 +618,7 @@ if (!$matches && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	 */
 	function getEventTypes($match_id)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 	   $app = JFactory::getApplication();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
