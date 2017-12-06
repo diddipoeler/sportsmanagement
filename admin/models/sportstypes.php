@@ -198,7 +198,7 @@ class sportsmanagementModelSportsTypes extends JSMModelList
         $this->jsmquery->where('st.id = '.$sporttypeid);
 
 		$this->jsmdb->setQuery($this->jsmquery);
-		if (!$this->jsmdb->query())
+		if (!$this->jsmdb->execute())
 		{
 			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
@@ -221,7 +221,7 @@ class sportsmanagementModelSportsTypes extends JSMModelList
         $this->jsmquery->from('#__sportsmanagement_playground AS p ');
 
 		$this->jsmdb->setQuery($this->jsmquery);
-		if (!$this->jsmdb->query())
+		if (!$this->jsmdb->execute())
 		{
 			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
@@ -243,7 +243,7 @@ class sportsmanagementModelSportsTypes extends JSMModelList
         $this->jsmquery->from('#__sportsmanagement_league AS l');
 
 		$this->jsmdb->setQuery($this->jsmquery);
-		if (!$this->jsmdb->query())
+		if (!$this->jsmdb->execute())
 		{
 			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
@@ -265,7 +265,7 @@ class sportsmanagementModelSportsTypes extends JSMModelList
         $this->jsmquery->from('#__sportsmanagement_person AS c');
 
 		$this->jsmdb->setQuery($this->jsmquery);
-		if (!$this->jsmdb->query())
+		if (!$this->jsmdb->execute())
 		{
 			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
@@ -290,7 +290,7 @@ class sportsmanagementModelSportsTypes extends JSMModelList
         $this->jsmquery->from('#__sportsmanagement_club AS c');
 
 		$this->jsmdb->setQuery($this->jsmquery);
-		if (!$this->jsmdb->query())
+		if (!$this->jsmdb->execute())
 		{
 			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
@@ -317,7 +317,7 @@ class sportsmanagementModelSportsTypes extends JSMModelList
         $this->jsmquery->where('st.id = '.$sporttypeid);
 
 		$this->jsmdb->setQuery($this->jsmquery);
-		if (!$this->jsmdb->query())
+		if (!$this->jsmdb->execute())
 		{
 			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
@@ -341,7 +341,7 @@ class sportsmanagementModelSportsTypes extends JSMModelList
         $this->jsmquery->from('#__sportsmanagement_season AS s ');
 
 		$this->jsmdb->setQuery($this->jsmquery);
-		if (!$this->jsmdb->query())
+		if (!$this->jsmdb->execute())
 		{
 			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
@@ -368,7 +368,7 @@ class sportsmanagementModelSportsTypes extends JSMModelList
         $this->jsmquery->where('st.id = '.$sporttypeid);
 
 		$this->jsmdb->setQuery($this->jsmquery);
-		if (!$this->jsmdb->query())
+		if (!$this->jsmdb->execute())
 		{
 			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
@@ -395,7 +395,7 @@ class sportsmanagementModelSportsTypes extends JSMModelList
         $this->jsmquery->where('st.id = '.$sporttypeid);
 
 		$this->jsmdb->setQuery($this->jsmquery);
-		if (!$this->jsmdb->query())
+		if (!$this->jsmdb->execute())
 		{
 			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
@@ -425,7 +425,7 @@ class sportsmanagementModelSportsTypes extends JSMModelList
         $this->jsmquery->where('st.id = '.$sporttypeid);
 		
 		$this->jsmdb->setQuery($this->jsmquery);
-		if (!$this->jsmdb->query())
+		if (!$this->jsmdb->execute())
 		{
 			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
@@ -452,7 +452,7 @@ class sportsmanagementModelSportsTypes extends JSMModelList
         $this->jsmquery->where('st.id = '.$sporttypeid);
 	
 	$this->jsmdb->setQuery($this->jsmquery);
-	if (!$this->jsmdb->query())
+	if (!$this->jsmdb->execute())
 	{
 	$this->setError($this->jsmdb->getErrorMsg());
 	return false;
@@ -479,7 +479,7 @@ class sportsmanagementModelSportsTypes extends JSMModelList
         $this->jsmquery->where('st.id = '.$sporttypeid);
 		
 		$this->jsmdb->setQuery($this->jsmquery);
-		if (!$this->jsmdb->query())
+		if (!$this->jsmdb->execute())
 		{
 			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
@@ -507,7 +507,7 @@ class sportsmanagementModelSportsTypes extends JSMModelList
         $this->jsmquery->where('st.id = '.$sporttypeid);
 		
 		$this->jsmdb->setQuery($this->jsmquery);
-		if (!$this->jsmdb->query())
+		if (!$this->jsmdb->execute())
 		{
 			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
@@ -567,7 +567,7 @@ class sportsmanagementModelSportsTypes extends JSMModelList
         $this->jsmquery->where('st.id = '.$sporttypeid);
 		
 		$this->jsmdb->setQuery($this->jsmquery);
-		if (!$this->jsmdb->query())
+		if (!$this->jsmdb->execute())
 		{
 			$this->setError($this->jsmdb->getErrorMsg());
 			return false;
@@ -596,7 +596,7 @@ class sportsmanagementModelSportsTypes extends JSMModelList
         $this->jsmquery->where('st.id = '.$sporttypeid);
 		
 		$this->jsmdb->setQuery($this->jsmquery);
-		if (!$this->jsmdb->query())
+		if (!$this->jsmdb->execute())
 		{
 			$this->setError($this->jsmdb->getErrorMsg());
 			return false;

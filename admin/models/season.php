@@ -116,7 +116,7 @@ class sportsmanagementModelseason extends JSMModelAdmin
         // Set the query using our newly populated query object and execute it.
         $db->setQuery($query);
 
-		if (!$db->query())
+		if (!$db->execute())
 		{
 		  $app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
 		} 
@@ -136,7 +136,7 @@ class sportsmanagementModelseason extends JSMModelAdmin
         // Set the query using our newly populated query object and execute it.
         $db->setQuery($query);
 
-		if (!$db->query())
+		if (!$db->execute())
 		{
 		  $app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
 		}
@@ -185,7 +185,7 @@ class sportsmanagementModelseason extends JSMModelAdmin
         // Set the query using our newly populated query object and execute it.
         $db->setQuery($query);
 
-		if (!$db->query())
+		if (!$db->execute())
 		{
 		  $app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
 		}  

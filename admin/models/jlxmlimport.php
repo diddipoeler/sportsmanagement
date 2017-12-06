@@ -4132,7 +4132,7 @@ $t_params = json_encode( $ini );
             $query->where('project_id = ' . $this->_project_id );
         $query->where('position_id = ' . $this->_convertPositionID[$oldPositionID] );
         $db->setQuery($query);
-		$db->query();
+		$db->execute();
         $p_projectposition->id = $db->loadResult();
         
         if ( $p_projectposition->id )
@@ -6669,7 +6669,7 @@ $mdl->setNewPicturePath();
             // Set the query using our newly populated query object and execute it.
             $db->setQuery($insertquery);
             
-			if (!$db->query())
+			if (!$db->execute())
 			{
 			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__); 
 			}
@@ -6854,7 +6854,7 @@ $mdl->setNewPicturePath();
         $query->where('project_position_id = ' . $team_member->project_position_id );
         $query->where('persontype IN (0,1)');
         $db->setQuery($query);
-		$db->query();
+		$db->execute();
         $result_ppp = $db->loadResult();
         
                 if ( $result_ppp )
@@ -7079,7 +7079,7 @@ $mdl->setNewPicturePath();
         $query->where('project_position_id = ' . $team_member->project_position_id );
         $query->where('persontype IN (0,2)');
         $db->setQuery($query);
-		$db->query();
+		$db->execute();
         $result_ppp = $db->loadResult();
         
                 if ( $result_ppp )

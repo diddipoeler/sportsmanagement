@@ -341,7 +341,7 @@ $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($quer
 							"SET project_position_id = " . $newid .
 							" WHERE project_position_id = " . $result['id'];
 				$this->_db->setQuery($query);
-				if(!$this->_db->query())
+				if(!$this->_db->execute())
 				{
 					$this->setError($this->_db->getErrorMsg());
 					$result=false;

@@ -577,10 +577,10 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
                 $query->clear();
                 $query->delete()->from('#__sportsmanagement_match_event')->where('match_id = '.$match_id.' AND teamplayer_id = '.$teamplayer1_id.' AND event_type_id = '.$event_id  );
                 $db->setQuery($query);
-                $resultdel = $db->query();
+                $resultdel = $db->execute();
                 if(!$resultdel) 
                 {
-                $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
+                //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
     		     }
     
     
@@ -732,7 +732,7 @@ $temp = implode( "\n", $defaultvalues );
 
 $query="UPDATE #__joomleague_match_single SET `extended`='".$temp."' WHERE id=".$cid;
 $this->_db->setQuery($query);
-if (!$this->_db->query())
+if (!$this->_db->execute())
 		{
 $app->enqueueMessage(JText::_('save_array - defaultconfig: '.print_r($this->_db->getErrorMsg(),true) ),'Error');			
 		}
@@ -817,7 +817,7 @@ $temp = implode( "\n", $defaultvalues );
 
 $query="UPDATE #__joomleague_match_single SET `extended`='".$temp."' WHERE id=".$cid;
 $this->_db->setQuery($query);
-if (!$this->_db->query())
+if (!$this->_db->execute())
 		{
 $app->enqueueMessage(JText::_('save_array - defaultconfig: '.print_r($this->_db->getErrorMsg(),true) ),'Error');			
 		}

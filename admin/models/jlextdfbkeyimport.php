@@ -137,7 +137,7 @@ return $country;
 		}
 		else
 		{
-		$this->_db->query();
+		$this->_db->execute();
 		$number = $this->_db->getNumRows();	
 		
 		if ( $number > 0 )

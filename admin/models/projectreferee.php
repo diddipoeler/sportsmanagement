@@ -110,8 +110,8 @@ class sportsmanagementModelprojectreferee extends JSMModelAdmin
             ON mre.project_referee_id = m.id
             WHERE m.id IN ('.$cids.')';
             $db->setQuery($query);
-            $db->query();
-            if (!$db->query()) 
+            $db->execute();
+            if (!$db->execute()) 
             {
                 $app->enqueueMessage(JText::_('delete getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
                 return false; 

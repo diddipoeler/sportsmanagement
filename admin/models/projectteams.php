@@ -357,7 +357,7 @@ $result_project_team = JFactory::getDbo()->insertObject('#__sportsmanagement_pro
 						FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_team
 						WHERE project_id = '" . $data['id'] . "'";
 			$db->setQuery( $query );
-			if ( !$db->query() )
+			if ( !$db->execute() )
 			{
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 				$result = false;
@@ -371,7 +371,7 @@ $result_project_team = JFactory::getDbo()->insertObject('#__sportsmanagement_pro
 						FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_team
 						WHERE project_id = '" . $data['id'] . "' AND team_id NOT IN  (" . $peids . ")";
 			$db->setQuery( $query );
-			if ( !$db->query() )
+			if ( !$db->execute() )
 			{
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 				$result = false;
@@ -383,7 +383,7 @@ $result_project_team = JFactory::getDbo()->insertObject('#__sportsmanagement_pro
 												where project_id = '" . $data['id'] . "' 
 												AND team_id NOT IN  (" . $peids . "))";
 			$db->setQuery( $query );
-			if ( !$db->query() )
+			if ( !$db->execute() )
 			{
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 				$result = false;
@@ -394,7 +394,7 @@ $result_project_team = JFactory::getDbo()->insertObject('#__sportsmanagement_pro
 												where project_id = '" . $data['id'] . "' 
 												AND team_id NOT IN  (" . $peids . "))";
 			$db->setQuery( $query );
-			if ( !$db->query() )
+			if ( !$db->execute() )
 			{
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 				$result = false;
@@ -410,7 +410,7 @@ $result_project_team = JFactory::getDbo()->insertObject('#__sportsmanagement_pro
 						VALUES ( '" . $data['id'] . "', '".$data['project_teamslist'][$x] . "')";
 
 			$db->setQuery( $query );
-			if ( !$db->query() )
+			if ( !$db->execute() )
 			{
 			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 				$result = false;
@@ -984,7 +984,7 @@ $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_CHANGE
 		       . ' FROM #__sportsmanagement_project_team '
 		       . ' WHERE id IN (' . implode(',', $ptids).')';
 		$db->setQuery($query);
-		$res = $db->query();
+		$res = $db->execute();
 		
 		if (!$res) 
 		{
@@ -1000,7 +1000,7 @@ $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_CHANGE
 		       . ' INNER JOIN #__sportsmanagement_project_team AS dest ON pt.team_id = dest.team_id AND dest.project_id = '.$dest 
 		       . ' WHERE pt.id IN (' . implode(',', $ptids).')';
 		$db->setQuery($query);
-		$res = $db->query();
+		$res = $db->execute();
 				
 		// and finally the staff
 		$query = ' INSERT INTO #__sportsmanagement_team_staff (projectteam_id, person_id, picture, extended, published) '
@@ -1010,7 +1010,7 @@ $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTTEAMS_NO_CHANGE
 				       . ' INNER JOIN #__sportsmanagement_project_team AS dest ON pt.team_id = dest.team_id AND dest.project_id = '.$dest 
 		. ' WHERE pt.id IN (' . implode(',', $ptids).')';
 		$db->setQuery($query);
-		$res = $db->query();
+		$res = $db->execute();
 		
 		if (!$res) 
 		{

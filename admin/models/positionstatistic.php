@@ -181,7 +181,7 @@ class sportsmanagementModelpositionstatistic extends JModelAdmin
 		}
 
 		$this->_db->setQuery( $query );
-		if( !$this->_db->query() )
+		if( !$this->_db->execute() )
 		{
 			$this->setError( $this->_db->getErrorMsg() );
 			$result = false;
@@ -191,7 +191,7 @@ class sportsmanagementModelpositionstatistic extends JModelAdmin
 		{
 			$query = "UPDATE #__".COM_SPORTSMANAGEMENT_TABLE."_position_statistic SET ordering='$x' WHERE position_id = '" . $position_id . "' AND statistic_id = '" . $peid[$x] . "'";
  			$this->_db->setQuery( $query );
-			if( !$this->_db->query() )
+			if( !$this->_db->execute() )
 			{
 				$this->setError( $this->_db->getErrorMsg() );
 				$result= false;
@@ -201,7 +201,7 @@ class sportsmanagementModelpositionstatistic extends JModelAdmin
 		{
 			$query = "INSERT IGNORE INTO #__".COM_SPORTSMANAGEMENT_TABLE."_position_statistic (position_id, statistic_id, ordering) VALUES ( '" . $position_id . "', '" . $peid[$x] . "','" . $x . "')";
 			$this->_db->setQuery( $query );
-			if ( !$this->_db->query() )
+			if ( !$this->_db->execute() )
 			{
 				$this->setError( $this->_db->getErrorMsg() );
 				$result= false;

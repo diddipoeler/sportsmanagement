@@ -629,7 +629,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
             $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' predictionGameID<br><pre>'.print_r($predictionGameID,true).'</pre>'),'');
             $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' query<br><pre>'.print_r($query,true).'</pre>'),'');
             
-			if ( !$this->_db->query() )
+			if ( !$this->_db->execute() )
 			{
 				//$this->setError( $this->_db->getErrorMsg() );
                 $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
@@ -770,7 +770,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 			$cids = implode( ',', $cid );
 			$query = 'DELETE FROM #__sportsmanagement_prediction_member WHERE id IN (' . $cids . ')';
 			$this->_db->setQuery( $query );
-			if ( !$this->_db->query() )
+			if ( !$this->_db->execute() )
 			{
 				//$this->setError( $this->_db->getErrorMsg() );
                 $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');
@@ -802,7 +802,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 			$query = 'SELECT user_id FROM #__sportsmanagement_prediction_member WHERE id IN (' . $cids . ') AND prediction_id = ' . $prediction_id;
 			//echo $query . '<br />';
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 
        if(version_compare(JVERSION,'3.0.0','ge')) 
 {
@@ -826,7 +826,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 			$query = 'DELETE FROM #__sportsmanagement_prediction_result WHERE user_id IN (' . $cids . ') AND prediction_id = ' . $prediction_id;
 			//echo $query . '<br />'; return true;
 			$this->_db->setQuery($query);
-			if (!$this->_db->query())
+			if (!$this->_db->execute())
 			{
 				//$this->setError($this->_db->getErrorMsg());
                 $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($this->_db->getErrorMsg(),true).'</pre>'),'Error');

@@ -178,7 +178,7 @@ $slide_id = 1;
                 	
 				echo '<table class="table" style="width:100%; " border="0"><thead><tr><td colspan="2" class="key" style="text-align:center;"><h3>';
 				echo "Checking existence of table [$DummyStr] - <span style='color:";
-				if ($db->query()){echo "green'>".JText::_('Success');}else{echo "red'>".JText::_('Failed');}
+				if ($db->execute()){echo "green'>".JText::_('Success');}else{echo "red'>".JText::_('Failed');}
 				echo '</span>';
 				echo '</h3></td></tr></thead><tbody>';
 				$DummyStr=$import;
@@ -314,7 +314,7 @@ $slide_id = 1;
                         {
                         try {    
 						$db->setQuery($queryDelete);
-                        $db->query();
+                        $db->execute();
                         echo "$queryDelete - <span style='color:green'".JText::_('Success').'</span>';
                         } catch (Exception $e) {
                         echo "$queryDelete - <span style='color:red'".JText::_('Failed').'</span>';
@@ -363,7 +363,7 @@ $slide_id = 1;
                        {
 						try {    
 						$db->setQuery($query);
-                        $db->query();
+                        $db->execute();
                         echo "$query - <span style='color:green'".JText::_('Success').'</span>';
                         } catch (Exception $e) {
                         echo "$query - <span style='color:red'".JText::_('Failed').'</span>';
@@ -377,7 +377,7 @@ $slide_id = 1;
                         {
                         try {    
 						$db->setQuery($query);
-                        $db->query();
+                        $db->execute();
                         echo "$query - <span style='color:green'".JText::_('Success').'</span>';
                         } catch (Exception $e) {
                         echo "$query - <span style='color:red'".JText::_('Failed').'</span>';
@@ -432,7 +432,7 @@ $slide_id = 1;
                         {
                         try {    
 						$db->setQuery($queryAdd);
-                        $db->query();
+                        $db->execute();
                         echo "$queryAdd - <span style='color:green'".JText::_('Success').'</span>';
                         } catch (Exception $e) {
                         echo "$queryAdd - <span style='color:red'".JText::_('Failed').'</span>';

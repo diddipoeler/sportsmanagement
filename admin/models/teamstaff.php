@@ -190,8 +190,8 @@ class sportsmanagementModelteamstaff extends JModelAdmin
             ON ms.team_staff_id = m.id
             WHERE m.id IN ('.$cids.')';
             $db->setQuery($query);
-            $db->query();
-            if (!$db->query()) 
+            $db->execute();
+            if (!$db->execute()) 
             {
                 $app->enqueueMessage(JText::_('delete getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
                 return false; 

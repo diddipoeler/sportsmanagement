@@ -197,8 +197,8 @@ class sportsmanagementModelteamplayer extends JModelAdmin
             ON me.teamplayer_id = m.id
             WHERE m.id IN ('.$cids.')';
             $db->setQuery($query);
-            $db->query();
-            if (!$db->query()) 
+            $db->execute();
+            if (!$db->execute()) 
             {
                 $app->enqueueMessage(JText::_('delete getErrorMsg<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
                 return false; 
@@ -264,7 +264,7 @@ class sportsmanagementModelteamplayer extends JModelAdmin
      $db->setQuery($query);   
  
   
- if (!$db->query())
+ if (!$db->execute())
 		{
 		    $app->enqueueMessage(JText::_('sportsmanagementModelteamplayer save personendaten<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		}
@@ -284,7 +284,7 @@ class sportsmanagementModelteamplayer extends JModelAdmin
      $query2->update($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_season_person_id'))->set($fields)->where($conditions);
      $db->setQuery($query2);   
  
- if (!$db->query())
+ if (!$db->execute())
 		{
 		    $app->enqueueMessage(JText::_('sportsmanagementModelteamplayer save person season <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
 		}

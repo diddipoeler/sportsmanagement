@@ -298,7 +298,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 		{
 			$query='DELETE FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_referee WHERE id='.$cid[$x];
 			JFactory::getDbo()->setQuery($query);
-			if(!JFactory::getDbo()->query())
+			if(!JFactory::getDbo()->execute())
 			{
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 				continue;

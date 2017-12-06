@@ -165,7 +165,7 @@ $query->delete($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_team_trainingda
 $query->where($conditions);
  
 $db->setQuery($query);    
-if (!$db->query())
+if (!$db->execute())
 		{
 			
             $app->enqueueMessage(JText::_('sportsmanagementModelteam DeleteTrainigData<br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
@@ -304,7 +304,7 @@ if (!$db->query())
         // Set the query using our newly populated query object and execute it.
         $db->setQuery($query);
 
-		if (!$db->query())
+		if (!$db->execute())
 		{
 			
             $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');

@@ -227,7 +227,7 @@ else
 		if ( count( $peid ) ) { $query .= ' AND user_id NOT IN (' . $peids . ')'; }
 //echo $query . '<br />';
 		$this->_db->setQuery( $query );
-		if( !$this->_db->query() )
+		if( !$this->_db->execute() )
 		{
 			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			$result = false;
@@ -239,7 +239,7 @@ else
 			$query = "INSERT IGNORE INTO #__".COM_SPORTSMANAGEMENT_TABLE."_prediction_admin ( prediction_id, user_id ) VALUES ( '" . $data['id'] . "', '" . $peid[$x] . "' )";
 //echo $query . '<br />';
 			$this->_db->setQuery( $query );
-			if ( !$this->_db->query() )
+			if ( !$this->_db->execute() )
 			{
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				$result= false;
@@ -277,7 +277,7 @@ else
 		$query = 'DELETE FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_project WHERE prediction_id = ' . $data['id'];
 		if (count($peid)){$query .= ' AND project_id NOT IN (' . $peids . ')';}
 		$this->_db->setQuery($query);
-		if(!$this->_db->query())
+		if(!$this->_db->execute())
 		{
 			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			$result = false;
@@ -287,7 +287,7 @@ else
 		{
 			$query = "INSERT IGNORE INTO #__".COM_SPORTSMANAGEMENT_TABLE."_prediction_project (prediction_id,project_id) VALUES ('" . $data['id'] . "','" . $peid[$x] . "')";
 			$this->_db->setQuery($query);
-			if (!$this->_db->query())
+			if (!$this->_db->execute())
 			{
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				$result= false;
@@ -328,7 +328,7 @@ else
 			$cids = implode( ',', $cid );
             $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_admin')->where('prediction_id IN ('.$cids.')' );
 			$db->setQuery( $query );
-			if ( !$db->query() )
+			if ( !$db->execute() )
 			{
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 				return false;
@@ -360,7 +360,7 @@ else
             $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_project')->where('prediction_id IN ('.$cids.')' );
 
 			$db->setQuery( $query );
-			if ( !$db->query() )
+			if ( !$db->execute() )
 			{
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 				return false;
@@ -391,7 +391,7 @@ else
 			$cids = implode( ',', $cid );
             $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_member')->where('prediction_id IN ('.$cids.')' );
 			$db->setQuery( $query );
-			if ( !$db->query() )
+			if ( !$db->execute() )
 			{
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 				return false;
@@ -422,7 +422,7 @@ else
 			$cids = implode( ',', $cid );
             $query->delete()->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_prediction_result')->where('prediction_id IN ('.$cids.')' );
 			$db->setQuery( $query );
-			if ( !$db->query() )
+			if ( !$db->execute() )
 			{
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $db->getErrorMsg(), __LINE__);
 				return false;

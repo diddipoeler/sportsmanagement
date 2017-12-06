@@ -187,7 +187,7 @@ class sportsmanagementModelProjectposition extends JModelAdmin
 			$query="DELETE FROM #__".COM_SPORTSMANAGEMENT_TABLE."_project_position WHERE project_id=".$data['project_id']." AND position_id NOT IN ($peids)";
 		}
 		$this->_db->setQuery($query);
-		if (!$this->_db->query())
+		if (!$this->_db->execute())
 		{
 			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 			$result=false;
@@ -196,7 +196,7 @@ class sportsmanagementModelProjectposition extends JModelAdmin
 		{
 			$query="INSERT IGNORE INTO #__".COM_SPORTSMANAGEMENT_TABLE."_project_position (project_id,position_id) VALUES ('".$data['project_id']."','".$data['project_positionslist'][$x]."')";
 			$this->_db->setQuery($query);
-			if(!$this->_db->query())
+			if(!$this->_db->execute())
 			{
 				sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 				$result=false;
@@ -291,7 +291,7 @@ class sportsmanagementModelProjectposition extends JModelAdmin
 							"SET project_position_id = " . $newid .
 							" WHERE project_position_id = " . $result['id'];
 				$this->_db->setQuery($query);
-				if(!$this->_db->query())
+				if(!$this->_db->execute())
 				{
 					sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, $this->_db->getErrorMsg(), __LINE__);
 					$result=false;

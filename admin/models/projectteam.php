@@ -297,7 +297,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
         );
         $query->update($db->quoteName('#__sportsmanagement_match'))->set($fields)->where($conditions);
         $db->setQuery($query);
-        $result = $db->query();  
+        $result = $db->execute();  
         if ( !$result )
 		{
 			$app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');
@@ -313,7 +313,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
         );
         $query->update($db->quoteName('#__sportsmanagement_match'))->set($fields)->where($conditions);
         $db->setQuery($query);
-        $result = $db->query();  
+        $result = $db->execute();  
         if ( !$result )
 		{
 			$app->enqueueMessage(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(), true).'</pre><br>','Error');

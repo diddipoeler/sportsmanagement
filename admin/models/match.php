@@ -678,7 +678,7 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,
 				.' WHERE match_id='. $this->_db->Quote($match_id)
 				.'   AND teamplayer_id='. $this->_db->Quote($teamplayer_id);
 				$this->_db->setQuery($query);
-				$res=$this->_db->query();
+				$res=$this->_db->execute();
 				foreach ($data as $key => $value)
 				{
 					if (preg_match('/^stat'.$teamplayer_id.'_([0-9]+)/',$key,$reg) && $value!="")
@@ -715,7 +715,7 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,
 				.' WHERE match_id='. $this->_db->Quote($match_id)
 				.'   AND team_staff_id='. $this->_db->Quote($team_staff_id);
 				$this->_db->setQuery($query);
-				$res=$this->_db->query();
+				$res=$this->_db->execute();
 				foreach ($data as $key => $value)
 				{
 					if (ereg('^staffstat'.$team_staff_id.'_([0-9]+)',$key,$reg) && $value!="")
@@ -983,10 +983,10 @@ $tournement_round = $this->jsmdb->loadResult();
             ON mpl.match_id = m.id
             WHERE m.id IN ('.$cids.')';
             JFactory::getDbo()->setQuery($query);
-            JFactory::getDbo()->query();
-            if (!JFactory::getDbo()->query()) 
+            JFactory::getDbo()->execute();
+            if (!JFactory::getDbo()->execute()) 
             {
-                $app->enqueueMessage(JText::_('match delete query getErrorMsg<br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
+                //$app->enqueueMessage(JText::_('match delete query getErrorMsg<br><pre>'.print_r(JFactory::getDbo()->getErrorMsg(),true).'</pre>'),'Error');
             }
             
             //$app->enqueueMessage(JText::_('match delete query<br><pre>'.print_r($query,true).'</pre>'   ),'');
@@ -2467,7 +2467,7 @@ function getPlayerEventsbb($teamplayer_id=0,$event_type_id=0,$match_id=0)
 					WHERE id=".JFactory::getDbo()->Quote($substitution_id). "
 					 OR id=".JFactory::getDbo()->Quote($substitution_id + 1);
 		JFactory::getDbo()->setQuery($query);
-		if (!JFactory::getDbo()->query())
+		if (!JFactory::getDbo()->execute())
 		{
 			$this->setError(JText::_('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_ERROR_DELETING_SUBST'));
 			return false;
@@ -2521,7 +2521,7 @@ $query->delete($db->quoteName('#__'.COM_SPORTSMANAGEMENT_TABLE.'_match_commentar
 $query->where($conditions);
  
 $db->setQuery($query);    
-if (!$db->query())
+if (!$db->execute())
 		{
 			
             $this->setError('COM_SPORTSMANAGEMENT_ADMIN_MATCH_MODEL_DELETE_FAILED_COMMENTARY');
@@ -2589,7 +2589,7 @@ if (!$db->query())
             ->values(implode(',', $values));
         // Set the query using our newly populated query object and execute it.
         $db->setQuery($query);
-        if (!$db->query())
+        if (!$db->execute())
 		{
 			$result = false;
             $object->id = $db->getErrorMsg();

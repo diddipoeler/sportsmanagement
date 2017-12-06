@@ -1267,7 +1267,7 @@ private function _getObjectName($tableName,$id,$usedFieldName='')
 													VALUES ('$template','$params->name','$defaultvalues','$project_id')";
 							$this->_db->setQuery($query);
 							//echo error,allows to check if there is a mistake in the template file
-							if (!$this->_db->query())
+							if (!$this->_db->execute())
 							{
 								$this->setError($this->_db->getErrorMsg());
 								return false;
