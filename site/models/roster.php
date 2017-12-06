@@ -85,8 +85,8 @@ class sportsmanagementModelRoster extends JModelLegacy
 	{
 	   // Reference global application object
         $app = JFactory::getApplication();
-//        // JInput object
-//        $jinput = $app->input;
+        // JInput object
+        $jinput = $app->input;
         
 		parent::__construct();
 
@@ -186,7 +186,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	public static function getTeam()
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = $this->jinput->getCmd('option');
        // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 		$query = $db->getQuery(true);
@@ -235,7 +235,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	public static function getTeamPlayers($persontype = 1)
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = $this->jinput->getCmd('option');
        // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 		$query = $db->getQuery(true);
@@ -338,7 +338,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	public static function getPositionEventTypes($positionId=0)
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = $this->jinput->getCmd('option');
        // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 		$query = $db->getQuery(true);
@@ -437,7 +437,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	public static function getTeamEventStat($eventtype_id)
 	{
 		$app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = $this->jinput->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -487,7 +487,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	function getTeamPlayer($round_id,$player_id)
 	{
 	   $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = $this->jinput->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -558,7 +558,7 @@ class sportsmanagementModelRoster extends JModelLegacy
     public static function getLastSeasonDate()
     {
         $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = $this->jinput->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
