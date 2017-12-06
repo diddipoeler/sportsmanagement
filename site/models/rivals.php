@@ -74,8 +74,8 @@ class sportsmanagementModelRivals extends JModelLegacy
         
 		parent::__construct( );
 
-		$this->projectid = JRequest::getInt( "p", 0 );
-		$this->teamid = JRequest::getInt( "tid", 0 );
+		$this->projectid = $jinput->getInt( "p", 0 );
+		$this->teamid = $jinput->getInt( "tid", 0 );
 		$this->getTeam();
 	}
 
