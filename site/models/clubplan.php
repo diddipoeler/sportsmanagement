@@ -131,9 +131,14 @@ class sportsmanagementModelClubPlan extends JModelLegacy
         $query->group('ag.id');
         // Order
         $query->order('ag.name ASC');
-
+try{
 		$db->setQuery($query);
 		$teamsart = $db->loadObjectList();
+		}
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_($e->getMessage()), 'error');
+}
 		}
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
