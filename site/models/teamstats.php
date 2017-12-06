@@ -79,7 +79,10 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	function __construct( )
 	{
 		parent::__construct();
-
+// Reference global application object
+        $app = JFactory::getApplication();
+        // JInput object
+        $jinput = $app->input;
 		self::$projectid = JFactory::getApplication()->input->get('p', 0, 'INT');
 		self::$teamid = JFactory::getApplication()->input->get('tid', 0, 'INT');
         self::$projectteamid = JFactory::getApplication()->input->get('ptid', 0, 'INT');
@@ -96,7 +99,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	 */
 	public static function getTeam( )
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = $this->jinput->getCmd('option');
 	    $app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -134,7 +137,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	 */
 	public static function getHighest($homeaway, $which)
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = $this->jinput->getCmd('option');
 	    $app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -253,7 +256,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
      */
     public static function getNoGoalsAgainst( )
     {
-        $option = JRequest::getCmd('option');
+        $option = $this->jinput->getCmd('option');
 	    $app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -301,7 +304,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
      */
     public static function getSeasonTotals($which)
     {
-        $option = JRequest::getCmd('option');
+        $option = $this->jinput->getCmd('option');
 	    $app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -385,7 +388,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 		 */
 		function getChartData( )
 		{
-		  $option = JRequest::getCmd('option');
+		  $option = $this->jinput->getCmd('option');
 	    $app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -443,7 +446,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
      */
     public static function getMatchDayTotals( )
     {
-        $option = JRequest::getCmd('option');
+        $option = $this->jinput->getCmd('option');
 	    $app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -504,7 +507,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
      */
     public static function getTotalRounds( )
     {
-        $option = JRequest::getCmd('option');
+        $option = $this->jinput->getCmd('option');
 	    $app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -550,7 +553,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
      */
     public static function _getAttendance( )
     {
-        $option = JRequest::getCmd('option');
+        $option = $this->jinput->getCmd('option');
 	    $app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -671,7 +674,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	 */
 	public static function getLogo( )
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = $this->jinput->getCmd('option');
 	    $app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -694,7 +697,7 @@ class sportsmanagementModelTeamStats extends JModelLegacy
 	 */
 	public static function getResults()
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = $this->jinput->getCmd('option');
 	    $app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
