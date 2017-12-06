@@ -396,9 +396,15 @@ else
 
 		if ( !is_null($round) ) 
         {
+try{
 			$db->setQuery($query);
             //$result = $db->loadObjectList();
             $result = $db->loadObjectList('id');
+            }
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+}
 		}
 		
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
