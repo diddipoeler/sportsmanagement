@@ -146,7 +146,7 @@ public function getStart()
 		$app = JFactory::getApplication('site');
         
         // List state information
-		//$value = JRequest::getUInt('limit', $app->getCfg('list_limit', 0));
+		//$value = JFactory::getApplication()->input->getUInt('limit', $app->getCfg('list_limit', 0));
         $value = $this->getUserStateFromRequest($this->context.'.limit', 'limit', $app->getCfg('list_limit', 0));
 		$this->setState('list.limit', $value);
 
@@ -164,14 +164,14 @@ public function getStart()
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
 
-        //$filter_order = JRequest::getCmd('filter_order');
+        //$filter_order = JFactory::getApplication()->input->getCmd('filter_order');
         $filter_order = $this->getUserStateFromRequest($this->context.'.filter_order', 'filter_order', '', 'string');
         if (!in_array($filter_order, $this->filter_fields)) 
         {
 			$filter_order = 'v.name';
 		}
         
-        //$filter_order_Dir = JRequest::getCmd('filter_order_Dir');
+        //$filter_order_Dir = JFactory::getApplication()->input->getCmd('filter_order_Dir');
         $filter_order_Dir = $this->getUserStateFromRequest($this->context.'.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
         if (!in_array(strtoupper($filter_order_Dir), array('ASC', 'DESC', ''))) 
         {

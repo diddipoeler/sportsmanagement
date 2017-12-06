@@ -785,7 +785,7 @@ $routeparameter['p'] = $g->project_slug;
 $routeparameter['mid'] = $g->slug;
 $url = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
 
-					//$url = JRoute::_(sportsmanagementHelperRoute::getMatchReportRoute($g->project_slug, $g->slug,JRequest::getInt('cfg_which_database',0)));
+					//$url = JRoute::_(sportsmanagementHelperRoute::getMatchReportRoute($g->project_slug, $g->slug,JFactory::getApplication()->input->getInt('cfg_which_database',0)));
 					echo JHtml::link($url, $img, $attr);
 				}
                 }

@@ -56,8 +56,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<td colspan="3"><span class=""><?php echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_OLD_MATCH' ); ?></span>
 		<span><?php 
 		$routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['mid'] = $this->match->old_match_id;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
@@ -76,7 +76,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 		<td colspan="3"><span class=""><?php echo JText::_( 'COM_SPORTSMANAGEMENT_NEXTMATCH_NEW_MATCH' ); ?></span>
 		<span>
         <?php 
-        echo JHTML :: link(sportsmanagementHelperRoute::getNextMatchRoute($this->project->id,$this->match->new_match_id,JRequest::getInt('cfg_which_database',0) ),$this->newmatchtext);
+        echo JHTML :: link(sportsmanagementHelperRoute::getNextMatchRoute($this->project->id,$this->match->new_match_id,JFactory::getApplication()->input->getInt('cfg_which_database',0) ),$this->newmatchtext);
         ?>
         </span></td>
 	</tr>
@@ -154,8 +154,8 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$rou
 		if ($this->match->playground_id > 0): ?>
 			<?php 
             $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['pgid'] = $this->match->playground_slug;
 $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$routeparameter);
@@ -192,8 +192,8 @@ $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playgr
 				<?php foreach ($this->referees AS $ref): ?> 
 				<?php 
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->id;
 $routeparameter['pid'] = $ref->person_id;
 $link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routeparameter);

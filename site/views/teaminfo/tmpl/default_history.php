@@ -91,8 +91,8 @@ defined('_JEXEC') or die('Restricted access');
 	foreach ($this->seasons as $season)
 	{
 	   $routeparameter = array();
-        $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-        $routeparameter['s'] = JRequest::getInt('s',0); 
+        $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+        $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0); 
         $routeparameter['p'] = $season->project_slug;
         $routeparameter['division'] = $season->division_slug;
         $routeparameter['type'] = 0; 
@@ -102,8 +102,8 @@ defined('_JEXEC') or die('Restricted access');
 		$ranking_link   = sportsmanagementHelperRoute::getSportsmanagementRoute('ranking',$routeparameter);
 		
         $routeparameter = array();
-        $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-        $routeparameter['s'] = JRequest::getInt('s',0); 
+        $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+        $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0); 
         $routeparameter["p"] = $season->project_slug;
         $routeparameter['r'] = $season->round_slug;
         $routeparameter['division'] = $season->division_slug;
@@ -113,8 +113,8 @@ defined('_JEXEC') or die('Restricted access');
         $results_link   = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routeparameter);
 		
         $routeparameter = array();
-       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $season->project_slug;
        $routeparameter['tid'] = $this->team->slug;
        $routeparameter['division'] = $season->division_slug;
@@ -123,15 +123,15 @@ defined('_JEXEC') or die('Restricted access');
         $teamplan_link  = sportsmanagementHelperRoute::getSportsmanagementRoute('teamplan',$routeparameter);
 		
         $routeparameter = array();
-       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $season->project_slug;
        $routeparameter['tid'] = $this->team->slug;
         $teamstats_link = sportsmanagementHelperRoute::getSportsmanagementRoute('teamstats',$routeparameter);
         
         $routeparameter = array();
-       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $season->project_slug;
        $routeparameter['tid'] = $season->team_slug;
        $routeparameter['ptid'] = $season->ptid;

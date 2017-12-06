@@ -61,7 +61,7 @@ static $_foldertype = '';
 	 */
 	function __construct()
 	{
-  $type	= JRequest::getVar( 'type' );
+  $type	= JFactory::getApplication()->input->getVar( 'type' );
   self::$_foldertype = $type;
 	}
 

@@ -171,7 +171,7 @@ class sportsmanagementModelPlayer extends JModelLegacy
 	static function getTeamPlayer($projectid=0,$personid=0,$teamplayerid=0)
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -250,7 +250,7 @@ class sportsmanagementModelPlayer extends JModelLegacy
 	function getTeamStaff()
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -301,7 +301,7 @@ class sportsmanagementModelPlayer extends JModelLegacy
 	function getPlayerHistory($sportstype = 0, $order = 'ASC', $persontype = 1, $cfg_which_database = 0)
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
        //$db = sportsmanagementHelper::getDBConnection();
@@ -395,7 +395,7 @@ class sportsmanagementModelPlayer extends JModelLegacy
 	function getAllEvents($sportstype=0)
 	{
 	   $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -439,7 +439,7 @@ class sportsmanagementModelPlayer extends JModelLegacy
     public static function getTimePlayed( $player_id, $game_regular_time, $match_id = NULL ,$cards = NULL, $project_id = 0 )
     {
         $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -648,7 +648,7 @@ catch (Exception $e) {
 	public static function getInOutStats($project_id = 0, $projectteam_id = 0, $teamplayer_id = 0, $game_regular_time = 90, $match_id = 0,$cfg_which_database = 0,$team_id = 0,$person_id = 0)
 	{
 	   $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -757,7 +757,7 @@ catch (Exception $e) {
 	function getStats()
 	{
 	   $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
     
 		$stats = array();
 		$players = self::getTeamPlayer();
@@ -914,7 +914,7 @@ catch (Exception $e) {
 	function getPlayerStatsByProject($sportstype=0)
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         
 		$teamplayer = self::getTeamPlayer();
 		$result = array();
@@ -981,7 +981,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	function getGames()
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -1097,7 +1097,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 	function getGamesEvents()
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);

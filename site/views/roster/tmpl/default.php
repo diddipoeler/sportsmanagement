@@ -178,14 +178,14 @@ if (!empty($css))
 				echo $this->loadTemplate('players');
 			} else if (($this->config['show_players_layout'])=='player_card') {
 				$document 	= JFactory::getDocument();
-				$option 	= JRequest::getCmd('option');
+				$option 	= JFactory::getApplication()->input->getCmd('option');
 				$version 	= urlencode(sportsmanagementHelper::getVersion());
 				$document->addStyleSheet(  $this->baseurl . '/components/'.$option.'/assets/css/'.$this->getName().'_card.css?v=' . $version );
 				echo $this->loadTemplate('players_card');
 			}
 			else if (($this->config['show_players_layout'])=='player_johncage') {
 			$document 	= JFactory::getDocument();
-			$option 	= JRequest::getCmd('option');
+			$option 	= JFactory::getApplication()->input->getCmd('option');
 			$version 	= urlencode(sportsmanagementHelper::getVersion());
 			$document->addStyleSheet(  $this->baseurl . '/components/'.$option.'/assets/css/'.$this->getName().'_johncage.css?v=' . $version );
 			echo $this->loadTemplate('players_johncage');
@@ -200,14 +200,14 @@ if (!empty($css))
 				echo $this->loadTemplate('staff');
 			} else if (($this->config['show_staff_layout'])=='staff_card') {
 				$document 	= JFactory::getDocument();
-				$option 	= JRequest::getCmd('option');
+				$option 	= JFactory::getApplication()->input->getCmd('option');
 				$version 	= urlencode(sportsmanagementHelper::getVersion());
 				$document->addStyleSheet(  $this->baseurl . '/components/'.$option.'/assets/css/'.$this->getName().'_card.css?v=' . $version );
 				echo $this->loadTemplate('staff_card');
 			}
 			else if (($this->config['show_staff_layout'])=='staff_johncage') {
 			$document 	= JFactory::getDocument();
-			$option 	= JRequest::getCmd('option');
+			$option 	= JFactory::getApplication()->input->getCmd('option');
 			$version 	= urlencode(sportsmanagementHelper::getVersion());
 			$document->addStyleSheet(  $this->baseurl . '/components/'.$option.'/assets/css/'.$this->getName().'_johncage.css?v=' . $version );
 			echo $this->loadTemplate('staff_johncage');

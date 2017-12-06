@@ -69,21 +69,21 @@ class sportsmanagementModelPredictionRules extends JModelLegacy
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
     
-//    $this->predictionGameID		= JRequest::getInt('prediction_id',		0);
-//		$this->predictionMemberID	= JRequest::getInt('uid',	0);
-//		$this->joomlaUserID			= JRequest::getInt('juid',	0);
-//		$this->roundID				= JRequest::getInt('r',		0);
-//        $this->pggroup				= JRequest::getInt('pggroup',		0);
-//        $this->pggrouprank			= JRequest::getInt('pggrouprank',		0);
-//		$this->pjID					= JRequest::getInt('p',		0);
-//		$this->isNewMember			= JRequest::getInt('s',		0);
-//		$this->tippEntryDone		= JRequest::getInt('eok',	0);
+//    $this->predictionGameID		= JFactory::getApplication()->input->getInt('prediction_id',		0);
+//		$this->predictionMemberID	= JFactory::getApplication()->input->getInt('uid',	0);
+//		$this->joomlaUserID			= JFactory::getApplication()->input->getInt('juid',	0);
+//		$this->roundID				= JFactory::getApplication()->input->getInt('r',		0);
+//        $this->pggroup				= JFactory::getApplication()->input->getInt('pggroup',		0);
+//        $this->pggrouprank			= JFactory::getApplication()->input->getInt('pggrouprank',		0);
+//		$this->pjID					= JFactory::getApplication()->input->getInt('p',		0);
+//		$this->isNewMember			= JFactory::getApplication()->input->getInt('s',		0);
+//		$this->tippEntryDone		= JFactory::getApplication()->input->getInt('eok',	0);
 //
-//		$this->from  				= JRequest::getInt('from',	$this->roundID);
-//		$this->to	 				= JRequest::getInt('to',	$this->roundID);
-//		$this->type  				= JRequest::getInt('type',	0);
+//		$this->from  				= JFactory::getApplication()->input->getInt('from',	$this->roundID);
+//		$this->to	 				= JFactory::getApplication()->input->getInt('to',	$this->roundID);
+//		$this->type  				= JFactory::getApplication()->input->getInt('type',	0);
 //
-//		$this->page  				= JRequest::getInt('page',	1);
+//		$this->page  				= JFactory::getApplication()->input->getInt('page',	1);
         
         $prediction = new sportsmanagementModelPrediction();  
 

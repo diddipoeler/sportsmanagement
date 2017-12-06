@@ -26,7 +26,7 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 	{
 		parent::__construct();
 
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app	= JFactory::getApplication();
 
 		$limit		= $app->getUserStateFromRequest( $option.'.imageselect'.'limit', 'limit', $app->getCfg('list_limit'), 'int');
@@ -45,7 +45,7 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 		static $set;
 
 		if (!$set) {
-			$folder = JRequest::getVar( 'folder' );
+			$folder = JFactory::getApplication()->input->getVar( 'folder' );
 			$this->setState('folder', $folder);
 
 			$set = true;
@@ -106,7 +106,7 @@ class sportsmanagementModelImagehandler extends JModelLegacy
 	 */
 	function getList()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app	= JFactory::getApplication();
         static $list;
 

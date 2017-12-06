@@ -233,11 +233,11 @@ echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$this->team->cr_
 			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_NAME' ); ?></strong>
 			<?php 
             $routeparameter = array();
-       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $this->project->slug;
        $routeparameter['tid'] = $this->team->slug;
-       $routeparameter['ptid'] = JRequest::getInt('ptid',0);
+       $routeparameter['ptid'] = JFactory::getApplication()->input->getInt('ptid',0);
             $link = sportsmanagementHelperRoute::getSportsmanagementRoute('teaminfo',$routeparameter);
 		echo JHtml::link($link, $this->team->tname);
             ?>
@@ -247,8 +247,8 @@ echo JText::sprintf('COM_SPORTSMANAGEMENT_COPYRIGHT_INFO','<i>'.$this->team->cr_
 			<strong><?php echo JText::_( 'COM_SPORTSMANAGEMENT_TEAMINFO_TEAM_NAME_SHORT' ); ?></strong>
 			<?php 
              $routeparameter = array();
-       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $this->project->slug;
        $routeparameter['tid'] = $this->team->slug;
        

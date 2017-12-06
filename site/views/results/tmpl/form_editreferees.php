@@ -228,7 +228,7 @@ $allreferees = sportsmanagementModelMatch::getRefereeRoster(0,$this->game->id);
 			<button type="button" onclick="jQuery('select.position-starters option').prop('selected', 'selected');document.getElementById('edit-referee-<?php echo $this->game->id;?>').submit();">
 				<?php echo JText::_('JSAVE');?></button>
 			<!--
-            <button id="cancel" type="button" onclick="<?php echo JRequest::getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
+            <button id="cancel" type="button" onclick="<?php echo JFactory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
 				<?php echo JText::_('JCANCEL');?></button>
             -->  
             <button type="button" class="btn btn-blue" data-dismiss="modal"><?php echo JText::_('JCANCEL');?></button>  
@@ -311,7 +311,7 @@ $allreferees = sportsmanagementModelMatch::getRefereeRoster(0,$this->game->id);
         <input type='hidden' name='layout' value='form' />
         <input type='hidden' name='task' value='results.saveReferees' />
 		<input type='hidden' name='sel_r' value='<?php echo sportsmanagementModelProject::$roundslug; ?>' />
-		<input type='hidden' name='Itemid' value='<?php echo JRequest::getInt('Itemid', 1, 'get'); ?>' />
+		<input type='hidden' name='Itemid' value='<?php echo JFactory::getApplication()->input->getInt('Itemid', 1, 'get'); ?>' />
 		<input type='hidden' name='boxchecked' value='0' id='boxchecked' />
 		<input type='hidden' name='checkmycontainers' value='0' id='checkmycontainers' />
 		<input type='hidden' name='save_data' value='1' class='button' />

@@ -116,7 +116,7 @@ class sportsmanagementViewResultsmatrix extends sportsmanagementView
 		$this->matchdaysoptions = $options;
         $routeparameter = array();
 $routeparameter['cfg_which_database'] = $this->jinput->getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $project->slug;
 $routeparameter['r'] = $this->roundid;
 $routeparameter['division'] = 0;
@@ -193,7 +193,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('resultsmatrix',$r
 		{
 		  $routeparameter = array();
 $routeparameter['cfg_which_database'] = $jinput->getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['r'] = $r->slug;
 $routeparameter['division'] = 0;

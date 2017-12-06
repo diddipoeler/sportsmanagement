@@ -30,7 +30,7 @@ JPluginHelper::importPlugin('gcalendar');
 $data = array();
 $SECSINDAY=86400;
 if (!empty($this->calendars)) {
-	$itemID = JRequest::getVar('Itemid', null);
+	$itemID = JFactory::getApplication()->input->getVar('Itemid', null);
 	foreach ($this->calendars as $calendar) {
 		if($itemID == null){
 			$itemID = jsmGCalendarUtil::getItemId($calendar->id);

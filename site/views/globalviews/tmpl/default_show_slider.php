@@ -47,7 +47,7 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 {
 // Joomla! 3.0 code here
 $idxTab = 1;
-$view = Jrequest::getCmd('view');
+$view = JFactory::getApplication()->input->getCmd('view');
 foreach ($this->output as $key => $templ) 
 {
 if ( $idxTab == 1 )

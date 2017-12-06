@@ -71,7 +71,7 @@ class sportsmanagementModelsishandball extends JModelLegacy
 	 */
 	function getLink($vereinsnummer,$vereinspasswort,$liganummer,$sis_art,$sis_xmllink) 
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $app = JFactory::getApplication();
 		$sislink = $sis_xmllink.'/xmlexport/xml_dyn.aspx?user=%s&pass=%s&art=%s&auf=%s';
 		$link = sprintf($sislink, $vereinsnummer, $vereinspasswort, $sis_art, $liganummer );	
@@ -89,7 +89,7 @@ class sportsmanagementModelsishandball extends JModelLegacy
 	 */
 	function getTabelle($linkresults,$liganummer,$sis_art) 
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $app = JFactory::getApplication();
 		// XML File
 		$filepath='components/'.$option.'/data/';
@@ -169,7 +169,7 @@ else
 	 */
 	function getStatistik($linkresults,$liganummer) 
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $app = JFactory::getApplication();
 		// XML File
 		$filepath='components/'.$option.'/data/';
@@ -253,7 +253,7 @@ else
 	 */
 	function getSpielplan($linkresults,$liganummer,$sis_art) 
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $app = JFactory::getApplication();
 		// XML File
 		$filepath='components/'.$option.'/data/';

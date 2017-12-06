@@ -38,7 +38,7 @@ class sportsmanagementModelGCalendar extends JModelLegacy
 		if(!is_array($calendarids) && !empty($calendarids)){
 			$calendarids = array($calendarids);
 		}
-		$tmp = JRequest::getVar('gcids', null);
+		$tmp = JFactory::getApplication()->input->getVar('gcids', null);
 		if(!empty($tmp)){
 			$calendarids = explode(',', $tmp);
 		}

@@ -62,7 +62,7 @@ class sportsmanagementControllerPredictionEntry extends JControllerLegacy
 	 */
 	function __construct()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
 		$document = JFactory::getDocument();
         // JInput object
@@ -70,7 +70,7 @@ $jinput = $app->input;
 $option = $jinput->getCmd('option');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($jinput->post,true).'</pre>'),'');
-        //$post	= JRequest::get('post');
+        //$post	= JFactory::getApplication()->input->get('post');
 		// Register Extra tasks
 		//$this->registerTask( 'add',			'display' );
 		//$this->registerTask( 'edit',		'display' );
@@ -93,8 +93,8 @@ $option = $jinput->getCmd('option');
 	function display($cachable = false, $urlparams = false)
 	{
 		// Get the view name from the query string
-		//$viewName = JRequest::getVar( 'view', 'editmatch' );
-		//$viewName = JRequest::getVar( 'view' );
+		//$viewName = JFactory::getApplication()->input->getVar( 'view', 'editmatch' );
+		//$viewName = JFactory::getApplication()->input->getVar( 'view' );
 //echo '<br /><pre>~' . print_r( $viewname, true ) . '~</pre><br />';
 
 		// Get the view
@@ -114,7 +114,7 @@ parent::display($cachable, $urlparams = false);
 	 */
 	function register()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
 		$document = JFactory::getDocument();
     // JInput object
@@ -122,18 +122,18 @@ $jinput = $app->input;
 $option = $jinput->getCmd('option');
     
     
-    JRequest::checkToken() or jexit(JText::_('COM_SPORTSMANAGEMENT_PRED_INVALID_TOKEN_REFUSED'));
+    JFactory::getApplication()->input->checkToken() or jexit(JText::_('COM_SPORTSMANAGEMENT_PRED_INVALID_TOKEN_REFUSED'));
 		
     $msg = '';
 		$link = '';
-		$post = JRequest::get('post');
+		$post = JFactory::getApplication()->input->get('post');
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
 
-		$predictionGameID = JRequest::getVar('prediction_id','','post','int');
-		$joomlaUserID = JRequest::getVar('user_id','','post','int');
-		$approved = JRequest::getVar('approved',0,'','int');
+		$predictionGameID = JFactory::getApplication()->input->getVar('prediction_id','','post','int');
+		$joomlaUserID = JFactory::getApplication()->input->getVar('user_id','','post','int');
+		$approved = JFactory::getApplication()->input->getVar('approved',0,'','int');
 		
 		
 		$model = $this->getModel('Prediction');
@@ -208,9 +208,9 @@ $option = $jinput->getCmd('option');
        // JInput object
        $jinput = $app->input;
        
-		JRequest::checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
-		$pID = JRequest::getVar('prediction_id','','post','int');
-		$uID = JRequest::getVar('uid',null,'post','int');
+		JFactory::getApplication()->input->checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
+		$pID = JFactory::getApplication()->input->getVar('prediction_id','','post','int');
+		$uID = JFactory::getApplication()->input->getVar('uid',null,'post','int');
 		if (empty($uID)){$uID=null;}
 		$link = JSMPredictionHelperRoute::getPredictionTippEntryRoute($pID,$uID);
 		//echo '<br />' . $link . '<br />';
@@ -228,22 +228,22 @@ $option = $jinput->getCmd('option');
        // JInput object
        $jinput = $app->input;
        
-		JRequest::checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
-		//$post	= JRequest::get('post');
+		JFactory::getApplication()->input->checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
+		//$post	= JFactory::getApplication()->input->get('post');
         $pID = $jinput->get('prediction_id', 0, '');
         $groupID = $jinput->get('pggroup', 0, '');
         $pjID = $jinput->get('pj', 0, '');
         $rID = $jinput->get('r', 0, '');
         $uID = $jinput->get('uid', 0, '');
         
-//		$pID	= JRequest::getVar('prediction_id',	null,	'post',	'int');
+//		$pID	= JFactory::getApplication()->input->getVar('prediction_id',	null,	'post',	'int');
 //        
 //        // diddipoeler
-//		//$pjID	= JRequest::getVar('project_id',	null,	'post',	'int');
-//        $pjID	= JRequest::getVar('p',	null,	'post',	'int');
+//		//$pjID	= JFactory::getApplication()->input->getVar('project_id',	null,	'post',	'int');
+//        $pjID	= JFactory::getApplication()->input->getVar('p',	null,	'post',	'int');
 //        
-//		$rID	= JRequest::getVar('r',				null,	'post',	'int');
-//		$uID	= JRequest::getVar('uid',			null,	'post',	'int');
+//		$rID	= JFactory::getApplication()->input->getVar('r',				null,	'post',	'int');
+//		$uID	= JFactory::getApplication()->input->getVar('uid',			null,	'post',	'int');
 		$link = JSMPredictionHelperRoute::getPredictionTippEntryRoute($pID,$uID,$rID,$pjID,$groupID);
 		$this->setRedirect($link);
 	}
@@ -270,7 +270,7 @@ $option = $jinput->getCmd('option');
 	 */
 	function addtipp()
 	{
-		JRequest::checkToken() or jexit(JText::_('JL_PRED_ENTRY_INVALID_TOKEN_PREDICTIONS_NOT_SAVED'));
+		JFactory::getApplication()->input->checkToken() or jexit(JText::_('JL_PRED_ENTRY_INVALID_TOKEN_PREDICTIONS_NOT_SAVED'));
     
     $app = JFactory::getApplication();
 		$document = JFactory::getDocument();
@@ -280,7 +280,7 @@ $option = $jinput->getCmd('option');
        $option = $jinput->getCmd('option');
        $post = $jinput->post->getArray();
        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
-    //$optiontext = strtoupper(JRequest::getCmd('option').'_');
+    //$optiontext = strtoupper(JFactory::getApplication()->input->getCmd('option').'_');
 		
 		
 		$msg = '';

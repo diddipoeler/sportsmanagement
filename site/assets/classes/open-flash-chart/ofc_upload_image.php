@@ -23,7 +23,7 @@ $default_path = '../tmp-upload-images/';
 if (!file_exists($default_path)) mkdir($default_path, 0777, true);
 
 // full path to the saved image including filename //
-$destination = $default_path . basename( JRequest::getString('name')); 
+$destination = $default_path . basename( JFactory::getApplication()->input->getString('name')); 
 
 echo 'Saving your image to: '. $destination;
 // print_r( $_POST );

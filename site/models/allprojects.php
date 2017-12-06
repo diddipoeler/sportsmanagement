@@ -149,14 +149,14 @@ public function getStart()
 		$app = JFactory::getApplication('site');
         
         // List state information
-		//$value = JRequest::getUInt('limit', $app->getCfg('list_limit', 0));
+		//$value = JFactory::getApplication()->input->getUInt('limit', $app->getCfg('list_limit', 0));
 		$value = $this->getUserStateFromRequest($this->context.'.limit', 'limit', $app->getCfg('list_limit', 0));
         $this->setState('list.limit', $value);
         
         //$temp_user_request = $this->getUserStateFromRequest($this->context.'.limit', 'limit', $app->getCfg('list_limit', 0));
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($temp_user_request,true).'</pre>'   ),'');
 
-		//$value = JRequest::getUInt('limitstart', 0);
+		//$value = JFactory::getApplication()->input->getUInt('limitstart', 0);
 //		$this->setState('list.start', $value);
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.'<br><pre>'.print_r($this->getUserStateFromRequest(),true).'</pre>'   ),'');
@@ -173,22 +173,22 @@ public function getStart()
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_leagues', 'filter_search_leagues', '');
         if ( !$temp_user_request )
         {
-//            $temp_user_request = JRequest::getInt( "l", 0 );
-//            JRequest::setVar( "l", 0 );
+//            $temp_user_request = JFactory::getApplication()->input->getInt( "l", 0 );
+//            JFactory::getApplication()->input->setVar( "l", 0 );
         }
         
 		$this->setState('filter.search_leagues', $temp_user_request);
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_seasons', 'filter_search_seasons', '');
 		$this->setState('filter.search_seasons', $temp_user_request);
 
-        //$filter_order = JRequest::getCmd('filter_order');
+        //$filter_order = JFactory::getApplication()->input->getCmd('filter_order');
         $filter_order = $this->getUserStateFromRequest($this->context.'.filter_order', 'filter_order', '', 'string');
         if (!in_array($filter_order, $this->filter_fields)) 
         {
 			$filter_order = 'v.name';
 		}
         
-        //$filter_order_Dir = JRequest::getCmd('filter_order_Dir');
+        //$filter_order_Dir = JFactory::getApplication()->input->getCmd('filter_order_Dir');
         $filter_order_Dir = $this->getUserStateFromRequest($this->context.'.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
         if (!in_array(strtoupper($filter_order_Dir), array('ASC', 'DESC', ''))) 
         {

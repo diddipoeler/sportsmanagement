@@ -82,7 +82,7 @@ class sportsmanagementModelPerson extends JModelLegacy
  	 */
  	function __construct()
   	{
-  	    $option = JRequest::getCmd('option');
+  	    $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         // JInput object
        $jinput = $app->input;
@@ -107,7 +107,7 @@ class sportsmanagementModelPerson extends JModelLegacy
 	  */
 	 public static function updateHits($personid=0,$inserthits=0)
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     $db = JFactory::getDbo();
  $query = $db->getQuery(true);
@@ -135,8 +135,8 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	public static function getPerson($personid = 0, $cfg_which_database = 0,$inserthits=0)
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
-        self::$personid	= JRequest::getInt( 'pid', 0 );
+        $option = JFactory::getApplication()->input->getCmd('option');
+        self::$personid	= JFactory::getApplication()->input->getInt( 'pid', 0 );
         $starttime = microtime(); 
         
         self::updateHits(self::$personid,$inserthits); 
@@ -179,7 +179,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	 */
 	public static function getReferee()
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
 	   // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -257,7 +257,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	function getContactID( $catid )
 	{
 		$app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -283,7 +283,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	function getAllEvents()
 	{
 	   $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -328,7 +328,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	function getPlayerEvents($eventid, $projectid = null, $projectteamid = null)
 	{
 	   $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -386,7 +386,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	function getPlayerChangedRecipients()
 	{
 	    $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	  $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -465,7 +465,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	   // Get a refrence of the page instance in joomla
 		$document = JFactory::getDocument();
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$allowed = false;
 		if ($user->id > 0)
 		{
@@ -547,7 +547,7 @@ $db->disconnect(); // See: http://api.joomla.org/cms-3/classes/JDatabaseDriver.h
 	function _getProjectTeamIds4UserId($userId)
 	{
 	   $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);

@@ -103,7 +103,7 @@ DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$paramscomponent->get( 'cfg_which_
 }
 else
 {
-if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
+if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JFactory::getApplication()->input->getInt( 'cfg_which_database', 0 ) )
 {
 if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
 {        
@@ -217,7 +217,7 @@ class sportsmanagementModelProject extends JModelLegacy
         self::$cfg_which_database = $jinput->getVar('cfg_which_database','0');
         self::$matchid = $jinput->getVar('mid','0');
         self::$layout = $jinput->getVar('layout','');
-        //$app->setUserState( "com_sportsmanagement.cfg_which_database", JRequest::getInt('cfg_which_database',0) );
+        //$app->setUserState( "com_sportsmanagement.cfg_which_database", JFactory::getApplication()->input->getInt('cfg_which_database',0) );
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
         //self::updateHits(self::$projectid);
         
@@ -289,7 +289,7 @@ $result = $db->execute();
         
         self::updateHits(self::$projectid,$inserthits); 
 
-      // $this->projectid = JRequest::getInt('p',0);
+      // $this->projectid = JFactory::getApplication()->input->getInt('p',0);
     
 //    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' call_function<br><pre>'.print_r($call_function,true).'</pre>'),'');
 //    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
@@ -871,7 +871,7 @@ $s = $configcolors;
         
         if ( !self::$projectid )
         {
-            self::$projectid = JRequest::getInt('p',0);
+            self::$projectid = JFactory::getApplication()->input->getInt('p',0);
         } 
         
         if (empty(self::$_rounds))
@@ -940,7 +940,7 @@ $s = $configcolors;
         
         if ( !self::$projectid )
         {
-            self::$projectid = JRequest::getInt('p',0);
+            self::$projectid = JFactory::getApplication()->input->getInt('p',0);
         } 
         
         // Select some fields
@@ -1276,7 +1276,7 @@ $s = $configcolors;
     $option = $app->input->getCmd('option');
     if ( !self::$projectid )
         {
-            self::$projectid = JRequest::getInt('p',0);
+            self::$projectid = JFactory::getApplication()->input->getInt('p',0);
         } 
         
         // Get a db connection.
@@ -1409,7 +1409,7 @@ $s = $configcolors;
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cfg_which_database<br><pre>'.print_r($cfg_which_database,true).'</pre>'),'');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' projectid<br><pre>'.print_r(self::$projectid,true).'</pre>'),'');
         
-        //self::$projectid = JRequest::getInt('p',0);
+        //self::$projectid = JFactory::getApplication()->input->getInt('p',0);
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, $cfg_which_database );
         $query = $db->getQuery(true);

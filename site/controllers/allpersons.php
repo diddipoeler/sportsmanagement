@@ -19,7 +19,7 @@ class sportsmanagementControllerallpersons extends JControllerLegacy
 
 //function __construct()
 //	{
-////JRequest::setVar('limitstart', JRequest::getVar('limitstart', 0, '', 'int'));
+////JFactory::getApplication()->input->setVar('limitstart', JFactory::getApplication()->input->getVar('limitstart', 0, '', 'int'));
 //}
 
 }

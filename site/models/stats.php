@@ -207,7 +207,7 @@ class sportsmanagementModelStats extends JModelLegacy
 //	function getHighestHome( )
 //	{
 //	   $app = JFactory::getApplication();
-//        $option = JRequest::getCmd('option');
+//        $option = JFactory::getApplication()->input->getCmd('option');
 //        // Create a new query object.
 //		$db		= sportsmanagementHelper::getDBConnection();
 //		$query	= $db->getQuery(true);
@@ -256,7 +256,7 @@ class sportsmanagementModelStats extends JModelLegacy
 //	function getHighestAway( )
 //	{
 //	   $app = JFactory::getApplication();
-//        $option = JRequest::getCmd('option');
+//        $option = JFactory::getApplication()->input->getCmd('option');
 //        // Create a new query object.
 //		$db		= sportsmanagementHelper::getDBConnection();
 //		$query	= $db->getQuery(true);
@@ -393,7 +393,7 @@ class sportsmanagementModelStats extends JModelLegacy
 	function getChartData( )
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.
 		$db		= sportsmanagementHelper::getDBConnection();
 		$query	= $db->getQuery(true);
@@ -463,7 +463,7 @@ class sportsmanagementModelStats extends JModelLegacy
 	function getTotalRounds( )
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.
 		$db		= sportsmanagementHelper::getDBConnection();
 		$query	= $db->getQuery(true);
@@ -499,7 +499,7 @@ class sportsmanagementModelStats extends JModelLegacy
 	function getAttendanceRanking( )
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.
 		$db		= sportsmanagementHelper::getDBConnection();
 		$query	= $db->getQuery(true);

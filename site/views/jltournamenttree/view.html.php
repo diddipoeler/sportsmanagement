@@ -62,7 +62,7 @@ class sportsmanagementViewjltournamenttree extends JViewLegacy
 	 */
 	function display( $tpl = null )
 	{
-	$option = JRequest::getCmd('option');	
+	$option = JFactory::getApplication()->input->getCmd('option');	
     // Get a refrence of the page instance in joomla
 	$document = JFactory::getDocument();
 	$uri = JFactory::getURI();		
@@ -70,7 +70,7 @@ class sportsmanagementViewjltournamenttree extends JViewLegacy
     
     $this->app = JFactory::getApplication();
 	$this->jinput = $this->app->input;
-    //$this->projectid = JRequest::getInt( "p", 0 );
+    //$this->projectid = JFactory::getApplication()->input->getInt( "p", 0 );
     sportsmanagementModelProject::setProjectID($this->jinput->getInt('p',0),sportsmanagementModelProject::$cfg_which_database);
     $this->project = sportsmanagementModelProject::getProject();	
         
@@ -84,7 +84,7 @@ if ( $this->project->project_type == 'TOURNAMENT_MODE' )
     //$model =& $this->getModel( 'jlxmlexports' ); 
     $model = $this->getModel();
     //$model->checkStartExtension();
-    $bracket_request = JRequest::get();
+    $bracket_request = JFactory::getApplication()->input->get();
     $this->logo = $bracket_request['tree_logo'];
     $this->color_from = $model->getColorFrom();
     $this->color_to = $model->getColorTo();

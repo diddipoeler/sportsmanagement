@@ -117,7 +117,7 @@ $column_names	= explode( ',', $this->config['ordered_columns_names'] );
 			case 'LOT':
 				echo '<th class="headers">';
 				echo '<span class="hasTip" title="'.$toolTipTitle.'::'.$toolTipText.'">';	
-				sportsmanagementHelperHtml::printColumnHeadingSort( $column_names[$k], "lot", $this->config,JRequest::getVar( 'dir', ''),$this->paramconfig );
+				sportsmanagementHelperHtml::printColumnHeadingSort( $column_names[$k], "lot", $this->config,JFactory::getApplication()->input->getVar( 'dir', ''),$this->paramconfig );
 				echo '</th>';
 				break;
 

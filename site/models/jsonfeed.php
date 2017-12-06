@@ -30,17 +30,17 @@ class sportsmanagementModelJSONFeed extends JModelLegacy
     {
         $app = JFactory::getApplication();
         
-		$startDate = JRequest::getVar('start', null, 'GET');
-		$endDate = JRequest::getVar('end', null, 'GET');
+		$startDate = JFactory::getApplication()->input->getVar('start', null, 'GET');
+		$endDate = JFactory::getApplication()->input->getVar('end', null, 'GET');
 
 		$calendarids = '';
-		if (JRequest::getVar('gcids', null) != null) {
-			if(is_array(JRequest::getVar('gcids', null)))
-				$calendarids = JRequest::getVar('gcids', null);
+		if (JFactory::getApplication()->input->getVar('gcids', null) != null) {
+			if(is_array(JFactory::getApplication()->input->getVar('gcids', null)))
+				$calendarids = JFactory::getApplication()->input->getVar('gcids', null);
 			else
-				$calendarids = explode(',', JRequest::getVar('gcids', null));
+				$calendarids = explode(',', JFactory::getApplication()->input->getVar('gcids', null));
 		} else {
-			$calendarids = JRequest::getVar('gcid', null);
+			$calendarids = JFactory::getApplication()->input->getVar('gcid', null);
 		}
 		$results = jsmGCalendarDBUtil::getCalendars($calendarids);
         

@@ -62,7 +62,7 @@ class sportsmanagementViewCurve extends JViewLegacy
 	 */
 	function display($tpl = null)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		
 		// Get a reference of the page instance in joomla
 		$document = JFactory::getDocument();
@@ -72,7 +72,7 @@ class sportsmanagementViewCurve extends JViewLegacy
 		$js = $this->baseurl . '/components/'.$option.'/assets/js/swfobject.js';
 		$document->addScript($js);
 
-		$division = JRequest::getInt('division', 0);
+		$division = JFactory::getApplication()->input->getInt('division', 0);
 
 		$model = $this->getModel();
 		$rankingconfig = sportsmanagementModelProject::getTemplateConfig( "ranking",$model::$cfg_which_database );

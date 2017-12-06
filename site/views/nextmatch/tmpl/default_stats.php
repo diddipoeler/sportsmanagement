@@ -280,8 +280,8 @@ if ( $this->config['show_match_diff'] == 1 )
 }
 
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 
 if ( $this->config['show_match_highest_stats'] == 1 ): ?>
 	

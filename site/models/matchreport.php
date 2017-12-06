@@ -107,7 +107,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
      */
     function checkMatchPlayerProjectPositionID()
     {
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
@@ -279,7 +279,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
      */
     function getMatchPositions($which = 'player')
 	{
-	$option = JRequest::getCmd('option');
+	$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
@@ -333,7 +333,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
     function getMatchPersons($which = 'player')
 	{
 	   $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $starttime = microtime(); 
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
@@ -430,7 +430,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
      */
     function getMatchReferees()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
@@ -466,7 +466,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	 */
 	function getEventTypes()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );
@@ -494,7 +494,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
      */
     function getMatchArticle($article_id)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
@@ -527,7 +527,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	 */
 	function getMatchStats()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
@@ -573,7 +573,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	 */
 	function getPlayersStats()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
@@ -624,7 +624,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	 */
 	function getPlayersEvents()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
@@ -673,7 +673,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
 	 */
 	function getMatchStaffStats()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     $starttime = microtime(); 
         // Get a db connection.
@@ -727,7 +727,7 @@ class sportsmanagementModelMatchReport extends JModelLegacy
     	 */
     	function getPlaygroundSchema($schema,$which)
   {
-  $option = JRequest::getCmd('option');
+  $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, sportsmanagementModelProject::$cfg_which_database );

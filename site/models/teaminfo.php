@@ -88,7 +88,7 @@ class sportsmanagementModelTeamInfo extends JModelLegacy
      */
     public static function updateHits($teamid=0,$inserthits=0)
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     $db = JFactory::getDbo();
  $query = $db->getQuery(true);

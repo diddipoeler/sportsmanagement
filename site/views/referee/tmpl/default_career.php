@@ -60,8 +60,8 @@ if (count($this->history) > 0)
 					foreach ($this->history AS $station)
 					{
 					   $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $station->project_slug;
 $routeparameter['pid'] = $this->referee->slug;
 $link1 = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routeparameter);

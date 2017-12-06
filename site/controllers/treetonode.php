@@ -17,7 +17,7 @@ class JoomleagueControllerTreetonode extends JoomleagueController
 	public function display($cachable = false, $urlparams = false)
 	{
 		// Get the view name from the query string
-		$viewName = JRequest::getVar( 'view', 'treetonode' );
+		$viewName = JFactory::getApplication()->input->getVar( 'view', 'treetonode' );
 
 		// Get the view
 		$view = $this->getView( $viewName );

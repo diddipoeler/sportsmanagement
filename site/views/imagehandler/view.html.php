@@ -63,10 +63,10 @@ class sportsmanagementViewImagehandler extends JViewLegacy  {
 		}
 
 		//get vars
-		$type     	= JRequest::getVar( 'type' );
+		$type     	= JFactory::getApplication()->input->getVar( 'type' );
 		$folder 	= ImageSelectSM::getfolder($type);
-		$field 		= JRequest::getVar( 'field' );
-		$fieldid 	= JRequest::getVar( 'fieldid' );
+		$field 		= JFactory::getApplication()->input->getVar( 'field' );
+		$fieldid 	= JFactory::getApplication()->input->getVar( 'fieldid' );
 		$search 	= $app->getUserStateFromRequest( 'com_sportsmanagement.imageselect', 'search', '', 'string' );
 		$search 	= trim(JString::strtolower( $search ) );
 
@@ -74,7 +74,7 @@ class sportsmanagementViewImagehandler extends JViewLegacy  {
 		//$version = urlencode(sportsmanagementHelper::getVersion());
 		//$document->addStyleSheet('components/com_sportsmanagement/assets/css/imageselect.css?v='.$version);
 
-		JRequest::setVar( 'folder', $folder );
+		JFactory::getApplication()->input->setVar( 'folder', $folder );
 
 		// Do not allow cache
 		JResponse::allowCache(false);
@@ -123,20 +123,20 @@ class sportsmanagementViewImagehandler extends JViewLegacy  {
 	 */
 	function _displayupload($tpl = null)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app	= JFactory::getApplication();
 
 		//initialise variables
 		$document	= JFactory::getDocument();
 		$uri 		= JFactory::getURI();
 		$params 	= JComponentHelper::getParams($option);
-		$type     	= JRequest::getVar( 'type' );
+		$type     	= JFactory::getApplication()->input->getVar( 'type' );
 		$folder 	= ImageSelectSM::getfolder($type);
-		$field  	= JRequest::getVar( 'field' );
-		$fieldid  	= JRequest::getVar( 'fieldid' );
-		$menu 		= JRequest::setVar( 'hidemainmenu', 1 );
+		$field  	= JFactory::getApplication()->input->getVar( 'field' );
+		$fieldid  	= JFactory::getApplication()->input->getVar( 'fieldid' );
+		$menu 		= JFactory::getApplication()->input->setVar( 'hidemainmenu', 1 );
 		//get vars
-		$task 		= JRequest::getVar( 'task' );
+		$task 		= JFactory::getApplication()->input->getVar( 'task' );
 
 		jimport('joomla.client.helper');
 		$ftp = JClientHelper::setCredentialsFromRequest('ftp');

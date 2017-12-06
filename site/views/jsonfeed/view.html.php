@@ -32,10 +32,10 @@ class sportsmanagementViewJSONFeed extends JViewLegacy
 
 	public function display($tpl = null) 
     {
-	    $start = jsmGCalendarUtil::getDate(JRequest::getInt('start'));
-	    JRequest::setVar('start', $start->format('U') - $start->getTimezone()->getOffset($start));
-	    $end = jsmGCalendarUtil::getDate(JRequest::getInt('end'));
-	    JRequest::setVar('end', $end->format('U') - $end->getTimezone()->getOffset($end));
+	    $start = jsmGCalendarUtil::getDate(JFactory::getApplication()->input->getInt('start'));
+	    JFactory::getApplication()->input->setVar('start', $start->format('U') - $start->getTimezone()->getOffset($start));
+	    $end = jsmGCalendarUtil::getDate(JFactory::getApplication()->input->getInt('end'));
+	    JFactory::getApplication()->input->setVar('end', $end->format('U') - $end->getTimezone()->getOffset($end));
 
 		parent::display($tpl);
 	}

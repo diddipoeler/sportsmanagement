@@ -47,7 +47,7 @@ $allCalendars = jsmGCalendarDBUtil::getAllCalendars();
 $calsSources = "		eventSources: [\n";
 foreach($allCalendars as $calendar) {
 	if(empty($calendarids) || in_array($calendar->id, $calendarids)){
-		$value = html_entity_decode(JRoute::_('index.php?option=com_sportsmanagement&view=jsonfeed&format=raw&gcid='.$calendar->id.'&Itemid='.JRequest::getInt('Itemid')));
+		$value = html_entity_decode(JRoute::_('index.php?option=com_sportsmanagement&view=jsonfeed&format=raw&gcid='.$calendar->id.'&Itemid='.JFactory::getApplication()->input->getInt('Itemid')));
 		$calsSources .= "				'".$value."',\n";
 	}
 }

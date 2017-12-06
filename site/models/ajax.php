@@ -65,7 +65,7 @@ class sportsmanagementModelAjax extends JModelLegacy
     {
         $app = JFactory::getApplication();
         $db = JFactory::getDbo();
-        //$option = JRequest::getCmd('option');
+        //$option = JFactory::getApplication()->input->getCmd('option');
         // Select some fields
         $query = $db->getQuery(true);
         $query->select('p.id AS value, p.name AS text, s.name AS season_name, l.name AS league_name');

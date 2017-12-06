@@ -108,7 +108,7 @@ class sportsmanagementModelResults extends JModelLegacy
 		} 
         else 
         {
-			//$this->roundid = sportsmanagementModelProject::getCurrentRound(JRequest::getVar('view'));
+			//$this->roundid = sportsmanagementModelProject::getCurrentRound(JFactory::getApplication()->input->getVar('view'));
             self::$roundid = sportsmanagementModelProject::getCurrentRound($jinput->getVar('view'),self::$cfg_which_database);
             
             //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' _current_round<br><pre>'.print_r(sportsmanagementModelProject::$_current_round,true).'</pre>'),'');
@@ -722,8 +722,8 @@ else
         
         //$post2 = $jinput->get('post');
         
-        $pks = JRequest::getVar('cid', null, 'post', 'array');
-        $post = JRequest::get('post');
+        $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
+        $post = JFactory::getApplication()->input->get('post');
         
         //$app->enqueueMessage(__METHOD__.' '.__LINE__.' post2<br><pre>'.print_r($post2, true).'</pre><br>','Notice');
         //$app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');

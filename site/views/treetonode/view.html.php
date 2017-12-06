@@ -35,7 +35,7 @@ class sportsmanagementViewTreetonode extends sportsmanagementView
 			$titleInfo->leagueName = $this->project->league_name;
 			$titleInfo->seasonName = $this->project->season_name;
 		}
-		$division = sportsmanagementModelProject::getDivision(JRequest::getInt('division',0));
+		$division = sportsmanagementModelProject::getDivision(JFactory::getApplication()->input->getInt('division',0));
 		if (!empty( $division ) && $division->id != 0)
 		{
 			$titleInfo->divisionName = $division->name;

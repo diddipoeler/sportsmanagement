@@ -93,7 +93,7 @@ public function getModel($name = '', $prefix = '', $config = array('ignore_reque
 	 */
 	function load()
 	{
-		$cid = JRequest::getInt( 'cid', 0 );
+		$cid = JFactory::getApplication()->input->getInt( 'cid', 0 );
 
 		$club = & JTable::getInstance( 'Club', 'sportsmanagementTable' );
 		$club->load( $cid );
@@ -115,10 +115,10 @@ public function getModel($name = '', $prefix = '', $config = array('ignore_reque
 		{
 			case 'add'     :
 				{
-					JRequest::setVar('hidemainmenu',0);
-					JRequest::setVar('layout','form');
-					JRequest::setVar('view','club');
-					JRequest::setVar('edit',false);
+					JFactory::getApplication()->input->setVar('hidemainmenu',0);
+					JFactory::getApplication()->input->setVar('layout','form');
+					JFactory::getApplication()->input->setVar('view','club');
+					JFactory::getApplication()->input->setVar('edit',false);
 
 					// Checkout the club
 					$model=$this->getModel('club');
@@ -126,10 +126,10 @@ public function getModel($name = '', $prefix = '', $config = array('ignore_reque
 				} break;
 			case 'edit'    :
 				{
-					JRequest::setVar('hidemainmenu',0);
-					JRequest::setVar('layout','form');
-					JRequest::setVar('view','club');
-					JRequest::setVar('edit',true);
+					JFactory::getApplication()->input->setVar('hidemainmenu',0);
+					JFactory::getApplication()->input->setVar('layout','form');
+					JFactory::getApplication()->input->setVar('view','club');
+					JFactory::getApplication()->input->setVar('edit',true);
 
 					// Checkout the club
 					$model=$this->getModel('club');
@@ -149,14 +149,14 @@ public function getModel($name = '', $prefix = '', $config = array('ignore_reque
 	{
 		$app = JFactory::getApplication();
     // Check for request forgeries
-		JRequest::checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
+		JFactory::getApplication()->input->checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
 		$msg='';
 		$address_parts = array();
-		$post=JRequest::get('post');
+		$post=JFactory::getApplication()->input->get('post');
 		
 		//$app->enqueueMessage(JText::_('post -> '.'<pre>'.print_r($post,true).'</pre>' ),'');
 		
-		$cid=JRequest::getVar('cid',array(0),'post','array');
+		$cid=JFactory::getApplication()->input->getVar('cid',array(0),'post','array');
 		$post['id']=(int) $cid[0];
 		$model=$this->getModel('club');
 		
@@ -219,10 +219,10 @@ public function getModel($name = '', $prefix = '', $config = array('ignore_reque
 		if ($model->save($post))
 		{
 			$msg=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CTRL_SAVED');
-			$createTeam=JRequest::getVar('createTeam');
+			$createTeam=JFactory::getApplication()->input->getVar('createTeam');
 			if ($createTeam)
 			{
-				$team_name=JRequest::getVar('name');
+				$team_name=JFactory::getApplication()->input->getVar('name');
 				$team_short_name=strtoupper(substr(ereg_replace("[^a-zA-Z]","",$team_name),0,3));
 				$teammodel=$this->getModel('team');
 				$tpost['id']= "0";
@@ -249,7 +249,7 @@ public function getModel($name = '', $prefix = '', $config = array('ignore_reque
 		}
 		else
 		{
-            $this->setRedirect('index.php?option=com_sportsmanagement&close='.JRequest::getString('close', 0).'&tmpl=component&view=editclub&cid='.$post['id'],$msg,$type);
+            $this->setRedirect('index.php?option=com_sportsmanagement&close='.JFactory::getApplication()->input->getString('close', 0).'&tmpl=component&view=editclub&cid='.$post['id'],$msg,$type);
 		}
      
         

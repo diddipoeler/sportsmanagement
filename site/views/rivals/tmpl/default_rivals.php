@@ -45,13 +45,13 @@ JHtml::_('behavior.framework');
     switch ($this->config['show_picture'])
 	{
     case 'logo_small':
-    echo sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_small',JRequest::getInt('cfg_which_database',0),0 );
+    echo sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_small',JFactory::getApplication()->input->getInt('cfg_which_database',0),0 );
     break;
     case 'logo_middle':
-    echo sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_middle',JRequest::getInt('cfg_which_database',0),0 );
+    echo sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_middle',JFactory::getApplication()->input->getInt('cfg_which_database',0),0 );
     break;
     case 'logo_big':
-    echo sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_big',JRequest::getInt('cfg_which_database',0),0 );
+    echo sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_big',JFactory::getApplication()->input->getInt('cfg_which_database',0),0 );
     break;
     case 'projectteam_picture':
     echo sportsmanagementHelper::getPictureThumb($team->projectteam_picture,$team->name,$this->config['picture_width'],'auto',1);
@@ -63,22 +63,22 @@ JHtml::_('behavior.framework');
     echo JSMCountries::getCountryFlag($team->country_flag);
     break;
     case 'logo_small_country_flag':
-    echo sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_small',JRequest::getInt('cfg_which_database',0),0 ).' '.JSMCountries::getCountryFlag($team->country_flag);
+    echo sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_small',JFactory::getApplication()->input->getInt('cfg_which_database',0),0 ).' '.JSMCountries::getCountryFlag($team->country_flag);
     break;
     case 'country_flag_logo_small':
-    echo JSMCountries::getCountryFlag($team->country_flag).' '.sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_small',JRequest::getInt('cfg_which_database',0),0 );
+    echo JSMCountries::getCountryFlag($team->country_flag).' '.sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_small',JFactory::getApplication()->input->getInt('cfg_which_database',0),0 );
     break;
     case 'logo_middle_country_flag':
-    echo sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_middle',JRequest::getInt('cfg_which_database',0),0 ).' '.JSMCountries::getCountryFlag($team->country_flag);
+    echo sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_middle',JFactory::getApplication()->input->getInt('cfg_which_database',0),0 ).' '.JSMCountries::getCountryFlag($team->country_flag);
     break;
     case 'country_flag_logo_middle':
-    echo JSMCountries::getCountryFlag($team->country_flag).' '.sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_middle',JRequest::getInt('cfg_which_database',0),0 );
+    echo JSMCountries::getCountryFlag($team->country_flag).' '.sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_middle',JFactory::getApplication()->input->getInt('cfg_which_database',0),0 );
     break;
     case 'logo_big_country_flag':
-    echo sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_big',JRequest::getInt('cfg_which_database',0),0 ).' '.JSMCountries::getCountryFlag($team->country_flag);
+    echo sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_big',JFactory::getApplication()->input->getInt('cfg_which_database',0),0 ).' '.JSMCountries::getCountryFlag($team->country_flag);
     break;
     case 'country_flag_logo_big':
-    echo JSMCountries::getCountryFlag($team->country_flag).' '.sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_big',JRequest::getInt('cfg_which_database',0),0 );
+    echo JSMCountries::getCountryFlag($team->country_flag).' '.sportsmanagementModelProject::getClubIconHtml($team,1,0,'logo_big',JFactory::getApplication()->input->getInt('cfg_which_database',0),0 );
     break;
     
     }

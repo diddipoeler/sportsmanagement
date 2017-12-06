@@ -88,7 +88,7 @@ class sportsmanagementModelClubs extends JModelLegacy
 	 */
 	function getClubs( $ordering = null)
 	{
-	$option = JRequest::getCmd('option');
+	$option = JFactory::getApplication()->input->getCmd('option');
 	   $app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );

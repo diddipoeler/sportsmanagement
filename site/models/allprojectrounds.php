@@ -97,7 +97,7 @@ class sportsmanagementModelallprojectrounds extends JModelLegacy
         $app = JFactory::getApplication();
         // JInput object
         $jinput = $app->input;
-    //$this->projectid = JRequest::getInt( "p", 0 );
+    //$this->projectid = JFactory::getApplication()->input->getInt( "p", 0 );
     $this->projectid = $jinput->request->get('p', 0, 'INT');
     sportsmanagementModelProject::$projectid = $this->projectid;
     sportsmanagementModelProject::$projectslug = $this->projectid;
@@ -143,14 +143,14 @@ $this->_params['option'] = $jinput->request->get('option', 'com_sportsmanagement
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.'params<pre>'.print_r($this->_params,true).'</pre>' ),'Error');
 
-// 		$this->round = JRequest::getInt( "r", $this->current_round);
-// 		$this->part  = JRequest::getInt( "part", 0);
-// 		$this->from  = JRequest::getInt( 'from', $this->round );
-// 		$this->to	 = JRequest::getInt( 'to', $this->round);
-// 		$this->type  = JRequest::getInt( 'type', 0 );
-// 		$this->last  = JRequest::getInt( 'last', 0 );
+// 		$this->round = JFactory::getApplication()->input->getInt( "r", $this->current_round);
+// 		$this->part  = JFactory::getApplication()->input->getInt( "part", 0);
+// 		$this->from  = JFactory::getApplication()->input->getInt( 'from', $this->round );
+// 		$this->to	 = JFactory::getApplication()->input->getInt( 'to', $this->round);
+// 		$this->type  = JFactory::getApplication()->input->getInt( 'type', 0 );
+// 		$this->last  = JFactory::getApplication()->input->getInt( 'last', 0 );
 
-// 		$this->selDivision = JRequest::getInt( 'division', 0 );
+// 		$this->selDivision = JFactory::getApplication()->input->getInt( 'division', 0 );
 
 		parent::__construct( );
 	}

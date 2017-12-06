@@ -160,8 +160,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
         if ($this->match->playground_id > 0): ?>
         <?php 
         $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['pgid'] = $this->match->playground_slug;
 $playground_link = sportsmanagementHelperRoute::getSportsmanagementRoute('playground',$routeparameter);
@@ -205,8 +205,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('matchpg'.$this->match->
             $first = true;
                     foreach ( $this->matchreferees as $referee ) : 
                     $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $this->project->slug;
 $routeparameter['pid'] = $referee->person_slug;
 $referee_link = sportsmanagementHelperRoute::getSportsmanagementRoute('referee',$routeparameter);

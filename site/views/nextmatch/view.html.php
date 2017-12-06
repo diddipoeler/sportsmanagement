@@ -62,7 +62,7 @@ class sportsmanagementViewNextMatch extends JViewLegacy
 	{
 		// Get a reference of the page instance in joomla
 		$document= JFactory::getDocument();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $app = JFactory::getApplication();
     //$version = urlencode(sportsmanagementHelper::getVersion());
 //		$css='components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
@@ -150,7 +150,7 @@ class sportsmanagementViewNextMatch extends JViewLegacy
         
 /**
  *         wir benutzen bootstrap
- *         $view = JRequest::getVar( "view") ;
+ *         $view = JFactory::getApplication()->input->getVar( "view") ;
  *         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
  *         $document->addCustomTag($stylelink);
  */

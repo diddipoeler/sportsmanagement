@@ -31,15 +31,15 @@ class sportsmanagementModelEvent extends JModelLegacy
     {
         $app = JFactory::getApplication();
         
-		$results = jsmGCalendarDBUtil::getCalendars(JRequest::getVar('gcid', null));
+		$results = jsmGCalendarDBUtil::getCalendars(JFactory::getApplication()->input->getVar('gcid', null));
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' results<br><pre>'.print_r($results,true).'</pre>'),'Notice');
         
-		if (empty($results) || JRequest::getVar('eventID', null) == null) {
+		if (empty($results) || JFactory::getApplication()->input->getVar('eventID', null) == null) {
 			return null;
 		}
 
-		return jsmGCalendarZendHelper::getEvent($results[0], JRequest::getVar('eventID', null));
+		return jsmGCalendarZendHelper::getEvent($results[0], JFactory::getApplication()->input->getVar('eventID', null));
 	}
 
 	protected function populateState() 

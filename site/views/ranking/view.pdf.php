@@ -66,7 +66,7 @@ class sportsmanagementViewRanking extends JViewLegacy
 		$document = JFactory :: getDocument();
 		$uri = JFactory :: getURI();
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         
         //$version = urlencode(JoomleagueHelper::getVersion());
 		//$css='components/com_sportsmanagement/assets/css/tabs.css?v='.$version;
@@ -172,7 +172,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 		$this->awayRank = $model->awayRank;
         }
         
-        $this->current_round = sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.JRequest::getVar("view"));
+        $this->current_round = sportsmanagementModelProject::getCurrentRound(__METHOD__.' '.JFactory::getApplication()->input->getVar("view"));
         
         // mannschaften holen
 		$this->teams = sportsmanagementModelProject::getTeamsIndexedByPtid();
@@ -365,7 +365,7 @@ if ( ($this->overallconfig['show_project_rss_feed']) == 1 )
 			$pageTitle .= ': ' . $this->project->name;
 		}
 		$document->setTitle( $pageTitle );
-		$view = JRequest::getVar( "view") ;
+		$view = JFactory::getApplication()->input->getVar( "view") ;
         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
         //$document->addCustomTag($stylelink);
 		parent :: display($tpl);

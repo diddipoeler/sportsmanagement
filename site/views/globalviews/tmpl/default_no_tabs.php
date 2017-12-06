@@ -44,7 +44,7 @@ defined('_JEXEC') or die('Restricted access');
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
 <?php
     
-$view = JRequest::getCmd('view');
+$view = JFactory::getApplication()->input->getCmd('view');
 
 foreach ($this->output as $key => $templ)
 {

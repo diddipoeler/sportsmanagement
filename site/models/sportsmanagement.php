@@ -76,7 +76,7 @@ class sportsmanagementModelsportsmanagement extends JModelItem
 	{
 		$app = JFactory::getApplication();
 		// Get the message id
-		$id = JRequest::getInt('id');
+		$id = JFactory::getApplication()->input->getInt('id');
 		$this->setState('message.id', $id);
  
 		// Load the parameters.

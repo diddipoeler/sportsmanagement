@@ -91,11 +91,11 @@ class sportsmanagementModelRanking extends JModelLegacy
        $to = 0;
 		self::$projectid = (int) $jinput->get('p', 0, '');
         self::$paramconfig['p'] = self::$projectid;
-		//$this->round = JRequest::getInt("r", $this->current_round);
+		//$this->round = JFactory::getApplication()->input->getInt("r", $this->current_round);
         self::$round = $jinput->get('r', self::$current_round, '');
 		self::$part  = $jinput->getInt("part", 0);
-		//$this->from  = JRequest::getInt('from', 0 );
-		//$this->to	 = JRequest::getInt('to', $this->round);
+		//$this->from  = JFactory::getApplication()->input->getInt('from', 0 );
+		//$this->to	 = JFactory::getApplication()->input->getInt('to', $this->round);
         self::$from = $jinput->post->get('from', 0, '');
         self::$to = $jinput->post->get('to', self::$round, '');
         
@@ -688,8 +688,8 @@ catch (Exception $e){
         $jinput = $app->input;
         $order = $jinput->request->get('order', '', 'STR');
         $order_dir = $jinput->request->get('dir', 'ASC', 'STR');
-//		$order     = JRequest::getVar( 'order', '' );
-//		$order_dir = JRequest::getVar( 'dir', 'ASC' );
+//		$order     = JFactory::getApplication()->input->getVar( 'order', '' );
+//		$order_dir = JFactory::getApplication()->input->getVar( 'dir', 'ASC' );
 
 		switch ($order)
 		{

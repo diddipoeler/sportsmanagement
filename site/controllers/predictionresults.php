@@ -75,7 +75,7 @@ class sportsmanagementControllerPredictionResults extends JControllerLegacy
 	 */
 	function selectprojectround()
 	{
-		JRequest::checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
+		JFactory::getApplication()->input->checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
         // Reference global application object
         $app = JFactory::getApplication();
         // JInput object
@@ -90,11 +90,11 @@ class sportsmanagementControllerPredictionResults extends JControllerLegacy
         $cfg_which_database = $jinput->getVar('cfg_which_database','0');
         
 //		//echo '<br /><pre>~' . print_r($post,true) . '~</pre><br />'; die();
-//		$pID	= JRequest::getVar('prediction_id',	null,	'post',	'int');
+//		$pID	= JFactory::getApplication()->input->getVar('prediction_id',	null,	'post',	'int');
 //		// diddipoeler
-//        $pggroup	= JRequest::getVar('pggroup',	null,	'post',	'int');
-//		$pjID	= JRequest::getVar('pj',	null,	'post',	'int');
-//        $rID	= JRequest::getVar('r',				null,	'post',	'int');
+//        $pggroup	= JFactory::getApplication()->input->getVar('pggroup',	null,	'post',	'int');
+//		$pjID	= JFactory::getApplication()->input->getVar('pj',	null,	'post',	'int');
+//        $rID	= JFactory::getApplication()->input->getVar('r',				null,	'post',	'int');
         
         
         

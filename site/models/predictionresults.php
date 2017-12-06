@@ -156,11 +156,11 @@ static $roundID		= 0;
        
 		parent::__construct();
 		
-        //$this->pggrouprank			= JRequest::getInt('pggrouprank',		0);
+        //$this->pggrouprank			= JFactory::getApplication()->input->getInt('pggrouprank',		0);
 
     //$this->predictionGameID	= $jinput->getInt('prediction_id',0);
 
-if ( JRequest::getVar( "view") == 'predictionresults' )
+if ( JFactory::getApplication()->input->getVar( "view") == 'predictionresults' )
 {    
 	// Get pagination request variables
 	$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'int');

@@ -224,16 +224,16 @@ $iconPath = sportsmanagementHelper::getDefaultPlaceholder("icon");
 //echo __FILE__.' '.__LINE__.' timePlayed<br><pre>'.print_r($timePlayed,true).'</pre><br>';
                                     
                     $routeparameter = array();
-       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $player_hist->project_slug;
        $routeparameter['tid'] = $player_hist->team_slug;
        $routeparameter['pid'] = $this->person->slug;
             
                     $link1 = sportsmanagementHelperRoute::getSportsmanagementRoute('player',$routeparameter);
                      $routeparameter = array();
-       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $player_hist->project_slug;
        $routeparameter['tid'] = $player_hist->team_slug;
        $routeparameter['ptid'] = 0;

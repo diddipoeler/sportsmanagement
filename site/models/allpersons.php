@@ -73,8 +73,8 @@ var $_identifier = "allpersons";
         $jinput = $app->input;
         $this->use_current_season = $jinput->getVar('use_current_season', '0','request','string');
                 $this->limitstart = $jinput->getVar('limitstart', 0, '', 'int');
-//                JRequest::setVar('limitstart', JRequest::getVar('limitstart', 0, '', 'int'));
-                //$this->setState('limitstart', JRequest::getVar('limitstart', 0, '', 'int'));
+//                JFactory::getApplication()->input->setVar('limitstart', JFactory::getApplication()->input->getVar('limitstart', 0, '', 'int'));
+                //$this->setState('limitstart', JFactory::getApplication()->input->getVar('limitstart', 0, '', 'int'));
               //  $this->limit = $this->getUserStateFromRequest($this->context.'.limit', 'limit', $app->getCfg('list_limit', 0));
                 $config['filter_fields'] = array(
                         'v.lastname',
@@ -156,15 +156,15 @@ public function getStart()
         
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' request<br><pre>'.print_r($_REQUEST,true).'</pre>'),'');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' limitstart<br><pre>'.print_r(JRequest::getVar('limitstart'),true).'</pre>'),'');
+        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' limitstart<br><pre>'.print_r(JFactory::getApplication()->input->getVar('limitstart'),true).'</pre>'),'');
         
         // List state information
-		//$value = JRequest::getUInt('limit', $app->getCfg('list_limit', 0));
+		//$value = JFactory::getApplication()->input->getUInt('limit', $app->getCfg('list_limit', 0));
         
         $value = $this->getUserStateFromRequest($this->context.'.limit', 'limit', $app->getCfg('list_limit', 0));
 		$this->setState('list.limit', $value);
         
-        //$this->setState('list.start', JRequest::getVar('limitstart', 0, '', 'int'));
+        //$this->setState('list.start', JFactory::getApplication()->input->getVar('limitstart', 0, '', 'int'));
         //$this->setState('list.start', $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart') );
         
         // In case limit has been changed, adjust limitstart accordingly
@@ -172,9 +172,9 @@ public function getStart()
 
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.limit<br><pre>'.print_r($value,true).'</pre>'),'');
 
-		//$limitstart = JRequest::getVar('limitstart', 0, '', 'int');
+		//$limitstart = JFactory::getApplication()->input->getVar('limitstart', 0, '', 'int');
 		//$limitstart = $this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart',0);
-        //$value = JRequest::getVar('limitstart');
+        //$value = JFactory::getApplication()->input->getVar('limitstart');
 //        $this->setState('limitstart', $this->limitstart);
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' list.start<br><pre>'.print_r($this->getUserStateFromRequest($this->context.'.limitstart', 'limitstart'),true).'</pre>'),'');
@@ -196,14 +196,14 @@ public function getStart()
         $temp_user_request = $this->getUserStateFromRequest($this->context.'.filter.search_nation', 'filter_search_nation', '');
 		$this->setState('filter.search_nation', $temp_user_request);
 
-        //$filter_order = JRequest::getCmd('filter_order');
+        //$filter_order = JFactory::getApplication()->input->getCmd('filter_order');
         $filter_order = $this->getUserStateFromRequest($this->context.'.filter_order', 'filter_order', '', 'string');
         if (!in_array($filter_order, $this->filter_fields)) 
         {
 			$filter_order = 'v.lastname';
 		}
         
-        //$filter_order_Dir = JRequest::getCmd('filter_order_Dir');
+        //$filter_order_Dir = JFactory::getApplication()->input->getCmd('filter_order_Dir');
         $filter_order_Dir = $this->getUserStateFromRequest($this->context.'.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
         if (!in_array(strtoupper($filter_order_Dir), array('ASC', 'DESC', ''))) 
         {

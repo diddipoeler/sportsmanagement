@@ -102,7 +102,7 @@ class sportsmanagementViewjsminlinehockey extends sportsmanagementView
 	 */
 	function init()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$mainframe = JFactory::getApplication();
 
 		$db	= JFactory::getDBO();

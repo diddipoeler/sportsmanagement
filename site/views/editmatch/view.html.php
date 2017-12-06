@@ -54,7 +54,7 @@ class sportsmanagementViewEditMatch extends JViewLegacy
 	function display($tpl=null)
 	{
 		
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         $document = JFactory::getDocument();
 		$db = JFactory::getDBO();
@@ -150,11 +150,11 @@ class sportsmanagementViewEditMatch extends JViewLegacy
 function initEditLineup()
 {
     $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 	$document = JFactory::getDocument();
 $default_name_format = '';
     
-        $tid = JRequest::getVar('team','0');
+        $tid = JFactory::getApplication()->input->getVar('team','0');
         $this->tid = $tid;
         $match = sportsmanagementModelMatch::getMatchTeams($this->match->id);
         $teamname = ($tid == $match->projectteam1_id) ? $match->team1 : $match->team2;
@@ -371,7 +371,7 @@ $default_name_format = '';
 function initEditEevents()
 {
 $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 	$document = JFactory::getDocument();
     //$model = $this->getModel();
     $params = JComponentHelper::getParams ( $option );

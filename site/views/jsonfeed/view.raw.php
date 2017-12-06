@@ -33,10 +33,10 @@ class sportsmanagementViewJSONFeed extends JViewLegacy
 	public function display($tpl = null) 
     {
 		$tz = new DateTimeZone(jsmGCalendarUtil::getComponentParameter('timezone', 'UTC'));
-		$start = JFactory::getDate(JRequest::getInt('start', 0, 'GET'), $tz);
-		JRequest::setVar('start', $start->format('U') - $tz->getOffset($start));
-		$end = JFactory::getDate(JRequest::getInt('end', 0, 'GET'), $tz);
-		JRequest::setVar('end', $end->format('U') - $tz->getOffset($end));
+		$start = JFactory::getDate(JFactory::getApplication()->input->getInt('start', 0, 'GET'), $tz);
+		JFactory::getApplication()->input->setVar('start', $start->format('U') - $tz->getOffset($start));
+		$end = JFactory::getDate(JFactory::getApplication()->input->getInt('end', 0, 'GET'), $tz);
+		JFactory::getApplication()->input->setVar('end', $end->format('U') - $tz->getOffset($end));
 
 		$calendars = $this->get('GoogleCalendarFeeds');
 		if(!is_array($calendars)){
@@ -44,7 +44,7 @@ class sportsmanagementViewJSONFeed extends JViewLegacy
 		}
 		$this->calendars = $calendars;
 
-		$this->compactMode = JRequest::getVar('compact', 0);
+		$this->compactMode = JFactory::getApplication()->input->getVar('compact', 0);
 		if ($this->compactMode == 1) {
 			$this->setLayout('module');
 		}

@@ -78,14 +78,14 @@ class sportsmanagementControllereditperson extends JControllerForm
         public function submit()
         {
 //                // Check for request forgeries.
-//                JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+//                JFactory::getApplication()->input->checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 // 
 //                // Initialise variables.
 //                $app    = JFactory::getApplication();
 //                $model  = $this->getModel('updhelloworld');
 // 
 //                // Get the data from the form POST
-//                $data = JRequest::getVar('jform', array(), 'post', 'array');
+//                $data = JFactory::getApplication()->input->getVar('jform', array(), 'post', 'array');
 // 
 //        // Now update the loaded data to the database via a function in the model
 //        $upditem        = $model->updItem($data);
@@ -106,9 +106,9 @@ class sportsmanagementControllereditperson extends JControllerForm
             $app    = JFactory::getApplication();
             $model  = $this->getModel('editperson');
 
-            //$data	= JRequest::getVar('jform', array(), 'post', 'array');
-            $data = JRequest::get('post');
-		    $id		= JRequest::getInt('id');
+            //$data	= JFactory::getApplication()->input->getVar('jform', array(), 'post', 'array');
+            $data = JFactory::getApplication()->input->get('post');
+		    $id		= JFactory::getApplication()->input->getInt('id');
             
             // Now update the loaded data to the database via a function in the model
             $upditem        = $model->updItem($data);

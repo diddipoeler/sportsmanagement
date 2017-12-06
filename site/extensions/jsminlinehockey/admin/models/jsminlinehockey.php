@@ -110,7 +110,7 @@ require_once(JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'l
  */
 function checkProjectTeam($team_id,$project_id,$season_id)
 {
-$option = JRequest::getCmd('option');
+$option = JFactory::getApplication()->input->getCmd('option');
 $mainframe = JFactory::getApplication();
 $db = JFactory::getDBO();
 $query = $db->getQuery(true);
@@ -830,13 +830,13 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_round', $object,
  */
 function getMatchLink($projectid)
 {
-$option = JRequest::getCmd('option');
+$option = JFactory::getApplication()->input->getCmd('option');
 $app = JFactory::getApplication();
-$post = JRequest::get('post');
+$post = JFactory::getApplication()->input->get('post');
 
 if ( $app->isAdmin() )
 { 
-$view = JRequest::getVar('view');
+$view = JFactory::getApplication()->input->getVar('view');
 }
 else
 {
@@ -1394,7 +1394,7 @@ function getdata()
         $option = $jinput->getCmd('option');
 		$document = JFactory::getDocument ();
 		// Check for request forgeries
-		//JRequest::checkToken () or die ( 'COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN' );
+		//JFactory::getApplication()->input->checkToken () or die ( 'COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN' );
 		$msg = '';
         $post = $jinput->post->getArray(array());
         

@@ -208,7 +208,7 @@ public $_predictionGame	= null;
 	 */
 	function store($data)
 {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
 		$document = JFactory::getDocument();
         
@@ -247,7 +247,7 @@ public $_predictionGame	= null;
 	 */
 	public static function createHelptText($gameMode=0)
 	{
-  //$option = JRequest::getCmd('option').'_';
+  //$option = JFactory::getApplication()->input->getCmd('option').'_';
 		$gameModeStr = ($gameMode==0) ? JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_STANDARD_MODE') : JText::_($option.'JL_PRED_ENTRY_TOTO_MODE');
 
 		$helpText = '<hr><h3>'.JText::_('COM_SPORTSMANAGEMENT_PRED_ENTRY_HELP_TITLE').'</h3>';
@@ -414,7 +414,7 @@ JFactory::getApplication()->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <b
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
 
-		//$pids = JRequest::getVar('pids',array(),'post','array');
+		//$pids = JFactory::getApplication()->input->getVar('pids',array(),'post','array');
         $pids = $jinput->getVar('pids', null, 'post', 'array');
 		JArrayHelper::toInteger($pids);
 

@@ -90,12 +90,12 @@ var $jl_tree_jquery_version = '1.7.1';
 function __construct( )
 	{
         $menu =  JSite::getMenu();
-		$this->projectid = JRequest::getInt( "p", 0 );
- 		$this->from  = JRequest::getInt( 'from', 0 );
- 		$this->to	 = JRequest::getInt( 'to', 0 );
- 		$this->round = JRequest::getVar( "r");
-        $this->request = JRequest::get();
-        $this->menue_itemid = JRequest::getInt( "Itemid", 0 );
+		$this->projectid = JFactory::getApplication()->input->getInt( "p", 0 );
+ 		$this->from  = JFactory::getApplication()->input->getInt( 'from', 0 );
+ 		$this->to	 = JFactory::getApplication()->input->getInt( 'to', 0 );
+ 		$this->round = JFactory::getApplication()->input->getVar( "r");
+        $this->request = JFactory::getApplication()->input->get();
+        $this->menue_itemid = JFactory::getApplication()->input->getInt( "Itemid", 0 );
         
         $this->request['r'] = (int) $this->request['r'];
         if ( isset($this->request['from']) )
@@ -119,8 +119,8 @@ function __construct( )
 
 
         
-        //$this->color_from = JRequest::getVar( "color_from");
-        //$this->color_to = JRequest::getVar( "color_to");
+        //$this->color_from = JFactory::getApplication()->input->getVar( "color_from");
+        //$this->color_to = JFactory::getApplication()->input->getVar( "color_to");
         
         $item = $menu->getItem($this->menue_itemid);
 //        $this->menue_params = new JParameter($item->params);
@@ -303,7 +303,7 @@ return $this->color_to;
  */
 function getTournamentName()
 {
-$option = JRequest::getCmd('option');
+$option = JFactory::getApplication()->input->getCmd('option');
 $app = JFactory::getApplication();
 $user = JFactory::getUser();
 
@@ -332,7 +332,7 @@ return $result->name;
  */
 function getTournamentRounds()
 {
-$option = JRequest::getCmd('option');
+$option = JFactory::getApplication()->input->getCmd('option');
 $app = JFactory::getApplication();
 $user = JFactory::getUser();
 $db = JFactory::getDBO();
@@ -483,7 +483,7 @@ return '['.implode(",",$temp_rounds).']';
  */
 function getTournamentMatches($rounds)
 {
-$option = JRequest::getCmd('option');
+$option = JFactory::getApplication()->input->getCmd('option');
 $app = JFactory::getApplication();
 $user = JFactory::getUser();
 
@@ -1310,7 +1310,7 @@ return implode(",",$varteams);
 function getTournamentResults($rounds)
 {
     
-$option = JRequest::getCmd('option');
+$option = JFactory::getApplication()->input->getCmd('option');
 $app = JFactory::getApplication();
 $user = JFactory::getUser();
 

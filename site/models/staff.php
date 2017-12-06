@@ -76,10 +76,10 @@ class sportsmanagementModelStaff extends JModelLegacy
  	function __construct()
  	{
  		
- 		self::$projectid = JRequest::getInt('p',0);
- 		self::$personid = JRequest::getInt('pid',0);
- 		self::$teamid = JRequest::getInt('tid',0);
-        self::$cfg_which_database = JRequest::getInt( 'cfg_which_database', 0 );
+ 		self::$projectid = JFactory::getApplication()->input->getInt('p',0);
+ 		self::$personid = JFactory::getApplication()->input->getInt('pid',0);
+ 		self::$teamid = JFactory::getApplication()->input->getInt('tid',0);
+        self::$cfg_which_database = JFactory::getApplication()->input->getInt( 'cfg_which_database', 0 );
         parent::__construct();
  	}
 
@@ -92,7 +92,7 @@ class sportsmanagementModelStaff extends JModelLegacy
 	function getTeamStaff()
 	{
 	   $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);
@@ -130,7 +130,7 @@ class sportsmanagementModelStaff extends JModelLegacy
 	function getStaffHistory($order='ASC')
 	{
 		$app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 		$query = $db->getQuery(true);
@@ -192,7 +192,7 @@ class sportsmanagementModelStaff extends JModelLegacy
 	function getPresenceStats($project_id,$person_id)
 	{
 	   $app = JFactory::getApplication();
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
         // Create a new query object.		
 	   $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 	   $query = $db->getQuery(true);

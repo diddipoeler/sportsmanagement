@@ -47,8 +47,8 @@ defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
 	  <?php foreach ($value->project_team AS $team): 
 			$teaminfo = $value->teaminfo[0][0];
             $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $team->project_id;
 $routeparameter['tid'] = $team->team_id;
 $routeparameter['ptid'] = 0;

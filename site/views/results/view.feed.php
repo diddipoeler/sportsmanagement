@@ -10,12 +10,12 @@ class sportsmanagementViewResults extends JViewLegacy
 	{
 
 		$document	= JFactory::getDocument();
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
         $app = JFactory::getApplication();
 		$document->link = JRoute::_('index.php?option=com_sportsmanagement');
 		$model = $this->getModel();
 		$matches = $model->getMatches();
-		sportsmanagementModelProject::setProjectID(JRequest::getInt('p',0));
+		sportsmanagementModelProject::setProjectID(JFactory::getApplication()->input->getInt('p',0));
 		$config	= sportsmanagementModelProject::getTemplateConfig($this->getName());
 		$project = sportsmanagementModelProject::getProject();
 		

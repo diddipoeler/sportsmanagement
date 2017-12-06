@@ -134,7 +134,7 @@ $option = $app->input->getCmd('option');
 		if ($mytask){$params['task'] = $mytask;}
 		if ($division > 0){$params['division'] = $division;}
 		if ($divLevel > 0){$params['divLevel'] = $divLevel;}
-		$prediction_id = JRequest::getInt("prediction_id",0);
+		$prediction_id = JFactory::getApplication()->input->getInt("prediction_id",0);
 		if($prediction_id >0) 
         {
 			$params['prediction_id']= $prediction_id;

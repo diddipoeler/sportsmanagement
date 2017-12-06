@@ -105,7 +105,7 @@ class sportsmanagementModelPredictionUsers extends JModelLegacy
 	function savememberdata()
 	{
 		$document	= JFactory::getDocument();
-    $option = JRequest::getCmd('option');    
+    $option = JFactory::getApplication()->input->getCmd('option');    
     $app = JFactory::getApplication();
     $jinput = $app->input;
     // Create a new query object.		

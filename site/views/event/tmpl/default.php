@@ -27,7 +27,7 @@ $document = JFactory::getDocument();
 $document->addStyleSheet(JURI::base().'components/com_sportsmanagement/views/event/tmpl/default.css');
 $document->addScript(JURI::base().'components/com_sportsmanagement/views/event/tmpl/default.js');
 
-if (JRequest::getCmd('tmpl', '') == 'component') {
+if (JFactory::getApplication()->input->getCmd('tmpl', '') == 'component') {
 	$document->addStyleSheet(JURI::base().'components/com_sportsmanagement/views/event/tmpl/none-responsive.css');
 }
 

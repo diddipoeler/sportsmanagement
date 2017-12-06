@@ -63,7 +63,7 @@ if (!empty($value)) // && !$field->backendonly)
 </div>
 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
 <?php 
-switch (JRequest::getVar('view'))
+switch (JFactory::getApplication()->input->getVar('view'))
 {
     case 'clubinfo':
     $title = $this->club->name;

@@ -75,7 +75,7 @@ class sportsmanagementControllerPredictionRanking extends JControllerLegacy
 	 */
 	function selectprojectround()
 	{
-		JRequest::checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
+		JFactory::getApplication()->input->checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
         // Reference global application object
         $app = JFactory::getApplication();
         // JInput object
@@ -97,16 +97,16 @@ class sportsmanagementControllerPredictionRanking extends JControllerLegacy
         $rID = sportsmanagementModelPrediction::getProjectSettings($pjID);    
         }
         
-//		//$post	= JRequest::get('post');
+//		//$post	= JFactory::getApplication()->input->get('post');
 //		//echo '<br /><pre>~' . print_r($post,true) . '~</pre><br />';
-//		$pID	= JRequest::getVar('prediction_id',	'',	'post',	'int');
-//		$pggroup	= JRequest::getVar('pggroup',	null,	'post',	'int');
-//        $pggrouprank= JRequest::getVar('pggrouprank',null,	'post',	'int');
-//        $pjID	= JRequest::getVar('pj',	'',	'post',	'int');
+//		$pID	= JFactory::getApplication()->input->getVar('prediction_id',	'',	'post',	'int');
+//		$pggroup	= JFactory::getApplication()->input->getVar('pggroup',	null,	'post',	'int');
+//        $pggrouprank= JFactory::getApplication()->input->getVar('pggrouprank',null,	'post',	'int');
+//        $pjID	= JFactory::getApplication()->input->getVar('pj',	'',	'post',	'int');
 //        
-//		$rID	= JRequest::getVar('r',		'',	'post',	'int');
-//		$set_pj	= JRequest::getVar('set_pj',		'',	'post',	'int');
-//		$set_r	= JRequest::getVar('set_r',			'',	'post',	'int');
+//		$rID	= JFactory::getApplication()->input->getVar('r',		'',	'post',	'int');
+//		$set_pj	= JFactory::getApplication()->input->getVar('set_pj',		'',	'post',	'int');
+//		$set_r	= JFactory::getApplication()->input->getVar('set_r',			'',	'post',	'int');
 
 		$link = JSMPredictionHelperRoute::getPredictionRankingRoute($pID,$pjID,$rID,'',$pggroup,$pggrouprank,$type,$from,$to);
         

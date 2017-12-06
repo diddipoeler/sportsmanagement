@@ -78,8 +78,8 @@ defined('_JEXEC') or die('Restricted access');
 if ( $item->slug )
 {
 $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $item->slug;
 $routeparameter['type'] = 0;
 $routeparameter['r'] = 0;

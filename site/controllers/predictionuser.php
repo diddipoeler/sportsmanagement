@@ -86,9 +86,9 @@ class sportsmanagementControllerPredictionUsers extends JControllerForm
 	 */
 	function select()
 	{
-		JRequest::checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
-		$pID	= JRequest::getVar('prediction_id',	'',		'post',	'int');
-		$uID	= JRequest::getVar('uid',			null,	'post',	'int');
+		JFactory::getApplication()->input->checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
+		$pID	= JFactory::getApplication()->input->getVar('prediction_id',	'',		'post',	'int');
+		$uID	= JFactory::getApplication()->input->getVar('uid',			null,	'post',	'int');
 		if (empty($uID)){$uID=null;}
 		$link = JSMPredictionHelperRoute::getPredictionMemberRoute($pID,$uID);
 		//echo '<br />' . $link . '<br />';
@@ -102,19 +102,19 @@ class sportsmanagementControllerPredictionUsers extends JControllerForm
 	 */
 	function savememberdata()
 	{
-		JRequest::checkToken() or jexit(JText::_('JL_PRED_USERS_INVALID_TOKEN_MEMBER_NOT_SAVED'));
-        $option = JRequest::getCmd('option');
-        $optiontext = strtoupper(JRequest::getCmd('option').'_');
+		JFactory::getApplication()->input->checkToken() or jexit(JText::_('JL_PRED_USERS_INVALID_TOKEN_MEMBER_NOT_SAVED'));
+        $option = JFactory::getApplication()->input->getCmd('option');
+        $optiontext = strtoupper(JFactory::getApplication()->input->getCmd('option').'_');
 		$app = JFactory::getApplication();
 		$document = JFactory::getDocument();
         
 		$msg	= '';
 		$link	= '';
 
-		$post	= JRequest::get('post');
+		$post	= JFactory::getApplication()->input->get('post');
 		//echo '<br /><pre>~' . print_r($post,true) . '~</pre><br />';
-		$predictionGameID	= JRequest::getVar('prediction_id',	'','post','int');
-		$joomlaUserID		= JRequest::getVar('user_id',		'','post','int');
+		$predictionGameID	= JFactory::getApplication()->input->getVar('prediction_id',	'','post','int');
+		$joomlaUserID		= JFactory::getApplication()->input->getVar('user_id',		'','post','int');
 
 		$model			= $this->getModel('predictionusers');
 		$user			=& JFactory::getUser();
@@ -161,7 +161,7 @@ class sportsmanagementControllerPredictionUsers extends JControllerForm
 	 */
 	function selectprojectround()
 	{
-		JRequest::checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
+		JFactory::getApplication()->input->checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
 		// Reference global application object
         $app = JFactory::getApplication();
         // JInput object

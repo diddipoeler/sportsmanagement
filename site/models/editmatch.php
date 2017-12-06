@@ -199,7 +199,7 @@ class sportsmanagementModelEditMatch extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		$cfg_which_media_tool = JComponentHelper::getParams(JRequest::getCmd('option'))->get('cfg_which_media_tool',0);
+		$cfg_which_media_tool = JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('cfg_which_media_tool',0);
         $app = JFactory::getApplication('site');
         // Get the form.
 		$form = $this->loadForm('com_sportsmanagement.'.$this->name, $this->name,array('load_data' => $loadData) );
@@ -208,7 +208,7 @@ class sportsmanagementModelEditMatch extends JModelAdmin
 			return false;
 		}
         
-//        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams(JRequest::getCmd('option'))->get('ph_player',''));
+//        $form->setFieldAttribute('picture', 'default', JComponentHelper::getParams(JFactory::getApplication()->input->getCmd('option'))->get('ph_player',''));
 //        $form->setFieldAttribute('picture', 'directory', 'com_sportsmanagement/database/persons');
 //        $form->setFieldAttribute('picture', 'type', $cfg_which_media_tool);
         

@@ -256,7 +256,7 @@ $this->_params[(string)$param->attributes()->name[0]] = (string)$param->attribut
      */
     function getAllTeams($project_ids)
     {
-$option = JRequest::getCmd('option');
+$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
@@ -322,7 +322,7 @@ JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEME
      */
     function getAllMatches($projects)
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     $res = '';
         // Get a db connection.
@@ -389,7 +389,7 @@ JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEME
      */
     function getAllTimeRanking()
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     
     $arr = explode(",",$this->alltimepoints);
@@ -767,20 +767,20 @@ JError::raiseWarning(0, __METHOD__.' '.__LINE__.' '.JText::_('COM_SPORTSMANAGEME
     function getAllProject()
     {
         $app = JFactory::getApplication();
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         $jinput = $app->input;
         $league = $jinput->request->get('l', 0, 'INT');
         
         //$search	= $this->getState('filter.search');
         
-        //$this->_project_id	= JRequest::getVar('pid');
+        //$this->_project_id	= JFactory::getApplication()->input->getVar('pid');
         //$this->_project_id	= $app->getUserState( "$option.pid", '0' );
         
         // Create a new query object.		
 		$db = JFactory::getDBO();
 		$query = JFactory::getDbo()->getQuery(true);
 
-        //$league = JRequest::getInt("l", 0);
+        //$league = JFactory::getApplication()->input->getInt("l", 0);
 
         if (!$league) 
         {
@@ -860,7 +860,7 @@ $query->clear();
      */
     function getCurrentRanking()
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     
     //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' teams<br><pre>'.print_r($this->teams,true).'</pre>'),'');
@@ -948,8 +948,8 @@ $query->clear();
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' order<br><pre>'.print_r($order,true).'</pre>'),'Notice');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' order_dir<br><pre>'.print_r($order_dir,true).'</pre>'),'Notice');
         
-        //$order = JRequest::getVar('order', '');
-        //$order_dir = JRequest::getVar('dir', 'DESC');
+        //$order = JFactory::getApplication()->input->getVar('order', '');
+        //$order_dir = JFactory::getApplication()->input->getVar('dir', 'DESC');
 
         if (!$order) 
         {

@@ -64,7 +64,7 @@ class sportsmanagementViewEditPerson extends JViewLegacy
 	function display($tpl=null)
 	{
 		
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
 		$db = JFactory::getDBO();
 		$uri = JFactory::getURI();

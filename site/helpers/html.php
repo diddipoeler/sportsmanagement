@@ -490,7 +490,7 @@ $routeparameter['order'] = sportsmanagementModelResults::$order;
 $routeparameter['layout'] = sportsmanagementModelProject::$layout;
 
 //                $routeparameter['cfg_which_database'] = $cfg_which_database;
-//                $routeparameter['s'] = JRequest::getInt('s',0); 
+//                $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0); 
 //        $routeparameter["p"] = sportsmanagementModelProject::$_project->slug;
 //        $routeparameter['r'] = 0;
 //        $routeparameter['division'] = $division;

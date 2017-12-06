@@ -147,7 +147,7 @@ if ( $jinput->getVar( "view") == 'predictionranking' )
  */
 function _buildQuery()
 {
-    $option = JRequest::getCmd('option');    
+    $option = JFactory::getApplication()->input->getCmd('option');    
     $app = JFactory::getApplication();
     // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection();
@@ -237,7 +237,7 @@ function getPagination()
      */
     function getChampLogo($ProjectID,$champ_tipp)
     {
-    $option = JRequest::getCmd('option');
+    $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     $projectteamid = 0;
     

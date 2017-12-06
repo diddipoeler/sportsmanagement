@@ -66,9 +66,9 @@ class sportsmanagementModelReferees extends JModelLegacy
 	function __construct()
 	{
 		
-        self::$projectid = JRequest::getInt( 'p', 0 );
+        self::$projectid = JFactory::getApplication()->input->getInt( 'p', 0 );
 		sportsmanagementModelProject::$projectid = self::$projectid;
-        self::$cfg_which_database = JRequest::getInt( 'cfg_which_database', 0 );
+        self::$cfg_which_database = JFactory::getApplication()->input->getInt( 'cfg_which_database', 0 );
 		parent::__construct();
 	}
     
@@ -79,7 +79,7 @@ class sportsmanagementModelReferees extends JModelLegacy
 	 */
 	function getReferees()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
     $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
     $query = $db->getQuery(true);

@@ -174,7 +174,7 @@ $link = sportsmanagementHelperRoute::getSportsmanagementRoute('results',$routepa
         
         
 		<input type='hidden' name='sel_r' value='<?php echo $this->roundid; ?>' />
-		<input type='hidden' name='Itemid' value='<?php echo JRequest::getInt('Itemid', 1, 'get'); ?>' />
+		<input type='hidden' name='Itemid' value='<?php echo JFactory::getApplication()->input->getInt('Itemid', 1, 'get'); ?>' />
 
 		<input type='hidden' name='boxchecked' value='0' id='boxchecked' />
 		<input type='hidden' name='checkmycontainers' value='0' id='checkmycontainers' />

@@ -189,7 +189,7 @@ DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$paramscomponent->get( 'cfg_which_
 }
 else
 {
-if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JRequest::getInt( 'cfg_which_database', 0 ) )
+if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JFactory::getApplication()->input->getInt( 'cfg_which_database', 0 ) )
 {
 if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
 {    
@@ -334,7 +334,7 @@ if(is_null($controller) && !($controller instanceof JControllerLegacy)) {
 $task = $input->getCmd('task');
 // Den 'task' der im Request übergeben wurde ausführen
 $controller->execute($task);
-//$controller->execute(JRequest::getCmd('task'));
+//$controller->execute(JFactory::getApplication()->input->getCmd('task'));
 $controller->redirect();
 
 

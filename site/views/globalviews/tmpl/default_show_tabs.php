@@ -49,7 +49,7 @@ if(version_compare(JVERSION,'3.0.0','ge'))
 {
 // Joomla! 3.0 code here
 $idxTab = 0;
-$view = Jrequest::getCmd('view');
+$view = JFactory::getApplication()->input->getCmd('view');
 
 
 ?>
@@ -127,7 +127,7 @@ $idxTab++;
 elseif(version_compare(JVERSION,'2.5.0','ge')) 
 {
 // Joomla! 2.5 code here
-$view = Jrequest::getCmd('view');
+$view = JFactory::getApplication()->input->getCmd('view');
 ?>
 
 <div class="panel with-nav-tabs panel-default">

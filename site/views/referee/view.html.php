@@ -108,7 +108,7 @@ class sportsmanagementViewReferee extends JViewLegacy
 /**
  * 		das benötigen wir nicht, da wir bootstrap verwenden
  *         $document->setTitle($titleStr);
- *         $view = JRequest::getVar( "view") ;
+ *         $view = JFactory::getApplication()->input->getVar( "view") ;
  *         $stylelink = '<link rel="stylesheet" href="'.JURI::root().'components/'.$option.'/assets/css/'.$view.'.css'.'" type="text/css" />' ."\n";
  *         $document->addCustomTag($stylelink);
  */
