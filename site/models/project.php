@@ -284,7 +284,7 @@ $result = $db->execute();
         
         if ( !self::$projectid )
         {
-            self::$projectid = JRequest::getInt('p',0);
+            self::$projectid = $app->input->getInt('p',0);
         }
         
         self::updateHits(self::$projectid,$inserthits); 
