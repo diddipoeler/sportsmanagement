@@ -82,7 +82,9 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
 		self::$divisionid = (int) $jinput->get('division',0, '');
 		self::$mode = (int) $jinput->get('mode',0, '');
         self::$cfg_which_database = (int) $jinput->get('cfg_which_database',0, '');
-        sportsmanagementModelProject::setProjectID($jinput->getInt('p',0),self::$cfg_which_database);
+//        sportsmanagementModelProject::setProjectID($jinput->getInt('p',0),self::$cfg_which_database);
+sportsmanagementModelProject::$projectid = self::$projectid;
+sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;		
         parent::__construct();
 	}
 
