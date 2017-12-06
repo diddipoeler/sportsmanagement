@@ -49,6 +49,13 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 $this->kmlpath = JURI::root().'tmp'.DS.$this->project->id.'-ranking.kml';
 $this->kmlfile = $this->project->id.'-ranking.kml';
 
+if( version_compare(JSM_JVERSION,'4','eq') ) 
+{	
+echo $this->loadTemplate('joomla_vier');	
+}
+else
+{
+	
 if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 {
 $my_text = 'config <pre>'.print_r($this->config,true).'</pre>'; 
@@ -289,3 +296,6 @@ echo $this->loadTemplate('footer');
 ?>
 </div>
 </div>
+<?PHP
+}
+?>	
