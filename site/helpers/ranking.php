@@ -307,8 +307,15 @@ $option = $app->input->getCmd('option');
 			JError::raiseWarning(0, JText::_('COM_SPORTSMANAGEMENT_RANKING_ERROR_PROJECTID_REQUIRED'));
 			return false;
 		}
-			
-		// Get a reference to the global cache object.
+
+if( version_compare(JSM_JVERSION,'4','eq') ) 
+{		
+$data = self::_cachedGetData($this->_projectid, $this->_division,$cfg_which_database );
+}
+
+if( version_compare(JSM_JVERSION,'3','eq') ) 
+{		
+	// Get a reference to the global cache object.
 		$cache = JFactory::getCache('sportsmanagement.project'.$this->_projectid);
 		 
 		// Enable caching regardless of global setting
@@ -318,7 +325,7 @@ $option = $app->input->getCmd('option');
 		}
 
 		$data = $cache->call( array( get_class($this), '_cachedGetData' ), $this->_projectid, $this->_division,$cfg_which_database );
-			
+}			
 		return $data;
 	}
 
