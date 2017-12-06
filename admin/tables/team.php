@@ -118,8 +118,8 @@ class sportsmanagementTableTeam extends JTable
      */
     public function bind($array, $ignore = '')
    {
-      $app = JFactory::getApplication();
-      $option = JRequest::getCmd('option');
+      //$app = JFactory::getApplication();
+      //$option = JRequest::getCmd('option');
       //$app->enqueueMessage(JText::_('sportsmanagementTableTeam bind season_ids<br><pre>'.print_r($array,true).'</pre>'   ),'');
       //$app->enqueueMessage(JText::_('sportsmanagementTableTeam bind season_ids<br><pre>'.print_r($array['season_ids'],true).'</pre>'   ),'');
         
