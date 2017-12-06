@@ -297,7 +297,7 @@ class sportsmanagementModelTeamPlan extends JModelLegacy
         $starttime = microtime(); 
 
         $matches = array();
-		$project = sportsmanagementModelProject::getProject();
+		$project = sportsmanagementModelProject::getProject(self::$cfg_which_database);
 
 		if (self::$divisionid > 0)
 		{
@@ -463,7 +463,7 @@ if (!$matches && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
 		//$mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
         $matches = array();
 
-		$project = sportsmanagementModelProject::getProject();
+		$project = sportsmanagementModelProject::getProject(self::$cfg_which_database);
         
         // Select some fields
         $query->select('matches.*');
