@@ -1653,8 +1653,14 @@ $app = JFactory::getApplication();
 		  $query->where('ppos.position_id = '. (int)$position_id );
 		}
         $query->group('et.id');
-		$db->setQuery($query);
+		try{
+        $db->setQuery($query);
 		$events = $db->loadObjectList('id');
+        }
+catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+}
 		return $events;
 	}
 
