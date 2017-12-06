@@ -46,6 +46,7 @@ $this->startPane = 'startTabSet';
 $this->endPane = 'endTabSet';
 $this->addPanel = 'addTab';
 $this->endPanel = 'endTab';
+$this->config['table_class'] = 'table table-striped'
 // Define tabs options for version of Joomla! 4.0
         $tabsOptions = array(
             "active" => "tab1_id" // It is the ID of the active tab.
