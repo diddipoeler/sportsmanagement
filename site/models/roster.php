@@ -235,7 +235,7 @@ class sportsmanagementModelRoster extends JModelLegacy
 	public static function getTeamPlayers($persontype = 1)
 	{
 	   $app = JFactory::getApplication();
-        $option = JFactory::getApplication()->jinput->getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
        // Create a new query object.		
 		$db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
 		$query = $db->getQuery(true);
