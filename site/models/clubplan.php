@@ -137,7 +137,7 @@ try{
 		}
 catch (Exception $e)
 {
-    $app->enqueueMessage(JText::_($e->getMessage()), 'error');
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
 }
 		}
         
