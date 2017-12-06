@@ -110,7 +110,7 @@ class sportsmanagementModelCurve extends JModelLegacy
 	 */
 	function determineTeam1And2()
 	{
-	   $option = $this->jinput->getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication();
         // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -311,7 +311,7 @@ class sportsmanagementModelCurve extends JModelLegacy
 	function getDataByDivision($division=0)
 	{
 	   $app = JFactory::getApplication();
-        $option = $this->jinput->getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
         
 		$project = sportsmanagementModelProject::getProject(self::$cfg_which_database);
 		$rounds  = sportsmanagementModelProject::getRounds('ASC',self::$cfg_which_database,FALSE);
