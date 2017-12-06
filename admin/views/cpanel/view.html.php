@@ -88,7 +88,15 @@ class sportsmanagementViewcpanel extends sportsmanagementView
         $sporttypes = $params->get( 'cfg_sport_types' );
         $sm_quotes = $params->get( 'cfg_quotes' );
         $country = $params->get( 'cfg_country_associations' );
-        
+        $install_agegroup = JComponentHelper::getParams($this->option)->get('install_agegroup',0);
+        $cfg_which_database = $params->get( 'cfg_which_database' );
+        if ( $cfg_which_database )
+        {
+        $sporttypes = '';
+        $sm_quotes = '';
+        $country = ''; 
+        $install_agegroup = '';   
+        }
         // JPluginHelper::isEnabled( 'system', 'jqueryeasy' )
         if ( $model->getInstalledPlugin('jqueryeasy')  )
         {
@@ -210,7 +218,7 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 /**
  * nur wenn in den optionen ja eingestellt ist, werden die altersgruppen installiert
  */
-        $install_agegroup = JComponentHelper::getParams($this->option)->get('install_agegroup',0);
+        //$install_agegroup = JComponentHelper::getParams($this->option)->get('install_agegroup',0);
         if ( $install_agegroup )
         {
         if ( $country )
@@ -237,7 +245,10 @@ class sportsmanagementViewcpanel extends sportsmanagementView
 		$items = $this->get('Items');
 		$pagination = $this->get('Pagination');
         
+        if ( !$cfg_which_database )
+        {
         $checkassociations = $databasetool->checkAssociations();
+        }
         
         $checkcountry = $model->checkcountry();
         if ( $checkcountry )
