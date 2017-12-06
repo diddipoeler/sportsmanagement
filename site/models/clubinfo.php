@@ -311,7 +311,7 @@ else
      */
     public static function updateHits($clubid=0,$inserthits=0)
     {
-        $option = JRequest::getCmd('option');
+        $option = $this->jinput->getCmd('option');
 	$app = JFactory::getApplication();
     $db = JFactory::getDbo();
  $query = $db->getQuery(true);
@@ -345,8 +345,8 @@ $result = $db->execute();
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
         $query = $db->getQuery(true);
         
-        self::$projectid = JRequest::getInt( "p", 0 );
-		self::$clubid = JRequest::getInt( "cid", 0 );
+        self::$projectid = $this->jinput->getInt( "p", 0 );
+		self::$clubid = $this->jinput->getInt( "cid", 0 );
         
         self::updateHits(self::$clubid,$inserthits); 
         
