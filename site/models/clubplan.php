@@ -151,7 +151,7 @@ class sportsmanagementModelClubPlan extends JModelLegacy
      */
     function getTeamsProjects()
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 	   $app = JFactory::getApplication();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -204,7 +204,7 @@ class sportsmanagementModelClubPlan extends JModelLegacy
      */
     function getTeamsSeasons()
     {
-        $option = JRequest::getCmd('option');
+        $option = JFactory::getApplication()->input->getCmd('option');
 	   $app = JFactory::getApplication();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -249,7 +249,7 @@ class sportsmanagementModelClubPlan extends JModelLegacy
 	 */
 	function getTeams()
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 	   $app = JFactory::getApplication();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -272,7 +272,7 @@ class sportsmanagementModelClubPlan extends JModelLegacy
        
        if ( !$teams )
        {
-        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
+        //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
         }
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -394,7 +394,7 @@ class sportsmanagementModelClubPlan extends JModelLegacy
 	 */
 	function getAllMatches($orderBy = 'ASC',$type = 0)
 	{
-		$option = JRequest::getCmd('option');
+		$option = JFactory::getApplication()->input->getCmd('option');
 	   $app = JFactory::getApplication();
        
        $project = sportsmanagementModelProject::getProject(self::$cfg_which_database);
@@ -588,7 +588,7 @@ class sportsmanagementModelClubPlan extends JModelLegacy
 	 */
 	function getMatchReferees($matchID)
 	{
-	   $option = JRequest::getCmd('option');
+	   $option = JFactory::getApplication()->input->getCmd('option');
 	   $app = JFactory::getApplication();
        // Get a db connection.
         $db = sportsmanagementHelper::getDBConnection(TRUE, self::$cfg_which_database );
@@ -611,12 +611,12 @@ class sportsmanagementModelClubPlan extends JModelLegacy
         $db->setQuery($query);
         
         $result = $db->loadObjectList();
-        
+        /*
         if ( !$result && $db->getErrorMsg() )
        {
         $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
         }
-        
+        */
 		return $result;
        
 	}
