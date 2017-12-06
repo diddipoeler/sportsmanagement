@@ -43,7 +43,8 @@
  * https://docs.joomla.org/Potential_backward_compatibility_issues_in_Joomla_4
  * Class 'JToolBarHelper' not found #14330
  * https://github.com/joomla/joomla-cms/issues/14330
- *  
+ * https://api.joomla.org/cms-3/deprecated.html
+ * https://www.joomla.org/announcements/release-news/5718-joomla-4-0-alpha-1-release.html
  */
 
 
