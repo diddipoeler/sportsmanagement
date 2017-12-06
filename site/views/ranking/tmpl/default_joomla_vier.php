@@ -60,31 +60,75 @@ echo $this->loadTemplate('projectheading');
 echo JHtml::_('bootstrap.'.$this->startPane, 'ID-Tabs-Group', $tabsOptions);
 echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab1_id',JText::_($this->config['table_text_1']) ); 
 //echo '<h2>' . JText::_('COM_SPORTSMANAGEMENT_DESCRIPTION_1') .'</h2>';
+?>
+<div class="container">
+<div class="row">
+<?PHP
 echo $this->loadTemplate('ranking');
+?>
+</div>
+</div>
+<?PHP
 echo JHtml::_('bootstrap.'.$this->endPanel);
 echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab2_id',JText::_($this->config['table_text_2'])); 
 //echo '<h2>' . JText::_('COM_SPORTSMANAGEMENT_DESCRIPTION_2') .'</h2>';
+?>
+<div class="container">
+<div class="row">
+<?PHP
 echo $this->loadTemplate('ranking_home');
+?>
+</div>
+</div>
+<?PHP
 echo JHtml::_('bootstrap.'.$this->endPanel);
 echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab3_id',JText::_($this->config['table_text_3'])); 
 //echo '<h2>' . JText::_('COM_SPORTSMANAGEMENT_DESCRIPTION_3') .'</h2>';
+?>
+<div class="container">
+<div class="row">
+<?PHP
 echo $this->loadTemplate('ranking_away');
+?>
+</div>
+</div>
+<?PHP
 echo JHtml::_('bootstrap.'.$this->endPanel);
 echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab4_id',JText::_($this->config['table_text_4'])); 
 //echo '<h2>' . JText::_('COM_SPORTSMANAGEMENT_DESCRIPTION_4') .'</h2>';
+?>
+<div class="container">
+<div class="row">
+<?PHP
 echo $this->loadTemplate('ranking_first');
+?>
+</div>
+</div>
+<?PHP
 echo JHtml::_('bootstrap.'.$this->endPanel);
 echo JHtml::_('bootstrap.'.$this->addPanel, 'ID-Tabs-Group', 'tab5_id',JText::_($this->config['table_text_5'])); 
 //echo '<h2>' . JText::_('COM_SPORTSMANAGEMENT_DESCRIPTION_5') .'</h2>';
+?>
+<div class="container">
+<div class="row">
+<?PHP
 echo $this->loadTemplate('ranking_second');
+?>
+</div>
+</div>
+<?PHP
 echo JHtml::_('bootstrap.'.$this->endPanel);
 echo JHtml::_('bootstrap.'.$this->endPane, 'ID-Tabs-Group');
 
-
-//echo $this->loadTemplate('ranking');
-
-
-
+?>
+<div class="container">
+<div class="row">
+<?PHP
 echo $this->loadTemplate('backbutton');
 echo $this->loadTemplate('footer');
+?>
+</div>
+</div>
+<?PHP
+	
 ?>
