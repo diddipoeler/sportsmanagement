@@ -229,7 +229,7 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 	// TODO: ranking deviates from the other views, regarding highlighting of the favorite team(s). Align this...
 	$config['highlight_fav'] = $isFavTeam;
 	//echo sportsmanagementHelper::formatTeamName( $team->team, 'tr' . $team->team->id, $config, $isFavTeam );
-    echo sportsmanagementHelper::formatTeamName( $team->team, $this->teamrow . $team->team->id, $config, $isFavTeam, NULL,JRequest::getInt('cfg_which_database',0) );
+    echo sportsmanagementHelper::formatTeamName( $team->team, $this->teamrow . $team->team->id, $config, $isFavTeam, NULL,JFactory::getApplication()->input->getInt('cfg_which_database',0) );
 	
 	if ( $config['show_unique_id'] )
 	{
@@ -248,8 +248,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 	foreach ( $columns AS $c )
 	{
 	   $routeparameter = array();
-       $routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-       $routeparameter['s'] = JRequest::getInt('s',0);
+       $routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+       $routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
        $routeparameter['p'] = $this->project->slug;
        $routeparameter['tid'] = $team->team->team_slug;
        $routeparameter['division'] = 0;
@@ -779,8 +779,8 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamrank
 							break;
 					}
                     $routeparameter = array();
-$routeparameter['cfg_which_database'] = JRequest::getInt('cfg_which_database',0);
-$routeparameter['s'] = JRequest::getInt('s',0);
+$routeparameter['cfg_which_database'] = JFactory::getApplication()->input->getInt('cfg_which_database',0);
+$routeparameter['s'] = JFactory::getApplication()->input->getInt('s',0);
 $routeparameter['p'] = $g->project_slug;
 $routeparameter['mid'] = $g->slug;
 $url = sportsmanagementHelperRoute::getSportsmanagementRoute('matchreport',$routeparameter);
