@@ -63,28 +63,28 @@ class sportsmanagementViewStatistics extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$document = JFactory::getDocument();
-		$user = JFactory::getUser();
-		$uri = JFactory::getURI();
-		$model	= $this->getModel();
+		//$app = JFactory::getApplication();
+		//$jinput = $app->input;
+		//$option = $jinput->getCmd('option');
+		//$document = JFactory::getDocument();
+		//$user = JFactory::getUser();
+		//$uri = JFactory::getURI();
+		//$model	= $this->getModel();
         
-		$this->state = $this->get('State');
-		$this->sortDirection = $this->state->get('list.direction');
-		$this->sortColumn = $this->state->get('list.ordering');
+		//$this->state = $this->get('State');
+		//$this->sortDirection = $this->state->get('list.direction');
+		//$this->sortColumn = $this->state->get('list.ordering');
 		
 
 	$starttime = microtime();
-		$items = $this->get('Items');
+		//$items = $this->get('Items');
 		
 		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		{
 		$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
 		}
-		$total = $this->get('Total');
-		$pagination = $this->get('Pagination');
+		//$total = $this->get('Total');
+		//$pagination = $this->get('Pagination');
 
 
 		$table = JTable::getInstance('statistic', 'sportsmanagementTable');
@@ -105,12 +105,12 @@ class sportsmanagementViewStatistics extends sportsmanagementView
 										$this->state->get('filter.sports_type'));
 		unset($sportstypes);
 
-		$this->user = $user;
+		//$this->user = $user;
 		$this->config = JFactory::getConfig();
 		$this->lists = $lists;
-		$this->items = $items;
-		$this->pagination = $pagination;
-		$this->request_url = $uri->toString();
+		//$this->items = $items;
+		//$this->pagination = $pagination;
+		//$this->request_url = $uri->toString();
         
 	}
 	
