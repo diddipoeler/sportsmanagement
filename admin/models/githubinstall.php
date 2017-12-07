@@ -50,7 +50,8 @@ jimport('joomla.filesystem.archive');
 }	
 elseif( version_compare(JSM_JVERSION,'4','eq') ) 
 {
-use Joomla\Archive\Archive;
+//use Joomla\Archive\Archive;
+jimport('vendor.joomla.archive.src.archive'); 
 }	
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
