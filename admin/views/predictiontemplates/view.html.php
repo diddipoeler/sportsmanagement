@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie kÃ¶nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spÃ¤teren
+* verÃ¶ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHRLEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nÃ¼tzlich sein wird, aber
+* OHNE JEDE GEWÃ„HRLEISTUNG, bereitgestellt; sogar ohne die implizite
+* GewÃ¤hrleistung der MARKTFÃ„HIGKEIT oder EIGNUNG FÃœR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fÃ¼r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -64,18 +64,18 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 	public function init ()
 	{
 		// Reference global application object
-		$app = JFactory::getApplication();
+		//$app = JFactory::getApplication();
         // JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
+		//$jinput = $app->input;
+		//$option = $jinput->getCmd('option');
     // Get a refrence of the page instance in joomla
-		$document	= JFactory::getDocument();
-		$model = $this->getModel();
+		//$document	= JFactory::getDocument();
+		//$model = $this->getModel();
 		$starttime = microtime(); 
     
-		$this->state = $this->get('State'); 
-		$this->sortDirection = $this->state->get('list.direction');
-		$this->sortColumn = $this->state->get('list.ordering');
+		//$this->state = $this->get('State'); 
+		//$this->sortDirection = $this->state->get('list.direction');
+		//$this->sortColumn = $this->state->get('list.ordering');
         
 		//$this->prediction_id	= $app->getUserState( "$option.prediction_id", '0' );
         
@@ -86,7 +86,7 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 		else
 		{
             //$this->prediction_id = $app->getUserState( "$option.predid", '0' );
-			$this->prediction_id = $jinput->post->get('filter_prediction_id', 0);
+			$this->prediction_id = $this->jinput->post->get('filter_prediction_id', 0);
 		}   
          
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prediction_id -> '.$this->prediction_id.''),'Notice');
@@ -94,7 +94,7 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 
         
 		$lists = array();
-		$uri = JFactory::getURI();
+		//$uri = JFactory::getURI();
         
         
 		
@@ -108,24 +108,24 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
         
 		if ( isset($this->prediction_id) )
 		{
-		$checkTemplates = $model->checklist($this->prediction_id);    
+		$checkTemplates = $this->model->checklist($this->prediction_id);    
 		$predictiongame	= $mdlPredictionGame->getPredictionGame( $this->prediction_id );
 		}
 		else
 		{
             //$this->prediction_id = $app->getUserState( "$option.predid", '0' );
-			$this->prediction_id = $jinput->post->get('filter_prediction_id', 0);
+			$this->prediction_id = $this->jinput->post->get('filter_prediction_id', 0);
 		}
         
-		$items = $this->get('Items');
+		//$items = $this->get('Items');
         
 		if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		{
 			$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' Ausfuehrungszeit query<br><pre>'.print_r(sportsmanagementModeldatabasetool::getQueryTime($starttime, microtime()),true).'</pre>'),'Notice');
 		}
         
-		$total = $this->get('Total');
-		$pagination = $this->get('Pagination');
+		//$total = $this->get('Total');
+		//$pagination = $this->get('Pagination');
         
         $table = JTable::getInstance('predictiontemplate', 'sportsmanagementTable');
 		$this->table	= $table;
@@ -157,13 +157,13 @@ class sportsmanagementViewPredictionTemplates extends sportsmanagementView
 
 
         
-        $this->user	= JFactory::getUser();
+        //$this->user	= JFactory::getUser();
 		$this->pred_id	= $this->prediction_id;
 		$this->lists	= $lists;
-		$this->items	= $items;
-		$this->pagination	= $pagination;
+		//$this->items	= $items;
+		//$this->pagination	= $pagination;
 		$this->predictiongame	= $predictiongame;
-		$this->request_url	= $uri->toString();
+		//$this->request_url	= $uri->toString();
        
 		unset( $res );
 		unset( $predictions );
