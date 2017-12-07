@@ -44,9 +44,17 @@ defined('_JEXEC') or die('Restricted access');
 // import Joomla modelform library
 //jimport('joomla.application.component.model');
 
+if( version_compare(JSM_JVERSION,'3','eq') ) 
+{
+jimport('joomla.filesystem.archive'); 	
+}	
+elseif( version_compare(JSM_JVERSION,'4','eq') ) 
+{
+use Joomla\Archive\Archive;
+}	
 jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.archive'); 
+
 
 /**
  * sportsmanagementModelgithubinstall
@@ -115,8 +123,17 @@ $this->_success_text['Komponente:'] = $my_text;
 
 $extractdir = JPATH_SITE.DS.'tmp';
 $dest = JPATH_SITE.DS.'tmp'.DS.$file['name'];
-$result = JArchive::extract($dest,$extractdir);
 
+if( version_compare(JSM_JVERSION,'3','eq') ) 
+{
+$result = JArchive::extract($dest,$extractdir);
+}
+elseif( version_compare(JSM_JVERSION,'4','eq') ) 
+{	
+$archive = new Archive;
+$result = $archive->extract($dest, $extractdir);
+}	
+	
 // Get an installer instance
 $installer = JInstaller::getInstance();
 // Get the path to the package to install
