@@ -480,9 +480,19 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
 			// For new records, check the create permission.
 			if ($canDo->get('core.create')) 
 			{
+			if( version_compare(JSM_JVERSION,'3','eq') ) 
+			{
 				JToolbarHelper::apply($this->view.'.apply', 'JTOOLBAR_APPLY');
 				JToolbarHelper::save($this->view.'.save', 'JTOOLBAR_SAVE');
 				JToolbarHelper::custom($this->view.'.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+			}
+			elseif( version_compare(JSM_JVERSION,'4','eq') ) 
+			{
+			$toolbarButtons[] = ['apply', $this->view.'.apply'];
+			$toolbarButtons[] = ['save', $this->view.'.save'];
+			$toolbarButtons[] = ['save2new', $this->view.'.save2new'];	
+			}
+				
 			}
 			JToolbarHelper::cancel($this->view.'.cancel', 'JTOOLBAR_CANCEL');
 		}
@@ -505,7 +515,16 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
 				JToolbarHelper::custom($this->view.'.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
 			}
 			JToolbarHelper::cancel($this->view.'.cancel', 'JTOOLBAR_CLOSE');
-		}    
+		}
+		
+		if( version_compare(JSM_JVERSION,'4','eq') ) 
+		{
+		JToolbarHelper::saveGroup(
+			$toolbarButtons,
+			'btn-success'
+		);
+		}
+		
             
         }
         else
