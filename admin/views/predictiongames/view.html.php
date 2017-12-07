@@ -60,19 +60,19 @@ class sportsmanagementViewPredictionGames extends sportsmanagementView
 	public function init ()
 	{
 		// Reference global application object
-		$app = JFactory::getApplication();
+		//$app = JFactory::getApplication();
 		// JInput object
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$model = $this->getModel();
+		//$jinput = $app->input;
+		//$option = $jinput->getCmd('option');
+		//$model = $this->getModel();
 		$starttime = microtime();
-		$document = JFactory::getDocument();
+		//$document = JFactory::getDocument();
     
-	$uri = JFactory::getURI();
+	//$uri = JFactory::getURI();
     
-	$this->state = $this->get('State');
-		$this->sortDirection = $this->state->get('list.direction');
-		$this->sortColumn = $this->state->get('list.ordering');
+	//$this->state = $this->get('State');
+	//	$this->sortDirection = $this->state->get('list.direction');
+	//	$this->sortColumn = $this->state->get('list.ordering');
     
 		//$prediction_id		= (int) $app->getUserState( $option . 'prediction_id' );
         //$this->prediction_id	= $app->getUserState( "$option.prediction_id", '0' );
@@ -94,7 +94,7 @@ class sportsmanagementViewPredictionGames extends sportsmanagementView
 		else
 			{
             //$this->prediction_id = $app->getUserState( "$option.predid", '0' );
-				$this->prediction_id = $jinput->request->get('prediction_id', 0);
+				$this->prediction_id = $this->jinput->request->get('prediction_id', 0);
 			} 
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' prediction_id<br><pre>'.print_r($this->prediction_id,true).'</pre>'),'');        
@@ -115,7 +115,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
         $table = JTable::getInstance('predictiongame', 'sportsmanagementTable');
 		$this->table	= $table;
         
-		if ( !$items )
+		if ( !$this->items )
 			{
 				$app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_GAMES'),'Error');
 			}
@@ -124,7 +124,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 
 		//build the html select list for prediction games
 		$predictions[] = JHtml::_( 'select.option', '0', JText::_( 'COM_SPORTSMANAGEMENT_GLOBAL_SELECT_PRED_GAME' ), 'value', 'text' );
-		if ( $res = $model->getPredictionGames() )
+		if ( $res = $this->model->getPredictionGames() )
         { 
 			$predictions = array_merge( $predictions, $res );
 			$this->prediction_ids	= $res;
@@ -141,12 +141,12 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		unset( $res );
 
 
-		$this->user	= JFactory::getUser();
+		//$this->user	= JFactory::getUser();
 		$this->lists	= $lists;
-        $this->option	= $option;
-		$this->items	= $items ;
+        //$this->option	= $option;
+		//$this->items	= $items ;
 		$this->dPredictionID	= $this->prediction_id;
-		$this->pagination	= $pagination;
+		//$this->pagination	= $pagination;
 		
 		if ( $this->prediction_id > 0 )
 		{
@@ -154,7 +154,7 @@ if ( COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO )
 		}
 
     
-		$this->request_url	= $uri->toString();
+		//$this->request_url	= $uri->toString();
         
        
     
