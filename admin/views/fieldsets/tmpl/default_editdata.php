@@ -47,6 +47,7 @@ if( version_compare(JSM_JVERSION,'4','eq') )
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('behavior.formvalidator');
 JHtml::_('behavior.keepalive');    
+JHtml::_('jquery.framework');
 }    
 // No direct access
 defined('_JEXEC') or die('Restricted access');
@@ -75,7 +76,10 @@ foreach ($fieldsets as $fieldset)
 //echo JText::_(__METHOD__.' '.__LINE__.' fieldset<br><pre>'.print_r($fieldset,true).'</pre>');
     
 echo JHtml::_('bootstrap.addTab', 'myTab', $fieldset->name, JText::_($fieldset->label, true));
-
+?>
+<div class="row">
+<div class="col-md-12">
+<?PHP
 switch ($fieldset->name)
 {
     case 'details':
@@ -168,9 +172,10 @@ switch ($fieldset->name)
     echo $this->loadTemplate('fieldsets_4');
     break;
 }    
-
-
-
+?>
+</div>
+</div>
+<?PHP
 echo JHtml::_('bootstrap.endTab');
 }
 
