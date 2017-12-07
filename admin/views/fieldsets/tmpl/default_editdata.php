@@ -50,7 +50,12 @@ $view = $this->jinput->getCmd('view', 'cpanel');
 /**
  * welche joomla version ?
  */
-if(version_compare(JVERSION,'3.0.0','ge')) 
+if( version_compare(JSM_JVERSION,'4','eq') ) 
+{
+
+
+}	
+elseif( version_compare(JSM_JVERSION,'3','eq') ) 
 {
 ?> 
 <div class="form-horizontal">
