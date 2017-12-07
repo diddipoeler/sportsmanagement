@@ -38,6 +38,16 @@
 */ 
 defined('_JEXEC') or die('Restricted access');
 
+/**
+ * welche joomla version ?
+ */
+if( version_compare(JSM_JVERSION,'4','eq') ) 
+{
+// Include the component HTML helpers.
+JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+JHtml::_('behavior.formvalidator');
+JHtml::_('behavior.keepalive');    
+}    
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('footer','fieldsets');
