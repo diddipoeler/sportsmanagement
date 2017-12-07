@@ -61,18 +61,18 @@ class sportsmanagementViewsmimageimports extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-        $model = $this->getModel();
-        $uri = JFactory::getURI();
+		//$app = JFactory::getApplication();
+		//$jinput = $app->input;
+		//$option = $jinput->getCmd('option');
+        //$model = $this->getModel();
+        //$uri = JFactory::getURI();
         
-		$checkimages = $model->getimagesxml();
-		$this->files = $model->getXMLFiles();
-		$this->state = $this->get('State');
+		$checkimages = $this->model->getimagesxml();
+		$this->files = $this->model->getXMLFiles();
+		//$this->state = $this->get('State');
         
-		$this->sortDirection = $this->state->get('list.direction');
-		$this->sortColumn = $this->state->get('list.ordering');
+		//$this->sortDirection = $this->state->get('list.direction');
+		//$this->sortColumn = $this->state->get('list.ordering');
         
         //$filter_state		= $app->getUserStateFromRequest($option.'.'.$model->_identifier.'.filter_state','filter_state','','word');
         // state filter
@@ -80,7 +80,7 @@ class sportsmanagementViewsmimageimports extends sportsmanagementView
         
         //build the html select list
 		$folders[] = JHtml::_('select.option', '', JText::_('COM_SPORTSMANAGEMENT_ADMIN_IMAGE_FOLDER'),'id','name');
-        $allfolders = $model->getXMLFolder();
+        $allfolders = $this->model->getXMLFolder();
 		$folders = array_merge($folders,$allfolders);
 		$lists['folders'] = JHtml::_( 'select.genericList', 
 										$folders, 
@@ -90,16 +90,16 @@ class sportsmanagementViewsmimageimports extends sportsmanagementView
 										'name', 
 										$this->state->get('filter.image_folder'));
                                        
-		$items = $this->get('Items');
-		$total = $this->get('Total');
-		$pagination = $this->get('Pagination');
+		//$items = $this->get('Items');
+		//$total = $this->get('Total');
+		//$pagination = $this->get('Pagination');
 
-		$this->option	= $option;
+		//$this->option	= $option;
         
-		$this-> lists	= $lists;
-		$this->items	= $items;
-		$this->pagination	= $pagination;
-		$this->request_url	= $uri->toString();
+		$this->lists	= $lists;
+		//$this->items	= $items;
+		//$this->pagination	= $pagination;
+		//$this->request_url	= $uri->toString();
         
 //        $this->addToolbar();
 //		parent::display($tpl);
