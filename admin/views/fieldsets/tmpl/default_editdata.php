@@ -63,7 +63,7 @@ $view = $this->jinput->getCmd('view', 'cpanel');
 if( version_compare(JSM_JVERSION,'4','eq') ) 
 {
 
-echo JText::_(__METHOD__.' '.__LINE__.' fieldsets<br><pre>'.print_r($fieldsets,true).'</pre>');
+//echo JText::_(__METHOD__.' '.__LINE__.' fieldsets<br><pre>'.print_r($fieldsets,true).'</pre>');
     
 ?>
 <div>
@@ -72,7 +72,7 @@ echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details'));
 
 foreach ($fieldsets as $fieldset) 
 {
-echo JText::_(__METHOD__.' '.__LINE__.' fieldset<br><pre>'.print_r($fieldset,true).'</pre>');
+//echo JText::_(__METHOD__.' '.__LINE__.' fieldset<br><pre>'.print_r($fieldset,true).'</pre>');
     
 echo JHtml::_('bootstrap.addTab', 'myTab', $fieldset->name, JText::_($fieldset->label, true));
 
