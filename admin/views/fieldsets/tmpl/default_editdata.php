@@ -52,8 +52,26 @@ $view = $this->jinput->getCmd('view', 'cpanel');
  */
 if( version_compare(JSM_JVERSION,'4','eq') ) 
 {
+?>
+<div>
+<?php
+echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details'));
+
+foreach ($fieldsets as $fieldset) 
+{
+echo JHtml::_('bootstrap.addTab', 'myTab', $fieldset->name, JText::_($fieldset->label, true));
 
 
+
+
+
+echo JHtml::_('bootstrap.endTab');
+}
+
+echo JHtml::_('bootstrap.endTabSet'); 
+?>
+</div>
+<?php
 }	
 elseif( version_compare(JSM_JVERSION,'3','eq') ) 
 {
