@@ -76,8 +76,8 @@ class sportsmanagementViewPredictionGames extends sportsmanagementView
     
 		//$prediction_id		= (int) $app->getUserState( $option . 'prediction_id' );
         //$this->prediction_id	= $app->getUserState( "$option.prediction_id", '0' );
-		$modalheight = JComponentHelper::getParams($option)->get('modal_popup_height', 600);
-		$modalwidth = JComponentHelper::getParams($option)->get('modal_popup_width', 900);
+		$modalheight = JComponentHelper::getParams($this->option)->get('modal_popup_height', 600);
+		$modalwidth = JComponentHelper::getParams($this->option)->get('modal_popup_width', 900);
 		$this->modalheight	= $modalheight;
 		$this->modalwidth	= $modalwidth;
         
