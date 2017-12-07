@@ -500,19 +500,42 @@ $myoptions[] = JHtml::_( 'select.option', '2', JText::_( 'JYES' ) );
 		{
 			if ( $canDo->get('core.edit') )
 			{
+				if( version_compare(JSM_JVERSION,'3','eq') ) 
+				{
 				// We can save the new record
 				JToolbarHelper::apply($this->view.'.apply', 'JTOOLBAR_APPLY');
 				JToolbarHelper::save($this->view.'.save', 'JTOOLBAR_SAVE');
- 
+				}
+				elseif( version_compare(JSM_JVERSION,'4','eq') ) 
+				{
+				$toolbarButtons[] = ['apply', $this->view.'.apply'];
+				$toolbarButtons[] = ['save', $this->view.'.save'];		
+				}
 				// We can save this record, but check the create permission to see if we can return to make a new one.
 				if ( $canDo->get('core.create') && $this->view != 'treetonode' ) 
 				{
+					if( version_compare(JSM_JVERSION,'3','eq') ) 
+					{
 					JToolbarHelper::custom($this->view.'.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+					}
+					elseif( version_compare(JSM_JVERSION,'4','eq') ) 
+					{
+					$toolbarButtons[] = ['save2new', $this->view.'.save2new'];	
+					}
 				}
 			}
 			if ( $canDo->get('core.create')  && $this->view != 'treetonode' ) 
 			{
+				if( version_compare(JSM_JVERSION,'3','eq') ) 
+				{
 				JToolbarHelper::custom($this->view.'.save2copy', 'save-copy.png', 'save-copy_f2.png', 'JTOOLBAR_SAVE_AS_COPY', false);
+				}
+				elseif( version_compare(JSM_JVERSION,'4','eq') ) 
+				{
+				$toolbarButtons[] = ['save2copy', $this->view.'.save2copy'];		
+				}
+				
+				
 			}
 			JToolbarHelper::cancel($this->view.'.cancel', 'JTOOLBAR_CLOSE');
 		}
