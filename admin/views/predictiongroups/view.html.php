@@ -59,35 +59,35 @@ class sportsmanagementViewpredictiongroups extends sportsmanagementView
 	 */
 	public function init ()
 	{
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$option = $jinput->getCmd('option');
-		$model	= $this->getModel();
-		$uri = JFactory::getURI();
+		//$app = JFactory::getApplication();
+		//$jinput = $app->input;
+		//$option = $jinput->getCmd('option');
+		//$model	= $this->getModel();
+		//$uri = JFactory::getURI();
         
-		$this->state = $this->get('State'); 
-		$this->sortDirection = $this->state->get('list.direction');
-		$this->sortColumn = $this->state->get('list.ordering');
+		//$this->state = $this->get('State'); 
+		//$this->sortDirection = $this->state->get('list.direction');
+		//$this->sortColumn = $this->state->get('list.ordering');
 
 
 
-		$items = $this->get('Items');
-		$total = $this->get('Total');
-		$pagination = $this->get('Pagination');
+		//$items = $this->get('Items');
+		//$total = $this->get('Total');
+		//$pagination = $this->get('Pagination');
         
 		$table = JTable::getInstance('predictiongroup', 'sportsmanagementTable');
 		$this->table	= $table;
         
-        if ( !$items )
+        if ( !$this->items )
         {
         $app->enqueueMessage(JText::_('COM_SPORTSMANAGEMENT_ADMIN_PGAMES_NO_GROUPS'),'Error');    
         }
 
-		$this->user	= JFactory::getUser();
+		//$this->user	= JFactory::getUser();
 		//$this->lists	= $lists;
-		$this->items	= $items;
-		$this->pagination	= $pagination;
-		$this->request_url	= $uri->toString();
+		//$this->items	= $items;
+		//$this->pagination	= $pagination;
+		//$this->request_url	= $uri->toString();
         
        		
 	}
