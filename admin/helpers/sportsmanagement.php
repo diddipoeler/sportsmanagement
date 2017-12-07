@@ -1234,7 +1234,6 @@ else
         
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
-        
         $jRegistry->loadString($data); 
         }
         else
@@ -1342,68 +1341,6 @@ else
 		}
 	}
 
-//	/**
-//	 * Method to return the project teams array (id,name)
-//	 *
-//	 * @access	public
-//	 * @return	array
-//	 * @since	0.1
-//	 */
-//	function getProjectteams($project_id)
-//	{
-//		$db = sportsmanagementHelper::getDBConnection();
-//		$query='	SELECT	pt.id AS value,
-//							t.name AS text,
-//							t.notes
-//
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
-//					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id=t.id
-//					WHERE pt.project_id='.$project_id.'
-//					ORDER BY name ASC ';
-//
-//		$db->setQuery($query);
-//		if (!$result=$db->loadObjectList())
-//		{
-//			$this->setError($db->getErrorMsg());
-//			return false;
-//		}
-//		else
-//		{
-//			return $result;
-//		}
-//	}
-
-//	/**
-//	 * Method to return the project teams array (id,name)
-//	 *
-//	 * @access	public
-//	 * @return	array
-//	 * @since	1.5.03a
-//	 */
-//	function getProjectteamsNew($project_id)
-//	{
-//		$db = sportsmanagementHelper::getDBConnection();
-//
-//		$query='	SELECT	pt.team_id AS value,
-//							t.name AS text,
-//							t.notes
-//
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_team AS t
-//					LEFT JOIN #__'.COM_SPORTSMANAGEMENT_TABLE.'_project_team AS pt ON pt.team_id=t.id
-//					WHERE pt.project_id='.(int) $project_id.'
-//					ORDER BY name ASC ';
-//
-//		$db->setQuery($query);
-//		if (!$result=$db->loadObjectList())
-//		{
-//			$this->setError($db->getErrorMsg());
-//			return false;
-//		}
-//		else
-//		{
-//			return $result;
-//		}
-//	}
 
 	/**
 	 * sportsmanagementHelper::getProjectFavTeams()
@@ -1424,27 +1361,7 @@ else
         {
         return false;    
         }
-//        $db = sportsmanagementHelper::getDBConnection();
-//
-//		$query='	SELECT fav_team,
-//							fav_team_color,
-//					fav_team_text_color,
-//							fav_team_highlight_type,
-//							fav_team_text_bold
-//
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_project
-//					WHERE id='.(int) $project_id;
-//
-//		$db->setQuery($query);
-//		if (!$result=$db->loadObject())
-//		{
-//			$this->setError($db->getErrorMsg());
-//			return false;
-//		}
-//		else
-//		{
-//			return $result;
-//		}
+
 	}
 
 	
