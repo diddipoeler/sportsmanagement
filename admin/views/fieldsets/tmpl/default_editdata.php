@@ -61,7 +61,98 @@ foreach ($fieldsets as $fieldset)
 {
 echo JHtml::_('bootstrap.addTab', 'myTab', $fieldset->name, JText::_($fieldset->label, true));
 
+switch ($fieldset->name)
+{
+    case 'details':
+    ?>
+    <div class="row-fluid">
+					<div class="span6">
+    <?PHP
+    foreach( $this->form->getFieldset($fieldset->name) as $field ) 
+    {
+        ?>
+					<div class="control-group">
+						<div class="control-label">
+							<?php echo $field->label; ?>
+						</div>
+						<div class="controls">
+							<?php echo $field->input; ?>
+						
+                        <?PHP
+                        $suchmuster = array ("jform[","]","request[");
+                $ersetzen = array ('', '', '');
+                $var_onlinehelp = str_replace($suchmuster, $ersetzen, $field->name);
+                        switch ($var_onlinehelp)
+                {
+                    case 'id':
+                    break;
+                    default:
+                ?>
+                <a	rel="{handler: 'iframe',size: {x: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH; ?>,y: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT; ?>}}"
+									href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Felder:'.$this->jinput->getVar( "view").'-'.$var_onlinehelp; ?>"
+									 class="modal">
+									<?php
+									echo JHtml::_(	'image','media/com_sportsmanagement/jl_images/help.png',
+													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
+													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
+									?>
+								</a>
+                
+                <?PHP
+                if ( $field->name == 'jform[country]' )
+                {
+                echo JSMCountries::getCountryFlag($field->value);    
+                }
+                
+                if ( $field->name == 'jform[standard_playground]' )
+                {
+                $picture = sportsmanagementHelper::getPicturePlayground($field->value);
+?>
+<a href="<?php echo JURI::root().$picture;?>" title="<?php echo 'Playground';?>" class="modal">
+<img src="<?php echo JURI::root().$picture;?>" alt="<?php echo 'Playground';?>" width="50" />
+</a>
+<?PHP                   
+                }
+                
+                if ( $field->name == 'jform[website]' )
+                {
+                //echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
+                echo '<img style="" src="http://api.thumbsniper.com/api_free.php?size=13&effect=1&url='.$field->value.'">'; 
+                }
+                if ( $field->name == 'jform[twitter]' )
+                {
+                //echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
+                echo '<img style="" src="http://api.thumbsniper.com/api_free.php?size=13&effect=1&url='.$field->value.'">'; 
+                }
+                if ( $field->name == 'jform[facebook]' )
+                {
+                //echo '<img style="" src="http://www.thumbshots.de/cgi-bin/show.cgi?url='.$field->value.'">';  
+                echo '<img style="" src="http://api.thumbsniper.com/api_free.php?size=13&effect=1&url='.$field->value.'">'; 
+                }
+                break;
+                }
+                        ?>
+                        </div>
+					</div>
+				<?php
 
+    }
+    ?>
+    </div>
+             <div class="span6">
+						<div class="control-group">
+							<style type="text/css">.map_canvas{width:100%;height:400px;}</style>
+							<div id="map_canvas"  class="map_canvas"></div>
+						</div>
+					</div>
+            </div>
+    <?PHP
+    break;
+    default:
+    $this->fieldset = $fieldset->name;
+    echo $this->loadTemplate('fieldsets_4');
+    break;
+}    
 
 
 
