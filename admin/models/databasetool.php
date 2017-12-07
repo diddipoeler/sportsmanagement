@@ -1089,7 +1089,18 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
             ->values(implode(',', $values));
         // Set the query using our newly populated query object and execute it.
         $this->jsmdb->setQuery($this->jsmquery);
-        
+
+	try{	    
+	self::runJoomlaQuery();	
+	$this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
+	$this->my_text .= JText::_('Installierte Altersgruppen').'</strong></span><br />';
+	$this->my_text .= JText::sprintf('Die Altersgruppe %1$s wurde angelegt!!',$agegroup).'<br />';
+	}
+	catch (Exception $e)
+{
+    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+}	    
+/*
         if (!self::runJoomlaQuery())
 		{
 			
@@ -1100,10 +1111,10 @@ $xml = JFactory::getXML(JPATH_ADMINISTRATOR.'/components/'.$this->jsmoption.'/he
         {
         //$this->app->enqueueMessage(JText::sprintf('COM_SPORTSMANAGEMENT_ADMIN_GLOBAL_AGEGROUP_SUCCESS',$agegroup),'Notice');
         $this->my_text .= '<span style="color:'.$this->storeSuccessColor.'"><strong>';
-					$this->my_text .= JText::_('Installierte Altersgruppen').'</strong></span><br />';
-					$this->my_text .= JText::sprintf('Die Altersgruppe %1$s wurde angelegt!!',$agegroup).'<br />';
+	$this->my_text .= JText::_('Installierte Altersgruppen').'</strong></span><br />';
+	$this->my_text .= JText::sprintf('Die Altersgruppe %1$s wurde angelegt!!',$agegroup).'<br />';
         }
-        
+       */ 
    }
    
    }
