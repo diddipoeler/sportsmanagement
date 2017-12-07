@@ -52,6 +52,9 @@ $view = $this->jinput->getCmd('view', 'cpanel');
  */
 if( version_compare(JSM_JVERSION,'4','eq') ) 
 {
+
+echo JText::_(__METHOD__.' '.__LINE__.' fieldsets<br><pre>'.print_r($fieldsets,true).'</pre>');
+    
 ?>
 <div>
 <?php
