@@ -216,14 +216,14 @@ $this->document->addStyleSheet(JUri::root() .'administrator/components/com_sport
         if( version_compare(JSM_JVERSION,'4','eq') ) 
 {
             
-            if ( $this->layout == 'edit' )
-            {
-            $this->setLayout($this->getLayout() . '_3');
-            }
-            else
-            {
+            //if ( $this->layout == 'edit' )
+            //{
+            //$this->setLayout($this->getLayout() . '_3');
+            //}
+            //else
+            //{
             $this->setLayout($this->getLayout() . '_4');    
-            }
+            //}
             
             $this->table_data_class = 'table table-striped';
             $this->table_data_div = '</div>';
