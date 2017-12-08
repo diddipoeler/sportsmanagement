@@ -1285,6 +1285,7 @@ else
 		
         if (JFile::exists($xmlfile))
         {
+	try{	
         $jRegistry = new JRegistry;
 		//$jRegistry->loadString($data, $format);
         if(version_compare(JVERSION,'3.0.0','ge')) 
@@ -1304,6 +1305,12 @@ else
 				false, '/config');
 		$extended->bind($jRegistry);
 		return $extended;
+	}
+catch (Exception $e) {
+    // catch errors.
+    JErrorPage::render(__METHOD__.' '.__LINE__.' '.$e);
+}
+		
         }
         else
         {
