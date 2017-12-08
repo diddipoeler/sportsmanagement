@@ -208,7 +208,8 @@ $option = $jinput->getCmd('option');
        // JInput object
        $jinput = $app->input;
        
-		JFactory::getApplication()->input->checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
+		//JFactory::getApplication()->input->checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
+		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
 		$pID = JFactory::getApplication()->input->getVar('prediction_id','','post','int');
 		$uID = JFactory::getApplication()->input->getVar('uid',null,'post','int');
 		if (empty($uID)){$uID=null;}
@@ -228,7 +229,8 @@ $option = $jinput->getCmd('option');
        // JInput object
        $jinput = $app->input;
        
-		JFactory::getApplication()->input->checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
+		//JFactory::getApplication()->input->checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
+		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
 		//$post	= JFactory::getApplication()->input->get('post');
         $pID = $jinput->get('prediction_id', 0, '');
         $groupID = $jinput->get('pggroup', 0, '');

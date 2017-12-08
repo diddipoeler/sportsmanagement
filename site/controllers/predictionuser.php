@@ -86,7 +86,8 @@ class sportsmanagementControllerPredictionUsers extends JControllerForm
 	 */
 	function select()
 	{
-		JFactory::getApplication()->input->checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
+		//JFactory::getApplication()->input->checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
+		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
 		$pID	= JFactory::getApplication()->input->getVar('prediction_id',	'',		'post',	'int');
 		$uID	= JFactory::getApplication()->input->getVar('uid',			null,	'post',	'int');
 		if (empty($uID)){$uID=null;}
@@ -161,7 +162,8 @@ class sportsmanagementControllerPredictionUsers extends JControllerForm
 	 */
 	function selectprojectround()
 	{
-		JFactory::getApplication()->input->checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
+		//JFactory::getApplication()->input->checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
+		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
 		// Reference global application object
         $app = JFactory::getApplication();
         // JInput object
