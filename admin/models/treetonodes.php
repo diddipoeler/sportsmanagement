@@ -1,40 +1,70 @@
 <?php
-
+/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+* @version         1.0.05
+* @file               
+* @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
+* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @license                This file is part of SportsManagement.
+*
+* SportsManagement is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* SportsManagement is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+* GNU General Public License for more details.
+*
+* You should have received a copy of the GNU General Public License
+* along with SportsManagement.  If not, see <http://www.gnu.org/licenses/>.
+*
+* Diese Datei ist Teil von SportsManagement.
+*
+* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* der GNU General Public License, wie von der Free Software Foundation,
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
+* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+*
+* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
+* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
+* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License für weitere Details.
+*
+* Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
+* Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
+*
+* Note : All ini files need to be saved as UTF-8 without BOM
+*/
 defined('_JEXEC') or die;
 
 
 
+/**
+ * sportsmanagementModelTreetonodes
+ * 
+ * @package 
+ * @author Dieter Plöger
+ * @copyright 2017
+ * @version $Id$
+ * @access public
+ */
 class sportsmanagementModelTreetonodes extends JSMModelList
 {
 
-
-
+	/**
+	 * sportsmanagementModelTreetonodes::__construct()
+	 * 
+	 * @param mixed $config
+	 * @return void
+	 */
 	public function __construct($config = array())
 	{
 			parent::__construct($config);
-//        $this->jsmdb = sportsmanagementHelper::getDBConnection();
-//        parent::setDbo($this->jsmdb);
-//        $this->jsmquery = $this->jsmdb->getQuery(true);        
-////
-////		// Register Extra tasks
-//////		$this->registerTask('add','display');
-//////		$this->registerTask('edit','display');
-//////		$this->registerTask('apply','save');
-////        
-//        // Reference global application object
-//        $this->jsmapp = JFactory::getApplication();
-//        // JInput object
-//        $this->jsmjinput = $this->jsmapp->input;
-//        $this->jsmoption = $this->jsmjinput->getCmd('option');
-//        $this->jsmdocument = JFactory::getDocument();
-        
-        //$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' jsmjinput<br><pre>'.print_r($this->jsmjinput,true).'</pre>'),'Notice');
         
 		$limit = 130;
 		$this->setState('limit',$limit);
 	}
-
-	
     
     /**
      * sportsmanagementModelTreetonodes::populateState()
@@ -54,11 +84,22 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 		}
 	}
 
+	/**
+	 * sportsmanagementModelTreetonodes::getStoreId()
+	 * 
+	 * @param string $id
+	 * @return
+	 */
 	protected function getStoreId($id = '')
 	{
 		return parent::getStoreId($id);
 	}
 
+	/**
+	 * sportsmanagementModelTreetonodes::getListQuery()
+	 * 
+	 * @return
+	 */
 	protected function getListQuery()
 	{
 
@@ -103,6 +144,12 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 
 	
     
+	/**
+	 * sportsmanagementModelTreetonodes::getMaxRound()
+	 * 
+	 * @param mixed $project_id
+	 * @return
+	 */
 	function getMaxRound($project_id)
 	{
 		$result = 0;
@@ -121,21 +168,16 @@ class sportsmanagementModelTreetonodes extends JSMModelList
 
 
 
+	/**
+	 * sportsmanagementModelTreetonodes::setRemoveNode()
+	 * 
+	 * @param mixed $post
+	 * @return
+	 */
 	function setRemoveNode($post)
 	{
-		//$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-		// $treeto_id = $app->getUserState($option . 'treeto_id');
+		
 		$treeto_id = $post['treeto_id'];
-
-//// delete all custom keys for user 1001.
-//$conditions = array(
-//    $db->quoteName('user_id') . ' = 1001', 
-//    $db->quoteName('profile_key') . ' = ' . $db->quote('custom.%')
-//);
-//$query->delete($db->quoteName('#__user_profiles'));
-//$query->where($conditions);
 
 		$this->jsmquery->clear();
         $this->jsmquery = ' DELETE ttn, ttm ';
@@ -163,21 +205,6 @@ $object->leafed = 0;
 // Update their details in the users table using id as the primary key.
 $result = $this->jsmdb->updateObject('#__sportsmanagement_treeto', $object, 'id');
 
-//		$query = ' UPDATE #__sportsmanagement_treeto AS tt ';
-//		$query .= ' SET ';
-//		$query .= ' tt.tree_i = 0 ';
-//		$query .= ' ,tt.global_bestof = 1 ';
-//		$query .= ' ,tt.global_matchday = 0 ';
-//		$query .= ' ,tt.global_known = 0 ';
-//		$query .= ' ,tt.global_fake = 0 ';
-//		$query .= ' ,tt.mirror = 0 ';
-//		$query .= ' ,tt.hide = 0 ';
-//		$query .= ' ,tt.leafed = 0 ';
-//		$query .= ' WHERE tt.id = ' . $treeto_id;
-//		$query .= ';';
-//		$this->_db->setQuery($query);
-//		$this->_db->query($query);
-
 		return true;
 	}
 
@@ -187,33 +214,15 @@ $result = $this->jsmdb->updateObject('#__sportsmanagement_treeto', $object, 'id'
 	function storeshortleaf($cid,$post)
 	{
 		$result = true;
-
-		//$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
 		$project_id = $this->jsmjinput->get('pid');
-
 		$tree_i = $post['tree_i'];
 		$treeto_id = $post['treeto_id'];
 		$global_fake = $post['global_fake'];
 
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' cid<br><pre>'.print_r($cid,true).'</pre>'),'Error');
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'Error');
-
-		//$db = JFactory::getDbo();
-
 		// if user checked at least ONE node as leaf
 		for($x = 0;$x < count($cid);$x ++)
 		{
-			// leaf(ing) this node
-//			$query = $db->getQuery(true);
-//			$query->update('#__sportsmanagement_treeto_node');
-//			$query->set('is_leaf = 1');
-//			$query->where('id=' . $cid[$x]);
-//			$db->setQuery($query);
-//			$db->execute();
-
-			// find index of checked node
+					// find index of checked node
 // Create an object for the record we are going to update.
 $object = new stdClass();
 // Must be a valid primary key value.
@@ -241,12 +250,6 @@ $result = $this->jsmdb->updateObject('#__sportsmanagement_treeto_node', $object,
 					{
 						if($z < pow(2,$tree_i + 1))
 						{
-//							$query = $db->getQuery(true);
-//							$query->update('#__sportsmanagement_treeto_node');
-//							$query->set('published=0');
-//							$query->where('(node= ' . $z . ' AND treeto_id = ' . $treeto_id . ')');
-//							$db->setQuery($query);
-//							$db->execute();
 
 $this->jsmquery->clear();
 // Fields to update.
@@ -271,14 +274,7 @@ sportsmanagementModeldatabasetool::runJoomlaQuery();
 		// 2, 4, 8, 16, 32, 64 teams, default leaf(ing)
 		for($k = pow(2,$tree_i);$k < pow(2,$tree_i + 1);$k ++)
 		{
-		//	$query = $db->getQuery(true);
-//			$query->update('#__sportsmanagement_treeto_node');
-//			$query->set('is_leaf=1');
-//			$query->where('(node= ' . $k . ' AND treeto_id = ' . $treeto_id . ')');
-//			$db->setQuery($query);
-//			$db->execute();
-
-$this->jsmquery->clear();
+		$this->jsmquery->clear();
 // Fields to update.
 $fields = array(
     $this->jsmdb->quoteName('is_leaf') . ' = 1'
@@ -294,14 +290,7 @@ $this->jsmdb->setQuery($this->jsmquery);
 sportsmanagementModeldatabasetool::runJoomlaQuery();            
             
 		}
-		// only for menu
-//		$query = $db->getQuery(true);
-//		$query->update('#__sportsmanagement_treeto');
-//		$query->set('leafed=3');
-//		$query->where('id = ' . $treeto_id);
-//		$db->setQuery($query);
-//		$db->execute();
-
+		
 // Create an object for the record we are going to update.
 $object = new stdClass();
 // Must be a valid primary key value.
@@ -317,31 +306,17 @@ $resultupdate = $this->jsmdb->updateObject('#__sportsmanagement_treeto', $object
 	}
 
 
+	
 	/**
-	 *
+	 * sportsmanagementModelTreetonodes::storefinishleaf()
+	 * 
+	 * @param mixed $post
+	 * @return
 	 */
 	function storefinishleaf($post)
 	{
-		//$app 	= JFactory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-		//$db 	= JFactory::getDbo();
-
-//$this->jsmapp->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
-
-//		$project_id 	= $this->jsmapp->getUserState($this->jsmoption.'project');
-//		$tree_i 		= $post['tree_i'];
+		
 		$treeto_id 		= $post['treeto_id'];
-//		$global_known 	= $post['global_known'];
-//		$global_bestof 	= $post['global_bestof'];
-
-//		$query = $db->getQuery(true);
-//		$query->update('#__sportsmanagement_treeto');
-//		$query->set('leafed = 1');
-//		$query->where('id = '.$treeto_id);
-//
-//		$db->setQuery($query);
-//		$db->execute($query);
 
 // Create an object for the record we are going to update.
 $object = new stdClass();
@@ -355,16 +330,16 @@ $resultupdate = $this->jsmdb->updateObject('#__sportsmanagement_treeto', $object
 	}
 
 
+	
 	/**
-	 *
+	 * sportsmanagementModelTreetonodes::getProjectTeamsOptions()
+	 * 
+	 * @param integer $project_id
+	 * @return
 	 */
 	function getProjectTeamsOptions($project_id=0)
 	{
-		//$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-		//$project_id = $this->jsmapp->getUserState($this->jsmoption.'.pid');
-        
+		        
         if ( !$project_id )
         {
         $project_id = $this->jsmjinput->get('pid');
@@ -398,31 +373,20 @@ $resultupdate = $this->jsmdb->updateObject('#__sportsmanagement_treeto', $object
 	}
 
 
+	
 	/**
-	 *
+	 * sportsmanagementModelTreetonodes::storeshort()
+	 * 
+	 * @param mixed $cid
+	 * @param mixed $post
+	 * @return
 	 */
 	function storeshort($cid,$post)
 	{
-		//$app = JFactory::getApplication();
-//		$jinput = $app->input;
-//		$option = $jinput->getCmd('option');
-//		$result = true;
-//		$post = JFactory::getApplication()->input->get('post');
-//		$db = JFactory::getDbo();
-
+		
 		for($x = 0;$x < count($cid);$x ++)
 		{
-		//	$query = $db->getQuery(true);
-//			$query->update('#__sportsmanagement_treeto_node');
-//			$query->set('team_id = '.$post['team_id'.$cid[$x]]);
-//			$query->where('id = '.$cid[$x]);
-//			$db->setQuery($query);
-//			if(! $db->execute())
-//			{
-//				$this->setError($db->getErrorMsg());
-//				$result = false;
-//			}
-            
+		            
 // Create an object for the record we are going to update.
 $object = new stdClass();
 // Must be a valid primary key value.
