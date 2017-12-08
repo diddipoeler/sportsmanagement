@@ -114,7 +114,9 @@ echo JHtml::_('bootstrap.renderModal',
 	$var_onlinehelp,
 	array(
 	'title' => JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'),
-	'url' => COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Felder:'.$this->jinput->getVar( "view").'-'.$var_onlinehelp
+	'url' => COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Felder:'.$this->jinput->getVar( "view").'-'.$var_onlinehelp,
+    'width' => COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH,
+    'height' => COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT
 	)
 	);	
 ?>									
