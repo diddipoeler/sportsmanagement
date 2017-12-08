@@ -63,9 +63,6 @@ $view = $this->jinput->getCmd('view', 'cpanel');
  */
 if( version_compare(JSM_JVERSION,'4','eq') ) 
 {
-
-//echo JText::_(__METHOD__.' '.__LINE__.' fieldsets<br><pre>'.print_r($fieldsets,true).'</pre>');
-    
 ?>
 <div>
 <?php
@@ -107,15 +104,21 @@ switch ($fieldset->name)
                     break;
                     default:
                 ?>
-                <a	rel="{handler: 'iframe',size: {x: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_WIDTH; ?>,y: <?php echo COM_SPORTSMANAGEMENT_MODAL_POPUP_HEIGHT; ?>}}"
-									href="<?php echo COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Felder:'.$this->jinput->getVar( "view").'-'.$var_onlinehelp; ?>"
-									 class="modal">
-									<?php
-									echo JHtml::_(	'image','media/com_sportsmanagement/jl_images/help.png',
-													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
-													JText::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
-									?>
-								</a>
+<a href="#<?php echo $var_onlinehelp;?>" title="<?php echo $var_onlinehelp;?>" class="" data-toggle="modal">
+<?php
+echo JHtml::_(	'image','media/com_sportsmanagement/jl_images/help.png',
+JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'),'title= "' .
+JText::_('COM_SPORTSMANAGEMENT_HELP_LINK').'"');
+	
+echo JHtml::_('bootstrap.renderModal',
+	$var_onlinehelp,
+	array(
+	'title' => JText::_('COM_SPORTSMANAGEMENT_HELP_LINK'),
+	'url' => COM_SPORTSMANAGEMENT_HELP_SERVER.'SM-Backend-Felder:'.$this->jinput->getVar( "view").'-'.$var_onlinehelp
+	)
+	);	
+?>									
+</a>                
                 
                 <?PHP
                 if ( $field->name == 'jform[country]' )

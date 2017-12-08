@@ -7,13 +7,13 @@
 * @license This file is part of SportsManagement.
 * 
 * https://docs.joomla.org/Creating_a_custom_form_field_type
+* https://hotexamples.com/examples/-/JFormFieldRadio/-/php-jformfieldradio-class-examples.html
  */
 
 // no direct access
 defined('_JEXEC') or die ;
 
 jimport('joomla.form.formfield');
-
 
 /**
  * JFormFieldExtensionRadioButton
@@ -24,10 +24,9 @@ jimport('joomla.form.formfield');
  * @version $Id$
  * @access public
  */
-class JFormFieldExtensionRadioButton extends JFormField {
+class JFormFieldExtensionRadioButton extends JFormFieldRadio {
 		
 	public $type = 'ExtensionRadioButton';
-	
 
 	/**
 	 * JFormFieldExtensionRadioButton::getLabel()
@@ -35,20 +34,9 @@ class JFormFieldExtensionRadioButton extends JFormField {
 	 * @return void
 	 */
 	protected function getLabel() 
-	{	
-	   
-    /**
-     * welche joomla version ?
-     */
-    if( version_compare(substr(JVERSION,0,1),'4','eq') ) 
-    {
-	$this->class = "switcher";   
-    }
-    else
-    {
-    $this->class = "radio btn-group btn-group-yesno";    
-    }
-    
+	{
+
+    return parent::getLabel();
 	}
 
 
@@ -59,18 +47,23 @@ class JFormFieldExtensionRadioButton extends JFormField {
 	 */
 	protected function getInput() 
 	{
+	/**
+     * welche joomla version ?
+     */
+    if( version_compare(substr(JVERSION,0,1),'4','eq') ) 
+    {
+	$this->class = "switcher";   
+    }
+    else
+    {
+    $this->class = "radio btn-group btn-group-yesno";    
+    }	
+		
 
+	return parent::getInput();
 	}
     
-    /**
-     * JFormFieldExtensionRadioButton::getValue()
-     * 
-     * @return void
-     */
-    protected function getValue() 
-	{		
-
-	}
+    
 
 }
 ?>
