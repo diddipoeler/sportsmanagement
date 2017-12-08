@@ -158,8 +158,15 @@ class sportsmanagementViewClub extends sportsmanagementView
 
 $this->document->addScript((JBrowser::getInstance()->isSSLConnection() ? "https" : "http") . '://maps.googleapis.com/maps/api/js?libraries=places&language=de');
 $this->document->addScript(JURI::base() . 'components/'.$this->option.'/assets/js/geocomplete.js');
-$this->document->addScript(JURI::base() . 'components/'.$this->option.'/views/club/tmpl/edit.js');
 
+        if( version_compare(JSM_JVERSION,'4','eq') ) 
+{
+	}
+		else
+		{
+$this->document->addScript(JURI::base() . 'components/'.$this->option.'/views/club/tmpl/edit.js');
+		}
+		
 //$this->document->addScript(JURI::root(true).'/administrator/components/com_sportsmanagement/assets/js/gmap3.min.js');
                              
 	}
