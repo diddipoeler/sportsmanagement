@@ -76,7 +76,7 @@ class sportsmanagementControllerUpdsportsmanagement extends JControllerForm
 	public function submit()
 	{
 		// Check for request forgeries.
-		JFactory::getApplication()->input->checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
 		$app	= JFactory::getApplication();

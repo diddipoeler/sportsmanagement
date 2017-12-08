@@ -122,7 +122,7 @@ $jinput = $app->input;
 $option = $jinput->getCmd('option');
     
     
-    JFactory::getApplication()->input->checkToken() or jexit(JText::_('COM_SPORTSMANAGEMENT_PRED_INVALID_TOKEN_REFUSED'));
+    JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
 		
     $msg = '';
 		$link = '';
@@ -208,7 +208,6 @@ $option = $jinput->getCmd('option');
        // JInput object
        $jinput = $app->input;
        
-		//JFactory::getApplication()->input->checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
 		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
 		$pID = JFactory::getApplication()->input->getVar('prediction_id','','post','int');
 		$uID = JFactory::getApplication()->input->getVar('uid',null,'post','int');
@@ -229,7 +228,6 @@ $option = $jinput->getCmd('option');
        // JInput object
        $jinput = $app->input;
        
-		//JFactory::getApplication()->input->checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
 		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
 		//$post	= JFactory::getApplication()->input->get('post');
         $pID = $jinput->get('prediction_id', 0, '');
@@ -272,7 +270,7 @@ $option = $jinput->getCmd('option');
 	 */
 	function addtipp()
 	{
-		JFactory::getApplication()->input->checkToken() or jexit(JText::_('JL_PRED_ENTRY_INVALID_TOKEN_PREDICTIONS_NOT_SAVED'));
+		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
     
     $app = JFactory::getApplication();
 		$document = JFactory::getDocument();

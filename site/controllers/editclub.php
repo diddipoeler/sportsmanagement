@@ -149,7 +149,7 @@ public function getModel($name = '', $prefix = '', $config = array('ignore_reque
 	{
 		$app = JFactory::getApplication();
     // Check for request forgeries
-		JFactory::getApplication()->input->checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
+		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
 		$msg='';
 		$address_parts = array();
 		$post=JFactory::getApplication()->input->get('post');

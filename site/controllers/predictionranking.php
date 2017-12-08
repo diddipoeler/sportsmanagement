@@ -75,7 +75,6 @@ class sportsmanagementControllerPredictionRanking extends JControllerLegacy
 	 */
 	function selectprojectround()
 	{
-		//JFactory::getApplication()->input->checkToken() or jexit(JText::_('JL_PRED_INVALID_TOKEN_REFUSED'));
 		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
         // Reference global application object
         $app = JFactory::getApplication();
