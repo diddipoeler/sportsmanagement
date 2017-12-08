@@ -53,8 +53,16 @@ jimport('joomla.application.component.model');
 //require_once(JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS. 'github' . DS . 'github.php');
 //require_once(JPATH_ROOT.DS.'libraries'.DS.'joomla'.DS. 'github' . DS . 'package' . DS . 'issues.php');
 
+if( version_compare(JSM_JVERSION,'4','eq') ) 
+{
+    
+}
+else
+{    
 //use Joomla\Github\Github;
 JLoader::import('libraries.joomla.github.github', JPATH_ADMINISTRATOR);
+}
+
 
 /**
  * sportsmanagementModelgithub

@@ -435,7 +435,7 @@ class sportsmanagementControllermatch extends JControllerForm
     function savepressebericht()
     {
     	// Check for request forgeries
-		JFactory::getApplication()->input->checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
+		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
 		$msg='';
 		JToolbarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
 		$app = JFactory::getApplication();

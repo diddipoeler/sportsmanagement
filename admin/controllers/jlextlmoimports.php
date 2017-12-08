@@ -67,7 +67,7 @@ class sportsmanagementControllerjlextlmoimports extends JControllerLegacy
 		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         // Check for request forgeries
-		JFactory::getApplication()->input->checkToken() or die('COM_SPORTSMANAGEMENT_GLOBAL_INVALID_TOKEN');
+		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
 		$msg='';
 		JToolbarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&view=jllmoimport&controller=jllmoimport'));
 		$app =& JFactory::getApplication();

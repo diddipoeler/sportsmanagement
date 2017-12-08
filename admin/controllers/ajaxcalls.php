@@ -61,12 +61,10 @@ function removeCommentary()
         //$result = $response;
         
         // Check for request forgeries
-        //JFactory::getApplication()->input->checkToken('get') or jexit('JINVALID_TOKEN');
-		//JSession::checkToken() or die('JINVALID_TOKEN');
-        JFactory::getApplication()->input->checkToken() or jexit('JINVALID_TOKEN');
+        JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
         
         // Check for request forgeries
-        //JFactory::getApplication()->input->checkToken( 'get' ) or jexit( 'JINVALID_TOKEN' );
+        //JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
         
  //       if (!JSession::checkToken('post')) 
 //        {

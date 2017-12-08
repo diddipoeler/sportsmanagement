@@ -102,7 +102,7 @@ class sportsmanagementControllergithub extends JControllerForm
 function addissue()
 {
   // Check for request forgeries
-		JFactory::getApplication()->input->checkToken() or die('JINVALID_TOKEN');
+		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
 
        $msg = $this->model->addissue();
        $this->setRedirect('index.php?option=com_sportsmanagement&view=github&tmpl=component&layout=github_result',$msg);    

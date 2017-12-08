@@ -78,10 +78,6 @@ class sportsmanagementViewgithub extends sportsmanagementView
    {
      $this->milestone = 2;
    }
-    
-    
-     
-        
 	   
        if ($this->getLayout()=='addissue' || $this->getLayout()=='addissue_3')
 		{
