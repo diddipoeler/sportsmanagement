@@ -1307,8 +1307,9 @@ else
 		return $extended;
 	}
 catch (Exception $e) {
-    // catch errors.
-    JErrorPage::render(__METHOD__.' '.__LINE__.' '.$e);
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns
+	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
 }
 		
         }
