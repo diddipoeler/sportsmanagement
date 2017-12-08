@@ -237,7 +237,7 @@ foreach ($this->extended->getFieldsets() as $fieldset)
 	
 	foreach ($fields as $field)
 	{
-	   if ( COM_SPORTSMANAGEMENT_JOOMLAVERSION == '2.5' )
+	   if ( JSM_JVERSION == '2' )
         {
 		echo $field->label;
        	echo $field->input;
