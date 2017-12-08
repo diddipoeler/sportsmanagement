@@ -24,7 +24,7 @@ jimport('joomla.form.formfield');
  * @version $Id$
  * @access public
  */
-class JFormFieldExtensionRadioButton extends JFormFieldRadio {
+class JFormFieldExtensionRadioButton extends JFormField {
 		
 	public $type = 'ExtensionRadioButton';
 
