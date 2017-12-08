@@ -83,25 +83,23 @@ class modJSMClubiconsHelper
 		$app = JFactory::getApplication();
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' module<br><pre>'.print_r($this->module,true).'</pre>'),'');
 
-		$project_id = (JRequest::getVar('option','') == 'com_sportsmanagement' AND 
-									JRequest::getInt('p',0) > 0 AND 
+		$project_id = ($app->input->getVar('option','') == 'com_sportsmanagement' AND 
+									$app->input->getInt('p',0) > 0 AND 
 									$this->params->get('usepfromcomponent',0) == 1 ) ? 
-									JRequest::getInt('p') : $this->params->get('project_ids');
+									$app->input->getInt('p') : $this->params->get('project_ids');
 		if (is_array($project_id)) { $project_id = $project_id[0];}
 		
         if ( $project_id )
         {
-        //$model = JModel::getInstance('project', 'sportsmanagementModel');
 		sportsmanagementModelProject::setProjectId($project_id);
 
 		$this->project = sportsmanagementModelProject::getProject();
 
 		$ranking = JSMRanking::getInstance($this->project);
-		//$ranking->setProjectId($project_id);
         sportsmanagementModelRanking::$projectid = $project_id;
 		$divisionid = explode(':', $this->params->get('division_id', 0));
 		$divisionid = $divisionid[0];
-		$this->ranking   = $ranking->getRanking(null, null, $divisionid);
+		$this->ranking = $ranking->getRanking(null, null, $divisionid);
 
 		if ($this->params->get( 'logotype' ) == 'logo_small')
 		{
@@ -163,18 +161,6 @@ class modJSMClubiconsHelper
 {
 $logourl = sportsmanagementHelper::getDefaultPlaceholder('logo_big');    
 }
-
-//        if ( JFile::exists($logourl) )
-//        {
-//        $logourl = $logourl;   
-//        }
-//        else
-//        {
-//        $logourl = $this->placeholders[$imgtype];    
-//        }
-        
-//		$logourl = (!empty($item->$imgtype) AND file_exists($this->module->picture_server.DS.$item->$imgtype))
-//			? $item->$imgtype : $this->placeholders[$imgtype];
 
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' logourl<br><pre>'.print_r($logourl,true).'</pre>'),'');
         

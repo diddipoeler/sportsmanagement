@@ -32,7 +32,7 @@
       description="MOD_SPORTSMANAGEMENT_BASIC_DESC"
       >
 			<field name="cfg_which_database" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -63,6 +63,7 @@
 		<option value="logo_big">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_BIG</option>
 		<option value="logo_middle">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_MIDDLE</option>
 		<option value="logo_small">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_SMALL</option>
+		<option value="projectteam_picture">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_PROJECTTEAM_PICTURE</option>
 	</field>
 	<field name="jcclubiconsglobalmaxwidth" type="text" default="50" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_GLOBAL_MAX_WIDTH" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_GLOBAL_MAX_WIDTH_DESC" />
 	<field name="logo_widthdif" type="text" default="12" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTH" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTH_DESC" />
@@ -82,7 +83,7 @@
 	</field>
 	
 	<field name="newwindow" 
-  type="radio"
+  type="extensionradiobutton"
   class="radio btn-group btn-group-yesno"  
   default="0" 
   label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LINKTO_NEWWINDOW" 
@@ -107,7 +108,7 @@
 -->  
   
   <field name="usepfromcomponent" 
-  type="radio" 
+  type="extensionradiobutton" 
   default="1"
   class="radio btn-group btn-group-yesno" 
   label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_USE_PROJECT_FROM_COMPONENT" 
