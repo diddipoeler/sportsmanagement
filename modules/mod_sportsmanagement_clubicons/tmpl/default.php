@@ -41,13 +41,7 @@ defined('_JEXEC') or die('Restricted access');
 
 ?>
 
-<script type="text/javascript">
-<?PHP
-echo $initjs;
-?>
-</script>
-
-<table id="clubicons<?php echo $module->id;?>" class="table">
+<table id="clubicons<?php echo $module->id;?>" class="<?php echo $params->get('table_class', 'table');?>">
 	<tr>
 <?php
 		$cnt = 0;

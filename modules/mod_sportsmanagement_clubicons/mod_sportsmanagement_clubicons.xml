@@ -31,18 +31,18 @@
 			<fieldset name="basic"
       description="MOD_SPORTSMANAGEMENT_BASIC_DESC"
       >
-			<field name="cfg_which_database" 
+	<field name="cfg_which_database" 
     type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
-			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
-      description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
-			<option value="0">JNO</option>
-			<option value="1">JYES</option>
-		</field>
+	label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
+    description="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_DESC">
+	<option value="0">JNO</option>
+	<option value="1">JYES</option>
+	</field>
 
 	
-    <field	name="s" 
+    <field name="s" 
     task="seasons" 
       type="dependsql"
       depends="cfg_which_database"
@@ -58,7 +58,12 @@
 	<field name="template" type="list" default="default" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_TEMPLATE" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_TEMPLATE_DESC">
 	  <option value="default">default</option>
 	</field>
+	<!--
 	<field name="max_width" type="text" default="0" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTH" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTH_DESC" />
+	-->
+	
+	<field name="max_width_after_mouse_over" type="text" default="10" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTH_AFTER_MOUSE_OVER" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_WIDTH_AFTER_MOUSE_OVER_DESC" />
+	
 	<field name="logotype" type="list" default="logo_big" label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_TYPE" description="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_TYPE_DESC">
 		<option value="logo_big">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_BIG</option>
 		<option value="logo_middle">MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LOGO_MIDDLE</option>
@@ -120,7 +125,7 @@
 	
 	<fieldset name="advanced">
 	
-             <field 	name="table_class" type="list" default="table" 
+             <field	name="table_class" type="list" default="table" 
 		class=""
 				label="COM_SPORTSMANAGEMENT_FES_PARAM_LABEL_TABLE_STYLE" 
 				description="COM_SPORTSMANAGEMENT_FES_PARAM_DESCR_TABLE_STYLE">

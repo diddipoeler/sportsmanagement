@@ -106,7 +106,25 @@ JHTML::_('behavior.mootools');
 }
 
 $doc = JFactory::getDocument();
-$doc->addStyleSheet(JURI::base() . 'modules'.DS.$module->module.DS.'css/style.css');
+//$doc->addStyleSheet(JURI::base() . 'modules'.DS.$module->module.DS.'css/style.css');
+// Add styles
+$style = '
+.img-zoom {
+    width: '.$this->params->get( 'jcclubiconsglobalmaxwidth','50' ).';
+    -webkit-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    -ms-transition: all .2s ease-in-out;
+}
+ 
+.transition {
+    -webkit-transform: scale('.$this->params->get( 'max_width_after_mouse_over','10' ).'); 
+    -moz-transform: scale('.$this->params->get( 'max_width_after_mouse_over','10' ).');
+    -o-transform: scale('.$this->params->get( 'max_width_after_mouse_over','10' ).');
+    transform: scale('.$this->params->get( 'max_width_after_mouse_over','10' ).');
+}
+'; 
+$doc->addStyleDeclaration($style);
 
 if ( $cnt )
 {
