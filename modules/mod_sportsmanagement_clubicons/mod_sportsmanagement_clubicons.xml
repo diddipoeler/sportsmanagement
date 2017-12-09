@@ -83,7 +83,7 @@
 	</field>
 	
 	<field name="newwindow" 
-  type="radio"
+  type="extensionradiobutton"
   class="radio btn-group btn-group-yesno"  
   default="0" 
   label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_LINKTO_NEWWINDOW" 
@@ -108,7 +108,7 @@
 -->  
   
   <field name="usepfromcomponent" 
-  type="radio" 
+  type="extensionradiobutton" 
   default="1"
   class="radio btn-group btn-group-yesno" 
   label="MOD_SPORTSMANAGEMENT_CLUBICONS_MODUL_USE_PROJECT_FROM_COMPONENT" 
