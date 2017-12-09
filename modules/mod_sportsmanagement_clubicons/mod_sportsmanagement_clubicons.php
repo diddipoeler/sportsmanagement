@@ -110,7 +110,7 @@ $doc = JFactory::getDocument();
 // Add styles
 $style = '
 .img-zoom {
-    width: '.$this->params->get( 'jcclubiconsglobalmaxwidth','50' ).';
+    width: '.$params->get( 'jcclubiconsglobalmaxwidth','50' ).';
     -webkit-transition: all .2s ease-in-out;
     -moz-transition: all .2s ease-in-out;
     -o-transition: all .2s ease-in-out;
@@ -118,10 +118,10 @@ $style = '
 }
  
 .transition {
-    -webkit-transform: scale('.$this->params->get( 'max_width_after_mouse_over','10' ).'); 
-    -moz-transform: scale('.$this->params->get( 'max_width_after_mouse_over','10' ).');
-    -o-transform: scale('.$this->params->get( 'max_width_after_mouse_over','10' ).');
-    transform: scale('.$this->params->get( 'max_width_after_mouse_over','10' ).');
+    -webkit-transform: scale('.$params->get( 'max_width_after_mouse_over','10' ).'); 
+    -moz-transform: scale('.$params->get( 'max_width_after_mouse_over','10' ).');
+    -o-transform: scale('.$params->get( 'max_width_after_mouse_over','10' ).');
+    transform: scale('.$params->get( 'max_width_after_mouse_over','10' ).');
 }
 '; 
 $doc->addStyleDeclaration($style);
