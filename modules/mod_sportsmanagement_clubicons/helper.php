@@ -94,13 +94,14 @@ class modJSMClubiconsHelper
         {
 		//sportsmanagementModelProject::setProjectId($project_id);
         sportsmanagementModelProject::$projectid = $project_id;
+        sportsmanagementModelProject::$cfg_which_database = $this->params->get('cfg_which_database');
 		$this->project = sportsmanagementModelProject::getProject();
 
-		$ranking = JSMRanking::getInstance($this->project);
+		$ranking = JSMRanking::getInstance($this->project,$this->params->get('cfg_which_database'));
         sportsmanagementModelRanking::$projectid = $project_id;
 		$divisionid = explode(':', $this->params->get('division_id', 0));
 		$divisionid = $divisionid[0];
-		$this->ranking = $ranking->getRanking(null, null, $divisionid);
+		$this->ranking = $ranking->getRanking(null, null, $divisionid,$this->params->get('cfg_which_database'));
 
 		if ($this->params->get( 'logotype' ) == 'logo_small')
 		{
