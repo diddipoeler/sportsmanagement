@@ -58,7 +58,8 @@ class modJSMClubiconsHelper
 	var $placeholders = array (
 			'logo_small' => 'images/com_sportsmanagement/database/placeholders/placeholder_small.png',
 			'logo_middle' => 'images/com_sportsmanagement/database/placeholders/placeholder_50.png',
-			'logo_big' => 'images/com_sportsmanagement/database/placeholders/placeholder_150.png'
+			'logo_big' => 'images/com_sportsmanagement/database/placeholders/placeholder_150.png',
+            'projectteam_picture' => 'images/com_sportsmanagement/database/placeholders/placeholder_450_2.png'
 		);
 	/**
 	 * modJSMClubiconsHelper::__construct()
