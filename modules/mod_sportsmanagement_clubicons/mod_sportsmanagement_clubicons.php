@@ -35,6 +35,9 @@
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
 *
 * Note : All ini files need to be saved as UTF-8 without BOM
+* 
+* https://stanhub.com/how-to-create-zoom-effect-on-image-hover-with-css-and-jquery/
+* 
 */
 
 defined('_JEXEC') or die('Restricted access');
@@ -96,45 +99,13 @@ else
 JHTML::_('behavior.mootools');
 }
 
-
-
 $doc = JFactory::getDocument();
 $doc->addStyleSheet(JURI::base() . 'modules'.DS.$module->module.DS.'css/style.css');
 
-$css = 'img.smstarticon { width:25px;}';
-if ($params->get('max_width', 800) > 0 AND $cnt <= 20) $css .= 'table.modjlclubicons { max-width: '.$params->get('max_width', 800).'px;}
-div.modjlclubicons { max-width: '.$params->get('max_width', 800).'px;}';
-$doc->addStyleDeclaration($css);
-
 if ( $cnt )
 {
-$tdw = intval(100/$cnt);
-$doc->addStyleDeclaration('td.modjlclubicons { width:'.$tdw.'%;}
-span.modjlclubicons { width:'.$tdw.'%;}
-span.modjlclubicons > img{ width:70%;}');
-$tpl = $params->get( 'template','default' );
-$rowsep = 'tr';
-$initjs = "
-    var jcclubiconsglobalmaxwidth = ".$params->get('jcclubiconsglobalmaxwidth', 0).";
-    window.addEvent('domready', function(){
-      jQuery('clubicons".$module->id."').setStyle('opacity', 0);
-      new Asset.images(jQuery('clubicons".$module->id."').getElements('img.smstarticon'), {
-      onComplete: function(){
-          observeClubIcons(".$module->id.", 'img.smstarticon', ".$cnt.", ".$params->get( 'logo_widthdif',12 ).", '".$rowsep."');
-          jQuery('clubicons".$module->id."').fade('in');
-      }
-    });
-});
-window.addEvent('resize', function(){
-    observeClubIcons(".$module->id.", 'img.smstarticon', ".$cnt.", ".$params->get( 'logo_widthdif',12 ).", '".$rowsep."');
-
-});
-
-";
-$mv = JFactory::getApplication()->get('MooToolsVersion');
 $script =  'script';
 $doc->addScript( JURI::base() . 'modules'.DS.$module->module.DS.'js/'.$script.'.js');
-//$doc->addScriptDeclaration($initjs);
 ?>           
 <div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP

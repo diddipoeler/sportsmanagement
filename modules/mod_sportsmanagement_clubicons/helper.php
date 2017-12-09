@@ -136,7 +136,7 @@ class modJSMClubiconsHelper
 			{
 				$this->teams[$r->projectteamid] = array();
 				$this->teams[$r->projectteamid]['link'] = self::getLink( $r );
-				$class = (!empty($this->teams[$r->projectteamid]['link'])) ? 'smstarticon' : 'smstarticon nolink';
+				$class = (!empty($this->teams[$r->projectteamid]['link'])) ? 'img-zoom' : 'img-zoom';
 				$this->teams[$r->projectteamid]['logo'] = self::getLogo( $r, $class );
 			}
 		}
@@ -165,7 +165,7 @@ $logourl = sportsmanagementHelper::getDefaultPlaceholder('logo_big');
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' logourl<br><pre>'.print_r($logourl,true).'</pre>'),'');
         
 		$imgtitle = JText::_('View ') . $item->name;
-		return JHTML::image($logourl, $item->name,'border="0" class="'.$class.'" title="'.$imgtitle.'"');
+		return JHTML::image($logourl, $item->name,'border="0" width="'.$this->params->get( 'jcclubiconsglobalmaxwidth','50' ).'" class="'.$class.'" title="'.$imgtitle.'"');
 	}
     
 	/**

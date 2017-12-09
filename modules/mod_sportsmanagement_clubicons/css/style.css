@@ -1,38 +1,17 @@
 @charset "utf-8";
 /* CSS Document */
 
-table.modjsmclubicons {
-  margin:0 auto;
-  padding:0;
-  width:100%;
-  height:auto;
+.img-zoom {
+    width: 310px;
+    -webkit-transition: all .2s ease-in-out;
+    -moz-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    -ms-transition: all .2s ease-in-out;
 }
-div.modjsmclubicons {
-  display:block !important;
-  margin:0 auto;
-  padding:0;
-  width:100%;
-  text-align:center;
-  overflow:hidden;
-}
-div.modjsmclubicons > div {
-  display:block !important;
-  margin:0 auto;
-  width:100%;
-  text-align:center;
-  overflow:hidden;
-}
-.modjsmclubicons td{
-  margin:0;
-  padding:0;
-  text-align:center;
-  vertical-align:middle;
-}
-span.modjsmclubicons {
-  display:block;
-  margin:0 auto;
-  padding:0;
-  text-align:center;
-  float:left;
-  height:100%;
+ 
+.transition {
+    -webkit-transform: scale(2); 
+    -moz-transform: scale(2);
+    -o-transform: scale(2);
+    transform: scale(2);
 }
