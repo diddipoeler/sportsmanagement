@@ -115,7 +115,7 @@ $doc->addScript( JURI::base() . 'modules'.DS.$module->module.DS.'js/'.$script.'.
 ?>           
 <div id="<?php echo $module->module; ?>-<?php echo $module->id; ?>">
 <?PHP
-require(JModuleHelper::getLayoutPath($module->module, $tpl));
+require(JModuleHelper::getLayoutPath($module->module, $params->get('template', 'default') ));
 ?>
 </div>
 <?PHP
