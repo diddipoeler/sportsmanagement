@@ -92,8 +92,8 @@ class modJSMClubiconsHelper
 		
         if ( $project_id )
         {
-		sportsmanagementModelProject::setProjectId($project_id);
-
+		//sportsmanagementModelProject::setProjectId($project_id);
+        sportsmanagementModelProject::$projectid = $project_id;
 		$this->project = sportsmanagementModelProject::getProject();
 
 		$ranking = JSMRanking::getInstance($this->project);
