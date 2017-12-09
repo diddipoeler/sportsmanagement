@@ -13,7 +13,19 @@
 // no direct access
 defined('_JEXEC') or die ;
 
-jimport('joomla.form.formfield');
+/**
+* welche joomla version ?
+*/
+if( version_compare(substr(JVERSION,0,1),'4','eq') ) 
+{
+jimport('joomla.form.formfield');    
+class JSMFormField extends JFormFieldRadio {}	   
+}
+else
+{
+require_once JPATH_LIBRARIES . '/joomla/form/fields/radio.php';    
+class JSMFormField extends JFormFieldRadio {}        
+}    
 
 /**
  * JFormFieldExtensionRadioButton
@@ -24,7 +36,7 @@ jimport('joomla.form.formfield');
  * @version $Id$
  * @access public
  */
-class JFormFieldExtensionRadioButton extends JFormField {
+class JFormFieldExtensionRadioButton extends JSMFormField {
 		
 	public $type = 'ExtensionRadioButton';
 
