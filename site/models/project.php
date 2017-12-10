@@ -95,31 +95,6 @@ if (! defined('COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO'))
 DEFINE( 'COM_SPORTSMANAGEMENT_SHOW_QUERY_DEBUG_INFO',$show_query_debug_info );
 }
 
-
-/*
-if ( $paramscomponent->get('cfg_dbprefix') && !defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER') )
-{
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$paramscomponent->get( 'cfg_which_database_server' ) );    
-}
-else
-{
-if ( COM_SPORTSMANAGEMENT_CFG_WHICH_DATABASE || JFactory::getApplication()->input->getInt( 'cfg_which_database', 0 ) )
-{
-if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
-{        
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$cfg_which_database_server );
-}    
-}
-else
-{
-if (! defined('COM_SPORTSMANAGEMENT_PICTURE_SERVER'))
-{        
-DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );
-}    
-}
-}
-*/
-
 }
             
 /**
@@ -1077,7 +1052,6 @@ $s = $configcolors;
           // für die anzeige der teams im frontend
           $query->select('t.name as team_name,t.short_name,t.middle_name,t.club_id,t.website AS team_www,t.picture as team_picture,c.name as club_name,c.address as club_address');
           $query->select('c.zipcode as club_zipcode,c.state as club_state,c.location as club_location,c.email as club_email,c.unique_id,c.country as club_country,c.website AS club_www');
-          
           
           $query->from('#__sportsmanagement_project_team AS tl ');
           $query->join('LEFT',' #__sportsmanagement_season_team_id st ON st.id = tl.team_id ');
