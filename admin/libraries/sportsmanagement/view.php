@@ -154,7 +154,8 @@ class sportsmanagementView extends JViewLegacy
         || $this->layout == 'edit_3' 
         || $this->layout == 'edit_4')
         {
-        // get the Data
+$this->addTemplatePath( JPATH_ROOT . DS . 'administrator' . DS . 'components' . DS . $this->option . DS . 'views' . DS . 'fieldsets' . DS . 'tmpl' );        
+		// get the Data
 		$this->form = $this->get('Form');
 		$this->item = $this->get('Item');
 		$this->script = $this->get('Script');    
