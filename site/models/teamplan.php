@@ -396,7 +396,7 @@ sportsmanagementModelProject::$cfg_which_database= self::$cfg_which_database;
 		}
         
         // Group
-        $query->group('m.id');
+        //$query->group('m.id');
         // Order
         $query->order("r.roundcode ".$ordering.",m.match_date,m.match_number");
 
@@ -483,7 +483,7 @@ if (!$matches && COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
           $query->where("(matches.projectteam1_id = ".self::$projectteamid." OR matches.projectteam2_id = ".self::$projectteamid.")");
 		}
 		// Group
-        $query->group('matches.id');
+        //$query->group('matches.id');
         // Order
         $query->order('matches.match_date '.$ordering.',matches.match_number');
 
