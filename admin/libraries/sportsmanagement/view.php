@@ -125,7 +125,11 @@ class sportsmanagementView extends JViewLegacy
         $this->format = $this->jinput->getCmd('format');
         $this->view = $this->jinput->getCmd('view', 'cpanel');
         $this->tmpl = $this->jinput->getCmd('tmpl', '');
-		
+	$this->project_id = $this->jinput->get('pid');
+	if ( !$this->project_id )	
+	{
+	$this->project_id = $this->app->getUserState( "$this->option.pid", '0' );	
+	}	
         $this->user = JFactory::getUser();
         $this->request_url	= $this->uri->toString();
         
