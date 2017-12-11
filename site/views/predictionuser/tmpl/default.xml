@@ -28,7 +28,7 @@ addfieldpath ="/administrator/components/com_sportsmanagement/models/fields">
 					query="" />
           
     <field name="cfg_which_database" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 

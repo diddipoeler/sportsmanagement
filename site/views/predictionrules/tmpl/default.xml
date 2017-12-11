@@ -16,7 +16,7 @@
 					query="SELECT id AS value, name AS prediction_id FROM #__sportsmanagement_prediction_game WHERE published='1' ORDER BY name" />
   
   <field name="cfg_which_database" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
