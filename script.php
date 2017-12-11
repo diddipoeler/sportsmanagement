@@ -45,6 +45,10 @@
  * https://github.com/joomla/joomla-cms/issues/14330
  * https://api.joomla.org/cms-3/deprecated.html
  * https://www.joomla.org/announcements/release-news/5718-joomla-4-0-alpha-1-release.html
+ * 
+ * https://www.spiralscripts.co.uk/Joomla-Tips/modal-windows-in-joomla-3.html
+ * 
+ * 
  */
 
 
