@@ -13,9 +13,7 @@
 	     <field
 			name="project_id"
 			type="hidden"
-			default="0"
-			
-      default="0"
+			default="0"			
 		/>
 		<field
 			name="name"
