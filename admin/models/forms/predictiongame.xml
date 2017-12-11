@@ -27,7 +27,7 @@
 			
 <field
 			name="auto_approve"
-			type="radio"
+			type="extensionradiobutton"
 			default="0"
 			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PGAME_AUTO_APPROVE"
@@ -37,7 +37,7 @@
 		</field>
 <field
 			name="only_favteams"
-			type="radio"
+			type="extensionradiobutton"
 			default="0"
 			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PGAME_ONLY_FAVTEAMS"
@@ -47,7 +47,7 @@
 		</field>
 <field
 			name="admin_tipp"
-			type="radio"
+			type="extensionradiobutton"
 			default="0"
 			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PGAME_ADMIN_TIPP"

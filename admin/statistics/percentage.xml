@@ -31,7 +31,7 @@
 					description="COM_SPORTSMANAGEMENT_STAT_PRECISION_DESC">
 			</field>
 			<field 	name="show_percent_symbol" 
-      type="radio" 
+      type="extensionradiobutton" 
       default="1" 
 					label="COM_SPORTSMANAGEMENT_STAT_PERCENTAGE_SHOW_PERCENTAGE_SYMBOL" 
 					description="COM_SPORTSMANAGEMENT_STAT_PERCENTAGE_SHOW_PERCENTAGE_SYMBOL_DESC">

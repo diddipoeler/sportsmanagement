@@ -11,7 +11,7 @@
 
       
 	<field name="cfg_jl_import" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_JL_IMPORT" 
@@ -29,7 +29,7 @@
 		</field>
 		
  <field name="cfg_use_plz_table" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_PLZ_TABLE" 
@@ -88,7 +88,7 @@
 		</field>
 		
 		<field name="cfg_which_media_tool" 
-    type="radio"
+    type="extensionradiobutton"
 			default="imageselect" 
       label="COM_SPORTSMANAGEMENT_SETTINGS_MEDIA_TOOL_TITLE"
 			description="COM_SPORTSMANAGEMENT_SETTINGS_MEDIA_TOOL_DESC">
@@ -97,7 +97,7 @@
 		</field>
 		
 		<field name="cfg_load_bootstrap" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="1"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_LOAD_BOOTSTRAP" 
@@ -107,7 +107,7 @@
 		</field>
 		
 		<field name="cfg_which_database" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_JOOMLA_DATABASE_TITLE" 
@@ -183,7 +183,7 @@
 			size="10" />
 		
 	<field name="cfg_dbprefix" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_USE_DATABASE_TABLE_PREFIX_TITLE" 
@@ -203,7 +203,7 @@
 		</field>
 		
     <field name="show_debug_info" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE" 
@@ -213,7 +213,7 @@
 		</field>
 		
 <field name="show_debug_info_backend" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_BACKEND_TITLE" 
@@ -222,7 +222,7 @@
 			<option value="1">JYES</option>
 		</field>		
 <field name="show_debug_info_frontend" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_FRONTEND_TITLE" 
@@ -232,7 +232,7 @@
 		</field>
 		
 <field name="show_query_debug_info" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_QUERY_DEBUG_TITLE" 
@@ -538,7 +538,7 @@ filter="safehtml"/>
 <fieldset name="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_FRONTEND"
   label="COM_SPORTSMANAGEMENT_SETTINGS_GROUP_FRONTEND">
 
-<field name="force_ranking_cache" type="radio" default="0"
+<field name="force_ranking_cache" type="extensionradiobutton" default="0"
 class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_FORCE_RANKING_CACHE" description="COM_SPORTSMANAGEMENT_SETTINGS_FORCE_RANKING_CACHE_DESC">
 			<option value="0">JNO</option>
@@ -699,7 +699,7 @@ multiple="true"
       />
 
 <field name="which_article_component" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="com_content"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_WHICH_MATCH_ARTICLE_COMPONENT" 
       description="COM_SPORTSMANAGEMENT_SETTINGS_WHICH_MATCH_ARTICLE_COMPONENT_DESC">
@@ -709,7 +709,7 @@ multiple="true"
 		
 		
 <field name="show_team_community" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_TEAM_COMMUNITY" 
@@ -721,7 +721,7 @@ multiple="true"
 
 
 <field name="show_debug_info_clubs" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_CLUBS" 
@@ -730,7 +730,7 @@ multiple="true"
 			<option value="1">JYES</option>
 		</field>
 <field name="show_debug_info_teams" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_TEAMS" 
@@ -739,7 +739,7 @@ multiple="true"
 			<option value="1">JYES</option>
 		</field>
     <field name="show_debug_info_leagues" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_LEAGUES" 
@@ -748,7 +748,7 @@ multiple="true"
 			<option value="1">JYES</option>
 		</field>
     <field name="show_debug_info_seasons" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_SEASONS" 
@@ -757,7 +757,7 @@ multiple="true"
 			<option value="1">JYES</option>
 		</field>
     <field name="show_debug_info_playgrounds" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_PLAYGROUNDS" 
@@ -766,7 +766,7 @@ multiple="true"
 			<option value="1">JYES</option>
 		</field>
     <field name="show_debug_info_positions" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_POSITIONS" 
@@ -775,7 +775,7 @@ multiple="true"
 			<option value="1">JYES</option>
 		</field>
     <field name="show_debug_info_statistics" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_STATISTICS" 
@@ -784,7 +784,7 @@ multiple="true"
 			<option value="1">JYES</option>
 		</field>
     <field name="show_debug_info_sportstypes" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_SPORTSTYPES" 
@@ -793,7 +793,7 @@ multiple="true"
 			<option value="1">JYES</option>
 		</field>
     <field name="show_debug_info_eventtypes" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_EVENTTYPES" 
@@ -803,7 +803,7 @@ multiple="true"
 		</field>
     
     <field name="show_debug_info_rounds" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_ROUNDS" 
@@ -813,7 +813,7 @@ multiple="true"
 		</field>
     
     <field name="show_debug_info_matches" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_DEBUG_TITLE_MATCHES" 
@@ -833,7 +833,7 @@ multiple="true"
 	addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 
 <field name="install_agegroup" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_INSTALL_AGEGROUP" 
@@ -843,7 +843,7 @@ multiple="true"
 		</field>
 		
 <field name="install_standard_position" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_INSTALL_STANDARD_POSITION" 
@@ -854,7 +854,7 @@ multiple="true"
 
 
 <field name="show_option_projectteams_quickadd" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_PROJECTTEAMS_QUICKADD" 
@@ -864,7 +864,7 @@ multiple="true"
 		</field>
 
 <field name="show_edit_matches_matrix" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 	label="COM_SPORTSMANAGEMENT_SETTINGS_EDIT_MATCHES_MATRIX" 
@@ -874,7 +874,7 @@ multiple="true"
 		</field>
 	
 <field name="show_option_federation" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_FEDERATION" 
@@ -884,7 +884,7 @@ multiple="true"
 		</field>  
 		
 <field name="show_option_association" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_ASSOCIATION" 
@@ -894,7 +894,7 @@ multiple="true"
 		</field>
 		
 <field name="show_option_position" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_POSITION" 
@@ -904,7 +904,7 @@ multiple="true"
 		</field>   
 		
 <field name="show_option_eventtypes" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_EVENTTYPES" 
@@ -914,7 +914,7 @@ multiple="true"
 		</field>
 		
 <field name="show_option_agegroup" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_AGEGROUP" 
@@ -924,7 +924,7 @@ multiple="true"
 		</field>    
 
 <field name="show_option_person" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_PERSON" 
@@ -934,7 +934,7 @@ multiple="true"
 		</field>
 		
 <field name="show_option_playground" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_PLAYGROUND" 
@@ -944,7 +944,7 @@ multiple="true"
 		</field>
 		
 <field name="show_option_rosterposition" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_ROSTERPOSITION" 
@@ -954,7 +954,7 @@ multiple="true"
 		</field>        
 
 <field name="show_option_extrafields" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_EXTRAFIELDS" 
@@ -964,7 +964,7 @@ multiple="true"
 		</field>
 		
 <field name="show_option_statistics" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_STATISTICS" 
@@ -974,7 +974,7 @@ multiple="true"
 		</field>
 		
 <field name="show_option_clubnames" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_CLUBNAMES" 
@@ -984,7 +984,7 @@ multiple="true"
 		</field>
 		
 <field name="show_option_github" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_GITHUB" 
@@ -994,7 +994,7 @@ multiple="true"
 		</field>            
 
 <field name="show_option_smquotes" 
-    type="radio" 
+    type="extensionradiobutton" 
     default="0"
     class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_SETTINGS_SHOW_OPTION_SMQUOTES" 
@@ -1101,13 +1101,13 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_DEVELOPERKEY_DESC" />
 			<option value="5">COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_WEEK_START_FRIDAY</option>
 			<option value="6">COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_WEEK_START_SATURDAY</option>
 		</field>
-		<field name="weekend" type="radio" default="1" 
+		<field name="weekend" type="extensionradiobutton" default="1" 
 		class="radio btn-group btn-group-yesno"
             label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SHOW_WEEKEND_LABEL" description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SHOW_WEEKEND_DESC"> 
             <option value="1">JYES</option> 
             <option value="0">JNO</option> 
         </field>
-		<field name="week_numbers" type="radio" default="0" 
+		<field name="week_numbers" type="extensionradiobutton" default="0" 
 		class="radio btn-group btn-group-yesno"
             label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SHOW_WEEK_NUMBER_LABEL" description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SHOW_WEEK_NUMBER_DESC"> 
             <option value="1">JYES</option> 
@@ -1154,7 +1154,7 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_DEVELOPERKEY_DESC" />
 		<field name="textafter" type="textarea" default=""
 			label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_TEXT_AFTER_LABEL" description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_TEXT_AFTER_DESC"
 			rows="5" cols="50" filter="raw"/>
-		<field name="show_event_as_popup" type="radio" default="1"
+		<field name="show_event_as_popup" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SHOW_POPUP_LABEL" description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_SHOW_POPUP_DESC">
 			<option value="1">JYES</option>
@@ -1175,7 +1175,7 @@ description="COM_SPORTSMANAGEMENT_SETTINGS_GOOGLE_API_DEVELOPERKEY_DESC" />
 			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_CALENDAR_MAX_TIME_DESC" size="10" />			
 
 
-		<field name="event_description_format" type="radio" default="1"
+		<field name="event_description_format" type="extensionradiobutton" default="1"
 		class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_DESCRIPTION_FORMAT_LABEL"
 			description="COM_SPORTSMANAGEMENT_JSMGCALENDAR_FIELD_CONFIG_EVENT_DESCRIPTION_FORMAT_DESC">
@@ -1358,7 +1358,7 @@ http://docs.joomla.org/Password_parameter_type
 http://docs.joomla.org/Radio_parameter_type
 <field
 	name="myradiovalue"
-	type="radio"
+	type="extensionradiobutton"
 	default="0"
 	label="Select an option"
 	description="">

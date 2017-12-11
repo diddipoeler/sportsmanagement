@@ -71,7 +71,7 @@
 
 <field
 			name="published_act_season"
-			type="radio"
+			type="extensionradiobutton"
 			class="radio btn-group btn-group-yesno"
 			default="1"
 			size="1"
@@ -87,7 +87,7 @@
 
 <field
 			name="published"
-			type="radio"
+			type="extensionradiobutton"
 			class="radio btn-group btn-group-yesno"
 			default="1"
 			size="1"

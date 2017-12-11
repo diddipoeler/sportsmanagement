@@ -12,7 +12,7 @@
 	
 	<field
 			name="published"
-			type="radio"
+			type="extensionradiobutton"
 			class="radio btn-group btn-group-yesno"
 			default="1"
 			size="1"
@@ -28,7 +28,7 @@
     
  <field
 			name="mode"
-			type="radio"
+			type="extensionradiobutton"
 			class="radio btn-group btn-group-yesno"
 			default="1"
 			size="1"
@@ -44,7 +44,7 @@
 
     <field
 			name="overview"
-			type="radio"
+			type="extensionradiobutton"
 			class="radio btn-group btn-group-yesno"
 			default="1"
 			size="1"
@@ -63,7 +63,7 @@
 <!-- alles für die joker -->
 <field 
 			name="joker" 
-			type="radio" 
+			type="extensionradiobutton" 
 			default="0"
 			onclick="change_joker();"
 			class="radio btn-group btn-group-yesno"
@@ -120,7 +120,7 @@
 <!-- alles für den meister -->    
 <field 
 			name="champ" 
-			type="radio" 
+			type="extensionradiobutton" 
 			default="0"
 			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PGAMES_CHAMP" 

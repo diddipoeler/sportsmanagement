@@ -21,7 +21,7 @@
 	<fieldset name="matchdetails">
 		<field
 				name="cancel"
-				type="radio"
+				type="extensionradiobutton"
 				default="0"		
         class="radio btn-group btn-group-yesno"		
 				label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MD_CANCEL"
@@ -59,7 +59,7 @@
 	<fieldset name="matchreport">
 		<field
 				name="show_report"
-				type="radio"
+				type="extensionradiobutton"
 				default="0"		
         class="radio btn-group btn-group-yesno"		
 				label="COM_SPORTSMANAGEMENT_ADMIN_MATCH_F_MR_SHOW"

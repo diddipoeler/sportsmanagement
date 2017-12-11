@@ -92,8 +92,18 @@ if ( $this->tmpl )
 ?> 
 
 <?PHP
-               
+
+if ( !$this->item->id && $this->view == 'club' )
+                {
+                    
+                ?>
+                <fieldset class="adminform">
+			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CREATE_TEAM'); ?></legend>
+                <input type="checkbox" name="createTeam" />
+                </fieldset>
+                <?PHP
+                }               
                 
 echo $this->loadTemplate('editdata');                
-                ?>
+?>
                 

@@ -47,11 +47,18 @@ $params = $this->form->getFieldsets('params');
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
 
-//echo ' params<br><pre>'.print_r($params,true).'</pre><br>';
-//echo ' fieldsets<br><pre>'.print_r($fieldsets,true).'</pre><br>';
-
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 <?PHP
+if ( !$this->item->id && $this->view == 'club' )
+                {
+                    
+                ?>
+                <fieldset class="adminform">
+			<legend><?php echo JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUB_CREATE_TEAM'); ?></legend>
+                <input type="checkbox" name="createTeam" />
+                </fieldset>
+                <?PHP
+                }   
 echo $this->loadTemplate('editdata');  
 ?>  

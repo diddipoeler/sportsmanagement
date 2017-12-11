@@ -20,7 +20,7 @@
 			required="true"/>
   <field
 				name="sportsart"
-				type="radio"
+				type="extensionradiobutton"
 				default="0"
         class="radio btn-group btn-group-yesno"
 				label="COM_SPORTSMANAGEMENT_ADMIN_SPORTSART"

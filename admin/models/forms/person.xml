@@ -109,7 +109,7 @@
       		
 	<field
 			name="published"
-			type="radio"
+			type="extensionradiobutton"
 			class="radio btn-group btn-group-yesno"
 			default="1"
 			size="1"
@@ -488,7 +488,7 @@ label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
   description="COM_SPORTSMANAGEMENT_TABS_INJURY_DESC">		
   <field
 			name="injury"
-			type="radio"
+			type="extensionradiobutton"
 			default="0"
       class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_INJURED"
@@ -524,7 +524,7 @@ label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
   description="COM_SPORTSMANAGEMENT_TABS_SUSPENSION_DESC">		
   <field
 			name="suspension"
-			type="radio"
+			type="extensionradiobutton"
 			default="0"
       class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SUSPENDED"
@@ -561,7 +561,7 @@ label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
   description="COM_SPORTSMANAGEMENT_TABS_AWAY_DESC">		
   <field
 			name="away"
-			type="radio"
+			type="extensionradiobutton"
 			default="0"
       class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_AWAY"
@@ -635,7 +635,7 @@ label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
 			<field
 				name="show_pic"
 				class="radio btn-group btn-group-yesno"
-				type="radio"
+				type="extensionradiobutton"
 				default="1"
 				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_PICTURE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_PICTURE_DESC">
@@ -645,7 +645,7 @@ label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
 			<field
 				name="show_persdata"
 				class="radio btn-group btn-group-yesno"
-				type="radio"
+				type="extensionradiobutton"
 				default="1"
 				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_P_DATA"
 				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_P_DATA_DESC">
@@ -655,7 +655,7 @@ label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
 			<field
 				name="show_teamdata"
 				class="radio btn-group btn-group-yesno"
-				type="radio"
+				type="extensionradiobutton"
 				default="1"
 				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_T_DATA"
 				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_T_DATA_DESC">
@@ -665,7 +665,7 @@ label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
 			<field
 				name="show_on_frontend"
 				class="radio btn-group btn-group-yesno"
-				type="radio"
+				type="extensionradiobutton"
 				default="1"
 				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_FE"
 				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_SHOW_FE_DESC">

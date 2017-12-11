@@ -55,7 +55,7 @@
   			
 		<field
 			name="injury"
-			type="radio"
+			type="extensionradiobutton"
 			default="0"
       class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_INJURED"
@@ -89,7 +89,7 @@
 			filter="safehtml"/>				
 		<field
 			name="suspension"
-			type="radio"
+			type="extensionradiobutton"
 			default="0"
       class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_SUSPENDED"
@@ -123,7 +123,7 @@
 			class="inputbox"/>				
 		<field
 			name="away"
-			type="radio"
+			type="extensionradiobutton"
 			default="0"
       class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_TEAMPLAYER_AWAY"

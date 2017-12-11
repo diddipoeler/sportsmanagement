@@ -19,7 +19,7 @@ addrulepath="/administrator/components/com_sportsmanagement/models/rules"
 			class="inputbox"
 			required=""/>
 
-<field name="field_type" type="radio" default="text"
+<field name="field_type" type="extensionradiobutton" default="text"
 			label="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TYPE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TYPE_DESC">
 			<option value="text">COM_SPORTSMANAGEMENT_ADMIN_EXTRA_FIELDS_TYPE_TEXT</option>

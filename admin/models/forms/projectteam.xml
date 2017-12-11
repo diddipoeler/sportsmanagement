@@ -41,7 +41,7 @@
 		</field>			
 		<field
 			name="is_in_score"
-			type="radio"
+			type="extensionradiobutton"
 			default="1"
 			class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_INSCORE"
@@ -63,7 +63,7 @@
 			class="inputbox"/>	
 		<field
 			name="use_finally"
-			type="radio"
+			type="extensionradiobutton"
 			default="0"
 			label="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_USE_FINALLY"
 			description="COM_SPORTSMANAGEMENT_ADMIN_P_TEAM_USE_FINALLY_DESC"

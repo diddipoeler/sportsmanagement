@@ -36,7 +36,7 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 		</field>
 		<field
 			name="published"
-			type="radio"
+			type="extensionradiobutton"
 			class="radio btn-group btn-group-yesno"
 			default="1"
 			size="1"
@@ -51,7 +51,7 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 		</field>		
 		<field
 			name="splitt"
-			type="radio"
+			type="extensionradiobutton"
       class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_NOTE"
 			description="COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_NOTE_DESC"
@@ -73,7 +73,7 @@ addfieldpath="/administrator/components/com_sportsmanagement/models/fields">
 
 		<field
 			name="double"
-			type="radio"
+			type="extensionradiobutton"
       class="radio btn-group btn-group-yesno"
 			label="COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_PAIR_EVENT"
 			description="COM_SPORTSMANAGEMENT_ADMIN_EVENTTYPE_PAIR_EVENT_DESC"

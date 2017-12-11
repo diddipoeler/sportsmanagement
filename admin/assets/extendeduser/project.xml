@@ -2,7 +2,7 @@
 <config>
 	
   <fieldset name="COM_JOOMLEAGUE_EXT_EXTENDED_USER_PREFERENCES">
-  	<field name="insertmatchplan" type="radio" default="1" label="insertmatchplan" description="insertmatchplan">
+  	<field name="insertmatchplan" type="extensionradiobutton" default="1" label="insertmatchplan" description="insertmatchplan">
 			<option value="0">Nein</option>
 			<option value="1">Ja</option>
 		</field>
@@ -18,7 +18,7 @@
     
     <field name="futbolmelink" type="textarea" rows="1" cols="100" label="futbolmelink" description="futbolmelink">
 		</field>
-		<field name="futbolmelinkfertig" type="radio" default="0" label="futbolmelinkfertig" description="futbolmelinkfertig">
+		<field name="futbolmelinkfertig" type="extensionradiobutton" default="0" label="futbolmelinkfertig" description="futbolmelinkfertig">
 			<option value="0">Nein</option>
 			<option value="1">Ja</option>
 		</field>
@@ -56,13 +56,13 @@
     <field name="ascneuenheimlink" type="textarea" rows="1" cols="100" label="ascneuenheimlink" description="ascneuenheimlink">
 		</field>
 		
-		<field name="ascneuenheimtyp" type="radio" default="0" label="ascneuenheimtyp" description="ascneuenheimtyp">
+		<field name="ascneuenheimtyp" type="extensionradiobutton" default="0" label="ascneuenheimtyp" description="ascneuenheimtyp">
 		<option value="0">Spielplan</option>
 		<option value="1">Tabelle mit S/U/N</option>
 		<option value="2">Tabelle ohne S/U/N</option>
 		</field>
 		
-		<field name="ascneuenheimfertig" type="radio" default="0" label="ascneuenheimfertig" description="ascneuenheimfertig">
+		<field name="ascneuenheimfertig" type="extensionradiobutton" default="0" label="ascneuenheimfertig" description="ascneuenheimfertig">
 			<option value="0">Nein</option>
 			<option value="1">Ja</option>
     </field> 
@@ -79,7 +79,7 @@
 		</field>
 		<field name="bari91compaarungspieltag" type="text" rows="1" cols="100" label="bari91compaarungspieltag" description="bari91compaarungspieltag">
 		</field>
-		<field name="bari91comfertig" type="radio" default="0" label="bari91comfertig" description="bari91comfertig">
+		<field name="bari91comfertig" type="extensionradiobutton" default="0" label="bari91comfertig" description="bari91comfertig">
 			<option value="0">Nein</option>
 			<option value="1">Ja</option>
 		</field>
@@ -135,7 +135,7 @@
 		</field>
     
            		
-		<field name="projectart" type="radio" default="1" label="Liga/Pokal/Freundschaftsspiele/Verbandsturnier ?" description="Liga/Pokal/Freundschaftsspiele/Verbandsturnier ?">
+		<field name="projectart" type="extensionradiobutton" default="1" label="Liga/Pokal/Freundschaftsspiele/Verbandsturnier ?" description="Liga/Pokal/Freundschaftsspiele/Verbandsturnier ?">
 			<option value="0">Pokal</option>
 			<option value="1">Liga</option>
 			<option value="2">Freundschaftsspiele</option>
