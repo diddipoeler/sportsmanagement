@@ -229,7 +229,7 @@ $bildpositionenaway['AWAY_POS'][10]['heim']['links'] = 288;
 //    }
 	$position++;
 	}
-	$this->assignRef('bildpositionen', $bildpositionen);  
+	$this->bildpositionen = $bildpositionen;  
     
     //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' jRegistry<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
     //$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' bildpositionen<br><pre>'.print_r($this->bildpositionen,true).'</pre>'),'Notice');
