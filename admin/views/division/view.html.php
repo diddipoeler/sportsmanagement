@@ -78,7 +78,7 @@ class sportsmanagementViewDivision extends sportsmanagementView
 			return false;
 		}
 
-        $this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
+        //$this->project_id = $this->app->getUserState( "$this->option.pid", '0' );
         $mdlProject = JModelLegacy::getInstance("Project", "sportsmanagementModel");
 	    $project = $mdlProject->getProject($this->project_id);
         $this->project = $project;
