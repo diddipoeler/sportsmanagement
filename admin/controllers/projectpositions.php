@@ -66,7 +66,7 @@ class sportsmanagementControllerprojectpositions extends JControllerAdmin
 	 */
   function store()
 	{
-		$post = JFactory::getApplication()->input->get('post');
+		$post = JFactory::getApplication()->input->post->getArray(array());
         // Check for request forgeries
 		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
 

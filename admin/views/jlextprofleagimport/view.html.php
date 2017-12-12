@@ -70,7 +70,7 @@ class sportsmanagementViewjlextprofleagimport extends sportsmanagementView
     
 		//$uri = JFactory::getURI();
 		$config = JComponentHelper::getParams('com_media');
-		$post = $this->jinput->get('post');
+		$post = $this->jinput->post->getArray(array());
 		$files = $this->jinput->get('files');
 
 //		$this->request_url	= $uri->toString();

@@ -309,7 +309,6 @@ class sportsmanagementViewJLXMLImports extends sportsmanagementView
 		$starttime	= $mtime;
         $config['dbo'] = sportsmanagementHelper::getDBConnection(); 
 		$model 		= JModelLegacy::getInstance('jlxmlimport', 'sportsmanagementmodel',$config);
-		//$post		= $jinput->get('post');
 		
         $data2  = $jinput->post->getArray(array());
         //var_dump($data2);

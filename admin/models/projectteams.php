@@ -646,7 +646,7 @@ foreach ($result as $teams)
         $db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
 
-		$post = JFactory::getApplication()->input->get('post');
+		$post = JFactory::getApplication()->input->post->getArray(array());
 		$oldteamid = JFactory::getApplication()->input->getVar('oldteamid',array(),'post','array');
 		$newteamid = JFactory::getApplication()->input->getVar('newteamid',array(),'post','array');
 

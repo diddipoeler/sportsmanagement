@@ -192,7 +192,7 @@ class sportsmanagementControllerTreeto extends JSMControllerForm
 //        $this->jsmapp->enqueueMessage(__METHOD__.' '.__LINE__.' $cid <pre>'.print_r($cid, true).'</pre><br>',''); 
 //        
 //        /*
-//		$post = JFactory::getApplication()->input->get('post');
+//		$post = JFactory::getApplication()->input->post->getArray(array());
 //		$cid = JFactory::getApplication()->input->getVar('cid', array(0), 'post', 'array');
 //		$post['id'] = (int) $cid[0];
 //		$msg='';

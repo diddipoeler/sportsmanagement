@@ -70,7 +70,7 @@ class sportsmanagementModelprojectteam extends JSMModelAdmin
         //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info',0) ;
         // Get the input
         $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
-        $post = JFactory::getApplication()->input->get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
 
 $project_id = $post['pid'];
 //$app->enqueueMessage('project_id<br><pre>'.print_r($project_id, true).'</pre><br>','Notice');
@@ -163,7 +163,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
 		$app = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
-        $post = JFactory::getApplication()->input->get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
         $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $project_id = $post['pid'];
         $season_id = $post['season_id'];
@@ -272,7 +272,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
 		$app = JFactory::getApplication();
         // Get a db connection.
         $db = JFactory::getDbo();
-        $post = JFactory::getApplication()->input->get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
         $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
         
         //$app->enqueueMessage(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post , true).'</pre><br>','Notice');
@@ -338,7 +338,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_club', $object, 
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        //$post = JFactory::getApplication()->input->get('post');
+        //$post = JFactory::getApplication()->input->post->getArray(array());
         $post = $jinput->post->getArray();
         $_pro_teams_to_delete = array();
         $query = JFactory::getDbo()->getQuery(true);

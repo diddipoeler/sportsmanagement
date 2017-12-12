@@ -73,7 +73,7 @@ class sportsmanagementControllerseasons extends JControllerAdmin
     {
         $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
-        $post = JFactory::getApplication()->input->get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
         $model = $this->getModel();
        $model->saveshortpersons();
        
@@ -91,7 +91,7 @@ class sportsmanagementControllerseasons extends JControllerAdmin
     {
         $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
-        $post = JFactory::getApplication()->input->get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
         $model = $this->getModel();
        $model->saveshortpersons();
         
@@ -109,7 +109,7 @@ class sportsmanagementControllerseasons extends JControllerAdmin
     {
         $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
-        $post = JFactory::getApplication()->input->get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
         $model = $this->getModel();
        $model->saveshortteams();
        
@@ -127,7 +127,7 @@ class sportsmanagementControllerseasons extends JControllerAdmin
     {
         $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
-        $post = JFactory::getApplication()->input->get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
         $model = $this->getModel();
        $model->saveshortteams();
         

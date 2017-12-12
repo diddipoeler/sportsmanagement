@@ -82,7 +82,7 @@ class sportsmanagementControllermatch extends JControllerForm
 		$option = JFactory::getApplication()->input->getCmd('option');
         $db = JFactory::getDbo();
 		$msg = '';
-		$post = JFactory::getApplication()->input->get('post');
+		$post = JFactory::getApplication()->input->post->getArray(array());
 		$model = $this->getModel('match');
 		$add_match_count = $post['add_match_count'];
 		$round_id = JFactory::getApplication()->input->getInt('rid');
@@ -286,7 +286,7 @@ class sportsmanagementControllermatch extends JControllerForm
 	{
 		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
-		$post = JFactory::getApplication()->input->get('post');
+		$post = JFactory::getApplication()->input->post->getArray(array());
 		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
 		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
         $post['count_result'] = 1;
@@ -439,7 +439,7 @@ class sportsmanagementControllermatch extends JControllerForm
 		$msg='';
 		JToolbarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
 		$app = JFactory::getApplication();
-		$post=JFactory::getApplication()->input->get('post');
+		$post=JFactory::getApplication()->input->post->getArray(array());
         $model = $this->getModel('match');
 
 		// first step - upload

@@ -319,7 +319,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
     function savestats()
     {
         $option = JFactory::getApplication()->input->getCmd('option');
-        $post = JFactory::getApplication()->input->get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
         $model = $this->getModel();
         if ($model->savestats($post))
 		{
@@ -353,7 +353,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
     function saveroster()
     {
         $option = JFactory::getApplication()->input->getCmd('option');
-        $post = JFactory::getApplication()->input->get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
         $model = $this->getModel();
         
         $positions = $model->getProjectPositionsOptions(0, 1,$post['project_id']);
@@ -412,7 +412,7 @@ class sportsmanagementControllermatches extends JControllerAdmin
     function saveReferees()
     {
         $option = JFactory::getApplication()->input->getCmd('option');
-        $post = JFactory::getApplication()->input->get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
         $model = $this->getModel();
         $positions = $model->getProjectPositionsOptions(0, 3,$post['project_id']);
         $post['positions'] = $positions;

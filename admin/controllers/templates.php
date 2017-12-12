@@ -66,7 +66,7 @@ class sportsmanagementControllertemplates extends JControllerAdmin
      */
     public function changetemplate() 
 	{
-	$post=JFactory::getApplication()->input->get('post');
+	$post=JFactory::getApplication()->input->post->getArray(array());
     $msg = '';
     $this->setRedirect('index.php?option=com_sportsmanagement&view=template&layout=edit&id='.$post['new_id'],$msg);	
 	}

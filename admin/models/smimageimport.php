@@ -147,7 +147,7 @@ function import()
     {
         $app = JFactory::getApplication();
         $option = JFactory::getApplication()->input->getCmd('option');
-        $post = JFactory::getApplication()->input->get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
         
         $server = 'http://sportsmanagement.fussballineuropa.de/jdownloads/';
         

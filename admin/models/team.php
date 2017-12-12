@@ -339,7 +339,7 @@ if (!$db->execute())
         {
             return JText::_('COM_SPORTSMANAGEMENT_ADMIN_TEAMS_SAVE_NO_SELECT');
         }
-        $post = JFactory::getApplication()->input->get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
         
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )

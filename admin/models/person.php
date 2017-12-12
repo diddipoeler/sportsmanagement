@@ -175,7 +175,7 @@ class sportsmanagementModelperson extends JSMModelAdmin
         $db = JFactory::getDbo();
         // Get the input
         $pks = $jinput->getVar('cid', null, 'post', 'array');
-        $post = JFactory::getApplication()->input->get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
         {

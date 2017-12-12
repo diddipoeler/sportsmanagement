@@ -67,7 +67,7 @@ class sportsmanagementControllerjlextindividualsportes extends JControllerAdmin
 	{
 	   $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
-        $post = JFactory::getApplication()->input->get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
 		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
 		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
         
@@ -92,7 +92,7 @@ class sportsmanagementControllerjlextindividualsportes extends JControllerAdmin
 	{
 	   $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
-        $post = JFactory::getApplication()->input->get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
 		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
 		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
         
@@ -115,7 +115,7 @@ class sportsmanagementControllerjlextindividualsportes extends JControllerAdmin
            $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         $pks = JFactory::getApplication()->input->getVar('cid', array(), 'post', 'array');
-        $post = JFactory::getApplication()->input->get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
 		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
 		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
         
@@ -137,7 +137,7 @@ class sportsmanagementControllerjlextindividualsportes extends JControllerAdmin
 	   $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
         $pks = JFactory::getApplication()->input->getVar('cid', array(), 'post', 'array');
-        $post = JFactory::getApplication()->input->get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
 		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
 		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
         

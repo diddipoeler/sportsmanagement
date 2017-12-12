@@ -179,7 +179,7 @@ $query->order('m.match_number');
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
-        $post = JFactory::getApplication()->input->get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
         $result=true;
 		for ($x=0; $x < count($pks); $x++)
 		{
@@ -354,7 +354,7 @@ $app->enqueueMessage(__METHOD__.' '.__LINE__.' result<br><pre>'.print_r($result,
         $db = JFactory::getDbo();
         $query = $db->getQuery(true);
         
-        $post = JFactory::getApplication()->input->get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
         $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
         $project_id	= $app->getUserState( "$option.pid", '0' );
         
@@ -1010,7 +1010,7 @@ $tournement_round = $this->jsmdb->loadResult();
 	   $app = JFactory::getApplication();
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
-       $post = JFactory::getApplication()->input->get('post');
+       $post = JFactory::getApplication()->input->post->getArray(array());
        $option = JFactory::getApplication()->input->getCmd('option');
        /* Ein Datenbankobjekt beziehen */
        $db = JFactory::getDbo();
@@ -2799,7 +2799,7 @@ else
     {
     $option = JFactory::getApplication()->input->getCmd('option');
 	$app = JFactory::getApplication(); 
-    //$post = JFactory::getApplication()->input->get('post');
+    //$post = JFactory::getApplication()->input->post->getArray(array());
     //$cid = JFactory::getApplication()->input->getVar('cid',array(0),'','array');
     //$match_id = $cid[0];
     $match_id = JFactory::getApplication()->input->getVar('match_id');

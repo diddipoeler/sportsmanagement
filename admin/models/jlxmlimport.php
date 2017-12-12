@@ -246,7 +246,7 @@ class sportsmanagementModelJLXMLImport extends JModelLegacy
 		$option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
        $query = JFactory::getDbo()->getQuery(true);
-        $post = JFactory::getApplication()->input->get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
         $this->_season_id = $post['filter_season'];
         $result = NULL;
         

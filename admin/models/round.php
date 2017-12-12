@@ -90,7 +90,7 @@ class sportsmanagementModelround extends JSMModelAdmin
         //$post = $jinput->post;
         $post = $jinput->post->getArray();
 //        $app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
-//        $post = JFactory::getApplication()->input->get('post');
+//        $post = JFactory::getApplication()->input->post->getArray(array());
 //        $app->enqueueMessage(__METHOD__.' '.__LINE__.'post <br><pre>'.print_r($post, true).'</pre><br>','Notice');
         
         if ( COM_SPORTSMANAGEMENT_SHOW_DEBUG_INFO )
@@ -146,7 +146,7 @@ class sportsmanagementModelround extends JSMModelAdmin
     
     //$show_debug_info = JComponentHelper::getParams($option)->get('show_debug_info_'.$this->_identifier,0) ;
     
-    $post = JFactory::getApplication()->input->get('post');
+    $post = JFactory::getApplication()->input->post->getArray(array());
     $project_id	= $app->getUserState( "$option.pid", '0' );
     $add_round_count = (int)$post['add_round_count'];
     

@@ -112,7 +112,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_season_team_pers
         $option = $jinput->getCmd('option');
         // Get the input
         $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
-        //$post = JFactory::getApplication()->input->get('post');
+        //$post = JFactory::getApplication()->input->post->getArray(array());
         $post = $jinput->post->getArray(array());
         $this->_project_id	= $post['pid'];
         $this->persontype	= $post['persontype'];
@@ -379,7 +379,7 @@ sportsmanagementModeldatabasetool::runJoomlaQuery(__CLASS__);
 	   $app = JFactory::getApplication();
        $option = JFactory::getApplication()->input->getCmd('option');
        $season_id = $app->getUserState( "$option.season_id");
-       $post = JFactory::getApplication()->input->get('post');
+       $post = JFactory::getApplication()->input->post->getArray(array());
        $db = $this->getDbo();
 	   $query = $db->getQuery(true);
        $date = JFactory::getDate();

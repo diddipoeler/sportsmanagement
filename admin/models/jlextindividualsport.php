@@ -138,7 +138,7 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
 //    {
 //        $app = JFactory::getApplication();
 //        $option = JFactory::getApplication()->input->getCmd('option');
-//        $post = JFactory::getApplication()->input->get('post');
+//        $post = JFactory::getApplication()->input->post->getArray(array());
 //        $app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.'<br><pre>'.print_r($post,true).'</pre>'),'Notice');
 //        
 //    }
@@ -153,7 +153,7 @@ class sportsmanagementModeljlextindividualsport extends JModelAdmin
         $query->clear();
         // Get the input
         $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
-        $post = JFactory::getApplication()->input->get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
         $match_id = $post['match_id'];
         
         $result_tie_break = 0;
@@ -952,7 +952,7 @@ break;
 	{
   $option='com_joomleague';
 	$app	=& JFactory::getApplication();
-	$post=JFactory::getApplication()->input->get('post');
+	$post=JFactory::getApplication()->input->post->getArray(array());
   $cid=JFactory::getApplication()->input->getVar('cid',array(),'post','array');
 	JArrayHelper::toInteger($cid);
 		
@@ -1015,7 +1015,7 @@ $temp = implode( "\n", $defaultvalues );
 	{
   $option = 'com_joomleague';
 	$app	=& JFactory::getApplication();
-	$post = JFactory::getApplication()->input->get('post');
+	$post = JFactory::getApplication()->input->post->getArray(array());
   $cid = JFactory::getApplication()->input->getVar('cid',array(),'post','array');
 	JArrayHelper::toInteger($cid);
 		

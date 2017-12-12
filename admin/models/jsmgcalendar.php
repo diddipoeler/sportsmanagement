@@ -117,7 +117,7 @@ class sportsmanagementModeljsmGCalendar extends JModelAdmin
 	   $app = JFactory::getApplication();
        $config = JFactory::getConfig();
        $option = JFactory::getApplication()->input->getCmd('option');
-       $post = JFactory::getApplication()->input->get('post');
+       $post = JFactory::getApplication()->input->post->getArray(array());
        // Get a db connection.
         $db = JFactory::getDbo();
         

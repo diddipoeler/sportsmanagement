@@ -95,17 +95,6 @@ class sportsmanagementViewjoomleagueimports extends sportsmanagementView
 		//$stateVar = $app->getUserStateFromRequest( "$option.success", 'success', '' );
 		
 		$this->model->check_database();
-		
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' stateVar <br><pre>'.print_r($stateVar,true).'</pre>'),'');
-        
-        //$post = JFactory::getApplication()->input->get('post');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' _success <br><pre>'.print_r(sportsmanagementModeljoomleagueimports::$_success,true).'</pre>'),'');
-        
-        
-        
-        //$this->state = $this->get('State'); 
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' ' .  ' state <br><pre>'.print_r($this->state,true).'</pre>'),'');
         
         //build the html select list for sportstypes
 		$sportstypes[] = JHtml::_('select.option', '0', JText::_('COM_SPORTSMANAGEMENT_ADMIN_PROJECTS_SPORTSTYPE_FILTER'),'id','name');

@@ -73,7 +73,7 @@ class sportsmanagementModelPredictionGame extends JSMModelAdmin
         $db = JFactory::getDbo();
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
-       $post = JFactory::getApplication()->input->get('post');
+       $post = JFactory::getApplication()->input->post->getArray(array());
        // Set the values
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');

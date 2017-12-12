@@ -72,7 +72,7 @@ class sportsmanagementControllerjlextprofleagimport extends JControllerLegacy
 		$msg='';
 		JToolbarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&view=jlextprofleagimport&controller=jlextprofleagimport'));
 		$app = JFactory::getApplication();
-		$post=JFactory::getApplication()->input->get('post');
+		$post=JFactory::getApplication()->input->post->getArray(array());
     $model=$this->getModel('jlextprofleagimport');
     
 		// first step - upload

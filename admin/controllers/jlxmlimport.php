@@ -145,7 +145,7 @@ class sportsmanagementControllerJLXMLImport extends JControllerLegacy
 		$msg='';
 		JToolbarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement&task=jlxmlimport.display'));
 		$app = JFactory::getApplication();
-		$post=JFactory::getApplication()->input->get('post');
+		$post=JFactory::getApplication()->input->post->getArray(array());
         
         $projectid = JFactory::getApplication()->input->getVar('projektfussballineuropa',null);
 
@@ -284,7 +284,7 @@ $app->enqueueMessage(JText::_('daten -> '.$europalink.' sind kopiert worden!'),'
 	function insert()
 	{
 		JToolbarHelper::back(JText::_('JPREV'),JRoute::_('index.php?option=com_sportsmanagement'));
-		$post=JFactory::getApplication()->input->get('post');
+		$post=JFactory::getApplication()->input->post->getArray(array());
 
 		$link='index.php?option=com_sportsmanagement&task=jlxmlimport.insert';
 		//echo $link;

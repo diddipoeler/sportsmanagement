@@ -93,7 +93,7 @@ class sportsmanagementControllerjlextindividualsport extends JController
         $db = JFactory::getDbo(); 
         
         //option=com_sportsmanagement&view=jlextindividualsportes&tmpl=component&id=241&team1=23&team2=31&rid=31
-		$post = JFactory::getApplication()->input->get('post');
+		$post = JFactory::getApplication()->input->post->getArray(array());
 		$post['project_id'] = $app->getUserState( "$option.pid", '0' );
 		$post['round_id'] = $app->getUserState( "$option.rid", '0' );
         //$post['match_id'] = $post['id'];
@@ -133,7 +133,7 @@ class sportsmanagementControllerjlextindividualsport extends JController
         /*
         $option = JFactory::getApplication()->input->getCmd('option');
 		$app = JFactory::getApplication();
-		$post=JFactory::getApplication()->input->get('post');
+		$post=JFactory::getApplication()->input->post->getArray(array());
 		
 		$post['match_id']		= $app->getUserState( $option . 'match_id',0 );
 		$post['project_id']=$app->getUserState($option.'project',0);

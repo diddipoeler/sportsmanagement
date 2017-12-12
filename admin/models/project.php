@@ -472,7 +472,7 @@ $result = JFactory::getDbo()->updateObject('#__sportsmanagement_user_extra_field
        $address_parts = array();
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
-       $post = JFactory::getApplication()->input->get('post');
+       $post = JFactory::getApplication()->input->post->getArray(array());
        // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');

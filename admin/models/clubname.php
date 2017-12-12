@@ -158,7 +158,7 @@ class sportsmanagementModelclubname extends JSMModelAdmin
 //        $jinput = $app->input;
 //       $date = JFactory::getDate();
 //	   $user = JFactory::getUser();
-//       $post = $jinput->get('post');
+//       $post = $jinput->post->getArray(array());
 //       // Set the values
 //	   $data['modified'] = $date->toSql();
 //	   $data['modified_by'] = $user->get('id');

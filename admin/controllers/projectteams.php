@@ -80,7 +80,7 @@ class sportsmanagementControllerprojectteams extends JControllerAdmin
 	   $app = JFactory::getApplication();
        // JInput object
         $jinput = $app->input;
-		//$post = JFactory::getApplication()->input->get('post');
+		//$post = JFactory::getApplication()->input->post->getArray(array());
         $post = $jinput->post->getArray();
         $option = $jinput->getCmd('option');
 

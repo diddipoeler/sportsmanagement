@@ -235,7 +235,7 @@ TRUNCATE TABLE `jos_joomleague_playground`;
   $lang = JFactory::getLanguage();
   $teile = explode("-",$lang->getTag());
   
-  $post = JFactory::getApplication()->input->get('post');
+  $post = JFactory::getApplication()->input->post->getArray(array());
   $country = $post['country'];
   //$country = JSMCountries::convertIso2to3($teile[1]);
   

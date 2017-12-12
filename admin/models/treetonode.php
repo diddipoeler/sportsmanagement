@@ -175,7 +175,7 @@ public function __construct($config = array())
 		$jinput = $app->input;
 		$option = $jinput->getCmd('option');
 		
-		$post = JFactory::getApplication()->input->get('post');
+		$post = JFactory::getApplication()->input->post->getArray(array());
 		$id = (int) $post['id'];
 		
 		$query = ' UPDATE #__joomleague_treeto_node AS ttn ';

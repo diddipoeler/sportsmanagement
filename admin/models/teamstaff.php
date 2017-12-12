@@ -108,7 +108,7 @@ class sportsmanagementModelteamstaff extends JModelAdmin
 		$app =& JFactory::getApplication();
         // Get the input
         $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
-        $post = JFactory::getApplication()->input->get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
         
         $app->enqueueMessage('saveshort $pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');
         $app->enqueueMessage('saveshort post<br><pre>'.print_r($post, true).'</pre><br>','Notice');
@@ -218,7 +218,7 @@ class sportsmanagementModelteamstaff extends JModelAdmin
 	public function save($data)
 	{
 	   $app = JFactory::getApplication();
-       $post=JFactory::getApplication()->input->get('post');
+       $post=JFactory::getApplication()->input->post->getArray(array());
        
        //$app->enqueueMessage(JText::_('sportsmanagementModelplayground save<br><pre>'.print_r($data,true).'</pre>'),'Notice');
        //$app->enqueueMessage(JText::_('sportsmanagementModelplayground post<br><pre>'.print_r($post,true).'</pre>'),'Notice');

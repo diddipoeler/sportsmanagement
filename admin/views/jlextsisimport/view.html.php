@@ -99,7 +99,7 @@ class sportsmanagementViewjlextsisimport extends sportsmanagementView
 		$option = $jinput->getCmd('option');
 		$uri = JFactory::getURI ();
 		$config = JComponentHelper::getParams ( 'com_media' );
-		$post = $jinput->get('post');
+		$post = $jinput->post->getArray(array());
 		$files = $jinput->get('files');
 		
 		$this->request_url	= $uri->toString ();

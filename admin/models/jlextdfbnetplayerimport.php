@@ -512,7 +512,7 @@ echo $this->pane->startPane('pane');
   $app->enqueueMessage(JText::_('Welche Art von Datei? '.$whichfile),'');
   
   //$delimiter=$app->getUserState($option.'delimiter');
-  $post = JFactory::getApplication()->input->get('post');
+  $post = JFactory::getApplication()->input->post->getArray(array());
   
   $this->_league_new_country = $country;
   

@@ -79,7 +79,7 @@ class sportsmanagementModelpredictionmember extends JSMModelAdmin
 		$db = sportsmanagementHelper::getDBConnection();
 		$query = $db->getQuery(true);
 	
-  $post	= JFactory::getApplication()->input->get('post');
+  $post	= JFactory::getApplication()->input->post->getArray(array());
 	$cid	= JFactory::getApplication()->input->getVar('cid', array(0), 'post', 'array');
   $prediction_id = (int) $cid[0];
   //echo '<br />save_memberlist post<pre>~' . print_r($post,true) . '~</pre><br />';
@@ -848,7 +848,7 @@ elseif(version_compare(JVERSION,'2.5.0','ge'))
 	   $app = JFactory::getApplication();
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
-       $post = JFactory::getApplication()->input->get('post');
+       $post = JFactory::getApplication()->input->post->getArray(array());
        // Set the values
 	   $data['modified'] = $date->toSql();
 	   $data['modified_by'] = $user->get('id');

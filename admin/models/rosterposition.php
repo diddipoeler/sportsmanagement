@@ -69,7 +69,7 @@ class sportsmanagementModelrosterposition extends JSMModelAdmin
 	   $user = JFactory::getUser();
     // Get a db connection.
         $db = JFactory::getDbo();
-       $post=JFactory::getApplication()->input->get('post');
+       $post=JFactory::getApplication()->input->post->getArray(array());
     
     
     if (isset($post['extended']) && is_array($post['extended'])) 

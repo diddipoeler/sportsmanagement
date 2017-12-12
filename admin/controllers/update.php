@@ -95,7 +95,7 @@ class sportsmanagementControllerUpdate extends JControllerLegacy
 	function save()
 	{
 		//JToolbarHelper::back(JText::_('COM_SPORTSMANAGEMENT_BACK_UPDATELIST'),JRoute::_('index.php?option=com_sportsmanagement&view=updates&task=update.display'));
-		$post = JFactory::getApplication()->input->get('post');
+		$post = JFactory::getApplication()->input->post->getArray(array());
 		$file_name = JFactory::getApplication()->input->getVar('file_name');
 		$path = explode('/',$file_name);
 		if (count($path) > 1)
