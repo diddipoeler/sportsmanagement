@@ -97,7 +97,7 @@ class sportsmanagementControllerPredictionRanking extends JControllerLegacy
         $rID = sportsmanagementModelPrediction::getProjectSettings($pjID);    
         }
         
-//		//$post	= JFactory::getApplication()->input->get('post');
+//		//$post	= JFactory::getApplication()->input->post->getArray(array());
 //		//echo '<br /><pre>~' . print_r($post,true) . '~</pre><br />';
 //		$pID	= JFactory::getApplication()->input->getVar('prediction_id',	'',	'post',	'int');
 //		$pggroup	= JFactory::getApplication()->input->getVar('pggroup',	null,	'post',	'int');

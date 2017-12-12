@@ -111,7 +111,7 @@ class sportsmanagementControllerPredictionUsers extends JControllerForm
 		$msg	= '';
 		$link	= '';
 
-		$post	= JFactory::getApplication()->input->get('post');
+		$post	= JFactory::getApplication()->input->post->getArray(array());
 		//echo '<br /><pre>~' . print_r($post,true) . '~</pre><br />';
 		$predictionGameID	= JFactory::getApplication()->input->getVar('prediction_id',	'','post','int');
 		$joomlaUserID		= JFactory::getApplication()->input->getVar('user_id',		'','post','int');

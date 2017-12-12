@@ -152,7 +152,7 @@ public function getModel($name = '', $prefix = '', $config = array('ignore_reque
 		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
 		$msg='';
 		$address_parts = array();
-		$post=JFactory::getApplication()->input->get('post');
+		$post=JFactory::getApplication()->input->post->getArray(array());
 		
 		//$app->enqueueMessage(JText::_('post -> '.'<pre>'.print_r($post,true).'</pre>' ),'');
 		

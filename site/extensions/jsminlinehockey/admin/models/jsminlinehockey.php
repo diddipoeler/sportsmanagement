@@ -832,7 +832,7 @@ function getMatchLink($projectid)
 {
 $option = JFactory::getApplication()->input->getCmd('option');
 $app = JFactory::getApplication();
-$post = JFactory::getApplication()->input->get('post');
+$post = JFactory::getApplication()->input->post->getArray(array());
 
 if ( $app->isAdmin() )
 { 

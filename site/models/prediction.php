@@ -105,7 +105,7 @@ class sportsmanagementModelPrediction extends JModelLegacy
         // JInput object
         $jinput = $app->input;
         $option = $jinput->getCmd('option');
-        //$post	= JFactory::getApplication()->input->get('post');
+        //$post	= JFactory::getApplication()->input->post->getArray(array());
 		self::$roundID = $jinput->getVar('r','0');
         self::$pjID	= $jinput->getVar('pj','0');
         self::$from	= $jinput->getVar('from',self::$roundID);

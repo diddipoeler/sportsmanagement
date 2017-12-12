@@ -100,7 +100,7 @@ public function getModel($name = '', $prefix = '', $config = array('ignore_reque
 	   $app = JFactory::getApplication();
        $date = JFactory::getDate();
 	   $user = JFactory::getUser();
-       $post = JFactory::getApplication()->input->get('post');
+       $post = JFactory::getApplication()->input->post->getArray(array());
        $option = JFactory::getApplication()->input->getCmd('option');
        /* Ein Datenbankobjekt beziehen */
        $db = JFactory::getDbo();

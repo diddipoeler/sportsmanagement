@@ -107,7 +107,7 @@ class sportsmanagementControllereditperson extends JControllerForm
             $model  = $this->getModel('editperson');
 
             //$data	= JFactory::getApplication()->input->getVar('jform', array(), 'post', 'array');
-            $data = JFactory::getApplication()->input->get('post');
+            $data = JFactory::getApplication()->input->post->getArray(array());
 		    $id		= JFactory::getApplication()->input->getInt('id');
             
             // Now update the loaded data to the database via a function in the model

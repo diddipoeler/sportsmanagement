@@ -720,10 +720,10 @@ else
         // Get the input
         //$pks = $jinput->getVar('cid','');
         
-        //$post2 = $jinput->get('post');
+        //$post2 = $jinput->post->getArray(array());
         
         $pks = JFactory::getApplication()->input->getVar('cid', null, 'post', 'array');
-        $post = JFactory::getApplication()->input->get('post');
+        $post = JFactory::getApplication()->input->post->getArray(array());
         
         //$app->enqueueMessage(__METHOD__.' '.__LINE__.' post2<br><pre>'.print_r($post2, true).'</pre><br>','Notice');
         //$app->enqueueMessage(__METHOD__.' '.__LINE__.' pks<br><pre>'.print_r($pks, true).'</pre><br>','Notice');

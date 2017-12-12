@@ -70,7 +70,7 @@ $jinput = $app->input;
 $option = $jinput->getCmd('option');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($jinput->post,true).'</pre>'),'');
-        //$post	= JFactory::getApplication()->input->get('post');
+        //$post	= JFactory::getApplication()->input->post->getArray(array());
 		// Register Extra tasks
 		//$this->registerTask( 'add',			'display' );
 		//$this->registerTask( 'edit',		'display' );
@@ -126,7 +126,7 @@ $option = $jinput->getCmd('option');
 		
     $msg = '';
 		$link = '';
-		$post = JFactory::getApplication()->input->get('post');
+		$post = JFactory::getApplication()->input->post->getArray(array());
 
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' getTask<br><pre>'.print_r($this->getTask(),true).'</pre>'),'');
 //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' post<br><pre>'.print_r($post,true).'</pre>'),'');
@@ -229,7 +229,7 @@ $option = $jinput->getCmd('option');
        $jinput = $app->input;
        
 		JSession::checkToken() or jexit(\JText::_('JINVALID_TOKEN'));
-		//$post	= JFactory::getApplication()->input->get('post');
+		//$post	= JFactory::getApplication()->input->post->getArray(array());
         $pID = $jinput->get('prediction_id', 0, '');
         $groupID = $jinput->get('pggroup', 0, '');
         $pjID = $jinput->get('pj', 0, '');
