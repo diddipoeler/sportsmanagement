@@ -281,31 +281,7 @@ sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/ok.png',
 													$imageTitle,'title= "'.$imageTitle.'"');
 
-if( version_compare(JSM_JVERSION,'4','eq') ) 
-{
-?>
-<a href="#collapseModallogo_middle<?php echo $row->id;?>" title="<?php echo $imageTitle;?>" class="" data-toggle="modal">
-<img src="<?php echo JURI::root().$row->logo_middle;?>" alt="<?php echo $imageTitle;?>" width="20" />
-<?PHP	
-echo JHtml::_('bootstrap.renderModal',
-	'collapseModallogo_middle'.$row->id,
-	array(
-	'title' => JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_CUSTOM_IMAGE'),
-	'url' => JURI::root().$row->logo_middle
-	)
-	);	
-?>									
-</a>
-<?PHP  
-}
-else
-{	
-?>
-<a href="<?php echo JURI::root().$row->logo_middle;?>" title="<?php echo $imageTitle;?>" class="modal">
-<img src="<?php echo JURI::root().$row->logo_middle;?>" alt="<?php echo $imageTitle;?>" width="20" />
-</a>
-<?PHP                                                    
-}                                                    
+echo sportsmanagementHelper::getBootstrapModalImage('collapseModallogo_middle'.$row->id,JURI::root().$row->logo_middle,$imageTitle,'20',JURI::root().$row->logo_middle);                                                   
 								} else {
 									$imageTitle=JText::_('COM_SPORTSMANAGEMENT_ADMIN_CLUBS_NO_IMAGE');
 									echo JHtml::_(	'image','administrator/components/com_sportsmanagement/assets/images/delete.png',
