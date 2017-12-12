@@ -53,12 +53,12 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 		<td class="teamlogo"><?php
 			$pic = $this->config['show_picture'];
         
-        $picture = $this->teams[0]->$pic;
+        $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.$this->teams[0]->$pic;
         //echo $picture.'<br>';
-        if ( !sportsmanagementHelper::existPicture($picture) )
-        {
-        $picture = sportsmanagementHelper::getDefaultPlaceholder($pic);
-        }   
+//        if ( !sportsmanagementHelper::existPicture($picture) )
+//        {
+//        $picture = sportsmanagementHelper::getDefaultPlaceholder($pic);
+//        }   
         
 echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch'.$this->teams[0]->id,$picture,$this->teams[0]->name,$this->config['club_logo_width'])
                              
@@ -68,12 +68,12 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch'.$this->teams
 		<td class="vs">&nbsp;</td>
 		<td class="teamlogo"><?php
 
-        $picture = $this->teams[1]->$pic;
+        $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.$this->teams[1]->$pic;
         //echo $picture.'<br>';
-        if ( !sportsmanagementHelper::existPicture($picture) )
-        {
-        $picture = sportsmanagementHelper::getDefaultPlaceholder($pic);
-        }                         
+//        if ( !sportsmanagementHelper::existPicture($picture) )
+//        {
+//        $picture = sportsmanagementHelper::getDefaultPlaceholder($pic);
+//        }                         
 
 echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch'.$this->teams[1]->id,$picture,$this->teams[1]->name,$this->config['club_logo_width'])
         
@@ -90,12 +90,12 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch'.$this->teams
 		<td class="teampicture">
 			<?php
         
-        $picture = $this->teams[0]->projectteam_picture;
+        $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.$this->teams[0]->projectteam_picture;
         //echo $picture.'<br>';
-        if ( !sportsmanagementHelper::existPicture($picture) )
-        {
-        $picture = sportsmanagementHelper::getDefaultPlaceholder('projectteam_picture');
-        }   
+//        if ( !sportsmanagementHelper::existPicture($picture) )
+//        {
+//        $picture = sportsmanagementHelper::getDefaultPlaceholder('projectteam_picture');
+//        }   
         
 echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch_team'.$this->teams[0]->id,$picture,$this->teams[0]->name,$this->config['team_picture_width'])
                              
@@ -105,12 +105,12 @@ echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch_team'.$this->
 		<td class="vs">&nbsp;</td>
 		<td class="teampicture"><?php
 
-        $picture = $this->teams[1]->projectteam_picture;
+        $picture = COM_SPORTSMANAGEMENT_PICTURE_SERVER.$this->teams[1]->projectteam_picture;
         //echo $picture.'<br>';
-        if ( !sportsmanagementHelper::existPicture($picture) )
-        {
-        $picture = sportsmanagementHelper::getDefaultPlaceholder('projectteam_picture');
-        }                         
+//        if ( !sportsmanagementHelper::existPicture($picture) )
+//        {
+//        $picture = sportsmanagementHelper::getDefaultPlaceholder('projectteam_picture');
+//        }                         
 
 echo sportsmanagementHelperHtml::getBootstrapModalImage('nextmatch_team'.$this->teams[1]->id,$picture,$this->teams[1]->name,$this->config['team_picture_width'])
         

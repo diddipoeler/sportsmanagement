@@ -95,6 +95,7 @@ if ( $this->config['show_previousx'] )
 
 echo $this->loadTemplate($this->config['show_nextmatch_tabs']);
 ?>
+</div>
 <div>
 <?PHP        
 			echo $this->loadTemplate('backbutton');
