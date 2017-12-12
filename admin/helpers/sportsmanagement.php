@@ -81,7 +81,29 @@ abstract class sportsmanagementHelper
 	static $_jsm_db = '';
     static $_success_text = array();
     
-    
+
+public static function getBootstrapModalImage($target='',$picture='',$text='',$picturewidth='20',$url='')
+    {
+    $app = JFactory::getApplication();
+    // JInput object
+    $jinput = $app->input;    
+
+$modaltext = '<a href="#'.$target.'" title="'.$text.'" data-toggle="modal" >';
+$modaltext .= '<img src="'.$picture.'" alt="'.$text.'" width="'.$picturewidth.'" />';
+$modaltext .= '</a>';
+
+$modaltext .= JHtml::_('bootstrap.renderModal',
+	$target,
+	array(
+	'title' => $text,
+	'url' => $url
+	)
+	);	
+		
+		
+	return $modaltext; 
+	}	
+	
     /**
      * sportsmanagementHelper::date_diff()
      * 
