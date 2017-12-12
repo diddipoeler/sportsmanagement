@@ -85,7 +85,8 @@ class sportsmanagementModelNextMatch extends JModelLegacy
 		self::$projectteamid = JFactory::getApplication()->input->get('ptid', 0, 'INT' );
         self::$cfg_which_database = JFactory::getApplication()->input->get('cfg_which_database',0, 'INT');
         
-        sportsmanagementModelProject::$projectid = self::$projectid; 
+        sportsmanagementModelProject::$projectid = self::$projectid;
+        sportsmanagementModelProject::$cfg_which_database = self::$cfg_which_database;  
         
         if ( self::$projectteamid )
         {
@@ -192,15 +193,16 @@ class sportsmanagementModelNextMatch extends JModelLegacy
         $query->join('INNER','#__sportsmanagement_round AS r ON r.id = m.round_id ');
         $query->join('LEFT','#__sportsmanagement_playground AS pl ON pl.id = m.playground_id ');
         $query->where('m.id = '. self::$matchid );
-            
-			$db->setQuery($query, 0, 1);
-            
-        if ( !$db->loadObject() )
-	    {
-		$app->enqueueMessage(JText::_(get_class($this).' '.__FUNCTION__.' '.'<pre>'.print_r($db->getErrorMsg(),true).'</pre>' ),'Error');
-	    }
         
-			$this->_match = $db->loadObject();
+        try{    
+		$db->setQuery($query, 0, 1);
+        $this->_match = $db->loadObject();    
+        }
+	    catch (Exception $e)
+        {
+        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' '.$e->getMessage()), 'error');
+        }
+        			
 		}
 		return $this->_match;
 	}
@@ -590,7 +592,7 @@ class sportsmanagementModelNextMatch extends JModelLegacy
         $query->where('p.published = 1');
         $query->where('m.published = 1');
         $query->where('m.team1_result IS NOT NULL AND m.team2_result IS NOT NULL');
-        $query->group('m.id');
+        //$query->group('m.id');
         $query->order('s.name DESC, m.match_date ASC');
   
 		$db->setQuery( $query );
