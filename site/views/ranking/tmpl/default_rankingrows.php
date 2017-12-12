@@ -203,12 +203,12 @@ foreach( $current as $ptid => $team )
 			$pic = $config['show_logo_small_table'];
             
    //if ( !sportsmanagementHelper::existPicture($team->team->$pic) )
-   if ( !sportsmanagementHelper::existPicture($team->team->$pic) )
-    {
-    $team->team->$pic = sportsmanagementHelper::getDefaultPlaceholder($pic);    
-    }
+//   if ( !sportsmanagementHelper::existPicture($team->team->$pic) )
+//    {
+//    $team->team->$pic = sportsmanagementHelper::getDefaultPlaceholder($pic);    
+//    }
 
-echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamranking'.$team->team->id,$team->team->$pic,$team->team->name,'20')		
+echo sportsmanagementHelperHtml::getBootstrapModalImage($this->teamrow.'teamranking'.$team->team->id,COM_SPORTSMANAGEMENT_PICTURE_SERVER.$team->team->$pic,$team->team->name,'20')		
 ?>    
 
 <?PHP        
