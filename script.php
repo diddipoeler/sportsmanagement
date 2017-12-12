@@ -354,9 +354,9 @@ else
     $file_to_delete = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'models'.DS.'fields'.DS.'title.php'; 
     JFile::delete($file_to_delete);
     
-$file_to_delete = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'views'.DS.'agegroup'.DS.'edit.php'; 
+$file_to_delete = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'views'.DS.'agegroup'.DS.'tmpl'.DS.'edit.php'; 
 JFile::delete($file_to_delete);
-$file_to_delete = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'views'.DS.'agegroup'.DS.'edit_3.php'; 
+$file_to_delete = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'views'.DS.'agegroup'.DS.'tmpl'.DS.'edit_3.php'; 
 JFile::delete($file_to_delete);
 		
     if(version_compare(JVERSION,'3.0.0','ge')) 
