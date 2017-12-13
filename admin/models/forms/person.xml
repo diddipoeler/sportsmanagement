@@ -378,65 +378,8 @@ label="COM_SPORTSMANAGEMENT_TABS_REQUEST"
 		</field>	
 </fieldset>
 
-<!--
-<fieldset name="request2"
-label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
-  description="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS_DESC">  
-
-
-<field
-			name="address_country"
-			type="country"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_COUNTRY"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_COUNTRY_DESC"
-			class="inputbox">
-		<option value="">COM_SPORTSMANAGEMENT_GLOBAL_SELECT_COUNTRY</option>
-	</field>	
-	
-<field
-			name="address"
-			type="textarea"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ADDRESS"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_ADDRESS_DESC"
-			class="inputbox"/>		
-		<field
-			name="zipcode"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_POSTAL_CODE"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_POSTAL_CODE_DESC"
-			class="inputbox"/>	
-		<field
-			name="location"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_CITY"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_CITY_DESC"
-			class="inputbox"/>	
-		<field
-			name="state"
-			type="text"
-			label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_STATE"
-			description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_STATE_DESC"
-			class="inputbox"/>				
-		
-
-</fieldset>
--->
 
 </fields>		
-
-
-
-
-
-
-
-
-<!--
-<fieldset name="maps"
-  label="COM_SPORTSMANAGEMENT_TABS_MAP"
-  description="COM_SPORTSMANAGEMENT_TABS_MAP_DESC">
-  </fieldset>
--->
   
 	<fieldset name="description"
   label="COM_SPORTSMANAGEMENT_TABS_DESCRIPTION"
@@ -447,7 +390,7 @@ label="COM_SPORTSMANAGEMENT_ADMIN_CLUB_ADDRESS"
 				label="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION"
 				description="COM_SPORTSMANAGEMENT_ADMIN_PERSON_DESCRIPTION_DESC"
 				width="450" 
-				filter="safehtml"/>			
+				filter="JComponentHelper::filterText"/>			
 	</fieldset>	
   
   <fieldset name="seasons" 
