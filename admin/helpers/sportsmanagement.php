@@ -1232,24 +1232,11 @@ else
     {
         $app = JFactory::getApplication();
 	$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.$file.'.xml';
-		
-    /*
-    //extension management
-		$extensions = sportsmanagementHelper::getExtensions(JFactory::getApplication()->input->getInt('p'));
-		foreach ($extensions as $e => $extension) {
-			$JLGPATH_EXTENSION = JPATH_COMPONENT_SITE.DS.'extensions'.DS.$extension.DS.'admin';
-			//General extension extended xml 
-			$file = $JLGPATH_EXTENSION.DS.'assets'.DS.'extended'.DS.$file.'.xml';
-			if(file_exists(JPath::clean($file))) {
-				$xmlfile = $file;
-				break; //first extension file will win
-			}
-		}
-		*/
-		
 		/*
 		 * extended data
 		*/
+	if (JFile::exists($xmlfile))
+        {
 	try{	
         $jRegistry = new JRegistry;
 		//$jRegistry->loadString($data, $format);
@@ -1279,6 +1266,11 @@ catch (Exception $e) {
 	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
 	return false;
 }	
+	}
+	else
+	{
+		return false;
+	}
 		
 		
 	}
@@ -1295,22 +1287,7 @@ catch (Exception $e) {
     static function getExtendedUser($data='', $file, $format='ini') 
     {
         $app = JFactory::getApplication();
-		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extendeduser'.DS.$file.'.xml';
-		
-    /*
-    //extension management
-		$extensions = sportsmanagementHelper::getExtensions(JFactory::getApplication()->input->getInt('p'));
-		foreach ($extensions as $e => $extension) {
-			$JLGPATH_EXTENSION = JPATH_COMPONENT_SITE.DS.'extensions'.DS.$extension.DS.'admin';
-			//General extension extended xml 
-			$file = $JLGPATH_EXTENSION.DS.'assets'.DS.'extended'.DS.$file.'.xml';
-			if(file_exists(JPath::clean($file))) {
-				$xmlfile = $file;
-				break; //first extension file will win
-			}
-		}
-		*/
-		
+	$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extendeduser'.DS.$file.'.xml';
 		/*
 		 * extended data
 		*/
