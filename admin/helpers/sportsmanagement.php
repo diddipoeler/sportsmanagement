@@ -1231,7 +1231,7 @@ else
 	static function getExtended($data='', $file, $format='ini') 
     {
         $app = JFactory::getApplication();
-		$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.$file.'.xml';
+	$xmlfile = JPATH_COMPONENT_ADMINISTRATOR.DS.'assets'.DS.'extended'.DS.$file.'.xml';
 		
     /*
     //extension management
@@ -1250,7 +1250,7 @@ else
 		/*
 		 * extended data
 		*/
-		
+	try{	
         $jRegistry = new JRegistry;
 		//$jRegistry->loadString($data, $format);
         
@@ -1271,6 +1271,16 @@ else
 				false, '/config');
 		$extended->bind($jRegistry);
 		return $extended;
+		
+	}
+catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns
+	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
+	return false;
+}	
+		
+		
 	}
     
     
