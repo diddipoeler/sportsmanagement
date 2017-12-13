@@ -50,7 +50,15 @@ jimport('joomla.html.pane');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.modal');
+try{
 $params = $this->form->getFieldsets('params');
+}
+catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns
+	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
+	return false;
+}
 
 //$options = array(
 //    'onActive' => 'function(title, description){
@@ -65,8 +73,16 @@ $params = $this->form->getFieldsets('params');
 //    'useCookie' => true, // this must not be a string. Don't use quotes.
 //);
 
+try{
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
+}
+catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns
+	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
+	return false;
+}
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_sportsmanagement&view='.$this->view.'&layout=edit&id='.(int) $this->item->id .'&tmpl='.$this->tmpl); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
 
