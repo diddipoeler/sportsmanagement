@@ -3017,20 +3017,15 @@ catch (Exception $e) {
         $jinput = $app->input;
     	$db = sportsmanagementHelper::getDBConnection();
         $query = $db->getQuery(true);
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' db-id<br><pre>'.print_r($jlid,true).'</pre>'),'Notice');
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' template<br><pre>'.print_r($template,true).'</pre>'),'Notice');
-        
+if ( $jlid )
+{
         $query->select('ef.*,ev.fieldvalue as fvalue,ev.id as value_id ');
 		$query->from('#__sportsmanagement_user_extra_fields as ef ');
         $query->join('LEFT', '#__sportsmanagement_user_extra_fields_values as ev ON ( ef.id = ev.field_id AND ev.jl_id = '.$jlid .')' );
         $query->where('ef.template_'.$template.' LIKE ' . $db->Quote(''.$jinput->get('view').'') );
-        //$query->where('ev.jl_id = '.$jlid );
         $query->order('ef.ordering');
-        
-    
-		
-		try {
+	
+	try {
         $db->setQuery($query);
         $result = $db->loadObjectList();
 			return $result;
@@ -3041,11 +3036,12 @@ catch (Exception $e) {
 	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
 	return false;
 }
-        
-        //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($result,true).'</pre>'),'Error');
-        
-		//return $result;
-    
+}
+else
+{
+	return false;
+}
+            
     }
     
     
