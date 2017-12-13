@@ -761,10 +761,10 @@ $option = $app->input->getCmd('option');
 			$query->from('#__sportsmanagement_person ');
 			$query->order('lastname');
 			$db->setQuery($query);    
-            
+            $result = $db->loadObjectList();
         }
         
-        return self::addGlobalSelectElement($db->loadObjectList(), $required);
+        return self::addGlobalSelectElement($result, $required);
         }
         
         /**
