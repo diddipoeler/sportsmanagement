@@ -3005,7 +3005,7 @@ public static function getExtraSelectOptions($view = '', $field = '', $template 
         $query->select('ef.id');
 		$query->from('#__sportsmanagement_user_extra_fields as ef ');
         $query->where('ef.template_'.$template.' LIKE ' . $db->Quote(''.$jinput->get('view').'') );
-    
+    try{
 			$db->setQuery($query);
 			if ($db->loadResult())
 			{
@@ -3014,7 +3014,15 @@ public static function getExtraSelectOptions($view = '', $field = '', $template 
             else
             {
                 return false;
-            }    
+            } 
+	    
+	    }
+catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns
+	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
+	return false;
+}
         
     }
     
@@ -3048,16 +3056,18 @@ public static function getExtraSelectOptions($view = '', $field = '', $template 
 		try {
         $db->setQuery($query);
         $result = $db->loadObjectList();
+			return $result;
     }
-    catch (Exception $e){
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($db->getErrorMsg(),true).'</pre>'),'Error');
-//            $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($query->dump(),true).'</pre>'),'Error');
-			$result = false;
-		}
+catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns
+	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
+	return false;
+}
         
         //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' <br><pre>'.print_r($result,true).'</pre>'),'Error');
         
-		return $result;
+		//return $result;
     
     }
     
