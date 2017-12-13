@@ -270,7 +270,7 @@ description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_CALENDAR_IDS_DESC" />
 				label="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_DESCRIPTION"
 				description="COM_SPORTSMANAGEMENT_ADMIN_PROJECT_DESCRIPTION_DESC"
 				width="450" 
-				filter="safehtml"/>			
+				filter="JComponentHelper::filterText"/>			
 	</fieldset>	
 	
 <fields name="request">
