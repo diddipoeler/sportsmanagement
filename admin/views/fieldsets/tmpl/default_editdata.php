@@ -53,8 +53,16 @@ JHtml::_('jquery.framework');
 defined('_JEXEC') or die('Restricted access');
 $templatesToLoad = array('footer','fieldsets');
 sportsmanagementHelper::addTemplatePaths($templatesToLoad, $this);
+try{
 // Get the form fieldsets.
 $fieldsets = $this->form->getFieldsets();
+}
+catch (Exception $e) {
+    $msg = $e->getMessage(); // Returns "Normally you would have other code...
+    $code = $e->getCode(); // Returns
+	JFactory::getApplication()->enqueueMessage(__METHOD__.' '.__LINE__.' '.$msg, 'error');	
+	return false;
+}
 $view = $this->jinput->getCmd('view', 'cpanel');
 
 
