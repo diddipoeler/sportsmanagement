@@ -109,7 +109,7 @@ $starttime = microtime();
 		if ($res = JSMCountries::getCountryOptions())
         {
             $nation = array_merge($nation,$res);
-            $this->assignRef('search_nation',$res);
+            $this->search_nation = $res;
             }
 		
         $lists['nation'] = $nation;
