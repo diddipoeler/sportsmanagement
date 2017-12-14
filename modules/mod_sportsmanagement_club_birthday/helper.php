@@ -39,7 +39,19 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+
+
+/**
+* welche joomla version ?
+*/
+if( version_compare(substr(JVERSION,0,1),'4','eq') ) 
+{
+	
+}
+else
+{
 jimport( 'joomla.utilities.arrayhelper' );
+}
 
 $clubs = array();
 $crew = array();
@@ -79,8 +91,17 @@ public static function jsm_birthday_sort ($array, $sort)
 	 *
 	 * @since   11.1
 	 */
-     		
-		$res = JArrayHelper::sortObjects($array,'age',$sort);
+     	/**
+* welche joomla version ?
+*/
+if( version_compare(substr(JVERSION,0,1),'4','eq') ) 
+{
+	
+}
+else
+{	
+	$res = JArrayHelper::sortObjects($array,'age',$sort);
+}
         return $res;
 	}    
 
