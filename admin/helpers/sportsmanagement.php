@@ -1241,6 +1241,8 @@ else
         $jRegistry = new JRegistry;
 		//$jRegistry->loadString($data, $format);
         
+		if ( $data )
+		{
         if(version_compare(JVERSION,'3.0.0','ge')) 
         {
         $jRegistry->loadString($data); 
@@ -1249,7 +1251,7 @@ else
         {
         $jRegistry->loadJSON($data);   
         }
-        
+	}
         //$app->enqueueMessage(JText::_('sportsmanagementHelper data<br><pre>'.print_r($data,true).'</pre>'),'Notice');
         //$app->enqueueMessage(JText::_('sportsmanagementHelper getExtended<br><pre>'.print_r($jRegistry,true).'</pre>'),'Notice');
         
