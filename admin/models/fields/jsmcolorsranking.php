@@ -104,47 +104,7 @@ class JFormFieldjsmcolorsranking extends JFormField
                 $select_text[] = JHtmlSelect::option($row->value,$row->text); 
             }
         }
-        
-// We need and instance of the pane class to create the sliders.
-      //$pane = JPane::getInstance('sliders');
-        
-	
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' templatename<br><pre>'.print_r($templatename,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' templatefield<br><pre>'.print_r($templatefield,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' select_Options<br><pre>'.print_r($select_Options,true).'</pre>'),'');
-//    $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' select_text<br><pre>'.print_r($select_text,true).'</pre>'),'');
-    
-   // $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' rankingteams<br><pre>'.print_r($rankingteams,true).'</pre>'),'');
 
-   
-
-
-/*
-           
-            $html[] = '<fieldset id="' . $this->id . '"' .  '>';
-            for($a=1; $a <= $rankingteams ; $a++)
-                {
-                    
-                if ( !is_array($this->value) )
-                {
-                $this->value[$a]['von'] = '';
-                }
-                $html[] = JHtml::_(	'select.genericlist',$select_ranking,
-													$this->name . '['. $a .'][von]"','class="inputbox" size="1"','value','text',
-													$this->value[$a]['von']);
-                $html[] = JHtml::_(	'select.genericlist',$select_ranking,
-													$this->name . '['. $a .'][bis]"','class="inputbox" size="1"','value','text',
-													$this->value[$a]['bis']);
-                $html[] = '<input type="text" class="color {hash:true,required:false}" id="' . $this->id . $i . '" name="' . $this->name . '['. $a .'][color]"' . ' value="' .$this->value[$a]['color']. '" size="5"' . '/>';
-                $html[] = '<input type="text" class="inputbox" id="' . $this->id . $i . '" name="' . $this->name . '['. $a .'][text]"' . ' value="' .$this->value[$a]['text']. '" size="10"' . '/>';
-                $html[] = "<br />"; 
-                }    
-                $html[] = '</fieldset>'; 
- */           
-            
-            
-            
-            //$html[] = '<fieldset id="' . $this->id . '"' .  '>';
             $html[] = '<table>';
             $html[] = '<tr>';
             $html[] = '<th>';
@@ -185,7 +145,7 @@ class JFormFieldjsmcolorsranking extends JFormField
                 
                 $html[] = '</td>';  
                 $html[] = '<td>';    
-                $html[] = '<input type="text" class="color {hash:true,required:false}" id="' . $this->id . $i . '" name="' . $this->name . '['. $a .'][color]"' . ' value="' .$this->value[$a]['color']. '" size="5"' . '/>';
+                $html[] = '<input type="text" class="color {hash:true,required:false}" id="' . $this->id . '" name="' . $this->name . '['. $a .'][color]"' . ' value="' .$this->value[$a]['color']. '" size="5"' . '/>';
                 $html[] = '</td>';  
                 $html[] = '<td>'; 
                 if ( $select_Options )
@@ -196,7 +156,7 @@ class JFormFieldjsmcolorsranking extends JFormField
             }
             else
             {
-                $html[] = '<input type="text" class="inputbox" id="' . $this->id . $i . '" name="' . $this->name . '['. $a .'][text]"' . ' value="' .$this->value[$a]['text']. '" size="40"' . '/>';
+                $html[] = '<input type="text" class="inputbox" id="' . $this->id . '" name="' . $this->name . '['. $a .'][text]"' . ' value="' .$this->value[$a]['text']. '" size="40"' . '/>';
             }
                 
                 $html[] = '</td>';               
@@ -204,14 +164,9 @@ class JFormFieldjsmcolorsranking extends JFormField
 
                 }    
             $html[] = '</table>';
-           //$html[] = '</fieldset>';
                     
-    
-            //return $html;
-            
-            //$app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' html<br><pre>'.print_r($html,true).'</pre>'),'');
-            
-            //return implode("\n", $html);
+        
+
             return implode($html);     
     
     }
