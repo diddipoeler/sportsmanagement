@@ -45,6 +45,17 @@ $document->addStyleSheet($css);
 
 $quotemarks = $params->get('quotemarks');
 $showpicture = $params->get('showpicture');  
+$cfg_which_database = $params->get('cfg_which_database');
+
+if ( $cfg_which_database )
+{	
+$paramscomponent = JComponentHelper::getParams( 'com_sportsmanagement' );
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',$paramscomponent->get( 'cfg_which_database_server' ) );	
+}
+else
+{
+DEFINE( 'COM_SPORTSMANAGEMENT_PICTURE_SERVER',JURI::root() );
+}
 
 if ( !isset($rquote->person_picture) )
 {
@@ -53,19 +64,19 @@ if ( !isset($rquote->person_picture) )
 
 if( $quotemarks == 0 )
  	{
-		echo '<strong>';
+	echo '<strong>';
         echo '<p>';
         if ( $showpicture )
         {
-        if ( sportsmanagementHelper::existPicture($rquote->person_picture) )
-        {
+        //if ( sportsmanagementHelper::existPicture($rquote->person_picture) )
+        //{
             
-            echo '<img style="float: left;" src="'.$rquote->person_picture.'" alt="'.$rquote->author.'" width="50" height="" />';
-        }    
-        else
-        {
-            echo '<img style="float: left;" src="'.$rquote->picture.'" alt="'.$rquote->author.'" width="50" height="" />';
-        }
+        echo '<img style="float: left;" src="'.COM_SPORTSMANAGEMENT_PICTURE_SERVER.$rquote->person_picture.'" alt="'.$rquote->author.'" width="50" height="" />';
+        //}    
+        //else
+        //{
+        //    echo '<img style="float: left;" src="'.$rquote->picture.'" alt="'.$rquote->author.'" width="50" height="" />';
+        //}
         }
         echo $rquote->quote;
 		echo '<div align="right">'.$rquote->author.'</div>';
