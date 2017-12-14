@@ -96,7 +96,7 @@ public static function jsm_birthday_sort ($array, $sort)
 */
 if( version_compare(substr(JVERSION,0,1),'4','eq') ) 
 {
-	
+	$res = ArrayHelper::sortObjects($array,'age',$sort);
 }
 else
 {	
