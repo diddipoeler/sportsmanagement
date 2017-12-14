@@ -270,7 +270,7 @@ break;
  * für die extendeduser daten
  */
 case 'extendeduser':
-if ( isset($this->extendeduser) )
+if ( !empty($this->extendeduser) )
 {
 foreach ($this->extendeduser->getFieldsets() as $fieldset)
 {
@@ -304,7 +304,7 @@ break;
  * tabellenpositionen in de gruppen/divisionen
  */
 case 'paramsranking':
-if ( isset($this->extended) )
+if ( !empty($this->extended) )
 {
 foreach ($this->extended->getFieldsets() as $fieldset)
 {
@@ -352,7 +352,7 @@ else
 break;
 // für die extended daten
 case 'params':
-if ( isset($this->formparams) )
+if ( !empty($this->formparams) )
 {
 foreach ($this->formparams->getFieldsets() as $fieldset)
 {
