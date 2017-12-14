@@ -109,7 +109,7 @@ $a = 0;
 foreach ($clubs AS $club) 
 {
 //$thispic = sportsmanagementHelper::getDefaultPlaceholder('clublogobig');                                                       
-$thispic = $module->picture_server.DS.$club->picture;
+$thispic = $module->picture_server.$club->picture;
 $active = ($a==0) ? 'active' : '';    
 
 $club->default_picture = sportsmanagementHelper::getDefaultPlaceholder('clublogobig');  
@@ -117,6 +117,8 @@ $club->default_picture = sportsmanagementHelper::getDefaultPlaceholder('clublogo
 if ( $params->get('show_picture') ) 
 {
 
+	
+/*
 if ( curl_init($club->picture) && $club->picture != '' ) 
 {
 $thispic = $club->picture;
@@ -125,7 +127,8 @@ elseif( curl_init($club->default_picture) && $club->default_picture != '' )
 {
 $thispic = $club->default_picture;
 }
-
+*/
+	
 }
 
 switch ($club->days_to_birthday) 
