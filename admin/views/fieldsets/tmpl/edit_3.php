@@ -60,5 +60,24 @@ if ( !$this->item->id && $this->view == 'club' )
                 </fieldset>
                 <?PHP
                 }   
+	
+	
+if ( $this->tmpl && $this->view == 'club' )
+{
+?>
+<fieldset>
+<div class="fltrt">
+<button type="button" onclick="Joomla.submitform('club.apply', this.form);">
+<?php echo JText::_('JAPPLY');?></button>
+<button type="button" onclick="Joomla.submitform('club.save', this.form);">
+<?php echo JText::_('JSAVE');?></button>
+<button id="cancel" type="button" onclick="<?php echo JFactory::getApplication()->input->getBool('refresh', 0) ? 'window.parent.location.href=window.parent.location.href;' : '';?>  window.parent.SqueezeBox.close();">
+<?php echo JText::_('JCANCEL');?></button>
+</div>
+</fieldset>
+<?PHP    	
+	
+}	
+	
 echo $this->loadTemplate('editdata');  
 ?>  
