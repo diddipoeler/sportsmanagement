@@ -221,7 +221,7 @@ break;
  * für die extended daten
  */
 case 'extended':
-if ( isset($this->extended) )
+if ( !empty($this->extended) )
 {
 foreach ($this->extended->getFieldsets() as $fieldset)
 {
