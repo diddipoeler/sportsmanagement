@@ -1,9 +1,9 @@
 <?php
-/** SportsManagement ein Programm zur Verwaltung für alle Sportarten
+/** SportsManagement ein Programm zur Verwaltung fÃ¼r alle Sportarten
 * @version         1.0.05
 * @file                agegroup.php
 * @author                diddipoeler, stony, svdoldie und donclumsy (diddipoeler@arcor.de)
-* @copyright        Copyright: © 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
+* @copyright        Copyright: Â© 2013 Fussball in Europa http://fussballineuropa.de/ All rights reserved.
 * @license                This file is part of SportsManagement.
 *
 * SportsManagement is free software: you can redistribute it and/or modify
@@ -21,15 +21,15 @@
 *
 * Diese Datei ist Teil von SportsManagement.
 *
-* SportsManagement ist Freie Software: Sie können es unter den Bedingungen
+* SportsManagement ist Freie Software: Sie kÃ¶nnen es unter den Bedingungen
 * der GNU General Public License, wie von der Free Software Foundation,
-* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder späteren
-* veröffentlichten Version, weiterverbreiten und/oder modifizieren.
+* Version 3 der Lizenz oder (nach Ihrer Wahl) jeder spÃ¤teren
+* verÃ¶ffentlichten Version, weiterverbreiten und/oder modifizieren.
 *
-* SportsManagement wird in der Hoffnung, dass es nützlich sein wird, aber
-* OHNE JEDE GEWÄHELEISTUNG, bereitgestellt; sogar ohne die implizite
-* Gewährleistung der MARKTFÄHIGKEIT oder EIGNUNG FÜR EINEN BESTIMMTEN ZWECK.
-* Siehe die GNU General Public License für weitere Details.
+* SportsManagement wird in der Hoffnung, dass es nÃ¼tzlich sein wird, aber
+* OHNE JEDE GEWÃ„HELEISTUNG, bereitgestellt; sogar ohne die implizite
+* GewÃ¤hrleistung der MARKTFÃ„HIGKEIT oder EIGNUNG FÃœR EINEN BESTIMMTEN ZWECK.
+* Siehe die GNU General Public License fÃ¼r weitere Details.
 *
 * Sie sollten eine Kopie der GNU General Public License zusammen mit diesem
 * Programm erhalten haben. Wenn nicht, siehe <http://www.gnu.org/licenses/>.
@@ -38,7 +38,25 @@
 */
 
 defined('_JEXEC') or die('Restricted access');
-//require_once(JPATH_SITE.DS.'components'.DS.'com_sportsmanagement'.DS.'sportsmanagement.php');
+
+// Get the base version
+$baseVersion = substr(JVERSION, 0, 3);
+if(version_compare( $baseVersion,'4.0','ge')) 
+{
+// Joomla! 4.0 code here
+defined('JSM_JVERSION') or define('JSM_JVERSION', 4);
+}
+if(version_compare($baseVersion,'3.0','ge')) 
+{
+// Joomla! 3.0 code here
+defined('JSM_JVERSION') or define('JSM_JVERSION', 3);
+}
+if(version_compare($baseVersion,'2.5','ge')) 
+{
+// Joomla! 2.5 code here
+defined('JSM_JVERSION') or define('JSM_JVERSION', 2);
+} 
+
 if (! defined('DS'))
 {
 	define('DS', DIRECTORY_SEPARATOR);
@@ -48,7 +66,7 @@ if ( !defined('JSM_PATH') )
 DEFINE( 'JSM_PATH','components/com_sportsmanagement' );
 }
 
-// prüft vor Benutzung ob die gewünschte Klasse definiert ist
+// prÃ¼ft vor Benutzung ob die gewÃ¼nschte Klasse definiert ist
 if ( !class_exists('sportsmanagementHelper') ) 
 {
 //add the classes for handling
