@@ -124,7 +124,7 @@ $seasons = implode(",",$season_ids);
     {
     $query->where('st.season_id IN ('.$seasons.')');    
     }		
-    $query->group('c.id');
+    //$query->group('c.id');
 
     $query->order('days_to_birthday ASC');
 
