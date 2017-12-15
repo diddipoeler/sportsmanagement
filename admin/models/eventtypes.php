@@ -176,8 +176,8 @@ class sportsmanagementModelEventtypes extends JSMModelList
 	{
 		//$option = JFactory::getApplication()->input->getCmd('option');
 		//$app = JFactory::getApplication();
-        //$db = sportsmanagementHelper::getDBConnection();
-        //$query = $db->getQuery(true);
+        $this->jsmdb = sportsmanagementHelper::getDBConnection();
+        $this->jsmquery = $this->jsmdb->getQuery(true);
         // Select some fields
 		$this->jsmquery->clear();
 		$this->jsmquery->select('evt.id AS value, concat(evt.name, " (" , st.name, ")") AS text,evt.name as posname,st.name AS stname');
