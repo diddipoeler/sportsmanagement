@@ -111,11 +111,11 @@ class sportsmanagementModelPersons extends JSMModelList
 		$this->setState('filter.search_agegroup', $temp_user_request);
         $value = $this->getUserStateFromRequest($this->context . '.list.limit', 'limit', $this->jsmapp->get('list_limit'), 'int');
 		$this->setState('list.limit', $value);	
-$value = $this->jsmjinput->getUInt('limitstart', 0);
-		$this->setState('list.start', $value);
+
 		// List state information.
 		parent::populateState($ordering, $direction);
-       
+ $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
+		$this->setState('list.start', $value);       
         
 	}
     
