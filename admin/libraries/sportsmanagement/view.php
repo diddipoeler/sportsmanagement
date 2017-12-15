@@ -128,6 +128,12 @@ class sportsmanagementView extends JViewLegacy
 	$this->project_id = $this->jinput->get('pid');
 	$this->jsmmessage = '';
 	$this->jsmmessagetype = 'notice';
+		
+if ( JComponentHelper::getParams($this->option)->get('cfg_which_database') )
+{
+$this->jsmmessage = 'Sie haben Zugriff auf die externe Datenbank';
+}
+		
 	if ( !$this->project_id )	
 	{
 	$this->project_id = $this->app->getUserState( "$this->option.pid", '0' );	
