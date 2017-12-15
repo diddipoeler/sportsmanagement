@@ -190,6 +190,7 @@ class sportsmanagementModelPositions extends JSMModelList
 		//support only 2 sublevel, so parent must not have parents themselves
         
         // Select some fields
+	$this->jsmquery->clear();
         $this->jsmquery->select('pos.id,pos.name,pos.id AS value,pos.name AS text,pos.alias,pos.parent_id,pos.persontype,pos.sports_type_id');
         // From the table
 		$this->jsmquery->from('#__sportsmanagement_position AS pos');
