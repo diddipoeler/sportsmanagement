@@ -176,24 +176,24 @@ class sportsmanagementModelEventtypes extends JSMModelList
 	{
 		//$option = JFactory::getApplication()->input->getCmd('option');
 		//$app = JFactory::getApplication();
-        $this->jsmdb = sportsmanagementHelper::getDBConnection();
-        $this->jsmquery = $this->jsmdb->getQuery(true);
+        $jsmdb = sportsmanagementHelper::getDBConnection();
+        $jsmquery = $jsmdb->getQuery(true);
         // Select some fields
-		$this->jsmquery->clear();
-		$this->jsmquery->select('evt.id AS value, concat(evt.name, " (" , st.name, ")") AS text,evt.name as posname,st.name AS stname');
+		$jsmquery->clear();
+		$jsmquery->select('evt.id AS value, concat(evt.name, " (" , st.name, ")") AS text,evt.name as posname,st.name AS stname');
         // From table
-		$this->jsmquery->from('#__sportsmanagement_eventtype as evt');
+		$jsmquery->from('#__sportsmanagement_eventtype as evt');
         // Join over the sportstype
-		$this->jsmquery->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = evt.sports_type_id');
-        $this->jsmquery->where('evt.published = 1');
+		$jsmquery->join('LEFT', '#__sportsmanagement_sports_type AS st ON st.id = evt.sports_type_id');
+        $jsmquery->where('evt.published = 1');
         if ( $sports_type_id )
         {
-            $this->jsmquery->where('evt.sports_type_id = '.$sports_type_id);
+            $jsmquery->where('evt.sports_type_id = '.$sports_type_id);
         }
-        $query->order('evt.name ASC');
+        $jsmquery->order('evt.name ASC');
                 
-		$this->jsmdb->setQuery($this->jsmquery);
-		if ( !$result = $this->jsmdb->loadObjectList() )
+		$jsmdb->setQuery($jsmquery);
+		if ( !$result = $jsmdb->loadObjectList() )
 		{
 			//sportsmanagementModeldatabasetool::writeErrorLog(__METHOD__, __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			return false;
