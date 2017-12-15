@@ -97,9 +97,23 @@ class sportsmanagementModelPositions extends JSMModelList
 		$this->setState('list.limit', $value);
 
 		// List state information.
-		parent::populateState('po.name', 'asc');
+		//parent::populateState('po.name', 'asc');
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
+		
+		// Filter.order
+		$orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = 'po.name';
+		}
+		$this->setState('list.ordering', $orderCol);
+		$listOrder = $this->getUserStateFromRequest($this->context. '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
+			$listOrder = 'ASC';
+		}
+		$this->setState('list.direction', $listOrder);
 	}
 	
 	/**
@@ -164,38 +178,30 @@ class sportsmanagementModelPositions extends JSMModelList
 	function getParentsPositions()
 	{
 		// Reference global application object
-        $app = JFactory::getApplication();
+        //$app = JFactory::getApplication();
         // JInput object
-        $jinput = $app->input;
-        $option = $jinput->getCmd('option');
-        $query = JFactory::getDbo()->getQuery(true);
-        $results = array();
+        //$jinput = $app->input;
+        //$option = $jinput->getCmd('option');
+        //$query = JFactory::getDbo()->getQuery(true);
+        //$results = array();
 		//$project_id=$app->getUserState($option.'project');
         
 		//get positions already in project for parents list
 		//support only 2 sublevel, so parent must not have parents themselves
         
         // Select some fields
-        $query->select('pos.id,pos.name,pos.id AS value,pos.name AS text,pos.alias,pos.parent_id,pos.persontype,pos.sports_type_id');
+        $this->jsmquery->select('pos.id,pos.name,pos.id AS value,pos.name AS text,pos.alias,pos.parent_id,pos.persontype,pos.sports_type_id');
         // From the table
-		$query->from('#__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos');
-        $query->where('pos.parent_id = 0');  
-        $query->order('pos.ordering ASC ');  
-        
-//		$query='	SELECT pos.id, pos.name,	
-//        pos.id AS value,
-//							pos.name AS text,
-//                            pos.alias,pos.parent_id,pos.persontype,pos.sports_type_id 
-//					FROM #__'.COM_SPORTSMANAGEMENT_TABLE.'_position AS pos
-//					WHERE pos.parent_id=0
-//					ORDER BY pos.ordering ASC 
-//					';
-		JFactory::getDbo()->setQuery($query);
-		if (!$result = JFactory::getDbo()->loadObjectList())
+		$query->from('#__sportsmanagement_position AS pos');
+        $this->jsmquery->where('pos.parent_id = 0');  
+        $this->jsmquery->order('pos.ordering ASC ');  
+
+		$this->jsmdb->setQuery($this->jsmquery);
+		if (!$result = $this->jsmdb->loadObjectList())
 		{
-			sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
+			//sportsmanagementModeldatabasetool::writeErrorLog(get_class($this), __FUNCTION__, __FILE__, JFactory::getDbo()->getErrorMsg(), __LINE__);
 			//return false;
-            return $result;
+            return false;
 		}
         
 //        $app->enqueueMessage(JText::_(__METHOD__.' '.__LINE__.' dump<br><pre>'.print_r($query->dump(),true).'</pre>'),'Notice');
