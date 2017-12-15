@@ -192,7 +192,7 @@ class sportsmanagementModelPositions extends JSMModelList
         // Select some fields
         $this->jsmquery->select('pos.id,pos.name,pos.id AS value,pos.name AS text,pos.alias,pos.parent_id,pos.persontype,pos.sports_type_id');
         // From the table
-		$query->from('#__sportsmanagement_position AS pos');
+		$this->jsmquery->from('#__sportsmanagement_position AS pos');
         $this->jsmquery->where('pos.parent_id = 0');  
         $this->jsmquery->order('pos.ordering ASC ');  
 
