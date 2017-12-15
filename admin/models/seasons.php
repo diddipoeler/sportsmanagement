@@ -151,8 +151,11 @@ class sportsmanagementModelSeasons extends JSMModelList
         
         $this->setState('list.ordering', $this->_order);
         
-        //$Subquery = $this->jsmdb->getQuery(true);
-        
+		if ( JComponentHelper::getParams($this->jsmoption)->get('cfg_which_database') )
+        {
+        $this->jsmmessage = 'Sie haben Zugriff auf die externe Datenbank';
+		}
+		
         switch ($layout)
         {
             case 'assignteams':
