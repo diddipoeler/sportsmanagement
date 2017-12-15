@@ -61,11 +61,6 @@ class sportsmanagementViewSeasons extends sportsmanagementView
 	{
 		
         $season_id = $this->jinput->getVar('id');
-
-if ( JComponentHelper::getParams($this->option)->get('cfg_which_database') )
-{
-$this->jsmmessage = 'Sie haben Zugriff auf die externe Datenbank';
-}
 		
 $starttime = microtime(); 
 
