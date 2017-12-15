@@ -108,7 +108,7 @@ class sportsmanagementModelSeasons extends JSMModelList
 	 *
 	 * @since	1.6
 	 */
-	protected function populateState($ordering = 's.name', $direction = 'asc')
+	protected function populateState($ordering = null, $direction = null)
 	{
 		
         $layout = $this->jsmjinput->getVar('layout');
@@ -133,9 +133,24 @@ class sportsmanagementModelSeasons extends JSMModelList
 		$this->setState('list.limit', $value);
         
         // List state information.
-		parent::populateState($ordering, $direction);
+		//parent::populateState($ordering, $direction);
         $value = $this->getUserStateFromRequest($this->context . '.list.start', 'limitstart', 0, 'int');
 		$this->setState('list.start', $value);
+		
+	// Filter.order
+		$orderCol = $this->getUserStateFromRequest($this->context. '.filter_order', 'filter_order', '', 'string');
+		if (!in_array($orderCol, $this->filter_fields))
+		{
+			$orderCol = 's.name';
+		}
+		$this->setState('list.ordering', $orderCol);
+		$listOrder = $this->getUserStateFromRequest($this->context. '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
+			$listOrder = 'ASC';
+		}
+		$this->setState('list.direction', $listOrder);
+		
 	}
     
 	/**
