@@ -58,6 +58,11 @@ $project_id = $app->getUserState( "$option.pid", '0' );
 <div id="j-main-container" class="j-main-container">
 <?php        
 
+	if ( $this->jsmmessage )
+	{
+	echo $this->loadTemplate('info_message');	
+	}
+		
 switch ($view)
 {
 case 'githubinstall':
