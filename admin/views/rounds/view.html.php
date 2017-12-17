@@ -69,17 +69,17 @@ class sportsmanagementViewRounds extends sportsmanagementView
 		$this->document->addStyleSheet(JUri::root() .'administrator/components/com_sportsmanagement/assets/css/form_control.css', 'text/css');
 
         
-		if ($this->getLayout()=='default' || $this->getLayout()=='default_3')
+		if ($this->getLayout()=='default' || $this->getLayout()=='default_3' || $this->getLayout()=='default_4')
 		{
 			$this->_displayDefault($tpl);
 			return;
 		}
-		else if ($this->getLayout()=='populate' || $this->getLayout()=='populate_3')
+		else if ($this->getLayout()=='populate' || $this->getLayout()=='populate_3' || $this->getLayout()=='populate_4')
 		{
 			$this->_displayPopulate($tpl);
 			return;
 		}
-        else if ($this->getLayout()=='massadd' || $this->getLayout()=='massadd_3')
+        else if ($this->getLayout()=='massadd' || $this->getLayout()=='massadd_3' || $this->getLayout()=='massadd_4')
 		{
 			$this->_displayMassadd($tpl);
 			return;
