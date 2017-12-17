@@ -345,19 +345,60 @@ else
     
     // sicherheitshalber dateien löschen, die ich falsch angelegt habe.
     // aber nur wenn sie vorhanden sind
-    $file_to_delete = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'models'.DS.'fields'.DS.'link.php'; 
-    JFile::delete($file_to_delete);
-    $file_to_delete = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'models'.DS.'fields'.DS.'message.php'; 
-    JFile::delete($file_to_delete);
-    $file_to_delete = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'models'.DS.'fields'.DS.'subtitle.php'; 
-    JFile::delete($file_to_delete);
-    $file_to_delete = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'models'.DS.'fields'.DS.'title.php'; 
-    JFile::delete($file_to_delete);
-    
-$file_to_delete = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'views'.DS.'agegroup'.DS.'tmpl'.DS.'edit.php'; 
-JFile::delete($file_to_delete);
-$file_to_delete = JPATH_ADMINISTRATOR.DS.'components'.DS.'com_sportsmanagement'.DS.'views'.DS.'agegroup'.DS.'tmpl'.DS.'edit_3.php'; 
-JFile::delete($file_to_delete);
+$files = array(
+			// Joomla 4.0
+			'/administrator/components/com_sportsmanagement/models/fields/link.php',
+            '/administrator/components/com_sportsmanagement/models/fields/message.php',
+            '/administrator/components/com_sportsmanagement/models/fields/subtitle.php',
+            '/administrator/components/com_sportsmanagement/models/fields/title.php',
+
+            '/administrator/components/com_sportsmanagement/views/agegroup/tmpl/edit.php',
+            '/administrator/components/com_sportsmanagement/views/agegroup/tmpl/edit_3.php',
+            
+            '/administrator/components/com_sportsmanagement/views/clubname/tmpl/edit.php',
+            '/administrator/components/com_sportsmanagement/views/clubname/tmpl/edit_3.php',
+            
+            '/administrator/components/com_sportsmanagement/views/eventtype/tmpl/edit.php',
+            '/administrator/components/com_sportsmanagement/views/eventtype/tmpl/edit_3.php',
+            
+            '/administrator/components/com_sportsmanagement/views/league/tmpl/edit.php',
+            '/administrator/components/com_sportsmanagement/views/league/tmpl/edit_3.php',
+            
+            '/administrator/components/com_sportsmanagement/views/jlextassociation/tmpl/edit.php',
+            '/administrator/components/com_sportsmanagement/views/jlextassociation/tmpl/edit_3.php',
+            '/administrator/components/com_sportsmanagement/views/jlextcountry/tmpl/edit.php',
+            '/administrator/components/com_sportsmanagement/views/jlextcountry/tmpl/edit_3.php',
+            '/administrator/components/com_sportsmanagement/views/jlextfederation/tmpl/edit.php',
+            '/administrator/components/com_sportsmanagement/views/jlextfederation/tmpl/edit_3.php',
+            
+            '/administrator/components/com_sportsmanagement/views/extrafield/tmpl/edit.php',
+            '/administrator/components/com_sportsmanagement/views/extrafield/tmpl/edit_details.php',
+            '/administrator/components/com_sportsmanagement/views/extrafield/tmpl/edit_extended.php',
+            '/administrator/components/com_sportsmanagement/views/extrafield/tmpl/edit_picture.php',
+            '/administrator/components/com_sportsmanagement/views/extrafield/tmpl/edit_3.php',
+            
+            '/administrator/components/com_sportsmanagement/views/position/tmpl/edit.php',
+            '/administrator/components/com_sportsmanagement/views/position/tmpl/edit_details.php',
+            '/administrator/components/com_sportsmanagement/views/position/tmpl/edit_events.php',
+            '/administrator/components/com_sportsmanagement/views/position/tmpl/edit_extended.php',
+            '/administrator/components/com_sportsmanagement/views/position/tmpl/edit_statistics.php',
+            '/administrator/components/com_sportsmanagement/views/position/tmpl/edit_3.php',
+            '/administrator/components/com_sportsmanagement/views/position/tmpl/edit_3_details.php',
+            '/administrator/components/com_sportsmanagement/views/position/tmpl/edit_3_events.php',
+            '/administrator/components/com_sportsmanagement/views/position/tmpl/edit_3_extended.php',
+            '/administrator/components/com_sportsmanagement/views/position/tmpl/edit_3_statistics.php',
+		);
+            
+foreach ($files as $file)
+		{
+			if (JFile::exists(JPATH_ROOT . $file) && !JFile::delete(JPATH_ROOT . $file))
+			{
+				echo JText::sprintf('FILES_JOOMLA_ERROR_FILE_FOLDER', $file) . '<br>';
+			}
+		}
+
+
+
 		
     if(version_compare(JVERSION,'3.0.0','ge')) 
         {
